@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.56 2005/06/08 14:17:34 ospiess Exp $
+// $Id: event.php,v 1.57 2005/06/25 17:14:34 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -504,7 +504,8 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
 */
 function listevents ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE,
+           $order, $prevorder, $direction;
 
     $retval = '';
     $retval .= COM_startBlock ($LANG22[11], '',
@@ -526,9 +527,11 @@ function listevents ($offset, $curpage, $query = '', $query_limit = 50)
     $event_templates->set_var('lang_search', $LANG22[28]);
     $event_templates->set_var('lang_limit_results', $LANG22[27]);
     $event_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '">';
     $event_templates->set_var('edit_ico', $editico);
-    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.png">';
+    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
+             . $_IMAGE_TYPE . '">';
     $event_templates->set_var('copy_ico', $copyico);
     $event_templates->set_var('lang_edit', $LANG22[29]);
     $event_templates->set_var('lang_copy', $LANG22[30]);
@@ -555,9 +558,9 @@ function listevents ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $event_templates->set_var ('direction', $direction);

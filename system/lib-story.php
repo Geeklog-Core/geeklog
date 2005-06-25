@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.33 2005/06/07 20:22:23 ospiess Exp $
+// $Id: lib-story.php,v 1.34 2005/06/25 17:14:36 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -56,7 +56,7 @@ if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
 function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
-           $_THEME_URL, $mode;
+           $_THEME_URL, $_IMAGE_TYPE, $mode;
 
     $curtime = COM_getUserDateTimeFormat( $A['day'] );
     $A['day'] = $curtime[0];
@@ -136,7 +136,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                         . $_CONF['site_url']
                         . '/users.php?mode=profile&amp;uid=' . $A['uid']
                         . '"><img src="' . $_CONF['layout_url']
-                        . '/images/smallcamera.gif" border="0" alt=""></a>' );
+                        . '/images/smallcamera.' . $_IMAGE_TYPE
+                        . '" border="0" alt=""></a>' );
             }
             else
             {
@@ -350,9 +351,9 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid']
                       . '&amp;what=emailstory';
             $article->set_var( 'email_icon', '<a href="' . $emailUrl . '">'
-                . '<img src="' . $_CONF['layout_url']
-                . '/images/mail.gif" alt="' . $LANG01[64]
-                . '" title="' . $LANG11[2] . '" border="0"></a>' );
+                . '<img src="' . $_CONF['layout_url'] . '/images/mail.'
+                . $_IMAGE_TYPE . '" alt="' . $LANG01[64] . '" title="'
+                . $LANG11[2] . '" border="0"></a>' );
             $article->set_var( 'email_story_url', $emailUrl );
             $article->set_var( 'lang_email_story', $LANG11[2] );
             $article->set_var( 'lang_email_story_alt', $LANG01[64] );
@@ -367,8 +368,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         {
             $article->set_var( 'print_icon', '<a href="' . $printUrl . '">'
                 . '<img border="0" src="' . $_CONF['layout_url']
-                . '/images/print.gif" alt="' . $LANG01[65] . '" title="'
-                . $LANG11[3] . '"></a>' );
+                . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65]
+                . '" title="' . $LANG11[3] . '"></a>' );
             $article->set_var( 'print_story_url', $printUrl );
             $article->set_var( 'lang_print_story', $LANG11[3] );
             $article->set_var( 'lang_print_story_alt', $LANG01[65] );
@@ -378,7 +379,9 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $pdfUrl = $_CONF['site_url'] . '/pdfgenerator.php?pageType=2&amp;'
                     . 'pageData=' . urlencode( $printUrl );
             $article->set_var( 'pdf_icon',
-                sprintf( '<a href="%s"><img border="0" src="%s/images/pdf.gif" alt="%s" title="%s"></a>', $pdfUrl, $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
+                sprintf( '<a href="%s"><img border="0" src="%s/images/pdf.'
+                         . $_IMAGE_TYPE . '" alt="%s" title="%s"></a>',
+                         $pdfUrl, $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
             $article->set_var( 'pdf_story_url', $pdfUrl );
             $article->set_var( 'lang_pdf_story', $LANG11[5] );
             $article->set_var( 'lang_pdf_story_alt', $LANG01[111] );
@@ -399,17 +402,18 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         $article->set_var( 'edit_url', $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $A['sid'] );
         $article->set_var( 'lang_edit_text',  $LANG01[4] );
+        $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
         $article->set_var( 'edit_icon', '<a href="' . $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $A['sid'] . '"><img src="'
-                . $_CONF['layout_url'] . '/images/edit.gif" alt="' . $LANG01[4]
-                . '" title="' . $LANG01[4] . '" border="0"></a>' );
-        $article->set_var( 'edit_image',  '<img src="' . $_CONF['layout_url']
-                . '/images/edit.gif" alt="' . $LANG01[4] . '" title="'
-                . $LANG01[4] . '" border="0">' );
+                . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4]
+                . '" border="0"></a>' );
+        $article->set_var( 'edit_image',  '<img src="' . $editicon . '" alt="'
+                . $LANG01[4] . '" title="' . $LANG01[4] . '" border="0">' );
     }
 
-    $t = explode(' ',$A['expire']);     // Need to convert text date/time to a timestamp
-    $archiveDateTime = COM_convertDate2Timestamp($t[0],$t[1]);
+    // Need to convert text date/time to a timestamp
+    $t = explode(' ', $A['expire']);
+    $archiveDateTime = COM_convertDate2Timestamp($t[0], $t[1]);
     if( $A['featured'] == 1 )
     {
         $article->set_var( 'lang_todays_featured_article', $LANG05[4] );

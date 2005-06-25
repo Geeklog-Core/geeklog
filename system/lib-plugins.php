@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.62 2005/05/15 20:13:22 dhaun Exp $
+// $Id: lib-plugins.php,v 1.63 2005/06/25 17:14:36 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1411,6 +1411,62 @@ function PLG_itemSaved ($id, $type)
     }
 
     return $error;
+}
+
+/**
+* Get the URL of a plugin's icon
+*
+* @param    string  $type   plugin name
+* @return   string          URL of the icon
+*
+*/
+function PLG_getIcon ($type)
+{
+    global $_CONF;
+
+    $retval = '';
+
+    // try the "geticon" function first
+    $function = 'plugin_geticon_' . $type;
+    if (function_exists ($function)) {
+        $retval = $function ();
+    }
+
+    // if that didn't work, try the "cclabel" function
+    if (empty ($retval)) {
+        $function = 'plugin_cclabel_' . $type
+        if (function_exists ($function)) {
+            $cclabel = $function ();
+            if (is_array ($cclabel)) {
+                if (!empty ($cclabel[2])) {
+                    $retval = $cclabel[2];
+                }
+            }
+        }
+    }
+
+    // lastly, search for the icon (assuming it's GIF)
+    if (empty ($retval)) {
+        $icon = $_CONF['site_url'] . '/' . $type . '/images/' . $type . '.gif';
+        $fh = @fopen ($icon, 'r');
+        if ($fh === false) {
+            $icon = $_CONF['site_admin_url'] . '/plugins/' . $type . '/images/'
+                  . $type . '.gif';
+            $fh = @fopen ($icon, 'r');
+            if ($fh === false) {
+                // give up and us a generic icon
+                $retval = $_CONF['site_url'] . '/images/icons/plugins.gif';
+            } else {
+                $retval = $icon;
+                fclose ($fh);
+            }
+        } else {
+            $retval = $icon;
+            fclose ($fh);
+        }
+    }
+
+    return $retval;
 }
 
 ?>

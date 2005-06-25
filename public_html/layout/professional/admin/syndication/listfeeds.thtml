@@ -1,6 +1,6 @@
 <table border="0" cellspacing="0" cellpadding=2 width="100%">
 <tr>
-  <td rowspan="2"><img src="{layout_url}/images/icons/feed.gif" alt=""></td>
+  <td rowspan="2"><img src="{layout_url}/images/icons/syndication.png" alt=""></td>
   <td>[ <a href="{site_admin_url}/syndication.php?mode=edit">{lang_newfeed}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
 </tr>
 <tr>

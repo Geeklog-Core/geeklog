@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog plugin administration page.                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.44 2005/06/09 07:47:17 ospiess Exp $
+// $Id: plugins.php,v 1.45 2005/06/25 17:14:34 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -40,7 +40,7 @@ require_once ('auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 // Number of plugins to list per page
 // We use 25 here instead of the 50 entries in other lists to leave room
@@ -71,7 +71,7 @@ if (!SEC_inGroup('Root')) {
 */ 
 function plugineditor ($pi_name, $confirmed = 0) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG32, $HTTP_POST_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG32, $_POST;
 
     $retval = '';
 
@@ -109,22 +109,7 @@ function plugineditor ($pi_name, $confirmed = 0)
     $plg_templates->set_var('lang_save', $LANG32[23]);
     $plg_templates->set_var('lang_cancel', $LANG32[24]);
     $plg_templates->set_var('lang_delete', $LANG32[25]);
-    $public_img = $_CONF['site_url'] . '/' . $pi_name . '/images/' . $pi_name . '.gif';
-    $fh = @fopen ($public_img, 'r');
-    if ($fh === false) {
-        $admin_img = $_CONF['site_admin_url'] . '/plugins/' . $pi_name
-                   . '/images/' . $pi_name . '.gif';
-        $fh2 = @fopen ($admin_img, 'r');
-        if ($fh2 === false) {
-            $default_img = $_CONF['site_url'] . '/images/icons/plugins.gif';
-            $plg_templates->set_var ('pi_icon', $default_img);
-        } else {
-            $plg_templates->set_var ('pi_icon', $admin_img);
-        }
-    } else {
-        fclose ($fh);
-        $plg_templates->set_var ('pi_icon', $public_img);
-    }
+    $plg_templates->set_var ('pi_icon', PLG_getIcon ($pi_name));
     if (!empty($pi_name)) {
         $plg_templates->set_var ('delete_option', '<input type="submit" value="'
                                  . $LANG32[25] . '" name="mode">');
@@ -173,7 +158,7 @@ function plugineditor ($pi_name, $confirmed = 0)
 */
 function listplugins ($page = 1) 
 {
-    global $_CONF, $_TABLES, $LANG32;
+    global $_CONF, $_TABLES, $LANG32, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -197,8 +182,9 @@ function listplugins ($page = 1)
     $plg_templates->set_var('lang_geeklogversion', $LANG32[18]);
     $plg_templates->set_var('lang_enabled', $LANG32[19]);
     $plg_templates->set_var('lang_edit', $LANG32[35]);
-    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif" title="' . $LANG_ACCESS['edit'] . '">';
-    $plg_templates->set_var ('edit_ico', $edit_ico);
+    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+              . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['edit'] . '">';
+    $plg_templates->set_var ('edit_icon', $edit_ico);
 
     $limit = (PLUGINS_PER_PAGE * $page) - PLUGINS_PER_PAGE;
     $result = DB_query("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']} LIMIT $limit," . PLUGINS_PER_PAGE);
@@ -445,8 +431,8 @@ function do_update ($pi_name)
         $retval .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
                 . '<img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.gif" border="0" align="top" alt="">'
-                . $LANG08[6] . '<br><br>'
+                . '/images/sysmessage.' . $_IMAGE_TYPE
+                . '" border="0" align="top" alt="">' . $LANG08[6] . '<br><br>'
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
@@ -491,8 +477,8 @@ function do_uninstall ($pi_name)
         $retval .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
                 . '<img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.gif" border="0" align="top" alt="">'
-                . $LANG08[6] . '<br><br>'
+                . '/images/sysmessage.' . $_IMAGE_TYPE
+                . '" border="0" align="top" alt="">' . $LANG08[6] . '<br><br>'
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
@@ -505,17 +491,17 @@ if (isset ($_POST['pluginChange'])) {
     changePluginStatus ($_POST['pluginChange']);
 }
 
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
+if (isset ($_POST['mode'])) {
+    $mode = $_POST['mode'];
 } else {
-    $mode = $HTTP_GET_VARS['mode'];
+    $mode = $_GET['mode'];
 }
 if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
-    $pi_name = COM_applyFilter ($HTTP_POST_VARS['pi_name']);
-    if ($HTTP_POST_VARS['confirmed'] == 1) {
+    $pi_name = COM_applyFilter ($_POST['pi_name']);
+    if ($_POST['confirmed'] == 1) {
         $display .= COM_siteHeader ('menu');
         $display .= do_uninstall ($pi_name);
-        $display .= listplugins (COM_applyFilter ($HTTP_POST_VARS['page']));
+        $display .= listplugins (COM_applyFilter ($_POST['page']));
         $display .= COM_siteFooter ();
     } else { // ask user for confirmation
         $display .= COM_siteHeader ('menu');
@@ -528,38 +514,33 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     }
 
 } else if ($mode == $LANG32[34]) {
-        $pi_name = COM_applyFilter ($HTTP_POST_VARS['pi_name']);
+        $pi_name = COM_applyFilter ($_POST['pi_name']);
         $display .= COM_siteHeader ('menu');
         $display .= do_update ($pi_name);
         $display .= COM_siteFooter ();
 
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu');
-    $display .= plugineditor (COM_applyFilter ($HTTP_GET_VARS['pi_name']));
+    $display .= plugineditor (COM_applyFilter ($_GET['pi_name']));
     $display .= COM_siteFooter ();
 
 } else if (($mode == $LANG32[23]) && !empty ($LANG32[23])) { // save
-    $display .= saveplugin (COM_applyFilter ($HTTP_POST_VARS['pi_name']),
-                            COM_applyFilter ($HTTP_POST_VARS['pi_version']),
-                            COM_applyFilter ($HTTP_POST_VARS['pi_gl_version']),
-                            COM_applyFilter ($HTTP_POST_VARS['enabled']),
-                            COM_applyFilter ($HTTP_POST_VARS['pi_homepage']));
+    $display .= saveplugin (COM_applyFilter ($_POST['pi_name']),
+                            COM_applyFilter ($_POST['pi_version']),
+                            COM_applyFilter ($_POST['pi_gl_version']),
+                            COM_applyFilter ($_POST['enabled']),
+                            COM_applyFilter ($_POST['pi_homepage']));
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu');
-    if (isset ($HTTP_POST_VARS['msg'])) {
-        $msg = $HTTP_POST_VARS['msg'];
-    } else {
-        $msg = $HTTP_GET_VARS['msg'];
-    }
+    $msg = COM_applyFilter ($_REQUEST['msg'], true);
     if (!empty ($msg)) {
-        $display .= COM_showMessage(COM_applyFilter ($msg, true));
+        $display .= COM_showMessage ($msg);
     }
-    if (isset ($HTTP_POST_VARS['page'])) {
-        $page = $HTTP_POST_VARS['page'];
-    } else {
-        $page = $HTTP_GET_VARS['page'];
+    $page = COM_applyFilter ($_REQUEST['page'], true);
+    if ($page < 1) {
+        $page = 1;
     }
-    $display .= listplugins (COM_applyFilter ($page, true));
+    $display .= listplugins ($page);
     $display .= COM_siteFooter ();
 }
 

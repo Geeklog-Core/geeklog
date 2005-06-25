@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog calendar.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.54 2004/12/15 20:51:46 dhaun Exp $
+// $Id: calendar.php,v 1.55 2005/06/25 17:14:34 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -194,7 +194,7 @@ function addMode ($mode, $more = true)
 */
 function getDeleteImageLink ($mode, $A)
 {
-    global $_CONF, $LANG22, $LANG30;
+    global $_CONF, $LANG22, $LANG30, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -205,8 +205,9 @@ function getDeleteImageLink ($mode, $A)
             $retval = '<a href="' . $_CONF['site_url']
                     . '/calendar_event.php?action=deleteevent&amp;eid='
                     . $A['eid'] . '"><img src="' . $_CONF['layout_url']
-                    . '/images/icons/delete_event.gif" border="0" alt="'
-                    . $LANG30[30] . '" title="' . $LANG30[30] . '"></a>';
+                    . '/images/icons/delete_event.' . $_IMAGE_TYPE
+                    . '" border="0" alt="' . $LANG30[30] . '" title="'
+                    . $LANG30[30] . '"></a>';
         }
     } else if (SEC_hasRights ('event.edit')) {
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
@@ -215,8 +216,9 @@ function getDeleteImageLink ($mode, $A)
             $retval = '<a href="' . $_CONF['site_admin_url']
                     . '/event.php?mode=' . $LANG22[22] . '&amp;eid='
                     . $A['eid'] . '"><img src="' . $_CONF['layout_url']
-                    . '/images/icons/delete_event.gif" border="0" alt="'
-                    . $LANG30[30] . '" title="' . $LANG30[30] . '"></a>';
+                    . '/images/icons/delete_event.' . $_IMAGE_TYPE
+                    . '" border="0" alt="' . $LANG30[30] . '" title="'
+                    . $LANG30[30] . '"></a>';
         }
     }
 

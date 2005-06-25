@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog database backup administration page.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs         - tony@tonybibbs.com                          |
-// |          Blaine Lang        - langmail@sympatico.ca                       |
-// |          Dirk Haun          - dirk@haun-online.de                         |
-// |          Alexander Schmacks - Alexander.Schmacks@gmx.de                   |
+// | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
+// |          Blaine Lang        - langmail AT sympatico DOT ca                |
+// |          Dirk Haun          - dirk AT haun-online DOT de                  |
+// |          Alexander Schmacks - Alexander.Schmacks AT gmx DOT de            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.20 2004/11/21 10:13:34 dhaun Exp $
+// $Id: database.php,v 1.21 2005/06/25 17:14:34 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -80,8 +80,8 @@ if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {
 }
 
 // Perform the backup if asked
-if (isset ($HTTP_POST_VARS['mode']) &&
-        ($HTTP_POST_VARS['mode'] == $LANG_DB_BACKUP['do_backup'])) {
+if (isset ($_POST['mode']) &&
+        ($_POST['mode'] == $LANG_DB_BACKUP['do_backup'])) {
     if (is_dir ($_CONF['backup_path'])) {
         $curdatetime = date ("Y_m_d");
         $backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";
@@ -107,7 +107,8 @@ if (isset ($HTTP_POST_VARS['mode']) &&
                 $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp,
                               '', COM_getBlockTemplate ('_msg_block', 'header'))
                          . '<img src="' . $_CONF['layout_url'] . '/images/'
-                         . 'sysmessage.gif" border="0" align="top" alt="">'
+                         . 'sysmessage.' . $_IMAGE_TYPE
+                         . '" border="0" align="top" alt="">'
                          . $LANG_DB_BACKUP['backup_successful'] . '<br><br>'
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             } else {

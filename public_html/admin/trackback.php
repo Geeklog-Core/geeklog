@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.16 2005/06/08 13:01:57 ospiess Exp $
+// $Id: trackback.php,v 1.17 2005/06/25 17:14:35 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -432,7 +432,8 @@ function getItemInfo ($type, $id, $what)
 */
 function listServices ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG_TRB, $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG_TRB, $_IMAGE_TYPE,
+           $order, $prevorder, $direction;
 
     $retval = '';
     $retval .= COM_startBlock ($LANG_TRB['services_headline'], '',
@@ -453,7 +454,8 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     $template->set_var ('lang_enabled', $LANG_TRB['service_enabled']);
     $template->set_var ('lang_site', $LANG_TRB['service_website']);
     $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '">';
     $template->set_var('edit_ico', $editico);
     $template->set_var('lang_edit', $LANG_TRB['edit']);
     $template->set_var('last_query', $query);
@@ -487,9 +489,9 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $template->set_var ('direction', $direction);

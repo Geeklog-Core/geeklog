@@ -1,5 +1,7 @@
 <?php
 
+$_IMAGE_TYPE = 'png';
+
 $result = DB_query ("SELECT onleft,name FROM {$_TABLES['blocks']} WHERE is_enabled = 1");
 $nrows = DB_numRows ($result);
 for ($i = 0; $i < $nrows; $i++) {

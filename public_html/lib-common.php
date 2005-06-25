@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.447 2005/06/18 08:53:39 dhaun Exp $
+// $Id: lib-common.php,v 1.448 2005/06/25 17:14:34 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -283,6 +283,14 @@ else if( $_CONF['allow_user_themes'] == 1 )
 if( file_exists( $_CONF['path_layout'] . 'functions.php' ))
 {
     require_once( $_CONF['path_layout'] . 'functions.php' );
+}
+
+// themes can now specify the default image type
+// fall back to 'gif' if they don't
+
+if( empty( $_IMAGE_TYPE ))
+{
+    $_IMAGE_TYPE = 'gif';
 }
 
 // Similarly set language
@@ -764,7 +772,7 @@ function COM_renderMenu( &$header, $plugin_menu )
 function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_CHARSET,
-           $topic, $_COM_VERBOSE;
+           $_IMAGE_TYPE, $topic, $_COM_VERBOSE;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -870,7 +878,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
          $header->set_var( 'advanced_editor', '' );
     }
 
-    $header->set_var( 'background_image', $_CONF['layout_url'] . '/images/bg.gif' );
+    $header->set_var( 'background_image', $_CONF['layout_url']
+                                          . '/images/bg.' . $_IMAGE_TYPE );
     $header->set_var( 'site_url', $_CONF['site_url'] );
     $header->set_var( 'layout_url', $_CONF['layout_url'] );
     $header->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
@@ -892,7 +901,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
     $header->set_var( 'welcome_msg', $msg );
     $header->set_var( 'datetime', $curtime[0] );
-    $header->set_var( 'site_logo', $_CONF['layout_url'] . '/images/logo.gif' );
+    $header->set_var( 'site_logo', $_CONF['layout_url']
+                                   . '/images/logo.' . $_IMAGE_TYPE );
     $header->set_var( 'css_url', $_CONF['layout_url'] . '/style.css' );
     $header->set_var( 'theme', $_CONF['theme'] );
 
@@ -1188,7 +1198,7 @@ function COM_siteFooter( $rightblock = false, $custom = '' )
 
 function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' )
 {
-    global $_CONF, $LANG01;
+    global $_CONF, $LANG01, $_IMAGE_TYPE;
 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
@@ -1199,17 +1209,18 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 
     if( !empty( $helpfile ))
     {
+        $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
         if( !stristr( $helpfile, 'http://' ))
         {
             $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile
-                . '" target="_blank"><img src="' . $_CONF['layout_url']
-                . '/images/button_help.gif" border="0" alt="?"></a>';
+                . '" target="_blank"><img src="' . $helpimg
+                . '" border="0" alt="?"></a>';
         }
         else
         {
             $help = '<a class="blocktitle" href="' . $helpfile
-                . '" target="_blank"><img src="' . $_CONF['layout_url']
-                . '/images/button_help.gif" border="0" alt="?"></a>';
+                . '" target="_blank"><img src="' . $helpimg
+                . '" border="0" alt="?"></a>';
         }
 
         $block->set_var( 'block_help', $help );
@@ -3911,7 +3922,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
 function COM_showMessage( $msg, $plugin='' )
 {
-    global $_CONF, $MESSAGE;
+    global $_CONF, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -3939,7 +3950,8 @@ function COM_showMessage( $msg, $plugin='' )
         $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate( '_msg_block', 'header' ))
             . '<table><tr><td><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.gif" border="0" align="top" alt=""></td>'
+            . '/images/sysmessage.' . $_IMAGE_TYPE
+            . '" border="0" align="top" alt=""></td>'
             . '<td style="padding:5px;">' . $message . '</td></tr></table>'
             . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     }
@@ -4129,7 +4141,7 @@ function COM_getUserCookieTimeout()
 
 function phpblock_whosonline()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -4170,7 +4182,8 @@ function phpblock_whosonline()
                 $retval .= '&nbsp;<a href="' . $_CONF['site_url']
                         . '/users.php?mode=profile&amp;uid=' . $A['uid']
                         . '"><img src="' . $_CONF['layout_url']
-                        . '/images/smallcamera.gif" border="0" alt=""></a>';
+                        . '/images/smallcamera.' . $_IMAGE_TYPE
+                        . '" border="0" alt=""></a>';
             }
             $retval .= '<br>';
             $num_reg++;

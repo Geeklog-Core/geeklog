@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.159 2005/06/11 20:14:43 ospiess Exp $
+// $Id: story.php,v 1.160 2005/06/25 17:14:34 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -613,7 +613,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 function liststories ($offset, $curpage, $query = '', $query_limit = 50)
 {
     global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS,
-           $_POST, $_GET, $order, $prevorder, $direction;
+           $_IMAGE_TYPE, $order, $prevorder, $direction;
 
     $display = '';
 
@@ -647,9 +647,11 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
     $story_templates->set_var('lang_submit', $LANG24[64]);
     $story_templates->set_var('last_query', $query);
     $story_templates->set_var('lang_limit_results', $LANG24[66]);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif" title="Edit">';
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '" title="Edit">';
     $story_templates->set_var('edit_ico', $editico);
-    $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.png" title="Send Ping">';
+    $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+             . $_IMAGE_TYPE . '" title="Send Ping">';
 
     if ($ping_allowed) {
         $story_templates->set_var('lang_ping', $LANG24[20]);
@@ -735,9 +737,9 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $story_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $story_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $story_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $story_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $story_templates->set_var ('direction', $direction);

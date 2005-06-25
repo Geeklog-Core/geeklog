@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.11 2005/05/30 02:17:45 vinny Exp $
+// $Id: lib-comment.php,v 1.12 2005/06/25 17:14:36 dhaun Exp $
 
 /**
 * This function displays the comment control bar
@@ -183,7 +183,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode ) {
 *
 */
 function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false ) {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $query;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $_IMAGE_TYPE, $query;
 
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
@@ -253,7 +253,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                         . $_CONF['site_url']
                         . '/users.php?mode=profile&amp;uid=' . $A['uid']
                         . '"><img src="' . $_CONF['layout_url']
-                        . '/images/smallcamera.gif" border="0" alt=""></a>' );
+                        . '/images/smallcamera.' . $_IMAGE_TYPE
+                        . '" border="0" alt=""></a>' );
             } else {
                 $template->set_var( 'author_photo', '' );
                 $template->set_var( 'camera_icon', '' );

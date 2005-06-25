@@ -1,7 +1,12 @@
 <form action="{php_self}" method="POST">
 <input type="hidden" name="mail" value="mail">
 {startblock_email}
-    <p>{lang_note}</p>
+    <table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
+        <tr>
+            <td><img src="{layout_url}/images/icons/mail.png" alt=""></td>
+            <td>{lang_note}</td>
+        </tr>
+    </table>
     <table border="0" cellpadding="2" cellspacing="0">
         <tr>
             <td align="right">{lang_to}:</td>

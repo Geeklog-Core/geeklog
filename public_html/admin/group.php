@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.47 2005/06/09 07:14:28 ospiess Exp $
+// $Id: group.php,v 1.48 2005/06/25 17:14:34 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -54,7 +54,7 @@ require_once ('auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 $display = '';
 
@@ -494,7 +494,8 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
 */
 function listgroups($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_TABLES, $_CONF, $LANG_ACCESS, $order, $prevorder, $direction;
+    global $_TABLES, $_CONF, $LANG_ACCESS, $_IMAGE_TYPE,
+           $order, $prevorder, $direction;
 
     $retval = COM_startBlock ($LANG_ACCESS['groupmanager'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -518,9 +519,11 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
     $group_templates->set_var('lang_submit', $LANG_ACCESS['submit']);
     $group_templates->set_var('last_query', $query);
     $group_templates->set_var('lang_limit_results', $LANG_ACCESS['limitresults']);
-    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif" title="' . $LANG_ACCESS['edit'] . '">';
+    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+              . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['edit'] . '">';
     $group_templates->set_var ('edit_ico', $edit_ico);
-    $list_ico = '<img src="' . $_CONF['layout_url'] . '/images/list.png" title="' . $LANG_ACCESS['listthem'] . '">';
+    $list_ico = '<img src="' . $_CONF['layout_url'] . '/images/list.'
+              . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['listthem'] . '">';
     $group_templates->set_var ('list_ico', $list_ico);
     
     switch($order) {
@@ -546,9 +549,9 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $group_templates->set_var ('direction', $direction);
@@ -882,16 +885,10 @@ function deleteGroup ($grp_id)
 }
 
 // MAIN
-$http_input_vars = array();
-if (count ($HTTP_POST_VARS) == 0) {
-    $http_input_vars = $HTTP_GET_VARS;
-} else {
-    $http_input_vars = $HTTP_POST_VARS;
-}
-$mode = $http_input_vars['mode'];
+$mode = $_REQUEST['mode'];
 
 if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
-    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
+    $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
         COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/group.php');
@@ -899,36 +896,33 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
         $display .= deleteGroup ($grp_id);
     }
 } else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
-    $display .= savegroup ($HTTP_POST_VARS['grp_id'],
-                           $HTTP_POST_VARS['grp_name'],
-                           $HTTP_POST_VARS['grp_descr'],
-                           $HTTP_POST_VARS['grp_gl_core'],
-                           $HTTP_POST_VARS['features'],
-                           $HTTP_POST_VARS[$_TABLES['groups']]);
+    $display .= savegroup ($_POST['grp_id'], $_POST['grp_name'],
+                           $_POST['grp_descr'], $_POST['grp_gl_core'],
+                           $_POST['features'], $_POST[$_TABLES['groups']]);
 } else if ($mode == 'savegroupusers') {
-    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
-    $display .= savegroupusers ($grp_id, $HTTP_POST_VARS['groupmembers']);
+    $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
+    $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
 } else if ($mode == 'edit') {
-    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
+    $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= COM_siteHeader ('menu');
     $display .= editgroup ($grp_id);
     $display .= COM_siteFooter ();
 } else if ($mode == 'listusers') {
-    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
-    $page = COM_applyFilter ($http_input_vars['page'], true);
+    $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
+    $page = COM_applyFilter ($_REQUEST['page'], true);
     $display .= COM_siteHeader ('menu');
     $display .= listusers ($grp_id, $page);
     $display .= COM_siteFooter ();
 } else if ($mode == 'editusers') {
-    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
-    $page = COM_applyFilter ($http_input_vars['page'], true);
+    $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
+    $page = COM_applyFilter ($_REQUEST['page'], true);
     $display .= COM_siteHeader ('menu');
     $display .= editusers ($grp_id, $page);
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu');
-    if (isset ($http_input_vars['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($http_input_vars['msg'], true));
+    if (isset ($_REQUEST['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
     $offset = 0;
     if (isset ($_REQUEST['offset'])) {
@@ -942,7 +936,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
         $page = 1;
     }
     $display .= listgroups ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
+                            COM_applyFilter ($_REQUEST['query_limit'], true));
     $display .= COM_siteFooter ();
 }
 

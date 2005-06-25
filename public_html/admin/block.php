@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.65 2005/05/09 11:34:14 ospiess Exp $
+// $Id: block.php,v 1.66 2005/06/25 17:14:34 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -474,7 +474,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 */
 function listblocks() 
 {
-    global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS, $_IMAGE_TYPE;
 
     // Added enhanced Block admin based on concept from stratosfear
     $retval = '';
@@ -535,11 +535,11 @@ function listblocks()
 
             if ($A['onleft'] == 1) {
                 $side = $LANG21[40];
-                $blockcontrol_image = 'block-right.gif';
+                $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
                 $moveTitleMsg = $LANG21[59];
                 $switchside = '1';
             } else {
-                $blockcontrol_image = 'block-left.gif';
+                $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
                 $moveTitleMsg = $LANG21[60];
                 $switchside = '0';
                 if (!$hasPrintedRight) {

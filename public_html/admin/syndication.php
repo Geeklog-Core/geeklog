@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.17 2005/06/08 11:53:17 ospiess Exp $
+// $Id: syndication.php,v 1.18 2005/06/25 17:14:35 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -55,7 +55,8 @@ if (!SEC_inGroup ('Root')) {
 */
 function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG33, $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG33, $_IMAGE_TYPE,
+           $order, $prevorder, $direction;
 
     $retval = '';
 
@@ -86,7 +87,8 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
     $feed_template->set_var ('lang_limit_results', $LANG33[46]);
     
     $feed_template->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '">';
     $feed_template->set_var('edit_ico', $editico);
     $feed_template->set_var('lang_edit', $LANG33[48]);
     
@@ -124,9 +126,9 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $feed_template->set_var ('direction', $direction);

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.109 2005/06/12 20:30:57 mjervis Exp $
+// $Id: user.php,v 1.110 2005/06/25 17:14:35 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -432,7 +432,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 */
 function listusers ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG28, $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG28, $_IMAGE_TYPE,
+           $order, $prevorder, $direction;
 
     $retval = '';
 
@@ -458,8 +459,10 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('lang_edit', $LANG28[17]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
-    $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif">';
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
+              . $_IMAGE_TYPE . '">';
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '">';
     $user_templates->set_var('edit_ico', $editico);
 
     if ($_CONF['lastlogin']==true) {
@@ -500,9 +503,9 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $user_templates->set_var ('direction', $direction);

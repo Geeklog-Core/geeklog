@@ -1,7 +1,7 @@
                             <table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin-top:5px;">
                                 <tr>
                                     <td rowspan="2">
-                                        <img src="{layout_url}/images/icons/user.gif" alt="">
+                                        <img src="{layout_url}/images/icons/user.png" alt="">
                                     </td>
                                     <td>[ <a href="{site_admin_url}/user.php?mode=edit">{lang_newuser}</a> | <a href="{site_admin_url}/user.php?mode=importform">{lang_batchadd}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]
                                     </td>

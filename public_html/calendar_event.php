@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.40 2005/04/16 12:51:55 dhaun Exp $
+// $Id: calendar_event.php,v 1.41 2005/06/25 17:14:34 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -658,8 +658,8 @@ default:
                     . $LANG01[4] . '</a>');
             $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
                     . '"><img src="' . $_CONF['layout_url']
-                    . '/images/edit.gif" alt="' . $LANG01[4] . '" title="'
-                    . $LANG01[4] . '" border="0"></a>');
+                    . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
+                    . '" title="' . $LANG01[4] . '" border="0"></a>');
         } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                 $A['perm_anon']) == 3) && SEC_hasRights ('event.edit')) {
@@ -669,8 +669,8 @@ default:
                     . $LANG01[4] . '</a>');
             $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
                     . '"><img src="' . $_CONF['layout_url']
-                    . '/images/edit.gif" alt="' . $LANG01[4] . '" title="'
-                    . $LANG01[4] . '" border="0"></a>');
+                    . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
+                    . '" title="' . $LANG01[4] . '" border="0"></a>');
         } else {
             $cal_templates->set_var ('event_edit', '');
             $cal_templates->set_var ('edit_icon', '');

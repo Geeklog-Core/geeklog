@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.57 2005/06/12 20:30:57 mjervis Exp $
+// $Id: moderation.php,v 1.58 2005/06/25 17:14:34 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -86,12 +86,6 @@ function commandcontrol()
 
     $retval = '';
 
-    if (empty ($_IMAGE_TYPE)) {
-        $ext = 'gif';
-    } else {
-        $ext = $_IMAGE_TYPE;
-    }
-
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
     $admin_templates->set_file (array ('cc'     => 'moderation.thtml',
                                        'ccrow'  => 'ccrow.thtml',
@@ -103,67 +97,67 @@ function commandcontrol()
     if (SEC_hasRights('story.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/story.php',
-                        $_CONF['layout_url'] . '/images/icons/story.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                         $LANG01[11]);
     }
     if (SEC_hasRights('block.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/block.php',
-                        $_CONF['layout_url'] . '/images/icons/block.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/block.' . $_IMAGE_TYPE,
                         $LANG01[12]);
     }
     if (SEC_hasRights('topic.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/topic.php',
-                        $_CONF['layout_url'] . '/images/icons/topic.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/topic.' . $_IMAGE_TYPE,
                         $LANG01[13]);
     }
     if (SEC_hasRights('event.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/event.php',
-                        $_CONF['layout_url'] . '/images/icons/event.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/event.' . $_IMAGE_TYPE,
                         $LANG01[15]);
     }
     if (SEC_hasRights('poll.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/poll.php',
-                        $_CONF['layout_url'] . '/images/icons/poll.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/poll.' . $_IMAGE_TYPE,
                         $LANG01[16]);
     }
     if (SEC_hasRights ('user.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/user.php',
-                        $_CONF['layout_url'] . '/images/icons/user.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                         $LANG01[17]);
     }
     if (SEC_hasRights ('group.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/group.php',
-                        $_CONF['layout_url'] . '/images/icons/group.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE,
                         $LANG01[96]);
     }
     if (SEC_hasRights ('user.mail')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/mail.php',
-                        $_CONF['layout_url'] . '/images/icons/mail.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE,
                         $LANG01[105]);
     }
     if (SEC_inGroup ('Root')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/syndication.php',
-                        $_CONF['layout_url'] . '/images/icons/syndication.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
                         $LANG01[38]);
     }
     if (SEC_hasRights ('story.ping')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/trackback.php',
-                        $_CONF['layout_url'] . '/images/icons/trackback.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE,
                         $LANG01[116]);
     }
     if (SEC_hasRights ('plugin.edit')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/plugins.php',
-                        $_CONF['layout_url'] . '/images/icons/plugins.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE,
                         $LANG01[98]);
     }
 
@@ -179,28 +173,28 @@ function commandcontrol()
     if (($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root')) {
         render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/database.php',
-                        $_CONF['layout_url'] . '/images/icons/backup.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE,
                         $LANG01[103]);
     }
 
     if ($_CONF['link_documentation'] == 1) {
         render_cc_item ($admin_templates,
                         $_CONF['site_url'] . '/docs/',
-                        $_CONF['layout_url'] . '/images/icons/docs.' . $ext,
+                        $_CONF['layout_url'] . '/images/icons/docs.' . $_IMAGE_TYPE,
                         $LANG01[113]);
     }
 
     if (SEC_inGroup ('Root')) {
         render_cc_item ($admin_templates,
                 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
-                $_CONF['layout_url'] . '/images/icons/versioncheck.' . $ext,
+                $_CONF['layout_url'] . '/images/icons/versioncheck.' . $_IMAGE_TYPE,
                 $LANG01[107]);
     }
 
     // logout is always the last entry
     render_cc_item ($admin_templates,
                     $_CONF['site_url'] . '/users.php?mode=logout',
-                    $_CONF['layout_url'] . '/images/icons/logout.' . $ext,
+                    $_CONF['layout_url'] . '/images/icons/logout.' . $_IMAGE_TYPE,
                     $LANG01[35]);
 
     // "flush out" any unrendered entries
