@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.8 2005/04/10 10:34:43 dhaun Exp $
+ * $Id: functions.inc,v 1.9 2005/06/25 19:14:51 dhaun Exp $
  */
 
 /**
@@ -130,7 +130,7 @@ function plugin_cclabel_spamx()
     if (SEC_hasRights('spamx.admin')) {
         $retval = array($LANG_SX00['plugin_name'],
             $_CONF['site_admin_url'] . '/plugins/spamx/index.php',
-            $_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.gif');
+            plugin_geticon_spamx ());
     } 
 
     return $retval;
@@ -289,6 +289,19 @@ function SPAMX_log($logentry)
     } 
     return $retval;
 } 
+
+/**
+* Returns the URL of the plugin's icon
+*
+* @return   string      URL of the icon
+*
+*/
+function plugin_geticon_spamx ()
+{
+    global $_CONF;
+
+    return $_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.png';
+}
 
 /**
  * Removes the datastructures for this plugin from the Geeklog database.
