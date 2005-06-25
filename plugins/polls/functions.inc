@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.5 2005/06/25 19:46:39 dhaun Exp $
+// $Id: functions.inc,v 1.6 2005/06/25 20:01:45 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -310,7 +310,7 @@ function plugin_cclabel_polls()
     global $LANG_POLLS, $_CONF;
 
     if (SEC_hasRights ('polls.edit')) {
-        return array ($LANG_POLLS[16],
+        return array ($LANG_POLLS[1],
                 $_CONF['site_admin_url'] . '/plugins/polls/index.php',
                 plugin_geticon_polls ());
     }
