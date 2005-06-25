@@ -2,7 +2,7 @@
                                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                                     <tr>
                                         <td rowspan="2">
-                                            <img src="{layout_url}/images/admin/plugins.png" alt="">
+                                            <img src="{layout_url}/images/icons/plugins.png" alt="">
                                         </td>
                                         <td>[ <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
                                     </tr>
