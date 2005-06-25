@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.4 2005/06/07 15:04:00 ospiess Exp $
+// $Id: index.php,v 1.5 2005/06/25 19:06:33 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -294,7 +294,8 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
 */
 function listlinks ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG_LINKS_ADMIN, $LANG_ACCESS, $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG_LINKS_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE,
+           $order, $prevorder, $direction;
 
     $retval = '';
 
@@ -323,8 +324,9 @@ function listlinks ($offset, $curpage, $query = '', $query_limit = 50)
     $link_templates->set_var('lang_search', $LANG_LINKS_ADMIN[27]);
     $link_templates->set_var('lang_limit_results', $LANG_LINKS_ADMIN[25]);
     $link_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
-    $link_templates->set_var('edit_ico', $editico);
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '">';
+    $link_templates->set_var('edit_icon', $editico);
     
     switch($order) {
         case 1:
@@ -351,9 +353,9 @@ function listlinks ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $link_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $link_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $link_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $link_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $link_templates->set_var ('direction', $direction);

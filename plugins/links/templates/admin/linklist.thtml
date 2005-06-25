@@ -1,6 +1,6 @@
                             <table border="0" cellspacing="0" cellpadding=2 width="100%">
                                 <tr>
-                                    <td rowspan="2"><img src="{layout_url}/images/icons/link.gif" alt=""></td>
+                                    <td rowspan="2"><img src="{site_url}/links/images/links.png" alt=""></td>
                                     <td>[ <a href="{site_admin_url}/plugins/links/index.php?mode=edit">{lang_newlink}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
                                 </tr>
                                 <tr>

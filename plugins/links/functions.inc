@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.13 2005/06/08 08:42:02 ospiess Exp $
+// $Id: functions.inc,v 1.14 2005/06/25 19:06:33 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -333,7 +333,7 @@ function plugin_cclabel_links()
     if (SEC_hasRights ('links.edit')) {
         return array ($LANG_LINKS[14],
                       $_CONF['site_admin_url'] . '/plugins/links/index.php',
-                      $_CONF['site_url'] . '/links/images/links.gif');
+                      plugin_geticon_links ());
     }
 
     return false;
@@ -834,6 +834,19 @@ function plugin_save_submit_links ($A)
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=17');
     }
     return $retval;
+}
+
+/**
+* Returns the URL of the plugin's icon
+*
+* @return   string      URL of the icon
+*
+*/
+function plugin_geticon_links ()
+{
+    global $_CONF;
+
+    return $_CONF['site_url'] . '/links/images/links.png';
 }
 
 ?>
