@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.65 2005/05/31 11:27:41 ospiess Exp $
+// $Id: article.php,v 1.66 2005/06/26 09:06:08 mjervis Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -126,9 +126,9 @@ if ($A['count'] > 0) {
                     stripslashes ($A['bodytext']));
         } else {
             $story_template->set_var ('story_introtext',
-                    nl2br (stripslashes ($A['introtext'])));
+                    PLG_replaceTags( nl2br (stripslashes ($A['introtext']))));
             $story_template->set_var ('story_bodytext',
-                    nl2br (stripslashes ($A['bodytext'])));
+                    PLG_replaceTags( nl2br (stripslashes ($A['bodytext']))));
         }
         $story_template->set_var('site_url',$_CONF['site_url']);
         $story_template->set_var('layout_url',$_CONF['layout_url']);
