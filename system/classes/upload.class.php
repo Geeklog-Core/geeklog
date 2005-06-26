@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.39 2004/12/19 10:12:28 dhaun Exp $
+// $Id: upload.class.php,v 1.40 2005/06/26 08:38:32 mjervis Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -1156,14 +1156,14 @@ class upload
 	*/
 	function uploadFiles()
 	{
-        global $HTTP_SERVER_VARS;
+        global $_SERVER;
 
         // Before we do anything, let's see if we are limiting file uploads by
         // IP address and, if so, verify the poster is originating from one of
         // those places
         if ($this->_limitByIP) {
-            if (!in_array($HTTP_SERVER_VARS['REMOTE_ADDR'], $this->_allowedIPS)) {
-                $this->_addError('The IP, ' . $HTTP_SERVER_VARS['REMOTE_ADDR'] . ' is not in the list of '
+            if (!in_array($_SERVER['REMOTE_ADDR'], $this->_allowedIPS)) {
+                $this->_addError('The IP, ' . $_SERVER['REMOTE_ADDR'] . ' is not in the list of '
                     . 'accepted IP addresses.  Refusing to allow file upload(s)');
                 return false;
             }

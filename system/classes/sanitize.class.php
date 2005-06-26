@@ -52,7 +52,7 @@ class sanitize extends kses {
 
     /* Filter or sanitize single parm */
     function filterparm ($parm) {
-        global $HTTP_SERVER_VARS;
+        global $_SERVER;
 
         $p = $this->Parse( $parm );
 
@@ -79,7 +79,7 @@ class sanitize extends kses {
         {
             if( strcmp( $p, $parm ) != 0 )
             {
-                COM_errorLog( "Filter applied: >> $parm << filtered to $p [IP {$HTTP_SERVER_VARS['REMOTE_ADDR']}]", 1);
+                COM_errorLog( "Filter applied: >> $parm << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
             }
         }
 

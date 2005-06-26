@@ -32,9 +32,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.11 2005/06/12 20:30:58 mjervis Exp $
+// $Id: lib-user.php,v 1.12 2005/06/26 08:38:32 mjervis Exp $
 
-if (eregi ('lib-user.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
+if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 

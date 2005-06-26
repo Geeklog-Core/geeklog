@@ -31,10 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.23 2005/06/19 09:41:31 mjervis Exp $
+// $Id: auth.inc.php,v 1.24 2005/06/26 08:38:31 mjervis Exp $
 
 // this file can't be used on its own
-if (eregi ('auth.inc.php', $HTTP_SERVER_VARS['PHP_SELF']))
+if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
 {
     die ('This file can not be used on its own.');
 }
@@ -49,7 +49,7 @@ $display = '';
 if ($status == 3) {
     DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
     $_USER = SESS_getUserDataFromId ($uid);
-    $sessid = SESS_newSession ($_USER['uid'], $HTTP_SERVER_VARS['REMOTE_ADDR'],
+    $sessid = SESS_newSession ($_USER['uid'], $_SERVER['REMOTE_ADDR'],
             $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
     SESS_setSessionCookie ($sessid, $_CONF['session_cookie_timeout'],
             $_CONF['cookie_session'], $_CONF['cookie_path'],
@@ -58,7 +58,7 @@ if ($status == 3) {
 
     // Now that we handled session cookies, handle longterm cookie
 
-    if (!isset ($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
+    if (!isset ($_COOKIE[$_CONF['cookie_name']])) {
 
         // Either their cookie expired or they are new
 
@@ -89,7 +89,7 @@ if ($status == 3) {
         .COM_accessLog($LANG20[03] . ' ' . $loginname);
     }
 	
-    $display .= '<form action="' . $HTTP_SERVER_VARS['PHP_SELF']
+    $display .= '<form action="' . $_SERVER['PHP_SELF']
              . '" method="POST">'
         .'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
         .'<tr><td align="right">'.$LANG20[04].'&nbsp;</td>'.LB

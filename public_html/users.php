@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.104 2005/06/12 20:30:58 mjervis Exp $
+// $Id: users.php,v 1.105 2005/06/26 08:38:32 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -301,7 +301,7 @@ function emailpassword ($username, $msg = 0)
 
     $username = addslashes ($username);
     // don't retrieve any remote users!
-    $result = DB_query ("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username' AND remoteservice is null");
+    $result = DB_query ("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username' AND ((remoteservice is null) OR (remoteservice = ''))");
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
@@ -339,7 +339,7 @@ function requestpassword ($username, $msg = 0)
     global $_CONF, $_TABLES, $LANG04;
 
     // no remote users!
-    $result = DB_query ("SELECT uid,email,passwd,status FROM {$_TABLES['users']} WHERE username = '$username' AND remoteservice IS NULL");
+    $result = DB_query ("SELECT uid,email,passwd,status FROM {$_TABLES['users']} WHERE username = '$username' AND ((remoteservice IS NULL) OR (remoteservice=''))");
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
@@ -794,7 +794,7 @@ case 'emailpasswd':
         $email = COM_applyFilter ($_POST['email']);
         if (empty ($username) && !empty ($email)) {
             $username = DB_getItem ($_TABLES['users'], 'username',
-                                    "email = '$email' AND remoteservice IS NULL");
+                                    "email = '$email' AND ((remoteservice IS NULL) OR (remoteservice = ''))");
         }
         if (!empty ($username)) {
             $display .= requestpassword ($username, 55);

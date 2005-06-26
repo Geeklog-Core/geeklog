@@ -30,12 +30,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.13 2005/06/03 09:43:07 ospiess Exp $
+// $Id: lib-syndication.php,v 1.14 2005/06/26 08:38:32 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
 
-if (eregi ('lib-syndication.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
+if (eregi ('lib-syndication.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 

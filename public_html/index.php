@@ -32,24 +32,24 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.71 2005/04/03 00:50:08 blaine Exp $
+// $Id: index.php,v 1.72 2005/06/26 08:38:32 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
 
 $newstories = false;
 $displayall = false;
-if (isset ($HTTP_GET_VARS['display']) && empty ($topic)) {
-    if ($HTTP_GET_VARS['display'] == 'new') {
+if (isset ($_GET['display']) && empty ($topic)) {
+    if ($_GET['display'] == 'new') {
         $newstories = true;
-    } else if ($HTTP_GET_VARS['display'] == 'all') {
+    } else if ($_GET['display'] == 'all') {
         $displayall = true;
     }
 }
 
 $page = 1;
-if (isset ($HTTP_GET_VARS['page'])) {
-    $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
+if (isset ($_GET['page'])) {
+    $page = COM_applyFilter ($_GET['page'], true);
     if ($page == 0) {
         $page = 1;
     }
@@ -67,8 +67,8 @@ if (!$newstories && !$displayall) {
 }
 
 $display .= COM_siteHeader();
-if (isset ($HTTP_GET_VARS['msg'])) {
-    $display .= COM_showMessage (COM_applyFilter ($HTTP_GET_VARS['msg'], true),COM_applyFilter ($HTTP_GET_VARS['plugin']));
+if (isset ($_GET['msg'])) {
+    $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true),COM_applyFilter ($_GET['plugin']));
 }
 
 

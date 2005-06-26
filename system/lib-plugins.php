@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.64 2005/06/25 17:58:54 dhaun Exp $
+// $Id: lib-plugins.php,v 1.65 2005/06/26 08:38:32 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -40,7 +40,7 @@
 *
 */
 
-if (eregi ('lib-plugins.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
+if (eregi ('lib-plugins.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 
@@ -893,7 +893,7 @@ function PLG_profileBlocksDisplay ($uid)
 * The user wants to save changes to his/her profile. Any plugin that added its
 * own variables or blocks to the profile input form will now have to extract
 * its data and save it.
-* Plugins will have to refer to the global $HTTP_POST_VARS array to get the
+* Plugins will have to refer to the global $_POST array to get the
 * actual data.
 *
 * @param   string   $plugin   name of a specific plugin or empty (all plugins)

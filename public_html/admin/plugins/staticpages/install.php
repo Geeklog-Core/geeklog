@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.14 2004/08/15 12:06:10 dhaun Exp $
+// $Id: install.php,v 1.15 2005/06/26 08:38:32 mjervis Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -46,7 +46,7 @@ require_once($_CONF['path'] . 'plugins/staticpages/functions.inc');
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
     // Someone is trying to illegally access this page
-    COM_errorLog("Someone has tried to illegally access the Static Pages install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$HTTP_SERVER_VARS['REMOTE_ADDR']}",1);
+    COM_errorLog("Someone has tried to illegally access the Static Pages install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}",1);
     $display = COM_siteHeader();
     $display .= COM_startBlock($LANG_STATIC['access_denied']);
     $display .= $LANG_STATIC['access_denied_msg'];

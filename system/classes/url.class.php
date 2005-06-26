@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: url.class.php,v 1.8 2004/08/11 09:23:34 dhaun Exp $
+// $Id: url.class.php,v 1.9 2005/06/26 08:38:32 mjervis Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
@@ -76,10 +76,10 @@ class url {
     */
     function _getArguments()
     {
-        global $HTTP_SERVER_VARS;
+        global $_SERVER;
 
-        if (isset ($HTTP_SERVER_VARS['PATH_INFO'])) {
-            $this->_arguments = explode ('/', $HTTP_SERVER_VARS['PATH_INFO']);
+        if (isset ($_SERVER['PATH_INFO'])) {
+            $this->_arguments = explode ('/', $_SERVER['PATH_INFO']);
             array_shift ($this->_arguments);
         } else {
             $this->_arguments = array ();
@@ -162,11 +162,11 @@ class url {
     */
     function getArgument($name)
     {
-        global $HTTP_GET_VARS;
+        global $_GET;
         
         // if in GET VARS array return it 
-        if (!empty($HTTP_GET_VARS[$name])) {
-            return $HTTP_GET_VARS[$name];
+        if (!empty($_GET[$name])) {
+            return $_GET[$name];
         }
         
         // ok, pull from query string

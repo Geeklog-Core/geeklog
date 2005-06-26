@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: addindex.php,v 1.2 2002/12/28 20:10:06 dhaun Exp $
+// $Id: addindex.php,v 1.3 2005/06/26 08:38:32 mjervis Exp $
 
 
 // Add missing indexes to Geeklog tables
@@ -45,7 +45,7 @@
 require_once('../../lib-common.php');
 
 if (!SEC_inGroup ('Root')) {
-    COM_errorLog ("Access denied to {$PHP_SELF} for user {$_USER['username']}, IP=" . $HTTP_SERVER_VARS['REMOTE_ADDR']);
+    COM_errorLog ("Access denied to {$PHP_SELF} for user {$_USER['username']}, IP=" . $_SERVER['REMOTE_ADDR']);
     $display = COM_siteHeader('menu');
     $display .= COM_startBlock($LANG20[1]);
     $display .= $LANG20[6];
