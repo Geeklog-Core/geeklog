@@ -36,6 +36,7 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added a permanent link to comments (in the professional theme) [Vinny]
 - Added new icons for the admin sections and made sure each admin section
   now has an icon in admin/moderation.php [Dirk]
   The new icons have been taken from the Gnome project (some of them modified

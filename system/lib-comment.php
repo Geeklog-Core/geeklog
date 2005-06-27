@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.12 2005/06/25 17:14:36 dhaun Exp $
+// $Id: lib-comment.php,v 1.13 2005/06/27 00:37:39 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -200,6 +200,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     $template->set_var( 'lang_reply', $LANG01[25] );
     $template->set_var( 'lang_authoredby', $LANG01[42] );
     $template->set_var( 'lang_on', $LANG01[36] );
+    $template->set_var( 'lang_permlink', $LANG01[120] );
     $template->set_var( 'order', $order );    
 
     // Make sure we have a default value for comment indentation
