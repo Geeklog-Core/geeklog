@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.448 2005/06/25 17:14:34 dhaun Exp $
+// $Id: lib-common.php,v 1.449 2005/06/29 16:44:47 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1964,7 +1964,11 @@ function COM_userMenu( $help='', $title='' )
         $login->set_var( 'lang_password', $LANG01[57] );
         $login->set_var( 'lang_forgetpassword', $LANG01[119] );
         $login->set_var( 'lang_login', $LANG01[58] );
-        $login->set_var( 'lang_signup', $LANG01[59] );
+        if ($_CONF['allow_newUser_registration'] == 1) {
+            $login->set_var( 'lang_signup', $LANG01[59] );
+        } else {
+            $login->set_var( 'lang_signup', '' );
+        }
         if ($_CONF['remoteauthentication'] && !$_CONF['usersubmission']) {
             /* Build select */
             $select = '<select name="service"><option value="">' . 

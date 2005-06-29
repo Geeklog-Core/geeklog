@@ -286,7 +286,7 @@ $LANG04 = array(
     63 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using {$_CONF['site_name']}",
     64 => 'Comment Preferences for',
     65 => 'Try Logging in Again',
-    66 => "You may have mistyped your login credentials.  Please try logging in again below. Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
+    66 => 'You may have mistyped your login credentials.  Please try logging in again below.',
     67 => 'Member Since',
     68 => 'Remember Me For',
     69 => 'How long should we remember you after logging in?',
@@ -341,7 +341,9 @@ $LANG04 = array(
     118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
     119 => "If you have forgotten your password, you may request a new one at this url:",
     120 => 'Account Activated',
-    121 => 'Service'
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
 ###############################################################################

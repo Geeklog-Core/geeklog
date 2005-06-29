@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.182 2005/06/13 12:12:21 ospiess Exp $
+// $Id: config.php,v 1.183 2005/06/29 16:44:45 mjervis Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -226,6 +226,9 @@ $_CONF['menu_elements'] = array
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+
+// Allow anonymous users to register (if set to 1).
+$_CONF['allow_newUser_registration'] = 1; // set to 0 to block new users.
 
 // optional settings (1 = on, 0 = off)
 $_CONF['allow_user_themes']   = 1;

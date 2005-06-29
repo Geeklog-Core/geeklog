@@ -192,6 +192,10 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
   in the Geeklog framework (reported by Sean C) [Dirk]
 - Save one SQL request for a story's printable view [Dirk]
 - The column headline for event search results was not displayed [Dirk]
+- Added logos to syndication feeds. [Mike]
+- Link tags are now translated in printer friendly mode (Bug #411) [Mike]
+- Added config option to disable new accounts (Patch #426 from Alford Deeley)
+  [Mike]
 
 - New Farsi (Persian) language file, provided by Hesam.H
 - Updated Italian language file, provided by Marcello Teodori
