@@ -1082,7 +1082,8 @@ $LANG33 = array(
     46 => 'Limit Results',
     47 => 'Search',
     48 => 'Edit',
-    49 => 'Feed Logo'
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
