@@ -68,6 +68,8 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_in_transit(in_tra
 
 // new header-link for feeds
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD header_tid varchar(48) NOT NULL default 'none' AFTER topic;";
+// add logo
+$_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD feedlogo varchar(255) AFTER description;";
 // Upgrade format values
 $_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RSS-0.91' WHERE format='rss'";
 $_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RSS-2.0' WHERE format='rss2'";

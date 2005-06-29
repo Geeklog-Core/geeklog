@@ -445,6 +445,7 @@ CREATE TABLE {$_TABLES['syndication']} (
   content_length smallint(5) unsigned NOT NULL default '0',
   title varchar(40) NOT NULL default '',
   description text,
+  feedlogo varchar(255),
   filename varchar(40) NOT NULL default 'geeklog.rdf',
   charset varchar(20) NOT NULL default 'UTF-8',
   language varchar(20) NOT NULL default 'en-gb',
@@ -863,7 +864,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, 
 
 $_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('20040101120556538',2,'GeekLog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for all Admin accounts.</li>\r<li>Remove the install directory (you won\'t need it any more).</li>\r</ol>','2004-01-01 12:05:56','html') ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('geeklog', '::all', 'rss', 10, 0, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rdf', 'UTF-8', 'en-gb', 1, '0000-00-00 00:00:00', NULL)";
+$_DATA[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('geeklog', '::all', 'RSS-2.0', 10, 0, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rdf', 'UTF-8', 'en-gb', 1, '0000-00-00 00:00:00', NULL)";
 
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.gif',1,10,6,2,3,2,2,2)";
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('GeekLog','GeekLog','/images/topics/topic_gl.gif',2,10,6,2,3,2,2,2)";

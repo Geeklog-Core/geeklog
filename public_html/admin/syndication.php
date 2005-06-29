@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.19 2005/06/25 18:12:30 dhaun Exp $
+// $Id: syndication.php,v 1.20 2005/06/29 06:53:34 mjervis Exp $
 
 
 require_once ('../lib-common.php');
@@ -327,7 +327,7 @@ function editfeed ($fid = 0, $type = '')
         if (!empty ($type)) { // set defaults
             $A['fid'] = $fid;
             $A['type'] = $type;
-            $A['format'] = 'rss-0.9x';
+            $A['format'] = 'RSS-2.0';
             $A['limits'] = $_CONF['rdf_limit'];
             $A['content_length'] = $_CONF['rdf_storytext'];
             $A['language'] = $_CONF['rdf_language'];
@@ -359,6 +359,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('lang_content_length', $LANG33[27]);
     $feed_template->set_var ('lang_clen_explain', $LANG33[28]);
     $feed_template->set_var ('lang_description', $LANG33[29]);
+    $feed_template->set_var ('lang_feedlogo', $LANG33[49]);
     $feed_template->set_var ('lang_filename', $LANG33[16]);
     $feed_template->set_var ('lang_updated', $LANG33[30]);
     $feed_template->set_var ('lang_type', $LANG33[15]);
@@ -385,6 +386,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('feed_id', $A['fid']);
     $feed_template->set_var ('feed_title', $A['title']);
     $feed_template->set_var ('feed_description', $A['description']);
+    $feed_template->set_var ('feed_logo', $A['feedlogo']);
     $feed_template->set_var ('feed_content_length', $A['content_length']);
     $feed_template->set_var ('feed_filename', $A['filename']);
     $feed_template->set_var ('feed_type', $A['type']);
@@ -581,8 +583,8 @@ function savefeed ($A)
         $A[$name] = addslashes ($value);
     }
 
-    DB_save ($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,filename,charset,language,is_enabled,updated,update_info',
-        "{$A['fid']},'{$A['type']}','{$A['topic']}','{$A['header_tid']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},'0000-00-00 00:00:00',NULL");
+    DB_save ($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,feedlogo,filename,charset,language,is_enabled,updated,update_info',
+        "{$A['fid']},'{$A['type']}','{$A['topic']}','{$A['header_tid']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['feedlogo']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},'0000-00-00 00:00:00',NULL");
 
     if ($A['fid'] == 0) {
         $A['fid'] = DB_insertId ();

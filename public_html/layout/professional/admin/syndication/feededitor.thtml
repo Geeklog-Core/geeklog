@@ -45,6 +45,10 @@
   <td><textarea name="description" cols="50" rows="8">{feed_description}</textarea></td>
 </tr>
 <tr>
+  <td align="right" valign="top">{lang_feedlogo}:</td>
+  <td><input type="text" maxlength="255" size="40" name="feedlogo" value="{feed_logo}"/></td>
+</tr>
+<tr>
   <td align="right">{lang_filename}:</td>
   <td><input type="text" size="40" name="filename" value="{feed_filename}"></td>
 </tr>
