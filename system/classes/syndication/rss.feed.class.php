@@ -108,6 +108,14 @@
         $xml .= "<description>".$this->_safeXML( $this->description )."</description>\n";
       }
       $xml .= "<language>{$this->lang}</language>\n";
+      if( strlen($this->feedlogo) > 0 )
+      {
+        $xml .= "<image>\n";
+        $xml .= '<url>'.$this->_safeXML( $this->feedlogo )."</url>\n";
+        $xml .= '<title>'.$this->_safeXML( $this->title )."</title>\n";
+        $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
+        $xml .= "</image>\n";
+      }
       return $xml;
     }
 
@@ -300,6 +308,15 @@
       }
       $xml .= '<pubDate>'.strftime( "%a, %d %b %Y %T %Z" )."</pubDate>\n";
       $xml .= "<language>{$this->lang}</language>\n";
+      
+      if( strlen($this->feedlogo) > 0 )
+      {
+        $xml .= "<image>\n";
+        $xml .= '<url>'.$this->_safeXML( $this->feedlogo )."</url>\n";
+        $xml .= '<title>'.$this->_safeXML( $this->title )."</title>\n";
+        $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
+        $xml .= "</image>\n";
+      }
 
       return $xml;
     }

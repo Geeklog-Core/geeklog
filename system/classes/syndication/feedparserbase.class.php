@@ -95,6 +95,11 @@
       * system powering the feed
       */
     var $system;
+    
+    /**
+      * Image to link to the feed.
+      */
+    var $feedlogo;
 
     /**
       * Stuff for parsing XML

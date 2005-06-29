@@ -105,6 +105,10 @@
       $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
       $xml .= '<description>'.$this->_safeXML( $this->description )."</description>\n";
       $xml .= '<dc:language>'.$this->lang."</dc:language>\n";
+      if( strlen($this->feedlogo) > 0 )
+      {
+        $xml .= '<image rdf:resource="'.$this->_safeXML( $this->feedlogo )."\"/>\n";
+      }
       if( strlen($this->sitecontact) > 0 )
       {
         $xml .= '<dc:creator>'.$this->sitecontact."</dc:creator>\n";
