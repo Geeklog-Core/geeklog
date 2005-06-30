@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.106 2005/06/29 16:44:47 mjervis Exp $
+// $Id: users.php,v 1.107 2005/06/30 06:38:18 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -513,10 +513,10 @@ function loginform ($hide_forgotpw_link = false, $statusmode=-1)
         $user_templates->set_var('lang_message', $LANG04[117]);
     } else {
         $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[65]));
-        if ($_CONF['allow_newUser_registration'] == 1){
-            $user_templates->set_var('lang_newreglink', $LANG04[123]);
-        } else {
+        if ($_CONF['disable_new_user_registration']) {
             $user_templates->set_var('lang_newreglink', '');
+        } else {
+            $user_templates->set_var('lang_newreglink', $LANG04[123]);
         }
         $user_templates->set_var('lang_message', $LANG04[66]);
     }
@@ -702,16 +702,16 @@ case 'user':
     break;
 
 case 'create':
-    if ($_CONF['allow_newUser_registration'] == 1) {
-        $display .= createuser (COM_applyFilter ($_POST['username']),
-                                COM_applyFilter ($_POST['email']));
-    } else {
+    if ($_CONF['disable_new_user_registration']) {
         $display .= COM_siteHeader ('menu');
         $display .= COM_startBlock ($LANG04[22], '',
                             COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG04[122]
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= COM_siteFooter ();
+        $display .= COM_siteFooter ();        
+    } else {
+        $display .= createuser (COM_applyFilter ($_POST['username']),
+                                COM_applyFilter ($_POST['email']));
     }
     break;
 
@@ -821,7 +821,12 @@ case 'emailpasswd':
 
 case 'new':
     $display .= COM_siteHeader ('menu', $LANG04[22]);
-    if ($_CONF['allow_newUser_registration'] == 1) {
+    if ($_CONF['disable_new_user_registration']) {
+        $display .= COM_startBlock ($LANG04[22], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'))
+                 . $LANG04[122]
+                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));        
+    } else {
         // Call custom registration and account record create function
         // if enabled and exists
         if ($_CONF['custom_registration'] AND (function_exists('custom_userform'))) {
@@ -829,11 +834,6 @@ case 'new':
         } else {
             $display .= newuserform();
         }
-    } else {
-        $display .= COM_startBlock ($LANG04[22], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'))
-                 . $LANG04[122]
-                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
     $display .= COM_siteFooter();
     break;
