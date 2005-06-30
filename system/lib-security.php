@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.36 2005/06/26 09:05:32 mjervis Exp $
+// $Id: lib-security.php,v 1.37 2005/06/30 23:45:43 trinity Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -853,5 +853,25 @@ function SEC_remoteAuthentication($loginname, $passwd, $service, $uid)
     }
 }
 
-
+/**
+  * Add user to a group
+  * 
+  * work in progress
+  *
+  * Rather self explanitory shortcut function
+  * is this the right place for this, Dirk?
+  * 
+  * @author Trinity L bays <trinity93@steubentech.com>
+  * 
+  * @param  string  $uid Their user id
+  * @param  string  $gname The group name
+  * @return bool    status, true or false.
+  */
+function SEC_addUserToGroup($uid, $gname)
+{
+    global $_TABLES, $_CONF;
+    
+    $remote_grp = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name='$gname'");
+    DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
+}
 ?>
