@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.13 2005/06/27 00:37:39 vinny Exp $
+// $Id: lib-comment.php,v 1.14 2005/06/30 19:50:27 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -430,7 +430,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $limit = $U['commentlimit'];
     }
 
-    if( empty( $order )) {
+    if( $order != 'ASC' && $order != 'DESC' ) {
         $order = 'ASC';
     }
 
