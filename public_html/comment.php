@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.91 2005/02/07 05:17:45 vinny Exp $
+// $Id: comment.php,v 1.92 2005/07/01 20:44:00 trinity Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -98,6 +98,7 @@ function handleSubmit() {
             }
             break;
 
+        /*
         case 'poll':
             $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
                                        "qid = '$sid'");
@@ -119,7 +120,7 @@ function handleSubmit() {
                     . "/pollbooth.php?qid=$sid&aid=-1");
             }
             break;
-
+        */
         default: // assume plugin
             if ( !($display = PLG_commentSave($type, strip_tags ($_POST['title']), 
                                 $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true),
@@ -165,7 +166,7 @@ function handleDelete() {
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             }
             break;
-
+        /* 
         case 'poll':
             $has_editPermissions = SEC_hasRights ('poll.edit');
             $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$sid}'");
@@ -182,7 +183,7 @@ function handleDelete() {
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             }
             break;
-
+          */
         default: //assume plugin
             if ( !($display = PLG_commentDelete($type, 
                                 COM_applyFilter($_REQUEST['cid'], true), $sid)) ) {
@@ -256,7 +257,7 @@ function handleView($view = true) {
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             }
             break;
-
+/*
         case 'poll':
             $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
@@ -280,7 +281,7 @@ function handleView($view = true) {
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             }
             break;
-
+*/
         default: // assume comment
             if ( !($display = PLG_displayComment($type, $sid, $cid, $title,
                                   COM_applyFilter ($_REQUEST['order']), $format, 
@@ -347,7 +348,7 @@ function handleFetch() {
                 $display .= 'ERROR ACCESS DENIED';
             }
             break;
-
+/*
         case 'poll':
             $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
@@ -372,7 +373,7 @@ function handleFetch() {
                 $display .= 'ERROR ACCESS DENIED';
             }
             break;
-
+*/
         default: // assume comment
             if ( !($display = PLG_fetchComment($type, $A, $full)) ) {
                 return 'ERROR ACCESS DENIED';
