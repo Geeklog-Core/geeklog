@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.2 2005/06/13 17:45:17 ospiess Exp $
+// $Id: index.php,v 1.3 2005/07/01 21:36:22 trinity Exp $
 
 require_once ('../lib-common.php');
 
@@ -162,52 +162,52 @@ function polllist ($page = 1)
 
 $display = '';
 
-if (isset ($HTTP_POST_VARS['reply'])
-        && ($HTTP_POST_VARS['reply'] == $LANG01[25])) {
+if (isset ($_POST['reply'])
+        && ($_POST['reply'] == $LANG01[25])) {
     $display .= COM_refresh ($_CONF['site_url'] . '/comment.php?sid='
-             . $HTTP_POST_VARS['qid'] . '&pid=' . $HTTP_POST_VARS['pid']
-             . '&type=' . $HTTP_POST_VARS['type']);
+             . $_POST['qid'] . '&pid=' . $_POST['pid']
+             . '&type=' . $_POST['type']);
     echo $display;
     exit;			
 }
 
-if (isset ($HTTP_POST_VARS['qid'])) {
-    $qid = COM_applyFilter ($HTTP_POST_VARS['qid']);
-    $aid = COM_applyFilter ($HTTP_POST_VARS['aid'], true);
+if (isset ($_POST['qid'])) {
+    $qid = COM_applyFilter ($_POST['qid']);
+    $aid = COM_applyFilter ($_POST['aid'], true);
 } else {
-    $qid = COM_applyFilter ($HTTP_GET_VARS['qid']);
-    $aid = COM_applyFilter ($HTTP_GET_VARS['aid']);
+    $qid = COM_applyFilter ($_REQUEST['qid']);
+    $aid = COM_applyFilter ($_REQUEST['aid']);
     if ($aid > 0) { // you can't vote with a GET request
         $aid = -1;
     }
 }
-if (isset ($HTTP_POST_VARS['order'])) {
-    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
+if (isset ($_POST['order'])) {
+    $order = COM_applyFilter ($_POST['order']);
 } else {
-    $order = COM_applyFilter ($HTTP_GET_VARS['order']);
+    $order = COM_applyFilter ($_REQUEST['order']);
 }
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+if (isset ($_POST['mode'])) {
+    $mode = COM_applyFilter ($_POST['mode']);
 } else {
-    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+    $mode = COM_applyFilter ($_REQUEST['mode']);
 }
 
 if (empty($qid)) {
-    if (isset ($HTTP_GET_VARS['page'])) {
-        $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
     } else {
         $page = 1;
     }
     $display .= COM_siteHeader ('menu', $LANG07[4]) . polllist ($page);
 } else if ($aid == 0) {
     $display .= COM_siteHeader();
-    if (empty($HTTP_COOKIE_VARS[$qid])) {
+    if (empty($_COOKIE[$qid])) {
         $display .= POLLS_pollVote($qid);
     } else {
         $display .= POLLS_pollResults($qid,400,$order,$mode);
     }
 } else if (($aid > 0) && ($aid <= $_PO_CONF['maxanswers']) &&
-        empty($HTTP_COOKIE_VARS[$qid])) {
+        empty($_COOKIE[$qid])) {
     setcookie ($qid, $aid, time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
