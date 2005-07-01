@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.92 2005/07/01 20:44:00 trinity Exp $
+// $Id: comment.php,v 1.93 2005/07/01 22:50:58 trinity Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -448,6 +448,7 @@ default:  // New Comment
             if ($type == 'article') {
                 $title = DB_getItem ($_TABLES['stories'], 'title',
                                      "sid = '{$sid}'");
+            // hmm probaly should remove this now that polls is a plugin
             } elseif ($type == 'poll') {
                 $title = DB_getItem ($_TABLES['pollquestions'], 'question',
                                      "qid = '{$sid}'");
