@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.5 2005/06/25 19:06:33 dhaun Exp $
+// $Id: index.php,v 1.6 2005/07/01 22:48:01 trinity Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -40,7 +40,7 @@ require_once ('../../auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 // number of links to list per page
 define ('LINKS_PER_PAGE', 50);
@@ -460,14 +460,14 @@ function deleteLink ($lid)
 }
 
 // MAIN
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
+if (isset ($_POST['mode'])) {
+    $mode = $_POST['mode'];
 } else {
-    $mode = $HTTP_GET_VARS['mode'];
+    $mode = $_GET['mode'];
 }
 
 if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // delete
-    $lid = COM_applyFilter ($HTTP_POST_VARS['lid']);
+    $lid = COM_applyFilter ($_POST['lid']);
     if (!isset ($lid) || empty ($lid)) {  // || ($lid == 0)
         COM_errorLog ('Attempted to delete link lid=' . $lid );
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php');
@@ -475,29 +475,29 @@ if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // del
         $display .= deleteLink ($lid);
     }
 } else if (($mode == $LANG_LINKS_ADMIN[21]) && !empty ($LANG_LINKS_ADMIN[21])) { // save
-    $display .= savelink (COM_applyFilter ($HTTP_POST_VARS['lid']),
-            COM_applyFilter ($HTTP_POST_VARS['old_lid']),
-            $HTTP_POST_VARS['category'], $HTTP_POST_VARS['categorydd'],
-            $HTTP_POST_VARS['url'], $HTTP_POST_VARS['description'],
-            $HTTP_POST_VARS['title'],
-            COM_applyFilter ($HTTP_POST_VARS['hits'], true),
-            $HTTP_POST_VARS['owner_id'], $HTTP_POST_VARS['group_id'],
-            $HTTP_POST_VARS['perm_owner'], $HTTP_POST_VARS['perm_group'],
-            $HTTP_POST_VARS['perm_members'], $HTTP_POST_VARS['perm_anon']);
+    $display .= savelink (COM_applyFilter ($_POST['lid']),
+            COM_applyFilter ($_POST['old_lid']),
+            $_POST['category'], $_POST['categorydd'],
+            $_POST['url'], $_POST['description'],
+            $_POST['title'],
+            COM_applyFilter ($_POST['hits'], true),
+            $_POST['owner_id'], $_POST['group_id'],
+            $_POST['perm_owner'], $_POST['perm_group'],
+            $_POST['perm_members'], $_POST['perm_anon']);
 } else if ($mode == 'editsubmission') {
     $display .= COM_siteHeader ('menu');
-    $display .= editlink ($mode, COM_applyFilter ($HTTP_GET_VARS['id']));
+    $display .= editlink ($mode, COM_applyFilter ($_GET['id']));
     $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu');
-    $display .= editlink ($mode, COM_applyFilter ($HTTP_GET_VARS['lid']));
+    $display .= editlink ($mode, COM_applyFilter ($_GET['lid']));
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu');
-    if (isset ($HTTP_POST_VARS['msg'])) {
-        $msg = COM_applyFilter ($HTTP_POST_VARS['msg'], true);
+    if (isset ($_POST['msg'])) {
+        $msg = COM_applyFilter ($_POST['msg'], true);
     } else {
-        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+        $msg = COM_applyFilter ($_GET['msg'], true);
     }
     if (isset ($msg) && ($msg > 0)) {
         $display .= COM_showMessage ($msg, 'links');

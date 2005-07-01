@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.6 2005/06/25 20:01:45 dhaun Exp $
+// $Id: functions.inc,v 1.7 2005/07/01 22:47:29 trinity Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -401,7 +401,7 @@ function POLLS_getPerms ($table = '', $access = '2', $u_id = '')
 /*
 function plugin_centerblock_polls ($where = 1, $page = 1, $topic ='')
 {
-    global $_CONF, $_TABLES, $_POLLS_CONF, $LANG_STATIC, $HTTP_GET_VARS;
+    global $_CONF, $_TABLES, $_POLLS_CONF, $LANG_STATIC, $_GET;
 
     $retval = '';
 
@@ -463,7 +463,7 @@ function plugin_centerblock_polls ($where = 1, $page = 1, $topic ='')
                         $retval .= COM_siteHeader ('menu');
                         break;
                 }
-                $retval .= COM_showMessage ($HTTP_GET_VARS['msg']);
+                $retval .= COM_showMessage ($_GET['msg']);
             }
 
             if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
@@ -729,7 +729,7 @@ function polls_templatePath ($path = '')
 
 function POLLS_pollVote( $qid )
 {
-    global $_CONF, $_TABLES, $LANG01, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
+    global $_CONF, $_TABLES, $LANG01, $_COOKIE, $_SERVER;
 
     $retval = '';
 
@@ -743,10 +743,10 @@ function POLLS_pollVote( $qid )
 
     $nquestion = DB_numRows( $question );
     $fields = array( 'ipaddress', 'qid' );
-    $values = array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid );
+    $values = array( $_SERVER['REMOTE_ADDR'], $qid );
     $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
 
-    if( empty( $HTTP_COOKIE_VARS[$qid] ) && $id == 0 )
+    if( empty( $_COOKIE[$qid] ) && $id == 0 )
     {
         if( $nquestion == 1 )
         {
@@ -826,7 +826,7 @@ function POLLS_pollVote( $qid )
 
 function POLLS_showPoll( $size, $qid='' )
 {
-    global $_CONF, $_PO_CONF, $_TABLES, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
+    global $_CONF, $_PO_CONF, $_TABLES, $_COOKIE, $_SERVER;
 
     $retval = '';
 
@@ -835,9 +835,9 @@ function POLLS_showPoll( $size, $qid='' )
     if( !empty( $qid ))
     {
         $pcount = DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
-                            array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid ));
+                            array( $_SERVER['REMOTE_ADDR'], $qid ));
 
-        if( empty( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
+        if( empty( $_COOKIE[$qid]) && $pcount == 0 )
         {
             $retval .= POLLS_pollVote( $qid );
         }
@@ -858,10 +858,10 @@ function POLLS_showPoll( $size, $qid='' )
                 $Q = DB_fetchArray( $result );
                 $qid = $Q['qid'];
                 $id = array( 'ipaddress', 'qid' );
-                $value = array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid );
+                $value = array( $_SERVER['REMOTE_ADDR'], $qid );
                 $pcount = DB_count( $_TABLES['pollvoters'], $id, $value );
 
-                if( !isset( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
+                if( !isset( $_COOKIE[$qid]) && $pcount == 0 )
                 {
                     $retval .= POLLS_pollVote( $qid );
                 }
@@ -1032,6 +1032,111 @@ function phpblock_polls()
 
     return $retval;
 }
+
+
+/*
+ * comment code stuff from comment.php
+ * 
+function plugin_handleSubmit() {
+    global $_POST, $_TABLES, $_CONF, $LANG03;
+    
+            $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
+                                       "qid = '$sid'");
+            if ($commentcode < 0) {
+                return COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+
+            $ret = CMT_saveComment (strip_tags ($_POST['title']), 
+                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true), 
+                'poll', COM_applyFilter ($_POST['postmode']));
+
+            if ( $ret > 0 ) { // failure
+                $display .= COM_siteHeader()
+                    . CMT_commentform ($uid, $title, $comment, $sid, $pid, 
+                            $type, $LANG03[14], $postmode)
+                    . COM_siteFooter();
+            } else { // success
+                $display = COM_refresh ($_CONF['site_url']
+                    . "/pollbooth.php?qid=$sid&aid=-1");
+            }
+
+
+
+}
+
+function handleDelete() {
+    global $_REQUEST, $_TABLES, $_CONF;
+    $has_editPermissions = SEC_hasRights ('poll.edit');
+            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$sid}'");
+            $A = DB_fetchArray ($result);
+
+            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
+                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
+                    $A['perm_members'], $A['perm_anon']) == 3) {
+                CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'poll');
+                $display .= COM_refresh ($_CONF['site_url'] . "/pollbooth.php?qid=$sid&aid=-1");
+            } else {
+                COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+                            . "tried to illegally delete comment $cid from $type $sid");
+                $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+
+}
+
+
+function handleView($view = true) {
+    global $_REQUEST, $_TABLES, $_USER, $_CONF;
+    $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
+                 . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
+                 . COM_getPermSQL('AND') . 'GROUP BY qid';
+            $result = DB_query ($sql);
+            $B = DB_fetchArray ($result);
+            $allowed = $B['count'];
+
+            if ( $allowed == 1 ) {
+                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
+                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
+                        $B['perm_anon'] ) == 3 ) );
+                $display .= CMT_userComments ($sid, $title, $type, 
+                        COM_applyFilter ($_REQUEST['order']), $format, $cid,
+                        COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
+            } else {
+                $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                                    COM_getBlockTemplate ('_msg_block', 'header'))
+                         . $LANG_ACCESS['storydenialmsg']
+                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            }
+}
+
+function handleFetch() {
+    global $_REQUEST, $_TABLES, $_USER, $_CONF;
+    $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
+                 . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
+                 . COM_getPermSQL('AND') . 'GROUP BY qid';
+            $result = DB_query ($sql);
+            $B = DB_fetchArray ($result);
+            $allowed = $B['count'];
+
+            if ( $allowed == 1 ) {
+                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
+                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
+                        $B['perm_anon'] ) == 3 ) );
+                if ( $full ) {
+                    $display .= CMT_getComment($A, 'dynamic_comment', 'poll', 
+                                               'ASC', $delete_option);
+                } else {
+                    $display .= CMT_getComment($A, 'dynamic_thread', 'poll', 
+                                               'ASC', $delete_option);
+                }
+            } else {
+                $display .= 'ERROR ACCESS DENIED';
+            }
+}
+
+
+*/
 
 /**
 * Returns the URL of the plugin's icon

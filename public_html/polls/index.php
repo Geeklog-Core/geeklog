@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2005/07/01 21:36:22 trinity Exp $
+// $Id: index.php,v 1.4 2005/07/01 22:48:49 trinity Exp $
 
 require_once ('../lib-common.php');
 
@@ -52,10 +52,10 @@ define ('POLLS_PER_PAGE', 50);
 */
 function pollsave($qid = '', $aid = 0) 
 {
-    global $_TABLES, $LANG07, $HTTP_SERVER_VARS;
+    global $_TABLES, $LANG07, $_SERVER;
 
     $pcount = DB_count ($_TABLES['pollvoters'], array ('ipaddress', 'qid' ),
-                        array ($HTTP_SERVER_VARS['REMOTE_ADDR'], $qid));
+                        array ($_SERVER['REMOTE_ADDR'], $qid));
     if ($pcount > 0) {
         exit;
     }
@@ -68,7 +68,7 @@ function pollsave($qid = '', $aid = 0)
     // This call to DB-change will properly supress the insertion of quoes around $value in the sql
     DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
     // This always does an insert so no need to provide key_field and key_value args
-    DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'{$HTTP_SERVER_VARS['REMOTE_ADDR']}'," . time() . ",'$qid'");
+    DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$qid'");
     $retval .= COM_startBlock ($LANG07[1], '',
                        COM_getBlockTemplate ('_msg_block', 'header'))
         . $LANG07[2] . ' "'
@@ -175,8 +175,8 @@ if (isset ($_POST['qid'])) {
     $qid = COM_applyFilter ($_POST['qid']);
     $aid = COM_applyFilter ($_POST['aid'], true);
 } else {
-    $qid = COM_applyFilter ($_REQUEST['qid']);
-    $aid = COM_applyFilter ($_REQUEST['aid']);
+    $qid = COM_applyFilter ($_GET['qid']);
+    $aid = COM_applyFilter ($_GET['aid']);
     if ($aid > 0) { // you can't vote with a GET request
         $aid = -1;
     }
@@ -184,17 +184,17 @@ if (isset ($_POST['qid'])) {
 if (isset ($_POST['order'])) {
     $order = COM_applyFilter ($_POST['order']);
 } else {
-    $order = COM_applyFilter ($_REQUEST['order']);
+    $order = COM_applyFilter ($_GET['order']);
 }
 if (isset ($_POST['mode'])) {
     $mode = COM_applyFilter ($_POST['mode']);
 } else {
-    $mode = COM_applyFilter ($_REQUEST['mode']);
+    $mode = COM_applyFilter ($_GET['mode']);
 }
 
 if (empty($qid)) {
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
+    if (isset ($_GET['page'])) {
+        $page = COM_applyFilter ($_GET['page'], true);
     } else {
         $page = 1;
     }
