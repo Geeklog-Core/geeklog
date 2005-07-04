@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.451 2005/07/02 16:13:33 dhaun Exp $
+// $Id: lib-common.php,v 1.452 2005/07/04 18:16:29 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3247,7 +3247,7 @@ function COM_getPassword( $loginname )
 * @return   string  Username, fullname or username@Service
 *
 */
-function COM_getDisplayName( $uid = '', $username='', $fullname='', $service='' )
+function COM_getDisplayName( $uid = '', $username='', $fullname='', $remoteusername='', $remoteservice='' )
 {
     global $_CONF, $_TABLES, $_USER;
  
@@ -4161,7 +4161,7 @@ function phpblock_whosonline()
     }
     if( $_CONF['remoteauthentication'] )
     {
-        $byname .= ',remoteservice';
+        $byname .= ',remoteusername,remoteservice';
     }
 
     $result = DB_query( "SELECT DISTINCT {$_TABLES['sessions']}.uid,{$byname},photo,showonline FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY {$byname}" );
@@ -4176,7 +4176,7 @@ function phpblock_whosonline()
 
         if( $A['showonline'] == 1 )
         {
-            $username = COM_getDisplayName( $A['uid'], $A['username'], $A['fullname'], $A['remoteservice']);
+            $username = COM_getDisplayName( $A['uid'], $A['username'], $A['fullname'], $A['remoteusername'], $A['remoteservice']);
             $retval .= '<a href="' . $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
                     . $username . '</a>';
