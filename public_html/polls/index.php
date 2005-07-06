@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.4 2005/07/01 22:48:49 trinity Exp $
+// $Id: index.php,v 1.5 2005/07/06 14:51:50 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -52,7 +52,7 @@ define ('POLLS_PER_PAGE', 50);
 */
 function pollsave($qid = '', $aid = 0) 
 {
-    global $_TABLES, $LANG07, $_SERVER;
+    global $_TABLES, $LANG_POLLS, $_SERVER;
 
     $pcount = DB_count ($_TABLES['pollvoters'], array ('ipaddress', 'qid' ),
                         array ($_SERVER['REMOTE_ADDR'], $qid));
@@ -69,9 +69,9 @@ function pollsave($qid = '', $aid = 0)
     DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
     // This always does an insert so no need to provide key_field and key_value args
     DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$qid'");
-    $retval .= COM_startBlock ($LANG07[1], '',
+    $retval .= COM_startBlock ($LANG_POLLS['savedvotemsg'], '',
                        COM_getBlockTemplate ('_msg_block', 'header'))
-        . $LANG07[2] . ' "'
+        . $LANG_POLLS['savedvotemsg'] . ' "'
         . DB_getItem ($_TABLES['pollquestions'], 'question', "qid = '{$qid}'")
         . '"'
         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
@@ -91,7 +91,7 @@ function pollsave($qid = '', $aid = 0)
 */
 function polllist ($page = 1) 
 {
-    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $LANG07, $LANG10, $LANG_LOGIN;
+    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $PANL_POLLS, $LANG10, $LANG_LOGIN;
 
     if ($page < 1) {
         $page = 1;
@@ -115,7 +115,7 @@ function polllist ($page = 1)
              . COM_getPermSQL () . " ORDER BY date DESC LIMIT $limit," . POLLS_PER_PAGE;
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
-        $retval = COM_startBlock($LANG07[4]);
+        $retval = COM_startBlock($LANG_POLLS['pollstitle']);
         if ($nrows > 0) {
             $pollitem = new Template($_CONF['path'] . 'plugins/polls/templates');
             $pollitem->set_file('pollitem', 'polllist.thtml');
@@ -126,7 +126,7 @@ function polllist ($page = 1)
                 $pollitem->set_var('poll_url', $_CONF['site_url'].'/polls/index.php?qid=' . $Q['qid'] . '&amp;aid=-1');
                 $pollitem->set_var('poll_question', stripslashes($Q['question']));
                 $pollitem->set_var('poll_votes', $Q['voters']);
-                $pollitem->set_var('lang_votes', $LANG07[5]);
+                $pollitem->set_var('lang_votes', $LANG_POLLS['votes']);
                 if ($i == $nrows) {
                     $pollitem->set_var('ending_br', '<br><br>');
                 } else {
@@ -198,7 +198,7 @@ if (empty($qid)) {
     } else {
         $page = 1;
     }
-    $display .= COM_siteHeader ('menu', $LANG07[4]) . polllist ($page);
+    $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle']) . polllist ($page);
 } else if ($aid == 0) {
     $display .= COM_siteHeader();
     if (empty($_COOKIE[$qid])) {
@@ -216,7 +216,7 @@ if (empty($qid)) {
     $question = DB_query ("SELECT question FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" . COM_getPermSql ('AND'));
     $Q = DB_fetchArray ($question);
     if (empty ($Q['question'])) {
-        $display .= COM_siteHeader ('menu', $LANG07[4]) . polllist ($page);
+        $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle']) . polllist ($page);
     } else {
         $display .= COM_siteHeader ('menu', $Q['question'])
                  . POLLS_pollResults ($qid, 400, $order, $mode);
