@@ -68,7 +68,7 @@ $DEFVALUES = array();
 $NEWFEATURE = array();
 $NEWFEATURE['polls.edit']        = "polls Admin Rights";
 $NEWFEATURE['polls.user']        = "polls User";
-//$NEWFEATURE['polls.user']        = "polls User";
+//$NEWFEATURE['polls.delete']        = "polls delete rights";
 
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
@@ -87,7 +87,7 @@ if (!SEC_inGroup('Root')) {
 * Puts the datastructures for this plugin into the Geeklog database
 *
 * Note: Corresponding uninstall routine is in functions.inc
-* 
+*
 * @return    boolean    True if successful False otherwise
 *
 */
@@ -99,40 +99,40 @@ function plugin_install_polls()
     COM_errorLog("Attempting to install the $pi_name Plugin",1);
 
     // Create the Plugins Tables
-    
+
     require_once($_CONF['path'] . 'plugins/polls/sql/polls_install_1.0.php');
-    
+
         COM_errorLOG("executing " . $_SQL[1]);
         DB_query($_SQL[1]);
         if (DB_error()) {
             COM_errorLog("Error Creating $table table",1);
-            //plugin_uninstall_polls('DeletePlugin');
-            //return false;
-            //exit;
+            plugin_uninstall_polls();
+            return false;
+            exit;
         }
-	
+
 	COM_errorLOG("executing " . $_SQL[2]);
         DB_query($_SQL[2]);
         if (DB_error()) {
             COM_errorLog("Error Creating $table table",1);
-            //plugin_uninstall_polls('DeletePlugin');
-            //return false;
-            //exit;
+            plugin_uninstall_polls();
+            return false;
+            exit;
         }
-        
+ 
 	COM_errorLOG("executing " . $_SQL[3]);
         DB_query($_SQL[3]);
         if (DB_error()) {
             COM_errorLog("Error Creating $table table",1);
-            //plugin_uninstall_polls('DeletePlugin');
-            //return false;
-            //exit;
+            plugin_uninstall_polls();
+            return false;
+            exit;
         }
-    
 
-       
+
+
     // Insert Default Data
-    
+
     foreach ($DEFVALUES as $table => $sql) {
         COM_errorLog("Inserting default data into $table table",1);
         DB_query($sql,1);
@@ -144,7 +144,7 @@ function plugin_install_polls()
         }
         COM_errorLog("Success - inserting data into $table table",1);
     }
-    
+
     // Create the plugin admin security group
     COM_errorLog("Attempting to create $pi_name admin group", 1);
     DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) "
@@ -156,7 +156,7 @@ function plugin_install_polls()
     }
     COM_errorLog('...success',1);
     $group_id = DB_insertId();
-    
+
     // Save the grp id for later uninstall
     COM_errorLog('About to save group_id to vars table for use during uninstall',1);
     DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_admin', $group_id)",1);
@@ -166,7 +166,7 @@ function plugin_install_polls()
         exit;
     }
     COM_errorLog('...success',1);
-    
+
     // Add plugin Features
     foreach ($NEWFEATURE as $feature => $desc) {
         COM_errorLog("Adding $feature feature",1);
@@ -189,8 +189,8 @@ function plugin_install_polls()
             exit;
         }
         COM_errorLog("Success",1);
-    }        
-    
+    }
+
     // OK, now give Root users access to this plugin now! NOTE: Root group should always be 1
     COM_errorLog("Attempting to give all users in Root group access to $pi_name admin group",1);
     DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
@@ -227,7 +227,7 @@ function plugin_install_polls()
     return true;
 }
 
-/* 
+/*
 * Main Function
 */
 
