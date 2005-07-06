@@ -33,26 +33,17 @@
 ###############################################################################
 
 
-$LANG_POLLS= array(
-    1 => 'Polls',
-    5 => 'Vote',
-    6 => 'Results',
-    7 => 'Poll Results',
-    8 => 'votes',
-    56 => 'Vote',
-    73 => 'Past Polls'
-);
-
-############################################################################
-# /polls/index.php
-
-$LANG07 = array(
-    1 => 'Vote Saved',
-    2 => 'Your vote was saved for the poll',
-    3 => 'Vote',
-    4 => 'Polls in System',
-    5 => 'Votes',
-    6 => 'View other poll questions'
+$LANG_POLLS = array(
+    'polls'     => 'Polls',
+    'results'   => 'Results',
+    'pollresults'   => 'Poll Results',
+    'votes'     => 'votes',
+    'vote'      => 'Vote',
+    'pastpolls' => 'Past Polls',
+    'savedvotetitle'    => 'Vote Saved',
+    'savedvotemsg'  => 'Your vote was saved for the poll',
+    'pollstitle'    => 'Polls in System',
+    'pollquestions' => 'View other poll questions'
 );
 
 ###############################################################################

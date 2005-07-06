@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.7 2005/07/01 22:47:29 trinity Exp $
+// $Id: functions.inc,v 1.8 2005/07/06 14:59:13 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -46,6 +46,8 @@ if (file_exists ($langfile)) {
 }
 
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
+
+
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -77,11 +79,12 @@ function plugin_getmenuitems_polls()
 * does comments.
 *
 */
-function plugin_commentsupport_polls() 
+function plugin_commentsupport_polls()
 {
     // polls will use comments
     return true;
 }
+
 
 /**
 * Shows the statistics for the Polls plugin on stats.php.
@@ -91,7 +94,7 @@ function plugin_commentsupport_polls()
 * @param    int     showsitestate   Flag to let us know which stats to get
 */
 /*
-function plugin_showstats_polls($showsitestats) 
+function plugin_showstats_polls($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
 
@@ -127,13 +130,13 @@ function plugin_showstats_polls($showsitestats)
                 $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/polls/index.php?page=' . $A['sp_id']));
                 $stat_templates->set_var ('item_text', stripslashes ($A['sp_title']));
                 $stat_templates->set_var ('item_stat', $A['sp_hits']);
-                $stat_templates->parse ('stat_row','statrow',true); 
+                $stat_templates->parse ('stat_row','statrow',true);
             }
             $stat_templates->parse ('output','itemstats');
             $retval .= $stat_templates->finish ($stat_templates->get_var ('output'));
         } else {
             $retval .= $LANG_STATIC['stats_no_hits'];
-        }	
+        }
         $retval .= COM_endBlock();
     }
     return $retval;
@@ -165,8 +168,8 @@ whats new block
 * Geeklog is asking us to provide any new items that show up in the type
 * drop-down on search.php.  Let's let users search static pages!
 *
-*/
-function plugin_searchtypes_polls() 
+
+function plugin_searchtypes_polls()
 {
     global $LANG_POLLS;
 
@@ -174,12 +177,12 @@ function plugin_searchtypes_polls()
 
     return $tmp;
 }
-
+*/
 
 /**
 * this searches for static pages matching the user query and returns an array of
 * for the header and table rows back to search.php where it will be formated and
-* printed 
+* printed
 *
 * @param    string  $query      Keywords user is looking for
 * @param    date    $datestart  Start date to get results for
@@ -189,10 +192,10 @@ function plugin_searchtypes_polls()
 * @param    int     $author     Get all results by this author
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
 *
-* Oct 05/2002: Blaine Lang, Corrected bug with SQL Search string. 
+* Oct 05/2002: Blaine Lang, Corrected bug with SQL Search string.
 */
 /*
-function plugin_dopluginsearch_polls($query, $datestart, $dateend, $topic, $type, $author, $keyType) 
+function plugin_dopluginsearch_polls($query, $datestart, $dateend, $topic, $type, $author, $keyType)
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
 
@@ -276,7 +279,7 @@ function plugin_dopluginsearch_polls($query, $datestart, $dateend, $topic, $type
     $plugin_results->addSearchHeading ($LANG_STATIC['hits']);
     $mycount = DB_numRows ($result);
 
-    // NOTE if any of your data items need to be links then add them here! 
+    // NOTE if any of your data items need to be links then add them here!
     // make sure data elements are in an array and in the same order as your
     // headings above!
     for ($i = 1; $i <= $mycount; $i++) {
@@ -305,12 +308,13 @@ function plugin_dopluginsearch_polls($query, $datestart, $dateend, $topic, $type
 * moderation.php
 *
 */
-function plugin_cclabel_polls() 
+
+function plugin_cclabel_polls()
 {
     global $LANG_POLLS, $_CONF;
 
     if (SEC_hasRights ('polls.edit')) {
-        return array ($LANG_POLLS[1],
+        return array ($LANG_POLLS['polls'],
                 $_CONF['site_admin_url'] . '/plugins/polls/index.php',
                 plugin_geticon_polls ());
     }
@@ -318,10 +322,12 @@ function plugin_cclabel_polls()
     return false;
 }
 
+
 /**
 * returns the administrative option for this plugin
 *
 */
+
 
 function plugin_getadminoption_polls()
 {
@@ -331,9 +337,10 @@ function plugin_getadminoption_polls()
         $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
-        return array ($LANG_POLLS[1], $_CONF['site_admin_url'] . '/plugins/polls/index.php', $total_pages);
+        return array ($LANG_POLLS['polls'], $_CONF['site_admin_url'] . '/plugins/polls/index.php', $total_pages);
     }
 }
+
 
 /**
 * Return SQL where statement with appropriate permissions
@@ -341,12 +348,12 @@ function plugin_getadminoption_polls()
 * Takes User id and permission and returns SQL where clause which will return
 * the appropriate objects.
 * This assumes that the table has the following security structure:
-* owner_id        | mediumint(8)          
-* group_id        | mediumint(8)          
-* perm_owner      | tinyint(1) unsigned   
-* perm_group      | tinyint(1) unsigned   
-* perm_members    | tinyint(1) unsigned  
-* perm_anon       | tinyint(1) unsigned  
+* owner_id        | mediumint(8)
+* group_id        | mediumint(8)
+* perm_owner      | tinyint(1) unsigned
+* perm_group      | tinyint(1) unsigned
+* perm_members    | tinyint(1) unsigned
+* perm_anon       | tinyint(1) unsigned
 * This will work with the standard GL tables
 *
 * @param    string  $table  Table name (used in joins)
@@ -390,130 +397,7 @@ function POLLS_getPerms ($table = '', $access = '2', $u_id = '')
     return $sql;
 }
 */
-/**
-* Display static pages in the center block.
-*
-* @param   where   int      where the static page will be displayed (0..3)
-* @param   page    int      page number
-* @param   topic   string   topic ID
-* @return          string   HTML for the static page (can be empty)
-*/
-/*
-function plugin_centerblock_polls ($where = 1, $page = 1, $topic ='')
-{
-    global $_CONF, $_TABLES, $_POLLS_CONF, $LANG_STATIC, $_GET;
 
-    $retval = '';
-
-    if ($page > 1) {
-        return $retval; // we only support page 1 at the moment ...
-    }
-
-    $moresql = "(sp_where = $where) AND ";
-    $displayFeatured = false;
-
-    // If there are no featured stories, we won't be called with $where == 2.
-    // So, if asked to display pages for the top of the page, check if we
-    // have pages to be displayed after the featured story and if there is
-    // no featured story, display those pages as well.
-    if (($where == 1) && ($_CONF['showfirstasfeatured'] == 0)) {
-        if (DB_count ($_TABLES['stories'], 'featured', 1) == 0) {
-            // no featured story found - redefine $moresql
-            $moresql = "(sp_where = 1 OR sp_where = 2) AND ";
-            $displayFeatured = true;
-        }
-    }
-
-    if (empty ($topic)) {
-        $moresql .= "((sp_tid = 'none') OR (sp_tid = 'all'))";
-    } else {
-        $moresql .= "((sp_tid = '{$topic}') OR (sp_tid = 'all'))";
-    }
-
-    if ($_SP_CONF['sort_by'] == 'date') {
-        $sort = 'sp_date DESC';
-    } else if ($_SP_CONF['sort_by'] == 'title') {
-        $sort = 'sp_title';
-    } else { // default to "sort by id"
-        $sort = 'sp_id';
-    }
-    if ($displayFeatured) {
-        $sort = 'sp_where,' . $sort;
-    }
-
-    $perms = SP_getPerms ();
-    if (!empty ($perms)) {
-        $perms = ' AND ' . $perms;
-    }
-    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
-    $result = DB_query ($spsql);
-
-    $pages = DB_numRows ($result);
-    if ($pages > 0) {
-        for ($i = 0; $i < $pages; $i++) {
-            $spresult = DB_fetchArray ($result);
-
-            if ($where == 0) {
-                switch ($spresult['sp_format']) {
-                    case 'noblocks':
-                        $retval .= COM_siteHeader ('none');
-                        break;
-                    case 'allblocks':
-                    case 'leftblocks':
-                        $retval .= COM_siteHeader ('menu');
-                        break;
-                }
-                $retval .= COM_showMessage ($_GET['msg']);
-            }
-
-            if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
-                && (($where != 0) || ($spresult['sp_format'] != 'blankpage'))) {
-                $retval .= COM_startBlock ($spresult['sp_title'], '',
-                    COM_getBlockTemplate ('_polls_centerblock', 'header'));
-            }
-
-            if ($_SP_CONF['allow_php'] == 1) {
-                // Check for type (ie html or php)
-                if ($spresult['sp_php'] == 1) {
-                    $retval .= eval (stripslashes ($spresult['sp_content']));
-                } else if ($spresult['sp_php'] == 2) {
-                    ob_start ();
-                    eval (stripslashes ($spresult['sp_content']));
-                    $retval .= ob_get_contents ();
-                    ob_end_clean ();
-                } else {
-                    $retval .= PLG_replacetags (stripslashes ($spresult['sp_content']));
-                }
-            } else {
-                if ($spresult['sp_php'] != 0) {
-                    COM_errorLog ("PHP in static pages is disabled. Can not display page '$sp_id'.", 1);
-                    $retval .= $LANG_STATIC['deny_msg'];
-                } else {
-                    $retval .= stripslashes ($spresult['sp_content']);
-                }
-            }
-
-            if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
-                && (($where != 0) || ($spresult['sp_format'] != 'blankpage'))) {
-                $retval .= COM_endBlock (COM_getBlockTemplate ('_polls_centerblock', 'footer'));
-            }
-
-            if ($where == 0) {
-                if ($spresult['sp_format'] == 'allblocks') {
-                    $retval .= COM_siteFooter (true);
-                } else if ($spresult['sp_format'] != 'blankpage') {
-                    $retval .= COM_siteFooter ();
-                }
-            }
-
-            // increment hit counter for page
-            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$spresult['sp_id']}'");
-        }
-    }
-
-    return $retval;
-}
-*/
 /**
 * A user is about to be deleted. Update ownership of any static pages owned
 * by that user or delete them.
@@ -549,7 +433,7 @@ function plugin_user_delete_polls($uid)
 */
 
 /**
-* Return the current version of code. 
+* Return the current version of code.
 * Used in the Plugin Editor to show the registered version and code version
 */
 function plugin_chkVersion_polls()
@@ -559,34 +443,7 @@ function plugin_chkVersion_polls()
     return $_POLLS_CONF['version'];
 }
 
-/**
-* Implements the [staticpage:] autotag.
-*
-*/
-/*
-function plugin_autotags_polls ($op, $content = '', $autotag = '')
-{
-    global $_CONF, $_TABLES;
 
-    if ($op == 'tagname' ) {
-        return 'staticpage';
-    } else if ($op == 'parse') {
-        $sp_id = COM_applyFilter ($autotag['parm1']);
-        $url = COM_buildUrl ($_CONF['site_url'] . '/polls/index.php?page='
-                             . $sp_id);
-        if (empty ($autotag['parm2'])) {
-            $linktext = stripslashes (DB_getItem ($_TABLES['polls'],
-                                      'sp_title', "sp_id = '$sp_id'"));
-        } else {
-            $linktext = $autotag['parm2'];
-        }
-        $link = '<a href="' . $url . '">' . $linktext . '</a>';
-        $content = str_replace ($autotag['tagstr'], $link, $content);
-
-        return $content;
-    }
-}
-*/
 /**
 * Removes the datastructures for this plugin from the Geeklog database
 *
@@ -595,7 +452,7 @@ function plugin_autotags_polls ($op, $content = '', $autotag = '')
 *
 * @steps   Array    Holds all the steps that have been completed by the install
 *
-*/  
+*/
 function plugin_uninstall_polls($steps = '')
 {
     global $_TABLES;
@@ -603,10 +460,17 @@ function plugin_uninstall_polls($steps = '')
     // Uninstalls the static pages plugin
 
     if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the staticpage table 
-        COM_errorLog('Dropping staticpage table',1);
-        //DB_query("DROP TABLE {$_TABLES['staticpage']}");
+        // Remove the staticpage table
+        COM_errorLog('Dropping polls answers table',1);
+        DB_query("DROP TABLE {$_TABLES['pollanswers']}");
         COM_errorLog('...success',1);
+        COM_errorLog('Dropping polls questions table',1);
+        DB_query("DROP TABLE {$_TABLES['pollquestions']}");
+        COM_errorLog('...success',1);
+        COM_errorLog('Dropping pollvoters table',1);
+        DB_query("DROP TABLE {$_TABLES['pollvoters']}");
+        COM_errorLog('...success',1);
+
     }
 
     // Remove security for this plugin
@@ -615,52 +479,55 @@ function plugin_uninstall_polls($steps = '')
     $grp_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
 
     if (empty($steps) OR $steps['insertgroup'] == 1) {
-        COM_errorLog('Attempting to remove the Static Page Admin Group', 1);
+        COM_errorLog('Attempting to remove the Polls Admin Group', 1);
         DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
         COM_errorLog('...success',1);
     }
 
     // Remove related features
     $edit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.edit'");
-    $delete_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.delete'");
-    $php_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.PHP'");
+    #$delete_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.delete'");
+    #$php_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.PHP'");
 
     if (empty($steps) OR $steps['addededittogroup'] == 1) {
-        // Remove access to those features 
-        COM_errorLog('Attempting to remove rights to staticpage.edit from all groups',1);
+        // Remove access to those features
+        COM_errorLog('Attempting to remove rights to polls.edit from all groups',1);
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
         COM_errorLog('...success',1);
     }
 
+    /*
     if (empty($steps) OR $steps['addeddeletetogroup'] == 1) {
-        // Remove access to those features 
-        COM_errorLog('Attempting to remove rights to staticpage.delete from all groups',1);
+        // Remove access to those features
+        COM_errorLog('Attempting to remove rights to polls.delete from all groups',1);
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $delete_id");
         COM_errorLog('...success',1);
     }
 
     if (empty($steps) OR $steps['addedphptogroup'] == 1) {
-        // Remove access to those features 
-        COM_errorLog('Attempting to remove rights to staticpage.PHP from all groups',1);
+        // Remove access to those features
+        COM_errorLog('Attempting to remove rights to polls.PHP from all groups',1);
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $php_id");
         COM_errorLog('...success',1);
     }
+    */
 
     if (empty($steps) OR $steps['addedrootuserstogroup'] == 1) {
         // Remove root users from the group
-        COM_errorLog('Attempting to remove root users from admin of static pages');
+        COM_errorLog('Attempting to remove root users from admin of polls pages');
         DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
         COM_errorLog('...success',1);
     }
 
     if (empty($steps) OR $steps['insertedfeatureedit'] == 1) {
-        COM_errorLog('Attempting to remove the staticpage.edit feature',1);
+        COM_errorLog('Attempting to remove the polls.edit feature',1);
         DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
         COM_errorLog('...success',1);
     }
 
+    /*
     if (empty($steps) OR $steps['insertedfeaturedelete'] == 1) {
-        COM_errorLog('Attempting to remove the staticpage.delete feature',1);
+        COM_errorLog('Attempting to remove the polls.delete feature',1);
         DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $delete_id");
         COM_errorLog('...success',1);
     }
@@ -670,11 +537,11 @@ function plugin_uninstall_polls($steps = '')
         DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $php_id");
         COM_errorLog('...success',1);
     }
-
+    */
     // Unregister the plugin with Geeklog
     // Always attempt to remove these entries or lib-common.php would still
     // try and read our functions.inc file ...
-    COM_errorLog('Attempting to unregister the plugin from Geeklog',1);
+    COM_errorLog('Attempting to unregister the polls plugin from Geeklog',1);
     DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'polls'");
     COM_errorLog('...success',1);
 
@@ -713,8 +580,6 @@ function polls_templatePath ($path = '')
 }
 
 
-
- 
 /**
 * Shows a poll form
 *
@@ -729,7 +594,7 @@ function polls_templatePath ($path = '')
 
 function POLLS_pollVote( $qid )
 {
-    global $_CONF, $_TABLES, $LANG01, $_COOKIE, $_SERVER;
+    global $_CONF, $_TABLES, $LANG_POLLS, $LANG_POLLS, $LANG01, $_COOKIE, $_SERVER;
 
     $retval = '';
 
@@ -770,9 +635,9 @@ function POLLS_pollVote( $qid )
                 $poll->set_var( 'poll_results_url', $_CONF['site_url']
                         . '/polls/index.php?qid=' . $qid . '&amp;aid=-1');
 
-                $poll->set_var( 'lang_vote', $LANG01[56] );
-                $poll->set_var( 'lang_votes', $LANG01[8] );
-                $poll->set_var( 'lang_results', $LANG01[6] );
+                $poll->set_var( 'lang_vote', $LANG_POLLS['vote'] );
+                $poll->set_var( 'lang_votes', $LANG_POLLS['votes'] );
+                $poll->set_var( 'lang_results', $LANG_POLLS['results'] );
 
                 for( $i = 1; $i <= $nanswers; $i++ )
                 {
@@ -892,7 +757,8 @@ function POLLS_showPoll( $size, $qid='' )
 */
 function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 {
-    global $_TABLES, $LANG01, $LANG07, $_CONF, $_COM_VERBOSE;
+    global $_TABLES, $LANG01, $LANG_POLLS, $LANG07, $_CONF, $_COM_VERBOSE;
+
 
     $retval = '';
 
@@ -950,7 +816,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
             $poll->set_var( 'poll_id', $qid );
             $poll->set_var( 'num_votes', $Q['voters'] );
 
-            $poll->set_var( 'lang_votes', $LANG01[8] );
+            $poll->set_var( 'lang_votes', $LANG_POLLS['votes'] );
 
             for( $i = 1; $i <= $nanswers; $i++ )
             {
@@ -998,7 +864,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
                 $poll->set_var( 'poll_comments', '' );
             }
 
-            $poll->set_var( 'lang_pollquestions', $LANG07[6] );
+            $poll->set_var( 'lang_pollquestions', $LANG_POLLS['pollquestions'] );
 
             $retval .= $poll->finish( $poll->parse( 'output', 'result' ));
 
@@ -1018,13 +884,13 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
                 $retval .= COM_userComments( $qid, $Q['question'], 'poll',
-                                             $order, $mode, 0, 1, false, $delete_option ); 
+                                             $order, $mode, 0, 1, false, $delete_option );
             }
         }
     }
-
     return $retval;
 }
+
 
 function phpblock_polls()
 {
