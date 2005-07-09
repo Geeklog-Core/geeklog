@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.45 2005/06/25 17:14:34 dhaun Exp $
+// $Id: plugins.php,v 1.46 2005/07/09 19:06:20 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -235,15 +235,16 @@ function listplugins ($page = 1)
 
 
 /**
-* Toggle status of a ping service from enabled to disabled and back
+* Toggle status of a plugin from enabled to disabled and back
 *
-* @param    int     $pid    ID of the service
+* @param    string  $pi_name    name of the plugin
 * @return   void
 *
 */
 function changePluginStatus ($pi_name)
 {
     global $_TABLES;
+
     $pi_name = addslashes (COM_applyFilter ($pi_name));
     if (!empty ($pi_name)) {
         $pi_enabled = 1;
@@ -489,12 +490,16 @@ function do_uninstall ($pi_name)
 $display = '';
 if (isset ($_POST['pluginChange'])) {
     changePluginStatus ($_POST['pluginChange']);
+
+    // force a refresh so that the information of the plugin that was just
+    // enabled / disabled (menu entries, etc.) is displayed properly
+    header ('Location: ' . $_CONF['site_admin_url'] . '/plugins.php');
+    exit;
 }
 
-if (isset ($_POST['mode'])) {
-    $mode = $_POST['mode'];
-} else {
-    $mode = $_GET['mode'];
+$mode = '';
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
 }
 if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     $pi_name = COM_applyFilter ($_POST['pi_name']);
@@ -513,7 +518,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
         $display .= COM_siteFooter ();
     }
 
-} else if ($mode == $LANG32[34]) {
+} else if (($mode == $LANG32[34]) && !empty ($LANG32[34])) { // update
         $pi_name = COM_applyFilter ($_POST['pi_name']);
         $display .= COM_siteHeader ('menu');
         $display .= do_update ($pi_name);
@@ -530,6 +535,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
                             COM_applyFilter ($_POST['pi_gl_version']),
                             COM_applyFilter ($_POST['enabled']),
                             COM_applyFilter ($_POST['pi_homepage']));
+
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu');
     $msg = COM_applyFilter ($_REQUEST['msg'], true);

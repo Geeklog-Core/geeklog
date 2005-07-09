@@ -1,12 +1,12 @@
-                                    <tr class="pluginRow{cssid}"  align="center">
-                                        <td align="left"><a href="{site_admin_url}/plugins.php?mode=edit&amp;pi_name={pi_name}">{edit_icon}</a></td>
-                                        <td align="left" style="padding-left:5px;">{pi_name}</td>
-                                        <td>{pi_installed_version}&nbsp;/&nbsp;{pi_code_version}</td>
-                                        <td>{pi_gl_version}</td>
-                                        <td>
-                                            <form action="{site_admin_url}/plugins.php" method="POST">
-                                                <input type="checkbox" name="pluginenable" onclick="submit()" value="{pi_name}" {pi_enabled}>
-                                                <input type="hidden" name="pluginChange" value="{pi_name}">
-                                            </form>
-                                        </td>
-                                    </tr>
+    <tr class="pluginRow{cssid}" align="center">
+        <td align="center"><a href="{site_admin_url}/plugins.php?mode=edit&amp;pi_name={pi_name}" title="{lang_edit}">{edit_icon}</a></td>
+        <td align="left" style="padding-left:5px;">{pi_name}</td>
+        <td>{pi_installed_version}&nbsp;/&nbsp;{pi_code_version}</td>
+        <td>{pi_gl_version}</td>
+        <td>
+            <form action="{site_admin_url}/plugins.php" method="POST">
+                <input type="checkbox" name="pluginenable" onclick="submit()" value="{pi_name}" {pi_enabled}>
+                <input type="hidden" name="pluginChange" value="{pi_name}">
+            </form>
+        </td>
+    </tr>
