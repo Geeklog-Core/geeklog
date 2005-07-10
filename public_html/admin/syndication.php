@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.21 2005/06/29 07:13:22 mjervis Exp $
+// $Id: syndication.php,v 1.22 2005/07/10 10:10:40 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -188,7 +188,8 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
             $feed_template->set_var ('feed_id', $A['fid']);
             $feed_template->set_var ('feed_title', $A['title']);
             $feed_template->set_var ('feed_type', ucwords ($A['type']));
-            $feed_template->set_var ('feed_format', ucwords ($A['format']));
+            $feed_template->set_var ('feed_format',
+                    str_replace ('-' , ' ', ucwords ($A['format'])));
             $feed_template->set_var ('feed_version', $A['version']);
             $feed_template->set_var ('feed_filename', $A['filename']);
             $feed_template->set_var ('feed_filename_and_link', $link);
