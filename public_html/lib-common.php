@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.452 2005/07/04 18:16:29 mjervis Exp $
+// $Id: lib-common.php,v 1.453 2005/07/10 09:12:44 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -820,32 +820,40 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         $topic = COM_applyFilter( $_GET['topic'] );
     }
 
-    if ($_CONF['backend'] == 1) // add feed-link to header if applicable
-    {  // check for feed that would be in all topics, or in current
-        $search_array = array( 'all', $topic);
-        for ( $r = 0; $r < count($search_array); $r++ )
-        {
-            $rdf_data = DB_query("SELECT format, filename, description FROM "
-                                 . $_TABLES['syndication']
-                                 . " WHERE header_tid='"
-                                 . current($search_array) . "'" );
-            $R=DB_fetchArray($rdf_data);
-            if ( !empty($R[1]) )
-                {
-                $rdf_format = explode( "-", $R[0] );
-                $rdf_format = strtolower( $rdf_format[0] );
-                $rdf_name = strtoupper( $rdf_format );
+    $feed_url = '';
+    if( $_CONF['backend'] == 1 ) // add feed-link to header if applicable
+    {
+        $feedpath = $_CONF['rdf_file'];
+        $pos = strrpos( $feedpath, '/' );
+        $feed = substr( $feedpath, 0, $pos + 1 );
+        $baseurl = substr_replace( $feed, $_CONF['site_url'], 0,
+                                   strlen( $_CONF['path_html'] ) - 1 );
 
-                $feed_url .= '<link rel="alternate" type="application/' .
-                            $rdf_format . '+xml" title="' . $rdf_name
-                            . '-Feed:' . $R[2]
-                            . '" href="' . $_CONF['site_url']
-                            . '/backend/' . $R[0] . '">' . LB;
-                }
-            next( $search_array );
+        $sql = 'SELECT format, filename, title FROM '
+             . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
+        if( !empty( $topic ))
+        {
+            $sql .= " OR (header_tid = '" . addslashes( $topic ) . "')";
+        }
+        $result = DB_query( $sql );
+        $numRows = DB_numRows( $result );
+        for( $i = 0; $i < $numRows; $i++ )
+        {
+            $A = DB_fetchArray( $result );
+            if ( !empty( $A['filename'] ))
+            {
+                $format = explode( '-', $A['format'] );
+                $format_type = strtolower( $format[0] );
+                $format_name = ucwords( $format[0] );
+
+                $feed_url .= '<link rel="alternate" type="application/'
+                          . $format_type . '+xml" title="' . $format_name
+                          . ' Feed: ' . $A['title'] . '" href="' . $baseurl
+                          . $A['filename'] . '">' . LB;
+            }
         }
     }
-    $header->set_var( 'feed_url', $feed_url);
+    $header->set_var( 'feed_url', $feed_url );
 
     if( empty( $pagetitle ) && isset( $_CONF['pagetitle'] ))
     {
