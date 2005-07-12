@@ -19,7 +19,7 @@
 
 <ul>
   <li><a href="#overview">Overview</a></li>
-  <li><a href="#Functions_for_writing">Functions for writing Plugins</a>
+  <li><a href="#Functions_for_writing">Geeklog Plugin API Functions</a>
     <ul>
       <li><a href="#mod_functions">Moderation Functions</a></li>
       <li><a href="#admin_user_functions">Admin and User Menu Functions</a></li>
@@ -35,13 +35,6 @@
   <li><a href="#Preparing_your_Geeklog_Plugin">Preparing your Geeklog Plugin Distribution</a></li>
   <li><a href="#How_Geeklog_Installs_Plugins">How To Install A Geeklog Plugin</a></li>
   <li><a href="#Deliver_Your_Plugin">Deliver Your Plugin!</a></li>
-  <li><a href="#Desc_of_api">Description of the Geeklog Plugin API</a>
-    <ul>
-      <li><a href="#Moderation_Functions_desc">Moderation Functions</a></li>
-      <li><a href="#adminuser_Functions_desc">Admin and User Functions</a></li>
-      <li><a href="#searching_Functions_desc">Search Functions</a></li>
-      <li><a href="#stats_Functions_desc">Stats Functions</a></li>
-    </ul></li>
 </ul>
 
 <h2><a name="overview">Overview</a></h2>
@@ -374,6 +367,11 @@ The function should return the complete HTML for the block (including header and
         <td valign="top" class="code">Plugins may add additional lines to the site's <code>&lt;head&gt;</code> tag by implementing this function, e.g. Javascript functions or additional Meta tags.<br>
 The function should return a concatenated string of all its extra header code.</td>
       </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_templatesetvars_&lt;plugin 
+     name&gt;</td>
+        <td valign="top" class="code">Plugins may set additional template variables. Currently this function is only called in COM_siteHeader but could in the future be called in other locations. The parameters passed are the template name and the reference to the template object. The plugin API can check the template name (in this case it will currently be 'header') and then using the passed template object reference - set any required new template variables.</td>
+      </tr>
     <tr>
         <td valign="top" class="codeheader">plugin_whatsnewsupported_&lt;plugin name&gt;</td>
         <td valign="top" class="code">Plugins can add their own section to Geeklog's What's New block by implementing this and the following function.<br>
@@ -382,8 +380,16 @@ The function should return a concatenated string of all its extra header code.</
     <tr>
         <td valign="top" class="codeheader">plugin_getwhatsnew_&lt;plugin name&gt;</td>
         <td valign="top" class="code">This function should return the actual new entries to be listed in the What's New block (as an array) or a string to be displayed in case there are no new entries.</td>
-
     </tr>
+    <tr>
+        <td valign="top" class="codeheader">plugin_chkVersion_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">Plugins should implement this function and return the code version. Plugins should use a variable in the plugins config.php for the code version which allows the developer to easily update it before releasing a new version. As of Geeklog 1.3.10, this API function is called in the plugin Editor to show the version of the current installed version and plugin code version. The plugin installed version is pulled from the plugins table and should be updated as part of the plugin install or future updates. This API function allows the site admin to know if the current plugin code is newer then the installed version. Plugin developers can read the installed version from the plugins table and determine automatically if any SQL updates are required or atleast update the plugin record to be the same as the code version.</td>
+    </tr>
+    <tr>
+        <td valign="top" class="codeheader">plugin_runScheduledTask_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function allows plugin developers to schedule a task to be run. This API will only be called when someone accesses the site but should be sufficient for most plugins that want to schedule some maintenance process or clean-up routine. The interval this API is called is set in the site's config.php and all plugins that have this function will then be called.</td>
+    </tr>
+
   </table>
 
 
@@ -458,26 +464,13 @@ to all  the functions in lib-common.php in your plugin code.</dd>
    behaviour and selecting the language file based on the user's preferred
    language (falling back to english.php if you can't find a language file for
    the selected language).</dd>
-<dt>table.sql</dt><dd>the DDL needed to modify the Geeklog database so that 
-  your plugin  will work.<br>
-  <strong>Note:</strong> you must provide an entry in the plugin table in your 
-  database. Without it, Geeklog will not know your plugin exists.<br>
-  <strong>Example:</strong><br>
-  <code>REPLACE INTO plugins (pi_name, pi_version, pi_gl_version, pi_homepage,
-   pi_enabled)  VALUES ('photos', '0.1', '1.2.2', 'http://www.tonybibbs.com',
-   1);</code></dd>
-<dt>data.sql</dt><dd>sample data for your plugin</dd>
+
 <dt>README</dt><dd>standard readme for software</dd>
 <dt>/docs:</dt><dd>includes any documentation you may want to provide 
   for your plugin  such as history, to-do, etc</dd>
 <dt>/admin:</dt><dd>includes only your admininstation pages</dd>
 <dt>/public_html:</dt><dd>include your regular web pages</dd>
-<dt>/updates:</dt><dd>includes all update sql and scripts.&nbsp; if you
-  are writing  an update SQL script be sure that you name it update_&lt;previous 
-  version&gt;.sql.&nbsp;  The way this work is if you have version 0.1 installed 
-  for a plugin and you  are installing version 0.2 the code will look for 
-the  update script for the  currently isntalled version (0.1) and if it finds 
- it, in this case update_0.1.sql  then it will execute it automatically.</dd>
+<dt>/updates:</dt><dd>includes all update sql and scripts</dd>
 </dl>
 
 <h2><a name="How_Geeklog_Installs_Plugins">How To Install A Geeklog Plugin</a></h2>
@@ -489,7 +482,7 @@ manual install as outlined below is now the recommended way to install a
 plugin and should work for both old and new versions of Geeklog.
 
 <p>For details, you should always refer to the README that comes with the 
-plugin. In general, however, a plugin will be installed like this:
+plugin. A general overview of plugins and install details is also provided as part of the Geeklog Documentation Project <a href="http://wiki.geeklog.net/index.php/Plugins">here</a> . In general, however, a plugin will be installed like this:
 
 <ol>
 <li>Depending on your setup and server access, you should either upload 
@@ -507,9 +500,8 @@ plugin. In general, however, a plugin will be installed like this:
 http://yourgeeklogsite/admin/plugins/&lt;plugin name&gt;/install.php
   <ul>
   <li>If this is a new install (plugin doesn't exist in plugins table) 
-    then table.sql is executed and then data.sql is executed</li>
-  <li>If this is an upgrade that the necessary upgrade_&lt;version&gt;.sql 
-    script is searched for and, if found, executed.</li>
+    then the install script should execute the needed install SQL to create the required tables and default data</li>
+  <li>If this is an upgrade, you will need to refer to the provided plugin documentation. Newer plugin may support the Plugin API to perform an update. The plugin Editor has the ability for the site admin to execute the update function if available.</li>
   </ul></li>
 <li>That's it!</li>
 </ol>
@@ -524,157 +516,10 @@ adverse behavior.&nbsp; Assuming your plugin checks out, we will put your
 tarfile on our site where it can be downloaded by Geeklog users.&nbsp; You  
 can sumbit your plugin to our site at http://www.geeklog.net
 
-<h2><a name="Desc_of_api">Description of the Geeklog Plugin API</a></h2>
-
-<p>This is the function reference for the Geeklog Plugin API,   as  contained  
-in the plugins.php file.&nbsp; This   is provided strictly    for  
-reference sake. You, as a Geeklog Plugin Developer,     will not need    to 
-modify these functions nor make calls to them as that  has already been    
-handled in the Geeklog codebase. We do, however, encourage suggestions    
-on how you think we can make this API better.
-  
-  
-<h2><a name="Moderation_Functions_desc">Moderation Functions</a></h2>
-
-<p>These are the functions used to allow your plugin 
-to  access    the   moderation   system.</p>
-
-      <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
-        <caption align="bottom">Table 1. Moderation Functions</caption>
-          <tr>
-            <th valign="top">Function</th>
-            <th valign="top">Description of Function</th>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">SubmitPlugin</td>
-            <td valign="top" class="code">This function loops through all 
-          enabled plugins and calls the  plugins plugin_submit_&lt;plugin 
-name&gt;         method so that a plugins submission  form is shown to the 
-user.</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">GetPluginModerationValues</td>
-            <td valign="top" class="code">Responsible for calling the plugin_moderationvalue_&lt;plugin
-            name&gt; method so that the plugin specific values can be set
-so   that     moderation    can occur.</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">ShowPluginModerationLists</td>
-            <td valign="top" class="code">Loops through all enabled plugins 
-          and call itemlist() so that  all items needing moderation for the 
-  plugin       shows up in moderation.php</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">ShowPluginModerationOptions</td>
-            <td valign="top" class="code">Loops through all enabled plugins 
-          and calls the plugin_cclabel_&lt;plugin  name&gt; method so the 
-plugin       shows   in the command and control center.</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">SavePluginSubmission</td>
-            <td valign="top" class="code">Loops through all enabled plugins 
-          and calls the plugin_savesubmission_&lt;plugin  name&gt; method 
-so   that     the  plugin submission for a specified plugin gets  saved.</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">DoPluginModerationDelete</td>
-            <td valign="top" class="code">Calls the plugin_moderationdelete_&lt;plugin 
-          name&gt; method  of a specifid plugin so that a submission is deleted</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">DoPluginModerationApprove</td>
-            <td valign="top" class="code">Calls the plugin_moderationapprove_&lt;plugin 
-          name&gt; method  of a specified plugin so that the submission is 
- approved.</td>
-          </tr>
-</table>
-
-<h2><a name="adminuser_Functions_desc">Admin and User options functions</a></h2>
-
-<p>These are the functions used to allow your plugin 
-to  access    the   admin   and user system</p>
-
-      <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
-        <caption align="bottom">Table 2.&nbsp;Admin and User options functions</caption>
-          <tr>
-            <th valign="top">Function</th>
-            <th valign="top">Description of Function</th>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">ShowPluginAdminOptions</td>
-            <td valign="top" class="code">Loops through all enabled plugins 
-        and calls their plugin_showadminoption_&lt;plugin name&gt; so that 
- the    plugin   shows any option(s) they need under the Admin block.</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">ShowPluginUserOptions</td>
-            <td valign="top" class="code">Loops through all enabled plugins 
-        and calls their plugin_showuseroptions_&lt;plugin name&gt; so that 
- the    plugin   shows any option(s) users need in their User Functions block</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">HandlePluginAdminEdit</td>
-            <td valign="top" class="code">Calls the plugin_adminedit_&lt;plugin 
-        name&gt; method so that the "new &lt;plugin name&gt; | Admin Home" 
- links      show up at the top of admin/plugins/&lt;plugin name&gt;.php.&nbsp; 
- This    is  implemented strictly for consistency of the UI</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">GetPluginSubmissionCounts</td>
-            <td valign="top" class="code">Loops through all enabled plugins 
-        and calls their plugin_submissioncount_&lt;plugin name&gt; method 
-so   that     the number of submissions for plugins gets displayed</td>
-          </tr>
-      </table>
-
-<h2><a name="searching_Functions_desc">Search functions</a></h2>
-
-<p>These are the functions used to allow your plugin 
-to  access    the   search system</p>
-
-<table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
-        <caption align="bottom">Table 3. Search functions</caption>
-          <tr>
-            <th valign="top">Function</th>
-            <th valign="top">Description of Function</th>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">GetPluginSearchTypes</td>
-            <td valign="top" class="code">Loops through all enabled plugins
-        and calls their plugin_getsearchtypes_&lt;plugin name&gt; method
-to   get    any  plugin specific values that need to show up in the Type
-drop  down on   search.php</td>
-          </tr>
-          <tr>
-            <td valign="top" class="codeheader">DoPluginSearches</td>
-            <td valign="top" class="code">Loops through all enabled plugins
-        and submits the search criteria to the plugin_dopluginsearch_&lt;pluginname&gt;
-        method so that the plugin can perform it's own search</td>
-          </tr>
-      </table>
-
-<h2><a name="stats_Functions_desc">Stats functions</a></h2>
-
-<p>These are the functions used to allow your plugin to access the stats 
-system:</p>
-
-<table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
-<caption align="bottom">Table 4. Stats functions</caption>
-<tr>
-  <th valign="top">Function</th>
-  <th valign="top">Description of Function</th>
-</tr>
-<tr>
-  <td valign="top" class="codeheader">Show Plugin Stats</td>
-  <td valign="top" class="code">Loops through all enabled plugins 
-     and calls the plugin's plugin_showstats_&lt;plugin name&gt; method 
-     so that statistics can be reported for the plugin</td>
-</tr>
-</table>
-
+<p />
 <table border="0" width="100%" class="footer">
 <tr valign="top">
-  <td colspan="2"><a href="http://www.geeklog.net">The Geeklog Documentation Project</a><br>
+  <td colspan="2"><a href="http://wiki.geeklog.net/wiki/index.php/Geeklog_1.3x_Documentation">The Geeklog Documentation Project</a><br>
     All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
 </tr>
 </table>
