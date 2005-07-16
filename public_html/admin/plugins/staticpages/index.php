@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.42 2005/06/25 18:50:44 dhaun Exp $
+// $Id: index.php,v 1.43 2005/07/16 11:38:24 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -247,7 +247,8 @@ function form ($A, $error = false)
         $sp_template->set_var('sp_formateddate', $curtime[0]);
         $sp_template->set_var('sp_date', $curtime[1]);
         $sp_template->set_var('lang_title', $LANG_STATIC['title']);
-        $sp_template->set_var('sp_title', stripslashes($A['sp_title']));
+        $sp_template->set_var('sp_title',
+                htmlspecialchars (stripslashes ($A['sp_title'])));
         $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
         if ($A['sp_onmenu'] == 1) {
             $sp_template->set_var('onmenu_checked', 'checked="checked"');
