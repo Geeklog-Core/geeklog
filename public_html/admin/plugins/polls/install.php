@@ -45,10 +45,10 @@ require_once($_CONF['path'] . 'plugins/polls/functions.inc');
 // Change these to match your plugin
 //
 
-$pi_name = 'Polls';                 // Plugin name
+$pi_name    = 'polls';                  // Plugin name
 $pi_version = '1.0';                    // Plugin Version
-$gl_version = '1.3.9';                  // GL Version plugin for
-$pi_url = 'http://www.trainease.net';   // Plugin Homepage
+$gl_version = '1.3.12';                 // GL Version the plugin requires
+$pi_url = 'http://www.geeklog.net/';    // Plugin Homepage
 
 
 // Default data
@@ -66,9 +66,7 @@ $DEFVALUES = array();
 //
 
 $NEWFEATURE = array();
-$NEWFEATURE['polls.edit']        = "polls Admin Rights";
-$NEWFEATURE['polls.user']        = "polls User";
-//$NEWFEATURE['polls.delete']        = "polls delete rights";
+$NEWFEATURE['polls.edit'] = 'Access to polls editor';
 
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
@@ -102,7 +100,7 @@ function plugin_install_polls()
 
     require_once($_CONF['path'] . 'plugins/polls/sql/polls_install_1.0.php');
 
-        COM_errorLOG("executing " . $_SQL[1]);
+        COM_errorLog("executing " . $_SQL[1]);
         DB_query($_SQL[1]);
         if (DB_error()) {
             COM_errorLog("Error Creating $table table",1);
@@ -111,7 +109,7 @@ function plugin_install_polls()
             exit;
         }
 
-	COM_errorLOG("executing " . $_SQL[2]);
+	COM_errorLog("executing " . $_SQL[2]);
         DB_query($_SQL[2]);
         if (DB_error()) {
             COM_errorLog("Error Creating $table table",1);
@@ -120,7 +118,7 @@ function plugin_install_polls()
             exit;
         }
  
-	COM_errorLOG("executing " . $_SQL[3]);
+	COM_errorLog("executing " . $_SQL[3]);
         DB_query($_SQL[3]);
         if (DB_error()) {
             COM_errorLog("Error Creating $table table",1);
@@ -148,7 +146,7 @@ function plugin_install_polls()
     // Create the plugin admin security group
     COM_errorLog("Attempting to create $pi_name admin group", 1);
     DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) "
-        . "VALUES ('$pi_name Admin', 'Users in this group can administer the $pi_name plugin')",1);
+        . "VALUES ('Polls Admin', 'Users in this group can administer the $pi_name plugin')",1);
     if (DB_error()) {
         plugin_uninstall_polls();
         return false;
@@ -156,16 +154,6 @@ function plugin_install_polls()
     }
     COM_errorLog('...success',1);
     $group_id = DB_insertId();
-
-    // Save the grp id for later uninstall
-    COM_errorLog('About to save group_id to vars table for use during uninstall',1);
-    DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_admin', $group_id)",1);
-    if (DB_error()) {
-        plugin_uninstall_polls();
-        return false;
-        exit;
-    }
-    COM_errorLog('...success',1);
 
     // Add plugin Features
     foreach ($NEWFEATURE as $feature => $desc) {
@@ -202,7 +190,7 @@ function plugin_install_polls()
 
     // Register the plugin with Geeklog
     COM_errorLog("Registering $pi_name plugin with Geeklog", 1);
-    DB_delete($_TABLES['plugins'],'pi_name','polls');
+    DB_delete($_TABLES['plugins'],'pi_name',$pi_name);
     DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) "
         . "VALUES ('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
 
@@ -212,17 +200,6 @@ function plugin_install_polls()
         exit;
     }
 
-    DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_status', 1)",1);
-
-    /* DO NOT REMOVE OR CHANGE THE FOLLOWING CODE UNDER ANY CONDITION */
-    /* This Plugin requires a license to be installed and information collected is ONLY used to track that license */
-    /* Blaine Lang: glpolls author */
-    /*$message =  'Completed polls plugin install: ' .date('m d Y',time()) . "   AT " . date('H:i', time()) . "\n";
-    $message .= 'Site: ' . $_CONF['site_url'] . ' and Sitename: ' . $_CONF['site_name'] . "\n";
-    $message .= 'Admin: ' . $_CONF['site_mail'] . "\n";
-    $message .= 'Hostname: ' . $_ENV['HOSTNAME'] . ' and RemoteAddress: ' .$_ENV['REMOTE_ADDR'];
-    @mail('glpolls@portalparts.com','glpolls Install successfull',$message);
-    */
     COM_errorLog("Succesfully installed the $pi_name Plugin!",1);
     return true;
 }
@@ -252,7 +229,7 @@ if ($action == 'install') {
    $T->set_var('installmsg1',$LANG_REG00['uninstall_msg']);
 }
 
-if (DB_count($_TABLES['plugins'], 'pi_name', 'polls') == 0) {
+if (DB_count($_TABLES['plugins'], 'pi_name', $pi_name) == 0) {
     $T->set_var('installmsg2', $LANG_REG00['uninstalled']);
     $T->set_var('btnmsg', $LANG_REG00['install']);
     $T->set_var('action','install');

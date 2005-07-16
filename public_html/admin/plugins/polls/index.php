@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | poll.php                                                                  |
+// | index.php                                                                 |
 // |                                                                           |
 // | Geeklog poll administration page                                          |
 // +---------------------------------------------------------------------------+
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2005/07/01 22:48:18 trinity Exp $
+// $Id: index.php,v 1.4 2005/07/16 21:24:13 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -239,10 +239,10 @@ function editpoll ($qid = '')
             '<input type="submit" name="mode" value="' . $LANG25[16] . '">');
     } else {
         $Q['owner_id'] = $_USER['uid'];
-        if (isset ($_GROUPS['Poll Admin'])) {
-            $Q['group_id'] = $_GROUPS['Poll Admin'];
+        if (isset ($_GROUPS['Polls Admin'])) {
+            $Q['group_id'] = $_GROUPS['Polls Admin'];
         } else {
-            $Q['group_id'] = SEC_getFeatureGroup ('poll.edit');
+            $Q['group_id'] = SEC_getFeatureGroup ('polls.edit');
         }
         $Q['perm_owner'] = 3;
         $Q['perm_group'] = 2;

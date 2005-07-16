@@ -7,8 +7,8 @@
 // | functions.inc                                                             |
 // |                                                                           |
 // | This file does two things: 1) it implements the necessary Geeklog Plugin  |
-// | API method and 2) implements all the common code needed by the Static     |
-// | Pages' PHP files.                                                         |
+// | API method and 2) implements all the common code needed by the Polls      |
+// | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.9 2005/07/16 20:34:01 dhaun Exp $
+// $Id: functions.inc,v 1.10 2005/07/16 21:24:13 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -108,7 +108,7 @@ function plugin_showstats_polls($showsitestats)
         if (!empty ($perms)) {
             $perms = ' WHERE ' . $perms;
         }
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['pollquestions']}" . $perms);
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
         $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
@@ -144,165 +144,6 @@ function plugin_showstats_polls($showsitestats)
 */
 
 
-/*
-
-whats new block
-
-    $powhere = '';
-
-    if( !empty( $_USER['uid'] ))
-    {
-        $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
-        $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
-        $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL)";
-    }
-    else
-    {
-        $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
-        }
-
-*/
-
-
-/**
-* Geeklog is asking us to provide any new items that show up in the type
-* drop-down on search.php.  Let's let users search static pages!
-*
-
-function plugin_searchtypes_polls()
-{
-    global $LANG_POLLS;
-
-    $tmp['polls'] = $LANG_POLLS['polls'];
-
-    return $tmp;
-}
-*/
-
-/**
-* this searches for static pages matching the user query and returns an array of
-* for the header and table rows back to search.php where it will be formated and
-* printed
-*
-* @param    string  $query      Keywords user is looking for
-* @param    date    $datestart  Start date to get results for
-* @param    date    $dateend    End date to get results for
-* @param    string  $topic      The topic they were searching in
-* @param    string  $type       Type of items they are searching, or 'all'
-* @param    int     $author     Get all results by this author
-* @param    string  $keyType    search key type: 'all', 'phrase', 'any'
-*
-* Oct 05/2002: Blaine Lang, Corrected bug with SQL Search string.
-*/
-/*
-function plugin_dopluginsearch_polls($query, $datestart, $dateend, $topic, $type, $author, $keyType)
-{
-    global $_CONF, $_TABLES, $LANG_POLLS;
-
-    if (empty($type)) {
-        $type = 'all';
-    }
-
-    // Bail if we aren't supppose to do our search
-    if ($type <> 'all' AND $type <> 'polls') {
-        $plugin_results = new Plugin();
-        $plugin_results->plugin_name = 'polls';
-        $plugin_results->searchlabel = $LANG_STATIC['results'];
-        return $plugin_results;
-    }
-
-    // Build search SQL - exclude static PHP pages from search.
-    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) AS day FROM " . $_TABLES['staticpage'] . " WHERE (sp_php != 1)";
-
-    if (!empty ($query)) {
-        if ($keyType == 'phrase') {
-            $mysearchterm = addslashes ($query);
-            $sql .= " AND ((sp_content LIKE '%$mysearchterm%')"
-                 . " OR (sp_title LIKE '%$mysearchterm%'))";
-        } else if ($keyType == 'all') {
-            $mywords = explode (' ', $query);
-            $sql .= ' AND (';
-            $tmp = '';
-            foreach ($mywords AS $mysearchterm) {
-                $mysearchterm = addslashes (trim ($mysearchterm));
-                if (!empty ($mysearchterm)) {
-                    $tmp .= "(sp_content LIKE '%$mysearchterm%')"
-                         . " OR (sp_title LIKE '%$mysearchterm%') AND ";
-                }
-            }
-            $tmp = substr ($tmp, 0, strlen ($tmp) - 5);
-            $sql .= $tmp . ')';
-        } else if ($keyType == 'any') {
-            $mywords = explode (' ', $query);
-            $sql .= ' AND (';
-            $tmp = '';
-            foreach ($mywords AS $mysearchterm) {
-                $mysearchterm = addslashes (trim ($mysearchterm));
-                if (!empty ($mysearchterm)) {
-                    $tmp .= "(sp_content LIKE '%$mysearchterm%')"
-                         . " OR (sp_title LIKE '%$mysearchterm%') OR ";
-                }
-            }
-            $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
-            $sql .= $tmp . ')';
-        } else {
-            $mysearchterm = addslashes ($query);
-            $sql .= " AND ((sp_content LIKE '%$mysearchterm%')"
-                 . " OR (sp_title LIKE '%$mysearchterm%'))";
-        }
-    }
-
-    if (!empty ($datestart) && !empty ($dateend)) {
-        $delim = substr ($datestart, 4, 1);
-        $DS = explode ($delim, $datestart);
-        $DE = explode ($delim, $dateend);
-        $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
-        $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
-        $sql .= " AND (UNIX_TIMESTAMP(sp_date) BETWEEN '$startdate' AND '$enddate')";
-    }
-
-    if (!empty ($author)) {
-        $sql .= "AND (sp_uid = '$author')";
-    }
-    $sql    .= " ORDER BY sp_date desc";
-
-    // Perform search
-    $result = DB_query ($sql);
-
-    // OK, now return coma delmited string of table header labels
-    $plugin_results = new Plugin();
-    $plugin_results->plugin_name = 'polls';
-    $plugin_results->searchlabel = $LANG_STATIC['results'];
-    $plugin_results->addSearchHeading ($LANG_STATIC['title']);
-    $plugin_results->addSearchHeading ($LANG_STATIC['date']);
-    $plugin_results->addSearchHeading ($LANG_STATIC['author']);
-    $plugin_results->addSearchHeading ($LANG_STATIC['hits']);
-    $mycount = DB_numRows ($result);
-
-    // NOTE if any of your data items need to be links then add them here!
-    // make sure data elements are in an array and in the same order as your
-    // headings above!
-    for ($i = 1; $i <= $mycount; $i++) {
-        $A = DB_fetchArray ($result);
-
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'])) {
-            $rcnt++;
-            $thetime = COM_getUserDateTimeFormat ($A['day']);
-            $A['sp_title'] = stripslashes ($A['sp_title']);
-            $row = array ('<a href="' . COM_buildURL ($_CONF['site_url'] . '/polls/index.php?page=' . $A['sp_id']) . '">' . $A['sp_title'] . '</a>',
-                    $thetime[0],
-                    '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['sp_uid'] . '">' . DB_getItem ($_TABLES['users'], 'username', "uid = '{$A['sp_uid']}'") . '</a>',
-                    $A['sp_hits']);
-            $plugin_results->addSearchResult ($row);
-        }
-    }
-    $plugin_results->num_searchresults = $rcnt;
-    $plugin_results->num_itemssearched = DB_count ($_TABLES['staticpage']);
-
-    return $plugin_results;
-}
-
-*/
 /**
 * This will put an option for polls in the command and control block on
 * moderation.php
@@ -457,10 +298,10 @@ function plugin_uninstall_polls($steps = '')
 {
     global $_TABLES;
 
-    // Uninstalls the static pages plugin
+    // Uninstalls the polls plugin
 
     if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the staticpage table
+        // Remove the pollquestions and pollanswers tables
         COM_errorLog('Dropping polls answers table',1);
         DB_query("DROP TABLE {$_TABLES['pollanswers']}");
         COM_errorLog('...success',1);
@@ -475,8 +316,8 @@ function plugin_uninstall_polls($steps = '')
 
     // Remove security for this plugin
 
-    // Remove the static page admin group
-    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
+    // Remove the polls admin group
+    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Polls Admin'");
 
     if (empty($steps) OR $steps['insertgroup'] == 1) {
         COM_errorLog('Attempting to remove the Polls Admin Group', 1);
@@ -525,19 +366,6 @@ function plugin_uninstall_polls($steps = '')
         COM_errorLog('...success',1);
     }
 
-    /*
-    if (empty($steps) OR $steps['insertedfeaturedelete'] == 1) {
-        COM_errorLog('Attempting to remove the polls.delete feature',1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $delete_id");
-        COM_errorLog('...success',1);
-    }
-
-    if (empty($steps) OR $steps['insertedphpfeature'] == 1) {
-        COM_errorLog('Attempting to remove the staticpage.PHP feature',1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $php_id");
-        COM_errorLog('...success',1);
-    }
-    */
     // Unregister the plugin with Geeklog
     // Always attempt to remove these entries or lib-common.php would still
     // try and read our functions.inc file ...
@@ -879,7 +707,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
             }
             if( $scale > 399 && $Q['commentcode'] >= 0 )
             {
-                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                $delete_option = ( SEC_hasRights( 'polls.edit' ) &&
                     SEC_hasAccess( $Q['owner_id'], $Q['group_id'],
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
@@ -931,8 +759,8 @@ function plugin_handleSubmit() {
 }
 
 function handleDelete() {
-    global $_REQUEST, $_TABLES, $_CONF;
-    $has_editPermissions = SEC_hasRights ('poll.edit');
+    global $_TABLES, $_CONF;
+    $has_editPermissions = SEC_hasRights ('polls.edit');
             $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$sid}'");
             $A = DB_fetchArray ($result);
 
@@ -951,7 +779,7 @@ function handleDelete() {
 
 
 function handleView($view = true) {
-    global $_REQUEST, $_TABLES, $_USER, $_CONF;
+    global $_TABLES, $_USER, $_CONF;
     $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
                  . COM_getPermSQL('AND') . 'GROUP BY qid';
@@ -960,7 +788,7 @@ function handleView($view = true) {
             $allowed = $B['count'];
 
             if ( $allowed == 1 ) {
-                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                $delete_option = ( SEC_hasRights( 'polls.edit' ) &&
                     ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
                         $B['perm_owner'], $B['perm_group'], $B['perm_members'],
                         $B['perm_anon'] ) == 3 ) );
@@ -976,7 +804,7 @@ function handleView($view = true) {
 }
 
 function handleFetch() {
-    global $_REQUEST, $_TABLES, $_USER, $_CONF;
+    global $_TABLES, $_USER, $_CONF;
     $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
                  . COM_getPermSQL('AND') . 'GROUP BY qid';
@@ -985,7 +813,7 @@ function handleFetch() {
             $allowed = $B['count'];
 
             if ( $allowed == 1 ) {
-                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                $delete_option = ( SEC_hasRights( 'polls.edit' ) &&
                     ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
                         $B['perm_owner'], $B['perm_group'], $B['perm_members'],
                         $B['perm_anon'] ) == 3 ) );
