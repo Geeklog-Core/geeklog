@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.8 2005/07/06 14:59:13 ospiess Exp $
+// $Id: functions.inc,v 1.9 2005/07/16 20:34:01 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -438,9 +438,9 @@ function plugin_user_delete_polls($uid)
 */
 function plugin_chkVersion_polls()
 {
-    global $_POLLS_CONF;
+    global $_PO_CONF;
 
-    return $_POLLS_CONF['version'];
+    return $_PO_CONF['version'];
 }
 
 
