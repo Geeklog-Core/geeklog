@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.49 2005/06/25 18:12:30 dhaun Exp $
+// $Id: group.php,v 1.50 2005/07/17 16:57:51 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -302,7 +302,7 @@ function printrights ($grp_id = '', $core = 0)
     }
 
     // now query for all available features
-    $features = DB_query ("SELECT ft_id,ft_name FROM {$_TABLES['features']}{$ftWhere} ORDER BY ft_name");
+    $features = DB_query ("SELECT ft_id,ft_name,ft_descr FROM {$_TABLES['features']}{$ftWhere} ORDER BY ft_name");
     $nfeatures = DB_numRows($features);
 
     if (!empty($grp_id)) {
@@ -355,14 +355,16 @@ function printrights ($grp_id = '', $core = 0)
             $ftcount++;
             $retval .= '<td><input type="checkbox" name="features[]" value="'. $A['ft_id'] . '"';
             if ($grpftarray[$A['ft_name']] == 'direct') {
-                $retval .= ' CHECKED';
+                $retval .= ' checked="checked"';
             } 
-            $retval .= '>' . $A['ft_name'] . '</td>';
+            $retval .= '><span title="' . $A['ft_descr'] . '">' . $A['ft_name']
+                    . '</span></td>';
         } else {
             // either this is an indirect right OR this is a core feature
             if ((($core == 1) AND ($grpftarray[$A['ft_name']] == 'indirect' OR $grpftarray[$A['ft_name']] == 'direct')) OR ($core == 0)) {
                 $ftcount++;
-                $retval .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<i>' .  $A['ft_name'] . '</i>)</td>';
+                $retval .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<i title="'
+                        . $A['ft_descr'] . '">' .  $A['ft_name'] . '</i>)</td>';
             }
         }
     }
