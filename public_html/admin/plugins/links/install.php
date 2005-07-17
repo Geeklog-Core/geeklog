@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.3 2005/05/30 22:44:01 blaine Exp $
+// $Id: install.php,v 1.4 2005/07/17 09:37:42 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once($_CONF['path'] . 'plugins/links/config.php');
@@ -49,7 +49,7 @@ require_once($_CONF['path'] . 'plugins/links/functions.inc');
 $pi_name = 'links';                      // Plugin name
 $pi_version = $_LI_CONF['version'];      // Plugin Version
 $gl_version = '1.3.12';                  // GL Version plugin for
-$pi_url = 'http://www.steubentech.com';  // Plugin Homepage
+$pi_url = 'http://www.geeklog.net/';  // Plugin Homepage
 
 
 // Default data
@@ -68,14 +68,14 @@ $DEFVALUES = array();
 
 
 $NEWFEATURE = array();
-$NEWFEATURE['links.edit']        = "links Admin Rights";
-$NEWFEATURE['links.moderate']        = "links Moderator";
-$NEWFEATURE['links.submit']        = "links Submit";
+$NEWFEATURE['links.edit']       = 'Access to links editor';
+$NEWFEATURE['links.moderate']   = 'Ablility to moderate pending links';
+$NEWFEATURE['links.submit']     = 'May skip the links submission queue';
 
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
     // Someone is trying to illegally access this page
-    COM_errorLog("Someone has tried to illegally access the links install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+    COM_accessLog("Someone has tried to illegally access the links install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
     $display = COM_siteHeader();
     $display .= COM_startBlock($LANG_REG00['access_denied']);
     $display .= $LANG_REG00['access_denied_msg'];
@@ -95,8 +95,8 @@ if (!SEC_inGroup('Root')) {
 */
 function plugin_install_links()
 {
-    global $pi_name, $pi_version, $gl_version, $pi_url, $NEWTABLE, $DEFVALUES, $NEWFEATURE;
-    global $_TABLES, $_CONF,$_ENV;
+    global $_CONF, $_TABLES, $NEWTABLE, $DEFVALUES, $NEWFEATURE, $_ENV,
+           $pi_name, $pi_version, $gl_version, $pi_url;
 
     COM_errorLog("Attempting to install the $pi_name Plugin",1);
 
@@ -104,28 +104,28 @@ function plugin_install_links()
 
     require_once($_CONF['path'] . 'plugins/links/sql/links_install_1.0.php');
 
-        COM_errorLOG("executing " . $_SQL[1]);
-        DB_query($_SQL[1]);
-        if (DB_error()) {
-            COM_errorLog("Error Creating $table table",1);
-            plugin_uninstall_links('DeletePlugin');
-            return false;
-            exit;
-        }
+    COM_errorLOG("executing " . $_SQL[1]);
+    DB_query($_SQL[1]);
+    if (DB_error()) {
+        COM_errorLog("Error Creating $table table",1);
+        plugin_uninstall_links();
+        return false;
+        exit;
+    }
 
 	COM_errorLOG("executing " . $_SQL[2]);
-        DB_query($_SQL[2]);
-        if (DB_error()) {
-            COM_errorLog("Error Creating $table table",1);
-            plugin_uninstall_links('DeletePlugin');
-            return false;
-            exit;
-        }
+    DB_query($_SQL[2]);
+    if (DB_error()) {
+        COM_errorLog("Error Creating $table table",1);
+        plugin_uninstall_links();
+        return false;
+        exit;
+    }
 
     // Create the plugin admin security group
     COM_errorLog("Attempting to create $pi_name admin group", 1);
     DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) "
-        . "VALUES ('$pi_name Admin', 'Users in this group can administer the $pi_name plugin')",1);
+        . "VALUES ('Links Admin', 'Has full access to $pi_name features')",1);
     if (DB_error()) {
         plugin_uninstall_links();
         return false;
@@ -133,16 +133,6 @@ function plugin_install_links()
     }
     COM_errorLog('...success',1);
     $group_id = DB_insertId();
-
-    // Save the grp id for later uninstall
-    COM_errorLog('About to save group_id to vars table for use during uninstall',1);
-    DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_admin', $group_id)",1);
-    if (DB_error()) {
-        plugin_uninstall_links();
-        return false;
-        exit;
-    }
-    COM_errorLog('...success',1);
 
     // Add plugin Features
     foreach ($NEWFEATURE as $feature => $desc) {
@@ -179,7 +169,7 @@ function plugin_install_links()
 
     // Register the plugin with Geeklog
     COM_errorLog("Registering $pi_name plugin with Geeklog", 1);
-    DB_delete($_TABLES['plugins'],'pi_name','links');
+    DB_delete ($_TABLES['plugins'], 'pi_name', $pi_name);
     DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) "
         . "VALUES ('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
 
@@ -189,10 +179,8 @@ function plugin_install_links()
         exit;
     }
 
-    DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_status', 1)",1);
-
-
     COM_errorLog("Succesfully installed the $pi_name Plugin!",1);
+
     return true;
 }
 
@@ -204,11 +192,11 @@ $display = COM_siteHeader();
 $T = new Template($_CONF['path'] . 'plugins/links/templates/admin');
 $T->set_file('install', 'install.thtml');
 $T->set_var('install_header', $LANG_REG00['install_header']);
-$T->set_var('img',$_CONF['site_url'] . '/links/images/links.gif');
+$T->set_var('img',$_CONF['site_url'] . '/links/images/links.png');
 $T->set_var('cgiurl', $_CONF['site_admin_url'] . '/plugins/links/install.php');
 $T->set_var('admin_url', $_CONF['site_admin_url']);
 
-if ($action == 'install') {
+if ($_REQUEST['action'] == 'install') {
     if (plugin_install_links()) {
         $install_msg = sprintf($LANG_REG00['install_success'],$_CONF['site_admin_url'] .'/plugins/links/install_doc.htm');
         $T->set_var('installmsg1',$install_msg);
@@ -216,8 +204,8 @@ if ($action == 'install') {
     } else {
         $T->set_var('installmsg1',$LANG_REG00['install_failed']);
     }
-} else if ($action == "uninstall") {
-   plugin_uninstall_links('installed');
+} else if ($_REQUEST['action'] == 'uninstall') {
+   plugin_uninstall_links();
    $T->set_var('installmsg1',$LANG_REG00['uninstall_msg']);
 }
 

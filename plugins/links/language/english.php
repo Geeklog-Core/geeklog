@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.4 2005/06/07 15:03:59 ospiess Exp $
+# $Id: english.php,v 1.5 2005/07/17 09:37:42 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -214,12 +214,12 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Link Description',
     10 => 'You need to provide a link Title, URL and Description.',
     11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that links edit icon below.  To create a new link click new link above.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link click New Link above.',
     13 => 'Link Title',
     14 => 'Link Category',
     15 => 'Link URL',
     16 => 'Access Denied',
-    17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/link.php\">go back to the link administration screen</a>.",
+    17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">go back to the link administration screen</a>.",
     18 => 'New Link',
     19 => 'Admin Home',
     20 => 'If other, specify',

@@ -85,7 +85,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET `type`= 'phpblock', `phpblockfn`='phpblock_polls' WHERE `name`='poll_block';";
 
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core = '0', ft_name='polls.edit' WHERE ft_name = 'poll.edit';";
-$_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core = '0' WHERE grp_name = 'Link Admin';";
+$_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core = '0', grp_name = 'Links Admin' WHERE grp_name = 'Link Admin';";
 $_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core = '0', grp_name = 'Polls Admin' WHERE grp_name = 'Poll Admin';";
 
 // rename "link.*" features to "links.*" to match the plugin name

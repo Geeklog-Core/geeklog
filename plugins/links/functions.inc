@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.14 2005/06/25 19:06:33 dhaun Exp $
+// $Id: functions.inc,v 1.15 2005/07/17 09:37:42 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -115,8 +115,10 @@ function plugin_commentsupport_links()
 * This may be different then the version installed and registered currently.
 * If newer then you may want to run the update
 */
-function plugin_chkVersion_links() {
+function plugin_chkVersion_links ()
+{
     global $_LI_CONF; 
+
     return $_LI_CONF['version'];
 }
 
@@ -191,9 +193,7 @@ function plugin_searchtypes_links()
 {
     global $LANG_LINKS;
 
-    $tmp['links'] = $LANG_LINKS[14];
-
-    return $tmp;
+    return $LANG_LINKS[14];
 }
 
 
@@ -328,7 +328,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
 */
 function plugin_cclabel_links() 
 {
-    global $LANG_LINKS, $_CONF;
+    global $_CONF, $LANG_LINKS;
 
     if (SEC_hasRights ('links.edit')) {
         return array ($LANG_LINKS[14],
@@ -345,14 +345,16 @@ function plugin_cclabel_links()
 */
 function plugin_getadminoption_links() 
 {
-    global $_CONF, $LANG_LINKS, $_TABLES;
+    global $_CONF, $_TABLES, $LANG_LINKS;
 
     if (SEC_hasRights ('links.edit,links.delete', 'OR')) {
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['links']}" . COM_getPermSQL ());
-        $A = DB_fetchArray ($result);
-        $total_pages = $A['cnt'];
-        return array ($LANG_LINKS[14], $_CONF['site_admin_url'] . '/plugins/links/index.php', $total_pages);
-    }	
+        $total_links = DB_getItem ($_TABLES['links'], 'COUNT(*)',
+                                   COM_getPermSql (''));
+
+        return array ($LANG_LINKS[14],
+                      $_CONF['site_admin_url'] . '/plugins/links/index.php',
+                      $total_links);
+    }
 }
 
 /**
@@ -362,10 +364,9 @@ function plugin_getadminoption_links()
 * @param   uid   int   User id of deleted user
 *
 */
-
 function plugin_user_delete_links ($uid)
 {
-    global $_TABLES;
+    global $_TABLES, $_LI_CONF;
 
     if (DB_count ($_TABLES['links'], "owner_id = $uid") == 0) {
         return;
@@ -411,11 +412,10 @@ function plugin_getfeednames_links()
 
 /*
 * Provide feed data
-
 */
-function plugin_getfeedcontent_links( $limit, &$link, &$update )
+function plugin_getfeedcontent_links($limit, &$link, &$update)
 {
-    global $_TABLES, $_CONF, $LANG01;
+    global $_CONF, $_TABLES, $LANG01;
 
     $result = DB_query( "SELECT lid,owner_id,title,description FROM " . $_TABLES['links'] . links_buildSql ($S['topic'], $S['limits']) );
 
@@ -483,7 +483,7 @@ function links_buildSql ($category, $limits)
 }
 
 /*
-* cheking if feeds are up to date
+* checking if feeds are up to date
 */
 function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit)
 {
@@ -502,9 +502,7 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit)
     }
     $current = implode (',', $lids);
 
-    //COM_errorLog ("Update check for downloads: comparing new list ($current) with old list ($update_data)", 1);
-
-    return ( $current != $update_data ) ? false : true;
+    return ($current != $update_data) ? false : true;
 }
 
 /**
@@ -516,108 +514,94 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit)
 * @steps   Array    Holds all the steps that have been completed by the install
 *
 */  
-function plugin_uninstall_links($steps = '')
+function plugin_uninstall_links ()
 {
     global $_TABLES;
 
-    // Uninstalls the static pages plugin
+    // Uninstalls the links plugin
 
-    if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the linksubmisssion table 
-        COM_errorLog('Dropping linksubmission table',1);
-        DB_query("DROP TABLE {$_TABLES['linksubmission']}");
-        COM_errorLog('...success',1);
-    }
-    if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the links table 
-        COM_errorLog('Dropping links table',1);
-        DB_query("DROP TABLE {$_TABLES['links']}");
-        COM_errorLog('...success',1);
-    }
+    // Remove the linksubmisssion table 
+    COM_errorLog ('Dropping linksubmission table', 1);
+    DB_query ("DROP TABLE {$_TABLES['linksubmission']}");
+    COM_errorLog ('...success', 1);
+
+    // Remove the links table 
+    COM_errorLog ('Dropping links table', 1);
+    DB_query ("DROP TABLE {$_TABLES['links']}");
+    COM_errorLog ('...success', 1);
 
     // Remove security for this plugin
 
-    // Remove the static page admin group
-    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Links Admin'");
+    // Remove the links admin group
+    $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                          "grp_name = 'Links Admin'");
 
-    if (empty($steps) OR $steps['insertgroup'] == 1) {
-        COM_errorLog('Attempting to remove the links Admin Group', 1);
-        DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
-        COM_errorLog('...success',1);
-    }
+    COM_errorLog ('Attempting to remove the Links Admin group', 1);
+    DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
+    COM_errorLog ('...success', 1);
 
     // Remove related features
-    $edit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'links.edit'");
-    $moderate_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'links.moderate'");
-    $submit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'links.submit'");
+    $edit_id = DB_getItem ($_TABLES['features'], 'ft_id',
+                           "ft_name = 'links.edit'");
+    $moderate_id = DB_getItem ($_TABLES['features'], 'ft_id',
+                               "ft_name = 'links.moderate'");
+    $submit_id = DB_getItem ($_TABLES['features'], 'ft_id',
+                             "ft_name = 'links.submit'");
 
-    if (empty($steps) OR $steps['addededittogroup'] == 1) {
-        // Remove access to those features 
-        COM_errorLog('Attempting to remove rights to links.edit from all groups',1);
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
-        COM_errorLog('...success',1);
-    } 
+    // Remove access to those features 
+    COM_errorLog ('Attempting to remove links.edit rights from all groups' ,1);
+    DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
+    COM_errorLog ('...success', 1);
     
-    if (empty($steps) OR $steps['addedmoderatetogroup'] == 1) {
-        // Remove access to those features 
-        COM_errorLog('Attempting to remove rights to links.edit from all groups',1);
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $moderate_id");
-        COM_errorLog('...success',1);
-    }
+    // Remove access to those features 
+    COM_errorLog ('Attempting to remove links.moderate rights from all groups', 1);
+    DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $moderate_id");
+    COM_errorLog ('...success', 1);
 
-    if (empty($steps) OR $steps['addedsubmittogroup'] == 1) {
-        // Remove access to those features 
-        COM_errorLog('Attempting to remove rights to links.delete from all groups',1);
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $submit_id");
-        COM_errorLog('...success',1);
-    }
+    COM_errorLog ('Attempting to remove links.submit rights from all groups', 1);
+    DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $submit_id");
+    COM_errorLog ('...success', 1);
 
-    if (empty($steps) OR $steps['addedrootuserstogroup'] == 1) {
-        // Remove root users from the group
-        COM_errorLog('Attempting to remove root users from admin of links');
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
-        COM_errorLog('...success',1);
-    }
+    // Remove Links Admin group from all other groups
+    COM_errorLog ('Attempting to Links Admin group from all groups.', 1);
+    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
+    COM_errorLog ('...success', 1);
 
-    if (empty($steps) OR $steps['insertedfeatureedit'] == 1) {
-        COM_errorLog('Attempting to remove the links.edit feature',1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
-        COM_errorLog('...success',1);
-    }
+    // remove features
+    COM_errorLog ('Attempting to remove the links.edit feature', 1);
+    DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
+    COM_errorLog ('...success', 1);
 
-    if (empty($steps) OR $steps['insertedfeaturemoderate'] == 1) {
-        COM_errorLog('Attempting to remove the links.moderate feature',1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $moderate_id");
-        COM_errorLog('...success',1);
-    }
+    COM_errorLog ('Attempting to remove the links.moderate feature', 1);
+    DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $moderate_id");
+    COM_errorLog ('...success', 1);
 
-    if (empty($steps) OR $steps['insertedfeaturesubmit'] == 1) {
-        COM_errorLog('Attempting to remove the links.submit feature',1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $submit_id");
-        COM_errorLog('...success',1);
-    }
+    COM_errorLog ('Attempting to remove the links.submit feature', 1);
+    DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $submit_id");
+    COM_errorLog ('...success', 1);
 
     // Unregister the plugin with Geeklog
     // Always attempt to remove these entries or lib-common.php would still
     // try and read our functions.inc file ...
-    COM_errorLog('Attempting to unregister the plugin from Geeklog',1);
-    DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'links'");
-    COM_errorLog('...success',1);
+    COM_errorLog ('Attempting to unregister the plugin from Geeklog', 1);
+    DB_query ("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'links'");
+    COM_errorLog ('...success',1);
 
-    COM_errorLog('leaving plugin_uninstall_links',1);
+    COM_errorLog ('Finished uninstalling the Links plugin.', 1);
 
     return true;
 }
+
 /**
 *
 * Counts the items that are submitted
 *
 */
-
 function plugin_submissioncount_links()
 {
    global $_TABLES;
-   return DB_count($_TABLES['linksubmission']);
+
+   return DB_count ($_TABLES['linksubmission']);
 }
 
 /**
@@ -628,8 +612,9 @@ function plugin_submissioncount_links()
 * @return        boolean       Returns true if moderator
 *
 */
-function plugin_ismoderator_links() {
-    return SEC_hasRights('links.moderate');
+function plugin_ismoderator_links()
+{
+    return SEC_hasRights ('links.moderate');
 }
 
 
@@ -652,6 +637,7 @@ function plugin_itemlist_links()
         return $plugin;
     }
 }
+
 /**
 * returns list of moderation values
 *
@@ -661,11 +647,14 @@ function plugin_itemlist_links()
 * @return       array        Returns array of useful moderation values
 *
 */
-function plugin_moderationvalues_links() {
+function plugin_moderationvalues_links()
+{
     global $_TABLES;
 
-    return array('lid', $_TABLES['links'], 'lid,category,url,description,title,date'
-                 , $_TABLES['linksubmission']);
+    return array ('lid',
+                  $_TABLES['links'],
+                  'lid,category,url,description,title,date',
+                  $_TABLES['linksubmission']);
 }
 
 
@@ -680,8 +669,8 @@ function plugin_moderationvalues_links() {
 * @return     string       Any wanted HTML output
 *
 */
-function plugin_moderationapprove_links($id) {
-
+function plugin_moderationapprove_links($id)
+{
     return '';
 }
 
@@ -696,13 +685,15 @@ function plugin_moderationapprove_links($id) {
 * @return     string       Any wanted HTML output
 *
 */
-function plugin_moderationdelete_lists($id) {
+function plugin_moderationdelete_lists($id)
+{
     global $_TABLES;
 
     // these tables should not contain any rows with ml_id = $id
     // this is done 'just in case'
-    DB_delete($_TABLES['linksubscriptions'], 'lid', $id);
-    return "";
+    DB_delete ($_TABLES['linksubscriptions'], 'lid', $id);
+
+    return '';
 }
 
 /**
@@ -725,6 +716,7 @@ function plugin_savesubmission_links($A)
             . submissionform($type)
             . COM_siteFooter ();
     }
+
     return $retval;
 } 
 
@@ -735,6 +727,7 @@ function plugin_savesubmission_links($A)
 function plugin_submit_links() 
 {
     global $_CONF, $_TABLES, $LANG_LINKS_SUBMIT, $LANG12;
+
     $retval = COM_startBlock ($LANG_LINKS_SUBMIT[1], 'submitlink.html');
 
     $linkform = new Template($_CONF['path'] . '/plugins/links/templates');
@@ -768,7 +761,7 @@ function plugin_submit_links()
 */
 function plugin_save_submit_links ($A)
 {
-    global $_CONF, $_LI_CONF, $_TABLES, $_USER, $LANG_LINKS_SUBMIT;
+    global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG_LINKS_SUBMIT;
 
     $retval = '';
 
@@ -833,6 +826,7 @@ function plugin_save_submit_links ($A)
     } else {
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=17');
     }
+
     return $retval;
 }
 
