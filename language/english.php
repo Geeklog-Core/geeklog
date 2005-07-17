@@ -1162,7 +1162,9 @@ $MESSAGE = array(
     68 => 'You have to enter the correct current password.',
     69 => 'Your account has been blocked!',
     70 => 'Your account is awaiting administrator approval.',
-    71 => 'Your account has now been confirmed and is awaiting administrator approval.'
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.'
 );
 
 ###############################################################################
