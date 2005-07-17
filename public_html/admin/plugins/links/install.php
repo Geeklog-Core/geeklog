@@ -1,22 +1,22 @@
 <?php
 
+/* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Universal Plugin 1.0 for Geeklog - The Ultimate Weblog                    |
+// | Links plugin 1.0 for Geeklog                                              |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
-// | This file installs the data structures for the links Plugin               |
-// |                                                                           |
+// | This file installs and removes the data structures for the                |
+// | Links plugin for Geeklog.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Author:                                                                   |
-// | Constructed with the Universal Plugin                                     |
-// | Copyright (C) 2002 by the following authors:                              |
-// | Tom Willett                 -    tomw@pigstye.net                         |
-// | Blaine Lang                 -    geeklog@langfamily.ca                    |
-// | The Universal Plugin is based on prior work by:                           |
-// | Tony Bibbs                  -    tony@tonybibbs.com                       |
+// | Copyright (C) 2002-2005 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Tom Willett      - tom AT pigstye DOT net                        |
+// |          Blaine Lang      - blaine AT portalparts DOT com                 |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,192 +35,228 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.4 2005/07/17 09:37:42 dhaun Exp $
+// $Id: install.php,v 1.5 2005/07/17 17:20:19 dhaun Exp $
 
-require_once('../../../lib-common.php');
-require_once($_CONF['path'] . 'plugins/links/config.php');
-require_once($_CONF['path'] . 'plugins/links/functions.inc');
+require_once ('../../../lib-common.php');
 
+// Plugin information
 //
-// Universal plugin install variables
-// Change these to match your plugin
+// ----------------------------------------------------------------------------
 //
+$pi_display_name = 'Links';
+$pi_name         = 'links';
+$pi_version      = '1.0';
+$gl_version      = '1.3.12';
+$pi_url          = 'http://www.geeklog.net/';
 
-$pi_name = 'links';                      // Plugin name
-$pi_version = $_LI_CONF['version'];      // Plugin Version
-$gl_version = '1.3.12';                  // GL Version plugin for
-$pi_url = 'http://www.geeklog.net/';  // Plugin Homepage
-
-
-// Default data
-// Insert table name and sql to insert default data for your plugin.
-
-$DEFVALUES = array();
-
-//
-// Security Feature to add
-// Fill in your security features here
-// Note you must add these features to the uninstall routine in function.inc so that they will
-// be removed when the uninstall routine runs.
-// You do not have to use these particular features.  You can edit/add/delete them
-// to fit your plugins security model
-//
-
+$pi_admin        = $pi_display_name . ' Admin';
+$pi_admin_desc   = 'Has full access to ' . $pi_name . ' features';
 
 $NEWFEATURE = array();
 $NEWFEATURE['links.edit']       = 'Access to links editor';
-$NEWFEATURE['links.moderate']   = 'Ablility to moderate pending links';
+$NEWFEATURE['links.moderate']   = 'Ability to moderate pending links';
 $NEWFEATURE['links.submit']     = 'May skip the links submission queue';
 
+// (optional) data to pre-populate tables with
+// Insert table name and sql to insert default data for your plugin.
+$DEFVALUES = array();
+$DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, date) VALUES ('20050717191600683', 'Geeklog Sites', 'http://www.geeklog.net/', 'All you ever need to know about GeekLog - and more ...', 'Geeklog Project Homepage', NOW())";
+
+/**
+* Checks the requirements for this plugin and if it is compatible with this
+* version of Geeklog.
+*
+* @return   boolean     true = proceed with install, false = not compatible
+*
+*/
+function plugin_compatible_with_this_geeklog_version ()
+{
+    return true;
+}
+//
+// ----------------------------------------------------------------------------
+//
+// The code below should be the same for most plugins and usually won't
+// require modifications.
+
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
+$langfile = $base_path . $_CONF['language'] . '.php';
+if (file_exists ($langfile)) {
+    require_once ($langfile);
+} else {
+    require_once ($base_path . 'language/english.php');
+}
+require_once ($base_path . 'config.php');
+require_once ($base_path . 'functions.inc');
+
+
 // Only let Root users access this page
-if (!SEC_inGroup('Root')) {
+if (!SEC_inGroup ('Root')) {
     // Someone is trying to illegally access this page
-    COM_accessLog("Someone has tried to illegally access the links install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
-    $display = COM_siteHeader();
-    $display .= COM_startBlock($LANG_REG00['access_denied']);
-    $display .= $LANG_REG00['access_denied_msg'];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter(true);
+    COM_accessLog ("Someone has tried to illegally access the {$pi_display_name} install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
+
+    $display = COM_siteHeader ('menu', $LANG_ACCESS['accessdenied'])
+             . COM_startBlock ($LANG_ACCESS['accessdenied'])
+             . $LANG_STATIC['access_denied_msg']
+             . COM_endBlock ()
+             . COM_siteFooter ();
+
     echo $display;
     exit;
 }
+ 
 
 /**
 * Puts the datastructures for this plugin into the Geeklog database
 *
-* Note: Corresponding uninstall routine is in functions.inc
-*
-* @return    boolean    True if successful False otherwise
-*
 */
-function plugin_install_links()
+function plugin_install_now()
 {
-    global $_CONF, $_TABLES, $NEWTABLE, $DEFVALUES, $NEWFEATURE, $_ENV,
-           $pi_name, $pi_version, $gl_version, $pi_url;
+    global $_TABLES, $_CONF, $NEWFEATURE, $DEFVALUES,
+           $base_path, $pi_admin, $pi_admin_desc,
+           $pi_name, $pi_display_name, $pi_version, $gl_version, $pi_url;
 
-    COM_errorLog("Attempting to install the $pi_name Plugin",1);
+    COM_errorLog ("Attempting to install the $pi_display_name plugin", 1);
 
-    // Create the Plugins Tables
+    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
 
-    require_once($_CONF['path'] . 'plugins/links/sql/links_install_1.0.php');
+    // Create the plugin's table(s)
+    require_once ($base_path . 'sql/'
+                  . $pi_name . '_install_' . $pi_version . '.php');
 
-    COM_errorLOG("executing " . $_SQL[1]);
-    DB_query($_SQL[1]);
-    if (DB_error()) {
-        COM_errorLog("Error Creating $table table",1);
-        plugin_uninstall_links();
-        return false;
-        exit;
+    foreach ($_SQL as $sql) {
+        DB_query ($sql);
+        if (DB_error ()) {
+            COM_errorLog ('Error creating table', 1);
+            $uninstall_plugin ();
+
+            return false;
+        }
     }
 
-	COM_errorLOG("executing " . $_SQL[2]);
-    DB_query($_SQL[2]);
-    if (DB_error()) {
-        COM_errorLog("Error Creating $table table",1);
-        plugin_uninstall_links();
+    // Create the plugin's Admin group
+    COM_errorLog ("Attempting to create $pi_admin group", 1);
+
+    $pi_admin_desc = addslashes ($pi_admin_desc);
+    DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES "
+              . "('$pi_admin', '$pi_admin_desc')", 1);
+    if (DB_error ()) {
+        $uninstall_plugin ();
+
         return false;
-        exit;
     }
 
-    // Create the plugin admin security group
-    COM_errorLog("Attempting to create $pi_name admin group", 1);
-    DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) "
-        . "VALUES ('Links Admin', 'Has full access to $pi_name features')",1);
-    if (DB_error()) {
-        plugin_uninstall_links();
-        return false;
-        exit;
-    }
-    COM_errorLog('...success',1);
-    $group_id = DB_insertId();
+    // get the group ID for the newly created Admin group
+    $group_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                            "grp_name = '$pi_admin'");
 
-    // Add plugin Features
+    // Add the plugin's features
+    COM_errorLog ("Attempting to add $pi_display_name feature(s)", 1);
+
     foreach ($NEWFEATURE as $feature => $desc) {
-        COM_errorLog("Adding $feature feature",1);
-        DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
-            . "VALUES ('$feature','$desc')",1);
-        if (DB_error()) {
-            COM_errorLog("Failure adding $feature feature",1);
-            plugin_uninstall_links();
+        $desc = addslashes ($desc);
+        DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
+                  . "VALUES ('$feature', '$desc')", 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
             return false;
-            exit;
         }
-        $feat_id = DB_insertId();
-        COM_errorLog("Success",1);
-        COM_errorLog("Adding $feature feature to admin group",1);
-        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, $group_id)");
-        if (DB_error()) {
-            COM_errorLog("Failure adding $feature feature to admin group",1);
-            plugin_uninstall_links();
+
+        $feat_id = DB_insertId ();
+        COM_errorLog ("Adding $feature feature to the $pi_admin group", 1);
+        DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) "
+                  . "VALUES ($feat_id, $group_id)");
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
             return false;
-            exit;
         }
-        COM_errorLog("Success",1);
     }
 
-    // OK, now give Root users access to this plugin now! NOTE: Root group should always be 1
-    COM_errorLog("Attempting to give all users in Root group access to $pi_name admin group",1);
-    DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
-    if (DB_error()) {
-        plugin_uninstall_links();
+    // Add plugin's Admin group to the Root user group
+    // (assumes that the Root group's ID is always 1)
+    COM_errorLog ("Attempting to give all users in the Root group access to the $pi_admin group", 1);
+
+    DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+              . "($group_id, NULL, 1)");
+    if (DB_error ()) {
+        $uninstall_plugin ();
+
         return false;
-        exit;
     }
 
-    // Register the plugin with Geeklog
-    COM_errorLog("Registering $pi_name plugin with Geeklog", 1);
+    // Pre-populate tables or run any other SQL queries
+    COM_errorLog ('Inserting default data', 1);
+    foreach ($DEFVALUES as $sql) {
+        DB_query ($sql, 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
+            return false;
+        }
+    }
+
+    // Finally, register the plugin with Geeklog
+    COM_errorLog ("Registering $pi_display_name plugin with Geeklog", 1);
+
+    // silently delete an existing entry
     DB_delete ($_TABLES['plugins'], 'pi_name', $pi_name);
-    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) "
-        . "VALUES ('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
 
-    if (DB_error()) {
-        plugin_uninstall_links();
+    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) VALUES "
+        . "('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
+
+    if (DB_error ()) {
+        $uninstall_plugin ();
+
         return false;
-        exit;
     }
 
-    COM_errorLog("Succesfully installed the $pi_name Plugin!",1);
+    COM_errorLog ("Successfully installed the $pi_display_name plugin!", 1);
 
     return true;
 }
 
-//*
-/* Main Function
-*/
 
-$display = COM_siteHeader();
-$T = new Template($_CONF['path'] . 'plugins/links/templates/admin');
-$T->set_file('install', 'install.thtml');
-$T->set_var('install_header', $LANG_REG00['install_header']);
-$T->set_var('img',$_CONF['site_url'] . '/links/images/links.png');
-$T->set_var('cgiurl', $_CONF['site_admin_url'] . '/plugins/links/install.php');
-$T->set_var('admin_url', $_CONF['site_admin_url']);
+// MAIN
+$display = '';
 
-if ($_REQUEST['action'] == 'install') {
-    if (plugin_install_links()) {
-        $install_msg = sprintf($LANG_REG00['install_success'],$_CONF['site_admin_url'] .'/plugins/links/install_doc.htm');
-        $T->set_var('installmsg1',$install_msg);
-        $T->set_var('editor',$LANG_REG00['editor']);
+if ($_REQUEST['action'] == 'uninstall') {
+    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
+    if ($uninstall_plugin ()) {
+        $display = COM_refresh ($_CONF['site_admin_url']
+                                . '/plugins.php?msg=45');
     } else {
-        $T->set_var('installmsg1',$LANG_REG00['install_failed']);
+        $display = COM_refresh ($_CONF['site_admin_url']
+                                . '/plugins.php?msg=73');
     }
-} else if ($_REQUEST['action'] == 'uninstall') {
-   plugin_uninstall_links();
-   $T->set_var('installmsg1',$LANG_REG00['uninstall_msg']);
-}
+} else if (DB_count ($_TABLES['plugins'], 'pi_name', $pi_name) == 0) {
+    // plugin not installed
 
-if (DB_count($_TABLES['plugins'], 'pi_name', 'links') == 0) {
-    $T->set_var('installmsg2', $LANG_REG00['uninstalled']);
-    $T->set_var('btnmsg', $LANG_REG00['install']);
-    $T->set_var('action','install');
+    if (plugin_compatible_with_this_geeklog_version ()) {
+        if (plugin_install_now ()) {
+            $display = COM_refresh ($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=44');
+        } else {
+            $display = COM_refresh ($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=72');
+        }
+    } else {
+        // plugin needs a newer version of Geeklog
+        $display .= COM_siteHeader ('menu', $LANG32[8])
+                 . COM_startBlock ($LANG32[8])
+                 . '<p>' . $LANG32[9] . '</p>'
+                 . COM_endBlock ()
+                 . COM_siteFooter ();
+    }
 } else {
-    $T->set_var('installmsg2', $LANG_REG00['installed']);
-    $T->set_var('btnmsg', $LANG_REG00['uninstall']);
-    $T->set_var('action','uninstall');
+    // plugin already installed
+    $display .= COM_siteHeader ('menu', $LANG01[77])
+             . COM_startBlock ($LANG32[6])
+             . '<p>' . $LANG32[7] . '</p>'
+             . COM_endBlock ()
+             . COM_siteFooter();
 }
-$T->parse('output','install');
-$display .= $T->finish($T->get_var('output'));
-$display .= COM_siteFooter(true);
 
 echo $display;
 
