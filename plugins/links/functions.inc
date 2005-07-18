@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.15 2005/07/17 09:37:42 dhaun Exp $
+// $Id: functions.inc,v 1.16 2005/07/18 07:23:20 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -536,9 +536,11 @@ function plugin_uninstall_links ()
     $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
                           "grp_name = 'Links Admin'");
 
-    COM_errorLog ('Attempting to remove the Links Admin group', 1);
-    DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($grp_id)) {
+        COM_errorLog ('Attempting to remove the Links Admin group', 1);
+        DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
+        COM_errorLog ('...success', 1);
+    }
 
     // Remove related features
     $edit_id = DB_getItem ($_TABLES['features'], 'ft_id',
@@ -549,36 +551,49 @@ function plugin_uninstall_links ()
                              "ft_name = 'links.submit'");
 
     // Remove access to those features 
-    COM_errorLog ('Attempting to remove links.edit rights from all groups' ,1);
-    DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($edit_id)) {
+        COM_errorLog ('Attempting to remove links.edit rights from all groups' ,1);
+        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
+        COM_errorLog ('...success', 1);
+    }
     
-    // Remove access to those features 
-    COM_errorLog ('Attempting to remove links.moderate rights from all groups', 1);
-    DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $moderate_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($moderate_id)) {
+        COM_errorLog ('Attempting to remove links.moderate rights from all groups', 1);
+        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $moderate_id");
+        COM_errorLog ('...success', 1);
+    }
 
-    COM_errorLog ('Attempting to remove links.submit rights from all groups', 1);
-    DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $submit_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($submit_id)) {
+        COM_errorLog ('Attempting to remove links.submit rights from all groups', 1);
+        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $submit_id");
+        COM_errorLog ('...success', 1);
+    }
 
     // Remove Links Admin group from all other groups
-    COM_errorLog ('Attempting to Links Admin group from all groups.', 1);
-    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($grp_id)) {
+        COM_errorLog ('Attempting to Links Admin group from all groups.', 1);
+        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
+        COM_errorLog ('...success', 1);
+    }
 
     // remove features
-    COM_errorLog ('Attempting to remove the links.edit feature', 1);
-    DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($edit_id)) {
+        COM_errorLog ('Attempting to remove the links.edit feature', 1);
+        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
+        COM_errorLog ('...success', 1);
+    }
 
-    COM_errorLog ('Attempting to remove the links.moderate feature', 1);
-    DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $moderate_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($moderate_id)) {
+        COM_errorLog ('Attempting to remove the links.moderate feature', 1);
+        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $moderate_id");
+        COM_errorLog ('...success', 1);
+    }
 
-    COM_errorLog ('Attempting to remove the links.submit feature', 1);
-    DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $submit_id");
-    COM_errorLog ('...success', 1);
+    if (!empty ($submit_id)) {
+        COM_errorLog ('Attempting to remove the links.submit feature', 1);
+        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $submit_id");
+        COM_errorLog ('...success', 1);
+    }
 
     // Unregister the plugin with Geeklog
     // Always attempt to remove these entries or lib-common.php would still
