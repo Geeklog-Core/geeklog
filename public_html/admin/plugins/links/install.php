@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.5 2005/07/17 17:20:19 dhaun Exp $
+// $Id: install.php,v 1.6 2005/07/19 10:45:52 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -97,7 +97,7 @@ if (!SEC_inGroup ('Root')) {
 
     $display = COM_siteHeader ('menu', $LANG_ACCESS['accessdenied'])
              . COM_startBlock ($LANG_ACCESS['accessdenied'])
-             . $LANG_STATIC['access_denied_msg']
+             . $LANG_ACCESS['plugin_access_denied_msg']
              . COM_endBlock ()
              . COM_siteFooter ();
 

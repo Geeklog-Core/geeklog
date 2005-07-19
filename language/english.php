@@ -1230,8 +1230,8 @@ $LANG_ACCESS = array(
     'search' => 'Search',
     'submit' => 'Submit',
     'limitresults' => 'Limit Results',
-    'group_id' => 'Group ID'
-    
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
 );
 
 ###############################################################################
