@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.184 2005/06/30 06:38:17 mjervis Exp $
+// $Id: config.php,v 1.185 2005/07/21 16:52:09 mjervis Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -87,7 +87,7 @@ $_CONF['site_url']          = 'http://www.example.com';
 // starting with https:// Otherwise, leave this as $_CONF['site_url'].
 // This will force authentication or password changes to use encrypted connection.
 // default is to not use https, so change this line to something like
-// $_CONF['site_url_ssl'] = 'https://www.example.com'; 
+// $_CONF['site_url_ssl'] = 'https://www.example.com';
 $_CONF['site_url_ssl']          = $_CONF['site_url'];
 
 // Some hosting services have a preconfigured admin directory. In that case,
@@ -98,7 +98,7 @@ $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 
 // if you want to do all your admin tasks over a ssl secured URL, please set
 // this to  $_CONF['site_url_ssl'] . '/admin';
-// otherwise, leave as $_CONF['site_url'] . '/admin'; 
+// otherwise, leave as $_CONF['site_url'] . '/admin';
 $_CONF['site_admin_url_ssl']    = $_CONF['site_url'] . '/admin';
 
 // This is the return address for all email sent by Geeklog:
@@ -165,7 +165,7 @@ $_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
 // - 'smtp', i.e. talk directly to your SMTP server
 // The default is 'mail' and will work in most environments.
 
-$_CONF['mail_settings'] = array (  
+$_CONF['mail_settings'] = array (
     'backend' => 'mail', // can be one of 'mail', 'sendmail', 'smtp'
 
     // sendmail parameters (only needed for 'backend' => 'sendmail')
@@ -282,6 +282,11 @@ $_CONF['spamx'] = 128;  // Default to ignore comment.
 $_CONF['advanced_editor'] = false;
 
 // +---------------------------------------------------------------------------+
+// | Sort the links in the admin block and the admin panel.                    |
+// +---------------------------------------------------------------------------+
+$_CONF['sort_admin'] = true;
+
+// +---------------------------------------------------------------------------+
 // | Path to user files relative to the $_CONF['site_url'] (no trailing slash) |
 // | Relative Directory where the Editor Image Library store                   |
 // +---------------------------------------------------------------------------+
@@ -305,7 +310,7 @@ $_CONF['default_charset'] = 'iso-8859-1';
 // Number formatting
 $_CONF['thousand_separator'] = "'";  // could be ' , . etc.
 $_CONF['decimal_separator']  = ".";  // could be , . etc.
-$_CONF['decimal_count']      = "2";  // if a number has decimals, 
+$_CONF['decimal_count']      = "2";  // if a number has decimals,
                                      //  force to this depth
 
 // "Timezone Hack"
@@ -394,16 +399,16 @@ $_CONF['pdf_enabled'] = 0;
 //     true = show title with summary
 //     false = title date author hits on one line
 $_CONF['expanded_search_results']  =  true;
-    
+
 // 0: use users max stories per page
 // 1: Show all
 // any other number is the # of results per page
 $_CONF['max_search_results']  =  1;
-    
-// maximum length for the summary text for search results should be    
+
+// maximum length for the summary text for search results should be
 $_CONF['summary_length']  =  250;
-    
-    
+
+
 // +---------------------------------------------------------------------------+
 // | MISCELLANEOUS SETTINGS                                                    |
 // |                                                                           |
@@ -411,8 +416,8 @@ $_CONF['summary_length']  =  250;
 // | for most situations.                                                      |
 // +---------------------------------------------------------------------------+
 
-// this lets you select which functions are available for registered users only 
-$_CONF['loginrequired'] = 0; // all of them, if set to 1 will override all else 
+// this lets you select which functions are available for registered users only
+$_CONF['loginrequired'] = 0; // all of them, if set to 1 will override all else
 $_CONF['submitloginrequired']     = 0;
 $_CONF['commentsloginrequired']   = 0;
 $_CONF['pollsloginrequired']      = 0;
@@ -582,7 +587,7 @@ $_CONF['rdf_file']      = $_CONF['path_html'] . 'backend/geeklog.rdf';
 
 // This allows a person to limit the rss feed to a certain number of stories
 // (e.g. 10 or 12) or else limit the rss feed to all stories within a certain
-// period of time in hours (e.g. 24h or 168h). 
+// period of time in hours (e.g. 24h or 168h).
 $_CONF['rdf_limit']     = 10;   // number of stories (10) or hours (24h)
 
 // Include the story's entire intro text in the feed (= 1) or limit the number
@@ -644,7 +649,7 @@ $_CONF['allow_user_scaling']    = 1; // 1 = allow the user to choose
 // Story image settings
 $_CONF['max_image_width']       = 160;  // In pixels
 $_CONF['max_image_height']      = 120;  // In pixels
-$_CONF['max_image_size']        = 1048576; // 1048576 = 1MB 
+$_CONF['max_image_size']        = 1048576; // 1048576 = 1MB
 
 // User photo settings
 $_CONF['max_photo_width']       = 128; // In pixels
@@ -660,7 +665,7 @@ $_CONF['max_topicicon_size']    = 65536; // 65536 = 64KB
 $_CONF['commentspeedlimit']     = 45;         // minimum time between comment posts, in seconds
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
 $_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'threaded','nested',                                                  // 'dynamic', 'nocomments', or 'flat'
-$_CONF['dynamic_comments']      = true;       // true to enable dynamic comment display, false to 
+$_CONF['dynamic_comments']      = true;       // true to enable dynamic comment display, false to
                                               // disable.  (enabling may affect performance)
 // Allow / disallow comments to stories by default (can be changed individually for every story)
 $_CONF['comment_code']          = 0;          // 0 = comments enabled, -1 = disabled
@@ -683,15 +688,15 @@ $_CONF['login_speedlimit'] = 300; // wait (in seconds) after $_CONF['login_attem
 
 // Parameters for checking HTML tags
 
-// *** Warning: Adding the following tags to the list of allowable HTML can     
+// *** Warning: Adding the following tags to the list of allowable HTML can
 // *** make your site vulnerable to scripting attacks!
-// *** Use with care: <img> <span> <marquee> <script> <embed> <object> <iframe> 
+// *** Use with care: <img> <span> <marquee> <script> <embed> <object> <iframe>
 
 /* This is a list of HTML tags that users are allowed to use in their posts.
  * Each tag can have a list of allowed attributes (see 'a' for an example).
  * Any attributes not listed will be filtered, i.e. removed.
  */
-$_CONF['user_html'] = array ( 
+$_CONF['user_html'] = array (
     'p'    => array(),
     'b'    => array(),
     'i'    => array(),
@@ -726,7 +731,7 @@ $_CONF['admin_html'] = array (
                      'colspan' => 1, 'rowspan' => 1)
 );
 
-/* Optional HTML Tags that will be enabled if advanced editor is enabled 
+/* Optional HTML Tags that will be enabled if advanced editor is enabled
  * Posible to add tags to the allowable general USER $_CONF['user_html'] as well
 */
 if ($_CONF['advanced_editor']) {

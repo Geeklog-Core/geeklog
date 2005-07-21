@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.58 2005/06/25 17:14:34 dhaun Exp $
+// $Id: moderation.php,v 1.59 2005/07/21 16:52:09 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -58,21 +58,15 @@ define ('ICONS_PER_ROW', 6);
 */
 function render_cc_item (&$template, $url = '', $image = '', $label = '')
 {
-    static $cols = 0;
 
     if (!empty ($url)) {
         $template->set_var ('page_url', $url);
         $template->set_var ('page_image', $image);
         $template->set_var ('option_label', $label);
         $template->set_var ('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
-        $template->parse ('cc_main_options', 'ccitem', true);
-        $cols++;
-    }
-
-    if (($cols == ICONS_PER_ROW) || empty ($url)) {
-        $template->parse ('cc_rows', 'ccrow', true);
-        $template->clear_var ('cc_main_options');
-        $cols = 0;
+        return $template->parse ('cc_main_options', 'ccitem', false);
+    } else {
+        return '';
     }
 }
 
@@ -80,7 +74,7 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 * Prints the command & control block at the top
 *
 */
-function commandcontrol() 
+function commandcontrol()
 {
     global $_CONF, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE;
 
@@ -90,115 +84,151 @@ function commandcontrol()
     $admin_templates->set_file (array ('cc'     => 'moderation.thtml',
                                        'ccrow'  => 'ccrow.thtml',
                                        'ccitem' => 'ccitem.thtml'));
-    
+
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (SEC_hasRights('story.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/story.php',
                         $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                         $LANG01[11]);
+        $items[$LANG01[11]] = $item;
     }
     if (SEC_hasRights('block.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/block.php',
                         $_CONF['layout_url'] . '/images/icons/block.' . $_IMAGE_TYPE,
                         $LANG01[12]);
+        $items[$LANG01[12]] = $item;
     }
     if (SEC_hasRights('topic.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/topic.php',
                         $_CONF['layout_url'] . '/images/icons/topic.' . $_IMAGE_TYPE,
                         $LANG01[13]);
+        $items[$LANG01[13]] = $item;
     }
     if (SEC_hasRights('event.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/event.php',
                         $_CONF['layout_url'] . '/images/icons/event.' . $_IMAGE_TYPE,
                         $LANG01[15]);
+        $items[$LANG01[15]] = $item;
     }
     if (SEC_hasRights('poll.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/poll.php',
                         $_CONF['layout_url'] . '/images/icons/poll.' . $_IMAGE_TYPE,
                         $LANG01[16]);
+        $items[$LANG01[16]] = $item;
     }
     if (SEC_hasRights ('user.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/user.php',
                         $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                         $LANG01[17]);
+        $items[$LANG01[17]] = $item;
     }
     if (SEC_hasRights ('group.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/group.php',
                         $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE,
                         $LANG01[96]);
+        $items[$LANG01[96]] = $item;
     }
     if (SEC_hasRights ('user.mail')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/mail.php',
                         $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE,
                         $LANG01[105]);
+        $items[$LANG01[105]] = $item;
     }
     if (SEC_inGroup ('Root')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/syndication.php',
                         $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
                         $LANG01[38]);
+        $items[$LANG01[38]] = $item;
     }
     if (SEC_hasRights ('story.ping')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/trackback.php',
                         $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE,
                         $LANG01[116]);
+        $items[$LANG01[116]] = $item;
     }
     if (SEC_hasRights ('plugin.edit')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/plugins.php',
                         $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE,
                         $LANG01[98]);
+        $items[$LANG01[98]] = $item;
     }
 
     // now add the plugins
     $plugins = PLG_getCCOptions ();
     for ($i = 0; $i < count ($plugins); $i++) {
     	$cur_plugin = current ($plugins);
-        render_cc_item ($admin_templates, $cur_plugin->adminurl,
+        $item = render_cc_item ($admin_templates, $cur_plugin->adminurl,
                         $cur_plugin->plugin_image, $cur_plugin->adminlabel);
+        $items[$cur_plugin->adminlabel] = $item;
         next ($plugins);
     }
 
     if (($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_admin_url'] . '/database.php',
                         $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE,
                         $LANG01[103]);
+        $items[$LANG01[103]] = $item;
     }
 
     if ($_CONF['link_documentation'] == 1) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                         $_CONF['site_url'] . '/docs/',
                         $_CONF['layout_url'] . '/images/icons/docs.' . $_IMAGE_TYPE,
                         $LANG01[113]);
+        $items[$LANG01[113]] = $item;
     }
 
     if (SEC_inGroup ('Root')) {
-        render_cc_item ($admin_templates,
+        $item = render_cc_item ($admin_templates,
                 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
                 $_CONF['layout_url'] . '/images/icons/versioncheck.' . $_IMAGE_TYPE,
                 $LANG01[107]);
+        $items[$LANG01[107]] = $item;
     }
 
-    // logout is always the last entry
-    render_cc_item ($admin_templates,
+    if ($_CONF['sort_admin'])
+    {
+        ksort($items);
+    }
+     // logout is always the last entry
+    $item = render_cc_item ($admin_templates,
                     $_CONF['site_url'] . '/users.php?mode=logout',
                     $_CONF['layout_url'] . '/images/icons/logout.' . $_IMAGE_TYPE,
                     $LANG01[35]);
-
+    $items[$LANG01[35]] = $item;
+    reset($items);
+    $cols = 0;
+    while (list($key, $val) = each($items))
+    {
+        $cc_main_options .= "$val\n";
+        $cols++;
+        if ($cols == ICONS_PER_ROW)
+        {
+            $admin_templates->set_var('cc_main_options', $cc_main_options);
+            $admin_templates->parse ('cc_rows', 'ccrow', true);
+            $admin_templates->clear_var ('cc_main_options');
+            $cc_main_options = '';
+            $cols = 0;
+        }
+    }
     // "flush out" any unrendered entries
-    render_cc_item ($admin_templates);
+    $admin_templates->set_var('cc_main_options', $cc_main_options);
+    $admin_templates->parse ('cc_rows', 'ccrow', true);
+    $admin_templates->clear_var ('cc_main_options');
 
     $retval .= $admin_templates->parse('output','cc');
 
@@ -233,7 +263,7 @@ function commandcontrol()
 * @type     string      Type of object to build list for
 *
 */
-function itemlist($type) 
+function itemlist($type)
 {
     global $_TABLES, $LANG29, $_CONF;
 
@@ -295,7 +325,7 @@ function itemlist($type)
         $mod_templates->set_var('heading_col3', $H[2]);
         $mod_templates->set_var('lang_approve', $LANG29[2]);
         $mod_templates->set_var('lang_delete', $LANG29[1]);
- 
+
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result, true);
             if ($type == 'story') {
@@ -307,7 +337,7 @@ function itemlist($type)
                     . '/index.php?mode=editsubmission&amp;id=' . $A['id']);
             } else {
                 $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/' .  $type
-                    . '.php?mode=editsubmission&amp;id=' . $A['id']); 
+                    . '.php?mode=editsubmission&amp;id=' . $A['id']);
             }
             $mod_templates->set_var('lang_edit', $LANG29[3]);
 
@@ -363,7 +393,7 @@ function userlist ()
         $mod_templates->set_var('heading_col3', $LANG29[18]);
         $mod_templates->set_var('lang_approve', $LANG29[2]);
         $mod_templates->set_var('lang_delete', $LANG29[1]);
- 
+
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             $mod_templates->set_var ('edit_submission_url',
@@ -421,7 +451,7 @@ function draftlist ()
         $mod_templates->set_var('heading_col3', $LANG29[15]);
         $mod_templates->set_var('lang_approve', $LANG29[2]);
         $mod_templates->set_var('lang_delete', $LANG29[1]);
- 
+
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             $mod_templates->set_var('edit_submission_url',
@@ -500,7 +530,7 @@ function deletestory ($sid)
 * @count        int         Number of items to moderate
 *
 */
-function moderation($mid,$action,$type,$count) 
+function moderation($mid,$action,$type,$count)
 {
     global $_CONF, $_TABLES;
 

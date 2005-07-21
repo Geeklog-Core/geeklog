@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.454 2005/07/21 14:05:09 vinny Exp $
+// $Id: lib-common.php,v 1.455 2005/07/21 16:52:09 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -247,8 +247,8 @@ if( !empty( $_POST['usetheme'] ) && is_dir( $_CONF['path_themes']
         . $_POST['usetheme'] ))
 {
     $_CONF['theme'] = $_POST['usetheme'];
-    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';      
-    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];   
+    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 }
 else if( $_CONF['allow_user_themes'] == 1 )
 {
@@ -879,7 +879,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'page_title', $_CONF['site_name'] . $pagetitle );
 
     if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) &&
-        file_exists ($_CONF['path_layout'] . 'advanced_editor_header.thtml')) { 
+        file_exists ($_CONF['path_layout'] . 'advanced_editor_header.thtml')) {
         $header->set_file( 'editor'  , 'advanced_editor_header.thtml');
         $header->parse( 'advanced_editor', 'editor' );
 
@@ -1109,14 +1109,14 @@ function COM_siteFooter( $rightblock = false, $custom = '' )
      * function or custom function.
      * This can be used to take control over what blocks are then displayed
      */
-    if( is_array( $custom )) 
+    if( is_array( $custom ))
     {
         $function = $custom['0'];
         if( function_exists( $function ))
         {
             $rblocks = $function( $custom['1'], 'right' );
         }
-    } 
+    }
     elseif( $rightblock )
     {
         $rblocks = COM_showBlocks( 'right', $topic );
@@ -1980,10 +1980,10 @@ function COM_userMenu( $help='', $title='' )
         }
         if ($_CONF['remoteauthentication'] && !$_CONF['usersubmission']) {
             /* Build select */
-            $select = '<select name="service"><option value="">' . 
+            $select = '<select name="service"><option value="">' .
                             $_CONF['site_name'] . '</option>';
             if (is_dir($_CONF['path_system'].'classes/authentication/')) {
-                
+
                 $folder = opendir( $_CONF['path_system'].'classes/authentication/' );
                 while (($filename = @readdir( $folder )) !== false) {
                     $strpos = strpos($filename, '.auth.class.php');
@@ -2140,9 +2140,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[10] );
             $adminmenu->set_var( 'option_count', $num );
-
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[10]] = $menu_item;
         }
 
         if( SEC_hasrights( 'story.edit' ))
@@ -2161,8 +2161,9 @@ function COM_adminMenu( $help = '', $title = '' )
                 $numstories = $N['count'];
             }
             $adminmenu->set_var( 'option_count', $numstories );
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[11]] = $menu_item;
         }
 
         if( SEC_hasrights( 'block.edit' ))
@@ -2172,8 +2173,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[12] );
             $adminmenu->set_var( 'option_count', DB_count( $_TABLES['blocks'] ));
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[12]] = $menu_item;
         }
 
         if( SEC_hasrights( 'topic.edit' ))
@@ -2183,8 +2185,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[13] );
             $adminmenu->set_var( 'option_count', DB_count( $_TABLES['topics'] ));
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[13]] = $menu_item;
         }
 
         if( SEC_hasrights( 'event.edit' ))
@@ -2194,8 +2197,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[15] );
             $adminmenu->set_var( 'option_count', DB_count( $_TABLES['events'] ));
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[15]] = $menu_item;
         }
 
         if( SEC_hasrights( 'user.edit' ))
@@ -2205,8 +2209,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[17] );
             $adminmenu->set_var( 'option_count', ( DB_count( $_TABLES['users'] ) -1 ));
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[17]] = $menu_item;
         }
 
         if( SEC_hasrights( 'group.edit' ))
@@ -2221,8 +2226,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[96] );
             $adminmenu->set_var( 'option_count', $A['count'] );
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[96]] = $menu_item;
         }
 
         if( SEC_hasrights( 'user.mail' ))
@@ -2232,8 +2238,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[105] );
             $adminmenu->set_var( 'option_count', 'N/A' );
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[105]] = $menu_item;
         }
 
         if(( $_CONF['backend'] == 1 ) && SEC_inGroup( 'Root' ))
@@ -2244,8 +2251,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $count = DB_count( $_TABLES['syndication'] );
             $adminmenu->set_var( 'option_count', $count );
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[38]] = $menu_item;
         }
 
         if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ||
@@ -2264,8 +2272,9 @@ function COM_adminMenu( $help = '', $title = '' )
                 $adminmenu->set_var( 'option_count', 'N/A' );
             }
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[116]] = $menu_item;
         }
 
         if( SEC_hasRights( 'plugin.edit' ))
@@ -2275,8 +2284,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[77] );
             $adminmenu->set_var( 'option_count', DB_count( $_TABLES['plugins'] ));
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[77]] = $menu_item;
         }
 
         // This will show the admin options for all installed plugins (if any)
@@ -2297,8 +2307,9 @@ function COM_adminMenu( $help = '', $title = '' )
                 $adminmenu->set_var( 'option_count', $plg->numsubmissions );
             }
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $plg->adminurl ) ? 'current' : 'option', true );
+            $link_array[$plg->adminlabel] = $menu_item;
 
             next( $plugin_options );
         }
@@ -2310,8 +2321,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[103] );
             $adminmenu->set_var( 'option_count', 'N/A' );
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG01[104]] = $menu_item;
         }
 
         // Add PDF Generator Link if the feature is enabled
@@ -2322,8 +2334,9 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG_PDF[9] );
             $adminmenu->set_var( 'option_count', 'N/A' );
 
-            $retval .= $adminmenu->parse( 'item',
+            $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
+            $link_array[$LANG_PDF[9]] = $menu_item;
         }
 
         if( $_CONF['link_documentation'] == 1 )
@@ -2331,7 +2344,8 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/docs/' );
             $adminmenu->set_var( 'option_label', $LANG01[113] );
             $adminmenu->set_var( 'option_count', 'N/A' );
-            $retval .= $adminmenu->parse( 'item', 'option' );
+            $menu_item = $adminmenu->parse( 'item', 'option' );
+            $link_array[$LANG01[113]] = $menu_item;
         }
 
         if( SEC_inGroup( 'Root' ))
@@ -2341,9 +2355,18 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[107] );
             $adminmenu->set_var( 'option_count', VERSION );
 
-            $retval .= $adminmenu->parse( 'item', 'option' );
+            $menu_item = $adminmenu->parse( 'item', 'option' );
+            $link_array[$LANG01[107]] = $menu_item;
         }
-
+        if ($_CONF['sort_admin'] )
+        {
+            ksort($link_array);
+        }
+        reset($link_array);
+        while (list($key, $val) = each($link_array))
+        {
+          $retval .= "$val\n";
+        }
         $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
     }
 
@@ -2531,7 +2554,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     }
 
     if( empty( $permissions) || !SEC_hasRights( $permissions ) ||
-            empty( $_CONF['admin_html'] ))       
+            empty( $_CONF['admin_html'] ))
     {
         $html = $_CONF['user_html'];
     }
@@ -2688,7 +2711,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     else
     {
         $charset = $LANG_CHARSET;
-    }    
+    }
 
     if( empty( $from ))
     {
@@ -2720,7 +2743,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
         $headers['Content-Type'] = 'text/plain; charset=' . $charset;
     }
     $headers['Subject'] = $subject;
-    if( $priority > 0 )    
+    if( $priority > 0 )
     {
         $headers['X-Priority'] = $priority;
     }
@@ -3259,7 +3282,7 @@ function COM_getPassword( $loginname )
 function COM_getDisplayName( $uid = '', $username='', $fullname='', $remoteusername='', $remoteservice='' )
 {
     global $_CONF, $_TABLES, $_USER;
- 
+
     if ($uid == '')
     {
         if( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 ))
@@ -3271,13 +3294,13 @@ function COM_getDisplayName( $uid = '', $username='', $fullname='', $remoteusern
             $uid = $_USER['uid'];
         }
     }
-    
+
     if (empty($username))
     {
         $query = DB_query( "SELECT username, fullname, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid='$uid'" );
         list( $username, $fullname, $remoteusername, $remoteservice ) = DB_fetchArray( $query );
     }
-    
+
     if( $fullname != '' AND $_CONF['show_fullname'] == 1 )
     {
         return $fullname;
@@ -3736,11 +3759,11 @@ function COM_whatsNewBlock( $help = '', $title = '' )
             {
                 $newmsg = $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' '
                     . $LANG01[82];
-                if( $newstories && ( $page < 2 ))  
+                if( $newstories && ( $page < 2 ))
                 {
                     $retval .= $newmsg . '<br>';
                 }
-                else 
+                else
                 {
                     $retval .= '<a href="' . $_CONF['site_url']
                         . '/index.php?display=new">' . $newmsg . '</a><br>';
@@ -3753,7 +3776,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         }
 
         if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['trackback_enabled']
-                && ( $_CONF['hidenewtrackbacks'] == 0 )) 
+                && ( $_CONF['hidenewtrackbacks'] == 0 ))
                 || ( $_CONF['hidenewplugins'] == 0 ))
         {
             $retval .= '<br>';
@@ -4004,7 +4027,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         $page_str = '';
     }
 
-    if( $num_pages < 2 ) 
+    if( $num_pages < 2 )
     {
         return;
     }
@@ -4500,7 +4523,7 @@ function COM_checkSpeedlimit( $type = 'submit', $max = 1 )
     $last = 0;
 
     $res  = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE "
-                   . "(type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}') " 
+                   . "(type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}') "
                    . "ORDER BY date ASC" );
 
     // If the number of allowed tries has not been reached, return 0 (didn't hit limit)
@@ -4748,7 +4771,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
 
     $sql .= ')';
 
-    return $sql;   
+    return $sql;
 }
 
 /**
@@ -4950,7 +4973,7 @@ function COM_highlightQuery( $text, $query )
 * This will takes either unixtimestamps or English dates as input and will
 * automatically do the date diff on the more recent of the two dates (e.g. the
 * order of the two dates given doesn't matter).
-* 
+*
 * @author Tony Bibbs <tony.bibbs@iowa.gov
 * @access public
 * @param string $interval Can be:
@@ -5092,7 +5115,7 @@ function COM_getCurrentURL()
             }
             if( !empty( $_SERVER['QUERY_STRING'] ))
             {
-                $requestUri .= '?' . $_SERVER['QUERY_STRING'];     
+                $requestUri .= '?' . $_SERVER['QUERY_STRING'];
             }
         }
 
@@ -5195,7 +5218,7 @@ return number_format($number,$dc,$ds,$ts);
 }
 
 /**
-* Convert a text based date YYYY-MM-DD to a unix timestamp integer value 
+* Convert a text based date YYYY-MM-DD to a unix timestamp integer value
 *
 * @param    string  $date   Date in the format YYYY-MM-DD
 * @param    string  $time   Option time in the format HH:MM::SS
@@ -5256,7 +5279,7 @@ foreach( $_PLUGINS as $pi_name )
 }
 
 /* Check and see if any plugins (or custom function) have scheduled tasks to perform */
-if ( (DB_getItem($_TABLES['vars'], 'value', "name='last_scheduled_run'") 
+if ( (DB_getItem($_TABLES['vars'], 'value', "name='last_scheduled_run'")
         + $_CONF['cron_schedule_interval'] ) <= time() ) {
     PLG_runScheduledTask();
     DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
