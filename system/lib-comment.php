@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.14 2005/06/30 19:50:27 vinny Exp $
+// $Id: lib-comment.php,v 1.15 2005/07/21 14:05:11 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -155,12 +155,8 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode ) {
     } else {
         $selector = '<select name="mode">';
     }
-    $where = '';
-    if( !$_CONF['dynamic_comments'] ) {
-        $where = 'mode != \'dynamic\'';
-    }
     $selector .= LB
-               . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode, 1, $where )
+               . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode )
                . LB . '</select>';
     $commentbar->set_var( 'mode_selector', $selector);
 
@@ -190,8 +186,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
     $template = new Template( $_CONF['path_layout'] . 'comment' );
     $template->set_file( array( 'comment' => 'comment.thtml',
-                                'thread'  => 'thread.thtml',
-                                'wrap'    => 'commentwrap.thtml' ));
+                                'thread'  => 'thread.thtml'  ));
 
     // generic template variables
     $template->set_var( 'site_url', $_CONF['site_url'] );
@@ -208,14 +203,12 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $_CONF['comment_indent'] = 25;
     }
 
-    if( $preview || $mode == 'dynamic_thread' || $mode == 'dynamic_comment' ) {
+    if( $preview ) {
         $A = $comments;   
         if( empty( $A['nice_date'] )) {
             $A['nice_date'] = time();
         }
-        if ( $preview ) {
-            $mode = 'flat';
-        }
+        $mode = 'flat';
     } else {
         $A = DB_fetchArray($comments);
     }
@@ -226,7 +219,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
     do {
         // determines indentation for current comment
-        if( $mode == 'threaded' || $mode == 'nested' || $mode == 'dynamic' ) {
+        if( $mode == 'threaded' || $mode == 'nested' ) {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
 
@@ -285,13 +278,6 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $template->set_var( 'hide_if_preview', 'style="display:none"' );
         } else {
             $template->set_var( 'hide_if_preview', '' );
-        }
-
-        // Display ability to expand comments only in dynamic mode
-        if( $mode != 'dynamic' && $mode != 'dynamic_thread' && $mode != 'dynamic_comment' ) {
-            $template->set_var( 'dynamic_hide', 'style="display:none"' );
-        } else {
-            $template->set_var( 'dynamic_hide', '' );
         }
 
         // for threaded mode, add a link to comment parent
@@ -375,20 +361,12 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'comments', $A['comment'] );
 
         // parse the templates
-        if( $mode == 'dynamic_thread' ) {
+        if( ($mode == 'threaded') && $indent > 0 ) {
             $template->set_var( 'pid', $A['pid'] );
             $retval .= $template->parse( 'output', 'thread' );   
-        } else if( $mode == 'dynamic_comment') {
-            $template->set_var( 'pid', $A['cid'] );
-            $retval .= $template->parse( 'output', 'comment' );   
-        } else if( (($mode == 'threaded' || $mode == 'dynamic') && $indent > 0 )) {
-            $template->set_var( 'pid', $A['pid'] );
-            $template->set_var( 'comment_content', $template->parse( 'output', 'thread' ) );
-            $retval .= $template->parse( 'output', 'wrap' );   
         } else {
             $template->set_var( 'pid', $A['cid'] );
-            $template->set_var( 'comment_content', $template->parse( 'output', 'comment' ) );
-            $retval .= $template->parse( 'output', 'wrap' );   
+            $retval .= $template->parse( 'output', 'comment' );   
         }
     } while( $A = DB_fetchArray( $comments ));
 
@@ -438,11 +416,6 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $mode = $_CONF['comment_mode'];
     }
 
-    // if dynamic comment mode is disabled and selected, use threaded instead
-    if ( ($mode == 'dynamic') && (!$_CONF['dynamic_comments']) ) {
-        $mode = 'threaded';
-    }
-
     if( empty( $limit )) {
         $limit = $_CONF['comment_limit'];
     }
@@ -460,7 +433,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
     $template->set_var( 'commentbar',
                         CMT_commentBar( $sid, $title, $type, $order, $mode));
     
-    if( $mode == 'nested' || $mode == 'threaded' || $mode == 'flat' || $mode == 'dynamic' ) {
+    if( $mode == 'nested' || $mode == 'threaded' || $mode == 'flat' ) {
         // build query
         switch( $mode ) {
             case 'flat':
@@ -484,7 +457,6 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
             case 'nested':
             case 'threaded':
-            case 'dynamic':
             default:
                 if( $order == 'DESC' ) {
                     $cOrder = 'c.rht DESC';

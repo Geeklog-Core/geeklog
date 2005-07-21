@@ -55,9 +55,6 @@ $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_pwrequestid(pwrequest
 // Add the remote authenticated group:
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Remote Users', 'Users in this group can have authenticated against a remote server.',1) ";
 
-// for dynamic comments
-$_SQL[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('dynamic', 'Dynamic')";
-
 // for quicker access to large speedlimit tables
 $_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX type_ipaddress(type,ipaddress)";
 $_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX date(date)";

@@ -143,8 +143,6 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
   and #119 [Dirk]
 - Hide 'edit' option for articles in preview (bug #347) [Dirk]
 - It wasn't possible to disable poll comments (reported by Demonhood) [Dirk]
-- Added the ability to dynamically expand and collapse comments without a page
-  refresh.  Uses javascript trickery. [Vinny]
 - Fixed SQL error when using the [staticpage:] autotag (bug #373) [Dirk]
 - Changed admin/user.php to use file() for the batch import [Dirk]
 - Implemented pinging weblog directory services like blo.gs and weblogs.com

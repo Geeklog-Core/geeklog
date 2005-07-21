@@ -1,5 +1,6 @@
+<div style="padding-left: {indent}px">
   <ul style="margin: 0; padding: 0"><li>
-    <span {dynamic_hide} onclick="loadFragmentInToElement('{site_url}/comment.php?mode=fetch&amp;cid={cid}&amp;full=true','c{cid}');"><img alt="++" src="{site_url}/images/dynexpand.gif"/></span>
     <a href="{site_url}/comment.php?mode=display&amp;format=threaded&amp;order={order}&amp;pid={pid}">{title}</a>
     - {lang_authoredby} {start_author_anchortag}{author}{end_author_anchortag} {lang_on} {date}
   </li></ul>
+</div>
