@@ -55,8 +55,8 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
   with Blogger and LiveJournal support) [Mike]
 - Added the ability to ban users, and to tell when a user has logged in at least
   once [Mike]
-- Added edit-icon, List-Sorting, searching, Limits & alternating row colors 
-  in admin menus for groups, syndication, staticpages, trackback 
+- Added edit-icon, List-Sorting, searching, Limits & alternating row colors
+  in admin menus for groups, syndication, staticpages, trackback
   (where not yet done) [Oliver]
 - Moved links functionality into a plugin [Trinity, Oliver]
 - Added function to allow user-defined scaling of images in articles by using
@@ -67,7 +67,7 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
 - Added a robots.txt file to the distribution. By default, it excludes
   comment.php, submit.php, and the docs directory from being spidered [Dirk]
 - Removed the "lastvisit" cookies, as they are obviously not used [Dirk]
-- Removed redundant changepwd-button & code from /admin/user.php (Bug #9) 
+- Removed redundant changepwd-button & code from /admin/user.php (Bug #9)
   [Oliver]
 - Added new feature to insert a feed-links into header depending on topic, to
   be chosen from /admin/syndication.php in the form of
@@ -76,24 +76,24 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
   url-rewriting (feature request #315). [Oliver]
 - Added speedlimit to login attempts, defaults to allowing three tries in a
   five minute period.  [Vinny]
-- Added optional SSL connections for all password-related pages and pathes in 
+- Added optional SSL connections for all password-related pages and pathes in
   config.php. Fixed bug #398, used diff file from Jerome Limozin [Oliver]
 - Userlist now also shows Registration Date and if $_CONF['lastlogin']= true it
   shows the last login date instead. [Oliver]
-- Added option in config.php to hide "Viewed: x" line with 
+- Added option in config.php to hide "Viewed: x" line with
   $_CONF['viewscountline'] just as the $_CONF['contributedbyline'] [Oliver]
-- Added function COM_NumberFormat to format displayed numbers with custom 
+- Added function COM_NumberFormat to format displayed numbers with custom
   decimal & thousand - separators and fixed decimal places if necessary
-  Includes the respecitve 3 new config.php values in locale section. 
+  Includes the respecitve 3 new config.php values in locale section.
   (Feature Request #298) [Oliver]
 - Default Blocks showed always in all Topics before. Now you can choose to show
   them in All/only one topic/only on homepage like other blocks (feature #326)
   [Oliver]
-- A Story can now break over several pages in the body-text. The tag 
+- A Story can now break over several pages in the body-text. The tag
   [page_break] will split the bodytext in pieces that can be opened with the
   std. COM_printPageNavigation. Introtext is removed for pages>1 [Oliver]
-- Added field for old password check in /usersettings.php (bug #230) [Oliver] 
-- Added password confirmation to /admin/user.php and /usersettings.php 
+- Added field for old password check in /usersettings.php (bug #230) [Oliver]
+- Added password confirmation to /admin/user.php and /usersettings.php
   (bug #230) [Oliver]
 - Made the alternating row colors in the Admin's trackback functions compatible
   with the scheme used in other places (list of users, etc.). Also changed the
@@ -194,6 +194,7 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
 - Link tags are now translated in printer friendly mode (Bug #411) [Mike]
 - Added config option to disable new accounts (Patch #426 from Alford Deeley)
   [Mike]
+- Alphabet Sort on Admin Menu and C&C Block [Mike]
 
 - New Farsi (Persian) language file, provided by Hesam.H
 - Updated Italian language file, provided by Marcello Teodori
