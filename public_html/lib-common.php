@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.455 2005/07/21 16:52:09 mjervis Exp $
+// $Id: lib-common.php,v 1.456 2005/07/23 19:38:24 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,8 +66,7 @@ $_COM_VERBOSE = false;
 * Make sure to include the name of the config file,
 * i.e. the path should end in .../config.php
 */
-//require_once( '/path/to/geeklog/config.php' );
-require_once( '/home/vmf/work/geeklog-1.3/config.php' );
+require_once( '/path/to/geeklog/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -4004,12 +4003,14 @@ function COM_showMessage( $msg, $plugin='' )
 * @param        int         $num_pages      Total number of pages
 * @param        string      $page_str       page-variable name AND '='
 * @param        bool        $do_rewrite     if true, url-rewriting is respected
-* @param        string      $msg            string displayed in same line as navi
+* @param        string      $msg            to be displayed with the navigation
+* @param        string      $open_ended     replace next/last links with this
 * @return   string   HTML formatted widget
 */
 
 function COM_printPageNavigation( $base_url, $curpage, $num_pages,
-                                  $page_str='page=', $do_rewrite=false, $msg='')
+                                  $page_str='page=', $do_rewrite=false, $msg='',
+                                  $open_ended = '')
 {
     global $LANG05;
 
@@ -4062,15 +4063,21 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         }
     }
 
-    if( $curpage == $num_pages )
+    if( !empty( $open_ended ))
+    {
+        $retval .= '| ' . $open_ended;
+    }
+    else if( $curpage == $num_pages )
     {
         $retval .= '| ' . $LANG05[5] . ' ';
         $retval .= '| ' . $LANG05[8];
     }
     else
     {
-        $retval .= '| <a href="' . $base_url . $sep . $page_str . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
-        $retval .= '| <a href="' . $base_url . $sep . $page_str . $num_pages . '">' . $LANG05[8] . '</a>';
+        $retval .= '| <a href="' . $base_url . $sep . $page_str
+                . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
+        $retval .= '| <a href="' . $base_url . $sep . $page_str . $num_pages
+                . '">' . $LANG05[8] . '</a>';
     }
 
     if( !empty( $retval ))

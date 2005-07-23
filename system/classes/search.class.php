@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.34 2005/06/12 20:30:58 mjervis Exp $
+// $Id: search.class.php,v 1.35 2005/07/23 19:38:24 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -92,7 +92,13 @@ class Search {
     * @access private
     * @var integer
     */
-    var $_page = null;
+    var $_page = 0;
+
+    /**
+    * @access private
+    * @var integer 
+    */
+    var $_per_page = 10;
 
     /**
     * Constructor
@@ -117,6 +123,9 @@ class Search {
         }
         $this->_keyType = COM_applyFilter ($_REQUEST['keyType']);
         $this->_page = COM_applyFilter ($_REQUEST['page']);
+        if ($this->_page < 1) {
+            $this->_page = 1;
+        }
 
         // In case we got a username instead of uid, convert it.  This should
         // make custom themes for search page easier.
@@ -189,9 +198,9 @@ class Search {
                     // do an exact phrase search (default)
                     $mywords[] = $this->_query;
                     $mysearchterm = addslashes ($this->_query);
-                    $sql .= "AND (introtext LIKE '%$mysearchterm%'  ";
+                    $sql .= "AND (introtext LIKE '%$mysearchterm%' ";
                     $sql .= "OR bodytext LIKE '%$mysearchterm%' ";
-                    $sql .= "OR title LIKE '%$mysearchterm%')  ";
+                    $sql .= "OR title LIKE '%$mysearchterm%') ";
                 } elseif($this->_keyType == 'all') {
                     // must contain ALL of the keywords
                     $mywords = explode(' ', $this->_query);
@@ -222,9 +231,9 @@ class Search {
                 } else {
                     $mywords[] = $this->_query;
                     $mysearchterm = addslashes ($this->_query);
-                    $sql .= "AND (introtext LIKE '%$mysearchterm%'  ";
+                    $sql .= "AND (introtext LIKE '%$mysearchterm%' ";
                     $sql .= "OR bodytext LIKE '%$mysearchterm%' ";
-                    $sql .= "OR title LIKE '%$mysearchterm%')  ";
+                    $sql .= "OR title LIKE '%$mysearchterm%') ";
                 }
             }
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
@@ -304,7 +313,7 @@ class Search {
     */
     function _searchComments()
     {
-        global $LANG09, $_CONF, $_TABLES, $_USER, $_GROUPS;
+        global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG09;
 
         if ($this->_type == 'all' OR $this->_type == 'comments') {
 
@@ -321,21 +330,12 @@ class Search {
                 $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL)";
             }
 
-            $posql = COM_getPermSQL ('AND', 0, 2, $_TABLES['pollquestions']);
-            $powhere = '';
-            if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
-                $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
-            } else {
-                $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
-                $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
-                $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL)";
-            }
-
             $mysearchterm = addslashes ($this->_query);
-            $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,cid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
+            $select = "SELECT {$_TABLES['users']}.username,{$_TABLES['users']}.fullname,{$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,cid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type";
+            $sql = " FROM {$_TABLES['comments']},{$_TABLES['users']} ";
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
-            $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") ";
             $sql .= "WHERE ";
+            $sql .= " {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND ";
             $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ";
             $sql .= " (comment like '%$mysearchterm%' ";
             $sql .= "OR {$_TABLES['comments']}.title like '%$mysearchterm%') ";
@@ -350,11 +350,14 @@ class Search {
             if (!empty($this->_author)) {
                 $sql .= "AND ({$_TABLES['comments']}.uid = '$this->_author') ";
             }
-            $sql .= "AND ((" .  $stwhere . ") OR (" . $powhere . ")) ";
-            $sql .= "ORDER BY {$_TABLES['comments']}.date DESC";
-            $result_comments = DB_query($sql);
-            $sql = "SELECT count(*) FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") WHERE ((" .  $stwhere . ") OR (" . $powhere . "))";
-            $result_count = DB_query($sql);
+            $sql .= "AND (" .  $stwhere . ") ";
+            $order = "ORDER BY {$_TABLES['comments']}.date DESC ";
+            $l = ($this->_per_page * $this->_page) - $this->_per_page;
+            $limit = 'LIMIT ' . $l . ',' . $this->_per_page;
+
+            $result_comments = DB_query ($select . $sql . $order . $limit);
+
+            $result_count = DB_query ("SELECT COUNT(*)" . $sql);
             $B = DB_fetchArray ($result_count, true);
             $comment_results = new Plugin();
             $comment_results->searchlabel = $LANG09[54];
@@ -363,6 +366,7 @@ class Search {
             $comment_results->addSearchHeading($LANG09[18]);
             $comment_results->num_searchresults = 0;
             $comment_results->num_itemssearched = $B[0];
+            $comment_results->supports_paging = true;
 
             if (!empty ($this->_query)) {
                 $querystring = '&amp;query=' . $this->_query;
@@ -403,99 +407,6 @@ class Search {
         }
 
         return $comment_results;        
-    }
-    
-    /**
-    * Performs search on all links
-    *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
-    * @access private
-    * @return object Plugin object
-    *
-    */
-    function _searchLinks()
-    {
-        global $LANG09, $_CONF, $_TABLES;
-
-        // Build SQL
-        if ( $this->_query != "" AND (($this->_type == 'links') OR ($this->_type == 'all')) ) {
-            $sql = "SELECT lid,title,description,url,hits FROM {$_TABLES['links']} WHERE ";
-    
-            if ($this->_keyType == 'phrase') {
-                // do an exact phrase search (default)
-                $mywords[] = $this->_query;
-                $mysearchterm = addslashes ($this->_query);
-                $sql .= "(description LIKE '%$mysearchterm%' ";
-                $sql .= "OR title LIKE '%$mysearchterm%')  ";
-            } else if ($this->_keyType == 'all') {
-                // must contain ALL of the keywords
-                $mywords = explode(' ', $this->_query);
-                $tmp = '';
-                foreach ($mywords AS $mysearchterm) {
-                    $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(description LIKE '%$mysearchterm%' OR ";
-                    $tmp .= "title LIKE '%$mysearchterm%') AND ";
-                }
-                $tmp = substr($tmp, 0, strlen($tmp) - 4);
-                $sql .= $tmp;
-            } elseif($this->_keyType == 'any') {
-                // need to do WORD searches
-                $mywords = explode(' ', $this->_query);
-                $tmp = '';
-                foreach ($mywords AS $mysearchterm) {
-                    $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(description LIKE '%$mysearchterm%' OR ";
-                    $tmp .= "title LIKE '%$mysearchterm%') OR ";
-                }
-                $tmp = substr($tmp,0,strlen($tmp)-3);
-                $sql .= "($tmp)";
-            } else {
-                $mywords[] = $this->_query;
-                $mysearchterm = addslashes ($this->_query);
-                $sql .= "(description LIKE '%$mysearchterm%' ";
-                $sql .= "OR title LIKE '%$mysearchterm%') ";
-            }
-    
-            if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
-                $delim = substr($this->_dateStart, 4, 1);
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
-                $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
-            }
-            $sql .= COM_getPermSQL ('AND');
-            $sql .= " ORDER BY title ASC";
-            $result_links = DB_query($sql);
-            $nrows_links = DB_numRows($result_links);
-            $link_results = new Plugin();
-            $link_results->searchlabel = $LANG09[38];
-            $link_results->addSearchHeading($LANG09[16]);
-            $link_results->addSearchHeading($LANG09[33]);
-            $link_results->addSearchHeading($LANG09[23]);
-            $link_results->num_searchresults = 0;
-            $link_results->num_itemssearched = DB_count($_TABLES['links']);
-    
-            // NOTE if any of your data items need to be links then add them here! 
-            // make sure data elements are in an array and in the same order as
-            // your headings above!
-            while ($A = DB_fetchArray($result_links)) {
-                $thetime = COM_getUserDateTimeFormat($A['day']);
-                $row = array (stripslashes ($A['title']),
-                              '<a href="' . COM_buildUrl ($_CONF['site_url']
-                              . '/portal.php?what=link&amp;item=' . $A['lid'])
-                              . '">' . $A['url'] . '</a>', 
-                              COM_NumberFormat($A['hits']) );
-                $link_results->addSearchResult($row);
-                $link_results->num_searchresults++;
-            }
-        } else {
-            $link_results = new Plugin();
-            $link_results->searchlabel = $LANG09[38];
-            $link_results->num_itemssearched = 0;
-        }
-
-        return $link_results;
     }
     
     /**
@@ -550,9 +461,9 @@ class Search {
             {
                 $mywords[] = $this->_query;
                 $mysearchterm = addslashes ($this->_query);
-                $sql .= "(location LIKE '%$mysearchterm%'  ";
+                $sql .= "(location LIKE '%$mysearchterm%' ";
                 $sql .= "OR description LIKE '%$mysearchterm%' ";
-                $sql .= "OR title LIKE '%$mysearchterm%')  ";
+                $sql .= "OR title LIKE '%$mysearchterm%') ";
             }
 
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
@@ -608,7 +519,7 @@ class Search {
         }
         return $event_results;
     }
-    
+
     function _showPager($resultPage, $pages, $extra='')
     {
         global $_CONF, $LANG09;
@@ -617,8 +528,8 @@ class Search {
         $pager = '';
         if ($pages > 1) {
             if ($resultPage > 1) {
-                $previous = $resultPage-1;
-                $pager .= " <a href = {$_CONF['site_url']}/search.php?query=$urlQuery&keyType=$this->_keyType&page=$previous&type=$this->_type&topic=$this->_topic&mode=search$extra>{$LANG09[47]}</a> ";
+                $previous = $resultPage - 1;
+                $pager .= ' <a href="' . $_CONF['site_url'] . '/search.php?query=' . $urlQuery . '&amp;keyType=' . $this->_keyType . '&amp;page=' . $previous . '&amp;type=' . $this->_type . '&amp;topic=' . $this->_topic . '&amp;mode=search' . $extra . '">' . $LANG09[47] . '</a> ';
             }
             if ($pages <= 20) {
                 $startPage = 1;
@@ -647,6 +558,7 @@ class Search {
         }
         return $pager;
     }
+
     /**
     * Gets formatted output of all searches
     *
@@ -661,14 +573,14 @@ class Search {
     */
     function _formatResults($nrows_plugins, $total_plugins, $result_plugins, $searchtime)
     {
-        global $_CONF, $LANG09, $_USER;
-        
+        global $_CONF, $_USER, $LANG09;
+
         $searchmain = new Template($_CONF['path_layout'] . 'search');
         $searchmain->set_file(array('searchresults'=>'searchresults.thtml'));
         $tmpTxt = sprintf($LANG09[24], $nrows_plugins);
         $searchmain->set_var('lang_found', $tmpTxt);
         $searchmain->set_var('num_matches', '');
-        
+
         if ($this->_keyType == 'any') {
             $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>",$this->_query);
             $searchQuery = "<b>'$searchQuery'</b>";
@@ -685,59 +597,121 @@ class Search {
         $searchmain->set_var('lang_itemsin', $LANG09[26]);
         $searchmain->set_var('search_time', $searchtime);
         $searchmain->set_var('lang_seconds', $LANG09[27]);
-        
+
         // Print plugins search results
         reset($result_plugins);
         $cur_plugin = new Plugin();
         $searchresults = new Template($_CONF['path_layout'] . 'search');
-                
+
+        $maxdisplayed = 0;
         for ($i = 1; $i <= count($result_plugins); $i++) {
-            $searchresults->set_file(array('searchheading'=>'searchresults_heading.thtml',
-                                            'searchrows'=>'searchresults_rows.thtml',
-                                            'searchblock' => 'searchblock.thtml',
-                                            'headingcolumn'=>'headingcolumn.thtml',
-                                            'resultrow'=>'resultrow.thtml',
-                                            'resulttitle'=>'resultcolumn.thtml',
-                                            'resultcolumn'=>'resultcolumn.thtml'));
+            $displayed = 0;
+            $searchresults->set_file (array (
+                'searchheading' => 'searchresults_heading.thtml',
+                'searchrows'    => 'searchresults_rows.thtml',
+                'searchblock'   => 'searchblock.thtml',
+                'headingcolumn' => 'headingcolumn.thtml',
+                'resultrow'     => 'resultrow.thtml',
+                'resulttitle'   => 'resultcolumn.thtml',
+                'resultcolumn'  => 'resultcolumn.thtml'
+            ));
             if ($i == 1) {
                 $searchresults->set_var('data_cols','');
                 $searchresults->set_var('headings','');
             }
             $cur_plugin = current($result_plugins);
-            if (($cur_plugin->num_searchresults > 0) OR $_CONF['showemptysearchresults']) {
+            $start_results = (($this->_per_page * $this->_page) - $this->_per_page) + 1;
+            if ($cur_plugin->supports_paging) {
+                $start_results = 1;
+                $end_results = $cur_plugin->num_searchresults;
+            } else {
+                // this plugin doesn't know about paging - fake it
+                if ($cur_plugin->num_searchresults < $start_results) {
+                    $cur_plugin->num_searchresults = 0;
+                } else if ($cur_plugin->num_searchresults >= $start_results) {
+                    $end_results = ($start_results + $this->_per_page) - 1;
+                    if ($end_results > $cur_plugin->num_searchresults) {
+                        $end_results = $cur_plugin->num_searchresults;
+                    }
+                } else {
+                    $start_results = 1;
+                    $end_results = $cur_plugin->num_searchresults;
+                }
+            }
+            if ($cur_plugin->num_searchresults > 0) {
                 // Clear out data columns from previous result block
                 $searchresults->set_var('data_cols','');
                 $searchresults->set_var('start_block_results',COM_startBlock($cur_plugin->searchlabel));
                 $searchresults->set_var('headings','');
+                $searchresults->set_var('label', '#');
+                $searchresults->parse('headings','headingcolumn',true);
                 for ($j = 1; $j <= $cur_plugin->num_searchheadings; $j++) {
                     $searchresults->set_var('label', $cur_plugin->searchheading[$j]);
                     $searchresults->parse('headings','headingcolumn',true);
                 }
                 $searchresults->set_var('results','');
-                for ($j = 1; $j <= $cur_plugin->num_searchresults; $j++) {
-                    $columns = current($cur_plugin->searchresults);
+                for ($j = $start_results; $j <= $end_results; $j++) {
+                    $columns = $cur_plugin->searchresults[$j - 1];
+                    if ($cur_plugin->supports_paging) {
+                        $searchresults->set_var('data', (($this->_per_page * $this->_page) - $this->_per_page) + $j . '.');
+                    } else {
+                        $searchresults->set_var('data', $j . '.');
+                    }
+                    $searchresults->parse('data_cols','resultcolumn',true);
                     for ($x = 1; $x <= count($columns); $x++) {
-                            $searchresults->set_var('data', current($columns));
-                            $searchresults->parse('data_cols','resultcolumn',true);
-                            next($columns);
+                        $searchresults->set_var('data', current($columns));
+                        $searchresults->parse('data_cols','resultcolumn',true);
+                        next($columns);
                     }
                     $searchresults->parse('results','resultrow',true);
                     $searchresults->set_var('data_cols','');
-                    next($cur_plugin->searchresults);
                     $resultNumber++;
+                    $displayed++;
                 }
                 if ($cur_plugin->num_searchresults == 0) {
                     $searchresults->set_var('results',
-                                '<tr><td colspan="4" align="center"><br>' . $LANG09[31]
-                                . '</td></tr>');
+                            '<tr><td colspan="4" align="center"><br>'
+                            . $LANG09[31] . '</td></tr>');
                 }
                 $searchresults->set_var('end_block', COM_endBlock());
                 $searchblocks .= $searchresults->parse('tmpoutput','searchblock');
             }
             next($result_plugins);
+            if ($displayed > $maxdisplayed) {
+                $maxdisplayed = $displayed;
+            }
         }
+
+        if ($maxdisplayed == 0) {
+            $searchblocks .= '<p>' . $LANG09[13] . '</p>' . LB;
+        }
+
         $searchmain->set_var('search_blocks', $searchblocks);
-        $searchmain->set_var('search_pager', $this->_showPager($resultPage, $pages, ''));
+
+        $urlQuery = urlencode ($this->_query);
+        $baseurl = $_CONF['site_url'] . '/search.php?query=' . $urlQuery . '&amp;keyType=' . $this->_keyType . '&amp;type=' . $this->_type . '&amp;topic=' . $this->_topic . '&amp;mode=search';
+        if ($this->_page > 1) {
+            if ($maxdisplayed >= $this->_per_page) {
+                $numpages = $this->_page + 1;
+            } else {
+                $numpages = $this->_page;
+            }
+        } else {
+            if ($maxdisplayed >= $this->_per_page) {
+                $numpages = 2;
+            } else {
+                $numpages = 1;
+            }
+        }
+        if ($numpages > $this->_page) {
+            $next = '<a href="' . $baseurl . '&amp;page=' . ($this->_page + 1)
+                  . '">' . $LANG09[58] . '</a>';
+        } else {
+            $next = $LANG09[58];
+        }
+        $searchmain->set_var ('search_pager',
+                COM_printPageNavigation ($baseurl, $this->_page, $numpages,
+                                         'page=', false, '', $next));
         $retval .= $searchmain->parse('output','searchresults');
 
         reset($result_plugins);
@@ -745,13 +719,14 @@ class Search {
         foreach ($result_plugins as $key) {
             $totalfound += $key->num_searchresults;
         }
-        if ( $totalfound == 0) {
+        if ($totalfound == 0) {
             $searchObj = new Search();
             $retval .=  $searchObj->showForm();
         }
+
         return $retval;
     }
-    
+
     /**
     * Determines if any advanced search criteria were supplied
     *
@@ -1048,7 +1023,6 @@ class Search {
         // Do searches
         $this->story_results = $this->_searchStories();
         $this->comment_results = $this->_searchComments();
-        $this->link_results = $this->_searchLinks();
         $this->event_results = $this->_searchEvents();
 
         // Have plugins do their searches
@@ -1057,16 +1031,14 @@ class Search {
         // Add the core GL object search results to plugin results
         $nrows_plugins = $nrows_plugins + $this->story_results->num_searchresults;
         $nrows_plugins = $nrows_plugins + $this->comment_results->num_searchresults;
-        $nrows_plugins = $nrows_plugins + $this->link_results->num_searchresults;
         $nrows_plugins = $nrows_plugins + $this->event_results->num_searchresults;
 
         $total_plugins = $total_plugins + $this->story_results->num_itemssearched;
         $total_plugins = $total_plugins + $this->comment_results->num_itemssearched;
-        $total_plugins = $total_plugins + $this->link_results->num_itemssearched;
         $total_plugins = $total_plugins + $this->event_results->num_itemssearched;
 
         // Move GL core objects to front of array
-        array_unshift($result_plugins, $this->story_results, $this->comment_results, $this->link_results, $this->event_results);
+        array_unshift($result_plugins, $this->story_results, $this->comment_results, $this->event_results);
 
         // Searches are done, stop timer
         $searchtime = $searchtimer->stopTimer();
