@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.4 2005/04/10 10:02:46 dhaun Exp $
+* $Id: MassDelete.Admin.class.php,v 1.5 2005/07/23 07:43:09 mjervis Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -19,11 +19,11 @@ require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
 class MassDelete extends BaseAdmin {
 	/**
 	* Constructor
-	* 
+	*
 	*/
 	function display(){
 		global $_CONF, $_POST, $_TABLES, $LANG_SX00;
-		
+
 		$display = $LANG_SX00['masshead'];
 
 		$act = $_POST['action'];
@@ -33,11 +33,11 @@ class MassDelete extends BaseAdmin {
 			$numc = 0;
 			if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {
 				while(($file = readdir($dir)) !== false) {
-					if (is_file($_CONF['path'] . 'plugins/spamx/' . $file)) 
-					{ 
+					if (is_file($_CONF['path'] . 'plugins/spamx/' . $file))
+					{
 						if (substr($file,-18) == '.Examine.class.php') {
 				        	$tmp = str_replace(".Examine.class.php","",$file);
-							$Spamx_Examine[]=$tmp; 
+							$Spamx_Examine[]=$tmp;
 						}
 					}
 				}
@@ -80,11 +80,11 @@ class MassDelete extends BaseAdmin {
 			$display .= '<input type = "Submit" name="action" value="' . $LANG_SX00['deletespam'] . '">';
 			$display .= '</form>';
 		}
-		
+
 		return $display;
-		
+
 	}
-	
+
 	function link()
 	{
 		global $LANG_SX00;
@@ -99,42 +99,41 @@ class MassDelete extends BaseAdmin {
 	* @return   string      Returns string needed to redirect page to right place
 	*
 	*/
-	function delcomment ($cid, $sid, $type) 
+	function delcomment ($cid, $sid, $type)
 	{
-    	global $_CONF, $_TABLES, $_USER;
+	    global $_REQUEST, $_TABLES, $_CONF;
 
-	    $retval = '';
+        $type = COM_applyFilter ($type);
+        $sid = COM_applyFilter ($sid);
+        switch ( $type ) {
+            case 'article':
+                $has_editPermissions = SEC_hasRights ('story.edit');
+                $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
+                $A = DB_fetchArray ($result);
 
-	    if (is_numeric ($cid) && ($cid > 0) && !empty ($sid) && !empty ($type)) {
-
-        	// only comments of type 'article' and 'poll' are handled by Geeklog
-        	if (($type == 'article') || ($type == 'poll')) {
-
-            	if ($type == 'article') {
-                	$table = $_TABLES['stories'];
-	                $idname = 'sid';
-        	    } else {
-            	    $table = $_TABLES['pollquestions'];
-            	    $idname = 'qid';
-    	        }
-        	    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$table} WHERE {$idname} = '{$sid}'");
-        	    $A = DB_fetchArray ($result);
-
-           	    $pid = DB_getItem ($_TABLES['comments'], 'pid', "cid = '$cid'");
-
-           	    DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
-                DB_delete ($_TABLES['comments'], 'cid', $cid);
-
-   	            if ($type == 'article') {
-               	    $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-               	    DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
-   	            }
-    	    } else {
-        	    // See if plugin will handle this
-        	    $retval = PLG_handlePluginComment ($type, $cid, 'delete');
-	        }
-			SPAMX_log($LANG_SX00['spamdeleted']);
-	    }
+                if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
+                        $A['group_id'], $A['perm_owner'], $A['perm_group'],
+                        $A['perm_members'], $A['perm_anon']) == 3) {
+                    CMT_deleteComment(COM_applyFilter($cid, true), $sid, 'article');
+                    $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+                    DB_change ($_TABLES['stories'], 'comments', $comments,
+                               'sid', $sid);
+                    $display .= COM_refresh (COM_buildUrl ($_CONF['site_url']
+                                    . "/article.php?story=$sid") . '#comments');
+                } else {
+                    COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+                                . "tried to illegally delete comment $cid from $type $sid");
+                    $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+                }
+                break;
+            default: //assume plugin
+                if ( !($display = PLG_commentDelete($type,
+                                    COM_applyFilter($cid, true), $sid)) ) {
+                    $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+                }
+                break;
+        }
+    	SPAMX_log($LANG_SX00['spamdeleted']);
 	}
 }
 
