@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.40 2005/07/24 16:53:02 dhaun Exp $
+// $Id: search.class.php,v 1.41 2005/07/24 20:01:11 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -1018,7 +1018,7 @@ class Search {
         $this->event_results = $this->_searchEvents();
 
         // Have plugins do their searches
-        list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType);
+        list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType, $this->_page, $this->_per_page);
 
         // Add the core GL object search results to plugin results
         $nrows_plugins += $this->story_results->num_searchresults;

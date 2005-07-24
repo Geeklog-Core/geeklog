@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.65 2005/06/26 08:38:32 mjervis Exp $
+// $Id: lib-plugins.php,v 1.66 2005/07/24 20:01:11 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -415,10 +415,12 @@ function PLG_supportsExpandedSearch($type)
 * @param    string  $type       Type of items they are searching, or 'all'
 * @param    int     $author     UID...only return results for this person
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
+* @param    int     $page       page number of current search
+* @param    int     $perpage    number of results per page
 * @return   array               Returns search results
 *
 */
-function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all') 
+function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all', $page = 1, $perpage = 10) 
 {
     global $_PLUGINS;
 
@@ -429,7 +431,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_dopluginsearch_' . $pi_name;
         if (function_exists($function)) {
-            $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType);
+            $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
             $nrows_plugins = $nrows_plugins + $plugin_result->num_searchresults;
             $total_plugins = $total_plugins + $plugin_result->num_itemssearched;
             $search_results[] = $plugin_result;
