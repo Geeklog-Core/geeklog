@@ -5,5 +5,5 @@
                                         {headings}
                                     </tr>
                                     {results}
-                                </table><BR>
+                                </table><br>
                                 {end_block}

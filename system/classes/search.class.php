@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.37 2005/07/24 08:31:07 dhaun Exp $
+// $Id: search.class.php,v 1.38 2005/07/24 08:55:57 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -262,7 +262,7 @@ class Search {
             $story_results->addSearchHeading($LANG09[23]);
             $story_results->num_searchresults = 0;
             $story_results->num_itemssearched = $B[0];
-    
+
             // NOTE if any of your data items need to be links then add them
             // here! Make sure data elements are in an array and in the same
             // order as your headings above!
@@ -287,7 +287,8 @@ class Search {
                 }
                 $row = array ('<a href="' . $articleUrl . '">'
                               . stripslashes ($A['title']) . '</a>',
-                              $thetime[0], $profile, COM_NumberFormat($A['hits']) );
+                              $thetime[0], $profile,
+                              COM_NumberFormat ($A['hits']));
                 $story_results->addSearchResult ($row);
                 $story_results->num_searchresults++;
             }
@@ -646,6 +647,7 @@ class Search {
                     $searchresults->parse('headings','headingcolumn',true);
                 }
                 $searchresults->set_var('results','');
+                $resultNumber = 0;
                 for ($j = $start_results; $j <= $end_results; $j++) {
                     $columns = $cur_plugin->searchresults[$j - 1];
                     if ($cur_plugin->supports_paging) {
@@ -659,9 +661,10 @@ class Search {
                         $searchresults->parse('data_cols','resultcolumn',true);
                         next($columns);
                     }
-                    $searchresults->parse('results','resultrow',true);
-                    $searchresults->set_var('data_cols','');
                     $resultNumber++;
+                    $searchresults->set_var ('cssid', ($resultNumber % 2) + 1);
+                    $searchresults->parse ('results', 'resultrow', true);
+                    $searchresults->set_var ('data_cols', '');
                     $displayed++;
                 }
                 if ($cur_plugin->num_searchresults == 0) {
