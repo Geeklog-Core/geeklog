@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.36 2005/07/24 08:22:49 dhaun Exp $
+// $Id: search.class.php,v 1.37 2005/07/24 08:31:07 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -98,7 +98,7 @@ class Search {
     * @access private
     * @var integer 
     */
-    var $_per_page = $_CONF['num_search_results'];
+    var $_per_page = 10;
 
     /**
     * Constructor
@@ -947,10 +947,14 @@ class Search {
     */
     function doSearch()
     {
+        global $_CONF;
+
         // Verify current user can perform requested search
         if (!$this->_isSearchAllowed()) {
             return $this->_getAccessDeniedMessage();
         }
+
+        $this->_per_page = $_CONF['num_search_results'];
 
         // Start search timer
         $searchtimer = new timerobject();
