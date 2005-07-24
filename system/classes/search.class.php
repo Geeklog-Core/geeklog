@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.39 2005/07/24 14:58:15 dhaun Exp $
+// $Id: search.class.php,v 1.40 2005/07/24 16:53:02 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -334,9 +334,47 @@ class Search {
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "WHERE ";
             $sql .= " {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND ";
-            $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ";
-            $sql .= " (comment like '%$mysearchterm%' ";
-            $sql .= "OR {$_TABLES['comments']}.title like '%$mysearchterm%') ";
+            $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) ";
+
+            if (!empty ($this->_query)) {
+                if($this->_keyType == 'phrase') {
+                    // do an exact phrase search (default)
+                    $mywords[] = $this->_query;
+                    $mysearchterm = addslashes ($this->_query);
+                    $sql .= "AND (comment LIKE '%$mysearchterm%' ";
+                    $sql .= "OR {$_TABLES['comments']}.title LIKE '%$mysearchterm%') ";
+                } elseif($this->_keyType == 'all') {
+                    // must contain ALL of the keywords
+                    $mywords = explode(' ', $this->_query);
+                    $sql .= 'AND ';
+                    $tmp = '';
+                    foreach ($mywords AS $mysearchterm) {
+                        $mysearchterm = addslashes (trim ($mysearchterm));
+                        $tmp .= "(comment LIKE '%$mysearchterm%' OR ";
+                        $tmp .= "{$_TABLES['comments']}.title LIKE '%$mysearchterm%') AND ";
+                    }
+                    $tmp = substr($tmp, 0, strlen($tmp) - 4);
+                    $sql .= $tmp;
+                } else if ($this->_keyType == 'any') {
+                    // must contain ANY of the keywords
+                    $mywords = explode(' ', $this->_query);
+                    $sql .= 'AND ';
+                    $tmp = '';
+                    foreach ($mywords AS $mysearchterm) {
+                        $mysearchterm = addslashes (trim ($mysearchterm));
+                        $tmp .= "(comment LIKE '%$mysearchterm%' OR ";
+                        $tmp .= "{$_TABLES['comments']}.title LIKE '%$mysearchterm%') OR ";
+                    }
+                    $tmp = substr($tmp, 0, strlen($tmp) - 3);
+                    $sql .= "($tmp)";
+                } else {
+                    $mywords[] = $this->_query;
+                    $mysearchterm = addslashes ($this->_query);
+                    $sql .= "AND (comment LIKE '%$mysearchterm%' ";
+                    $sql .= "OR {$_TABLES['comments']}.title LIKE '%$mysearchterm%') ";
+                }
+            }
+
             if (!empty($this->_dateStart) && !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
                 $DS = explode($delim, $this->_dateStart);
