@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.35 2005/07/23 19:38:24 dhaun Exp $
+// $Id: search.class.php,v 1.36 2005/07/24 08:22:49 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -98,7 +98,7 @@ class Search {
     * @access private
     * @var integer 
     */
-    var $_per_page = 10;
+    var $_per_page = $_CONF['num_search_results'];
 
     /**
     * Constructor
@@ -180,10 +180,6 @@ class Search {
         global $LANG09, $_CONF, $_TABLES, $_USER, $_GROUPS;
 
         $urlQuery = urlencode($this->_query);
-
-        if ($_CONF['max_search_results'] > 0) {
-            $resultLimit = $_CONF['max_search_results'];
-        }
 
         $resultPage = 1;
 
@@ -830,7 +826,7 @@ class Search {
     */
     function _isFormAllowed ()
     {
-        global $_USER, $_CONF;
+        global $_CONF, $_USER;
 
         if (empty($_USER['username']) AND (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] >= 1))) {
             return false;
@@ -839,65 +835,6 @@ class Search {
         return true;
     }
 
-    function _getSummary($query,$fullText)
-    {
-        global $_CONF;
-        
-        if ($query) {
-            $mywords = explode(' ',$query);
-            $position = 0;
-            
-            // Find the first keyword in our text
-            foreach ($mywords as $searchword) {
-                $temp = stristr($fullText, $searchword);
-                $pos = strlen($fullText) - strlen($temp);
-                
-                if($pos < $position OR $position == 0) {
-                    $position = $pos;
-                }
-            }    
-            // Make sure we aren't beyond the end of the string
-            if ($position >= strlen($fullText)) {
-                $position = 0;
-            }
-        
-            //provide a buffer for content
-            $position = $position - 50;
-            
-            // Make sure we aren't before the beginning of the string
-            if ($position < 0) {
-                $position = 0;
-            }
-                
-            $summary = substr( $fullText,$position,$_CONF['summary_length']);  
-            
-            //remove unnecessary tags
-            $summary = strip_tags($summary,'<ol><ul><li><br>');
-            $summary = preg_replace ("/^.*\">/i", "", $summary);
-            
-            //Dress it up a little                      
-            if (strlen($summary) != strlen($fullText)) {
-                if ($position > 0) {
-                    $summary = "&hellip; $summary";
-                }
-                if (($position + $_CONF['summary_length']) < strlen($fullText)) {
-                    $summary = "$summary &hellip;";
-                }
-            }
-            
-            //highlight the key words
-            foreach ($mywords as $searchword) {
-                $summary = preg_replace ("/($searchword)/i", "<b>\\1</b>", "$summary");
-            }
-        } else {
-            $summary = substr($fullText, 0, $_CONF['summary_length']);
-            if (strlen($fullText) > $_CONF['summary_length']) {
-                $summary = "$summary &hellip;";
-            }
-        }
-        return $summary;
-    }
-    
     /**
     * Shows search form
     *

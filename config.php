@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.185 2005/07/21 16:52:09 mjervis Exp $
+// $Id: config.php,v 1.186 2005/07/24 08:22:49 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -391,22 +391,10 @@ $_CONF['pdf_enabled'] = 0;
 
 // +---------------------------------------------------------------------------+
 // | SEARCH SETTINGS                                                           |
-// |                                                                           |
-// | These aren't really used at the moment - leave as is ...                  |
 // +---------------------------------------------------------------------------+
 
-// Indicates if we should expand search results or not.
-//     true = show title with summary
-//     false = title date author hits on one line
-$_CONF['expanded_search_results']  =  true;
-
-// 0: use users max stories per page
-// 1: Show all
-// any other number is the # of results per page
-$_CONF['max_search_results']  =  1;
-
-// maximum length for the summary text for search results should be
-$_CONF['summary_length']  =  250;
+// number of search results (per type) to be displayed per page
+$_CONF['num_search_results'] = 10;
 
 
 // +---------------------------------------------------------------------------+
@@ -476,9 +464,6 @@ $_CONF['showsubmissioncount'] = 1;
 
 // Hide 'Home' link from Topics block (if set to 1)
 $_CONF['hide_home_link'] = 0;
-
-// Show blocks for empty search results
-$_CONF['showemptysearchresults'] = 0;
 
 
 // Who's Online block settings
