@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.51 2005/07/24 08:46:59 dhaun Exp $
+// $Id: functions.inc,v 1.52 2005/07/24 20:01:47 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -186,14 +186,15 @@ function plugin_searchtypes_staticpages()
 * @param    string  $type       Type of items they are searching, or 'all'
 * @param    int     $author     Get all results by this author
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
+* @param    int     $page       page number of current search
+* @param    int     $perpage    number of results per page
 *
-* Oct 05/2002: Blaine Lang, Corrected bug with SQL Search string. 
 */
-function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType) 
+function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage) 
 {
     global $_CONF, $_TABLES, $LANG_STATIC;
 
-    if (empty($type)) {
+    if (empty ($type)) {
         $type = 'all';
     }
 
@@ -202,11 +203,13 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         $plugin_results = new Plugin();
         $plugin_results->plugin_name = 'staticpages';
         $plugin_results->searchlabel = $LANG_STATIC['results'];
+
         return $plugin_results;
     }
 
     // Build search SQL - exclude static PHP pages from search.
-    $sql = "SELECT u.username,u.fullname,sp.sp_id,sp.sp_title,sp.sp_hits,sp.sp_uid,UNIX_TIMESTAMP(sp.sp_date) AS day FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u WHERE (sp.sp_uid = u.uid) AND (sp_php != 1)" . COM_getPermSQL ('AND');
+    $select = "SELECT u.username,u.fullname,sp.sp_id,sp.sp_title,sp.sp_hits,sp.sp_uid,UNIX_TIMESTAMP(sp.sp_date) AS day";
+    $sql = " FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u WHERE (sp.sp_uid = u.uid) AND (sp_php != 1)" . COM_getPermSQL ('AND');
 
     if (!empty ($query)) {
         if ($keyType == 'phrase') {
@@ -258,10 +261,15 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     if (!empty ($author)) {
         $sql .= "AND (sp_uid = '$author')";
     }
-    $sql    .= " ORDER BY sp_date DESC";
+    $sql    .= " ORDER BY sp_date DESC ";
+    $l = ($perpage * $page) - $perpage;
+    $sql .= 'LIMIT ' . $l . ',' . $perpage;
 
     // Perform search
-    $result = DB_query ($sql);
+    $result = DB_query ($select . $sql);
+    $mycount = DB_numRows ($result);
+    $result_count = DB_query ('SELECT COUNT(*)' . $sql);
+    $B = DB_fetchArray ($result_count, true);
 
     // OK, now return table header labels
     $plugin_results = new Plugin();
@@ -271,7 +279,9 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $plugin_results->addSearchHeading ($LANG_STATIC['date']);
     $plugin_results->addSearchHeading ($LANG_STATIC['author']);
     $plugin_results->addSearchHeading ($LANG_STATIC['hits']);
-    $mycount = DB_numRows ($result);
+    $plugin_results->num_searchresults = 0;
+    $plugin_results->num_itemssearched = $B[0];
+    $plugin_results->supports_paging = true;
 
     // NOTE if any of your data items need to be links then add them here! 
     // make sure data elements are in an array and in the same order as your
@@ -296,9 +306,8 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
                       '<a href="' . $profile . '">' . $author . '</a>',
                       COM_NumberFormat ($A['sp_hits']));
         $plugin_results->addSearchResult ($row);
+        $plugin_results->num_searchresults++;
     }
-    $plugin_results->num_searchresults = $mycount;
-    $plugin_results->num_itemssearched = DB_count ($_TABLES['staticpage']);
 
     return $plugin_results;
 }
