@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.50 2005/06/25 18:50:43 dhaun Exp $
+// $Id: functions.inc,v 1.51 2005/07/24 08:46:59 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -294,7 +294,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         $row = array ('<a href="' . $pageurl . '">' . $A['sp_title'] . '</a>',
                       $thetime[0],
                       '<a href="' . $profile . '">' . $author . '</a>',
-                      $A['sp_hits']);
+                      COM_NumberFormat ($A['sp_hits']));
         $plugin_results->addSearchResult ($row);
     }
     $plugin_results->num_searchresults = $mycount;
