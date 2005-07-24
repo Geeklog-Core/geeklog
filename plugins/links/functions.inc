@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.16 2005/07/18 07:23:20 dhaun Exp $
+// $Id: functions.inc,v 1.17 2005/07/24 21:56:26 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -67,6 +67,64 @@ function plugin_getmenuitems_links()
 
     return $menuitems;
 }
+
+function plugin_whatsnewsupported_links()
+    {
+    global $LANG01, $_TABLES;
+    $hidewhatsnew = $_LI_CONF['hidenewlinks'];
+    if ( $hidewhatsnew == 0 ) {
+        $retval = array ('LINKS', '<small>' . $LANG01[87] . '</small>');
+    } else {
+        $retval = false;
+    }
+    return $retval;
+    }
+
+function plugin_getwhatsnew_links()
+    {
+    global $_CONF, $_TABLES, $LANG01, $_USER, $_LI_CONF;
+
+    // Get newest links
+    $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
+    $result = DB_query( $sql );
+    $nrows = DB_numRows( $result );
+
+    if( $nrows > 0 )
+    {
+        $newlinks = array();
+        for( $x = 0; $x < $nrows; $x++ )
+        {
+            $A = DB_fetchArray( $result );
+            $A['title'] = stripslashes( $A['title'] );
+
+            // redirect link via portal.php so we can count the clicks
+            $lcount = COM_buildUrl( $_CONF['site_url']
+                    . '/portal.php?what=link&amp;item=' . $A['lid'] );
+
+            // Trim the length if over 16 characters
+            $itemlen = strlen( $A['title'] );
+            if( $itemlen > 16 )
+            {
+                $newlinks [] = '<a href="' . $lcount . '" title="'
+                    . $A['title'] . '">' . substr( $A['title'], 0, 16 )
+                    . '...</a>' . LB;
+            }
+            else
+            {
+                $newlinks[] = '<a href="' . $lcount . '">'
+                    . substr( $A['title'], 0, $itemlen ) . '</a>' . LB;
+            }
+        }
+
+        $retval .= COM_makeList( $newlinks, 'list-new-links' );
+    }
+    else
+    {
+        $retval .= $LANG01[88] . '<br>' . LB;
+    }
+    return $retval;
+    }
+
 /**
 * Implements the [link:] autotag.
 *
