@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.17 2005/07/24 21:56:26 ospiess Exp $
+// $Id: functions.inc,v 1.18 2005/07/25 18:36:04 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -69,20 +69,22 @@ function plugin_getmenuitems_links()
 }
 
 function plugin_whatsnewsupported_links()
-    {
-    global $LANG01, $_TABLES;
+{
+    global $_TABLES, $_LI_CONF, $LANG01;
+
     $hidewhatsnew = $_LI_CONF['hidenewlinks'];
     if ( $hidewhatsnew == 0 ) {
         $retval = array ('LINKS', '<small>' . $LANG01[87] . '</small>');
     } else {
         $retval = false;
     }
+
     return $retval;
-    }
+}
 
 function plugin_getwhatsnew_links()
-    {
-    global $_CONF, $_TABLES, $LANG01, $_USER, $_LI_CONF;
+{
+    global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG01;
 
     // Get newest links
     $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
@@ -122,8 +124,9 @@ function plugin_getwhatsnew_links()
     {
         $retval .= $LANG01[88] . '<br>' . LB;
     }
+
     return $retval;
-    }
+}
 
 /**
 * Implements the [link:] autotag.
@@ -267,10 +270,11 @@ function plugin_searchtypes_links()
 * @param    string  $type       Type of items they are searching, or 'all'
 * @param    int     $author     Get all results by this author
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
+* @param    int     $page       page number of current search
+* @param    int     $perpage    number of results per page
 *
-* Oct 05/2002: Blaine Lang, Corrected bug with SQL Search string. 
 */
-function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type, $author, $keyType) 
+function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage) 
 {
     global $_CONF, $_TABLES, $LANG_LINKS_SEARCH;
 
@@ -282,13 +286,12 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     if ($type <> 'all' AND $type <> 'links') {
         $plugin_results = new Plugin();
         $plugin_results->plugin_name = 'links';
-        $plugin_results->searchlabel = $LANG_STATIC['results'];
+        $plugin_results->searchlabel = $LANG_LINKS_SEARCH['results'];
         return $plugin_results;
     }
 
-    // Build search SQL - exclude static PHP pages from search.
-    $sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM " . $_TABLES['links'] . " WHERE date <> 1 ";
-    //$sql = "SELECT *,UNIX_TIMESTAMP(sp_date) AS day FROM {$_TABLES['links']} WHERE ";
+    $select = "SELECT *,UNIX_TIMESTAMP(date) AS day";
+    $sql = " FROM {$_TABLES['links']} WHERE date <> 1 ";
     
     if (!empty ($query)) {
         if ($keyType == 'phrase') {
@@ -340,12 +343,16 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author')";
     }
-    $sql    .= " ORDER BY date desc";
+    $sql .= " ORDER BY date DESC ";
+    $l = ($perpage * $page) - $perpage;
+    $sql .= 'LIMIT ' . $l . ',' . $perpage;
 
     // Perform search
-    $result = DB_query ($sql);
+    $result = DB_query ($select . $sql);
+    $mycount = DB_numRows ($result);
+    $result_count = DB_query ('SELECT COUNT(*)' . $sql);
+    $B = DB_fetchArray ($result_count, true);
 
-    // OK, now return coma delmited string of table header labels
     $plugin_results = new Plugin();
     $plugin_results->plugin_name = 'links';
     $plugin_results->searchlabel = $LANG_LINKS_SEARCH['results'];
@@ -353,27 +360,35 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['date']);
     $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['author']);
     $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['hits']);
-    $mycount = DB_numRows ($result);
+    $plugin_results->num_searchresults = 0;
+    $plugin_results->num_itemssearched = $B[0];
+    $plugin_results->supports_paging = true;
 
     // NOTE if any of your data items need to be links then add them here! 
     // make sure data elements are in an array and in the same order as your
     // headings above!
-    for ($i = 1; $i <= $mycount; $i++) {
+    for ($i = 0; $i < $mycount; $i++) {
         $A = DB_fetchArray ($result);
 
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'])) {
-            $rcnt++;
             $thetime = COM_getUserDateTimeFormat ($A['day']);
             $A['title'] = stripslashes ($A['title']);
-            $row = array ('<a href="' . COM_buildURL ($_CONF['site_url'] . '/links/index.php?page=' . $A['lid']) . '">' . $A['title'] . '</a>',
-                    $thetime[0],
-                    '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['owner_id'] . '">' . DB_getItem ($_TABLES['users'], 'username', "uid = '{$A['owner_id']}'") . '</a>',
-                    $A['hits']);
+            $submitter = COM_getDisplayName ($A['owner_id']);
+            if ($A['owner_id'] > 1) {
+                $profile = '<a href="' . $_CONF['site_url']
+                         . '/users.php?mode=profile&amp;uid=' . $A['owner_id']
+                         . '">' . $submitter . '</a>';
+            } else {
+                $profile = $submitter;
+            }
+            $linkUrl = COM_buildURL ($_CONF['site_url']
+                                     . '/links/index.php?page=' . $A['lid']);
+            $row = array ('<a href="' . $linkUrl . '">' . $A['title'] . '</a>',
+                    $thetime[0], $profile, COM_NumberFormat ($A['hits']));
             $plugin_results->addSearchResult ($row);
+            $plugin_results->num_searchresults++;
         }
     }
-    $plugin_results->num_searchresults = $rcnt;
-    $plugin_results->num_itemssearched = DB_count ($_TABLES['staticpage']);
 
     return $plugin_results;
 }
