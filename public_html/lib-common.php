@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.456 2005/07/23 19:38:24 dhaun Exp $
+// $Id: lib-common.php,v 1.457 2005/07/26 17:35:56 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2322,7 +2322,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[104]] = $menu_item;
+            $link_array[$LANG01[103]] = $menu_item;
         }
 
         // Add PDF Generator Link if the feature is enabled
