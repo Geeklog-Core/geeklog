@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.18 2005/07/25 18:36:04 dhaun Exp $
+// $Id: functions.inc,v 1.19 2005/07/30 20:08:25 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -254,7 +254,9 @@ function plugin_searchtypes_links()
 {
     global $LANG_LINKS;
 
-    return $LANG_LINKS[14];
+    $tmp['links'] = $LANG_LINKS[14];
+
+    return $tmp;
 }
 
 
