@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.42 2005/07/30 16:06:36 dhaun Exp $
+// $Id: search.class.php,v 1.43 2005/07/30 21:50:53 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -781,9 +781,9 @@ class Search {
         $searchmain->set_var ('lang_found', $tmpTxt);
         $retval .= $searchmain->parse ('output', 'searchresults');
 
-        if ($totalfound == 0) {
+        if (($totalfound == 0) && ($this->_page == 1)) {
             $searchObj = new Search();
-            $retval .=  $searchObj->showForm();
+            $retval .=  $searchObj->showForm ();
         }
 
         return $retval;
@@ -911,7 +911,7 @@ class Search {
     * @return string HTML output for form
     *
     */
-    function showForm()
+    function showForm ()
     {
         global $_CONF, $_TABLES, $LANG09;
 
@@ -934,7 +934,8 @@ class Search {
         $searchform->set_var('date_format', $LANG09[22]);    
         $searchform->set_var('lang_topic', $LANG09[3]);
         $searchform->set_var('lang_all', $LANG09[4]);
-        $searchform->set_var('topic_option_list', COM_topicList('tid,topic'));
+        $searchform->set_var('topic_option_list',
+                             COM_topicList ('tid,topic', $this->_topic));
         $searchform->set_var('lang_type', $LANG09[5]);
         $searchform->set_var('lang_stories', $LANG09[6]);
         $searchform->set_var('lang_comments', $LANG09[7]);
@@ -946,15 +947,61 @@ class Search {
         $searchform->set_var('lang_exact_phrase', $LANG09[43]);
         $searchform->set_var('lang_all_words', $LANG09[44]);
         $searchform->set_var('lang_any_word', $LANG09[45]);
+
+        $searchform->set_var ('query', htmlspecialchars ($this->_query));
+        $searchform->set_var ('datestart', $this->_dateStart);
+        $searchform->set_var ('dateend', $this->_dateEnd);
+        $searchform->set_var ($this->_per_page . '_selected',
+                              'selected="selected"');
         
+        $phrase_selected = '';
+        $all_selected = '';
+        $any_selected = '';
+        if ($this->_keyType == 'phrase') {
+            $phrase_selected = 'selected="selected"';
+        } else if ($this->_keyType == 'all') {
+            $all_selected = 'selected="selected"';
+        } else if ($this->_keyType == 'any') {
+            $any_selected = 'selected="selected"';
+        }
+        $searchform->set_var ('phrase_selected', $phrase_selected);
+        $searchform->set_var ('all_selected', $all_selected);
+        $searchform->set_var ('any_selected', $any_selected);
+
         $plugintypes = PLG_getSearchTypes();
         $pluginoptions = '';
+        $plugin_selected = false;
         // Generally I don't like to hardcode HTML but this seems easiest
-        for ($i = 1; $i <= count($plugintypes); $i++) {
-            $pluginoptions .= '<option value="' . key($plugintypes) . '">' . current($plugintypes) . '</option>' . LB; 
+        for ($i = 0; $i < count ($plugintypes); $i++) {
+            $pluginoptions .= '<option value="' . key ($plugintypes) . '"';
+            if ($this->_type == key ($plugintypes)) {
+                $pluginoptions .= ' selected="selected"';
+                $plugin_selected = true;
+            }
+            $pluginoptions .= '>' . current ($plugintypes) . '</option>' . LB; 
             next($plugintypes);
         }
         $searchform->set_var('plugin_types', $pluginoptions);
+
+        $all_selected = '';
+        $stories_selected = '';
+        $comments_selected = '';
+        $events_selected = '';
+        if (!$plugin_selected) {
+            if ($this->_type == 'stories') {
+                $stories_selected = 'selected="selected"';
+            } else if ($this->_type == 'comments') {
+                $comments_selected = 'selected="selected"';
+            } else if ($this->_type == 'events') {
+                $events_selected = 'selected="selected"';
+            } else {
+                $all_selected = 'selected="selected"';
+            }
+        }
+        $searchform->set_var ('all_selected', $all_selected);
+        $searchform->set_var ('stories_selected', $stories_selected);
+        $searchform->set_var ('comments_selected', $comments_selected);
+        $searchform->set_var ('events_selected', $events_selected);
     
         if ($_CONF['contributedbyline'] == 1) {
             $searchform->set_var('lang_authors', $LANG09[8]);
@@ -985,9 +1032,12 @@ class Search {
                 $result = DB_query ($sql);
                 $useroptions = '';
                 while ($A = DB_fetchArray($result)) {
-                    $useroptions .= '<option value="' . $A['uid'] . '">'
-                        . $this->_displayName ($A['username'], $A['fullname'])
-                        . '</option>';
+                    $useroptions .= '<option value="' . $A['uid'] . '"';
+                    if ($A['uid'] == $this->_author) {
+                        $useroptions .= ' selected="selected"';
+                    }
+                    $useroptions .= '>' . $this->_displayName ($A['username'],
+                                            $A['fullname']) . '</option>';
                 }
                 $searchform->set_var('author_option_list', $useroptions);
                 $searchform->parse('author_form_element', 'authors', true);
@@ -995,14 +1045,15 @@ class Search {
                 $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
             }
         } else {
-            $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
+            $searchform->set_var ('author_form_element',
+                    '<input type="hidden" name="author" value="0">');
         }
         $searchform->set_var('lang_search', $LANG09[10]);    
         $searchform->parse('output', 'searchform');
-    
+
         $retval .= $searchform->finish($searchform->get_var('output'));
         $retval .= COM_endBlock();
-    
+
         return $retval;
     }
 

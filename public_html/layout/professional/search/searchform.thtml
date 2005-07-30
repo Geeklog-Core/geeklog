@@ -3,17 +3,17 @@
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td align="right">{lang_keywords}:</td>
-                                        <td><input type="text" name="query" size="35" maxlength="35">
+                                        <td><input type="text" name="query" size="35" maxlength="35" value="{query}">
                                         <select name="keyType">
-                                            <option value="phrase">{lang_exact_phrase}</option>
-                                            <option value="all">{lang_all_words}</option>
-                                            <option value="any">{lang_any_word}</option>
+                                            <option value="phrase" {phrase_selected}>{lang_exact_phrase}</option>
+                                            <option value="all" {all_selected}>{lang_all_words}</option>
+                                            <option value="any" {any_selected}>{lang_any_word}</option>
                                         </select></td>
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_date}:</td>
                                         <td>
-                                            <input type="text" name="datestart" size="10" maxlength="10"> {lang_to} <input type="text" name="dateend" size="10" maxlength="10"> {date_format} 
+                                            <input type="text" name="datestart" size="10" maxlength="10" value="{datestart}"> {lang_to} <input type="text" name="dateend" size="10" maxlength="10" value="{dateend}"> {date_format} 
                                         </td>
                                     </tr>
                                     <tr>
@@ -29,10 +29,10 @@
                                         <td align="right">{lang_type}:</td>
                                         <td>
                                             <select name="type">
-                                                <option selected="selected" value="all">{lang_all}</option>
-                                                <option value="stories">{lang_stories}</option>
-                                                <option value="comments">{lang_comments}</option>
-                                                <option value="events">{lang_events}</option>
+                                                <option value="all" {all_selected}>{lang_all}</option>
+                                                <option value="stories" {stories_selected}>{lang_stories}</option>
+                                                <option value="comments" {comments_selected}>{lang_comments}</option>
+                                                <option value="events" {events_selected}>{lang_events}</option>
 						                        {plugin_types}
                                             </select>
                                         </td>
@@ -42,10 +42,10 @@
                                         <td align="right">{lang_results}:</td>
                                         <td>
                                         <select name="results">
-                                            <option value="10">10</option>
-                                            <option value="15">15</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
+                                            <option value="10" {10_selected}>10</option>
+                                            <option value="15" {15_selected}>15</option>
+                                            <option value="25" {25_selected}>25</option>
+                                            <option value="50" {50_selected}>50</option>
                                         </select>&nbsp; {lang_per_page}</td>
                                     </tr>
                                     <tr>
