@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.41 2005/07/24 20:01:11 dhaun Exp $
+// $Id: search.class.php,v 1.42 2005/07/30 16:06:36 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -111,6 +111,8 @@ class Search {
     */
     function Search()
     {
+        global $_CONF;
+
         // Set search criteria
         $this->_query = strip_tags (COM_stripslashes ($_REQUEST['query']));
         $this->_topic = COM_applyFilter ($_REQUEST['topic']);
@@ -122,7 +124,11 @@ class Search {
             $this->_type = 'all';
         }
         $this->_keyType = COM_applyFilter ($_REQUEST['keyType']);
-        $this->_page = COM_applyFilter ($_REQUEST['page']);
+        $this->_per_page = COM_applyFilter ($_REQUEST['results'], true);
+        if ($this->_per_page < 1) {
+            $this->_per_page = $_CONF['num_search_results'];
+        }
+        $this->_page = COM_applyFilter ($_REQUEST['page'], true);
         if ($this->_page < 1) {
             $this->_page = 1;
         }
@@ -738,8 +744,17 @@ class Search {
 
         $searchmain->set_var ('search_blocks', $searchblocks);
 
-        $urlQuery = urlencode ($this->_query);
-        $baseurl = $_CONF['site_url'] . '/search.php?query=' . $urlQuery . '&amp;keyType=' . $this->_keyType . '&amp;type=' . $this->_type . '&amp;topic=' . $this->_topic . '&amp;mode=search';
+        $baseurl = $_CONF['site_url'] . '/search.php?mode=search';
+        if (!empty ($this->_query)) {
+            $urlQuery = urlencode ($this->_query);
+            $baseurl .= '&amp;query=' . $urlQuery;
+        }
+        $baseurl .= '&amp;keyType=' . $this->_keyType
+                 . '&amp;type=' . $this->_type;
+        if (!empty ($this->_topic)) {
+            $baseurl .= '&amp;topic=' . $this->_topic;
+        }
+        $baseurl .= '&amp;results=' . $this->_per_page;
         if ($this->_page > 1) {
             if ($maxdisplayed >= $this->_per_page) {
                 $numpages = $this->_page + 1;
@@ -925,6 +940,8 @@ class Search {
         $searchform->set_var('lang_comments', $LANG09[7]);
         $searchform->set_var('lang_links', $LANG09[39]);
         $searchform->set_var('lang_events', $LANG09[40]);
+        $searchform->set_var('lang_results', $LANG09[59]);
+        $searchform->set_var('lang_per_page', $LANG09[60]);
         
         $searchform->set_var('lang_exact_phrase', $LANG09[43]);
         $searchform->set_var('lang_all_words', $LANG09[44]);
@@ -1004,8 +1021,6 @@ class Search {
         if (!$this->_isSearchAllowed()) {
             return $this->_getAccessDeniedMessage();
         }
-
-        $this->_per_page = $_CONF['num_search_results'];
 
         // Start search timer
         $searchtimer = new timerobject();

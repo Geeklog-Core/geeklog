@@ -39,6 +39,16 @@
                                     </tr>
                                     {author_form_element}
                                     <tr>
+                                        <td align="right">{lang_results}:</td>
+                                        <td>
+                                        <select name="results">
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                        </select>&nbsp; {lang_per_page}</td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="2">
                                             <input type="submit" value="{lang_search}">
                                             <input type="hidden" name="mode" value="search">
