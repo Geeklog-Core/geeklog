@@ -5,9 +5,9 @@
                                         <td align="right">{lang_keywords}:</td>
                                         <td><input type="text" name="query" size="35" maxlength="35" value="{query}">
                                         <select name="keyType">
-                                            <option value="phrase" {phrase_selected}>{lang_exact_phrase}</option>
-                                            <option value="all" {all_selected}>{lang_all_words}</option>
-                                            <option value="any" {any_selected}>{lang_any_word}</option>
+                                            <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
+                                            <option value="all" {key_all_selected}>{lang_all_words}</option>
+                                            <option value="any" {key_any_selected}>{lang_any_word}</option>
                                         </select></td>
                                     </tr>
                                     <tr>
@@ -29,7 +29,7 @@
                                         <td align="right">{lang_type}:</td>
                                         <td>
                                             <select name="type">
-                                                <option value="all" {all_selected}>{lang_all}</option>
+                                                <option value="all" {type_all_selected}>{lang_all}</option>
                                                 <option value="stories" {stories_selected}>{lang_stories}</option>
                                                 <option value="comments" {comments_selected}>{lang_comments}</option>
                                                 <option value="events" {events_selected}>{lang_events}</option>

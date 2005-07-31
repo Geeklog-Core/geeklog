@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.43 2005/07/30 21:50:53 dhaun Exp $
+// $Id: search.class.php,v 1.44 2005/07/31 08:55:58 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -647,6 +647,7 @@ class Search {
         $searchmain->set_var('lang_itemsin', $LANG09[26]);
         $searchmain->set_var('search_time', $searchtime);
         $searchmain->set_var('lang_seconds', $LANG09[27]);
+        $searchmain->set_var('lang_refine_search', $LANG09[61]);
 
         // Print plugins search results
         reset($result_plugins);
@@ -744,17 +745,18 @@ class Search {
 
         $searchmain->set_var ('search_blocks', $searchblocks);
 
-        $baseurl = $_CONF['site_url'] . '/search.php?mode=search';
+        $searchUrl = $_CONF['site_url'] . '/search.php?mode=search';
+        $queryUrl = '';
         if (!empty ($this->_query)) {
             $urlQuery = urlencode ($this->_query);
-            $baseurl .= '&amp;query=' . $urlQuery;
+            $queryUrl .= '&amp;query=' . $urlQuery;
         }
-        $baseurl .= '&amp;keyType=' . $this->_keyType
-                 . '&amp;type=' . $this->_type;
+        $queryUrl .= '&amp;keyType=' . $this->_keyType
+                  . '&amp;type=' . $this->_type;
         if (!empty ($this->_topic)) {
-            $baseurl .= '&amp;topic=' . $this->_topic;
+            $queryUrl .= '&amp;topic=' . $this->_topic;
         }
-        $baseurl .= '&amp;results=' . $this->_per_page;
+        $queryUrl .= '&amp;results=' . $this->_per_page;
         if ($this->_page > 1) {
             if ($maxdisplayed >= $this->_per_page) {
                 $numpages = $this->_page + 1;
@@ -769,16 +771,32 @@ class Search {
             }
         }
         if ($numpages > $this->_page) {
-            $next = '<a href="' . $baseurl . '&amp;page=' . ($this->_page + 1)
-                  . '">' . $LANG09[58] . '</a>';
+            $next = '<a href="' . $searchUrl . $queryUrl . '&amp;page='
+                  . ($this->_page + 1) . '">' . $LANG09[58] . '</a>';
         } else {
             $next = $LANG09[58];
         }
+        $searchUrl .= $queryUrl;
         $searchmain->set_var ('search_pager',
-                COM_printPageNavigation ($baseurl, $this->_page, $numpages,
+                COM_printPageNavigation ($searchUrl, $this->_page, $numpages,
                                          'page=', false, '', $next));
         $tmpTxt = sprintf ($LANG09[24], $totalfound);
         $searchmain->set_var ('lang_found', $tmpTxt);
+        if (($totalfound == 0) && ($this->_page == 1)) {
+            $searchmain->set_var ('refine_url', '');
+            $searchmain->set_var ('start_refine_anchortag', '');
+            $searchmain->set_var ('end_refine_anchortag', '');
+            $searchmain->set_var ('refine_search', '');
+        } else {
+            $refineUrl = $_CONF['site_url'] . '/search.php?mode=refine'
+                       . $queryUrl;
+            $refineLink = '<a href="' . $refineUrl . '">';
+            $searchmain->set_var ('refine_url', $refineUrl);
+            $searchmain->set_var ('start_refine_anchortag', $refineLink);
+            $searchmain->set_var ('end_refine_anchortag', '</a>');
+            $searchmain->set_var ('refine_search',
+                                  $refineLink . $LANG09[61] . '</a>');
+        }
         $retval .= $searchmain->parse ('output', 'searchresults');
 
         if (($totalfound == 0) && ($this->_page == 1)) {
@@ -964,9 +982,9 @@ class Search {
         } else if ($this->_keyType == 'any') {
             $any_selected = 'selected="selected"';
         }
-        $searchform->set_var ('phrase_selected', $phrase_selected);
-        $searchform->set_var ('all_selected', $all_selected);
-        $searchform->set_var ('any_selected', $any_selected);
+        $searchform->set_var ('key_phrase_selected', $phrase_selected);
+        $searchform->set_var ('key_all_selected', $all_selected);
+        $searchform->set_var ('key_any_selected', $any_selected);
 
         $plugintypes = PLG_getSearchTypes();
         $pluginoptions = '';
@@ -998,7 +1016,7 @@ class Search {
                 $all_selected = 'selected="selected"';
             }
         }
-        $searchform->set_var ('all_selected', $all_selected);
+        $searchform->set_var ('type_all_selected', $all_selected);
         $searchform->set_var ('stories_selected', $stories_selected);
         $searchform->set_var ('comments_selected', $comments_selected);
         $searchform->set_var ('events_selected', $events_selected);
