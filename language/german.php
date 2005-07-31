@@ -160,7 +160,10 @@ $LANG01 = array(
     114 => 'TRACKBACKS',
     115 => 'Keine neuen Trackback-Kommentare',
     116 => 'Trackback',
-    117 => 'Verzeichnis'
+    117 => 'Verzeichnis',
+    118 => 'Please continue reading on the next page:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    120 => 'Permanent link to this comment'
 );
 
 ###############################################################################
@@ -224,7 +227,7 @@ $LANG04 = array(
     1 => 'Userprofil für',
     2 => 'Username',
     3 => 'Name',
-    4 => 'Passwort',
+    4 => 'Neues Passwort',
     5 => 'E-Mail',
     6 => 'Homepage',
     7 => 'Biographie',
@@ -327,7 +330,23 @@ $LANG04 = array(
     104 => 'Online-Status zeigen',
     105 => 'Unter "Wer ist online?"',
     106 => 'Wohnort',
-    107 => 'Erscheint im öffentlichen Profil'
+    107 => 'Erscheint im öffentlichen Profil',
+    108 => 'Neues Passwort bestätigen',
+    109 => 'Gib hier das neue Passwort noch einmal ein',
+    110 => 'Aktuelles Passwort',
+    111 => 'Gib Dein aktuelles Passwort ein',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
+    119 => 'If you have forgotten your password, you may request a new one at this url:',
+    120 => 'Account Activated',
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
 ###############################################################################
@@ -348,9 +367,6 @@ $LANG05 = array(
 # links.php
 
 $LANG06 = array(
-    1 => 'Links',
-    2 => 'Es gibt keine Links anzuzeigen.',
-    3 => 'Link hinzufügen'
 );
 
 ###############################################################################
@@ -466,7 +482,11 @@ $LANG09 = array(
     54 => 'Gefundene Kommentare',
     55 => 'der Wortgruppe',
     56 => '<em>und</em>',
-    57 => '<em>oder</em>'
+    57 => '<em>oder</em>',
+    58 => 'Weitere Ergebnisse &gt;&gt;',
+    59 => 'Ergebnisse',
+    60 => 'pro Seite',
+    61 => 'Suche korrigieren'
 );
 
 ###############################################################################
@@ -684,36 +704,18 @@ $LANG22 = array(
     22 => 'Löschen',
     23 => 'Ungültiges Startdatum.',
     24 => 'Ungültiges Enddatum.',
-    25 => 'Enddatum ist vor dem Startdatum.'
+    25 => 'Enddatum ist vor dem Startdatum.',
+    26 => 'Submit',
+    27 => 'Limit Results',
+    28 => 'Search',
+    29 => 'Edit',
+    30 => 'Copy'
 );
 
 ###############################################################################
 # admin/link.php
 
 $LANG23 = array(
-    1 => 'Link-Editor',
-    2 => '',
-    3 => 'Titel',
-    4 => 'URL',
-    5 => 'Kategorie',
-    6 => '(mit http://)',
-    7 => 'Andere',
-    8 => 'Klicks',
-    9 => 'Beschreibung',
-    10 => 'Du musst einen Titel, eine URL und eine Beschreibung für den Link angeben.',
-    11 => 'Link-Manager',
-    12 => 'Auf den Link-Titel klicken, um einen Link zu ändern oder zu löschen. Mit Neuer Link (s.o.) kann ein neuer Link angelegt werden.',
-    13 => 'Titel',
-    14 => 'Kategorie',
-    15 => 'URL',
-    16 => 'Zugriff verweigert',
-    17 => "Du hast keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/link.php\">Zurück zum Administrator-Menü</a>.",
-    18 => 'Neuer Link',
-    19 => 'Admin Home',
-    20 => 'Andere bitte eingeben',
-    21 => 'Speichern',
-    22 => 'Abbruch',
-    23 => 'Löschen'
 );
 
 ###############################################################################
@@ -744,10 +746,10 @@ $LANG24 = array(
     22 => 'Artikel-Liste',
     23 => 'Auf die Nummer klicken, um einen Artikel zu ändern oder zu löschen. Um einen Artikel anzusehen, auf dessen Titel klicken. Auf Neuer Artikel (s.o.) klicken, um einen neuen Artikel zu schreiben.',
     24 => 'Diese ID wird bereits für einen anderen Artikel benutzt. Bitte wähle eine andere ID.',
-    25 => '',
+    25 => 'Error when saving story',
     26 => 'Artikel-Vorschau',
-    27 => '',
-    28 => '',
+    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
+    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
     29 => '',
     30 => 'Fehler beim Datei-Upload',
     31 => 'Bitte mindestens die Felder Titel und Einleitung ausfüllen',
@@ -781,7 +783,11 @@ $LANG24 = array(
     59 => 'Option',
     60 => 'Aktiv',
     61 => 'automatisch archivieren',
-    62 => 'automatisch löschen'
+    62 => 'automatisch löschen',
+    63 => 'Edit',
+    64 => 'Submit',
+    65 => 'Search',
+    66 => 'Limit Results'
 );
 
 ###############################################################################
@@ -845,7 +851,10 @@ $LANG27 = array(
     23 => 'Zur Default-Kategorie für neue Artikel machen',
     24 => '(*)',
     25 => 'Archiv-Kategorie',
-    26 => 'Zur Archiv-Kategorie machen (nur für eine Kategorie möglich)'
+    26 => 'Zur Archiv-Kategorie machen (nur für eine Kategorie möglich)',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################
@@ -889,7 +898,15 @@ $LANG28 = array(
     35 => 'Letzter Login',
     36 => '(noch nie)',
     37 => 'UID',
-    38 => 'Gruppenliste'
+    38 => 'Gruppenliste',
+    39 => 'Password (again)',
+    40 => 'Registration Date',
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status'
 );
 
 ###############################################################################
@@ -1034,7 +1051,8 @@ $LANG32 = array(
     31 => 'Bist Du sicher, dass Du dieses Plugin löschen willst? Dies wird alle Daten und Datenstrukturen löschen, die dieses Plugin benutzt. Wenn Du sicher bist, dann klicke jetzt bitte noch einmal auf Löschen.',
     32 => '<p><b>Fehler: Ungültiges Format für Autolink.</b></p>',
     33 => 'Code-Version',
-    34 => 'Aktualisieren'
+    34 => 'Aktualisieren',
+    35 => 'Edit'
 );
 
 ###############################################################################
@@ -1077,7 +1095,15 @@ $LANG33 = array(
     39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
     40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
     41 => 'Links',
-    42 => 'Termine'
+    42 => 'Termine',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1149,7 +1175,14 @@ $MESSAGE = array(
     63 => 'Beim Löschen des Trackback-Kommentars trat ein Fehler auf.',
     64 => 'Dein Trackback-Kommentar wurde erfolgreich verschickt.',
     65 => 'Das Weblog-Verzeichnis wurde gespeichert.',
-    66 => 'Das Weblog-Verzeichnis wurde gelöscht.'
+    66 => 'Das Weblog-Verzeichnis wurde gelöscht.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.'
 );
 
 ###############################################################################
@@ -1211,7 +1244,12 @@ $LANG_ACCESS = array(
     'canteditgroup' => 'Um diese Gruppe bearbeiten zu können, musst Du selbst ein Mitglied der Gruppe sein. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.',
     'cantlistgroup' => 'Um die Mitglieder dieser Gruppe sehen zu können, musst Du selbst ein Mitglied der Gruppe sein. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.',
     'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
-    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>'
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
 );
 
 ###############################################################################
@@ -1317,58 +1355,64 @@ $LANG_TRB = array(
     'url_required' => 'Es muss mindestens die URL für den Eintrag angegeben werden.',
     'target_missing' => 'Keine Trackback-URL',
     'target_required' => 'Bitte gib die Trackback-URL ein.',
-    'error_socket'       => 'Socket konnte nicht geöffnet werden.',
-    'error_response'     => 'Antwort nicht verstanden.',
-    'error_unspecified'  => 'Fehler nicht näher spezifiziert.',
-    'select_url'         => 'Trackback-URL auswählen',
-    'not_found'          => 'Trackback-URL nicht gefunden',
-    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL für den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte gib die Trackback-URL von Hand ein.',
-    'trackback_explain'  => 'Aus den unten aufgeführten Links kannst Du jetzt den Beitrag auswählen, zu dem Dein Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls kannst Du die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>.',
+    'error_socket' => 'Socket konnte nicht geöffnet werden.',
+    'error_response' => 'Antwort nicht verstanden.',
+    'error_unspecified' => 'Fehler nicht näher spezifiziert.',
+    'select_url' => 'Trackback-URL auswählen',
+    'not_found' => 'Trackback-URL nicht gefunden',
+    'autodetect_failed' => 'Geeklog konnte keine Trackback-URL für den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte gib die Trackback-URL von Hand ein.',
+    'trackback_explain' => 'Aus den unten aufgeführten Links kannst Du jetzt den Beitrag auswählen, zu dem Dein Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls kannst Du die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>.',
     'no_links_trackback' => 'Keine Links gefunden. Für diesen Beitrag können keine Trackback-Kommentare gesendet werden.',
-    'pingback'           => 'Pingback',
-    'pingback_results'   => 'Pingback-Ergebnisse',
-    'send_pings'         => 'Pings senden',
-    'send_pings_for'     => 'Pings für "%s" senden',
-    'no_links_pingback'  => 'Keine Links gefunden. Es wurden keine Pingbacks für diesen Beitrag gesendet.',
-    'pingback_success'   => 'Pingback gesendet.',
-    'no_pingback_url'    => 'Keine Pingback-URL gefunden.',
-    'resend'             => 'Nochmal senden',
-    'ping_all_explain'   => 'Du kannst jetzt einen <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> zu den verlinkten Sites senden, einen Ping an Weblog-Verzeichnisse senden, oder einen <a href="http://de.wikipedia.org/wiki/Trackback">Trackback</a>-Kommentar verschicken, wenn Du über einen Beitrag in einem anderen Weblog geschrieben hast.',
-    'pingback_button'    => 'Pingback senden',
-    'pingback_short'     => 'Einen Pingback an alle in diesem Beitrag verlinkten Sites senden.',
-    'pingback_disabled'  => '(Pingback deaktiviert)',
-    'ping_button'        => 'Ping senden',
-    'ping_short'         => 'Weblog-Verzeichnisse "anpingen".',
-    'ping_disabled'      => '(Ping deaktiviert)',
-    'trackback_button'   => 'Trackback senden',
-    'trackback_short'    => 'Einen Trackback-Kommentar senden.',
+    'pingback' => 'Pingback',
+    'pingback_results' => 'Pingback-Ergebnisse',
+    'send_pings' => 'Pings senden',
+    'send_pings_for' => 'Pings für "%s" senden',
+    'no_links_pingback' => 'Keine Links gefunden. Es wurden keine Pingbacks für diesen Beitrag gesendet.',
+    'pingback_success' => 'Pingback gesendet.',
+    'no_pingback_url' => 'Keine Pingback-URL gefunden.',
+    'resend' => 'Nochmal senden',
+    'ping_all_explain' => 'Du kannst jetzt einen <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> zu den verlinkten Sites senden, einen Ping an Weblog-Verzeichnisse senden, oder einen <a href="http://de.wikipedia.org/wiki/Trackback">Trackback</a>-Kommentar verschicken, wenn Du über einen Beitrag in einem anderen Weblog geschrieben hast.',
+    'pingback_button' => 'Pingback senden',
+    'pingback_short' => 'Einen Pingback an alle in diesem Beitrag verlinkten Sites senden.',
+    'pingback_disabled' => '(Pingback deaktiviert)',
+    'ping_button' => 'Ping senden',
+    'ping_short' => 'Weblog-Verzeichnisse "anpingen".',
+    'ping_disabled' => '(Ping deaktiviert)',
+    'trackback_button' => 'Trackback senden',
+    'trackback_short' => 'Einen Trackback-Kommentar senden.',
     'trackback_disabled' => '(Trackback deaktiviert)',
-    'may_take_a_while'   => 'Hinweis: Das Senden von Pingbacks und Pings kann eine Weile dauern.',
-    'ping_results'       => 'Ping-Ergebnisse',
-    'unknown_method'     => 'Unbekannte Ping-Methode',
-    'ping_success'       => 'Ping gesendet.',
-    'error_site_name'    => 'Bitte gib den Namen der Site ein.',
-    'error_site_url'     => 'Bitte gib die URL der Site ein.',
-    'error_ping_url'     => 'Bitte gib die Ping-URL der Site ein.',
-    'no_services'        => 'Es sind keine Weblog-Verzeichnis konfiguriert.',
-    'services_headline'  => 'Weblog-Verzeichnisse',
-    'admin_home'         => 'Admin Home',
-    'new_service'        => 'Neues Verzeichnis',
-    'service_explain'    => 'Um ein Weblog-Verzeichnis zu ändern oder zu löschen, auf dessen Namen klicken. Um ein neues Weblog-Verzeichnis einzutragen, auf Neues Verzeichnis klicken.',
-    'service'            => 'Verzeichnis',
-    'ping_method'        => 'Ping-Methode',
-    'service_enabled'    => 'Aktiv',
-    'service_website'    => 'Website',
-    'service_ping_url'   => 'Ping-URL',
-    'ping_standard'      => 'Normaler Ping',
-    'ping_extended'      => 'Erweiterter Ping',
-    'ping_unknown'       => '(unbekannte Methode)',
-    'edit_service'       => 'Weblog-Verzeichnis bearbeiten',
-    'button_save'        => 'Speichern',
-    'button_cancel'      => 'Abbruch',
-    'button_delete'      => 'Löschen',
-    'trackbacks'         => 'Trackbacks',
-    'editor_intro'       => 'Hier kannst Du Deinen Trackback-Kommentar für <a href="%s">%s</a> eingeben.'
+    'may_take_a_while' => 'Hinweis: Das Senden von Pingbacks und Pings kann eine Weile dauern.',
+    'ping_results' => 'Ping-Ergebnisse',
+    'unknown_method' => 'Unbekannte Ping-Methode',
+    'ping_success' => 'Ping gesendet.',
+    'error_site_name' => 'Bitte gib den Namen der Site ein.',
+    'error_site_url' => 'Bitte gib die URL der Site ein.',
+    'error_ping_url' => 'Bitte gib die Ping-URL der Site ein.',
+    'no_services' => 'Es sind keine Weblog-Verzeichnis konfiguriert.',
+    'services_headline' => 'Weblog-Verzeichnisse',
+    'admin_home' => 'Admin Home',
+    'new_service' => 'Neues Verzeichnis',
+    'service_explain' => 'Um ein Weblog-Verzeichnis zu ändern oder zu löschen, auf dessen Namen klicken. Um ein neues Weblog-Verzeichnis einzutragen, auf Neues Verzeichnis klicken.',
+    'service' => 'Verzeichnis',
+    'ping_method' => 'Ping-Methode',
+    'service_enabled' => 'Aktiv',
+    'service_website' => 'Website',
+    'service_ping_url' => 'Ping-URL',
+    'ping_standard' => 'Normaler Ping',
+    'ping_extended' => 'Erweiterter Ping',
+    'ping_unknown' => '(unbekannte Methode)',
+    'edit_service' => 'Weblog-Verzeichnis bearbeiten',
+    'button_save' => 'Speichern',
+    'button_cancel' => 'Abbruch',
+    'button_delete' => 'Löschen',
+    'trackbacks' => 'Trackbacks',
+    'editor_intro' => 'Hier kannst Du Deinen Trackback-Kommentar für <a href="%s">%s</a> eingeben.',
+    'editor_intro_none' => 'Prepare your trackback comment.',
+    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'edit' => 'Edit',
+    'search' => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit' => 'Submit'
 );
 
 ###############################################################################
