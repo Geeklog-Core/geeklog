@@ -36,6 +36,21 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- When the search returns no results, the search form is now pre-populated
+  with the last search query, so that it can be changed easily. On successful
+  searches, a "refine search" link will appear that also takes you back to a
+  pre-populated search form (to refine your search, obviously) [Dirk]
+- Changed search to only return a certain amount of hits per page, thus
+  avoiding timeouts on servers where the script execution time is limited
+  (bug #274) [Dirk]
+  A new config variable, $_CONF['num_search_results'], defines the number of
+  search results to be returned per page (and per type). The search form also
+  includes a drop-down menu where this can be changed for every search.
+  Plugins will have to indicate if they support this "paged" search. Otherwise,
+  Geeklog will fake the paging for the plugin, so that the plugin does a full
+  search for every page, but Geeklog will only display the hits for the current
+  page (such a plugin can therefore still cause a timeout until it is changed
+  to support "paged" searching).
 - Added a permanent link to comments (in the professional theme) [Vinny]
 - Added new icons for the admin sections and made sure each admin section
   now has an icon in admin/moderation.php [Dirk]
