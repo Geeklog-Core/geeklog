@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.18 2005/06/25 18:12:30 dhaun Exp $
+// $Id: trackback.php,v 1.19 2005/08/01 11:18:45 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -754,7 +754,7 @@ function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
     }
 
     return COM_refresh ($_CONF['site_admin_url']
-                        . '/trackback?mode=listservice&msg=65');
+                        . '/trackback.php?mode=listservice&msg=65');
 }
 
 /**
