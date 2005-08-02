@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.107 2005/06/30 06:38:18 mjervis Exp $
+// $Id: users.php,v 1.108 2005/08/02 18:17:15 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -206,6 +206,7 @@ function userprofile ($user, $msg = 0)
         }
     }
 
+/*
     // add all polls the current visitor has access to
     $sql = "SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ();
     $result = DB_query($sql);
@@ -215,6 +216,7 @@ function userprofile ($user, $msg = 0)
         $Q = DB_fetchArray ($result);
         $sidArray[] = $Q['qid'];
     }
+*/
 
     $sidList = implode("', '",$sidArray);
     $sidList = "'$sidList'";
