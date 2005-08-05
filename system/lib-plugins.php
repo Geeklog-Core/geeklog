@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.66 2005/07/24 20:01:11 dhaun Exp $
+// $Id: lib-plugins.php,v 1.67 2005/08/05 22:37:12 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1004,9 +1004,10 @@ function PLG_collectTags ()
 * The autolink would be like:  [story:20040101093000103 here]
 *
 * @param   string   $content   Content that should be parsed for autolinks
+* @param   string   $plugin    Optional if you only want to parse using a specific plugin
 *
 */
-function PLG_replaceTags ($content)
+function PLG_replaceTags ($content,$plugin='')
 {
     global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
 
@@ -1072,7 +1073,7 @@ function PLG_replaceTags ($content)
     if (count ($tags) > 0) {       // Found the [tag] - Now process them all
         foreach ($tags as $autotag) {
             $function = 'plugin_autotags_' . $autotag['module'];
-            if ($autotag['module'] == 'geeklog') {
+            if ($plugin == '' OR ($autotag['module'] == 'geeklog' AND $plugin == 'geeklog') ) {
                 $url = '';
                 $linktext = $autotag['parm2'];
                 if ($autotag['tag'] == 'story') {
@@ -1095,7 +1096,7 @@ function PLG_replaceTags ($content)
                     $content = str_replace ($autotag['tagstr'], $filelink,
                                             $content);
                 }
-            } else if (function_exists ($function)) {
+            } else if (function_exists ($function) AND ($plugin == '' OR $plugin == $autotag['module']) ) {
                 $content = $function ('parse', $content, $autotag);
             }
         }
