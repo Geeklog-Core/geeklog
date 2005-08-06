@@ -33,7 +33,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.15 2005/07/21 14:05:11 vinny Exp $
+// $Id: lib-comment.php,v 1.16 2005/08/06 13:52:00 dhaun Exp $
+
+if( $_CONF['allow_user_photo'] )
+{
+    // only needed for the USER_getPhoto function
+    require_once ($_CONF['path_system'] . 'lib-user.php');
+}
 
 /**
 * This function displays the comment control bar
@@ -217,6 +223,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         return '';
     }
 
+    $row = 1;
     do {
         // determines indentation for current comment
         if( $mode == 'threaded' || $mode == 'nested' ) {
@@ -228,6 +235,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'author', $A['username'] );
         $template->set_var( 'author_id', $A['uid'] );
         $template->set_var( 'cid', $A['cid'] );
+        $template->set_var( 'cssid', $row % 2 );
 
         if( $A['uid'] > 1 ) {
             if( empty( $A['fullname'] )) {
@@ -238,11 +246,12 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 $alttext = $A['fullname'];
             }
 
-            if( !empty( $A['photo'] )) {
-                $template->set_var( 'author_photo', '<img src="'
-                                    . $_CONF['site_url']
-                                    . '/images/userphotos/' . $A['photo']
-                                    . '" alt="' . $alttext . '">' );
+            $photo = '';
+            if( $_CONF['allow_user_photo'] ) {
+                $photo = USER_getPhoto( $A['uid'], $A['photo'] );
+            }
+            if( !empty( $photo )) {
+                $template->set_var( 'author_photo', $photo );
                 $template->set_var( 'camera_icon', '<a href="'
                         . $_CONF['site_url']
                         . '/users.php?mode=profile&amp;uid=' . $A['uid']
@@ -368,6 +377,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $template->set_var( 'pid', $A['cid'] );
             $retval .= $template->parse( 'output', 'comment' );   
         }
+        $row++;
     } while( $A = DB_fetchArray( $comments ));
 
     return $retval;
@@ -432,6 +442,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
     $template->set_var( 'layout_url', $_CONF['layout_url'] );
     $template->set_var( 'commentbar',
                         CMT_commentBar( $sid, $title, $type, $order, $mode));
+    $template->set_var( 'sid', $sid );
+    $template->set_var( 'comment_type', $type );
     
     if( $mode == 'nested' || $mode == 'threaded' || $mode == 'flat' ) {
         // build query
@@ -637,6 +649,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $start->set_file( array( 'comment' => 'startcomment.thtml' ));
                 $start->set_var( 'site_url', $_CONF['site_url'] );
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
+                $start->set_var( 'hide_if_preview', 'style="display:none"' );
 
                 if (empty ($_POST['username'])) {
                     $_POST['username'] = DB_getItem ($_TABLES['users'],

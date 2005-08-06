@@ -33,10 +33,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.34 2005/06/25 17:14:36 dhaun Exp $
+// $Id: lib-story.php,v 1.35 2005/08/06 13:52:00 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
+}
+
+if( $_CONF['allow_user_photo'] )
+{
+    // only needed for the USER_getPhoto function
+    require_once ($_CONF['path_system'] . 'lib-user.php');
 }
 
 
@@ -117,33 +123,21 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'end_contributedby_anchortag', '</a>' );
             $article->set_var( 'contributedby_url', $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid=' . $A['uid'] );
+        }
 
-            $photo = $A['photo'];
-            if( !empty( $photo ))
-            {
-                if( empty( $fullname ))
-                {
-                    $altname = $username;
-                }
-                else
-                {
-                    $altname = $fullname;
-                }
-                $article->set_var( 'contributedby_photo', '<img src="'
-                        . $_CONF['site_url'] . '/images/userphotos/' . $photo
-                        . '" alt="' . $altname . '">' );
-                $article->set_var( 'camera_icon', '<a href="'
-                        . $_CONF['site_url']
-                        . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                        . '"><img src="' . $_CONF['layout_url']
-                        . '/images/smallcamera.' . $_IMAGE_TYPE
-                        . '" border="0" alt=""></a>' );
-            }
-            else
-            {
-                $article->set_var( 'contributedby_photo', '' );
-                $article->set_var( 'camera_icon', '' );
-            }
+        $photo = '';
+        if( $_CONF['allow_user_photo'] )
+        {
+            $photo = USER_getPhoto( $A['uid'], $A['photo'] );
+        }
+        if( !empty( $photo ))
+        {
+            $article->set_var( 'contributedby_photo', $photo );
+            $article->set_var( 'camera_icon', '<a href="' . $_CONF['site_url']
+                    . '/users.php?mode=profile&amp;uid=' . $A['uid']
+                    . '"><img src="' . $_CONF['layout_url']
+                    . '/images/smallcamera.' . $_IMAGE_TYPE
+                    . '" border="0" alt=""></a>' );
         }
         else
         {

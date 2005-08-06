@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.108 2005/08/02 18:17:15 dhaun Exp $
+// $Id: users.php,v 1.109 2005/08/06 13:52:00 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -92,7 +92,7 @@ function userprofile ($user, $msg = 0)
         return $retval;
     }
 
-    $result = DB_query("SELECT username,fullname,regdate,homepage,about,location,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
+    $result = DB_query("SELECT username,fullname,regdate,homepage,about,location,pgpkey,photo,email FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $nrows = DB_numRows($result);
     if ($nrows == 0) { // no such user
         return COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -116,19 +116,10 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('username', $A['username']);
-    if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
-        if (strstr ($_CONF['path_images'], $_CONF['path_html'])) {
-            $imgpath = substr ($_CONF['path_images'],
-                               strlen ($_CONF['path_html']));
-            $user_templates->set_var ('user_photo', '<img src="'
-                . $_CONF['site_url'] . '/' . $imgpath . 'userphotos/'
-                . $A['photo'] . '" alt="">');
-        } else {
-            $user_templates->set_var ('user_photo', '<img src="' . $_CONF['site_url'] . '/getimage.php?mode=userphotos&amp;image=' . $A['photo'] . '" alt="">');
-        }
-    } else {
-        $user_templates->set_var('user_photo','');
-    }
+
+    $photo = USER_getPhoto ($user, $A['photo'], $A['email']);
+    $user_templates->set_var ('user_photo', $photo);
+
     $user_templates->set_var('user_fullname', $A['fullname']);
     $user_templates->set_var('lang_membersince', $LANG04[67]);
     $user_templates->set_var('user_regdate', $A['regdate']);
