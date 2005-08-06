@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.12 2005/06/26 08:38:32 mjervis Exp $
+// $Id: lib-user.php,v 1.13 2005/08/06 13:51:21 dhaun Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -344,6 +344,95 @@ function USER_sendNotification ($username, $email, $uid, $mode='inactive')
 
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[40];
     COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+}
+
+/**
+* Get a user's photo, either uploaded or from an external service
+*
+* @param    int     $uid    User ID
+* @param    string  $photo  name of the user's uploaded image
+* @param    string  $email  user's email address (for gravatar.com)
+* @param    int     $width  preferred image width
+* @return   string          <img> tag or empty string if no image available
+*
+* @note     All parameters are optional and can be passed as 0 / empty string.
+*
+*/
+function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    $photo = '';
+    if ($_CONF['allow_user_photo'] == 1) {
+
+        if (($width == 0) && !empty ($_CONF['force_photo_width'])) {
+            $width = $_CONF['force_photo_width'];
+        }
+
+        // collect user's information with as few SQL requests as possible
+        if ($uid == 0) {
+            $uid = $_USER['uid'];
+            if (empty ($email)) {
+                $email = $_USER['email'];
+            }
+            if (empty ($photo)) {
+                $photo = $_USER['photo'];
+            }
+        }
+        if (empty ($photo) || empty ($email)) {
+            $result = DB_query ("SELECT email,photo FROM {$_TABLES['users']} WHERE uid = '$uid'");
+            list($newemail, $newphoto) = DB_fetchArray ($result);
+            if (empty ($photo)) {
+                $photo = $newphoto;
+            }
+            if (empty ($email)) {
+                $email = $newemail;
+            }
+        }
+
+        $img = '';
+        if (empty ($photo)) {
+            // no photo - try gravatar.com, if allowed
+            if ($_CONF['use_gravatar']) {
+                $img = 'http://www.gravatar.com/avatar.php?gravatar_id='
+                     . md5 ($email);
+                if ($width > 0) {
+                    $img .= '&amp;size=' . $width;
+                }
+                if (!empty ($_CONF['gravatar_rating'])) {
+                    $img .= '&amp;rating=' . $_CONF['gravatar_rating'];
+                }
+                if (!empty ($_CONF['default_photo'])) {
+                    $img .= '&amp;default='
+                         . urlencode ($_CONF['default_photo']);
+                }
+            }
+        } else {
+            // check if images are inside or outside the document root
+            if (strstr ($_CONF['path_images'], $_CONF['path_html'])) {
+                $imgpath = substr ($_CONF['path_images'],
+                                   strlen ($_CONF['path_html']));
+                $img = $_CONF['site_url'] . '/' . $imgpath . 'userphotos/'
+                     . $photo;
+            } else {
+                $img = $_CONF['site_url']
+                     . '/getimage.php?mode=userphotos&amp;image=' . $photo;
+            }
+        }
+
+        if (empty ($img) && !empty ($_CONF['default_photo'])) {
+            $img = $_CONF['default_photo'];
+        }
+        if (!empty ($img)) {
+            $photo = '<img src="' . $img . '"';
+            if ($width > 0) {
+                $photo .= ' width="' . $width . '"';
+            }
+            $photo .= ' alt="" class="userphoto">';
+        }
+    }
+
+    return $photo;
 }
 
 ?>
