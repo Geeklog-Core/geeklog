@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.187 2005/08/01 11:23:30 dhaun Exp $
+// $Id: config.php,v 1.188 2005/08/07 20:15:15 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -636,15 +636,30 @@ $_CONF['max_image_width']       = 160;  // In pixels
 $_CONF['max_image_height']      = 120;  // In pixels
 $_CONF['max_image_size']        = 1048576; // 1048576 = 1MB
 
+// Topic icon settings
+$_CONF['max_topicicon_width']   = 48; // In pixels
+$_CONF['max_topicicon_height']  = 48; // In pixels
+$_CONF['max_topicicon_size']    = 65536; // 65536 = 64KB
+
 // User photo settings
 $_CONF['max_photo_width']       = 128; // In pixels
 $_CONF['max_photo_height']      = 128; // In pixels
 $_CONF['max_photo_size']        = 65536; // 65536 = 64KB
 
-// Topic icon settings
-$_CONF['max_topicicon_width']   = 48; // In pixels
-$_CONF['max_topicicon_height']  = 48; // In pixels
-$_CONF['max_topicicon_size']    = 65536; // 65536 = 64KB
+// Use avatars from gravatar.com (if set = true).
+// A gravatar will only be requested if there is no uploaded photo.
+$_CONF['use_gravatar'] = false;
+
+// gravatar.com provides "movie-style" ratings of the avatars (G, PG, R, X).
+// Setting this to 'R' would allow avatars rated as G, PG, and R (but not X).
+// $_CONF['gravatar_rating'] = 'R';
+
+// Force a max. width when displaying the user photo (also used for gravatars)
+// $_CONF['force_photo_width'] = 75;
+
+// Use this image when there's neither an uploaded photo nor a gravatar.
+// Should be the complete URL of the image.
+// $_CONF['default_photo'] = 'http://example.com/default.jpg';
 
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;         // minimum time between comment posts, in seconds
