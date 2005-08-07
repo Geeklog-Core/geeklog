@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.111 2005/06/25 18:12:30 dhaun Exp $
+// $Id: user.php,v 1.112 2005/08/07 08:24:50 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -149,19 +149,17 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('username', $A['username']);
 
-    if (($_CONF['allow_user_photo'] == 1) && !empty ($A['photo'])) {
-        if (strstr ($_CONF['path_images'], $_CONF['path_html'])) {
-            $imgpath = substr ($_CONF['path_images'],
-                               strlen ($_CONF['path_html']));
-            $user_templates->set_var ('user_photo', '<img src="'
-                . $_CONF['site_url'] . '/' . $imgpath . 'userphotos/'
-                . $A['photo'] . '" alt="">');
+    if ($_CONF['allow_user_photo']) {
+        $photo = USER_getPhoto ($A['uid'], $A['photo'], $A['email'], -1);
+        $user_templates->set_var ('user_photo', $photo);
+        if (empty ($A['photo'])) {
+            $user_templates->set_var ('lang_delete_photo', '');
+            $user_templates->set_var ('delete_photo_option', '');
         } else {
-            $user_templates->set_var ('user_photo', '<img src="' . $_CONF['site_url'] . '/getimage.php?mode=userphotos&amp;image=' . $A['photo'] . '" alt="">');
+            $user_templates->set_var ('lang_delete_photo', $LANG28[28]);
+            $user_templates->set_var ('delete_photo_option',
+                    '<input type="checkbox" name="delete_photo">');
         }
-        $user_templates->set_var ('lang_delete_photo', $LANG28[28]);
-        $user_templates->set_var ('delete_photo_option',
-                '<input type="checkbox" name="delete_photo">');
     } else {
         $user_templates->set_var ('user_photo', '');
         $user_templates->set_var ('lang_delete_photo', '');
