@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.20 2005/08/07 17:42:10 dhaun Exp $
+// $Id: trackback.php,v 1.21 2005/08/07 18:18:49 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -461,8 +461,11 @@ function getItemInfo ($type, $id, $what)
 */
 function listServices ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG_TRB, $_IMAGE_TYPE,
-           $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG_TRB, $_IMAGE_TYPE;
+
+    $order = COM_applyFilter ($_GET['order'], true);
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
     $retval .= COM_startBlock ($LANG_TRB['services_headline'], '',
@@ -492,8 +495,7 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     $template->set_var('lang_search', $LANG_TRB['search']);
     $template->set_var('lang_submit', $LANG_TRB['submit']);
 
-
-    switch($order) {
+    switch ($order) {
         case 1:
             $orderby = 'name';
             break;
@@ -512,21 +514,24 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
             break;
     }
     if ($order == $prevorder) {
-        $direction = ($direction == "desc") ? "asc" : "desc";
+        $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
-        $direction = ($direction == "desc") ? "desc" : "asc";
+        $direction = ($direction == 'desc') ? 'desc' : 'asc';
     }
 
     if ($direction == 'asc') {
-        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowdown';
     } else {
-        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowup';
     }
+    $template->set_var ('img_arrow' . $order, '&nbsp;<img src="'
+            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
+            . '" border="0" alt="">');
 
     $template->set_var ('direction', $direction);
     $template->set_var ('page', $page);
     $template->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
+    if (empty ($query_limit)) {
         $limit = 50;
     } else {
         $limit = $query_limit;
@@ -537,17 +542,17 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
         $template->set_var ('query', '');
     }
     $template->set_var ('query_limit', $query_limit);
-    $template->set_var($limit . '_selected', 'selected="selected"');
+    $template->set_var ($limit . '_selected', 'selected="selected"');
 
     if (!empty ($query)) {
         $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'count(*)',
+        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'COUNT(*)',
                 "(name LIKE '$query' OR ping_url LIKE '$query')") / $limit);
         if ($num_pages < $curpage) {
             $curpage = 1;
         }
     } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'count(*)') / $limit);
+        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'COUNT(*)') / $limit);
     }
 
     $offset = (($curpage - 1) * $limit);
