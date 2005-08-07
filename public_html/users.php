@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.109 2005/08/06 13:52:00 dhaun Exp $
+// $Id: users.php,v 1.110 2005/08/07 08:38:52 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -117,7 +117,7 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('username', $A['username']);
 
-    $photo = USER_getPhoto ($user, $A['photo'], $A['email']);
+    $photo = USER_getPhoto ($user, $A['photo'], $A['email'], -1);
     $user_templates->set_var ('user_photo', $photo);
 
     $user_templates->set_var('user_fullname', $A['fullname']);
