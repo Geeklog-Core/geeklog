@@ -1168,7 +1168,8 @@ $MESSAGE = array(
     70 => 'Your account is awaiting administrator approval.',
     71 => 'Your account has now been confirmed and is awaiting administrator approval.',
     72 => 'An error occured while attempting to install the plugin. See error.log for details.',
-    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.'
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.'
 );
 
 ###############################################################################
@@ -1394,7 +1395,14 @@ $LANG_TRB = array (
     'edit'               => 'Edit',
     'search'             => 'Search',
     'limit_results'      => 'Limit Results',
-    'submit'             => 'Submit'
+    'submit'             => 'Submit',
+    'pingback_explain'   => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url'       => 'Pingback URL',
+    'site_url'           => 'This site\'s URL',
+    'pingback_note'      => 'To send a pingback for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing'   => 'No Pingback URL',
+    'pbtarget_required'  => 'Please enter a pingback URL',
+    'pb_error_details'   => 'Error when sending the pingback:'
 );
 
 ###############################################################################

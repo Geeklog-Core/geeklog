@@ -1,0 +1,22 @@
+<form action="{site_admin_url}/trackback.php" method="POST">
+    <p>{lang_explain}</p>
+    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+        <tr>
+            <td align="right"><b>{lang_pingback_url}:</b></td>
+            <td>
+                <input type="text" size="50" maxsize="{max_url_length}" name="target" value="{target_url}">
+            </td>
+        </tr>
+        <tr>
+            <td align="right">{lang_site_url}:</td>
+            <td>
+                <b>{site_url}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="{lang_send}" name="mode[2]">
+            </td>
+        </tr>
+    </table>
+</form>

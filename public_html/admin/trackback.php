@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.19 2005/08/01 11:18:45 dhaun Exp $
+// $Id: trackback.php,v 1.20 2005/08/07 17:42:10 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -271,6 +271,35 @@ function sendPingbacks ($type, $id)
     } else {
         $retval = $LANG_TRB['no_links_pingback'];
     }
+
+    return $retval;
+}
+
+function pingbackForm ($targetUrl = '')
+{
+    global $_CONF, $LANG_TRB;
+
+    $retval = '';
+    $retval .= COM_startBlock ($LANG_TRB['pingback_button'], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
+    $template->set_file (array ('list' => 'pingbackform.thtml'));
+    $template->set_var ('site_url', $_CONF['site_url']);
+    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $template->set_var ('layout_url', $_CONF['layout_url']);
+
+    $template->set_var ('lang_explain', $LANG_TRB['pingback_explain']);
+    $template->set_var ('lang_pingback_url', $LANG_TRB['pingback_url']);
+    $template->set_var ('lang_site_url', $LANG_TRB['site_url']);
+    $template->set_var ('lang_send', $LANG_TRB['button_send']);
+
+    $template->set_var ('target_url', $targetUrl);
+
+    $template->parse ('output', 'list');
+    $retval .= $template->finish ($template->get_var ('output'));
+
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -584,6 +613,9 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     if ($_CONF['trackback_enabled']) {
         $retval .= freshTrackback ();
     }
+    if ($_CONF['pingback_enabled']) {
+        $retval .= freshPingback ();
+    }
     return $retval;
 }
 
@@ -798,6 +830,26 @@ function freshTrackback ()
     return $retval;
 }
 
+/**
+* Display a note about how pingbacks are supposed to be used
+*
+*/
+function freshPingback ()
+{
+    global $_CONF, $LANG_TRB;
+
+    $retval = '';
+
+    $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=freepb';
+
+    $retval .= COM_startBlock ($LANG_TRB['pingback'], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= sprintf ($LANG_TRB['pingback_note'], $freshurl);
+    $retval .= COM_endBlock ();
+
+    return $retval;
+}
+
 
 // MAIN
 $display = '';
@@ -812,6 +864,8 @@ if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
         $mode = 'send';
     } else if (isset ($mode[1])) {
         $mode = 'preview';
+    } else if (isset ($mode[2])) {
+        $mode = 'sendpingback';
     } else {
         $mode = '';
     }
@@ -858,6 +912,8 @@ if (empty ($mode)) {
         $mode = 'listservice';
     } else if ($_CONF['trackback_enabled']) {
         $mode = 'fresh';
+    } else if ($_CONF['pinback_enabled']) {
+        $mode = 'freepb';
     }
 }
 
@@ -1097,7 +1153,7 @@ if ($mode == 'delete') {
     $display .= trackback_editor ($trackbackUrl, $url, $title, $excerpt, $blog)
              . COM_siteFooter ();
 } else if (($mode == 'fresh') || ($mode == 'preview')) {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_TRB['trackback']);
 
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
@@ -1183,6 +1239,30 @@ if ($mode == 'delete') {
     $display .= listServices ($offset, $page, $_REQUEST['q'],
                            COM_applyFilter ($_REQUEST['query_limit'], true));
     $display .= COM_siteFooter();
+} else if ($mode == 'freepb') {
+    $display .= COM_siteHeader ('menu', $LANG_TRB['pingback']);
+    $display .= pingbackForm ();
+    $display .= COM_siteFooter();
+} else if ($mode == 'sendpingback') {
+    $target = COM_applyFilter ($_POST['target']);
+    $display .= COM_siteHeader ('menu', $LANG_TRB['pingback']);
+    if (empty ($target)) {
+        $display .= showTrackbackMessage ($LANG_TRB['pbtarget_missing'],
+                                          $LANG_TRB['pbtarget_required']);
+    } else {
+        $result = PNB_sendPingback ($_CONF['site_url'], $target);
+        if (empty ($result)) {
+            $display .= COM_showMessage (74);
+            $target = '';
+        } else {
+            $message = '<p>' . $LANG_TRB['pb_error_details'] . '<br>'
+                     . '<span class="warningsmall">'
+                     . htmlspecialchars ($result) . '</span></p>';
+            $display .= showTrackbackMessage ($LANG_TRB['send_error'], $message);
+        }
+    }
+    $display .= pingbackForm ($target);
+    $display .= COM_siteFooter ();
 } else {
     $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
 }
