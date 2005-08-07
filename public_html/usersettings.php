@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.116 2005/07/21 14:05:09 vinny Exp $
+// $Id: usersettings.php,v 1.117 2005/08/07 08:36:13 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -129,33 +129,20 @@ function edituser()
     $preferences->set_var ('signature_value', htmlspecialchars ($A['sig']));
 
     if ($_CONF['allow_user_photo'] == 1) {
-        $stdLoc = true;
-        if (!strstr ($_CONF['path_images'], $_CONF['path_html'])) {
-            $stdLoc = false;
-        }
-        $photo = '';
-        if (!empty ($A['photo'])) {
-            if (!empty ($A['fullname'])) {
-                $alt = '[' . $A['fullname'] . ']';
-            } else {
-                $alt = '[' . $A['username'] . ']';
-            }
-            if ($stdLoc) {
-                $imgpath = substr ($_CONF['path_images'],
-                                   strlen ($_CONF['path_html']));
-                $photo .= '<br><img src="' . $_CONF['site_url'] . '/' . $imgpath
-                    . 'userphotos/' . $A['photo'] . '" alt="' . $alt . '">' . LB
-                    . '<br>' . $LANG04[79]
-                    . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
-            } else {
-                $photo .= '<br><img src="' . $_CONF['site_url']
-                   . '/getimage.php?mode=userphotos&amp;image=' . $A['photo']
-                   . '" alt="' . $alt . '">' . LB . '<br>' . $LANG04[79]
-                   . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
+        $photo = USER_getPhoto ($_USER['uid'], $A['photo'], $A['email'], -1);
+        if (empty ($photo)) {
+            $preferences->set_var ('userphoto_option', '');
+        } else {
+            if (empty ($A['photo'])) { // external avatar
+                $photo = '<br>' . $photo;
+            } else { // uploaded photo - add delete option
+                $photo = '<br>' . $photo . '<br>' . $LANG04[79]
+                       . '&nbsp;<input type="checkbox" name="delete_photo">'
+                       . LB;
             }
             $preferences->set_var ('display_photo', $photo);
+            $preferences->parse ('userphoto_option', 'photo', true);
         }
-        $preferences->parse ('userphoto_option', 'photo', true);
     } else {
         $preferences->set_var ('userphoto_option', '');
     }
