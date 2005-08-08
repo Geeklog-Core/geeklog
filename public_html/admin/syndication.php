@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.22 2005/07/10 10:10:40 dhaun Exp $
+// $Id: syndication.php,v 1.23 2005/08/08 18:41:23 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -55,14 +55,17 @@ if (!SEC_inGroup ('Root')) {
 */
 function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG33, $_IMAGE_TYPE,
-           $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG33, $_IMAGE_TYPE;
+
+    $order = COM_applyFilter ($_GET['order'], true);
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
 
     $feed_template = new Template ($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file (array ('list' => 'listfeeds.thtml',
-                                     'row' => 'listitem.thtml'));
+                                     'row'  => 'listitem.thtml'));
 
     $retval .= COM_startBlock ($LANG33[10], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -120,16 +123,19 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
             break;
     }
     if ($order == $prevorder) {
-        $direction = ($direction == "desc") ? "asc" : "desc";
+        $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
-        $direction = ($direction == "desc") ? "desc" : "asc";
+        $direction = ($direction == 'desc') ? 'desc' : 'asc';
     }
 
     if ($direction == 'asc') {
-        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowdown';
     } else {
-        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowup';
     }
+    $feed_template->set_var ('img_arrow' . $order, '&nbsp;<img src="'
+            . $_CONF['layout_url'] .'/images/' . $arrow . '.' . $_IMAGE_TYPE
+            . '" border="0" alt="">');
 
     $feed_template->set_var ('direction', $direction);
     $feed_template->set_var ('page', $page);
