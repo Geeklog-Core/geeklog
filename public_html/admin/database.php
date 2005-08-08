@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.21 2005/06/25 17:14:34 dhaun Exp $
+// $Id: database.php,v 1.22 2005/08/08 18:42:12 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -140,7 +140,7 @@ if (isset ($_POST['mode']) &&
 
 // Show last ten backups
 
-if(is_writable($_CONF['backup_path'])) {
+if (is_writable ($_CONF['backup_path'])) {
     $backups = array();
     $display .= COM_startBlock ($LANG_DB_BACKUP['last_ten_backups'], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
@@ -170,11 +170,12 @@ if(is_writable($_CONF['backup_path'])) {
         $database->set_var ('lang_backupsize', $LANG_DB_BACKUP['size']);
         $database->set_var ('lang_bytes', $LANG_DB_BACKUP['bytes']);
 
-        for ($i = 1; $i <= count ($backups); $i++) {
+        for ($i = 0; $i < count ($backups); $i++) {
             $backupfile = $_CONF['backup_path'] . current ($backups);
             $backupfilesize = filesize ($backupfile);
             $database->set_var ('backup_file', current ($backups));
             $database->set_var ('backup_size', $backupfilesize);
+            $database->set_var ('cssid', ($i % 2) + 1);
             $database->parse ('backup_item', 'row', true);
             next($backups);
         }
