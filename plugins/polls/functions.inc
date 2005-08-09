@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.10 2005/07/16 21:24:13 dhaun Exp $
+// $Id: functions.inc,v 1.11 2005/08/09 12:13:43 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -83,6 +83,39 @@ function plugin_commentsupport_polls()
 {
     // polls will use comments
     return true;
+}
+
+/**
+ * Poll saves a comment
+ *
+ * @param   string  $type   Plugin to save comment
+ * @param   string  $title  comment title
+ * @param   string  $comment comment text
+ * @param   string  $id     Item id to which $cid belongs
+ * @param   int     $pid    comment parent
+ * @param   string  $postmode 'html' or 'text'
+ * @return  mixed   false for failure, HTML string (redirect?) for success
+ */
+function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
+{
+    global $_CONF, $LANG03, $_TABLES;
+    $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
+                               "qid = '$id'");
+    if ($commentcode < 0) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    $ret = CMT_saveComment ($title, $comment, $id, $pid, 'polls', $postmode);
+
+    if ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
+        $display .= COM_siteHeader()
+            . CMT_commentform ($uid, $title, $comment, $id, $pid,
+                    $type, $LANG03[14], $postmode)
+            . COM_siteFooter();
+    } else { // success
+        $display = COM_refresh ($_CONF['site_url']
+            . "/pollbooth.php?qid=$id&aid=-1");
+    }
 }
 
 
@@ -711,7 +744,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
                     SEC_hasAccess( $Q['owner_id'], $Q['group_id'],
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
-                $retval .= COM_userComments( $qid, $Q['question'], 'poll',
+                $retval .= COM_userComments( $qid, $Q['question'], 'polls',
                                              $order, $mode, 0, 1, false, $delete_option );
             }
         }
