@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.16 2005/08/06 13:52:00 dhaun Exp $
+// $Id: lib-comment.php,v 1.17 2005/08/09 22:37:14 ospiess Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -455,14 +455,14 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
                          . "unix_timestamp(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                       . "WHERE c.uid = u.uid AND c.cid = $pid";
+                       . "WHERE c.uid = u.uid AND c.cid = $pid AND type='{$type}'";
                 } else {
                     $count = DB_count( $_TABLES['comments'], 'sid', $sid );
             
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
                          . "unix_timestamp(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                       . "WHERE c.uid = u.uid AND c.sid = '$sid' "
+                       . "WHERE c.uid = u.uid AND c.sid = '$sid' AND type='{$type}'"
                        . "ORDER BY date $order LIMIT $start, $limit";
                 }
                 break;
@@ -483,7 +483,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                     $q2 = "SELECT COUNT(*) "
                         . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
                         . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
-                        . "AND c2.cid = $pid";
+                        . "AND c2.cid = $pid AND type='{$type}'";
                     $result = DB_query( $q2 );
                     list( $count ) = DB_fetchArray( $result );
 
@@ -492,7 +492,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
                          . "{$_TABLES['users']} as u "
                        . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
-                         . "AND c2.cid = $pid AND c.uid = u.uid "
+                         . "AND c2.cid = $pid AND c.uid = u.uid  AND type='{$type}'"
                        . "ORDER BY $cOrder LIMIT $start, $limit";
                 } else {
                     if( $pid == 0 ) {
@@ -502,14 +502,14 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                         $q = "SELECT c.*, u.username, u.fullname, u.photo, 0 as pindent, " 
                              . "unix_timestamp(c.date) AS nice_date "
                            . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                           . "WHERE c.sid = '$sid' AND c.uid = u.uid "
+                           . "WHERE c.sid = '$sid' AND c.uid = u.uid  AND type='{$type}'"
                            . "ORDER BY $cOrder LIMIT $start, $limit";
                     } else {
                         // count the total number of applicable comments
                         $q2 = "SELECT COUNT(*) "
                             . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
                             . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
-                            . "AND c2.cid = $pid";
+                            . "AND c2.cid = $pid AND type='{$type}'";
                         $result = DB_query($q2);
                         list($count) = DB_fetchArray($result);
 
@@ -518,7 +518,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                            . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
                              . "{$_TABLES['users']} as u "
                            . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
-                             . "AND c2.cid = $pid AND c.uid = u.uid "
+                             . "AND c2.cid = $pid AND c.uid = u.uid AND type='{$type}'"
                            . "ORDER BY $cOrder LIMIT $start, $limit";
                     }
                 }
@@ -731,7 +731,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
  * @param    string      $comment    Text of comment
  * @param    string      $sid        ID of object receiving comment
  * @param    int         $pid        ID of parent comment
- * @param    string      $type       Type of comment this is (article, poll, etc)
+ * @param    string      $type       Type of comment this is (article, polls, etc)
  * @param    string      $postmode   Indicates if text is HTML or plain text
  * @return   int         0 for success, > 0 indicates error
  *
