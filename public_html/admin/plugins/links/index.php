@@ -32,15 +32,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.10 2005/08/09 23:15:18 ospiess Exp $
+// $Id: index.php,v 1.11 2005/08/09 23:46:15 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
 
-// Uncomment the line below if you need to debug the HTTP variables being passed
+// Uncomment the lines below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
+// exit;
 
 // number of links to list per page
 define ('LINKS_PER_PAGE', 50);
@@ -94,9 +95,10 @@ function editlink ($mode, $lid = '')
         if ($mode == 'editsubmission') {
             $result = DB_query ("SELECT * FROM {$_TABLES['linksubmission']} WHERE lid = '$lid'");
             $A = DB_fetchArray($result);
+        } else {
+            $A['lid'] = COM_makesid();
         }
         $A['hits'] = 0;
-        $A['lid'] = COM_makesid();
         $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Links Admin'])) {
             $A['group_id'] = $_GROUPS['Links Admin'];
