@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.11 2005/08/09 12:13:43 ospiess Exp $
+// $Id: functions.inc,v 1.12 2005/08/09 13:52:00 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -115,6 +115,32 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     } else { // success
         $display = COM_refresh ($_CONF['site_url']
             . "/pollbooth.php?qid=$id&aid=-1");
+    }
+}
+
+/**
+ * polls delete a comment
+ *
+ * @param   int     $cid    Comment to be deleted
+ * @param   string  $id     Item id to which $cid belongs
+ * @return  mixed   false for failure, HTML string (redirect?) for success
+ */
+function plugin_deletecomment_polls($cid, $id)
+{
+    global $_TABLES;
+    $has_editPermissions = SEC_hasRights ('polls.edit');
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$id}'");
+    $A = DB_fetchArray ($result);
+
+    if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
+            $A['group_id'], $A['perm_owner'], $A['perm_group'],
+            $A['perm_members'], $A['perm_anon']) == 3) {
+        CMT_deleteComment($cid, $id, 'polls');
+        $display .= COM_refresh ($_CONF['site_url'] . "/pollbooth.php?qid=$id&aid=-1");
+    } else {
+        COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+                    . "tried to illegally delete comment $cid from $type $id");
+        $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 }
 
