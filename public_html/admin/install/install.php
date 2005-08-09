@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.77 2005/01/29 09:02:11 dhaun Exp $
+// $Id: install.php,v 1.78 2005/08/09 17:30:27 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -231,6 +231,61 @@ function INST_welcomePage()
     return $retval;
 }
 
+function INST_identifyGeeklogVersion ()
+{
+    global $_TABLES, $_DB_dbms;
+
+    // simple tests for the version of the database:
+    // "DESCRIBE sometable somefield", ''
+    //  => just test that the field exists
+    // "DESCRIBE sometable somefield", 'somefield,sometype'
+    //  => test that the field exists and is of the given type
+    //
+    // Should always include a test for the current version so that we can
+    // warn the user if they try to run the update again.
+
+    $test = array(
+        '1.3.12' => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
+        '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
+        '1.3.10' => array("DESCRIBE {$_TABLES['comments']} lft",''),
+        '1.3.9'  => array("DESCRIBE {$_TABLES['blocks']} blockorder",'blockorder,smallint(5)'),
+        '1.3.8'  => array("DESCRIBE {$_TABLES['userprefs']} showonline",'')
+
+        // It's hard to (reliably) test for 1.3.7 - let's just hope nobody uses
+        // such an old version any more ...
+    );
+
+    $version = '';
+
+    if ($_DB_dbms == 'mysql') {
+        foreach ($test as $v => $qarray) {
+            $result = DB_query ($qarray[0]);
+            if ($result === false) {
+                // error - get out of here
+                break;
+            }
+            if (DB_numRows ($result) > 0) {
+                $A = DB_fetchArray ($result);
+                if (empty ($qarray[1])) {
+                    // test only for existence of field - succeeded
+                    $version = $v;
+                    break;
+                } else {
+                    // test for certain type of field
+                    $tst = explode (',', $qarray[1]);
+
+                    if (($A['Field'] == $tst[0]) && ($A['Type'] == $tst[1])) {
+                        $version = $v;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return $version;
+}
+
 function INST_getDatabaseSettings($install_type, $geeklog_path)
 {
     global $_CONF, $_TABLES;
@@ -240,24 +295,36 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     $db_templates->set_var ('geeklog_path', $geeklog_path);
 
     if ($install_type == 'upgrade_db') {
-        $db_templates->set_var('upgrade',1);
+        $db_templates->set_var ('upgrade', 1);
 
         $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11');
 
-        $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
-        $cnt = count ($old_versions);
-        for ($j = 1; $j <= $cnt; $j++) {
-           $versiondd .= '<option';
-           if ($j == $cnt) {
-               $versiondd .= ' selected="selected"';
-           }
-           $versiondd .= '>' . current ($old_versions) . '</option>';
-           next($old_versions);
+        $curv = INST_identifyGeeklogVersion ();
+        if (empty ($curv)) {
+            $curv = $old_versions[count ($old_versions) - 1];
         }
-        $versiondd .= '</select></td></tr>';
-        $db_templates->set_var('UPGRADE_OPTIONS', $versiondd);
-        $db_templates->set_var('DB_TABLE_OPTIONS', '');
+        if ($curv == VERSION) {
+            $versiondd = '<tr><td align="left"><b>Database already up to date!</b>' . LB
+                       . '<p>It looks like your database is already up to date. You probably ran the upgrade before. If you need to run the upgrade again, please re-install your database backup first!</td></tr>';
+            $nextbutton = '';
+        } else {
+            $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
+            foreach ($old_versions as $version) {
+                $versiondd .= '<option';
+                if ($version == $curv) {
+                    $versiondd .= ' selected="selected"';
+                }
+                $versiondd .= '>' . $version . '</option>';
+            }
+            $versiondd .= '</select></td></tr>';
+            $nextbutton = '<input type="submit" name="action" value="Next &gt;&gt;">';
+        }
+        $db_templates->set_var ('UPGRADE_OPTIONS', $versiondd);
+        $db_templates->set_var ('DB_TABLE_OPTIONS', '');
+        $db_templates->set_var ('NEXT_BUTTON', $nextbutton);
+
     } else {
+
         // This is a fresh installation
         $db_templates->set_var ('upgrade', 0);
 
@@ -271,6 +338,8 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
             $db_templates->set_var ('UPGRADE_OPTIONS',
                                     '<tr><td>&nbsp;</td></tr>');
         }
+        $nextbutton = '<input type="submit" name="action" value="Next &gt;&gt;">';
+        $db_templates->set_var ('NEXT_BUTTON', $nextbutton);
     }
 
     return $db_templates->parse('output','db');

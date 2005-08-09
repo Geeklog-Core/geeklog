@@ -11,7 +11,7 @@
     </table>
     <input type="hidden" name="page" value="2">
     <input type="hidden" name="geeklog_path" value="{geeklog_path}">
-    <p align="center"><input type="submit" name="action" value="&lt;&lt; Previous">&nbsp;<input type="submit" name="action" value="Next &gt;&gt;"></p>
+    <p align="center"><input type="submit" name="action" value="&lt;&lt; Previous">&nbsp;{NEXT_BUTTON}</p>
     </form>
 </body>
 </html>
