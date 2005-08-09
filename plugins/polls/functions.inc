@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.12 2005/08/09 13:52:00 ospiess Exp $
+// $Id: functions.inc,v 1.13 2005/08/09 22:38:37 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -770,7 +770,8 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
                     SEC_hasAccess( $Q['owner_id'], $Q['group_id'],
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
-                $retval .= COM_userComments( $qid, $Q['question'], 'polls',
+                require_once $_CONF['path_system'] . 'lib-comment.php';
+                $retval .= CMT_userComments( $qid, $Q['question'], 'polls',
                                              $order, $mode, 0, 1, false, $delete_option );
             }
         }
