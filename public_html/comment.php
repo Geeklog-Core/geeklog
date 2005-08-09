@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.94 2005/07/21 14:05:09 vinny Exp $
+// $Id: comment.php,v 1.95 2005/08/09 14:04:20 ospiess Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -97,30 +97,6 @@ function handleSubmit() {
                     . "/article.php?story=$sid"));
             }
             break;
-
-        /*
-        case 'poll':
-            $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
-                                       "qid = '$sid'");
-            if ($commentcode < 0) {
-                return COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-
-            $ret = CMT_saveComment (strip_tags ($_POST['title']), 
-                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true), 
-                'poll', COM_applyFilter ($_POST['postmode']));
-
-            if ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
-                $display .= COM_siteHeader()
-                    . CMT_commentform ($uid, $title, $comment, $sid, $pid, 
-                            $type, $LANG03[14], $postmode)
-                    . COM_siteFooter();
-            } else { // success
-                $display = COM_refresh ($_CONF['site_url']
-                    . "/pollbooth.php?qid=$sid&aid=-1");
-            }
-            break;
-        */
         default: // assume plugin
             if ( !($display = PLG_commentSave($type, strip_tags ($_POST['title']), 
                                 $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true),
@@ -166,24 +142,6 @@ function handleDelete() {
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             }
             break;
-        /* 
-        case 'poll':
-            $has_editPermissions = SEC_hasRights ('poll.edit');
-            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$sid}'");
-            $A = DB_fetchArray ($result);
-
-            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
-                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
-                    $A['perm_members'], $A['perm_anon']) == 3) {
-                CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'poll');
-                $display .= COM_refresh ($_CONF['site_url'] . "/pollbooth.php?qid=$sid&aid=-1");
-            } else {
-                COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
-                            . "tried to illegally delete comment $cid from $type $sid");
-                $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-            break;
-          */
         default: //assume plugin
             if ( !($display = PLG_commentDelete($type, 
                                 COM_applyFilter($_REQUEST['cid'], true), $sid)) ) {
@@ -282,7 +240,7 @@ function handleView($view = true) {
             }
             break;
 */
-        default: // assume comment
+        default: // assume plugin
             if ( !($display = PLG_displayComment($type, $sid, $cid, $title,
                                   COM_applyFilter ($_REQUEST['order']), $format, 
                                   COM_applyFilter ($_REQUEST['page'], true), $view)) ) {
@@ -351,9 +309,10 @@ default:  // New Comment
                 $title = DB_getItem ($_TABLES['stories'], 'title',
                                      "sid = '{$sid}'");
             // hmm probaly should remove this now that polls is a plugin
-            } elseif ($type == 'poll') {
+            /**} elseif ($type == 'poll') {
                 $title = DB_getItem ($_TABLES['pollquestions'], 'question',
                                      "qid = '{$sid}'");
+            **/
             }
             $title = str_replace ('$', '&#36;', $title);
         }
