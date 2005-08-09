@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2005/08/09 11:03:01 ospiess Exp $
+// $Id: index.php,v 1.9 2005/08/09 11:04:08 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -127,8 +127,7 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('lang_category', $LANG_LINKS_ADMIN[5]);
     $result    = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} GROUP BY category");
     $nrows    = DB_numRows($result);
-    // The SQL above calls entries with "Other" already. Adding it here lists it
-    // twice!
+
     $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">' . $LANG_LINKS_ADMIN[7] . '</option>';
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
