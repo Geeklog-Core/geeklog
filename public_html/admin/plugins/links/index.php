@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.9 2005/08/09 11:04:08 ospiess Exp $
+// $Id: index.php,v 1.10 2005/08/09 23:15:18 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -463,8 +463,8 @@ function deleteLink ($lid)
 }
 
 // MAIN
-if (isset ($_REQUES['mode'])) {
-    $mode = $_REQUES['mode'];
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
 }
 
 if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // delete
