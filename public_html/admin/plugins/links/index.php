@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2005/07/17 09:37:42 dhaun Exp $
+// $Id: index.php,v 1.8 2005/08/09 11:03:01 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -129,7 +129,7 @@ function editlink ($mode, $lid = '')
     $nrows    = DB_numRows($result);
     // The SQL above calls entries with "Other" already. Adding it here lists it
     // twice!
-    // $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">' . $LANG_LINKS_ADMIN[7] . '</option>';
+    $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">' . $LANG_LINKS_ADMIN[7] . '</option>';
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
@@ -209,7 +209,7 @@ function editlink ($mode, $lid = '')
 */
 function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $title, $hits, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG23, $MESSAGE;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $MESSAGE, $LANG_LINKS_ADMIN;
 
     // Convert array values to numeric permission values
     if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
