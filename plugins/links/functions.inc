@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.19 2005/07/30 20:08:25 dhaun Exp $
+// $Id: functions.inc,v 1.20 2005/08/10 06:13:50 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -761,6 +761,9 @@ function plugin_moderationvalues_links()
 */
 function plugin_moderationapprove_links($id)
 {
+    global $_TABLES, $_USER;
+    # this was mentioned as a bug but I am not sure it is necessary.
+    DB_change($_TABLES['links'],'owner_id',$_USER['uid'],'lid',$id)
     return '';
 }
 
@@ -775,13 +778,13 @@ function plugin_moderationapprove_links($id)
 * @return     string       Any wanted HTML output
 *
 */
-function plugin_moderationdelete_lists($id)
+function plugin_moderationdelete_links($id)
 {
     global $_TABLES;
 
     // these tables should not contain any rows with ml_id = $id
     // this is done 'just in case'
-    DB_delete ($_TABLES['linksubscriptions'], 'lid', $id);
+    DB_delete ($_TABLES['linksubmissions'], 'lid', $id);
 
     return '';
 }
