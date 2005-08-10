@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.68 2005/08/10 17:08:36 trinity Exp $
+// $Id: lib-plugins.php,v 1.69 2005/08/10 17:15:51 trinity Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1432,9 +1432,7 @@ function PLG_getBlocks( $side, $topic='')
     global $_PLUGINS;
 
     // future code to do a lib-custom function   
-    /* if (function_exists(CUSTOM_getBlocks)) {
-        $cust_items .= CUSTOM_getBlocks($side, $topic='');
-    }*/
+    /* */
    
     
 
@@ -1445,13 +1443,19 @@ function PLG_getBlocks( $side, $topic='')
             $items = $function($side, $topic='');
             if (is_array ($items)) {
                 $ret = array_merge ($ret, $items);
-                // future code to do a lib-custom function
-                /*
-                 $ret = array_merge ($ret, $cust_items) 
-                */
+                
             }
         }
     }
+    // future code to do a lib-custom function
+    /*
+    if (function_exists(CUSTOM_getBlocks)) {
+       $cust_items .= CUSTOM_getBlocks($side, $topic='');
+       if (is_array ($cust_items)) {
+          $ret = array_merge ($ret, $cust_items) 
+       }
+    }
+    */
     return $ret;
 }
 /**
