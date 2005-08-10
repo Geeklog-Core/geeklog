@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.20 2005/08/10 06:13:50 ospiess Exp $
+// $Id: functions.inc,v 1.21 2005/08/10 09:53:35 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -763,7 +763,7 @@ function plugin_moderationapprove_links($id)
 {
     global $_TABLES, $_USER;
     # this was mentioned as a bug but I am not sure it is necessary.
-    DB_change($_TABLES['links'],'owner_id',$_USER['uid'],'lid',$id)
+    DB_change($_TABLES['links'],'owner_id',$_USER['uid'],'lid',$id);
     return '';
 }
 
