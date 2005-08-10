@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.67 2005/08/05 22:37:12 blaine Exp $
+// $Id: lib-plugins.php,v 1.68 2005/08/10 17:08:36 trinity Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1416,6 +1416,44 @@ function PLG_itemSaved ($id, $type)
     return $error;
 }
 
+/**
+* gets Geeklog blocks from plugin's
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic. 
+*
+* @param        string      $side       Side to get blocks for (right or left for now)
+* @param        string      $topic      Only get blocks for this topic
+* @return   array of block data
+*
+*/
+function PLG_getBlocks( $side, $topic='')
+{
+    global $_PLUGINS;
+
+    // future code to do a lib-custom function   
+    /* if (function_exists(CUSTOM_getBlocks)) {
+        $cust_items .= CUSTOM_getBlocks($side, $topic='');
+    }*/
+   
+    
+
+    $ret = array();
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_getBlocks_' . $pi_name;
+        if (function_exists($function)) {
+            $items = $function($side, $topic='');
+            if (is_array ($items)) {
+                $ret = array_merge ($ret, $items);
+                // future code to do a lib-custom function
+                /*
+                 $ret = array_merge ($ret, $cust_items) 
+                */
+            }
+        }
+    }
+    return $ret;
+}
 /**
 * Get the URL of a plugin's icon
 *
