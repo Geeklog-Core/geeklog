@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.46 2005/07/09 19:06:20 dhaun Exp $
+// $Id: plugins.php,v 1.47 2005/08/10 18:12:40 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -269,7 +269,7 @@ function changePluginStatus ($pi_name)
 */ 
 function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage) 
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $LANG32;
 
     $retval = '';
 
