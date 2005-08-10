@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2005/08/09 23:46:15 ospiess Exp $
+// $Id: index.php,v 1.12 2005/08/10 00:00:07 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -272,7 +272,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "'$lid','$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         COM_rdfUpToDateCheck ();
 
-        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=3');
+        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=2');
     } else { // missing fields
         $retval .= COM_siteHeader('menu');
         $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
