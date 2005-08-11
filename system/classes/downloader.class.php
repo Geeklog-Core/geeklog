@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.9 2005/06/01 20:53:13 blaine Exp $
+// $Id: downloader.class.php,v 1.10 2005/08/11 03:03:41 blaine Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -487,13 +487,18 @@ class downloader
             $strPathSeparator = '/';
         }
 
-        // Ensure file exists  - test 1
-        if(!is_file(($this->_sourceDirectory . $fileName)) OR
-           ($this->_sourceDirectory <> (dirname(realpath($this->_sourceDirectory . $fileName)) . $strPathSeparator))) {
+        if(!is_file($this->_sourceDirectory . $fileName)) {
+            echo "<br>{$this->sourceDirectory}{$filename} does not exist";
+        }
+
+
+        // Ensure file exists and is accessible
+        if(!is_file($this->_sourceDirectory . $fileName) OR 
+            ($this->_sourceDirectory <> (dirname($this->_sourceDirectory . $strPathSeparator .$fileName) .$strPathSeparator)) ) {
             $this->_addError('Specified file ' . $this->_sourceDirectory . $fileName . ' does not exist or is not accessible');
             return false;
         }
-        
+
         // Make sure file is readable - test 2
         clearstatcache();
         if (!is_readable($this->_sourceDirectory . $fileName)) {
