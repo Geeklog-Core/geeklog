@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.457 2005/07/26 17:35:56 mjervis Exp $
+// $Id: lib-common.php,v 1.458 2005/08/12 16:59:55 trinity Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2909,7 +2909,7 @@ function COM_showBlock( $name, $help='', $title='' )
 
 function COM_showBlocks( $side, $topic='', $name='all' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
+      global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
 
     $retval = '';
 
@@ -2965,20 +2965,43 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
+    
+    
     for( $i = 1; $i <= $nrows; $i++ )
     {
-        $A = DB_fetchArray( $result );
+        $b[] = DB_fetchArray( $result );
+    }
 
-        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
-        {
-            $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
-        }
+$c = PLG_getBlocks( $side, $topic, $name );
+$z = array_merge($b, $c);
+
+$column = 'blockorder';
+   $sorted = $z;
+   for ($i=0; $i < sizeof($sorted)-1; $i++) {
+     for ($j=0; $j<sizeof($sorted)-1-$i; $j++)
+       if ($sorted[$j][$column] > $sorted[$j+1][$column]) {
+         $tmp = $sorted[$j];
+         $sorted[$j] = $sorted[$j+1];
+         $sorted[$j+1] = $tmp;
+     }
+   }
+    $z = $sorted;
+
+//print_r(array_values($z));
+$nrows = count($z);
+
+foreach ($z as $current){
+
+
+	$A = $current;
+      if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 or $A['type']=='dynamic')
+       {
+           $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
+       }
     }
 
     return $retval;
 }
-
-
 /**
 * Formats a Geeklog block
 *
