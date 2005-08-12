@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.459 2005/08/12 17:54:21 trinity Exp $
+// $Id: lib-common.php,v 1.460 2005/08/12 18:13:01 trinity Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2965,39 +2965,39 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
-    
-    
+    // convert result set to an array of associated arrays
     for( $i = 1; $i <= $nrows; $i++ )
     {
         $b[] = DB_fetchArray( $result );
     }
-
+    
+    // get blocks from all the plugins and 
+    // merge them with the db results
     $c = PLG_getBlocks( $side, $topic, $name );
     $z = array_merge($b, $c);
-
+    
+    // sort the resulting array by block order
     $column = 'blockorder';
     $sorted = $z;
-    for ($i=0; $i < sizeof($sorted)-1; $i++) {
+    for ($i=0; $i < sizeof($sorted)-1; $i++) 
+    {
       for ($j=0; $j<sizeof($sorted)-1-$i; $j++)
-        if ($sorted[$j][$column] > $sorted[$j+1][$column]) {
+        if ($sorted[$j][$column] > $sorted[$j+1][$column]) 
+        {
          $tmp = $sorted[$j];
          $sorted[$j] = $sorted[$j+1];
          $sorted[$j+1] = $tmp;
         }
     }
     $z = $sorted;
-
-
-   $nrows = count($z);
-
+    
+    // Loop though resulting sorted array aand pass associative arays to COM_formatBlock
     foreach ($z as $current){
-
-
-	$A = $current;
-      if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 or $A['type']=='dynamic')
-       {
+        $A = $current;
+        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 or $A['type']=='dynamic')
+        {
            $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
-       }
+        }
     }
 
     return $retval;
