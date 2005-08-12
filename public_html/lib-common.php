@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.458 2005/08/12 16:59:55 trinity Exp $
+// $Id: lib-common.php,v 1.459 2005/08/12 17:54:21 trinity Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2972,25 +2972,25 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         $b[] = DB_fetchArray( $result );
     }
 
-$c = PLG_getBlocks( $side, $topic, $name );
-$z = array_merge($b, $c);
+    $c = PLG_getBlocks( $side, $topic, $name );
+    $z = array_merge($b, $c);
 
-$column = 'blockorder';
-   $sorted = $z;
-   for ($i=0; $i < sizeof($sorted)-1; $i++) {
-     for ($j=0; $j<sizeof($sorted)-1-$i; $j++)
-       if ($sorted[$j][$column] > $sorted[$j+1][$column]) {
+    $column = 'blockorder';
+    $sorted = $z;
+    for ($i=0; $i < sizeof($sorted)-1; $i++) {
+      for ($j=0; $j<sizeof($sorted)-1-$i; $j++)
+        if ($sorted[$j][$column] > $sorted[$j+1][$column]) {
          $tmp = $sorted[$j];
          $sorted[$j] = $sorted[$j+1];
          $sorted[$j+1] = $tmp;
-     }
-   }
+        }
+    }
     $z = $sorted;
 
-//print_r(array_values($z));
-$nrows = count($z);
 
-foreach ($z as $current){
+   $nrows = count($z);
+
+    foreach ($z as $current){
 
 
 	$A = $current;
