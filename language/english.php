@@ -664,7 +664,9 @@ $LANG21 = array(
     59 => 'Move block to the right side',
     60 => 'Move block to the left side',
     61 => 'No Title',
-    62 => 'Article Limit'
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!'
 );
 
 ###############################################################################
@@ -775,37 +777,6 @@ $LANG24 = array(
     66 => 'Limit Results'
 );
 
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'Mode',
-    2 => 'Please enter a question and at least one answer.',
-    3 => 'Poll Created',
-    4 => 'Poll %s saved',
-    5 => 'Edit Poll',
-    6 => 'Poll ID',
-    7 => '(do not use spaces)',
-    8 => 'Appears on Homepage',
-    9 => 'Question',
-    10 => 'Answers / Votes',
-    11 => 'There was an error getting poll answer data about the poll %s',
-    12 => 'There was an error getting poll question data about the poll %s',
-    13 => 'Create Poll',
-    14 => 'save',
-    15 => 'cancel',
-    16 => 'delete',
-    17 => 'Please enter a Poll ID',
-    18 => 'Poll List',
-    19 => 'To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.',
-    20 => 'Voters',
-    21 => 'Access Denied',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
-    23 => 'New Poll',
-    24 => 'Admin Home',
-    25 => 'Yes',
-    26 => 'No'
-);
 
 ###############################################################################
 # admin/topic.php

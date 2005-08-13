@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.66 2005/06/25 17:14:34 dhaun Exp $
+// $Id: block.php,v 1.67 2005/08/13 19:14:22 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -352,6 +352,19 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 
     $retval = '';
 
+    $title = addslashes (COM_stripslashes (strip_tags ($title)));
+    $phpblockfn = addslashes (COM_stripslashes ($phpblockfn));
+    if (empty($title)) {
+        $retval .= COM_siteHeader()
+                . COM_startBlock ($LANG21[63], '',
+                          COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG21[64]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                      'footer'))
+                . editblock ($bid)
+                . COM_siteFooter ();
+        return $retval;
+    }
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
@@ -429,8 +442,6 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             $rdflimit = 0;
         }
 
-        $title = addslashes (COM_stripslashes ($title));
-        $phpblockfn = addslashes (COM_stripslashes ($phpblockfn));
         DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled");
 
         if (($type == 'gldefault') && ($name == 'older_stories')) {
