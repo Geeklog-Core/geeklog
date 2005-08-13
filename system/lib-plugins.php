@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.69 2005/08/10 17:15:51 trinity Exp $
+// $Id: lib-plugins.php,v 1.70 2005/08/13 16:01:29 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -496,7 +496,13 @@ function PLG_getUserOptions()
 * This function will show any plugin adminstrative options in the
 * admin functions block on every page (assuming the user is an admin
 * and is logged in).
-* NOTE: the plugin is responsible for it's own security. 
+* NOTE: the plugin is responsible for it's own security.
+* This supports that a plugin can have several lines in the Admin menu.
+* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* get n lines in the menu such as
+* array(    "first line", "url1", "1",
+*            "second line", "url2", "44",
+*            etc, etc)
 *
 * @return   array   Returns options to put in admin menu
 *
@@ -505,13 +511,17 @@ function PLG_getAdminOptions()
 {
     global $_PLUGINS;
 
+    $var_names=array("adminlabel", "adminurl", "numsubmissions");
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
-        $plugin = new Plugin();
         $function = 'plugin_getadminoption_' . $pi_name;
         if (function_exists($function)) {
-            list($plugin->adminlabel, $plugin->adminurl, $plugin->numsubmissions) = $function();
-            if (!empty ($plugin->adminlabel) && !empty ($plugin->adminurl)) {
+            $sets_array = array_chunk($function(), count($var_names));
+            while(list($key, $val) = each($sets_array)) {
+                $plugin = new Plugin();
+                for ($n=0;$n<count($var_names);$n++) {
+                    $plugin->$var_names[$n] = $val[$n];
+                }
                 $counter++;
                 $plgresults[$counter] = $plugin;
             }
