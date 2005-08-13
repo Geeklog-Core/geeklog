@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.73 2005/08/13 20:13:50 ospiess Exp $
+// $Id: lib-plugins.php,v 1.74 2005/08/13 21:51:49 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -467,14 +467,14 @@ function PLG_getSubmissionCount()
 * functions and is not to be called from the plugin directly. The function which
 * call this here follow below.
 * 
-* NOTE: the plugin is responsible for it's own security.
-* This supports that a plugin can have several lines in a menu.
-* The plugin has to provide simply a set of n sets of variables in order to
-* get n lines in the menu such as
-* array(    "first line", "url1", "1",
-*            "second line", "url2", "44",
-*            etc, etc)
+* NOTE for plugin developers: 
+* The plugin is responsible for it's own security.
+* This supports a plugin having either a single menuitem or multiple mennuitems.
+* The plugin has to provide an array for the menuitem of the format:
+* array (menuitem_title, item_url, submission_count)
+* Plugin function can return a single record array or multiple records
 *
+* 
 * @param    array $var_names    An array of the variables that are retrieved. 
 *                               This has to match the named array that is used
 *                               in the function returning the values
@@ -495,7 +495,14 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
         if (function_exists($function)) {
             $plg_array = $function();
             if ($plg_array !== false) {
-                $sets_array = array_chunk($plg_array, count($var_names));
+                // Check if plugin is returning an single record array or multiple records
+                if (count($plg_array[0]) == 1) {
+                    // Single record - so we need to prepare the sets_array;
+                    $sets_array[0] = $plg_array;
+                } else {
+                    // Multiple menuitem records - in required format
+                    $sets_array = $plg_array;
+                }
                 while (list ($key, $val) = each ($sets_array)) {
                     $plugin = new Plugin();
                     $good_array = true;
