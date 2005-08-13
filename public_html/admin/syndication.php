@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.23 2005/08/08 18:41:23 dhaun Exp $
+// $Id: syndication.php,v 1.24 2005/08/13 18:37:07 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -91,7 +91,8 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
     
     $feed_template->set_var('last_query', $query);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG33[48] . '" title="'
+             . $LANG33[48] . '">';
     $feed_template->set_var('edit_icon', $editico);
     $feed_template->set_var('lang_edit', $LANG33[48]);
     
@@ -122,7 +123,9 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
             $order = 1;
             break;
     }
-    if ($order == $prevorder) {
+    if (empty ($direction)) {
+        $direction = 'asc';
+    } else if ($order == $prevorder) {
         $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
         $direction = ($direction == 'desc') ? 'desc' : 'asc';

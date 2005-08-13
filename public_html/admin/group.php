@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.50 2005/07/17 16:57:51 dhaun Exp $
+// $Id: group.php,v 1.51 2005/08/13 18:37:07 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -496,8 +496,11 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
 */
 function listgroups($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_TABLES, $_CONF, $LANG_ACCESS, $_IMAGE_TYPE,
-           $order, $prevorder, $direction;
+    global $_TABLES, $_CONF, $LANG_ACCESS, $_IMAGE_TYPE;
+
+    $order = COM_applyFilter ($_GET['order'], true);
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = COM_startBlock ($LANG_ACCESS['groupmanager'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -522,10 +525,12 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
     $group_templates->set_var('last_query', $query);
     $group_templates->set_var('lang_limit_results', $LANG_ACCESS['limitresults']);
     $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-              . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['edit'] . '">';
+              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['edit']
+              . '" title="' . $LANG_ACCESS['edit'] . '">';
     $group_templates->set_var ('edit_icon', $edit_ico);
     $list_ico = '<img src="' . $_CONF['layout_url'] . '/images/list.'
-              . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['listthem'] . '">';
+              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
+              . '" title="' . $LANG_ACCESS['listthem'] . '">';
     $group_templates->set_var ('list_icon', $list_ico);
     
     switch($order) {
@@ -540,21 +545,25 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
             break;
         default:
             $orderby = 'grp_name';
-            $order = 2;
+            $order = 1;
             break;
     }
-    
-    if ($order == $prevorder) {
-        $direction = ($direction == "desc") ? "asc" : "desc";
+    if (empty ($direction)) {
+        $direction = 'asc';
+    } else if ($order == $prevorder) {
+        $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
-        $direction = ($direction == "desc") ? "desc" : "asc";
+        $direction = ($direction == 'desc') ? 'desc' : 'asc';
     }
 
     if ($direction == 'asc') {
-        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowdown';
     } else {
-        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowup';
     }
+    $group_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="'
+            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
+            . '" border="0" alt="">');
 
     $group_templates->set_var ('direction', $direction);
     $group_templates->set_var ('page', $page);

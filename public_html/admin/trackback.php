@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.21 2005/08/07 18:18:49 dhaun Exp $
+// $Id: trackback.php,v 1.22 2005/08/13 18:37:07 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -487,7 +487,8 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     $template->set_var ('lang_site', $LANG_TRB['service_website']);
     $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_TRB['edit']
+             . '" title="' . $LANG_TRB['edit'] . '">';
     $template->set_var('edit_icon', $editico);
     $template->set_var('lang_edit', $LANG_TRB['edit']);
     $template->set_var('last_query', $query);
@@ -513,7 +514,9 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
             $order = 1;
             break;
     }
-    if ($order == $prevorder) {
+    if (empty ($direction)) {
+        $direction = 'asc';
+    } else if ($order == $prevorder) {
         $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
         $direction = ($direction == 'desc') ? 'desc' : 'asc';

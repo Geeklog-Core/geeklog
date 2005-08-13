@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.112 2005/08/07 08:24:50 dhaun Exp $
+// $Id: user.php,v 1.113 2005/08/13 18:37:07 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -430,8 +430,11 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 */
 function listusers ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG28, $_IMAGE_TYPE,
-           $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG28, $_IMAGE_TYPE;
+
+    $order = COM_applyFilter ($_GET['order'], true);                           
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);                   
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
 
@@ -458,9 +461,10 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_edit', $LANG28[17]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
-              . $_IMAGE_TYPE . '">';
+              . $_IMAGE_TYPE . '" border="0" alt="">';
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG28[17] . '" title="'
+             . $LANG28[17] . '">';
     $user_templates->set_var('edit_icon', $editico);
 
     if ($_CONF['lastlogin']==true) {
@@ -494,17 +498,22 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
             $order = 1;
             break;
     }
-    if ($order == $prevorder) {
-        $direction = ($direction == "desc") ? "asc" : "desc";
+    if (empty ($direction)) {
+        $direction = 'asc';
+    } else if ($order == $prevorder) {
+        $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
-        $direction = ($direction == "desc") ? "desc" : "asc";
+        $direction = ($direction == 'desc') ? 'desc' : 'asc';
     }
 
     if ($direction == 'asc') {
-        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowdown';
     } else {
-        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowup';
     }
+    $user_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="'
+            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
+            . '" border="0" alt="">');
 
     $user_templates->set_var ('direction', $direction);
     $user_templates->set_var ('page', $page);

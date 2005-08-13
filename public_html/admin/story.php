@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.161 2005/06/25 18:12:30 dhaun Exp $
+// $Id: story.php,v 1.162 2005/08/13 18:37:07 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -612,14 +612,18 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 */
 function liststories ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS,
-           $_IMAGE_TYPE, $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG09, $LANG24, $LANG_ACCESS,
+           $_IMAGE_TYPE;
+
+    $order = COM_applyFilter ($_GET['order'], true);
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $display = '';
 
     $ping_allowed = false;
-    if (SEC_hasRights ('story.ping') &&
-            ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled'])) {
+    if (SEC_hasRights ('story.ping') && ($_CONF['trackback_enabled'] ||
+            $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])) {
         $ping_allowed = true;
     }
 
@@ -648,10 +652,12 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
     $story_templates->set_var('last_query', $query);
     $story_templates->set_var('lang_limit_results', $LANG24[66]);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" title="Edit">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG01[4] . '" title="'
+             . $LANG01[4] . '">';
     $story_templates->set_var('edit_icon', $editico);
     $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
-             . $_IMAGE_TYPE . '" title="Send Ping">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG24[21] . '" title="'
+             . $LANG24[21] . '">';
 
     if ($ping_allowed) {
         $story_templates->set_var('lang_ping', $LANG24[20]);
@@ -667,8 +673,8 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
         $current_topic = $LANG09[9];
     }
 
-    for ($i=1;$i<8;$i++) {
-      $story_templates->set_var ('img_arrow'.$i, '');
+    for ($i = 1; $i < 8; $i++) {
+      $story_templates->set_var ('img_arrow' . $i, '');
     }
 
     if ($current_topic == $LANG09[9]) {
@@ -727,20 +733,22 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
             $order = 3;
             break;
     }
-    if (!isset($direction)) {
-        $direction = "desc";
-    }
-    if ($order == $prevorder) {
-        $direction = ($direction == "desc") ? "asc" : "desc";
+    if (empty ($direction)) {
+        $direction = 'desc';
+    } else if ($order == $prevorder) {
+        $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
-        $direction = ($direction == "desc") ? "desc" : "asc";
+        $direction = ($direction == 'desc') ? 'desc' : 'asc';
     }
 
     if ($direction == 'asc') {
-        $story_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowdown';
     } else {
-        $story_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowup';
     }
+    $story_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="'
+            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
+            . '" border="0" alt="">');
 
     $story_templates->set_var ('direction', $direction);
     $story_templates->set_var ('page', $page);

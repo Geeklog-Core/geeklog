@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.58 2005/06/25 18:12:30 dhaun Exp $
+// $Id: event.php,v 1.59 2005/08/13 18:37:07 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -504,8 +504,11 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
 */
 function listevents ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE,
-           $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE;
+
+    $order = COM_applyFilter ($_GET['order'], true);                           
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);                   
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
     $retval .= COM_startBlock ($LANG22[11], '',
@@ -528,10 +531,12 @@ function listevents ($offset, $curpage, $query = '', $query_limit = 50)
     $event_templates->set_var('lang_limit_results', $LANG22[27]);
     $event_templates->set_var('last_query', $query);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG22[29] . '" title="'
+             . $LANG22[29] . '">';
     $event_templates->set_var('edit_icon', $editico);
     $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG22[30] . '" title="'
+             . $LANG22[30] . '">';
     $event_templates->set_var('copy_icon', $copyico);
     $event_templates->set_var('lang_edit', $LANG22[29]);
     $event_templates->set_var('lang_copy', $LANG22[30]);
@@ -551,17 +556,22 @@ function listevents ($offset, $curpage, $query = '', $query_limit = 50)
             $order = 2;
             break;
     }
-    if ($order == $prevorder) {
-        $direction = ($direction == "desc") ? "asc" : "desc";
+    if (empty ($direction)) {
+        $direction = 'desc';
+    } else if ($order == $prevorder) {
+        $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
-        $direction = ($direction == "desc") ? "desc" : "asc";
+        $direction = ($direction == 'desc') ? 'desc' : 'asc';
     }
 
     if ($direction == 'asc') {
-        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowdown';
     } else {
-        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
+        $arrow = 'bararrowup';
     }
+    $event_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="' 
+            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
+            . '" border="0" alt="">');
 
     $event_templates->set_var ('direction', $direction);
     $event_templates->set_var ('page', $page);

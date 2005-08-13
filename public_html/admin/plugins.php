@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.47 2005/08/10 18:12:40 dhaun Exp $
+// $Id: plugins.php,v 1.48 2005/08/13 18:37:07 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -183,7 +183,8 @@ function listplugins ($page = 1)
     $plg_templates->set_var('lang_enabled', $LANG32[19]);
     $plg_templates->set_var('lang_edit', $LANG32[35]);
     $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-              . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['edit'] . '">';
+              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['edit']
+              . '" title="' . $LANG_ACCESS['edit'] . '">';
     $plg_templates->set_var ('edit_icon', $edit_ico);
 
     $limit = (PLUGINS_PER_PAGE * $page) - PLUGINS_PER_PAGE;
