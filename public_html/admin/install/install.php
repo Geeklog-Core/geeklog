@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.78 2005/08/09 17:30:27 dhaun Exp $
+// $Id: install.php,v 1.79 2005/08/13 12:19:31 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -176,8 +176,13 @@ function INST_welcomePage()
 
     $globals_off     = false;
     $long_arrays_off = false;
+    $public_html     = false;
     $warn_message    = '';
     $help_message    = '';
+
+    if (strpos ($_SERVER['PHP_SELF'], 'public_html') !== false) {
+        $public_html = true;
+    }
 
     if (!ini_get ('register_globals')) {
         $globals_off = true;
@@ -198,13 +203,19 @@ function INST_welcomePage()
         $help_message .= '<code>register_long_arrays = On</code>';
     }
 
-    if ($globals_off || $long_arrays_off) {
+    if ($globals_off || $long_arrays_off || $public_html) {
         $retval .= '<h1>Important Note</h1>' . LB;
 
-        $retval .= '<p><font color="red"><strong>Note:</strong> You have '
-                . $warn_message .' in your <tt>php.ini</tt>. While Geeklog itself will work just fine with that setting, many of the available plugins and add-ons may not. You may want to set '
-                . $help_message . ' (and restart your webserver) if you plan to install any of those add-ons.</font></p>' . LB;
-        $retval .= '<p>If you don\'t know where your <tt>php.ini</tt> file is located, please <a href="info.php">click here</a>.</p>' . LB;
+        if ($public_html) {
+            $retval .= '<p><strong>Note:</strong> "public_html" should never be part of your site\'s URL. Please read the part about public_html in the <a href="../../docs/install.html#public_html">installation instructions</a> again and change your setup accordingly before you proceed.</p>';
+        }
+
+        if ($globals_off || $long_arrays_off) {
+            $retval .= '<p><font color="red"><strong>Note:</strong> You have '
+                    . $warn_message .' in your <tt>php.ini</tt>. While Geeklog itself will work just fine with that setting, some of the available plugins and add-ons may not. You may want to set '
+                    . $help_message . ' (and restart your webserver) if you plan to install any of those add-ons.</font></p>' . LB;
+            $retval .= '<p>If you don\'t know where your <tt>php.ini</tt> file is located, please <a href="info.php">click here</a>.</p>' . LB;
+        }
     }
 
     $retval .= '<h2>Installation Options</h2>' . LB;
