@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.22 2005/08/08 18:42:12 dhaun Exp $
+// $Id: database.php,v 1.23 2005/08/13 19:33:19 ospiess Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -83,7 +83,7 @@ if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {
 if (isset ($_POST['mode']) &&
         ($_POST['mode'] == $LANG_DB_BACKUP['do_backup'])) {
     if (is_dir ($_CONF['backup_path'])) {
-        $curdatetime = date ("Y_m_d");
+        $curdatetime = date ("Y_m_d_H_i_s");
         $backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";
         $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user";
         if (!empty ($_DB_pass)) {
