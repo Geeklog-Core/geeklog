@@ -662,13 +662,20 @@ TD.forumRollOut   {
     font-family: Verdana, Helvetica, sans-serif;
 }
 /* New Plugin CSS Declarations */
+.plugin                { color: #000; background-color: #EFEFEF; font-weight: plain; font-size: 12pt; font-family: Verdana, sans-serif; border:1px solid #CCC }
+.plugin th             { color: #000; font-size: .9em; background-color: #B7C1DC; padding:5px; text-align:left;}
+.plugin tr             { vertical-align:top; }
+.plugin td             { padding:2px 5px 2px 5px; }
 .pluginBG              { background-color: #EFEFEF; }
 .pluginAltBG           { background-color: #1C1E2D; }
 .pluginTitle           { color: #1C1E2D; background-color:#EFEFEF; font-weight: bold; font-size: 85%; font-family: Verdana, sans-serif; }
 .pluginHeader          { color: #1A3955; font-weight: bolder; font-size: 95%; background-color: #CCC; padding:5px; }
 .pluginFooter          { background-color:#EFEFEF; }
 .pluginAlert           { padding:5px 15px 5px 15px; color:#D8010E; background-color: #FEF1B4; font-weight:bold;}
-
+.pluginInfo            { padding:5px 15px 5px 15px; color:#707070; background-color: #FEF1B4; font-size: 8pt; font-weight:normal;}
+.pluginSubTable        { color: #000; background-color: #CCC; font-weight: plain; font-size: 12pt; font-family: Verdana, sans-serif; border:1px solid #CCC }
+.pluginSubTable th     { color: #000; font-size: .7em; background-color: #C9D1E4; padding:5px; text-align:left;}
+.pluginSubTable tr     { vertical-align:top; }
 .pluginSolidOutline    { background-color: #396998; }
 .pluginSolidFill       { background-color: #1A3955; }
 .pluginCellTitle       { color: #1C1E2D; font-weight: bold; font-size: 80%; font-family: Verdana, sans-serif; background-color: #E5E5EA; }
@@ -680,8 +687,8 @@ TD.forumRollOut   {
 .pluginLargeText       { font-size:90%; }
 .pluginAltText         { color: #FFF }
 
-.pluginRow1            { background-color: #EFEFEF; }
-.pluginRow2            { background-color: #D9D9D9; }
+.pluginRow1 td         { background-color: #EFEFEF; }
+.pluginRow2 td         { background-color: #D9D9D9; }
 
 .pluginRollOver         { color: #1C1E2D; background-color: #FFFF8F; }
 .pluginRollOut          { color: #1C1E2D; background-color: #F7F7F7; }
