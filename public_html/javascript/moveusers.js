@@ -2,8 +2,8 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | index.php                                                                 |
-// | Geeklog homepage.                                                         |
+// | Set of javascript functions to support the user-move feature              |
+// | where two selectboxes are presented                                       |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2003,2004 by the following authors:                         |
