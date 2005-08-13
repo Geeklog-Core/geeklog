@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.70 2005/08/13 16:01:29 ospiess Exp $
+// $Id: lib-plugins.php,v 1.71 2005/08/13 16:16:35 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -511,19 +511,26 @@ function PLG_getAdminOptions()
 {
     global $_PLUGINS;
 
-    $var_names=array("adminlabel", "adminurl", "numsubmissions");
+    $var_names = array("adminlabel", "adminurl", "numsubmissions");
+    $required_names = array(true, true, false);
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getadminoption_' . $pi_name;
         if (function_exists($function)) {
             $sets_array = array_chunk($function(), count($var_names));
-            while(list($key, $val) = each($sets_array)) {
+            while (list ($key, $val) = each ($sets_array)) {
                 $plugin = new Plugin();
-                for ($n=0;$n<count($var_names);$n++) {
-                    $plugin->$var_names[$n] = $val[$n];
+                $good_array = true;
+                for ($n = 0; $n < count($var_names); $n++) {
+                    $plugin -> $var_names[$n] = $val[$n];
+                    if (empty ($plugin -> $var_names[$n]) && $required_names[$n]) {
+                        $good_array = false;
+                    }
                 }
                 $counter++;
-                $plgresults[$counter] = $plugin;
+                if ($good_array) {
+                    $plgresults[$counter] = $plugin;
+                }
             }
         }
     }
