@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.74 2005/08/13 21:51:49 blaine Exp $
+// $Id: lib-plugins.php,v 1.75 2005/08/13 23:08:03 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1480,22 +1480,20 @@ function PLG_getBlocks( $side, $topic='')
 {
     global $_PLUGINS;
 
-    // future code to do a lib-custom function   
-    /* */
-   
-    
-
     $ret = array();
-    foreach ($_PLUGINS as $pi_name) {
+    foreach ($_PLUGINS as $pi_name)
+    {
         $function = 'plugin_getBlocks_' . $pi_name;
-        if (function_exists($function)) {
+        if (function_exists($function))
+        {
             $items = $function($side, $topic='');
-            if (is_array ($items)) {
+            if (is_array ($items))
+            {
                 $ret = array_merge ($ret, $items);
-                
             }
         }
     }
+
     // future code to do a lib-custom function
     /*
     if (function_exists(CUSTOM_getBlocks)) {

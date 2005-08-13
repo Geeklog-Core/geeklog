@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.460 2005/08/12 18:13:01 trinity Exp $
+// $Id: lib-common.php,v 1.461 2005/08/13 23:08:03 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2966,34 +2966,34 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $nrows = DB_numRows( $result );
 
     // convert result set to an array of associated arrays
+    $blocks = array();
     for( $i = 1; $i <= $nrows; $i++ )
     {
-        $b[] = DB_fetchArray( $result );
+        $blocks[] = DB_fetchArray( $result );
     }
-    
-    // get blocks from all the plugins and 
-    // merge them with the db results
-    $c = PLG_getBlocks( $side, $topic, $name );
-    $z = array_merge($b, $c);
-    
+
+    // Check and see if any plugins have blocks to show
+    $pluginBlocks = PLG_getBlocks( $side, $topic, $name );
+    $blocks = array_merge($blocks, $pluginBlocks);
+
     // sort the resulting array by block order
     $column = 'blockorder';
-    $sorted = $z;
-    for ($i=0; $i < sizeof($sorted)-1; $i++) 
+    $sortedBlocks = $blocks;
+    for ($i=0; $i < sizeof($sortedBlocks)-1; $i++) 
     {
-      for ($j=0; $j<sizeof($sorted)-1-$i; $j++)
-        if ($sorted[$j][$column] > $sorted[$j+1][$column]) 
+      for ($j=0; $j<sizeof($sortedBlocks)-1-$i; $j++)
+        if ($sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column]) 
         {
-         $tmp = $sorted[$j];
-         $sorted[$j] = $sorted[$j+1];
-         $sorted[$j+1] = $tmp;
+         $tmp = $sortedBlocks[$j];
+         $sortedBlocks[$j] = $sortedBlocks[$j+1];
+         $sortedBlocks[$j+1] = $tmp;
         }
     }
-    $z = $sorted;
+    $blocks = $sortedBlocks;
     
     // Loop though resulting sorted array aand pass associative arays to COM_formatBlock
-    foreach ($z as $current){
-        $A = $current;
+    foreach ($blocks as $A)
+    {
         if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 or $A['type']=='dynamic')
         {
            $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
