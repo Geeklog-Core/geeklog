@@ -30,13 +30,13 @@
   </table>
   <table cellpadding="2" cellspacing="1" border="0" width="100%">
       <tr style="background:#FFFFFF;">
-          <th style="text-align:left;padding-right:5px;padding-left:5px;">{lang_edit}</th>
-          <th style="text-align:left;padding-right:5px;padding-left:5px;">{lang_copy}</th>
-          <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_id}{img_arrow1}</th>
-          <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_title}{img_arrow2}</th>
-          <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_centerblock}{img_arrow3}</th>
-          <th style="text-align:left;padding-right:5px;" nowrap>{lang_writtenby}</th>
-          <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_lastupdated}{img_arrow4}</th>
+          <th class="admin-list-headerfield">{lang_edit}</th>
+          <th class="admin-list-headerfield">{lang_copy}</th>
+          <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_id}{img_arrow1}</th>
+          <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_title}{img_arrow2}</th>
+          <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_centerblock}{img_arrow3}</th>
+          <th class="admin-list-headerfield">{lang_writtenby}</th>
+          <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/staticpages/index.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_lastupdated}{img_arrow4}</th>
       </tr>
       {list_item} 
       <tr><td colspan="4">{lang_nopages_msg}</td></tr>
