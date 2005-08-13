@@ -1,5 +1,5 @@
     <tr class="pluginRow{cssid}">
-        <td><a href="{service_url}">{service_name}</a></td>
-        <td>{ping_result}</td>
-        <td>{resend}</td>
+        <td class="admin-list-field"><a href="{service_url}">{service_name}</a></td>
+        <td class="admin-list-field">{ping_result}</td>
+        <td class="admin-list-field">{resend}</td>
     </tr>

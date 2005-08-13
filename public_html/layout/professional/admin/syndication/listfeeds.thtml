@@ -25,16 +25,16 @@
     </td>
 </tr>
 </table>
-<table border="0" cellspacing="1" cellpadding="2" width="100%">
+<table class="admin-list-table">
     <tr style="background:#FFFFFF;">
-        <th style="padding-right:5px;padding-left:5px;" nowrap>{lang_edit}</th>
-        <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_title}{img_arrow1}</th>
-        <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_type}{img_arrow2}</th>
-        <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_format}{img_arrow3}</th>
-        <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_filename}{img_arrow4}</th>
-        <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=5&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_header_topic}{img_arrow5}</th>
-        <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=6&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_updated}{img_arrow6}</th>
-        <th width="5%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=7&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_enabled}{img_arrow7}</th>
+        <th class="admin-list-headerfield">{lang_edit}</th>
+        <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_title}{img_arrow1}</th>
+        <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_type}{img_arrow2}</th>
+        <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_format}{img_arrow3}</th>
+        <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_filename}{img_arrow4}</th>
+        <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=5&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_header_topic}{img_arrow5}</th>
+        <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=6&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_updated}{img_arrow6}</th>
+        <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/syndication.php?order=7&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_enabled}{img_arrow7}</th>
     </tr>
     {feedlist_items}
 </table>

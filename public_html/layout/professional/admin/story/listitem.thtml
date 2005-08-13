@@ -1,11 +1,11 @@
-                                <tr align="left" class="pluginRow{cssid}" style=";" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-                                    <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/story.php?mode=edit&amp;sid={story_id}">{edit_icon}</a></td>
-                                    <td style="padding-left:3px;padding-right:0px;"><a href="{article_url}">{story_title}</a></td>
-                                    <td style="padding-left:3px;padding-right:0px;">{story_access}</td>
-                                    <td style="padding-left:3px;">{story_draft}</td>
-                                    <td style="padding-left:3px;">{story_author}</td>
-                                    <td style="padding-left:3px;">{story_date}</td>
-                                    <td style="padding-left:3px;">{story_topic}</td>
-                                    <td style="padding-left:3px;">{story_feature}</td>
-                                    <td style="padding-left:3px;">{story_ping}</td>
+                                <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
+                                    <td class="admin-list-field"><a href="{site_admin_url}/story.php?mode=edit&amp;sid={story_id}">{edit_icon}</a></td>
+                                    <td class="admin-list-field"><a href="{article_url}">{story_title}</a></td>
+                                    <td class="admin-list-field">{story_access}</td>
+                                    <td class="admin-list-field">{story_draft}</td>
+                                    <td class="admin-list-field">{story_author}</td>
+                                    <td class="admin-list-field">{story_date}</td>
+                                    <td class="admin-list-field">{story_topic}</td>
+                                    <td class="admin-list-field">{story_feature}</td>
+                                    <td class="admin-list-field">{story_ping}</td>
                                 </tr>

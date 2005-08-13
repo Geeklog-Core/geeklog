@@ -1,15 +1,15 @@
     <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-        <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/trackback.php?mode=editservice&amp;service_id={service_id}">{edit_icon}</a></td>
-        <td style="padding-left:3px;">
+        <td class="admin-list-field"><a href="{site_admin_url}/trackback.php?mode=editservice&amp;service_id={service_id}">{edit_icon}</a></td>
+        <td class="admin-list-field">
             <a href="{service_site_url}">{service_name}</a>
         </td>
-        <td style="padding-left:3px;">
+        <td class="admin-list-field">
             {service_method}
         </td>
-        <td style="padding-left:3px;">
+        <td class="admin-list-field">
             {service_ping_url}
         </td>
-        <td align="center" style="padding-right:0px;">
+        <td class="admin-list-field">
             <form action="{site_admin_url}/trackback.php" method="POST">
                 <input type="checkbox" name="serviceenable" onclick="submit()" value="{service_id}" {is_enabled}>
                 <input type="hidden" name="serviceChange" value="{service_id}">
