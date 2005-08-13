@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.71 2005/08/13 16:16:35 ospiess Exp $
+// $Id: lib-plugins.php,v 1.72 2005/08/13 17:03:16 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -464,6 +464,13 @@ function PLG_getSubmissionCount()
 /**
 * This function will show any plugin user options in the
 * user block on every page
+*
+* This supports that a plugin can have several lines in the User menu.
+* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* get n lines in the menu such as
+* array(    "first line", "url1", "1",
+*            "second line", "url2", "44",
+*            etc, etc)
 * NOTE: the plugin is responsible for it's own security.
 *
 * @return   array   Returns options to add to user menu
@@ -471,24 +478,64 @@ function PLG_getSubmissionCount()
 */
 function PLG_getUserOptions() 
 {
+    // I know this uses the adminlabel, adminurl but who cares?
+    $var_names = array("adminlabel", "adminurl", "numsubmissions");
+    $required_names = array(true, true, false);
+    $function_name = 'plugin_getuseroption_';
+    $plgresults = PLG_getOptionsforMenus($var_names, $required_names, $function_name);
+    return $plgresults;
+}
+
+/**
+* This function will get & check user or admin options from plugins and check
+* required ones for availability.
+* 
+* NOTE: the plugin is responsible for it's own security.
+* This supports that a plugin can have several lines in a menu.
+* The plugin has to provide simply a set of n sets of variables in order to
+* get n lines in the menu such as
+* array(    "first line", "url1", "1",
+*            "second line", "url2", "44",
+*            etc, etc)
+*
+* @param    array $var_names    An array of the variables that are retrieved. 
+*                               This has to match the named array that is used
+*                               in the function returning the values
+* @param    array $required_names An array of true/false-values, describing
+*                                 which of the above listed values is required
+*                                 to give a valid set of data.
+* @param    string $function_name A string that gives the name of the function
+*                                 at the plugin that will return the values.
+* @return   array Returns options to add to the given menu that is calling this
+*
+*/
+function PLG_getOptionsforMenus($var_names, $required_names, $function_name)
+{
     global $_PLUGINS;
-
-    $plgresults = array ();
-
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
-        $plugin = new Plugin();
-        $function = 'plugin_getuseroption_' . $pi_name;
+        $function = $function_name . $pi_name;
         if (function_exists($function)) {
-            // I know this uses the adminlabel, adminurl but who cares?
-            list($plugin->adminlabel, $plugin->adminurl, $plugin->numsubmissions) = $function();
-            if (!empty ($plugin->adminlabel) && !empty ($plugin->adminurl)) {
-                $counter++;
-                $plgresults[$counter] = $plugin;
+            $cclabel = $function();
+            if ($cclabel !== false) {
+                $sets_array = array_chunk($cclabel, count($var_names));
+                while (list ($key, $val) = each ($sets_array)) {
+                    $plugin = new Plugin();
+                    $good_array = true;
+                    for ($n = 0; $n < count($var_names); $n++) {
+                        $plugin -> $var_names[$n] = $val[$n];
+                        if (empty ($plugin -> $var_names[$n]) && $required_names[$n]) {
+                            $good_array = false;
+                        }
+                    }
+                    $counter++;
+                    if ($good_array) {
+                        $plgresults[$counter] = $plugin;
+                    }
+                }
             }
         }
     }
-
     return $plgresults;
 }
 
@@ -513,27 +560,8 @@ function PLG_getAdminOptions()
 
     $var_names = array("adminlabel", "adminurl", "numsubmissions");
     $required_names = array(true, true, false);
-    $counter = 0;
-    foreach ($_PLUGINS as $pi_name) {
-        $function = 'plugin_getadminoption_' . $pi_name;
-        if (function_exists($function)) {
-            $sets_array = array_chunk($function(), count($var_names));
-            while (list ($key, $val) = each ($sets_array)) {
-                $plugin = new Plugin();
-                $good_array = true;
-                for ($n = 0; $n < count($var_names); $n++) {
-                    $plugin -> $var_names[$n] = $val[$n];
-                    if (empty ($plugin -> $var_names[$n]) && $required_names[$n]) {
-                        $good_array = false;
-                    }
-                }
-                $counter++;
-                if ($good_array) {
-                    $plgresults[$counter] = $plugin;
-                }
-            }
-        }
-    }
+    $function_name = 'plugin_getadminoption_';
+    $plgresults = PLG_getOptionsforMenus($var_names, $required_names, $function_name);
     return $plgresults;
 }
 
@@ -591,6 +619,13 @@ function PLG_saveSubmission($type, $A)
 * This function shows the option for all plugins at the top of the 
 * command and control center.
 *
+* This supports that a plugin can have several lines in the CC menu.
+* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* get n lines in the menu such as
+* array(    "first line", "url1", "1",
+*            "second line", "url2", "44",
+*            etc, etc)
+*
 * @return   array   Returns Command and Control options for moderation.php
 *
 */
@@ -598,23 +633,11 @@ function PLG_getCCOptions()
 {
     global $_PLUGINS;
 
-    $plugins = array();
-    foreach ($_PLUGINS as $pi_name) {
-        $cur_plugin = new Plugin();
-        $function = 'plugin_cclabel_' . $pi_name;
-        if (function_exists($function)) {
-            $cclabel = $function ();
-            if ($cclabel !== false) {
-                list($cur_plugin->adminlabel, $cur_plugin->adminurl, $cur_plugin->plugin_image) = $cclabel;
-                if (!empty ($cur_plugin->adminlabel) &&
-                    !empty ($cur_plugin->adminurl) &&
-                    !empty ($cur_plugin->plugin_image)) {
-                    $plugins[] = $cur_plugin; 
-                }
-            }
-        }
-    }
-    return $plugins;
+    $var_names = array("adminlabel", "adminurl", "plugin_image");
+    $required_names = array(true, true, true);
+    $function_name = 'plugin_cclabel_';
+    $plgresults = PLG_getOptionsforMenus($var_names, $required_names, $function_name);
+    return $plgresults;
 }
 
 /**
