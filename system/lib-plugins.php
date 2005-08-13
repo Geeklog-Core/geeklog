@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.72 2005/08/13 17:03:16 ospiess Exp $
+// $Id: lib-plugins.php,v 1.73 2005/08/13 20:13:50 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -462,33 +462,10 @@ function PLG_getSubmissionCount()
 }
 
 /**
-* This function will show any plugin user options in the
-* user block on every page
-*
-* This supports that a plugin can have several lines in the User menu.
-* The plugin has to provide simply a set of 3 x n sets of variables in order to
-* get n lines in the menu such as
-* array(    "first line", "url1", "1",
-*            "second line", "url2", "44",
-*            etc, etc)
-* NOTE: the plugin is responsible for it's own security.
-*
-* @return   array   Returns options to add to user menu
-*
-*/
-function PLG_getUserOptions() 
-{
-    // I know this uses the adminlabel, adminurl but who cares?
-    $var_names = array("adminlabel", "adminurl", "numsubmissions");
-    $required_names = array(true, true, false);
-    $function_name = 'plugin_getuseroption_';
-    $plgresults = PLG_getOptionsforMenus($var_names, $required_names, $function_name);
-    return $plgresults;
-}
-
-/**
 * This function will get & check user or admin options from plugins and check
-* required ones for availability.
+* required ones for availability. This function is called by several other
+* functions and is not to be called from the plugin directly. The function which
+* call this here follow below.
 * 
 * NOTE: the plugin is responsible for it's own security.
 * This supports that a plugin can have several lines in a menu.
@@ -509,16 +486,16 @@ function PLG_getUserOptions()
 * @return   array Returns options to add to the given menu that is calling this
 *
 */
-function PLG_getOptionsforMenus($var_names, $required_names, $function_name)
+function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 {
     global $_PLUGINS;
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
         $function = $function_name . $pi_name;
         if (function_exists($function)) {
-            $cclabel = $function();
-            if ($cclabel !== false) {
-                $sets_array = array_chunk($cclabel, count($var_names));
+            $plg_array = $function();
+            if ($plg_array !== false) {
+                $sets_array = array_chunk($plg_array, count($var_names));
                 while (list ($key, $val) = each ($sets_array)) {
                     $plugin = new Plugin();
                     $good_array = true;
@@ -536,6 +513,31 @@ function PLG_getOptionsforMenus($var_names, $required_names, $function_name)
             }
         }
     }
+    return $plgresults;
+}
+
+/**
+* This function shows the option for all plugins at the top of the
+* command and control center.
+*
+* This supports that a plugin can have several lines in the CC menu.
+* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* get n lines in the menu such as
+* array(    "first line", "url1", "1",
+*            "second line", "url2", "44",
+*            etc, etc)
+*
+* @return   array   Returns Command and Control options for moderation.php
+*
+*/
+function PLG_getCCOptions()
+{
+    global $_PLUGINS;
+
+    $var_names = array("adminlabel", "adminurl", "plugin_image");
+    $required_names = array(true, true, true);
+    $function_name = 'plugin_cclabel_';
+    $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
     return $plgresults;
 }
 
@@ -561,7 +563,32 @@ function PLG_getAdminOptions()
     $var_names = array("adminlabel", "adminurl", "numsubmissions");
     $required_names = array(true, true, false);
     $function_name = 'plugin_getadminoption_';
-    $plgresults = PLG_getOptionsforMenus($var_names, $required_names, $function_name);
+    $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
+    return $plgresults;
+}
+
+/**
+* This function will show any plugin user options in the
+* user block on every page
+*
+* This supports that a plugin can have several lines in the User menu.
+* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* get n lines in the menu such as
+* array(    "first line", "url1", "1",
+*            "second line", "url2", "44",
+*            etc, etc)
+* NOTE: the plugin is responsible for it's own security.
+*
+* @return   array   Returns options to add to user menu
+*
+*/
+function PLG_getUserOptions()
+{
+    // I know this uses the adminlabel, adminurl but who cares?
+    $var_names = array("adminlabel", "adminurl", "numsubmissions");
+    $required_names = array(true, true, false);
+    $function_name = 'plugin_getuseroption_';
+    $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
     return $plgresults;
 }
 
@@ -613,31 +640,6 @@ function PLG_saveSubmission($type, $A)
     $args[1] = $A;
 
     return PLG_callFunctionForOnePlugin('plugin_savesubmission_' . $type, $args);
-}
-
-/**
-* This function shows the option for all plugins at the top of the 
-* command and control center.
-*
-* This supports that a plugin can have several lines in the CC menu.
-* The plugin has to provide simply a set of 3 x n sets of variables in order to
-* get n lines in the menu such as
-* array(    "first line", "url1", "1",
-*            "second line", "url2", "44",
-*            etc, etc)
-*
-* @return   array   Returns Command and Control options for moderation.php
-*
-*/
-function PLG_getCCOptions() 
-{
-    global $_PLUGINS;
-
-    $var_names = array("adminlabel", "adminurl", "plugin_image");
-    $required_names = array(true, true, true);
-    $function_name = 'plugin_cclabel_';
-    $plgresults = PLG_getOptionsforMenus($var_names, $required_names, $function_name);
-    return $plgresults;
 }
 
 /**
