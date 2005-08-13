@@ -1,4 +1,5 @@
-<?php /*
+<?php 
+/*
  * FCKeditor - The text editor for internet
  * Copyright (C) 2003-2005 Frederico Caldeira Knabben
  * 
@@ -18,7 +19,6 @@
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
-
 class FCKeditor
 {
 	var $InstanceName ;
@@ -29,8 +29,9 @@ class FCKeditor
 	var $Value ;
 	var $Config ;
 
-	function FCKeditor( $instanceName )
-	{
+	// PHP 5 Constructor (by Marcus Bointon <coolbru@users.sourceforge.net>)
+	function __construct( $instanceName )
+ 	{
 		$this->InstanceName	= $instanceName ;
 		$this->BasePath		= '/FCKeditor/' ;
 		$this->Width		= '100%' ;
@@ -39,6 +40,12 @@ class FCKeditor
 		$this->Value		= '' ;
 
 		$this->Config		= array() ;
+	}
+	
+	// PHP 4 Contructor
+	function FCKeditor( $instanceName )
+	{
+		$this->__construct( $instanceName ) ;
 	}
 
 	function Create()

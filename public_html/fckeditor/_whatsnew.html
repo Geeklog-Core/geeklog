@@ -16,272 +16,488 @@
 	p { margin-left: 20px; }
 	</style></head>
 	<body>
-<H3>Version 2.0&nbsp;FC (Final Candidate)</H3>
-<P>New Features and Improvements:</P>
-<UL>
-  <LI>A new tab called "<STRONG>Link</STRONG>" is available 
-  in the<STRONG> Image Dialog</STRONG> window. In this way you can insert 
-  or modify the image link directly from that dialog.*
-  <LI>The new "<STRONG>Templates</STRONG>" command is now available. Now the 
-  user can select from a list of pre-build HTML and fill the editor with it. 
-  Take a look at the "_docs" for more info.** 
-  <LI>The <A href="http://mcpuk.net/fbxp/" target="_blank">mcpuk's</A> File Browser for PHP has been 
-  included in the package. He became the official developer of the File Manager for FCKeditor, so 
-  we can expect good news in the future.
-  <LI>New configuration options are available to <STRONG>hide tabs</STRONG> from 
-  the <STRONG>Image</STRONG> Dialog&nbsp;and <STRONG>Link</STRONG> Dialog windows: LinkDlgHideTarget, 
-  LinkDlgHideAdvanced, ImageDlgHideLink and ImageDlgHideAdvanced. 
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1189442&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1189442</A>] [<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1187164&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1187164</A>] [<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1185905&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1185905</A>] It is now possible to configure the editor to <STRONG>not convert 
-  Greek</STRONG> or special&nbsp;<STRONG>Latin </STRONG>letters to ther specific HTML entities. You 
-  can also configure it to not convert any character at all. Take a look at the 
-  "ProcessHTMLEntities", "IncludeLatinEntities" and "IncludeGreekEntities" 
-  configuration options. 
-  <LI>New language files are available: </LI>     
-  <UL>
-    <LI><STRONG>Basque</STRONG> (by Ibon 
-    Igartua) 
-    <LI><STRONG>English (Australia / United Kingdom)</STRONG> (by Christopher 
-    Dawes)
-    <LI><STRONG>Ukrainian</STRONG> (by Alexander Pervak)</LI></UL>    
-                
-         
-     
-  <LI>The version and date information have been removed 
-  from the files headers to avoid unecessary diffs in source control systems 
-  when new versions are released (from now on).
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1159854&amp;group_id=75348&amp;atid=543655" 
-  target="_blank">SF Patch-1159854</A>] Ther HTML output rendered by the 
-  server side integration files are now XHTML compatible.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1181823&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1181823</A>] It is now possible to 
-  set the desired DOCTYPE to use when edit HTML fragments (not in Full Page 
-  mode).
-  <LI>There is now an optional way to implement different "mouse over" effects 
-  to the buttons when they are "on" of "off".</LI></UL>
-<P>Fixed Bugs:</P>
-<UL>
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1162200&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1162200</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1161633&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1161633</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1050293&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1050293</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1058948&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1058948</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1109120&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1109120</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155408&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1155408</A>] The IE memory leak bug has been solved. The code has 
-  been completely reviewed and many memory usage improvements have been done. 
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1179645&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1179645</A>] [<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1183252&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1183252</A> ] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1166779&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1181647</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155627&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1155627</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155782&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1155782</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155750&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1155750</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1157166&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1157166</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1157857&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1157857</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1158121&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1158121</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1177153&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1177153</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1175847&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1175847</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155747&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1155747</A>] There was a loading problem in Gecko 
-  browsers in some cases. It has been solved. 
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1161147&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1161147</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1157635&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1157635</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1149805&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1149805</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1124600&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1124600</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1117535&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1117535</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1118145&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1118145</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1098113&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1098113</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1092272&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1092272</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1086416&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1086416</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1027952&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1027952</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=978441&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-978441</A>           
-   ] A custom Undo/Redo system has been implemented for IE.
-  <LI>The editor startup execution is now made in the right 
-  order (so configurations override works correctly). 
-  <LI>     [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1166779&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1166779</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1166651&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1166651</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1066198&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1066198</A>]&nbsp;[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1090388&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1090388</A>     ]&nbsp;No more "illegible" characters in 
-  the toolbar when "ClearType" is active.
-  <LI>It is now possible to set the "width" style of the 
-  BODY tag in the EditorAreaCSS to limit the editing area size.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1113620&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1113620</A>] In IE, the editor doesn't generate new entries in the 
-  browser history anymore.
-  <LI>The editor now uses the same method used on version 
-  RC2 to load its contents on Gecko. It is now possible to have more than one 
-  editor in the page. This change has a negative impact: the BaseHref property 
-  is not working.
-  <LI>Changes have been made to make the editor work with 
-  PHP versions&nbsp;older than&nbsp;2.1.0.
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1190835&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1190835</A>] [<A 
-  href="https://sourceforge.net/tracker/?func=detail&amp;atid=543653&amp;aid=1196547&amp;group_id=75348" 
-  target="_blank">SF BUG-1196547</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1156863&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1156863</A>] The "Insert Horizontal Line" command is now working correctly. Thanks to 
-  Hector Raul Colonia Coral.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1101861&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1101861</A>] The editor now shows a normal textarea correctly (as expected) on Safari 
-  browsers (and all "like Gecko" browsers). Thanks to Bob Paul.
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1182224&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1182224</A>] The PHP connector can now handle file extensions in upper case,&nbsp;like 
-  JPG or Gif, correctly. Thanks to Georg Ivancsic.
-  <LI>The "sample06.html" is now working correctly with 
-  Gecko browsers.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1156660&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1156660</A>] Some fixes have been 
-  applied to the Universal Keyboard. Thanks to Abdul-Aziz Al-Oraij.
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1192881&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1192881</A>] [<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1185006&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1185006</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1156068&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1156068</A>] The "Browse Server" button is now 
-  working correctly for the Background Image in the "Document Properties" dialog 
-  window (full page editing). The active "BaseHref" is also set to the preview 
-  window.
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1191704&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1191704</A>] Invalid HTML tags (according to the 
-  W3C naming standards for XHTML) are ignored with no errors.
-  <LI>[<A 
-  href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1185911&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1185911</A>] The Greek language file name has been 
-  corrected to "el.js".
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1181572&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1181572</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1158421&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1158421</A>] The "Print" button is 
-  now active on startup.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1181572&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1165219</A>] No error occours when 
-  the user defines just one color to the FontColors on "in page" configurations.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1162957&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1162957</A>] The small problem with 
-  Zope (ZPT)&nbsp;has been solved.
-  <LI>Some small RTL / LTR corrections has been done in the interface and the 
-  Farsi language has been added to the Universal Keyboard. Thanks to Silver 
-  Baghdasarian.</LI></UL>
-<P>* This version has been partially sponsored by the <A 
-href="http://www.hamilton.edu">Hamilton College</A>.<BR>** 
-This version has been partially sponsored by <A href="http://www.infineon.com/" 
-target="_blank">Infineon Technologies AG</A>.</P>
-<H3>Version 2.0 RC3 (Release Candidate 3)</H3>
+		<H3>
+			Version 2.0</H3>
 		<P>New Features and Improvements:</P>
 		<UL>
-  <LI>The editor now offers native <STRONG>Perl integration</STRONG>! Thanks and 
-  welcome to Takashi Yamaguchi, our official Perl developer. 
-  <LI>
-				[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1026584&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1026584</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1112692&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1112692</A>] <STRONG>Formatting </STRONG>has been introduced to the <STRONG>Source View</STRONG>. 
-			The output HTML can also be formatted. You can choose to use spaces or tab for 
-			indentation. See the configuration file.
 			<LI>
-				[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1031492&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1031492</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1004293&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1004293</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=784281&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-784281</A>] 
-				It is now possible to edit <STRONG>full HTML pages</STRONG>
+				The&nbsp;new "<STRONG>Flash</STRONG>" command is available. Now you can 
+			easily handle Flash content, over IE and Gecko, including server browser 
+			integration and context menu support. Due to limitations of the browsers, it is 
+			not possible to see the preview of the movie while editing, so a nice 
+			"placeholder" is used instead. *
+			<LI>
+				A&nbsp;"<STRONG>Quick Upload</STRONG> " 
+			option is now available in the link, image and flash dialog windows, so the user 
+			don't need to go (or have) the File Browser for this operations. The ASP and 
+			PHP uploader&nbsp;are included.&nbsp;Take a look at the configuration file.***
+			<LI>
+				Added support for <STRONG>Active FoxPro Pages</STRONG>
+			. Thanks to our new developer, Snke Freitag.
+			<LI>
+				It is now possible to <STRONG>disable the size handles</STRONG>
+			for images and tables (IE only feature). Take a look at the DisableImageHandles 
+			and DisableTableHandles configuration options.
+			<LI>
+			The handles on form fields&nbsp;(small squares around them) and the inline 
+			editing of&nbsp;its contents&nbsp;have been disabled. This makes it easier to 
+			users to use the controls.
+			<LI>
+			A much better support for Word pasting operations has been introduced. Now it 
+			uses a dialog box, in this way we have better results and more control.**
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1225372&amp;group_id=75348&amp;atid=543655"
+					target="_blank">SF Patch-1225372</A>] A small change has been done to the 
+				PHP integration file. The generic __construct constructor has been added for 
+				better PHP 5 sub-classing&nbsp;compatibility (backward compatible). Thanks to 
+				Marcus Bointon.</LI></UL>
+		<P>Fixed Bugs:</P>
+<UL>
+			<LI>
+				ATTENTION: Some security changes have been made to 
+  the connectors. Now you must explicitly enable the connector you want to 
+  use. Please test your application before deploying this update.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1211591" 
+  target="_blank">SF BUG-1211591</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1204273&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1204273</A>] The connectors have been changed so it is 
+  not possible to use ".." on directory names.
+  <LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1219734&amp;group_id=75348&amp;atid=543655"
+					target="_blank">SF Patch-1219734</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1219728&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1219728</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1208654&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1208654</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1205442&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1205442</A>] There was an error in 
+  the page unload on some cases that has been fixed. 
+  <LI>   [<A 
+  href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1209708" 
+  target="_blank">SF BUG-1209708</A>] [<A 
+  href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1214125" 
+  target="_blank">SF BUG-1214125</A>]   The undo on IE is 
+			now working correctly when the user starts typing.
+			<LI>
+			The preview now loads "Full Page" editing correctly. It also uses the same 
+			XHTML code produced by the final output.
+			<LI>
+			The "Templates" dialog was not working on some very specific (and strange) 
+			occasions over IE.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/?func=detail&amp;atid=543653&amp;aid=1199631&amp;group_id=75348"
+					target="_blank">SF BUG-1199631</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1171944&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1171944</A>] A new option is available to avoid 
+			a bad IE behavior that shows the horizontal scrollbar even when not needed. You 
+			can now force the vertical scrollbar to be always visible. Just set the 
+			"IEForceVScroll" configuration option to "true". Thanks to Grant Bartlett.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1212026&amp;group_id=75348&amp;atid=543655"
+					target="_blank">SF Patch-1212026</A>] [<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1228860&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1228860</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1211775&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1211775</A>] [<A 
+  href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1199824" 
+  target="_blank">SF BUG-1199824</A>] An error in the Packager has been 
+			corrected.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1163669"
+					target="_blank">SF BUG-1163669</A>] The XHTML processor now 
+  adds a space before the closing slash of tags that don't have a closing tag, 
+  like &lt;br /&gt;. 
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1213733&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1213733</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1216866&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1216866</A>]&nbsp;[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1209673&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1209673</A>]&nbsp;[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155454&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1155454</A>]&nbsp;[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1187936&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1187936</A>      ]&nbsp;Now, 
+			on Gecko, the source is opened in a dialog window to avoid fatal errors 
+			(Gecko bugs).
+			<LI>
+			Some pages have been changed to avoid importing errors on Plone. Thanks to 
+			Arthur Kalmenson.
+			<LI>
+			[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1171606&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1171606</A>] 
+			There&nbsp;is a bug on IE that makes the editor to not work if the instance 
+			name matches a meta tag name. Fixed.
+			<LI>
+			On Firefox, the source code is now opened in a dialog box, to avoid error on 
+			pages with more than one editor.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1225703&amp;group_id=75348&amp;atid=543655"
+					target="_blank">SF Patch-1225703</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1214941&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1214941</A>] The "ForcePasteAsPlainText" 
+			configuration option is now working correctly on Gecko browsers. Thanks to 
+			Manuel Polo.
+			<LI>
+			[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1228836&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1228836</A>] 
+			The "Show Table Borders" feature is now working on Gecko browsers.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1212529&amp;group_id=75348&amp;atid=543655"
+					target="_blank">SF Patch-1212529</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1212517&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1212517</A>] The default File Browser now 
+			accepts connectors with querystring parameters (with "?"). Thanks to Tomas 
+			Jucius.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1233318&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1233318</A>] A JavaScript error thrown when 
+			using the Print command has been fixed.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1229696&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1229696</A>] A regular expression has been 
+			escaped to avoid problems when opening the code in some editors. It has been 
+			moved to a&nbsp;dialog window.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1231978&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1231978</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1228939&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1228939</A>] The Preview window is now using the 
+			Content Type and Base href.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1232056&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1232056</A>] The&nbsp;anchor icon is now working 
+			correctly on IE.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1232056&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1202468</A>] The anchor icon is now 
+  available on Gecko too.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1236279&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1236279</A>] A security warning has 
+  been corrected when using the File Browser over HTTPS.
+  <LI>The ASP implementation now avoid errors when setting 
+  the editor value to null values.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1237359&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1237359</A>] The trailing &lt;BR&gt; 
+  added by Gecko at the end of the source is now removed.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1170828" 
+  target="_blank">SF BUG-1170828</A>] No more &amp;nbsp; is added to the source 
+  when using the "New Page" button.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1165264&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1165264</A>] A&nbsp;new configuration option has been included to 
+  force the editor to ignore empty paragraph 
+  values&nbsp;(&lt;p&gt;&amp;nbsp;&lt;/p&gt;), returning empty ("").
+  <LI>No more &amp;nbsp; is added when creating a table or adding columns, rows 
+  or cells.
+  <LI>The &lt;TD&gt; tags are now included in the 
+  FillEmptyBlocks configuration handling.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1224829&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1224829</A>] A small bug in the 
+  "Find" dialog has been fixed.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1221307&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1221307</A>] A small bug in the 
+  "Image" dialog has been fixed.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1219981&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1219981</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155726&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1155726</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1178473&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1178473</A>] It is handling the 
+  &lt;FORM&gt;, &lt;TEXTAREA&gt; and &lt;SELECT&gt; tags "name" attribute 
+  correctly. Thanks to thc33.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1205403&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1205403</A>] The checkbox and radio button values 
+  are now handled correctly in their dialog 
+  windows. Thanks to thc33.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1236626&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1236626</A>] The toolbar now doesn't 
+  need to collapse when unloading the page (IE only).
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1212559&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1212559</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1017231&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1017231</A>] The "Save" button now 
+  calls the "onsubmit" event before posting the form. The submit can be 
+  cancelled if the onsubmit returns "false".
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1215823&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1215823</A>] The editor now works 
+  correctly on Firefox if it values is set to "&lt;p&gt;&lt;/p&gt;".
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1217546&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1217546</A>] No error is thrown when 
+  "pasting as plain text" and no text is available for pasting (as an image for 
+  example).
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1207031&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1207031</A>] [<A 
+  href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1223978" 
+  target="_blank">SF BUG-1223978</A>] The context menu is now 
+  available in the source view.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/?group_id=75348&amp;atid=543653&amp;func=detail&amp;aid=1213871" 
+  target="_blank">SF BUG-1213871</A>] Undo has been added to 
+  table creation and table operation commands.
+  <LI>[<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1205211&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1205211</A>] [<A 
+  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1229941&amp;group_id=75348&amp;atid=543653" 
+  target="_blank">SF BUG-1229941</A>] Small bug in the mcpuk file browser&nbsp;have 
+  been corrected.</LI></UL>
+		<P>* This version has been partially sponsored by <A href="http://www.infineon.com/" target="_blank">
+				Infineon Technologies AG</A>.<BR>
+			** This version has been partially sponsored by <a href="http://www.visualsoft.co.uk">
+				Visualsoft</a> <a href="http://www.visualsoft.co.uk/websolutions.html">Web 
+				Solutions</a>.<BR>
+			*** This version has been partially sponsored by <A href="http://www.webcrossing.com" target="_blank">
+				Web Crossing, Inc</A>.</P>
+		<H3>Version 2.0&nbsp;FC (Final Candidate)</H3>
+		<P>New Features and Improvements:</P>
+		<UL>
+			<LI>
+				A new tab called "<STRONG>Link</STRONG>" is available in the<STRONG> Image Dialog</STRONG>
+			window. In this way you can insert or modify the image link directly from that 
+			dialog.*
+			<LI>
+				The new "<STRONG>Templates</STRONG>" command is now available. Now the user 
+			can select from a list of pre-build HTML and fill the editor with it. Take a 
+			look at the "_docs" for more info.**
+			<LI>
+				The <A href="http://mcpuk.net/fbxp/" target="_blank">mcpuk's</A>
+			File Browser for PHP has been included in the package. He became the official 
+			developer of the File Manager for FCKeditor, so we can expect good news in the 
+			future.
+			<LI>
+				New configuration options are available to <STRONG>hide tabs</STRONG> from the <STRONG>
+					Image</STRONG> Dialog&nbsp;and <STRONG>Link</STRONG>
+			Dialog windows: LinkDlgHideTarget, LinkDlgHideAdvanced, ImageDlgHideLink and 
+			ImageDlgHideAdvanced.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1189442&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1189442</A>] [<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1187164&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1187164</A>] [<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1185905&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1185905</A>] It is now possible to configure the 
+				editor to <STRONG>not convert Greek</STRONG> or special&nbsp;<STRONG>Latin </STRONG>
+			letters to ther specific HTML entities. You can also configure it to not 
+			convert any character at all. Take a look at the "ProcessHTMLEntities", 
+			"IncludeLatinEntities" and "IncludeGreekEntities" configuration options.
+			<LI>
+				New language files are available:
+				<UL>
+					<LI>
+						<STRONG>Basque</STRONG>
+					(by Ibon Igartua)
+					<LI>
+						<STRONG>English (Australia / United Kingdom)</STRONG>
+					(by Christopher Dawes)
+					<LI>
+						<STRONG>Ukrainian</STRONG> (by Alexander Pervak)</LI></UL>
+			<LI>
+			The version and date information have been removed from the files headers to 
+			avoid unecessary diffs in source control systems when new versions are released 
+			(from now on).
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1159854&amp;group_id=75348&amp;atid=543655"
+					target="_blank">SF Patch-1159854</A>] Ther HTML output rendered by the 
+			server side integration files are now XHTML compatible.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1181823&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1181823</A>] It is now possible to set the 
+			desired DOCTYPE to use when edit HTML fragments (not in Full Page mode).
+			<LI>
+				There is now an optional way to implement different "mouse over" effects to the 
+				buttons when they are "on" of "off".</LI></UL>
+		<P>Fixed Bugs:</P>
+		<UL>
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1162200&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1162200</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1161633&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1161633</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1050293&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1050293</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1058948&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1058948</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1109120&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1109120</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155408&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1155408</A>] The IE memory leak bug has been 
+			solved. The code has been completely reviewed and many memory usage 
+			improvements have been done.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1179645&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1179645</A>] [<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1183252&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1183252</A> ] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1166779&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1181647</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155627&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1155627</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155782&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1155782</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155750&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1155750</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1157166&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1157166</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1157857&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1157857</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1158121&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1158121</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1177153&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1177153</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1175847&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1175847</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1155747&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1155747</A>] There was a loading problem in 
+			Gecko browsers in some cases. It has been solved.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1161147&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1161147</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1157635&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1157635</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1149805&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1149805</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1124600&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1124600</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1117535&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1117535</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1118145&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1118145</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1098113&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1098113</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1092272&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1092272</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1086416&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1086416</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1027952&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1027952</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=978441&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-978441</A>
+			] A custom Undo/Redo system has been implemented for IE.
+			<LI>
+			The editor startup execution is now made in the right order (so configurations 
+			override works correctly).
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1166779&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1166779</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1166651&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1166651</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1066198&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1066198</A>]&nbsp;[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1090388&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1090388</A>
+			]&nbsp;No more "illegible" characters in the toolbar when "ClearType" is 
+			active.
+			<LI>
+			It is now possible to set the "width" style of the BODY tag in the 
+			EditorAreaCSS to limit the editing area size.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1113620&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1113620</A>] In IE, the editor doesn't generate 
+			new entries in the browser history anymore.
+			<LI>
+			The editor now uses the same method used on version RC2 to load its contents on 
+			Gecko. It is now possible to have more than one editor in the page. This change 
+			has a negative impact: the BaseHref property is not working.
+			<LI>
+			Changes have been made to make the editor work with PHP versions&nbsp;older 
+			than&nbsp;2.1.0.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1190835&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1190835</A>] [<A href="https://sourceforge.net/tracker/?func=detail&amp;atid=543653&amp;aid=1196547&amp;group_id=75348"
+					target="_blank">SF BUG-1196547</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1156863&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1156863</A>] The "Insert Horizontal Line" 
+			command is now working correctly. Thanks to Hector Raul Colonia Coral.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1101861&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1101861</A>] The editor now shows a normal 
+			textarea correctly (as expected) on Safari browsers (and all "like Gecko" 
+			browsers). Thanks to Bob Paul.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1182224&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1182224</A>] The PHP connector can now handle 
+			file extensions in upper case,&nbsp;like JPG or Gif, correctly. Thanks to Georg 
+			Ivancsic.
+			<LI>
+			The "sample06.html" is now working correctly with Gecko browsers.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1156660&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1156660</A>] Some fixes have been applied to the 
+			Universal Keyboard. Thanks to Abdul-Aziz Al-Oraij.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1192881&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1192881</A>] [<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1185006&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1185006</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1156068&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1156068</A>] The "Browse Server" button is now 
+			working correctly for the Background Image in the "Document Properties" dialog 
+			window (full page editing). The active "BaseHref" is also set to the preview 
+			window.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1191704&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1191704</A>] Invalid HTML tags (according to the 
+			W3C naming standards for XHTML) are ignored with no errors.
+			<LI>
+				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1185911&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1185911</A>] The Greek language file name has 
+			been corrected to "el.js".
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1181572&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1181572</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1158421&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1158421</A>] The "Print" button is now active on 
+			startup.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1181572&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1165219</A>] No error occours when the user 
+			defines just one color to the FontColors on "in page" configurations.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1162957&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1162957</A>] The small problem with Zope 
+			(ZPT)&nbsp;has been solved.
+			<LI>
+				Some small RTL / LTR corrections has been done in the interface and the Farsi 
+				language has been added to the Universal Keyboard. Thanks to Silver 
+				Baghdasarian.</LI></UL>
+		<P>* This version has been partially sponsored by the <A href="http://www.hamilton.edu">
+				Hamilton College</A>.<BR>
+			** This version has been partially sponsored by <A href="http://www.infineon.com/" target="_blank">
+				Infineon Technologies AG</A>.</P>
+		<H3>Version 2.0 RC3 (Release Candidate 3)</H3>
+		<P>New Features and Improvements:</P>
+		<UL>
+			<LI>
+				The editor now offers native <STRONG>Perl integration</STRONG>! Thanks and 
+			welcome to Takashi Yamaguchi, our official Perl developer.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1026584&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1026584</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1112692&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1112692</A>] <STRONG>Formatting </STRONG>has 
+				been introduced to the <STRONG>Source View</STRONG>. The output HTML can 
+			also be formatted. You can choose to use spaces or tab for indentation. See the 
+			configuration file.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1031492&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1031492</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1004293&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1004293</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=784281&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-784281</A>] It is now possible to edit <STRONG>full 
+					HTML pages</STRONG>
 			with the editor. Use the "FullPage" configuration setting to activate it.
 			<LI>
 				The&nbsp;new toolbar command, "<STRONG>Document Properties</STRONG>"&nbsp;is 
 			available to edit document header info, title, colors, background, etc... Full 
 			page editing must be enabled.
 			<LI>
-				[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1151448&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1151448</A>] <STRONG>Spell Check</STRONG> is now available. You can use <STRONG>ieSpell</STRONG>
-				or <STRONG>Speller Pages</STRONG> right from FCKeditor. More 
-  info about configuration can be found in the _docs folder. 
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1041686&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1041686</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1086386&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1086386</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1124602&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1124602</A>] New "<STRONG>Insert Anchor</STRONG>" 
-  command has been introduced. (The anchor icon is visible only over&nbsp;IE for 
-  now).
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1123816&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1123816</A>] It is now possible to configure the 
-  editor to <STRONG>show "fake" table borders</STRONG> when the 
-			border size is set to zero. (It is working only on IE for 
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1151448&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1151448</A>] <STRONG>Spell Check</STRONG> is now 
+				available. You can use <STRONG>ieSpell</STRONG> or <STRONG>Speller Pages</STRONG>
+			right from FCKeditor. More info about configuration can be found in the _docs 
+			folder.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1041686&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1041686</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1086386&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1086386</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1124602&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1124602</A>] New "<STRONG>Insert Anchor</STRONG>" 
+			command has been introduced. (The anchor icon is visible only over&nbsp;IE for 
 			now).
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1123816&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1123816</A>] It is now possible to configure the 
+				editor to <STRONG>show "fake" table borders</STRONG>
+			when the border size is set to zero. (It is working only on IE for now).
 			<LI>
 				<STRONG>Numbered</STRONG> and <STRONG>Bulleted</STRONG> lists can now be <STRONG>configured</STRONG>
 			. Just right click on then.
 			<LI>
-				[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1088608&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1088608</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1144047&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1144047</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1149808&amp;group_id=75348&amp;atid=543656" 
-  target="_blank">SF Feature-1149808</A>] 
-				A new configuration setting is available, "<STRONG>BaseHref</STRONG> ", to 
-  set the URL used to resolve relative links. 
-  <LI>It is now possible to set&nbsp;the <STRONG>content language 
-  direction</STRONG> . See the 
-  "FCKConfig.ContentLangDirection" configurations setting. 
-  <LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1088608&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1088608</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1144047&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1144047</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1149808&amp;group_id=75348&amp;atid=543656"
+					target="_blank">SF Feature-1149808</A>] A new configuration setting is 
+				available, "<STRONG>BaseHref</STRONG>
+			", to set the URL used to resolve relative links.
+			<LI>
+				It is now possible to set&nbsp;the <STRONG>content language direction</STRONG>
+			. See the "FCKConfig.ContentLangDirection" configurations setting.
+			<LI>
 				All <STRONG>Field Commands</STRONG> available on version 1.6 have been upgraded 
 				and&nbsp;included in this version: <STRONG>form</STRONG>, <STRONG>checkbox</STRONG>,
 				<STRONG>radio button</STRONG>, <STRONG>text field</STRONG>, text <STRONG>area</STRONG>,
@@ -319,27 +535,35 @@ target="_blank">Infineon Technologies AG</A>.</P>
 				New Language files are available:
 				<UL>
 					<LI>
-						<STRONG>Brazilian Portuguese</STRONG> (by Carlos Alberto Tomatis Loth) 
-    <LI><STRONG>Bulgarian</STRONG>
-					  (by Miroslav Ivanov)
+						<STRONG>Brazilian Portuguese</STRONG>
+					(by Carlos Alberto Tomatis Loth)
 					<LI>
-						<STRONG>Esperanto</STRONG> (by 
-    Tim Morley) 
-    <LI><STRONG>Galician</STRONG> (by 
-					Fernando Riveiro Lopez)
+						<STRONG>Bulgarian</STRONG>
+					(by Miroslav Ivanov)
+					<LI>
+						<STRONG>Esperanto</STRONG>
+					(by Tim Morley)
+					<LI>
+						<STRONG>Galician</STRONG>
+					(by Fernando Riveiro Lopez)
 					<LI>
 						<STRONG>Japanese</STRONG>
 					( by Takashi Yamaguchi)
 					<LI>
-						<STRONG>Persian</STRONG> (by 
-    Hamed Taj-Abadi) 
-    <LI><STRONG>Romanian</STRONG>
+						<STRONG>Persian</STRONG>
+					(by Hamed Taj-Abadi)
+					<LI>
+						<STRONG>Romanian</STRONG>
 					(by Adrian Nicoara)
-					<LI><STRONG>Slovak</STRONG> (by Gabriel Kiss)
+					<LI>
+						<STRONG>Slovak</STRONG>
+					(by Gabriel Kiss)
 					<LI>
 						<STRONG>Thai </STRONG>
 					(by Audy Charin Arsakit)
-					<LI><STRONG>Turkish</STRONG> (by Reha Bier)
+					<LI>
+						<STRONG>Turkish</STRONG>
+					(by Reha Bier)
 					<LI>
 						The Chinese Traditional has been set as the default (zn) instead of zn-tw.</LI></UL>
 			<LI>
@@ -354,8 +578,8 @@ target="_blank">Infineon Technologies AG</A>.</P>
 			the FCKeditor.Net package. In this way the ASP.Net integration is much better 
 			organized.
 			<LI>
-			 The FCKeditor.Packager program is now part of the main package. It is 
-			not anymore&nbsp;distributed separately.
+			The FCKeditor.Packager program is now part of the main package. It is not 
+			anymore&nbsp;distributed separately.
 			<LI>
 			The PHP connector now sets the uploaded file permissions (chmod)&nbsp;to 0777.
 			<LI>
@@ -364,15 +588,16 @@ target="_blank">Infineon Technologies AG</A>.</P>
 			more info from your custom image browser calling the SetUrl( url [, width] [, 
 			height] [, alt] ). Thanks to Ben Noblet.
 			<LI>
-				The package files now maintain their original "Last 
-  Modified" date, so incremental FTP uploads can be used to update to&nbsp;new 
-  versions of the editor (from now on).
-  <LI>The "Source" view now forces its contents to be written in "Left to Right" 
-  direction even when the editor interface language is running a RTL language 
-  (like Arabic, Hebrew or Persian).</LI>
+			The package files now maintain their original "Last Modified" date, so 
+			incremental FTP uploads can be used to update to&nbsp;new versions of the 
+			editor (from now on).
+			<LI>
+				The "Source" view now forces its contents to be written in "Left to Right" 
+				direction even when the editor interface language is running a RTL language 
+				(like Arabic, Hebrew or Persian).</LI>
 		</UL>
 		<P>Fixed Bugs:</P>
-<UL>
+		<UL>
 			<LI>
 				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1124220&amp;group_id=75348&amp;atid=543653"
 					target="_blank">SF BUG-1124220</A>] [<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1119894&amp;group_id=75348&amp;atid=543653"
@@ -384,22 +609,19 @@ target="_blank">Infineon Technologies AG</A>.</P>
 				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1119380&amp;group_id=75348&amp;atid=543653"
 					target="_blank">SF BUG-1119380</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1115750&amp;group_id=75348&amp;atid=543653"
 					target="_blank">SF BUG-1115750</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1101808&amp;group_id=75348&amp;atid=543653"
-					target="_blank">SF BUG-1101808</A>] The problem with the 
-  scrollbar and the toolbar combos (Style, Font, etc...) over Mac has been 
-  fixed. 
-  <LI> [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1098460&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1098460</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1076544&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1076544</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1077845&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1077845</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1092395&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1092395</A>] A new upload class has 
-  been included for the ASP File Manager Connector. It uses the "ADODB.Stream" 
-  object. Many thanks to "NetRube". 
-  <LI>        I small correction has 
-			been made to the ColdFusion integration files. Thanks to Hendrik Kramer.
+					target="_blank">SF BUG-1101808</A>] The problem with the scrollbar and 
+			the toolbar combos (Style, Font, etc...) over Mac has been fixed.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1098460&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1098460</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1076544&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1076544</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1077845&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1077845</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1092395&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1092395</A>] A new upload class has been 
+			included for the ASP File Manager Connector. It uses the "ADODB.Stream" object. 
+			Many thanks to "NetRube".
+			<LI>
+			I small correction has been made to the ColdFusion integration files. Thanks to 
+			Hendrik Kramer.
 			<LI>
 			There was a very specific problem when the editor was running over a FRAME 
 			executed on another domain.
@@ -422,9 +644,8 @@ target="_blank">Infineon Technologies AG</A>.</P>
 			"accept-charset" attribute in the FORM tag (IE specific bug).
 			<LI>
 				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1122742&amp;group_id=75348&amp;atid=543653"
-					target="_blank">SF BUG-1122742</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1089548&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1089548</A>
+					target="_blank">SF BUG-1122742</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1089548&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1089548</A>
 			] Now, the contents of the SCRIPT and STYLE tags remain untouched.
 			<LI>
 				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1114748&amp;group_id=75348&amp;atid=543653"
@@ -439,27 +660,19 @@ target="_blank">Infineon Technologies AG</A>.</P>
 			(editor/filemanager/browser/default/connectors/asp/config.asp) to set some 
 			security preferences.
 			<LI>
-			A small bug in the toolbar rendering (strips auto position) has been 
-			corrected.
+			A small bug in the toolbar rendering (strips auto position) has been corrected.
 			<LI>
-			[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1093732&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1093732</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1091377&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1091377</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1083044&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1083044</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1096307&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1096307</A>] 
-			The configurations are now encoded so a user can use values that has special 
-			chars (&amp;=/).
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1093732&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1093732</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1091377&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1091377</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1083044&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1083044</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1096307&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1096307</A>] The configurations are now encoded 
+			so a user can use values that has special chars (&amp;=/).
 			<LI>
 				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1103688&amp;group_id=75348&amp;atid=543653"
-					target="_blank">SF BUG-1103688</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1092331&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1092331</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1088220&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1088220</A>] PHP samples now use PHP_SELF to 
+					target="_blank">SF BUG-1103688</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1092331&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1092331</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1088220&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1088220</A>] PHP samples now use PHP_SELF to 
 			automatically discover the editor's base path.
 			<LI>
 			Some small wrapping problems with some labels in the Image and Table dialog 
@@ -478,18 +691,16 @@ target="_blank">Infineon Technologies AG</A>.</P>
 			<LI>
 				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1108167&amp;group_id=75348&amp;atid=543653"
 					target="_blank">SF BUG-1108167</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1085149&amp;group_id=75348&amp;atid=543653"
-					target="_blank">SF BUG-1085149</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1151296&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1151296</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1082433&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1082433</A>] No more IFRAMEs without src 
+					target="_blank">SF BUG-1085149</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1151296&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1151296</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1082433&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1082433</A>] No more IFRAMEs without src 
 			attribute. Now it points to a blank page located in the editor's package. In 
 			this way we avoid security warnings when using the editor over HTTPS. Thanks to 
 			Guillermo Bozovich.
 			<LI>
 				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1117779&amp;group_id=75348&amp;atid=543653"
-					target="_blank">SF BUG-1117779</A>] The editor now works well if you have 
-			more than one element named "submit"&nbsp;on its form (even if it is not 
+					target="_blank">SF BUG-1117779</A>] The editor now works well if you 
+			have more than one element named "submit"&nbsp;on its form (even if it is not 
 			correct to have this situation).
 			<LI>
 			The XHTML processor was duplicating the text on some specific situation. It has 
@@ -500,21 +711,16 @@ target="_blank">Infineon Technologies AG</A>.</P>
 					target="_blank">SF Patch-1098929</A>] With ASP, the editor now works 
 			correctly on pages using "Option Explicit". Thanks to Ben Noblet.
 			<LI>
-			[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1100759&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1100759</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1029125&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1029125</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=966130&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-966130</A>] The editor was not 
-  working with old IE 5.5 browsers. There was a problem with the XML parser. It 
-  has been fixed. 
-  <LI> 
-			           The localization engine is now working correctly over 
-  IE 5.5 browsers.
-  <LI>Some commands where not 
-			           working well over IE 
-			5.5 (emoticons, image,...). It has been fixed.
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1100759&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1100759</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1029125&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1029125</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=966130&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-966130</A>] The editor was not working with old 
+			IE 5.5 browsers. There was a problem with the XML parser. It has been fixed.
+			<LI>
+			The localization engine is now working correctly over IE 5.5 browsers.
+			<LI>
+			Some commands where not working well over IE 5.5 (emoticons, image,...). It has 
+			been fixed.
 			<LI>
 				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1146441&amp;group_id=75348&amp;atid=543653"
 					target="_blank">SF BUG-1146441</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1149777&amp;group_id=75348&amp;atid=543653"
@@ -528,41 +734,34 @@ target="_blank">Infineon Technologies AG</A>.</P>
 			<LI>
 				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1121365&amp;group_id=75348&amp;atid=543653"
 					target="_blank">SF BUG-1121365</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1090102&amp;group_id=75348&amp;atid=543653"
-					target="_blank">SF BUG-1090102</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1152171&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1152171</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1102907&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1102907</A>] There is no problem now to start 
+					target="_blank">SF BUG-1090102</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1152171&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1152171</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1102907&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1102907</A>] There is no problem now to start 
 			the editor with values like "&lt;div&gt;&lt;/div&gt;" or "&lt;p&gt;&lt;/p&gt;".
 			<LI>
 				[<A href="https://sourceforge.net/tracker/index.php?func=detail&amp;aid=1114059&amp;group_id=75348&amp;atid=543653"
-					target="_blank">SF BUG-1114059</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1041861&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1041861</A>] The click on the disabled options in 
-  the Context Menu has no effects now.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1152617&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1152617</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1102441&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1102441</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1095312&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1095312</A>] Some problems when setting the editor source 
-  to very specific values has been fixed.
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1093514&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1093514</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1089204&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1089204</A>] [<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1077609&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1077609</A>] The editor now runs correctly if called 
-  directly (locally)&nbsp;without a server installation (just opening the HTML 
-  sample files).
-  <LI>[<A 
-  href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1088248&amp;group_id=75348&amp;atid=543653" 
-  target="_blank">SF BUG-1088248</A>] The editor now uses a 
-  different method to load its contents. In this way the URLs remain untouched.
-  <LI>The PHP integration file now detects Internet Explorer 5.5 
-correctly.</LI></UL>
+					target="_blank">SF BUG-1114059</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1041861&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1041861</A>] The click on the disabled options 
+			in the Context Menu has no effects now.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1152617&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1152617</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1102441&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1102441</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1095312&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1095312</A>] Some problems when setting the 
+			editor source to very specific values has been fixed.
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1093514&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1093514</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1089204&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1089204</A>] [<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1077609&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1077609</A>] The editor now runs correctly if 
+			called directly (locally)&nbsp;without a server installation (just opening the 
+			HTML sample files).
+			<LI>
+				[<A href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1088248&amp;group_id=75348&amp;atid=543653"
+					target="_blank">SF BUG-1088248</A>] The editor now uses a different 
+			method to load its contents. In this way the URLs remain untouched.
+			<LI>
+				The PHP integration file now detects Internet Explorer 5.5 correctly.</LI></UL>
 		<h3>Version 2.0 RC2 (Release Candidate 2)</h3>
 		<ul>
 			<LI>
