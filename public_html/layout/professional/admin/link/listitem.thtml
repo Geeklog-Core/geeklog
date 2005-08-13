@@ -1,9 +1,0 @@
-                                <tr align="center">
-                                    <td align="left">{row_num}</td>
-                                    <td align="left">
-                                        <a href="{site_admin_url}/link.php?mode=edit&amp;lid={link_id}">{link_name}</a>
-                                    </td>
-                                    <td>{link_access}</td>
-                                    <td>{link_category}</td>
-                                    <td align="left"><a href="{link_url}">{link_url}</a></td>
-                                </tr>

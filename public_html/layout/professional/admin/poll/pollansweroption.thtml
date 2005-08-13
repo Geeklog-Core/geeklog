@@ -1,1 +1,0 @@
-<input type="text" name="answer[]" value="{answer_text}" size="30" maxlength="255"> / <input type="text" name="votes[]" value="{answer_votes}" size="5"><BR>
