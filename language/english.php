@@ -1396,7 +1396,7 @@ $LANG_DIR = array (
 # $n    amount, "2", "20" etc
 # $t    time, "2" (weeks)
 # $s    scale, "hrs", "weeks"
-$WHATS_NEW_STRING="$n new $i in the last $t $s";
+$WHATS_NEW_STRING="%n new %i in the last %t %s";
 
 $LANG_WHATSNEW = array (
     'minutes'     => 'minutes',

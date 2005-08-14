@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.462 2005/08/14 20:19:19 ospiess Exp $
+// $Id: lib-common.php,v 1.463 2005/08/14 20:43:28 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3763,7 +3763,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
         if( $nrows > 0 )
         {
-            $newmsg .= COM_whatsnewString($_CONF['newstoriesinterval'], "Stories", $nrows) . "<br>";
+            $newmsg .= COM_WhatsNewString($_CONF['newstoriesinterval'], "Stories", $nrows) . "<br>";
 
             if( $newstories && ( $page < 2 ))
             {
@@ -3957,7 +3957,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 * @param      string  $type        type (translated string) of new item
 * @param      int     $amount      amount of things that have been found.
 */
-function COM_whatsnewString($time, $type, $amount)
+function COM_WhatsNewString($time, $type, $amount)
 {
     global $LANG_WHATSNEW, $WHATS_NEW_STRING;
     # this is the amount you have to divide the previous by to get the different
@@ -3986,7 +3986,6 @@ function COM_whatsnewString($time, $type, $amount)
             {
                 $retval = str_replace( $fields[$x], $values[$x], $retval );
             }
-            $retval = "$amount new $type in the last $time " . $LANG_WHATSNEW[$time_str];
             break;
         }
     }
