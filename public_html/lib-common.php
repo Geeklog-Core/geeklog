@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.461 2005/08/13 23:08:03 blaine Exp $
+// $Id: lib-common.php,v 1.462 2005/08/14 20:19:19 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3763,33 +3763,16 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
         if( $nrows > 0 )
         {
-            $hours = (( $_CONF['newstoriesinterval'] / 60 ) / 60 );
-            if( $nrows == 1 )
+            $newmsg .= COM_whatsnewString($_CONF['newstoriesinterval'], "Stories", $nrows) . "<br>";
+
+            if( $newstories && ( $page < 2 ))
             {
-                $newmsg = '1 ' . $LANG01[81] . ' ' . $hours . ' ' . $LANG01[82];
-                if( $newstories && ( $page < 2 ))
-                {
-                    $retval .= $newmsg . '<br>';
-                }
-                else
-                {
-                    $retval .= '<a href="' . $_CONF['site_url']
-                        . '/index.php?display=new">' . $newmsg . '</a><br>';
-                }
+                $retval .= $newmsg . '<br>';
             }
             else
             {
-                $newmsg = $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' '
-                    . $LANG01[82];
-                if( $newstories && ( $page < 2 ))
-                {
-                    $retval .= $newmsg . '<br>';
-                }
-                else
-                {
-                    $retval .= '<a href="' . $_CONF['site_url']
-                        . '/index.php?display=new">' . $newmsg . '</a><br>';
-                }
+                $retval .= '<a href="' . $_CONF['site_url']
+                    . '/index.php?display=new">' . $newmsg . '</a><br>';
             }
         }
         else
@@ -3966,6 +3949,50 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
     return $retval;
 }
+
+/**
+* Creates the string that indicates the timespan in which new items are found
+*
+* @param      int     $time        numbe of seconds in which results are found
+* @param      string  $type        type (translated string) of new item
+* @param      int     $amount      amount of things that have been found.
+*/
+function COM_whatsnewString($time, $type, $amount)
+{
+    global $LANG_WHATSNEW, $WHATS_NEW_STRING;
+    # this is the amount you have to divide the previous by to get the different
+    # time intervals: hour, day, week, months
+    $time_divider = array ( 60, 60, 24, 7, 30 );
+    # these are the respective strings to the numbers above. They have to match
+    # the strings in $LANG_WHATSNEW.
+    $times_description = array ( "minutes", "hours", "days", "weeks", "months" );
+    $time_description = array ( "minute", "hour", "day", "week", "month" );
+    for ( $s = 0; $s < count ($time_divider); $s++ )
+    {
+        $time = $time / $time_divider[$s];
+        if ( $time < $time_divider[$s+1] )
+        {
+            $retval = $WHATS_NEW_STRING;
+            if ( $time == 1 )
+            {
+                $time_str = $time_description[$s];
+            } else
+            {
+                $time_str = $times_description[$s];
+            }
+            $fields = array( "%n", "%i", "%t", "%s" );
+            $values = array( $amount,$type,$time,$LANG_WHATSNEW[$time_str] );
+            for( $x = 0; $x < 4; $x++ )
+            {
+                $retval = str_replace( $fields[$x], $values[$x], $retval );
+            }
+            $retval = "$amount new $type in the last $time " . $LANG_WHATSNEW[$time_str];
+            break;
+        }
+    }
+    return $retval;
+}
+
 
 /**
 * Displays a message on the webpage

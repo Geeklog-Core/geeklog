@@ -1384,7 +1384,31 @@ $LANG_DIR = array (
     'title_year'       => 'Article Directory for %d',
     'title_month_year' => 'Article Directory for %s %d',
     'nav_top'          => 'Back to Article Directory',
-    'no_articles'      => 'No articles.',
+    'no_articles'      => 'No articles.'
 );
 
+################################################################################
+# whatsNew Time Strings
+#
+# this here determines the order of the sentence "No new stories in 2 hrs"
+# order it so it makes sense in your language:
+# $i    item, "Stories"
+# $n    amount, "2", "20" etc
+# $t    time, "2" (weeks)
+# $s    scale, "hrs", "weeks"
+$WHATS_NEW_STRING="$n new $i in the last $t $s";
+
+$LANG_WHATSNEW = array (
+    'minutes'     => 'minutes',
+    'hours'       => 'hours',
+    'days'        => 'days',
+    'weeks'       => 'weeks',
+    'months'      => 'months',
+    'minute'      => 'minute',
+    'hour'        => 'hour',
+    'day'         => 'day',
+    'week'        => 'week',
+    'month'       => 'month'
+
+);
 ?>
