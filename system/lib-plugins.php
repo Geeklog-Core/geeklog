@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.75 2005/08/13 23:08:03 blaine Exp $
+// $Id: lib-plugins.php,v 1.76 2005/08/20 12:07:00 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -362,7 +362,7 @@ function PLG_getPluginStats($showsitestats)
 * @return   array   String array of search types for plugin(s)
 *
 */
-function PLG_getSearchTypes() 
+function PLG_getSearchTypes()
 {
     global $_PLUGINS;
 
@@ -371,23 +371,27 @@ function PLG_getSearchTypes()
  
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_searchtypes_' . $pi_name;
-        if (function_exists($function)) {
-            //great, stats function is there, call it
-            $cur_types = $function();
-            $types = array_merge($types, $cur_types);
+        if (function_exists ($function)) {
+            $cur_types = $function ();
+            if (is_array ($cur_types) && (count ($cur_types) > 0)) {
+                $types = array_merge ($types, $cur_types);
+            }
         } // no else because this is not a required API function
     }
+
     return $types;
 }
 
 /**
-* Determines if s specific plugin supports Geeklog's
+* Determines if a specific plugin supports Geeklog's
 * expanded search results feature
 *
 * @author Tony Bibbs <tony AT geeklog DOT net>
 * @access public
 * @param string $type Plugin name
 * @return boolean True if it is supported, otherwise false
+*
+* NOTE: This function is not currently used
 *
 */
 function PLG_supportsExpandedSearch($type)
