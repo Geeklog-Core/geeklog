@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.77 2005/08/20 14:31:05 dhaun Exp $
+// $Id: lib-plugins.php,v 1.78 2005/08/20 15:36:54 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -507,7 +507,7 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
                     // Multiple menuitem records - in required format
                     $sets_array = $plg_array;
                 }
-                while (list ($key, $val) = each ($sets_array)) {
+                foreach ($sets_array as $val) {
                     $plugin = new Plugin();
                     $good_array = true;
                     for ($n = 0; $n < count($var_names); $n++) {
