@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.76 2005/08/20 12:07:00 dhaun Exp $
+// $Id: lib-plugins.php,v 1.77 2005/08/20 14:31:05 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1060,7 +1060,7 @@ function PLG_collectTags ()
 * @param   string   $plugin    Optional if you only want to parse using a specific plugin
 *
 */
-function PLG_replaceTags ($content,$plugin='')
+function PLG_replaceTags ($content, $plugin = '')
 {
     global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
 
@@ -1071,53 +1071,62 @@ function PLG_replaceTags ($content,$plugin='')
 
     $autolinkModules = PLG_collectTags ();
 
-    // For each supported module - scan the content looking for any AutoLink tags
+    // For each supported module, scan the content looking for any AutoLink tags
     $tags = array ();
     foreach ($autolinkModules as $moduletag => $module) {
         $autotag_prefix = '['. $moduletag . ':';
-        $offset = $prev_offset = 0;
-        $strlen = strlen ($content);
-        while ($offset < $strlen) {
+        $offset = 0;
+        $prev_offset = 0;
+        $contentlen = strlen ($content);
+        while ($offset < $contentlen) {
             $start_pos = strpos (strtolower ($content), $autotag_prefix,
                                  $offset);
-            if ($start_pos !== FALSE) {
-               $end_pos = strpos (strtolower ($content), ']', $start_pos);
-               $next_tag = strpos (strtolower ($content), '[', $start_pos + 1);
-               if ($end_pos > $start_pos AND (($end_pos < $next_tag OR $next_tag == FALSE))) {
+            if ($start_pos === false) {
+                break;
+            } else {
+                $end_pos = strpos (strtolower ($content), ']', $start_pos);
+                $next_tag = strpos (strtolower ($content), '[', $start_pos + 1);
+                if (($end_pos > $start_pos) AND
+                        (($next_tag === false) OR ($end_pos < $next_tag))) {
                     $taglength = $end_pos - $start_pos + 1;
                     $tag = substr ($content, $start_pos, $taglength);
                     $parms = explode (' ', $tag);
 
-                    /* Extra test to see if autotag was entered with a space after the module name */
-                    if (substr($parms[0],-1) == ':') {
-                        $startpos =strlen ($parms[0]) + strlen($parms[1]) + 2;
+                    // Extra test to see if autotag was entered with a space
+                    // after the module name
+                    if (substr ($parms[0], -1) == ':') {
+                        $startpos = strlen ($parms[0]) + strlen ($parms[1]) + 2;
                         $label = str_replace (']', '', substr ($tag, $startpos));
+                        $tagid = $parms[1];
                     } else {
                         $label = str_replace (']', '',
                                  substr ($tag, strlen ($parms[0]) + 1));
                         $parms = explode (':', $parms[0]);
+                        if (count ($parms) > 2) {
+                            // whoops, there was a ':' in the tag id ...
+                            array_shift ($parms);
+                            $tagid = implode (':', $parms);
+                        } else {
+                            $tagid = $parms[1];
+                        }
                     }
+
                     $newtag = array (
                         'module'    => $module,
                         'tag'       => $moduletag,
                         'tagstr'    => $tag,
                         'startpos'  => $start_pos,
                         'length'    => $taglength,
-                        'parm1'     => str_replace (']', '', $parms[1]),
+                        'parm1'     => str_replace (']', '', $tagid),
                         'parm2'     => $label
                     );
                     $tags[] = $newtag;
-
                 } else {
-                    /* Error tags do not match - return with no changes */
-                    return $content . $LANG32['32'];
+                    // Error: tags do not match - return with no changes
+                    return $content . $LANG32[32];
                 }
                 $prev_offset = $offset;
                 $offset = $end_pos;
-            } else {
-                $prev_offset = $end_pos;
-                $end_pos = $strlen;
-                $offset = $strlen;
             }
         }
     }
@@ -1126,7 +1135,8 @@ function PLG_replaceTags ($content,$plugin='')
     if (count ($tags) > 0) {       // Found the [tag] - Now process them all
         foreach ($tags as $autotag) {
             $function = 'plugin_autotags_' . $autotag['module'];
-            if ($plugin == '' OR ($autotag['module'] == 'geeklog' AND $plugin == 'geeklog') ) {
+            if (($autotag['module'] == 'geeklog') AND
+                    (empty ($plugin) OR ($plugin == 'geeklog'))) {
                 $url = '';
                 $linktext = $autotag['parm2'];
                 if ($autotag['tag'] == 'story') {
@@ -1149,7 +1159,8 @@ function PLG_replaceTags ($content,$plugin='')
                     $content = str_replace ($autotag['tagstr'], $filelink,
                                             $content);
                 }
-            } else if (function_exists ($function) AND ($plugin == '' OR $plugin == $autotag['module']) ) {
+            } else if (function_exists ($function) AND
+                    (empty ($plugin) OR ($plugin == $autotag['module']))) {
                 $content = $function ('parse', $content, $autotag);
             }
         }
