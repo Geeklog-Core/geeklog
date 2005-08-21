@@ -1,33 +1,6 @@
 GeekLog History/Changes:
 
-Jun ??, 2005 (Spam-X plugin 1.0.2)
-------------
-
-- Changed the display name of the plugin to "Spam-X" to avoid potential
-  confusion with the email spam filter of the same name.
-  "SpamX" is a registered trademark of Hendrickson Software Components.
-- Added a new module to filter posts based on the IP address of the poster
-  [Tom Willet]
-- Added  a new module to filter posts based on the IP address of the
-  spamvertised site [Tom Willet]
-- Added a new module to filter posts based on characteristics of the HTTP header
-  [Dirk]
-- Fixed the Mass Delete Spam Comments module [Tom Willet]
-- The Spam-X plugin's examine modules run the post through html_entity_decode()
-  now in case the spammers try to obfuscate their posts by using HTML entities
-  [Tom Willet, Dirk]
-- The Mail Admin action module now also reports the HTTP headers of the post
-  that triggered the spam filter [Dirk]
-- Added a simple stats function (reports the number of posts deleted as spam,
-  and - to the Spam-X Admin only - the number of entries for each module) [Dirk]
-- Implemented an update function for the plugin [Dirk]
-
-- New Farsi (Persian) language file, provided by Hesam.H
-- New Italian language file, provided by Marcello Teodori
-- New Spanish language file, provided by vivi1123
-
-
-Jun ??, 2005 (Links-Plugin 1.0.0)
+??? ??, 2005 (Links-Plugin 1.0.0)
 ------------
 - Added ID-editor and Autotags-feature [link: ... ] [Oliver]
 - Added Category-Specific Feeds [Oliver]
@@ -220,6 +193,42 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
 
 - New Farsi (Persian) language file for the static pages plugin,
   provided by Hesam.H
+
+
+Aug 21, 2005 (Spam-X plugin 1.0.2)
+------------
+
+- Changed the display name of the plugin to "Spam-X" to avoid potential
+  confusion with the email spam filter of the same name.
+  "SpamX" is a registered trademark of Hendrickson Software Components.
+- Added a new module to filter posts based on the IP address of the poster
+  [Tom Willet]
+- Added  a new module to filter posts based on the IP address of the
+  spamvertised site [Tom Willet]
+- Added a new module to filter posts based on characteristics of the HTTP header
+  [Dirk]
+- Fixed the Mass Delete Spam Comments module [Tom Willet]
+- The Spam-X plugin's examine modules run the post through html_entity_decode()
+  now in case the spammers try to obfuscate their posts by using HTML entities
+  [Tom Willet, Dirk]
+- The Mail Admin action module now also reports the HTTP headers of the post
+  that triggered the spam filter [Dirk]
+- Added a simple stats function (reports the number of posts deleted as spam,
+  and - to the Spam-X Admin only - the number of entries for each module) [Dirk]
+- Implemented an update function for the plugin [Dirk]
+
+- New Farsi (Persian) language file, provided by Hesam.H
+- New Italian language file, provided by Marcello Teodori
+- New Spanish language file, provided by vivi1123
+
+
+Jul 3, 2005 (1.3.11sr1)
+-----------
+
+This release addresses the following security issue:
+
+Stefan Esser found an SQL injection that can, under certain circumstances,
+be exploited to extract user data such as the user's password hash.
 
 
 Dec 31, 2004 (1.3.11)
