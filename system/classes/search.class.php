@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.44 2005/07/31 08:55:58 dhaun Exp $
+// $Id: search.class.php,v 1.45 2005/08/21 18:20:56 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -126,7 +126,12 @@ class Search {
         $this->_keyType = COM_applyFilter ($_REQUEST['keyType']);
         $this->_per_page = COM_applyFilter ($_REQUEST['results'], true);
         if ($this->_per_page < 1) {
-            $this->_per_page = $_CONF['num_search_results'];
+            if (isset ($_CONF['num_search_results']) &&
+                    ($_CONF['num_search_results'] > 0)) {
+                $this->_per_page = $_CONF['num_search_results'];
+            } else {
+                $this->_per_page = 10;
+            }
         }
         $this->_page = COM_applyFilter ($_REQUEST['page'], true);
         if ($this->_page < 1) {
@@ -251,7 +256,7 @@ class Search {
             }
             $permsql = COM_getPermSQL ('AND') . COM_getTopicSQL ('AND');
             $sql .= $permsql;
-            $sql .= "ORDER BY date DESC ";
+            $sql .= ' ORDER BY date DESC ';
             $l = ($this->_per_page * $this->_page) - $this->_per_page;
             $sql .= 'LIMIT ' . $l . ',' . $this->_per_page;
 
@@ -392,7 +397,7 @@ class Search {
             if (!empty($this->_author)) {
                 $sql .= "AND ({$_TABLES['comments']}.uid = '$this->_author') ";
             }
-            $sql .= "AND (" .  $stwhere . ") ";
+            $sql .= 'AND (' .  $stwhere . ') ';
             $sql .= "ORDER BY {$_TABLES['comments']}.date DESC ";
             $l = ($this->_per_page * $this->_page) - $this->_per_page;
             $sql .= 'LIMIT ' . $l . ',' . $this->_per_page;
@@ -518,7 +523,7 @@ class Search {
                 $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
             }
             $sql .= COM_getPermSQL ('AND');
-            $sql .= "ORDER BY datestart DESC ";
+            $sql .= ' ORDER BY datestart DESC ';
             $l = ($this->_per_page * $this->_page) - $this->_per_page;
             $sql .= 'LIMIT ' . $l . ',' . $this->_per_page;
 
