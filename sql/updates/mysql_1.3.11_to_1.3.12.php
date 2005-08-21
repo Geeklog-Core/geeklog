@@ -88,6 +88,9 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.moderate', ft_gl_c
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.edit', ft_gl_core = '0' WHERE ft_name = 'link.edit';";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.submit', ft_gl_core = '0' WHERE ft_name = 'link.submit';";
 
+// the included Spam-X requires Geeklog 1.3.12 now (for the MassDelete module)
+$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.3', pi_gl_version = '1.3.12' WHERE pi_name = 'spamx'";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {
