@@ -654,7 +654,9 @@ $LANG21 = array(
     59 => 'Block auf die rechte Seite',
     60 => 'Block auf die linke Seite',
     61 => 'Ohne Titel',
-    62 => 'Artikel-Limit'
+    62 => 'Artikel-Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!'
 );
 
 ###############################################################################
