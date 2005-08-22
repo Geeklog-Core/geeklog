@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.78 2005/08/20 15:36:54 blaine Exp $
+// $Id: lib-plugins.php,v 1.79 2005/08/22 18:29:50 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -472,8 +472,8 @@ function PLG_getSubmissionCount()
 * call this here follow below.
 * 
 * NOTE for plugin developers: 
-* The plugin is responsible for it's own security.
-* This supports a plugin having either a single menuitem or multiple mennuitems.
+* The plugin is responsible for its own security.
+* This supports a plugin having either a single menuitem or multiple menuitems.
 * The plugin has to provide an array for the menuitem of the format:
 * array (menuitem_title, item_url, submission_count)
 * Plugin function can return a single record array or multiple records
@@ -493,14 +493,18 @@ function PLG_getSubmissionCount()
 function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 {
     global $_PLUGINS;
+
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
         $function = $function_name . $pi_name;
-        if (function_exists($function)) {
+        if (function_exists ($function)) {
             $plg_array = $function();
             if ($plg_array !== false) {
-                // Check if plugin is returning an single record array or multiple records
-                if (count($plg_array[0]) == 1) {
+                // Check if plugin is returning a single record array or multiple records
+                $entries = count ($plg_array[0]);
+                if ($entries == 0) {
+                    $sets_array = array ();
+                } else if ($entries == 1) {
                     // Single record - so we need to prepare the sets_array;
                     $sets_array[0] = $plg_array;
                 } else {
@@ -549,6 +553,7 @@ function PLG_getCCOptions()
     $required_names = array(true, true, true);
     $function_name = 'plugin_cclabel_';
     $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
+
     return $plgresults;
 }
 
@@ -556,7 +561,8 @@ function PLG_getCCOptions()
 * This function will show any plugin adminstrative options in the
 * admin functions block on every page (assuming the user is an admin
 * and is logged in).
-* NOTE: the plugin is responsible for it's own security.
+*
+* NOTE: the plugin is responsible for its own security.
 * This supports that a plugin can have several lines in the Admin menu.
 * The plugin has to provide simply a set of 3 x n sets of variables in order to
 * get n lines in the menu such as
@@ -575,6 +581,7 @@ function PLG_getAdminOptions()
     $required_names = array(true, true, false);
     $function_name = 'plugin_getadminoption_';
     $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
+
     return $plgresults;
 }
 
@@ -588,7 +595,7 @@ function PLG_getAdminOptions()
 * array(    "first line", "url1", "1",
 *            "second line", "url2", "44",
 *            etc, etc)
-* NOTE: the plugin is responsible for it's own security.
+* NOTE: the plugin is responsible for its own security.
 *
 * @return   array   Returns options to add to user menu
 *
@@ -596,10 +603,11 @@ function PLG_getAdminOptions()
 function PLG_getUserOptions()
 {
     // I know this uses the adminlabel, adminurl but who cares?
-    $var_names = array("adminlabel", "adminurl", "numsubmissions");
+    $var_names = array('adminlabel', 'adminurl', 'numsubmissions');
     $required_names = array(true, true, false);
     $function_name = 'plugin_getuseroption_';
     $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
+
     return $plgresults;
 }
 
