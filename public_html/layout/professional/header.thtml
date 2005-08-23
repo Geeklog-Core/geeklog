@@ -3,7 +3,6 @@
 <html>
 <head>
 <title>{page_title}</title>
-<meta name="ROBOTS" content="INDEX,FOLLOW">
 <!-- link rel="SHORTCUT ICON" href="{site_url}/favicon.ico" -->
 <!--
 <meta http-equiv="Pragma" content="no-cache">
