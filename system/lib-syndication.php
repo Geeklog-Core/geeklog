@@ -30,13 +30,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.15 2005/06/29 07:13:22 mjervis Exp $
+// $Id: lib-syndication.php,v 1.16 2005/08/27 09:06:08 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
 
 if (eregi ('lib-syndication.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
+}
+if ($_CONF['trackback_enabled']) {
+    require_once ($_CONF['path_system'] . 'lib-trackback.php'); 
 }
 
 /**
@@ -305,11 +308,11 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $fulltext = preg_replace( "/(\015)/", "", $fulltext );
             $fulltext = "$storytext\n\n$fulltext";
     
-            $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
-                                       . $row['sid'] );
+            $storylink = COM_buildUrl( $_CONF['site_url']
+                                       . '/article.php?story=' . $row['sid'] );
     
             $content[] = array( 'title'  => $storytitle,
-                                'summary'   => $storytext,
+                                'summary' => $storytext,
                                 'text'   => $fulltext,
                                 'link'   => $storylink,
                                 'uid'    => $row['uid'],
@@ -317,6 +320,12 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
                                 'date'   => $row['modified'],
                                 'format' => $row['postmode']
                               );
+
+            if( $_CONF['trackback_enabled'] )
+            {
+                $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
+                $content[count( $content ) - 1]['trackback:ping'] = $trbUrl;
+            }
         }
     }
 
@@ -411,6 +420,12 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
                             'date'   => $row['modified'],
                             'format' => $row['postmode']
                           );
+
+        if( $_CONF['trackback_enabled'] )
+        {
+            $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
+            $content[count( $content ) - 1]['trackback:ping'] = $trbUrl;
+        }
     }
 
     $link = $_CONF['site_url'];
@@ -571,7 +586,14 @@ function SYND_updateFeed( $fid )
 
             $feed->title = $A['title'];
             $feed->description = $A['description'];
-            $feed->feedlogo = $link.$A['feedlogo'];
+            if( empty( $A['feedlogo'] ))
+            {
+                $feed->feedlogo = '';
+            }
+            else
+            {
+                $feed->feedlogo = $link . $A['feedlogo'];
+            }
             $feed->sitelink = $link;
             $feed->copyright = 'Copyright ' . strftime( '%Y' ) . ' '
                              . $_CONF['site_name'];

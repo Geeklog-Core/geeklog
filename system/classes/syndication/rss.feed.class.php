@@ -261,7 +261,7 @@
       $xml .= '<title>'.$this->_safeXML( $article['title'] )."</title>\n";
       $xml .= '<link>'.$this->_safeXML( $article['link'] )."</link>\n";
       $xml .= '<guid isPermaLink="true">'.$this->_safeXML( $article['link'] )."</guid>\n";
-      $xml .= '<pubDate>'.strftime( "%a, %d %b %Y %T %Z", $article['date'] )."</pubDate>\n";
+      $xml .= '<pubDate>'.date( 'r', $article['date'] )."</pubDate>\n";
       if( array_key_exists( 'commenturl', $article ) )
       {
         $xml .= '<comments>'.$this->_safeXML( $article['commenturl'] )."</comments>\n";
@@ -271,6 +271,13 @@
         if( strlen( $article['summary'] ) > 0 )
         {
           $xml .= '<description>'.$this->_safeXML( $article['summary'] )."</description>\n";
+        }
+      }
+      if( array_key_exists( 'trackback:ping', $article ) )
+      {
+        if( strlen( $article['trackback:ping'] ) > 0 )
+        {
+          $xml .= '<trackback:ping>'.$this->_safeXML( $article['trackback:ping'] )."</trackback:ping>\n";
         }
       }
       $xml .= "</item>\n";
@@ -285,8 +292,24 @@
       */
     function _feedHeader()
     {
+      global $_CONF;
+
+      $modules = array();
+      if( $_CONF['trackback_enabled'] )
+      {
+        $modules[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
+      }
+
       $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
-      $xml .= "<rss version=\"2.0\">\n<channel>\n";
+      if( count( $modules ) == 0 )
+      {
+        $xml .= "<rss version=\"2.0\">\n";
+      }
+      else
+      {
+        $xml .= '<rss version="2.0" ' . implode( ' ', $modules ) . ">\n";
+      }
+      $xml .= "<channel>\n";
       $xml .= "<title>".$this->_safeXML( $this->title )."</title>\n";
       $xml .= "<link>".$this->_safeXML( $this->sitelink )."</link>\n";
       if( strlen( $this->description ) > 0 )
@@ -306,7 +329,7 @@
       {
         $xml .= '<generator>'.$this->_safeXML( $this->system )."</generator>\n";
       }
-      $xml .= '<pubDate>'.strftime( "%a, %d %b %Y %T %Z" )."</pubDate>\n";
+      $xml .= '<pubDate>'.date( 'r' )."</pubDate>\n";
       $xml .= "<language>{$this->lang}</language>\n";
       
       if( strlen($this->feedlogo) > 0 )
