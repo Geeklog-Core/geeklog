@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.188 2005/08/07 20:15:15 dhaun Exp $
+// $Id: config.php,v 1.189 2005/08/27 12:50:00 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -568,7 +568,7 @@ $_CONF['left_blocks_in_footer'] = 0;
 $_CONF['backend']       = 1;    // 1 = activate feeds, 0 = off
 
 // path to your site's default RSS feed
-$_CONF['rdf_file']      = $_CONF['path_html'] . 'backend/geeklog.rdf';
+$_CONF['rdf_file']      = $_CONF['path_html'] . 'backend/geeklog.rss';
 
 // This allows a person to limit the rss feed to a certain number of stories
 // (e.g. 10 or 12) or else limit the rss feed to all stories within a certain
