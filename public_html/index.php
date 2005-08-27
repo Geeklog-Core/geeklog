@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.72 2005/06/26 08:38:32 mjervis Exp $
+// $Id: index.php,v 1.73 2005/08/27 18:19:11 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -128,17 +128,21 @@ $archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag='1'");
 
 // Scan for any stories that have expired and should be archived or deleted
 $asql = "SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']} ";
-$asql .= "WHERE (expire <= NOW()) AND (statuscode = " . STORY_ARCHIVE_ON_EXPIRE;
-$asql .= " OR statuscode = " . STORY_DELETE_ON_EXPIRE . ") AND tid != '$archivetid'";
+$asql .= 'WHERE (expire <= NOW()) AND (statuscode = ' . STORY_DELETE_ON_EXPIRE;
+if (empty ($archivetid)) {
+    $asql .= ')';
+} else {
+    $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND tid != '$archivetid'";
+}
 $expiresql = DB_query ($asql);
 while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray ($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
         if (!empty ($archivetid) ) {
-            COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
+            COM_errorLOG("Archive Story: $sid, Topic: $archivetid, Title: $title, Expired: $expire");
             DB_query ("UPDATE {$_TABLES['stories']} SET tid = '$archivetid', frontpage = '0', featured = '0' WHERE sid='{$sid}'");
         }
     } else if ($statuscode == STORY_DELETE_ON_EXPIRE) {
-        COM_errorLOG("Delete Story and comments: $sid, Topic:$expiretopic, Title: $title. Expired :$expire");
+        COM_errorLOG("Delete Story and comments: $sid, Topic: $expiretopic, Title: $titler, Expired: $expire");
         STORY_deleteImages ($sid);
         DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid='{$sid}' AND type = 'article'");
         DB_query("DELETE FROM {$_TABLES['stories']} WHERE sid='{$sid}'");
