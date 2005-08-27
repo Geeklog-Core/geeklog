@@ -362,7 +362,7 @@ CREATE TABLE {$_TABLES['sortcodes']} (
 $_SQL[26] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id int(10) unsigned NOT NULL auto_increment,
-  ipaddress varchar(15) NOT NULL default '', 
+  ipaddress varchar(15) NOT NULL default '',
   date int(10) unsigned default NULL,
   type varchar(30) NOT NULL default 'submit',
   PRIMARY KEY (id),
@@ -439,7 +439,7 @@ CREATE TABLE {$_TABLES['syndication']} (
   fid int(10) unsigned NOT NULL auto_increment,
   type varchar(30) NOT NULL default 'geeklog',
   topic varchar(48) NOT NULL default '::all',
-  header_tid varchar(48) NOT NULL default 'none', 
+  header_tid varchar(48) NOT NULL default 'none',
   format varchar(20) NOT NULL default 'rss',
   limits varchar(5) NOT NULL default '10',
   content_length smallint(5) unsigned NOT NULL default '0',
@@ -653,7 +653,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   KEY staticpage_sp_where (sp_where)
 ) TYPE=MyISAM
 ";
- 
+
 $_SQL[43] = "
 CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
@@ -945,9 +945,9 @@ $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tz
 # Dumping data for table 'users'
 #
 
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2004-01-01 00:00:01',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2004-01-01 00:00:02',28800,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2004-01-01 00:00:03',28800,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme, status) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2004-01-01 00:00:01',0,NULL,3) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme, status) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2004-01-01 00:00:02',28800,NULL,3) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme, status) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2004-01-01 00:00:03',28800,NULL,3) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
