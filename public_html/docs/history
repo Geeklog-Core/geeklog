@@ -1,14 +1,14 @@
 GeekLog History/Changes:
 
-??? ??, 2005 (Links-Plugin 1.0.0)
-------------
-- Added ID-editor and Autotags-feature [link: ... ] [Oliver]
-- Added Category-Specific Feeds [Oliver]
-- Added Edit-Icon, List-Sorting, searching, Limits & etc for admin menu [Oliver]
-
-
 ??? ??, 2005 (1.3.12)
 ------------
+- Don't check for auto-archived stories when no archive topic has been
+  defined yet [Dirk]
+- The default feed for a new site is now in RSS 2.0 format and named
+  "geeklog.rss" [Mike, Dirk]
+- Removed the <meta name="ROBOTS"> entry from the Professional theme's
+  header.thtml as "INDEX,FOLLOW" is the default anyway. For finer control,
+  we now ship a robots.txt [Dirk]
 - Added time of the day to the name of the database backups to allow several
   backups a day [Oliver]
 - When the search returns no results, the search form is now pre-populated
@@ -38,7 +38,6 @@ GeekLog History/Changes:
   provided by Alford Deeley (machinari)
 - Changed the Admin's "Command and Control" center such that there is an icon
   for every entry in the Admin's block [Dirk]
-  [To do: Need to add icons for the new entries]
 - Removed duplicate code for creating a "topic SQL" query in moderation.php
   (use COM_getTopicSQL instead) [Dirk]
 - Added the ability to allow users to login via defined remote services (ships
@@ -48,7 +47,6 @@ GeekLog History/Changes:
 - Added edit-icon, List-Sorting, searching, Limits & alternating row colors
   in admin menus for groups, syndication, staticpages, trackback
   (where not yet done) [Oliver]
-- Moved links functionality into a plugin [Trinity, Oliver]
 - Added function to allow user-defined scaling of images in articles by using
   [unscaledX] instead of [imageX] [Oliver]
 - Removed $_CONF['whosonline_fullname'] option - use $_CONF['show_fullname']
@@ -136,7 +134,7 @@ GeekLog History/Changes:
 - Fixed SQL error when using the [staticpage:] autotag (bug #373) [Dirk]
 - Changed admin/user.php to use file() for the batch import [Dirk]
 - Implemented pinging weblog directory services like blo.gs and weblogs.com
-  (Feature Request #35) [Dirk]
+  (Feature Request #35). By default, we ping pingomatic.com [Dirk]
 - Complete overhaul of the Plugin Comment API to reduce the likelyhood of
   plugins introducing security problems.  Older plugins that use the comment
   API will no longer work. [Vinny]
@@ -145,9 +143,12 @@ GeekLog History/Changes:
 - Introduced a 'story.ping' permission that enables users to send Pings,
   Pingbacks, and Trackbacks for a story (or plugin item). Members of the Story
   Admin group have that permission by default.
-- The install script will abort the installation now if the minumum requirements
-  (PHP 4.1.0, MySQL 3.23.2) are not met. It also displays a warning message if
-  register_long_arrays is off (PHP 5 only, bug #360) [Dirk]
+- Overhauled install script: It will now abort the installation if the minumum
+  requirements (PHP 4.1.0, MySQL 3.23.2) are not met. It also displays a warning
+  message if register_long_arrays is off (PHP 5 only, bug #360). Another
+  warning message is displayed if "public_html" is part of the URL.
+  When upgrading, it now tries to identify the Geeklog version that was used
+  previously (only really works for versions 1.3.8 - 1.3.11) [Dirk]
 - Fixed date in comment preview (bug #370) [Dirk]
 - Added a missing stripslashes call to remove backslashes when a topic's name
   was displayed in the index page's title (bug #369) [Dirk]
@@ -193,6 +194,22 @@ GeekLog History/Changes:
 
 - New Farsi (Persian) language file for the static pages plugin,
   provided by Hesam.H
+
+Links plugin 1.0.0
+------------
+- Added ID-editor and Autotags-feature [link: ... ] [Oliver]
+- Added Category-Specific Feeds [Oliver]
+- Added Edit-Icon, List-Sorting, searching, Limits & etc for admin menu [Oliver]
+- Moved links functionality into a plugin [Trinity, Oliver]
+
+Polls plugin 1.0.0
+------------
+- Polls moved to a plugin [Trinity]
+
+Spam-X plugin 1.0.3
+-------------
+- Added an "admin override" option, so that postings by members of the 'spamx
+  Admin' group will not be checked for spam [Dirk]
 
 
 Aug 21, 2005 (Spam-X plugin 1.0.2)
