@@ -32,20 +32,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.38 2005/06/30 23:56:41 trinity Exp $
+// $Id: lib-security.php,v 1.39 2005/08/27 18:16:31 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
-* *nix-style security system.  
+* *nix-style security system.
 *
 * Programming notes:  For items you need security on you need the following for
 * each record in your database:
-* owner_id        | mediumint(8)          
-* group_id        | mediumint(8)          
-* perm_owner      | tinyint(1) unsigned   
-* perm_group      | tinyint(1) unsigned   
-* perm_members    | tinyint(1) unsigned  
-* perm_anon       | tinyint(1) unsigned  
+* owner_id        | mediumint(8)
+* group_id        | mediumint(8)
+* perm_owner      | tinyint(1) unsigned
+* perm_group      | tinyint(1) unsigned
+* perm_members    | tinyint(1) unsigned
+* perm_anon       | tinyint(1) unsigned
 *
 * For display one function can handle most needs:
 * function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
@@ -55,7 +55,7 @@
 * function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
 * This function displays the permissions widget with arrays for each permission
 * function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon)
-* This function takes the permissions from the previous function and converts them into 
+* This function takes the permissions from the previous function and converts them into
 * an integer for saving back to the database.
 *
 */
@@ -74,7 +74,7 @@ if (eregi ('lib-security.php', $_SERVER['PHP_SELF'])) {
 * all the groups a user belongs to.  This function is called recursively
 * as groups can belong to other groups
 *
-* Note: this is an expensive function -- if you are concerned about speed it should only 
+* Note: this is an expensive function -- if you are concerned about speed it should only
 *       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
 *       used through out the page.
 *
@@ -91,7 +91,7 @@ function SEC_getUserGroups($uid='')
     if ($_SEC_VERBOSE) {
         COM_errorLog("****************in getusergroups(uid=$uid,usergroups=$usergroups,cur_grp_id=$cur_grp_id)***************",1);
     }
-    
+
     $groups = array();
 
     if (empty($uid)) {
@@ -120,7 +120,7 @@ function SEC_getUserGroups($uid='')
 
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
-    
+
             if ($_SEC_VERBOSE) {
                 COM_errorLog('user is in group ' . $A['grp_name'],1);
             }
@@ -486,7 +486,7 @@ function SEC_getUserPermissions($grp_id='',$uid='')
             $retval .= ',';
         }
     }
-    
+
     return $retval;
 }
 
@@ -505,7 +505,7 @@ function SEC_getUserPermissions($grp_id='',$uid='')
 * @see  SEC_getPermissionValue
 *
 */
-function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon) 
+function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon)
 {
     global $_SEC_VERBOSE;
 
@@ -552,7 +552,7 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
 * Converts permission array into numeric value
 *
 * This function converts an array of permissions for either
-* the owner/group/members/anon and returns the numeric 
+* the owner/group/members/anon and returns the numeric
 * equivalent.  This is typically called by the admin screens
 * to prepare the permissions to be save to the database
 *
@@ -561,7 +561,7 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
 * @see SEC_getPermissionValues
 *
 */
-function SEC_getPermissionValue($perm_x) 
+function SEC_getPermissionValue($perm_x)
 {
     global $_SEC_VERBOSE;
 
@@ -655,7 +655,7 @@ function SEC_getFeatureGroup ($feature, $uid = '')
 * @return   int                 user status, -1 for fail.
 *
 */
-function SEC_authenticate($username, $password, $uid)
+function SEC_authenticate($username, $password, &$uid)
 {
     global $_TABLES, $LANG01, $_CONF;
 
@@ -720,7 +720,7 @@ function SEC_checkUserStatus($userid)
     global $_TABLES, $_CONF;
     // Check user status
     $status = DB_getItem($_TABLES['users'], 'status', "uid=$userid");
-    
+
     // only do redirects if we aren't on users.php in a valid mode (logout or
     // default)
     if (!(eregi('users.php', $_SERVER['PHP_SELF'])))
@@ -785,10 +785,10 @@ function SEC_checkUserStatus($userid)
   * @param  string  $uid OUTPUT parameter, pass it by ref to get uid back.
   * @return int     user status, -1 for fail.
   */
-function SEC_remoteAuthentication($loginname, $passwd, $service, $uid)
+function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
 {
     global $_TABLES, $_CONF;
-    
+
     /* First try a local cached login */
     $remoteusername = addslashes($loginname);
     $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername'");
@@ -805,8 +805,8 @@ function SEC_remoteAuthentication($loginname, $passwd, $service, $uid)
             return $U['status'];
         }
     }
-    
-    
+
+
     if (file_exists($_CONF['path_system'].'classes/authentication/'.$service.'.auth.class.php'))
     {
         require_once($_CONF['path_system'].'classes/authentication/'.$service.'.auth.class.php');
@@ -817,7 +817,7 @@ function SEC_remoteAuthentication($loginname, $passwd, $service, $uid)
             if (empty($mypass))
             {
                 // no such user, create them
-                    
+
                 //Check to see if their remoteusername is unique locally
                 $checkName = DB_getItem($_TABLES['users'],'username',"username='$remoteusername'");
                 if ($checkName != '')
@@ -855,14 +855,14 @@ function SEC_remoteAuthentication($loginname, $passwd, $service, $uid)
 
 /**
   * Add user to a group
-  * 
+  *
   * work in progress
   *
   * Rather self explanitory shortcut function
   * Is this the right place for this, Dirk?
-  * 
+  *
   * @author Trinity L Bays <trinity93@steubentech.com>
-  * 
+  *
   * @param  string  $uid Their user id
   * @param  string  $gname The group name
   * @return bool    status, true or false.
@@ -870,7 +870,7 @@ function SEC_remoteAuthentication($loginname, $passwd, $service, $uid)
 function SEC_addUserToGroup($uid, $gname)
 {
     global $_TABLES, $_CONF;
-    
+
     $remote_grp = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name='". $gname ."'");
     DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
 }

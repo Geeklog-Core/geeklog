@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.110 2005/08/07 08:38:52 dhaun Exp $
+// $Id: users.php,v 1.111 2005/08/27 18:16:31 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -88,7 +88,7 @@ function userprofile ($user, $msg = 0)
         $retval .= $login->finish ($login->get_var('output'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter ();
- 
+
         return $retval;
     }
 
@@ -131,7 +131,7 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_var('lang_location', $LANG04[106]);
     $user_templates->set_var('user_location', $A['location']);
     $user_templates->set_var('lang_bio', $LANG04[7]);
-    $user_templates->set_var('user_bio', nl2br(stripslashes($A['about']))); 
+    $user_templates->set_var('user_bio', nl2br(stripslashes($A['about'])));
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var('user_pgp', nl2br($A['pgpkey']));
     $user_templates->set_var('start_block_last10stories',
@@ -238,7 +238,7 @@ function userprofile ($user, $msg = 0)
             $user_templates->set_var('comment_title', stripslashes($C['title']));
             $user_templates->set_var('comment_end_href', '</a>');
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
-            $user_templates->set_var('comment_date', $commenttime[0]); 
+            $user_templates->set_var('comment_date', $commenttime[0]);
             $user_templates->parse('comment_row','row',true);
         }
     } else {
@@ -268,7 +268,7 @@ function userprofile ($user, $msg = 0)
     PLG_profileVariablesDisplay ($user, $user_templates);
 
     $user_templates->parse('output', 'profile');
-    $retval .= $user_templates->finish($user_templates->get_var('output'));        
+    $retval .= $user_templates->finish($user_templates->get_var('output'));
 
     $retval .= PLG_profileBlocksDisplay ($user);
     $retval .= COM_siteFooter ();
@@ -286,7 +286,7 @@ function userprofile ($user, $msg = 0)
 * @return   string      Optionally returns the HTML for the default form if the user info can't be found
 *
 */
-function emailpassword ($username, $msg = 0) 
+function emailpassword ($username, $msg = 0)
 {
     global $_CONF, $_TABLES, $LANG04;
 
@@ -412,7 +412,7 @@ function newpasswordform ($uid, $requestid)
 * @return   string      HTML for the form again if error occurs, otherwise nothing.
 *
 */
-function createuser ($username, $email) 
+function createuser ($username, $email)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG04;
 
@@ -443,7 +443,7 @@ function createuser ($username, $email)
             }
 
             $uid = USER_createAccount ($username, $email);
-            
+
             emailpassword ($username, 1);
             if (isset ($_CONF['notification']) &&
                     in_array ('user', $_CONF['notification'])) {
@@ -483,7 +483,7 @@ function createuser ($username, $email)
 
 /**
 * Shows the user login form after failed attempts to either login or access a page
-* requiring login. 
+* requiring login.
 *
 * @return   string      HTML for login form
 *
@@ -513,7 +513,7 @@ function loginform ($hide_forgotpw_link = false, $statusmode=-1)
         }
         $user_templates->set_var('lang_message', $LANG04[66]);
     }
-        
+
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('lang_password', $LANG04[4]);
     if ($hide_forgotpw_link) {
@@ -525,10 +525,10 @@ function loginform ($hide_forgotpw_link = false, $statusmode=-1)
     $user_templates->set_var('end_block', COM_endBlock());
     if ($_CONF['remoteauthentication'] && !$_CONF['usersubmission']) {
         /* Build select */
-        $select = '<select name="service"><option value="">' . 
+        $select = '<select name="service"><option value="">' .
                         $_CONF['site_name'] . '</option>';
         if (is_dir($_CONF['path_system'].'classes/authentication/')) {
-            
+
             $folder = opendir( $_CONF['path_system'].'classes/authentication/' );
             while (($filename = @readdir( $folder )) !== false) {
                 $strpos = strpos($filename, '.auth.class.php');
@@ -565,7 +565,7 @@ function newuserform($msg = '')
     global $LANG04, $_CONF;
 
     $retval = '';
-    
+
     if (!empty ($msg)) {
         $retval .= COM_startBlock ($LANG04[21], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
@@ -583,7 +583,7 @@ function newuserform($msg = '')
     $user_templates->set_var('lang_register', $LANG04[27]);
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->parse('output', 'regform');
-    $retval .= $user_templates->finish($user_templates->get_var('output')); 
+    $retval .= $user_templates->finish($user_templates->get_var('output'));
 
     return $retval;
 }
@@ -701,7 +701,7 @@ case 'create':
                             COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG04[122]
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= COM_siteFooter ();        
+        $display .= COM_siteFooter ();
     } else {
         $display .= createuser (COM_applyFilter ($_POST['username']),
                                 COM_applyFilter ($_POST['email']));
@@ -818,7 +818,7 @@ case 'new':
         $display .= COM_startBlock ($LANG04[22], '',
                             COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG04[122]
-                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));        
+                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
         // Call custom registration and account record create function
         // if enabled and exists
@@ -852,15 +852,15 @@ default:
     $service = COM_applyFilter($_POST['service']);
     $uid = '';
     if (!empty($loginname) && !empty($passwd) && empty($service)) {
-        $status = SEC_authenticate($loginname, $passwd, &$uid);
+        $status = SEC_authenticate($loginname, $passwd, $uid);
     } elseif(( $_CONF['usersubmission'] == 0) && $_CONF['remoteauthentication'] && ($service != '')) {
         /* Distributed Authentication */
         //pass $loginname by ref so we can change it ;-)
-        $status = SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid);
+        $status = SEC_remoteAuthentication($loginname, $passwd, $service, $uid);
     } else {
         $status = -1;
     }
-    
+
     if ($status == 3) { // logged in AOK.
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
         $userdata = SESS_getUserDataFromId($uid);
@@ -951,7 +951,7 @@ default:
             // check to see if this was the last allowed attempt
             if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
                 $retval .= COM_siteHeader()
-                         . COM_startBlock ($LANG04[113], '', 
+                         . COM_startBlock ($LANG04[113], '',
                                            COM_getBlockTemplate ('_msg_block', 'header'))
                          . $LANG04[112]
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
