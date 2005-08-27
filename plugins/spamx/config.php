@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: config.php,v 1.9 2005/08/21 18:56:45 dhaun Exp $
+ * $Id: config.php,v 1.10 2005/08/27 17:25:20 dhaun Exp $
  */
 
 $_SPX_CONF['version'] = '1.0.3';
@@ -29,6 +29,9 @@ $_SPX_CONF['spamx_submit_url'] = 'http://www.pigstye.net/gplugs/spamx/submit.php
 
 // address which mail admin module will use
 $_SPX_CONF['notification_email'] = $_CONF['site_mail'];
+
+// if set to = true, skip spam check for members of the "spamx Admin" group
+$_SPX_CONF['admin_override'] = false;
 
 // This sets Spam-X Plugin Table Prefix the same as Geeklog
 $_SPX_table_prefix = $_DB_table_prefix;
