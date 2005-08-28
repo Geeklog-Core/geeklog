@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.59 2005/07/21 16:52:09 mjervis Exp $
+// $Id: moderation.php,v 1.60 2005/08/28 09:12:10 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -649,8 +649,10 @@ function moderateusers ($uid, $action, $count)
                 $nrows = DB_numRows($result);
                 if ($nrows == 1) {
                     $A = DB_fetchArray($result);
-
-                    USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
+                    $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
+                    DB_Query($sql);
+                    USER_sendActivationEmail($A['username'], $A['email']);
+                    //USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
                 }
                 break;
         }

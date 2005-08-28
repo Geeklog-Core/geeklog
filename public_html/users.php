@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.111 2005/08/27 18:16:31 mjervis Exp $
+// $Id: users.php,v 1.112 2005/08/28 09:12:10 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -308,7 +308,7 @@ function emailpassword ($username, $msg = 0)
         if ($msg) {
             $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=$msg");
         } else {
-            $retval = COM_refresh ("{$_CONF['site_url']}/index.php");
+            $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=1");
         }
     } else {
         $retval = COM_siteHeader ('menu', $LANG04[17])
@@ -444,13 +444,13 @@ function createuser ($username, $email)
 
             $uid = USER_createAccount ($username, $email);
 
-            emailpassword ($username, 1);
+            $retval = emailpassword ($username, 1, $msg);
             if (isset ($_CONF['notification']) &&
                     in_array ('user', $_CONF['notification'])) {
                 USER_sendNotification ($username, $email, $uid, 'new');
             }
 
-            return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
+            return $retval;
         } else {
             $retval .= COM_siteHeader ('Menu');
             if ($_CONF['custom_registration'] &&
