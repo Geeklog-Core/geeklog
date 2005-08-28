@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.464 2005/08/14 21:24:12 ospiess Exp $
+// $Id: lib-common.php,v 1.465 2005/08/28 19:40:27 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4086,8 +4086,14 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     if( $curpage > 1 )
     {
-        $retval .= '<a href="' . $base_url . $sep . $page_str . '1">' . $LANG05[7] . '</a> | ';
-        $retval .= '<a href="' . $base_url . $sep . $page_str . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> | ';
+        $retval .= '<a href="' . $base_url . '">' . $LANG05[7] . '</a> | ';
+        $pg = '';
+        if( ( $curpage - 1 ) > 1 )
+        {
+            $pg = $sep . $page_str . ( $curpage - 1 );
+        }
+        $retval .= '<a href="' . $base_url . $pg . '">' . $LANG05[6]
+                . '</a> | ';
     }
     else
     {
@@ -4108,7 +4114,13 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         }
         else
         {
-            $retval .= '<a href="' . $base_url . $sep . $page_str . $pgcount . '">' . $pgcount . '</a> ';
+            $pg = '';
+            if( $pgcount > 1 )
+            {
+                $pg = $sep . $page_str . $pgcount;
+            }
+            $retval .= '<a href="' . $base_url . $pg . '">' . $pgcount
+                    . '</a> ';
         }
     }
 
