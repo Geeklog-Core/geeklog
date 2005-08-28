@@ -331,7 +331,7 @@
       }
       $xml .= '<pubDate>'.date( 'r' )."</pubDate>\n";
       $xml .= "<language>{$this->lang}</language>\n";
-      
+
       if( strlen($this->feedlogo) > 0 )
       {
         $xml .= "<image>\n";
@@ -410,14 +410,26 @@
       {
         if( $this->_currentTag == 'TITLE' )
         {
-          $this->_currentItem['title'] = $data;
+          if( empty( $this->_currentItem['title'] ) )
+          {
+            $this->_currentItem['title'] = $data;
+          } else {
+            $this->_currentItem['title'] .= $data;
+          }
         } else if( $this->_currentTag == 'LINK' ) {
-          if( $this->_currentItem['link'] == '' )
+          if( empty( $this->_currentItem['link'] ) )
           {
             $this->_currentItem['link'] = $data;
+          } else {
+            $this->_currentItem['link'] .= $data;
           }
         } else if( $this->_currentTag == 'DESCRIPTION' ) {
-          $this->_currentItem['summary'] = $data;
+          if( empty( $this->_currentItem['summary'] ) )
+          {
+            $this->_currentItem['summary'] = $data;
+          } else {
+            $this->_currentItem['summary'] .= $data;
+          }
         } else if( $this->_currentTag == 'PUBDATE' ) {
           $this->_currentItem['date'] = $data;
         } else if( ($this->_currentTag == 'GUID') && $this->_permaLink) {
