@@ -3,9 +3,10 @@
 // | Version 1.0    Date: Jun 4, 2005                                          |
 // | Authors:   Blaine Lang - blaine@portalparts.com                           |
 // |                                                                           |
-// | Javascript functions for FCKEdior Integration into Geeklog                |
+// | Javascript functions for FCKEditor Integration into Geeklog                |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
+
 
     window.onload = function() {
         var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
@@ -13,26 +14,17 @@
         oFCKeditor1.ToolbarSet = 'editor-toolbar1' ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
-
-        var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
-        oFCKeditor2.BasePath = geeklogEditorBasePath ;
-        oFCKeditor2.ToolbarSet = 'editor-toolbar1' ;
-        oFCKeditor2.Height = 200 ;
-        oFCKeditor2.ReplaceTextarea() ;
-
     }
 
     function change_editmode(obj) {
         if (obj.value == 'html') {
             document.getElementById('text_editor').style.display='none';
             document.getElementById('html_editor').style.display='';
-            swapEditorContent('html','intro');
-            swapEditorContent('html','body');
+            swapEditorContent('html');
         } else {
             document.getElementById('text_editor').style.display='';
             document.getElementById('html_editor').style.display='none';
-            swapEditorContent('text','intro');
-            swapEditorContent('text','body');
+            swapEditorContent('text');
         }
     }
 
@@ -68,36 +60,23 @@
         }
     }
 
-    function swapEditorContent(curmode,instance) {
+    function swapEditorContent(curmode) {
         var content = '';
-        if (instance == 'intro' )  {
-            editor_frame = document.getElementById('introhtml___Frame');
-        } else {
-            editor_frame = document.getElementById('bodyhtml___Frame');
-        }
+        editor_frame = document.getElementById('introhtml___Frame');
         editor_source = editor_frame.contentWindow.document.getElementById('eEditorArea');
 
         if (curmode == 'html') {
-            if (instance == 'intro' )  {
-                content = document.getElementById('introtext').value;
-            } else {
-                content = document.getElementById('bodytext').value;
-            }
+            content = document.getElementById('introtext').value;
             editor_source.contentWindow.document.body.innerHTML = content;
         } else {
             content = editor_source.contentWindow.document.body.innerHTML;
-            if (instance == 'intro' )  {
-                document.getElementById('introtext').value = content;
-            } else {
-                document.getElementById('bodytext').value = content;
-            }
+            document.getElementById('introtext').value = content;
         }
     }
 
     function set_postcontent() {
         if (document.getElementById('sel_editmode').value == 'html') {
             document.getElementById('introtext').value = getEditorContent('introhtml');
-            document.getElementById('bodytext').value = getEditorContent('bodyhtml');
         }
     }
 
@@ -109,6 +88,5 @@
         if (editor_frame!=null) {
             //editor_frame.src=basePath+'editor/fckeditor.html?InstanceName='+instanceName+'&Toolbar='+toolbar;
             editor_frame.src='http://localhost/geekcvs/fckeditor/editor/fckeditor.html?InstanceName=introhtml&Toolbar=editor-toolbar1';
-            //editor_frame.src='http://www.google.com';
         }
    }
