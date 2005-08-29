@@ -766,7 +766,7 @@ $LANG24 = array(
     55 => 'The following errors occurred while trying to save your story.  Please correct these errors before saving',
     56 => 'Show Topic Icon',
     57 => 'View unscaled image',
-    58 => 'Story Management',
+    58 => 'Archive Options',
     59 => 'Option',
     60 => 'Enabled',
     61 => 'Auto Archive',
@@ -774,7 +774,16 @@ $LANG24 = array(
     63 => 'Edit',
     64 => 'Submit',
     65 => 'Search',
-    66 => 'Limit Results'
+    66 => 'Limit Results',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
 
