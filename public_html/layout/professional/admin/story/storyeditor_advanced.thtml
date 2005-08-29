@@ -1,75 +1,9 @@
 <script type="text/javascript">
-
-    function enablearchive(obj) {
-        var f = obj.form;               // all elements have their parent form in "form"
-        var disable = obj.checked;      // Disable when checked
-        if (f.elements["archiveflag"].checked==true && f.elements["storycode11"].checked==false) {
-            f.elements["storycode10"].checked=true;
-        }
-        f.elements["storycode10"].disabled=!disable;
-        f.elements["storycode11"].disabled=!disable;
-        f.elements["expire_month"].disabled=!disable;
-        f.elements["expire_day"].disabled=!disable;
-        f.elements["expire_year"].disabled=!disable;
-        f.elements["expire_hour"].disabled=!disable;
-        f.elements["expire_minute"].disabled=!disable;
-        f.elements["expire_ampm"].disabled=!disable;
-    }
-
-    function showhideEditorDiv(option) {
-        var obj = document.getElementById('adveditor');
-        var divarray1 = new Array('text_editor','html_editor');
-        var divarray = new Array('publish','images','archive','perms');
-
-        if (option != 'preview') {
-            for (i=0; i < divarray.length; i++) {
-                div = 'se_' + divarray[i];
-                if (option != 'all' && option != divarray[i]) {
-                    document.getElementById(div).style.display = 'none';
-                } else {
-                    document.getElementById(div).style.display = '';
-                }
-            }
-        }
-
-        if (option == 'editor' || option == 'all') {
-            document.getElementById('editor_mode').style.display = '';
-            if (document.getElementById('sel_editmode').value == 'html') {
-                document.getElementById('text_editor').style.display = 'none';
-                document.getElementById('html_editor').style.display = '';
-            } else {
-                document.getElementById('text_editor').style.display = '';
-                document.getElementById('html_editor').style.display = 'none';
-            }
-            if (option == 'all') {
-                document.getElementById('se_options').style.display = '';
-            } else {
-                document.getElementById('se_options').style.display = 'none';
-            }
-
-        } else if (option == 'preview') {
-            if (document.getElementById('preview').style.display == 'none') {
-                document.getElementById('preview').style.display = '';
-            } else {
-                document.getElementById('preview').style.display = 'none';
-            }
-
-        } else {
-            document.getElementById('se_options').style.display = '';
-            document.getElementById('text_editor').style.display = 'none';
-            document.getElementById('html_editor').style.display = 'none';
-            document.getElementById('editor_mode').style.display = 'none';
-        }
-        document.getElementById('navcontainer').scrollIntoView(true);
-
-    }
-
     // Setup editor path for FCKeditor JS Functions
     geeklogEditorBasePath = "{site_url}/fckeditor/" ;
 </script>
-
-
-<script type="text/JavaScript" src="{site_url}/fckeditor/geeklog.js"></script>
+<script type="text/JavaScript" src="{site_url}/javascript/advanced_editor.js"></script>
+<script type="text/JavaScript" src="{site_url}/javascript/storyeditor_fckeditor.js"></script>
 <br>
 {navbar}
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
@@ -122,8 +56,8 @@
                                     <tr>
                                         <td>{lang_introtext}:
                                             <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeTextAreaSize('introtext','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeTextAreaSize('introtext','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');"></span>
                                             </span>
                                         </td>
                                     </tr>
@@ -133,8 +67,8 @@
                                     <tr>
                                         <td>{lang_bodytext}:
                                             <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeTextAreaSize('bodytext','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeTextAreaSize('bodytext','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');"></span>
                                             </span>
                                         </td>
                                     </tr>
@@ -144,34 +78,33 @@
                                 </table>
                                 <!-- Rich Text Editor --->
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
-                                <!--  BL: Feature not complete yet
-                                    <tr>
-                                        <td>Toolbar: 
+                                     <tr>
+                                        <td style="padding-left:15px;">{lang_introtext}:
                                             <span style="padding-left:10px;">
-                                               <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
-                                                    <option value="editor-toolbar1">One</option>
-                                                    <option value="editor-toolbar2">Two</option>
-                                                    <option value="editor-toolbar3">Three</option>
-                                                    <option value="editor-toolbar4">Four</option>
-                                           </select>
-                                       </td>
-                                    </tr>
-                               -->
-                                    <tr>
-                                        <td>{lang_introtext}:
-                                            <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeHTMLTextAreaSize('introhtml','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeHTMLTextAreaSize('introhtml','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');"></span>
+                                                <!-- BL: Not supported yet. Works in Firefox but not in IE
+                                                <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
+                                                  <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
+                                                       <option value="editor-toolbar1">{toolbar1}</option>
+                                                       <option value="editor-toolbar2">{toolbar2}</option>
+                                                       <option value="editor-toolbar3">{toolbar3}</option>
+                                                       <option value="editor-toolbar4">{toolbar4}</option>
+                                                       <option value="Default">{toolbar5}</option>
+                                                       
+                                                  </select>
+                                                </span>
+                                                -->
                                             </span>
                                         </td>
                                     <tr>
                                         <td style="padding:5px 10px 5px 10px;"><textarea id="introhtml" name="introhtml" cols="90" rows="12">{story_introtext}</textarea></td>
                                     </tr>
                                     <tr>
-                                        <td>{lang_bodytext}:
+                                        <td style="padding-left:15px;">{lang_bodytext}:
                                             <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="lang_expandhelp" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"></span>
                                             </span>
                                         </td>
                                     <tr>
@@ -195,7 +128,7 @@
                                     <tr>
                                         <td colspan="2" style="padding:10px;">
                                             <div  id="se_publish" style="display:none;">
-                                                <fieldset><legend>Publish Story Date</legend>
+                                                <fieldset><legend>{lang_publishdate}</legend>
                                                     <table border="0" cellspacing="0" cellpadding="3" width="100%">
                                                         <tr>
                                                             <td align="right" valign="top">{lang_date}:</td>

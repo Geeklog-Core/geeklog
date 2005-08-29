@@ -1,0 +1,149 @@
+<script type="text/javascript">
+    // Setup editor path for FCKeditor JS Functions
+    geeklogEditorBasePath = "{site_url}/fckeditor/" ;
+</script>
+<script type="text/JavaScript" src="{site_url}/javascript/staticpages_fckeditor.js"></script>
+
+  {start_block_editor}
+  <form action="{site_admin_url}/plugins/staticpages/index.php" method="post">
+      <table border="0" cellspacing="0" cellpadding="3" width="100%">
+          <tr>
+              <td align="right">{lang_title}:</td>
+              <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_addtomenu}:</td>
+              <td>
+                  <input type="checkbox" name="sp_onmenu" {onmenu_checked}>&nbsp;&nbsp;{lang_label}:
+                  <input type="text" name="sp_label" size="48" maxlength="64" value="{sp_label}">
+              </td>
+          </tr>
+          <tr>
+              <td align="right">{lang_pageformat}:</td>
+              <td>
+                  <select name="sp_format">
+                      <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
+                      <option value="noblocks" {noblock_selected}>{lang_noblocks}</option>
+                      <option value="leftblocks" {leftblocks_selected}>{lang_leftblocks}</option>
+                      <option value="allblocks" {allblocks_selected}>{lang_leftrightblocks}</option>
+                  </select>
+              </td>
+          </tr>
+          <tr>
+            <td align="right">{lang_id}:</td>
+            <td><input type="text" name="sp_id" size="40" maxlength="40" value="{sp_id}"></td>
+          </tr>
+          <tr>
+            <td style="text-align:right;padding-bottom:15px;">{lang_url}:</td>
+            <td style="padding-bottom:15px;">{example_url}</td>
+          </tr>
+           <tr>
+                  <td style="text-align:right;vertical-align:top;padding-top:10px;border-top:1px solid #CCC;">{lang_content}</td>
+               <td style="padding-top:10px;border-top:1px solid #CCC;">
+               <div style="padding-left:10px;">
+                    <img src="{layout_url}/images/expand.gif" border="0" TITLE="{lang_expandhelp}" onclick="changeHTMLAreaSize('larger');">
+                    <span style="padding-left:15px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="{lang_reducehelp}" onclick="changeHTMLAreaSize('smaller');"></span>
+                     <!-- BL: Not supported yet. Works in Firefox but not in IE
+                    <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
+                      <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
+                           <option value="editor-toolbar1">{toolbar1}</option>
+                           <option value="editor-toolbar2">{toolbar2}</option>
+                           <option value="editor-toolbar3">{toolbar3}</option>
+                           <option value="editor-toolbar4">{toolbar4}</option>
+                           <option value="Default">{toolbar5}</option>
+                      </select>
+                    </span>
+                    -->
+                  <div style="margin-top:10px;border:1px solid #CCC;">
+                      <textarea id="sp_content" name="sp_content" cols="75" rows="24" wrap="virtual">{sp_content}</textarea>
+                  </div>
+                  <br><span class="warningsmall">{lang_allowedhtml}</span><br><br>
+               </div>
+              </td>
+           </tr>
+          <tr>
+              <td align="right">{lang_writtenby}:</td>
+              <td>{username}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_lastupdated}:</td>
+              <td>{sp_formateddate}<input type="hidden" name="unixdate" value="{sp_date}"></td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr></td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{lang_centerblock}</td>
+              <td valign="top"><input type="checkbox" name="sp_centerblock" {centerblock_checked}>&nbsp;&nbsp;{lang_centerblock_msg}</td>
+          </tr>
+          <tr>
+              <td align="right">{lang_position}</td>
+              <td>{pos_selection}&nbsp;&nbsp;&nbsp;{lang_topic}&nbsp;&nbsp;{topic_selection}</td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr></td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{inblock_msg}</td>
+              <td valign="top"><input type="checkbox" name="sp_inblock" value="1" {inblock_checked}>&nbsp;&nbsp;{inblock_info}</td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{php_msg}</td>
+              <td valign="top">{php_selector}&nbsp;&nbsp;{php_warn}</td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{exit_msg}</td>
+              <td valign="top"><input type="checkbox" name="sp_nf" value="1" {exit_checked}>&nbsp;&nbsp;{exit_info}</td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr></td>
+          </tr>
+          <tr>
+              <td colspan="2"><b>{lang_accessrights}<b></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_owner}:</td>
+              <td>{owner_username}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+          </tr>
+          <tr>
+              <td align="right">{lang_group}:</td>
+              <td>
+                  {group_dropdown}
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2"><b>{lang_permissions}</b>:</td>
+          </tr>
+          <tr>
+              <td colspan="2"></td>
+          </tr>
+          <tr>
+              <td colspan="2">{lang_perm_key}</td>
+          </tr>
+          <tr>
+              <td colspan="2">
+              {permissions_editor}
+              </td>
+          </tr>
+          <tr>
+              <td colspan="2">{permissions_msg}<td>
+          </tr>
+          <tr>
+              <td colspan="2"><hr><td>
+          </tr>
+          <tr>
+              <td align="right">{lang_hits}:</td>
+              <td><input type="hidden" name="sp_hits" value="{sp_hits}">{sp_hits}</td>
+          </tr>
+          <tr><td>&nbsp;</td></tr>
+          <tr>
+              <td colspan="2">
+                  <input type="submit" value="{lang_save}" name="mode"> 
+                  <input type="submit" value="{lang_cancel}" name="mode"> 
+                  {delete_option}
+                  <input type="hidden" name="sp_old_id" value="{sp_old_id}">
+              </td>
+          </tr>
+      </table>
+  </form>
+  {end_block}
