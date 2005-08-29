@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.162 2005/08/13 18:37:07 dhaun Exp $
+// $Id: story.php,v 1.163 2005/08/29 03:49:46 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -195,8 +195,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $A['expiredate'] = time();
         $A['commentcode'] = $_CONF['comment_code'];
 
-        // BL: Set mode to HTML for now if advanced editor enabled
-        // Need to add user-profile option to set default mode
+        /* @TODO -o"Blaine" Add a user-preference option to set if user wants to use advanced-editor */
         if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
             $A['postmode'] = 'html';
         } else {
@@ -271,7 +270,16 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
         $story_templates->set_var ('navbar', $navbar->generate() );
         $story_templates->set_var ('show_preview', 'none');
-
+        $story_templates->set_var ('lang_expandhelp', $LANG24[67]);
+        $story_templates->set_var ('lang_reducehelp', $LANG24[68]);
+        $story_templates->set_var ('lang_publishdate', $LANG24[69]);
+        $story_templates->set_var ('lang_toolbar', $LANG24[70]);
+        $story_templates->set_var ('toolbar1', $LANG24[71]);
+        $story_templates->set_var ('toolbar2', $LANG24[72]);
+        $story_templates->set_var ('toolbar3', $LANG24[73]);
+        $story_templates->set_var ('toolbar4', $LANG24[74]);
+        $story_templates->set_var ('toolbar5', $LANG24[75]);
+ 
         if ($A['postmode'] == 'html') {
             $story_templates->set_var ('show_texteditor', 'none');
             $story_templates->set_var ('show_htmleditor', '');
