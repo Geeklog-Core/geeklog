@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.43 2005/07/16 11:38:24 dhaun Exp $
+// $Id: index.php,v 1.44 2005/08/29 03:48:30 blaine Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -59,28 +59,28 @@ if (!SEC_hasRights ('staticpages.edit')) {
 */ 
 function form ($A, $error = false) 
 {
-	global $_CONF, $_TABLES, $_USER, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS,
-           $mode, $sp_id;
+    global $_CONF, $_TABLES, $_USER, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS;
+    global $mode, $sp_id, $LANG24;
 
-	if (!empty($sp_id) && $mode=='edit') {
-    	$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-	} else {
-    	$A['owner_id'] = $_USER['uid'];
-		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Static Page Admin'");
-		$A['perm_owner'] = 3;
-		$A['perm_group'] = 2;
-		$A['perm_members'] = 2;
-		$A['perm_anon'] = 2;
+    if (!empty($sp_id) && $mode=='edit') {
+        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+    } else {
+        $A['owner_id'] = $_USER['uid'];
+        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Static Page Admin'");
+        $A['perm_owner'] = 3;
+        $A['perm_group'] = 2;
+        $A['perm_members'] = 2;
+        $A['perm_anon'] = 2;
         $A['sp_inblock'] = $_SP_CONF['in_block'];
-		$access = 3;
-	}
+        $access = 3;
+    }
     $retval = '';
 
     if (empty ($A['owner_id'])) {
-	    $error = COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+        $error = COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                         COM_getBlockTemplate ('_msg_block', 'header'));
-    	$error .= $LANG_STATIC['deny_msg'];
-	    $error .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $error .= $LANG_STATIC['deny_msg'];
+        $error .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
     
     if ($error) {
@@ -90,37 +90,47 @@ function form ($A, $error = false)
         $sp_template = new Template ($template_path);
         if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($template_path . '/editor_advanced.thtml')) {
             $sp_template->set_file ('form', 'editor_advanced.thtml');
+            $sp_template->set_var ('lang_expandhelp', $LANG24[67]);
+            $sp_template->set_var ('lang_reducehelp', $LANG24[68]);
+            $sp_template->set_var ('lang_toolbar', $LANG24[70]);
+            $sp_template->set_var ('toolbar1', $LANG24[71]);
+            $sp_template->set_var ('toolbar2', $LANG24[72]);
+            $sp_template->set_var ('toolbar3', $LANG24[73]);
+            $sp_template->set_var ('toolbar4', $LANG24[74]);
+            $sp_template->set_var ('toolbar5', $LANG24[75]);
         } else {
             $sp_template->set_file ('form', 'editor.thtml');
         }
+        $sp_template->set_var('layout_url', $_CONF['layout_url']);
+        
         $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
-    	$sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
+        $sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
         $sp_template->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
         $sp_template->set_var('owner_id', $A['owner_id']);
         $sp_template->set_var('lang_group', $LANG_ACCESS['group']);
-    	$usergroups = SEC_getUserGroups();
+        $usergroups = SEC_getUserGroups();
         $groupdd = '';
-    	if ($access == 3) {
-			$groupdd .= '<select name="group_id">';
-        	for ($i = 0; $i < count($usergroups); $i++) {
-            	$groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
-            	if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                	$groupdd .= ' selected="selected"';
-            	}
-            	$groupdd .= '>' . key($usergroups) . '</option>';
-            	next($usergroups);
-        	}
-        	$groupdd .= '</select>';
-    	} else {
-        	// they can't set the group then
-        	$groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
-        	$groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
-    	}
-    	$sp_template->set_var('group_dropdown', $groupdd);
-    	$sp_template->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
-    	$sp_template->set_var('lang_permissions', $LANG_ACCESS['permissions']);
-    	$sp_template->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
-		$sp_template->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
+        if ($access == 3) {
+            $groupdd .= '<select name="group_id">';
+            for ($i = 0; $i < count($usergroups); $i++) {
+                $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
+                if ($A['group_id'] == $usergroups[key($usergroups)]) {
+                    $groupdd .= ' selected="selected"';
+                }
+                $groupdd .= '>' . key($usergroups) . '</option>';
+                next($usergroups);
+            }
+            $groupdd .= '</select>';
+        } else {
+            // they can't set the group then
+            $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
+            $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
+        }
+        $sp_template->set_var('group_dropdown', $groupdd);
+        $sp_template->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+        $sp_template->set_var('lang_permissions', $LANG_ACCESS['permissions']);
+        $sp_template->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
+        $sp_template->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
         $sp_template->set_var('site_url', $_CONF['site_url']);
         $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $sp_template->set_var('start_block_editor',
@@ -262,26 +272,26 @@ function form ($A, $error = false)
         $sp_template->set_var('lang_noblocks', $LANG_STATIC['noblocks']);
         $sp_template->set_var('lang_leftblocks', $LANG_STATIC['leftblocks']);
         $sp_template->set_var('lang_leftrightblocks', $LANG_STATIC['leftrightblocks']);
-		if ($A['sp_format'] == 'noblocks') {
-			$sp_template->set_var('noblock_selected', 'selected="selected"');
-		} else {
-			$sp_template->set_var('noblock_selected', '');
-		}
-		if ($A['sp_format'] == 'leftblocks') {
-			$sp_template->set_var('leftblocks_selected', 'selected="selected"');
-		} else {
-			$sp_template->set_var('leftblocks_selected', '');
-		}
+        if ($A['sp_format'] == 'noblocks') {
+            $sp_template->set_var('noblock_selected', 'selected="selected"');
+        } else {
+            $sp_template->set_var('noblock_selected', '');
+        }
+        if ($A['sp_format'] == 'leftblocks') {
+            $sp_template->set_var('leftblocks_selected', 'selected="selected"');
+        } else {
+            $sp_template->set_var('leftblocks_selected', '');
+        }
         if ($A['sp_format'] == 'blankpage') {
             $sp_template->set_var('blankpage_selected', 'selected="selected"');
         } else {
             $sp_template->set_var('blankpage_selected', '');
         }
-		if (($A['sp_format'] == 'allblocks') OR empty($A['sp_format'])) {
-			$sp_template->set_var('allblocks_selected', 'selected="selected"');
-		} else {
-			$sp_template->set_var('allblocks_selected', '');
-		}
+        if (($A['sp_format'] == 'allblocks') OR empty($A['sp_format'])) {
+            $sp_template->set_var('allblocks_selected', 'selected="selected"');
+        } else {
+            $sp_template->set_var('allblocks_selected', '');
+        }
 
         $sp_template->set_var('lang_content', $LANG_STATIC['content']);
         $sp_template->set_var('sp_content', htmlspecialchars (stripslashes($A['sp_content'])));
@@ -299,7 +309,7 @@ function form ($A, $error = false)
         $sp_template->set_var('end_block',
                 COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
         $retval .= $sp_template->parse('output','form');
-	}
+    }
 
     return $retval;
 }
@@ -615,7 +625,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         }
 
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where,sp_inblock', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where,'$sp_inblock'");
+        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where,sp_inblock', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where,'$sp_inblock'");
         if ($delete_old_page && !empty ($sp_old_id)) {
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
