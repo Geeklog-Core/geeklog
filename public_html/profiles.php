@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.41 2005/05/12 10:38:56 ospiess Exp $
+// $Id: profiles.php,v 1.42 2005/08/31 11:30:31 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -238,14 +238,24 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         return $retval;
     }
 
- 	$sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
- 	$result = DB_query ($sql);
- 	$A = DB_fetchArray ($result);
+    $sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
+    $result = DB_query ($sql);
+    $A = DB_fetchArray ($result);
     $shortmsg = COM_stripslashes ($shortmsg);
- 	$mailtext = sprintf ($LANG08[23], $from, $fromemail) . LB;
-	if (strlen ($shortmsg) > 0) {
-		$mailtext .= LB . sprintf ($LANG08[28], $from) . $shortmsg . LB;
-	}
+    $mailtext = sprintf ($LANG08[23], $from, $fromemail) . LB;
+    if (strlen ($shortmsg) > 0) {
+        $mailtext .= LB . sprintf ($LANG08[28], $from) . $shortmsg . LB;
+    }
+
+    // just to make sure this isn't an attempt at spamming users ...
+    $result = PLG_checkforSpam ($mailtext, $_CONF['spamx']);
+    if ($result > 0) {
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
+                               . '&amp;plugin=spamx');
+
+        return $retval;
+    }
+
     $mailtext .= '------------------------------------------------------------'
               . LB . LB
               . COM_undoSpecialChars (stripslashes ($A['title'])) . LB
