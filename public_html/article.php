@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.66 2005/06/26 09:06:08 mjervis Exp $
+// $Id: article.php,v 1.67 2005/09/01 09:03:06 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -175,7 +175,9 @@ if ($A['count'] > 0) {
         $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_template->set_var('story_id', $story);
         $story_options = array ();
-        if ($_CONF['hideemailicon'] == 0) {
+        if (($_CONF['hideemailicon'] == 0) && (!empty ($_USER['username']) ||
+                (($_CONF['loginrequired'] == 0) &&
+                 ($_CONF['emailstoryloginrequired'] == 0)))) {
             $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $story
                       . '&amp;what=emailstory';
             $story_options[] = '<a href="' . $emailUrl . '">' . $LANG11[2]
@@ -222,16 +224,12 @@ if ($A['count'] > 0) {
         $story_template->set_var ('whats_related', $related);
         $story_template->set_var ('story_options', $optionsblock);
         $story_template->set_var ('whats_related_story_options',
-                $related . $optionsblock);
-
-        // if (DB_count($_TABLES['pollquestions'],'qid',$story) > 0) {
-        //     $display .= COM_showPoll(80,$story);
-        // }
+                                  $related . $optionsblock);
 
         $story_template->set_var ('formatted_article',
                                   STORY_renderArticle ($A, 'n'));
+
         // display comments or not?
-        
         if ( (is_numeric($mode)) and ($_CONF['allow_page_breaks'] == 1) )
         {
             $story_page = $mode;
