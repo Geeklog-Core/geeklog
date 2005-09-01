@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.17 2005/08/09 22:37:14 ospiess Exp $
+// $Id: lib-comment.php,v 1.18 2005/09/01 09:02:00 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -56,10 +56,12 @@ if( $_CONF['allow_user_photo'] )
 * @return     string   HTML Formated comment bar
 *
 */
-function CMT_commentBar( $sid, $title, $type, $order, $mode ) {
+function CMT_commentBar( $sid, $title, $type, $order, $mode )
+{
     global $_CONF, $_TABLES, $_USER, $LANG01, $_REQUEST;
 
-    $page = array_pop( explode( '/', $_SERVER['PHP_SELF'] ));
+    $parts = explode( '/', $_SERVER['PHP_SELF'] );
+    $page = array_pop( $parts );
     $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
 
     $commentbar = new Template( $_CONF['path_layout'] . 'comment' );
