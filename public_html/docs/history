@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Fixed bug #454, SQL error when reading comments. [Vinny]
 - Don't check for auto-archived stories when no archive topic has been
   defined yet [Dirk]
 - The default feed for a new site is now in RSS 2.0 format and named

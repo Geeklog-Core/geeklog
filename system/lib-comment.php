@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.18 2005/09/01 09:02:00 dhaun Exp $
+// $Id: lib-comment.php,v 1.19 2005/09/02 19:06:32 vinny Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -480,12 +480,12 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
                 // We can simplify the query, and hence increase performance
                 // when pid = 0 (when fetching all the comments for a given sid)
-                if( $cid ) {
+                if( $cid ) {  // pid refers to commentid rather than parentid
                     // count the total number of applicable comments
                     $q2 = "SELECT COUNT(*) "
                         . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
                         . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
-                        . "AND c2.cid = $pid AND type='{$type}'";
+                        . "AND c2.cid = $pid AND c.type='{$type}'";
                     $result = DB_query( $q2 );
                     list( $count ) = DB_fetchArray( $result );
 
@@ -494,10 +494,10 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
                          . "{$_TABLES['users']} as u "
                        . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
-                         . "AND c2.cid = $pid AND c.uid = u.uid  AND type='{$type}'"
+                         . "AND c2.cid = $pid AND c.uid = u.uid AND c.type='{$type}'"
                        . "ORDER BY $cOrder LIMIT $start, $limit";
-                } else {
-                    if( $pid == 0 ) {
+                } else {    // pid refers to parentid rather than commentid
+                    if( $pid == 0 ) {  // the simple, fast case
                         // count the total number of applicable comments
                         $count = DB_count( $_TABLES['comments'], 'sid', $sid );
 
@@ -511,7 +511,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                         $q2 = "SELECT COUNT(*) "
                             . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
                             . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
-                            . "AND c2.cid = $pid AND type='{$type}'";
+                            . "AND c2.cid = $pid AND c.type='{$type}'";
                         $result = DB_query($q2);
                         list($count) = DB_fetchArray($result);
 
