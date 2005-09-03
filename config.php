@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.189 2005/08/27 12:50:00 dhaun Exp $
+// $Id: config.php,v 1.190 2005/09/03 14:53:40 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -269,8 +269,8 @@ $_CONF['remoteauthentication'] = false;  // Set to true to enable remote logins.
 // | Current Spam-X module supports two actions which can be combined          |
 // | Additional classes can be added as well as other plugin extensions        |
 // | Actions: 128 = ignore comment and redirect to homepage                    |
-// |          8 = mail admin message                                           |
-// |          136 (SUM) ignore and email adming                                |
+// |            8 = mail admin message                                         |
+// |          136 (SUM) ignore and email admin                                 |
 // +---------------------------------------------------------------------------+
 $_CONF['spamx'] = 128;  // Default to ignore comment.
 
@@ -393,7 +393,7 @@ $_CONF['pdf_enabled'] = 0;
 // | SEARCH SETTINGS                                                           |
 // +---------------------------------------------------------------------------+
 
-// number of search results (per type) to be displayed per page
+// default number of search results (per type) to be displayed per page
 $_CONF['num_search_results'] = 10;
 
 
@@ -544,6 +544,17 @@ $_CONF['page_break_comments']   = 'last';  // When an article has a page break,
 
 
 // Advanced theme settings
+
+// Set the default whether to display the right-side blocks (= true) or not
+// (= false). In the default configuration, Geeklog will only display the
+// right-side blocks on the index page. Please note that setting this to true
+// will reduce the amount of space available for the actual page content,
+// especially for users with narrow browser windows.
+// May require theme changes in article/article.thtml (depending on the theme
+// used) to avoid the What's Related and Story Options "blocks" showing up in
+// an extra (fourth) column.
+$_CONF['show_right_blocks'] = false;
+
 // It is recommended to leave these unchanged and overwrite them in the theme's
 // functions.php instead.
 

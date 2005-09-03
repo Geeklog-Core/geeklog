@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.465 2005/08/28 19:40:27 dhaun Exp $
+// $Id: lib-common.php,v 1.466 2005/09/03 14:53:39 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1050,9 +1050,21 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 * @return   string  Formated HTML containing site footer and optionally right blocks
 *
 */
-function COM_siteFooter( $rightblock = false, $custom = '' )
+function COM_siteFooter( $rightblock = -1, $custom = '' )
 {
     global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic;
+
+    if( $rightblock < 0 )
+    {
+        if( isset( $_CONF['show_right_blocks'] ))
+        {
+            $rightblock = $_CONF['show_right_blocks'];
+        }
+        else
+        {
+            $rightblock = false;
+        }
+    }
 
     // If the theme implemented this for us then call their version instead.
 

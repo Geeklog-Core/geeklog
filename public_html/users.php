@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.112 2005/08/28 09:12:10 mjervis Exp $
+// $Id: users.php,v 1.113 2005/09/03 14:53:40 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -839,7 +839,7 @@ default:
             . COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG04[112]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . COM_siteFooter(true);
+            . COM_siteFooter ();
         echo $retval;
         exit();
     }
@@ -955,7 +955,7 @@ default:
                                            COM_getBlockTemplate ('_msg_block', 'header'))
                          . $LANG04[112]
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                         . COM_siteFooter(true);
+                         . COM_siteFooter ();
                 echo $retval;
                 exit();
             } else { // Show login form
