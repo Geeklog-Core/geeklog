@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.163 2005/08/29 03:49:46 blaine Exp $
+// $Id: story.php,v 1.164 2005/09/04 13:57:30 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1171,7 +1171,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
 
         // update feed(s) and Older Stories block
-        COM_rdfUpToDateCheck ();
+        COM_rdfUpToDateCheck ();//'geeklog', $tid, $sid);
         COM_olderStuff ();
 
         if ($type == 'submission') {

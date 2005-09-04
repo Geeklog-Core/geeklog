@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.79 2005/08/22 18:29:50 dhaun Exp $
+// $Id: lib-plugins.php,v 1.80 2005/09/04 13:57:30 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1265,14 +1265,21 @@ function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data)
 * This is called from COM_rdfUpToDateCheck() every time Geeklog's index.php
 * is displayed - it should try to be as efficient as possible ...
 *
-* @param    string   plugin   plugin name
-* @param    int      feed     feed id
-* @param    string   topic    "topic" of the feed - plugin specific
-* @param    string   limit    number of entries or number of hours
-* @return   bool              false = feed has to be updated, true = ok
+* @param    string  plugin          plugin name
+* @param    int     feed            feed id
+* @param    string  topic           "topic" of the feed - plugin specific
+* @param    string  limit           number of entries or number of hours
+* @param    string  updated_type    (optional) type of feed to update
+* @param    string  updated_topic   (optional) topic to update
+* @param    string  updated_id      (optional) entry id to update
+* @return   bool                    false = feed has to be updated, true = ok
+*
+* @note The presence of non-empty $updated_XXX parameters indicates that an
+*       existing entry has been changed. The plugin may therefore apply a
+*       different method to check if its feed has to be updated.
 *
 */
-function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit)
+function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
 {
     global $_PLUGINS;
 
@@ -1281,7 +1288,8 @@ function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit)
     if (in_array ($plugin, $_PLUGINS)) {
         $function = 'plugin_feedupdatecheck_' . $plugin;
         if (function_exists ($function)) {
-            $is_current = $function ($feed, $topic, $update_data, $limit);
+            $is_current = $function ($feed, $topic, $update_data, $limit,
+                            $updated_type, $updated_topic, $updated_id);
         }
     }
 

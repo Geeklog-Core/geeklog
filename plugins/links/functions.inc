@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.21 2005/08/10 09:53:35 dhaun Exp $
+// $Id: functions.inc,v 1.22 2005/09/04 13:57:30 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -488,17 +488,21 @@ function plugin_getfeednames_links()
 /*
 * Provide feed data
 */
-function plugin_getfeedcontent_links($limit, &$link, &$update)
+function plugin_getfeedcontent_links ($feed, &$link, &$update)
 {
     global $_CONF, $_TABLES, $LANG01;
 
-    $result = DB_query( "SELECT lid,owner_id,title,description FROM " . $_TABLES['links'] . links_buildSql ($S['topic'], $S['limits']) );
+    $result = DB_query( "SELECT topic,limits,content_length FROM {$_TABLES['syndication']} WHERE fid = '$feed'" );
+    $S = DB_fetchArray( $result );
+    
+
+    $result = DB_query( "SELECT lid,owner_id,title,description,UNIX_TIMESTAMP(date) AS modified FROM " . $_TABLES['links'] . links_buildSql ($S['topic'], $S['limits']) );
 
     $content = array();
     $lids = array();
     $nrows = DB_numRows( $result );
 
-    for( $i = 1; $i <= $nrows; $i++ )
+    for( $i = 0; $i < $nrows; $i++ )
     {
         $row = DB_fetchArray( $result );
         $lids[] = $row['lid'];
@@ -507,13 +511,13 @@ function plugin_getfeedcontent_links($limit, &$link, &$update)
         $linklink = COM_buildUrl( $_CONF['site_url']
                   . '/portal.php?what=link&item=' . $row['lid'] );
 
-        $content[] = array( 'title'  => $linktitle,
-                            'summary'   => $linkdesc,
-                            'link'   => $linklink,
-                            'uid'    => $row['owner_id'],
-                            'author' => COM_getDisplayName( $row['owner_id'] ),
-                            'date'   => $row['modified'],
-                            'format' => 'plaintext'
+        $content[] = array( 'title'   => $linktitle,
+                            'summary' => $linkdesc,
+                            'link'    => $linklink,
+                            'uid'     => $row['owner_id'],
+                            'author'  => COM_getDisplayName( $row['owner_id'] ),
+                            'date'    => $row['modified'],
+                            'format'  => 'plaintext'
                           );
     }
 
@@ -552,19 +556,35 @@ function links_buildSql ($category, $limits)
         $where = ' WHERE ' . $where;
     }
 
-    $sql = $where . $limitsql;
+    $sql = $where . ' ORDER BY date DESC' . $limitsql;
 
     return $sql;
 }
 
-/*
-* checking if feeds are up to date
+/**
+* Checking if links feeds are up to date
+*
+* @param    int     $feed           id of feed to be checked
+* @param    string  $topic          topic (actually: category)
+* @param    string  $update_data    data describing current feed contents
+* @param    string  $limit          number of entries or number of hours
+* @param    string  $updated_type   (optional) type of feed to be updated
+* @param    string  $updated_topic  (optional) feed's "topic" to be updated
+* @param    string  $updated_id     (optional) id of entry that has changed
+*
 */
-function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit)
+function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
 {
     global $_TABLES;
 
     $is_current = true;
+
+    if ($updated_type != 'links') {
+        // we're not interested
+        $updated_type = '';
+        $updated_topic = '';
+        $updated_id = '';
+    }
 
     $sql = "SELECT lid FROM {$_TABLES['links']}" . links_buildSql ($category, $limits);
     $result = DB_query ($sql);
@@ -573,6 +593,12 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit)
     $lids = array ();
     for ($i = 0; $i < $num; $i++) {
         $A = DB_fetchArray ($result);
+
+        if ($A['lid'] == $updated_id) {
+            // this feed has to be updated - no further checks needed
+            return false;
+        }
+
         $lids[] = $A['lid'];
     }
     $current = implode (',', $lids);
@@ -584,7 +610,7 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit)
 * Removes the datastructures for this plugin from the Geeklog database
 *
 * This may get called by the install routine to undo anything done to this
-* point.  To do that, $steps will have a list of steps to undo
+* point.
 *
 * @steps   Array    Holds all the steps that have been completed by the install
 *

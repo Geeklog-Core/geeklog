@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.466 2005/09/03 14:53:39 dhaun Exp $
+// $Id: lib-common.php,v 1.467 2005/09/04 13:57:30 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1495,16 +1495,33 @@ function COM_debug( $A )
 * of an article with a future publish date reaching it's
 * publish time and if so updates the RDF file.
 *
+* @param    string  $updated_type   (optional) feed type to update
+* @param    string  $updated_topic  (optional) feed topic to update
+* @param    string  $updated_id     (optional) feed id to update
+*
+* @note When called without parameters, this will only check for new entries to
+*       include in the feeds. Pass the $updated_XXX parameters when the content
+*       of an existing entry has changed.
+*
 * @see file lib-syndication.php
 *
 */
-function COM_rdfUpToDateCheck()
+function COM_rdfUpToDateCheck( $updated_type = '', $updated_topic = '', $updated_id = '' )
 {
     global $_CONF, $_TABLES;
 
     if( $_CONF['backend'] > 0 )
     {
-        $result = DB_query( "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE is_enabled = 1" );
+        if( !empty( $updated_type ) && ( $updated_type != 'geeklog' ))
+        {
+            // when a plugin's feed is to be updated, skip Geeklog's own feeds
+            $sql = "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE (is_enabled = 1) AND (type <> 'geeklog')";
+        }
+        else
+        {
+            $sql = "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE is_enabled = 1";
+        }
+        $result = DB_query( $sql );
         $num = DB_numRows( $result );
         for( $i = 0; $i < $num; $i++)
         {
@@ -1513,13 +1530,15 @@ function COM_rdfUpToDateCheck()
             $is_current = true;
             if( $A['type'] == 'geeklog' )
             {
-                $is_current = SYND_feedUpdateCheck( $A['type'], $A['fid'],
-                        $A['topic'], $A['update_info'], $A['limits'] );
+                $is_current = SYND_feedUpdateCheck( $A['topic'],
+                                $A['update_info'], $A['limits'],
+                                $updated_topic, $updated_id );
             }
             else
             {
                 $is_current = PLG_feedUpdateCheck( $A['type'], $A['fid'],
-                        $A['topic'], $A['update_info'], $A['limits'] );
+                                $A['topic'], $A['update_info'], $A['limits'],
+                                $updated_type, $updated_topic, $updated_id );
             }
             if( !$is_current )
             {

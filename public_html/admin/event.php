@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.59 2005/08/13 18:37:07 dhaun Exp $
+// $Id: event.php,v 1.60 2005/09/04 13:57:30 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -480,7 +480,7 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
                     "$eid,'$title','$event_type','$datestart','$dateend','$address1','$address2','$city','$state','$zipcode',$allday,'$url','$description',$group_id,$owner_id,$perm_owner,$perm_group,$perm_members,$perm_anon,{$P['uid']},'$location','$timestart','$timeend'");
             }
         }
-        COM_rdfUpToDateCheck ();
+        COM_rdfUpToDateCheck ('geeklog', '::events', $eid);
 
         return COM_refresh ($_CONF['site_admin_url'] . '/event.php?msg=17');
     } else {

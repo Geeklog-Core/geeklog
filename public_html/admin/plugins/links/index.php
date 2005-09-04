@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog links administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2005/08/10 00:00:07 ospiess Exp $
+// $Id: index.php,v 1.13 2005/09/04 13:57:30 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -270,7 +270,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         DB_delete ($_TABLES['links'], 'lid', $old_lid);
 
         DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "'$lid','$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
-        COM_rdfUpToDateCheck ();
+        COM_rdfUpToDateCheck ('links', $category, $lid);
 
         return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=2');
     } else { // missing fields

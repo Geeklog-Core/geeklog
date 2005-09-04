@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.16 2005/08/27 09:06:08 dhaun Exp $
+// $Id: lib-syndication.php,v 1.17 2005/09/04 13:57:30 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -45,12 +45,14 @@ if ($_CONF['trackback_enabled']) {
 /**
 * Check if a feed for all stories needs to be updated.
 *
-* @param    string   $update_info   list of story ids
-* @param    string   $limit         number of entries or number of hours
+* @param    string  $update_info    list of story ids
+* @param    string  $limit          number of entries or number of hours
+* @param    string  $updated_topic  (optional) topic to be updated
+* @param    string  $updated_id     (optional) entry id to be updated
 * @return   bool                    false = feed needs to be updated
 *
 */
-function SYND_feedUpdateCheckAll( $update_info, $limit )
+function SYND_feedUpdateCheckAll( $update_info, $limit, $updated_topic = '', $updated_id = '' )
 {
     global $_CONF, $_TABLES, $_SYND_DEBUG;
 
@@ -77,18 +79,15 @@ function SYND_feedUpdateCheckAll( $update_info, $limit )
     $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
                          . COM_getPermSQL( 'WHERE', 1 ));
     $tnumrows = DB_numRows( $tresult );
-    $tlist = '';
-    for( $i = 1; $i <= $tnumrows; $i++ )
+    $topiclist = array();
+    for( $i = 0; $i < $tnumrows; $i++ )
     {
         $T = DB_fetchArray( $tresult );
-        $tlist .= "'" . $T['tid'] . "'";
-        if( $i < $tnumrows )
-        {
-            $tlist .= ',';
-        }
+        $topiclist[] = $T['tid'];
     }
-    if( !empty( $tlist ))
+    if( count( $topiclist ) > 0 )
     {
+        $tlist = "'" . implode( "','", $topiclist ) . "'";
         $where .= " AND (tid IN ($tlist))";
     }
 
@@ -99,6 +98,13 @@ function SYND_feedUpdateCheckAll( $update_info, $limit )
     for( $i = 0; $i < $nrows; $i++ )
     {
         $A = DB_fetchArray( $result );
+
+        if( $A['sid'] == $updated_id )
+        {
+            // no need to look any further - this feed has to be updated
+            return false;
+        }
+
         $sids[] = $A['sid'];
     }
     $current = implode( ',', $sids );
@@ -113,13 +119,15 @@ function SYND_feedUpdateCheckAll( $update_info, $limit )
 /**
 * Check if a feed for stories from a topic needs to be updated.
 *
-* @param    string   $tid           topic id
-* @param    string   $update_info   list of story ids
-* @param    string   $limit         number of entries or number of hours
+* @param    string  $tid            topic id
+* @param    string  $update_info    list of story ids
+* @param    string  $limit          number of entries or number of hours
+* @param    string  $updated_topic  (optional) topic to be updated
+* @param    string  $updated_id     (optional) entry id to be updated
 * @return   bool                    false = feed needs to be updated
 *
 */
-function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit )
+function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic = '', $updated_id = '' )
 {
     global $_CONF, $_TABLES, $_SYND_DEBUG;
 
@@ -149,6 +157,13 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit )
     for( $i = 0; $i < $nrows; $i++ )
     {
         $A = DB_fetchArray( $result );
+
+        if( $A['sid'] == $updated_id )
+        {
+            // no need to look any further - this feed has to be updated
+            return false;
+        }
+
         $sids[] = $A['sid'];
     }
     $current = implode( ',', $sids );
@@ -163,12 +178,13 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit )
 /**
 * Check if a feed for the events needs to be updated.
 *
-* @param    string   $update_info   list of event ids
-* @param    string   $limit         number of entries or number of hours
+* @param    string  $update_info    list of event ids
+* @param    string  $limit          number of entries or number of hours
+* @param    string  $updated_id     (optional) entry id to be updated
 * @return   bool                    false = feed needs to be updated
 *
 */
-function SYND_feedUpdateCheckEvents( $update_info, $limit )
+function SYND_feedUpdateCheckEvents( $update_info, $limit, $updated_id = '' )
 {
     global $_CONF, $_TABLES, $_SYND_DEBUG;
 
@@ -198,6 +214,13 @@ function SYND_feedUpdateCheckEvents( $update_info, $limit )
     for( $i = 0; $i < $nrows; $i++ )
     {
         $A = DB_fetchArray( $result );
+
+        if( $A['eid'] == $updated_id )
+        {
+            // no need to look any further - this feed has to be updated
+            return false;
+        }
+
         $eids[] = $A['eid'];
     }
     $current = implode( ',', $eids );
@@ -210,43 +233,56 @@ function SYND_feedUpdateCheckEvents( $update_info, $limit )
 }
 
 /**
-* Check if the feed contents need to be updated.
+* Check if the contents of Geeklog's built-in feeds need to be updated.
 *
-* @param    string   plugin   plugin name
-* @param    int      feed     feed id
-* @param    string   topic    "topic" of the feed - plugin specific
-* @param    string   limit    number of entries or number of hours
-* @return   bool              false = feed has to be updated, true = ok
+* @param    string  topic           indicator of the feed's "topic"
+* @param    string  limit           number of entries or number of hours
+* @param    string  updated_topic   (optional) specific topic to update
+* @param    string  updated_id      (optional) specific id to update
+* @return   bool                    false = feed has to be updated, true = ok
 *
 */
-function SYND_feedUpdateCheck( $plugin, $feed, $topic, $update_data, $limit )
+function SYND_feedUpdateCheck( $topic, $update_data, $limit, $updated_topic = '', $updated_id = '' )
 {
     $is_current = true;
+
+    if( $topic == '::events' )
+    {
+        if( $updated_topic != '::events' )
+        {
+            $updated_topic = '';
+            $updated_id = '';
+        }
+    }
+    else
+    {
+        if( $updated_topic == '::events' )
+        {
+            $updated_topic = '';
+            $updated_id = '';
+        }
+    }
 
     switch( $topic )
     {
         case '::all':
         {
-            $is_current = SYND_feedUpdateCheckAll( $update_data, $limit );
-        }
-        break;
-
-        case '::links':
-        {
-            $is_current = SYND_feedUpdateCheckLinks( $update_data, $limit );
+            $is_current = SYND_feedUpdateCheckAll( $update_data, $limit,
+                            $updated_topic, $updated_id );
         }
         break;
 
         case '::events':
         {
-            $is_current = SYND_feedUpdateCheckEvents( $update_data, $limit );
+            $is_current = SYND_feedUpdateCheckEvents( $update_data, $limit,
+                            $updated_id );
         }
         break;
 
         default:
         {
-            $is_current = SYND_feedUpdateChecktopic( $topic, $update_data,
-                                                     $limit );
+            $is_current = SYND_feedUpdateCheckTopic( $topic, $update_data,
+                            $limit, $updated_topic, $updated_id );
         }
         break;
     }
@@ -443,7 +479,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentEvents( $limit, &$link, &$update )
+function SYND_getFeedContentEvents( $limit, &$link, &$update, $updated_id )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -547,11 +583,6 @@ function SYND_updateFeed( $fid )
                 {
                     $content = SYND_getFeedContentAll( $A['limits'], $link,
                                                        $data, $A['content_length'] );
-                }
-                elseif( $A['topic'] == '::links')
-                {
-                    $content = SYND_getFeedContentLinks( $A['limits'], $link,
-                                                         $data, $A['content_length'] );
                 }
                 elseif( $A['topic'] == '::events')
                 {
