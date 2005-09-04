@@ -2,7 +2,18 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Introduced a method to signal a forced update for feeds in case the content
+  of one of the feed entries has changed  - so far, we only checked if entries
+  had been added or removed (bug #277) [Dirk]
+- Added $_CONF['show_right_blocks'] option which, if set = true, will display
+  right-side blocks on all pages [Dirk]
 - Fixed bug #454, SQL error when reading comments. [Vinny]
+- When $_CONF['emailstoryloginrequired'] = 1, hide the links to the "email
+  story" form from anonymous users [Dirk]
+- When emailing a story, check the user's message that is sent with the story
+  for spam [Dirk]
+- Leave off the "page=1" parameter on the "Google paging" navigation bar for
+  links that point back to the first page [Dirk]
 - Don't check for auto-archived stories when no archive topic has been
   defined yet [Dirk]
 - The default feed for a new site is now in RSS 2.0 format and named
