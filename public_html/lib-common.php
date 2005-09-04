@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.467 2005/09/04 13:57:30 dhaun Exp $
+// $Id: lib-common.php,v 1.468 2005/09/04 18:52:19 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3763,7 +3763,8 @@ function COM_emailUserTopics()
 
 function COM_whatsNewBlock( $help = '', $title = '' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG01,
+           $WHATS_NEW_STRING, $WHATS_NEW_LAST, $page, $newstories;
 
     $retval = COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'whats_new_block', 'header' ));
@@ -3794,7 +3795,8 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
         if( $nrows > 0 )
         {
-            $newmsg .= COM_whatsNewString($_CONF['newstoriesinterval'], $LANG01[11], $nrows);
+            $newmsg .= COM_formatTimeString( $WHATS_NEW_STRING,
+                        $_CONF['newstoriesinterval'], $LANG01[11], $nrows);
 
             if( $newstories && ( $page < 2 ))
             {
@@ -3822,7 +3824,10 @@ function COM_whatsNewBlock( $help = '', $title = '' )
     if( $_CONF['hidenewcomments'] == 0 )
     {
         // Go get the newest comments
-        $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
+        $retval .= '<b>' . $LANG01[83] . '</b> <small>'
+                . COM_formatTimeString( $WHATS_NEW_LAST,
+                                        $_CONF['newcommentsinterval'] )
+                . '</small><br>';
 
         $stwhere = '';
 
@@ -3896,7 +3901,10 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
     if( $_CONF['trackback_enabled'] && ( $_CONF['hidenewtrackbacks'] == 0 ))
     {
-        $retval .= '<b>' . $LANG01[114] . '</b> <small>' . $LANG01[85] . '</small><br>';
+        $retval .= '<b>' . $LANG01[114] . '</b> <small>'
+                . COM_formatTimeString( $WHATS_NEW_LAST,
+                                        $_CONF['newtrackbackinterval'] )
+                . '</small><br>';
 
         $sql = "SELECT DISTINCT COUNT(*) AS count,{$_TABLES['stories']}.title,t.sid FROM {$_TABLES['trackback']} AS t,{$_TABLES['stories']} WHERE (t.type = 'article') AND (t.sid = {$_TABLES['stories']}.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0)" . $topicsql . " GROUP BY t.sid ORDER BY t.date DESC LIMIT 15";
         $result = DB_query( $sql );
@@ -3951,14 +3959,14 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
     if( $_CONF['hidenewplugins'] == 0 )
     {
-        list( $headlines, $bylines, $content ) = PLG_getWhatsNew();
+        list( $headlines, $smallheadlines, $content ) = PLG_getWhatsNew();
         $plugins = sizeof( $headlines );
         if( $plugins > 0 )
         {
             for( $i = 0; $i < $plugins; $i++ )
             {
                 $retval .= '<b>' . $headlines[$i] . '</b> <small>'
-                        . $bylines[$i] . '</small><br>';
+                        . $smallheadlines[$i] . '</small><br>';
                 if( is_array( $content[$i] ))
                 {
                     $retval .= COM_makeList( $content[$i], 'list-new-plugins' );
@@ -3982,44 +3990,49 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 }
 
 /**
-* Creates the string that indicates the timespan in which new items are found
+* Creates the string that indicates the timespan in which new items were found
 *
-* @param      int     $time        numbe of seconds in which results are found
-* @param      string  $type        type (translated string) of new item
-* @param      int     $amount      amount of things that have been found.
+* @param    string  $time_string    template string
+* @param    int     $time           number of seconds in which results are found
+* @param    string  $type           type (translated string) of new item
+* @param    int     $amount         amount of things that have been found.
 */
-function COM_whatsNewString($time, $type, $amount)
+function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 {
-    global $LANG_WHATSNEW, $WHATS_NEW_STRING;
-    # this is the amount you have to divide the previous by to get the different
-    # time intervals: hour, day, week, months
+    global $LANG_WHATSNEW;
+
+    $retval = $time_string;
+
+    // This is the amount you have to divide the previous by to get the
+    // different time intervals: hour, day, week, months
     $time_divider = array ( 60, 60, 24, 7, 30 );
-    # these are the respective strings to the numbers above. They have to match
-    # the strings in $LANG_WHATSNEW.
-    $times_description = array ( "minutes", "hours", "days", "weeks", "months" );
-    $time_description = array ( "minute", "hour", "day", "week", "month" );
-    for ( $s = 0; $s < count ($time_divider); $s++ )
+
+    // These are the respective strings to the numbers above. They have to match
+    // the strings in $LANG_WHATSNEW (i.e. these are the keys for the array -
+    // the actual text strings are taken from the language file).
+    $times_description = array ( 'minutes', 'hours', 'days', 'weeks', 'months' );
+    $time_description = array ( 'minute', 'hour', 'day', 'week', 'month' );
+
+    for ( $s = 0; $s < count( $time_divider ); $s++ )
     {
         $time = $time / $time_divider[$s];
-        if ( $time < $time_divider[$s+1] )
+        if ( $time < $time_divider[$s + 1] )
         {
-            $retval = $WHATS_NEW_STRING;
             if ( $time == 1 )
             {
                 $time_str = $time_description[$s];
-            } else
+            }
+            else
             {
                 $time_str = $times_description[$s];
             }
-            $fields = array( "%n", "%i", "%t", "%s" );
-            $values = array( $amount,$type,$time,$LANG_WHATSNEW[$time_str] );
-            for( $x = 0; $x < 4; $x++ )
-            {
-                $retval = str_replace( $fields[$x], $values[$x], $retval );
-            }
+            $fields = array( '%n', '%i', '%t', '%s' );
+            $values = array( $amount, $type, $time, $LANG_WHATSNEW[$time_str] );
+            $retval = str_replace( $fields, $values, $retval );
             break;
         }
     }
+
     return $retval;
 }
 
