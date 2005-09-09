@@ -3,13 +3,14 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | check.php                                                                 |
-// | Geeklog check installation script                                         |
+// | configinfo.php                                                            |
 // |                                                                           |
+// | Display contents of config.php                                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Copyright (C) 2002-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Jeffrey Schoolcraft  - dream AT dr3amscap3 DOT com               |
+// |          Dirk Haun            - dirk AT haun-online DOT de                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -28,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configinfo.php,v 1.2 2002/07/07 16:21:16 dreamscape Exp $
+// $Id: configinfo.php,v 1.3 2005/09/09 19:13:21 dhaun Exp $
 
 /**
 * This script will display file and permission information based on settings in
@@ -39,14 +40,27 @@
 *
 */
 
-require_once('../../../config.php');
+if (file_exists ('../../../config.php')) {
+    require_once('../../../config.php');
+} else if (file_exists ('../../lib-common.php')) {
+    require_once('../../lib-common.php');
+} else {
+    die ("Sorry, config.php not found ...");
+}
 
-$highlight_on 	= '#bcbcbc';
-$highlight_off	= '#3399FF';
+$highlight_on 	= '#EFEFEF';
+$highlight_off	= '#D9D9D9';
 
-$display = '';
+if (isset ($_CONF['site_url']) &&
+        strpos ($_CONF['site_url'], 'example.com') === false) {
+    $docs = $_CONF['site_url'] . '/docs/config.html#desc_';
+} else {
+    $docs = '../../docs/config.html#desc_';
+}
+
+$display = "<html>\n<head><title>config.php</title></head>\n<body>\n";
 $n = 0;
-$display .= '<table width=100% cellspacing=0 cellpadding=0 border=0 style="border: thin black solid;">';
+$display .= '<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border: thin black solid;">';
 
 foreach($_CONF as $option => $value) {
 	$display .= '<tr';
@@ -55,21 +69,23 @@ foreach($_CONF as $option => $value) {
 	} else {
 		$display .= ' style="background-color: ' . $highlight_off . '">';
 	}
-	$display .= '<td style="border: thin black solid;"><strong>$_CONF["' . $option . '"]</strong></td>';
+	$display .= '<td style="border: thin black solid; padding: 2px;"><strong>$_CONF[\'<a href="' . $docs . $option . '">' . $option . '</a>\']</strong></td>';
 	if (is_array($value)) {
 		ob_start();
 		print_r($value);
 		$value=nl2br(ob_get_contents());
 		ob_end_clean();
+    } elseif (is_bool ($value)) {
+        $value = ($value === false) ? 'false' : 'true';
 	} elseif (eregi('[a-z]+html', $option)) {
 		$value = htmlentities($value);
-	} elseif (! isset($value)) {
+	} elseif (!isset($value)) {
 		$value = '&nbsp;';
-	}
-	$display .= '<td style="border: thin black solid;"><strong>' . $value . '</strong></td>';
+    }
+	$display .= '<td style="border: thin black solid; padding: 2px;"><strong>' . $value . '</strong></td>';
 	$display .= '</tr>';
 	$n++;
 }
-$display .= '</table>';
+$display .= "</table>\n</body>\n</html>";
 
 echo $display;
