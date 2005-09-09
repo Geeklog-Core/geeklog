@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.117 2005/08/07 08:36:13 dhaun Exp $
+// $Id: usersettings.php,v 1.118 2005/09/09 08:46:23 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -131,7 +131,7 @@ function edituser()
     if ($_CONF['allow_user_photo'] == 1) {
         $photo = USER_getPhoto ($_USER['uid'], $A['photo'], $A['email'], -1);
         if (empty ($photo)) {
-            $preferences->set_var ('userphoto_option', '');
+            $preferences->set_var ('display_photo', '');
         } else {
             if (empty ($A['photo'])) { // external avatar
                 $photo = '<br>' . $photo;
@@ -141,8 +141,8 @@ function edituser()
                        . LB;
             }
             $preferences->set_var ('display_photo', $photo);
-            $preferences->parse ('userphoto_option', 'photo', true);
         }
+        $preferences->parse ('userphoto_option', 'photo', true);
     } else {
         $preferences->set_var ('userphoto_option', '');
     }
