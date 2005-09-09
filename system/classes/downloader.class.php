@@ -8,9 +8,9 @@
 // |                                                                           |
 // | Geeklog file download class library.                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Copyright (C) 2002-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.10 2005/08/11 03:03:41 blaine Exp $
+// $Id: downloader.class.php,v 1.11 2005/09/09 08:58:24 dhaun Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -398,12 +398,11 @@ class downloader
         // This is a subset of _availableMimetypes.  Go ahead and make sure
         // all the mime types passed to this function are in the
         // available list
-        for ($i = 1; $i <= count($validExtensions); $i++) {
-            if (!in_array(current($validExtensions),$this->_availableExtensions)) {
-                $this->_addError('extension, ' .current($validExtensions) . ' is not in the list of available file types for download');
+        foreach ($validExtensions as $ext => $mime) {
+            if (!in_array ($mime, $this->_availableMimeTypes)) {
+                $this->_addError('extension, ' . $ext . ' is not in the list of available file types for download');
                 return;
             }
-            next($validExtensions);
         }
         $this->_allowedExtensions = $validExtensions;
     }
