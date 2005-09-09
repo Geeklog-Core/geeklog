@@ -40,8 +40,8 @@ defined below:</p>
 <li><a href="#story">Story Settings</a></li>
 <li><a href="#comment">Comment Settings</a></li>
 <li><a href="#poll">Poll Settings</a></li>
-<li><a href="#links">Links Settings</a></li>
-<li><a href="#image">Image Settings</a></li>
+<li><a href="#image">Image Settings</a>
+    <ul><li><a href="#userphoto">User photo</a></li></ul></li>
 <li><a href="#rdf">Syndication Settings</a></li>
 <li><a href="#content">Content Control Settings</a></li>
 <li><a href="#url-rewrite">URL Rewriting</a></li>
@@ -142,7 +142,7 @@ defined below:</p>
   <td valign="top">E-mail address for all admin mail</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_url">site_url</a></td>
-  <td valign="top">http://www.yourdomain.com</td>
+  <td valign="top">http://www.example.com</td>
   <td valign="top">Base URL for your site (no trailing slash)</td></tr>
 <tr>
   <td valign="top"><a name="desc_theme">theme</a></td>
@@ -177,6 +177,23 @@ defined below:</p>
   <td valign="top">Can be 1 or 0</td>
   <td valign="top">If set to 1, the option to to exclude certain authors from being seen is hidden from the user's preferences.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_remoteauthentication">remoteauthentication</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+    an account with some other service to log into your Geeklog site with the
+    login for that service. Currently supported: Blogger and LiveJournal.<br>
+    Please note that to enable login for a specific service, you need an
+    authorization class in <tt>system/classes/authentication</tt>. If you only
+    want to allow Blogger but not LiveJournal users (or vice versa), simply
+    remove the class file for the unwanted service(s).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_show_servicename">show_servicename</a></td>
+  <td valign="top">true</td>
+  <td valign="top">If you allow users to log in with accounts on remote services
+    (like Blogger or LiveJournal), this option will at the service's name to
+    the username to avoid confusion with local users of the same name. Set to
+    <tt>false</tt> to disable.</td></tr>
+<tr>
   <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
   <td valign="top">true</td>
   <td valign="top">A Geeklog site can be disabled quickly (e.g. for maintenance)
@@ -188,25 +205,30 @@ defined below:</p>
     disabled.  If the text begins with "http:" then visitors are redirected to
     that URL.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_sort_admin">sort_admin</a></td>
+  <td valign="top">false</td>
+  <td valign="top">If set to <tt>true</tt> will sort the entries in the Admin's
+    block and the icons on the Submissions page (<tt>moderation.php</tt>)
+    alphabetically.</td></tr>
+<tr>
   <td valign="top"><a name="desc_link_documentation">link_documentation</a></td>
   <td valign="top">1</td>
   <td valign="top">Add a link to Geeklog's documentation to the Admin block.
     Set this to 0 if you don't want that link to show up.</td></tr>
 <tr>
   <td valign="top"><a name="desc_menu_elements">menu_elements</a></td>
-  <td valign="top"><code>array('contribute', 'links', 'polls', 'calendar',
-    'search', 'stats', 'directory')</code></td>
+  <td valign="top"><code>array('contribute', 'calendar', 'search', 'stats',
+    'directory', 'plugins')</code></td>
   <td valign="top">Specifies which entries are displayed in the site's menu bar
     (if your theme uses the <code>{menu_elements}</code> variable to display
     the menu bar). Can be any combination of <tt>'home'</tt>,
-    <tt>'contribute'</tt>, <tt>'links'</tt>, <tt>'polls'</tt>,
-    <tt>'calendar'</tt>, <tt>'search'</tt>, <tt>'directory'</tt>,
-    <tt>'prefs'</tt>, <tt>'plugins'</tt>, and <tt>'custom'</tt> where
-    <tt>'plugins'</tt> is the same as the <code>{plg_menu_elements}</code>
-    variable, i.e. a list of the menu entries provided by plugins, and
-    <tt>'custom'</tt> displays the entries returned by a custom function
-    <code>CUSTOM_menuEntries</code> (see <tt>lib-custom.php</tt> for
-    details).</td></tr>
+    <tt>'contribute'</tt>, <tt>'calendar'</tt>, <tt>'search'</tt>,
+    <tt>'directory'</tt>, <tt>'prefs'</tt>, <tt>'plugins'</tt>,
+    and <tt>'custom'</tt> where <tt>'plugins'</tt> is the same as the
+    <code>{plg_menu_elements}</code> variable, i.e. a list of the menu entries
+    provided by plugins, and <tt>'custom'</tt> displays the entries returned by
+    a custom function <code>CUSTOM_menuEntries</code> (see
+    <tt>lib-custom.php</tt> for details).</td></tr>
 </table>
 
 
@@ -391,18 +413,11 @@ options:</p>
       from the following settings.</td></tr>
 <tr><td valign="top"><a name="desc_submitloginrequired">submitloginrequired</a></td>
     <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can submit stories, links, and 
-      events</td></tr>
+    <td valign="top">When set to 1, only registered users can submit stories
+      and events</td></tr>
 <tr><td valign="top"><a name="desc_commentsloginrequired">commentsloginrequired</a></td>
     <td valign="top">0</td>
     <td valign="top">When set to 1, only registered users can submit comments</td></tr>
-<tr><td valign="top"><a name="desc_linksloginrequired">linksloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can access the links area</td></tr>
-<tr><td valign="top"><a name="desc_pollsloginrequired">pollsloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can access the list of recent 
-      polls</td></tr>
 <tr><td valign="top"><a name="desc_calendarloginrequired">calendarloginrequired</a></td>
     <td valign="top">0</td>
     <td valign="top">When set to 1, only registered users can access the calendar</td></tr>
@@ -440,10 +455,6 @@ options:</p>
   <td valign="top">1</td>
   <td valign="top">Enable (1) or disable (0) the story submission queue</td></tr>
 <tr>
-  <td valign="top"><a name="desc_linksubmission">linksubmission</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Enable (1) or disable (0) the link submission queue</td></tr>
-<tr>
   <td valign="top"><a name="desc_eventsubmission">eventsubmission</a></td>
   <td valign="top">1</td>
   <td valign="top">Enable (1) or disable (0) the event submission queue</td></tr>
@@ -452,6 +463,11 @@ options:</p>
   <td valign="top">0</td>
   <td valign="top">Enable (1) or disable (0) the user submission queue (i.e.
       new users must be approved before they receive their password)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_disable_new_user_registration">disable_new_user_registration</a></td>
+  <td valign="top">false</td>
+  <td valign="top">When set to <tt>true</tt> completely disables all options
+    to sign up as a new user.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_domains">allow_domains</a></td>
   <td valign="top">''</td>
@@ -463,14 +479,16 @@ options:</p>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>
   <td valign="top">Send an email notification to <tt>$_CONF['site_email']</tt>
-    when a new story, comment, link, or event has been submitted or a new user
-    has registered with the site. The <tt>array()</tt> can hold any combination
-    of  the strings <tt>'story'</tt>, <tt>'comment'</tt>, <tt>'trackback'</tt>,
-    <tt>'pingback'</tt>, <tt>'link'</tt>, <tt>'event'</tt>, and <tt>'user'</tt>
-    (separated by commas), depending on which notification(s) you want.<br>
+    when a new story, comment, event, trackback or pingback has been submitted
+    or a new user has registered with the site. The <tt>array()</tt> can hold
+    any combination of  the strings <tt>'story'</tt>, <tt>'comment'</tt>,
+    <tt>'trackback'</tt>, <tt>'pingback'</tt>, <tt>'event'</tt>, and
+    <tt>'user'</tt> (separated by commas), depending on which notification(s)
+    you want.<br>
     <strong>Example:</strong> <code>array('story','user');</code> would
     send notifications when a new story has been submitted or a new user has
-    registered. No notifications would be sent for new links or events.</td>
+    registered. No notifications would be sent, for example, for new
+    events.</td>
 <tr>
   <td valign="top"><a name="desc_listdraftstories">listdraftstories</a></td>
   <td valign="top">0</td>
@@ -567,10 +585,6 @@ options:</p>
   <td valign="top">172800</td>
   <td valign="top">Trackback comments are "new" if they are this many seconds old.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_newlinksinterval">newlinksinterval</a></td>
-  <td valign="top">1209600</td>
-  <td valign="top">Links are "new" if they are this many seconds old.</td></tr>
-<tr>
   <td valign="top"><a name="desc_hidenewstories">hidenewstories</a></td>
   <td valign="top">0</td>
   <td valign="top">Set to 1 to hide new stories from the What's New block.</td></tr>
@@ -582,10 +596,6 @@ options:</p>
   <td valign="top"><a name="desc_hidenewtrackbacks">hidenewtrackbacks</a></td>
   <td valign="top">0</td>
   <td valign="top">Set to 1 to hide new trackback comments from the What's New block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hidenewlinks">hidenewlinks</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Set to 1 to hide new links from the What's New block.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hidenewplugins">hidenewplugins</a></td>
   <td valign="top">0</td>
@@ -687,12 +697,26 @@ options:</p>
     the &quot;View Printable Version&quot; from the Story Options
     block.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_show_right_blocks">show_right_blocks</a></td>
+  <td valign="top">false</td>
+  <td valign="top">If set to <tt>true</tt>, the right-side column of blocks
+    will be displayed on <em>all</em> pages (instead of only on the index
+    page).</td></tr>
+<tr>
   <td valign="top"><a name="desc_showfirstasfeatured">showfirstasfeatured</a></td>
   <td valign="top">0</td>
   <td valign="top">When set to 1, this will render the first story on <em>any</em> page
     using the templates for a featured story, even if that story is not
     featured. This will even be applied to the first story on page 2 of a
     topic page, for example.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_left_blocks_in_footer">left_blocks_in_footer</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this will make the <code>{left_blocks}</code>
+    variable available in <tt>footer.thtml</tt> (and disable it in
+    <tt>header.thtml</tt>). This is really only useful for two-column layouts
+    where you want the left column contain the stories and the right columni
+    contain the standard blocks.</td></tr>
 </table>
 
 
@@ -747,27 +771,6 @@ options:</p>
 </table>
 
 
-<h3><a name="links">Links Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_linkcols">linkcols</a></td>
-  <td valign="top">3</td>
-  <td valign="top">Number of columns to use when listing the categories in the links section.
-    Set to 0 if you don't want categories listed.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_linksperpage">linksperpage</a></td>
-  <td valign="top">10</td>
-  <td valign="top">Number of links to show per page. Set to 0 to show all links at once.</td></tr>
-</table>
-
-<p><strong>Note:</strong> When setting both 'linkcols' and 'linksperpage'
-to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
-
-
 <h3><a name="image">Image Settings</a></h3>
 
 <table border="1" width="100%">
@@ -809,6 +812,14 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
   <td valign="top">Set this to 1 if you want Geeklog to keep the original, unscaled images after upload. The smaller image will then be used as a thumbnail and will link to the original image. Note that this may use a lot of disk space (depending on the size of your images).</td>
 </tr>
 <tr>
+  <td valign="top"><a name="desc_allow_user_scaling">allow_user_scaling</a></td>
+  <td valign="top">1</td>
+  <td valign="top">When unscaled images are kept (see above), this option lets
+    the user chose between using the scaled or unscaled image in the story, i.e.
+    enables the <code>[unscaled<i>X</i>]</code> image tag (in addition to the
+    <code>[image<i>X</i>]</code> tag).</td>
+</tr>
+<tr>
   <td valign="top"><a name="desc_max_image_width">max_image_width</a></td>
   <td valign="top">160</td>
   <td valign="top">Max. width of an image in pixels. If it exceeds this, it is
@@ -826,26 +837,6 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
   <td valign="top"><a name="desc_max_image_size">max_image_size</a></td>
   <td valign="top">1048576 <i>(equals 1 MB)</i></td>
   <td valign="top">Max. size of an image in bytes. If it exceeds this, it is
-    is rejected (even if you're using a graphics package to resize images).
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_photo_width">max_photo_width</a></td>
-  <td valign="top">128</td>
-  <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it
-    is either rejected or resized (depending on the setting of
-    $_CONF['image_lib'] above).
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_photo_height">max_photo_height</a></td>
-  <td valign="top">128</td>
-  <td valign="top">Max. height of a user photo in pixels. If it exceeds this,
-    it is either rejected or resized (depending on the setting of
-    $_CONF['image_lib'] above).
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_photo_size">max_photo_size</a></td>
-  <td valign="top">65536 <i>(equals 64 KB)</i></td>
-  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
     is rejected (even if you're using a graphics package to resize images).
 </tr>
 <tr>
@@ -870,6 +861,73 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 </tr>
 </table>
 
+<h4><a name="userphoto">User photo</a></h4>
+
+<p>Additional options for the user photo.</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_max_photo_width">max_photo_width</a></td>
+  <td valign="top">128</td>
+  <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it
+    is either rejected or resized (depending on the setting of
+    $_CONF['image_lib'] above).
+</tr>
+<tr>
+  <td valign="top"><a name="desc_max_photo_height">max_photo_height</a></td>
+  <td valign="top">128</td>
+  <td valign="top">Max. height of a user photo in pixels. If it exceeds this,
+    it is either rejected or resized (depending on the setting of
+    $_CONF['image_lib'] above).</td>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_max_photo_size">max_photo_size</a></td>
+  <td valign="top">65536 <i>(equals 64 KB)</i></td>
+  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
+    is rejected (even if you're using a graphics package to resize images).</td>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_use_gravatar">use_gravatar</a></td>
+  <td valign="top">false</i></td>
+  <td valign="top">If enabled (set to <tt>true</tt>), a user's avatar image will
+    be requested from <a href="http://gravatar.com/">gravatar.com</a> if the
+    user didn't upload a user photo (i.e. an uploaded photo always takes
+    priority).<br>
+    Please note that this option may slow down your site on pages that display
+    a lot of userphotos for different users (e.g. forum threads).</td>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_gravatar_rating">gravatar_rating</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">Avatars submitted to gravatar.com are <a
+    href="http://gravatar.com/rating.php">rated</a> with the rating system used
+    for movies (in the U.S.), i.e. the letters G, PG, R, or X. This option will
+    let you chose the <em>maximum</em> allowed rating for an avatar. For
+    example, a max. rating of R will make sure that no X-rated avatars will be
+    displayed on your site (only G, PG, and R).</td>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_force_photo_width">force_photo_width</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">This option, when enabled, will only apply when
+    <em>displaying</em> a user photo. The <code>&lt;img&gt;</code> tag for the
+    user photo will be emitted with a max. width, as specified by this option.
+    This means that the actual photo can still be larger, but will only be
+    displayed smaller. This is useful for cases where you don't want oddly
+    shaped user photos to break your page's layout (e.g. in a forum).</td>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_default_photo">default_photo</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">When enabled, this option should point to an image (full URL
+    required!) that should be displayed for users without a user photo. When
+    this option is not set and a user does not have a user photo (or an avatar)
+    then Geeklog will simply not display anything.</td>
+</tr>
+</table>
 
 <h3><a name="rdf">Syndication Settings</a></h3>
 
@@ -888,7 +946,7 @@ admin panel.</p>
     <td valign="top">1</td>
     <td valign="top">Create a feed file for the stories in rdf_file (0=no, 1=yes)</td></tr>
 <tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
-    <td valign="top">HTML path with "/backend/geeklog.rdf" suffix</td>
+    <td valign="top">HTML path with "/backend/geeklog.rss" suffix</td>
     <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others</td></tr>
 <tr><td valign="top"><a name="desc_rdf_language">rdf_language</a></td>
     <td valign="top">en-gb</td>
@@ -926,7 +984,8 @@ admin panel.</p>
 <tr>
   <td valign="top"><a name="desc_allowed_protocols">allowed_protocols</a></td>
   <td valign="top">array ('http', 'https', 'ftp');</td>
-  <td valign="top">Defines which protocols are allowed in links (i.e. HTML <code>&lt;a&gt;</code> tags).</td></tr>
+  <td valign="top">Defines which protocols are allowed in links (i.e. HTML
+    <code>&lt;a&gt;</code> tags).</td></tr>
 <tr>
   <td valign="top"><a name="desc_disable_autolinks">disable_autolinks</a></td>
   <td valign="top">0</td>
