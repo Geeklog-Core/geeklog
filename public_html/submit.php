@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.85 2005/08/29 03:48:51 blaine Exp $
+// $Id: submit.php,v 1.86 2005/09/09 13:20:58 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -535,11 +535,13 @@ function saveevent ($A)
 
     if (empty ($A['title']) || empty ($A['start_month']) ||
             empty ($A['start_day']) || empty ($A['start_year'])) {
-        $retval .= COM_startBlock ($LANG12[22], '',
+        $retval .= COM_siteHeader ('menu', $LANG12[4])
+            . COM_startBlock ($LANG12[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . submissionform ($type)
+            . submissionform ('event',
+                    ($A['calendar_type'] == 'master') ? '' : 'personal')
             . COM_siteFooter ();
 
         return $retval;
