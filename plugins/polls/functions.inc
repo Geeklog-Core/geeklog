@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.15 2005/09/12 12:56:52 dhaun Exp $
+// $Id: functions.inc,v 1.16 2005/09/12 16:13:55 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -151,6 +151,42 @@ function plugin_deletecomment_polls($cid, $id)
 
 
 /**
+* Helper function: counter number of polls and total number of votes
+*
+* @return   array(number of polls, number of votes);
+*
+*/
+function POLLS_countPollsAndVotes ()
+{
+    global $_TABLES;
+
+    $total_polls = 0;
+    $total_answers = 0;
+
+    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+    $A = DB_fetchArray($result);
+    $total_polls = $A['count'];
+
+    $result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+    $nrows = DB_numRows ($result);
+    if ($nrows > 0) {
+        $questions = '';
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            if ($i > 1) {
+                $questions .= ',';
+            }
+            $questions .= "'" . $A['qid'] . "'";
+        }
+        $result = DB_query ("SELECT SUM(votes) FROM {$_TABLES['pollanswers']} WHERE qid IN ({$questions})");
+        $A = DB_fetchArray($result, true);
+        $total_answers = $A[0];
+    }
+
+    return array ($total_polls, $total_answers);
+}
+
+/**
 * Shows the statistics for the Polls plugin on stats.php.
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
@@ -163,36 +199,17 @@ function plugin_showstats_polls ($showsitestats)
 
     $retval = '';
 
-    $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
-    $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
-                                      'statrow'   => 'singlestat.thtml'));
-
     if ($showsitestats == 1) {
-        $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
-        $A = DB_fetchArray($result);
-        $total_polls = $A['count'];
-        $result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
-        $nrows = DB_numRows ($result);
-        if ($nrows > 0) {
-            $questions = '';
-            for ($i = 1; $i <= $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                if ($i > 1) {
-                    $questions .= ',';
-                }
-                $questions .= "'" . $A['qid'] . "'";
-            }
-            $result = DB_query ("SELECT SUM(votes) FROM {$_TABLES['pollanswers']} WHERE qid IN ({$questions})");
-            $A = DB_fetchArray($result, true);
-            $total_answers = $A[0];
-        } else {
-            $total_answers = 0;
-        }
+        list($total_polls, $total_answers) = POLLS_countPollsAndVotes ();
 
         $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
         $retval .= '<tr><td>' . $LANG_POLLS['stats_summary'] . '</td>';
         $retval .= '<td align="right">' . COM_numberFormat ($total_polls) . '(' . COM_numberFormat ($total_answers) . ')' . '&nbsp;&nbsp;</td></tr></table>';
     } else {
+        $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
+        $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
+                                          'statrow'   => 'singlestat.thtml'));
+
         $result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
         $nrows  = DB_numRows ($result);
         $retval .= COM_startBlock ($LANG_POLLS['stats_top10']);
@@ -203,7 +220,7 @@ function plugin_showstats_polls ($showsitestats)
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
                 $stat_templates->set_var ('item_url', $_CONF['site_url']
-                    . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1');
+                    . '/polls/index.php?qid=' . $A['qid'] . '&amp;aid=-1');
                 $stat_templates->set_var ('item_text', $A['question']);
                 $stat_templates->set_var ('item_stat',
                                           COM_numberFormat ($A['voters']));
@@ -214,10 +231,28 @@ function plugin_showstats_polls ($showsitestats)
         } else {
             $retval .= $LANG_POLLS['stats_none'];
         }
-        $retval .= COM_endBlock();
+        $retval .= COM_endBlock ();
     }
 
     return $retval;
+}
+
+/**
+* New stats plugin API function for proper integration with the site stats
+*
+* @return   array(item text, item count);
+*
+*/
+function plugin_statssummary_polls ()
+{
+    global $LANG_POLLS;
+
+    list($total_polls, $total_answers) = POLLS_countPollsAndVotes ();
+
+    $item_count = COM_numberFormat ($total_polls)
+                . ' (' . COM_numberFormat ($total_answers) . ')';
+
+    return array ($LANG_POLLS['stats_summary'], $item_count);
 }
 
 
@@ -226,7 +261,6 @@ function plugin_showstats_polls ($showsitestats)
 * moderation.php
 *
 */
-
 function plugin_cclabel_polls()
 {
     global $LANG_POLLS, $_CONF;

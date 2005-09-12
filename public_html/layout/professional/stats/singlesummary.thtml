@@ -1,0 +1,6 @@
+                                <tr>
+                                    <td>
+                                        {item_text}
+                                    </td>
+                                    <td align="right">{item_stat}</td>
+                                </tr>

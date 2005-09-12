@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.80 2005/09/04 13:57:30 dhaun Exp $
+// $Id: lib-plugins.php,v 1.81 2005/09/12 16:13:54 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -326,29 +326,71 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
 
 
 /**
-* The way this function works is very specific to how Geeklog shows it's
+* The way this function works is very specific to how Geeklog shows its
 * statistics.  On stats.php, there is the top box which gives overall
 * statistics for Geeklog and then there are blocks below it that give
-* more specific statistics for various components of Geeklog.  If 
-* $showsitestats is 1 then the plugins is to return the overall stats
-* for the plugin.  If $showsitestats is 0 then it will return the plugin
-* specific stats
+* more specific statistics for various components of Geeklog.
 *
-* @param        boolean     $showsitestats      flag indicated type of stats to return 
+* This plugin API function suffers from a variety of bugs and bad design
+* decisions for which we have to provide backward compatibility, so please
+* bear with us ...
+*
+* The only parameter to this function, $showsitestats, was documented as being
+* 1 for the site stats and 0 for the plugin-specific stats. However, the latter
+* was always called with a value of 2, so plugins only did a check for 1 and
+* "else", which makes extensions somewhat tricky.
+* Furthermore, due to the original templates for the site stats, it has
+* become standard practice to hard-code a <table> in the plugins as the return
+* value for $showsitestats == 1. This table, however, didn't align properly
+* with the built-in site stats entries.
+*
+* Because of all this, the new mode, 3, works differently:
+* - for $showsitestats == 3, we call a new plugin API function,
+*   plugin_statssummary_<plugin-name>, which is supposed to return the plugin's
+*   entry for the site stats in an array which stats.php will then properly
+*   format, alongside the entries for the built-in items.
+* - for $showsitestats == 1, we only call those plugins that do NOT have a
+*   plugin_statssummary_<plugin-name> function, thus providing backward
+*   compatibility
+* - for $showsitestats == 2, nothing has changed
+*
+* @param    int     $showsitestats      value indicating type of stats to return
+* @return   mixed                       array (for mode 3) or string
 *
 */
-function PLG_getPluginStats($showsitestats) 
+function PLG_getPluginStats ($showsitestats) 
 {
     global $_PLUGINS;
 
-    $retval = '';
+    if ($showsitestats == 3) {
+        $retval = array ();
+    } else {
+        $retval = '';
+    }
 
     foreach ($_PLUGINS as $pi_name) {
-        $function = 'plugin_showstats_' . $pi_name;
-        if (function_exists($function)) {
-            //great, stats function is there, call it
-            $retval .= $function($showsitestats);
-        } // no else because this is not a required API function
+        if ($showsitestats == 3) {
+            $function = 'plugin_statssummary_' . $pi_name;
+            if (function_exists ($function)) {
+                $summary = $function ();
+                if (is_array ($summary)) {
+                    $retval[$pi_name] = $summary;
+                }
+            }
+        } else if ($showsitestats == 1) {
+            $function1 = 'plugin_showstats_' . $pi_name;
+            $function2 = 'plugin_statssummary_' . $pi_name;
+            if (!function_exists ($function2)) {
+                if (function_exists ($function1)) {
+                    $retval .= $function1 ($showsitestats);
+                }
+            }
+        } else if ($showsitestats == 2) {
+            $function = 'plugin_showstats_' . $pi_name;
+            if (function_exists ($function)) {
+                $retval .= $function ($showsitestats);
+            }
+        }
     }
 
     return $retval;

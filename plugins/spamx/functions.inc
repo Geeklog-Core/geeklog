@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.10 2005/08/27 17:25:20 dhaun Exp $
+ * $Id: functions.inc,v 1.11 2005/09/12 16:13:54 dhaun Exp $
  */
 
 /**
@@ -113,6 +113,21 @@ function plugin_showstats_spamx($showsitestats)
     }
 
     return $retval;
+}
+
+/**
+* New stats plugin API function for proper integration with the site stats
+* 
+* @return   array(item text, item count);
+* 
+*/
+function plugin_statssummary_spamx ()
+{
+    global $_TABLES, $LANG_SX00;
+
+    $counter = DB_getItem ($_TABLES['vars'], 'value', "name = 'spamx.counter'");
+
+    return array ($LANG_SX00['stats_deleted'], COM_numberFormat ($counter));
 }
 
 /**

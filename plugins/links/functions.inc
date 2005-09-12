@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.23 2005/09/04 18:52:19 dhaun Exp $
+// $Id: functions.inc,v 1.24 2005/09/12 16:13:54 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -187,6 +187,26 @@ function plugin_chkVersion_links ()
     return $_LI_CONF['version'];
 }
 
+/**
+* Helper function: count number of links and total number of clicks
+*
+* @return   array(number of links, number of clicks);
+*
+*/
+function LINKS_countLinksAndClicks ()
+{
+    global $_TABLES;
+
+    $result = DB_query ("SELECT COUNT(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
+    $A = DB_fetchArray($result);
+    $total_links = $A['count'];
+    $total_clicks = $A['clicks'];
+    if (empty ($total_clicks)) {
+        $total_clicks = 0;
+    }
+
+    return array ($total_links, $total_clicks);
+}
 
 /**
 * Shows the statistics for the links plugin on stats.php.
@@ -195,58 +215,70 @@ function plugin_chkVersion_links ()
 *
 * @param    int     showsitestate   Flag to let us know which stats to get
 */
-function plugin_showstats_links($showsitestats) 
+function plugin_showstats_links ($showsitestats) 
 {
     global $_CONF, $_TABLES, $LANG_LINKS_STATS;
 
     $retval = '';
 
-    $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
-    $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
-                                      'statrow'   => 'singlestat.thtml'));
     if ($showsitestats == 1) {
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
-            $perms = ' WHERE ' . $perms;
-        }
+        list($total_links, $total_clicks) = LINKS_countLinksAndClicks ();
 
-        $result = DB_query ("SELECT COUNT(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
-        $A = DB_fetchArray($result);
-        $total_links = $A['count'];
-        $total_clicks = $A['clicks'];
-        if (empty ($total_clicks)) {
-            $total_clicks = 0;
-        }
         $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
         $retval .= '<tr><td>' . $LANG_LINKS_STATS['links'] . '</td>';
         $retval .= '<td align="right">' . COM_NumberFormat ($total_links) . '('. COM_NumberFormat ($total_clicks) . ')&nbsp;&nbsp;</td></tr></table>';
     } else {
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
-            $perms = ' AND ' . $perms;
-        }
-        $result = DB_query ("SELECT lid,title,hits FROM {$_TABLES['links']} WHERE hits > 0" . $perms . ' ORDER BY hits DESC LIMIT 10');
+        $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
+        $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
+                                          'statrow'   => 'singlestat.thtml'));
+
+        $result = DB_query("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
         $nrows  = DB_numRows ($result);
         $retval .= COM_startBlock ($LANG_LINKS_STATS['stats_headline']);
         if ($nrows > 0) {
-            $stat_templates->set_var ('item_label', $LANG_LINKS_STATS['stats_page_title']);
-            $stat_templates->set_var ('stat_name', $LANG_LINKS_STATS['stats_hits']);
+            $stat_templates->set_var ('item_label',
+                                      $LANG_LINKS_STATS['stats_page_title']);
+            $stat_templates->set_var ('stat_name',
+                                      $LANG_LINKS_STATS['stats_hits']);
+
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
                 $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/portal.php?what=link&amp;item=' . $A['lid']));
-                $stat_templates->set_var ('item_text', stripslashes ($A['title']));
-                $stat_templates->set_var ('item_stat', $A['hits']);
-                $stat_templates->parse ('stat_row','statrow',true); 
+                $stat_templates->set_var ('item_text',
+                        stripslashes (str_replace ('$', '&#36;', $A['title'])));
+                $stat_templates->set_var ('item_stat',
+                        COM_numberFormat ($A['hits']));
+                $stat_templates->parse ('stat_row', 'statrow', true); 
             }
-            $stat_templates->parse ('output','itemstats');
+            $stat_templates->parse ('output', 'itemstats');
             $retval .= $stat_templates->finish ($stat_templates->get_var ('output'));
+
         } else {
             $retval .= $LANG_LINKS_STATS['stats_no_hits'];
-        }	
-        $retval .= COM_endBlock();
+        }
+        $retval .= COM_endBlock ();
     }
 
     return $retval;
+}
+
+/**
+* New stats plugin API function for proper integration with the site stats
+*
+* @return   array(item text, item count);
+*
+*/
+function plugin_statssummary_links ()
+{
+    global $LANG_LINKS_STATS;
+
+    list($total_links, $total_clicks) = LINKS_countLinksAndClicks ();
+
+    $item_count = COM_NumberFormat ($total_links)
+                . ' (' . COM_NumberFormat ($total_clicks) . ')';
+
+
+    return array ($LANG_LINKS_STATS['links'], $item_count);
 }
 
 /**

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.36 2005/09/12 12:32:58 dhaun Exp $
+// $Id: stats.php,v 1.37 2005/09/12 16:13:54 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -62,46 +62,55 @@ if (empty ($_USER['username']) &&
 $display .= COM_siteHeader ('menu', $LANG10[1]) . COM_startBlock ($LANG10[1]);
 
 $stat_templates = new Template($_CONF['path_layout'] . 'stats');
-$stat_templates->set_file (array ('stats'     => 'stats.thtml',
-                                  'sitestats' => 'sitestatistics.thtml',
+$stat_templates->set_file (array ('sitestats' => 'sitestatistics.thtml',
                                   'itemstats' => 'itemstatistics.thtml',
-                                  'statrow'   => 'singlestat.thtml'));
+                                  'statrow'   => 'singlestat.thtml',
+                                  'summary'   => 'singlesummary.thtml'));
 
 // Overall Site Statistics
 
-$totalhits = DB_getItem($_TABLES['vars'],'value',"name = 'totalhits'");
-$stat_templates->set_var('lang_totalhitstosystem',$LANG10[2]);
-$stat_templates->set_var('total_hits', COM_NumberFormat( $totalhits ) );
+$totalhits = DB_getItem ($_TABLES['vars'], 'value', "name = 'totalhits'");
+$stat_templates->set_var ('lang_totalhitstosystem', $LANG10[2]);
+$stat_templates->set_var ('total_hits', COM_NumberFormat ($totalhits));
 
 $topicsql = COM_getTopicSql ('AND');
 
-$id = array('draft_flag','date');
-$values = array('0','NOW()');	
-$result = DB_query("SELECT count(*) AS count,SUM(comments) as ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql);
-$A = DB_fetchArray($result);
+$id = array ('draft_flag', 'date');
+$values = array ('0', 'NOW()');	
+$result = DB_query ("SELECT COUNT(*) AS count,SUM(comments) AS ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql);
+$A = DB_fetchArray ($result);
 $total_stories = $A['count'];
 $comments = $A['ccount'];
 if (empty ($comments)) {
     $comments = 0;
 }
-$stat_templates->set_var('lang_stories_comments',$LANG10[3]);
-$stat_templates->set_var('total_stories', COM_NumberFormat ($total_stories) );
-$stat_templates->set_var('total_comments', COM_NumberFormat ($comments) );
+$stat_templates->set_var ('lang_stories_comments', $LANG10[3]);
+$stat_templates->set_var ('total_stories', COM_NumberFormat ($total_stories));
+$stat_templates->set_var ('total_comments', COM_NumberFormat ($comments));
 
 $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
-$A = DB_fetchArray($result);
+$A = DB_fetchArray ($result);
 $total_events = $A['count'];
-$stat_templates->set_var('lang_events',$LANG10[6]);
-$stat_templates->set_var('total_events',COM_NumberFormat ($total_events) );
+$stat_templates->set_var ('lang_events', $LANG10[6]);
+$stat_templates->set_var ('total_events', COM_NumberFormat ($total_events));
 
-$stat_templates->parse('site_statistics','sitestats',true);
-$stat_templates->parse('output','stats');
-$display .= $stat_templates->finish($stat_templates->get_var('output'));
+// new stats plugin API call
+$plg_stats = PLG_getPluginStats (3);
+if (count ($plg_stats) > 0) {
+    foreach ($plg_stats as $pstats) {
+        $stat_templates->set_var ('item_text', $pstats[0]);
+        $stat_templates->set_var ('item_stat', $pstats[1]);
+        $stat_templates->parse ('summary_row', 'summary', true);
+    }
+}
 
-// Get overall plugin statistics for inclusion
-$display .= PLG_getPluginStats(1);
+$stat_templates->parse ('output', 'sitestats');
+$display .= $stat_templates->finish ($stat_templates->get_var ('output'));
 
-$display .= COM_endBlock();
+// old stats plugin API call, for backward compatibilty
+$display .= PLG_getPluginStats (1);
+
+$display .= COM_endBlock ();
 
 // Detailed story statistics
 

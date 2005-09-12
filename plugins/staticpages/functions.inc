@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.52 2005/07/24 20:01:47 dhaun Exp $
+// $Id: functions.inc,v 1.53 2005/09/12 16:13:55 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -105,6 +105,26 @@ function plugin_commentsupport_staticpages()
 }
 
 /**
+* Helper function: Count static pages visible to the current user
+*
+* @return   int     number of pages
+*
+*/
+function SP_countVisiblePages ()
+{
+    global $_TABLES;
+
+    $perms = SP_getPerms ();
+    if (!empty ($perms)) {
+        $perms = ' WHERE ' . $perms;
+    }
+    $result = DB_query ("SELECT COUNT(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
+    $A = DB_fetchArray ($result);
+
+    return $A['cnt'];
+}
+
+/**
 * Shows the statistics for the Static Pages plugin on stats.php.
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
@@ -117,21 +137,16 @@ function plugin_showstats_staticpages($showsitestats)
 
     $retval = '';
 
-    $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
-    $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
-                                      'statrow'   => 'singlestat.thtml'));
     if ($showsitestats == 1) {
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
-            $perms = ' WHERE ' . $perms;
-        }
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
-        $A = DB_fetchArray ($result);
-        $total_pages = $A['cnt'];
+        $total_pages = SP_countVisiblePages ();
         $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
         $retval .= '<tr><td>' . $LANG_STATIC['staticpages'] . '</td>';
         $retval .= '<td align="right">' . $total_pages . '&nbsp;&nbsp;</td></tr></table>';
     } else {
+        $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
+        $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
+                                          'statrow'   => 'singlestat.thtml'));
+
         $perms = SP_getPerms ();
         if (!empty ($perms)) {
             $perms = ' AND ' . $perms;
@@ -157,6 +172,21 @@ function plugin_showstats_staticpages($showsitestats)
         $retval .= COM_endBlock();
     }
     return $retval;
+}
+
+/**
+* New stats plugin API function for proper integration with the site stats
+* 
+* @return   array(item text, item count);
+* 
+*/
+function plugin_statssummary_staticpages ()
+{
+    global $_TABLES, $LANG_STATIC;
+
+    $total_pages = SP_countVisiblePages ();
+
+    return array ($LANG_STATIC['staticpages'], COM_numberFormat ($total_pages));
 }
 
 /**

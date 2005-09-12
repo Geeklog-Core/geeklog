@@ -2,6 +2,10 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Introduced a new plugin API function so that the plugin's summary (e.g.
+  number of items) can be properly integrated with the "Site Stats" section.
+  Modified stats/sitestatistics.thtml, removed stats/stats.thtml, added
+  stats/singlesummary.thtml template files [Dirk]
 - Fixed bug with topic-specific blocks not showing up on the article page when
   URL rewriting was enabled (bug #401) [Dirk]
 - Fixed missing site header when trying to submit an event without required
