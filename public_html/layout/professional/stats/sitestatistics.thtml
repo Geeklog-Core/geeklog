@@ -8,10 +8,6 @@
                                     <td align="right">{total_stories} ({total_comments})</td>
                                 </tr>
                                 <tr>
-                                    <td>{lang_polls_answers}</td>
-                                    <td align="right">{total_polls} ({total_answers})</td>
-                                </tr>
-                                <tr>
                                     <td>{lang_events}</td>
                                     <td align="right">{total_events}</td>
                                 </tr>

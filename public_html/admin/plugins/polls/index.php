@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.5 2005/08/13 13:29:23 ospiess Exp $
+// $Id: index.php,v 1.6 2005/09/12 12:32:58 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -358,9 +358,10 @@ function listpolls ($offset, $curpage, $query = '', $query_limit = 50)
     $poll_templates->set_var('lang_search', $LANG25[29]);
     $poll_templates->set_var('lang_limit_results', $LANG25[30]);
     $poll_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '">';
-    $poll_templates->set_var('edit_icon', $editico);
+    $editicon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG25[27] . '" title="'
+              . $LANG25[27] . '">';
+    $poll_templates->set_var('edit_icon', $editicon);
     
     switch($order) {
         case 1:
@@ -453,10 +454,11 @@ function listpolls ($offset, $curpage, $query = '', $query_limit = 50)
             $poll_templates->set_var ('question_id', $A['qid']);
             $poll_templates->set_var ('poll_question', $A['question']);
             $poll_templates->set_var ('poll_access', $access);
-            $poll_templates->set_var ('poll_votes', $A['voters']);
+            $poll_templates->set_var ('poll_votes',
+                                      COM_numberFormat ($A['voters']));
             $poll_templates->set_var ('poll_createdate', $curtime[0]);
             $poll_templates->set_var ('poll_homepage', $A['display']);
-            $poll_templates->set_var ('cssid', ($i%2)+1);
+            $poll_templates->set_var ('cssid', ($i % 2) + 1);
             $poll_templates->set_var ('row_num', $pcount);
             $poll_templates->parse ('poll_row', 'row', true);
         }
@@ -564,7 +566,7 @@ if ($mode == 'edit') {
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
         if ($msg > 0) {
-            $display .= COM_showMessage ($msg, 'links');
+            $display .= COM_showMessage ($msg, 'polls');
         }
     }
     $offset = 0;

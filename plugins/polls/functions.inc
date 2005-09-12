@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.13 2005/08/09 22:38:37 ospiess Exp $
+// $Id: functions.inc,v 1.14 2005/09/12 12:32:58 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -152,8 +152,7 @@ function plugin_deletecomment_polls($cid, $id)
 *
 * @param    int     showsitestate   Flag to let us know which stats to get
 */
-/*
-function plugin_showstats_polls($showsitestats)
+function plugin_showstats_polls ($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
 
@@ -162,45 +161,59 @@ function plugin_showstats_polls($showsitestats)
     $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
     $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
                                       'statrow'   => 'singlestat.thtml'));
+
     if ($showsitestats == 1) {
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
-            $perms = ' WHERE ' . $perms;
-        }
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['pollquestions']}" . $perms);
-        $A = DB_fetchArray ($result);
-        $total_pages = $A['cnt'];
-        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
-        $retval .= '<tr><td>' . $LANG_STATIC['polls'] . '</td>';
-        $retval .= '<td align="right">' . $total_pages . '&nbsp;&nbsp;</td></tr></table>';
-    } else {
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
-            $perms = ' AND ' . $perms;
-        }
-        $result = DB_query ("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
-        $nrows  = DB_numRows ($result);
-        $retval .= COM_startBlock ($LANG_STATIC['stats_headline']);
+        $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+        $A = DB_fetchArray($result);
+        $total_polls = $A['count'];
+        $result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+        $nrows = DB_numRows ($result);
         if ($nrows > 0) {
-            $stat_templates->set_var ('item_label', $LANG_STATIC['stats_page_title']);
-            $stat_templates->set_var ('stat_name', $LANG_STATIC['stats_hits']);
+            $questions = '';
+            for ($i = 1; $i <= $nrows; $i++) {
+                $A = DB_fetchArray($result);
+                if ($i > 1) {
+                    $questions .= ',';
+                }
+                $questions .= "'" . $A['qid'] . "'";
+            }
+            $result = DB_query ("SELECT SUM(votes) FROM {$_TABLES['pollanswers']} WHERE qid IN ({$questions})");
+            $A = DB_fetchArray($result, true);
+            $total_answers = $A[0];
+        } else {
+            $total_answers = 0;
+        }
+
+        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
+        $retval .= '<tr><td>' . $LANG_POLLS['stats_summary'] . '</td>';
+        $retval .= '<td align="right">' . COM_numberFormat ($total_polls) . '(' . COM_numberFormat ($total_answers) . ')' . '&nbsp;&nbsp;</td></tr></table>';
+    } else {
+        $result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
+        $nrows  = DB_numRows ($result);
+        $retval .= COM_startBlock ($LANG_POLLS['stats_top10']);
+        if ($nrows > 0) {
+            $stat_templates->set_var ('item_label',
+                                      $LANG_POLLS['stats_questions']);
+            $stat_templates->set_var ('stat_name', $LANG_POLLS['stats_votes']);
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
-                $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/polls/index.php?page=' . $A['sp_id']));
-                $stat_templates->set_var ('item_text', stripslashes ($A['sp_title']));
-                $stat_templates->set_var ('item_stat', $A['sp_hits']);
-                $stat_templates->parse ('stat_row','statrow',true);
+                $stat_templates->set_var ('item_url', $_CONF['site_url']
+                    . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1');
+                $stat_templates->set_var ('item_text', $A['question']);
+                $stat_templates->set_var ('item_stat',
+                                          COM_numberFormat ($A['voters']));
+                $stat_templates->parse ('stat_row', 'statrow', true);
             }
-            $stat_templates->parse ('output','itemstats');
+            $stat_templates->parse ('output', 'itemstats');
             $retval .= $stat_templates->finish ($stat_templates->get_var ('output'));
         } else {
-            $retval .= $LANG_STATIC['stats_no_hits'];
+            $retval .= $LANG_POLLS['stats_none'];
         }
         $retval .= COM_endBlock();
     }
+
     return $retval;
 }
-*/
 
 
 /**

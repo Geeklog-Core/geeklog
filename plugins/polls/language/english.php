@@ -34,16 +34,21 @@
 
 
 $LANG_POLLS = array(
-    'polls'     => 'Polls',
-    'results'   => 'Results',
-    'pollresults'   => 'Poll Results',
-    'votes'     => 'votes',
-    'vote'      => 'Vote',
-    'pastpolls' => 'Past Polls',
+    'polls'             => 'Polls',
+    'results'           => 'Results',
+    'pollresults'       => 'Poll Results',
+    'votes'             => 'votes',
+    'vote'              => 'Vote',
+    'pastpolls'         => 'Past Polls',
     'savedvotetitle'    => 'Vote Saved',
-    'savedvotemsg'  => 'Your vote was saved for the poll',
-    'pollstitle'    => 'Polls in System',
-    'pollquestions' => 'View other poll questions'
+    'savedvotemsg'      => 'Your vote was saved for the poll',
+    'pollstitle'        => 'Polls in System',
+    'pollquestions'     => 'View other poll questions',
+    'stats_top10'       => 'Top Ten Polls',
+    'stats_questions'   => 'Poll Question',
+    'stats_votes'       => 'Votes',
+    'stats_none'        => 'It appears that there are no polls on this site or no one has ever voted.',
+    'stats_summary'     => 'Polls(Answers) in the system'
 );
 
 ###############################################################################
@@ -81,5 +86,7 @@ $LANG25 = array(
     29 => 'Search',
     30 => 'Limit Results',
 );
+
+$PLG_polls_MESSAGE19 = 'Your poll has been successfully saved.';
 
 ?>

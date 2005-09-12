@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.35 2005/05/22 18:23:16 dhaun Exp $
+// $Id: stats.php,v 1.36 2005/09/12 12:32:58 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -87,32 +87,6 @@ if (empty ($comments)) {
 $stat_templates->set_var('lang_stories_comments',$LANG10[3]);
 $stat_templates->set_var('total_stories', COM_NumberFormat ($total_stories) );
 $stat_templates->set_var('total_comments', COM_NumberFormat ($comments) );
-
-$result = DB_query ("SELECT count(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
-$A = DB_fetchArray($result);
-$total_polls = $A['count'];
-$result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
-$nrows = DB_numRows ($result);
-if ($nrows > 0) {
-    $questions = '';
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        if ($i > 1) {
-            $questions .= ',';
-        }
-        $questions .= "'" . $A['qid'] . "'";
-    }
-    $result = DB_query ("SELECT SUM(votes) FROM {$_TABLES['pollanswers']} WHERE qid IN ({$questions})");
-    $A = DB_fetchArray($result, true);
-    $total_answers = $A[0];
-} else {
-    $total_answers = 0;
-}
-$stat_templates->set_var('lang_polls_answers',$LANG10[4]);
-$stat_templates->set_var('total_polls', COM_NumberFormat ($total_polls) );
-$stat_templates->set_var('total_answers', COM_NumberFormat ($total_answers) );
-
-
 
 $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
@@ -228,32 +202,6 @@ if ($nrows > 0) {
 }
 $display .= COM_endBlock();
 $stat_templates->set_var('stat_row','');
-
-// Top Ten Polls
-
-$result = DB_query("SELECT qid,question,voters FROM {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
-$nrows  = DB_numRows($result);
-$display .= COM_startBlock($LANG10[14]);
-if ($nrows>0) {
-    $stat_templates->set_var('item_label',$LANG10[15]);
-    $stat_templates->set_var('stat_name',$LANG10[16]);
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $stat_templates->set_var ('item_url', $_CONF['site_url']
-                . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1');
-        $stat_templates->set_var('item_text', $A['question']);
-        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['voters']) );
-        $stat_templates->parse('stat_row','statrow',true); 
-    }
-    $stat_templates->parse('output','itemstats');
-    $display .= $stat_templates->finish($stat_templates->get_var('output'));
-} else {
-    $display .= $LANG10[17];
-}
-
-$display .= COM_endBlock();
-$stat_templates->set_var('stat_row','');
-
 
 
 // Now show stats for any plugins that want to be included
