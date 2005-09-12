@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.469 2005/09/09 14:12:23 dhaun Exp $
+// $Id: lib-common.php,v 1.470 2005/09/12 08:15:55 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2712,6 +2712,15 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     static $mailobj;
 
+    if( empty( $from ))
+    {
+        $from = COM_formatEmailAddress( $_CONF['site_name'], $_CONF['site_mail']);
+    }
+
+    $to = substr( $to, 0, strcspn( $to, "\r\n" ));
+    $from = substr( $from, 0, strcspn( $from, "\r\n" ));
+    $subject = substr( $subject, 0, strcspn( $subject, "\r\n" ));
+
     if( function_exists( 'CUSTOM_mail' ))
     {
         return CUSTOM_mail( $to, $subject, $message, $from, $html, $priority );
@@ -2746,11 +2755,6 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     else
     {
         $charset = $LANG_CHARSET;
-    }
-
-    if( empty( $from ))
-    {
-        $from = COM_formatEmailAddress( $_CONF['site_name'], $_CONF['site_mail']);
     }
 
     $headers = array();
