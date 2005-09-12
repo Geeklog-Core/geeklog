@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.14 2005/09/12 12:32:58 dhaun Exp $
+// $Id: functions.inc,v 1.15 2005/09/12 12:56:52 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -60,13 +60,18 @@ require_once ($_CONF['path'] . 'plugins/polls/config.php');
 * $<arrayname>[<label>] = <url>
 *
 */
-function plugin_getmenuitems_polls()
+function plugin_getmenuitems_polls ()
 {
-    if( $anon && $_PO_CONF['pollsloginrequired'] ) {
-        exit;
+    global $_CONF, $_PO_CONF, $LANG_POLLS;
+
+    $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
+    if($anon && ($_CONF['loginrequired'] || $_PO_CONF['pollsloginrequired'])) {
+        return false;
     } else {
-        $menuitems['Polls'] = '/polls/index.php';
+        $menuitems[$LANG_POLLS['polls']] = $_CONF['site_url']
+                                         . '/polls/index.php';
     }
+
     return $menuitems;
 }
 
@@ -241,75 +246,21 @@ function plugin_cclabel_polls()
 *
 */
 
-
 function plugin_getadminoption_polls()
 {
-    global $_CONF, $LANG_POLLS, $_TABLES;
+    global $_CONF, $_TABLES, $LANG_POLLS;
 
     if (SEC_hasRights ('polls.edit,polls.delete', 'OR')) {
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+        $result = DB_query ("SELECT COUNT(*) AS cnt FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
-        return array ($LANG_POLLS['polls'], $_CONF['site_admin_url'] . '/plugins/polls/index.php', $total_pages);
+
+        return array ($LANG_POLLS['polls'],
+                      $_CONF['site_admin_url'] . '/plugins/polls/index.php',
+                      $total_pages);
     }
 }
 
-
-/**
-* Return SQL where statement with appropriate permissions
-*
-* Takes User id and permission and returns SQL where clause which will return
-* the appropriate objects.
-* This assumes that the table has the following security structure:
-* owner_id        | mediumint(8)
-* group_id        | mediumint(8)
-* perm_owner      | tinyint(1) unsigned
-* perm_group      | tinyint(1) unsigned
-* perm_members    | tinyint(1) unsigned
-* perm_anon       | tinyint(1) unsigned
-* This will work with the standard GL tables
-*
-* @param    string  $table  Table name (used in joins)
-* @param    int     $access Access if blank read access  2 = read 3 = read/edit
-* @param    int     $u_id   User ID if blank current user
-* @return   string          Where clause of sql statement
-*
-*/
-/*
-function POLLS_getPerms ($table = '', $access = '2', $u_id = '')
-{
-    global $_USER, $_GROUPS;
-
-    if ($table != '') { $table .= '.'; }
-
-    if ($u_id == '') {
-        if (isset ($_USER['uid'])) {
-            $uid = $_USER['uid'];
-        } else {
-            $uid = 1;
-        }
-        $GROUPS = $_GROUPS;
-    } else {
-        $uid = $u_id;
-        $GROUPS = SEC_getUserGroups ($uid);
-	}
-
-    $sql = '(';
-
-    if ($uid > 1) {
-        $sql .= "((owner_id = '{$uid}') AND (perm_owner >= $access)) OR ";
-
-        $sql .= "((group_id IN (" . implode (',', $GROUPS) . ")) "
-             . "AND (perm_group >= $access)) OR (perm_members >= $access)";
-    } else {
-        $sql .= "perm_anon >= $access";
-    }
-
-    $sql .= ')';
-
-    return $sql;
-}
-*/
 
 /**
 * A user is about to be deleted. Update ownership of any static pages owned
