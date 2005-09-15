@@ -1,6 +1,0 @@
-<br><b>{poll_question}</b><br><br>
-<table border="0" cellpadding="3" cellspacing="0" align="center">
-{poll_votes}
-</table>
-<div class="block-vote-results" align="left"><br><a href="{site_url}/pollbooth.php">{lang_pollquestions}</a></div>
-<div class="block-vote-results" align="right">{num_votes} {lang_votes} {poll_comments}</div>

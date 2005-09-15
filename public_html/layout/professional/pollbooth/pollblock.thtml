@@ -1,8 +1,0 @@
-<b>{poll_question}</b>
-<form action="{poll_vote_url}" name="Vote" method="POST">
-  <input type="hidden" name="qid" value="{poll_id}">
-  {poll_answers}
-  <input type="submit" value="{lang_vote}">
-  <a href="{poll_results_url}">{lang_results}</a>
-</form>
-<span class="block-vote">{num_votes} {lang_votes}{poll_comments}</span><br>
