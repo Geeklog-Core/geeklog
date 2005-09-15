@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.24 2005/09/12 16:13:54 dhaun Exp $
+// $Id: functions.inc,v 1.25 2005/09/15 07:29:11 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -105,7 +105,7 @@ function plugin_getwhatsnew_links()
 
             // redirect link via portal.php so we can count the clicks
             $lcount = COM_buildUrl( $_CONF['site_url']
-                    . '/portal.php?what=link&amp;item=' . $A['lid'] );
+                    . '/links/portal.php?what=link&amp;item=' . $A['lid'] );
 
             // Trim the length if over 16 characters
             $itemlen = strlen( $A['title'] );
@@ -144,7 +144,7 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
         return 'link';
     } else if ($op == 'parse') {
         $lid = COM_applyFilter ($autotag['parm1']);
-        $url = COM_buildUrl ($_CONF['site_url'] . '/portal.php?what=link&item='
+        $url = COM_buildUrl ($_CONF['site_url'] . '/links/portal.php?what=link&item='
                              . $lid);
         if (empty ($autotag['parm2'])) {
             $linktext = stripslashes (DB_getItem ($_TABLES['links'],
@@ -243,7 +243,7 @@ function plugin_showstats_links ($showsitestats)
 
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
-                $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/portal.php?what=link&amp;item=' . $A['lid']));
+                $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/links/portal.php?what=link&amp;item=' . $A['lid']));
                 $stat_templates->set_var ('item_text',
                         stripslashes (str_replace ('$', '&#36;', $A['title'])));
                 $stat_templates->set_var ('item_stat',
@@ -545,7 +545,7 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
 
         $linktitle = stripslashes( $row['title'] );
         $linklink = COM_buildUrl( $_CONF['site_url']
-                  . '/portal.php?what=link&item=' . $row['lid'] );
+                  . '/links/portal.php?what=link&item=' . $row['lid'] );
 
         $content[] = array( 'title'   => $linktitle,
                             'summary' => $linkdesc,
