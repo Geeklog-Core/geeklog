@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.16 2005/09/12 16:13:55 dhaun Exp $
+// $Id: functions.inc,v 1.17 2005/09/15 09:46:50 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -547,7 +547,6 @@ function POLLS_pollVote( $qid )
                     $poll->set_var( 'poll_comments_url', '' );
                 }
 
-                $title = DB_getItem( $_TABLES['blocks'], 'title', "name='poll_block'" );
                 $retval =  $poll->finish( $poll->parse( 'output', 'block' )) . LB;
             }
         }
@@ -600,6 +599,8 @@ function POLLS_showPoll( $size, $qid='' )
     {
         $result = DB_query( "SELECT qid from {$_TABLES['pollquestions']} WHERE display = 1 ORDER BY date DESC" );
         $nrows = DB_numRows( $result );
+        
+        $title = DB_getItem( $_TABLES['blocks'], 'title', "name='poll_block'" );
 
         if( $nrows > 0 )
         {
@@ -611,7 +612,22 @@ function POLLS_showPoll( $size, $qid='' )
                 $value = array( $_SERVER['REMOTE_ADDR'], $qid );
                 $pcount = DB_count( $_TABLES['pollvoters'], $id, $value );
 
-                if( !isset( $_COOKIE[$qid]) && $pcount == 0 )
+                if( $size < 120 ) // assume we're in the poll block
+                {
+                    if ( $i > 1 )
+                    {
+                        $retval .= COM_startBlock( $title, '',
+                             COM_getBlockTemplate( 'poll_block', 'header' ));
+                    }
+
+                             # $_CONF['path'] . 'plugins/polls/templates/
+                }
+                else // assume we're in pollbooth.php
+                {
+                    $retval .= COM_startBlock( $title );
+                }
+
+                if( !isset( $_COOKIE[$qid]) && $pcount == 0)
                 {
                     $retval .= POLLS_pollVote( $qid );
                 }
@@ -619,6 +635,20 @@ function POLLS_showPoll( $size, $qid='' )
                 {
                     $retval .= POLLS_pollResults( $qid, $size );
                 }
+                
+                if( $size < 120 )
+                {
+                    if ( $i < $nrows )
+                    {
+                        $retval .= COM_endBlock( COM_getBlockTemplate( 
+                             'poll_block', 'footer' ));
+                    }
+                }
+                else
+                {
+                    $retval .= COM_endBlock();
+                }
+                
             }
         }
     }
@@ -677,17 +707,6 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 
         if( $nanswers > 0 )
         {
-            $title = DB_getItem( $_TABLES['blocks'], 'title', "name='poll_block'" );
-
-            if( $scale < 120 ) // assume we're in the poll block
-            {
-                //$retval .= COM_startBlock( $title, '',
-                 //       COM_getBlockTemplate( 'poll_block', 'header' ));
-            }
-            else // assume we're in pollbooth.php
-            {
-                $retval .= COM_startBlock( $title );
-            }
 
             $poll = new Template( $_CONF['path'] . 'plugins/polls/templates/' );
             $poll->set_file( array( 'result' => 'pollresult.thtml',
@@ -753,15 +772,6 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 
             $retval .= $poll->finish( $poll->parse( 'output', 'result' ));
 
-            if( $scale < 120)
-            {
-                $retval .= COM_endBlock( COM_getBlockTemplate( 'poll_block',
-                        'footer' ));
-            }
-            else
-            {
-                $retval .= COM_endBlock();
-            }
             if( $scale > 399 && $Q['commentcode'] >= 0 )
             {
                 $delete_option = ( SEC_hasRights( 'polls.edit' ) &&
