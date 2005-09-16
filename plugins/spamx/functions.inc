@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.12 2005/09/16 07:09:02 dhaun Exp $
+ * $Id: functions.inc,v 1.13 2005/09/16 07:16:34 dhaun Exp $
  */
 
 /**
@@ -32,18 +32,6 @@ require_once ($_CONF['path'] . 'plugins/spamx/config.php');
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
 // +---------------------------------------------------------------------------+
-
-/**
- * Check to see if this Plugin uses comments
- * 
- * Geeklog is checking to see if this plugin supports comments, tell it no!
- * 
- * @return boolean true or false
- */
-function plugin_commentsupport_spamx()
-{
-    return false;
-} 
 
 /**
  * Shows the statistics for the plugin on stats.php.  If
@@ -77,8 +65,7 @@ function plugin_showstats_spamx($showsitestats)
         $templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
                                      'statrow'   => 'singlestat.thtml'));
         $templates->set_var ('item_label', $LANG_SX00['stats_page_title']);
-        $templates->set_var ('stat_name',
-                COM_numberFormat ($LANG_SX00['stats_entries']));
+        $templates->set_var ('stat_name', $LANG_SX00['stats_entries']);
 
         // we need a URL - link to the plugin's admin page
         $templates->set_var ('item_url',
