@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.21 2005/09/16 11:18:10 dhaun Exp $
+// $Id: functions.inc,v 1.22 2005/09/16 18:06:02 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -330,6 +330,7 @@ function plugin_user_delete_polls ($uid)
             list($qid) = DB_fetchArray ($result);
             DB_delete ($_TABLES['pollanswers'], 'qid', $qid);
             DB_delete ($_TABLES['pollvoters'], 'qid', $qid);
+            DB_query ("DELETE FROM {$_TABLES['comments']} WHERE sid = '$qid' AND type = 'polls'");
         }
         DB_delete ($_TABLES['pollquestions'], 'owner_id', $uid);
     } else {
