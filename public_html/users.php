@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.113 2005/09/03 14:53:40 dhaun Exp $
+// $Id: users.php,v 1.114 2005/09/16 21:02:50 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -534,7 +534,7 @@ function loginform ($hide_forgotpw_link = false, $statusmode=-1)
                 $strpos = strpos($filename, '.auth.class.php');
                 if ($strpos) {
                     $service = substr($filename, 0, $strpos);
-                    $select .= '<option value="'.$service.'">'.$service.'</service>';
+                    $select .= '<option value="'.$service.'">'.$service.'</option>';
                 }
             }
         }
