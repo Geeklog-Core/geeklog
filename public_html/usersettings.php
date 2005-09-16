@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.118 2005/09/09 08:46:23 dhaun Exp $
+// $Id: usersettings.php,v 1.119 2005/09/16 12:59:12 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -860,7 +860,7 @@ function saveuser($A)
 
     $A['email'] = COM_applyFilter ($A['email']);
     $A['homepage'] = COM_applyFilter ($A['homepage']);
-    $A['location'] = COM_applyFilter ($A['location']);
+    $A['location'] = addslashes ($A['location']);
 
     // basic filtering only
     $A['fullname'] = strip_tags (COM_stripslashes ($A['fullname']));
