@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.44 2005/08/29 03:48:30 blaine Exp $
+// $Id: index.php,v 1.45 2005/09/16 21:41:36 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -368,7 +368,9 @@ function liststaticpages ($offset, $curpage, $query = '', $query_limit = 50)
                                   'row'=>'row.thtml'));
     $sp_templates->set_var('site_url', $_CONF['site_url']);
     $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC['staticpagelist']), '', COM_getBlockTemplate ('_admin_block', 'header'));
+    $sp_templates->set_var('start_block_list',
+        COM_startBlock ($LANG_STATIC['staticpagelist'], $_CONF['site_url'] . '/docs/staticpages.html',
+ COM_getBlockTemplate ('_admin_block', 'header')));
     $sp_templates->set_var('new_page_url', $_CONF['site_admin_url']
                            . '/plugins/staticpages/index.php?mode=edit');
     $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);

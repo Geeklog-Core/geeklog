@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2005/09/16 18:06:03 dhaun Exp $
+// $Id: index.php,v 1.8 2005/09/16 21:41:36 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -336,7 +336,7 @@ function listpolls ($offset, $curpage, $query = '', $query_limit = 50)
         $page = 1;
     }
 
-    $retval .= COM_startBlock ($LANG25[18], '',
+    $retval .= COM_startBlock ($LANG25[18], $_CONF['site_url'] . '/docs/polls.html',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $poll_templates = new Template ($_CONF['path'] . 'plugins/polls/templates/admin/');
