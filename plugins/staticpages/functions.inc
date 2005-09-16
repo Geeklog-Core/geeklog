@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.53 2005/09/12 16:13:55 dhaun Exp $
+// $Id: functions.inc,v 1.54 2005/09/16 07:09:02 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -141,7 +141,8 @@ function plugin_showstats_staticpages($showsitestats)
         $total_pages = SP_countVisiblePages ();
         $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
         $retval .= '<tr><td>' . $LANG_STATIC['staticpages'] . '</td>';
-        $retval .= '<td align="right">' . $total_pages . '&nbsp;&nbsp;</td></tr></table>';
+        $retval .= '<td align="right">' . COM_numberFormat ($total_pages)
+                . '&nbsp;&nbsp;</td></tr></table>';
     } else {
         $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
         $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
@@ -160,8 +161,10 @@ function plugin_showstats_staticpages($showsitestats)
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
                 $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']));
-                $stat_templates->set_var ('item_text', stripslashes ($A['sp_title']));
-                $stat_templates->set_var ('item_stat', $A['sp_hits']);
+                $stat_templates->set_var ('item_text',
+                                          stripslashes ($A['sp_title']));
+                $stat_templates->set_var ('item_stat',
+                                          COM_numberFormat ($A['sp_hits']));
                 $stat_templates->parse ('stat_row','statrow',true); 
             }
             $stat_templates->parse ('output','itemstats');

@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.11 2005/09/12 16:13:54 dhaun Exp $
+ * $Id: functions.inc,v 1.12 2005/09/16 07:09:02 dhaun Exp $
  */
 
 /**
@@ -67,7 +67,8 @@ function plugin_showstats_spamx($showsitestats)
                                                  "name = 'spamx.counter'");
         $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
         $retval .= '<tr><td>' . $LANG_SX00['stats_deleted'] . '</td>';
-        $retval .= '<td align="right">' . $counter . '&nbsp;&nbsp;</td></tr></table>';
+        $retval .= '<td align="right">' . COM_numberFormat ($counter)
+                . '&nbsp;&nbsp;</td></tr></table>';
     } else if (SEC_hasRights('spamx.admin')) {
         // detailed stats are only visible to Spam-X admins
         $retval .= COM_startBlock ($LANG_SX00['stats_headline']);
@@ -76,7 +77,8 @@ function plugin_showstats_spamx($showsitestats)
         $templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
                                      'statrow'   => 'singlestat.thtml'));
         $templates->set_var ('item_label', $LANG_SX00['stats_page_title']);
-        $templates->set_var ('stat_name', $LANG_SX00['stats_entries']);
+        $templates->set_var ('stat_name',
+                COM_numberFormat ($LANG_SX00['stats_entries']));
 
         // we need a URL - link to the plugin's admin page
         $templates->set_var ('item_url',
@@ -84,27 +86,27 @@ function plugin_showstats_spamx($showsitestats)
 
         $templates->set_var ('item_text', $LANG_SX00['stats_mtblacklist']);
         $templates->set_var ('item_stat',
-                DB_count ($_TABLES['spamx'], 'name', 'MTBlacklist'));
+                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'MTBlacklist')));
         $templates->parse ('stat_row', 'statrow', true);
 
         $templates->set_var ('item_text', $LANG_SX00['stats_pblacklist']);
         $templates->set_var ('item_stat',
-                DB_count ($_TABLES['spamx'], 'name', 'Personal'));
+                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'Personal')));
         $templates->parse ('stat_row', 'statrow', true);
 
         $templates->set_var ('item_text', $LANG_SX00['stats_ip']);
         $templates->set_var ('item_stat',
-                DB_count ($_TABLES['spamx'], 'name', 'IP'));
+                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'IP')));
         $templates->parse ('stat_row', 'statrow', true);
 
         $templates->set_var ('item_text', $LANG_SX00['stats_ipofurl']);
         $templates->set_var ('item_stat',
-                DB_count ($_TABLES['spamx'], 'name', 'IPofUrl'));
+                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'IPofUrl')));
         $templates->parse ('stat_row', 'statrow', true);
 
         $templates->set_var ('item_text', $LANG_SX00['stats_header']);
         $templates->set_var ('item_stat',
-                DB_count ($_TABLES['spamx'], 'name', 'HTTPHeader'));
+                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'HTTPHeader')));
         $templates->parse ('stat_row', 'statrow', true);
 
         $templates->parse ('output', 'itemstats');
