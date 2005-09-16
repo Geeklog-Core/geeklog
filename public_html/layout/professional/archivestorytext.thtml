@@ -8,7 +8,7 @@
                             
                                 <tr>
                                     <td>
-                                        <p>{story_anchortag_and_image}{story_introtext}</p>
+                                        {story_anchortag_and_image}{story_introtext}
                                     </td></tr></table>
                                 	<table border="0" cellpadding="3" cellspacing="0" width="100%">
 
