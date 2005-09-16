@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.22 2005/08/13 18:37:07 dhaun Exp $
+// $Id: trackback.php,v 1.23 2005/09/16 19:14:32 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -109,7 +109,8 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
     $title = htmlspecialchars ($title);
     $excerpt = htmlspecialchars ($excerpt, ENT_NOQUOTES);
 
-    $retval .= COM_startBlock ($LANG_TRB['editor_title'], '',
+    $retval .= COM_startBlock ($LANG_TRB['editor_title'], $_CONF['site_url']
+                               . '/docs/trackback.html#trackback',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
@@ -280,7 +281,8 @@ function pingbackForm ($targetUrl = '')
     global $_CONF, $LANG_TRB;
 
     $retval = '';
-    $retval .= COM_startBlock ($LANG_TRB['pingback_button'], '',
+    $retval .= COM_startBlock ($LANG_TRB['pingback_button'],
+                               $_CONF['site_url'] . '/docs/trackback.html',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
@@ -468,7 +470,8 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
-    $retval .= COM_startBlock ($LANG_TRB['services_headline'], '',
+    $retval .= COM_startBlock ($LANG_TRB['services_headline'],
+                               $_CONF['site_url'] . '/docs/trackback.html#ping',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
@@ -676,7 +679,8 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $retval .= showTrackbackMessage ('Error', $msg);
     }
 
-    $retval .= COM_startBlock ($LANG_TRB['edit_service'], '',
+    $retval .= COM_startBlock ($LANG_TRB['edit_service'], $_CONF['site_url']
+                               . '/docs/trackback.html#ping',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
@@ -830,7 +834,8 @@ function freshTrackback ()
 
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=fresh';
 
-    $retval .= COM_startBlock ($LANG_TRB['trackback'], '',
+    $retval .= COM_startBlock ($LANG_TRB['trackback'],
+                               $_CONF['site_url'] . '/docs/trackback.html',
                                COM_getBlockTemplate ('_admin_block', 'header'));
     $retval .= sprintf ($LANG_TRB['trackback_note'], $freshurl);
     $retval .= COM_endBlock ();
@@ -850,7 +855,8 @@ function freshPingback ()
 
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=freepb';
 
-    $retval .= COM_startBlock ($LANG_TRB['pingback'], '',
+    $retval .= COM_startBlock ($LANG_TRB['pingback'],
+                               $_CONF['site_url'] . '/docs/trackback.html',
                                COM_getBlockTemplate ('_admin_block', 'header'));
     $retval .= sprintf ($LANG_TRB['pingback_note'], $freshurl);
     $retval .= COM_endBlock ();
@@ -1130,7 +1136,8 @@ if ($mode == 'delete') {
     $fulltext = getItemInfo ($type, $id, 'description');
 
     $display .= COM_siteHeader ('menu', $LANG_TRB['trackback'])
-              . COM_startBlock ($LANG_TRB['select_url'])
+              . COM_startBlock ($LANG_TRB['select_url'], $_CONF['site_url']
+                                . '/docs/trackback.html#trackback')
               . prepareAutodetect ($type, $id, $fulltext)
               . COM_endBlock ()
               . COM_siteFooter ();
@@ -1228,7 +1235,6 @@ if ($mode == 'delete') {
 
     $display .= editServiceForm ($pid);
 } else if ($mode == 'listservice') {
-
     $display .= COM_siteHeader ('menu', $LANG_TRB['services_headline']);
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
