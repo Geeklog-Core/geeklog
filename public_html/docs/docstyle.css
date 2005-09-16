@@ -1,37 +1,54 @@
 body {
-  margin-left: 4%;
-  margin-right: 4%;
+  margin: 1em 5%;
   background: white;
   color: black;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: smaller;
 }
 
 h1 {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 195%;
+  font-size: 1.4em;
 }
 
 h2 {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 156%;
+  font-size: 1.2em;
 }
 
 h3 {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 125%;
+  font-size: 1.0em;
+}
+
+p, ul, ol, li {
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+}
+ul, ol {
+  margin-left: 0.9em;
+  padding-left: 0.9em;
 }
 
 code, kbd, var {
   font-family: Courier, "Courier New", monospace;
 }
 
-th {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  background: black;
-  color: white;
+table {
+  width: 100%;
 }
 
-tr, td {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
+td, th {
+  vertical-align: top;
+  padding: 4px;
+  line-height: 128%;
+  font-size: smaller;
+}
+
+th {
+  text-align: left;
+  background: silver;
+}
+
+.r2 {
+  background: rgb(240,240,240);
 }
 
 dt {
@@ -40,19 +57,16 @@ dt {
 
 
 .usual {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 100%;
 }
 
 .menu {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 90%;
   background: #dddddd;
   color: black;
 }
 
 .footer {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 90%;
   background: #dddddd;
   color: black;
@@ -60,7 +74,6 @@ dt {
 
 
 .comment {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 80%;
 }
 
@@ -69,7 +82,8 @@ dt {
 
 a:link    { color: #2222FF; background: transparent; }
 a:visited { color: #2222FF; background: transparent; }
-a:hover   { color: #333366; background: #AAAADD; }
+a:hover   { color: #5252FF; background: transparent; }
+/*a:hover   { color: #333366; background: #AAAADD; }*/
 a:active  { color: #2222FF; background: transparent; }
 
 /* this is to prevent Mozilla from applying :hover on <a name="..."> */

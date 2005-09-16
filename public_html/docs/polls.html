@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Polls Plugin</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table>
+<tr>
+  <td><a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" border="0"></a></td>
+</tr>
+<tr>
+  <td class="menu"><a href="index.html">Geeklog Documentation</a> - Polls Plugin</td>
+</tr>
+</table>
+
+<h1>Polls Plugin</h1>
+
+<p>Polls used to be an integral part of the Geeklog core code, but have been
+moved to a plugin as of Geeklog 1.3.12.</p>
+
+<h2><a name="config.php">Configuration File</a></h2>
+
+<p>The polls plugin has its own configuration file, located at <tt>/path/to/geeklog/plugins/polls/config.php</tt>. There you will find the following options:</p>
+
+<table>
+<tr><th width="25%">Variable</th>
+    <th width="25%">Default Value</th>
+    <th width="50%">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_pollsloginrequired">pollsloginrequired</a></td>
+  <td>0</td>
+  <td>When set to 1, only registered users can access the list of recent
+    polls.<br>
+    Please note that <code>$_CONF['<a
+    href="config.html#desc_loginrequired">loginrequired</a>']</code> in
+    <tt>config.php</tt> takes precedence over this setting. So when
+    <code>'loginrequired'</code> is set to 1, anonymous users can not access
+    the recent polls even when <code>'pollsloginrequired'</code> is set
+    to 0.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_maxanswers">maxanswers</a></td>
+  <td>10</td>
+  <td>Maximum number of possible answers for the poll editor</td>
+</tr>
+<tr>
+  <td><a name="desc_answerorder">answerorder</a></td>
+  <td>submitorder</td>
+  <td>Sort answers by the number of results ('voteorder') or keep the order 
+    in which they were entered ('submitorder')</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_pollcookietime">pollcookietime</a></td>
+  <td>86400</td>
+  <td>Number of seconds to set a poll answer cookie to time out on</td>
+</tr>
+<tr>
+  <td><a name="desc_polladdresstime">polladdresstime</a></td>
+  <td>604800</td>
+  <td>Number of seconds to set a poll answer IP address to time out on</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_delete_polls">delete_polls</a></td>
+  <td>0</td>
+  <td>Defines what to do when a user is deleted that is the owner of a poll.
+    When set to 0, all polls owned by the deleted user will be assigned to a
+    user of the "Root" group (e.g. the site admin). When set to 1, the polls
+    are deleted, including all the comments posted on that poll.</td>
+</tr>
+</table>
+
+<h2>How do the polls work?</h2>
+
+<p><small>(Taken from the <a href="http://www.geeklog.net/faqman/">Geeklog
+FAQ</a>)</small></p>
+
+<p>In order to prevent manipulation of polls (or at least make it harder),
+Geeklog does two things when you vote:</p>
+
+<ol>
+  <li>It stores a cookie</li>
+  <li>It stores your IP address</li>
+</ol>
+
+<p>Both the cookie and the IP are valid for a certain amount of time (see below)
+and during that time, you can't vote again on the same poll.</p>
+
+<p>The amount of time your cookie and IP are stored can be changed in the polls
+plugin's <tt>config.php</tt>:</p>
+
+<pre>$_PO_CONF['pollcookietime']    = 86400;
+$_PO_CONF['polladdresstime']   = 604800;</pre>
+
+<p>Both times are in seconds, i.e. the cookie is valid for 24 hours and the IP
+is stored for a week.</p>
+
+<p>In setups where more than one person uses the same computer or the same IP
+address, you can set one (or both) of them to 1.</p>
+
+<p>Please keep in mind that <strong>any</strong> poll can be manipulated, so
+you shouldn't take the results too seriously.</p>
+
+
+<table class="footer">
+<tr>
+  <td colspan="2"><a href="http://www.geeklog.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>
