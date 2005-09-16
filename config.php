@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.190 2005/09/03 14:53:40 dhaun Exp $
+// $Id: config.php,v 1.191 2005/09/16 08:13:15 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -298,7 +298,7 @@ $_CONF_FCK['imagelibrary'] = '/images/library';
 // | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
 $_CONF['language']        = 'english';
-$_CONF['locale']          = 'en-gb';
+$_CONF['locale']          = 'en_GB';
 $_CONF['date']            = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']         = '%m/%d %I:%M%p';
 $_CONF['shortdate']       = '%x';
@@ -408,7 +408,6 @@ $_CONF['num_search_results'] = 10;
 $_CONF['loginrequired'] = 0; // all of them, if set to 1 will override all else
 $_CONF['submitloginrequired']     = 0;
 $_CONF['commentsloginrequired']   = 0;
-$_CONF['pollsloginrequired']      = 0;
 $_CONF['calendarloginrequired']   = 0;
 $_CONF['statsloginrequired']      = 0;
 $_CONF['searchloginrequired']     = 0;
@@ -680,14 +679,6 @@ $_CONF['comment_mode']          = 'threaded';
 // Allow / disallow comments to stories by default (can be changed individually for every story)
 $_CONF['comment_code']          = 0;          // 0 = comments enabled, -1 = disabled
 
-// Poll Settings
-$_CONF['maxanswers']        = 10; // max. number of options in a poll
-// 'submitorder' is the order in which answers are saved in admin/poll.php
-// 'voteorder' will list answers ordered by number of votes (highest->lowest);
-$_CONF['answerorder']       = 'submitorder';
-$_CONF['pollcookietime']    = 86400;
-$_CONF['polladdresstime']   = 604800;
-
 // Password setting: minimum time between two requests for a new password
 $_CONF['passwordspeedlimit'] = 300; // seconds = 5 minutes
 
@@ -780,6 +771,18 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 // Note: Works with Apache (Linux and Windows successfully tested).
 //       Unresolvable issues with systems running IIS; known PHP CGI bug.
 $_CONF['url_rewrite'] = false; // false = off, true = on
+
+// Define default permissions for new objects created from the Admin panels.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order. Possible values:
+// 3 = read + write permissions (perm_owner and perm_group only)
+// 2 = read-only
+// 0 = neither read nor write permissions
+// (a value of 1, ie. write-only, does not make sense and is not allowed)
+$_CONF['default_permissions_block'] = array (3, 2, 2, 2);
+$_CONF['default_permissions_event'] = array (3, 2, 2, 2);
+$_CONF['default_permissions_story'] = array (3, 2, 2, 2);
+$_CONF['default_permissions_topic'] = array (3, 2, 2, 2);
 
 // Define a few useful things for GL
 

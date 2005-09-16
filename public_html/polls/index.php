@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.5 2005/07/06 14:51:50 ospiess Exp $
+// $Id: index.php,v 1.6 2005/09/16 08:13:15 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -91,13 +91,15 @@ function pollsave($qid = '', $aid = 0)
 */
 function polllist ($page = 1) 
 {
-    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $PANL_POLLS, $LANG10, $LANG_LOGIN;
+    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $PANL_POLLS,
+           $LANG10, $LANG_LOGIN;
 
     if ($page < 1) {
         $page = 1;
     }
 
-    if (empty ($_USER['username']) && ( $_PO_CONF['pollsloginrequired'] == 1)) {
+    if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
+            ($_PO_CONF['pollsloginrequired'] == 1))) {
         $retval = COM_startBlock ($LANG_LOGIN[1], '',
                           COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit'); 

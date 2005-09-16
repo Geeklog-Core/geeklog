@@ -12,10 +12,10 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Tom Willett      - twillett@users.sourceforge.net                |
-// |          Blaine Lang      - langmail@sympatico.ca                         |
-// |          Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
+// |          Blaine Lang      - langmail AT sympatico DOT ca                  |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.17 2005/09/15 09:46:50 ospiess Exp $
+// $Id: functions.inc,v 1.18 2005/09/16 08:13:15 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -76,7 +76,7 @@ function plugin_getmenuitems_polls ()
 }
 
 /**
-* Geeklog is checking to see if this plugin supports comments, tell it no.
+* Geeklog is checking to see if this plugin supports comments, tell it yes.
 *
 * NOTE: to support comments you must used the same date/time based ID for your
 * widget.  In other words, to make primary keys for your plugin you should call
@@ -103,7 +103,10 @@ function plugin_commentsupport_polls()
  */
 function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 {
-    global $_CONF, $LANG03, $_TABLES;
+    global $_CONF, $_TABLES, $LANG03;
+
+    $retval = '';
+
     $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
                                "qid = '$id'");
     if ($commentcode < 0) {
@@ -111,20 +114,21 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     }
 
     $ret = CMT_saveComment ($title, $comment, $id, $pid, 'polls', $postmode);
-
     if ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
-        $display .= COM_siteHeader()
+        $retval .= COM_siteHeader()
             . CMT_commentform ($uid, $title, $comment, $id, $pid,
                     $type, $LANG03[14], $postmode)
             . COM_siteFooter();
     } else { // success
-        $display = COM_refresh ($_CONF['site_url']
-            . "/pollbooth.php?qid=$id&aid=-1");
+        $retval = COM_refresh ($_CONF['site_url']
+                                . "/pollbooth.php?qid=$id&aid=-1");
     }
+
+    return $retval;
 }
 
 /**
- * polls delete a comment
+ * polls: delete a comment
  *
  * @param   int     $cid    Comment to be deleted
  * @param   string  $id     Item id to which $cid belongs
@@ -132,7 +136,10 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
  */
 function plugin_deletecomment_polls($cid, $id)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES, $_USER;
+
+    $retval = '';
+
     $has_editPermissions = SEC_hasRights ('polls.edit');
     $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$id}'");
     $A = DB_fetchArray ($result);
@@ -141,17 +148,20 @@ function plugin_deletecomment_polls($cid, $id)
             $A['group_id'], $A['perm_owner'], $A['perm_group'],
             $A['perm_members'], $A['perm_anon']) == 3) {
         CMT_deleteComment($cid, $id, 'polls');
-        $display .= COM_refresh ($_CONF['site_url'] . "/pollbooth.php?qid=$id&aid=-1");
+        $retval .= COM_refresh ($_CONF['site_url']
+                                 . "/pollbooth.php?qid=$id&aid=-1");
     } else {
         COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
                     . "tried to illegally delete comment $cid from $type $id");
-        $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
+
+    return $retval;
 }
 
 
 /**
-* Helper function: counter number of polls and total number of votes
+* Helper function: count number of polls and total number of votes
 *
 * @return   array(number of polls, number of votes);
 *
@@ -263,7 +273,7 @@ function plugin_statssummary_polls ()
 */
 function plugin_cclabel_polls()
 {
-    global $LANG_POLLS, $_CONF;
+    global $_CONF, $LANG_POLLS;
 
     if (SEC_hasRights ('polls.edit')) {
         return array ($LANG_POLLS['polls'],
@@ -297,7 +307,7 @@ function plugin_getadminoption_polls()
 
 
 /**
-* A user is about to be deleted. Update ownership of any static pages owned
+* A user is about to be deleted. Update ownership of any polls owned
 * by that user or delete them.
 *
 * @param   uid   int   User id of deleted user
@@ -368,7 +378,6 @@ function plugin_uninstall_polls($steps = '')
         COM_errorLog('Dropping pollvoters table',1);
         DB_query("DROP TABLE {$_TABLES['pollvoters']}");
         COM_errorLog('...success',1);
-
     }
 
     // Remove security for this plugin
@@ -479,7 +488,7 @@ function polls_templatePath ($path = '')
 
 function POLLS_pollVote( $qid )
 {
-    global $_CONF, $_TABLES, $LANG_POLLS, $LANG_POLLS, $LANG01, $_COOKIE, $_SERVER;
+    global $_CONF, $_TABLES, $LANG_POLLS, $LANG01;
 
     $retval = '';
 
@@ -575,7 +584,7 @@ function POLLS_pollVote( $qid )
 
 function POLLS_showPoll( $size, $qid='' )
 {
-    global $_CONF, $_PO_CONF, $_TABLES, $_COOKIE, $_SERVER;
+    global $_CONF, $_PO_CONF, $_TABLES;
 
     $retval = '';
 
@@ -672,8 +681,8 @@ function POLLS_showPoll( $size, $qid='' )
 */
 function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 {
-    global $_TABLES, $LANG01, $LANG_POLLS, $LANG07, $_CONF, $_COM_VERBOSE;
-
+    global $_CONF, $_TABLES, $_PO_CONF, $LANG01, $LANG_POLLS, $LANG07,
+           $_COM_VERBOSE;
 
     $retval = '';
 
@@ -686,7 +695,6 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
     }
 
     $nquestion = DB_numRows( $question );
-
     if( $nquestion == 1 )
     {
         if( $_PO_CONF['answerorder'] == 'voteorder' )
@@ -799,7 +807,8 @@ function phpblock_polls()
 /*
  * comment code stuff from comment.php
  * 
-function plugin_handleSubmit() {
+function plugin_handleSubmit()
+{
     global $_POST, $_TABLES, $_CONF, $LANG03;
     
             $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
@@ -826,7 +835,8 @@ function plugin_handleSubmit() {
 
 }
 
-function handleDelete() {
+function handleDelete()
+{
     global $_TABLES, $_CONF;
     $has_editPermissions = SEC_hasRights ('polls.edit');
             $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$sid}'");
@@ -846,7 +856,8 @@ function handleDelete() {
 }
 
 
-function handleView($view = true) {
+function handleView($view = true)
+{
     global $_TABLES, $_USER, $_CONF;
     $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
@@ -871,7 +882,8 @@ function handleView($view = true) {
             }
 }
 
-function handleFetch() {
+function handleFetch()
+{
     global $_TABLES, $_USER, $_CONF;
     $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
