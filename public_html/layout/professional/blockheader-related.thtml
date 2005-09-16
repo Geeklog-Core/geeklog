@@ -2,5 +2,5 @@
   <tr>
     <td>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr><td height="22" colspan="3" align="left" valign="middle" class="block-title">{block_title}<td align="right">{block_help}</td>
-	</tr><tr><td width="100%" class="block-info">
+    <tr><td height="22" align="left" valign="middle" class="block-title">{block_title}</td><td align="right">{block_help}</td>
+	</tr><tr><td colspan="2" width="100%" class="block-info">
