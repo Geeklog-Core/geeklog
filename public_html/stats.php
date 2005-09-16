@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.37 2005/09/12 16:13:54 dhaun Exp $
+// $Id: stats.php,v 1.38 2005/09/16 14:49:21 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -98,9 +98,17 @@ $stat_templates->set_var ('total_events', COM_NumberFormat ($total_events));
 $plg_stats = PLG_getPluginStats (3);
 if (count ($plg_stats) > 0) {
     foreach ($plg_stats as $pstats) {
-        $stat_templates->set_var ('item_text', $pstats[0]);
-        $stat_templates->set_var ('item_stat', $pstats[1]);
-        $stat_templates->parse ('summary_row', 'summary', true);
+        if (is_array ($pstats[0])) {
+            foreach ($pstats as $pmstats) {
+                $stat_templates->set_var ('item_text', $pmstats[0]);
+                $stat_templates->set_var ('item_stat', $pmstats[1]);
+                $stat_templates->parse ('summary_row', 'summary', true);
+            }
+        } else {
+            $stat_templates->set_var ('item_text', $pstats[0]);
+            $stat_templates->set_var ('item_stat', $pstats[1]);
+            $stat_templates->parse ('summary_row', 'summary', true);
+        }
     }
 }
 
