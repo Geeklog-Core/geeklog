@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.4 2005/09/16 08:13:15 dhaun Exp $
+// $Id: config.php,v 1.5 2005/09/16 11:11:27 dhaun Exp $
 
 $_PO_CONF['version']            = '1.0'; // Plugin Version
 
@@ -52,6 +52,11 @@ $_PO_CONF['answerorder']        = 'submitorder';
 // how long a poll is closed for a user after they've voted
 $_PO_CONF['pollcookietime']     = 86400;  // seconds (= 24 hours)
 $_PO_CONF['polladdresstime']    = 604800; // seconds (= 7 days)
+
+// When a user is deleted, ownership of polls created by that user can
+// be transfered to a user in the Root group (= 0) or the polls can be
+// deleted (= 1).
+$_PO_CONF['delete_polls'] = 0;
 
 // database table names - don't change
 $_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';

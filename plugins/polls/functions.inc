@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.19 2005/09/16 09:23:25 dhaun Exp $
+// $Id: functions.inc,v 1.20 2005/09/16 11:11:27 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -46,7 +46,6 @@ if (file_exists ($langfile)) {
 }
 
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
-
 
 
 // +---------------------------------------------------------------------------+
@@ -114,9 +113,9 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     }
 
     $ret = CMT_saveComment ($title, $comment, $id, $pid, 'polls', $postmode);
-    if ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
+    if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= COM_siteHeader()
-            . CMT_commentform ($uid, $title, $comment, $id, $pid,
+            . CMT_commentForm ($uid, $title, $comment, $id, $pid,
                     $type, $LANG03[14], $postmode)
             . COM_siteFooter();
     } else { // success
@@ -152,7 +151,7 @@ function plugin_deletecomment_polls($cid, $id)
                                  . "/polls/index.php?qid=$id&aid=-1");
     } else {
         COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
-                    . "tried to illegally delete comment $cid from $type $id");
+                    . "tried to illegally delete comment $cid from poll $id");
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
@@ -219,6 +218,8 @@ function plugin_showstats_polls ($showsitestats)
         $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
         $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
                                           'statrow'   => 'singlestat.thtml'));
+        $stat_templates->set_var ('site_url', $_CONF['site_url']);
+        $stat_templates->set_var ('layout_url', $_CONF['layout_url']);
 
         $result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
         $nrows  = DB_numRows ($result);
@@ -289,7 +290,6 @@ function plugin_cclabel_polls()
 * returns the administrative option for this plugin
 *
 */
-
 function plugin_getadminoption_polls()
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
@@ -313,32 +313,35 @@ function plugin_getadminoption_polls()
 * @param   uid   int   User id of deleted user
 *
 */
-/*
-function plugin_user_delete_polls($uid)
+function plugin_user_delete_polls ($uid)
 {
-    global $_TABLES, $_POLLS_CONF;
+    global $_TABLES, $_PO_CONF;
 
-    if (DB_count ($_TABLES['staticpage'],
-            "(sp_uid = $uid) OR (owner_id = $uid)") == 0) {
+    if (DB_count ($_TABLES['pollquestions'], "owner_id = $uid") == 0) {
+        // there are no polls owned by this user
         return;
     }
 
-    if ($_SP_CONF['delete_pages'] == 1) {
-        // delete the pages
-        DB_query ("DELETE FROM {$_TABLES['staticpage']} WHERE (sp_uid = $uid) OR (owner_id = $uid)");
+    if ($_PO_CONF['delete_polls'] == 1) {
+        // delete the polls
+        $result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']} WHERE owner_id = $uid");
+        $numPolls = DB_numRows ($result);
+        for ($i = 0; $i < $numPolls; $i++) {
+            list($qid) = DB_fetchArray ($result);
+            DB_delete ($_TABLES['pollanswers'], 'qid', $qid);
+            DB_delete ($_TABLES['pollvotes'], 'qid', $qid);
+        }
+        DB_delete ($_TABLES['pollquestions'], 'owner_id', $uid);
     } else {
         // assign ownership to a user from the Root group
         $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',
                                  "grp_name = 'Root'");
         $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
-        $A = DB_fetchArray ($result);
-        $rootuser = $A['ug_uid'];
+        list($rootuser) = DB_fetchArray ($result);
 
-        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_uid = $rootuser WHERE sp_uid = $uid");
-        DB_query ("UPDATE {$_TABLES['staticpage']} SET owner_id = $rootuser WHERE owner_id = $uid");
+        DB_query ("UPDATE {$_TABLES['pollquestions']} SET owner_id = $rootuser WHERE owner_id = $uid");
     }
 }
-*/
 
 /**
 * Return the current version of code.
