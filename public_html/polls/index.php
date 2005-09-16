@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.6 2005/09/16 08:13:15 dhaun Exp $
+// $Id: index.php,v 1.7 2005/09/16 09:23:25 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -224,7 +224,7 @@ if (empty($qid)) {
                  . POLLS_pollResults ($qid, 400, $order, $mode);
     }
 }
-$display .= COM_siteFooter(true);
+$display .= COM_siteFooter();
 
 echo $display;
 

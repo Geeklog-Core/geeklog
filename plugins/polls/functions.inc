@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.18 2005/09/16 08:13:15 dhaun Exp $
+// $Id: functions.inc,v 1.19 2005/09/16 09:23:25 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -121,7 +121,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
             . COM_siteFooter();
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
-                                . "/pollbooth.php?qid=$id&aid=-1");
+                                . "/polls/index.php?qid=$id&aid=-1");
     }
 
     return $retval;
@@ -149,7 +149,7 @@ function plugin_deletecomment_polls($cid, $id)
             $A['perm_members'], $A['perm_anon']) == 3) {
         CMT_deleteComment($cid, $id, 'polls');
         $retval .= COM_refresh ($_CONF['site_url']
-                                 . "/pollbooth.php?qid=$id&aid=-1");
+                                 . "/polls/index.php?qid=$id&aid=-1");
     } else {
         COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
                     . "tried to illegally delete comment $cid from $type $id");
@@ -294,7 +294,7 @@ function plugin_getadminoption_polls()
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
 
-    if (SEC_hasRights ('polls.edit,polls.delete', 'OR')) {
+    if (SEC_hasRights ('polls.edit')) {
         $result = DB_query ("SELECT COUNT(*) AS cnt FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
@@ -393,8 +393,6 @@ function plugin_uninstall_polls($steps = '')
 
     // Remove related features
     $edit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.edit'");
-    #$delete_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.delete'");
-    #$php_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.PHP'");
 
     if (empty($steps) OR $steps['addededittogroup'] == 1) {
         // Remove access to those features
@@ -402,22 +400,6 @@ function plugin_uninstall_polls($steps = '')
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
         COM_errorLog('...success',1);
     }
-
-    /*
-    if (empty($steps) OR $steps['addeddeletetogroup'] == 1) {
-        // Remove access to those features
-        COM_errorLog('Attempting to remove rights to polls.delete from all groups',1);
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $delete_id");
-        COM_errorLog('...success',1);
-    }
-
-    if (empty($steps) OR $steps['addedphptogroup'] == 1) {
-        // Remove access to those features
-        COM_errorLog('Attempting to remove rights to polls.PHP from all groups',1);
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $php_id");
-        COM_errorLog('...success',1);
-    }
-    */
 
     if (empty($steps) OR $steps['addedrootuserstogroup'] == 1) {
         // Remove root users from the group
@@ -631,7 +613,7 @@ function POLLS_showPoll( $size, $qid='' )
 
                              # $_CONF['path'] . 'plugins/polls/templates/
                 }
-                else // assume we're in pollbooth.php
+                else // assume we're in polls/index.php
                 {
                     $retval .= COM_startBlock( $title );
                 }
@@ -792,6 +774,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
             }
         }
     }
+
     return $retval;
 }
 
@@ -803,114 +786,6 @@ function phpblock_polls()
     return $retval;
 }
 
-
-/*
- * comment code stuff from comment.php
- * 
-function plugin_handleSubmit()
-{
-    global $_POST, $_TABLES, $_CONF, $LANG03;
-    
-            $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
-                                       "qid = '$sid'");
-            if ($commentcode < 0) {
-                return COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-
-            $ret = CMT_saveComment (strip_tags ($_POST['title']), 
-                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true), 
-                'poll', COM_applyFilter ($_POST['postmode']));
-
-            if ( $ret > 0 ) { // failure
-                $display .= COM_siteHeader()
-                    . CMT_commentform ($uid, $title, $comment, $sid, $pid, 
-                            $type, $LANG03[14], $postmode)
-                    . COM_siteFooter();
-            } else { // success
-                $display = COM_refresh ($_CONF['site_url']
-                    . "/pollbooth.php?qid=$sid&aid=-1");
-            }
-
-
-
-}
-
-function handleDelete()
-{
-    global $_TABLES, $_CONF;
-    $has_editPermissions = SEC_hasRights ('polls.edit');
-            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$sid}'");
-            $A = DB_fetchArray ($result);
-
-            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
-                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
-                    $A['perm_members'], $A['perm_anon']) == 3) {
-                CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'poll');
-                $display .= COM_refresh ($_CONF['site_url'] . "/pollbooth.php?qid=$sid&aid=-1");
-            } else {
-                COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
-                            . "tried to illegally delete comment $cid from $type $sid");
-                $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-
-}
-
-
-function handleView($view = true)
-{
-    global $_TABLES, $_USER, $_CONF;
-    $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
-                 . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
-                 . COM_getPermSQL('AND') . 'GROUP BY qid';
-            $result = DB_query ($sql);
-            $B = DB_fetchArray ($result);
-            $allowed = $B['count'];
-
-            if ( $allowed == 1 ) {
-                $delete_option = ( SEC_hasRights( 'polls.edit' ) &&
-                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
-                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
-                        $B['perm_anon'] ) == 3 ) );
-                $display .= CMT_userComments ($sid, $title, $type, 
-                        COM_applyFilter ($_REQUEST['order']), $format, $cid,
-                        COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
-            } else {
-                $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                                    COM_getBlockTemplate ('_msg_block', 'header'))
-                         . $LANG_ACCESS['storydenialmsg']
-                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            }
-}
-
-function handleFetch()
-{
-    global $_TABLES, $_USER, $_CONF;
-    $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
-                 . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
-                 . COM_getPermSQL('AND') . 'GROUP BY qid';
-            $result = DB_query ($sql);
-            $B = DB_fetchArray ($result);
-            $allowed = $B['count'];
-
-            if ( $allowed == 1 ) {
-                $delete_option = ( SEC_hasRights( 'polls.edit' ) &&
-                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
-                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
-                        $B['perm_anon'] ) == 3 ) );
-                if ( $full ) {
-                    $display .= CMT_getComment($A, 'dynamic_comment', 'poll', 
-                                               'ASC', $delete_option);
-                } else {
-                    $display .= CMT_getComment($A, 'dynamic_thread', 'poll', 
-                                               'ASC', $delete_option);
-                }
-            } else {
-                $display .= 'ERROR ACCESS DENIED';
-            }
-}
-
-
-*/
 
 /**
 * Returns the URL of the plugin's icon

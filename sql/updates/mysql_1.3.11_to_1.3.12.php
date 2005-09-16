@@ -77,7 +77,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.3.12', '1', 'http://www.geeklog.net/')";
 
 // updates core -> plugin
-$_SQL[] = "UPDATE {$_TABLES['blocks']} SET `type`= 'phpblock', `phpblockfn`='phpblock_polls' WHERE `name`='poll_block';";
+$_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'phpblock', phpblockfn ='phpblock_polls' WHERE name = 'poll_block';";
 
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core = '0', ft_name='polls.edit' WHERE ft_name = 'poll.edit';";
 $_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core = '0', grp_name = 'Links Admin' WHERE grp_name = 'Link Admin';";
@@ -90,6 +90,9 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.submit', ft_gl_cor
 
 // the included Spam-X requires Geeklog 1.3.12 now (for the MassDelete module)
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.3', pi_gl_version = '1.3.12' WHERE pi_name = 'spamx'";
+
+// update poll(s) comments
+$_SQL[] = "UPDATE {$_TABLES['comments']} SET type = 'polls' WHERE type = 'poll'";
 
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
