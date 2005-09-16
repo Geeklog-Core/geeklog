@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.13 2005/08/06 13:51:21 dhaun Exp $
+// $Id: lib-user.php,v 1.14 2005/09/16 18:08:45 dhaun Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -136,7 +136,6 @@ function USER_deleteAccount ($uid)
     $rootuser = $A['ug_uid'];
 
     DB_query ("UPDATE {$_TABLES['blocks']} SET owner_id = $rootuser WHERE owner_id = $uid");
-    DB_query ("UPDATE {$_TABLES['pollquestions']} SET owner_id = $rootuser WHERE owner_id = $uid");
     DB_query ("UPDATE {$_TABLES['topics']} SET owner_id = $rootuser WHERE owner_id = $uid");
 
     // now delete the user itself
