@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.20 2005/09/16 11:11:27 dhaun Exp $
+// $Id: functions.inc,v 1.21 2005/09/16 11:18:10 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -329,7 +329,7 @@ function plugin_user_delete_polls ($uid)
         for ($i = 0; $i < $numPolls; $i++) {
             list($qid) = DB_fetchArray ($result);
             DB_delete ($_TABLES['pollanswers'], 'qid', $qid);
-            DB_delete ($_TABLES['pollvotes'], 'qid', $qid);
+            DB_delete ($_TABLES['pollvoters'], 'qid', $qid);
         }
         DB_delete ($_TABLES['pollquestions'], 'owner_id', $uid);
     } else {
