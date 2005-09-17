@@ -880,7 +880,7 @@ $LANG28 = array(
     14 => 'Reg. Datum',
     15 => 'Neuer User',
     16 => 'Admin Home',
-    17 => 'pw ändern',
+    17 => '',
     18 => 'Abbruch',
     19 => 'Löschen',
     20 => 'Speichern',
@@ -902,14 +902,15 @@ $LANG28 = array(
     36 => '(noch nie)',
     37 => 'UID',
     38 => 'Gruppenliste',
-    39 => 'Password (again)',
-    40 => 'Registration Date',
-    41 => 'Last login Date',
-    42 => 'Banned',
-    43 => 'Awaiting Activation',
-    44 => 'Awaiting Authorization',
-    45 => 'Active',
-    46 => 'User Status'
+    39 => 'Passwort (nochmal)',
+    40 => 'Registriert',
+    41 => 'Letzter Login',
+    42 => 'Gesperrt',
+    43 => 'Erwartet Aktivierung',
+    44 => 'Erwartet Autorisierung',
+    45 => 'Aktiv',
+    46 => 'User-Status',
+    47 => 'Ändern'
 );
 
 ###############################################################################

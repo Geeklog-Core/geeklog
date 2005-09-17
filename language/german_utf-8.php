@@ -894,7 +894,16 @@ $LANG28 = array(
     35 => 'Letzter Login',
     36 => '(noch nie)',
     37 => 'UID',
-    38 => 'Gruppenliste'
+    38 => 'Gruppenliste',
+    39 => 'Passwort (nochmal)',
+    40 => 'Registriert',
+    41 => 'Letzter Login',
+    42 => 'Gesperrt',
+    43 => 'Erwartet Aktivierung',
+    44 => 'Erwartet Autorisierung',
+    45 => 'Aktiv',
+    46 => 'User-Status',
+    47 => 'Ändern'
 );
 
 ###############################################################################

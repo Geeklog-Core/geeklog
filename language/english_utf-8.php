@@ -148,7 +148,7 @@ $LANG01 = array(
     103 => 'DB Backups',
     104 => 'by',
     105 => 'Mail Users',
-    106 => 'Views',
+    106 => 'Views:',
     107 => 'GL Version Test',
     108 => 'Clear Cache',
     109 => 'Report abuse',
@@ -159,7 +159,10 @@ $LANG01 = array(
     114 => 'TRACKBACKS',
     115 => 'No new trackback comments',
     116 => 'Trackback',
-    117 => 'Directory'
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    120 => 'Permanent link to this comment'
 );
 
 ###############################################################################
@@ -217,13 +220,13 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# users.php
+# usersettings.php
 
 $LANG04 = array(
     1 => 'User Profile for',
     2 => 'User Name',
     3 => 'Full Name',
-    4 => 'Password',
+    4 => 'New Password',
     5 => 'Email',
     6 => 'Homepage',
     7 => 'Bio',
@@ -285,7 +288,7 @@ $LANG04 = array(
     63 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using {$_CONF['site_name']}",
     64 => 'Comment Preferences for',
     65 => 'Try Logging in Again',
-    66 => "You may have mistyped your login credentials.  Please try logging in again below. Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
+    66 => 'You may have mistyped your login credentials.  Please try logging in again below.',
     67 => 'Member Since',
     68 => 'Remember Me For',
     69 => 'How long should we remember you after logging in?',
@@ -326,7 +329,23 @@ $LANG04 = array(
     104 => 'Show Online Status',
     105 => 'Show up in Who\'s Online block',
     106 => 'Location',
-    107 => 'Shown in your public profile'
+    107 => 'Shown in your public profile',
+    108 => 'Confirm new password',
+    109 => 'Enter the New password again here',
+    110 => 'Current Password',
+    111 => 'Please enter your Current password',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
+    119 => "If you have forgotten your password, you may request a new one at this url:",
+    120 => 'Account Activated',
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
 ###############################################################################
@@ -341,15 +360,6 @@ $LANG05 = array(
     6 => 'Previous',
     7 => 'First',
     8 => 'Last'
-);
-
-###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => 'Web Resources',
-    2 => 'There are no resources to display.',
-    3 => 'Add A Link'
 );
 
 ###############################################################################
@@ -465,7 +475,11 @@ $LANG09 = array(
     54 => 'Comment Results',
     55 => 'the phrase',
     56 => 'AND',
-    57 => 'OR'
+    57 => 'OR',
+    58 => 'More results &gt;&gt;',
+    59 => 'Results',
+    60 => 'per page',
+    61 => 'Refine search'
 );
 
 ###############################################################################
@@ -473,11 +487,11 @@ $LANG09 = array(
 
 $LANG10 = array(
     1 => 'Site Statistics',
-    2 => 'Total Hits to the System',
-    3 => 'Stories(Comments) in the System',
-    4 => 'Polls(Answers) in the System',
-    5 => 'Links(Clicks) in the System',
-    6 => 'Events in the System',
+    2 => 'Total Hits to the system',
+    3 => 'Stories (Comments) in the system',
+    4 => '',
+    5 => '',
+    6 => 'Events in the system',
     7 => 'Top Ten Viewed Stories',
     8 => 'Story Title',
     9 => 'Views',
@@ -485,13 +499,13 @@ $LANG10 = array(
     11 => 'Top Ten Commented Stories',
     12 => 'Comments',
     13 => 'It appears that there are no stories on this site or no one has ever posted a comment on them.',
-    14 => 'Top Ten Polls',
-    15 => 'Poll Question',
-    16 => 'Votes',
-    17 => 'It appears that there are no polls on this site or no one has ever voted.',
-    18 => 'Top Ten Links',
-    19 => 'Links',
-    20 => 'Hits',
+    14 => '',
+    15 => '',
+    16 => '',
+    17 => '',
+    18 => '',
+    19 => '',
+    20 => '',
     21 => 'It appears that there are no links on this site or no one has ever clicked on one.',
     22 => 'Top Ten Emailed Stories',
     23 => 'Emails',
@@ -520,7 +534,7 @@ $LANG12 = array(
     2 => 'Login',
     3 => 'New User',
     4 => 'Submit an Event',
-    5 => 'Submit a Link',
+    5 => '',
     6 => 'Submit a Story',
     7 => 'Login is Required',
     8 => 'Submit',
@@ -531,12 +545,12 @@ $LANG12 = array(
     13 => 'End Date',
     14 => 'Location',
     15 => 'Description',
-    16 => 'If other, please specify',
-    17 => 'Category',
-    18 => 'Other',
+    16 => '',
+    17 => '',
+    18 => '',
     19 => 'Read First',
-    20 => 'Error: Missing Category',
-    21 => 'When selecting "Other" please also provide a category name',
+    20 => '',
+    21 => '',
     22 => 'Error: Missing Fields',
     23 => 'Please fill in all the fields on the form.  All fields are required.',
     24 => 'Submission Saved',
@@ -653,7 +667,9 @@ $LANG21 = array(
     59 => 'Move block to the right side',
     60 => 'Move block to the left side',
     61 => 'No Title',
-    62 => 'Article Limit'
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!'
 );
 
 ###############################################################################
@@ -671,7 +687,7 @@ $LANG22 = array(
     9 => '(include http://)',
     10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
-    12 => 'To modify or delete an event, click on that event below.  To create a new event click on new event above. Click on [C] to create a copy of an existing event.',
+    12 => 'To modify or delete an event, click on that events edit icon below.  To create a new event click on new event above. Click on the copy icon to create a copy of an existing event.',
     13 => 'Event Title',
     14 => 'Start Date',
     15 => 'End Date',
@@ -684,36 +700,12 @@ $LANG22 = array(
     22 => 'delete',
     23 => 'Bad start date.',
     24 => 'Bad end date.',
-    25 => 'End date is before start date.'
-);
-
-###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => 'Link Editor',
-    2 => '',
-    3 => 'Link Title',
-    4 => 'Link URL',
-    5 => 'Category',
-    6 => '(include http://)',
-    7 => 'Other',
-    8 => 'Link Hits',
-    9 => 'Link Description',
-    10 => 'You need to provide a link Title, URL and Description.',
-    11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that link below.  To create a new link click new link above.',
-    13 => 'Link Title',
-    14 => 'Link Category',
-    15 => 'Link URL',
-    16 => 'Access Denied',
-    17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/link.php\">go back to the link administration screen</a>.",
-    18 => 'New Link',
-    19 => 'Admin Home',
-    20 => 'If other, specify',
-    21 => 'save',
-    22 => 'cancel',
-    23 => 'delete'
+    25 => 'End date is before start date.',
+    26 => 'Submit',
+    27 => 'Limit Results',
+    28 => 'Search',
+    29 => 'Edit',
+    30 => 'Copy'
 );
 
 ###############################################################################
@@ -742,12 +734,12 @@ $LANG24 = array(
     20 => 'Ping',
     21 => 'Send Ping',
     22 => 'Story List',
-    23 => 'To modify or delete a story, click on that story\'s number below. To view a story, click on the title of the story you wish to view. To create a new story click on new story above.',
+    23 => 'To modify or delete a story, click on that story\'s edit icon below. To view a story, click on the title of the story you wish to view. To create a new story click on new story above.',
     24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => 'Error when saving story',
     26 => 'Story Preview',
-    27 => '',
-    28 => '',
+    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
+    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
     29 => '',
     30 => 'File Upload Errors',
     31 => 'Please fill in the Title and Intro Text fields',
@@ -770,51 +762,33 @@ $LANG24 = array(
     48 => 'image',
     49 => 'right',
     50 => 'left',
-    51 => 'To add one of the images you are attaching to this article you need to insert specially formatted text.  The specially formatted text is [imageX], [imageX_right] or [imageX_left] where X is the number of the image you have attached.  NOTE: You must use the images you attach.  If you do not you will be unable to save your story.<br><p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    51 => 'To add one of the images you are attaching to this article you need to insert specially formatted text.  The specially formatted text is [imageX], [imageX_right] or [imageX_left] where X is the number of the image you have attached.  NOTE: You must use the images you attach.  If you do not you will be unable to save your story.<br>',
     52 => 'Delete',
     53 => 'was not used.  You must include this image in the intro or body before you can save your changes',
     54 => 'Attached Images Not Used',
     55 => 'The following errors occurred while trying to save your story.  Please correct these errors before saving',
     56 => 'Show Topic Icon',
     57 => 'View unscaled image',
-    58 => 'Story Management',
+    58 => 'Archive Options',
     59 => 'Option',
     60 => 'Enabled',
     61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    62 => 'Auto Delete',
+    63 => 'Edit',
+    64 => 'Submit',
+    65 => 'Search',
+    66 => 'Limit Results',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'Mode',
-    2 => 'Please enter a question and at least one answer.',
-    3 => 'Poll Created',
-    4 => 'Poll %s saved',
-    5 => 'Edit Poll',
-    6 => 'Poll ID',
-    7 => '(do not use spaces)',
-    8 => 'Appears on Homepage',
-    9 => 'Question',
-    10 => 'Answers / Votes',
-    11 => 'There was an error getting poll answer data about the poll %s',
-    12 => 'There was an error getting poll question data about the poll %s',
-    13 => 'Create Poll',
-    14 => 'save',
-    15 => 'cancel',
-    16 => 'delete',
-    17 => 'Please enter a Poll ID',
-    18 => 'Poll List',
-    19 => 'To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.',
-    20 => 'Voters',
-    21 => 'Access Denied',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
-    23 => 'New Poll',
-    24 => 'Admin Home',
-    25 => 'Yes',
-    26 => 'No'
-);
 
 ###############################################################################
 # admin/topic.php
@@ -845,7 +819,10 @@ $LANG27 = array(
     23 => 'make this the default topic for new story submissions',
     24 => '(*)',
     25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    26 => 'make this the default topic for archived stories. Only one topic allowed.',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################
@@ -863,12 +840,12 @@ $LANG28 = array(
     9 => '(do not use spaces)',
     10 => 'Please fill in the Username and Email Address fields',
     11 => 'User Manager',
-    12 => "To modify or delete a user, click on that user's number below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
+    12 => "To modify or delete a user, click on that user's edit icon below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
     13 => 'SecLev',
     14 => 'Reg. Date',
     15 => 'New User',
     16 => 'Admin Home',
-    17 => 'changepw',
+    17 => '',
     18 => 'cancel',
     19 => 'delete',
     20 => 'save',
@@ -889,7 +866,16 @@ $LANG28 = array(
     35 => 'Last Login',
     36 => '(never)',
     37 => 'UID',
-    38 => 'Group Listing'
+    38 => 'Group Listing',
+    39 => 'Password (again)',
+    40 => 'Registration Date',
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status',
+    47 => 'Edit',
 );
 
 ###############################################################################
@@ -903,7 +889,7 @@ $LANG29 = array(
     10 => 'Title',
     11 => 'Start Date',
     12 => 'URL',
-    13 => 'Category',
+    13 => '',
     14 => 'Date',
     15 => 'Topic',
     16 => 'User name',
@@ -911,7 +897,7 @@ $LANG29 = array(
     18 => 'Email',
     34 => 'Command and Control',
     35 => 'Story Submissions',
-    36 => 'Link Submissions',
+    36 => '',
     37 => 'Event Submissions',
     38 => 'Submit',
     39 => 'There are no submissions to moderate at this time',
@@ -1011,7 +997,7 @@ $LANG32 = array(
     8 => 'Plugin Compatibility Check Failed',
     9 => 'This plugin requires a newer version of Geeklog. Either upgrade your copy of <a href="http://www.geeklog.net">Geeklog</a> or get a newer version of the plugin.',
     10 => '<br><b>There are no plugins currently installed.</b><br><br>',
-    11 => 'To modify or delete a plugin, click on that plugin name below. This will show the plugin details including the authors\'s website. Both the installed version and the version returned from the plugin\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plugin please consult its documentation.',
+    11 => 'To modify or delete a plugin, click on that plugins edit icon below. This will show the plugin details including the authors\'s website. Both the installed version and the version returned from the plugin\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plugin please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',
     13 => 'Plugin Editor',
     14 => 'New Plugin',
@@ -1034,8 +1020,8 @@ $LANG32 = array(
     31 => 'Are you sure you want to delete this plugin?  By doing so you will remove all the data and data structures that this plugin uses.  If you are sure, click delete again on the form below.',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
-    34 => 'Update'
-
+    34 => 'Update',
+    35 => 'Edit'
 );
 
 ###############################################################################
@@ -1049,7 +1035,7 @@ $LANG33 = array(
     10 => 'Content Syndication',
     11 => 'New Feed',
     12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
+    13 => 'To modify or delete a feed, click on the feed\'s edit icon below. To create a new feed, click on New Feed above.',
     14 => 'Title',
     15 => 'Type',
     16 => 'Filename',
@@ -1077,8 +1063,16 @@ $LANG33 = array(
     38 => 'Error: Missing Fields',
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
-    41 => 'Links',
-    42 => 'Events'
+    41 => 'Submit',
+    42 => 'Events',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1087,7 +1081,7 @@ $LANG33 = array(
 $MESSAGE = array(
     1 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using {$_CONF['site_name']}",
     2 => "Thank-you for submitting your story to {$_CONF['site_name']}.  It has been submitted to our staff for approval. If approved, your story will be available for others to read on our site.",
-    3 => "Thank-you for submitting a link to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF['site_url']}/links.php>links</a> section.",
+    3 => "",
     4 => "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen in our <a href={$_CONF['site_url']}/calendar.php>calendar</a> section.",
     5 => 'Your account information has been successfully saved.',
     6 => 'Your preferences have been successfully saved.',
@@ -1099,8 +1093,8 @@ $MESSAGE = array(
     12 => 'The block has been successfully deleted.',
     13 => 'Your topic has been successfully saved.',
     14 => 'The topic and all its stories and blocks have been successfully deleted.',
-    15 => 'Your link has been successfully saved.',
-    16 => 'The link has been successfully deleted.',
+    15 => '',
+    16 => '',
     17 => 'Your event has been successfully saved.',
     18 => 'The event has been successfully deleted.',
     19 => 'Your poll has been successfully saved.',
@@ -1150,7 +1144,15 @@ $MESSAGE = array(
     63 => 'An error occurred when deleting the trackback comment.',
     64 => 'Your trackback comment has been successfully sent.',
     65 => 'Weblog directory service successfully saved.',
-    66 => 'The weblog directory service has been deleted.'
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.'
 );
 
 ###############################################################################
@@ -1174,7 +1176,7 @@ $LANG_ACCESS = array(
     'missingfields' => 'Missing Fields',
     'missingfieldsmsg' => 'You must supply the name and a description for a group',
     'groupmanager' => 'Group Manager',
-    'newgroupmsg' => 'To modify or delete a group, click on that group below. To create a new group click new group above. Please note that core groups cannot be deleted because they are used in the system.',
+    'newgroupmsg' => 'To modify or delete a group, click on that groups edit icon below. To create a new group click new group above. Please note that core groups cannot be deleted because they are used in the system.',
     'groupname' => 'Group Name',
     'coregroup' => 'Core Group',
     'yes' => 'Yes',
@@ -1201,7 +1203,7 @@ $LANG_ACCESS = array(
     'cancel' => 'cancel',
     'delete' => 'delete',
     'canteditroot' => 'You have tried to edit the Root group but you are not in the Root group yourself therefore your access to this group is denied.  Please contact the system administrator if you feel this is an error.',
-    'listusers' => 'List Users',
+    'listusers' => 'Members',
     'listthem' => 'list',
     'usersingroup' => 'Users in group "%s"',
     'usergroupadmin' => 'User Group Administration',
@@ -1212,7 +1214,12 @@ $LANG_ACCESS = array(
     'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
     'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
     'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
-    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>'
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
 );
 
 ###############################################################################
@@ -1351,7 +1358,7 @@ $LANG_TRB = array (
     'services_headline'  => 'Weblog Directory Services',
     'admin_home'         => 'Admin Home',
     'new_service'        => 'New Service',
-    'service_explain'    => 'To modify or delete a weblog directory service, click on the number of that service below. To add a new weblog directory service click on New Service above.',
+    'service_explain'    => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service click on New Service above.',
     'service'            => 'Service',
     'ping_method'        => 'Ping method',
     'service_enabled'    => 'Enabled',
@@ -1365,7 +1372,20 @@ $LANG_TRB = array (
     'button_cancel'      => 'Cancel',
     'button_delete'      => 'Delete',
     'trackbacks'         => 'Trackbacks',
-    'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.'
+    'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none'  => 'Prepare your trackback comment.',
+    'trackback_note'     => 'To send a trackback comment for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'edit'               => 'Edit',
+    'search'             => 'Search',
+    'limit_results'      => 'Limit Results',
+    'submit'             => 'Submit',
+    'pingback_explain'   => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url'       => 'Pingback URL',
+    'site_url'           => 'This site\'s URL',
+    'pingback_note'      => 'To send a pingback for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing'   => 'No Pingback URL',
+    'pbtarget_required'  => 'Please enter a pingback URL',
+    'pb_error_details'   => 'Error when sending the pingback:'
 );
 
 ###############################################################################
@@ -1376,7 +1396,32 @@ $LANG_DIR = array (
     'title_year'       => 'Article Directory for %d',
     'title_month_year' => 'Article Directory for %s %d',
     'nav_top'          => 'Back to Article Directory',
-    'no_articles'      => 'No articles.',
+    'no_articles'      => 'No articles.'
+);
+
+################################################################################
+# "What's New" Time Strings
+#
+# This here determines the order of the sentence "No new stories in 2 hrs"
+# order it so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
+$WHATS_NEW_STRING = '%n new %i in the last %t %s';
+$WHATS_NEW_LAST   = 'last %t %s';
+
+$LANG_WHATSNEW = array (
+    'minutes'     => 'minutes',
+    'hours'       => 'hours',
+    'days'        => 'days',
+    'weeks'       => 'weeks',
+    'months'      => 'months',
+    'minute'      => 'minute',
+    'hour'        => 'hour',
+    'day'         => 'day',
+    'week'        => 'week',
+    'month'       => 'month'
 );
 
 ?>

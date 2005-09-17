@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.113 2005/08/13 18:37:07 dhaun Exp $
+// $Id: user.php,v 1.114 2005/09/17 19:27:02 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -458,13 +458,13 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_uid', $LANG28[37]);
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
-    $user_templates->set_var('lang_edit', $LANG28[17]);
+    $user_templates->set_var('lang_edit', $LANG28[47]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
               . $_IMAGE_TYPE . '" border="0" alt="">';
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG28[17] . '" title="'
-             . $LANG28[17] . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG28[47] . '" title="'
+             . $LANG28[47] . '">';
     $user_templates->set_var('edit_icon', $editico);
 
     if ($_CONF['lastlogin']==true) {

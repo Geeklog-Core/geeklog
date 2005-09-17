@@ -843,7 +843,7 @@ $LANG28 = array(
     14 => 'Reg. Date',
     15 => 'New User',
     16 => 'Admin Home',
-    17 => 'Edit',
+    17 => '',
     18 => 'cancel',
     19 => 'delete',
     20 => 'save',
@@ -872,7 +872,8 @@ $LANG28 = array(
     43 => 'Awaiting Activation',
     44 => 'Awaiting Authorization',
     45 => 'Active',
-    46 => 'User Status'
+    46 => 'User Status',
+    47 => 'Edit',
 );
 
 ###############################################################################
