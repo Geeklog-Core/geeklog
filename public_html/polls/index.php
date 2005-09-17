@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2005/09/16 09:23:25 dhaun Exp $
+// $Id: index.php,v 1.8 2005/09/17 11:30:05 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -91,7 +91,7 @@ function pollsave($qid = '', $aid = 0)
 */
 function polllist ($page = 1) 
 {
-    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $PANL_POLLS,
+    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $LANG_POLLS,
            $LANG10, $LANG_LOGIN;
 
     if ($page < 1) {
