@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog poll administration page                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2005/09/16 21:41:36 dhaun Exp $
+// $Id: index.php,v 1.9 2005/09/17 18:30:47 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -327,8 +327,11 @@ function editpoll ($qid = '')
 */
 function listpolls ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG25, $LANG_ACCESS, $_IMAGE_TYPE,
-            $order, $prevorder, $direction;
+    global $_CONF, $_TABLES, $LANG25, $LANG_ACCESS, $_IMAGE_TYPE;
+
+    $order = COM_applyFilter ($_GET['order'], true);
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
 
@@ -336,7 +339,8 @@ function listpolls ($offset, $curpage, $query = '', $query_limit = 50)
         $page = 1;
     }
 
-    $retval .= COM_startBlock ($LANG25[18], $_CONF['site_url'] . '/docs/polls.html',
+    $retval .= COM_startBlock ($LANG25[18], $_CONF['site_url']
+                                            . '/docs/polls.html',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $poll_templates = new Template ($_CONF['path'] . 'plugins/polls/templates/admin/');
@@ -378,10 +382,12 @@ function listpolls ($offset, $curpage, $query = '', $query_limit = 50)
             break;
         default:
             $orderby = 'date';
-            $order = 2;
+            $order = 3;
             break;
     }
-    if ($order == $prevorder) {
+    if (empty ($direction)) {
+        $direction = 'desc';
+    } else if ($order == $prevorder) {
         $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
         $direction = ($direction == 'desc') ? 'desc' : 'asc';
