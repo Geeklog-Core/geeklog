@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2005/09/17 11:30:05 dhaun Exp $
+// $Id: index.php,v 1.9 2005/09/17 16:01:03 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -92,7 +92,7 @@ function pollsave($qid = '', $aid = 0)
 function polllist ($page = 1) 
 {
     global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $LANG_POLLS,
-           $LANG10, $LANG_LOGIN;
+           $LANG_LOGIN;
 
     if ($page < 1) {
         $page = 1;
@@ -147,7 +147,7 @@ function polllist ($page = 1)
                 $retval .= COM_printPageNavigation ($baseurl, $page, $numpages);
             }
         } else {
-            $retval .= $LANG10[17];
+            $retval .= $LANG_POLLS['stats_none'];
         }
         $retval .= COM_endBlock();
     }
