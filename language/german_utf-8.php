@@ -500,7 +500,8 @@ $LANG10 = array(
     23 => 'E-Mails',
     24 => 'Es wurden keine Artikel per E-Mail verschickt.',
     25 => 'Top Ten der Artikel mit Trackback-Kommentaren',
-    26 => 'Keine Trackback-Kommentare gefunden.'
+    26 => 'Keine Trackback-Kommentare gefunden.',
+    27 => 'Anzahl aktiver User'
 );
 
 ###############################################################################

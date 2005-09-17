@@ -497,7 +497,8 @@ $LANG10 = array(
     23 => 'Emails',
     24 => 'It appears that no one has emailed a story on this site',
     25 => 'Top Ten Trackback Commented Stories',
-    26 => 'No trackback comments found.'
+    26 => 'No trackback comments found.',
+    27 => 'Number of active users'
 );
 
 ###############################################################################

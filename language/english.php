@@ -485,11 +485,11 @@ $LANG09 = array(
 
 $LANG10 = array(
     1 => 'Site Statistics',
-    2 => 'Total Hits to the System',
-    3 => 'Stories(Comments) in the System',
-    4 => 'Polls(Answers) in the System',
+    2 => 'Total Hits to the system',
+    3 => 'Stories (Comments) in the system',
+    4 => '',
     5 => '',
-    6 => 'Events in the System',
+    6 => 'Events in the system',
     7 => 'Top Ten Viewed Stories',
     8 => 'Story Title',
     9 => 'Views',
@@ -497,10 +497,10 @@ $LANG10 = array(
     11 => 'Top Ten Commented Stories',
     12 => 'Comments',
     13 => 'It appears that there are no stories on this site or no one has ever posted a comment on them.',
-    14 => 'Top Ten Polls',
-    15 => 'Poll Question',
-    16 => 'Votes',
-    17 => 'It appears that there are no polls on this site or no one has ever voted.',
+    14 => '',
+    15 => '',
+    16 => '',
+    17 => '',
     18 => '',
     19 => '',
     20 => '',
@@ -509,7 +509,8 @@ $LANG10 = array(
     23 => 'Emails',
     24 => 'It appears that no one has emailed a story on this site',
     25 => 'Top Ten Trackback Commented Stories',
-    26 => 'No trackback comments found.'
+    26 => 'No trackback comments found.',
+    27 => 'Number of active users'
 );
 
 ###############################################################################

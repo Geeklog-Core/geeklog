@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.38 2005/09/16 14:49:21 dhaun Exp $
+// $Id: stats.php,v 1.39 2005/09/17 12:59:19 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -72,6 +72,20 @@ $stat_templates->set_file (array ('sitestats' => 'sitestatistics.thtml',
 $totalhits = DB_getItem ($_TABLES['vars'], 'value', "name = 'totalhits'");
 $stat_templates->set_var ('lang_totalhitstosystem', $LANG10[2]);
 $stat_templates->set_var ('total_hits', COM_NumberFormat ($totalhits));
+
+if ($_CONF['lastlogin']) {
+    // if we keep track of the last login date, count the number of users
+    // that have logged in during the last 4 weeks
+    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 28 DAY)))");
+    list($active_users) = DB_fetchArray ($result);
+} else {
+    // otherwise, just count all users with status 'active'
+    // (i.e. those that logged in at least once and have not been banned since)
+    $active_users = DB_count ($_TABLES['users'], 'status', 3);
+    $active_users--; // don't count the anonymous user account
+}
+$stat_templates->set_var ('lang_active_users', $LANG10[27]);
+$stat_templates->set_var ('active_users', COM_NumberFormat ($active_users));
 
 $topicsql = COM_getTopicSql ('AND');
 
