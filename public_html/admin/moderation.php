@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.60 2005/08/28 09:12:10 mjervis Exp $
+// $Id: moderation.php,v 1.61 2005/09/18 18:53:57 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -115,13 +115,6 @@ function commandcontrol()
                         $_CONF['layout_url'] . '/images/icons/event.' . $_IMAGE_TYPE,
                         $LANG01[15]);
         $items[$LANG01[15]] = $item;
-    }
-    if (SEC_hasRights('poll.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/poll.php',
-                        $_CONF['layout_url'] . '/images/icons/poll.' . $_IMAGE_TYPE,
-                        $LANG01[16]);
-        $items[$LANG01[16]] = $item;
     }
     if (SEC_hasRights ('user.edit')) {
         $item = render_cc_item ($admin_templates,
