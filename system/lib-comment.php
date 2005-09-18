@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.19 2005/09/02 19:06:32 vinny Exp $
+// $Id: lib-comment.php,v 1.20 2005/09/18 17:20:21 vinny Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -520,7 +520,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                            . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
                              . "{$_TABLES['users']} as u "
                            . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
-                             . "AND c2.cid = $pid AND c.uid = u.uid AND type='{$type}'"
+                             . "AND c2.cid = $pid AND c.uid = u.uid AND c.type='{$type}'"
                            . "ORDER BY $cOrder LIMIT $start, $limit";
                     }
                 }
