@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.61 2005/09/18 18:53:57 dhaun Exp $
+// $Id: moderation.php,v 1.62 2005/09/18 19:22:17 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -162,7 +162,7 @@ function commandcontrol()
     // now add the plugins
     $plugins = PLG_getCCOptions ();
     for ($i = 0; $i < count ($plugins); $i++) {
-    	$cur_plugin = current ($plugins);
+        $cur_plugin = current ($plugins);
         $item = render_cc_item ($admin_templates, $cur_plugin->adminurl,
                         $cur_plugin->plugin_image, $cur_plugin->adminlabel);
         $items[$cur_plugin->adminlabel] = $item;
@@ -549,7 +549,7 @@ function moderation($mid,$action,$type,$count)
             return $retval;
         }
         list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
-	}
+    }
 
     for ($i = 1; $i <= $count; $i++) {
         switch ($action[$i]) {
@@ -571,7 +571,7 @@ function moderation($mid,$action,$type,$count)
             break;
         case 'approve':
             if ($type == 'story') {
-                $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} where sid = '$mid[$i]'");
+                $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} WHERE sid = '$mid[$i]'");
                 $A = DB_fetchArray ($result);
                 $A['related'] = addslashes (implode ("\n", STORY_extractLinks ($A['introtext'])));
                 $A['owner_id'] = $A['uid'];
@@ -590,6 +590,15 @@ function moderation($mid,$action,$type,$count)
 
                 COM_rdfUpToDateCheck ();
                 COM_olderStuff ();
+            } else if ($type == 'event') {
+                // first, copy entry from the submission to the events table
+                DB_copy ($table, $fields, $fields, $submissiontable, $id,
+                         $mid[$i]);
+                // then set the default permissions
+                $A = array ();
+                SEC_setDefaultPermissions ($A,
+                                           $_CONF['default_permissions_event']);
+                DB_query ("UPDATE {$_TABLES['events']} SET perm_owner = {$A['perm_owner']}, perm_group = {$A['perm_group']}, perm_members = {$A['perm_members']}, perm_anon = {$A['perm_anon']} WHERE eid = {$mid[$i]}");
             } else if ($type == 'draft') {
                 DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = {$mid[$i]}");
 
