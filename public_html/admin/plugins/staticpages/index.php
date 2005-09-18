@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.45 2005/09/16 21:41:36 dhaun Exp $
+// $Id: index.php,v 1.46 2005/09/18 12:09:46 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -67,10 +67,7 @@ function form ($A, $error = false)
     } else {
         $A['owner_id'] = $_USER['uid'];
         $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Static Page Admin'");
-        $A['perm_owner'] = 3;
-        $A['perm_group'] = 2;
-        $A['perm_members'] = 2;
-        $A['perm_anon'] = 2;
+        SEC_setDefaultPermissions ($A, $_SP_CONF['default_permissions']);
         $A['sp_inblock'] = $_SP_CONF['in_block'];
         $access = 3;
     }

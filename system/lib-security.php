@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.39 2005/08/27 18:16:31 mjervis Exp $
+// $Id: lib-security.php,v 1.40 2005/09/18 12:09:45 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -874,4 +874,40 @@ function SEC_addUserToGroup($uid, $gname)
     $remote_grp = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name='". $gname ."'");
     DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
 }
+
+/**
+* Set default permissions for an object
+*
+* @param    array   $A                  target array
+* @param    array   $use_permissions    permissions to set
+*
+*/
+function SEC_setDefaultPermissions (&$A, $use_permissions = array ())
+{
+    if (!is_array ($use_permissions) || (count ($use_permissions) != 4)) {
+        $use_permissions = array (3, 2, 2, 2);
+    }
+
+    // sanity checks
+    if (($use_permissions[0] > 3) || ($use_permissions[0] < 0) ||
+            ($use_permissions[0] == 1)) {
+        $use_permissions[0] = 3;
+    }
+    if (($use_permissions[1] > 3) || ($use_permissions[1] < 0) ||
+            ($use_permissions[1] == 1)) {
+        $use_permissions[1] = 2;
+    }
+    if (($use_permissions[2] != 2) && ($use_permissions[2] != 0)) {
+        $use_permissions[2] = 2;
+    }
+    if (($use_permissions[3] != 2) && ($use_permissions[3] != 0)) {
+        $use_permissions[3] = 2;
+    }
+
+    $A['perm_owner']   = $use_permissions[0];
+    $A['perm_group']   = $use_permissions[1];
+    $A['perm_members'] = $use_permissions[2];
+    $A['perm_anon']    = $use_permissions[3];
+}
+
 ?>

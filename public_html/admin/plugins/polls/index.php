@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.9 2005/09/17 18:30:47 dhaun Exp $
+// $Id: index.php,v 1.10 2005/09/18 12:09:46 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -244,10 +244,7 @@ function editpoll ($qid = '')
         } else {
             $Q['group_id'] = SEC_getFeatureGroup ('polls.edit');
         }
-        $Q['perm_owner'] = 3;
-        $Q['perm_group'] = 2;
-        $Q['perm_members'] = 2;
-        $Q['perm_anon'] = 2;
+        SEC_setDefaultPermissions ($Q, $_PO_CONF['default_permissions']);
         $Q['statuscode'] = 0;
         $Q['commentcode'] = $_CONF['comment_code'];
         $access = 3;

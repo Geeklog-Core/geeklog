@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2005/09/04 13:57:30 dhaun Exp $
+// $Id: index.php,v 1.14 2005/09/18 12:09:45 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -105,10 +105,7 @@ function editlink ($mode, $lid = '')
         } else {
             $A['group_id'] = SEC_getFeatureGroup ('links.edit');
         }
-        $A['perm_owner'] = 3;
-        $A['perm_group'] = 2;
-        $A['perm_members'] = 2;
-        $A['perm_anon'] = 2;
+        SEC_setDefaultPermissions ($A, $_LI_CONF['default_permissions']);
         $access = 3;
     }
     $retval .= COM_startBlock ($LANG_LINKS_ADMIN[1], '',

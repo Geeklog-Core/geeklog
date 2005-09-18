@@ -28,16 +28,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.4 2005/06/04 20:24:15 trinity Exp $
+// $Id: config.php,v 1.5 2005/09/18 12:09:45 dhaun Exp $
 
-// links plugin
-$_TABLES['links']               = $_DB_table_prefix . 'links';
-$_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
+$_LI_CONF['version'] = '1.0';          // Plugin Version
 
 // this lets you select which functions are available for registered users only
 $_LI_CONF['linksloginrequired'] = 0;
-
-$_LI_CONF['version'] = '1.0';          // Plugin Version
 
 // Submission Settings
 // enable (set to 1) or disable (set to 0) submission queues:
@@ -61,4 +57,18 @@ $_LI_CONF['notification'] = 0; // notify when a new link was submitted
 // should be remove links submited by users if account is removed? (1)
 // or change owner to root (0)
 $_LI_CONF['delete_links'] = 0; 
+
+// Define default permissions for new links created from the Admin panel.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order). Possible values:
+// 3 = read + write permissions (perm_owner and perm_group only)
+// 2 = read-only
+// 0 = neither read nor write permissions
+// (a value of 1, ie. write-only, does not make sense and is not allowed)
+$_LI_CONF['default_permissions'] = array (3, 2, 2, 2);
+
+// database table names - don't change
+$_TABLES['links']               = $_DB_table_prefix . 'links';
+$_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
+
 ?>

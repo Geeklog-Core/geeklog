@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.191 2005/09/16 08:13:15 dhaun Exp $
+// $Id: config.php,v 1.192 2005/09/18 12:09:45 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -375,7 +375,7 @@ $_CONF['lastlogin']                     = true;
 
 // +---------------------------------------------------------------------------+
 // | This is really redundant but I am including this as a reminder that those |
-// | people writing Geeklog Plug-ins that are OS dependent should check either |
+// | people writing Geeklog Plugins that are OS dependent should check either  |
 // | the $_CONF variable below or PHP_OS directly.  If you are writing an      |
 // | addon that is OS specific your addon should check the system is using the |
 // | right OS.  If not, be sure to show a friendly message that says their GL  |
@@ -774,7 +774,7 @@ $_CONF['url_rewrite'] = false; // false = off, true = on
 
 // Define default permissions for new objects created from the Admin panels.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
-// order. Possible values:
+// order). Possible values:
 // 3 = read + write permissions (perm_owner and perm_group only)
 // 2 = read-only
 // 0 = neither read nor write permissions

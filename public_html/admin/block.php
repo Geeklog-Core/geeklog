@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.67 2005/08/13 19:14:22 ospiess Exp $
+// $Id: block.php,v 1.68 2005/09/18 12:09:45 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -199,10 +199,7 @@ function editblock ($bid = '')
         } else {
             $A['group_id'] = SEC_getFeatureGroup ('block.edit');
         }
-        $A['perm_owner'] = 3;
-        $A['perm_group'] = 2;
-        $A['perm_members'] = 2;
-        $A['perm_anon'] = 2;
+        SEC_setDefaultPermissions ($A, $_CONF['default_permissions_block']);
         $A['is_enabled'] = 1;
         $access = 3;
     }

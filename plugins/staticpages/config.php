@@ -38,4 +38,13 @@ $_SP_CONF['in_block'] = 1;
 $_SP_CONF['filter_html'] = 0;
 $_SP_CONF['censor'] = 1;
 
+// Define default permissions for new pages created from the Admin panel.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order). Possible values:
+// 3 = read + write permissions (perm_owner and perm_group only)
+// 2 = read-only
+// 0 = neither read nor write permissions
+// (a value of 1, ie. write-only, does not make sense and is not allowed)
+$_SP_CONF['default_permissions'] = array (3, 2, 2, 2);
+
 ?>

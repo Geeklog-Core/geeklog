@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.51 2005/06/12 08:59:41 dhaun Exp $
+// $Id: topic.php,v 1.52 2005/09/18 12:09:45 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -92,10 +92,7 @@ function edittopic ($tid = '')
         } else {
             $A['group_id'] = SEC_getFeatureGroup ('topic.edit');
         }
-        $A['perm_owner'] = 3;
-        $A['perm_group'] = 2;
-        $A['perm_members'] = 2;
-        $A['perm_anon'] = 2;
+        SEC_setDefaultPermissions ($A, $_CONF['default_permissions_topic']);
         $access = 3;
     }
     $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');

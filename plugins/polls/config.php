@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.5 2005/09/16 11:11:27 dhaun Exp $
+// $Id: config.php,v 1.6 2005/09/18 12:09:45 dhaun Exp $
 
 $_PO_CONF['version']            = '1.0'; // Plugin Version
 
@@ -57,6 +57,15 @@ $_PO_CONF['polladdresstime']    = 604800; // seconds (= 7 days)
 // be transfered to a user in the Root group (= 0) or the polls can be
 // deleted (= 1).
 $_PO_CONF['delete_polls'] = 0;
+
+// Define default permissions for new polls created from the Admin panel.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order). Possible values:
+// 3 = read + write permissions (perm_owner and perm_group only)
+// 2 = read-only
+// 0 = neither read nor write permissions
+// (a value of 1, ie. write-only, does not make sense and is not allowed)
+$_PO_CONF['default_permissions'] = array (3, 2, 2, 2);
 
 // database table names - don't change
 $_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';

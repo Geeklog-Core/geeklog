@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.164 2005/09/04 13:57:30 dhaun Exp $
+// $Id: story.php,v 1.165 2005/09/18 12:09:45 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -210,10 +210,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         } else {
             $A['group_id'] = SEC_getFeatureGroup ('story.edit');
         }
-        $A['perm_owner'] = 3;
-        $A['perm_group'] = 2;
-        $A['perm_members'] = 2;
-        $A['perm_anon'] = 2;
+        SEC_setDefaultPermissions ($A, $_CONF['default_permissions_story']);
         $access = 3;
     } else {
         $A = $_POST;
