@@ -15,7 +15,7 @@
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
- * $I$
+ * $Id: Import.Admin.class.php,v 1.8 2005/09/18 12:08:03 dhaun Exp $
  */
 
 require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
