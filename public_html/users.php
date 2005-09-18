@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.114 2005/09/16 21:02:50 dhaun Exp $
+// $Id: users.php,v 1.115 2005/09/18 18:12:35 vinny Exp $
 
 /**
 * This file handles user authentication
@@ -843,7 +843,6 @@ default:
         echo $retval;
         exit();
     }
-    COM_updateSpeedlimit('login');
 
     $loginname = COM_applyFilter ($_POST['loginname']);
     if (isset ($_POST['passwd'])) {
@@ -926,6 +925,9 @@ default:
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }
     } else {
+        // On failed login attempt, update speed limit
+        COM_updateSpeedlimit('login');
+
         $display .= COM_siteHeader('menu');
 
         if (isset ($_REQUEST['msg'])) {
