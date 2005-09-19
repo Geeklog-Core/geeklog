@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.22 2005/09/16 18:06:02 dhaun Exp $
+// $Id: functions.inc,v 1.23 2005/09/19 14:34:24 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -802,6 +802,46 @@ function plugin_geticon_polls ()
     global $_CONF;
 
     return $_CONF['site_url'] . '/polls/images/polls.png';
+}
+
+/**
+* Plugin should display [a] comment[s]
+*
+* @param   string  $id     Unique idenifier for item comment belongs to
+* @param   int     $cid    Comment id to display (possibly including sub-comments)
+* @param   string  $title  Page/comment title
+* @param   string  $order  'ASC' or 'DSC' or blank                            
+* @param   string  $format 'threaded', 'nested', or 'flat'                    
+* @param   int     $page   Page number of comments to display                 
+* @param   boolean $view   True to view comment (by cid), false to display (by $pid)
+* @return  mixed   results of calling the plugin_displaycomment_ function     
+*/
+function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page, $view)
+{
+    global $_TABLES, $LANG_ACCESS;
+
+    $retval = '';
+
+    $sql = "SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$id')" . COM_getPermSQL('AND') . ' GROUP BY qid';
+    $result = DB_query ($sql);
+    $A = DB_fetchArray ($result);
+    $allowed = $A['count'];
+
+    if ($allowed == 1) {
+        $delete_option = (SEC_hasRights ('polls.edit') &&
+                (SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon']) == 3));
+        $retval .= CMT_userComments ($id, $title, 'polls', $order, $format,
+                                     $cid, $page, $view, $delete_option);
+    } else {
+        $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                        COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG_ACCESS['storydenialmsg']
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+
+    return $retval;
 }
 
 ?>
