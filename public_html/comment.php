@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
-// | Let user comment on a story, poll, or plugin.                             |
+// | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.95 2005/08/09 14:04:20 ospiess Exp $
+// $Id: comment.php,v 1.96 2005/09/19 14:37:53 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -215,31 +215,7 @@ function handleView($view = true) {
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             }
             break;
-/*
-        case 'poll':
-            $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
-                 . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
-                 . COM_getPermSQL('AND') . 'GROUP BY qid';
-            $result = DB_query ($sql);
-            $B = DB_fetchArray ($result);
-            $allowed = $B['count'];
 
-            if ( $allowed == 1 ) {
-                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
-                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
-                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
-                        $B['perm_anon'] ) == 3 ) );
-                $display .= CMT_userComments ($sid, $title, $type, 
-                        COM_applyFilter ($_REQUEST['order']), $format, $cid,
-                        COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
-            } else {
-                $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                                    COM_getBlockTemplate ('_msg_block', 'header'))
-                         . $LANG_ACCESS['storydenialmsg']
-                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            }
-            break;
-*/
         default: // assume plugin
             if ( !($display = PLG_displayComment($type, $sid, $cid, $title,
                                   COM_applyFilter ($_REQUEST['order']), $format, 
@@ -308,11 +284,6 @@ default:  // New Comment
             if ($type == 'article') {
                 $title = DB_getItem ($_TABLES['stories'], 'title',
                                      "sid = '{$sid}'");
-            // hmm probaly should remove this now that polls is a plugin
-            /**} elseif ($type == 'poll') {
-                $title = DB_getItem ($_TABLES['pollquestions'], 'question',
-                                     "qid = '{$sid}'");
-            **/
             }
             $title = str_replace ('$', '&#36;', $title);
         }
