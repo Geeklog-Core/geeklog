@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2005/09/18 12:09:45 dhaun Exp $
+// $Id: index.php,v 1.15 2005/09/19 08:16:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -70,7 +70,8 @@ if (!SEC_hasRights ('links.edit')) {
 */
 function editlink ($mode, $lid = '') 
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG_LINKS_ADMIN, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $_LI_CONF,
+           $LANG_LINKS_ADMIN, $LANG_ACCESS;
 
     $retval = '';
 

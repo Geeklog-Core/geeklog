@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.25 2005/09/15 07:29:11 ospiess Exp $
+// $Id: functions.inc,v 1.26 2005/09/19 08:16:42 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -283,7 +283,7 @@ function plugin_statssummary_links ()
 
 /**
 * Geeklog is asking us to provide any new items that show up in the type
-* drop-down on search.php.  Let's let users search static pages!
+* drop-down on search.php.  Let's users search for links.
 *
 */
 function plugin_searchtypes_links() 
@@ -297,7 +297,7 @@ function plugin_searchtypes_links()
 
 
 /**
-* this searches for static pages matching the user query and returns an array of
+* This searches for links matching the user query and returns an array of
 * for the header and table rows back to search.php where it will be formated and
 * printed 
 *
@@ -821,11 +821,23 @@ function plugin_moderationvalues_links()
 * @return     string       Any wanted HTML output
 *
 */
-function plugin_moderationapprove_links($id)
+function plugin_moderationapprove_links ($id)
 {
-    global $_TABLES, $_USER;
-    # this was mentioned as a bug but I am not sure it is necessary.
-    DB_change($_TABLES['links'],'owner_id',$_USER['uid'],'lid',$id);
+    global $_TABLES, $_USER, $_GROUPS, $_LI_CONF;
+
+    $A = array ();
+    SEC_setDefaultPermissions ($A, $_LI_CONF['default_permissions']);
+
+    // Since the linksubmission table does not contain fields for the owner
+    // and group, we set those to the current user. Also set the default
+    // permissions as specified in the plugin's config.php
+    if (isset ($_GROUPS['Links Admin'])) {
+        $group_id = $_GROUPS['Links Admin'];
+    } else {
+        $group_id = SEC_getFeatureGroup ('links.moderate');
+    }
+    DB_query ("UPDATE {$_TABLES['links']} SET owner_id = '{$_USER['uid']}', group_id = '$group_id', perm_owner = '{$A['perm_owner']}', perm_group = '{$A['perm_group']}', perm_members = '{$A['perm_members']}', perm_anon = '{$A['perm_anon']}' WHERE lid = '$id'");
+
     return '';
 }
 
@@ -846,7 +858,7 @@ function plugin_moderationdelete_links($id)
 
     // these tables should not contain any rows with ml_id = $id
     // this is done 'just in case'
-    DB_delete ($_TABLES['linksubmissions'], 'lid', $id);
+    DB_delete ($_TABLES['linksubmission'], 'lid', $id);
 
     return '';
 }
