@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.96 2005/09/19 14:37:53 dhaun Exp $
+// $Id: comment.php,v 1.97 2005/09/19 16:38:38 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -154,15 +154,16 @@ function handleDelete() {
 }
 
 /**
- * Hanldes a comment view request
+ * Handles a comment view request
  *
  * @copyright Vincent Furia 2005
  * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @param boolean $view View or display (true for view)
  * @return string HTML (possibly a refresh)
  */
-function handleView($view = true) {
-    global $_REQUEST, $_TABLES, $_USER, $_CONF;
+function handleView($view = true)
+{
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS;
 
     if ($view) {
         $cid = COM_applyFilter ($_REQUEST['cid'], true);
