@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.115 2005/09/18 18:12:35 vinny Exp $
+// $Id: users.php,v 1.116 2005/09/19 12:39:11 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -69,7 +69,7 @@ $VERBOSE = false;
 */
 function userprofile ($user, $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG09, $LANG_LOGIN;
 
     $retval = '';
 
@@ -92,12 +92,12 @@ function userprofile ($user, $msg = 0)
         return $retval;
     }
 
-    $result = DB_query("SELECT username,fullname,regdate,homepage,about,location,pgpkey,photo,email FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
-    $nrows = DB_numRows($result);
+    $result = DB_query ("SELECT username,fullname,regdate,homepage,about,location,pgpkey,photo,email FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
+    $nrows = DB_numRows ($result);
     if ($nrows == 0) { // no such user
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
-    $A = DB_fetchArray($result);
+    $A = DB_fetchArray ($result);
 
     $retval .= COM_siteHeader ('menu', $LANG04[1] . ' ' . $A['username']);
     if ($msg > 0) {
@@ -105,45 +105,51 @@ function userprofile ($user, $msg = 0)
     }
 
     // format date/time to user preference
-    $curtime = COM_getUserDateTimeFormat($A["regdate"]);
+    $curtime = COM_getUserDateTimeFormat ($A['regdate']);
     $A['regdate'] = $curtime[0];
 
-    $user_templates = new Template($_CONF['path_layout'] . 'users');
-    $user_templates->set_file(array('profile'=>'profile.thtml','row'=>'commentrow.thtml','strow'=>'storyrow.thtml'));
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_url_ssl', $_CONF['site_url_ssl']);
-    $user_templates->set_var('start_block_userprofile', COM_startBlock($LANG04[1] . ' ' . $A['username']));
-    $user_templates->set_var('end_block', COM_endBlock());
-    $user_templates->set_var('lang_username', $LANG04[2]);
-    $user_templates->set_var('username', $A['username']);
+    $user_templates = new Template ($_CONF['path_layout'] . 'users');
+    $user_templates->set_file (array ('profile' => 'profile.thtml',
+                                      'row'     => 'commentrow.thtml',
+                                      'strow'   => 'storyrow.thtml'));
+    $user_templates->set_var ('site_url', $_CONF['site_url']);
+    $user_templates->set_var ('site_url_ssl', $_CONF['site_url_ssl']);
+    $user_templates->set_var ('start_block_userprofile',
+            COM_startBlock ($LANG04[1] . ' ' . $A['username']));
+    $user_templates->set_var ('end_block', COM_endBlock ());
+    $user_templates->set_var ('lang_username', $LANG04[2]);
+    $user_templates->set_var ('username', $A['username']);
 
     $photo = USER_getPhoto ($user, $A['photo'], $A['email'], -1);
     $user_templates->set_var ('user_photo', $photo);
 
-    $user_templates->set_var('user_fullname', $A['fullname']);
-    $user_templates->set_var('lang_membersince', $LANG04[67]);
-    $user_templates->set_var('user_regdate', $A['regdate']);
-    $user_templates->set_var('lang_email', $LANG04[5]);
-    $user_templates->set_var('user_id', $user);
-    $user_templates->set_var('lang_sendemail', $LANG04[81]);
-    $user_templates->set_var('lang_homepage', $LANG04[6]);
-    $user_templates->set_var('user_homepage', COM_killJS ($A['homepage']));
-    $user_templates->set_var('lang_location', $LANG04[106]);
-    $user_templates->set_var('user_location', $A['location']);
-    $user_templates->set_var('lang_bio', $LANG04[7]);
-    $user_templates->set_var('user_bio', nl2br(stripslashes($A['about'])));
-    $user_templates->set_var('lang_pgpkey', $LANG04[8]);
-    $user_templates->set_var('user_pgp', nl2br($A['pgpkey']));
-    $user_templates->set_var('start_block_last10stories',
-            COM_startBlock($LANG04[82] . ' ' . $A['username']));
-    $user_templates->set_var('start_block_last10comments',
+    $user_templates->set_var ('user_fullname', $A['fullname']);
+    $user_templates->set_var ('lang_membersince', $LANG04[67]);
+    $user_templates->set_var ('user_regdate', $A['regdate']);
+    $user_templates->set_var ('lang_email', $LANG04[5]);
+    $user_templates->set_var ('user_id', $user);
+    $user_templates->set_var ('lang_sendemail', $LANG04[81]);
+    $user_templates->set_var ('lang_homepage', $LANG04[6]);
+    $user_templates->set_var ('user_homepage', COM_killJS ($A['homepage']));
+    $user_templates->set_var ('lang_location', $LANG04[106]);
+    $user_templates->set_var ('user_location', $A['location']);
+    $user_templates->set_var ('lang_bio', $LANG04[7]);
+    $user_templates->set_var ('user_bio', nl2br (stripslashes ($A['about'])));
+    $user_templates->set_var ('lang_pgpkey', $LANG04[8]);
+    $user_templates->set_var ('user_pgp', nl2br ($A['pgpkey']));
+    $user_templates->set_var ('start_block_last10stories',
+            COM_startBlock ($LANG04[82] . ' ' . $A['username']));
+    $user_templates->set_var ('start_block_last10comments',
             COM_startBlock($LANG04[10] . ' ' . $A['username']));
-    $user_templates->set_var('start_block_postingstats',
-            COM_startBlock($LANG04[83] . ' ' . $A['username']));
+    $user_templates->set_var ('start_block_postingstats',
+            COM_startBlock ($LANG04[83] . ' ' . $A['username']));
+    $user_templates->set_var ('lang_title', $LANG09[16]);
+    $user_templates->set_var ('lang_date', $LANG09[17]);
+
     // for alternative layouts: use these as headlines instead of block titles
-    $user_templates->set_var('headline_last10stories', $LANG04[82]);
-    $user_templates->set_var('headline_last10comments', $LANG04[10]);
-    $user_templates->set_var('headline_postingstats', $LANG04[83]);
+    $user_templates->set_var ('headline_last10stories', $LANG04[82]);
+    $user_templates->set_var ('headline_last10comments', $LANG04[10]);
+    $user_templates->set_var ('headline_postingstats', $LANG04[83]);
 
     $result = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
             . COM_getPermSQL ());
@@ -159,29 +165,32 @@ function userprofile ($user, $msg = 0)
     if (sizeof ($tids) > 0) {
         $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $sql .= " ORDER BY unixdate DESC LIMIT 10";
-        $result = DB_query($sql);
-        $nrows = DB_numRows($result);
+        $result = DB_query ($sql);
+        $nrows = DB_numRows ($result);
     } else {
         $nrows = 0;
     }
     if ($nrows > 0) {
-        for ($i = 1; $i <= $nrows; $i++) {
-            $C = DB_fetchArray($result);
-            $user_templates->set_var('row_number', $i . '.');
+        for ($i = 0; $i < $nrows; $i++) {
+            $C = DB_fetchArray ($result);
+            $user_templates->set_var ('cssid', ($i % 2) + 1);
+            $user_templates->set_var ('row_number', ($i + 1) . '.');
             $articleUrl = COM_buildUrl ($_CONF['site_url']
                                         . '/article.php?story=' . $C['sid']);
             $user_templates->set_var ('article_url', $articleUrl);
             $user_templates->set_var ('story_begin_href',
                                       '<a href="' . $articleUrl . '">');
             $C['title'] = str_replace ('$', '&#36;', $C['title']);
-            $user_templates->set_var('story_title', stripslashes($C['title']));
-            $user_templates->set_var('story_end_href', '</a>');
-            $storytime = COM_getUserDateTimeFormat($C['unixdate']);
-            $user_templates->set_var('story_date', $storytime[0]);
-            $user_templates->parse('story_row','strow',true);
+            $user_templates->set_var ('story_title',
+                                      stripslashes ($C['title']));
+            $user_templates->set_var ('story_end_href', '</a>');
+            $storytime = COM_getUserDateTimeFormat ($C['unixdate']);
+            $user_templates->set_var ('story_date', $storytime[0]);
+            $user_templates->parse ('story_row', 'strow', true);
         }
     } else {
-        $user_templates->set_var('story_row','<tr><td>' . $LANG01[37] . '</td></tr>');
+        $user_templates->set_var ('story_row',
+                                  '<tr><td>' . $LANG01[37] . '</td></tr>');
     }
 
     // list of last 10 comments by this user
@@ -228,18 +237,20 @@ function userprofile ($user, $msg = 0)
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
-        for ($i = 1; $i <= $nrows; $i++) {
-            $C = DB_fetchArray($result);
-            $user_templates->set_var('row_number', $i . '.');
+        for ($i = 0; $i < $nrows; $i++) {
+            $C = DB_fetchArray ($result);
+            $user_templates->set_var ('cssid', ($i % 2) + 1);
+            $user_templates->set_var ('row_number', ($i + 1) . '.');
             $user_templates->set_var ('comment_begin_href',
                     '<a href="' . $_CONF['site_url'] .
                     '/comment.php?mode=view&amp;cid=' . $C['cid']. '">');
-            $C['title'] = str_replace('$','&#36;',$C['title']);
-            $user_templates->set_var('comment_title', stripslashes($C['title']));
-            $user_templates->set_var('comment_end_href', '</a>');
-            $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
-            $user_templates->set_var('comment_date', $commenttime[0]);
-            $user_templates->parse('comment_row','row',true);
+            $C['title'] = str_replace ('$', '&#36;', $C['title']);
+            $user_templates->set_var ('comment_title',
+                                      stripslashes ($C['title']));
+            $user_templates->set_var ('comment_end_href', '</a>');
+            $commenttime = COM_getUserDateTimeFormat ($C['unixdate']);
+            $user_templates->set_var ('comment_date', $commenttime[0]);
+            $user_templates->parse ('comment_row', 'row', true);
         }
     } else {
         $user_templates->set_var('comment_row','<tr><td>' . $LANG01[29] . '</td></tr>');
@@ -247,28 +258,29 @@ function userprofile ($user, $msg = 0)
 
     // posting stats for this user
     $user_templates->set_var ('lang_number_stories', $LANG04[84]);
-    $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
+    $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
     $result = DB_query($sql);
     $N = DB_fetchArray ($result);
-    $user_templates->set_var('number_stories', $N['count']);
+    $user_templates->set_var ('number_stories', $N['count']);
     $user_templates->set_var ('lang_number_comments', $LANG04[85]);
-    $sql = "SELECT count(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $user)";
+    $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $user)";
     if (!empty ($sidList)) {
         $sql .= " AND (sid in ($sidList))";
     }
-    $result = DB_query($sql);
+    $result = DB_query ($sql);
     $N = DB_fetchArray ($result);
-    $user_templates->set_var('number_comments', $N['count']);
-    $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $A['username']);
+    $user_templates->set_var ('number_comments', $N['count']);
+    $user_templates->set_var ('lang_all_postings_by',
+                              $LANG04[86] . ' ' . $A['username']);
 
     // Call custom registration function if enabled and exists
-    if ($_CONF['custom_registration'] AND (function_exists(custom_userdisplay)) ) {
-        $user_templates->set_var ('customfields', custom_userdisplay($user) );
+    if ($_CONF['custom_registration'] && function_exists ('custom_userdisplay') ) {
+        $user_templates->set_var ('customfields', custom_userdisplay ($user));
     }
     PLG_profileVariablesDisplay ($user, $user_templates);
 
-    $user_templates->parse('output', 'profile');
-    $retval .= $user_templates->finish($user_templates->get_var('output'));
+    $user_templates->parse ('output', 'profile');
+    $retval .= $user_templates->finish ($user_templates->get_var ('output'));
 
     $retval .= PLG_profileBlocksDisplay ($user);
     $retval .= COM_siteFooter ();
@@ -346,7 +358,7 @@ function requestpassword ($username, $msg = 0)
         $mailtext = sprintf ($LANG04[88], $username);
         $mailtext .= $_CONF['site_url'] . '/users.php?mode=newpwd&uid=' . $A['uid'] . '&rid=' . $reqid . "\n\n";
         $mailtext .= $LANG04[89];
-        $mailtext .= "{$_CONF["site_name"]}\n";
+        $mailtext .= "{$_CONF['site_name']}\n";
         $mailtext .= "{$_CONF['site_url']}\n";
 
         $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
