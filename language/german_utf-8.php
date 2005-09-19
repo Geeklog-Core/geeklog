@@ -1336,7 +1336,7 @@ $LANG_TRB = array(
     'error_unspecified'  => 'Fehler nicht näher spezifiziert.',
     'select_url'         => 'Trackback-URL auswaehlen',
     'not_found'          => 'Trackback-URL nicht gefunden',
-    'autodetect_failed'  => ''Geeklog konnte keine Trackback-URL fuer den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte gib die Trackback-URL von Hand ein.',
+    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL fuer den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte gib die Trackback-URL von Hand ein.',
     'trackback_explain'  => 'Aus den unten aufgefuehrten Links kannst Du jetzt den Beitrag auswaehlen, zu dem Dein Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls kannst Du die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>.',
     'no_links_trackback' => 'Keine Links gefunden. Fuer diesen Beitrag koennen keine Trackback-Kommentare gesendet werden.',
     'pingback'           => 'Pingback',
