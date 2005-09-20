@@ -1,9 +1,9 @@
 <form action="{site_url}/users.php" method="POST">
   <b><label for="loginname">{lang_username}</label>:</b><br>
-  <input type="text" size="10" name="loginname" value=""><br>
+  <input type="text" size="10" name="loginname" value="" id="loginname"><br>
   {services}
   <b><label for="passwd">{lang_password}</label>:</b><br>
-  <input type="password" size="10" name="passwd"><br>
+  <input type="password" size="10" name="passwd" id="passwd"><br>
   <input type="submit" value="{lang_login}">
 </form>
 {lang_signup}<br>
