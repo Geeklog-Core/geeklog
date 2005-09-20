@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.192 2005/09/18 12:09:45 dhaun Exp $
+// $Id: config.php,v 1.193 2005/09/20 18:02:14 mjervis Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -588,7 +588,7 @@ $_CONF['rdf_limit']     = 10;   // number of stories (10) or hours (24h)
 // Include the story's entire intro text in the feed (= 1) or limit the number
 // of characters from the intro text (any number > 1) or don't include the text
 // at all (= 0).
-$_CONF['rdf_storytext'] = 0;
+$_CONF['rdf_storytext'] = 1;
 
 // Default language for the feed - may have to be different than the locale
 $_CONF['rdf_language']  = 'en-gb';
