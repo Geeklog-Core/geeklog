@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.17 2005/09/04 13:57:30 dhaun Exp $
+// $Id: lib-syndication.php,v 1.18 2005/09/20 18:00:51 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -39,7 +39,7 @@ if (eregi ('lib-syndication.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 if ($_CONF['trackback_enabled']) {
-    require_once ($_CONF['path_system'] . 'lib-trackback.php'); 
+    require_once ($_CONF['path_system'] . 'lib-trackback.php');
 }
 
 /**
@@ -338,15 +338,15 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $sids[] = $row['sid'];
 
             $storytitle = stripslashes( $row['title'] );
-            $storytext = SYND_truncateSummary( $row['introtext'], $contentLength);
-            $fulltext = stripslashes( $row['bodytext'] );
+            $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
+            $storytext = SYND_truncateSummary( $fulltext, $contentLength);
+
             $fulltext = trim( $fulltext );
             $fulltext = preg_replace( "/(\015)/", "", $fulltext );
-            $fulltext = "$storytext\n\n$fulltext";
-    
+
             $storylink = COM_buildUrl( $_CONF['site_url']
                                        . '/article.php?story=' . $row['sid'] );
-    
+
             $content[] = array( 'title'  => $storytitle,
                                 'summary' => $storytext,
                                 'text'   => $fulltext,
@@ -435,18 +435,16 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
         $sids[] = $row['sid'];
 
         $storytitle = stripslashes( $row['title'] );
-        
-        $storytext = SYND_truncateSummary($row['introtext'], $contentLength);
 
-        $fulltext = stripslashes( $row['bodytext'] );
+        $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
+        $storytext = SYND_truncateSummary($fulltext, $contentLength);
         $fulltext = trim( $fulltext );
         $fulltext = preg_replace( "/(\015)/", "", $fulltext );
-        $fulltext = "$storytext\n\n$fulltext";
 
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
 
-        
+
         $content[] = array( 'title'  => $storytitle,
                             'summary'   => $storytext,
                             'text'   => $fulltext,
@@ -605,7 +603,7 @@ function SYND_updateFeed( $fid )
                     $count = count( $content );
                     for( $i = 0; $i < $count; $i++ )
                     {
-                        $content[i]['summary'] = SYND_truncateSummary( 
+                        $content[i]['summary'] = SYND_truncateSummary(
                                     $content[i]['text'], $A['content_length'] );
                     }
                 }
