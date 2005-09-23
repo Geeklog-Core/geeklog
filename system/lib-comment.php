@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.20 2005/09/18 17:20:21 vinny Exp $
+// $Id: lib-comment.php,v 1.21 2005/09/23 16:35:50 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -776,13 +776,15 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
 
     // Let plugins have a chance to check for SPAM
     $result = PLG_checkforSpam($comment, $_CONF['spamx']);
-    // Now check the result and redirect to index.php if spam action was taken
+    // Now check the result and display message if spam action was taken
     if ($result > 0) {
-        // notice no return value here to prevent spam based denail of service attack
-        // FIXME: is 'plugin=spamx' needed here?
-        echo COM_refresh($_CONF['site_url'] . '/index.php?msg='.$result.'&amp;plugin=spamx');
-        exit;
+        // update speed limit nonetheless
+        COM_updateSpeedlimit ('comment');
+
+        // then tell them to get lost ...
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
+
     // Let plugins have a chance to decide what to do before saving the comment, return errors.
     if ($someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode)) {
         return $someError;

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.86 2005/09/09 13:20:58 dhaun Exp $
+// $Id: submit.php,v 1.87 2005/09/23 16:35:50 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -450,10 +450,8 @@ function savestory ($A)
     $spamcheck = '<h1>' . $A['title'] . '</h1><p>' . $A['introtext'] . '</p>';
     $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
     if ($result > 0) {
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
-                               . '&amp;plugin=spamx');
-
-        return $retval;
+        COM_updateSpeedlimit ('submit');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $A['title'] = strip_tags (COM_checkWords ($A['title']));
@@ -568,10 +566,8 @@ function saveevent ($A)
                . '<br>' . $A['description'] . '</p>';
     $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
     if ($result > 0) {
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
-                               . '&amp;plugin=spamx');
-
-        return $retval;
+        COM_updateSpeedlimit ('submit');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));

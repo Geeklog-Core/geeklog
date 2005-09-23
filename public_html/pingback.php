@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.6 2005/06/06 19:24:11 dhaun Exp $
+// $Id: pingback.php,v 1.7 2005/09/23 16:35:50 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -100,13 +100,15 @@ function PNB_handlePingback ($id, $type, $url)
 
     // save as a trackback comment
     $saved = TRB_saveTrackbackComment ($id, $type, $url, $title);
+
+    // update speed limit in any case
+    COM_updateSpeedlimit ('pingback');
+
     if ($saved == TRB_SAVE_SPAM) {
         return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
     } else if ($saved == TRB_SAVE_REJECT) {
         return new XML_RPC_Response (0, 49, $PNB_ERROR['multiple']);
     }
-
-    COM_updateSpeedlimit ('pingback');
 
     if (isset ($_CONF['notification']) &&
             in_array ('pingback', $_CONF['notification'])) {                  

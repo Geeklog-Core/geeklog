@@ -2,6 +2,22 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Changed the spam handling to update the speed limit when spam is detected
+  (i.e. handle spam posts as if they were successful posts and make the
+  submitter wait for the speed limit to expire). Also send a 403 "Forbidden"
+  HTTP response code when displaying the "spam detected" message [Dirk]
+  To quote RFC2616: "403 Forbidden: The server understood the request, but is
+  refusing to fulfill it. Authorization will not help and the request SHOULD
+  NOT be repeated."
+- The default permissions for new objects (stories, topics, blocks, etc.) can
+  now be set in config.php (feature request #90) [Dirk]
+- Filter linefeeds in the To:, From:, and Subject: fields of an email in
+  COM_mail [Dirk]
+- Added an "Active users" entry to the site statistics. If Geeklog is configured
+  to track a user's last login, this will display the number of users who
+  logged into the site during the last 4 weeks. Otherwise, it displays the
+  number of user accounts with status = 3 (i.e. have logged into their account
+  at least once and haven't been banned) [Dirk]
 - Introduced a new plugin API function so that the plugin's summary (e.g.
   number of items) can be properly integrated with the "Site Stats" section.
   Modified stats/sitestatistics.thtml, removed stats/stats.thtml, added
@@ -21,7 +37,7 @@ GeekLog History/Changes:
   of one of the feed entries has changed  - so far, we only checked if entries
   had been added or removed (bug #277) [Dirk]
 - Added $_CONF['show_right_blocks'] option which, if set = true, will display
-  right-side blocks on all pages [Dirk]
+  right-side blocks on all pages (also addresses feature request #31) [Dirk]
 - Fixed bug #454, SQL error when reading comments. [Vinny]
 - When $_CONF['emailstoryloginrequired'] = 1, hide the links to the "email
   story" form from anonymous users [Dirk]

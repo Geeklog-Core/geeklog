@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.119 2005/09/16 12:59:12 dhaun Exp $
+// $Id: usersettings.php,v 1.120 2005/09/23 16:35:50 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -854,8 +854,7 @@ function saveuser($A)
              . $A['about'] . '<br>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
     if ($result > 0) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
-                            . '&amp;plugin=spamx');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $A['email'] = COM_applyFilter ($A['email']);

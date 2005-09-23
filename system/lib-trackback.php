@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.10 2005/06/05 09:40:12 dhaun Exp $
+// $Id: lib-trackback.php,v 1.11 2005/09/23 16:35:50 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -408,6 +408,10 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
 
         $saved = TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog,
                                            $excerpt);
+
+        // update speed limit in any case
+        COM_updateSpeedlimit ('trackback');
+
         if ($saved == TRB_SAVE_SPAM) {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['spam']);
 
@@ -417,8 +421,6 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
 
             return false;
         }
-
-        COM_updateSpeedlimit ('trackback');
 
         if (isset ($_CONF['notification']) &&
                 in_array ('trackback', $_CONF['notification'])) {
