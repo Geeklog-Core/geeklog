@@ -266,6 +266,21 @@
       {
         $xml .= '<comments>'.$this->_safeXML( $article['commenturl'] )."</comments>\n";
       }
+      if( array_key_exists( 'topic', $article ) )
+      {
+        $topic = $article['topic'];
+        if( is_array( $topic ))
+        {
+          foreach( $topic as $subject )
+          {
+            $xml .= '<dc:subject>'.$this->_safeXML( $subject )."</dc:subject>\n";
+          }
+        }
+        else
+        {
+          $xml .= '<dc:subject>'.$this->_safeXML( $topic )."</dc:subject>\n";
+        }
+      }
       if( array_key_exists( 'summary', $article ) )
       {
         if( strlen( $article['summary'] ) > 0 )
@@ -295,6 +310,7 @@
       global $_CONF;
 
       $modules = array();
+      $modules[] = 'xmlns:dc="http://purl.org/dc/elements/1.1/"';
       if( $_CONF['trackback_enabled'] )
       {
         $modules[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.18 2005/09/20 18:00:51 mjervis Exp $
+// $Id: lib-syndication.php,v 1.19 2005/09/23 12:18:32 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -328,6 +328,9 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $limitsql = ' LIMIT 10';
         }
 
+        $topic = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
+                               "tid = '$tid'" ));
+
         $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
         $nrows = DB_numRows( $result );
@@ -347,14 +350,16 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $storylink = COM_buildUrl( $_CONF['site_url']
                                        . '/article.php?story=' . $row['sid'] );
 
-            $content[] = array( 'title'  => $storytitle,
-                                'summary' => $storytext,
-                                'text'   => $fulltext,
-                                'link'   => $storylink,
-                                'uid'    => $row['uid'],
-                                'author' => COM_getDisplayName( $row['uid'] ),
-                                'date'   => $row['modified'],
-                                'format' => $row['postmode']
+            $content[] = array( 'title'      => $storytitle,
+                                'summary'    => $storytext,
+                                'text'       => $fulltext,
+                                'link'       => $storylink,
+                                'uid'        => $row['uid'],
+                                'author'     => COM_getDisplayName( $row['uid'] ),
+                                'date'       => $row['modified'],
+                                'format'     => $row['postmode'],
+                                'commenturl' => $storylink . '#comments',
+                                'topic'      => $topic
                               );
 
             if( $_CONF['trackback_enabled'] )
@@ -405,7 +410,8 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
     }
 
     // get list of topics that anonymous users have access to
-    $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
+    $topics = array();
+    $tresult = DB_query( "SELECT tid,topic FROM {$_TABLES['topics']}"
                          . COM_getPermSQL( 'WHERE', 1 ));
     $tnumrows = DB_numRows( $tresult );
     $tlist = '';
@@ -417,13 +423,14 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
         {
             $tlist .= ',';
         }
+        $topics[$T['tid']] = stripslashes( $T['topic'] );
     }
     if( !empty( $tlist ))
     {
         $where .= " AND (tid IN ($tlist))";
     }
 
-    $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+    $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
     $content = array();
     $sids = array();
@@ -437,22 +444,23 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
         $storytitle = stripslashes( $row['title'] );
 
         $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
-        $storytext = SYND_truncateSummary($fulltext, $contentLength);
+        $storytext = SYND_truncateSummary( $fulltext, $contentLength );
         $fulltext = trim( $fulltext );
         $fulltext = preg_replace( "/(\015)/", "", $fulltext );
 
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
 
-
-        $content[] = array( 'title'  => $storytitle,
-                            'summary'   => $storytext,
-                            'text'   => $fulltext,
-                            'link'   => $storylink,
-                            'uid'    => $row['uid'],
-                            'author' => COM_getDisplayName( $row['uid'] ),
-                            'date'   => $row['modified'],
-                            'format' => $row['postmode']
+        $content[] = array( 'title'      => $storytitle,
+                            'summary'    => $storytext,
+                            'text'       => $fulltext,
+                            'link'       => $storylink,
+                            'uid'        => $row['uid'],
+                            'author'     => COM_getDisplayName( $row['uid'] ),
+                            'date'       => $row['modified'],
+                            'format'     => $row['postmode'],
+                            'commenturl' => $storylink . '#comments',
+                            'topic'      => $topics[$row['tid']]
                           );
 
         if( $_CONF['trackback_enabled'] )
