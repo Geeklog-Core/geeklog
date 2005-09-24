@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: trackback.php,v 1.5 2005/09/24 09:25:39 dhaun Exp $
+// $Id: trackback.php,v 1.6 2005/09/24 17:40:59 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-trackback.php');
@@ -47,9 +47,6 @@ if (!$_CONF['trackback_enabled']) {
     exit;
 }
 
-$id = '';
-$type = '';
-
 if (isset ($_SERVER['REQUEST_METHOD'])) {
     // Trackbacks are only allowed as POST requests
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -58,12 +55,9 @@ if (isset ($_SERVER['REQUEST_METHOD'])) {
     }
 }
 
-if (isset ($_POST['id'])) {
-    $id = COM_applyFilter ($_POST['id']);
-}
-if (isset ($_POST['type'])) {
-    $type = COM_applyFilter ($_POST['type']);
-}
+COM_setArgNames (array ('id', 'type'));
+$id = COM_applyFilter (COM_getArgument ('id'));
+$type = COM_applyFilter (COM_getArgument ('type'));
 
 if (empty ($id)) {
     TRB_sendTrackbackResponse (1, $TRB_ERROR['illegal_request']);
