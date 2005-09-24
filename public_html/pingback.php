@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.7 2005/09/23 16:35:50 dhaun Exp $
+// $Id: pingback.php,v 1.8 2005/09/24 15:08:16 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -233,10 +233,18 @@ function PNB_receivePing ($params)
     }
 
     $s = $params->getParam (0);
-    $sourceURI = $s->scalarval (); // the page linking to us
+    $p1 = $s->scalarval (); // the page linking to us
 
-    $s = $params->getParam (1);
-    $targetURI = $s->scalarval (); // the page being linked to (on our site)
+    if (is_array ($p1)) {
+        // WordPress sends the 2 URIs as an array ...
+        $sourceURI = $p1[0]->scalarval ();
+        $targetURI = $p1[1]->scalarval ();
+    } else {
+        $sourceURI = $p1;
+
+        $s = $params->getParam (1);
+        $targetURI = $s->scalarval (); // the page being linked to (on our site)
+    }
 
     if (!PNB_validURL ($targetURI)) {
         return new XML_RPC_Response (0, 33, $PNB_ERROR['uri_invalid']);
@@ -261,14 +269,10 @@ function PNB_receivePing ($params)
 
 
 // MAIN
-//                                 return    source    target
-$receiveSignature = array (array ('string', 'string', 'string'));
-
 
 // fire up the XML-RPC server - it does all the work for us
 $s = new XML_RPC_Server ( array (
-        'pingback.ping' => array ('function'  => 'PNB_receivePing',
-                                  'signature' => $receiveSignature)
+        'pingback.ping' => array ('function'  => 'PNB_receivePing')
      ));
 
 ?>
