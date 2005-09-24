@@ -903,7 +903,7 @@ $LANG28 = array(
     44 => 'Erwartet Autorisierung',
     45 => 'Aktiv',
     46 => 'User-Status',
-    47 => '�ndern'
+    47 => 'Ändern'
 );
 
 ###############################################################################
@@ -1163,7 +1163,17 @@ $MESSAGE = array(
     63 => 'Beim Löschen des Trackback-Kommentars trat ein Fehler auf.',
     64 => 'Dein Trackback-Kommentar wurde erfolgreich verschickt.',
     65 => 'Das Weblog-Verzeichnis wurde gespeichert.',
-    66 => 'Das Weblog-Verzeichnis wurde geloescht.'
+    66 => 'Das Weblog-Verzeichnis wurde gelöscht.',
+    67 => 'Das neue Passwort stimmt nicht mit dem Bestätigungs-Passwort überein!',
+    68 => 'Gib bitte Dein korrektes aktuelles Passwort ein.',
+    69 => 'Dein Account wurde gesperrt!',
+    70 => 'Dein Account wurde noch nicht freigeschaltet.',
+    71 => 'Dein Account wurde bestätigt, muss aber noch freigeschaltet werden.',
+    72 => 'Bei der Installation des Plugins trat ein Fehler auf. Siehe error.log für weitere Informationen.',
+    73 => 'Bei der Deinstallation des Plugins trat ein Fehler aus. Siehe error.log für weitere Informationen.',
+    74 => 'Der Pingback wurde erfolgreich verschickt.',
+    75 => 'Trackbacks müssen als POST-Request verschickt werden.'
+);
 );
 
 ###############################################################################
@@ -1334,20 +1344,20 @@ $LANG_TRB = array(
     'error_socket'       => 'Socket konnte nicht geöffnet werden.',
     'error_response'     => 'Antwort nicht verstanden.',
     'error_unspecified'  => 'Fehler nicht näher spezifiziert.',
-    'select_url'         => 'Trackback-URL auswaehlen',
+    'select_url'         => 'Trackback-URL auswählen',
     'not_found'          => 'Trackback-URL nicht gefunden',
-    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL fuer den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte gib die Trackback-URL von Hand ein.',
-    'trackback_explain'  => 'Aus den unten aufgefuehrten Links kannst Du jetzt den Beitrag auswaehlen, zu dem Dein Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls kannst Du die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>.',
-    'no_links_trackback' => 'Keine Links gefunden. Fuer diesen Beitrag koennen keine Trackback-Kommentare gesendet werden.',
+    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL für den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte gib die Trackback-URL von Hand ein.',
+    'trackback_explain'  => 'Aus den unten aufgeführten Links kannst Du jetzt den Beitrag auswählen, zu dem Dein Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls kannst Du die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>.',
+    'no_links_trackback' => 'Keine Links gefunden. Für diesen Beitrag können keine Trackback-Kommentare gesendet werden.',
     'pingback'           => 'Pingback',
     'pingback_results'   => 'Pingback-Ergebnisse',
     'send_pings'         => 'Pings senden',
-    'send_pings_for'     => 'Pings fuer "%s" senden',
-    'no_links_pingback'  => 'Keine Links gefunden. Es wurden keine Pingbacks fuer diesen Beitrag gesendet.',
+    'send_pings_for'     => 'Pings für "%s" senden',
+    'no_links_pingback'  => 'Keine Links gefunden. Es wurden keine Pingbacks für diesen Beitrag gesendet.',
     'pingback_success'   => 'Pingback gesendet.',
     'no_pingback_url'    => 'Keine Pingback-URL gefunden.',
     'resend'             => 'Nochmal senden',
-    'ping_all_explain'   => 'Du kannst jetzt einen <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> zu den verlinkten Sites senden, einen Ping an Weblog-Verzeichnisse senden, oder einen <a href="http://de.wikipedia.org/wiki/Trackback">Trackback</a>-Kommentar verschicken, wenn Du ueber einen Beitrag in einem
+    'ping_all_explain'   => 'Du kannst jetzt einen <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> zu den verlinkten Sites senden, einen Ping an Weblog-Verzeichnisse senden, oder einen <a href="http://de.wikipedia.org/wiki/Trackback">Trackback</a>-Kommentar verschicken, wenn Du über einen Beitrag in einem
 anderen Weblog geschrieben hast.',
     'pingback_button'    => 'Pingback senden',
     'pingback_short'     => 'Einen Pingback an alle in diesem Beitrag verlinkten Sites senden.',
@@ -1369,7 +1379,7 @@ anderen Weblog geschrieben hast.',
     'services_headline'  => 'Weblog-Verzeichnisse',
     'admin_home'         => 'Admin Home',
     'new_service'        => 'Neues Verzeichnis',
-    'service_explain'    => 'Um ein Weblog-Verzeichnis zu aendern oder zu loeschen, auf dessen Namen klicken. Um ein neues Weblog-Verzeichnis einzutragen, auf Neues Verzeichnis klicken.',
+    'service_explain'    => 'Um ein Weblog-Verzeichnis zu ändern oder zu löschen, auf dessen Namen klicken. Um ein neues Weblog-Verzeichnis einzutragen, auf Neues Verzeichnis klicken.',
     'service'            => 'Verzeichnis',
     'ping_method'        => 'Ping-Methode',
     'service_enabled'    => 'Aktiv',
@@ -1381,9 +1391,9 @@ anderen Weblog geschrieben hast.',
     'edit_service'       => 'Weblog-Verzeichnis bearbeiten',
     'button_save'        => 'Speichern',
     'button_cancel'      => 'Abbruch',
-    'button_delete'      => 'Loeschen',
+    'button_delete'      => 'Löschen',
     'trackbacks'         => 'Trackbacks',
-    'editor_intro'       => 'Hier kannst Du Deinen Trackback-Kommentar fuer <a href="%s">%s</a> eingeben.'
+    'editor_intro'       => 'Hier kannst Du Deinen Trackback-Kommentar für <a href="%s">%s</a> eingeben.'
 );
 
 ###############################################################################

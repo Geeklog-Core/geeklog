@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: trackback.php,v 1.4 2005/06/05 09:40:12 dhaun Exp $
+// $Id: trackback.php,v 1.5 2005/09/24 09:25:39 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-trackback.php');
@@ -47,14 +47,22 @@ if (!$_CONF['trackback_enabled']) {
     exit;
 }
 
-COM_setArgNames (array ('id', 'type'));
-$id = COM_applyFilter (COM_getArgument ('id'));
-$type = COM_applyFilter (COM_getArgument ('type'));
+$id = '';
+$type = '';
 
-// Trackback pings using GET requests are deprecated but we still support them
-if (empty ($id)) {
-    $id = COM_applyFilter ($_REQUEST['id']);
-    $type = COM_applyFilter ($_REQUEST['type']);
+if (isset ($_SERVER['REQUEST_METHOD'])) {
+    // Trackbacks are only allowed as POST requests
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        header ('Allow: POST');
+        COM_displayMessageAndAbort (75, '', 405, 'Method Not Allowed');
+    }
+}
+
+if (isset ($_POST['id'])) {
+    $id = COM_applyFilter ($_POST['id']);
+}
+if (isset ($_POST['type'])) {
+    $type = COM_applyFilter ($_POST['type']);
 }
 
 if (empty ($id)) {

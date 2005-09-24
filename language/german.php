@@ -1180,14 +1180,15 @@ $MESSAGE = array(
     64 => 'Dein Trackback-Kommentar wurde erfolgreich verschickt.',
     65 => 'Das Weblog-Verzeichnis wurde gespeichert.',
     66 => 'Das Weblog-Verzeichnis wurde gelöscht.',
-    67 => 'The new password does not match the confirmation password!',
-    68 => 'You have to enter the correct current password.',
-    69 => 'Your account has been blocked!',
-    70 => 'Your account is awaiting administrator approval.',
-    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
-    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
-    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
-    74 => 'Der Pingback wurde erfolgreich verschickt.'
+    67 => 'Das neue Passwort stimmt nicht mit dem Bestätigungs-Passwort überein!',
+    68 => 'Gib bitte Dein korrektes aktuelles Passwort ein.',
+    69 => 'Dein Account wurde gesperrt!',
+    70 => 'Dein Account wurde noch nicht freigeschaltet.',
+    71 => 'Dein Account wurde bestätigt, muss aber noch freigeschaltet werden.',
+    72 => 'Bei der Installation des Plugins trat ein Fehler auf. Siehe error.log für weitere Informationen.',
+    73 => 'Bei der Deinstallation des Plugins trat ein Fehler aus. Siehe error.log für weitere Informationen.',
+    74 => 'Der Pingback wurde erfolgreich verschickt.',
+    75 => 'Trackbacks müssen als POST-Request verschickt werden.'
 );
 
 ###############################################################################

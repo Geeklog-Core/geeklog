@@ -1162,7 +1162,16 @@ $MESSAGE = array(
     63 => 'Beim Löschen des Trackback-Kommentars trat ein Fehler auf.',
     64 => 'Ihr Trackback-Kommentar wurde erfolgreich verschickt.',
     65 => 'Das Weblog-Verzeichnis wurde gespeichert.',
-    66 => 'Das Weblog-Verzeichnis wurde gelöscht.'
+    66 => 'Das Weblog-Verzeichnis wurde gelöscht.',
+    67 => 'Das neue Passwort stimmt nicht mit dem Bestätigungs-Passwort überein!',
+    68 => 'Geben Sie bitte Ihr korrektes aktuelles Passwort ein.',
+    69 => 'Ihr Account wurde gesperrt!',
+    70 => 'Ihr Account wurde noch nicht freigeschaltet.',
+    71 => 'Ihr Account wurde bestätigt, muss aber noch freigeschaltet werden.',
+    72 => 'Bei der Installation des Plugins trat ein Fehler auf. Siehe error.log für weitere Informationen.',
+    73 => 'Bei der Deinstallation des Plugins trat ein Fehler aus. Siehe error.log für weitere Informationen.',
+    74 => 'Der Pingback wurde erfolgreich verschickt.',
+    75 => 'Trackbacks müssen als POST-Request verschickt werden.'
 );
 
 ###############################################################################

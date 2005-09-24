@@ -1150,7 +1150,8 @@ $MESSAGE = array(
     71 => 'Your account has now been confirmed and is awaiting administrator approval.',
     72 => 'An error occured while attempting to install the plugin. See error.log for details.',
     73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
-    74 => 'The pingback has been successfully sent.'
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
