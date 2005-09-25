@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.5 2005/07/23 07:43:09 mjervis Exp $
+* $Id: MassDelete.Admin.class.php,v 1.6 2005/09/25 16:41:28 dhaun Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -67,8 +67,8 @@ class MassDelete extends BaseAdmin {
 		} else {
 			$display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=MassDelete">';
 			$display .= $LANG_SX00['numtocheck'] . "&nbsp;&nbsp&nbsp" . ' <select name="limit">';
-			$display .= '<option value = "10">10</option><option value="50" selected>50</option>';
-			$display .= '<option value = "100" selected>100</option><option value="200">200</option>';
+			$display .= '<option value = "10">10</option><option value="50">50</option>';
+			$display .= '<option value = "100" selected="selected">100</option><option value="200">200</option>';
 			$display .= '<option value = "300">300</option><option value="400">400</option>';
 			$display .= '</select>';
 			$display .= $LANG_SX00['note1'];
