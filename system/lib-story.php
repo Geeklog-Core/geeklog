@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.36 2005/09/01 09:03:06 dhaun Exp $
+// $Id: lib-story.php,v 1.37 2005/09/25 12:30:06 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -286,6 +286,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                                                 . $LANG01[3] );
             $article->set_var( 'comments_count', COM_NumberFormat ( $A['comments'] ));
             $article->set_var( 'lang_comments', $LANG01[3] );
+            $article->set_var( 'comments_with_count',
+                               sprintf( $LANG01[121], $A['comments'] ));
 
             if( $A['comments'] > 0 )
             {
@@ -327,6 +329,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                                                   . $LANG_TRB['trackbacks'] );
             $article->set_var( 'trackbacks_count', $num_trackbacks );
             $article->set_var( 'lang_trackbacks', $LANG_TRB['trackbacks'] );
+            $article->set_var( 'trackbacks_with_count',
+                               sprintf( $LANG01[122], $num_trackbacks ));
 
             if( $num_trackbacks > 0 )
             {

@@ -4,20 +4,24 @@
       <td class="story-title" width="5%" align="right" nowrap>&nbsp;{email_icon}&nbsp;{print_icon}&nbsp;{pdf_icon}</td>
     </tr>
     <tr>
-      <td class="story-box" colspan="2"><table border="0" cellpadding="3" cellspacing="0" width="100%"><tr><td class="story-information" width="100%">{story_date}<br>{lang_contributed_by} {start_contributedby_anchortag}{contributedby_user}{end_contributedby_anchortag}<br>{lang_views}: {story_hits}</td></tr>
-                            
-                                <tr>
-                                    <td>
-                                        {story_anchortag_and_image}{story_introtext}
-                                    </td></tr></table>
-                                	<table border="0" cellpadding="3" cellspacing="0" width="100%">
-
-						
-							<tr><td align="center">{edit_link}<br>
-							  {readmore_link} {start_comments_anchortag}{comments_text}{end_comments_anchortag}<br>
-{recent_post_anchortag}<br></td></tr>
-							
-							</table></td>
+      <td class="story-box" colspan="2">
+            <table border="0" cellpadding="3" cellspacing="0" width="100%">
+                <tr><td class="story-information" width="100%">
+                        {story_date}<br>
+                        {lang_contributed_by} {start_contributedby_anchortag}{contributedby_user}{end_contributedby_anchortag}<br>
+                        {lang_views} {story_hits}
+                </td></tr>
+                <tr><td>{story_anchortag_and_image}{story_introtext}</td></tr>
+            </table>
+            <table border="0" cellpadding="3" cellspacing="0" width="100%">
+              <tr><td align="center">{edit_link}&nbsp;{page_selector}<br>
+                                     {readmore_link} {post_comment_link}<br>
+                                     {start_comments_anchortag}{comments_with_count}{end_comments_anchortag} {start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}
+              </td></tr>
+            </table>
+      </td>
     </tr>
   </table>
-<table cellspacing="0" cellpadding="0" align="center" width="100%" class="block-divider"><tr><td><img src="{site_url}/images/speck.gif" width="1" height="2" alt=""></td></tr></table> 
+<table cellspacing="0" cellpadding="0" align="center" width="100%" class="block-divider">
+    <tr><td><img src="{site_url}/images/speck.gif" width="1" height="2" alt=""></td></tr>
+</table> 

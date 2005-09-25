@@ -14,11 +14,10 @@
                 <tr><td>{story_anchortag_and_image}{story_introtext}</td></tr>
             </table>
             <table border="0" cellpadding="3" cellspacing="0" width="100%">
-                <tr><td align="center">
-                    {edit_link}&nbsp;{page_selector}<br>
-                    {readmore_link} {start_comments_anchortag}{comments_text}{end_comments_anchortag}<br>
-                    {recent_post_anchortag}<br>
-                </td></tr>
+              <tr><td align="center">{edit_link}&nbsp;{page_selector}<br>
+                                     {readmore_link} {post_comment_link}<br>
+                                     {start_comments_anchortag}{comments_with_count}{end_comments_anchortag} {start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}
+              </td></tr>
             </table>
       </td>
     </tr>

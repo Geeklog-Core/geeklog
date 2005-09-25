@@ -162,7 +162,12 @@ $LANG01 = array(
     114 => 'TRACKBACKS',
     115 => 'Keine neuen Trackback-Kommentare',
     116 => 'Trackback',
-    117 => 'Verzeichnis'
+    117 => 'Verzeichnis',
+    118 => 'Fortsetzung auf der nächsten Seite:',
+    119 => "<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">Passwort vergessen?</a>",
+    120 => 'Permalink',
+    121 => 'Kommentare (%d)',
+    122 => 'Trackbacks (%d)'
 );
 
 ###############################################################################
