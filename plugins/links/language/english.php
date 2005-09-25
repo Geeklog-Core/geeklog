@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.5 2005/07/17 09:37:42 dhaun Exp $
+# $Id: english.php,v 1.6 2005/09/25 14:48:12 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -194,10 +194,10 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "Thank-you for submitting a link to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF['site_url']}/links.php>links</a> section.";
+$PLG_links_MESSAGE1 = "Thank-you for submitting a link to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
 $PLG_links_MESSAGE2 = 'Your link has been successfully saved.';
 $PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
-$PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links.php>links</a> section.";
+$PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
 
 ###############################################################################
 # admin/link.php

@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.26 2005/09/19 08:16:42 dhaun Exp $
+// $Id: functions.inc,v 1.27 2005/09/25 14:48:12 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -557,7 +557,7 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
                           );
     }
 
-    $link = $_CONF['site_url'] . '/links.php';
+    $link = $_CONF['site_url'] . '/links/index.php';
     $update = implode( ',', $lids );
 
     return $content;
@@ -946,8 +946,18 @@ function plugin_save_submit_links ($A)
 
         return $retval;
     }
-    $A['category'] = addslashes ($A['category']);
 
+    // pseudo-formatted link description for the spam check
+    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a> ('
+               . $A['category'] . ', ' . $A['categorydd'] . ')<br>'
+               . $A['description'] . '</p>';
+    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
+    if ($result > 0) {
+        COM_updateSpeedlimit ('submit');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+    }
+
+    $A['category'] = addslashes ($A['category']);
     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
     $A['title'] = addslashes (strip_tags (COM_checkWords ($A['title'])));
 
@@ -973,11 +983,11 @@ function plugin_save_submit_links ($A)
                     "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW()");
 
         if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
-            sendNotification ($_TABLES['linksubmission'], $A);
+            LINKS_sendNotification ($_TABLES['linksubmission'], $A);
         }
 
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=1&plugin=links');
-    } elseif ($_LI_CONF['linksubmission'] == 0) { // add link directly
+    } else { // add link directly
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             $owner_id = $_USER['uid'];
         } else {
@@ -985,16 +995,47 @@ function plugin_save_submit_links ($A)
         }
         $result = DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,owner_id', "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
         if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
-            sendNotification ($_TABLES['links'], $A);
+            LINKS_sendNotification ($_TABLES['links'], $A);
         }
         COM_rdfUpToDateCheck ();
 
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=4&plugin=links');
-    } else {
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=17');
     }
 
     return $retval;
+}
+
+/**         
+* Send an email notification for a new submission.
+*           
+* @param    string  $table  Table where the new submission can be found
+* @param    array   $A      submission data
+*           
+*/
+function LINKS_sendNotification ($table, $A)
+{
+    global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT,
+           $LANG01, $LANG08;
+
+    $title = stripslashes ($A['title']);
+    $description = stripslashes ($A['description']);
+
+    $mailbody = "$LANG_LINKS_SUBMIT[8]: $title\n"
+              . "$LANG_LINKS_SUBMIT[9]: <{$A['url']}>\n"
+              . "$LANG_LINKS_SUBMIT[3]: {$A['category']}\n\n"
+              . $description . "\n\n";
+    if ($table == $_TABLES['linksubmission']) {
+        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n"; 
+    } else {
+        $mailbody .= "$LANG_LINKS[114] <{$_CONF['site_url']}/links/index.php?category=" . urlencode ($A['category']) . ">\n\n";
+    }
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG_LINKS_SUBMIT[11];
+
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
+
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 /**
