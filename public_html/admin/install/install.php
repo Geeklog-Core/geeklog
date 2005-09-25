@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.79 2005/08/13 12:19:31 dhaun Exp $
+// $Id: install.php,v 1.80 2005/09/25 09:12:04 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -358,7 +358,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
 
 function INST_createDatabaseStructures ($use_innodb = false)
 {
-    global $_CONF, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $_TABLES;
+    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass;
 
     $_DB->setDisplayError (true);
 
@@ -367,37 +367,45 @@ function INST_createDatabaseStructures ($use_innodb = false)
     // postgresql.class.php, etc)
 
     // Get DBMS-specific create table array and data array
-    require_once($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
+    require_once ($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
 
     $progress = '';
 
     if ($_DB_dbms == 'mysql') {
 
-        for ($i = 1; $i <= count ($_SQL); $i++) {
-            $sql = current ($_SQL);
+        foreach ($_SQL as $sql) {
 
             if ($use_innodb) {
                 $sql = str_replace ('MyISAM', 'InnoDB', $sql);
             }
 
             DB_query ($sql);
-            next ($_SQL);
         }
 
     } else { // in the highly unlikely event that we're not on MySQL ...
 
-        for ($i = 1; $i <= count ($_SQL); $i++) {
-            DB_query (current ($_SQL));
-            next ($_SQL);
+        foreach ($_SQL as $sql) {
+            DB_query ($sql);
         }
 
     }
 
     // Now insert mandatory data and a small subset of initial data
-    for ($i = 1; $i <= count($_DATA); $i++) {
-        $progress .= "executing " . current($_DATA) . "<br>\n";
-        DB_query(current($_DATA));
-        next($_DATA);
+    foreach ($_DATA as $data) {
+        $progress .= "executing " . $data . "<br>\n";
+        DB_query ($data);
+    }
+
+    if ($_DB_dbms == 'mysql') {
+
+        // let's try and personalize the Admin account a bit ...
+
+        if (strpos ($_CONF['site_mail'], 'example.com') === false) {
+            DB_query ("UPDATE {$_TABLES['users']} SET email = '" . addslashes ($_CONF['site_mail']) . "' WHERE uid = 2");
+        }
+        if (strpos ($_CONF['site_url'], 'example.com') === false) {
+            DB_query ("UPDATE {$_TABLES['users']} SET homepage = '" . addslashes ($_CONF['site_url']) . "' WHERE uid = 2");
+        }
     }
 
     return true;
@@ -912,7 +920,7 @@ case 1:
     break;
 
 case 2:
-    if (!empty($_POST['version'])) {
+    if (!empty ($_POST['version'])) {
         if (INST_doDatabaseUpgrades ($_POST['version'], $_POST['prefix'])) {
             // Great, installation is complete
             // Done with installation...redirect to success page
