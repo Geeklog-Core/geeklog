@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish.php,v 1.3 2005/04/10 10:34:43 dhaun Exp $
+ * $Id: spanish.php,v 1.4 2005/09/25 16:39:12 dhaun Exp $
  */
 
 // +---------------------------------------------------------------------------+
@@ -103,6 +103,7 @@ $LANG_SX00 = array (
 	'note5'		=> 'se comprueban desde los más nuevos hasta los más antiguos -- La comprobación de más comentarios ',
 	'note6'		=> 'requiere más tiempo para llevarse a cabo</p>',
 	'masshead'	=> '<hr><center><h1>Borrado Masivo de Comentarios Spam</h1></center>',
+    'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
 	'comdel'	=> ' comentarios borrados.',
     'initial_Pimport' => '<p>Importar la Lista Negra Personal"',
     'initial_import' => 'Importar la lista Negra-MT inicial',

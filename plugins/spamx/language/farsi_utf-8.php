@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: farsi_utf-8.php,v 1.1 2005/04/11 08:18:39 dhaun Exp $
+ * $Id: farsi_utf-8.php,v 1.2 2005/09/25 16:39:12 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -98,6 +98,7 @@ $LANG_SX00 = array (
 	'note5'		=> 'are checked from newest comment to oldest -- checking more comments ',
 	'note6'		=> 'requires more time for the check.</p>',
 	'masshead'	=> '<hr><h1 align="center">Mass Delete Spam Comments</h1>',
+    'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
 	'comdel'	=> ' comments deleted.',
     'initial_Pimport' => '<p>Personal Blacklist Import"',
     'initial_import' => 'Initial MT-Blacklist Import',

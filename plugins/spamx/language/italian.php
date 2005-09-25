@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: italian.php,v 1.4 2005/04/10 10:34:43 dhaun Exp $
+ * $Id: italian.php,v 1.5 2005/09/25 16:39:12 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -98,6 +98,7 @@ $LANG_SX00 = array (
 	'note5'		=> 'vengono controllati dal pi&ugrave; recente al meno recente -- controllare pi&ugrave; commenti ',
 	'note6'		=> 'richiede pi&ugrave; tempo per il controllo</p>',
 	'masshead'	=> '<hr><h1 align="center">Eliminazione in Blocco Commenti Spam</h1>',
+    'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
 	'comdel'	=> ' commenti eliminati.',
     'initial_Pimport' => '<p>Importazione Blacklist Personale"',
     'initial_import' => 'Importazione Iniziale MT-Blacklist',

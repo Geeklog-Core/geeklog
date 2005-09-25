@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english.php,v 1.12 2005/04/10 10:34:43 dhaun Exp $
+ * $Id: english.php,v 1.13 2005/09/25 16:39:12 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -96,6 +96,7 @@ $LANG_SX00 = array (
 	'note5'		=> 'are checked from newest comment to oldest -- checking more comments ',
 	'note6'		=> 'requires more time for the check.</p>',
 	'masshead'	=> '<hr><h1 align="center">Mass Delete Spam Comments</h1>',
+	'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
 	'comdel'	=> ' comments deleted.',
     'initial_Pimport' => '<p>Personal Blacklist Import"',
     'initial_import' => 'Initial MT-Blacklist Import',

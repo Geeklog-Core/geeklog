@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: french_canada.php,v 1.5 2005/04/10 10:34:43 dhaun Exp $
+ * $Id: french_canada.php,v 1.6 2005/09/25 16:39:12 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -98,6 +98,7 @@ $LANG_SX00 = array (
 	'note5'		=> 'sont vérifiés à partir des plus récents -- vérifier plus de commentaires ',
 	'note6'		=> 'nécessite plus de temps pour la vérification</p>',
 	'masshead'	=> '<hr><h1 align="center">Suppression de commentaires en lot</h1>',
+    'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
 	'comdel'	=> ' commentaires supprimés.',
     'initial_Pimport' => '<p>Importer Liste Noire Personnelle"',
     'initial_import' => 'Importer Liste Noire Principale Originale',
