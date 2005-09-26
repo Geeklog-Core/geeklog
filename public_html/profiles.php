@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.42 2005/08/31 11:30:31 dhaun Exp $
+// $Id: profiles.php,v 1.43 2005/09/26 08:40:23 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -250,10 +250,8 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     // just to make sure this isn't an attempt at spamming users ...
     $result = PLG_checkforSpam ($mailtext, $_CONF['spamx']);
     if ($result > 0) {
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
-                               . '&amp;plugin=spamx');
-
-        return $retval;
+        COM_updateSpeedlimit ('mail');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $mailtext .= '------------------------------------------------------------'
