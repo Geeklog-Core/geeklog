@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.11 2005/09/23 16:35:50 dhaun Exp $
+// $Id: lib-trackback.php,v 1.12 2005/09/29 07:50:25 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -42,12 +42,14 @@ define ('TRB_SAVE_REJECT', -2);
 /**
 * Send a trackback response message
 *
-* @param    int     $error      0 = OK, 1 = an error occured
-* @param    string  $errormsg   the error message (ignored for $error == 0)
+* @param    int     $error          0 = OK, 1 = an error occured
+* @param    string  $errormsg       the error message (ignored for $error == 0)
+* @param    int     $http_status    optional HTTP status code
+* @param    string  $http_text      optional HTTP status code text
 * @return   void
 *
 */
-function TRB_sendTrackbackResponse ($error, $errormsg = '')
+function TRB_sendTrackbackResponse ($error, $errormsg = '', $http_status = 200, $http_text = "OK")
 {
     $display = '<?xml version="1.0" encoding="iso-8859-1"?>' . LB
              . '<response>' . LB
@@ -60,6 +62,11 @@ function TRB_sendTrackbackResponse ($error, $errormsg = '')
     }
     $display .= '</response>';
 
+    if ($http_status != 200)
+    {
+        header ("HTTP/1.1 $http_status $http_text");
+        header ("Status: $http_status $http_text");
+    }
     header ('Content-Type: text/xml');
     echo $display;
 }
@@ -396,7 +403,8 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
         $last = COM_checkSpeedlimit ('trackback');
         if ($last > 0) {
             TRB_sendTrackbackResponse (1, sprintf ($TRB_ERROR['speedlimit'],
-                                       $last, $_CONF['commentspeedlimit']));
+                                       $last, $_CONF['commentspeedlimit']),
+                                       403, 'Forbidden');
 
             return false;
         }
@@ -413,7 +421,7 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
         COM_updateSpeedlimit ('trackback');
 
         if ($saved == TRB_SAVE_SPAM) {
-            TRB_sendTrackbackResponse (1, $TRB_ERROR['spam']);
+            TRB_sendTrackbackResponse (1, $TRB_ERROR['spam'], 403, 'Forbidden');
 
             return false;
         } else if ($saved == TRB_SAVE_REJECT) {
