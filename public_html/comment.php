@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.97 2005/09/19 16:38:38 dhaun Exp $
+// $Id: comment.php,v 1.98 2005/09/29 02:19:44 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -287,6 +287,11 @@ default:  // New Comment
                                      "sid = '{$sid}'");
             }
             $title = str_replace ('$', '&#36;', $title);
+            // CMT_commentForm expects non-htmlspecial chars for title...
+            $title = str_replace ( '&amp;', '&', $title );
+            $title = str_replace ( '&quot;', '"', $title );
+            $title = str_replace ( '&lt;', '<', $title );
+            $title = str_replace ( '&gt;', '>', $title );
         }
         $display .= COM_siteHeader('menu', $LANG03[1])
             . CMT_commentForm ($title, '', $sid, COM_applyFilter ($_REQUEST['pid'], true),
