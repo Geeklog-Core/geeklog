@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.12 2005/09/29 07:50:25 dhaun Exp $
+// $Id: lib-trackback.php,v 1.13 2005/09/29 18:06:55 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -550,7 +550,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
 
     if (empty ($LANG_CHARSET)) {
         $charset = $_CONF['default_charset'];
-                                                                                
+
         if (empty ($charset)) {
             $charset = 'iso-8859-1';
         }
@@ -610,47 +610,49 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
 */
 function TRB_detectTrackbackUrl ($url)
 {
-    $fp = @fopen ($url, 'r');
-    if ($fp === false) {
+    require_once ('HTTP/Request.php');
+
+    $retval = false;
+
+    $req =& new HTTP_Request ($url);
+    $req->setMethod (HTTP_REQUEST_METHOD_GET);
+    $req->addHeader ('User-Agent', 'GeekLog ' . VERSION);
+
+    $response = $req->sendRequest ();
+    if (PEAR::isError ($response)) {
+        COM_errorLog ('TRB_detectTrackbackUrl: ' . $response->getMessage());
+
         return false;
     }
-    $page = '';
-    $found_start = false;
-    $pos1 = 0;
-    $pos2 = 0;
-    while (!feof ($fp)) {
-        $page .= fread ($fp, 4096);
-        if (!$found_start) {
-            $pos = strpos ($page, '<rdf:RDF ');
-            if ($pos === false) {
-                continue;
+
+    $page = $req->getResponseBody ();
+
+    // search for the RDF first
+    $startpos = strpos ($page, '<rdf:RDF ');
+    if ($startpos !== false) {
+        $endpos = strpos ($page, '</rdf:RDF>', $startpos);
+
+        $endpos += strlen ('</rdf:RDF>');
+        $rdf = substr ($page, $startpos, $endpos - $startpos);
+
+        // Okay, we COULD fire up the XML parser now. But then again ...
+        if (preg_match ('/trackback:ping="(.*)"/', $rdf, $matches) == 1) {
+            if (!empty ($matches[1])) {
+                $retval = $matches[1];
             }
-            $found_start = true;
-            $pos1 = $pos;
         }
-        if ($found_start) {
-            $pos = strpos ($page, '</rdf:RDF>');
-            if ($pos !== false) {
-                $pos2 = $pos;
+    }
+
+    // no luck with the RDF? try searching for a rel="trackback" link
+    if ($retval === false) {
+        preg_match_all( "/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $page, $matches );
+        for ($i = 0; $i < count ($matches[0]); $i++) {
+            $link = $matches[0][$i];
+            if (strpos ($link, 'rel="trackback"') !== false) {
+                $retval = $matches[1][$i];
                 break;
             }
         }
-    }
-    fclose ($fp);
-
-    if ($found_start) {
-        $pos2 += strlen ('</rdf:RDF>');
-        $rdf = substr ($page, $pos1, $pos2 - $pos1);
-
-        // Okay, we COULD fire up the XML parser now. But then again ...
-        preg_match ('/trackback:ping="(.*)"/', $rdf, $matches);
-        if (empty ($matches[1])) {
-            $retval = false;
-        } else {
-            $retval = $matches[1];
-        }
-    } else {
-        $retval = false;
     }
 
     return $retval;
