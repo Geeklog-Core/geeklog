@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.117 2005/09/30 20:04:48 mjervis Exp $
+// $Id: users.php,v 1.118 2005/09/30 20:41:19 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -457,10 +457,7 @@ function createuser ($username, $email)
             $uid = USER_createAccount ($username, $email);
 
             $retval = emailpassword ($username, 1, $msg);
-            if (isset ($_CONF['notification']) &&
-                    in_array ('user', $_CONF['notification'])) {
-                USER_sendNotification ($username, $email, $uid, 'new');
-            }
+
 
             return $retval;
         } else {
@@ -862,7 +859,9 @@ default:
     }
     $service = COM_applyFilter($_POST['service']);
     $uid = '';
-    if(( $_CONF['usersubmission'] == 0) && $_CONF['remoteauthentication'] && ($service != '')) {
+    if (!empty($loginname) && !empty($passwd) && empty($service)) {
+        $status = SEC_authenticate($loginname, $passwd, $uid);
+    elseif(( $_CONF['usersubmission'] == 0) && $_CONF['remoteauthentication'] && ($service != '')) {
         /* Distributed Authentication */
         //pass $loginname by ref so we can change it ;-)
         $status = SEC_remoteAuthentication($loginname, $passwd, $service, $uid);
