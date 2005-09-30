@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.118 2005/09/30 20:41:19 mjervis Exp $
+// $Id: users.php,v 1.119 2005/09/30 20:50:23 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -861,7 +861,7 @@ default:
     $uid = '';
     if (!empty($loginname) && !empty($passwd) && empty($service)) {
         $status = SEC_authenticate($loginname, $passwd, $uid);
-    elseif(( $_CONF['usersubmission'] == 0) && $_CONF['remoteauthentication'] && ($service != '')) {
+    } elseif(( $_CONF['usersubmission'] == 0) && $_CONF['remoteauthentication'] && ($service != '')) {
         /* Distributed Authentication */
         //pass $loginname by ref so we can change it ;-)
         $status = SEC_remoteAuthentication($loginname, $passwd, $service, $uid);
