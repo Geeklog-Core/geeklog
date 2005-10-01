@@ -127,7 +127,17 @@
           return new RDF();
           break;
         case 'atom':
-          return new Atom03();
+          if( $version == '' )
+          {
+            return new Atom10();
+          } else {
+            if( $version < 1.0 )
+            {
+              return new Atom03();
+            } else {
+              return new Atom10();
+            }
+          }
           break;
         default:
           return false;
@@ -150,6 +160,7 @@
       $types[] = array('name'=>'RSS','version'=>'2.0');
       $types[] = array('name'=>'RDF','version'=>'1.0');
       $types[] = array('name'=>'Atom','version'=>'0.3');
+      $types[] = array('name'=>'Atom','version'=>'1.0');
       return $types;
     }
 
@@ -208,6 +219,12 @@
         /* Check for atom */
         if( $name == 'FEED' )
         {
+          if( array_key_exists('VERSION', $attributes) )
+          {
+            $this->readerName = 'Atom03';
+          } else {
+            $this->readerName = 'Atom10';
+          }
           $this->readerName = 'Atom03';
         } elseif ( $name == 'RSS' ) {
           if( array_key_exists('VERSION', $attributes) )
