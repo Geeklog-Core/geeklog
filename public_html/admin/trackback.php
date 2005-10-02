@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.23 2005/09/16 19:14:32 dhaun Exp $
+// $Id: trackback.php,v 1.24 2005/10/02 20:54:00 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -399,7 +399,14 @@ function prepareAutodetect ($type, $id, $text)
     preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
                     $matches);
     $numlinks = count ($matches[0]);
-    if ($numlinks > 0) {
+    if ($numlinks == 1) {
+        // skip the link selection when there's only one link in the story
+        $url = urlencode ($matches[1][0]);
+        $link = $baseurl .= '&url=' . $url;
+
+        echo COM_refresh ($link);
+        exit;
+    } else if ($numlinks > 0) {
         $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
         $template->set_file (array ('list' => 'autodetectlist.thtml',
                                     'item' => 'autodetectitem.thtml'));
