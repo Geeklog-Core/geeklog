@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: Blogger.auth.class.php,v 1.3 2005/06/12 17:20:55 mjervis Exp $
+// $Id: Blogger.auth.class.php,v 1.4 2005/10/02 17:44:44 mjervis Exp $
 
 // PEAR class to handle XML-RPC
 require_once ('XML/RPC.php');
@@ -37,7 +37,7 @@ require_once ('XML/RPC.php');
 class Blogger
 {
     var $email;
-    
+
     function authenticate($username, $password)
     {
         $email = '';
@@ -50,12 +50,20 @@ class Blogger
 												);
         $client = new XML_RPC_Client('/api/', 'www.blogger.com', 80);
         $result = $client->send($message, 5, 'http');
-        if ($result && !$result->faultCode()) {
+        if ($result && ($result->faultString() == '')) {
             // Get the email address:
             $value = $result->value();
-            $value = $value->structmem('email');
-            $this->email = $value->scalarVal();
-            return true;
+            // Blogger return faultcode = 0 for a login fail.
+            // which the lib doesn't handle. Hence horrible stuff.
+            $f = $value->structmem('faultString');
+            if ($f)
+            {
+                return false;
+            } else {
+                $value = $value->structmem('email');
+                $this->email = $value->scalarVal();
+                return true;
+            }
         }
         else {
             return false;
