@@ -26,7 +26,7 @@
   /*  3. This notice may not be removed or altered from any source            */
   /*     distribution.                                                        */
   /****************************************************************************/
-  // $Id: atom.feed.class.php,v 1.6 2005/10/01 18:26:03 mjervis Exp $
+  // $Id: atom.feed.class.php,v 1.7 2005/10/03 18:49:40 mjervis Exp $
 
   /**
     * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -294,12 +294,12 @@
            . '<title type="text">' . $this->_safeXML( $this->title ) . '</title>' . LB
            . '<subtitle type="text">' . $this->_safeXML( $this->description ) . '</subtitle>' . LB
            . '<link rel="self" href="' . $this->_safeXML( $this->url ) . '"/>' . LB
-           . '<link rel="alternate" type="text/html" href="' . $this->_safeXML( $this->sitelink ) . '"/>' . LB;
+           . '<link rel="alternate" type="text/html" href="' . $this->_safeXML( $this->sitelink ) . '/"/>' . LB;
       if ($this->feedlogo != '')
       {
            $xml .= '<logo>' . $this->_safeXML( $this->feedlogo ) . '</logo>' . LB;
       }
-      $xml .= '<id>' . $this->_safeXML( $this->sitelink ) . '</id>' . LB
+      $xml .= '<id>' . $this->_safeXML( $this->sitelink ) . '/</id>' . LB
            . '<updated>'.date("Y-m-d\TH:i:s\Z").'</updated>' . LB
            . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
            . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
