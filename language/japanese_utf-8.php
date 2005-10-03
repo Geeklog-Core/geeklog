@@ -66,7 +66,7 @@ $LANG01 = array(
     22 => 'ID',
     23 => '管理レベル',
     24 => '匿名',
-    25 => 'お返事',
+    25 => 'コメントを追加',
     26 => 'コメントは投稿者の責任においてなされるものであり、サイト管理者はなんら責任をおうものではありません。',
     27 => '最新の投稿',
     28 => '削除',
@@ -84,7 +84,7 @@ $LANG01 = array(
     40 => ' あなたの <tt>php.ini</tt> で、<tt>register_globals = Off</tt> になっているようです。Geeklogは、 <tt>register_globals</tt> が <strong>on</strong> になっていなければなりません。 Geeklogを使うために、 <strong>on</strong> にして、Webサーバーを再起動してください。',
     41 => 'ゲストユーザー',
     42 => '投稿者は:',
-    43 => '返事を書く',
+    43 => 'さらにコメント',
     44 => '元の記事',
     45 => 'MySQLのエラー番号は、',
     46 => 'MySQLのエラーメッセージは、',
@@ -96,14 +96,14 @@ $LANG01 = array(
     52 => '新規',
     53 => '管理画面',
     54 => 'ファイルが開けません',
-    55 => '次でエラー：',
+    55 => '次の場所でエラーがありました。->',
     56 => '投票',
     57 => 'パスワード',
     58 => 'login',
     59 => "アカウントがなければ、<a href=\"{$_CONF['site_url']}/users.php?mode=new\">登録</a>できます。",
     60 => 'コメントを投稿',
     61 => 'アカウントの作成',
-    62 => '段落（程度）',
+    62 => 'カウント',
     63 => 'コメントの設定',
     64 => '記事を友人にメールする',
     65 => '印刷用画面',
@@ -154,7 +154,17 @@ $LANG01 = array(
     110 => '投稿をサイトの管理者に知らせる',
     111 => 'View PDF Version',
     112 => '登録ユーザー数：',
-    113 => '文書'
+    113 => '文書',
+    114 => 'トラックバック',
+    115 => '新しいトラックバックはありません。',
+    116 => 'トラックバック',
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:',
+    119 => "<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">パスワードの再発行</a>?",
+    120 => 'このコメントへの永続リンク（Permanent link）',
+    121 => 'コメント (%d件)',
+    122 => 'トラックバック (%d件)'
+
 );
 
 ###############################################################################
@@ -321,7 +331,24 @@ $LANG04 = array(
     104 => 'オンラインかどうかを表示する',
     105 => '「現在のログイン状況」に名前を表示する',
     106 => '居住地',
-    107 => '公開プロフィールで表示'
+    107 => '公開プロフィールで表示',
+    108 => '新しいパスワードの確認',
+    109 => '新しいパスワードを再入力',
+    110 => '現在のパスワード',
+    111 => '現在のパスワードを入力してください',
+    112 => 'ログイン試行回数を超えてしまいましたので、後ほどまたログインしてみてください。',
+    113 => 'ログインできませんでした',
+    114 => 'アカウントが無効になっています',
+    115 => 'アカウントが無効になりましたのでログインできません。管理者に連絡してください。',
+    116 => 'アカウントが有効になるのを待機しています',
+    117 => 'あなたのアカウントは管理者が有効にするのを待っています。管理者が承認するまでログインできません。',
+    118 => "{$_CONF['site_name']} のあなたのアカウントが有効になりました。以下のリンクから、あなたのユーザー名(<username>)とメールで送られてきたパスワードでログインできます。",
+    119 => "パスワードを忘れてしまっていれば、以下のリンクから新しいパスワードを申請できます。",
+    120 => 'アカウントが有効になりました。',
+    121 => 'Service',
+    122 => 'ユーザーの新規登録は停止中です。ごめんなさい。',
+    123 => "<a href=\"{$_CONF['site_url']}/users.php?mode=new\">新規ユーザー</a>でしょうか？"
+
 );
 
 ###############################################################################
@@ -336,15 +363,6 @@ $LANG05 = array(
     6 => '一つ前',
     7 => '最初',
     8 => '最後'
-);
-
-###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => '使えるWebページ',
-    2 => '表示するリンクはありません',
-    3 => 'リンクの追加'
 );
 
 ###############################################################################
@@ -460,7 +478,12 @@ $LANG09 = array(
     54 => 'コメントの検索結果',
     55 => '検索文字列',
     56 => 'AND',
-    57 => 'OR'
+    57 => 'OR',
+    58 => 'More results &gt;&gt;',
+    59 => 'Results',
+    60 => 'per page',
+    61 => '検索条件の修正'
+
 );
 
 ###############################################################################
@@ -488,9 +511,12 @@ $LANG10 = array(
     19 => 'タイトル',
     20 => '件',
     21 => 'このサイトにはリンクが一つもないか、リンクをクリックした人が一人もいないのかのどちらかだと思います',
-    22 => '友達に紹介された記事（上位10件）',
+    22 => '紹介件数の多い記事（上位10件）',
     23 => '件',
-    24 => '友達に紹介された記事はないようです'
+    24 => '友達に紹介された記事はないようです',
+    25 => 'トラックバックが多い記事（上位10件）',
+    26 => 'トラックバックはありません',
+    27 => '登録ユーザーの数'
 );
 
 ###############################################################################
@@ -643,7 +669,11 @@ $LANG21 = array(
     57 => 'ブロックを下に',
     58 => 'ブロックを上に',
     59 => 'ブロックを右側に',
-    60 => 'ブロックを左側に'
+    60 => 'ブロックを左側に',
+    61 => 'タイトルなし',
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'タイトルは空欄ではいけませんし、HTMLを含んでもいけません。'
 );
 
 ###############################################################################
@@ -674,36 +704,12 @@ $LANG22 = array(
     22 => '削除',
     23 => '開始日がおかしいです',
     24 => '終了日がおかしいです',
-    25 => '終了日が開始日よりも前です'
-);
-
-###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => 'リンクの編集',
-    2 => '',
-    3 => 'リンク先の名前',
-    4 => 'リンク先のURL',
-    5 => '分類',
-    6 => '(http://からはじめてください)',
-    7 => 'その他',
-    8 => 'リンクのヒット数',
-    9 => 'リンクの詳細',
-    10 => 'リンクの名前、URL、詳細について記入してください',
-    11 => 'リンクの管理',
-    12 => 'リンクの編集・削除は、リンク自体をクリックしてください。新しく作成する場合は、上の「新規リンク」をクリックしてください',
-    13 => 'リンク先の名前',
-    14 => 'リンクの分類',
-    15 => 'リンク先のURL',
-    16 => 'アクセスが拒否されました',
-    17 => "管理権限のないリンクを編集しようとしました。この行為は記録として残ります。<a href=\"{$_CONF['site_admin_url']}/link.php\">リンク編集画面</a>に戻ってください",
-    18 => '新規リンク',
-    19 => '管理画面',
-    20 => '新規分類',
-    21 => '保存',
-    22 => '中止',
-    23 => '削除'
+    25 => '終了日が開始日よりも前です',
+    26 => '登録',
+    27 => '結果の絞り込み',
+    28 => '検索',
+    29 => '編集',
+    30 => 'コピー'
 );
 
 ###############################################################################
@@ -771,39 +777,21 @@ $LANG24 = array(
     59 => 'オプション',
     60 => '有効',
     61 => '自動で圧縮',
-    62 => '自動で削除'
-);
+    62 => '自動で削除',
+    63 => '編集',
+    64 => '登録',
+    65 => '検索',
+    66 => '結果の絞り込み',
+    67 => '編集エリアの拡大',
+    68 => '編集エリアの縮小',
+    69 => 'Publish Story Date',
+    70 => 'ツールバーの選択',
+    71 => '基本的なツールバー',
+    72 => '一般的なツールバー',
+    73 => 'Advanced ツールバー',
+    74 => 'Advanced II ツールバー',
+    75 => '全機能'
 
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'モード',
-    2 => '質問と最低一つの選択肢を入力してください',
-    3 => '投票コーナーが作成された',
-    4 => '投票コーナー（ %s ）が保存された',
-    5 => '投票コーナーの編集',
-    6 => '投票コーナーの ID',
-    7 => '(スペースを含まないこと)',
-    8 => 'ホームページに表示する',
-    9 => '質問すること',
-    10 => '回答 ／ 投票数',
-    11 => '投票コーナー( %s )における選択肢にエラーがありました',
-    12 => '投票コーナー( %s )における質問項目にエラーがありました',
-    13 => '投票コーナーの作成',
-    14 => '保存',
-    15 => '中止',
-    16 => '削除',
-    17 => '投票IDを入力してください。',
-    18 => '投票コーナー一覧',
-    19 => '投票コーナーを削除・編集するためには、投票コーナーをクリックしてください。新規に作成する場合は、「新規コーナー」をクリックしてください。',
-    20 => '投票者',
-    21 => 'アクセスが拒否されました。',
-    22 => "管理権限のない記事を編集しようとしました。この行為は記録されます。<a href=\"{$_CONF['site_admin_url']}/poll.php\">投票の管理画面</a>に戻ってください",
-    23 => '新規投票コーナー',
-    24 => '管理画面',
-    25 => 'はい',
-    26 => 'いいえ'
 );
 
 ###############################################################################
@@ -835,7 +823,10 @@ $LANG27 = array(
     23 => 'このトピックを新規記事投稿の際のデフォルトにします。',
     24 => '(*)',
     25 => 'このトピックを圧縮',
-    26 => 'このトピックを記事のデフォルトにする。デフォルトトピックは一つだけしていできます。'
+    26 => 'このトピックを記事のデフォルトにする。デフォルトトピックは一つだけしていできます。',
+    27 => 'または、トピックアイコンをアップロード',
+    28 => '最大',
+    29 => 'ファイルアップロード時にエラー'
 );
 
 ###############################################################################
@@ -877,7 +868,18 @@ $LANG28 = array(
     33 => '検索',
     34 => 'エラー：登録するファイルを指定してください',
     35 => '最後のログイン日時',
-    36 => '(一度もログインしていない)'
+    36 => '(一度もログインしていない)',
+    37 => 'UID',
+    38 => 'Group Listing',
+    39 => 'パスワード (再入力)',
+    40 => '登録日',
+    41 => '最終ログインの日付',
+    42 => 'Banned',
+    43 => '有効になるのを待機中',
+    44 => '承認されるのを待機中',
+    45 => '有効',
+    46 => 'ユーザーの状態',
+    47 => '編集'
 );
 
 ###############################################################################
@@ -1022,7 +1024,8 @@ $LANG32 = array(
     31 => 'このプラグインを削除しますが、よろしいですか？削除する場合は関連するファイルやデータがすべて削除されます。削除する場合は「削除」ボタンをもう一度押してください。',
     32 => '<p><b>AutoLingタグのフォーマットが正しくありません。</b></p>',
     33 => '最新のバージョン',
-    34 => 'Update'
+    34 => '更新',
+    35 => '編集'
 );
 
 ###############################################################################
@@ -1065,7 +1068,15 @@ $LANG33 = array(
     39 => 'フィードのタイトル、詳細、ファイル名を入力してください。',
     40 => 'エントリ数または、取得する時間を入力してください。',
     41 => 'Links',
-    42 => 'Events'
+    42 => 'Events',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1132,7 +1143,21 @@ $MESSAGE = array(
     58 => 'フィードが無事保存されました。',
     59 => 'フィードが削除されました。',
     60 => 'プラグインが更新されました。',
-    61 => 'Plugin %s: Unknown message placeholder'
+    61 => 'Plugin %s: Unknown message placeholder',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occurred when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.',
+    65 => 'Weblog directory service successfully saved.',
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
@@ -1184,15 +1209,22 @@ $LANG_ACCESS = array(
     'delete' => '削除',
     'canteditroot' => 'Rootグループに所属していないのにRootグループを編集しようとしたため、アクセスは拒否されました。このエラーがおかしいと思った場合はシステムの管理者に連絡してください。',
     'listusers' => 'ユーザー一覧の表示',
-    'listthem' => 'list',
-    'usersingroup' => 'Users in group "%s"',
+    'listthem' => 'リスト',
+    'usersingroup' => '"%s"に含まれるユーザーの一覧',
     'usergroupadmin' => 'グループ管理',
     'add' => '追加',
     'remove' => '削除',
-    'availmembers' => 'Available Members',
+    'availmembers' => 'メンバー一覧',
     'groupmembers' => 'グループメンバー',
     'canteditgroup' => 'グループを編集するためには、グループのメンバーでなければなりません。このメッセージがエラーである場合は、システム管理者に連絡してください。',
-    'cantlistgroup' => 'メンバーリストを閲覧するためには、グループのメンバーでなければなりません。このメッセージがエラーである場合は、システム管理者に連絡してください。'
+    'cantlistgroup' => 'メンバーリストを閲覧するためには、グループのメンバーでなければなりません。このメッセージがエラーである場合は、システム管理者に連絡してください。',
+    'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => '検索',
+    'submit' => '登録',
+    'limitresults' => '結果の絞り込み',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
 );
 
 ###############################################################################
@@ -1226,7 +1258,8 @@ $LANG_BUTTONS = array(
     7 => 'サイト情報',
     8 => '個人設定',
     9 => '検索',
-    10 => '高度な検索'
+    10 => '高度な検索',
+    11 => 'Directory'
 );
 
 ###############################################################################
@@ -1267,5 +1300,138 @@ $LANG_PDF = array(
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
     14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
+
+###############################################################################
+# trackback
+
+$LANG_TRB = array (
+    'trackback'          => 'Trackback',
+    'from'               => 'from',
+    'tracked_on'         => 'Tracked on',
+    'read_more'          => '[read more]',
+    'intro_text'         => "Here's what others have to say about '%s':",
+    'no_comments'        => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments'       => '%d trackback comments',
+    'send_trackback'     => 'Send Pings',
+    'preview'            => 'Preview',
+    'editor_title'       => 'Send trackback comment',
+    'trackback_url'      => 'Trackback URL',
+    'entry_url'          => 'Entry URL',
+    'entry_title'        => 'Entry Title',
+    'blog_name'          => 'Site Name',
+    'excerpt'            => 'Excerpt',
+    'truncate_warning'   => 'Note: The receiving site may truncate your excerpt',
+    'button_send'        => 'Send',
+    'button_preview'     => 'Preview',
+    'send_error'         => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing'        => 'No Entry URL',
+    'url_required'       => 'Please enter at least a URL for the entry.',
+    'target_missing'     => 'No Trackback URL',
+    'target_required'    => 'Please enter a trackback URL',
+    'error_socket'       => 'Could not open socket.',
+    'error_response'     => 'Response not understood.',
+    'error_unspecified'  => 'Unspecified error.',
+    'select_url'         => 'Select Trackback URL',
+    'not_found'          => 'Trackback URL not found',
+    'autodetect_failed'  => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
+    'trackback_explain'  => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
+    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'pingback'           => 'Pingback',
+    'pingback_results'   => 'Pingback results',
+    'send_pings'         => 'Send Pings',
+    'send_pings_for'     => 'Send Pings for "%s"',
+    'no_links_pingback'  => 'No links found. No Pingbacks were sent for this entry.',
+    'pingback_success'   => 'Pingback sent.',
+    'no_pingback_url'    => 'No pingback URL found.',
+    'resend'             => 'Resend',
+    'ping_all_explain'   => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'pingback_button'    => 'Send Pingback',
+    'pingback_short'     => 'Send Pingbacks to all sites linked from this entry.',
+    'pingback_disabled'  => '(Pingback disabled)',
+    'ping_button'        => 'Send Ping',
+    'ping_short'         => 'Ping weblog directory services.',
+    'ping_disabled'      => '(Ping disabled)',
+    'trackback_button'   => 'Send Trackback',
+    'trackback_short'    => 'Send a Trackback comment.',
+    'trackback_disabled' => '(Trackback disabled)',
+    'may_take_a_while'   => 'Please note that sending Pingbacks and Pings may take a while.',
+    'ping_results'       => 'Ping results',
+    'unknown_method'     => 'Unknown ping method',
+    'ping_success'       => 'Ping sent.',
+    'error_site_name'    => 'Please enter the site\'s name.',
+    'error_site_url'     => 'Please enter the site\'s URL.',
+    'error_ping_url'     => 'Please enter a valid Ping URL.',
+    'no_services'        => 'No weblog directory services configured.',
+    'services_headline'  => 'Weblog Directory Services',
+    'admin_home'         => 'Admin Home',
+    'new_service'        => 'New Service',
+    'service_explain'    => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service click on New Service above.',
+    'service'            => 'Service',
+    'ping_method'        => 'Ping method',
+    'service_enabled'    => 'Enabled',
+    'service_website'    => 'Website',
+    'service_ping_url'   => 'URL to ping',
+    'ping_standard'      => 'Standard Ping',
+    'ping_extended'      => 'Extended Ping',
+    'ping_unknown'       => '(unknown method)',
+    'edit_service'       => 'Edit Weblog Directory Service',
+    'button_save'        => 'Save',
+    'button_cancel'      => 'Cancel',
+    'button_delete'      => 'Delete',
+    'trackbacks'         => 'Trackbacks',
+    'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none'  => 'Prepare your trackback comment.',
+    'trackback_note'     => 'To send a trackback comment for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'edit'               => 'Edit',
+    'search'             => 'Search',
+    'limit_results'      => 'Limit Results',
+    'submit'             => 'Submit',
+    'pingback_explain'   => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url'       => 'Pingback URL',
+    'site_url'           => 'This site\'s URL',
+    'pingback_note'      => 'To send a pingback for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing'   => 'No Pingback URL',
+    'pbtarget_required'  => 'Please enter a pingback URL',
+    'pb_error_details'   => 'Error when sending the pingback:'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array (
+    'title'            => 'Article Directory',
+    'title_year'       => 'Article Directory for %d',
+    'title_month_year' => 'Article Directory for %s %d',
+    'nav_top'          => 'Back to Article Directory',
+    'no_articles'      => 'No articles.'
+);
+
+################################################################################
+# "What's New" Time Strings
+#
+# This here determines the order of the sentence "No new stories in 2 hrs"
+# order it so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
+$WHATS_NEW_STRING = '%n new %i in the last %t %s';
+$WHATS_NEW_LAST   = 'last %t %s';
+
+$LANG_WHATSNEW = array (
+    'minutes'     => '分',
+    'hours'       => '時間',
+    'days'        => '日',
+    'weeks'       => '週',
+    'months'      => 'ヶ月',
+    'minute'      => '分',
+    'hour'        => '時間',
+    'day'         => '日',
+    'week'        => '週',
+    'month'       => 'ヶ月'
+);
+
 
 ?>
