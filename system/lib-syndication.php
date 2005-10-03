@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.19 2005/09/23 12:18:32 dhaun Exp $
+// $Id: lib-syndication.php,v 1.20 2005/10/03 18:48:56 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -651,6 +651,8 @@ function SYND_updateFeed( $fid )
             $pos = strrpos( $path, '/' );
             $path = substr( $path, 0, $pos + 1 );
             $filename = $path . $filename;
+            $feed->url = substr_replace ($filename, $_CONF['site_url'], 0,
+                               strlen ($_CONF['path_html']) - 1);
             $feed->createFeed( $filename );
         }
         else
