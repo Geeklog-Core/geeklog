@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.67 2005/09/01 09:03:06 dhaun Exp $
+// $Id: article.php,v 1.68 2005/10/03 10:01:41 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -119,17 +119,16 @@ if ($A['count'] > 0) {
             $story_template->set_var('lang_contributedby', $LANG01[1]);
             $story_template->set_var('story_author', $A['username']);
         }
-        if ($A['postmode'] == 'html') {
-            $story_template->set_var ('story_introtext',
-                    stripslashes ($A['introtext']));
-            $story_template->set_var ('story_bodytext',
-                    stripslashes ($A['bodytext']));
-        } else {
-            $story_template->set_var ('story_introtext',
-                    PLG_replaceTags( nl2br (stripslashes ($A['introtext']))));
-            $story_template->set_var ('story_bodytext',
-                    PLG_replaceTags( nl2br (stripslashes ($A['bodytext']))));
+
+        if ($A['postmode'] == 'plaintext') {
+            $A['introtext'] = nl2br ($A['introtext']);
+            $A['bodytext'] = nl2br ($A['bodytext']);
         }
+        $story_template->set_var ('story_introtext',
+                PLG_replaceTags (stripslashes ($A['introtext'])));
+        $story_template->set_var ('story_bodytext',
+                PLG_replaceTags (stripslashes ($A['bodytext'])));
+
         $story_template->set_var('site_url',$_CONF['site_url']);
         $story_template->set_var('layout_url',$_CONF['layout_url']);
         $story_template->set_var('story_id', $A['sid']);
