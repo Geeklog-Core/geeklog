@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.40 2005/09/18 12:09:45 dhaun Exp $
+// $Id: lib-security.php,v 1.41 2005/10/03 19:00:34 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -720,7 +720,6 @@ function SEC_checkUserStatus($userid)
     global $_TABLES, $_CONF;
     // Check user status
     $status = DB_getItem($_TABLES['users'], 'status', "uid=$userid");
-
     // only do redirects if we aren't on users.php in a valid mode (logout or
     // default)
     if (!(eregi('users.php', $_SERVER['PHP_SELF'])))
@@ -791,7 +790,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
 
     /* First try a local cached login */
     $remoteusername = addslashes($loginname);
-    $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername'");
+    $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername' AND remoteservice='$service'");
     $tmp = mysql_errno();
     $nrows = DB_numRows($result);
     if (($tmp == 0) && ($nrows == 1))
@@ -829,7 +828,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
                     }
                 }
                 USER_createAccount($loginname, $authmodule->email, md5($passwd), '', '', $remoteusername, $service);
-                $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$loginname'");
+                $uid = DB_getItem ($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$service'");
                 // Store full remote account name:
                 $service = addslashes($service);
                 DB_Query("UPDATE {$_TABLES['users']} SET remoteusername='$remoteusername', remoteservice='$service', status=3 WHERE uid='$uid'");
@@ -841,9 +840,9 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
                           // and integrates user activation, see?
             } else {
                 // user existed, update local password:
-                DB_Change($_TABLES['users'], 'passwd', md5($passwd), 'remoteusername', $remoteusername);
+                DB_Change($_TABLES['users'], 'passwd', md5($passwd), array('remoteusername','remoteservice'), array($remoteusername,$service));
                 // and return their status
-                return DB_getItem($_TABLES['users'], 'status', "remoteusername='$remoteusername'");
+                return DB_getItem($_TABLES['users'], 'status', "remoteusername='$remoteusername' AND remoteservice='$service'");
             }
         } else {
             return -1;
