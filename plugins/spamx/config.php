@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: config.php,v 1.10 2005/08/27 17:25:20 dhaun Exp $
+ * $Id: config.php,v 1.11 2005/10/08 14:55:43 dhaun Exp $
  */
 
 $_SPX_CONF['version'] = '1.0.3';
@@ -17,11 +17,17 @@ $_SPX_CONF['version'] = '1.0.3';
 // Default Spam-X Action
 $_SPX_CONF['action'] = 128; // Default is ignore comment
 
-// URL blacklist changes RSS feed (currently only RSS v1.0 is supported)
-$_SPX_CONF['rss_url'] = 'http://www.jayallen.org/comment_spam/feeds/blacklist-changes.rdf';
+// NOTE: MT-Blacklist has been discontinued, i.e. the links to jayallen.org
+//       no longer work. For the time being, we provide a copy of the last
+//       version of MT-Blacklist on geeklog.net (see below) but there will be
+//       no more updates.
+//       Also see http://www.geeklog.net/article.php/mt-blacklist-discontinued
 
 // Entire MT-Blacklist (for inital import)
-$_SPX_CONF['mtblacklist_url'] = 'http://www.jayallen.org/comment_spam/blacklist.txt';
+$_SPX_CONF['mtblacklist_url'] = 'http://www.geeklog.net/backend/blacklist.txt';
+
+// URL blacklist changes RSS feed (no longer working - see above)
+$_SPX_CONF['rss_url'] = 'http://www.jayallen.org/comment_spam/feeds/blacklist-changes.rdf';
 
 // Spam-X URLs
 $_SPX_CONF['spamx_rss_url'] = 'http://www.pigstye.net/backend/spamx_users.rdf';
