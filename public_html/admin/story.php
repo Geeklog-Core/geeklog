@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.165 2005/09/18 12:09:45 dhaun Exp $
+// $Id: story.php,v 1.166 2005/10/11 13:41:48 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -786,7 +786,7 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
 
     $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
     if (!empty($query)) {
-         $sql .= " AND (title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query' or tid LIKE '$query')";
+         $sql .= " AND (title LIKE '%$query%' OR introtext LIKE '%$query%' OR bodytext LIKE '%$query%' OR sid LIKE '%$query%' or tid LIKE '%$query%')";
     }
     $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
 
@@ -1331,20 +1331,20 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     } else {
         $display .= COM_siteHeader('menu');
         $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
-            $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
+        $offset = 0;
+        if (isset ($_REQUEST['offset'])) {
+            $offset = COM_applyFilter ($_REQUEST['offset'], true);
+        }
         $page = 1;
-    }
-    $display .= liststories ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
-        $display .= COM_siteFooter();
+        if (isset ($_REQUEST['page'])) {
+            $page = COM_applyFilter ($_REQUEST['page'], true);
+        }
+        if ($page < 1) {
+            $page = 1;
+        }
+        $display .= liststories ($offset, $page, $_REQUEST['q'],
+                               COM_applyFilter ($_REQUEST['query_limit'], true));
+            $display .= COM_siteFooter();
     }
     echo $display;
 }
