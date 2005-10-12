@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.8 2005/09/24 15:08:16 dhaun Exp $
+// $Id: pingback.php,v 1.9 2005/10/12 14:06:24 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -44,6 +44,7 @@ require_once ('XML/RPC/Server.php');
 // knowing which language the sender of the pingback may prefer.
 $PNB_ERROR = array (
     'success'     => 'Thank you.', // success message; not an error ...
+    'skipped'     => '(skipped)',  // not an error
     'spam'        => 'Spam detected.',
     'speedlimit'  => 'Your last pingback was %d seconds ago. This site requires at least %d seconds between pingbacks.',
     'disabled'    => 'Pingback is disabled.',
@@ -70,11 +71,28 @@ function PNB_handlePingback ($id, $type, $url)
 
     require_once ('HTTP/Request.php');
 
+    // handle pingbacks to articles on our own site
+    $skip_speedlimit = false;
+    if ($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR']) {
+        if (!isset ($_CONF['pingback_self'])) {
+            $_CONF['pingback_self'] = 0; // default: skip self-pingbacks
+        }
+
+        if ($_CONF['pingback_self'] == 0) {
+            return new XML_RPC_Response (new XML_RPC_Value ($PNB_ERROR['skipped']));
+        } else if ($_CONF['pingback_self'] == 2) {
+            $skip_speedlimit = true;
+        }
+    }
+
     COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'pingback');
-    $last = COM_checkSpeedlimit ('pingback');
-    if ($last > 0) {
-        return new XML_RPC_Response (0, 49, sprintf ($PNB_ERROR['speedlimit'],
-                                     $last, $_CONF['commentspeedlimit']));
+    if (!$skip_speedlimit) {
+        $last = COM_checkSpeedlimit ('pingback');
+        if ($last > 0) {
+            return new XML_RPC_Response (0, 49,
+                    sprintf ($PNB_ERROR['speedlimit'], $last,
+                             $_CONF['commentspeedlimit']));
+        }
     }
 
     // See if we can read the page linking to us and extract at least
@@ -89,7 +107,7 @@ function PNB_handlePingback ($id, $type, $url)
             if (empty ($content[1])) {
                 $title = ''; // no title found
             } else {
-                $title = $content[1];
+                $title = trim ($content[1]);
             }
 
             // we could also run the rest of the other site's page
