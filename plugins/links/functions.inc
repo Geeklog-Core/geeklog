@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.27 2005/09/25 14:48:12 dhaun Exp $
+// $Id: functions.inc,v 1.28 2005/10/13 13:33:27 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -665,6 +665,11 @@ function plugin_uninstall_links ()
     // Remove the links table 
     COM_errorLog ('Dropping links table', 1);
     DB_query ("DROP TABLE {$_TABLES['links']}");
+    COM_errorLog ('...success', 1);
+    
+    // Remove Links Feeds from syndiaction table
+    COM_errorLog ('removing links feeds', 1);
+    DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE `type` = 'links'");
     COM_errorLog ('...success', 1);
 
     // Remove security for this plugin
