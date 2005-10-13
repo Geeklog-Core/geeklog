@@ -523,6 +523,18 @@ options:</p>
   <td valign="top"><a name="desc_multiple_trackbacks">multiple_trackbacks</a></td>
   <td valign="top">0</td>
   <td valign="top">How to handle multiple trackbacks and pingbacks from the same source: 0 = keep only the first, reject any further trackbacks / pingbacks; 1 = overwrite, i.e. only keep the latest trackback / pingback; 2 = allow multiple trackbacks / pingbacks, i.e. list them all</td></tr>
+<tr>
+  <td valign="top"><a name="desc_pingback_self">pingback_self</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Pingbacks are sent out automatically to <em>all</em> the
+    URLs linked from a story - which includes stories on your own site that
+    you may have linked in the article. This option lets you specify how these
+    "self pingbacks" are to be handled: 0 = skip them, i.e. don't send pingbacks
+    to stories on your own site; 1 = allow them, but obey the speed limit;
+    2 = allow them and ignore the speed limit.<br>
+    If your article contains more than one link to other stories on your site,
+    then option 1 is probably of limited use, as it would only pingback the
+    first linked story and run into the speed limit for the others.</td></tr>
 </table>
 
 

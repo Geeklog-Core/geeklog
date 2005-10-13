@@ -3,17 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2005 (1.3.12)
 ------------
 - Fixed Bug #174 -- quotes in titles are no longer double htmlentized [Vinny]
-- Changed the spam handling to update the speed limit when spam is detected
-  (i.e. handle spam posts as if they were successful posts and make the
-  submitter wait for the speed limit to expire). Also send a 403 "Forbidden"
-  HTTP response code when displaying the "spam detected" message [Dirk]
-  To quote RFC2616: "403 Forbidden: The server understood the request, but is
-  refusing to fulfill it. Authorization will not help and the request SHOULD
-  NOT be repeated."
 - The default permissions for new objects (stories, topics, blocks, etc.) can
   now be set in config.php (feature request #90) [Dirk]
-- Filter linefeeds in the To:, From:, and Subject: fields of an email in
-  COM_mail [Dirk]
 - Added an "Active users" entry to the site statistics. If Geeklog is configured
   to track a user's last login, this will display the number of users who
   logged into the site during the last 4 weeks. Otherwise, it displays the
@@ -23,11 +14,6 @@ GeekLog History/Changes:
   number of items) can be properly integrated with the "Site Stats" section.
   Modified stats/sitestatistics.thtml, removed stats/stats.thtml, added
   stats/singlesummary.thtml template files [Dirk]
-- Fixed bug with topic-specific blocks not showing up on the article page when
-  URL rewriting was enabled (bug #401) [Dirk]
-- Fixed missing site header when trying to submit an event without required
-  fields. Also fixed that it would redirect you to the story submission form
-  then (bug #409) [Dirk]
 - Introduced a generic function, USER_getPhoto, which provides the user's photo,
   if available. The function also supports getting the user's avatar from
   gravatar.com (if enabled in config.php) [Dirk]
@@ -40,19 +26,10 @@ GeekLog History/Changes:
 - Added $_CONF['show_right_blocks'] option which, if set = true, will display
   right-side blocks on all pages (also addresses feature request #31) [Dirk]
 - Fixed bug #454, SQL error when reading comments. [Vinny]
-- When $_CONF['emailstoryloginrequired'] = 1, hide the links to the "email
-  story" form from anonymous users [Dirk]
-- When emailing a story, check the user's message that is sent with the story
-  for spam [Dirk]
 - Leave off the "page=1" parameter on the "Google paging" navigation bar for
   links that point back to the first page [Dirk]
-- Don't check for auto-archived stories when no archive topic has been
-  defined yet [Dirk]
 - The default feed for a new site is now in RSS 2.0 format and named
   "geeklog.rss" [Mike, Dirk]
-- Removed the <meta name="ROBOTS"> entry from the Professional theme's
-  header.thtml as "INDEX,FOLLOW" is the default anyway. For finer control,
-  we now ship a robots.txt [Dirk]
 - Added time of the day to the name of the database backups to allow several
   backups a day [Oliver]
 - When the search returns no results, the search form is now pre-populated
@@ -96,8 +73,6 @@ GeekLog History/Changes:
 - Removed $_CONF['whosonline_fullname'] option - use $_CONF['show_fullname']
   instead [Dirk]
 - Fixed bug where extra slashes appeared when previewing comments [Vinny]
-- Added a robots.txt file to the distribution. By default, it excludes
-  comment.php, submit.php, and the docs directory from being spidered [Dirk]
 - Removed the "lastvisit" cookies, as they are obviously not used [Dirk]
 - Removed redundant changepwd-button & code from /admin/user.php (Bug #9)
   [Oliver]
@@ -106,8 +81,6 @@ GeekLog History/Changes:
   <link rel="alternate" type="application/{format}+xml" ....> [Oliver]
 - Added options to google-Navigation so it can be used by plugins and work with
   url-rewriting (feature request #315). [Oliver]
-- Added speedlimit to login attempts, defaults to allowing three tries in a
-  five minute period.  [Vinny]
 - Added optional SSL connections for all password-related pages and pathes in
   config.php. Fixed bug #398, used diff file from Jerome Limozin [Oliver]
 - Userlist now also shows Registration Date and if $_CONF['lastlogin']= true it
@@ -140,17 +113,9 @@ GeekLog History/Changes:
   Also updated the list of static pages to use alternating colors for the
   rows [Dirk]
 - Use "\r\n" when sending trackback pings (bug #407) [Dirk]
-- Make sure {menu_elements} is rendered using the menuitem_none.thtml template
-  when no menu elements are to be displayed (bug #378) [Dirk]
-- Quote names in email addresses as soon as they contain any non-alphanumeric
-  characters (apart from the blank). This also addresses bug #368 [Dirk]
-- Made sure all language files refer to Geeklog's [image] tags as [imageX],
-  [imageX_right], and [imageX_left] (bug #381) [Dirk]
 - Allow autotags to optionally have a space after the tag name [Blaine]
   Valid tags are:
   [story:20040101093000103 here] or [story: 20040101093000103 here]
-- Allow single quotes in passwords (bug #396, also previously reported as
-  bug #349 / #996354) [Dirk]
 - Fixed inconsistent use of {site_url} and {layout_url} in some of the
   professional theme's admin template files - using {layout_url} everywhere
   now when referring to icons (bug #395) [Dirk]
@@ -166,16 +131,7 @@ GeekLog History/Changes:
 - Enhanced the User Admin display and made the headings sortable [Blaine]
 - Geeklog will now properly handle html special characters (such as quotes and
   ampersands) in comment titles (bug #174) [Vinny]
-- Fix: Made a story's archive/expire date work with the timezone hack [Dirk]
-- COM_applyFilter will now accept negative numbers if the isnumeric parameter
-  is true. Needed to fix problems with pollbooth.php (and others) [Vinny]
-- Added a spam check to the user profile [Dirk]
-- Upgraded included kses class to version 0.2.2 which fixes problems with
-  Japanese and Thai characters (among other things), thus addressing bugs #94
-  and #119 [Dirk]
 - Hide 'edit' option for articles in preview (bug #347) [Dirk]
-- It wasn't possible to disable poll comments (reported by Demonhood) [Dirk]
-- Fixed SQL error when using the [staticpage:] autotag (bug #373) [Dirk]
 - Changed admin/user.php to use file() for the batch import [Dirk]
 - Implemented pinging weblog directory services like blo.gs and weblogs.com
   (Feature Request #35). By default, we ping pingomatic.com [Dirk]
@@ -194,8 +150,6 @@ GeekLog History/Changes:
   When upgrading, it now tries to identify the Geeklog version that was used
   previously (only really works for versions 1.3.8 - 1.3.11) [Dirk]
 - Fixed date in comment preview (bug #370) [Dirk]
-- Added a missing stripslashes call to remove backslashes when a topic's name
-  was displayed in the index page's title (bug #369) [Dirk]
 - Incorporated the new syndication framework for reading and writing feeds of
   different formats (RSS, RDF, Atom), provided by Michael Jervis (patch #352).
   This contribution also addresses Task #19 ("RSS import class") and Feature
@@ -203,38 +157,23 @@ GeekLog History/Changes:
   Please note that the feed writer classes, system/classes/*.feed.class.php,
   are now obsolete and can be removed. Please also note this adds new PEAR
   package requirements for Net_URL and HTTP_Request.
-- Story, event, and link submissions are now also checked for spam [Dirk]
 - Added support for sending and receiving trackback comments (Feature Request
   #34) Also implemented Pingback support in pretty much the same way. Once
   received, Geeklog treats Trackbacks and Pingbacks the same and stores them
   in the gl_trackback table. [Dirk]
   Both can be switched off in config.php: $_CONF['trackback_enabled'] = false;
   and $_CONF['pingback_enabled'] = false;
-- Added support for a custom_usercheck function. Custom registration code that
-  requires certain information can now abort the creation of a new account if
-  that information is missing. The function is called after Geeklog has checked
-  that the username and email address of the new user are okay (valid and not
-  in the database yet), but before the user has been added to the database
-  [Dirk]
 - Added a new script, directory.php, that implements a date-based listing of
   all the stories on a site [Dirk]
   A link to the directory is available as a new option, 'directory', for the
   $_CONF['menu_elements'] config variable, so that it can be added to the menu.
-- When $_CONF['profileloginrequired'] was set to 1, the actual message that
-  you have to log in before being able to see a user profile was not wrapped
-  in the Geeklog framework (reported by Sean C) [Dirk]
-- Save one SQL request for a story's printable view [Dirk]
 - The column headline for event search results was not displayed [Dirk]
 - Added logos to syndication feeds. [Mike]
-- Link tags are now translated in printer friendly mode (Bug #411) [Mike]
 - Added config option to disable new accounts (Patch #426 from Alford Deeley)
   [Mike]
 - Alphabet Sort on Admin Menu and C&C Block [Mike]
 
 - New Farsi (Persian) language file, provided by Hesam.H
-- Updated Italian language file, provided by Marcello Teodori
-- Updated Italian language file for the Static Pages plugin, provided by
-  Marcello Teodori
 
 - New Farsi (Persian) language file for the static pages plugin,
   provided by Hesam.H
@@ -252,8 +191,118 @@ Polls plugin 1.0.0
 
 Spam-X plugin 1.0.3
 -------------
+- Added a Mass Delete module for Trackback comments [Dirk]
 - Added an "admin override" option, so that postings by members of the 'spamx
   Admin' group will not be checked for spam [Dirk]
+
+
+Oct 9, 2005 (1.3.11sr2)
+-----------
+
+This release provides security enhancements and better spam protection
+originally developed for Geeklog 1.3.12. It also addresses a few bugs where
+the bugfix could be integrated with a reasonable amount of work (other bugfixes
+will have to wait for the 1.3.12 release).
+
+Security and Spam protection:
+
+- Added speedlimit to login attempts, defaults to allowing three tries in a
+  five minute period.  [Vinny]
+  See new config options $_CONF['login_attempts'] and $_CONF['login_speedlimit']
+- Changed the spam handling to update the speed limit when spam is detected
+  (i.e. handle spam posts as if they were successful posts and make the
+  submitter wait for the speed limit to expire). Also send a 403 "Forbidden"
+  HTTP response code when displaying the "spam detected" message [Dirk]
+  To quote RFC2616: "403 Forbidden: The server understood the request, but is
+  refusing to fulfill it. Authorization will not help and the request SHOULD
+  NOT be repeated."
+- Filter linefeeds in the To:, From:, and Subject: fields of an email in
+  COM_mail [Dirk]
+- When a new user account is created and the user submission queue is enabled
+  in config.php, ensure that the user is properly "queued" even in the
+  unlikely event that the account creation fails halfway through (reported by
+  LWC) [Dirk]
+- When $_CONF['emailstoryloginrequired'] = 1, hide the links to the "email
+  story" form from anonymous users [Dirk]
+- When emailing a story, check the user's message that is sent with the story
+  for spam [Dirk]
+- Added a robots.txt file to the distribution. By default, it excludes
+  comment.php, submit.php, and the docs directory from being spidered [Dirk]
+- Added a spam check to the user profile [Dirk]
+- Story, event, and link submissions are now also checked for spam [Dirk]
+- This release also includes the Spam-X plugin version 1.0.2
+
+Please note that MT-Blacklist (used by Spam-X) has recently been discontinued.
+For the time being, we provide the last version of the blacklist for download
+from geeklog.net (the Spam-X plugin as included in this release is configured
+to get it from there for the initial import). There will, however, be no
+updates the blacklist. For details, please see
+http://www.geeklog.net/article.php/mt-blacklist-discontinued
+
+Bugfixes:
+
+- Fixed an error message thrown up by PHP 5.0.5 or later when viewing the
+  article page (bug #483) [Dirk]
+- Fixed bug with topic-specific blocks not showing up on the article page when
+  URL rewriting was enabled (bug #401) [Dirk]
+- Fixed missing site header when trying to submit an event without required
+  fields. Also fixed that it would redirect you to the story submission form
+  then (bug #409) [Dirk]
+- Make sure {menu_elements} is rendered using the menuitem_none.thtml template
+  when no menu elements are to be displayed (bug #378) [Dirk]
+- Quote names in email addresses as soon as they contain any non-alphanumeric
+  characters (apart from the blank). This also addresses bug #368 [Dirk]
+- Allow single quotes in passwords (bug #396, also previously reported as
+  bug #349 / #996354) [Dirk]
+- When $_CONF['profileloginrequired'] was set to 1, the actual message that
+  you have to log in before being able to see a user profile was not wrapped
+  in the Geeklog framework (reported by Sean C) [Dirk]
+- Fix: Made a story's archive/expire date work with the timezone hack [Dirk]
+- COM_applyFilter will now accept negative numbers if the isnumeric parameter
+  is true. Needed to fix problems with pollbooth.php (and others) [Vinny]
+- Upgraded included kses class to version 0.2.2 which fixes problems with
+  Japanese and Thai characters (among other things), thus addressing bugs #94
+  and #119 [Dirk]
+- Fixed SQL error when using the [staticpage:] autotag (bug #373) [Dirk]
+- Added a missing stripslashes call to remove backslashes when a topic's name
+  was displayed in the index page's title (bug #369) [Dirk]
+- Link tags are now translated in printer friendly mode (Bug #411) [Mike]
+- Removed the <meta name="ROBOTS"> entry from the Professional theme's
+  header.thtml as "INDEX,FOLLOW" is the default anyway. For finer control,
+  we now ship a robots.txt [Dirk]
+
+Improvements:
+
+- Don't check for auto-archived stories when no archive topic has been
+  defined yet [Dirk]
+- Added support for a custom_usercheck function. Custom registration code that
+  requires certain information can now abort the creation of a new account if
+  that information is missing. The function is called after Geeklog has checked
+  that the username and email address of the new user are okay (valid and not
+  in the database yet), but before the user has been added to the database
+  [Dirk]
+- Saved one SQL request for a story's printable view [Dirk]
+
+Language files:
+
+- Made sure all language files refer to Geeklog's [image] tags as [imageX],
+  [imageX_right], and [imageX_left] (bug #381) [Dirk]
+
+- New Catalan language file, provided by an anonymous user
+- New Russian (UTF-8) language file, provided by Konstantin Boyandin
+- Updated Hebrew language file, provided by LWC
+- Updated Hellenic (Greek) language file, provided by MzOzD
+- Updated Italian language file, provided by Marcello Teodori
+- Updated Japanese (UTF-8) language file, provided by Yusuke Sakata
+- Updated Portuguese (Brazil) language file, provided by Alcides Soares Filho
+- Updated Russian language file, provided by Konstantin Boyandin
+
+- New Japanese (UTF-8) language file for the Static Pages plugin, provided by
+  Yusuke Sakata
+- Updated Italian language file for the Static Pages plugin, provided by
+  Marcello Teodori
+- Updated Japanese language file for the Static Pages plugin, provided by
+  Yusuke Sakata
 
 
 Aug 21, 2005 (Spam-X plugin 1.0.2)

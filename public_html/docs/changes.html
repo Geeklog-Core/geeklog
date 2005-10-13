@@ -51,6 +51,73 @@ of files that have been changed since the last release.</p>
     banned as normal accounts).</li>
 </ul>
 
+
+<h2><a name="changes1311sr2">Geeklog 1.3.11sr2</a></h2>
+
+<p>This release provides security enhancements and better spam protection
+originally developed for Geeklog 1.3.12. It also addresses a few bugs where
+the bugfix could be integrated with a reasonable amount of work (other bugfixes
+will have to wait for the 1.3.12 release).
+
+<h3>Security and Spam protection</h3>
+<ul>
+<li>There is now a speed limit for login attempts, defaulting to three tries
+    in a five minute period (<a
+    href="config.html#desc_login_attempts">configurable</a> in
+    <tt>config.php</tt>).</li>
+<li>Linefeeds are filtered from the To:, From:, and Subject: fields of any
+    email sent through <code>COM_mail</code>.</li>
+<li>When a new user account is created and the user submission queue is enabled
+    in <tt>config.php</tt>, Geeklog now ensures that the new account is properly
+    queued even in the unlikely event that the account creation fails halfway
+    through.</li>
+<li>When a post is identified as spam, it now also triggers the speed limit
+    (ie. posters will have to wait for the speed limit to expire before they
+    can make another submission).</li>
+<li>Spam posts now get a 403 "Forbidden" HTTP response code.</li>
+<li>Spam checks are now done for comments, story, link, and event submissions,
+    the message sent with the "email story to a friend" option, and for the
+    contents of the user profile.</li>
+<li><a href="http://www.geeklog.net/article.php/spam-x-1.0.2"
+    rel="nofollow">Spam-X plugin 1.0.2</a> included.</li>
+</ul>
+
+<p>Please note that MT-Blacklist (used by Spam-X) has recently been <a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a>. The
+Spam-X plugin as included in this release is configured to get the last version
+of the blacklist from geeklog.net, but there will be no more updates.</p>
+
+<h3>Bugfixes</h3>
+<ul>
+<li>Fixed an error message thrown up by PHP 5.0.5 or later when viewing the
+    article page (bug #483).</li>
+<li>Quote names in email addresses as soon as they contain any non-alphanumeric
+    characters, apart from the blank (bug #368). This should help when trying
+    to email users with special characters in their name.</li>
+<li>Upgraded included kses class to version 0.2.2 which fixes problems with
+    Japanese and Thai characters (bugs #94 and #119).</li>
+<li>Fixed SQL error when using the [staticpage:] autotag (bug #373).</li>
+</ul>
+<p>For a complete list of bugfixes, please see the Changelog.</p>
+
+<h3>Improvements</h3>
+<ul>
+<li>Added support for a <code>custom_usercheck</code> function (for the
+    custom registration code). See the included <tt>lib-custom.php</tt> for
+    details.</li>
+<li>Improved handling of the auto-archive option in <tt>index.php</tt>, which
+    should slightly improve page load times.</li>
+<li>Includes several new and updated language files.</li>
+<li>Includes updated PEAR classes.</li>
+</ul>
+
+
+<h2><a name="changes1311sr1">Geeklog 1.3.11sr1</a></h2>
+<p>This release addresses the following security issue:</p>
+<ul>
+<li>Stefan Esser found an SQL injection that can, under certain circumstances,
+be exploited to extract user data such as the user's password hash.</li>
+</ul>
+
 <h2><a name="changes1311">Geeklog 1.3.11</a></h2>
 
 <p>Geeklog 1.3.11 is a <strong>bugfix and security release</strong> over Geeklog 1.3.10 and is meant to replace 1.3.10. The change in the version number was necessary since one of the bugfixes involves a change in the database.</p>
