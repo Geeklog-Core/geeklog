@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.69 2005/10/13 08:40:23 ospiess Exp $
+// $Id: block.php,v 1.70 2005/10/13 08:44:42 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -620,7 +620,6 @@ function listblocks ($offset, $curpage, $query = '', $query_limit = 50)
          $sql .= " WHERE (title LIKE '%$query%' OR content LIKE '%$query%')";
     }
     $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-    echo $sql;
 
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
