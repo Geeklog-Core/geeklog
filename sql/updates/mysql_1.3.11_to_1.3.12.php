@@ -73,6 +73,8 @@ $_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RSS-2.0' WHERE format=
 
 // add links plugin
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.3.12', 1, 'http://www.geeklog.net/')";
+// update links Rss to links plugin
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `type` = 'links', `topic` = 'all' WHERE `topic` = '::links';";
 // add polls plugin
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.3.12', '1', 'http://www.geeklog.net/')";
 
