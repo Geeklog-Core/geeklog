@@ -630,7 +630,7 @@ $LANG21 = array(
     22 => 'Block Type',
     23 => 'Block Order',
     24 => 'Block Topic',
-    25 => 'To modify or delete a block, click on that block below.  To create a new block click on new block above.',
+    25 => 'To modify or delete a block, click on that blocks edit icon below.  To create a new block click on new block above. To move a block, click on the arrows or boxes with R and L.',
     26 => 'Layout Block',
     27 => 'PHP Block',
     28 => 'PHP Block Options',
@@ -669,7 +669,13 @@ $LANG21 = array(
     61 => 'No Title',
     62 => 'Article Limit',
     63 => 'Bad Block Title',
-    64 => 'Your Title must not be empty and cannot contain HTML!'
+    64 => 'Your Title must not be empty and cannot contain HTML!',
+    65 => 'Order',
+    66 => 'Search',
+    67 => 'Move',
+    68 => 'Submit',
+    69 => 'Limit Results',
+    70 => 'Edit'
 );
 
 ###############################################################################

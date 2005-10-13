@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.70 2005/10/13 08:44:42 ospiess Exp $
+// $Id: block.php,v 1.71 2005/10/13 08:52:21 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -541,14 +541,14 @@ function listblocks ($offset, $curpage, $query = '', $query_limit = 50)
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_blocktopic', $LANG21[24]);
     $block_templates->set_var('lang_enabled', $LANG21[53]);
-    $block_templates->set_var('lang_move', "Move");
-    $block_templates->set_var('lang_side', "Side");
-    $block_templates->set_var('lang_order', "Order");
-    $block_templates->set_var('lang_edit', "Edit");
-    $block_templates->set_var('lang_search', "Search");
-    $block_templates->set_var('lang_submit', "Submit");
+    $block_templates->set_var('lang_move', $LANG21[67]);
+    $block_templates->set_var('lang_side', $LANG21[39]);
+    $block_templates->set_var('lang_order', $LANG21[65]);
+    $block_templates->set_var('lang_edit', $LANG21[70]);
+    $block_templates->set_var('lang_search', $LANG21[66]);
+    $block_templates->set_var('lang_submit', $LANG21[68]);
     $block_templates->set_var('last_query', $query);
-    $block_templates->set_var('lang_limit_results', "Limit Results");
+    $block_templates->set_var('lang_limit_results', $LANG21[69]);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG01[4] . '" title="'
              . $LANG01[4] . '">';
