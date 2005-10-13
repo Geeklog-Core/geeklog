@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.41 2005/06/25 17:14:34 dhaun Exp $
+// $Id: calendar_event.php,v 1.42 2005/10/13 14:14:28 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -570,7 +570,7 @@ default:
                     $cal_templates->parse('addremove_event','addremove');
                 }
                 $cal_templates->set_var('lang_when', $LANG02[3]);
-                if ($A['allday'] == 0 OR ($A['allday'] == 1 AND $A['start'] <> $A['end'])) {
+                if ($A['allday'] == 0) {
                     $thedatetime = COM_getUserDateTimeFormat ($A['start'] . ' '
                                                             . $A['timestart']);
                     $cal_templates->set_var ('event_start', $thedatetime[0]);
@@ -583,6 +583,14 @@ default:
                                                         . ' ' . $A['timeend']);
                     }
                     $cal_templates->set_var ('event_end', $thedatetime[0]);
+                } elseif ($A['allday'] == 1 AND $A['start'] <> $A['end']) {
+                    $thedatetime1 = strftime ('%A, ' . $_CONF['shortdate'],
+                                             strtotime ($A['start']));
+                    $cal_templates->set_var ('event_start', $thedatetime1);
+                    $thedatetime2 = strftime ('%A, ' . $_CONF['shortdate'],
+                                                  strtotime ($A['end']));
+                    $cal_templates->set_var ('event_end', $thedatetime2
+                                                        . ' ' . $LANG30[26]);
                 } else {
                     $thedatetime = strftime ('%A, ' . $_CONF['shortdate'],
                                              strtotime ($A['start']));
