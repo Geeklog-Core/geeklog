@@ -1,8 +1,10 @@
-                                <tr class="blocktitle" align="center">
-                                    <td colspan="2" align="center">{side}</td>
-                                    <td align="left">{lang_blocktitle}</td>
-                                    <td>{lang_access}</td>
-                                    <td>{lang_blocktype}</td>
-                                    <td>{lang_blocktopic}</td>
-                                    <td>{lang_enabled}</td>
+                                <tr style="background:#FFFFFF;">
+                                    <th class="admin-list-headerfield">{lang_edit}</td>
+                                    <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/block.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_side}, {lang_order}{img_arrow1}</td>
+                                    <th class="admin-list-headerfield">{lang_move}</td>
+                                    <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/block.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_blocktitle}{img_arrow2}</td>
+                                    <th class="admin-list-headerfield">{lang_access}</td>
+                                    <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/block.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_blocktype}{img_arrow3}</td>
+                                    <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/block.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_blocktopic}{img_arrow4}</td>
+                                    <th class="admin-list-headerfield" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/block.php?order=5&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';">{lang_enabled}{img_arrow5}</td>
                                 </tr>

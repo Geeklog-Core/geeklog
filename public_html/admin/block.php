@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.68 2005/09/18 12:09:45 dhaun Exp $
+// $Id: block.php,v 1.69 2005/10/13 08:40:23 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -473,6 +473,37 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
     
     return $retval;
 }
+/**
+*
+* Re-orders all blocks in steps of 10
+*
+*/
+function reorderblocks()
+{
+    global $_TABLES;
+    $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft asc, blockorder asc;";
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    
+    $lastside = 0;
+    $blockOrd = 10;
+    $stepNumber = 10;
+    
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+    
+        if ($lastside != $A['onleft']) { // we are switching left/right blocks
+            $blockOrd = 10;              // so start with 10 again
+        }
+        if ($A['blockorder'] != $blockOrd) {  // only update incorrect ones
+            $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = '" .
+                  $blockOrd . "' WHERE bid = '" . $A['bid'] ."'";
+            DB_query($q);
+        }
+        $blockOrd += $stepNumber;
+        $lastside = $A['onleft'];       // save variable for next round
+    }
+}
 
 /**
 * Lists all block in the system
@@ -480,12 +511,18 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 * @return   string      HTML with list of blocks
 *
 */
-function listblocks() 
+function listblocks ($offset, $curpage, $query = '', $query_limit = 50)
 {
     global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS, $_IMAGE_TYPE;
 
     // Added enhanced Block admin based on concept from stratosfear
     $retval = '';
+    
+    reorderblocks(); // re-assign block order numbers to 10, 20, etc.
+
+    $order = COM_applyFilter ($_GET['order'], true);
+    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
+    $direction = COM_applyFilter ($_GET['direction']);
 
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file(array('list'=>'listblocks.thtml', 'row'=>'listitem.thtml', 'leftRight'=>'listside.thtml'));
@@ -504,19 +541,95 @@ function listblocks()
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_blocktopic', $LANG21[24]);
     $block_templates->set_var('lang_enabled', $LANG21[53]);
+    $block_templates->set_var('lang_move', "Move");
+    $block_templates->set_var('lang_side', "Side");
+    $block_templates->set_var('lang_order', "Order");
+    $block_templates->set_var('lang_edit', "Edit");
+    $block_templates->set_var('lang_search', "Search");
+    $block_templates->set_var('lang_submit', "Submit");
+    $block_templates->set_var('last_query', $query);
+    $block_templates->set_var('lang_limit_results', "Limit Results");
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG01[4] . '" title="'
+             . $LANG01[4] . '">';
+    $block_templates->set_var('edit_icon', $editico);
  
-    $result = DB_query("SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft DESC,blockorder");
+    for ($i = 1; $i < 8; $i++) {
+        $block_templates->set_var ('img_arrow' . $i, '');
+    }
+    
+    
+    if (empty ($direction)) {
+        $direction = 'desc';
+    } else if ($order == $prevorder) {
+        $direction = ($direction == 'desc') ? 'asc' : 'desc';
+    } else {
+        $direction = ($direction == 'desc') ? 'desc' : 'asc';
+    }
+    
+    switch($order) {
+        case 1:
+            $orderby = "onleft $direction, blockorder, title";
+            break;
+        case 2:
+            $orderby = 'title';
+            break;
+        case 3:
+            $orderby = 'type';
+            break;
+        case 4:
+            $orderby = 'tid';
+            break;
+        case 5:
+            $orderby = 'is_enabled';
+            break;
+        default:
+            $orderby = "onleft $direction, blockorder, title";
+            $order = 1;
+            break;
+    }
+
+
+    if ($direction == 'asc') {
+        $arrow = 'bararrowdown';
+    } else {
+        $arrow = 'bararrowup';
+    }
+    $block_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="'
+            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
+            . '" border="0" alt="">');
+
+    $block_templates->set_var ('direction', $direction);
+    $block_templates->set_var ('page', $page);
+    $block_templates->set_var ('prevorder', $order);
+    if (empty($query_limit)) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    if ($query != '') {
+        $block_templates->set_var ('query', urlencode($query) );
+    } else {
+        $block_templates->set_var ('query', '');
+    }
+    $block_templates->set_var ('query_limit', $query_limit);
+    $block_templates->set_var($limit . '_selected', 'selected="selected"');
+    
+    $sql = "SELECT * FROM {$_TABLES['blocks']} ";
+    if (!empty($query)) {
+         $sql .= " WHERE (title LIKE '%$query%' OR content LIKE '%$query%')";
+    }
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+    echo $sql;
+
+    $result = DB_query($sql);
     $nrows = DB_numRows($result);
-    $hasPrintedRight = false;
-    $blockOrd = 10;
-    $stepNumber = 10;
+
+    $block_templates->parse('blocklist_item', 'leftRight', true);
 
     for ($i = 0; $i < $nrows; $i++) {
-        if ($i == 0) {
-            $block_templates->set_var('side', $LANG21[40]);
-            $block_templates->parse('blocklist_item', 'leftRight', true);
-        }
         $A = DB_fetchArray($result);
+        $block_templates->set_var('cssid', ($i%2)+1);
 
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
@@ -545,33 +658,22 @@ function listblocks()
                 $side = $LANG21[40];
                 $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
                 $moveTitleMsg = $LANG21[59];
-                $switchside = '1';
+                $block_templates->set_var('side', $LANG21[40]);
             } else {
                 $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
                 $moveTitleMsg = $LANG21[60];
-                $switchside = '0';
-                if (!$hasPrintedRight) {
-                    $block_templates->set_var('side', $LANG21[41]);
-                    $block_templates->parse('blocklist_item', 'leftRight', true);
-                    $hasPrintedRight = true;
-                    $blockOrd = 10;
-                }
-                $side = $LANG21[41];
+                $block_templates->set_var('side', $LANG21[41]);
             }
+            
             $block_templates->set_var('blockcontrol_image', $blockcontrol_image);
             $block_templates->set_var('switchside', $switchside);
             $block_templates->set_var('upTitleMsg', $LANG21[58]);
             $block_templates->set_var('moveTitleMsg', $moveTitleMsg);
             $block_templates->set_var('dnTitleMsg', $LANG21[57]);
-            if ($A['blockorder'] != $blockOrd) {
-                $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = '" .
-                      $blockOrd . "' WHERE bid = '" . $A['bid'] ."'";
-                DB_query($q);
-            }
-            $block_templates->set_var('block_order', $blockOrd);
+            
+            $block_templates->set_var('block_order', $A['blockorder']);
             $block_templates->set_var('block_topic', $A['tid']); 
             $block_templates->parse('blocklist_item', 'row', true);
-            $blockOrd += $stepNumber;
         }
     }
 
@@ -712,8 +814,20 @@ if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
     if ($msg > 0) {
         $display .= COM_showMessage ($msg);
     }
-    $display .= listblocks ();
-    $display .= COM_siteFooter ();
+    $offset = 0;
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+    }
+    $page = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
+    }
+    if ($page < 1) {
+        $page = 1;
+    }
+    $display .= listblocks ($offset, $page, $_REQUEST['q'],
+                           COM_applyFilter ($_REQUEST['query_limit'], true));
+        $display .= COM_siteFooter();
 }
 
 echo $display;
