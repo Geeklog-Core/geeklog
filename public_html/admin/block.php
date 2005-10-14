@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.71 2005/10/13 08:52:21 ospiess Exp $
+// $Id: block.php,v 1.72 2005/10/14 08:31:30 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -90,7 +90,7 @@ function hasBlockTopicAccess ($tid)
 */ 
 function editdefaultblock ($A, $access) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $_USER, $LANG21, $LANG_ACCESS, $LANG_ADMIN;
 
     $retval = '';
 
@@ -103,21 +103,26 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('block_id', $A['bid']);
-    $block_templates->set_var('lang_blocktitle', $LANG21[5]);
+    // standard Admin strings
+    $block_templates->set_var('lang_blocktitle', $LANG_ADMIN['title']);
+    $block_templates->set_var('lang_enabled', $LANG_ADMIN['enabled']);
+    $block_templates->set_var('lang_blockhelpurl', $LANG_ADMIN['help_url']);
+    $block_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
+    $block_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $block_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
+    $block_templates->set_var('lang_blocktype', $LANG_ADMIN['type']);
+
     $block_templates->set_var('block_title', stripslashes ($A['title']));
-    $block_templates->set_var('lang_enabled', $LANG21[53]);
     if ($A['is_enabled'] == 1) {
         $block_templates->set_var('is_enabled', 'checked="CHECKED"');
     } else {
         $block_templates->set_var('is_enabled', '');
     }
-    $block_templates->set_var('lang_blockhelpurl', $LANG21[50]);
     $block_templates->set_var('block_help', $A['help']);
     $block_templates->set_var('lang_includehttp', $LANG21[51]);
     $block_templates->set_var('lang_explanation', $LANG21[52]);
     $block_templates->set_var('block_name',$A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
-    $block_templates->set_var('lang_topic', $LANG21[6]);
     $block_templates->set_var('lang_homeonly', $LANG21[43]);
     if ($A['tid'] == 'all') {
         $block_templates->set_var('all_selected', 'selected="selected"');
@@ -129,8 +134,7 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
-    $block_templates->set_var('lang_save', $LANG21[54]);
-    $block_templates->set_var('lang_cancel', $LANG21[55]);
+
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
     } else if ($A['onleft'] == 0) {
@@ -138,7 +142,6 @@ function editdefaultblock ($A, $access)
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
     $block_templates->set_var('block_order', $A['blockorder']);
-    $block_templates->set_var('lang_blocktype', $LANG21[10]);
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = '{$A['owner_id']}'"));
@@ -169,7 +172,7 @@ function editdefaultblock ($A, $access)
 */
 function editblock ($bid = '') 
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG21, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG21, $LANG_ACCESS, $LANG_ADMIN;
 
     $retval = '';
 
@@ -214,12 +217,20 @@ function editblock ($bid = '')
         
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.delete')) {
-            $block_templates->set_var('delete_option',"<input type=\"submit\" value=\"$LANG21[56]\" name=\"mode\">");
+            $block_templates->set_var('delete_option',"<input type=\"submit\" value=\"{$LANG_ADMIN['delete']}\" name=\"mode\">");
         }
     }
 
     $block_templates->set_var('block_bid', $A['bid']);
-    $block_templates->set_var('lang_blocktitle', $LANG21[5]);
+    // standard Admin strings
+    $block_templates->set_var('lang_blocktitle', $LANG_ADMIN['title']);
+    $block_templates->set_var('lang_enabled', $LANG_ADMIN['enabled']);
+    $block_templates->set_var('lang_blockhelpurl', $LANG_ADMIN['help_url']);
+    $block_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
+    $block_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $block_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
+    $block_templates->set_var('lang_blocktype', $LANG_ADMIN['type']);
+    
     $block_templates->set_var('block_title', stripslashes ($A['title']));
     $block_templates->set_var('lang_enabled', $LANG21[53]);
     if ($A['is_enabled'] == 1) {
@@ -228,13 +239,11 @@ function editblock ($bid = '')
         $block_templates->set_var('is_enabled', '');
     }
     $block_templates->set_var('block_help', $A['help']);
-    $block_templates->set_var('lang_blockhelpurl', $LANG21[50]);
     $block_templates->set_var('lang_includehttp', $LANG21[51]);
     $block_templates->set_var('lang_explanation', $LANG21[52]);
     $block_templates->set_var('block_name', $A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
     $block_templates->set_var('lang_nospaces', $LANG21[49]);
-    $block_templates->set_var('lang_topic', $LANG21[6]);
     $block_templates->set_var('lang_all', $LANG21[7]);
     $block_templates->set_var('lang_homeonly', $LANG21[43]);
     if ($A['tid'] == 'all') {
@@ -246,8 +255,6 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
-    $block_templates->set_var('lang_save', $LANG21[54]);
-    $block_templates->set_var('lang_cancel', $LANG21[55]);
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
     } else if ($A['onleft'] == 0) {
@@ -255,7 +262,6 @@ function editblock ($bid = '')
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
     $block_templates->set_var('block_order', $A['blockorder']);
-    $block_templates->set_var('lang_blocktype', $LANG21[10]);
     $block_templates->set_var('lang_normalblock', $LANG21[12]);
     $block_templates->set_var('lang_phpblock', $LANG21[27]);
     $block_templates->set_var('lang_portalblock', $LANG21[11]);
@@ -513,7 +519,8 @@ function reorderblocks()
 */
 function listblocks ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS, $_IMAGE_TYPE,
+            $LANG_ADMIN;
 
     // Added enhanced Block admin based on concept from stratosfear
     $retval = '';
@@ -532,23 +539,25 @@ function listblocks ($offset, $curpage, $query = '', $query_limit = 50)
     $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
-    $block_templates->set_var('lang_newblock', $LANG21[46]);
-    $block_templates->set_var('lang_adminhome', $LANG21[47]);
-    $block_templates->set_var('lang_instructions', $LANG21[25]);
-    $block_templates->set_var('lang_blocktitle', $LANG21[20]);
+    // standard admin list strings
+    $block_templates->set_var('lang_newblock', $LANG_ADMIN['create_new']);
+    $block_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
+    $block_templates->set_var('lang_blocktitle', $LANG_ADMIN['title']);
+    $block_templates->set_var('lang_blocktype', $LANG_ADMIN['type']);
+    $block_templates->set_var('lang_blocktopic', $LANG_ADMIN['topic']);
+    $block_templates->set_var('lang_enabled', $LANG_ADMIN['enabled']);
+    $block_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
+    $block_templates->set_var('lang_search', $LANG_ADMIN['search']);
+    $block_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
+    $block_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
+    
     $block_templates->set_var('lang_access', $LANG_ACCESS['access']);
-    $block_templates->set_var('lang_blocktype', $LANG21[22]);
-    $block_templates->set_var('lang_side', $LANG21[39]);
-    $block_templates->set_var('lang_blocktopic', $LANG21[24]);
-    $block_templates->set_var('lang_enabled', $LANG21[53]);
-    $block_templates->set_var('lang_move', $LANG21[67]);
+    // custom strings
+    $block_templates->set_var('lang_instructions', $LANG21[25]);
+    $block_templates->set_var('lang_move', $LANG21[46]);
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_order', $LANG21[65]);
-    $block_templates->set_var('lang_edit', $LANG21[70]);
-    $block_templates->set_var('lang_search', $LANG21[66]);
-    $block_templates->set_var('lang_submit', $LANG21[68]);
     $block_templates->set_var('last_query', $query);
-    $block_templates->set_var('lang_limit_results', $LANG21[69]);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG01[4] . '" title="'
              . $LANG01[4] . '">';

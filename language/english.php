@@ -610,12 +610,12 @@ $LANG21 = array(
     2 => 'You do not have the necessary rights to edit this block.',
     3 => 'Block Editor',
     4 => 'There was a problem reading this feed (see error.log for details).',
-    5 => 'Block Title',
-    6 => 'Topic',
+    5 => '',
+    6 => '',
     7 => 'All',
     8 => 'Block Security Level',
     9 => 'Block Order',
-    10 => 'Block Type',
+    10 => '',
     11 => 'Portal Block',
     12 => 'Normal Block',
     13 => 'Portal Block Options',
@@ -625,11 +625,11 @@ $LANG21 = array(
     17 => 'Block Content',
     18 => 'Please fill in the Block Title and Content fields',
     19 => 'Block Manager',
-    20 => 'Block Title',
+    20 => '',
     21 => 'Block SecLev',
-    22 => 'Block Type',
+    22 => '',
     23 => 'Block Order',
-    24 => 'Block Topic',
+    24 => '',
     25 => 'To modify or delete a block, click on that blocks edit icon below.  To create a new block click on new block above. To move a block, click on the arrows or boxes with R and L.',
     26 => 'Layout Block',
     27 => 'PHP Block',
@@ -651,11 +651,11 @@ $LANG21 = array(
     43 => 'Homepage Only',
     44 => 'Access Denied',
     45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/block.php\">go back to the block administration screen</a>.",
-    46 => 'New Block',
-    47 => 'Admin Home',
+    46 => 'Move',
+    47 => '',
     48 => 'Block Name',
     49 => ' (no spaces and must be unique)',
-    50 => 'Help File URL',
+    50 => '',
     51 => 'include http://',
     52 => 'If you leave this blank the help icon for this block will not be displayed',
     53 => 'Enabled',
@@ -670,12 +670,7 @@ $LANG21 = array(
     62 => 'Article Limit',
     63 => 'Bad Block Title',
     64 => 'Your Title must not be empty and cannot contain HTML!',
-    65 => 'Order',
-    66 => 'Search',
-    67 => 'Move',
-    68 => 'Submit',
-    69 => 'Limit Results',
-    70 => 'Edit'
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -1429,6 +1424,31 @@ $LANG_WHATSNEW = array (
     'day'         => 'day',
     'week'        => 'week',
     'month'       => 'month'
+);
+
+################################################################################
+# Admin - Strings
+#
+# These are some standard strings used by core functions as well as plugins to
+# display adminiatration lists and edit pages
+
+$LANG_ADMIN = array (
+    'search'        => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit'        => 'Submit',
+    'edit'          => 'Edit',
+    'admin_home'    => 'Admin Home',
+    'create_new'    => 'Create New',
+    'enabled'       => 'Enabled',
+    'access'        => 'Access',
+    'title'         => 'Title',
+    'type'          => 'Type',
+    'topic'         => 'Topic',
+    'help_url' => 'Help File URL',
+    'save'          => 'Save',
+    'cancel'        => 'Cancel',
+    'delete'        => 'Delete'
+
 );
 
 ?>
