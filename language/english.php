@@ -649,7 +649,7 @@ $LANG21 = array(
     41 => 'Right',
     42 => 'You must enter the block title and block order for Geeklog default blocks.',
     43 => 'Homepage Only',
-    44 => 'Access Denied',
+    44 => '',
     45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/block.php\">go back to the block administration screen</a>.",
     46 => 'Move',
     47 => '',
@@ -679,7 +679,7 @@ $LANG21 = array(
 $LANG22 = array(
     1 => 'Event Editor',
     2 => 'Error',
-    3 => 'Event Title',
+    3 => '',
     4 => 'Event URL',
     5 => 'Event Start Date',
     6 => 'Event End Date',
@@ -689,24 +689,19 @@ $LANG22 = array(
     10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
     12 => 'To modify or delete an event, click on that events edit icon below.  To create a new event click on new event above. Click on the copy icon to create a copy of an existing event.',
-    13 => 'Event Title',
+    13 => '',
     14 => 'Start Date',
     15 => 'End Date',
-    16 => 'Access Denied',
+    16 => '',
     17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/event.php\">go back to the event administration screen</a>.",
-    18 => 'New Event',
-    19 => 'Admin Home',
+    18 => '',
+    19 => '',
     20 => 'save',
     21 => 'cancel',
     22 => 'delete',
     23 => 'Bad start date.',
     24 => 'Bad end date.',
-    25 => 'End date is before start date.',
-    26 => 'Submit',
-    27 => 'Limit Results',
-    28 => 'Search',
-    29 => 'Edit',
-    30 => 'Copy'
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -1444,10 +1439,12 @@ $LANG_ADMIN = array (
     'title'         => 'Title',
     'type'          => 'Type',
     'topic'         => 'Topic',
-    'help_url' => 'Help File URL',
+    'help_url'      => 'Help File URL',
     'save'          => 'Save',
     'cancel'        => 'Cancel',
-    'delete'        => 'Delete'
+    'delete'        => 'Delete',
+    'copy'          => 'Copy',
+    'access_denied' => 'Access Denied'
 
 );
 

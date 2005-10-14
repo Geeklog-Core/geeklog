@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.72 2005/10/14 08:31:30 ospiess Exp $
+// $Id: block.php,v 1.73 2005/10/14 08:56:23 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -181,7 +181,7 @@ function editblock ($bid = '')
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 2 || $access == 0 || hasBlockTopicAccess ($A['tid']) < 3) {
-            $retval .= COM_startBlock ($LANG21[44], '',
+            $retval .= COM_startBlock ($LANG_ADMIN['access_denied'], '',
                                COM_getBlockTemplate ('_msg_block', 'header'))
                     . $LANG21[45]
                     . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));

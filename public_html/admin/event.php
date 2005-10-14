@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.61 2005/09/18 12:09:45 dhaun Exp $
+// $Id: event.php,v 1.62 2005/10/14 08:56:23 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -73,7 +73,7 @@ if (!SEC_hasRights('event.edit')) {
 function editevent ($mode, $A, $msg = '') 
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG12, $LANG22, $LANG30,
-           $LANG_ACCESS, $_STATES;
+           $LANG_ACCESS, $_STATES, $LANG_ADMIN;
 
     $retval = '';
 
@@ -95,7 +95,7 @@ function editevent ($mode, $A, $msg = '')
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
             // Uh, oh!  User doesn't have access to this object
-            $retval .= COM_startBlock ($LANG22[16], '',
+            $retval .= COM_startBlock ($LANG_ADMIN['access_denied'], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG22[17];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
@@ -135,7 +135,7 @@ function editevent ($mode, $A, $msg = '')
     }
 
     $event_templates->set_var('event_id', $A['eid']);
-    $event_templates->set_var('lang_eventtitle', $LANG22[3]);
+    $event_templates->set_var('lang_eventtitle', $LANG_ADMIN['title']);
     $A['title'] = str_replace('{','&#123;',$A['title']);
     $A['title'] = str_replace('}','&#125;',$A['title']);
     $A['title'] = str_replace('"','&quot;',$A['title']);
@@ -501,7 +501,7 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
 */
 function listevents ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE, $LANG_ADMIN;
 
     $order = COM_applyFilter ($_GET['order'], true);                           
     $prevorder = COM_applyFilter ($_GET['prevorder'], true);                   
@@ -515,28 +515,28 @@ function listevents ($offset, $curpage, $query = '', $query_limit = 50)
     $event_templates->set_file(array('list'=>'eventlist.thtml','row'=>'listitem.thtml'));
     $event_templates->set_var('site_url', $_CONF['site_url']);
     $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $event_templates->set_var('lang_newevent', $LANG22[18]);
-    $event_templates->set_var('lang_adminhome', $LANG22[19]);
+    $event_templates->set_var('lang_newevent', $LANG_ADMIN['create_new']);
+    $event_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
     $event_templates->set_var('lang_instructions', $LANG22[12]);
-    $event_templates->set_var('lang_eventtitle', $LANG22[13]);
+    $event_templates->set_var('lang_eventtitle', $LANG_ADMIN['title']);
     $event_templates->set_var('lang_access', $LANG_ACCESS['access']);
     $event_templates->set_var('lang_startdate', $LANG22[14]);
     $event_templates->set_var('lang_enddate', $LANG22[15]);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
-    $event_templates->set_var('lang_submit', $LANG22[26]);
-    $event_templates->set_var('lang_search', $LANG22[28]);
-    $event_templates->set_var('lang_limit_results', $LANG22[27]);
+    $event_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
+    $event_templates->set_var('lang_search', $LANG_ADMIN['search']);
+    $event_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
     $event_templates->set_var('last_query', $query);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG22[29] . '" title="'
-             . $LANG22[29] . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
+             . $LANG_ADMIN['edit'] . '">';
     $event_templates->set_var('edit_icon', $editico);
     $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG22[30] . '" title="'
-             . $LANG22[30] . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
+             . $LANG_ADMIN['copy'] . '">';
     $event_templates->set_var('copy_icon', $copyico);
-    $event_templates->set_var('lang_edit', $LANG22[29]);
-    $event_templates->set_var('lang_copy', $LANG22[30]);
+    $event_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
+    $event_templates->set_var('lang_copy', $LANG_ADMIN['copy']);
 
     switch($order) {
         case 1:
