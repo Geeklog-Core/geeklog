@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.28 2005/10/13 13:33:27 ospiess Exp $
+// $Id: functions.inc,v 1.29 2005/10/14 07:32:57 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -653,7 +653,7 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 */  
 function plugin_uninstall_links ()
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
 
     // Uninstalls the links plugin
 
@@ -667,9 +667,30 @@ function plugin_uninstall_links ()
     DB_query ("DROP TABLE {$_TABLES['links']}");
     COM_errorLog ('...success', 1);
     
+    // Remove feed files
+    COM_errorLog ('removing links feed files', 1);
+    $sql = "SELECT filename FROM {$_TABLES['syndication']} WHERE type = 'links';";
+    $result = DB_query( $sql );
+    $nrows = DB_numRows( $result );
+    COM_errorLog ($nrows. ' files stored in table.', 1);
+    if ( $nrows > 0 ) {
+        for ( $i = 0; $i < $nrows; $i++ ) {
+            $fcount = $i + 1;
+            $A = DB_fetchArray( $result );
+            $fullpath = $_CONF['path_html'] . 'backend/' . $A[0];
+            if ( file_exists( $fullpath ) ) {
+                unlink ($fullpath);
+                COM_errorLog ("removed file $fcount of $nrows: $fullpath", 1);
+            } else {
+                COM_errorLog ("cannot remove file $fcount of $nrows, it does not exist! ($fullpath)", 1);
+            }
+        }
+    }
+    COM_errorLog ('...success', 1);
+    
     // Remove Links Feeds from syndiaction table
-    COM_errorLog ('removing links feeds', 1);
-    DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE `type` = 'links'");
+    COM_errorLog ('removing links feeds from table', 1);
+    # DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE `type` = 'links'");
     COM_errorLog ('...success', 1);
 
     // Remove security for this plugin
