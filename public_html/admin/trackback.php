@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.24 2005/10/02 20:54:00 dhaun Exp $
+// $Id: trackback.php,v 1.25 2005/10/14 10:11:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -470,7 +470,7 @@ function getItemInfo ($type, $id, $what)
 */
 function listServices ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG_TRB, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_TRB, $_IMAGE_TYPE, $LANG_ADMIN;
 
     $order = COM_applyFilter ($_GET['order'], true);
     $prevorder = COM_applyFilter ($_GET['prevorder'], true);
@@ -488,23 +488,23 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
 
-    $template->set_var ('lang_adminhome', $LANG_TRB['admin_home']);
-    $template->set_var ('lang_newservice', $LANG_TRB['new_service']);
+    $template->set_var ('lang_adminhome', $LANG_ADMIN['admin_home']);
+    $template->set_var ('lang_newservice', $LANG_ADMIN['create_new']);
     $template->set_var ('lang_instructions', $LANG_TRB['service_explain']);
     $template->set_var ('lang_name', $LANG_TRB['service']);
     $template->set_var ('lang_method', $LANG_TRB['ping_method']);
-    $template->set_var ('lang_enabled', $LANG_TRB['service_enabled']);
+    $template->set_var ('lang_enabled', $LANG_ADMIN['enabled']);
     $template->set_var ('lang_site', $LANG_TRB['service_website']);
     $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_TRB['edit']
-             . '" title="' . $LANG_TRB['edit'] . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
+             . '" title="' . $LANG_ADMIN['edit'] . '">';
     $template->set_var('edit_icon', $editico);
-    $template->set_var('lang_edit', $LANG_TRB['edit']);
+    $template->set_var('lang_edit', $LANG_ADMIN['edit']);
     $template->set_var('last_query', $query);
-    $template->set_var('lang_limit_results', $LANG_TRB['limit_results']);
-    $template->set_var('lang_search', $LANG_TRB['search']);
-    $template->set_var('lang_submit', $LANG_TRB['submit']);
+    $template->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
+    $template->set_var('lang_search', $LANG_ADMIN['search']);
+    $template->set_var('lang_submit', $LANG_ADMIN['submit']);
 
     switch ($order) {
         case 1:
@@ -652,7 +652,7 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
 */
 function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $new_ping_url = '', $new_method = '', $new_enabled = -1)
 {
-    global $_CONF, $_TABLES, $LANG_TRB;
+    global $_CONF, $_TABLES, $LANG_TRB, $LANG_ADMIN;
 
     $retval = '';
 
@@ -702,16 +702,16 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
     $template->set_var ('lang_name', $LANG_TRB['service']);
     $template->set_var ('lang_site_url', $LANG_TRB['service_website']);
     $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
-    $template->set_var ('lang_enabled', $LANG_TRB['service_enabled']);
+    $template->set_var ('lang_enabled', $LANG_ADMIN['enabled']);
     $template->set_var ('lang_method', $LANG_TRB['ping_method']);
     $template->set_var ('lang_method_standard', $LANG_TRB['ping_standard']);
     $template->set_var ('lang_method_extended', $LANG_TRB['ping_extended']);
-    $template->set_var ('lang_save', $LANG_TRB['button_save']);
-    $template->set_var ('lang_cancel', $LANG_TRB['button_cancel']);
+    $template->set_var ('lang_save', $LANG_ADMIN['save']);
+    $template->set_var ('lang_cancel', $LANG_ADMIN['cancel']);
 
     if ($pid > 0) {
         $template->set_var ('delete_option', '<input type="submit" value="'
-                . $LANG_TRB['button_delete'] . '" name="servicemode[2]">');
+                . $LANG_ADMIN['delete'] . '" name="servicemode[2]">');
     } else {
         $template->set_var ('delete_option', '');
     }
