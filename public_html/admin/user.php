@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.114 2005/09/17 19:27:02 dhaun Exp $
+// $Id: user.php,v 1.115 2005/10/14 10:33:43 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -66,7 +66,7 @@ if (!SEC_hasRights('user.edit')) {
 */
 function edituser($uid = '', $msg = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $MESSAGE, $LANG_ADMIN;
 
     $retval = '';
 
@@ -125,11 +125,11 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('site_admin_url_ssl', $_CONF['site_admin_url_ssl']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
-    $user_templates->set_var('lang_save', $LANG28[20]);
+    $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
-        $user_templates->set_var('delete_option', '<input type="submit" value="' . $LANG28[19] . '" name="mode">');
+        $user_templates->set_var('delete_option', '<input type="submit" value="' . $LANG_ADMIN['delete'] . '" name="mode">');
     }
-    $user_templates->set_var('lang_cancel', $LANG28[18]);
+    $user_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     $user_templates->set_var('lang_userid', $LANG28[2]);
     if (empty ($A['uid'])) {
@@ -430,7 +430,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 */
 function listusers ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG28, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG28, $_IMAGE_TYPE, $LANG_ADMIN;
 
     $order = COM_applyFilter ($_GET['order'], true);                           
     $prevorder = COM_applyFilter ($_GET['prevorder'], true);                   
@@ -447,24 +447,24 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
-    $user_templates->set_var('lang_newuser', $LANG28[15]);
+    $user_templates->set_var('lang_newuser', $LANG_ADMIN['create_new']);
     $user_templates->set_var('lang_batchadd',$LANG28[23]);
-    $user_templates->set_var('lang_adminhome', $LANG28[16]);
+    $user_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
     $user_templates->set_var('lang_instructions', $LANG28[12]);
-    $user_templates->set_var('lang_search', $LANG28[26]);
-    $user_templates->set_var('lang_submit', $LANG28[33]);
+    $user_templates->set_var('lang_search', $LANG_ADMIN['search']);
+    $user_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
     $user_templates->set_var('last_query', $query);
-    $user_templates->set_var('lang_limit_results', $LANG28[27]);
+    $user_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
     $user_templates->set_var('lang_uid', $LANG28[37]);
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
-    $user_templates->set_var('lang_edit', $LANG28[47]);
+    $user_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
               . $_IMAGE_TYPE . '" border="0" alt="">';
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG28[47] . '" title="'
-             . $LANG28[47] . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
+             . $LANG_ADMIN['edit'] . '">';
     $user_templates->set_var('edit_icon', $editico);
 
     if ($_CONF['lastlogin']==true) {
@@ -770,7 +770,7 @@ if (isset ($_GET['direction'])) {
 if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
         $display .= COM_refresh($_CONF['site_admin_url']
                             . '/user.php?mode=edit&msg=67&uid='.$_POST['uid']);
-} else if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
+} else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
     $uid = COM_applyFilter ($_POST['uid'], true);
     if ($uid > 1) {
         $display .= deleteUser ($uid);
@@ -778,7 +778,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
         COM_errorLog ('Attempted to delete user uid=' . $uid);
         $display = COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     }
-} else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) { // save
     $display = saveusers (COM_applyFilter ($_POST['uid'], true),
             $_POST['username'], $_POST['fullname'],
             $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
