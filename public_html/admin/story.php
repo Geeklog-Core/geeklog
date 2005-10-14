@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.166 2005/10/11 13:41:48 ospiess Exp $
+// $Id: story.php,v 1.167 2005/10/14 09:39:31 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -115,7 +115,7 @@ function userlist ($uid = 0)
 */
 function storyeditor($sid = '', $mode = '', $errormsg = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN;
 
     $display = '';
 
@@ -135,7 +135,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         $access = min ($access, SEC_hasTopicAccess ($A['tid']));
         if ($access == 2) {
-            $display .= COM_startBlock($LANG24[40], '',
+            $display .= COM_startBlock($LANG_ADMIN['access_denied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[41];
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
@@ -143,7 +143,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
             return $display;
         } else if ($access == 0) {
-            $display .= COM_startBlock($LANG24[40], '',
+            $display .= COM_startBlock($LANG_ADMIN['access_denied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[42];
             $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
@@ -492,10 +492,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     }
     $story_templates->set_var('lang_archivetitle', $LANG24[58]);
     $story_templates->set_var('lang_option', $LANG24[59]);
-    $story_templates->set_var('lang_enabled', $LANG24[60]);
+    $story_templates->set_var('lang_enabled', $LANG_ADMIN['enabled']);
     $story_templates->set_var('lang_optionarchive', $LANG24[61]);
     $story_templates->set_var('lang_optiondelete', $LANG24[62]);
-    $story_templates->set_var('lang_title', $LANG24[13]);
+    $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
     if ($A['postmode'] == 'plaintext') {
         $A['title'] = str_replace ('$', '&#36;', $A['title']);
     }
@@ -504,7 +504,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $A['title'] = str_replace('}','&#125;',$A['title']);
     $A['title'] = str_replace('"','&quot;',$A['title']);
     $story_templates->set_var('story_title', stripslashes ($A['title']));
-    $story_templates->set_var('lang_topic', $LANG24[14]);
+    $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
     if (empty ($A['tid'])) {
         $A['tid'] = DB_getItem ($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL ('AND'));
     }
@@ -567,7 +567,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             for ($z = 1; $z <= $icount; $z++) {
                 $I = DB_fetchArray($result_articles);
                 $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '">' . $I['ai_filename'] . '</a>';
-                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><br>';
+                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG_ADMIN['delete'] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><br>';
             }
         }
 
@@ -617,7 +617,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 */
 function liststories ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG09, $LANG24, $LANG_ACCESS,
+    global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS, $LANG_ADMIN,
            $_IMAGE_TYPE;
 
     $order = COM_applyFilter ($_GET['order'], true);
@@ -641,24 +641,24 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
     $story_templates->set_var('layout_url', $_CONF['layout_url']);
     $story_templates->set_var('site_url', $_CONF['site_url']);
     $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $story_templates->set_var('lang_newstory', $LANG24[43]);
-    $story_templates->set_var('lang_adminhome', $LANG24[44]);
+    $story_templates->set_var('lang_newstory', $LANG_ADMIN['create_new']);
+    $story_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
     $story_templates->set_var('lang_instructions', $LANG24[23]);
-    $story_templates->set_var('lang_title', $LANG24[13]);
+    $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
     $story_templates->set_var('lang_access', $LANG_ACCESS['access']);
     $story_templates->set_var('lang_draft', $LANG24[34]);
     $story_templates->set_var('lang_author', $LANG24[7]);
     $story_templates->set_var('lang_date', $LANG24[15]);
-    $story_templates->set_var('lang_topic', $LANG24[14]);
+    $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
     $story_templates->set_var('lang_featured', $LANG24[32]);
-    $story_templates->set_var('lang_edit', $LANG24[63]);
-    $story_templates->set_var('lang_search', $LANG24[65]);
-    $story_templates->set_var('lang_submit', $LANG24[64]);
+    $story_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
+    $story_templates->set_var('lang_search', $LANG_ADMIN['search']);
+    $story_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
     $story_templates->set_var('last_query', $query);
-    $story_templates->set_var('lang_limit_results', $LANG24[66]);
+    $story_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG01[4] . '" title="'
-             . $LANG01[4] . '">';
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
+             . $LANG_ADMIN['edit'] . '">';
     $story_templates->set_var('edit_icon', $editico);
     $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG24[21] . '" title="'

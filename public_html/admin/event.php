@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.62 2005/10/14 08:56:23 ospiess Exp $
+// $Id: event.php,v 1.63 2005/10/14 09:39:31 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -95,7 +95,7 @@ function editevent ($mode, $A, $msg = '')
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
             // Uh, oh!  User doesn't have access to this object
-            $retval .= COM_startBlock ($LANG_ADMIN['access_denied'], '',
+            $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG22[17];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
