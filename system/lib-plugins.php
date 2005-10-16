@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.81 2005/09/12 16:13:54 dhaun Exp $
+// $Id: lib-plugins.php,v 1.82 2005/10/16 16:56:31 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -226,7 +226,7 @@ function PLG_getMenuItems()
 /**
  * Plugin should delete a comment
  *
- * @author Vincnet Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @param   string  $type   Plugin to delete comment
  * @param   int     $cid    Comment to be deleted
  * @param   string  $id     Item id to which $cid belongs
@@ -243,7 +243,7 @@ function PLG_commentDelete($type, $cid, $id)
 /**
  * Plugin should save a comment
  *
- * @author Vincnet Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @param   string  $type   Plugin to delete comment
  * @param   string  $title  comment title
  * @param   string  $comment comment text
@@ -266,7 +266,7 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
 /**
  * Plugin should display [a] comment[s]
  *
- * @author Vincnet Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @param   string  $type   Plugin to display comment
  * @param   string  $id     Unique idenifier for item comment belongs to
  * @param   int     $cid    Comment id to display (possibly including sub-comments)
@@ -1375,8 +1375,8 @@ function PLG_getWhatsNew ()
 
 /**
 * Allows plugins and Core GL Components to filter out spam.
-* The SPAMX Plugin is now part of the Geeklog Distribution
-* This plugin API will call the main function in the SPAMX plugin
+* The Spam-X Plugin is now part of the Geeklog Distribution
+* This plugin API will call the main function in the Spam-X plugin
 * but can also be used to call other plugins or custom functions
 * if available for filtering spam or content.
 *
@@ -1578,6 +1578,7 @@ function PLG_getBlocks( $side, $topic='')
     */
     return $ret;
 }
+
 /**
 * Get the URL of a plugin's icon
 *
