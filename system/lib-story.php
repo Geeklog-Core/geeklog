@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.37 2005/09/25 12:30:06 dhaun Exp $
+// $Id: lib-story.php,v 1.38 2005/10/16 11:58:16 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -150,9 +150,9 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $article->set_var( 'story_topic_id', $A['tid'] );
     $article->set_var( 'story_topic_name', $topicname );
 
+    $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
     if( $_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1 )
     {
-        $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
         if( !empty( $A['imageurl'] ))
         {
             if( isset( $_THEME_URL ))
@@ -170,8 +170,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                     . $topicurl . '">' . $topicimage . '</a>' );
             $article->set_var( 'story_topic_image', $topicimage );
         }
-        $article->set_var( 'story_topic_url', $topicurl );
     }
+    $article->set_var( 'story_topic_url', $topicurl );
 
     $A['title'] = str_replace( '$', '&#36;', $A['title'] );
     $A['introtext'] = str_replace( '$', '&#36;', $A['introtext'] );
@@ -310,11 +310,11 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             }
             $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
                             . $A['sid'] . '&amp;pid=0&amp;type=article';
-            $article->set_var( 'post_comment_link',' <a href="'
+            $article->set_var( 'post_comment_link','<a href="'
                     . $postCommentUrl . '">' . $LANG01[60] . '</a>' );
             $article->set_var( 'lang_post_comment', $LANG01[60] );
             $article->set_var( 'start_post_comment_anchortag',
-                               ' <a href="' . $postCommentUrl . '">' );
+                               '<a href="' . $postCommentUrl . '">' );
             $article->set_var( 'end_post_comment_anchortag', '</a>' );
         }
 
