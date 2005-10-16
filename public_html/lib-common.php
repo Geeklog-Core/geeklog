@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.472 2005/09/23 16:35:50 dhaun Exp $
+// $Id: lib-common.php,v 1.473 2005/10/16 17:26:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -882,12 +882,16 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     }
     $header->set_var( 'page_title', $_CONF['site_name'] . $pagetitle );
 
-    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) &&
-        file_exists ($_CONF['path_layout'] . 'advanced_editor_header.thtml')) {
+    if( isset( $_CONF['advanced_editor'] ) && ( $_CONF['advanced_editor'] == 1 )
+            && file_exists( $_CONF['path_layout']
+                            . 'advanced_editor_header.thtml' ))
+    {
         $header->set_file( 'editor'  , 'advanced_editor_header.thtml');
         $header->parse( 'advanced_editor', 'editor' );
 
-    } else {
+    }
+    else
+    {
          $header->set_var( 'advanced_editor', '' );
     }
 
@@ -1826,9 +1830,12 @@ function COM_showTopics( $topic='' )
                 {
                     $countstring .= '/';
                 }
-                if( empty( $submissioncount[$A['tid']] ) ) {
+                if( empty( $submissioncount[$A['tid']] ))
+                {
                     $countstring .= 0;
-                } else {
+                }
+                else
+                {
                     $countstring .= $submissioncount[$A['tid']];
                 }
             }
@@ -1903,7 +1910,8 @@ function COM_userMenu( $help='', $title='' )
 
         if( empty( $title ))
         {
-            $title = DB_getItem( $_TABLES['blocks'], 'title', "name='user_block'" );
+            $title = DB_getItem( $_TABLES['blocks'], 'title',
+                                 "name='user_block'" );
         }
 
         // what's our current URL?
@@ -2008,34 +2016,45 @@ function COM_userMenu( $help='', $title='' )
         $login->set_var( 'lang_password', $LANG01[57] );
         $login->set_var( 'lang_forgetpassword', $LANG01[119] );
         $login->set_var( 'lang_login', $LANG01[58] );
-        if ($_CONF['disable_new_user_registration'] == 1) {
+        if( $_CONF['disable_new_user_registration'] == 1 )
+        {
             $login->set_var( 'lang_signup', '' );
-        } else {
+        }
+        else
+        {
             $login->set_var( 'lang_signup', $LANG01[59] );
         }
-        if ($_CONF['remoteauthentication'] && !$_CONF['usersubmission']) {
-            /* Build select */
+        if( $_CONF['remoteauthentication'] && !$_CONF['usersubmission'] )
+        {
+            // Build select
             $select = '<select name="service"><option value="">' .
                             $_CONF['site_name'] . '</option>';
-            if (is_dir($_CONF['path_system'].'classes/authentication/')) {
-
-                $folder = opendir( $_CONF['path_system'].'classes/authentication/' );
-                while (($filename = @readdir( $folder )) !== false) {
-                    $strpos = strpos($filename, '.auth.class.php');
-                    if ($strpos) {
-                        $service = substr($filename, 0, $strpos);
-                        $select .= '<option value="'.$service.'">'.$service.'</option>';
+            if( is_dir( $_CONF['path_system'] . 'classes/authentication/' ))
+            {
+                $folder = opendir( $_CONF['path_system']
+                                   . 'classes/authentication/' );
+                while(( $filename = @readdir( $folder )) !== false )
+                {
+                    $strpos = strpos( $filename, '.auth.class.php' );
+                    if( $strpos )
+                    {
+                        $service = substr( $filename, 0, $strpos );
+                        $select .= '<option value="' . $service . '">'
+                                . $service . '</option>';
                     }
                 }
             }
             $select .= '</select>';
-            $login->set_file('services', 'blockservices.thtml');
-            $login->set_var('lang_service', $LANG04[121]);
-            $login->set_var('select_service', $select);
-            $login->parse('output', 'services');
-            $login->set_var('services', $login->finish($login->get_var('output')));
-        } else {
-            $login->set_var('services', '');
+            $login->set_file( 'services', 'blockservices.thtml' );
+            $login->set_var( 'lang_service', $LANG04[121] );
+            $login->set_var( 'select_service', $select );
+            $login->parse( 'output', 'services' );
+            $login->set_var( 'services',
+                             $login->finish( $login->get_var( 'output' )));
+        }
+        else
+        {
+            $login->set_var( 'services', '' );
         }
         $retval .= $login->parse( 'output', 'form' );
 
@@ -2538,7 +2557,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
 {
     global $_CONF;
 
-    $str = stripslashes($str);
+    $str = stripslashes( $str );
 
     // Get rid of any newline characters
     $str = preg_replace( "/\n/", '', $str );
@@ -3014,27 +3033,29 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     // Check and see if any plugins have blocks to show
     $pluginBlocks = PLG_getBlocks( $side, $topic, $name );
-    $blocks = array_merge($blocks, $pluginBlocks);
+    $blocks = array_merge( $blocks, $pluginBlocks );
 
     // sort the resulting array by block order
     $column = 'blockorder';
     $sortedBlocks = $blocks;
-    for ($i=0; $i < sizeof($sortedBlocks)-1; $i++) 
+    for( $i = 0; $i < sizeof( $sortedBlocks )-1; $i++ ) 
     {
-      for ($j=0; $j<sizeof($sortedBlocks)-1-$i; $j++)
-        if ($sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column]) 
+        for ($j=0; $j<sizeof($sortedBlocks)-1-$i; $j++)
         {
-         $tmp = $sortedBlocks[$j];
-         $sortedBlocks[$j] = $sortedBlocks[$j+1];
-         $sortedBlocks[$j+1] = $tmp;
+            if ($sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column]) 
+            {
+                $tmp = $sortedBlocks[$j];
+                $sortedBlocks[$j] = $sortedBlocks[$j + 1];
+                $sortedBlocks[$j + 1] = $tmp;
+            }
         }
     }
     $blocks = $sortedBlocks;
-    
+
     // Loop though resulting sorted array aand pass associative arays to COM_formatBlock
-    foreach ($blocks as $A)
+    foreach( $blocks as $A )
     {
-        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 or $A['type']=='dynamic')
+        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 or $A['type'] == 'dynamic' )
         {
            $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
         }
@@ -3042,6 +3063,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     return $retval;
 }
+
 /**
 * Formats a Geeklog block
 *
@@ -3120,6 +3142,7 @@ function COM_formatBlock( $A, $noboxes = false )
                 . $blockcontent . LB
                 . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
     }
+
     return $retval;
 }
 
@@ -3226,10 +3249,10 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
     }
     else
     {
-      // failed to aquire info, 0 out the block and log an error
-      COM_errorLog( "Unable to aquire feed reader for $rdfurl", 1 );
-      $result = DB_change( $_TABLES['blocks'], 'content',
-                           addslashes( $LANG21[4] ), 'bid', $bid );
+        // failed to aquire info, 0 out the block and log an error
+        COM_errorLog( "Unable to aquire feed reader for $rdfurl", 1 );
+        $result = DB_change( $_TABLES['blocks'], 'content',
+                             addslashes( $LANG21[4] ), 'bid', $bid );
     }
 }
 
@@ -3357,22 +3380,23 @@ function COM_getDisplayName( $uid = '', $username='', $fullname='', $remoteusern
         }
     }
 
-    if (empty($username))
+    if( empty( $username ))
     {
         $query = DB_query( "SELECT username, fullname, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid='$uid'" );
         list( $username, $fullname, $remoteusername, $remoteservice ) = DB_fetchArray( $query );
     }
 
-    if( $fullname != '' AND $_CONF['show_fullname'] == 1 )
+    if( !empty( $fullname ) && ($_CONF['show_fullname'] == 1 ))
     {
         return $fullname;
-    } else if( $_CONF['remoteauthentication'] &&
-                    ($remoteusername != '') &&
-                    $_CONF['show_servicename']) {
-        return "$remoteusername@$remoteservice";
-    } else {
-        return $username;
     }
+    else if( $_CONF['remoteauthentication'] && $_CONF['show_servicename'] &&
+                    !empty( $remoteusername ))
+    {
+        return "$remoteusername@$remoteservice";
+    }
+
+    return $username;
 }
 
 
@@ -4109,33 +4133,36 @@ function COM_showMessage( $msg, $plugin='' )
 * @param        string      $open_ended     replace next/last links with this
 * @return   string   HTML formatted widget
 */
-
 function COM_printPageNavigation( $base_url, $curpage, $num_pages,
                                   $page_str='page=', $do_rewrite=false, $msg='',
                                   $open_ended = '')
 {
     global $LANG05;
 
-    if (!$do_rewrite)
-    {
-        $hasargs = strstr( $base_url, '?' );
-        if( $hasargs )
-        {
-            $sep='&amp;';
-        } else {
-            $sep='?';
-        }
-    } else {
-        $sep = '/';
-        $page_str = '';
-    }
+    $retval = '';
 
     if( $num_pages < 2 )
     {
         return;
     }
 
-    $retval = '';
+    if( !$do_rewrite )
+    {
+        $hasargs = strstr( $base_url, '?' );
+        if( $hasargs )
+        {
+            $sep = '&amp;';
+        }
+        else
+        {
+            $sep = '?';
+        }
+    }
+    else
+    {
+        $sep = '/';
+        $page_str = '';
+    }
 
     if( $curpage > 1 )
     {
@@ -4643,16 +4670,16 @@ function COM_checkSpeedlimit( $type = 'submit', $max = 1 )
 
     $last = 0;
 
-    $res  = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE "
-                   . "(type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}') "
-                   . "ORDER BY date ASC" );
+    $res  = DB_query( "SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}') ORDER BY date ASC" );
 
-    // If the number of allowed tries has not been reached, return 0 (didn't hit limit)
-    if ( DB_numRows($res) < $max ) {
+    // If the number of allowed tries has not been reached,
+    // return 0 (didn't hit limit)
+    if( DB_numRows( $res ) < $max )
+    {
         return $last;
     }
 
-    list($date) = DB_fetchArray($res);
+    list( $date ) = DB_fetchArray( $res );
 
     if( !empty( $date ))
     {
@@ -5326,16 +5353,20 @@ function COM_sanitizeID( $id, $new_id = true )
 */
 function COM_NumberFormat( $number )
 {
-global $_CONF;
-if ($number - abs($number)>0) {# number has decimals
-        $dc = $_CONF['decimal_count'];
-} else {
-        $dc = 0;
-}
-$ts = $_CONF['thousand_separator'];
-$ds = $_CONF['decimal_separator'];
+    global $_CONF;
 
-return number_format($number,$dc,$ds,$ts);
+    if( $number - abs( $number ) > 0 ) // number has decimals
+    {
+        $dc = $_CONF['decimal_count'];
+    }
+    else
+    {
+        $dc = 0;
+    }
+    $ts = $_CONF['thousand_separator'];
+    $ds = $_CONF['decimal_separator'];
+
+    return number_format( $number, $dc, $ds, $ts );
 }
 
 /**
@@ -5380,16 +5411,19 @@ function COM_convertDate2Timestamp( $date, $time = '' )
 * @param    string  $file   full path to the file
 * @return   string          html that will be included in the img-tag
 */
-function COM_getImgSizeAttributes($file)
+function COM_getImgSizeAttributes( $file )
 {
-    $dimensions = GetImageSize($file);
-    if (!empty($dimensions[0]) AND !empty($dimensions[1]))
+    $dimensions = GetImageSize( $file );
+    if( !empty( $dimensions[0] ) AND !empty( $dimensions[1] ))
     {
         $sizeattributes = 'width="' . $dimensions[0]
                         . '" height="' . $dimensions[1] . '" ';
-    } else {
+    }
+    else
+    {
         $sizeattributes = '';
     }
+
     return $sizeattributes;
 }
 
@@ -5425,11 +5459,13 @@ foreach( $_PLUGINS as $pi_name )
     require_once( $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc' );
 }
 
-/* Check and see if any plugins (or custom function) have scheduled tasks to perform */
-if ( (DB_getItem($_TABLES['vars'], 'value', "name='last_scheduled_run'")
-        + $_CONF['cron_schedule_interval'] ) <= time() ) {
+// Check and see if any plugins (or custom functions)
+// have scheduled tasks to perform
+if(( DB_getItem( $_TABLES['vars'], 'value', "name='last_scheduled_run'" )
+        + $_CONF['cron_schedule_interval'] ) <= time())
+{
     PLG_runScheduledTask();
-    DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
+    DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
 }
 
 ?>
