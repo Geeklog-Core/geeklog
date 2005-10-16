@@ -8,9 +8,9 @@
 // |                                                                           |
 // | Geeklog check installation script                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2004 by the following authors:                         |
+// | Copyright (C) 2002-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,13 +29,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.6 2004/10/15 18:19:12 dhaun Exp $
+// $Id: check.php,v 1.7 2005/10/16 16:59:11 dhaun Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
 * most common errors / omissions when setting up a new Geeklog site ...
 *
-* @author   Dirk Haun <dirk@haun-online.de>
+* @author   Dirk Haun <dirk AT haun-online DOT de>
 *
 */
 
@@ -89,17 +89,17 @@ if (!$errfile || !$accfile) {
 echo '<p>Testing <b>backend</b> directory ' . $_CONF['path_html'] . 'backend/ ...<br>' . LB;
 if ($_CONF['backend'] > 0) {
     if (!$file = @fopen ($_CONF['rdf_file'], 'w')) {
-        echo '<font color="#ff0000">Could not open the RDF file ' . $_CONF['rdf_file'] . ' for writing.</font><br>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rdf</b> file in that directory to <b>chmod 775</b>.' . LB;
+        echo '<font color="#ff0000">Could not open the RSS file ' . $_CONF['rdf_file'] . ' for writing.</font><br>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rss</b> file in that directory to <b>chmod 775</b>.' . LB;
         $endPerms = sprintf ("%3o", @fileperms ($_CONF['path_html'] . 'backend/') & 0777);
         $rdfPerms = sprintf ("%3o", @fileperms ($_CONF['rdf_file']) & 0777);
         echo '<table cellspacing="0" cellpadding="0" border="0">' . LB;
         echo "<tr><td>Current permissions for <b>backend</b>:&nbsp;</td><td>$endPerms</td></tr>" . LB;
-        echo "<tr><td>Current permissions for <b>geeklog.rdf</b>:&nbsp;</td><td>$rdfPerms</td></tr>" . LB;
+        echo "<tr><td>Current permissions for <b>geeklog.rss</b>:&nbsp;</td><td>$rdfPerms</td></tr>" . LB;
         echo '</table>' . LB;
         $failed++;
     } else {
         fclose ($file);
-        echo '<b>backend</b> directory and the <b>geeklog.rdf</b> file are okay.' . LB;
+        echo '<b>backend</b> directory and the <b>geeklog.rss</b> file are okay.' . LB;
         $successful++;
     }
 } else {
