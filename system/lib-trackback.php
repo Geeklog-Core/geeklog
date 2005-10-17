@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.13 2005/09/29 18:06:55 dhaun Exp $
+// $Id: lib-trackback.php,v 1.14 2005/10/17 11:59:09 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -255,6 +255,10 @@ function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $
              "'$sid','$url','$title','$blog','$excerpt',NOW(),'$type','{$_SERVER['REMOTE_ADDR']}'");
 
     $comment_id = DB_insertId ();
+
+    if ($type == 'article') {
+        DB_query ("UPDATE {$_TABLES['stories']} SET trackbacks = trackbacks + 1 WHERE (sid = '$sid')");
+    }
 
     return $comment_id;
 }

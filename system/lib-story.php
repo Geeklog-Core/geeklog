@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.38 2005/10/16 11:58:16 dhaun Exp $
+// $Id: lib-story.php,v 1.39 2005/10/17 11:59:09 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -320,8 +320,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
 
         if( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] )
         {
-            $num_trackbacks = COM_NumberFormat ( DB_count( $_TABLES['trackback'],
-                    array( 'sid', 'type' ), array( $A['sid'], 'article' )));
+            $num_trackbacks = $A['trackbacks'];
             $trackbacksUrl = COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#trackback';
             $article->set_var( 'trackbacks_url', $trackbacksUrl );

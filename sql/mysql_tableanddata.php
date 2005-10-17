@@ -392,6 +392,7 @@ CREATE TABLE {$_TABLES['stories']} (
   hits mediumint(8) unsigned NOT NULL default '0',
   numemails mediumint(8) unsigned NOT NULL default '0',
   comments mediumint(8) unsigned NOT NULL default '0',
+  trackbacks mediumint(8) unsigned NOT NULL default '0',
   related text,
   featured tinyint(3) unsigned NOT NULL default '0',
   show_topic_icon tinyint(1) unsigned NOT NULL default '1',

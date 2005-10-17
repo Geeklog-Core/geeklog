@@ -61,6 +61,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX date(date)";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD in_transit tinyint(1) unsigned default '0' AFTER frontpage";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_in_transit(in_transit)";
 
+// trackback counter
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD trackbacks mediumint(8) unsigned NOT NULL default '0' AFTER comments";
+
 // new header-link for feeds
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD header_tid varchar(48) NOT NULL default 'none' AFTER topic;";
 // add logo
