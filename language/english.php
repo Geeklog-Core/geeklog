@@ -1388,8 +1388,6 @@ $LANG_DIR = array (
 
 ################################################################################
 # "What's New" Time Strings
-$WHATS_NEW_STRING = '%n new %i in the last %t %s';
-$WHATS_NEW_LAST = 'last %t %s',
 
 $LANG_WHATSNEW = array (
     # This here determines the order of the sentence "No new stories in 2 hrs"
