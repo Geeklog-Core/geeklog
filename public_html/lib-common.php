@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.473 2005/10/16 17:26:48 dhaun Exp $
+// $Id: lib-common.php,v 1.474 2005/10/21 12:11:45 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3796,8 +3796,8 @@ function COM_emailUserTopics()
 
 function COM_whatsNewBlock( $help = '', $title = '' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01,
-           $WHATS_NEW_STRING, $WHATS_NEW_LAST, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_WHATSNEW
+            $page, $newstories;
 
     $retval = COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'whats_new_block', 'header' ));
@@ -3828,7 +3828,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
         if( $nrows > 0 )
         {
-            $newmsg .= COM_formatTimeString( $WHATS_NEW_STRING,
+            $newmsg .= COM_formatTimeString( $LANG_WHATSNEW['new_string'],
                         $_CONF['newstoriesinterval'], $LANG01[11], $nrows);
 
             if( $newstories && ( $page < 2 ))
@@ -3858,7 +3858,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
     {
         // Go get the newest comments
         $retval .= '<b>' . $LANG01[83] . '</b> <small>'
-                . COM_formatTimeString( $WHATS_NEW_LAST,
+                . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newcommentsinterval'] )
                 . '</small><br>';
 
@@ -3935,7 +3935,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
     if( $_CONF['trackback_enabled'] && ( $_CONF['hidenewtrackbacks'] == 0 ))
     {
         $retval .= '<b>' . $LANG01[114] . '</b> <small>'
-                . COM_formatTimeString( $WHATS_NEW_LAST,
+                . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newtrackbackinterval'] )
                 . '</small><br>';
 
