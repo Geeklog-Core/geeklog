@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.476 2005/10/23 09:13:08 dhaun Exp $
+// $Id: lib-common.php,v 1.477 2005/10/23 16:11:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1295,7 +1295,30 @@ function COM_endBlock( $template='blockfooter.thtml' )
 */
 function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where='' )
 {
+    global $_DB_table_prefix;
+
     $retval = '';
+
+    $LangTableName = '';
+    if( substr( $table, 0, strlen( $_DB_table_prefix )) == $_DB_table_prefix )
+    {
+        $LangTableName = 'LANG_' . substr( $table, strlen( $_DB_table_prefix ));
+    }
+    else
+    {
+        $LangTableName = 'LANG_' . $table;
+    }
+
+    global $$LangTableName;
+
+    if( isset( $$LangTableName ))
+    {
+        $LangTable = $$LangTableName;
+    }
+    else
+    {
+        $LangTable = array();
+    }
 
     $tmp = str_replace( 'DISTINCT ', '', $selection );
     $select_set = explode( ',', $tmp );
@@ -1329,7 +1352,16 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where=''
             $retval .= ' selected="selected"';
         }
 
-        $retval .= '>' . $A[1] . '</option>' . LB;
+        $retval .= '>';
+        if( empty( $LangTable[$A[0]] ))
+        {
+            $retval .= $A[1];
+        }
+        else
+        {
+            $retval .= $LangTable[$A[0]];
+        }
+        $retval .= '</option>' . LB;
     }
 
     return $retval;

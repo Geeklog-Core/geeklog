@@ -1466,4 +1466,75 @@ $LANG_WHATSNEW = array (
     'month'       => 'Monat'
 );
 
+################################################################################
+# Admin - Strings
+#
+# These are some standard strings used by core functions as well as plugins to
+# display administration lists and edit pages
+
+$LANG_ADMIN = array (
+    'search'        => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit'        => 'Submit',
+    'edit'          => 'Edit',
+    'admin_home'    => 'Admin Home',
+    'create_new'    => 'Create New',
+    'enabled'       => 'Enabled',
+    'title'         => 'Title',
+    'type'          => 'Type',
+    'topic'         => 'Topic',
+    'help_url'      => 'Help File URL',
+    'save'          => 'Save',
+    'cancel'        => 'Cancel',
+    'delete'        => 'Delete',
+    'copy'          => 'Copy'
+);
+
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0   => 'Kommentare erlaubt',
+    -1  => 'Keine Kommentare'
+);
+
+$LANG_commentmodes = array(
+    'flat'      => 'Flach',
+    'nested'    => 'Verschachtelt',
+    'threaded'  => 'Nach Thema',
+    'nocomment' => 'Keine Kommentare'
+);
+
+$LANG_cookiecodes = array(
+    0       => '(gar nicht)',
+    3600    => '1 Stunde',
+    7200    => '2 Stunden',
+    10800   => '3 Stunden',
+    28800   => '8 Stunden',
+    86400   => '1 Tag',
+    604800  => '1 Woche',
+    2678400 => '1 Monat'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Normaler Artikel',
+    1 => 'Hauptartikel'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Nur unter der Kategorie',
+    1 => 'Auf der Startseite'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'als Text',
+    'html'      => 'in HTML'
+);
+
+$LANG_sortcodes = array(
+    'ASC'  => 'Älteste zuerst',
+    'DESC' => 'Neueste zuerst'
+);
+
 ?>

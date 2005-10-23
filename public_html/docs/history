@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Change COM_optionList to check for language arrays which override the text
+  strings that are embedded in the database (for comment mode, featured story,
+  post mode, etc.) Bug #227 [Dirk]
 - Fixed Bug #174 -- quotes in titles are no longer double htmlentized [Vinny]
 - The default permissions for new objects (stories, topics, blocks, etc.) can
   now be set in config.php (feature request #90) [Dirk]
