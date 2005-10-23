@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.39 2005/10/17 11:59:09 dhaun Exp $
+// $Id: lib-story.php,v 1.40 2005/10/23 09:13:09 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -644,12 +644,7 @@ function STORY_getItemInfo ($sid, $what)
                 if (empty ($feedfile)) {
                     $retval[] = '';
                 } else {
-                    $feedpath = $_CONF['rdf_file'];
-                    $pos = strrpos ($feedpath, '/');
-                    $feed = substr ($feedpath, 0, $pos + 1);
-                    $url = substr_replace ($feed, $_CONF['site_url'], 0,
-                            strlen ($_CONF['path_html']) - 1);
-                    $retval[] = $url . $feedfile;
+                    $retval[] = SYND_getFeedUrl ($feedfile);
                 }
                 break;
             case 'title':

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.24 2005/08/13 18:37:07 dhaun Exp $
+// $Id: syndication.php,v 1.25 2005/10/23 09:13:09 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -169,7 +169,7 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
 
     $offset = (($curpage - 1) * $limit);
 
-    $sql = "SELECT *,UNIX_TIMESTAMP(updated) as date FROM {$_TABLES['syndication']} WHERE 1 ";
+    $sql = "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1 ";
     if (!empty($query)) {
          $sql .= " AND (title LIKE '$query' OR filename LIKE '$query')";
     }
@@ -182,18 +182,14 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
         $feed_template->set_var ('feed_title', $LANG33[22]);
         $feed_template->parse ('feedlist_items', 'row', true);
     } else {
-        $feedpath = $_CONF['rdf_file'];
-        $pos = strrpos ($feedpath, '/');
-        $feed = substr ($feedpath, 0, $pos + 1);
-        $url = substr_replace ($feed, $_CONF['site_url'], 0,
-                               strlen ($_CONF['path_html']) - 1);
+        $url = SYND_getFeedUrl ();
 
         for ($i = 0; $i < $num; $i++) {
             $A = DB_fetchArray ($result);
 
             $link = '<a href="' . $url . $A['filename'] . '">' . $A['filename']
                   . '</a>';
-            $feed_template->set_var ('cssid', ($i%2)+1);
+            $feed_template->set_var ('cssid', ($i % 2) + 1);
             $feed_template->set_var ('feed_id', $A['fid']);
             $feed_template->set_var ('feed_title', $A['title']);
             $feed_template->set_var ('feed_type', ucwords ($A['type']));

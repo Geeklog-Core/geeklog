@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.30 2005/10/14 07:49:54 ospiess Exp $
+// $Id: functions.inc,v 1.31 2005/10/23 09:13:08 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -677,7 +677,7 @@ function plugin_uninstall_links ()
         for ( $i = 0; $i < $nrows; $i++ ) {
             $fcount = $i + 1;
             $A = DB_fetchArray( $result );
-            $fullpath = $_CONF['path_html'] . 'backend/' . $A[0];
+            $fullpath = SYND_getFeedPath( $A[0] );
             if ( file_exists( $fullpath ) ) {
                 unlink ($fullpath);
                 COM_errorLog ("removed file $fcount of $nrows: $fullpath", 1);

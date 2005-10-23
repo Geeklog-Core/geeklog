@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.20 2005/10/03 18:48:56 mjervis Exp $
+// $Id: lib-syndication.php,v 1.21 2005/10/23 09:13:09 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -647,13 +647,8 @@ function SYND_updateFeed( $fid )
                 $pos = strrpos( $_CONF['rdf_file'], '/' );
                 $filename = substr( $_CONF['rdf_file'], $pos + 1 );
             }
-            $path = $_CONF['rdf_file'];
-            $pos = strrpos( $path, '/' );
-            $path = substr( $path, 0, $pos + 1 );
-            $filename = $path . $filename;
-            $feed->url = substr_replace ($filename, $_CONF['site_url'], 0,
-                               strlen ($_CONF['path_html']) - 1);
-            $feed->createFeed( $filename );
+            $feed->url = SYND_getFeedUrl( $filename );
+            $feed->createFeed( SYND_getFeedPath( $filename ));
         }
         else
         {
@@ -699,6 +694,45 @@ function SYND_truncateSummary($text, $length)
          }
         return $text;
     }
+}
+
+
+/**
+* Get the path of the feed directory or a specific feed file
+*
+* @param    string  $feedfile   (option) feed file name
+* @return   string              path of feed directory or file
+*
+*/
+function SYND_getFeedPath( $feedfile = '' )
+{
+    global $_CONF;
+
+    $feedpath = $_CONF['rdf_file'];
+    $pos = strrpos( $feedpath, '/' );
+    $feed = substr( $feedpath, 0, $pos + 1 );
+    $feed .= $feedfile;
+
+    return $feed;
+}
+
+/**
+* Get the URL of the feed directory or a specific feed file
+*
+* @param    string  $feedfile   (option) feed file name
+* @return   string              URL of feed directory or file
+*
+*/
+function SYND_getFeedUrl( $feedfile = '' )
+{
+    global $_CONF;
+
+    $feedpath = SYND_getFeedPath();
+    $url = substr_replace ($feedpath, $_CONF['site_url'], 0,
+                           strlen ($_CONF['path_html']) - 1);
+    $url .= $feedfile;
+
+    return $url;
 }
 
 ?>

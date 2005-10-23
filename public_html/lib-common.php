@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.475 2005/10/21 12:19:32 ospiess Exp $
+// $Id: lib-common.php,v 1.476 2005/10/23 09:13:08 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -828,11 +828,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $feed_url = '';
     if( $_CONF['backend'] == 1 ) // add feed-link to header if applicable
     {
-        $feedpath = $_CONF['rdf_file'];
-        $pos = strrpos( $feedpath, '/' );
-        $feed = substr( $feedpath, 0, $pos + 1 );
-        $baseurl = substr_replace( $feed, $_CONF['site_url'], 0,
-                                   strlen( $_CONF['path_html'] ) - 1 );
+        $baseurl = SYND_getFeedUrl();
 
         $sql = 'SELECT format, filename, title FROM '
              . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.68 2005/10/03 10:01:41 dhaun Exp $
+// $Id: article.php,v 1.69 2005/10/23 09:13:08 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -129,8 +129,8 @@ if ($A['count'] > 0) {
         $story_template->set_var ('story_bodytext',
                 PLG_replaceTags (stripslashes ($A['bodytext'])));
 
-        $story_template->set_var('site_url',$_CONF['site_url']);
-        $story_template->set_var('layout_url',$_CONF['layout_url']);
+        $story_template->set_var('site_url', $_CONF['site_url']);
+        $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_template->set_var('story_id', $A['sid']);
         $story_template->set_var('story_comments', DB_count($_TABLES['comments'],'sid',$A['sid']));
         $story_template->set_var('lang_comments', $LANG01[3]);
