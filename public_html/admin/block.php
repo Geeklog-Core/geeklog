@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.74 2005/10/14 09:39:31 ospiess Exp $
+// $Id: block.php,v 1.75 2005/10/26 19:21:15 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -785,14 +785,14 @@ if (isset ($_POST['blkChange'])) {
     changeBlockStatus ($_POST['blkChange']);
 }
 
-if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
         COM_errorLog ('Attempted to delete block, bid empty or null, value =' . $bid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/block.php');
     } else {
         $display .= deleteBlock ($bid);
     }
-} else if (($mode == $LANG21[54]) && !empty ($LANG21[54])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $display .= saveblock ($bid, $_POST['name'], $_POST['title'],
                 $_POST['help'], $_POST['type'], $_POST['blockorder'],
                 $_POST['content'], $_POST['tid'], $_POST['rdfurl'],
@@ -803,16 +803,16 @@ if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
                 $_POST['perm_group'], $_POST['perm_members'],
                 $_POST['perm_anon'], $_POST['is_enabled']);
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader ()
+    $display .= COM_siteHeader ('menu', $LANG21[3])
              . editblock ($bid)
              . COM_siteFooter ();
 } else if ($mode == 'move') {
-    $display .= COM_siteHeader();
+    $display .= COM_siteHeader('menu', $LANG21[19]);
     $display .= moveBlock();
     $display .= listblocks();
     $display .= COM_siteFooter();
 } else {  // 'cancel' or no mode at all
-    $display .= COM_siteHeader ();
+    $display .= COM_siteHeader ('menu', $LANG21[19]);
     $msg = 0;
     if (isset ($_POST['msg'])) {
         $msg = COM_applyFilter ($_POST['msg'], true);
