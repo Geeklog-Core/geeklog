@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.75 2005/10/26 19:21:15 dhaun Exp $
+// $Id: block.php,v 1.76 2005/10/27 07:10:10 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -666,10 +666,12 @@ function listblocks ($offset, $curpage, $query = '', $query_limit = 50)
                 $side = $LANG21[40];
                 $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
                 $moveTitleMsg = $LANG21[59];
+                $switchside = '1';
                 $block_templates->set_var('side', $LANG21[40]);
             } else {
                 $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
                 $moveTitleMsg = $LANG21[60];
+                $switchside = '0';
                 $block_templates->set_var('side', $LANG21[41]);
             }
             
