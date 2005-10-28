@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.115 2005/10/14 10:33:43 ospiess Exp $
+// $Id: user.php,v 1.116 2005/10/28 19:18:25 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -822,8 +822,59 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     if ($page < 1) {
         $page = 1;
     }
-    $display .= listusers ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
+    #$display .= listusers ($offset, $page, $_REQUEST['q'],
+    #                        COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    # describe headers for the tables
+    if ($_CONF['lastlogin']==true) {
+        $login_text = $LANG28[41];
+        $login_field = 'lastlogin';
+    } else {
+        $login_text = $LANG28[40];
+        $login_field = 'regdate';
+    }
+
+    $header = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG28[37], 'field' => 'uid'),
+                    array('text' => $LANG28[3], 'field' => 'username'),
+                    array('text' => $LANG28[4], 'field' => 'fullname'),
+                    array('text' => $login_text, 'field' => $login_field),
+                    array('text' => $LANG28[7], 'field' => 'email')
+    );
+
+    $menu = array (
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
+                          'text' => $LANG28[23]),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+                    
+    $default_order = 0;
+    $texts = array('title' => $LANG28[11], 'instructions' => $LANG28[12]);
+    $icon = $_CONF['layout_url'] . '/images/icons/user.png';
+
+    $form_url = $_CONF['site_admin_url'] . "/user.php";
+    
+    if ($_CONF['lastlogin']==true) {
+        $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+        $select_userinfo=",lastlogin ";
+    }
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE ";
+
+    $query = $_REQUEST['q'];
+    $query = str_replace ('*', '%', $query);
+    $sql_query = addslashes ($query);
+    $query_sql = array('table' => 'users',
+                       'sql' => $sql,
+                       'filtered' => $_TABLES['users'].".uid > 1 AND (username LIKE '$sql_query' OR email LIKE '$sql_query' OR fullname LIKE '$sql_query')",
+                       'unfiltered' => $_TABLES['users'].'.uid > 1');
+    
+    $display .= ADMIN_list ("user", "USER_getListField", $header, $default_order, $texts, $query_sql,
+                            $menu, $filter, $form_url, $icon, $offset, $page, $query,
+                            COM_applyFilter ($_REQUEST['query_limit'], true));
+                           
     $display .= COM_siteFooter();
 }
 

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.168 2005/10/17 10:24:30 dhaun Exp $
+// $Id: story.php,v 1.169 2005/10/28 19:18:24 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -813,7 +813,6 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
             $story_templates->set_var ('article_url',
                     COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
                                   . $A['sid']));
-            $story_templates->set_var ('row_num', $scount);
             $A['title'] = str_replace('$', '&#36;', $A['title']);
             $story_templates->set_var('story_title', stripslashes($A['title']));
             $story_templates->set_var('story_access', $access);
@@ -1342,9 +1341,103 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         if ($page < 1) {
             $page = 1;
         }
-        $display .= liststories ($offset, $page, $_REQUEST['q'],
-                               COM_applyFilter ($_REQUEST['query_limit'], true));
-            $display .= COM_siteFooter();
+        #$display .= liststories ($offset, $page, $_REQUEST['q'],
+        #                       COM_applyFilter ($_REQUEST['query_limit'], true));
+                               
+        if (!empty ($_GET['tid'])) {
+            $current_topic = $_GET['tid'];
+        } elseif (!empty ($_POST['tid'])) {
+            $current_topic = $_POST['tid'];
+        } else {
+            $current_topic = $LANG09[9];
+        }
+
+        $ping_allowed = false;
+        if (SEC_hasRights ('story.ping') && ($_CONF['trackback_enabled'] ||
+                $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])) {
+            $ping_allowed = true;
+            $lang_ping = $LANG24[20];
+        } else{
+            $lang_ping='';
+        }
+        
+        if ($current_topic == $LANG09[9]) {
+            $excludetopics = '';
+            $seltopics = '';
+            $topicsql = "SELECT tid,topic FROM {$_TABLES['topics']}" . COM_getPermSQL ();
+            $tresult = DB_query( $topicsql );
+            $trows = DB_numRows( $tresult );
+            if( $trows > 0 )
+            {
+                $excludetopics .= ' AND (';
+                for( $i = 1; $i <= $trows; $i++ )  {
+                    $T = DB_fetchArray ($tresult);
+                    if ($i > 1)  {
+                        $excludetopics .= ' OR ';
+                    }
+                    $excludetopics .= "tid = '{$T['tid']}'";
+                    $seltopics .= '<option value="' .$T['tid']. '"';
+                    if ($current_topic == "{$T['tid']}") {
+                        $seltopics .= ' selected="selected"';
+                    }
+                    $seltopics .= '>' . $T['topic'] . '</option>' . LB;
+                }
+                $excludetopics .= ') ';
+            }
+        } else {
+            $excludetopics = " AND tid = '$current_topic' ";
+            $seltopics = COM_topicList ('tid,topic', $current_topic);
+        }
+        
+        $alltopics = '<option value="' .$LANG09[9]. '"';
+        if ($current_topic == $LANG09[9]) {
+            $alltopics .= ' selected="selected"';
+        }
+        $alltopics .= '>' .$LANG09[9]. '</option>' . LB;
+        $filter = $LANG_ADMIN['topic'] . ': <select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>';
+
+
+        $header = array(      # dislay 'text' and use table field 'field'
+                        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+                        array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true),
+                        array('text' => $LANG24[7], 'field' => 'author', 'sort' => false), //author
+                        array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true), //date
+                        array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
+                        array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true),
+                        array('text' => $lang_ping, 'field' => 'ping', 'sort' => false)
+        );
+
+        $menu = array (
+                        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
+                              'text' => $LANG_ADMIN['create_new']),
+                        array('url' => $_CONF['site_admin_url'],
+                              'text' => $LANG_ADMIN['admin_home'])
+        );
+
+        $default_order = 4;
+        $texts = array('title' => $LANG24[22], 'instructions' => $LANG24[23]);
+        $icon = $_CONF['layout_url'] . '/images/icons/story.png';
+        $form_url = $_CONF['site_admin_url'] . "/story.php";
+
+        $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
+
+        $query = $_REQUEST['q'];
+        $query = str_replace ('*', '%', $query);
+        if (!empty($query)) {
+            $sql .= " AND ";
+        }
+        $sql_query = addslashes ($query);
+        $query_sql = array('table' => 'stories',
+                           'sql' => $sql,
+                           'filtered' => " (title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query' or tid LIKE '$query')",
+                           'unfiltered' => '');
+
+        $display .= ADMIN_list ("story", "STORY_getListField", $header, $default_order, $texts, $query_sql,
+                                $menu, $filter, $form_url, $icon, $offset, $page, $query,
+                                COM_applyFilter ($_REQUEST['query_limit'], true));
+
+        $display .= COM_siteFooter();
     }
     echo $display;
 }

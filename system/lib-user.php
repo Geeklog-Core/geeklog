@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.14 2005/09/16 18:08:45 dhaun Exp $
+// $Id: lib-user.php,v 1.15 2005/10/28 19:18:25 ospiess Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -432,6 +432,38 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
     }
 
     return $photo;
+}
+
+function USER_getListField($fieldname, $fieldvalue, $A) {
+    global $_CONF, $LANG_ADMIN, $LANG28;
+
+    switch($fieldname) {
+        case "edit":
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/user.php?mode=edit&amp;uid={$A['uid']}\">$fieldvalue</a>";
+            break;
+        case 'username':
+            $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
+                      . $_IMAGE_TYPE . '" border="0" alt="">';
+            if (!empty($A['photo']))
+                 {$photoico = "&nbsp;" . $photoico;}
+            else
+                 {$photoico = '';}
+            $retval = '<a href="'. $_CONF['site_url']. '/users.php?mode=profile&amp;uid='
+                      . $A['uid'].'">' . $fieldvalue.'</a>' . $photoico;
+            break;
+        case "lastlogin":
+             if ($fieldvalue < 1) {
+                 $retval = $LANG28[36];
+             } else {
+                 $retval = date("Y.m.d H:i:s",$A['lastlogin']);
+             }
+
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
 }
 
 ?>

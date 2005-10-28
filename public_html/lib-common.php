@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.477 2005/10/23 16:11:50 dhaun Exp $
+// $Id: lib-common.php,v 1.478 2005/10/28 19:18:25 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -228,6 +228,13 @@ require_once( $_CONF['path_system'] . 'lib-plugins.php' );
 */
 
 require_once( $_CONF['path_system'] . 'lib-sessions.php' );
+
+/**
+* Include admin functions library
+*
+*/
+
+require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
 /**
 * Ulf Harnhammar's kses class
