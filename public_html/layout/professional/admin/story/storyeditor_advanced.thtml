@@ -160,16 +160,19 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right">{lang_mode}:</td>
+                                                            <td valign="top" align="right">{lang_mode}:</td>
                                                             <td>
-                                                                <select name="commentcode">
-                                                                    {comment_options}
-                                                                </select> 
                                                                 <select name="featured">
                                                                     {featured_options}
                                                                 </select> 
                                                                 <select name="frontpage">
                                                                     {frontpage_options}
+                                                                </select><br>
+                                                                <select name="commentcode">
+                                                                    {comment_options}
+                                                                </select>
+                                                                <select name="trackbackcode">
+                                                                    {trackback_options}
                                                                 </select>
                                                             </td>
                                                         </tr>

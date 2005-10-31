@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.87 2005/09/23 16:35:50 dhaun Exp $
+// $Id: submit.php,v 1.88 2005/10/31 19:04:45 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -496,7 +496,7 @@ function savestory ($A)
         $related = addslashes (implode ("\n", STORY_extractLinks ($introtext)));
 
         $introtext = addslashes ($introtext);
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','$introtext','{$related}',NOW(),{$_CONF['comment_code']},'{$A['postmode']}',{$A['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,trackbackcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','$introtext','{$related}',NOW(),'{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',{$A['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
 
         COM_rdfUpToDateCheck ();
         COM_olderStuff ();

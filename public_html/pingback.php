@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.9 2005/10/12 14:06:24 dhaun Exp $
+// $Id: pingback.php,v 1.10 2005/10/31 19:04:45 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -225,10 +225,12 @@ function PNB_getSid ($url)
     // okay, so we have a SID - but are they allowed to access the story?
     if (!empty ($sid)) {
         $testsid = addslashes ($sid);
-        $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$testsid'" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
-        $A = DB_fetchArray ($result);
-        if ($A['count'] == 1) {
-            $retval = $sid;
+        $result = DB_query ("SELECT trackbackcode FROM {$_TABLES['stories']} WHERE sid = '$testsid'" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
+        if (DB_numRows ($result) == 1) {
+            $A = DB_fetchArray ($result);
+            if ($A['trackbackcode'] == 0) {
+                $retval = $sid;
+            }
         }
     }
 

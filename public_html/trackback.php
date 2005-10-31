@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: trackback.php,v 1.6 2005/09/24 17:40:59 dhaun Exp $
+// $Id: trackback.php,v 1.7 2005/10/31 19:04:45 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-trackback.php');
@@ -71,10 +71,14 @@ if (empty ($type)) {
 if ($type == 'article') {
     // check if they have access to this story
     $sid = addslashes ($id);
-    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
-    $A = DB_fetchArray ($result);
-    if ($A['count'] == 1) {
-        TRB_handleTrackbackPing ($id, $type);
+    $result = DB_query("SELECT trackbackcode FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
+    if (DB_numRows ($result) == 1) {
+        $A = DB_fetchArray ($result);
+        if ($A['trackbackcode'] == 0) {
+            TRB_handleTrackbackPing ($id, $type);
+        } else {
+            TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
+        }
     } else {
         TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
     }

@@ -1499,6 +1499,11 @@ $LANG_commentcodes = array(
     -1  => 'Keine Kommentare'
 );
 
+$LANG_trackbackcodes = array(
+    0   => 'Trackbacks erlaubt',
+    -1  => 'Keine Trackbacks'
+);
+
 $LANG_commentmodes = array(
     'flat'      => 'Flach',
     'nested'    => 'Verschachtelt',

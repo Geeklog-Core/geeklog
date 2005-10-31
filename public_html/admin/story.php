@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.172 2005/10/31 16:11:20 ospiess Exp $
+// $Id: story.php,v 1.173 2005/10/31 19:04:45 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -165,6 +165,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $A = DB_fetchArray($result);
             $A['show_topic_icon'] = 1;
             $A['commentcode'] = $_CONF['comment_code'];
+            $A['trackbackcode'] = $_CONF['trackback_code'];
             $A['featured'] = 0;
             if (DB_getItem ($_TABLES['topics'], 'archive_flag',
                     "tid = '{$A['tid']}'") == 1) {
@@ -194,6 +195,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $A['unixdate'] = time();
         $A['expiredate'] = time();
         $A['commentcode'] = $_CONF['comment_code'];
+        $A['trackbackcode'] = $_CONF['trackback_code'];
 
         /* @TODO -o"Blaine" Add a user-preference option to set if user wants to use advanced-editor */
         if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
@@ -519,11 +521,22 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     if ($A['draft_flag'] == 1) {
         $story_templates->set_var('is_checked', 'checked="checked"');
     }
-    $story_templates->set_var('lang_mode', $LANG24[3]);
-    $story_templates->set_var('status_options', COM_optionList($_TABLES['statuscodes'],'code,name',$A['statuscode']));
-    $story_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$A['commentcode']));
-    $story_templates->set_var('featured_options', COM_optionList($_TABLES['featurecodes'],'code,name',$A['featured']));
-    $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',$A['frontpage']));
+    $story_templates->set_var ('lang_mode', $LANG24[3]);
+    $story_templates->set_var ('status_options',
+            COM_optionList ($_TABLES['statuscodes'], 'code,name',
+                            $A['statuscode']));
+    $story_templates->set_var ('comment_options',
+            COM_optionList ($_TABLES['commentcodes'], 'code,name',
+                            $A['commentcode']));
+    $story_templates->set_var ('trackback_options',
+            COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
+                            $A['trackbackcode']));
+    $story_templates->set_var ('featured_options',
+            COM_optionList ($_TABLES['featurecodes'], 'code,name',
+                            $A['featured']));
+    $story_templates->set_var ('frontpage_options',
+            COM_optionList ($_TABLES['frontpagecodes'], 'code,name',
+                            $A['frontpage']));
 
     if ($A['postmode'] == 'plaintext') {
         $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
@@ -621,6 +634,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 * @param    int         $comments       Number of user comments made to this story
 * @param    int         $featured       Flag on whether or not this is a featured article
 * @param    string      $commentcode    Indicates if comments are allowed to be made to article
+* @param    string      $trackbackcode  Indicates if trackbacks are allowed to be made to article
 * @param    string      $statuscode     Status of the story
 * @param    string      $postmode       Is this HTML or plain text?
 * @param    string      $frontpage      Flag indicates if story will appear on front page and topic or just topic
@@ -635,7 +649,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 * @param    int         $delete         String array of attached images to delete from article
 *
 */
-function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid)
+function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$trackbackcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid)
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE;
 
@@ -873,7 +887,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $introtext = addslashes ($introtext);
         $bodytext = addslashes ($bodytext);
 
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1");
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,trackbackcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$trackbackcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1");
 
         // If this is done as part of the moderation then delete the submission
         if (empty ($old_sid)) {
@@ -1049,6 +1063,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                  COM_applyFilter ($_POST['comments'], true),
                  COM_applyFilter ($_POST['featured'], true),
                  COM_applyFilter ($_POST['commentcode']),
+                 COM_applyFilter ($_POST['trackbackcode']),
                  COM_applyFilter ($_POST['statuscode']),
                  COM_applyFilter ($_POST['postmode']),
                  COM_applyFilter ($_POST['frontpage']),

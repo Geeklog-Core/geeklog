@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.194 2005/10/12 14:06:24 dhaun Exp $
+// $Id: config.php,v 1.195 2005/10/31 19:04:44 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -512,6 +512,10 @@ $_CONF['pingback_enabled'] = true;
 
 // Disable pinging weblog directory services by setting this to 'false'.
 $_CONF['ping_enabled'] = true;
+
+// Allow / disallow trackbacks and pingbacks to stories by default
+// (can be changed individually for every story)
+$_CONF['trackback_code'] = 0;   // 0 = trackbacks enabled, -1 = disabled
 
 // how to handle multiple trackbacks and pingbacks from the same URL:
 // 0 = reject, 1 = only keep the latest, 2 = allow multiple posts

@@ -397,6 +397,7 @@ CREATE TABLE {$_TABLES['stories']} (
   featured tinyint(3) unsigned NOT NULL default '0',
   show_topic_icon tinyint(1) unsigned NOT NULL default '1',
   commentcode tinyint(4) NOT NULL default '0',
+  trackbackcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   expire DATETIME NOT NULL,
   postmode varchar(10) NOT NULL default 'html',
@@ -660,6 +661,14 @@ CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
   value varchar(255) NOT NULL default '',
   INDEX spamx_name(name)
+) TYPE=MyISAM
+";
+
+$_SQL[44] = "
+CREATE TABLE {$_TABLES['trackbackcodes']} (
+  code tinyint(4) NOT NULL default '0',
+  name varchar(32) default NULL,
+  PRIMARY KEY  (code)
 ) TYPE=MyISAM
 ";
 
@@ -944,5 +953,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0'
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter','0') ";
+
+$_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
+$_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled') ";
 
 ?>

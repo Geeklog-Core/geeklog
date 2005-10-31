@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.69 2005/10/23 09:13:08 dhaun Exp $
+// $Id: article.php,v 1.70 2005/10/31 19:04:45 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -252,7 +252,7 @@ if ($A['count'] > 0) {
         }
                                   
         // Display the comments, if there are any ..
-        if ( ($A['commentcode'] >= 0) and ($show_comments == true) ){
+        if (($A['commentcode'] >= 0) and $show_comments) {
             $delete_option = (SEC_hasRights('story.edit') && ($access == 3)
                              ? true : false);
             require_once ( $_CONF['path_system'] . 'lib-comment.php' );
@@ -260,7 +260,8 @@ if ($A['count'] > 0) {
                     CMT_userComments ($story, $A['title'], 'article',
                                       $order, $mode, 0, $page, false, $delete_option));
         }
-        if ($_CONF['trackback_enabled']) {
+        if ($_CONF['trackback_enabled'] && ($A['trackbackcode'] >= 0) &&
+                $show_comments) {
             if (SEC_hasRights ('story.ping')) {
                 if (($A['draft'] == 0) && ($A['day'] < time ())) {
                     $url = $_CONF['site_admin_url']

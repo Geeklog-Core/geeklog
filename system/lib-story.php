@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.41 2005/10/28 19:18:25 ospiess Exp $
+// $Id: lib-story.php,v 1.42 2005/10/31 19:04:46 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -278,7 +278,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'end_readmore_anchortag', '</a>' );
         }
 
-        if( ( $A['commentcode'] >= 0 )  and ($show_comments == true) )
+        if( ( $A['commentcode'] >= 0 )  and ( $show_comments ))
         {
             $commentsUrl = COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#comments';
@@ -319,7 +319,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'end_post_comment_anchortag', '</a>' );
         }
 
-        if( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] )
+        if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) &&
+                ( $A['trackbackcode'] >= 0 ) && ( $show_comments ))
         {
             $num_trackbacks = $A['trackbacks'];
             $trackbacksUrl = COM_buildUrl( $_CONF['site_url']

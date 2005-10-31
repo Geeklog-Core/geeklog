@@ -28,8 +28,17 @@ $_SQL[] = "CREATE TABLE {$_TABLES['pingservice']} (
   INDEX pingservice_is_enabled(is_enabled)
 ) TYPE=MyISAM";
 
+$_SQL[] = "CREATE TABLE {$_TABLES['trackbackcodes']} (
+  code tinyint(4) NOT NULL default '0',
+  name varchar(32) default NULL,
+  PRIMARY KEY  (code)
+) TYPE=MyISAM ";
+
 // a weblog directory to ping (which, in turn, pings others)
 $_SQL[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (1, 'Ping-O-Matic', 'http://pingomatic.com/', 'http://rpc.pingomatic.com/', 'weblogUpdates.ping', 1)";
+
+$_SQL[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
+$_SQL[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled') ";
 
 // max. number of entries to import into a portal block
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdflimit smallint(5) unsigned NOT NULL default '0' AFTER rdfupdated";
@@ -60,6 +69,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX date(date)";
 // new 'in transit' status
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD in_transit tinyint(1) unsigned default '0' AFTER frontpage";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_in_transit(in_transit)";
+
+// trackback code - just like commentcode
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD trackbackcode tinyint(4) NOT NULL default '0' AFTER commentcode";
 
 // trackback counter
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD trackbacks mediumint(8) unsigned NOT NULL default '0' AFTER comments";
