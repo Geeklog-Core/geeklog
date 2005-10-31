@@ -1,8 +1,0 @@
-                                <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-                                    <td class="admin-list-field"><a href="{site_admin_url}/plugins/polls/index.php?mode=edit&amp;qid={question_id}">{edit_icon}</a></td>
-                                    <td class="admin-list-field">{poll_question}</td>
-                                    <td class="admin-list-field">{poll_access}</td>
-                                    <td class="admin-list-field">{poll_votes}</td>
-                                    <td class="admin-list-field">{poll_createdate}</td>
-                                    <td class="admin-list-field">{poll_homepage}</td>
-                                </tr>

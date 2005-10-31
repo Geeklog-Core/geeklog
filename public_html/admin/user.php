@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.117 2005/10/31 13:31:18 ospiess Exp $
+// $Id: user.php,v 1.118 2005/10/31 14:44:55 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -629,21 +629,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    #$display .= listusers ($offset, $page, $_REQUEST['q'],
-    #                        COM_applyFilter ($_REQUEST['query_limit'], true));
 
-    # describe headers for the tablesBIT_COUNTBIT_COUNT
     if ($_CONF['lastlogin']==true) {
         $login_text = $LANG28[41];
         $login_field = 'lastlogin';
@@ -687,7 +673,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
     
     $display .= ADMIN_list ("user", "USER_getListField", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $filter, $offset, $page);
+                            $query_arr, $menu_arr, $filter);
                            
     $display .= COM_siteFooter();
 }

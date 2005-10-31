@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.10 2005/09/18 12:09:46 dhaun Exp $
+// $Id: index.php,v 1.11 2005/10/31 14:44:55 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -316,178 +316,6 @@ function editpoll ($qid = '')
 }
 
 /**
-* lists existing polls
-*
-* @param    int     $page   page to display
-* @return   string          HTML with the list of polls
-*
-*/
-function listpolls ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_CONF, $_TABLES, $LANG25, $LANG_ACCESS, $_IMAGE_TYPE;
-
-    $order = COM_applyFilter ($_GET['order'], true);
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
-    $direction = COM_applyFilter ($_GET['direction']);
-
-    $retval = '';
-
-    if ($page <= 0) {
-        $page = 1;
-    }
-
-    $retval .= COM_startBlock ($LANG25[18], $_CONF['site_url']
-                                            . '/docs/polls.html',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-
-    $poll_templates = new Template ($_CONF['path'] . 'plugins/polls/templates/admin/');
-    $poll_templates->set_file (array ('list' => 'polllist.thtml',
-                                      'row'  => 'listitem.thtml'));
-    $poll_templates->set_var('site_url', $_CONF['site_url']);
-    $poll_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $poll_templates->set_var('layout_url', $_CONF['layout_url']);
-    $poll_templates->set_var('lang_newpoll', $LANG25[23]);
-    $poll_templates->set_var('lang_edit', $LANG25[27]);
-    $poll_templates->set_var('lang_adminhome', $LANG25[24]);
-    $poll_templates->set_var('lang_instructions', $LANG25[19]);
-    $poll_templates->set_var('lang_question', $LANG25[9]);
-    $poll_templates->set_var('lang_access', $LANG_ACCESS['access']);
-    $poll_templates->set_var('lang_voters',  $LANG25[20]);
-    $poll_templates->set_var('lang_pollcreated', $LANG25[3]);
-    $poll_templates->set_var('lang_appearsonhomepage', $LANG25[8]);
-    $poll_templates->set_var('lang_submit', $LANG25[28]);
-    $poll_templates->set_var('lang_search', $LANG25[29]);
-    $poll_templates->set_var('lang_limit_results', $LANG25[30]);
-    $poll_templates->set_var('last_query', $query);
-    $editicon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG25[27] . '" title="'
-              . $LANG25[27] . '">';
-    $poll_templates->set_var('edit_icon', $editicon);
-    
-    switch($order) {
-        case 1:
-            $orderby = 'question';
-            break;
-        case 2:
-            $orderby = 'voters';
-            break;
-        case 3:
-            $orderby = 'date';
-            break;
-        case 4:
-            $orderby = 'display';
-            break;
-        default:
-            $orderby = 'date';
-            $order = 3;
-            break;
-    }
-    if (empty ($direction)) {
-        $direction = 'desc';
-    } else if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
-
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $poll_templates->set_var ('img_arrow' . $order,
-        '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow . '.'
-        . $_IMAGE_TYPE . '" border="0" alt="">');
-
-    $poll_templates->set_var ('direction', $direction);
-    $poll_templates->set_var ('page', $page);
-    $poll_templates->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if (!empty ($query)) {
-        $poll_templates->set_var ('query', urlencode($query) );
-    } else {
-        $poll_templates->set_var ('query', '');
-    }
-    $poll_templates->set_var ('query_limit', $query_limit);
-    $poll_templates->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['pollquestions'], 'COUNT(*)',
-                "(question LIKE '$query')" . COM_getPermSql ('AND')) / $limit);
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['pollquestions'], 'COUNT(*)', COM_getPermSql ('')) / $limit);
-    }
-    if ($num_pages < $curpage) {
-        $curpage = 1;
-    }
-
-    $offset = (($curpage - 1) * $limit);
-
-    $sql = "SELECT * FROM {$_TABLES['pollquestions']}";
-    if (empty ($query)) {
-        $sql .= COM_getPermSql ();
-    } else {
-         $sql .= " WHERE (question LIKE '$query')" . COM_getPermSql ('AND');
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                                 $A['perm_owner'], $A['perm_group'],
-                                 $A['perm_members'], $A['perm_anon']);
-        if ($access > 0) {
-            if ($access == 3) {
-                $access = $LANG_ACCESS['edit'];
-            } else {
-                $access = $LANG_ACCESS['readonly'];
-            }
-            $curtime = COM_getUserDateTimeFormat ($A['date']); 
-            if ($A['display'] == 1) {
-                $A['display'] = $LANG25[25];
-            } else {
-                $A['display'] = $LANG25[26];
-            }
-            $poll_templates->set_var ('question_id', $A['qid']);
-            $poll_templates->set_var ('poll_question', $A['question']);
-            $poll_templates->set_var ('poll_access', $access);
-            $poll_templates->set_var ('poll_votes',
-                                      COM_numberFormat ($A['voters']));
-            $poll_templates->set_var ('poll_createdate', $curtime[0]);
-            $poll_templates->set_var ('poll_homepage', $A['display']);
-            $poll_templates->set_var ('cssid', ($i % 2) + 1);
-            $poll_templates->set_var ('row_num', $pcount);
-            $poll_templates->parse ('poll_row', 'row', true);
-        }
-    }
-
-    if (!empty ($query)) {
-        $base_url = $_CONF['site_admin_url'] . '/plugins/polls/index.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    } else {
-        $base_url = $_CONF['site_admin_url'] . "/plugins/polls/index.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    }
-
-    if ($num_pages > 1) {
-        $poll_templates->set_var ('google_paging',
-                COM_printPageNavigation ($base_url, $curpage, $num_pages));
-    } else {
-        $poll_templates->set_var ('google_paging', '');
-    }
-
-    $poll_templates->parse ('output', 'list');
-    $retval .= $poll_templates->finish ($poll_templates->get_var ('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-}
-
-/**
 * Delete a poll
 *
 * @param    string  $qid    ID of poll to delete
@@ -572,19 +400,36 @@ if ($mode == 'edit') {
             $display .= COM_showMessage ($msg, 'polls');
         }
     }
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= listpolls ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG25[9],             'field' => 'question',  'sort' => true),
+                    array('text' => $LANG25[20],            'field' => 'voters',    'sort' => true),
+                    array('text' => $LANG_ACCESS['access'], 'field' => 'access',    'sort' => false),
+                    array('text' => $LANG25[3],             'field' => 'date',      'sort' => 'default'),
+                    array('text' => $LANG25[8],             'field' => 'display',   'sort' => true)
+    );
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('title' => $LANG25[18], 'instructions' => $LANG25[19],
+                      'icon' => $_CONF['site_url'] . '/polls/images/polls.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php");
+
+    $query_arr = array('table' => 'pollquestions',
+                       'sql' => "SELECT * FROM {$_TABLES['pollquestions']} WHERE 1",
+                       'filter' => array('question'),
+                       'unfiltered' => '',
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $display .= ADMIN_list ("polls", "plugin_getListField_polls", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $filter);
+
     $display .= COM_siteFooter ();
 }
 

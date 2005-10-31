@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.170 2005/10/31 13:31:18 ospiess Exp $
+// $Id: story.php,v 1.171 2005/10/31 14:44:55 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1068,20 +1068,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     } else {
         $display .= COM_siteHeader('menu');
         $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
-        $offset = 0;
-        if (isset ($_REQUEST['offset'])) {
-            $offset = COM_applyFilter ($_REQUEST['offset'], true);
-        }
-        $page = 1;
-        if (isset ($_REQUEST['page'])) {
-            $page = COM_applyFilter ($_REQUEST['page'], true);
-        }
-        if ($page < 1) {
-            $page = 1;
-        }
-        #$display .= liststories ($offset, $page, $_REQUEST['q'],
-        #                       COM_applyFilter ($_REQUEST['query_limit'], true));
-                               
+
         if (!empty ($_GET['tid'])) {
             $current_topic = $_GET['tid'];
         } elseif (!empty ($_POST['tid'])) {
@@ -1166,7 +1153,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                            'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
         $display .= ADMIN_list ("story", "STORY_getListField", $header_arr, $text_arr,
-                                $query_arr, $menu_arr, $filter, $offset, $page);
+                                $query_arr, $menu_arr, $filter);
 
         $display .= COM_siteFooter();
     }

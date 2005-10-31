@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.23 2005/09/19 14:34:24 dhaun Exp $
+// $Id: functions.inc,v 1.24 2005/10/31 14:44:54 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -843,5 +843,51 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
 
     return $retval;
 }
+
+function plugin_getListField_polls($fieldname, $fieldvalue, $A) {
+    global $_CONF, $LANG25, $LANG_ACCESS;
+
+    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                             $A['perm_owner'], $A['perm_group'],
+                             $A['perm_members'], $A['perm_anon']);
+    if ($access > 0) {
+        switch($fieldname) {
+            case "edit":
+                if ($access == 3) {
+                    $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">$fieldvalue</a>";
+                }
+                break;
+            case 'date':
+                $curtime = COM_getUserDateTimeFormat ($A['date']);
+                $retval = $curtime[0];
+                break;
+            case 'question': # http://www.example.com/
+                $retval = "<a href=\"{$_CONF[site_url]}/polls/index.php?qid={$A['qid']}&aid=-1\">$fieldvalue</a>";
+                break;
+            case 'access':
+                if ($access == 3) {
+                    $access = $LANG_ACCESS['edit'];
+                } else {
+                    $access = $LANG_ACCESS['readonly'];
+                }
+                $retval = $access;
+                break;
+            case 'display':
+                if ($A['display'] == 1) {
+                    $retval = $LANG25[25];
+                } else {
+                    $retval = $LANG25[26];
+                }
+                break;
+            default:
+                $retval = $fieldvalue;
+                break;
+        }
+    } else {
+        $retval = false;
+    }
+    return $retval;
+}
+
 
 ?>

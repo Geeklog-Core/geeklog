@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.2 2005/10/31 13:31:19 ospiess Exp $
+// $Id: lib-admin.php,v 1.3 2005/10/31 14:44:56 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
-                    $menu_arr, $filter, $offset, $curpage)
+                    $menu_arr, $filter)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE;
     // Make sure user has access to this page
@@ -56,6 +56,19 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
+
+    $offset = 0;
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+    }
+    $curpage = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
+    }
+
+    if ($curpage <= 0) {
+        $curpage = 1;
+    }
 
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array ('list' => 'list.thtml',
@@ -198,8 +211,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
             $fieldname = $header_arr[$j]['field'];
             $fieldvalue = $A[$fieldname];
             $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A);
-            $admin_templates->set_var('itemtext', $fieldvalue);
-            $admin_templates->parse('item_field', 'field', true);
+            if ($fieldvalue !== false) {
+                $admin_templates->set_var('itemtext', $fieldvalue);
+                $admin_templates->parse('item_field', 'field', true);
+            }
         }
         $admin_templates->set_var('cssid', ($i%2)+1);
         $admin_templates->parse('item_row', 'row', true);
