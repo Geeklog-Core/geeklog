@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.118 2005/10/31 14:44:55 ospiess Exp $
+// $Id: user.php,v 1.119 2005/10/31 16:11:20 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -639,6 +639,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     }
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG28[37], 'field' => 'uid', 'sort' => true),
                     array('text' => $LANG28[3], 'field' => 'username', 'sort' => 'default'),
                     array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true),

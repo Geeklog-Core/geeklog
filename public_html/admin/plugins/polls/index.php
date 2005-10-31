@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2005/10/31 14:44:55 ospiess Exp $
+// $Id: index.php,v 1.12 2005/10/31 16:11:20 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -402,11 +402,12 @@ if ($mode == 'edit') {
     }
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG25[9],             'field' => 'question',  'sort' => true),
-                    array('text' => $LANG25[20],            'field' => 'voters',    'sort' => true),
-                    array('text' => $LANG_ACCESS['access'], 'field' => 'access',    'sort' => false),
-                    array('text' => $LANG25[3],             'field' => 'date',      'sort' => 'default'),
-                    array('text' => $LANG25[8],             'field' => 'display',   'sort' => true)
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
+                    array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
+                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+                    array('text' => $LANG25[3], 'field' => 'date', 'sort' => 'default'),
+                    array('text' => $LANG25[8], 'field' => 'display', 'sort' => true)
     );
 
     $menu_arr = array (

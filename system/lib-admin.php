@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.3 2005/10/31 14:44:56 ospiess Exp $
+// $Id: lib-admin.php,v 1.4 2005/10/31 16:11:20 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $filter)
@@ -50,8 +50,12 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         echo $retval;
         exit;
     }
+    
+    $order = $_GET['order'];
+    if (!empty($order)) {
+        $order = COM_applyFilter ($order, true);
+    }
 
-    $order = COM_applyFilter ($_GET['order'], true);
     $prevorder = COM_applyFilter ($_GET['prevorder'], true);
     $direction = COM_applyFilter ($_GET['direction']);
 
@@ -73,9 +77,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array ('list' => 'list.thtml',
                                        'header' => 'header.thtml',
-                                      'row' => 'listitem.thtml',
-                                      'field' => 'field.thtml',
-                                      'menufields' => 'menufields.thtml'
+                                       'row' => 'listitem.thtml',
+                                       'field' => 'field.thtml',
+                                       'menufields' => 'menufields.thtml'
                                       ));
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $text_arr['form_url']);
@@ -141,7 +145,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
                     ."order=$i&prevorder=$order&direction=$direction"
                     ."&page=$page&q=$query&query_limit=$query_limit';\"";
             $admin_templates->set_var('on_click', $onclick);
-            $admin_templates->set_var('arrow', $arrow);
         }
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('img_arrow');
@@ -202,14 +205,13 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
 
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        // Edit icon
-        $fieldvalue = $fieldfunction('edit', $editico, $A);
-        $admin_templates->set_var('itemtext', $fieldvalue);
-        $admin_templates->parse('item_field', 'field', true);
-        // other fields
         for ($j = 0; $j < count($header_arr); $j++) {
             $fieldname = $header_arr[$j]['field'];
-            $fieldvalue = $A[$fieldname];
+            if ($fieldname == 'edit') {
+                $fieldvalue = $editico;
+            } else {
+                $fieldvalue = $A[$fieldname];
+            }
             $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A);
             if ($fieldvalue !== false) {
                 $admin_templates->set_var('itemtext', $fieldvalue);

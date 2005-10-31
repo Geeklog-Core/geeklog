@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.171 2005/10/31 14:44:55 ospiess Exp $
+// $Id: story.php,v 1.172 2005/10/31 16:11:20 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1123,6 +1123,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
 
 
         $header_arr = array(
+                        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
                         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
                         array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true),
