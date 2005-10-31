@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.116 2005/10/28 19:18:25 ospiess Exp $
+// $Id: user.php,v 1.117 2005/10/31 13:31:18 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -419,188 +419,6 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 }
 
 /**
-* Lists all users in the system
-*
-* @param    int     $offset         start of list
-* @param    int     $curpage        current page
-* @param    string  $query          query string for search
-* @param    int     $query_limit    max. entries per page
-* @return   string                  HTML for list of users
-*
-*/
-function listusers ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_CONF, $_TABLES, $LANG28, $_IMAGE_TYPE, $LANG_ADMIN;
-
-    $order = COM_applyFilter ($_GET['order'], true);                           
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);                   
-    $direction = COM_applyFilter ($_GET['direction']);
-
-    $retval = '';
-
-    $retval .= COM_startBlock ($LANG28[11], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-
-    $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file (array ('list' => 'userslist.thtml',
-                                      'row' => 'listitem.thtml'));
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
-    $user_templates->set_var('lang_newuser', $LANG_ADMIN['create_new']);
-    $user_templates->set_var('lang_batchadd',$LANG28[23]);
-    $user_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
-    $user_templates->set_var('lang_instructions', $LANG28[12]);
-    $user_templates->set_var('lang_search', $LANG_ADMIN['search']);
-    $user_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-    $user_templates->set_var('last_query', $query);
-    $user_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-    $user_templates->set_var('lang_uid', $LANG28[37]);
-    $user_templates->set_var('lang_username', $LANG28[3]);
-    $user_templates->set_var('lang_fullname', $LANG28[4]);
-    $user_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $user_templates->set_var('lang_emailaddress', $LANG28[7]);
-    $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
-              . $_IMAGE_TYPE . '" border="0" alt="">';
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
-             . $LANG_ADMIN['edit'] . '">';
-    $user_templates->set_var('edit_icon', $editico);
-
-    if ($_CONF['lastlogin']==true) {
-        $user_templates->set_var('lang_regdate', $LANG28[41]);
-    } else {
-        $user_templates->set_var('lang_regdate', $LANG28[40]);
-    }
-
-    switch($order) {
-        case 1:
-            $orderby = 'uid';
-            break;
-        case 2:
-            $orderby = 'username';
-            break;
-        case 3:
-            $orderby = 'fullname';
-            break;
-        case 4:
-            $orderby = 'email';
-            break;
-        case 5:
-            if ($_CONF['lastlogin']==true) {
-                $orderby = 'lastlogin';
-            } else {
-                $orderby = 'regdate';
-            }
-            break;
-        default:
-            $orderby = 'uid';
-            $order = 1;
-            break;
-    }
-    if (empty ($direction)) {
-        $direction = 'asc';
-    } else if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
-
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $user_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="'
-            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
-            . '" border="0" alt="">');
-
-    $user_templates->set_var ('direction', $direction);
-    $user_templates->set_var ('page', $page);
-    $user_templates->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $user_templates->set_var ('query', urlencode($query) );
-    } else {
-        $user_templates->set_var ('query', '');
-    }
-    $user_templates->set_var ('query_limit', $query_limit);
-    $user_templates->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['users'], 'count(*)',
-                "uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query')") / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['users'], 'count(*)',
-                                       'uid > 1') / $limit);
-    }
-
-    $offset = (($curpage - 1) * $limit);
-    
-    if ($_CONF['lastlogin']==true) {
-        $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
-        $select_userinfo=",lastlogin ";
-    }
-    
-    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1";
-    if (!empty($query)) {
-         $sql .= " AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query')";
-    } 
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-    
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $user_templates->set_var('user_id', $A['uid']);
-        $user_templates->set_var('username', $A['username']);
-        $user_templates->set_var('user_fullname', $A['fullname']);
-        $user_templates->set_var('user_email', $A['email']);
-        $user_templates->set_var('cssid', ($i%2)+1);
-        if (!empty($A['photo']))
-                {$user_templates->set_var('photo_icon', $photoico);}
-        else
-                {$user_templates->set_var('photo_icon', '');}
-        if ($_CONF['lastlogin']==true) {
-            if ($A['lastlogin']<1) {
-                $user_templates->set_var('user_regdate',$LANG28[36]);
-            } else {
-                $user_templates->set_var('user_regdate',date("Y.m.d H:i:s",$A['lastlogin']));
-            }
-        } else {
-            $user_templates->set_var('user_regdate', $A['regdate']);
-        }
-        $user_templates->parse('user_row', 'row', true);
-    }
-    if (!empty($query)) {
-        $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    } else {
-        $base_url = $_CONF['site_admin_url'] . "/user.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    }
-
-    if ($num_pages > 1) {
-        $user_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
-    } else {
-        $user_templates->set_var('google_paging', '');
-    }
-    $user_templates->parse('output', 'list');
-    $retval .= $user_templates->finish($user_templates->get_var('output'));
-
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-}
-
-/**
 * This function allows the administrator to import batches of users
 *
 * @param    string  $file   file to import
@@ -825,7 +643,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     #$display .= listusers ($offset, $page, $_REQUEST['q'],
     #                        COM_applyFilter ($_REQUEST['query_limit'], true));
 
-    # describe headers for the tables
+    # describe headers for the tablesBIT_COUNTBIT_COUNT
     if ($_CONF['lastlogin']==true) {
         $login_text = $LANG28[41];
         $login_field = 'lastlogin';
@@ -834,15 +652,15 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
         $login_field = 'regdate';
     }
 
-    $header = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG28[37], 'field' => 'uid'),
-                    array('text' => $LANG28[3], 'field' => 'username'),
-                    array('text' => $LANG28[4], 'field' => 'fullname'),
-                    array('text' => $login_text, 'field' => $login_field),
-                    array('text' => $LANG28[7], 'field' => 'email')
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG28[37], 'field' => 'uid', 'sort' => true),
+                    array('text' => $LANG28[3], 'field' => 'username', 'sort' => 'default'),
+                    array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true),
+                    array('text' => $login_text, 'field' => $login_field, 'sort' => true),
+                    array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
     );
 
-    $menu = array (
+    $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
                           'text' => $LANG_ADMIN['create_new']),
                     array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
@@ -851,29 +669,25 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                           'text' => $LANG_ADMIN['admin_home'])
     );
                     
-    $default_order = 0;
-    $texts = array('title' => $LANG28[11], 'instructions' => $LANG28[12]);
-    $icon = $_CONF['layout_url'] . '/images/icons/user.png';
+    $text_arr = array('title' => $LANG28[11], 'instructions' => $LANG28[12],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/user.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/user.php");
 
-    $form_url = $_CONF['site_admin_url'] . "/user.php";
-    
     if ($_CONF['lastlogin']==true) {
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
         $select_userinfo=",lastlogin ";
     }
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE ";
 
-    $query = $_REQUEST['q'];
-    $query = str_replace ('*', '%', $query);
-    $sql_query = addslashes ($query);
-    $query_sql = array('table' => 'users',
+    $query_arr = array('table' => 'users',
                        'sql' => $sql,
-                       'filtered' => $_TABLES['users'].".uid > 1 AND (username LIKE '$sql_query' OR email LIKE '$sql_query' OR fullname LIKE '$sql_query')",
-                       'unfiltered' => $_TABLES['users'].'.uid > 1');
+                       'filter' => array('username', 'email', 'fullname'),
+                       'unfiltered' => $_TABLES['users'].'.uid > 1',
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
     
-    $display .= ADMIN_list ("user", "USER_getListField", $header, $default_order, $texts, $query_sql,
-                            $menu, $filter, $form_url, $icon, $offset, $page, $query,
-                            COM_applyFilter ($_REQUEST['query_limit'], true));
+    $display .= ADMIN_list ("user", "USER_getListField", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $filter, $offset, $page);
                            
     $display .= COM_siteFooter();
 }

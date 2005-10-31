@@ -32,13 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.1 2005/10/28 19:19:43 ospiess Exp $
+// $Id: lib-admin.php,v 1.2 2005/10/31 13:31:19 ospiess Exp $
 
-// Set this to true to get various debug messages from this script
-
-function ADMIN_list($component, $fieldfunction, $header, $default_order, $texts, $query_sql,
-                    $menu, $filter, $form_url, $icon, $offset, $curpage, $query = '',
-                    $query_limit = 50)
+function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
+                    $menu_arr, $filter, $offset, $curpage)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE;
     // Make sure user has access to this page
@@ -68,13 +65,13 @@ function ADMIN_list($component, $fieldfunction, $header, $default_order, $texts,
                                       'menufields' => 'menufields.thtml'
                                       ));
     $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('form_url', $form_url);
-    $admin_templates->set_var('icon', $icon);
+    $admin_templates->set_var('form_url', $text_arr['form_url']);
+    $admin_templates->set_var('icon', $text_arr['icon']);
 
-    for ($i = 0; $i < count($menu); $i++) {
-        $admin_templates->set_var('menu_url', $menu[$i]['url'] );
-        $admin_templates->set_var('menu_text', $menu[$i]['text'] );
-        if ($i < (count($menu) -1)) {
+    for ($i = 0; $i < count($menu_arr); $i++) {
+        $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
+        $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
+        if ($i < (count($menu_arr) -1)) {
             $admin_templates->set_var('line', '|' );
         }
         $admin_templates->parse('menu_fields', 'menufields', true);
@@ -89,17 +86,17 @@ function ADMIN_list($component, $fieldfunction, $header, $default_order, $texts,
          . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
          . $LANG_ADMIN['edit'] . '">';
 
-    $admin_templates->set_var('lang_instructions', $texts['instructions']);
-    $retval .= COM_startBlock ($texts['title'], '',
+    $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
+    $retval .= COM_startBlock ($text_arr['title'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
     $admin_templates->set_var('last_query', $query);
     $admin_templates->set_var('filter', $filter);
-
-    if (empty($order)) {
-        $order = $default_order;
-    }
-    $orderby = $header[$order]['field'];
-
+    
+    $query = $query_arr['query'];
+    $query = str_replace ('*', '%', $query);
+    $sql_query = addslashes ($query);
+    $sql = $query_arr['sql'];
+    
     if (empty ($direction)) {
         $direction = 'asc';
     } else if ($order == $prevorder) {
@@ -115,47 +112,14 @@ function ADMIN_list($component, $fieldfunction, $header, $default_order, $texts,
     }
     $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
             . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
-
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $admin_templates->set_var ('query', urlencode($query) );
-    } else {
-        $admin_templates->set_var ('query', '');
-    }
-    $admin_templates->set_var ('query_limit', $query_limit);
-    $admin_templates->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $num_pages = ceil (DB_getItem ($_TABLES[$query_sql['table']], 'count(*)',
-                $query_sql['filtered']) / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES[$query_sql['table']], 'count(*)',
-                                       $query_sql['unfiltered']) / $limit);
-    }
-    $offset = (($curpage - 1) * $limit);
-
-    # SQL
-    $sql = $query_sql['sql'];
-    if (!empty($query)) {
-         $sql .= $query_sql['filtered'];
-    } else {
-        $sql .= $query_sql['unfiltered'];
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-
-    # HEADER FIELDS array(text, field)
-    for ($i=0; $i < count( $header ); $i++) {
-        $admin_templates->set_var('header_text', $header[$i]['text']);
-        if ($header[$i]['sort'] != false) {
+    
+    # HEADER FIELDS array(text, field, sort)
+    for ($i=0; $i < count( $header_arr ); $i++) {
+        $admin_templates->set_var('header_text', $header_arr[$i]['text']);
+        if ($header_arr[$i]['sort'] != false) {
+            if (($header_arr[$i]['sort'] === 'default') && empty($order)) {
+                $order = $i;
+            }
             if ($order==$i) {
                 $admin_templates->set_var('img_arrow', $img_arrow);
             }
@@ -173,6 +137,56 @@ function ADMIN_list($component, $fieldfunction, $header, $default_order, $texts,
         $admin_templates->clear_var('arrow');
     }
 
+    $orderby = $header_arr[$order]['field'];
+
+    if (empty($query_arr['query_limit'])) {
+        $limit = 50;
+    } else {
+        $limit = $query_arr['query_limit'];
+    }
+    if ($query != '') {
+        $admin_templates->set_var ('query', urlencode($query) );
+    } else {
+        $admin_templates->set_var ('query', '');
+    }
+    $admin_templates->set_var ('query_limit', $query_arr['query_limit']);
+    $admin_templates->set_var($limit . '_selected', 'selected="selected"');
+
+    if (!empty ($query)) {
+        if (!empty($query_arr['unfiltered'])) {
+            $filter_str = $query_arr['unfiltered'] . " AND (";
+        } else {
+            $filter_str = "(";
+        }
+        for ($f = 0; $f < count($query_arr['filter']); $f++) {
+            $filter_str .= $query_arr['filter'][$f] . " LIKE '$sql_query'";
+            if ($f < (count($query_arr['filter']) - 1)) {
+                $filter_str .= " OR ";
+            }
+        }
+        $filter_str .= ")";
+
+        $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
+                           $filter_str) / $limit);
+        if ($num_pages < $curpage) {
+            $curpage = 1;
+        }
+    } else {
+        $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
+                                       $query_arr['unfiltered']) / $limit);
+    }
+    $offset = (($curpage - 1) * $limit);
+
+    # SQL
+    if (!empty($query)) {
+         $sql .=  $filter_str;
+    } else {
+        $sql .= $query_arr['unfiltered'];
+    }
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         // Edit icon
@@ -180,8 +194,8 @@ function ADMIN_list($component, $fieldfunction, $header, $default_order, $texts,
         $admin_templates->set_var('itemtext', $fieldvalue);
         $admin_templates->parse('item_field', 'field', true);
         // other fields
-        for ($j = 0; $j < count($header); $j++) {
-            $fieldname = $header[$j]['field'];
+        for ($j = 0; $j < count($header_arr); $j++) {
+            $fieldname = $header_arr[$j]['field'];
             $fieldvalue = $A[$fieldname];
             $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A);
             $admin_templates->set_var('itemtext', $fieldvalue);
@@ -192,9 +206,9 @@ function ADMIN_list($component, $fieldfunction, $header, $default_order, $texts,
         $admin_templates->clear_var('item_field');
     }
     if (!empty($query)) {
-        $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
+        $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
     } else {
-        $base_url = $form_url . "?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
+        $base_url = $form_url . "?query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
     }
 
     if ($num_pages > 1) {

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.169 2005/10/28 19:18:24 ospiess Exp $
+// $Id: story.php,v 1.170 2005/10/31 13:31:18 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -607,268 +607,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 }
 
 /**
-* List all stories in the system
-*
-* This lists all the stories in the database
-*
-* @param    int     $page   Page to show user
-* @return   string  HTML for story listing
-*
-*/
-function liststories ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS, $LANG_ADMIN,
-           $_IMAGE_TYPE;
-
-    $order = COM_applyFilter ($_GET['order'], true);
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
-    $direction = COM_applyFilter ($_GET['direction']);
-
-    $display = '';
-
-    $ping_allowed = false;
-    if (SEC_hasRights ('story.ping') && ($_CONF['trackback_enabled'] ||
-            $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])) {
-        $ping_allowed = true;
-    }
-
-    $display .= COM_startBlock ($LANG24[22], '',
-                        COM_getBlockTemplate ('_admin_block', 'header'));
-    $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    $story_templates->set_file (array ('list' => 'liststories.thtml',
-                                       'row' => 'listitem.thtml'));
-
-    $story_templates->set_var('layout_url', $_CONF['layout_url']);
-    $story_templates->set_var('site_url', $_CONF['site_url']);
-    $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $story_templates->set_var('lang_newstory', $LANG_ADMIN['create_new']);
-    $story_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
-    $story_templates->set_var('lang_instructions', $LANG24[23]);
-    $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
-    $story_templates->set_var('lang_access', $LANG_ACCESS['access']);
-    $story_templates->set_var('lang_draft', $LANG24[34]);
-    $story_templates->set_var('lang_author', $LANG24[7]);
-    $story_templates->set_var('lang_date', $LANG24[15]);
-    $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
-    $story_templates->set_var('lang_featured', $LANG24[32]);
-    $story_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $story_templates->set_var('lang_search', $LANG_ADMIN['search']);
-    $story_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-    $story_templates->set_var('last_query', $query);
-    $story_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
-             . $LANG_ADMIN['edit'] . '">';
-    $story_templates->set_var('edit_icon', $editico);
-    $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG24[21] . '" title="'
-             . $LANG24[21] . '">';
-
-    if ($ping_allowed) {
-        $story_templates->set_var('lang_ping', $LANG24[20]);
-    } else {
-        $story_templates->set_var('lang_ping', '');
-    }
-
-    if (!empty ($_GET['tid'])) {
-        $current_topic = $_GET['tid'];
-    } elseif (!empty ($_POST['tid'])) {
-        $current_topic = $_POST['tid'];
-    } else {
-        $current_topic = $LANG09[9];
-    }
-
-    for ($i = 1; $i < 8; $i++) {
-      $story_templates->set_var ('img_arrow' . $i, '');
-    }
-
-    if ($current_topic == $LANG09[9]) {
-        $excludetopics = '';
-        $seltopics = '';
-        $topicsql = "SELECT tid,topic FROM {$_TABLES['topics']}" . COM_getPermSQL ();
-        $tresult = DB_query( $topicsql );
-        $trows = DB_numRows( $tresult );
-        if( $trows > 0 )
-        {
-            $excludetopics .= ' AND (';
-            for( $i = 1; $i <= $trows; $i++ )  {
-                $T = DB_fetchArray ($tresult);
-                if ($i > 1)  {
-                    $excludetopics .= ' OR ';
-                }
-                $excludetopics .= "tid = '{$T['tid']}'";
-                $seltopics .= '<option value="' .$T['tid']. '"';
-                if ($current_topic == "{$T['tid']}") {
-                    $seltopics .= ' selected="selected"';
-                }
-                $seltopics .= '>' . $T['topic'] . '</option>' . LB;
-            }
-            $excludetopics .= ') ';
-        }
-    } else {
-        $excludetopics = " AND tid = '$current_topic' ";
-        $seltopics = COM_topicList ('tid,topic', $current_topic);
-    }
-
-    $alltopics = '<option value="' .$LANG09[9]. '"';
-    if ($current_topic == $LANG09[9]) {
-        $alltopics .= ' selected="selected"';
-    }
-    $alltopics .= '>' .$LANG09[9]. '</option>' . LB;
-    $story_templates->set_var ('topic_selection', '<select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>');
-
-    switch($order) {
-        case 1:
-            $orderby = 'title';
-            break;
-        case 2:
-            $orderby = 'draft_flag';
-            break;
-        case 3:
-            $orderby = 'unixdate';
-            break;
-        case 4:
-            $orderby = 'tid';
-            break;
-        case 5:
-            $orderby = 'featured';
-            break;
-        default:
-            $orderby = 'unixdate';
-            $order = 3;
-            break;
-    }
-    if (empty ($direction)) {
-        $direction = 'desc';
-    } else if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
-
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $story_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="'
-            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
-            . '" border="0" alt="">');
-
-    $story_templates->set_var ('direction', $direction);
-    $story_templates->set_var ('page', $page);
-    $story_templates->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $story_templates->set_var ('query', urlencode($query) );
-    } else {
-        $story_templates->set_var ('query', '');
-    }
-    $story_templates->set_var ('query_limit', $query_limit);
-    $story_templates->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['stories'], 'count(*)',
-                "(title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query' or tid LIKE '$query')") / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['stories'], 'count(*)') / $limit);
-    }
-
-    $offset = (($curpage - 1) * $limit);
-
-    $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
-    if (!empty($query)) {
-         $sql .= " AND (title LIKE '%$query%' OR introtext LIKE '%$query%' OR bodytext LIKE '%$query%' OR sid LIKE '%$query%' or tid LIKE '%$query%')";
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-    if ($nrows > 0) {
-        for ($i = 1; $i <= $nrows; $i++) {
-            $A = DB_fetchArray ($result);
-            $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                                     $A['perm_owner'], $A['perm_group'],
-                                     $A['perm_members'], $A['perm_anon']);
-            if ($access == 3) {
-                if (SEC_hasTopicAccess ($A['tid']) == 3) {
-                    $access = $LANG_ACCESS['edit'];
-                } else {
-                    $access = $LANG_ACCESS['readonly'];
-                }
-            } else {
-                $access = $LANG_ACCESS['readonly'];
-            }
-            $story_templates->set_var('cssid', ($i%2)+1);
-            $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
-            $story_templates->set_var ('story_id', $A['sid']);
-            $story_templates->set_var ('article_url',
-                    COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
-                                  . $A['sid']));
-            $A['title'] = str_replace('$', '&#36;', $A['title']);
-            $story_templates->set_var('story_title', stripslashes($A['title']));
-            $story_templates->set_var('story_access', $access);
-            if ($A['draft_flag'] == 1) {
-                $story_templates->set_var('story_draft', $LANG24[35]);
-            } else {
-                $story_templates->set_var('story_draft', $LANG24[36]);
-            }
-            $story_templates->set_var('story_author', DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}"));
-            $story_templates->set_var('story_date', strftime($_CONF['shortdate'], $curtime[1]));
-            $story_templates->set_var('story_topic', $A['tid']);
-            if ($A['featured'] == 1) {
-                $story_templates->set_var('story_feature', $LANG24[35]);
-            } else {
-                $story_templates->set_var('story_feature', $LANG24[36]);
-            }
-            if ($ping_allowed && ($A['draft_flag'] == 0) &&
-                    ($A['unixdate'] < time())) {
-                $url = $_CONF['site_admin_url']
-                     . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
-                $story_templates->set_var ('story_ping', '<a href="' . $url
-                        . '">' . $pingico . '</a>');
-            } else {
-                $story_templates->set_var ('story_ping', '');
-            }
-            $story_templates->parse('storylist_item','row',true);
-        }
-
-        if (!empty($query)) {
-            $query = str_replace('%','*',$query);
-            $base_url = $_CONF['site_admin_url'] . '/story.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-        } else {
-            $base_url = $_CONF['site_admin_url'] . "/story.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-        }
-
-        if ($num_pages > 1) {
-            $story_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
-        } else {
-            $story_templates->set_var('google_paging', '');
-        }
-
-    } else {
-        // There are no news items
-        $story_templates->set_var ('storylist_item', '<tr><td colspan="8">'
-                . $LANG24[6] . '</td></tr>');
-        $story_templates->set_var ('previouspage_link', '');
-        $story_templates->set_var ('nextpage_link', '');
-        $story_templates->set_var ('google_paging' ,'');
-    }
-    $display .= $story_templates->parse('output','list');
-    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $display;
-}
-
-/**
 * Saves story to database
 *
 * @param    string      $type           story submission or (new) story
@@ -1397,45 +1135,38 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         $filter = $LANG_ADMIN['topic'] . ': <select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>';
 
 
-        $header = array(      # dislay 'text' and use table field 'field'
+        $header_arr = array(
                         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
                         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
                         array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true),
                         array('text' => $LANG24[7], 'field' => 'author', 'sort' => false), //author
-                        array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true), //date
+                        array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => 'default'), //date
                         array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
                         array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true),
                         array('text' => $lang_ping, 'field' => 'ping', 'sort' => false)
         );
 
-        $menu = array (
+        $menu_arr = array (
                         array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
                               'text' => $LANG_ADMIN['create_new']),
                         array('url' => $_CONF['site_admin_url'],
                               'text' => $LANG_ADMIN['admin_home'])
         );
 
-        $default_order = 4;
-        $texts = array('title' => $LANG24[22], 'instructions' => $LANG24[23]);
-        $icon = $_CONF['layout_url'] . '/images/icons/story.png';
-        $form_url = $_CONF['site_admin_url'] . "/story.php";
+        $text_arr = array('title' => $LANG24[22], 'instructions' => $LANG24[23],
+                       'icon' => $_CONF['layout_url'] . '/images/icons/story.png',
+                       'form_url' => $_CONF['site_admin_url'] . "/story.php");
 
         $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
-
-        $query = $_REQUEST['q'];
-        $query = str_replace ('*', '%', $query);
-        if (!empty($query)) {
-            $sql .= " AND ";
-        }
-        $sql_query = addslashes ($query);
-        $query_sql = array('table' => 'stories',
+        $query_arr = array('table' => 'stories',
                            'sql' => $sql,
-                           'filtered' => " (title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query' or tid LIKE '$query')",
-                           'unfiltered' => '');
+                           'filter' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
+                           'unfiltered' => '',
+                           'query' => $_REQUEST['q'],
+                           'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
-        $display .= ADMIN_list ("story", "STORY_getListField", $header, $default_order, $texts, $query_sql,
-                                $menu, $filter, $form_url, $icon, $offset, $page, $query,
-                                COM_applyFilter ($_REQUEST['query_limit'], true));
+        $display .= ADMIN_list ("story", "STORY_getListField", $header_arr, $text_arr,
+                                $query_arr, $menu_arr, $filter, $offset, $page);
 
         $display .= COM_siteFooter();
     }
