@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.22 2005/11/02 15:24:55 ospiess Exp $
+// $Id: lib-syndication.php,v 1.23 2005/11/02 20:22:15 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -629,7 +629,7 @@ function SYND_updateFeed( $fid )
             }
             else
             {
-                $feed->feedlogo = $link . $A['feedlogo'];
+                $feed->feedlogo = $_CONF['site_url'] . $A['feedlogo'];
             }
             $feed->sitelink = $link;
             $feed->copyright = 'Copyright ' . strftime( '%Y' ) . ' '
