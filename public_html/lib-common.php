@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.481 2005/11/02 12:56:05 ospiess Exp $
+// $Id: lib-common.php,v 1.482 2005/11/02 13:21:08 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2430,8 +2430,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( $_CONF['link_documentation'] == 1 )
         {
-            $adminmenu->set_var( 'option_url',
-                                 $_CONF['site_url'] . '/docs/index.html' );
+            $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/docs/' );
             $adminmenu->set_var( 'option_label', $LANG01[113] );
             $adminmenu->set_var( 'option_count', 'N/A' );
             $menu_item = $adminmenu->parse( 'item', 'option' );
@@ -3790,7 +3789,7 @@ function COM_emailUserTopics()
 
             if( $_CONF['emailstorieslength'] > 0 )
             {
-                $storytext = COM_undoSpecialChars( strip_tags( PLG_replaceTags( stripslashes( $S['introtext'] ))));
+                $storytext = COM_undoSpecialChars( stripslashes( strip_tags( $S['introtext'] )));
 
                 if( $_CONF['emailstorieslength'] > 1 )
                 {
@@ -5510,7 +5509,9 @@ function COM_getListField_blocks($fieldname, $fieldvalue, $A) {
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">$fieldvalue</a>";
+            if ($access >3) {
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">$fieldvalue</a>";
+            }
             break;
         case 'access':
             if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
