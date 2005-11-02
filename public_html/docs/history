@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Allow for more topic IDs in the user's preferences (bug #490) [Dirk]
 - Replace autotags in the Daily Digest (bug #484) [Dirk]
 - Explicitly link to /docs/index.html for the documentation link in the Admin's
   block (bug #504) [Dirk]

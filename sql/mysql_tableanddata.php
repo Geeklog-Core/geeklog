@@ -504,7 +504,7 @@ $_SQL[34] = "
 CREATE TABLE {$_TABLES['userindex']} (
   uid mediumint(8) NOT NULL default '1',
   tids varchar(255) NOT NULL default '',
-  etids varchar(255) NOT NULL default '',
+  etids text,
   aids varchar(255) NOT NULL default '',
   boxes varchar(255) NOT NULL default '',
   noboxes tinyint(4) NOT NULL default '0',

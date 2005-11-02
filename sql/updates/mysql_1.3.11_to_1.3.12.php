@@ -111,6 +111,9 @@ $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.3', pi_gl_version 
 // update poll(s) comments
 $_SQL[] = "UPDATE {$_TABLES['comments']} SET type = 'polls' WHERE type = 'poll'";
 
+// allow for more topic ids in the user's preferences (bug #490)
+$_SQL[] = "ALTER {$_TABLES['userindex']} etids etids text";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {
