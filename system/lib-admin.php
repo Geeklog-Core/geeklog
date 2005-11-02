@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.4 2005/10/31 16:11:20 ospiess Exp $
+// $Id: lib-admin.php,v 1.5 2005/11/02 10:28:03 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
-                    $menu_arr, $filter)
+                    $menu_arr, $defsort_arr, $filter)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE;
     // Make sure user has access to this page
@@ -51,11 +51,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         exit;
     }
     
-    $order = $_GET['order'];
-    if (!empty($order)) {
-        $order = COM_applyFilter ($order, true);
-    }
-
+    $order = COM_applyFilter ($_GET['order']);
     $prevorder = COM_applyFilter ($_GET['prevorder'], true);
     $direction = COM_applyFilter ($_GET['direction']);
 
@@ -114,8 +110,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $sql_query = addslashes ($query);
     $sql = $query_arr['sql'];
     
+    
     if (empty ($direction)) {
-        $direction = 'asc';
+        if (empty($order)) {
+            $order = $defsort_arr['field'];
+            $direction = $defsort_arr['direction'];
+        } else {
+            $direction = 'asc';
+        }
     } else if ($order == $prevorder) {
         $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
@@ -134,15 +136,12 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     for ($i=0; $i < count( $header_arr ); $i++) {
         $admin_templates->set_var('header_text', $header_arr[$i]['text']);
         if ($header_arr[$i]['sort'] != false) {
-            if (($header_arr[$i]['sort'] === 'default') && empty($order)) {
-                $order = $i;
-            }
-            if ($order==$i) {
+            if ($order==$header_arr[$i]['field']) {
                 $admin_templates->set_var('img_arrow', $img_arrow);
             }
             $admin_templates->set_var('mouse_over', "OnMouseOver=\"this.style.cursor='pointer';\"");
             $onclick="onclick=\"window.location.href='" .$form_url . "?"
-                    ."order=$i&prevorder=$order&direction=$direction"
+                    ."order={$header_arr[$i]['field']}&prevorder=$order&direction=$direction"
                     ."&page=$page&q=$query&query_limit=$query_limit';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
@@ -152,8 +151,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->clear_var('on_click');
         $admin_templates->clear_var('arrow');
     }
-
-    $orderby = $header_arr[$order]['field'];
 
     if (empty($query_arr['query_limit'])) {
         $limit = 50;
@@ -199,7 +196,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     } else {
         $sql .= $query_arr['unfiltered'];
     }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+    $sql.= " ORDER BY $order $direction LIMIT $offset,$limit";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 

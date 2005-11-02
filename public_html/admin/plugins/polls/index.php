@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2005/10/31 16:11:20 ospiess Exp $
+// $Id: index.php,v 1.13 2005/11/02 10:28:03 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -406,9 +406,11 @@ if ($mode == 'edit') {
                     array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
                     array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
                     array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG25[3], 'field' => 'date', 'sort' => 'default'),
+                    array('text' => $LANG25[3], 'field' => 'date', 'sort' => true),
                     array('text' => $LANG25[8], 'field' => 'display', 'sort' => true)
     );
+
+    $defsort_arr = array('field' => 'date', 'direction' => 'asc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php?mode=edit',
@@ -429,7 +431,7 @@ if ($mode == 'edit') {
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
     $display .= ADMIN_list ("polls", "plugin_getListField_polls", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $filter);
+                            $query_arr, $menu_arr, $defsort_arr, $filter);
 
     $display .= COM_siteFooter ();
 }

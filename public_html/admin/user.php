@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.119 2005/10/31 16:11:20 ospiess Exp $
+// $Id: user.php,v 1.120 2005/11/02 10:28:03 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -641,11 +641,13 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG28[37], 'field' => 'uid', 'sort' => true),
-                    array('text' => $LANG28[3], 'field' => 'username', 'sort' => 'default'),
+                    array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
                     array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true),
                     array('text' => $login_text, 'field' => $login_field, 'sort' => true),
                     array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
     );
+    
+    $defsort_arr = array('field' => 'username', 'direction' => 'asc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
@@ -674,7 +676,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
     
     $display .= ADMIN_list ("user", "USER_getListField", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $filter);
+                            $query_arr, $menu_arr, $defsort_arr, $filter);
                            
     $display .= COM_siteFooter();
 }

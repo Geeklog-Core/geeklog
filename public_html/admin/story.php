@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.173 2005/10/31 19:04:45 dhaun Exp $
+// $Id: story.php,v 1.174 2005/11/02 10:28:03 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1143,11 +1143,13 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
                         array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true),
                         array('text' => $LANG24[7], 'field' => 'author', 'sort' => false), //author
-                        array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => 'default'), //date
+                        array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true), //date
                         array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
                         array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true),
                         array('text' => $lang_ping, 'field' => 'ping', 'sort' => false)
         );
+        
+        $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
         $menu_arr = array (
                         array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
@@ -1169,7 +1171,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                            'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
         $display .= ADMIN_list ("story", "STORY_getListField", $header_arr, $text_arr,
-                                $query_arr, $menu_arr, $filter);
+                                $query_arr, $menu_arr, $defsort_arr, $filter);
 
         $display .= COM_siteFooter();
     }
