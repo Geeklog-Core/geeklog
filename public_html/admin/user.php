@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.120 2005/11/02 10:28:03 ospiess Exp $
+// $Id: user.php,v 1.121 2005/11/02 12:56:05 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -658,7 +658,8 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                           'text' => $LANG_ADMIN['admin_home'])
     );
                     
-    $text_arr = array('title' => $LANG28[11], 'instructions' => $LANG28[12],
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG28[11], 'instructions' => $LANG28[12],
                       'icon' => $_CONF['layout_url'] . '/images/icons/user.png',
                       'form_url' => $_CONF['site_admin_url'] . "/user.php");
 
@@ -676,8 +677,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
     
     $display .= ADMIN_list ("user", "USER_getListField", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr, $filter);
-                           
+                            $query_arr, $menu_arr, $defsort_arr);
     $display .= COM_siteFooter();
 }
 

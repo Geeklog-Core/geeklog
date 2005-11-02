@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.76 2005/10/27 07:10:10 ospiess Exp $
+// $Id: block.php,v 1.77 2005/11/02 12:56:04 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -824,20 +824,64 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if ($msg > 0) {
         $display .= COM_showMessage ($msg);
     }
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= listblocks ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
-        $display .= COM_siteFooter();
+
+    # $display .= listblocks ($offset, $page, $_REQUEST['q'],
+    #                        COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    reorderblocks();
+                           
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
+                    array('text' => $LANG21[46], 'field' => 'move', 'sort' => false),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
+                    array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
+                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
+                    
+    );
+
+    # 'onleft, blockorder, title'
+    $defsort_arr = array('field' => 'onleft, blockorder, title', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/block.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG21[19], 'instructions' => $LANG21[25],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/block.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/block.php");
+
+    $query_arr = array('table' => 'blocks',
+                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE ",
+                       'filter' => array('title', 'content'),
+                       'unfiltered' => 'onleft=1',
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $display .= ADMIN_list ("blocks", "COM_getListField_blocks", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr, $filter);
+                            
+    $query_arr = array('table' => 'blocks',
+                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE ",
+                       'filter' => array('title', 'content'),
+                       'unfiltered' => 'onleft=0',
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+                       
+    $text_arr = array('has_menu' =>  false,
+                      'title' => "$LANG21[19] ($LANG21[40])", 'instructions' => $LANG21[25],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/block.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/block.php");
+
+    $display .= ADMIN_list ("blocks", "COM_getListField_blocks", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr, $filter);
+                           
+    $display .= COM_siteFooter();
 }
 
 echo $display;

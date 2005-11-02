@@ -1432,7 +1432,8 @@ $LANG_ADMIN = array (
     'save'          => 'Save',
     'cancel'        => 'Cancel',
     'delete'        => 'Delete',
-    'copy'          => 'Copy'
+    'copy'          => 'Copy',
+    'no_results'    => '- No entries found -'
 
 );
 

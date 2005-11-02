@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2005/11/02 10:28:03 ospiess Exp $
+// $Id: index.php,v 1.14 2005/11/02 12:56:05 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -419,7 +419,8 @@ if ($mode == 'edit') {
                           'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $text_arr = array('title' => $LANG25[18], 'instructions' => $LANG25[19],
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG25[18], 'instructions' => $LANG25[19],
                       'icon' => $_CONF['site_url'] . '/polls/images/polls.png',
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php");
 
@@ -431,7 +432,7 @@ if ($mode == 'edit') {
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
     $display .= ADMIN_list ("polls", "plugin_getListField_polls", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr, $filter);
+                            $query_arr, $menu_arr, $defsort_arr);
 
     $display .= COM_siteFooter ();
 }

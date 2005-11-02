@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.480 2005/11/02 11:13:11 dhaun Exp $
+// $Id: lib-common.php,v 1.481 2005/11/02 12:56:05 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5501,6 +5501,68 @@ if(( DB_getItem( $_TABLES['vars'], 'value', "name='last_scheduled_run'" )
 {
     PLG_runScheduledTask();
     DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
+}
+
+function COM_getListField_blocks($fieldname, $fieldvalue, $A) {
+    global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
+
+    $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+
+    switch($fieldname) {
+        case "edit":
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">$fieldvalue</a>";
+            break;
+        case 'access':
+            if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
+                if ($access == 3) {
+                    $retval = $LANG_ACCESS['edit'];
+                } else {
+                    $retval = $LANG_ACCESS['readonly'];
+                }
+            }
+            break;
+        case 'title':
+            $retval = stripslashes ($A['title']);
+            if (empty ($retval)) {
+                $retval = '(' . $A['name'] . ')';
+            }
+            break;
+        case 'blockorder':
+            $retval .= $A['blockorder'];
+            break;
+        case 'is_enabled':
+            if ($A['is_enabled'] == 1) {
+                $switch = 'checked="checked"';
+            } else {
+                $switch = '';
+            }
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/block.php\" method=\"post\">"
+                     ."<input type=\"checkbox\" name=\"blkenable\" onclick=\"submit()\" value=\"{$A['bid']}\" $switch><input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></form>";
+            break;
+        case 'move':
+            if ($A['onleft'] == 1) {
+                $side = $LANG21[40];
+                $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
+                $moveTitleMsg = $LANG21[59];
+                $switchside = '1';
+            } else {
+                $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
+                $moveTitleMsg = $LANG21[60];
+                $switchside = '0';
+            }
+            $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" border=\"0\" usemap=\"#arrow$block_id\" alt=\"\">"
+                    ."<map name=\"arrow$block_id\">"
+                    ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up\" alt=\"{$LANG21[58]}\">"
+                    ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside\" alt=\"$moveTitleMsg\">"
+                    ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn\" alt=\"{$LANG21[57]}\">"
+                    ."</map>";
+
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
 }
 
 ?>

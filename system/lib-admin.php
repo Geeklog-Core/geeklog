@@ -32,24 +32,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.5 2005/11/02 10:28:03 ospiess Exp $
+// $Id: lib-admin.php,v 1.6 2005/11/02 12:56:05 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
-                    $menu_arr, $defsort_arr, $filter)
+                    $menu_arr, $defsort_arr)
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE;
-    // Make sure user has access to this page
-    if (!SEC_hasRights($component.'.edit')) {
-        $retval .= COM_siteHeader ('menu');
-        $retval .= COM_startBlock ($MESSAGE[30], '',
-                   COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $MESSAGE[37];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter ();
-        COM_accessLog("User {$_USER['username']} tried to illegally access the $component administration screen.");
-        echo $retval;
-        exit;
-    }
+    global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE, $MESSAGE;
     
     $order = COM_applyFilter ($_GET['order']);
     $prevorder = COM_applyFilter ($_GET['prevorder'], true);
@@ -71,7 +59,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     }
 
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
-    $admin_templates->set_file (array ('list' => 'list.thtml',
+    $admin_templates->set_file (array ('topmenu' => 'topmenu.thtml',
+                                       'list' => 'list.thtml',
                                        'header' => 'header.thtml',
                                        'row' => 'listitem.thtml',
                                        'field' => 'field.thtml',
@@ -80,36 +69,39 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $text_arr['form_url']);
     $admin_templates->set_var('icon', $text_arr['icon']);
-
-    for ($i = 0; $i < count($menu_arr); $i++) {
-        $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
-        $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
-        if ($i < (count($menu_arr) -1)) {
-            $admin_templates->set_var('line', '|' );
-        }
-        $admin_templates->parse('menu_fields', 'menufields', true);
-        $admin_templates->clear_var('line');
-    }
     
-    $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
-    $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-    $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
+    $query = $query_arr['query'];
+    $query = str_replace ('*', '%', $query);
+    
+    if ($text_arr['has_menu']) {
+        for ($i = 0; $i < count($menu_arr); $i++) {
+            $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
+            $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
+            if ($i < (count($menu_arr) -1)) {
+                $admin_templates->set_var('line', '|' );
+            }
+            $admin_templates->parse('menu_fields', 'menufields', true);
+            $admin_templates->clear_var('line');
+        }
+        $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
+        $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
+        $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
+        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
+        $admin_templates->set_var('last_query', $query);
+        $admin_templates->set_var('filter', $filter);
+        $admin_templates->parse('top_menu', 'topmenu', true);
+    }
+
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
          . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
          . $LANG_ADMIN['edit'] . '">';
 
-    $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
     $retval .= COM_startBlock ($text_arr['title'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
-    $admin_templates->set_var('last_query', $query);
-    $admin_templates->set_var('filter', $filter);
-    
-    $query = $query_arr['query'];
-    $query = str_replace ('*', '%', $query);
+
     $sql_query = addslashes ($query);
     $sql = $query_arr['sql'];
-    
     
     if (empty ($direction)) {
         if (empty($order)) {
@@ -140,7 +132,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
                 $admin_templates->set_var('img_arrow', $img_arrow);
             }
             $admin_templates->set_var('mouse_over', "OnMouseOver=\"this.style.cursor='pointer';\"");
-            $onclick="onclick=\"window.location.href='" .$form_url . "?"
+            $onclick="onclick=\"window.location.href='$form_url?"
                     ."order={$header_arr[$i]['field']}&prevorder=$order&direction=$direction"
                     ."&page=$page&q=$query&query_limit=$query_limit';\"";
             $admin_templates->set_var('on_click', $onclick);
@@ -188,6 +180,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
                                        $query_arr['unfiltered']) / $limit);
     }
+
     $offset = (($curpage - 1) * $limit);
 
     # SQL
@@ -196,7 +189,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     } else {
         $sql .= $query_arr['unfiltered'];
     }
-    $sql.= " ORDER BY $order $direction LIMIT $offset,$limit";
+    $sql.= " ORDER BY $order $direction LIMIT $offset,$limit;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
@@ -219,6 +212,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->parse('item_row', 'row', true);
         $admin_templates->clear_var('item_field');
     }
+    
+    if ($nrows==0) {
+        $admin_templates->set_var('message', $LANG_ADMIN['no_results']);
+    }
+    
     if (!empty($query)) {
         $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
     } else {
