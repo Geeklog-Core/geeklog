@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.77 2005/11/02 12:56:04 ospiess Exp $
+// $Id: block.php,v 1.78 2005/11/02 13:19:22 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -511,188 +511,6 @@ function reorderblocks()
     }
 }
 
-/**
-* Lists all block in the system
-*
-* @return   string      HTML with list of blocks
-*
-*/
-function listblocks ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS, $_IMAGE_TYPE,
-            $LANG_ADMIN;
-
-    // Added enhanced Block admin based on concept from stratosfear
-    $retval = '';
-    
-    reorderblocks(); // re-assign block order numbers to 10, 20, etc.
-
-    $order = COM_applyFilter ($_GET['order'], true);
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
-    $direction = COM_applyFilter ($_GET['direction']);
-
-    $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
-    $block_templates->set_file(array('list'=>'listblocks.thtml', 'row'=>'listitem.thtml', 'leftRight'=>'listside.thtml'));
-
-    $retval .= COM_startBlock ($LANG21[19], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-    $block_templates->set_var('site_url', $_CONF['site_url']);
-    $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $block_templates->set_var('layout_url', $_CONF['layout_url']);
-    // standard admin list strings
-    $block_templates->set_var('lang_newblock', $LANG_ADMIN['create_new']);
-    $block_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
-    $block_templates->set_var('lang_blocktitle', $LANG_ADMIN['title']);
-    $block_templates->set_var('lang_blocktype', $LANG_ADMIN['type']);
-    $block_templates->set_var('lang_blocktopic', $LANG_ADMIN['topic']);
-    $block_templates->set_var('lang_enabled', $LANG_ADMIN['enabled']);
-    $block_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $block_templates->set_var('lang_search', $LANG_ADMIN['search']);
-    $block_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-    $block_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-    
-    $block_templates->set_var('lang_access', $LANG_ACCESS['access']);
-    // custom strings
-    $block_templates->set_var('lang_instructions', $LANG21[25]);
-    $block_templates->set_var('lang_move', $LANG21[46]);
-    $block_templates->set_var('lang_side', $LANG21[39]);
-    $block_templates->set_var('lang_order', $LANG21[65]);
-    $block_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG01[4] . '" title="'
-             . $LANG01[4] . '">';
-    $block_templates->set_var('edit_icon', $editico);
- 
-    for ($i = 1; $i < 8; $i++) {
-        $block_templates->set_var ('img_arrow' . $i, '');
-    }
-    
-    
-    if (empty ($direction)) {
-        $direction = 'desc';
-    } else if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
-    
-    switch($order) {
-        case 1:
-            $orderby = "onleft $direction, blockorder, title";
-            break;
-        case 2:
-            $orderby = 'title';
-            break;
-        case 3:
-            $orderby = 'type';
-            break;
-        case 4:
-            $orderby = 'tid';
-            break;
-        case 5:
-            $orderby = 'is_enabled';
-            break;
-        default:
-            $orderby = "onleft $direction, blockorder, title";
-            $order = 1;
-            break;
-    }
-
-
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $block_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="'
-            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
-            . '" border="0" alt="">');
-
-    $block_templates->set_var ('direction', $direction);
-    $block_templates->set_var ('page', $page);
-    $block_templates->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $block_templates->set_var ('query', urlencode($query) );
-    } else {
-        $block_templates->set_var ('query', '');
-    }
-    $block_templates->set_var ('query_limit', $query_limit);
-    $block_templates->set_var($limit . '_selected', 'selected="selected"');
-    
-    $sql = "SELECT * FROM {$_TABLES['blocks']} ";
-    if (!empty($query)) {
-         $sql .= " WHERE (title LIKE '%$query%' OR content LIKE '%$query%')";
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-
-    $block_templates->parse('blocklist_item', 'leftRight', true);
-
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $block_templates->set_var('cssid', ($i%2)+1);
-
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
-            if ($access == 3) {
-                $access = $LANG_ACCESS['edit'];
-            } else {
-                $access = $LANG_ACCESS['readonly'];
-            }
-            $block_templates->set_var('block_access', $access);
-            $block_templates->set_var('block_type',$A['type']);
-            $block_templates->set_var('block_id', $A['bid']);
-            $btitle = stripslashes ($A['title']);
-            if (empty ($btitle)) {
-                $btitle = '(' . $A['name'] . ')';
-            }
-            $block_templates->set_var('block_title', $btitle);
-
-            if ($A['is_enabled'] == 1) {
-                $block_templates->set_var('enabled', 'checked="checked"');
-            } else {
-                $block_templates->set_var('enabled', '');
-            }
-            // $block_templates->set_var ('block_enabled', $enabled);
-
-            if ($A['onleft'] == 1) {
-                $side = $LANG21[40];
-                $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
-                $moveTitleMsg = $LANG21[59];
-                $switchside = '1';
-                $block_templates->set_var('side', $LANG21[40]);
-            } else {
-                $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
-                $moveTitleMsg = $LANG21[60];
-                $switchside = '0';
-                $block_templates->set_var('side', $LANG21[41]);
-            }
-            
-            $block_templates->set_var('blockcontrol_image', $blockcontrol_image);
-            $block_templates->set_var('switchside', $switchside);
-            $block_templates->set_var('upTitleMsg', $LANG21[58]);
-            $block_templates->set_var('moveTitleMsg', $moveTitleMsg);
-            $block_templates->set_var('dnTitleMsg', $LANG21[57]);
-            
-            $block_templates->set_var('block_order', $A['blockorder']);
-            $block_templates->set_var('block_topic', $A['tid']); 
-            $block_templates->parse('blocklist_item', 'row', true);
-        }
-    }
-
-    $block_templates->parse('output','list');
-    $retval .= $block_templates->finish($block_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-}
 
 /**
 * Move blocks UP, Down and Switch Sides - Left and Right
@@ -825,9 +643,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= COM_showMessage ($msg);
     }
 
-    # $display .= listblocks ($offset, $page, $_REQUEST['q'],
-    #                        COM_applyFilter ($_REQUEST['query_limit'], true));
-
     reorderblocks();
                            
     $header_arr = array(      # dislay 'text' and use table field 'field'
@@ -842,7 +657,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     );
 
     # 'onleft, blockorder, title'
-    $defsort_arr = array('field' => 'onleft, blockorder, title', 'direction' => 'asc');
+    $defsort_arr = array('field' => 'blockorder', 'direction' => 'asc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/block.php?mode=edit',

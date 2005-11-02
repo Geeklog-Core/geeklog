@@ -32,15 +32,19 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.6 2005/11/02 12:56:05 ospiess Exp $
+// $Id: lib-admin.php,v 1.7 2005/11/02 13:19:24 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE, $MESSAGE;
     
-    $order = COM_applyFilter ($_GET['order']);
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
+    $order_var = $_GET['order'];
+    if (!empty($order_var)) {
+        $order_var = COM_applyFilter ($order_var, true);
+        $order = $header_arr[$order_var]['field'];
+    }
+    $prevorder = COM_applyFilter ($_GET['prevorder']);
     $direction = COM_applyFilter ($_GET['direction']);
 
     $retval = '';
@@ -103,7 +107,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $sql_query = addslashes ($query);
     $sql = $query_arr['sql'];
     
-    if (empty ($direction)) {
+    if (empty($direction)) {
         if (empty($order)) {
             $order = $defsort_arr['field'];
             $direction = $defsort_arr['direction'];
@@ -132,8 +136,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
                 $admin_templates->set_var('img_arrow', $img_arrow);
             }
             $admin_templates->set_var('mouse_over', "OnMouseOver=\"this.style.cursor='pointer';\"");
+            $order_var = $i;
             $onclick="onclick=\"window.location.href='$form_url?"
-                    ."order={$header_arr[$i]['field']}&prevorder=$order&direction=$direction"
+                    ."order=$order_var&prevorder=$order&direction=$direction"
                     ."&page=$page&q=$query&query_limit=$query_limit';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
