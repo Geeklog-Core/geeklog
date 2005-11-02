@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.482 2005/11/02 13:21:08 ospiess Exp $
+// $Id: lib-common.php,v 1.483 2005/11/02 13:45:48 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5509,7 +5509,7 @@ function COM_getListField_blocks($fieldname, $fieldvalue, $A) {
 
     switch($fieldname) {
         case "edit":
-            if ($access >3) {
+            if ($access == 3) {
                 $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">$fieldvalue</a>";
             }
             break;
@@ -5541,23 +5541,24 @@ function COM_getListField_blocks($fieldname, $fieldvalue, $A) {
                      ."<input type=\"checkbox\" name=\"blkenable\" onclick=\"submit()\" value=\"{$A['bid']}\" $switch><input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></form>";
             break;
         case 'move':
-            if ($A['onleft'] == 1) {
-                $side = $LANG21[40];
-                $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
-                $moveTitleMsg = $LANG21[59];
-                $switchside = '1';
-            } else {
-                $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
-                $moveTitleMsg = $LANG21[60];
-                $switchside = '0';
+            if ($access == 3) {
+                if ($A['onleft'] == 1) {
+                    $side = $LANG21[40];
+                    $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
+                    $moveTitleMsg = $LANG21[59];
+                    $switchside = '1';
+                } else {
+                    $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
+                    $moveTitleMsg = $LANG21[60];
+                    $switchside = '0';
+                }
+                $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" border=\"0\" usemap=\"#arrow{$A['bid']}\" alt=\"\">"
+                        ."<map name=\"arrow{$A['bid']}\">"
+                        ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up\" alt=\"{$LANG21[58]}\">"
+                        ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside\" alt=\"$moveTitleMsg\">"
+                        ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn\" alt=\"{$LANG21[57]}\">"
+                        ."</map>";
             }
-            $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" border=\"0\" usemap=\"#arrow$block_id\" alt=\"\">"
-                    ."<map name=\"arrow$block_id\">"
-                    ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up\" alt=\"{$LANG21[58]}\">"
-                    ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside\" alt=\"$moveTitleMsg\">"
-                    ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn\" alt=\"{$LANG21[57]}\">"
-                    ."</map>";
-
             break;
         default:
             $retval = $fieldvalue;
