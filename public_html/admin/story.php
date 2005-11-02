@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.175 2005/11/02 12:56:05 ospiess Exp $
+// $Id: story.php,v 1.176 2005/11/02 13:55:15 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1167,7 +1167,6 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         $query_arr = array('table' => 'stories',
                            'sql' => $sql,
                            'filter' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
-                           'unfiltered' => '',
                            'query' => $_REQUEST['q'],
                            'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 

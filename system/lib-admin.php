@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.7 2005/11/02 13:19:24 ospiess Exp $
+// $Id: lib-admin.php,v 1.8 2005/11/02 13:55:17 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -163,11 +163,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $admin_templates->set_var($limit . '_selected', 'selected="selected"');
 
     if (!empty ($query)) {
-        if (!empty($query_arr['unfiltered'])) {
-            $filter_str = $query_arr['unfiltered'] . " AND (";
-        } else {
-            $filter_str = "(";
-        }
+        $filter_str = "(";
         for ($f = 0; $f < count($query_arr['filter']); $f++) {
             $filter_str .= $query_arr['filter'][$f] . " LIKE '$sql_query'";
             if ($f < (count($query_arr['filter']) - 1)) {

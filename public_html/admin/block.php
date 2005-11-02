@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.78 2005/11/02 13:19:22 ospiess Exp $
+// $Id: block.php,v 1.79 2005/11/02 13:55:15 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -682,9 +682,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                             $query_arr, $menu_arr, $defsort_arr, $filter);
                             
     $query_arr = array('table' => 'blocks',
-                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE ",
+                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft=0",
                        'filter' => array('title', 'content'),
-                       'unfiltered' => 'onleft=0',
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
                        
