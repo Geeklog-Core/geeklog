@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.63 2005/10/14 09:39:31 ospiess Exp $
+// $Id: event.php,v 1.64 2005/11/02 16:01:15 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -493,161 +493,6 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
 }
 
 /**
-* lists all the events in the system
-*
-* @param    int     $page   page number to display 
-* @return   string          HTML for list of events
-*
-*/
-function listevents ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE, $LANG_ADMIN;
-
-    $order = COM_applyFilter ($_GET['order'], true);                           
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);                   
-    $direction = COM_applyFilter ($_GET['direction']);
-
-    $retval = '';
-    $retval .= COM_startBlock ($LANG22[11], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-
-    $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
-    $event_templates->set_file(array('list'=>'eventlist.thtml','row'=>'listitem.thtml'));
-    $event_templates->set_var('site_url', $_CONF['site_url']);
-    $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $event_templates->set_var('lang_newevent', $LANG_ADMIN['create_new']);
-    $event_templates->set_var('lang_adminhome', $LANG_ADMIN['admin_home']);
-    $event_templates->set_var('lang_instructions', $LANG22[12]);
-    $event_templates->set_var('lang_eventtitle', $LANG_ADMIN['title']);
-    $event_templates->set_var('lang_access', $LANG_ACCESS['access']);
-    $event_templates->set_var('lang_startdate', $LANG22[14]);
-    $event_templates->set_var('lang_enddate', $LANG22[15]);
-    $event_templates->set_var('layout_url',$_CONF['layout_url']);
-    $event_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-    $event_templates->set_var('lang_search', $LANG_ADMIN['search']);
-    $event_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-    $event_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
-             . $LANG_ADMIN['edit'] . '">';
-    $event_templates->set_var('edit_icon', $editico);
-    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
-             . $LANG_ADMIN['copy'] . '">';
-    $event_templates->set_var('copy_icon', $copyico);
-    $event_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $event_templates->set_var('lang_copy', $LANG_ADMIN['copy']);
-
-    switch($order) {
-        case 1:
-            $orderby = 'title';
-            break;
-        case 2:
-            $orderby = 'datestart';
-            break;
-        case 3:
-            $orderby = 'dateend';
-            break;
-        default:
-            $orderby = 'datestart';
-            $order = 2;
-            break;
-    }
-    if (empty ($direction)) {
-        $direction = 'desc';
-    } else if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
-
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $event_templates->set_var ('img_arrow' . $order, '&nbsp;<img src="' 
-            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
-            . '" border="0" alt="">');
-
-    $event_templates->set_var ('direction', $direction);
-    $event_templates->set_var ('page', $page);
-    $event_templates->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $event_templates->set_var ('query', urlencode($query) );
-    } else {
-        $event_templates->set_var ('query', '');
-    }
-    $event_templates->set_var ('query_limit', $query_limit);
-    $event_templates->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['events'], 'count(*)',
-                "(title LIKE '$query' OR datestart LIKE '$query' OR dateend LIKE '$query')") / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['events'], 'count(*)') / $limit);
-    }
-
-    $offset = (($curpage - 1) * $limit);
-
-    $sql = "SELECT * FROM {$_TABLES['events']} WHERE 1 " . COM_getPermSQL ();
-    if (!empty($query)) {
-         $sql .= " AND (title LIKE '$query' OR datestart LIKE '$query' OR dateend LIKE '$query')";
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-
-
-    $result = DB_query ($sql);
-    $nrows = DB_numRows ($result);
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                                 $A['perm_owner'], $A['perm_group'],
-                                 $A['perm_members'], $A['perm_anon']);
-        if ($access == 3) {
-            $access = $LANG_ACCESS['edit'];
-        } else {
-            $access = $LANG_ACCESS['readonly'];
-        }
-        $event_templates->set_var('cssid', ($i%2)+1);
-        $event_templates->set_var('event_id', $A['eid']);
-        $event_templates->set_var('event_title', stripslashes ($A['title']));
-        $event_templates->set_var('event_access', $access);
-        $event_templates->set_var('event_startdate', $A['datestart']);
-        $event_templates->set_var('event_enddate', $A['dateend']); 
-        $event_templates->parse('event_row', 'row', true);
-    }
-
-    if (!empty($query)) {
-        $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_admin_url'] . '/event.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    } else {
-        $base_url = $_CONF['site_admin_url'] . "/event.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    }
-
-    if ($num_pages > 1) {
-        $event_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
-    } else {
-        $event_templates->set_var('google_paging', '');
-    }
-
-    $event_templates->parse('output', 'list');
-    $retval .= $event_templates->finish($event_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-}
-
-/**
 * Delete an event
 *
 * @param    string  $eid    id of event to delete
@@ -736,19 +581,44 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
                                                       true));
     }
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+                           
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+                    array('text' => $LANG22[14], 'field' => 'datestart', 'sort' => true),
+                    array('text' => $LANG22[15], 'field' => 'dateend', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/event.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG22[11], 'instructions' => $LANG22[12],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/event.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/event.php");
+
+    if ($_CONF['lastlogin']==true) {
+        $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+        $select_userinfo=",lastlogin ";
     }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= listevents ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $query_arr = array('table' => 'events',
+                       'sql' => $sql = "SELECT * FROM {$_TABLES['events']} WHERE 1 " . COM_getPermSQL(),
+                       'query_fields' => array('title', 'datestart', 'dateend'),
+                       'default_filter' => "",
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $display .= ADMIN_list ("events", "COM_getListField_events", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
     $display .= COM_siteFooter ();
 }
 

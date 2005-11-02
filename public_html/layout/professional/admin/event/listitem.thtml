@@ -1,8 +1,0 @@
-                                <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-                                    <td class="admin-list-field"><a href="{site_admin_url}/event.php?mode=edit&amp;eid={event_id}">{edit_icon}</a></td>
-                                    <td class="admin-list-field"><a href="{site_admin_url}/event.php?mode=clone&amp;eid={event_id}">{copy_icon}</a></td>
-                                    <td class="admin-list-field">{event_title}</td>
-                                    <td class="admin-list-field">{event_access}</td>
-                                    <td class="admin-list-field">{event_startdate}</td>
-                                    <td class="admin-list-field">{event_enddate}</td>
-                                </tr>

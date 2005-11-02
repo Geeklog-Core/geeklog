@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.9 2005/11/02 15:24:55 ospiess Exp $
+// $Id: lib-admin.php,v 1.10 2005/11/02 16:01:15 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -100,6 +100,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
          . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
          . $LANG_ADMIN['edit'] . '">';
+    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
+         . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
+         . $LANG_ADMIN['copy'] . '">';
 
     $retval .= COM_startBlock ($text_arr['title'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -199,6 +202,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
             $fieldname = $header_arr[$j]['field'];
             if ($fieldname == 'edit') {
                 $fieldvalue = $editico;
+            } else if ($fieldname == 'copy') {
+                $fieldvalue = $copyico;
             } else {
                 $fieldvalue = $A[$fieldname];
             }
