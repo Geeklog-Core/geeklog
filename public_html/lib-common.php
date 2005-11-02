@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.478 2005/10/28 19:18:25 ospiess Exp $
+// $Id: lib-common.php,v 1.479 2005/11/02 10:53:02 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2430,7 +2430,8 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( $_CONF['link_documentation'] == 1 )
         {
-            $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/docs/' );
+            $adminmenu->set_var( 'option_url',
+                                 $_CONF['site_url'] . '/docs/index.html' );
             $adminmenu->set_var( 'option_label', $LANG01[113] );
             $adminmenu->set_var( 'option_count', 'N/A' );
             $menu_item = $adminmenu->parse( 'item', 'option' );

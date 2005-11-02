@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Explicitly link to /docs/index.html for the documentation link in the Admin's
+  block (bug #504) [Dirk]
 - Added an option to enable / disable trackbacks per story (just like you can
   enable / disable comments per story) [Dirk]
 - Changed COM_optionList to check for language arrays which override the text
