@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.176 2005/11/02 13:55:15 ospiess Exp $
+// $Id: story.php,v 1.177 2005/11/02 15:24:55 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1166,7 +1166,8 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
         $query_arr = array('table' => 'stories',
                            'sql' => $sql,
-                           'filter' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
+                           'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
+                           'default_filter' => '',
                            'query' => $_REQUEST['q'],
                            'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 

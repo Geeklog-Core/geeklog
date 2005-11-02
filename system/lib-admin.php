@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.8 2005/11/02 13:55:17 ospiess Exp $
+// $Id: lib-admin.php,v 1.9 2005/11/02 15:24:55 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -162,18 +162,21 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $admin_templates->set_var ('query_limit', $query_arr['query_limit']);
     $admin_templates->set_var($limit . '_selected', 'selected="selected"');
 
+
+    if (!empty($query_arr['default_filter'])){
+        $filter_str = " AND {$query_arr['default_filter']}";
+    }
     if (!empty ($query)) {
-        $filter_str = "(";
-        for ($f = 0; $f < count($query_arr['filter']); $f++) {
-            $filter_str .= $query_arr['filter'][$f] . " LIKE '$sql_query'";
-            if ($f < (count($query_arr['filter']) - 1)) {
+        $filter_str .= " AND (";
+        for ($f = 0; $f < count($query_arr['query_fields']); $f++) {
+            $filter_str .= $query_arr['query_fields'][$f] . " LIKE '$sql_query'";
+            if ($f < (count($query_arr['query_fields']) - 1)) {
                 $filter_str .= " OR ";
             }
         }
         $filter_str .= ")";
-
         $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
-                           $filter_str) / $limit);
+                           "1 " . $filter_str) / $limit);
         if ($num_pages < $curpage) {
             $curpage = 1;
         }
@@ -185,12 +188,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $offset = (($curpage - 1) * $limit);
 
     # SQL
-    if (!empty($query)) {
-         $sql .=  $filter_str;
-    } else {
-        $sql .= $query_arr['unfiltered'];
-    }
-    $sql.= " ORDER BY $order $direction LIMIT $offset,$limit;";
+    $sql .=  $filter_str;
+    $sql .= " ORDER BY $order $direction LIMIT $offset,$limit;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 

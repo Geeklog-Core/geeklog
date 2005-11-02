@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.122 2005/11/02 13:55:16 ospiess Exp $
+// $Id: user.php,v 1.123 2005/11/02 15:24:55 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -667,11 +667,12 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
         $select_userinfo=",lastlogin ";
     }
-    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1";
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1";
 
     $query_arr = array('table' => 'users',
                        'sql' => $sql,
-                       'filter' => array('username', 'email', 'fullname'),
+                       'query_fields' => array('username', 'email', 'fullname'),
+                       'default_filter' => "{$_TABLES['users']}.uid > 1",
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
     

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2005/11/02 13:55:16 ospiess Exp $
+// $Id: index.php,v 1.16 2005/11/02 15:24:55 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -426,7 +426,8 @@ if ($mode == 'edit') {
 
     $query_arr = array('table' => 'pollquestions',
                        'sql' => "SELECT * FROM {$_TABLES['pollquestions']} WHERE 1",
-                       'filter' => array('question'),
+                       'query_fields' => array('question'),
+                       'default_filter' => '',
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 

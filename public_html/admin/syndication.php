@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.25 2005/10/23 09:13:09 dhaun Exp $
+// $Id: syndication.php,v 1.26 2005/11/02 15:24:55 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -45,194 +45,6 @@ if (!SEC_inGroup ('Root')) {
     COM_accessLog("User {$_USER['username']} tried to illegally access the content syndication administration screen.");
     echo $display;
     exit;
-}
-
-/**
-* Display a list of all available feeds.
-*
-* @return   string   HTML for the block that contains the list of feeds
-*
-*/
-function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_CONF, $_TABLES, $LANG33, $_IMAGE_TYPE;
-
-    $order = COM_applyFilter ($_GET['order'], true);
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
-    $direction = COM_applyFilter ($_GET['direction']);
-
-    $retval = '';
-
-    $feed_template = new Template ($_CONF['path_layout'] . 'admin/syndication');
-    $feed_template->set_file (array ('list' => 'listfeeds.thtml',
-                                     'row'  => 'listitem.thtml'));
-
-    $retval .= COM_startBlock ($LANG33[10], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-    $feed_template->set_var ('site_url', $_CONF['site_url']);
-    $feed_template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $feed_template->set_var ('layout_url', $_CONF['layout_url']);
-
-    $feed_template->set_var ('lang_newfeed', $LANG33[11]);
-    $feed_template->set_var ('lang_adminhome', $LANG33[12]);
-    $feed_template->set_var ('lang_instructions', $LANG33[13]);
-
-    $feed_template->set_var ('lang_title', $LANG33[14]);
-    $feed_template->set_var ('lang_type', $LANG33[15]);
-    $feed_template->set_var ('lang_filename', $LANG33[16]);
-    $feed_template->set_var ('lang_format', $LANG33[17]);
-    $feed_template->set_var ('lang_version', $LANG33[43]);
-    $feed_template->set_var ('lang_updated', $LANG33[18]);
-    $feed_template->set_var ('lang_enabled', $LANG33[19]);
-    $feed_template->set_var ('lang_header_topic', $LANG33[45]);
-    $feed_template->set_var ('lang_submit', $LANG33[41]);
-    $feed_template->set_var ('lang_search', $LANG33[47]);
-    $feed_template->set_var ('lang_limit_results', $LANG33[46]);
-    
-    $feed_template->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG33[48] . '" title="'
-             . $LANG33[48] . '">';
-    $feed_template->set_var('edit_icon', $editico);
-    $feed_template->set_var('lang_edit', $LANG33[48]);
-    
-    switch($order) {
-        case 1:
-            $orderby = 'title';
-            break;
-        case 2:
-            $orderby = 'type';
-            break;
-        case 3:
-            $orderby = 'format';
-            break;
-        case 4:
-            $orderby = 'filename';
-            break;
-        case 5:
-            $orderby = 'header_tid';
-            break;
-        case 6:
-            $orderby = 'updated';
-            break;
-        case 7:
-            $orderby = 'is_enabled';
-            break;
-        default:
-            $orderby = 'title';
-            $order = 1;
-            break;
-    }
-    if (empty ($direction)) {
-        $direction = 'asc';
-    } else if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
-
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $feed_template->set_var ('img_arrow' . $order, '&nbsp;<img src="'
-            . $_CONF['layout_url'] .'/images/' . $arrow . '.' . $_IMAGE_TYPE
-            . '" border="0" alt="">');
-
-    $feed_template->set_var ('direction', $direction);
-    $feed_template->set_var ('page', $page);
-    $feed_template->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $feed_template->set_var ('query', urlencode($query) );
-    } else {
-        $feed_template->set_var ('query', '');
-    }
-    $feed_template->set_var ('query_limit', $query_limit);
-    $feed_template->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['syndication'], 'count(*)',
-                "(title LIKE '$query' OR filename LIKE '$query')") / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['syndication'], 'count(*)') / $limit);
-    }
-
-    $offset = (($curpage - 1) * $limit);
-
-    $sql = "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1 ";
-    if (!empty($query)) {
-         $sql .= " AND (title LIKE '$query' OR filename LIKE '$query')";
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-
-    $result = DB_query ($sql);
-    $num = DB_numRows ($result);
-
-    if ($num == 0) {
-        $feed_template->set_var ('feed_title', $LANG33[22]);
-        $feed_template->parse ('feedlist_items', 'row', true);
-    } else {
-        $url = SYND_getFeedUrl ();
-
-        for ($i = 0; $i < $num; $i++) {
-            $A = DB_fetchArray ($result);
-
-            $link = '<a href="' . $url . $A['filename'] . '">' . $A['filename']
-                  . '</a>';
-            $feed_template->set_var ('cssid', ($i % 2) + 1);
-            $feed_template->set_var ('feed_id', $A['fid']);
-            $feed_template->set_var ('feed_title', $A['title']);
-            $feed_template->set_var ('feed_type', ucwords ($A['type']));
-            $feed_template->set_var ('feed_format',
-                    str_replace ('-' , ' ', ucwords ($A['format'])));
-            $feed_template->set_var ('feed_version', $A['version']);
-            $feed_template->set_var ('feed_filename', $A['filename']);
-            $feed_template->set_var ('feed_filename_and_link', $link);
-            $feed_template->set_var ('feed_updated',
-                                     strftime ($_CONF['daytime'], $A['date']));
-            if ($A['is_enabled'] == 1) {
-                $feed_template->set_var ('is_enabled', 'checked="checked"');
-            } else {
-                $feed_template->set_var ('is_enabled', '');
-            }
-            $feed_template->set_var ('feed_enabled', $enabled);
-            
-            if ($A['header_tid'] == 'all') {
-                $A['header_tid'] = $LANG33[43];
-            } elseif ($A['header_tid'] == 'none') {
-                $A['header_tid'] = $LANG33[44];
-            }
-            $feed_template->set_var ('feed_header_topic', $A['header_tid']);
-            $feed_template->parse ('feedlist_items', 'row', true);
-        }
-    }
-    if (!empty($query)) {
-        $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_admin_url'] . '/syndication.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    } else {
-        $base_url = $_CONF['site_admin_url'] . "/syndication.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    }
-
-    if ($num_pages > 1) {
-        $feed_template->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
-    } else {
-        $feed_template->set_var('google_paging', '');
-    }
-
-    $retval .= $feed_template->finish ($feed_template->parse ('output','list'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
 }
 
 /**
@@ -659,20 +471,43 @@ else
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage ($_REQUEST['msg']);
     }
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= listfeeds ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true))
-             . COM_siteFooter ();
+
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
+                    array('text' => $LANG33[17], 'field' => 'format', 'sort' => true),
+                    array('text' => $LANG33[16], 'field' => 'filename', 'sort' => true),
+                    array('text' => $LANG_ADMIN['topic'], 'field' => 'header_tid', 'sort' => true),
+                    array('text' => $LANG33[18], 'field' => 'updated', 'sort' => true),
+                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'title', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/syndication.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG33[10], 'instructions' => $LANG33[13],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/syndication.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/syndication.php");
+
+    $query_arr = array('table' => 'syndication',
+                       'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1",
+                       'query_fields' => array('title', 'filename'),
+                       'default_filter' => '',
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $display .= ADMIN_list ("syndication", "SYND_getListField", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+
+    $display .= COM_siteFooter ();
 }
 
 echo $display;

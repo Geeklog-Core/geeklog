@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.15 2005/10/28 19:18:25 ospiess Exp $
+// $Id: lib-user.php,v 1.16 2005/11/02 15:24:55 ospiess Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -455,7 +455,7 @@ function USER_getListField($fieldname, $fieldvalue, $A) {
              if ($fieldvalue < 1) {
                  $retval = $LANG28[36];
              } else {
-                 $retval = date("Y.m.d H:i:s",$A['lastlogin']);
+                 $retval = strftime ($_CONF['daytime'],$A['lastlogin']);
              }
 
             break;

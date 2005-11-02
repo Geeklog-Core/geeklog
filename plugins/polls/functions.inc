@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.24 2005/10/31 14:44:54 ospiess Exp $
+// $Id: functions.inc,v 1.25 2005/11/02 15:24:55 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -858,8 +858,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A) {
                 }
                 break;
             case 'date':
-                $curtime = COM_getUserDateTimeFormat ($A['date']);
-                $retval = $curtime[0];
+                $retval =strftime ($_CONF['daytime'],$A['date']);
                 break;
             case 'question': # http://www.example.com/
                 $retval = "<a href=\"{$_CONF[site_url]}/polls/index.php?qid={$A['qid']}&aid=-1\">$fieldvalue</a>";

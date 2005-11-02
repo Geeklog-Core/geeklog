@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.42 2005/10/31 19:04:46 dhaun Exp $
+// $Id: lib-story.php,v 1.43 2005/11/02 15:24:55 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -879,7 +879,7 @@ function STORY_getListField($fieldname, $fieldvalue, $A) {
     switch($fieldname) {
         case "unixdate":
             $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
-            $retval = strftime($_CONF['shortdate'], $curtime[1]);
+            $retval = strftime($_CONF['daytime'], $curtime[1]);
             break;
         case "edit":
             $retval = "<a href=\"{$_CONF[site_admin_url]}/story.php?mode=edit&amp;sid={$A['sid']}\">$fieldvalue</a>";
