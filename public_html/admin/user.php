@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.124 2005/11/03 08:03:33 mjervis Exp $
+// $Id: user.php,v 1.125 2005/11/03 11:04:24 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -682,7 +682,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
-    $display .= ADMIN_list ("user", "USER_getListField", $header_arr, $text_arr,
+    $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
     $display .= COM_siteFooter();
 }

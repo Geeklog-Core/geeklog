@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.44 2005/11/03 09:40:48 ospiess Exp $
+// $Id: lib-story.php,v 1.45 2005/11/03 11:04:24 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -871,75 +871,6 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
     }
 
     return array($errors, $intro, $body);
-}
-
-function STORY_getListField($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_TABLES, $_IMAGE_TYPE;
-
-    switch($fieldname) {
-        case "unixdate":
-            $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
-            $retval = strftime($_CONF['daytime'], $curtime[1]);
-            break;
-        case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
-            break;
-        case "title":
-            $A['title'] = str_replace('$', '&#36;', $A['title']);
-            $article_url = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
-                                  . $A['sid']);
-            $retval =  "<a href=\"$article_url\">" . stripslashes($A['title']) . "</a>";
-            break;
-        case "draft_flag":
-            if ($A['draft_flag'] == 1) {
-                $retval = $LANG24[35];
-            } else {
-                $retval = $LANG24[36];
-            }
-            break;
-        case "access":
-            $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                                     $A['perm_owner'], $A['perm_group'],
-                                     $A['perm_members'], $A['perm_anon']);
-            if ($access == 3) {
-                if (SEC_hasTopicAccess ($A['tid']) == 3) {
-                    $access = $LANG_ACCESS['edit'];
-                } else {
-                    $access = $LANG_ACCESS['readonly'];
-                }
-            } else {
-                $access = $LANG_ACCESS['readonly'];
-            }
-            $retval = $access;
-            break;
-        case "author":
-            $retval = DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}");
-            break;
-        case "featured":
-            if ($A['featured'] == 1) {
-                $retval = $LANG24[35];
-            } else {
-                $retval = $LANG24[36];
-            }
-            break;
-        case "ping":
-            $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
-                     . $_IMAGE_TYPE . '" border="0" alt="' . $LANG24[21] . '" title="'
-                     . $LANG24[21] . '">';
-            if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
-                $url = $_CONF['site_admin_url']
-                     . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
-                $retval = '<a href="' . $url . '">' . $pingico . '</a>';
-            } else {
-                $retval = '';
-            }
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
-    }
-    
-    return $retval;
 }
 
 ?>

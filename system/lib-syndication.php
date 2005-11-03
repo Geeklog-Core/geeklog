@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.23 2005/11/02 20:22:15 mjervis Exp $
+// $Id: lib-syndication.php,v 1.24 2005/11/03 11:04:24 ospiess Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -733,50 +733,6 @@ function SYND_getFeedUrl( $feedfile = '' )
     $url .= $feedfile;
 
     return $url;
-}
-
-function SYND_getListField($fieldname, $fieldvalue, $A) {
-    global $_CONF, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
-
-    switch($fieldname) {
-        case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/syndication.php?mode=edit&amp;fid={$A['fid']}\">$fieldvalue</a>";
-            break;
-        case 'type':
-            $retval = ucwords($A['type']);
-            break;
-        case 'format':
-            $retval = str_replace ('-' , ' ', ucwords ($A['format']));
-            break;
-        case 'updated':
-            $retval = strftime ($_CONF['daytime'], $A['date']);
-            break;
-        case 'is_enabled':
-            if ($A['is_enabled'] == 1) {
-                $switch = 'checked="checked"';
-            } else {
-                $switch = '';
-            }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/syndication.php\" method=\"POST\">"
-                     ."<input type=\"checkbox\" name=\"feedenable\" onclick=\"submit()\" value=\"{$A['fid']}\" $switch>"
-                     ."<input type=\"hidden\" name=\"feedChange\" value=\"{$A['fid']}\"></form>";
-            break;
-        case 'header_tid':
-            if ($A['header_tid'] == 'all') {
-                $retval = $LANG33[43];
-            } elseif ($A['header_tid'] == 'none') {
-                $retval = $LANG33[44];
-            }
-            break;
-        case 'filename':
-            $url = SYND_getFeedUrl ();
-            $retval = '<a href="' . $url . $A['filename'] . '">' . $A['filename'] . '</a>';
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
-    }
-    return $retval;
 }
 
 ?>

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.26 2005/11/02 15:24:55 ospiess Exp $
+// $Id: syndication.php,v 1.27 2005/11/03 11:04:24 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -504,7 +504,7 @@ else
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
-    $display .= ADMIN_list ("syndication", "SYND_getListField", $header_arr, $text_arr,
+    $display .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
 
     $display .= COM_siteFooter ();

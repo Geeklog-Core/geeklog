@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.49 2005/09/24 08:58:44 dhaun Exp $
+// $Id: plugins.php,v 1.50 2005/11/03 11:04:24 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -148,92 +148,6 @@ function plugineditor ($pi_name, $confirmed = 0)
 
     return $retval;
 }
-
-/**
-* Shows all installed Geeklog plugins
-*
-* @param    int     $page   Page number to show
-* @return   string          HTML for list of plugins
-*
-*/
-function listplugins ($page = 1) 
-{
-    global $_CONF, $_TABLES, $LANG32, $_IMAGE_TYPE;
-
-    $retval = '';
-
-    if ($page < 1) {
-        $page = 1;
-    }
-
-    $plg_templates = new Template ($_CONF['path_layout'] . 'admin/plugins');
-    $plg_templates->set_file (array ('list' => 'pluginlist.thtml',
-                                     'row'  => 'listitem.thtml'));
-    $plg_templates->set_var('site_url', $_CONF['site_url']);
-    $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $plg_templates->set_var('layout_url', $_CONF['layout_url']);
-    $plg_templates->set_var('start_block_pluginlist', COM_startBlock($LANG32[5],
-            '', COM_getBlockTemplate ('_admin_block', 'header')));
-    $plg_templates->set_var('lang_newplugin', $LANG32[14]);
-    $plg_templates->set_var('lang_adminhome', $LANG32[15]);
-    $plg_templates->set_var('lang_instructions', $LANG32[11]);
-    $plg_templates->set_var('lang_pluginname', $LANG32[16]);
-    $plg_templates->set_var('lang_pluginversion', $LANG32[17]);
-    $plg_templates->set_var('lang_geeklogversion', $LANG32[18]);
-    $plg_templates->set_var('lang_enabled', $LANG32[19]);
-    $plg_templates->set_var('lang_edit', $LANG32[35]);
-    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['edit']
-              . '" title="' . $LANG_ACCESS['edit'] . '">';
-    $plg_templates->set_var ('edit_icon', $edit_ico);
-
-    $limit = (PLUGINS_PER_PAGE * $page) - PLUGINS_PER_PAGE;
-    $result = DB_query("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']} LIMIT $limit," . PLUGINS_PER_PAGE);
-    $nrows = DB_numRows($result);
-    if ($nrows > 0) {
-         for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $plugin_code_version = PLG_chkVersion($A['pi_name']);
-            if ($plugin_code_version == '') {
-                $plugin_code_version = 'N/A';
-            }
-            $plg_templates->set_var('pi_name', $A['pi_name']);
-            $plg_templates->set_var ('cssid', $i%2 + 1);
-            $plg_templates->set_var('pi_url', $A['pi_homepage']);
-            $plg_templates->set_var('pi_installed_version', $A['pi_version']);
-            $plg_templates->set_var('pi_code_version', $plugin_code_version);
-            $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
-            if ($A['pi_enabled'] == 1) {
-                $plg_templates->set_var ('pi_enabled', 'checked="checked"');
-            } else {
-                $plg_templates->set_var ('pi_enabled', '');
-            }
-            $plg_templates->parse('plugin_list', 'row', true);
-        }
-    } else {
-        // no plug-ins installed, give a message that says as much
-        $plg_templates->set_var('lang_nopluginsinstalled', $LANG32[10]);
-    }
-
-    $numplugins = DB_count ($_TABLES['plugins']);
-    if ($numplugins > PLUGINS_PER_PAGE) {
-        $baseurl = $_CONF['site_admin_url'] . '/plugins.php';
-        $numpages = ceil ($numplugins / PLUGINS_PER_PAGE);
-        $plg_templates->set_var ('google_paging',
-                COM_printPageNavigation ($baseurl, $page, $numpages));
-    } else {
-        $plg_templates->set_var ('google_paging', '');
-    }
-
-    $plg_templates->set_var('end_block',
-            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
-    $plg_templates->parse('output', 'list');
-    $retval .= $plg_templates->finish($plg_templates->get_var('output'));
-    $retval .= show_newplugins();
-
-    return $retval;
-}
-
 
 /**
 * Toggle status of a plugin from enabled to disabled and back
@@ -545,12 +459,39 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     if (!empty ($msg)) {
         $display .= COM_showMessage ($msg);
     }
-    $page = COM_applyFilter ($_REQUEST['page'], true);
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= listplugins ($page);
-    $display .= COM_siteFooter ();
+    
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
+                    array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
+                    array('text' => $LANG32[18], 'field' => 'pi_gl_version', 'sort' => true),
+                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'enabled', 'sort' => false)
+    );
+
+    $defsort_arr = array('field' => 'pi_name', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG32[5], 'instructions' => $LANG32[11],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/plugins.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/plugins.php");
+
+    $query_arr = array('table' => 'plugins',
+                       'sql' => "SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1",
+                       'query_fields' => array('pi_name'),
+                       'default_filter' => "",
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $display .= ADMIN_list ("plugins", "ADMIN_getListField_plugins", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+                            
+    $display .= show_newplugins();
+    $display .= COM_siteFooter();
 }
 
 echo $display;

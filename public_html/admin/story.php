@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.177 2005/11/02 15:24:55 ospiess Exp $
+// $Id: story.php,v 1.178 2005/11/03 11:04:24 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1171,7 +1171,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                            'query' => $_REQUEST['q'],
                            'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
-        $display .= ADMIN_list ("story", "STORY_getListField", $header_arr, $text_arr,
+        $display .= ADMIN_list ("story", "ADMIN_getListField_stories", $header_arr, $text_arr,
                                 $query_arr, $menu_arr, $defsort_arr);
 
         $display .= COM_siteFooter();

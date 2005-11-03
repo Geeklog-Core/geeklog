@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.12 2005/11/03 10:25:50 ospiess Exp $
+// $Id: lib-admin.php,v 1.13 2005/11/03 11:04:24 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -356,4 +356,183 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
     }
     return $retval;
 }
+
+function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ADMIN, $LANG28;
+
+    switch($fieldname) {
+        case "edit":
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
+            break;
+        case 'username':
+            $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
+                      . $_IMAGE_TYPE . '" border="0" alt="">';
+            if (!empty($A['photo']))
+                 {$photoico = "&nbsp;" . $photoico;}
+            else
+                 {$photoico = '';}
+            $retval = '<a href="'. $_CONF['site_url']. '/users.php?mode=profile&amp;uid='
+                      . $A['uid'].'">' . $fieldvalue.'</a>' . $photoico;
+            break;
+        case "lastlogin":
+             if ($fieldvalue < 1) {
+                 $retval = $LANG28[36];
+             } else {
+                 $retval = strftime ($_CONF['daytime'],$A['lastlogin']);
+             }
+
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
+}
+
+function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_TABLES, $_IMAGE_TYPE;
+
+    switch($fieldname) {
+        case "unixdate":
+            $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
+            $retval = strftime($_CONF['daytime'], $curtime[1]);
+            break;
+        case "edit":
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
+            break;
+        case "title":
+            $A['title'] = str_replace('$', '&#36;', $A['title']);
+            $article_url = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                                  . $A['sid']);
+            $retval =  "<a href=\"$article_url\">" . stripslashes($A['title']) . "</a>";
+            break;
+        case "draft_flag":
+            if ($A['draft_flag'] == 1) {
+                $retval = $LANG24[35];
+            } else {
+                $retval = $LANG24[36];
+            }
+            break;
+        case "access":
+            $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                                     $A['perm_owner'], $A['perm_group'],
+                                     $A['perm_members'], $A['perm_anon']);
+            if ($access == 3) {
+                if (SEC_hasTopicAccess ($A['tid']) == 3) {
+                    $access = $LANG_ACCESS['edit'];
+                } else {
+                    $access = $LANG_ACCESS['readonly'];
+                }
+            } else {
+                $access = $LANG_ACCESS['readonly'];
+            }
+            $retval = $access;
+            break;
+        case "author":
+            $retval = DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}");
+            break;
+        case "featured":
+            if ($A['featured'] == 1) {
+                $retval = $LANG24[35];
+            } else {
+                $retval = $LANG24[36];
+            }
+            break;
+        case "ping":
+            $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+                     . $_IMAGE_TYPE . '" border="0" alt="' . $LANG24[21] . '" title="'
+                     . $LANG24[21] . '">';
+            if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
+                $url = $_CONF['site_admin_url']
+                     . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
+                $retval = '<a href="' . $url . '">' . $pingico . '</a>';
+            } else {
+                $retval = '';
+            }
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+
+    return $retval;
+}
+
+function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A) {
+    global $_CONF, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
+
+    switch($fieldname) {
+        case "edit":
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/syndication.php?mode=edit&amp;fid={$A['fid']}\">$fieldvalue</a>";
+            break;
+        case 'type':
+            $retval = ucwords($A['type']);
+            break;
+        case 'format':
+            $retval = str_replace ('-' , ' ', ucwords ($A['format']));
+            break;
+        case 'updated':
+            $retval = strftime ($_CONF['daytime'], $A['date']);
+            break;
+        case 'is_enabled':
+            if ($A['is_enabled'] == 1) {
+                $switch = 'checked="checked"';
+            } else {
+                $switch = '';
+            }
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/syndication.php\" method=\"POST\">"
+                     ."<input type=\"checkbox\" name=\"feedenable\" onclick=\"submit()\" value=\"{$A['fid']}\" $switch>"
+                     ."<input type=\"hidden\" name=\"feedChange\" value=\"{$A['fid']}\"></form>";
+            break;
+        case 'header_tid':
+            if ($A['header_tid'] == 'all') {
+                $retval = $LANG33[43];
+            } elseif ($A['header_tid'] == 'none') {
+                $retval = $LANG33[44];
+            }
+            break;
+        case 'filename':
+            $url = SYND_getFeedUrl ();
+            $retval = '<a href="' . $url . $A['filename'] . '">' . $A['filename'] . '</a>';
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
+}
+
+function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ADMIN, $LANG28;
+
+    switch($fieldname) {
+        case "edit":
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
+            break;
+        case 'pi_version':
+            $plugin_code_version = PLG_chkVersion($A['pi_name']);
+            if ($plugin_code_version == '') {
+                $plugin_code_version = 'N/A';
+            }
+            $pi_installed_version = $A['pi_version'];
+            $retval = "$pi_installed_version&nbsp;/&nbsp;$plugin_code_version";
+            break;
+        case 'enabled':
+            if ($A['pi_enabled'] == 1) {
+                $switch = 'checked="checked"';
+            } else {
+                $switch = '';
+            }
+            $retval = "<form action=\"{$_CONF[site_admin_url]}/plugins.php\" method=\"POST\">"
+                     ."<input type=\"checkbox\" name=\"pluginenable\" onclick=\"submit()\" value=\"{$A['pi_name']}\" $switch>"
+                     ."<input type=\"hidden\" name=\"pluginChange\" value=\"{$A['pi_name']}\">"
+                     ."</form>";
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
+}
+
 ?>
