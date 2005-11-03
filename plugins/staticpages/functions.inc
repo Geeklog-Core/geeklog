@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.54 2005/09/16 07:09:02 dhaun Exp $
+// $Id: functions.inc,v 1.55 2005/11/03 12:16:45 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -763,6 +763,47 @@ function staticpages_templatePath ($path = '')
         }
     }
 
+    return $retval;
+}
+
+function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ADMIN, $LANG_STATIC, $_TABLES;
+
+    switch($fieldname) {
+        case "edit":
+            $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$A['sp_id']}\">{$icon_arr['edit']}</a>";
+            break;
+        case "copy":
+            $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}\">{$icon_arr['copy']}</a>";
+            break;
+        case "title":
+            $sp_title = stripslashes ($A['sp_title']);
+            $retval = "<a href=\"{$_CONF['site_url']}/staticpages/index.php?page={$A['sp_id']}\" title=\"{$LANG_STATIC['title_display']}\">$sp_title</a>";
+            break;
+        case "sp_uid":
+            $nresult = DB_query ("SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = {$A['sp_uid']}");
+            $N = DB_fetchArray ($nresult);
+            $retval = $N['username'];
+            break;
+        case "sp_centerblock":
+            if ($A['sp_centerblock']) {
+                switch ($A['sp_where']) {
+                    case '1': $where = $LANG_STATIC['centerblock_top']; break;
+                    case '2': $where = $LANG_STATIC['centerblock_feat']; break;
+                    case '3': $where = $LANG_STATIC['centerblock_bottom']; break;
+                    default:  $where = $LANG_STATIC['centerblock_entire']; break;
+                }
+                $retval = $where;
+            } else {
+                $retval = $LANG_STATIC['centerblock_no'];
+            }
+        case "unixdate":
+            $retval = strftime ($_CONF['daytime'], $A['unixdate']);
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
     return $retval;
 }
 

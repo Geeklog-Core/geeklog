@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.46 2005/09/18 12:09:46 dhaun Exp $
+// $Id: index.php,v 1.47 2005/11/03 12:16:46 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -349,188 +349,6 @@ function staticpageeditor ($sp_id, $mode = '')
     return form ($A);
 }
 
-###############################################################################
-# Displays a list of static pages 
-
-function liststaticpages ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_TABLES, $LANG_STATIC, $_CONF, $_IMAGE_TYPE,
-           $order, $prevorder, $direction;
-
-    $retval = '';
-
-    $template_path = staticpages_templatePath ('admin');
-    $sp_templates = new Template ($template_path);
-    $sp_templates->set_file(array('list'=>'list.thtml',
-                                  'row'=>'row.thtml'));
-    $sp_templates->set_var('site_url', $_CONF['site_url']);
-    $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sp_templates->set_var('start_block_list',
-        COM_startBlock ($LANG_STATIC['staticpagelist'], $_CONF['site_url'] . '/docs/staticpages.html',
- COM_getBlockTemplate ('_admin_block', 'header')));
-    $sp_templates->set_var('new_page_url', $_CONF['site_admin_url']
-                           . '/plugins/staticpages/index.php?mode=edit');
-    $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);
-    $sp_templates->set_var('lang_adminhome', $LANG_STATIC['adminhome']);
-    $sp_templates->set_var('lang_instructions', $LANG_STATIC['instructions']);
-    $sp_templates->set_var('lang_title', $LANG_STATIC['title']);
-    $sp_templates->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
-    $sp_templates->set_var('lang_lastupdated', $LANG_STATIC['date']);
-    $sp_templates->set_var('lang_url', $LANG_STATIC['url']);
-    $sp_templates->set_var('lang_centerblock', $LANG_STATIC['head_centerblock']);
-    $sp_templates->set_var ('lang_title_edit', $LANG_STATIC['title_edit']);
-    $sp_templates->set_var ('lang_title_copy', $LANG_STATIC['title_copy']);
-    $sp_templates->set_var ('lang_title_display', $LANG_STATIC['title_display']);
-    $sp_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '">';
-    $sp_templates->set_var('lang_edit', $LANG_STATIC['edit']);
-    $sp_templates->set_var('edit_icon', $editico);
-    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '">';
-    $sp_templates->set_var('lang_copy', $LANG_STATIC['copy']);
-    $sp_templates->set_var('copy_icon', $copyico);
-    $sp_templates->set_var('lang_id', $LANG_STATIC['id']);
-    $sp_templates->set_var('lang_limit_results', $LANG_STATIC['limit_results']);
-    $sp_templates->set_var('lang_submit', $LANG_STATIC['submit']);
-    $sp_templates->set_var('lang_search', $LANG_STATIC['search']);
-
-
-        switch($order) {
-        case 1:
-            $orderby = 'sp_id';
-            break;
-        case 2:
-            $orderby = 'sp_title';
-            break;
-        case 3:
-            $orderby = 'sp_centerblock';
-            break;
-        case 4:
-            $orderby = 'unixdate';
-            break;
-        default:
-            $orderby = 'sp_title';
-            $order = 2;
-            break;
-    }
-    if ($order == $prevorder) {
-        $direction = ($direction == "desc") ? "asc" : "desc";
-    } else {
-        $direction = ($direction == "desc") ? "desc" : "asc";
-    }
-
-    for ($i=1;$i<5;$i++) {
-      $sp_templates->set_var ('img_arrow'.$i, '');
-    }
-
-    if ($direction == 'asc') {
-        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
-    } else {
-        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
-    }
-
-    $sp_templates->set_var ('direction', $direction);
-    $sp_templates->set_var ('page', $page);
-    $sp_templates->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $sp_templates->set_var ('query', urlencode($query) );
-    } else {
-        $sp_templates->set_var ('query', '');
-    }
-    $sp_templates->set_var ('query_limit', $query_limit);
-    $sp_templates->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['staticpage'], 'count(*)',
-                " (sp_title LIKE '$query' OR sp_id LIKE '$query')") / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['staticpage'], 'count(*)') / $limit);
-    }
-
-    $offset = (($curpage - 1) * $limit);
-
-
-    $perms = COM_getPermSQL ('AND', 0, 3);
-    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE 1 " . $perms;
-    if (!empty($query)) {
-         $sql .= " AND (sp_title LIKE '$query' OR sp_id LIKE '$query')";
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-    $result = DB_query($sql);
-
-    $nrows = DB_numRows ($result);
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $sp_templates->set_var ('sp_id', $A['sp_id']);
-            $sp_templates->set_var ('page_edit_url', $_CONF['site_admin_url']
-                    . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
-                    . $A['sp_id']);
-            $sp_templates->set_var ('page_display_url',
-                    COM_buildURL ($_CONF['site_url']
-                    . '/staticpages/index.php?page=' . $A['sp_id']));
-            $sp_templates->set_var ('page_clone_url', $_CONF['site_admin_url']
-                    . '/plugins/staticpages/index.php?mode=clone&amp;sp_id='
-                    . $A['sp_id']);
-            $sp_templates->set_var ('sp_title', stripslashes ($A['sp_title']));
-            $sp_templates->set_var ('cssid', ($i % 2) + 1);
-
-            $nresult = DB_query ("SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = {$A['sp_uid']}");
-            $N = DB_fetchArray ($nresult);
-            $sp_templates->set_var ('username', $N['username']);
-            if (empty ($N['fullname'])) {
-                $sp_templates->set_var ('fullname', $N['username']);
-            } else {
-                $sp_templates->set_var ('fullname', $N['fullname']);
-            }
-
-            if ($A['sp_centerblock']) {
-                switch ($A['sp_where']) {
-                    case '1': $where = $LANG_STATIC['centerblock_top']; break;
-                    case '2': $where = $LANG_STATIC['centerblock_feat']; break;
-                    case '3': $where = $LANG_STATIC['centerblock_bottom']; break;
-                    default:  $where = $LANG_STATIC['centerblock_entire']; break;
-                }
-                $sp_templates->set_var ('sp_centerblock', $where);
-            } else {
-                $sp_templates->set_var ('sp_centerblock', $LANG_STATIC['centerblock_no']);
-            }
-            $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
-            $sp_templates->set_var ('sp_date', $curtime[0]);
-            $sp_templates->parse ('list_item', 'row', true);
-        }
-        $sp_templates->set_var ('lang_nopages_msg', '');
-
-        $baseurl = $_CONF['site_admin_url'] . '/plugins/staticpages/index.php';
-        if ($numpages > 1) {
-            $sp_templates->set_var ('google_paging',
-                    COM_printPageNavigation ($baseurl, $page, $numpages));
-        } else {
-            $sp_templates->set_var ('google_paging', '');
-        }
-    } else {
-        $sp_templates->set_var ('lang_nopages_msg', $LANG_STATIC['nopages']);
-        $sp_templates->set_var ('list_item', '');
-        $sp_templates->set_var ('google_paging', '');
-    }
-    $sp_templates->set_var ('end_block',
-            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
-
-    $retval .= $sp_templates->parse('output', 'list', true);
-
-    return $retval;
-}
-
 /** 
 * Saves a Static Page to the database
 *
@@ -679,19 +497,42 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
 } else {
     $page = COM_applyFilter ($_GET['page'], true);
     $display .= COM_siteHeader ('menu');
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= liststaticpages ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
+                           
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
+                    array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
+                    array('text' => $LANG28[3], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => false),
+                    array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
+                    array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG_STATIC['staticpagelist'],
+                      'instructions' => $LANG_STATIC['instructions'],
+                      'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
+
+    $query_arr = array('table' => 'staticpage',
+                       'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE 1 " . COM_getPermSQL ('AND', 0, 3),
+                       'query_fields' => array('sp_title', 'sp_id'),
+                       'default_filter' => "",
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $display .= ADMIN_list ("static pages", "plugin_getListField_staticpages", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+                           
     $display .= COM_siteFooter ();
 }
 
