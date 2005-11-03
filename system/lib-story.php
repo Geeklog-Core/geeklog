@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.43 2005/11/02 15:24:55 ospiess Exp $
+// $Id: lib-story.php,v 1.44 2005/11/03 09:40:48 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -873,7 +873,7 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
     return array($errors, $intro, $body);
 }
 
-function STORY_getListField($fieldname, $fieldvalue, $A) {
+function STORY_getListField($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_TABLES, $_IMAGE_TYPE;
 
     switch($fieldname) {
@@ -882,7 +882,7 @@ function STORY_getListField($fieldname, $fieldvalue, $A) {
             $retval = strftime($_CONF['daytime'], $curtime[1]);
             break;
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/story.php?mode=edit&amp;sid={$A['sid']}\">$fieldvalue</a>";
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
             break;
         case "title":
             $A['title'] = str_replace('$', '&#36;', $A['title']);

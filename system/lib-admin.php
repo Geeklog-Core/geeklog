@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.10 2005/11/02 16:01:15 ospiess Exp $
+// $Id: lib-admin.php,v 1.11 2005/11/03 09:40:48 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -97,12 +97,18 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     }
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-         . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
-         . $LANG_ADMIN['edit'] . '">';
-    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-         . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
-         . $LANG_ADMIN['copy'] . '">';
+    
+    $icon_arr = array(
+        'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
+             . $LANG_ADMIN['edit'] . '">',
+        'copy' => '<img src="' . $_CONF['layout_url'] . '/images/copy.'
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
+             . $LANG_ADMIN['copy'] . '">',
+        'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
+            . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
+            . '" title="' . $LANG_ACCESS['listthem'] . '">'
+    );
 
     $retval .= COM_startBlock ($text_arr['title'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -191,8 +197,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $offset = (($curpage - 1) * $limit);
 
     # SQL
-    $sql .=  $filter_str;
-    $sql .= " ORDER BY $order $direction LIMIT $offset,$limit;";
+    $sql .= "$filter_str ORDER BY $order $direction LIMIT $offset,$limit;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
@@ -200,14 +205,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $A = DB_fetchArray($result);
         for ($j = 0; $j < count($header_arr); $j++) {
             $fieldname = $header_arr[$j]['field'];
-            if ($fieldname == 'edit') {
-                $fieldvalue = $editico;
-            } else if ($fieldname == 'copy') {
-                $fieldvalue = $copyico;
-            } else {
-                $fieldvalue = $A[$fieldname];
-            }
-            $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A);
+            $fieldvalue = $fieldfunction($fieldname, $A[$fieldname], $A, $icon_arr);
             if ($fieldvalue !== false) {
                 $admin_templates->set_var('itemtext', $fieldvalue);
                 $admin_templates->parse('item_field', 'field', true);

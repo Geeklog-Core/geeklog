@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.16 2005/11/02 15:24:55 ospiess Exp $
+// $Id: lib-user.php,v 1.17 2005/11/03 09:40:48 ospiess Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -434,12 +434,12 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
     return $photo;
 }
 
-function USER_getListField($fieldname, $fieldvalue, $A) {
+function USER_getListField($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG28;
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/user.php?mode=edit&amp;uid={$A['uid']}\">$fieldvalue</a>";
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
             break;
         case 'username':
             $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'

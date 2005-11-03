@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.25 2005/11/02 15:24:55 ospiess Exp $
+// $Id: functions.inc,v 1.26 2005/11/03 09:40:47 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -844,7 +844,7 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
     return $retval;
 }
 
-function plugin_getListField_polls($fieldname, $fieldvalue, $A) {
+function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG25, $LANG_ACCESS;
 
     $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
@@ -854,7 +854,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A) {
         switch($fieldname) {
             case "edit":
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">$fieldvalue</a>";
+                    $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">{$icon_arr['edit']}</a>";
                 }
                 break;
             case 'date':

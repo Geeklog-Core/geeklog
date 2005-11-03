@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.484 2005/11/02 16:01:15 ospiess Exp $
+// $Id: lib-common.php,v 1.485 2005/11/03 09:40:48 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5502,7 +5502,7 @@ if(( DB_getItem( $_TABLES['vars'], 'value', "name='last_scheduled_run'" )
     DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
 }
 
-function COM_getListField_blocks($fieldname, $fieldvalue, $A) {
+function COM_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -5511,7 +5511,7 @@ function COM_getListField_blocks($fieldname, $fieldvalue, $A) {
         switch($fieldname) {
             case "edit":
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">$fieldvalue</a>";
+                    $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">{$icon_arr['edit']}</a>";
                 }
                 break;
             case 'title':
@@ -5560,7 +5560,7 @@ function COM_getListField_blocks($fieldname, $fieldvalue, $A) {
     return $retval;
 }
 
-function COM_getListField_events($fieldname, $fieldvalue, $A) {
+function COM_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -5568,12 +5568,12 @@ function COM_getListField_events($fieldname, $fieldvalue, $A) {
     switch($fieldname) {
         case "edit":
             if ($access == 3) {
-                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=edit&amp;eid={$A['eid']}\">$fieldvalue</a>";
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=edit&amp;eid={$A['eid']}\">{$icon_arr['edit']}</a>";
             }
             break;
         case "copy":
             if ($access == 3) {
-                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=clone&amp;eid={$A['eid']}\">$fieldvalue</a>";
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=clone&amp;eid={$A['eid']}\">{$icon_arr['copy']}</a>";
             }
             break;
         case 'access':
@@ -5593,4 +5593,31 @@ function COM_getListField_events($fieldname, $fieldvalue, $A) {
     return $retval;
 }
 
+function COM_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $editico;
+    # if (in_array ($A['grp_id'], SEC_getUserGroups() )) {
+        switch($fieldname) {
+            case "edit":
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
+                break;
+            case 'grp_gl_core':
+                if ($A['grp_gl_core'] == 1) {
+                    $retval = $LANG_ACCESS['yes'];
+                } else {
+                    $retval = $LANG_ACCESS['no'];
+                }
+                break;
+            case 'list':
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}\">"
+                         ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
+                         ."<a href=\"{$_CONF[site_admin_url]}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
+                         ."{$icon_arr['edit']}</a>";
+                break;
+            default:
+                $retval = $fieldvalue;
+                break;
+        }
+    # }
+    return $retval;
+}
 ?>
