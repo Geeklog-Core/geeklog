@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.32 2005/11/03 07:57:02 mjervis Exp $
+// $Id: functions.inc,v 1.33 2005/11/03 10:09:04 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -1074,6 +1074,34 @@ function plugin_geticon_links ()
     global $_CONF;
 
     return $_CONF['site_url'] . '/links/images/links.png';
+}
+
+function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $LANG_ADMIN, $LANG_ACCESS;
+    $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+    if ($access > 0) {
+        switch($fieldname) {
+            case "edit":
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
+                break;
+            case "access":
+                if ($access == 3) {
+                   $retval = $LANG_ACCESS['edit'];
+                } else {
+                   $retval = $LANG_ACCESS['readonly'];
+                }
+                break;
+            case "title":
+                $title = stripslashes($A['title']);
+                $retval = "<a href=\"{$A['url']}\">$title</a>";
+                break;
+            default:
+                $retval = $fieldvalue;
+                break;
+        }
+    }
+    return $retval;
 }
 
 ?>

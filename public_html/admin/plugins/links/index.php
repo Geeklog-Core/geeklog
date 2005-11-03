@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2005/09/19 08:16:44 dhaun Exp $
+// $Id: index.php,v 1.16 2005/11/03 10:09:04 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -285,159 +285,6 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
 }
 
 /**
-* Lists all the links in the database
-*
-* @param    int     $page   page number to display
-* @return   string          HTML for list of links
-*
-*/
-function listlinks ($offset, $curpage, $query = '', $query_limit = 50)
-{
-    global $_CONF, $_TABLES, $LANG_LINKS_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE,
-           $order, $prevorder, $direction;
-
-    $retval = '';
-
-    if ($page <= 0) {
-        $page = 1;
-    }
-
-    $retval .= COM_startBlock ($LANG23[11], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-
-    $link_templates = new Template($_CONF['path'] . 'plugins/links/templates/admin/');
-    $link_templates->set_file(array('list'=>'linklist.thtml', 'row'=>'listitem.thtml'));
-    $link_templates->set_var('site_url', $_CONF['site_url']);
-    $link_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $link_templates->set_var('layout_url', $_CONF['layout_url']);
-    $link_templates->set_var('lang_newlink', $LANG_LINKS_ADMIN[18]);
-    $link_templates->set_var('lang_adminhome', $LANG_LINKS_ADMIN[19]);
-    $link_templates->set_var('lang_instructions', $LANG_LINKS_ADMIN[12]);
-    $link_templates->set_var('lang_linktitle', $LANG_LINKS_ADMIN[13]);
-    $link_templates->set_var('lang_access', $LANG_ACCESS['access']);
-    $link_templates->set_var('lang_linkcategory', $LANG_LINKS_ADMIN[14]);
-    $link_templates->set_var('lang_linkurl', $LANG_LINKS_ADMIN[15]);
-    $link_templates->set_var('lang_edit', $LANG_LINKS_ADMIN[24]);
-    $link_templates->set_var('lang_lid', $LANG_LINKS_ADMIN[2]);
-    $link_templates->set_var('lang_submit', $LANG_LINKS_ADMIN[26]);
-    $link_templates->set_var('lang_search', $LANG_LINKS_ADMIN[27]);
-    $link_templates->set_var('lang_limit_results', $LANG_LINKS_ADMIN[25]);
-    $link_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '">';
-    $link_templates->set_var('edit_icon', $editico);
-    
-    switch($order) {
-        case 1:
-            $orderby = 'lid';
-            break;
-        case 2:
-            $orderby = 'title';
-            break;
-        case 3:
-            $orderby = 'category';
-            break;
-        case 4:
-            $orderby = 'url';
-            break;
-        default:
-            $orderby = 'title';
-            $order = 2;
-            break;
-    }
-    if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
-
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $link_templates->set_var ('img_arrow' . $order,
-        '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow . '.'
-        . $_IMAGE_TYPE . '" border="0" alt="">');
-
-    $link_templates->set_var ('direction', $direction);
-    $link_templates->set_var ('page', $page);
-    $link_templates->set_var ('prevorder', $order);
-    if (empty($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if (!empty ($query)) {
-        $link_templates->set_var ('query', urlencode($query) );
-    } else {
-        $link_templates->set_var ('query', '');
-    }
-    $link_templates->set_var ('query_limit', $query_limit);
-    $link_templates->set_var($limit . '_selected', 'selected="selected"');
-
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['links'], 'COUNT(*)',
-                "(title LIKE '$query' OR category LIKE '$query' OR url LIKE '$query')" . COM_getPermSql ('AND')) / $limit);
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['links'], 'COUNT(*)', COM_getPermSql ('')) / $limit);
-    }
-    if ($num_pages < $curpage) {
-        $curpage = 1;
-    }
-
-    $offset = (($curpage - 1) * $limit);
-
-    $sql = "SELECT * FROM {$_TABLES['links']}";
-    if (empty ($query)) {
-        $sql .= COM_getPermSql ();
-    } else {
-         $sql .= " WHERE (title LIKE '$query' OR category LIKE '$query' OR url LIKE '$query')" . COM_getPermSql ('AND');
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access > 0) {
-            if ($access == 3) {
-               $access = $LANG_ACCESS['edit'];
-            } else {
-               $access = $LANG_ACCESS['readonly'];
-            }
-            $link_templates->set_var('cssid', ($i%2)+1);
-            $link_templates->set_var('link_id', $A['lid']);
-            $link_templates->set_var('link_name', stripslashes($A['title']));
-            $link_templates->set_var('link_access', $access);
-            $link_templates->set_var('link_category', $A['category']);
-            $link_templates->set_var('link_url', $A['url']);
-            $link_templates->parse('link_row', 'row', true);
-        }
-    }
-    if (!empty ($query)) {
-        $base_url = $_CONF['site_admin_url'] . '/plugins/links/index.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    } else {
-        $base_url = $_CONF['site_admin_url'] . "/plugins/links/index.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    }
-
-    if ($num_pages > 1) {
-        $link_templates->set_var ('google_paging',
-                COM_printPageNavigation ($base_url, $curpage, $num_pages));
-    } else {
-        $link_templates->set_var ('google_paging', '');
-    }
-
-    $link_templates->parse('output','list');
-    $retval .= $link_templates->finish($link_templates->get_var('output'));
-
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-}
-
-/**
 * Delete a link
 *
 * @param    string  $lid    id of link to delete
@@ -500,19 +347,39 @@ if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // del
             $display .= COM_showMessage ($msg, 'links');
         }
     }
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= listlinks ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
+                           
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_LINKS_ADMIN[2], 'field' => 'lid', 'sort' => true),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+                    array('text' => $LANG_LINKS_ADMIN[14], 'field' => 'category', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'title', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_url'] . '/admin/plugins/links/index.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
+                      'icon' => $_CONF['site_url'] . '/links/images/links.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php");
+
+    $query_arr = array('table' => 'links',
+                       'sql' => "SELECT * FROM {$_TABLES['links']} WHERE 1",
+                       'query_fields' => array('title', 'category', 'url'),
+                       'default_filter' => COM_getPermSql (''),
+                       'query' => $_REQUEST['q'],
+                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+
+    $display .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    $display .= COM_siteFooter();
     $display .= COM_siteFooter ();
 }
 

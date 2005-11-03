@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.52 2005/11/03 09:40:47 ospiess Exp $
+// $Id: group.php,v 1.53 2005/11/03 10:09:04 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -794,7 +794,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
+                    array('url' => $_CONF['site_admin_url'] . '/group.php?mode=edit',
                           'text' => $LANG_ADMIN['create_new']),
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])

@@ -1,7 +1,0 @@
-                                <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-                                    <td class="admin-list-field"><a href="{site_admin_url}/plugins/links/index.php?mode=edit&amp;lid={link_id}">{edit_icon}</a></td>
-                                    <td class="admin-list-field">{link_id}</td>
-                                    <td class="admin-list-field"><a href="{link_url}">{link_name}</a></td>
-                                    <td class="admin-list-field">{link_access}</td>
-                                    <td class="admin-list-field">{link_category}</td>
-                                </tr>
