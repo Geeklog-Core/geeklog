@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.53 2005/11/03 10:09:04 ospiess Exp $
+// $Id: group.php,v 1.54 2005/11/03 10:25:49 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -813,7 +813,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
-    $display .= ADMIN_list ("groups", "COM_getListField_groups", $header_arr, $text_arr,
+    $display .= ADMIN_list ("groups", "ADMIN_getListField_groups", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
     $display .= COM_siteFooter();
 }

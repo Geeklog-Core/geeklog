@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.11 2005/11/03 09:40:48 ospiess Exp $
+// $Id: lib-admin.php,v 1.12 2005/11/03 10:25:50 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -235,6 +235,125 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
+    return $retval;
+}
+
+function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
+
+    $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+
+    if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
+        switch($fieldname) {
+            case "edit":
+                if ($access == 3) {
+                    $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">{$icon_arr['edit']}</a>";
+                }
+                break;
+            case 'title':
+                $retval = stripslashes ($A['title']);
+                if (empty ($retval)) {
+                    $retval = '(' . $A['name'] . ')';
+                }
+                break;
+            case 'blockorder':
+                $retval .= $A['blockorder'];
+                break;
+            case 'is_enabled':
+                if ($A['is_enabled'] == 1) {
+                    $switch = 'checked="checked"';
+                } else {
+                    $switch = '';
+                }
+                $retval = "<form action=\"{$_CONF['site_admin_url']}/block.php\" method=\"post\">"
+                         ."<input type=\"checkbox\" name=\"blkenable\" onclick=\"submit()\" value=\"{$A['bid']}\" $switch><input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></form>";
+                break;
+            case 'move':
+                if ($access == 3) {
+                    if ($A['onleft'] == 1) {
+                        $side = $LANG21[40];
+                        $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
+                        $moveTitleMsg = $LANG21[59];
+                        $switchside = '1';
+                    } else {
+                        $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
+                        $moveTitleMsg = $LANG21[60];
+                        $switchside = '0';
+                    }
+                    $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" border=\"0\" usemap=\"#arrow{$A['bid']}\" alt=\"\">"
+                            ."<map name=\"arrow{$A['bid']}\">"
+                            ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up\" alt=\"{$LANG21[58]}\">"
+                            ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside\" alt=\"$moveTitleMsg\">"
+                            ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn\" alt=\"{$LANG21[57]}\">"
+                            ."</map>";
+                }
+                break;
+            default:
+                $retval = $fieldvalue;
+                break;
+        }
+    }
+    return $retval;
+}
+
+function ADMIN_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
+
+    $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+
+    switch($fieldname) {
+        case "edit":
+            if ($access == 3) {
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=edit&amp;eid={$A['eid']}\">{$icon_arr['edit']}</a>";
+            }
+            break;
+        case "copy":
+            if ($access == 3) {
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=clone&amp;eid={$A['eid']}\">{$icon_arr['copy']}</a>";
+            }
+            break;
+        case 'access':
+            if ($access == 3) {
+                $retval = $LANG_ACCESS['edit'];
+            } else {
+                $retval = $LANG_ACCESS['readonly'];
+            }
+            break;
+        case 'title':
+            $retval = stripslashes ($A['title']);
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
+}
+
+function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
+    if (in_array ($A['grp_id'], SEC_getUserGroups() )) {
+        switch($fieldname) {
+            case "edit":
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
+                break;
+            case 'grp_gl_core':
+                if ($A['grp_gl_core'] == 1) {
+                    $retval = $LANG_ACCESS['yes'];
+                } else {
+                    $retval = $LANG_ACCESS['no'];
+                }
+                break;
+            case 'list':
+                $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}\">"
+                         ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
+                         ."<a href=\"{$_CONF[site_admin_url]}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
+                         ."{$icon_arr['edit']}</a>";
+                break;
+            default:
+                $retval = $fieldvalue;
+                break;
+        }
+    }
     return $retval;
 }
 ?>

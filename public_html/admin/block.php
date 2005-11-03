@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.80 2005/11/02 15:24:55 ospiess Exp $
+// $Id: block.php,v 1.81 2005/11/03 10:25:49 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -678,7 +678,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
-    $display .= ADMIN_list ("blocks", "COM_getListField_blocks", $header_arr, $text_arr,
+    $display .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr, $filter);
                             
     $query_arr = array('table' => 'blocks',
@@ -693,7 +693,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                       'icon' => $_CONF['layout_url'] . '/images/icons/block.png',
                       'form_url' => $_CONF['site_admin_url'] . "/block.php");
 
-    $display .= ADMIN_list ("blocks", "COM_getListField_blocks", $header_arr, $text_arr,
+    $display .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr, $filter);
                            
     $display .= COM_siteFooter();

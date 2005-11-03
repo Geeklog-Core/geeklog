@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.64 2005/11/02 16:01:15 ospiess Exp $
+// $Id: event.php,v 1.65 2005/11/03 10:25:49 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -617,7 +617,7 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
-    $display .= ADMIN_list ("events", "COM_getListField_events", $header_arr, $text_arr,
+    $display .= ADMIN_list ("events", "ADMIN_getListField_events", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
     $display .= COM_siteFooter ();
 }
