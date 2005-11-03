@@ -24,10 +24,10 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.6 2005/09/25 14:48:12 dhaun Exp $
+# $Id: english.php,v 1.7 2005/11/03 07:57:02 mjervis Exp $
 
 ###############################################################################
-# Array Format: 
+# Array Format:
 # $LANGXX[YY]:	$LANG - variable name
 #		  	XX - file id number
 #			YY - phrase id number
@@ -106,24 +106,24 @@ $LANG_LINKS= array(
     69 => 'Contact',
     70 => 'Search',
     71 => 'Contribute',
-    72 => 'Training Provider Directory',
+    72 => 'Web Resources',
     73 => 'Past Polls',
-    74 => 'Training Calendar',
+    74 => 'Calendar',
     75 => 'Advanced Search',
     76 => 'Site Statistics',
     77 => 'Plugins',
-    78 => 'Upcoming Training Events',
+    78 => 'Upcoming Events',
     79 => 'What\'s New',
     80 => 'articles in last',
     81 => 'article in last',
     82 => 'hours',
     83 => 'COMMENTS',
-    84 => 'TRAINING PROVIDER DIRECTORY',
+    84 => 'LINKS',
     85 => 'last 48 hrs',
     86 => 'No new comments',
     87 => 'last 2 wks',
-    88 => 'No recent new providers',
-    89 => 'There are no upcoming training events',
+    88 => 'No recent new links',
+    89 => 'There are no upcoming events',
     90 => 'Home',
     91 => 'Created this page in',
     92 => 'seconds',
@@ -162,11 +162,11 @@ $LANG_LINKS_STATS = array(
     'stats_page_title' => 'Links',
     'stats_hits' => 'Hits',
     'stats_no_hits' => 'It appears that there are no links on this site or no one has ever clicked on one.',
-); 
- 
+);
+
 ###############################################################################
 # for the search
- 
+
 $LANG_LINKS_SEARCH = array(
  'results' => 'Link Results',
  'title' => 'Title',
