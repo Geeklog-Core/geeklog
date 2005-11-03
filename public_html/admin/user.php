@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.123 2005/11/02 15:24:55 ospiess Exp $
+// $Id: user.php,v 1.124 2005/11/03 08:03:33 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -175,7 +175,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_homepage', $LANG28[8]);
     $user_templates->set_var('user_homepage', htmlspecialchars($A['homepage']));
     $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
-    
+
     $statusarray = array(0 => $LANG28[42], 1 => $LANG28[43], 3 => $LANG28[45] );
     if ($_CONF['usersubmission'] == 1)
     {
@@ -258,10 +258,11 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
 
     $retval = '';
+    $userChanged = false;
 
     if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);
     if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);
-    
+
     if ($passwd!=$passwd_conf) { // passwords dont match
         return edituser ($uid, 67);
     }
@@ -353,12 +354,12 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
                 custom_usersave($uid);
             }
-            if( ($_CONF['usersubmission'] == 1) && ($oldstatus == 2) 
+            if( ($_CONF['usersubmission'] == 1) && ($oldstatus == 2)
                    && ($userstatus == 3) )
             {
                 USER_sendActivationEmail($username, $email);
             }
-            PLG_userInfoChanged ($uid);
+            $userChanged = true;
         }
 
         // if groups is -1 then this user isn't allowed to change any groups so ignore
@@ -388,6 +389,11 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                     next($groups);
                 }
             }
+        }
+
+        if ($userChanged)
+        {
+            PLG_userInfoChanged ($uid);
         }
         $errors = DB_error();
         if (empty($errors)) {
@@ -499,7 +505,7 @@ function importusers ($file)
                 // user doesn't already exist
                 $uid = USER_createAccount ($userName, $emailAddr, '',
                                            $fullName);
-                                           
+
                 USER_createAndSendPassword ($username, $emailAddr, $uid);
 
                 if ($verbose_import) {
@@ -611,7 +617,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     }
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
-    $display .= edituser (COM_applyFilter ($_GET['uid']), 
+    $display .= edituser (COM_applyFilter ($_GET['uid']),
                                               COM_applyFilter ($_GET['msg']));
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
@@ -646,7 +652,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                     array('text' => $login_text, 'field' => $login_field, 'sort' => true),
                     array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
     );
-    
+
     $defsort_arr = array('field' => 'username', 'direction' => 'asc');
 
     $menu_arr = array (
@@ -657,7 +663,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
-                    
+
     $text_arr = array('has_menu' =>  true,
                       'title' => $LANG28[11], 'instructions' => $LANG28[12],
                       'icon' => $_CONF['layout_url'] . '/images/icons/user.png',
@@ -675,7 +681,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                        'default_filter' => "{$_TABLES['users']}.uid > 1",
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-    
+
     $display .= ADMIN_list ("user", "USER_getListField", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
     $display .= COM_siteFooter();
