@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.63 2005/10/31 19:04:45 dhaun Exp $
+// $Id: moderation.php,v 1.64 2005/11/03 12:47:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -87,76 +87,54 @@ function commandcontrol()
 
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
+                               
+    $cc_arr = array(
+                  array('condition' => SEC_hasRights('story.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/story.php',
+                        'lang' => $LANG01[11], 'image' => '/images/icons/story.'),
+                  array('condition' => SEC_hasRights('block.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/block.php',
+                        'lang' => $LANG01[12], 'image' => '/images/icons/block.'),
+                  array('condition' => SEC_hasRights('topic.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/topic.php',
+                        'lang' => $LANG01[13], 'image' => '/images/icons/topic.'),
+                  array('condition' => SEC_hasRights('event.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/event.php',
+                        'lang' => $LANG01[15], 'image' => '/images/icons/event.'),
+                  array('condition' => SEC_hasRights('user.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/user.php',
+                        'lang' => $LANG01[17], 'image' => '/images/icons/user.'),
+                  array('condition' => SEC_hasRights('group.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/group.php',
+                        'lang' => $LANG01[96], 'image' => '/images/icons/group.'),
+                  array('condition' => SEC_inGroup('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/syndication.php',
+                        'lang' => $LANG01[38], 'image' => '/images/icons/syndication.'),
+                  array('condition' => SEC_hasRights('story.ping'),
+                        'url' => $_CONF['site_admin_url'] . '/trackback.php',
+                        'lang' => $LANG01[116], 'image' => '/images/icons/trackback.'),
+                  array('condition' => SEC_hasRights('plugin.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/plugins.php',
+                        'lang' => $LANG01[98], 'image' => '/images/icons/plugins.'),
+                  array('condition' => ($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/database.php',
+                        'lang' => $LANG01[103], 'image' => '/images/icons/database.'),
+                  array('condition' => ($_CONF['link_documentation'] == 1),
+                        'url' => $_CONF['site_url'] . '/docs/',
+                        'lang' => $LANG01[113], 'image' => '/images/icons/docs.'),
+                  array('condition' => (SEC_inGroup ('Root')),
+                        'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
+                        'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.')
+    );
 
-    if (SEC_hasRights('story.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/story.php',
-                        $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
-                        $LANG01[11]);
-        $items[$LANG01[11]] = $item;
-    }
-    if (SEC_hasRights('block.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/block.php',
-                        $_CONF['layout_url'] . '/images/icons/block.' . $_IMAGE_TYPE,
-                        $LANG01[12]);
-        $items[$LANG01[12]] = $item;
-    }
-    if (SEC_hasRights('topic.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/topic.php',
-                        $_CONF['layout_url'] . '/images/icons/topic.' . $_IMAGE_TYPE,
-                        $LANG01[13]);
-        $items[$LANG01[13]] = $item;
-    }
-    if (SEC_hasRights('event.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/event.php',
-                        $_CONF['layout_url'] . '/images/icons/event.' . $_IMAGE_TYPE,
-                        $LANG01[15]);
-        $items[$LANG01[15]] = $item;
-    }
-    if (SEC_hasRights ('user.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/user.php',
-                        $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
-                        $LANG01[17]);
-        $items[$LANG01[17]] = $item;
-    }
-    if (SEC_hasRights ('group.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/group.php',
-                        $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE,
-                        $LANG01[96]);
-        $items[$LANG01[96]] = $item;
-    }
-    if (SEC_hasRights ('user.mail')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/mail.php',
-                        $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE,
-                        $LANG01[105]);
-        $items[$LANG01[105]] = $item;
-    }
-    if (SEC_inGroup ('Root')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/syndication.php',
-                        $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
-                        $LANG01[38]);
-        $items[$LANG01[38]] = $item;
-    }
-    if (SEC_hasRights ('story.ping')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/trackback.php',
-                        $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE,
-                        $LANG01[116]);
-        $items[$LANG01[116]] = $item;
-    }
-    if (SEC_hasRights ('plugin.edit')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/plugins.php',
-                        $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE,
-                        $LANG01[98]);
-        $items[$LANG01[98]] = $item;
+    for ($i=0; $i < count ($cc_arr); $i++) {
+        if ($cc_arr[$i]['condition']) {
+            $item = render_cc_item ($admin_templates,
+                            $_CONF['site_admin_url'] . $cc_arr[$i]['url'],
+                            $_CONF['layout_url'] . $cc_arr[$i]['image'] . $_IMAGE_TYPE,
+                            $cc_arr[$i]['lang']);
+            $items[$cc_arr[$i]['lang']] = $item;
+        }
     }
 
     // now add the plugins
@@ -167,30 +145,6 @@ function commandcontrol()
                         $cur_plugin->plugin_image, $cur_plugin->adminlabel);
         $items[$cur_plugin->adminlabel] = $item;
         next ($plugins);
-    }
-
-    if (($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root')) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_admin_url'] . '/database.php',
-                        $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE,
-                        $LANG01[103]);
-        $items[$LANG01[103]] = $item;
-    }
-
-    if ($_CONF['link_documentation'] == 1) {
-        $item = render_cc_item ($admin_templates,
-                        $_CONF['site_url'] . '/docs/',
-                        $_CONF['layout_url'] . '/images/icons/docs.' . $_IMAGE_TYPE,
-                        $LANG01[113]);
-        $items[$LANG01[113]] = $item;
-    }
-
-    if (SEC_inGroup ('Root')) {
-        $item = render_cc_item ($admin_templates,
-                'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
-                $_CONF['layout_url'] . '/images/icons/versioncheck.' . $_IMAGE_TYPE,
-                $LANG01[107]);
-        $items[$LANG01[107]] = $item;
     }
 
     if ($_CONF['sort_admin'])
