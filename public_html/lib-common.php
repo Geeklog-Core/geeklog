@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.485 2005/11/03 09:40:48 ospiess Exp $
+// $Id: lib-common.php,v 1.486 2005/11/03 09:46:58 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5594,8 +5594,8 @@ function COM_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
 }
 
 function COM_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $editico;
-    # if (in_array ($A['grp_id'], SEC_getUserGroups() )) {
+    global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
+    if (in_array ($A['grp_id'], SEC_getUserGroups() )) {
         switch($fieldname) {
             case "edit":
                 $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
@@ -5617,7 +5617,7 @@ function COM_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
                 $retval = $fieldvalue;
                 break;
         }
-    # }
+    }
     return $retval;
 }
 ?>
