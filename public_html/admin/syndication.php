@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.27 2005/11/03 11:04:24 ospiess Exp $
+// $Id: syndication.php,v 1.28 2005/11/04 10:35:57 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -493,6 +493,7 @@ else
     );
 
     $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
                       'title' => $LANG33[10], 'instructions' => $LANG33[13],
                       'icon' => $_CONF['layout_url'] . '/images/icons/syndication.png',
                       'form_url' => $_CONF['site_admin_url'] . "/syndication.php");

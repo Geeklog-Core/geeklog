@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2005/11/03 10:09:04 ospiess Exp $
+// $Id: index.php,v 1.17 2005/11/04 10:35:57 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -366,6 +366,7 @@ if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // del
     );
 
     $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
                       'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
                       'icon' => $_CONF['site_url'] . '/links/images/links.png',
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php");

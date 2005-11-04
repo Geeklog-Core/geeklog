@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.50 2005/11/03 11:04:24 ospiess Exp $
+// $Id: plugins.php,v 1.51 2005/11/04 10:35:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -476,6 +476,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     );
 
     $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
                       'title' => $LANG32[5], 'instructions' => $LANG32[11],
                       'icon' => $_CONF['layout_url'] . '/images/icons/plugins.png',
                       'form_url' => $_CONF['site_admin_url'] . "/plugins.php");

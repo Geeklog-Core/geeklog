@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.81 2005/11/03 10:25:49 ospiess Exp $
+// $Id: block.php,v 1.82 2005/11/04 10:35:57 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -667,6 +667,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     );
 
     $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
                       'title' => $LANG21[19], 'instructions' => $LANG21[25],
                       'icon' => $_CONF['layout_url'] . '/images/icons/block.png',
                       'form_url' => $_CONF['site_admin_url'] . "/block.php");
@@ -689,6 +690,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
                        
     $text_arr = array('has_menu' =>  false,
+                      'has_extras'   => true,
                       'title' => "$LANG21[19] ($LANG21[40])", 'instructions' => $LANG21[25],
                       'icon' => $_CONF['layout_url'] . '/images/icons/block.png',
                       'form_url' => $_CONF['site_admin_url'] . "/block.php");

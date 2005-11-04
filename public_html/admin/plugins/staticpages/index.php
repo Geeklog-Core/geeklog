@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.47 2005/11/03 12:16:46 ospiess Exp $
+// $Id: index.php,v 1.48 2005/11/04 10:35:57 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -518,6 +518,7 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     );
 
     $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
                       'title' => $LANG_STATIC['staticpagelist'],
                       'instructions' => $LANG_STATIC['instructions'],
                       'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',

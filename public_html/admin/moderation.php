@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.64 2005/11/03 12:47:46 ospiess Exp $
+// $Id: moderation.php,v 1.65 2005/11/04 10:35:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -219,10 +219,12 @@ function itemlist($type)
 
     switch ($type) {
     case 'event':
-        $retval .= COM_startBlock ($LANG29[37], 'cceventsubmission.html',
-                COM_getBlockTemplate ('_admin_block', 'header'));
+        // $retval .= COM_startBlock ($LANG29[37], 'cceventsubmission.html',
+        //         COM_getBlockTemplate ('_admin_block', 'header'));
         $sql = "SELECT eid AS id,title,datestart as day,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
         $H = array($LANG29[10],$LANG29[11],$LANG29[12]);
+        $section_title = $LANG29[37];
+        $section_help = 'cceventsubmission.html';
         break;
     default:
         if ((strlen($type) > 0) && ($type <> 'story')) {
@@ -232,18 +234,22 @@ function itemlist($type)
                 $plugin = new Plugin();
                 $plugin = $function();
                 $helpfile = $plugin->submissionhelpfile;
-                $retval .= COM_startBlock ($plugin->submissionlabel, $helpfile,
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+                // $retval .= COM_startBlock ($plugin->submissionlabel, $helpfile,
+                //                COM_getBlockTemplate ('_admin_block', 'header'));
                 $sql = $plugin->getsubmissionssql;
                 $H = $plugin->submissionheading;
                 $isplugin = true;
+                $section_title = $plugin->submissionlabel;
+                $section_help = $helpfile;
                 break;
             }
-        } else {
-            $retval .= COM_startBlock ($LANG29[35], 'ccstorysubmission.html',
-                    COM_getBlockTemplate ('_admin_block', 'header'));
+        } else { # story submission
+            //$retval .= COM_startBlock ($LANG29[35], 'ccstorysubmission.html',
+            //        COM_getBlockTemplate ('_admin_block', 'header'));
             $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
             $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
+            $section_title = $LANG29[35];
+            $section_help = 'ccstorysubmission.html';
             break;
         }
     }
@@ -261,7 +267,7 @@ function itemlist($type)
     }
 
     if ($nrows > 0) {
-        $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
+        /* $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
         $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
                                        'itemrows'=>'itemlistrows.thtml'));
         $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
@@ -271,9 +277,9 @@ function itemlist($type)
         $mod_templates->set_var('heading_col2', $H[1]);
         $mod_templates->set_var('heading_col3', $H[2]);
         $mod_templates->set_var('lang_approve', $LANG29[2]);
-        $mod_templates->set_var('lang_delete', $LANG29[1]);
+        $mod_templates->set_var('lang_delete', $LANG29[1]); */
 
-        for ($i = 1; $i <= $nrows; $i++) {
+        /* for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result, true);
             if ($type == 'story') {
                 $A[2] = strftime("%c",$A[2]);
@@ -299,15 +305,53 @@ function itemlist($type)
             $mod_templates->parse('list_of_items','itemrows',true);
         }
         $mod_templates->set_var('lang_submit', $LANG29[38]);
-        $mod_templates->parse('output','itemlist');
-        $retval .= $mod_templates->finish($mod_templates->get_var('output'));
+        $mod_templates->parse('output','itemlist'); */
+        # $retval .= $mod_templates->finish($mod_templates->get_var('output'));
+        
+        global $LANG_ADMIN;
+        
+        $header_arr = array(      # dislay 'text' and use table field 'field'
+            array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+            array('text' => $H[0], 'field' => 1, 'sort' => false),
+            array('text' => $H[1], 'field' => 2, 'sort' => false),
+            array('text' => $H[2], 'field' => 3, 'sort' => false),
+            array('text' => $LANG29[2], 'field' => 'delete', 'sort' => false),
+            array('text' => $LANG29[1], 'field' => 'approve', 'sort' => false)
+        );
+        
+        $defsort_arr = array('field' => '',
+                         'direction' => '');
+
+        $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+        );
+        
+        $text_arr = array('has_menu'     =>  false,
+                          'title'        => $section_title,
+                          'help_url' => $section_help,
+        );
+        
+        $query_arr = array('table' => '',
+                           'sql' => $sql
+        );
+        
+        $retval .="<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
+                    ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
+                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
+
+        $retval .= ADMIN_list ($type, ADMIN_getListField_moderation, $header_arr, $text_arr,
+                                $query_arr, $menu_arr, $defsort_arr);
+        $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+
+        
     } else {
         if ($nrows <> -1) {
-            $retval .= $LANG29[39];
+            $retval .= $LANG29[39] . "<br>";
         }
     }
 
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    # $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -361,7 +405,7 @@ function userlist ()
         $retval .= $mod_templates->finish($mod_templates->get_var('output'));
     } else {
         if ($nrows <> -1) {
-            $retval .= $LANG29[39];
+            $retval .= $LANG29[39] . "<br>";
         }
     }
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -417,7 +461,7 @@ function draftlist ()
         $retval .= $mod_templates->finish($mod_templates->get_var('output'));
     } else {
         if ($nrows <> -1) {
-            $retval .= $LANG29[39];
+            $retval .= $LANG29[39] . "<br>";
         }
     }
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -477,11 +521,13 @@ function deletestory ($sid)
 * @count        int         Number of items to moderate
 *
 */
-function moderation($mid,$action,$type,$count)
+function moderation($mid,$action,$type)
 {
     global $_CONF, $_TABLES;
 
     $retval = '';
+    
+    echo phpinfo();
 
     switch ($type) {
     case 'event':
@@ -505,7 +551,7 @@ function moderation($mid,$action,$type,$count)
         list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
     }
 
-    for ($i = 1; $i <= $count; $i++) {
+    for ($i = 0; $i < count($action); $i++) {
         switch ($action[$i]) {
         case 'delete':
             if ((strlen($type) > 0) && ($type <> 'story') && ($type <> 'draft')) {
@@ -632,8 +678,7 @@ if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
         $display .= moderateusers ($_POST['id'], $_POST['action'],
                                    $_POST['count']);
     } else {
-        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type'],
-                                $_POST['count']);
+        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type']);
     }
 } else {
     $display .= commandcontrol();

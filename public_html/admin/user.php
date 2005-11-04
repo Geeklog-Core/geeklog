@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.125 2005/11/03 11:04:24 ospiess Exp $
+// $Id: user.php,v 1.126 2005/11/04 10:35:57 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -653,7 +653,8 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                     array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
     );
 
-    $defsort_arr = array('field' => 'username', 'direction' => 'asc');
+    $defsort_arr = array('field' => 'username',
+                         'direction' => 'asc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
@@ -664,10 +665,14 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                           'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $text_arr = array('has_menu' =>  true,
-                      'title' => $LANG28[11], 'instructions' => $LANG28[12],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/user.png',
-                      'form_url' => $_CONF['site_admin_url'] . "/user.php");
+    $text_arr = array('has_menu'     =>  true,
+                      'has_extras'   => true,
+                      'title'        => $LANG28[11],
+                      'instructions' => $LANG28[12],
+                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.png',
+                      'form_url'     => $_CONF['site_admin_url'] . "/user.php",
+                      'help_url'     => ''
+    );
 
     if ($_CONF['lastlogin']==true) {
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";

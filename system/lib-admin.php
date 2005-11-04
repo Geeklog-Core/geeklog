@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.13 2005/11/03 11:04:24 ospiess Exp $
+// $Id: lib-admin.php,v 1.14 2005/11/04 10:35:58 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -75,8 +75,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $admin_templates->set_var('icon', $text_arr['icon']);
     
     $query = $query_arr['query'];
-    $query = str_replace ('*', '%', $query);
-    
+
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
             $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
@@ -95,7 +94,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->set_var('filter', $filter);
         $admin_templates->parse('top_menu', 'topmenu', true);
     }
-
+    
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     
     $icon_arr = array(
@@ -110,14 +109,16 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
 
-    $retval .= COM_startBlock ($text_arr['title'], '',
+    $retval .= COM_startBlock ($text_arr['title'], $text_arr['help_url'],
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
+    $query = $query_arr['query'];
+    $query = str_replace ('*', '%', $query);
     $sql_query = addslashes ($query);
     $sql = $query_arr['sql'];
     
     if (empty($direction)) {
-        if (empty($order)) {
+        if (empty($order) && !empty($defsort_arr['field'])) {
             $order = $defsort_arr['field'];
             $direction = $defsort_arr['direction'];
         } else {
@@ -134,6 +135,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     } else {
         $arrow = 'bararrowup';
     }
+    if (!empty($order)) {
+        $order_sql = "ORDER BY $order $direction";
+    }
+
     $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
             . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
     
@@ -157,47 +162,50 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->clear_var('on_click');
         $admin_templates->clear_var('arrow');
     }
+    
+    if ($text_arr['has_extras']) {
+        if (empty($query_arr['query_limit'])) {
+            $limit = 50;
+        } else {
+            $limit = $query_arr['query_limit'];
+        }
+        if ($query != '') {
+            $admin_templates->set_var ('query', urlencode($query) );
+        } else {
+            $admin_templates->set_var ('query', '');
+        }
+        $admin_templates->set_var ('query_limit', $query_arr['query_limit']);
 
-    if (empty($query_arr['query_limit'])) {
-        $limit = 50;
-    } else {
-        $limit = $query_arr['query_limit'];
-    }
-    if ($query != '') {
-        $admin_templates->set_var ('query', urlencode($query) );
-    } else {
-        $admin_templates->set_var ('query', '');
-    }
-    $admin_templates->set_var ('query_limit', $query_arr['query_limit']);
-    $admin_templates->set_var($limit . '_selected', 'selected="selected"');
+        $admin_templates->set_var($limit . '_selected', 'selected="selected"');
 
-
-    if (!empty($query_arr['default_filter'])){
-        $filter_str = " AND {$query_arr['default_filter']}";
-    }
-    if (!empty ($query)) {
-        $filter_str .= " AND (";
-        for ($f = 0; $f < count($query_arr['query_fields']); $f++) {
-            $filter_str .= $query_arr['query_fields'][$f] . " LIKE '$sql_query'";
-            if ($f < (count($query_arr['query_fields']) - 1)) {
-                $filter_str .= " OR ";
+        if (!empty($query_arr['default_filter'])){
+            $filter_str = " AND {$query_arr['default_filter']}";
+        }
+        if (!empty ($query)) {
+            $filter_str .= " AND (";
+            for ($f = 0; $f < count($query_arr['query_fields']); $f++) {
+                $filter_str .= $query_arr['query_fields'][$f] . " LIKE '$sql_query'";
+                if ($f < (count($query_arr['query_fields']) - 1)) {
+                    $filter_str .= " OR ";
+                }
             }
+            $filter_str .= ")";
+            $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
+                               "1 " . $filter_str) / $limit);
+            if ($num_pages < $curpage) {
+                $curpage = 1;
+            }
+        } else {
+            $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
+                                           $query_arr['unfiltered']) / $limit);
         }
-        $filter_str .= ")";
-        $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
-                           "1 " . $filter_str) / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
-                                       $query_arr['unfiltered']) / $limit);
-    }
 
-    $offset = (($curpage - 1) * $limit);
+        $offset = (($curpage - 1) * $limit);
+        $limit = "LIMIT $offset,$limit";
+    }
 
     # SQL
-    $sql .= "$filter_str ORDER BY $order $direction LIMIT $offset,$limit;";
+    $sql .= "$filter_str $order_sql $limit;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
@@ -205,7 +213,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $A = DB_fetchArray($result);
         for ($j = 0; $j < count($header_arr); $j++) {
             $fieldname = $header_arr[$j]['field'];
-            $fieldvalue = $fieldfunction($fieldname, $A[$fieldname], $A, $icon_arr);
+            if (!empty($fieldfunction)) {
+                $fieldvalue = $fieldfunction($fieldname, $A[$fieldname], $A, $icon_arr);
+            } else {
+                $fieldvalue = $A[$fieldname];
+            }
             if ($fieldvalue !== false) {
                 $admin_templates->set_var('itemtext', $fieldvalue);
                 $admin_templates->parse('item_field', 'field', true);
@@ -220,17 +232,20 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->set_var('message', $LANG_ADMIN['no_results']);
     }
     
-    if (!empty($query)) {
-        $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
-    } else {
-        $base_url = $form_url . "?query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
+    if ($text_arr['has_extras']) {
+        if (!empty($query)) {
+            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
+        } else {
+            $base_url = $form_url . "?query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
+        }
+
+        if ($num_pages > 1) {
+            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
+        } else {
+            $admin_templates->set_var('google_paging', '');
+        }
     }
 
-    if ($num_pages > 1) {
-        $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
-    } else {
-        $admin_templates->set_var('google_paging', '');
-    }
     $admin_templates->parse('output', 'list');
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -458,12 +473,11 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
     return $retval;
 }
 
-function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A) {
+function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
-
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/syndication.php?mode=edit&amp;fid={$A['fid']}\">$fieldvalue</a>";
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/syndication.php?mode=edit&amp;fid={$A['fid']}\">{$icon_arr['edit']}</a>";
             break;
         case 'type':
             $retval = ucwords($A['type']);
@@ -530,6 +544,28 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             break;
         default:
             $retval = $fieldvalue;
+            break;
+    }
+    return $retval;
+}
+
+function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_ADMIN;
+    switch($fieldname) {
+        case "edit":
+            $url = $_CONF['site_admin_url'] . '/plugins/' . $type
+                    . '/index.php?mode=editsubmission&amp;id=' . $A['id'];
+            $retval = "<a href=\"$url\">{$icon_arr['edit']}</a>";
+            break;
+        case "delete":
+            $retval = "<input type=\"radio\" name=\"action[]\" value=\"delete\">";
+            break;
+        case "approve":
+            $retval = "<input type=\"radio\" name=\"action[]\" value=\"approve\">"
+                     ."<input type=\"hidden\" name=\"id[]\" value=\"{$A['id']}\">";
+            break;
+        default:
+            $retval = COM_makeClickableLinks (stripslashes ( $fieldvalue));
             break;
     }
     return $retval;

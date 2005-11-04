@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.178 2005/11/03 11:04:24 ospiess Exp $
+// $Id: story.php,v 1.179 2005/11/04 10:35:57 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1159,6 +1159,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         );
 
         $text_arr = array('has_menu' =>  true,
+                          'has_extras'   => true,
                           'title' => $LANG24[22], 'instructions' => $LANG24[23],
                           'icon' => $_CONF['layout_url'] . '/images/icons/story.png',
                           'form_url' => $_CONF['site_admin_url'] . "/story.php");

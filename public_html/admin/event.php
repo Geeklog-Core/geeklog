@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.65 2005/11/03 10:25:49 ospiess Exp $
+// $Id: event.php,v 1.66 2005/11/04 10:35:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -601,6 +601,7 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     );
 
     $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
                       'title' => $LANG22[11], 'instructions' => $LANG22[12],
                       'icon' => $_CONF['layout_url'] . '/images/icons/event.png',
                       'form_url' => $_CONF['site_admin_url'] . "/event.php");
