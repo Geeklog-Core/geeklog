@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.65 2005/11/04 10:35:57 ospiess Exp $
+// $Id: moderation.php,v 1.66 2005/11/04 11:04:58 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -212,7 +212,7 @@ function commandcontrol()
 */
 function itemlist($type)
 {
-    global $_TABLES, $LANG29, $_CONF;
+    global $_TABLES, $LANG29, $_CONF, $LANG_ADMIN;
 
     $isplugin = false;
     $retval = '';
@@ -267,48 +267,6 @@ function itemlist($type)
     }
 
     if ($nrows > 0) {
-        /* $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
-        $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
-                                       'itemrows'=>'itemlistrows.thtml'));
-        $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
-        $mod_templates->set_var('item_type', $type);
-        $mod_templates->set_var('num_rows', $nrows);
-        $mod_templates->set_var('heading_col1', $H[0]);
-        $mod_templates->set_var('heading_col2', $H[1]);
-        $mod_templates->set_var('heading_col3', $H[2]);
-        $mod_templates->set_var('lang_approve', $LANG29[2]);
-        $mod_templates->set_var('lang_delete', $LANG29[1]); */
-
-        /* for ($i = 1; $i <= $nrows; $i++) {
-            $A = DB_fetchArray($result, true);
-            if ($type == 'story') {
-                $A[2] = strftime("%c",$A[2]);
-            }
-            if ($isplugin)  {
-                $mod_templates->set_var ('edit_submission_url',
-                    $_CONF['site_admin_url'] . '/plugins/' . $type
-                    . '/index.php?mode=editsubmission&amp;id=' . $A['id']);
-            } else {
-                $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/' .  $type
-                    . '.php?mode=editsubmission&amp;id=' . $A['id']);
-            }
-            $mod_templates->set_var('lang_edit', $LANG29[3]);
-
-            for ($j = 1; $j <= 3; $j++) {
-                $A[$j] = COM_makeClickableLinks (stripslashes ($A[$j]));
-            }
-            $mod_templates->set_var('data_col1', $A[1]);
-            $mod_templates->set_var('data_col2', $A[2]);
-            $mod_templates->set_var('data_col3', $A[3]);
-            $mod_templates->set_var('cur_row', $i);
-            $mod_templates->set_var('item_id', $A[0]);
-            $mod_templates->parse('list_of_items','itemrows',true);
-        }
-        $mod_templates->set_var('lang_submit', $LANG29[38]);
-        $mod_templates->parse('output','itemlist'); */
-        # $retval .= $mod_templates->finish($mod_templates->get_var('output'));
-        
-        global $LANG_ADMIN;
         
         $header_arr = array(      # dislay 'text' and use table field 'field'
             array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
@@ -470,48 +428,6 @@ function draftlist ()
 }
 
 /**
-* Delete a story.
-*
-* This is used to delete a story from the list of stories with the 'draft' flag
-* set (see function draftlist() above).
-* Note: This code has been lifted from admin/story.php and should be kept in
-*       sync with the code there.
-*
-* @sid      string      ID of the story to delete
-*
-*/
-function deletestory ($sid)
-{
-    global $_TABLES, $_CONF;
-
-    $result = DB_query ("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
-    $nrows = DB_numRows ($result);
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $filename = $_CONF['path_html'] . 'images/articles/' . $A['ai_filename'];
-        if (!unlink ($filename)) {
-            echo COM_errorLog ('Unable to remove the following image from the article: ' . $filename);
-            exit;
-        }
-
-        // remove unscaled image, if it exists
-        $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
-                strrpos ($A['ai_filename'], '.'), 1);
-        $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
-                                  . $lFilename_large;
-        if (file_exists ($lFilename_large_complete)) {
-            if (!unlink ($lFilename_large_complete)) {
-                echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
-                exit;
-            }
-        }
-    }
-    DB_delete ($_TABLES['article_images'], 'ai_sid', $sid);
-    DB_delete ($_TABLES['comments'], 'sid', $sid);
-    DB_delete ($_TABLES['stories'], 'sid', $sid);
-}
-
-/**
 * Moderates an item
 *
 * This will actually perform moderation (approve or delete) one or more items
@@ -564,7 +480,7 @@ function moderation($mid,$action,$type)
                 return $retval;
             }
             if ($type == 'draft') {
-                deletestory ($mid[$i]);
+                STORY_deleteStory($mid[$i]);
             } else {
                 DB_delete($submissiontable,"$id",$mid[$i]);
             }
