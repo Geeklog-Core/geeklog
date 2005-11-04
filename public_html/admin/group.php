@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.54 2005/11/03 10:25:49 ospiess Exp $
+// $Id: group.php,v 1.55 2005/11/04 08:53:29 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -409,6 +409,24 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
             return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
         }
 
+        // group names have to be unique, so check if this one exists already
+        $g_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                            "grp_name = '$grp_name'");
+        if ($g_id > 0) {
+            if (empty ($grp_id) || ($grp_id != $g_id)) {
+                // there already is a group with that name - complain
+                $retval .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
+                $retval .= COM_startBlock ($LANG_ACCESS['groupexists'], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+                $retval .= $LANG_ACCESS['groupexistsmsg'];
+                $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $retval .= editgroup ($grp_id);
+                $retval .= COM_siteFooter ();
+
+                return $retval;
+            }
+        }
+
         $grp_descr = COM_stripslashes ($grp_descr);
         $grp_descr = addslashes ($grp_descr);
         if (empty ($grp_id)) {
@@ -476,7 +494,7 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
 
         echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
     } else {
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
         $retval .= COM_startBlock ($LANG_ACCESS['missingfields'], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG_ACCESS['missingfieldsmsg'];
@@ -762,7 +780,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
 } else if ($mode == 'edit') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
     $display .= editgroup ($grp_id);
     $display .= COM_siteFooter ();
 } else if ($mode == 'listusers') {
@@ -778,7 +796,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $display .= editusers ($grp_id, $page);
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG28[38]);
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
