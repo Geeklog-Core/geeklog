@@ -173,7 +173,7 @@ $LANG01 = array(
 
 $LANG02 = array(
     1 => 'Terminkalender',
-    2 => 'Sorry, es gibt keine Termine anzuzeigen.',
+    2 => 'Es gibt keine Termine anzuzeigen.',
     3 => 'Wann',
     4 => 'Wo',
     5 => 'Beschreibung',
@@ -337,18 +337,18 @@ $LANG04 = array(
     109 => 'Gib hier das neue Passwort noch einmal ein',
     110 => 'Aktuelles Passwort',
     111 => 'Gib Dein aktuelles Passwort ein',
-    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    113 => 'Login Attempt Failed',
-    114 => 'Account Disabled',
-    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
-    116 => 'Account Awaiting Activation',
-    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
-    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
-    119 => 'If you have forgotten your password, you may request a new one at this url:',
-    120 => 'Account Activated',
-    121 => 'Service',
-    122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
+    112 => 'Du hast die erlaubte Anzahl von Anmeldeversuchen überschritten. Bitte versuche es später noch einmal.',
+    113 => 'Anmeldeversuch fehlgeschlagen',
+    114 => 'Account gesperrt',
+    115 => 'Dein Account wurde gesperrt. Du kannst Dich nicht einloggen. Bitte wende Dich an einen Administrator.',
+    116 => 'Account noch nicht freigegeben',
+    117 => 'Dein Account muss erst noch von einem Administrator freigegeben werden. Du kannst Dich erst einloggen, wenn Dein Account freigegeben wurde.',
+    118 => "Dein Account für {$_CONF['site_name']} wurde jetzt freigeschaltet. Du kannst Dich jetzt auf der Website unter der unten angegebenen URL anmelden. Benutze dazu Deinen Usernamen (<username>) und das Passwort, das Du bereits per E-Mail erhalten hast.",
+    119 => 'Wenn Du Dein Passwort vergessen hast, kannst Du unter der folgenden URL ein neues anfordern:',
+    120 => 'Account aktiviert',
+    121 => 'Dienst',
+    122 => 'Sorry, derzeit können sich keine neuen User anmelden.',
+    123 => "Bist Du ein <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User</a>?"
 );
 
 ###############################################################################
@@ -677,8 +677,8 @@ $LANG21 = array(
     60 => 'Block auf die linke Seite',
     61 => 'Ohne Titel',
     62 => 'Artikel-Limit',
-    63 => 'Bad Block Title',
-    64 => 'Your Title must not be empty and cannot contain HTML!'
+    63 => 'Block-Titel nicht erlaubt',
+    64 => 'Der Titel kann nicht leer sein und darf kein HTML enthalten!'
 );
 
 ###############################################################################
@@ -710,11 +710,11 @@ $LANG22 = array(
     23 => 'Ungültiges Startdatum.',
     24 => 'Ungültiges Enddatum.',
     25 => 'Enddatum ist vor dem Startdatum.',
-    26 => 'Submit',
+    26 => 'Abschicken',
     27 => 'Limit Results',
-    28 => 'Search',
-    29 => 'Edit',
-    30 => 'Copy'
+    28 => 'Suchen',
+    29 => 'Ändern',
+    30 => 'Kopieren'
 );
 
 ###############################################################################
@@ -751,7 +751,7 @@ $LANG24 = array(
     22 => 'Artikel-Liste',
     23 => 'Auf die Nummer klicken, um einen Artikel zu ändern oder zu löschen. Um einen Artikel anzusehen, auf dessen Titel klicken. Auf Neuer Artikel (s.o.) klicken, um einen neuen Artikel zu schreiben.',
     24 => 'Diese ID wird bereits für einen anderen Artikel benutzt. Bitte wähle eine andere ID.',
-    25 => 'Error when saving story',
+    25 => 'Fehler beim Speichern des Artikels',
     26 => 'Artikel-Vorschau',
     27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
     28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
@@ -789,9 +789,9 @@ $LANG24 = array(
     60 => 'Aktiv',
     61 => 'automatisch archivieren',
     62 => 'automatisch löschen',
-    63 => 'Edit',
-    64 => 'Submit',
-    65 => 'Search',
+    63 => 'Ändern',
+    64 => 'Abschicken',
+    65 => 'Suchen',
     66 => 'Limit Results'
 );
 
@@ -857,9 +857,9 @@ $LANG27 = array(
     24 => '(*)',
     25 => 'Archiv-Kategorie',
     26 => 'Zur Archiv-Kategorie machen (nur für eine Kategorie möglich)',
-    27 => 'Or Upload Topic Icon',
-    28 => 'Maximum',
-    29 => 'File Upload Errors'
+    27 => 'oder ein Icon hochladen',
+    28 => 'maximal',
+    29 => 'Fehler beim Datei-Upload'
 );
 
 ###############################################################################
@@ -909,7 +909,7 @@ $LANG28 = array(
     41 => 'Letzter Login',
     42 => 'Gesperrt',
     43 => 'Erwartet Aktivierung',
-    44 => 'Erwartet Autorisierung',
+    44 => 'Erwartet Freigabe',
     45 => 'Aktiv',
     46 => 'User-Status',
     47 => 'Ändern'
@@ -1058,7 +1058,7 @@ $LANG32 = array(
     32 => '<p><b>Fehler: Ungültiges Format für Autolink.</b></p>',
     33 => 'Code-Version',
     34 => 'Aktualisieren',
-    35 => 'Edit'
+    35 => 'Ändern'
 );
 
 ###############################################################################
@@ -1102,14 +1102,14 @@ $LANG33 = array(
     40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
     41 => 'Links',
     42 => 'Termine',
-    43 => 'All',
-    44 => 'None',
+    43 => 'Alle',
+    44 => 'Keine',
     45 => 'Header-link in topic',
     46 => 'Limit Results',
-    47 => 'Search',
-    48 => 'Edit',
-    49 => 'Feed Logo',
-    50 => "Relative to site url ({$_CONF['site_url']})"
+    47 => 'Suchen',
+    48 => 'Ändern',
+    49 => 'Feed-Logo',
+    50 => "Relativ zur URL dieser Site ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1252,11 +1252,11 @@ $LANG_ACCESS = array(
     'canteditgroup' => 'Um diese Gruppe bearbeiten zu können, musst Du selbst ein Mitglied der Gruppe sein. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.',
     'cantlistgroup' => 'Um die Mitglieder dieser Gruppe sehen zu können, musst Du selbst ein Mitglied der Gruppe sein. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.',
     'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
-    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
-    'search' => 'Search',
-    'submit' => 'Submit',
+    'listgroupmsg' => 'Liste aller Mitglieder der Gruppe "<b>%s</b>"',
+    'search' => 'Suchen',
+    'submit' => 'Abschicken',
     'limitresults' => 'Limit Results',
-    'group_id' => 'Group ID',
+    'group_id' => 'Gruppen-ID',
     'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
 );
 
@@ -1415,19 +1415,19 @@ $LANG_TRB = array(
     'button_delete' => 'Löschen',
     'trackbacks' => 'Trackbacks',
     'editor_intro' => 'Hier kannst Du Deinen Trackback-Kommentar für <a href="%s">%s</a> eingeben.',
-    'editor_intro_none' => 'Prepare your trackback comment.',
+    'editor_intro_none' => 'Trackback-Kommentar eingeben.',
     'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
-    'edit' => 'Edit',
-    'search' => 'Search',
+    'edit' => 'Ändern',
+    'search' => 'Suchen',
     'limit_results' => 'Limit Results',
-    'submit' => 'Submit',
-    'pingback_explain'   => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
-    'pingback_url'       => 'Pingback URL',
-    'site_url'           => 'This site\'s URL',
+    'submit' => 'Abschicken',
+    'pingback_explain'   => 'Gib eine URL ein, an die der Pingback geschickt werden soll. Der Pingback wird auf die Startseite Deiner Website verweisen.',
+    'pingback_url'       => 'Pingback-URL',
+    'site_url'           => 'Die URL dieser Website',
     'pingback_note'      => 'To send a pingback for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
-    'pbtarget_missing'   => 'No Pingback URL',
-    'pbtarget_required'  => 'Please enter a pingback URL',
-    'pb_error_details'   => 'Error when sending the pingback:'
+    'pbtarget_missing'   => 'Keine Pingback-URL',
+    'pbtarget_required'  => 'Gib bitte die Pingback-URL ein',
+    'pb_error_details'   => 'Fehler beim Senden des Pingbacks:'
 );
 
 ###############################################################################
@@ -1473,21 +1473,22 @@ $LANG_WHATSNEW = array (
 # display administration lists and edit pages
 
 $LANG_ADMIN = array (
-    'search'        => 'Search',
-    'limit_results' => 'Limit Results',
-    'submit'        => 'Submit',
-    'edit'          => 'Edit',
+    'search'        => 'Suchen',
+    'limit_results' => 'Anzahl Ergebnisse',
+    'submit'        => 'Abschicken',
+    'edit'          => 'Ändern',
     'admin_home'    => 'Admin Home',
-    'create_new'    => 'Create New',
-    'enabled'       => 'Enabled',
-    'title'         => 'Title',
-    'type'          => 'Type',
-    'topic'         => 'Topic',
-    'help_url'      => 'Help File URL',
-    'save'          => 'Save',
-    'cancel'        => 'Cancel',
-    'delete'        => 'Delete',
-    'copy'          => 'Copy'
+    'create_new'    => 'Neu anlegen',
+    'enabled'       => 'Aktiv',
+    'title'         => 'Titel',
+    'type'          => 'Typ',
+    'topic'         => 'Kategorie',
+    'help_url'      => 'URL f. Hilfe-Datei',
+    'save'          => 'Speichern',
+    'cancel'        => 'Abbruch',
+    'delete'        => 'Löschen',
+    'copy'          => 'Kopieren',
+    'no_results'    => '- Keine Einträge gefunden -'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
