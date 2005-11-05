@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.14 2005/11/04 10:35:58 ospiess Exp $
+// $Id: lib-admin.php,v 1.15 2005/11/05 13:38:10 dhaun Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -521,7 +521,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
+            $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}\">{$icon_arr['edit']}</a>";
             break;
         case 'pi_version':
             $plugin_code_version = PLG_chkVersion($A['pi_name']);
