@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.30 2005/06/12 20:03:59 mjervis Exp $
+// $Id: mail.php,v 1.31 2005/11/05 14:02:11 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -218,7 +218,7 @@ function send_messages ($vars)
 
 // MAIN
 
-$display .= COM_siteHeader ();
+$display .= COM_siteHeader ('menu', $LANG31[1]);
 
 if (isset ($_POST['mail']) && ($_POST['mail'] == 'mail')) {
     $display .= send_messages ($_POST);

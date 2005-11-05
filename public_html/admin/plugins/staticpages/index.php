@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.48 2005/11/04 10:35:57 ospiess Exp $
+// $Id: index.php,v 1.49 2005/11/05 14:02:11 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -470,12 +470,12 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
                 $_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
     }
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
     $display .= staticpageeditor ($sp_id, $mode);
     $display .= COM_siteFooter ();
 } else if ($mode == 'clone') {
     if (!empty ($sp_id)) {
-        $display .= COM_siteHeader('menu');
+        $display .= COM_siteHeader('menu', $LANG_STATIC['staticpageeditor']);
         $display .= staticpageeditor($sp_id,$mode);
         $display .= COM_siteFooter();
     } else {
@@ -496,7 +496,7 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     }
 } else {
     $page = COM_applyFilter ($_GET['page'], true);
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpagelist']);
                            
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),

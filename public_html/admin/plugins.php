@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.51 2005/11/04 10:35:57 ospiess Exp $
+// $Id: plugins.php,v 1.52 2005/11/05 14:02:11 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -421,12 +421,12 @@ if (isset ($_REQUEST['mode'])) {
 if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     $pi_name = COM_applyFilter ($_POST['pi_name']);
     if ($_POST['confirmed'] == 1) {
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG32[30]);
         $display .= do_uninstall ($pi_name);
         $display .= listplugins (COM_applyFilter ($_POST['page']));
         $display .= COM_siteFooter ();
     } else { // ask user for confirmation
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG32[30]);
         $display .= COM_startBlock ($LANG32[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $LANG32[31];
@@ -442,7 +442,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
         $display .= COM_siteFooter ();
 
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG32[13]);
     $display .= plugineditor (COM_applyFilter ($_GET['pi_name']));
     $display .= COM_siteFooter ();
 
@@ -454,7 +454,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
                             COM_applyFilter ($_POST['pi_homepage']));
 
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG32[5]);
     $msg = COM_applyFilter ($_REQUEST['msg'], true);
     if (!empty ($msg)) {
         $display .= COM_showMessage ($msg);

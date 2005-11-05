@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2005/11/02 15:24:55 ospiess Exp $
+// $Id: index.php,v 1.17 2005/11/05 14:02:11 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -353,7 +353,7 @@ if (isset ($_POST['mode'])) {
 }
 
 if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG25[5]);
     $display .= editpoll (COM_applyFilter ($_GET['qid']));
     $display .= COM_siteFooter ();
 } else if (($mode == $LANG25[14]) && !empty ($LANG25[14])) { // save
@@ -393,7 +393,7 @@ if ($mode == 'edit') {
     }
 } else { // 'cancel' or no mode at all
 
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG25[18]);
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
         if ($msg > 0) {

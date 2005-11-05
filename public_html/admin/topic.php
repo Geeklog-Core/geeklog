@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.52 2005/09/18 12:09:45 dhaun Exp $
+// $Id: topic.php,v 1.53 2005/11/05 14:02:11 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -524,11 +524,11 @@ if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
                            $_POST['perm_members'], $_POST['perm_anon'],
                            $_POST['is_default'], $_POST['is_archive']);
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader('menu', $LANG27[1]);
     $display .= edittopic (COM_applyFilter ($_GET['tid']));
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader('menu', $LANG27[8]);
     if (isset ($_GET['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
     }

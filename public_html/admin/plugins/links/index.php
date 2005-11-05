@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.17 2005/11/04 10:35:57 ospiess Exp $
+// $Id: index.php,v 1.18 2005/11/05 14:02:11 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -332,15 +332,15 @@ if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // del
             $_POST['perm_owner'], $_POST['perm_group'],
             $_POST['perm_members'], $_POST['perm_anon']);
 } else if ($mode == 'editsubmission') {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[1]);
     $display .= editlink ($mode, COM_applyFilter ($_GET['id']));
     $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[1]);
     $display .= editlink ($mode, COM_applyFilter ($_GET['lid']));
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
         if ($msg > 0) {

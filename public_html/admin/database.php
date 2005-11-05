@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.23 2005/08/13 19:33:19 ospiess Exp $
+// $Id: database.php,v 1.24 2005/11/05 14:02:11 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -65,7 +65,7 @@ function compareBackupFiles ($pFileA, $pFileB)
 
 
 $display = '';
-$display .= COM_siteHeader();
+$display .= COM_siteHeader ('menu', $LANG_DB_BACKUP['last_ten_backups']);
 
 // If user isn't a root user or if the backup feature is disabled, bail.
 if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {

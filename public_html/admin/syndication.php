@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.28 2005/11/04 10:35:57 ospiess Exp $
+// $Id: syndication.php,v 1.29 2005/11/05 14:02:11 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -323,7 +323,7 @@ function newfeed ()
         $feed_template->set_var ('lang_explain', $LANG33[37]);
         $feed_template->set_var ('lang_go', $LANG33[1]);
 
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $LANG33[11]);
         $retval .= COM_startBlock ($LANG33[36], '',
                 COM_getBlockTemplate ('_admin_block', 'header'));
         $retval .= $feed_template->finish ($feed_template->parse ('output',
@@ -446,14 +446,14 @@ if ($_REQUEST['mode'] == 'edit') {
     if ($_REQUEST['fid'] == 0) {
         $display .= newfeed ();
     } else {
-        $display .= COM_siteHeader ('menu')
+        $display .= COM_siteHeader ('menu', $LANG33[24])
                  . editfeed ($_REQUEST['fid'])
                  . COM_siteFooter ();
     }
 }
 else if (($_REQUEST['mode'] == $LANG33[1]) && !empty ($LANG33[1]))
 {
-    $display .= COM_siteHeader ('menu')
+    $display .= COM_siteHeader ('menu', $LANG33[24])
              . editfeed (0, $_REQUEST['type'])
              . COM_siteFooter ();
 }
@@ -467,7 +467,7 @@ else if (($_REQUEST['mode'] == $LANG33[3]) && !empty ($LANG33[3]))
 }
 else
 {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG33[10]);
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage ($_REQUEST['msg']);
     }
