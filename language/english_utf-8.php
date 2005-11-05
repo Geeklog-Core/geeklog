@@ -612,12 +612,12 @@ $LANG21 = array(
     2 => 'You do not have the necessary rights to edit this block.',
     3 => 'Block Editor',
     4 => 'There was a problem reading this feed (see error.log for details).',
-    5 => 'Block Title',
-    6 => 'Topic',
+    5 => '',
+    6 => '',
     7 => 'All',
     8 => 'Block Security Level',
     9 => 'Block Order',
-    10 => 'Block Type',
+    10 => '',
     11 => 'Portal Block',
     12 => 'Normal Block',
     13 => 'Portal Block Options',
@@ -627,12 +627,12 @@ $LANG21 = array(
     17 => 'Block Content',
     18 => 'Please fill in the Block Title and Content fields',
     19 => 'Block Manager',
-    20 => 'Block Title',
+    20 => '',
     21 => 'Block SecLev',
-    22 => 'Block Type',
+    22 => '',
     23 => 'Block Order',
-    24 => 'Block Topic',
-    25 => 'To modify or delete a block, click on that block below.  To create a new block click on new block above.',
+    24 => '',
+    25 => 'To modify or delete a block, click on that blocks edit icon below.  To create a new block click on new block above. To move a block, click on the arrows or boxes with R and L.',
     26 => 'Layout Block',
     27 => 'PHP Block',
     28 => 'PHP Block Options',
@@ -651,13 +651,13 @@ $LANG21 = array(
     41 => 'Right',
     42 => 'You must enter the block title and block order for Geeklog default blocks.',
     43 => 'Homepage Only',
-    44 => 'Access Denied',
+    44 => '',
     45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/block.php\">go back to the block administration screen</a>.",
-    46 => 'New Block',
-    47 => 'Admin Home',
+    46 => 'Move',
+    47 => '',
     48 => 'Block Name',
     49 => ' (no spaces and must be unique)',
-    50 => 'Help File URL',
+    50 => '',
     51 => 'include http://',
     52 => 'If you leave this blank the help icon for this block will not be displayed',
     53 => 'Enabled',
@@ -671,7 +671,8 @@ $LANG21 = array(
     61 => 'No Title',
     62 => 'Article Limit',
     63 => 'Bad Block Title',
-    64 => 'Your Title must not be empty and cannot contain HTML!'
+    64 => 'Your Title must not be empty and cannot contain HTML!',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -680,7 +681,7 @@ $LANG21 = array(
 $LANG22 = array(
     1 => 'Event Editor',
     2 => 'Error',
-    3 => 'Event Title',
+    3 => '',
     4 => 'Event URL',
     5 => 'Event Start Date',
     6 => 'Event End Date',
@@ -690,24 +691,19 @@ $LANG22 = array(
     10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
     12 => 'To modify or delete an event, click on that events edit icon below.  To create a new event click on new event above. Click on the copy icon to create a copy of an existing event.',
-    13 => 'Event Title',
+    13 => '',
     14 => 'Start Date',
     15 => 'End Date',
-    16 => 'Access Denied',
+    16 => '',
     17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/event.php\">go back to the event administration screen</a>.",
-    18 => 'New Event',
-    19 => 'Admin Home',
+    18 => '',
+    19 => '',
     20 => 'save',
     21 => 'cancel',
     22 => 'delete',
     23 => 'Bad start date.',
     24 => 'Bad end date.',
-    25 => 'End date is before start date.',
-    26 => 'Submit',
-    27 => 'Limit Results',
-    28 => 'Search',
-    29 => 'Edit',
-    30 => 'Copy'
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -726,8 +722,8 @@ $LANG24 = array(
     10 => 'cancel',
     11 => 'delete',
     12 => 'ID',
-    13 => 'Title',
-    14 => 'Topic',
+    13 => '',
+    14 => '',
     15 => 'Date',
     16 => 'Intro Text',
     17 => 'Body Text',
@@ -753,19 +749,19 @@ $LANG24 = array(
     37 => 'More by',
     38 => 'More from',
     39 => 'Emails',
-    40 => 'Access Denied',
+    40 => '',
     41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the story administration screen</a> when you are done.",
     42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the story administration screen</a>.",
-    43 => 'New Story',
-    44 => 'Admin Home',
-    45 => 'Access',
+    43 => '',
+    44 => '',
+    45 => '',
     46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RSS headline feed and it will be ignored by the search and statistics pages.',
     47 => 'Images',
     48 => 'image',
     49 => 'right',
     50 => 'left',
     51 => 'To add one of the images you are attaching to this article you need to insert specially formatted text.  The specially formatted text is [imageX], [imageX_right] or [imageX_left] where X is the number of the image you have attached.  NOTE: You must use the images you attach.  If you do not you will be unable to save your story.<br>',
-    52 => 'Delete',
+    52 => '',
     53 => 'was not used.  You must include this image in the intro or body before you can save your changes',
     54 => 'Attached Images Not Used',
     55 => 'The following errors occurred while trying to save your story.  Please correct these errors before saving',
@@ -773,13 +769,13 @@ $LANG24 = array(
     57 => 'View unscaled image',
     58 => 'Archive Options',
     59 => 'Option',
-    60 => 'Enabled',
+    60 => '',
     61 => 'Auto Archive',
     62 => 'Auto Delete',
-    63 => 'Edit',
-    64 => 'Submit',
-    65 => 'Search',
-    66 => 'Limit Results',
+    63 => '',
+    64 => '',
+    65 => '',
+    66 => '',
     67 => 'Expand the Content Edit Area size',
     68 => 'Reduce the Content Edit Area size',
     69 => 'Publish Story Date',
@@ -845,19 +841,19 @@ $LANG28 = array(
     12 => "To modify or delete a user, click on that user's edit icon below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
     13 => 'SecLev',
     14 => 'Reg. Date',
-    15 => 'New User',
-    16 => 'Admin Home',
+    15 => '',
+    16 => '',
     17 => '',
-    18 => 'cancel',
-    19 => 'delete',
+    18 => '',
+    19 => '',
     20 => 'save',
     21 => 'The username you tried saving already exists.',
     22 => 'Error',
     23 => 'Batch Add',
     24 => 'Batch Import of Users',
     25 => 'You can import a batch of users into Geeklog.  The import file must be a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!',
-    26 => 'Search',
-    27 => 'Limit Results',
+    26 => '',
+    27 => '',
     28 => 'Check here to delete this picture',
     29 => 'Path',
     30 => 'Import',
@@ -973,7 +969,7 @@ $LANG31 = array(
     14 => 'Ignore user settings',
     15 => 'Error when sending to: ',
     16 => 'Successfully sent messages to: ',
-    17 => "<a href={$_CONF['site_admin_url']}/mail.php>Send another message</a>",
+    17 => "<a href=\"{$_CONF['site_admin_url']}/mail.php\">Send another message</a>",
     18 => 'To',
     19 => 'NOTE: if you wish to send a message to all site members, select the Logged-in Users group from the drop down.',
     20 => "Successfully sent <successcount> messages and unsuccessfully sent <failcount> messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href=\"{$_CONF['site_admin_url']}/mail.php\">Send another message</a> or you can <a href=\"{$_CONF['site_admin_url']}/moderation.php\">go back to the administration page</a>.",
@@ -1084,7 +1080,7 @@ $MESSAGE = array(
     1 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using {$_CONF['site_name']}",
     2 => "Thank-you for submitting your story to {$_CONF['site_name']}.  It has been submitted to our staff for approval. If approved, your story will be available for others to read on our site.",
     3 => "",
-    4 => "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen in our <a href={$_CONF['site_url']}/calendar.php>calendar</a> section.",
+    4 => "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen in our <a href=\"{$_CONF['site_url']}/calendar.php\">calendar</a> section.",
     5 => 'Your account information has been successfully saved.',
     6 => 'Your preferences have been successfully saved.',
     7 => 'Your comment preferences have been successfully saved.',
@@ -1154,7 +1150,8 @@ $MESSAGE = array(
     71 => 'Your account has now been confirmed and is awaiting administrator approval.',
     72 => 'An error occured while attempting to install the plugin. See error.log for details.',
     73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
-    74 => 'The pingback has been successfully sent.'
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
@@ -1195,8 +1192,8 @@ $LANG_ACCESS = array(
     'edit' => 'Edit',
     'none' => 'None',
     'accessdenied' => 'Access Denied',
-    'storydenialmsg' => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF['site_name']} to receive full membership access!",
-    'eventdenialmsg' => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF['site_name']} to receive full membership access!",
+    'storydenialmsg' => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\">become a member</a> of {$_CONF['site_name']} to receive full membership access!",
+    'eventdenialmsg' => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\">become a member</a> of {$_CONF['site_name']} to receive full membership access!",
     'nogroupsforcoregroup' => 'This group doesn\'t belong to any of the other groups',
     'grouphasnorights' => 'This group doesn\'t have access to any of the administrative features of this site',
     'newgroup' => 'New Group',
@@ -1221,14 +1218,16 @@ $LANG_ACCESS = array(
     'submit' => 'Submit',
     'limitresults' => 'Limit Results',
     'group_id' => 'Group ID',
-    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Group name already exists',
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
 );
 
 ###############################################################################
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'last_ten_backups' => 'Last 10 Back-ups',
+    'last_ten_backups' => 'Last 10 Backups',
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
     'no_backups' => 'No backups in the system',
@@ -1358,29 +1357,19 @@ $LANG_TRB = array (
     'error_ping_url'     => 'Please enter a valid Ping URL.',
     'no_services'        => 'No weblog directory services configured.',
     'services_headline'  => 'Weblog Directory Services',
-    'admin_home'         => 'Admin Home',
-    'new_service'        => 'New Service',
     'service_explain'    => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service click on New Service above.',
     'service'            => 'Service',
     'ping_method'        => 'Ping method',
-    'service_enabled'    => 'Enabled',
     'service_website'    => 'Website',
     'service_ping_url'   => 'URL to ping',
     'ping_standard'      => 'Standard Ping',
     'ping_extended'      => 'Extended Ping',
     'ping_unknown'       => '(unknown method)',
     'edit_service'       => 'Edit Weblog Directory Service',
-    'button_save'        => 'Save',
-    'button_cancel'      => 'Cancel',
-    'button_delete'      => 'Delete',
     'trackbacks'         => 'Trackbacks',
     'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.',
     'editor_intro_none'  => 'Prepare your trackback comment.',
     'trackback_note'     => 'To send a trackback comment for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
-    'edit'               => 'Edit',
-    'search'             => 'Search',
-    'limit_results'      => 'Limit Results',
-    'submit'             => 'Submit',
     'pingback_explain'   => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
     'pingback_url'       => 'Pingback URL',
     'site_url'           => 'This site\'s URL',
@@ -1403,17 +1392,17 @@ $LANG_DIR = array (
 
 ################################################################################
 # "What's New" Time Strings
-#
-# This here determines the order of the sentence "No new stories in 2 hrs"
-# order it so it makes sense in your language:
-# %i    item, "Stories"
-# %n    amount, "2", "20" etc
-# %t    time, "2" (weeks)
-# %s    scale, "hrs", "weeks"
-$WHATS_NEW_STRING = '%n new %i in the last %t %s';
-$WHATS_NEW_LAST   = 'last %t %s';
 
 $LANG_WHATSNEW = array (
+    # This here determines the order of the sentence "No new stories in 2 hrs"
+    # order it so it makes sense in your language:
+    # %i    item, "Stories"
+    # %n    amount, "2", "20" etc
+    # %t    time, "2" (weeks)
+    # %s    scale, "hrs", "weeks"
+    'new_string'  => '%n new %i in the last %t %s',
+    'new_last'    => 'last %t %s',
+    # other strings
     'minutes'     => 'minutes',
     'hours'       => 'hours',
     'days'        => 'days',
@@ -1424,6 +1413,32 @@ $LANG_WHATSNEW = array (
     'day'         => 'day',
     'week'        => 'week',
     'month'       => 'month'
+);
+
+################################################################################
+# Admin - Strings
+#
+# These are some standard strings used by core functions as well as plugins to
+# display adminiatration lists and edit pages
+
+$LANG_ADMIN = array (
+    'search'        => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit'        => 'Submit',
+    'edit'          => 'Edit',
+    'admin_home'    => 'Admin Home',
+    'create_new'    => 'Create New',
+    'enabled'       => 'Enabled',
+    'title'         => 'Title',
+    'type'          => 'Type',
+    'topic'         => 'Topic',
+    'help_url'      => 'Help File URL',
+    'save'          => 'Save',
+    'cancel'        => 'Cancel',
+    'delete'        => 'Delete',
+    'copy'          => 'Copy',
+    'no_results'    => '- No entries found -'
+
 );
 
 ?>
