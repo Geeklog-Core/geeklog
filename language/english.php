@@ -1225,7 +1225,7 @@ $LANG_ACCESS = array(
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'last_ten_backups' => 'Last 10 Back-ups',
+    'last_ten_backups' => 'Last 10 Backups',
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
     'no_backups' => 'No backups in the system',
