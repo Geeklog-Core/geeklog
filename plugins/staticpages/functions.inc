@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.55 2005/11/03 12:16:45 ospiess Exp $
+// $Id: functions.inc,v 1.56 2005/11/05 14:14:03 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -797,6 +797,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
             } else {
                 $retval = $LANG_STATIC['centerblock_no'];
             }
+            break;
         case "unixdate":
             $retval = strftime ($_CONF['daytime'], $A['unixdate']);
             break;
