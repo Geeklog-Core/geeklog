@@ -382,6 +382,7 @@
       */
     function startElement($parser, $name, $attributes)
     {
+      $this->_currentTag = $name;
       if( $name == 'ITEM' )
       {
         $this->_inItem = true;
@@ -397,7 +398,7 @@
       } else {
         $this->_permaLink = false;
       }
-      $this->_currentTag = $name;
+
     }
 
     /**
@@ -411,6 +412,9 @@
       {
         $this->_inItem = false;
         $this->articles[] = $this->_currentItem;
+      } elseif( $name == 'GUID' && $this->_permaLink ) {
+        /* if we have a guid that is ALSO a permalink, override link with it */
+        $this->_currentItem['link'] = $this->_currentItem['guid'];
       }
       $this->_currentTag = '';
     }
@@ -448,9 +452,13 @@
           }
         } else if( $this->_currentTag == 'PUBDATE' ) {
           $this->_currentItem['date'] = $data;
-        } else if( ($this->_currentTag == 'GUID') && $this->_permaLink) {
-          /* if we have a guid that is ALSO a permalink, override link with it */
-          $this->_currentItem['link'] = $data;
+        } else if( $this->_currentTag == 'GUID' ) {
+          if( empty( $this->_currentItem['guid'] ) )
+          {
+            $this->_currentItem['guid'] = $data;
+          } else {
+            $this->_currentItem['guid'] .= $data;
+          }
         }
       } else {
         if( $this->_currentTag == 'TITLE' )
