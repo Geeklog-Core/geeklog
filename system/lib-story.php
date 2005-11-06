@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.46 2005/11/04 11:04:58 ospiess Exp $
+// $Id: lib-story.php,v 1.47 2005/11/06 14:05:41 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -59,34 +59,61 @@ if( $_CONF['allow_user_photo'] )
 * Note: Formerly named COM_article
 *
 */
-function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
+function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query='' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
            $_THEME_URL, $_IMAGE_TYPE, $mode;
 
+    if( empty( $storytpl ))
+    {
+        $storytpl = 'storytext.thtml';
+    }
+
     $curtime = COM_getUserDateTimeFormat( $A['day'] );
     $A['day'] = $curtime[0];
+
+    $introtext = stripslashes( $A['introtext'] );
+    $bodytext  = stripslashes( $A['bodytext'] );
 
     // If plain text then replace newlines with <br> tags
     if( $A['postmode'] == 'plaintext' )
     {
-        $A['introtext'] = nl2br( $A['introtext'] );
-        $A['bodytext'] = nl2br( $A['bodytext'] );
+        $introtext = nl2br( $introtext );
+        $bodytext  = nl2br( $bodytext );
     }
 
-    $A['introtext'] = str_replace( '{', '&#123;', $A['introtext'] );
-    $A['introtext'] = str_replace( '}', '&#125;', $A['introtext'] );
-    $A['bodytext'] = str_replace( '{', '&#123;', $A['bodytext'] );
-    $A['bodytext'] = str_replace( '}', '&#125;', $A['bodytext'] );
+    $introtext = str_replace( '$', '&#36;', $introtext );
+    $introtext = str_replace( '{', '&#123;', $introtext );
+    $introtext = str_replace( '}', '&#125;', $introtext );
+
+   // Replace any plugin autolink tags
+    $introtext = PLG_replaceTags( $introtext );
+
+    if( !empty( $bodytext ))
+    {
+        $bodytext = str_replace( '$', '&#36;', $bodytext );
+        $bodytext = str_replace( '{', '&#123;', $bodytext );
+        $bodytext = str_replace( '}', '&#125;', $bodytext );
+
+        $bodytext = PLG_replaceTags( $bodytext );
+    }
+
+    if( !empty( $query ))
+    {
+        $introtext = COM_highlightQuery( $introtext, $query );
+        $bodytext  = COM_highlightQuery( $bodytext, $query );
+    }
+
+    $A['title'] = str_replace( '$', '&#36;', $A['title'] );
 
     $article = new Template( $_CONF['path_layout'] );
     $article->set_file( array(
             'article'          => $storytpl,
             'bodytext'         => 'storybodytext.thtml',
             'featuredarticle'  => 'featuredstorytext.thtml',
-            'featuredbodytext'=>'featuredstorybodytext.thtml',
-            'archivearticle'=>'archivestorytext.thtml',
-            'archivebodytext'=>'archivestorybodytext.thtml'
+            'featuredbodytext' => 'featuredstorybodytext.thtml',
+            'archivearticle'   => 'archivestorytext.thtml',
+            'archivebodytext'  => 'archivestorybodytext.thtml'
             ));
 
     $article->set_var( 'layout_url', $_CONF['layout_url'] );
@@ -94,7 +121,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $article->set_var( 'story_date', $A['day'] );
     if( $_CONF['hideviewscount'] != 1 ) {
         $article->set_var( 'lang_views', $LANG01[106] );
-        $article->set_var( 'story_hits', COM_NumberFormat( $A['hits'] ) );
+        $article->set_var( 'story_hits', COM_NumberFormat( $A['hits'] ));
     }
     $article->set_var( 'story_id', $A['sid'] );
 
@@ -173,35 +200,25 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     }
     $article->set_var( 'story_topic_url', $topicurl );
 
-    $A['title'] = str_replace( '$', '&#36;', $A['title'] );
-    $A['introtext'] = str_replace( '$', '&#36;', $A['introtext'] );
-    $A['bodytext'] = str_replace( '$', '&#36;', $A['bodytext'] );
-
     $recent_post_anchortag = '';
     $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                 . $A['sid'] );
-    $introtext = stripslashes( $A['introtext'] );
-    $introtext = PLG_replacetags($introtext);   // Replace any plugin autolink tags
     $article->set_var( 'story_title', stripslashes( $A['title'] ));
 
     $show_comments = true;
     if(( $index == 'n' ) || ( $index == 'p' ))
     {
-        if( empty( $A['bodytext'] ))
+        if( empty( $bodytext ))
         {
             $article->set_var( 'story_introtext', $introtext );
             $article->set_var( 'story_text_no_br', $introtext );
         }
         else
         {
-            $bodytext = stripslashes( $A['bodytext'] );
-            // Replace any plugin autolink tags
-            $bodytext = PLG_replacetags( $bodytext );
-
-            if ( ($_CONF['allow_page_breaks'] == 1) and ($index == 'n') )
+            if(( $_CONF['allow_page_breaks'] == 1 ) and ( $index == 'n' ))
             {
                 // page selector
-                if (is_numeric($mode))
+                if( is_numeric( $mode ))
                 {
                     $story_page = $mode;
                 }
@@ -223,7 +240,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                                                       );
                 if( count( $article_array ) > 1 )
                 {
-                    $bodytext=$article_array[$story_page - 1];
+                    $bodytext = $article_array[$story_page - 1];
                 }
                 $article->set_var( 'page_selector', $pagelinks );
 
@@ -263,11 +280,11 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         $article->set_var( 'story_introtext', $introtext );
         $article->set_var( 'story_text_no_br', $introtext );
 
-        if( !empty( $A['bodytext'] ))
+        if( !empty( $bodytext ))
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
             $article->set_var( 'lang_readmore_words', $LANG01[62] );
-            $numwords = COM_NumberFormat (sizeof( explode( ' ', strip_tags( $A['bodytext'] ))));
+            $numwords = COM_NumberFormat (sizeof( explode( ' ', strip_tags( $bodytext ))));
             $article->set_var( 'readmore_words', $numwords );
 
             $article->set_var( 'readmore_link', '<a href="' . $articleUrl . '">'
@@ -278,17 +295,18 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'end_readmore_anchortag', '</a>' );
         }
 
-        if( ( $A['commentcode'] >= 0 )  and ( $show_comments ))
+        if(( $A['commentcode'] >= 0 ) and ( $show_comments ))
         {
             $commentsUrl = COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#comments';
             $article->set_var( 'comments_url', $commentsUrl );
-            $article->set_var( 'comments_text', $A['comments'] . ' '
-                                                . $LANG01[3] );
-            $article->set_var( 'comments_count', COM_NumberFormat ( $A['comments'] ));
+            $article->set_var( 'comments_text',
+                    COM_numberFormat( $A['comments'] ) . ' ' . $LANG01[3] );
+            $article->set_var( 'comments_count',
+                    COM_numberFormat ( $A['comments'] ));
             $article->set_var( 'lang_comments', $LANG01[3] );
             $article->set_var( 'comments_with_count',
-                               sprintf( $LANG01[121], $A['comments'] ));
+                    sprintf( $LANG01[121], COM_numberFormat( $A['comments'] )));
 
             if( $A['comments'] > 0 )
             {
@@ -322,7 +340,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) &&
                 ( $A['trackbackcode'] >= 0 ) && ( $show_comments ))
         {
-            $num_trackbacks = $A['trackbacks'];
+            $num_trackbacks = COM_numberFormat( $A['trackbacks'] );
             $trackbacksUrl = COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#trackback';
             $article->set_var( 'trackbacks_url', $trackbacksUrl );
@@ -333,7 +351,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'trackbacks_with_count',
                                sprintf( $LANG01[122], $num_trackbacks ));
 
-            if( $num_trackbacks > 0 )
+            if( $A['trackbacks'] > 0 )
             {
                 $article->set_var( 'start_trackbacks_anchortag', '<a href="'
                         . $trackbacksUrl . '">' );
@@ -414,15 +432,15 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     }
 
     // Need to convert text date/time to a timestamp
-    $t = explode(' ', $A['expire']);
-    $archiveDateTime = COM_convertDate2Timestamp($t[0], $t[1]);
+    $t = explode( ' ', $A['expire'] );
+    $archiveDateTime = COM_convertDate2Timestamp( $t[0], $t[1] );
     if( $A['featured'] == 1 )
     {
         $article->set_var( 'lang_todays_featured_article', $LANG05[4] );
         $article->parse( 'story_bodyhtml', 'featuredbodytext', true );
         $article->parse( 'finalstory', 'featuredarticle' );
     }
-    elseif ($A['statuscode'] == 10 AND $archiveDateTime <= time() )
+    elseif( $A['statuscode'] == 10 AND $archiveDateTime <= time() )
     {
         $article->parse( 'story_bodyhtml', 'archivestorybodytext', true );
         $article->parse( 'finalstory', 'archivearticle' );

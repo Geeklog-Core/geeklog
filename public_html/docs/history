@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Fixed problems with query highlighting in stories scrambling links in
+  autotags (bug #492) [Dirk]
 - Group names are now unique (as they should have been from the beginning). The
   install script takes care of existing duplicate group names when upgrading
   to 1.3.12 (bug #367) [Dirk]

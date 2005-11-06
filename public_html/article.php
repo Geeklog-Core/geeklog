@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.70 2005/10/31 19:04:45 dhaun Exp $
+// $Id: article.php,v 1.71 2005/11/06 14:05:42 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -160,11 +160,6 @@ if ($A['count'] > 0) {
 
         DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '$story') AND (date <= NOW()) AND (draft_flag = 0)");
 
-        if (!empty ($query)) {
-            $A['introtext'] = COM_highlightQuery ($A['introtext'], $query);
-            $A['bodytext'] = COM_highlightQuery ($A['bodytext'], $query);
-        }
-
         // Display whats related any polls configured for this page
 
         $story_template = new Template($_CONF['path_layout'] . 'article');
@@ -226,7 +221,7 @@ if ($A['count'] > 0) {
                                   $related . $optionsblock);
 
         $story_template->set_var ('formatted_article',
-                                  STORY_renderArticle ($A, 'n'));
+                                  STORY_renderArticle ($A, 'n', '', $query));
 
         // display comments or not?
         if ( (is_numeric($mode)) and ($_CONF['allow_page_breaks'] == 1) )
