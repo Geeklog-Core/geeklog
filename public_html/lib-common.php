@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.489 2005/11/06 10:39:04 dhaun Exp $
+// $Id: lib-common.php,v 1.490 2005/11/06 20:40:07 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -817,7 +817,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         {
             $sid = COM_applyFilter( $_POST['story'] );
         }
-        if( empty( $sid ) && $_CONF['url_rewrite'] )
+        if( empty( $sid ) && $_CONF['url_rewrite'] &&
+                ( strpos( $_SERVER['PHP_SELF'], 'article.php' ) !== false ))
         {
             COM_setArgNames( array( 'story' ));
             $sid = COM_applyFilter( COM_getArgument( 'story' ));
