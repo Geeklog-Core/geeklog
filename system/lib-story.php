@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.47 2005/11/06 14:05:41 dhaun Exp $
+// $Id: lib-story.php,v 1.48 2005/11/06 20:17:07 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -647,12 +647,10 @@ function STORY_getItemInfo ($sid, $what)
     foreach ($properties as $p) {
         switch ($p) {
             case 'description':
-                $retval[] = trim (stripslashes ($A['introtext']) . ' '
-                                  . stripslashes ($A['bodytext']));
+                $retval[] = trim (PLG_replaceTags (stripslashes ($A['introtext']) . ' ' . stripslashes ($A['bodytext'])));
                 break;
             case 'excerpt':
-                $retval[] = trim (stripslashes ($A['introtext']) . "\n\n"
-                                  . stripslashes ($A['bodytext']));
+                $retval[] = trim (PLG_replaceTags (stripslashes ($A['introtext']) . "\n\n" . stripslashes ($A['bodytext'])));
                 break;
             case 'feed':
                 $feedfile = DB_getItem ($_TABLES['syndication'], 'filename',
