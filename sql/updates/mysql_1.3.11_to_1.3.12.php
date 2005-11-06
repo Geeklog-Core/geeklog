@@ -129,4 +129,53 @@ function upgrade_addFeature ()
     }
 }
 
+function upgrade_uniqueGroupNames()
+{
+    global $_TABLES;
+
+    $groups = DB_count ($_TABLES['groups']);
+    $result = DB_query ("SELECT DISTINCT grp_name FROM {$_TABLES['groups']} ORDER BY grp_gl_core ASC");
+    $numGroups = DB_numRows($result);
+
+    if ($groups != $numGroups) {
+        // find and delete the duplicates
+
+        // first, prepare a list of all unique group names
+        $names = array ();
+        for ($i = 0; $i < $numGroups; $i++) {
+            $A = DB_fetchArray ($result);
+            $names[] = $A['grp_name'];
+        }
+
+        // then search for names that occure more than once
+        foreach ($names as $name) {
+            $result = DB_query ("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name = '$name'");
+            $num = DB_numRows ($result);
+            if ($num > 1) {
+                // we're going to keep the first entry - fetch and discard
+                $A = DB_fetchArray ($result);
+                $num--;
+                for ($i = 0; $i < $num; $i++) {
+                    list($grp_id) = DB_fetchArray ($result);
+
+                    DB_delete ($_TABLES['access'], 'acc_grp_id', $grp_id);
+                    DB_delete ($_TABLES['group_assignments'], 'ug_grp_id', $grp_id);
+                    DB_delete ($_TABLES['group_assignments'], 'ug_main_grp_id', $grp_id);
+                    DB_delete ($_TABLES['groups'], 'grp_id', $grp_id);
+                }
+
+                // check if we already found all the duplicates
+                $groups -= $num;
+                if ($groups == $numGroups) {
+                    break;
+                }
+            }
+        }
+    }
+
+    // make 'grp_name' a unique index
+    DB_query ("ALTER TABLE {$_TABLES['groups']} DROP INDEX grp_name");
+    DB_query ("ALTER TABLE {$_TABLES['groups']} ADD UNIQUE grp_name(grp_name)");
+}
+
 ?>

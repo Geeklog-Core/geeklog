@@ -197,7 +197,7 @@ CREATE TABLE {$_TABLES['groups']} (
   grp_descr varchar(255) NOT NULL default '',
   grp_gl_core tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (grp_id),
-  KEY grp_name (grp_name)
+  UNIQUE grp_name (grp_name)
 ) TYPE=MyISAM
 ";
 
