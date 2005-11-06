@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.25 2005/11/06 12:15:38 mjervis Exp $
+// $Id: lib-syndication.php,v 1.26 2005/11/06 13:28:41 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -647,7 +647,7 @@ function SYND_updateFeed( $fid )
             $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $data, $format[0], $format[1]);
             if( $_CONF['trackback_enabled'] && ($format[0] == 'RSS') )
             {
-                $feed->namespaces[] = $this->namespaces[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
+                $feed->namespaces[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
             }
             $feed->extensions = PLG_getFeedExtensionTags($A['type'], $data, $format[0], $format[1]);
             $feed->articles = $content;
