@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.25 2005/10/14 10:11:46 ospiess Exp $
+// $Id: trackback.php,v 1.26 2005/11/06 18:32:43 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -174,6 +174,9 @@ function deleteTrackbackComment ($id)
 
     if (TRB_allowDelete ($sid, $type)) {
         TRB_deleteTrackbackComment ($id);
+        if ($type == 'article') {
+            DB_query ("UPDATE {$_TABLES['stories']} SET trackbacks = trackbacks - 1 WHERE (sid = '$sid')");
+        }
         $msg = 62;
     } else {
         $msg = 63;
