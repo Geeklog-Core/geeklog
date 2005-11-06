@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.26 2005/11/06 18:32:43 dhaun Exp $
+// $Id: trackback.php,v 1.27 2005/11/06 20:16:39 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -273,7 +273,7 @@ function sendPingbacks ($type, $id)
         $retval .= $template->finish ($template->get_var ('output'));
 
     } else {
-        $retval = $LANG_TRB['no_links_pingback'];
+        $retval = '<p>' . $LANG_TRB['no_links_pingback'] . '</p>';
     }
 
     return $retval;
