@@ -26,7 +26,7 @@
   /*  3. This notice may not be removed or altered from any source            */
   /*     distribution.                                                        */
   /****************************************************************************/
-  // $Id: atom.feed.class.php,v 1.7 2005/10/03 18:49:40 mjervis Exp $
+  // $Id: atom.feed.class.php,v 1.8 2005/11/06 12:15:36 mjervis Exp $
 
   /**
     * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -91,6 +91,13 @@
                           . "</content>\n";
         }
       }
+      if( is_array( $this->extensions ) )
+      {
+        foreach( $this->extensions as $extendingTag )
+        {
+            $xml .= "$extendingTag\n";
+        }
+      }
       $xml .= "</entry>\n";
       return $xml;
     }
@@ -104,13 +111,20 @@
     function _feedHeader()
     {
       $xml = '<?xml version="1.0" encoding="' . $this->encoding . '" ?>' . LB . LB
-           . '<feed version="0.3"  xmlns="http://purl.org/atom/ns#">' . LB
+           . '<feed version="0.3"  xmlns="http://purl.org/atom/ns#"'.$this->_injectNamespaces().'>' . LB
            . '<title mode="escaped">' . $this->_safeXML( $this->title ) . '</title>' . LB
            . '<tagline mode="escaped">' . $this->_safeXML( $this->description ) . '</tagline>' . LB
            . '<link rel="alternate" type="text/html" href="' . $this->_safeXML( $this->sitelink ) . '"/>' . LB
            . '<modified>'.date("Y-m-d\TH:i:s\Z").'</modified>' . LB
            . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
            . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
+      if( is_array( $this->extensions ) )
+      {
+        foreach( $this->extensions as $extendingTag )
+        {
+            $xml .= "$extendingTag\n";
+        }
+      }
       return $xml;
     }
 
@@ -268,6 +282,13 @@
                           . "</content>\n";
         }
       }
+      if( is_array( $this->extensions ) )
+      {
+        foreach( $this->extensions as $extendingTag )
+        {
+            $xml .= "$extendingTag\n";
+        }
+      }
       $xml .= "</entry>\n";
       return $xml;
     }
@@ -290,7 +311,7 @@
     function _feedHeader()
     {
       $xml = '<?xml version="1.0" encoding="' . $this->encoding . '" ?>' . LB . LB
-           . '<feed xmlns="http://www.w3.org/2005/Atom">' . LB
+           . '<feed xmlns="http://www.w3.org/2005/Atom"'.$this->_injectNamespaces().'>' . LB
            . '<title type="text">' . $this->_safeXML( $this->title ) . '</title>' . LB
            . '<subtitle type="text">' . $this->_safeXML( $this->description ) . '</subtitle>' . LB
            . '<link rel="self" href="' . $this->_safeXML( $this->url ) . '"/>' . LB
@@ -303,6 +324,13 @@
            . '<updated>'.date("Y-m-d\TH:i:s\Z").'</updated>' . LB
            . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
            . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
+      if( is_array( $this->extensions ) )
+      {
+        foreach( $this->extensions as $extendingTag )
+        {
+            $xml .= "$extendingTag\n";
+        }
+      }
       return $xml;
     }
 

@@ -95,11 +95,21 @@
       * system powering the feed
       */
     var $system;
-    
+
     /**
       * Image to link to the feed.
       */
     var $feedlogo;
+
+    /**
+      * Additional namespaces to add.
+      */
+    var $namespaces;
+
+    /**
+      * Additional tags to add.
+      */
+    var $extensions;
 
     /**
       * Stuff for parsing XML
@@ -183,8 +193,22 @@
       $xml = "<article>\n";
       while( list($key, $value) = each( $article ) )
       {
-        $value = $this->safeXML( $value );
-        $xml .= "<$key>$value</$key>\n>";
+        if($key != 'extensions')
+        {
+            $value = $this->safeXML( $value );
+            $xml .= "<$key>$value</$key>\n>";
+        } else {
+            if(is_array($value))
+            {
+                foreach( $value as $ext )
+                {
+                    $xml .= $ext."\n";
+                }
+            } else {
+                $xml .= $ext."\n";
+            }
+        }
+
       }
       $xml .= "</article>\n";
       return $xl;
@@ -209,8 +233,30 @@
     function _feedHeader()
     {
       $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
-      $xml .= "<feed>\n<title>{$this->title}</title>\n";
+
+      $xml .= '<feed'.$this->_injectNamespaces().">\n";
+
+      $xml .= "<title>{$this->title}</title>\n";
+      foreach( $this->extensions as $extendingTag )
+      {
+        $xml .= $extendingTag."\n";
+      }
       return $xml;
+    }
+
+    /**
+      * Inject XMLNS items into the feed master element,
+      * if needed.
+      */
+    function _injectNamespaces()
+    {
+        $xml = ' ';
+        if( is_array($this->namespaces) )
+        {
+            $xml .= implode(' ', $this->namespaces);
+        }
+
+        return $xml;
     }
 
     /**

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.82 2005/10/16 16:56:31 dhaun Exp $
+// $Id: lib-plugins.php,v 1.83 2005/11/06 12:15:37 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -63,7 +63,7 @@ while ($A = DB_fetchArray($result)) {
 * @param     string     $function_name      holds name of function to call
 *
 */
-function PLG_callFunctionForAllPlugins($function_name) 
+function PLG_callFunctionForAllPlugins($function_name)
 {
     global $_PLUGINS;
 
@@ -88,7 +88,7 @@ function PLG_callFunctionForAllPlugins($function_name)
 * @return       mixed       returns result of function call, otherwise false
 *
 */
-function PLG_callFunctionForOnePlugin($function, $args='') 
+function PLG_callFunctionForOnePlugin($function, $args='')
 {
     if (function_exists($function)) {
         // great, function exists, run it
@@ -99,7 +99,7 @@ function PLG_callFunctionForOnePlugin($function, $args='')
         case 1:
             return $function($args[1]);
             break;
-        case 2: 
+        case 2:
             return $function($args[1], $args[2]);
             break;
         case 3:
@@ -150,7 +150,7 @@ function PLG_upgrade($type)
     return PLG_callFunctionForOnePlugin('plugin_upgrade_' . $type);
 }
 /**
-* Calls the plugin function to return the current version of code. 
+* Calls the plugin function to return the current version of code.
 * Used to indicate to admin if an update or upgrade is requied.
 *
 * @param        string      $type       Plugin name
@@ -177,7 +177,7 @@ function PLG_uninstall($type)
 
     if (empty($retval)) {
         return false;
-    } else { 
+    } else {
         return $retval;
     }
 }
@@ -190,7 +190,7 @@ function PLG_uninstall($type)
 * @return   boolean     True if current user is moderator of plugin otherwise false
 *
 */
-function PLG_isModerator() 
+function PLG_isModerator()
 {
     return PLG_callFunctionForAllPlugins('plugin_ismoderator_');
 }
@@ -206,7 +206,7 @@ function PLG_isModerator()
 * @return   array   Returns menu options for plugin
 *
 */
-function PLG_getMenuItems() 
+function PLG_getMenuItems()
 {
     global $_PLUGINS;
 
@@ -291,7 +291,7 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
 }
 
 /**
-* Allows plugins a chance to handle a comment before GL does.  
+* Allows plugins a chance to handle a comment before GL does.
 
 * This is a first-come-first-serve affair so if a plugin returns an error, other
 * plugins wishing to handle comment preprocessing won't get called
@@ -358,7 +358,7 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
 * @return   mixed                       array (for mode 3) or string
 *
 */
-function PLG_getPluginStats ($showsitestats) 
+function PLG_getPluginStats ($showsitestats)
 {
     global $_PLUGINS;
 
@@ -410,7 +410,7 @@ function PLG_getSearchTypes()
 
     $types = array();
     $cur_types = array();
- 
+
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_searchtypes_' . $pi_name;
         if (function_exists ($function)) {
@@ -451,13 +451,13 @@ function PLG_supportsExpandedSearch($type)
 
 /**
 * This function gives each plugin the opportunity to do their search
-* and return their results.  Results comeback in an array of HTML 
-* formatted table rows that can be quickly printed by search.php 
+* and return their results.  Results comeback in an array of HTML
+* formatted table rows that can be quickly printed by search.php
 *
 * @param    string  $query      What the user searched for
 * @param    date    $datestart  beginning of date range to search for
 * @param    date    $dateend    ending date range to search for
-* @param    string  $topic      the topic the user searched within 
+* @param    string  $topic      the topic the user searched within
 * @param    string  $type       Type of items they are searching, or 'all'
 * @param    int     $author     UID...only return results for this person
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
@@ -466,7 +466,7 @@ function PLG_supportsExpandedSearch($type)
 * @return   array               Returns search results
 *
 */
-function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all', $page = 1, $perpage = 10) 
+function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all', $page = 1, $perpage = 10)
 {
     global $_PLUGINS;
 
@@ -493,7 +493,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
 * @return   int     Number of submissions in queue for plugins
 *
 */
-function PLG_getSubmissionCount() 
+function PLG_getSubmissionCount()
 {
     global $_PLUGINS;
 
@@ -512,16 +512,16 @@ function PLG_getSubmissionCount()
 * required ones for availability. This function is called by several other
 * functions and is not to be called from the plugin directly. The function which
 * call this here follow below.
-* 
-* NOTE for plugin developers: 
+*
+* NOTE for plugin developers:
 * The plugin is responsible for its own security.
 * This supports a plugin having either a single menuitem or multiple menuitems.
 * The plugin has to provide an array for the menuitem of the format:
 * array (menuitem_title, item_url, submission_count)
 * Plugin function can return a single record array or multiple records
 *
-* 
-* @param    array $var_names    An array of the variables that are retrieved. 
+*
+* @param    array $var_names    An array of the variables that are retrieved.
 *                               This has to match the named array that is used
 *                               in the function returning the values
 * @param    array $required_names An array of true/false-values, describing
@@ -599,7 +599,7 @@ function PLG_getCCOptions()
     return $plgresults;
 }
 
-/** 
+/**
 * This function will show any plugin adminstrative options in the
 * admin functions block on every page (assuming the user is an admin
 * and is logged in).
@@ -615,7 +615,7 @@ function PLG_getCCOptions()
 * @return   array   Returns options to put in admin menu
 *
 */
-function PLG_getAdminOptions() 
+function PLG_getAdminOptions()
 {
     global $_PLUGINS;
 
@@ -663,7 +663,7 @@ function PLG_getUserOptions()
 * @return       boolean     Returns true on success otherwise false
 *
 */
-function PLG_approveSubmission($type, $id) 
+function PLG_approveSubmission($type, $id)
 {
     $args[1] = $id;
 
@@ -671,16 +671,16 @@ function PLG_approveSubmission($type, $id)
 }
 
 /**
-* This function is responsible for calling 
+* This function is responsible for calling
 * plugin_moderationdelete_<pluginname> which deletes an item from the
-* submission queue for a plugin.  
+* submission queue for a plugin.
 *
 * @param        string      $type       Plugin to do submission deletion for
 * @param        string      $id         used to identify the record for which to delete
 * @return       boolean     Returns true on success otherwise false
 *
 */
-function PLG_deleteSubmission($type, $id) 
+function PLG_deleteSubmission($type, $id)
 {
     $args[1] = $id;
 
@@ -696,7 +696,7 @@ function PLG_deleteSubmission($type, $id)
 * @return       boolean     Returns true on success otherwise false
 *
 */
-function PLG_saveSubmission($type, $A) 
+function PLG_saveSubmission($type, $A)
 {
     $args[1] = $A;
 
@@ -710,7 +710,7 @@ function PLG_saveSubmission($type, $A)
 * @return   string      returns list of items needing moderation for plugins
 *
 */
-function PLG_showModerationList() 
+function PLG_showModerationList()
 {
     global $_PLUGINS;
 
@@ -731,7 +731,7 @@ function PLG_showModerationList()
 * @return       string
 *
 */
-function PLG_getModerationValues($type) 
+function PLG_getModerationValues($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_moderationvalues_' . $type);
 }
@@ -744,13 +744,13 @@ function PLG_getModerationValues($type)
 * @return       string      HTML for submit form for plugin
 *
 */
-function PLG_showSubmitForm($type) 
+function PLG_showSubmitForm($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_submit_' . $type);
 }
 
 /**
-* This function will show the centerblock for any plugin 
+* This function will show the centerblock for any plugin
 * It will be display before any news and after any defined staticpage content.
 * The plugin is responsible to format the output correctly.
 *
@@ -760,7 +760,7 @@ function PLG_showSubmitForm($type)
 * @return  Formatted center block content
 *
 */
-function PLG_showCenterblock($where = 1, $page = 1, $topic = '') 
+function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
 {
     global $PLG_bufferCenterAPI, $PLG_buffered, $_PLUGINS;
 
@@ -1283,10 +1283,12 @@ function PLG_getFeedNames ($plugin)
 * @param    int      feed          feed id
 * @param    string   link          link to content on the site
 * @param    string   update_data   information for later up-to-date checks
+* @param    string   feedType      The type of feed (RSS/Atom etc)
+* @param    string   feedVersion   The version info of the feed.
 * @return   array                  content of feed
 *
 */
-function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data)
+function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data, $feedType, $feedVersion)
 {
     global $_PLUGINS;
 
@@ -1295,11 +1297,86 @@ function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data)
     if (in_array ($plugin, $_PLUGINS)) {
         $function = 'plugin_getfeedcontent_' . $plugin;
         if (function_exists ($function)) {
-            $content = $function ($feed, $link, $update_data);
+            $content = $function ($feed, $link, $update_data, $feedType, $feedVersion);
         }
     }
 
     return $content;
+}
+
+/**
+  * Get extension tags for a feed. For example, some plugins may extened the
+  * available elements for an RSS 2.0 feed for articles. For some reason. This
+  * function allows that.
+  *
+  * @param  string  contentType     Type of feed content, article, event or a plugin specific type
+  * @param  string  contentID       Unique identifier of content item to extend
+  * @param  string  feedType        Type of feed format (RSS/Atom/etc)
+  * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
+  */
+function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feedVersion)
+{
+    global $_PLUGINS;
+    $extensions = array();
+    foreach( $_PLUGINS as $plugin )
+    {
+        $function = 'plugin_feedElementExtensions_'.$plugin;
+        if (function_exists($function))
+        {
+            array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion));
+        }
+    }
+
+    return $extensions;
+}
+
+/**
+  * Get namespaces extensions for a feed. If a plugin has added extended tags
+  * to a feed, then it may also need to insert some extensions to the name
+  * spaces.
+  * @param string contentType   Type of feed content, article, event or a plugin specific type
+  * @param string $data         Debug trace
+  * @param  string  feedType        Type of feed format (RSS/Atom/etc)
+  * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
+  */
+function PLG_getFeedNSExtensions($contentType, &$data, $feedType, $feedVersion)
+{
+    global $_PLUGINS;
+    $namespaces = array();
+    foreach( $_PLUGINS as $plugin )
+    {
+        $function = 'plugin_feedNSExtensions_'.$plugin;
+        if (function_exists($function))
+        {
+            array_merge($namespaces, $function($contentType, $contentID, $feedType, $feedVersion));
+        }
+    }
+
+    return $namespaces;
+}
+
+/**
+  * Get meta tag extensions for a feed. Add extended tags to the meta
+  * area of a feed.
+  * @param  string contentType      Type of feed content, article, event or a plugin specific type
+  * @param  string   $data          Debug trace
+  * @param  string  feedType        Type of feed format (RSS/Atom/etc)
+  * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
+  */
+function PLG_getFeedExtensionTags($contentType, &$data, $feedType, $feedVersion)
+{
+    global $_PLUGINS;
+    $tags = array();
+    foreach( $_PLUGINS as $plugin )
+    {
+        $function = 'plugin_feedExtensionTags_'.$plugin;
+        if (function_exists($function))
+        {
+            array_merge($tags, $function($contentType, $contentID, $feedType, $feedVersion));
+        }
+    }
+
+    return $tags;
 }
 
 /**
@@ -1383,7 +1460,7 @@ function PLG_getWhatsNew ()
 * @param string $content   Text to be filtered or checked for spam
 * @param integer $action   what to do if comment found
 * @return an error or formatted action HTML to return to calling program
-* 
+*
 * Note: Examples for formatted action HTML are a redirect formatted by COM_refresh
 * The spamx DeleteComment.Action does this.
 *
@@ -1542,7 +1619,7 @@ function PLG_itemSaved ($id, $type)
 * gets Geeklog blocks from plugin's
 *
 * Returns data for blocks on a given side and, potentially, for
-* a given topic. 
+* a given topic.
 *
 * @param        string      $side       Side to get blocks for (right or left for now)
 * @param        string      $topic      Only get blocks for this topic
@@ -1572,7 +1649,7 @@ function PLG_getBlocks( $side, $topic='')
     if (function_exists(CUSTOM_getBlocks)) {
        $cust_items .= CUSTOM_getBlocks($side, $topic='');
        if (is_array ($cust_items)) {
-          $ret = array_merge ($ret, $cust_items) 
+          $ret = array_merge ($ret, $cust_items)
        }
     }
     */

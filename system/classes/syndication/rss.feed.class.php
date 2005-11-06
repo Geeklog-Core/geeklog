@@ -87,6 +87,14 @@
           $xml .= '<description>'.$this->_safeXML( $article['summary'] )."</description>\n";
         }
       }
+
+      if( is_array($article['extensions']) )
+      {
+        foreach( $article['extensions'] as $extensionTag )
+        {
+            $xml .= "$extensionTag\n";
+        }
+      }
       $xml .= "</item>\n";
       return $xml;
     }
@@ -100,7 +108,7 @@
     function _feedHeader()
     {
       $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
-      $xml .= "<rss version=\"0.91\">\n<channel>\n";
+      $xml .= "<rss version=\"0.91\"".$this->_injectNamespaces().">\n<channel>\n";
       $xml .= "<title>".$this->_safeXML( $this->title )."</title>\n";
       $xml .= "<link>".$this->_safeXML( $this->sitelink )."</link>\n";
       if( strlen( $this->description ) > 0 )
@@ -115,6 +123,10 @@
         $xml .= '<title>'.$this->_safeXML( $this->title )."</title>\n";
         $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
         $xml .= "</image>\n";
+      }
+      foreach( $this->extensions as $extendingTag )
+      {
+        $xml .= $extendingTag."\n";
       }
       return $xml;
     }
@@ -288,11 +300,11 @@
           $xml .= '<description>'.$this->_safeXML( $article['summary'] )."</description>\n";
         }
       }
-      if( array_key_exists( 'trackback:ping', $article ) )
+      if( is_array($article['extensions']) )
       {
-        if( strlen( $article['trackback:ping'] ) > 0 )
+        foreach( $article['extensions'] as $extensionTag )
         {
-          $xml .= '<trackback:ping>'.$this->_safeXML( $article['trackback:ping'] )."</trackback:ping>\n";
+            $xml .= "$extensionTag\n";
         }
       }
       $xml .= "</item>\n";
@@ -309,22 +321,14 @@
     {
       global $_CONF;
 
-      $modules = array();
-      $modules[] = 'xmlns:dc="http://purl.org/dc/elements/1.1/"';
-      if( $_CONF['trackback_enabled'] )
+      if( !is_array($this->namespaces) )
       {
-        $modules[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
+        $this->namespaces = array();
       }
+      $this->namespaces[] = 'xmlns:dc="http://purl.org/dc/elements/1.1/"';
 
       $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
-      if( count( $modules ) == 0 )
-      {
-        $xml .= "<rss version=\"2.0\">\n";
-      }
-      else
-      {
-        $xml .= '<rss version="2.0" ' . implode( ' ', $modules ) . ">\n";
-      }
+      $xml .= "<rss version=\"2.0\"".$this->_injectNamespaces().">\n";
       $xml .= "<channel>\n";
       $xml .= "<title>".$this->_safeXML( $this->title )."</title>\n";
       $xml .= "<link>".$this->_safeXML( $this->sitelink )."</link>\n";
@@ -356,7 +360,10 @@
         $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
         $xml .= "</image>\n";
       }
-
+      foreach( $this->extensions as $extendingTag )
+      {
+        $xml .= $extendingTag."\n";
+      }
       return $xml;
     }
 

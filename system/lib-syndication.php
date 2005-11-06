@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.24 2005/11/03 11:04:24 ospiess Exp $
+// $Id: lib-syndication.php,v 1.25 2005/11/06 12:15:38 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -300,7 +300,7 @@ function SYND_feedUpdateCheck( $topic, $update_data, $limit, $updated_topic = ''
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLength )
+function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLength, $feedType, $feedVersion )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -349,7 +349,12 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 
             $storylink = COM_buildUrl( $_CONF['site_url']
                                        . '/article.php?story=' . $row['sid'] );
-
+            $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion);
+            if( $_CONF['trackback_enabled'] && ($feedType = 'RSS'))
+            {
+                $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
+                $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
+            }
             $content[] = array( 'title'      => $storytitle,
                                 'summary'    => $storytext,
                                 'text'       => $fulltext,
@@ -359,14 +364,9 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
                                 'date'       => $row['modified'],
                                 'format'     => $row['postmode'],
                                 'commenturl' => $storylink . '#comments',
-                                'topic'      => $topic
+                                'topic'      => $topic,
+                                'extensions' => $extensionTags,
                               );
-
-            if( $_CONF['trackback_enabled'] )
-            {
-                $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
-                $content[count( $content ) - 1]['trackback:ping'] = $trbUrl;
-            }
         }
     }
 
@@ -386,7 +386,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
+function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feedType, $feedVersion )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -450,7 +450,12 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
 
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
-
+        $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion);
+        if( $_CONF['trackback_enabled'] && ($feedType = 'RSS'))
+        {
+            $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
+            $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
+        }
         $content[] = array( 'title'      => $storytitle,
                             'summary'    => $storytext,
                             'text'       => $fulltext,
@@ -460,14 +465,11 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
                             'date'       => $row['modified'],
                             'format'     => $row['postmode'],
                             'commenturl' => $storylink . '#comments',
-                            'topic'      => $topics[$row['tid']]
+                            'topic'      => $topics[$row['tid']],
+                            'extensions' => $extensionTags
                           );
 
-        if( $_CONF['trackback_enabled'] )
-        {
-            $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
-            $content[count( $content ) - 1]['trackback:ping'] = $trbUrl;
-        }
+
     }
 
     $link = $_CONF['site_url'];
@@ -485,7 +487,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentEvents( $limit, &$link, &$update, $updated_id )
+function SYND_getFeedContentEvents( $limit, &$link, &$update, $updated_id, $feedType, $feedVersion )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -533,14 +535,15 @@ function SYND_getFeedContentEvents( $limit, &$link, &$update, $updated_id )
         $mysec = substr( $row['eid'], 12, 2 );
         $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
         $creationtime = strtotime( $newtime );
-
+        $extensionTags = PLG_getFeedElementExtensions('event', $row['eid'], $feedType, $feedVersion);
         $content[] = array( 'title'  => $eventtitle,
                             'summary'   => $eventtext,
                             'link'   => $eventlink,
                             'uid'    => $row['owner_id'],
                             'author' => COM_getDisplayName( $row['owner_id'] ),
                             'date'   => $creationtime,
-                            'format' => 'plaintext'
+                            'format' => 'plaintext',
+                            'extensions' => $extensionTags
                           );
     }
 
@@ -588,22 +591,25 @@ function SYND_updateFeed( $fid )
                 if( $A['topic'] == '::all')
                 {
                     $content = SYND_getFeedContentAll( $A['limits'], $link,
-                                                       $data, $A['content_length'] );
+                                                       $data, $A['content_length'],
+                                                       $format[0], $format[1] );
                 }
                 elseif( $A['topic'] == '::events')
                 {
                     $content = SYND_getFeedContentEvents( $A['limits'], $link,
-                                                          $data, $A['content_length'] );
+                                                          $data, $A['content_length'],
+                                                          $format[0], $format[1] );
                 }
                 else // feed for a single topic only
                 {
                     $content = SYND_getFeedContentPerTopic( $A['topic'],
-                            $A['limits'], $link, $data, $A['content_length'] );
+                            $A['limits'], $link, $data, $A['content_length'],
+                            $format[0], $format[1] );
                 }
             }
             else
             {
-                $content = PLG_getFeedContent( $A['type'], $fid, $link, $data );
+                $content = PLG_getFeedContent( $A['type'], $fid, $link, $data, $format[0], $format[1] );
                 // can't randomly change the api to send a max length, so
                 // fix it here:
                 if ($A['content_length'] != 1)
@@ -636,6 +642,14 @@ function SYND_updateFeed( $fid )
                              . $_CONF['site_name'];
             $feed->sitecontact = $_CONF['site_mail'];
             $feed->system = 'Geeklog ' . VERSION;
+
+            /* Gather any other stuff */
+            $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $data, $format[0], $format[1]);
+            if( $_CONF['trackback_enabled'] && ($format[0] == 'RSS') )
+            {
+                $feed->namespaces[] = $this->namespaces[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
+            }
+            $feed->extensions = PLG_getFeedExtensionTags($A['type'], $data, $format[0], $format[1]);
             $feed->articles = $content;
 
             if( !empty( $A['filename'] ))

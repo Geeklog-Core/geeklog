@@ -87,6 +87,13 @@
                           . "</content:encoded>\n";
         }
       }
+      if( is_array( $article->extensions ) )
+      {
+        foreach( $article->extensions as $extendingTag )
+        {
+            $xml .= "$extendingTag\n";
+        }
+      }
       $xml .= "</item>\n";
       return $xml;
     }
@@ -100,7 +107,11 @@
     function _feedHeader()
     {
       $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
-      $xml .= "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns=\"http://purl.org/rss/1.0/\">\n<channel>\n";
+      $this->namespaces[] = 'xmlns:dc="http://purl.org/dc/elements/1.1/"';
+      $this->namespaces[] = 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"';
+      $this->namespaces[] = 'xmlns="http://purl.org/rss/1.0/"';
+      $xml .= '<rdf:RDF'.$this->_injectNamespaces().">\n";
+      $xml .= "<channel  rdf:about=\"{$this->feedlogo}\">\n";
       $xml .= "<title>".$this->_safeXML( $this->title )."</title>\n";
       $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
       $xml .= '<description>'.$this->_safeXML( $this->description )."</description>\n";
@@ -109,11 +120,28 @@
       {
         $xml .= '<image rdf:resource="'.$this->_safeXML( $this->feedlogo )."\"/>\n";
       }
+
       if( strlen($this->sitecontact) > 0 )
       {
         $xml .= '<dc:creator>'.$this->sitecontact."</dc:creator>\n";
       }
-      $xml .= "<items>\n<rdf:Seq/>\n</items></channel>\n";
+      $xml .= "<items>\n<rdf:Seq/>\n</items>\n";
+      if( strlen($this->feedlogo) > 0 )
+      {
+        $xml .= "<image  rdf:about=\"{$this->feedlogo}\">\n";
+        $xml .= '<url>'.$this->_safeXML( $this->feedlogo )."</url>\n";
+        $xml .= '<title>'.$this->_safeXML( $this->title )."</title>\n";
+        $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
+        $xml .= "</image>\n";
+      }
+      if( is_array( $this->extensions ) )
+      {
+        foreach( $this->extensions as $extendingTag )
+        {
+            $xml .= "$extendingTag\n";
+        }
+      }
+      $xml .= "</channel>\n";
 
       return $xml;
     }
