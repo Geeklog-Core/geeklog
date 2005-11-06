@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.27 2005/11/06 16:39:19 mjervis Exp $
+// $Id: lib-syndication.php,v 1.28 2005/11/06 19:57:54 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -342,6 +342,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 
             $storytitle = stripslashes( $row['title'] );
             $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
+            $fulltext = PLG_replaceTags( $fulltext );
             $storytext = SYND_truncateSummary( $fulltext, $contentLength);
 
             $fulltext = trim( $fulltext );
@@ -444,6 +445,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
         $storytitle = stripslashes( $row['title'] );
 
         $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
+        $fulltext = PLG_replaceTags( $fulltext );
         $storytext = SYND_truncateSummary( $fulltext, $contentLength );
         $fulltext = trim( $fulltext );
         $fulltext = preg_replace( "/(\015)/", "", $fulltext );
