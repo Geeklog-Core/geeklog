@@ -399,7 +399,7 @@ CREATE TABLE {$_TABLES['stories']} (
   commentcode tinyint(4) NOT NULL default '0',
   trackbackcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
-  expire DATETIME NOT NULL,
+  expire DATETIME NOT NULL default '0000-00-00 00:00:00',
   postmode varchar(10) NOT NULL default 'html',
   frontpage tinyint(3) unsigned default '1',
   in_transit tinyint(1) unsigned default '0',
