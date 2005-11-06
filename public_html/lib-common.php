@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.488 2005/11/05 15:40:07 dhaun Exp $
+// $Id: lib-common.php,v 1.489 2005/11/06 10:39:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3315,6 +3315,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
         $retval .= '<span class="warningsmall">' . $LANG01[31] . ' ';
     }
 
+    $allow_page_break = false;
     if( empty( $permissions ) || !SEC_hasRights( $permissions ) ||
             empty( $_CONF['admin_html'] ))
     {
@@ -3324,6 +3325,18 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
     {
         $html = array_merge_recursive( $_CONF['user_html'],
                                        $_CONF['admin_html'] );
+        if( $_CONF['allow_page_breaks'] == 1 )
+        {
+            $perms = explode( ',', $permissions );
+            foreach( $perms as $p )
+            {
+                if( substr( $p, 0, 6 ) == 'story.' )
+                {
+                    $allow_page_break = true;
+                    break;
+                }
+            }
+        }
     }
 
     foreach( $html as $tag => $attr )
@@ -3333,8 +3346,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
 
     $retval .= '[code]';
 
-    if( ( $_CONF['allow_page_breaks'] == 1 )
-        and (substr($permissions,0,5) == 'story') )
+    if( $allow_page_break )
     {
         $retval .= ', [page_break]';
     }
