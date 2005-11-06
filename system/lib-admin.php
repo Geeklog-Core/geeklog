@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.15 2005/11/05 13:38:10 dhaun Exp $
+// $Id: lib-admin.php,v 1.16 2005/11/06 21:41:48 ospiess Exp $
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -55,7 +55,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     }
     $curpage = 1;
     if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
+        $curpage = COM_applyFilter ($_REQUEST['page'], true);
     }
 
     if ($curpage <= 0) {
@@ -234,9 +234,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     
     if ($text_arr['has_extras']) {
         if (!empty($query)) {
-            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
+            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order_var}&amp;direction={$prevdirection}";
         } else {
-            $base_url = $form_url . "?query_limit={$query_arr['query_limit']}&amp;order={$order}&amp;direction={$prevdirection}";
+            $base_url = $form_url . "?query_limit={$query_arr['query_limit']}&amp;order={$order_var}&amp;direction={$prevdirection}";
         }
 
         if ($num_pages > 1) {
@@ -559,6 +559,9 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr) {
             break;
         case "delete":
             $retval = "<input type=\"radio\" name=\"action[]\" value=\"delete\">";
+            break;
+        case "date":
+            $retval = strftime ($_CONF['daytime'], $A['date']);
             break;
         case "approve":
             $retval = "<input type=\"radio\" name=\"action[]\" value=\"approve\">"
