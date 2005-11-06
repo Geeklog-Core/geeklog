@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.83 2005/11/06 12:15:37 mjervis Exp $
+// $Id: lib-plugins.php,v 1.84 2005/11/06 16:39:19 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1323,10 +1323,10 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
         $function = 'plugin_feedElementExtensions_'.$plugin;
         if (function_exists($function))
         {
-            array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion));
+            $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion));
+            var_dump($extensions);
         }
     }
-
     return $extensions;
 }
 
@@ -1335,11 +1335,10 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
   * to a feed, then it may also need to insert some extensions to the name
   * spaces.
   * @param string contentType   Type of feed content, article, event or a plugin specific type
-  * @param string $data         Debug trace
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
   */
-function PLG_getFeedNSExtensions($contentType, &$data, $feedType, $feedVersion)
+function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion)
 {
     global $_PLUGINS;
     $namespaces = array();
@@ -1348,7 +1347,7 @@ function PLG_getFeedNSExtensions($contentType, &$data, $feedType, $feedVersion)
         $function = 'plugin_feedNSExtensions_'.$plugin;
         if (function_exists($function))
         {
-            array_merge($namespaces, $function($contentType, $contentID, $feedType, $feedVersion));
+            $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion));
         }
     }
 
@@ -1359,11 +1358,10 @@ function PLG_getFeedNSExtensions($contentType, &$data, $feedType, $feedVersion)
   * Get meta tag extensions for a feed. Add extended tags to the meta
   * area of a feed.
   * @param  string contentType      Type of feed content, article, event or a plugin specific type
-  * @param  string   $data          Debug trace
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
   */
-function PLG_getFeedExtensionTags($contentType, &$data, $feedType, $feedVersion)
+function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion)
 {
     global $_PLUGINS;
     $tags = array();
@@ -1372,7 +1370,7 @@ function PLG_getFeedExtensionTags($contentType, &$data, $feedType, $feedVersion)
         $function = 'plugin_feedExtensionTags_'.$plugin;
         if (function_exists($function))
         {
-            array_merge($tags, $function($contentType, $contentID, $feedType, $feedVersion));
+            $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion));
         }
     }
 

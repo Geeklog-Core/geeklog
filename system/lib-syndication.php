@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.26 2005/11/06 13:28:41 dhaun Exp $
+// $Id: lib-syndication.php,v 1.27 2005/11/06 16:39:19 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -350,7 +350,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $storylink = COM_buildUrl( $_CONF['site_url']
                                        . '/article.php?story=' . $row['sid'] );
             $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion);
-            if( $_CONF['trackback_enabled'] && ($feedType = 'RSS'))
+            if( $_CONF['trackback_enabled'] && ($feedType == 'RSS'))
             {
                 $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
                 $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
@@ -451,7 +451,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
         $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion);
-        if( $_CONF['trackback_enabled'] && ($feedType = 'RSS'))
+        if( $_CONF['trackback_enabled'] && ($feedType == 'RSS'))
         {
             $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
             $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
@@ -644,12 +644,12 @@ function SYND_updateFeed( $fid )
             $feed->system = 'Geeklog ' . VERSION;
 
             /* Gather any other stuff */
-            $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $data, $format[0], $format[1]);
+            $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $format[0], $format[1]);
             if( $_CONF['trackback_enabled'] && ($format[0] == 'RSS') )
             {
                 $feed->namespaces[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
             }
-            $feed->extensions = PLG_getFeedExtensionTags($A['type'], $data, $format[0], $format[1]);
+            $feed->extensions = PLG_getFeedExtensionTags($A['type'], $format[0], $format[1]);
             $feed->articles = $content;
 
             if( !empty( $A['filename'] ))
