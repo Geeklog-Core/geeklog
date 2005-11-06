@@ -1257,7 +1257,9 @@ $LANG_ACCESS = array(
     'submit' => 'Abschicken',
     'limitresults' => 'Limit Results',
     'group_id' => 'Gruppen-ID',
-    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Gruppenname existiert schon',
+    'groupexistsmsg' => 'Es existiert bereits eine Gruppe mit diesem Namen. Gruppennamen müssen eindeutig sein.'
 );
 
 ###############################################################################
