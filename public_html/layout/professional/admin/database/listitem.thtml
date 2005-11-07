@@ -1,4 +1,0 @@
-<tr class="pluginRow{cssid}">
-  <td align="left">{backup_file}</td>
-  <td align="right">{backup_size} <b>{lang_bytes}</b></td>
-</tr>

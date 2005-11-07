@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.67 2005/11/05 14:02:11 dhaun Exp $
+// $Id: moderation.php,v 1.68 2005/11/07 10:15:30 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -265,24 +265,28 @@ function itemlist($type)
     } else {
         $nrows = DB_numRows($result);
     }
-
+    $data_arr = array();
     if ($nrows > 0) {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            if ($isplugin)  {
+                $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
+                         . '/index.php?mode=editsubmission&amp;id=' . $A[0];
+            } else {
+                $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
+                         . '.php?mode=editsubmission&amp;id=' . $A[0];
+            }
+            $A['row'] = $i;
+            $data_arr[$i] = $A;
+        }
         
         $header_arr = array(      # dislay 'text' and use table field 'field'
-            array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-            array('text' => $H[0], 'field' => 1, 'sort' => false),
-            array('text' => $H[1], 'field' => 2, 'sort' => false),
-            array('text' => $H[2], 'field' => 3, 'sort' => false),
-            array('text' => $LANG29[2], 'field' => 'delete', 'sort' => false),
-            array('text' => $LANG29[1], 'field' => 'approve', 'sort' => false)
-        );
-        
-        $defsort_arr = array('field' => '',
-                         'direction' => '');
-
-        $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
+            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+            array('text' => $H[0], 'field' => 1),
+            array('text' => $H[1], 'field' => 2),
+            array('text' => $H[2], 'field' => 3),
+            array('text' => $LANG29[2], 'field' => 'delete'),
+            array('text' => $LANG29[1], 'field' => 'approve')
         );
         
         $text_arr = array('has_menu'     =>  false,
@@ -290,19 +294,12 @@ function itemlist($type)
                           'help_url' => $section_help,
         );
         
-        $query_arr = array('table' => '',
-                           'sql' => $sql
-        );
-        
-        $retval .="<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
+        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
                     ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
 
-        $retval .= ADMIN_list ($type, ADMIN_getListField_moderation, $header_arr, $text_arr,
-                                $query_arr, $menu_arr, $defsort_arr);
+        $retval .= ADMIN_simpleList($type, "ADMIN_getListField_moderation", $header_arr, $field_arr, $text_arr, $data_arr, $menu_arr);
         $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
-
-        
     } else {
         if ($nrows <> -1) {
             $retval .= $LANG29[39] . "<br>";
@@ -442,8 +439,6 @@ function moderation($mid,$action,$type)
     global $_CONF, $_TABLES;
 
     $retval = '';
-    
-    echo phpinfo();
 
     switch ($type) {
     case 'event':

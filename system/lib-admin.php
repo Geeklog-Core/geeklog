@@ -32,7 +32,85 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.16 2005/11/06 21:41:48 ospiess Exp $
+// $Id: lib-admin.php,v 1.17 2005/11/07 10:15:30 ospiess Exp $
+
+function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
+                            $text_arr, $data_arr, $menu_arr)
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE, $MESSAGE;
+    $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates->set_file (array ('topmenu' => 'topmenu_nosearch.thtml',
+                                       'list' => 'list.thtml',
+                                       'header' => 'header.thtml',
+                                       'row' => 'listitem.thtml',
+                                       'field' => 'field.thtml',
+                                       'menufields' => 'menufields.thtml'
+                                      ));
+    $admin_templates->set_var('site_url', $_CONF['site_url']);
+    $admin_templates->set_var('form_url', $text_arr['form_url']);
+    $admin_templates->set_var('icon', $text_arr['icon']);
+    
+    $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
+    
+    if ($text_arr['has_menu']) {
+        for ($i = 0; $i < count($menu_arr); $i++) {
+            $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
+            $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
+            if ($i < (count($menu_arr) -1)) {
+                $admin_templates->set_var('line', '|' );
+            }
+            $admin_templates->parse('menu_fields', 'menufields', true);
+            $admin_templates->clear_var('line');
+        }
+        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
+        $admin_templates->parse('top_menu', 'topmenu', true);
+    }
+
+    $icon_arr = array(
+        'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
+             . $LANG_ADMIN['edit'] . '">',
+        'copy' => '<img src="' . $_CONF['layout_url'] . '/images/copy.'
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
+             . $LANG_ADMIN['copy'] . '">',
+        'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
+            . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
+            . '" title="' . $LANG_ACCESS['listthem'] . '">'
+    );
+
+    $retval .= COM_startBlock ($text_arr['title'], $text_arr['help_url'],
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+                               
+    # HEADER FIELDS array(text, field, sort)
+    for ($i=0; $i < count( $header_arr ); $i++) {
+        $admin_templates->set_var('header_text', $header_arr[$i]['text']);
+        $admin_templates->parse('header_row', 'header', true);
+    }
+
+    for ($i = 0; $i < count($data_arr); $i++) {
+        for ($j = 0; $j < count($header_arr); $j++) {
+            $fieldname = $header_arr[$j]['field'];
+            if (!empty($fieldfunction)) {
+                $fieldvalue = $fieldfunction($fieldname, $data_arr[$i][$fieldname], $data_arr[$i], $icon_arr);
+            } else {
+                $fieldvalue = $data_arr[$i][$fieldname];
+            }
+            if ($fieldvalue !== false) {
+                $admin_templates->set_var('itemtext', $fieldvalue);
+                $admin_templates->parse('item_field', 'field', true);
+            }
+        }
+        $admin_templates->set_var('cssid', ($i%2)+1);
+        $admin_templates->parse('item_row', 'row', true);
+        $admin_templates->clear_var('item_field');
+    }
+    
+    $admin_templates->parse('output', 'list');
+    $retval .= $admin_templates->finish($admin_templates->get_var('output'));
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    return $retval;
+
+}
 
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
@@ -550,22 +628,20 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
 }
 
 function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ADMIN;
+    global $_CONF, $LANG_ADMIN, $type;
     switch($fieldname) {
         case "edit":
-            $url = $_CONF['site_admin_url'] . '/plugins/' . $type
-                    . '/index.php?mode=editsubmission&amp;id=' . $A['id'];
-            $retval = "<a href=\"$url\">{$icon_arr['edit']}</a>";
+            $retval = "<a href=\"{$A['edit']}\">{$icon_arr['edit']}</a>";
             break;
         case "delete":
-            $retval = "<input type=\"radio\" name=\"action[]\" value=\"delete\">";
+            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\">";
             break;
-        case "date":
+        case "day":
             $retval = strftime ($_CONF['daytime'], $A['date']);
             break;
         case "approve":
-            $retval = "<input type=\"radio\" name=\"action[]\" value=\"approve\">"
-                     ."<input type=\"hidden\" name=\"id[]\" value=\"{$A['id']}\">";
+            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\">"
+                     ."<input type=\"hidden\" name=\"id[{{$A['row']}}]\" value=\"{$A[0]}\">";
             break;
         default:
             $retval = COM_makeClickableLinks (stripslashes ( $fieldvalue));

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.24 2005/11/05 14:02:11 dhaun Exp $
+// $Id: database.php,v 1.25 2005/11/07 10:15:30 ospiess Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -80,8 +80,8 @@ if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {
 }
 
 // Perform the backup if asked
-if (isset ($_POST['mode']) &&
-        ($_POST['mode'] == $LANG_DB_BACKUP['do_backup'])) {
+if (isset ($_GET['mode']) &&
+        ($_GET['mode'] == $LANG_DB_BACKUP['do_backup'])) {
     if (is_dir ($_CONF['backup_path'])) {
         $curdatetime = date ("Y_m_d_H_i_s");
         $backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";
@@ -142,8 +142,6 @@ if (isset ($_POST['mode']) &&
 
 if (is_writable ($_CONF['backup_path'])) {
     $backups = array();
-    $display .= COM_startBlock ($LANG_DB_BACKUP['last_ten_backups'], '',
-                        COM_getBlockTemplate ('_admin_block', 'header'));
     $fd = opendir($_CONF['backup_path']);
     $index = 0;
     while ((false !== ($file = @readdir ($fd)))) {
@@ -160,40 +158,38 @@ if (is_writable ($_CONF['backup_path'])) {
         usort ($backups, 'compareBackupFiles');
         $backups = array_slice ($backups, 0, 10);
         reset($backups);
-
-        $database = new Template ($_CONF['path_layout'] . 'admin/database');
-        $database->set_file (array ('list' => 'listbackups.thtml',
-                                    'row'  => 'listitem.thtml'));
-        $database->set_var ('site_url', $_CONF['site_url']);
-        $database->set_var ('layout_url', $_CONF['layout_url']);
-        $database->set_var ('lang_backupfile', $LANG_DB_BACKUP['backup_file']);
-        $database->set_var ('lang_backupsize', $LANG_DB_BACKUP['size']);
-        $database->set_var ('lang_bytes', $LANG_DB_BACKUP['bytes']);
-
+        
+        $data_arr = array();
         for ($i = 0; $i < count ($backups); $i++) {
-            $backupfile = $_CONF['backup_path'] . current ($backups);
+            $backupfile = $_CONF['backup_path'] . $backups[$i];
             $backupfilesize = filesize ($backupfile);
-            $database->set_var ('backup_file', current ($backups));
-            $database->set_var ('backup_size', $backupfilesize);
-            $database->set_var ('cssid', ($i % 2) + 1);
-            $database->parse ('backup_item', 'row', true);
-            next($backups);
+            $data_arr[$i] = array('file' => $backups[$i],
+                                  'size' => $backupfilesize . " <b>"
+                                            .$LANG_DB_BACKUP['bytes'] . "</b>");
         }
-        $database->set_var ('number_backups',
-                sprintf ($LANG_DB_BACKUP['total_number'], $index));
-        $display .= $database->parse ('output', 'list');
+        
+        $menu_arr = array (
+                        array('url' => $_CONF['site_admin_url']
+                                       . '/database.php?mode=' . $LANG_DB_BACKUP['do_backup'],
+                              'text' => $LANG_ADMIN['create_new']),
+                        array('url' => $_CONF['site_admin_url'],
+                              'text' => $LANG_ADMIN['admin_home'])
+        );
+         
+        $header_arr = array(      # dislay 'text' and use table field 'field'
+            array('text' => $LANG_DB_BACKUP['backup_file'], 'field' => 'file'),
+            array('text' => $LANG_DB_BACKUP['size'], 'field' => 'size')
+        );
+
+        $text_arr = array('has_menu' => true,
+                          'instructions' => $LANG_DB_BACKUP['db_explanation']
+                                            . "<br>" . sprintf ($LANG_DB_BACKUP['total_number'], $index),
+                          'icon' => $_CONF['layout_url'] . '/images/icons/database.png'
+        );
+        $display .= ADMIN_simpleList($type, "", $header_arr, $field_arr, $text_arr, $data_arr, $menu_arr);
     } else {
         $display .= '<p>' . $LANG_DB_BACKUP['no_backups'] . '</p>';
     }
-
-    // Show backup form
-    $display .= $LANG_DB_BACKUP['db_explanation'];
-    $display .= '<form name="dobackup" method="POST" action="'
-             . $_CONF['site_admin_url'] . '/database.php">';
-    $display .= '<input type="submit" name="mode" value="'
-             . $LANG_DB_BACKUP['do_backup'] . '"></form>';
-
-    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 } else {
     $display .= COM_startBlock ($LANG08[06], '',
                         COM_getBlockTemplate ('_msg_block', 'header'));
