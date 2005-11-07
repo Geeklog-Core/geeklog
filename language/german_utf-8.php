@@ -1179,7 +1179,6 @@ $MESSAGE = array(
     74 => 'Der Pingback wurde erfolgreich verschickt.',
     75 => 'Trackbacks müssen als POST-Request verschickt werden.'
 );
-);
 
 ###############################################################################
 
