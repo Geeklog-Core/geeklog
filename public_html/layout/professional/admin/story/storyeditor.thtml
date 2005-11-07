@@ -168,16 +168,15 @@ function enablearchive(obj) {
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_hits}:</td>
-                                        <td><input type="hidden" name="hits" value="{story_hits}">{story_hits}</td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">{lang_comments}:</td>
-                                        <td><input type="hidden" name="comments" value="{story_comments}">{story_comments}</td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">{lang_emails}:</td>
-                                        <td><input type="hidden" name="numemails" value="{story_emails}">{story_emails} 
-                                        </td>
+                                        <td><table border="0" cellspacing="0" cellpadding="0" width="100%"><tr>
+                                        <td align="left"><input type="hidden" name="hits" value="{story_hits}">{story_hits}</td>
+                                        <td>{lang_comments}:
+                                        <input type="hidden" name="comments" value="{story_comments}">{story_comments}</td>
+                                        <td>{lang_trackbacks}:
+                                        <input type="hidden" name="trackbacks" value="{story_trackbacks}">{story_trackbacks}</td>
+                                        <td align="right">{lang_emails}:
+                                        <input type="hidden" name="numemails" value="{story_emails}">{story_emails}</td>
+                                        </tr></table></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><hr></td>

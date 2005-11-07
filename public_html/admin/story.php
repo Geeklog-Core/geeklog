@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.181 2005/11/05 14:02:11 dhaun Exp $
+// $Id: story.php,v 1.182 2005/11/07 21:17:09 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -603,6 +603,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $story_templates->set_var('story_hits', $A['hits']);
     $story_templates->set_var('lang_comments', $LANG24[19]);
     $story_templates->set_var('story_comments', $A['comments']);
+    $story_templates->set_var('lang_trackbacks', $LANG24[29]);
+    $story_templates->set_var('story_trackbacks', $A['trackbacks']);
     $story_templates->set_var('lang_emails', $LANG24[39]);
     $story_templates->set_var('story_emails', $A['numemails']);
     $story_templates->set_var('story_id', $A['sid']);
