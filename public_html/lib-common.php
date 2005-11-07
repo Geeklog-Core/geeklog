@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.490 2005/11/06 20:40:07 dhaun Exp $
+// $Id: lib-common.php,v 1.491 2005/11/07 09:15:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2866,7 +2866,7 @@ function COM_olderStuff()
 {
     global $_TABLES, $_CONF;
 
-    $sql = "SELECT sid,tid,title,comments,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL( 'AND', 1 ) . " ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql = "SELECT sid,tid,title,comments,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL( 'AND', 1 ) . " ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 

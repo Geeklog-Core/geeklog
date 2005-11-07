@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- The "Older Stories" block now only lists articles that appeared on the
+  frontpage (i.e. have not been set to "Show only in topic", bug #408) [Dirk]
 - Fixed problems with query highlighting in stories scrambling links in
   autotags (bug #492) [Dirk]
 - Group names are now unique (as they should have been from the beginning). The
