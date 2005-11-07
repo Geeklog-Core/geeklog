@@ -97,8 +97,6 @@ GeekLog History/Changes:
   <link rel="alternate" type="application/{format}+xml" ....> [Oliver]
 - Added options to google-Navigation so it can be used by plugins and work with
   url-rewriting (feature request #315). [Oliver]
-- Added optional SSL connections for all password-related pages and pathes in
-  config.php. Fixed bug #398, used diff file from Jerome Limozin [Oliver]
 - Userlist now also shows Registration Date and if $_CONF['lastlogin']= true it
   shows the last login date instead. [Oliver]
 - Added option in config.php to hide "Viewed: x" line with

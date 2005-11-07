@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.119 2005/09/30 20:50:23 mjervis Exp $
+// $Id: users.php,v 1.120 2005/11/07 11:10:41 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -113,7 +113,6 @@ function userprofile ($user, $msg = 0)
                                       'row'     => 'commentrow.thtml',
                                       'strow'   => 'storyrow.thtml'));
     $user_templates->set_var ('site_url', $_CONF['site_url']);
-    $user_templates->set_var ('site_url_ssl', $_CONF['site_url_ssl']);
     $user_templates->set_var ('start_block_userprofile',
             COM_startBlock ($LANG04[1] . ' ' . $A['username']));
     $user_templates->set_var ('end_block', COM_endBlock ());
@@ -393,7 +392,6 @@ function newpasswordform ($uid, $requestid)
     $pwform = new Template ($_CONF['path_layout'] . 'users');
     $pwform->set_file (array ('newpw' => 'newpassword.thtml'));
     $pwform->set_var ('site_url', $_CONF['site_url']);
-    $pwform->set_var ('site_url_ssl', $_CONF['site_url_ssl']);
     $pwform->set_var ('layout_url', $_CONF['layout_url']);
 
     $pwform->set_var ('user_id', $uid);
@@ -506,7 +504,6 @@ function loginform ($hide_forgotpw_link = false, $statusmode=-1)
     $user_templates = new Template ($_CONF['path_layout'] . 'users');
     $user_templates->set_file('login', 'loginform.thtml');
     $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_url_ssl', $_CONF['site_url_ssl']);
     if ($statusmode == 0) {
         $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[114]));
         $user_templates->set_var('lang_message', $LANG04[115]);

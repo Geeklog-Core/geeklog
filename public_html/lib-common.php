@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.491 2005/11/07 09:15:12 dhaun Exp $
+// $Id: lib-common.php,v 1.492 2005/11/07 11:10:41 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2046,7 +2046,6 @@ function COM_userMenu( $help='', $title='' )
         $login = new Template( $_CONF['path_layout'] );
         $login->set_file( 'form', 'loginform.thtml' );
         $login->set_var( 'site_url', $_CONF['site_url'] );
-        $login->set_var( 'site_url_ssl', $_CONF['site_url_ssl'] );
         $login->set_var( 'layout_url', $_CONF['layout_url'] );
         $login->set_var( 'lang_username', $LANG01[21] );
         $login->set_var( 'lang_password', $LANG01[57] );

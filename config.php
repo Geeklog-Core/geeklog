@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.195 2005/10/31 19:04:44 dhaun Exp $
+// $Id: config.php,v 1.196 2005/11/07 11:10:40 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -82,24 +82,11 @@ $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 // index.php file resides (no trailing slash).
 $_CONF['site_url']          = 'http://www.example.com';
 
-// if your server supports SSL and is configured to serve pages with https,
-// you can setup the variable site_url_ssl to point to the URL to your site,
-// starting with https:// Otherwise, leave this as $_CONF['site_url'].
-// This will force authentication or password changes to use encrypted connection.
-// default is to not use https, so change this line to something like
-// $_CONF['site_url_ssl'] = 'https://www.example.com';
-$_CONF['site_url_ssl']          = $_CONF['site_url'];
-
 // Some hosting services have a preconfigured admin directory. In that case,
 // you need to rename Geeklog's admin directory to something like "myadmin"
 // and change the following URL as well. Leave as is until you experience any
 // problems accessing Geeklog's admin menu.
 $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
-
-// if you want to do all your admin tasks over a ssl secured URL, please set
-// this to  $_CONF['site_url_ssl'] . '/admin';
-// otherwise, leave as $_CONF['site_url'] . '/admin';
-$_CONF['site_admin_url_ssl']    = $_CONF['site_url'] . '/admin';
 
 // This is the return address for all email sent by Geeklog:
 $_CONF['site_mail']         = 'admin@example.com';

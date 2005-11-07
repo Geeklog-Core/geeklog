@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.120 2005/09/23 16:35:50 dhaun Exp $
+// $Id: usersettings.php,v 1.121 2005/11/07 11:10:41 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -63,7 +63,6 @@ function edituser()
                                    'username' => 'username.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
     $preferences->set_var ('site_url', $_CONF['site_url']);
-    $preferences->set_var ('site_url_ssl', $_CONF['site_url_ssl']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
 
     $preferences->set_var ('lang_fullname', $LANG04[3]);
