@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.182 2005/11/07 21:17:09 dhaun Exp $
+// $Id: story.php,v 1.183 2005/11/08 08:37:55 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -163,7 +163,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         if (DB_numRows ($result) > 0) {
             $A = DB_fetchArray($result);
-            $A['show_topic_icon'] = 1;
+            if (isset ($_CONF['show_topic_icon'])) {
+                $A['show_topic_icon'] = $_CONF['show_topic_icon'];
+            } else {
+                $A['show_topic_icon'] = 1;
+            }
             $A['commentcode'] = $_CONF['comment_code'];
             $A['trackbackcode'] = $_CONF['trackback_code'];
             $A['featured'] = 0;
@@ -190,7 +194,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     } elseif ($mode == 'edit') {
         $A['sid'] = COM_makesid();
         $A['old_sid'] = '';
-        $A['show_topic_icon'] = 1;
+        if (isset ($_CONF['show_topic_icon'])) {
+            $A['show_topic_icon'] = $_CONF['show_topic_icon'];
+        } else {
+            $A['show_topic_icon'] = 1;
+        }
         $A['uid'] = $_USER['uid'];
         $A['unixdate'] = time();
         $A['expiredate'] = time();

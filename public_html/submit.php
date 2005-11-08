@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.88 2005/10/31 19:04:45 dhaun Exp $
+// $Id: submit.php,v 1.89 2005/11/08 08:37:55 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -270,7 +270,11 @@ function submitstory($topic = '')
         $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
         $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
 
-        $A['show_topic_icon'] = 1;
+        if (isset ($_CONF['show_topic_icon'])) {
+            $A['show_topic_icon'] = $_CONF['show_topic_icon'];
+        } else {
+            $A['show_topic_icon'] = 1;
+        }
         $A['hits'] = 0;
         $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
         $A += DB_fetchArray($res);
