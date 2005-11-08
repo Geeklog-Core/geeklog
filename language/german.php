@@ -521,7 +521,11 @@ $LANG10 = array(
     24 => 'Es wurden keine Artikel per E-Mail verschickt.',
     25 => 'Top Ten der Artikel mit Trackback-Kommentaren',
     26 => 'Keine Trackback-Kommentare gefunden.',
-    27 => 'Anzahl aktiver User'
+    27 => 'Anzahl aktiver User',
+    28 => 'Top Ten der Termine',
+    29 => 'Termin',
+    30 => 'Angezeigt',
+    31 => 'Es gibt keine Termine oder sie wurden von niemandem gelesen.'
 );
 
 ###############################################################################

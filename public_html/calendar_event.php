@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.42 2005/10/13 14:14:28 ospiess Exp $
+// $Id: calendar_event.php,v 1.43 2005/11/08 17:47:08 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -476,6 +476,7 @@ default:
             } else {
                 $pagetitle = sprintf ($LANG30[9], $_CONF['site_name']);
             }
+            DB_query ("UPDATE {$_TABLES['events']} SET hits = hits + 1 WHERE eid = '$eid'");
         }
 
         $display .= COM_siteHeader ('menu', $pagetitle);
@@ -679,10 +680,15 @@ default:
                     . '"><img src="' . $_CONF['layout_url']
                     . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
                     . '" title="' . $LANG01[4] . '" border="0"></a>');
+            $cal_templates->set_var ('hits_admin',
+                                     COM_numberFormat ($A['hits']));
+            $cal_templates->set_var ('lang_hits_admin', $LANG10[30]);
         } else {
             $cal_templates->set_var ('event_edit', '');
             $cal_templates->set_var ('edit_icon', '');
         }
+        $cal_templates->set_var ('hits', COM_numberFormat ($A['hits']));
+        $cal_templates->set_var ('lang_hits', $LANG10[30]);
 
         $cal_templates->parse ('output', 'events');
         $display .= $cal_templates->finish ($cal_templates->get_var ('output'));

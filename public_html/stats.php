@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.39 2005/09/17 12:59:19 dhaun Exp $
+// $Id: stats.php,v 1.40 2005/11/08 17:47:09 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -234,6 +234,30 @@ if ($nrows > 0) {
 $display .= COM_endBlock();
 $stat_templates->set_var('stat_row','');
 
+// Top Ten Events
+
+$result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
+$nrows  = DB_numRows($result);
+$display .= COM_startBlock($LANG10[28]);
+if ($nrows > 0) {
+    $stat_templates->set_var('item_label',$LANG10[29]);
+    $stat_templates->set_var('stat_name',$LANG10[30]);
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $stat_templates->set_var('item_url', $_CONF['site_url']
+                . '/calendar_event.php?eid=' . $A['eid']);
+        $stat_templates->set_var('item_text',
+                stripslashes (str_replace ('$', '&#36;', $A['title'])));
+        $stat_templates->set_var('item_stat', COM_numberFormat ($A['hits']));
+        $stat_templates->parse('stat_row', 'statrow', true);
+    }
+    $stat_templates->parse('output','itemstats');
+    $display .= $stat_templates->finish($stat_templates->get_var('output'));
+} else {
+    $display .= $LANG10[31];
+}
+$display .= COM_endBlock();
+$stat_templates->set_var('stat_row','');
 
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);

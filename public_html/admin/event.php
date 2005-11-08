@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.67 2005/11/05 14:02:11 dhaun Exp $
+// $Id: event.php,v 1.68 2005/11/08 17:47:09 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -72,8 +72,8 @@ if (!SEC_hasRights('event.edit')) {
 */
 function editevent ($mode, $A, $msg = '') 
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG12, $LANG22, $LANG30,
-           $LANG_ACCESS, $_STATES, $LANG_ADMIN;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG10, $LANG12, $LANG22,
+           $LANG30, $LANG_ACCESS, $_STATES, $LANG_ADMIN;
 
     $retval = '';
 
@@ -295,6 +295,8 @@ function editevent ($mode, $A, $msg = '')
     $event_templates->set_var('event_location', stripslashes ($A['location']));
     $event_templates->set_var('lang_eventdescription', $LANG22[8]);
     $event_templates->set_var('event_description', stripslashes ($A['description']));
+    $event_templates->set_var('lang_hits', $LANG10[30]);
+    $event_templates->set_var('hits', COM_numberFormat ($A['hits']));
     $event_templates->set_var('lang_save', $LANG22[20]);
     $event_templates->set_var('lang_cancel', $LANG22[21]);
 

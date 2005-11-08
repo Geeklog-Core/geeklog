@@ -106,6 +106,7 @@ CREATE TABLE {$_TABLES['events']} (
   datestart date default NULL,
   dateend date default NULL,
   url varchar(255) default NULL,
+  hits mediumint(8) unsigned NOT NULL default '0',
   group_id mediumint(8) unsigned NOT NULL default '1',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',

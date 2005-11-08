@@ -120,6 +120,10 @@
                                         <td><textarea name="description" cols="50" rows="8">{event_description}</textarea></td>
                                     </tr>
                                     <tr>
+                                        <td align="right"><b>{lang_hits}:</b></td>
+                                        <td>{hits}</td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="2"><hr></td>
                                     </tr>
                                     <tr>

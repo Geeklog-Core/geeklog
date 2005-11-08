@@ -114,6 +114,9 @@ $_SQL[] = "UPDATE {$_TABLES['comments']} SET type = 'polls' WHERE type = 'poll'"
 // allow for more topic ids in the user's preferences (bug #490)
 $_SQL[] = "ALTER TABLE {$_TABLES['userindex']} CHANGE etids etids text";
 
+// add a hits counter for events
+$_SQL[] = "ALTER TABLE {$_TABLES['events']} ADD hits mediumint(8) unsigned NOT NULL default '0' AFTER url";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {
