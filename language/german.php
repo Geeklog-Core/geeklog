@@ -165,7 +165,8 @@ $LANG01 = array(
     119 => "<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">Passwort vergessen?</a>",
     120 => 'Permalink',
     121 => 'Kommentare (%d)',
-    122 => 'Trackbacks (%d)'
+    122 => 'Trackbacks (%d)',
+    123 => 'Alle HTML-Tags sind erlaubt'
 );
 
 ###############################################################################

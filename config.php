@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.197 2005/11/08 08:37:55 dhaun Exp $
+// $Id: config.php,v 1.198 2005/11/10 19:12:37 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -734,6 +734,12 @@ if ($_CONF['advanced_editor']) {
     $_CONF['admin_html']['img']  = array('src' => 1, 'width' => 1, 'height' => 1);
     $_CONF['admin_html']['font'] = array('face' => 1, 'size' => 1);
 }
+
+// When set to 1, disables the HTML filter for all users in the 'Root' group.
+// Obviously, you should only enable this if you know what you're doing and
+// when you can trust all the users in the 'Root' group not to use this for
+// Cross Site Scripting, defacements, etc. USE AT YOUR OWN RISK!
+$_CONF['skip_html_filter_for_root'] = 0;
 
 // list of protocols that are allowed in links
 $_CONF['allowed_protocols'] = array ('http', 'https', 'ftp');

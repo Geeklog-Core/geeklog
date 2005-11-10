@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.492 2005/11/07 11:10:41 ospiess Exp $
+// $Id: lib-common.php,v 1.493 2005/11/10 19:12:38 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2630,6 +2630,13 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     }
     while( $start_pos !== false );
 
+    if( isset( $_CONF['skip_html_filter_for_root'] ) &&
+             ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
+            SEC_inGroup( 'Root' ))
+    {
+        return $str;
+    }
+
     // strip_tags() gets confused by HTML comments ...
     $str = preg_replace( '/<!--.+?-->/', '', $str );
 
@@ -3310,6 +3317,19 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
     global $_CONF, $LANG01;
 
     $retval = '';
+
+    if( isset( $_CONF['skip_html_filter_for_root'] ) &&
+             ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
+            SEC_inGroup( 'Root' ))
+    {
+        if( !$list_only )
+        {
+            $retval .= '<span class="warningsmall">' . $LANG01[123] . '</span>';
+        }
+
+        return $retval;
+    }
+
     if( !$list_only )
     {
         $retval .= '<span class="warningsmall">' . $LANG01[31] . ' ';
