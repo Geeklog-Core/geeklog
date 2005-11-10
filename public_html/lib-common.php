@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.493 2005/11/10 19:12:38 dhaun Exp $
+// $Id: lib-common.php,v 1.494 2005/11/10 19:39:46 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1200,6 +1200,9 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 
     $footer->set_var( 'execution_time', $exectime );
     $footer->set_var( 'execution_textandtime', $exectext );
+
+    // Call to plugins to set template variables in the footer
+    PLG_templateSetVars( 'footer', $footer );
 
     // Actually parse the template and make variable substitutions
     $footer->parse( 'index_footer', 'footer' );
@@ -3081,11 +3084,11 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     // sort the resulting array by block order
     $column = 'blockorder';
     $sortedBlocks = $blocks;
-    for( $i = 0; $i < sizeof( $sortedBlocks )-1; $i++ ) 
+    for( $i = 0; $i < sizeof( $sortedBlocks )-1; $i++ )
     {
         for ($j=0; $j<sizeof($sortedBlocks)-1-$i; $j++)
         {
-            if ($sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column]) 
+            if ($sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column])
             {
                 $tmp = $sortedBlocks[$j];
                 $sortedBlocks[$j] = $sortedBlocks[$j + 1];
