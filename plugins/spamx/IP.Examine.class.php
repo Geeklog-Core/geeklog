@@ -9,7 +9,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: IP.Examine.class.php,v 1.5 2005/04/10 10:02:45 dhaun Exp $
+* $Id: IP.Examine.class.php,v 1.6 2005/11/10 19:22:39 mjervis Exp $
 */
 
 /**
@@ -49,10 +49,10 @@ class IP extends BaseCommand {
         $ans = 0;
         for ($i = 1; $i <= $nrows; $i++) {
             list ($val) = DB_fetchArray ($result);
-            if ($val == $_SERVER['REMOTE_ADDR']) {
+            if ( preg_match ("#$val#i", $_SERVER['REMOTE_ADDR'])) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log ($LANG_SX00['foundspam'] . $val .
-                           $LANG_SX00['foundspam2'] . $uid . 
+                           $LANG_SX00['foundspam2'] . $uid .
                            $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
             }
