@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.54 2005/11/12 10:28:46 dhaun Exp $
+// $Id: topic.php,v 1.55 2005/11/12 21:03:47 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -284,7 +284,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 */
 function listtopics()
 {
-    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $_THEME_URL;
+    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN, $_THEME_URL;
 
     $retval = '';
 
@@ -296,7 +296,7 @@ function listtopics()
     $topic_templates->set_var('site_url', $_CONF['site_url']);
     $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $topic_templates->set_var('layout_url', $_CONF['layout_url']);
-    $topic_templates->set_var('lang_newtopic', $LANG27[17]);
+    $topic_templates->set_var('lang_newtopic', $LANG_ADMIN['create_new']);
     $topic_templates->set_var('lang_adminhome', $LANG27[18]);
     $topic_templates->set_var('lang_instructions', $LANG27[9]); 
     $topic_templates->set_var('begin_row', '<tr align="center" valign="bottom">');
