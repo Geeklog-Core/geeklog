@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.128 2005/11/12 17:18:48 dhaun Exp $
+// $Id: user.php,v 1.129 2005/11/12 20:36:05 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -652,7 +652,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                     array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
     );
 
-    $defsort_arr = array('field' => 'username',
+    $defsort_arr = array('field' => 'uid',
                          'direction' => 'asc');
 
     $menu_arr = array (
@@ -673,7 +673,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                       'help_url'     => ''
     );
 
-    if ($_CONF['lastlogin']==true) {
+    if ($_CONF['lastlogin']) {
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
         $select_userinfo=",lastlogin ";
     }
