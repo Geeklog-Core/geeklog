@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.21 2005/09/23 16:35:50 dhaun Exp $
+// $Id: lib-comment.php,v 1.22 2005/11/12 14:03:18 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -79,10 +79,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'comment_type', $type );
     $commentbar->set_Var( 'sid', $sid );
 
-    if( $type == 'poll' ) {
-        $commentbar->set_var( 'story_link', $_CONF['site_url']
-                . "/pollbooth.php?scale=400&amp;qid=$sid&amp;aid=-1" );
-    } else if( $type == 'article' ) {
+    if( $type == 'article' ) {
         $articleUrl = COM_buildUrl( $_CONF['site_url'] . "/article.php?story=$sid" );
         $commentbar->set_var( 'story_link', $articleUrl );
         $commentbar->set_var( 'article_url', $articleUrl );
