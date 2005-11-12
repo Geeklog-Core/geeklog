@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.494 2005/11/10 19:39:46 mjervis Exp $
+// $Id: lib-common.php,v 1.495 2005/11/12 12:18:49 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -779,7 +779,7 @@ function COM_renderMenu( &$header, $plugin_menu )
 function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_CHARSET,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE;
+           $LANG_DIRECTION, $_IMAGE_TYPE, $topic, $_COM_VERBOSE;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -942,6 +942,15 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     }
 
     $header->set_var( 'charset', $charset );
+    if( empty( $LANG_DIRECTION ))
+    {
+        // default to left-to-right
+        $header->set_var( 'direction', 'ltr' );
+    }
+    else
+    {
+        $header->set_var( 'direction', $LANG_DIRECTION );
+    }
 
     // Now add variables for buttons like e.g. those used by the Yahoo theme
     $header->set_var( 'button_home', $LANG_BUTTONS[1] );
