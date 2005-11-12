@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.25 2005/11/07 10:15:30 ospiess Exp $
+// $Id: database.php,v 1.26 2005/11/12 17:18:48 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -184,7 +184,7 @@ if (is_writable ($_CONF['backup_path'])) {
         $text_arr = array('has_menu' => true,
                           'instructions' => $LANG_DB_BACKUP['db_explanation']
                                             . "<br>" . sprintf ($LANG_DB_BACKUP['total_number'], $index),
-                          'icon' => $_CONF['layout_url'] . '/images/icons/database.png'
+                          'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
         );
         $display .= ADMIN_simpleList($type, "", $header_arr, $field_arr, $text_arr, $data_arr, $menu_arr);
     } else {

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.29 2005/11/05 14:02:11 dhaun Exp $
+// $Id: syndication.php,v 1.30 2005/11/12 17:18:48 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -495,7 +495,7 @@ else
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
                       'title' => $LANG33[10], 'instructions' => $LANG33[13],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/syndication.png',
+                      'icon' => $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/syndication.php");
 
     $query_arr = array('table' => 'syndication',

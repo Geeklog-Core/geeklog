@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.127 2005/11/07 11:10:41 ospiess Exp $
+// $Id: user.php,v 1.128 2005/11/12 17:18:48 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -668,7 +668,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
                       'has_extras'   => true,
                       'title'        => $LANG28[11],
                       'instructions' => $LANG28[12],
-                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.png',
+                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                       'form_url'     => $_CONF['site_admin_url'] . "/user.php",
                       'help_url'     => ''
     );

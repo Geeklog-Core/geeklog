@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.56 2005/11/04 10:35:57 ospiess Exp $
+// $Id: group.php,v 1.57 2005/11/12 17:18:48 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -822,7 +822,8 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
                       'has_extras'   => true,
                       'title' => $LANG_ACCESS['groupmanager'],
                       'instructions' => $LANG_ACCESS['newgroupmsg'],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/group.png',
+                      'icon' => $_CONF['layout_url'] . '/images/icons/group.'
+                                . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/group.php");
 
     $query_arr = array('table' => 'groups',

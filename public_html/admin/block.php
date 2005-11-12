@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.82 2005/11/04 10:35:57 ospiess Exp $
+// $Id: block.php,v 1.83 2005/11/12 17:18:47 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -669,7 +669,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
                       'title' => $LANG21[19], 'instructions' => $LANG21[25],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/block.png',
+                      'icon' => $_CONF['layout_url'] . '/images/icons/block.'
+                                . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/block.php");
 
     $query_arr = array('table' => 'blocks',
@@ -692,7 +693,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $text_arr = array('has_menu' =>  false,
                       'has_extras'   => true,
                       'title' => "$LANG21[19] ($LANG21[40])", 'instructions' => $LANG21[25],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/block.png',
+                      'icon' => $_CONF['layout_url'] . '/images/icons/block.'
+                                . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/block.php");
 
     $display .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.183 2005/11/08 08:37:55 dhaun Exp $
+// $Id: story.php,v 1.184 2005/11/12 17:18:48 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1139,7 +1139,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         $text_arr = array('has_menu' =>  true,
                           'has_extras'   => true,
                           'title' => $LANG24[22], 'instructions' => $LANG24[23],
-                          'icon' => $_CONF['layout_url'] . '/images/icons/story.png',
+                          'icon' => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                           'form_url' => $_CONF['site_admin_url'] . "/story.php");
 
         $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
