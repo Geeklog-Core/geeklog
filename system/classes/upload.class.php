@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.40 2005/06/26 08:38:32 mjervis Exp $
+// $Id: upload.class.php,v 1.41 2005/11/12 13:33:29 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -639,7 +639,20 @@ class upload
                 $newwidth = (int) ($imageInfo['width'] * $sizefactor);
                 $newheight = (int) ($imageInfo['height'] * $sizefactor);
                 $newsize = $newwidth . 'x' . $newheight;
-                $image_dest = ImageCreateTrueColor($newwidth, $newheight);
+
+                // ImageCreateTrueColor may throw a fatal error on some PHP
+                // versions when GD2 is not installed. Ugly workaround, but
+                // there seems to be no better way. Also see the discussion at
+                // http://php.net/ImageCreateTrueColor
+                $image_dest = @ImageCreateTrueColor($newwidth, $newheight);
+                if (!$image_dest) {
+                    $thumb = imagecreate ($newwidth, $newheight);
+                    imageJPEG ($thumb, $filename);
+                    imagedestroy ($thumb);
+                    $image_dest = @imagecreatefromjpeg ($filename);
+                    unlink ($filename);
+                }
+
                 imagecopyresized ($image_dest, $image_source, 0, 0, 0, 0,
                                   $newwidth, $newheight, $imageInfo['width'],
                                   $imageInfo['height']);

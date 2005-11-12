@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added a workaround for image uploads using GD when ImageCreateTrueColor is
+  not available (patch #468) [Dirk]
 - Allow a subject to be passed as a parameter for the "contact user" form
   (based on patch #497) [Dirk]
 - Added support for right-to-left languages (based on patch #488) [Dirk]
