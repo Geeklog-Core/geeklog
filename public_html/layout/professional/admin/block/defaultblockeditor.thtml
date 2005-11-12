@@ -37,7 +37,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_blockorder}:</td>
-                                        <td><input type="text" size="3" name="blockorder" value="{block_order}"> 0 - 255</td>
+                                        <td><input type="text" size="4" name="blockorder" value="{block_order}"> 0 - 9999</td>
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_blocktype}:</td>
