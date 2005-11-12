@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.69 2005/11/08 08:37:55 dhaun Exp $
+// $Id: moderation.php,v 1.70 2005/11/12 18:03:36 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -246,7 +246,7 @@ function itemlist($type)
         } else { # story submission
             //$retval .= COM_startBlock ($LANG29[35], 'ccstorysubmission.html',
             //        COM_getBlockTemplate ('_admin_block', 'header'));
-            $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
+            $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
             $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
             $section_title = $LANG29[35];
             $section_help = 'ccstorysubmission.html';
@@ -302,7 +302,9 @@ function itemlist($type)
         $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
     } else {
         if ($nrows <> -1) {
+            $retval .= COM_startBlock( ucfirst($type) . " " . $LANG29[13]);
             $retval .= $LANG29[39] . "<br>";
+            $retval .= COM_endBlock();
         }
     }
 

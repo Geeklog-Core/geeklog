@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.17 2005/11/07 10:15:30 ospiess Exp $
+// $Id: lib-admin.php,v 1.18 2005/11/12 18:03:37 ospiess Exp $
 
 function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
                             $text_arr, $data_arr, $menu_arr)
@@ -635,9 +635,6 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr) {
             break;
         case "delete":
             $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\">";
-            break;
-        case "day":
-            $retval = strftime ($_CONF['daytime'], $A['date']);
             break;
         case "approve":
             $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\">"
