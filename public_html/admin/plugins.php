@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.52 2005/11/05 14:02:11 dhaun Exp $
+// $Id: plugins.php,v 1.53 2005/11/12 17:09:55 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -403,6 +403,53 @@ function do_uninstall ($pi_name)
     return $retval;
 }
 
+/**
+* List available plugins
+*
+* @param    string  $query          search query string
+* @param    int     $query_limit    limit for search query
+* @return   string                  formatted list of plugins
+*
+*/
+function listplugins ($query = '', $query_limit = 0)
+{
+    global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
+
+    $header_arr = array(      # display 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
+                    array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
+                    array('text' => $LANG32[18], 'field' => 'pi_gl_version', 'sort' => true),
+                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'enabled', 'sort' => false)
+    );
+
+    $defsort_arr = array('field' => 'pi_name', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'has_extras' => true,
+                      'title' => $LANG32[5],
+                      'instructions' => $LANG32[11],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/plugins.'
+                                . $_IMAGE_TYPE,
+                      'form_url' => $_CONF['site_admin_url'] . '/plugins.php');
+
+    $query_arr = array('table' => 'plugins',
+                       'sql' => "SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1",
+                       'query_fields' => array('pi_name'),
+                       'default_filter' => '',
+                       'query' => $query,
+                       'query_limit' => $query_limit);
+
+    return ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
+                       $text_arr, $query_arr, $menu_arr, $defsort_arr);
+                            
+}
+
 // MAIN
 $display = '';
 if (isset ($_POST['pluginChange'])) {
@@ -423,7 +470,8 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     if ($_POST['confirmed'] == 1) {
         $display .= COM_siteHeader ('menu', $LANG32[30]);
         $display .= do_uninstall ($pi_name);
-        $display .= listplugins (COM_applyFilter ($_POST['page']));
+        $display .= listplugins ();
+        $display .= show_newplugins();
         $display .= COM_siteFooter ();
     } else { // ask user for confirmation
         $display .= COM_siteHeader ('menu', $LANG32[30]);
@@ -459,38 +507,8 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     if (!empty ($msg)) {
         $display .= COM_showMessage ($msg);
     }
-    
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
-                    array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
-                    array('text' => $LANG32[18], 'field' => 'pi_gl_version', 'sort' => true),
-                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'enabled', 'sort' => false)
-    );
-
-    $defsort_arr = array('field' => 'pi_name', 'direction' => 'asc');
-
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG32[5], 'instructions' => $LANG32[11],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/plugins.png',
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins.php");
-
-    $query_arr = array('table' => 'plugins',
-                       'sql' => "SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1",
-                       'query_fields' => array('pi_name'),
-                       'default_filter' => "",
-                       'query' => $_REQUEST['q'],
-                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-
-    $display .= ADMIN_list ("plugins", "ADMIN_getListField_plugins", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
-                            
+    $display .= listplugins ($_REQUEST['q'],
+                             COM_applyFilter ($_REQUEST['query_limit'], true));
     $display .= show_newplugins();
     $display .= COM_siteFooter();
 }
