@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.43 2005/09/26 08:40:23 dhaun Exp $
+// $Id: profiles.php,v 1.44 2005/11/12 12:59:04 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -401,8 +401,14 @@ switch ($what) {
             $uid = 0;
         }
         if ($uid > 1) {
+            $subject = '';
+            if (isset ($_GET['subject'])) {
+                $subject = strip_tags ($_GET['subject']);
+                $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
+                $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
+            }
             $display .= COM_siteHeader ('menu', $LANG04[81])
-                     . contactform ($uid)
+                     . contactform ($uid, $subject)
                      . COM_siteFooter ();
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
