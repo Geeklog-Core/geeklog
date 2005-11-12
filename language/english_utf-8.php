@@ -9,7 +9,7 @@
 # jwhitten AT securitygeeks DOT com
 #
 # Converted to Unicode (UTF-8) by Samuel M Stone <sam AT stonemicro DOT com>
-#
+# 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -164,7 +164,8 @@ $LANG01 = array(
     119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
     120 => 'Permanent link to this comment',
     121 => 'Comments (%d)',
-    122 => 'Trackbacks (%d)'
+    122 => 'Trackbacks (%d)',
+    123 => 'All HTML is allowed'
 );
 
 ###############################################################################
@@ -514,7 +515,11 @@ $LANG10 = array(
     24 => 'It appears that no one has emailed a story on this site',
     25 => 'Top Ten Trackback Commented Stories',
     26 => 'No trackback comments found.',
-    27 => 'Number of active users'
+    27 => 'Number of active users',
+    28 => 'Top Ten Events',
+    29 => 'Event',
+    30 => 'Hits',
+    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
 ###############################################################################
@@ -632,7 +637,7 @@ $LANG21 = array(
     22 => '',
     23 => 'Block Order',
     24 => '',
-    25 => 'To modify or delete a block, click on that blocks edit icon below.  To create a new block click on new block above. To move a block, click on the arrows or boxes with R and L.',
+    25 => 'To modify or delete a block, click on that block\'s edit icon below.  To create a new block, click on "Create New" above. To move a block, click on the arrows or [R] and [L] boxes.',
     26 => 'Layout Block',
     27 => 'PHP Block',
     28 => 'PHP Block Options',
@@ -690,7 +695,7 @@ $LANG22 = array(
     9 => '(include http://)',
     10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
-    12 => 'To modify or delete an event, click on that events edit icon below.  To create a new event click on new event above. Click on the copy icon to create a copy of an existing event.',
+    12 => 'To modify or delete an event, click on that event\'s edit icon below.  To create a new event, click on "Create New" above. Click on the copy icon to create a copy of an existing event.',
     13 => '',
     14 => 'Start Date',
     15 => 'End Date',
@@ -732,13 +737,13 @@ $LANG24 = array(
     20 => 'Ping',
     21 => 'Send Ping',
     22 => 'Story List',
-    23 => 'To modify or delete a story, click on that story\'s edit icon below. To view a story, click on the title of the story you wish to view. To create a new story click on new story above.',
+    23 => 'To modify or delete a story, click on that story\'s edit icon below. To view a story, click on the title of the story you wish to view. To create a new story, click on "Create New" above.',
     24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => 'Error when saving story',
     26 => 'Story Preview',
     27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
     28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
-    29 => '',
+    29 => 'Trackbacks',
     30 => 'File Upload Errors',
     31 => 'Please fill in the Title and Intro Text fields',
     32 => 'Featured',
@@ -800,7 +805,7 @@ $LANG27 = array(
     6 => 'Deleting a topic deletes all stories and blocks associated with it',
     7 => 'Please fill in the Topic ID and Topic Name fields',
     8 => 'Topic Manager',
-    9 => 'To modify or delete a topic, click on that topic.  To create a new topic click the new topic button to the left. You will find your access level for each topic in parenthesis. The asterisk(*) denotes the default topic.',
+    9 => 'To modify or delete a topic, click on that topic.  To create a new topic, click on "Create New" above. You will find your access level for each topic in parenthesis. The asterisk(*) denotes the default topic.',
     10 => 'Sort Order',
     11 => 'Stories/Page',
     12 => 'Access Denied',
@@ -838,7 +843,7 @@ $LANG28 = array(
     9 => '(do not use spaces)',
     10 => 'Please fill in the Username and Email Address fields',
     11 => 'User Manager',
-    12 => "To modify or delete a user, click on that user's edit icon below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
+    12 => 'To modify or delete a user, click on that user\'s edit icon below. To view a user, click on the username you wish to view. To create a new user, click on "Create New" above. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.',
     13 => 'SecLev',
     14 => 'Reg. Date',
     15 => '',
@@ -887,7 +892,7 @@ $LANG29 = array(
     10 => 'Title',
     11 => 'Start Date',
     12 => 'URL',
-    13 => '',
+    13 => 'Submissions',
     14 => 'Date',
     15 => 'Topic',
     16 => 'User name',
@@ -995,7 +1000,7 @@ $LANG32 = array(
     8 => 'Plugin Compatibility Check Failed',
     9 => 'This plugin requires a newer version of Geeklog. Either upgrade your copy of <a href="http://www.geeklog.net">Geeklog</a> or get a newer version of the plugin.',
     10 => '<br><b>There are no plugins currently installed.</b><br><br>',
-    11 => 'To modify or delete a plugin, click on that plugins edit icon below. This will show the plugin details including the authors\'s website. Both the installed version and the version returned from the plugin\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plugin please consult its documentation.',
+    11 => 'To modify or delete a plugin, click on that plugin\'s edit icon below. This will show the plugin details including the authors\'s website. Both the installed version and the version returned from the plugin\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plugin please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',
     13 => 'Plugin Editor',
     14 => 'New Plugin',
@@ -1033,7 +1038,7 @@ $LANG33 = array(
     10 => 'Content Syndication',
     11 => 'New Feed',
     12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s edit icon below. To create a new feed, click on New Feed above.',
+    13 => 'To modify or delete a feed, click on the feed\'s edit icon below. To create a new feed, click on "Create New" above.',
     14 => 'Title',
     15 => 'Type',
     16 => 'Filename',
@@ -1175,7 +1180,7 @@ $LANG_ACCESS = array(
     'missingfields' => 'Missing Fields',
     'missingfieldsmsg' => 'You must supply the name and a description for a group',
     'groupmanager' => 'Group Manager',
-    'newgroupmsg' => 'To modify or delete a group, click on that groups edit icon below. To create a new group click new group above. Please note that core groups cannot be deleted because they are used in the system.',
+    'newgroupmsg' => 'To modify or delete a group, click on that group\'s edit icon below. To create a new group, click on "Create New" above. Please note that core groups cannot be deleted because they are used by the system.',
     'groupname' => 'Group Name',
     'coregroup' => 'Core Group',
     'yes' => 'Yes',
@@ -1212,7 +1217,7 @@ $LANG_ACCESS = array(
     'groupmembers' => 'Group Members',
     'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
     'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
-    'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
     'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
     'search' => 'Search',
     'submit' => 'Submit',
@@ -1231,7 +1236,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
     'no_backups' => 'No backups in the system',
-    'db_explanation' => 'To create a new backup of your Geeklog system, hit the button below',
+    'db_explanation' => 'To create a new backup of your site\'s database, click on "Create New" above.',
     'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
@@ -1357,7 +1362,7 @@ $LANG_TRB = array (
     'error_ping_url'     => 'Please enter a valid Ping URL.',
     'no_services'        => 'No weblog directory services configured.',
     'services_headline'  => 'Weblog Directory Services',
-    'service_explain'    => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service click on New Service above.',
+    'service_explain'    => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service, click on "Create New" above.',
     'service'            => 'Service',
     'ping_method'        => 'Ping method',
     'service_website'    => 'Website',

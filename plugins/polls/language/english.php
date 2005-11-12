@@ -73,7 +73,7 @@ $LANG25 = array(
     16 => 'delete',
     17 => 'Please enter a Poll ID',
     18 => 'Poll List',
-    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll click on new poll above.',
+    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
     20 => 'Voters',
     21 => 'Access Denied',
     22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",

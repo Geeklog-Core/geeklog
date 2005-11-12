@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.7 2005/11/03 07:57:02 mjervis Exp $
+# $Id: english.php,v 1.8 2005/11/12 21:14:34 dhaun Exp $
 
 ###############################################################################
 # Array Format:
@@ -214,7 +214,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Link Description',
     10 => 'You need to provide a link Title, URL and Description.',
     11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link click New Link above.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link, click on "Create New" above.',
     13 => 'Link Title',
     14 => 'Link Category',
     15 => 'Link URL',
