@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.22 2005/11/12 14:03:18 dhaun Exp $
+// $Id: lib-comment.php,v 1.23 2005/11/12 14:15:55 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -80,9 +80,16 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_Var( 'sid', $sid );
 
     if( $type == 'article' ) {
-        $articleUrl = COM_buildUrl( $_CONF['site_url'] . "/article.php?story=$sid" );
+        $articleUrl = COM_buildUrl( $_CONF['site_url']
+                                    . "/article.php?story=$sid" );
         $commentbar->set_var( 'story_link', $articleUrl );
         $commentbar->set_var( 'article_url', $articleUrl );
+
+        if( $page == 'comment.php' ) {
+            $commentbar->set_var( 'start_storylink_anchortag', '<a href="'
+                    . $articleUrl . '" class="non-ul">' );
+            $commentbar->set_var( 'end_storylink_anchortag', '</a>' );
+        }
     } else { // for a plugin
         // Link to generic link the plugin should support (hopefully)
         $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/$type/index.php?id=$sid" );

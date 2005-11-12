@@ -2,6 +2,11 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Introduced {start_storylink_anchortag} and {end_storylink_anchortag} template
+  variables in the story and commentbar template files which only produce a
+  link to the story when not on article.php, thus avoiding links back to the
+  article page itself, which the spider for Google News doesn't seem to like
+  (feature request #486) [Dirk]
 - Added a workaround for image uploads using GD when ImageCreateTrueColor is
   not available (patch #468) [Dirk]
 - Allow a subject to be passed as a parameter for the "contact user" form

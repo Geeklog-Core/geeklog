@@ -1,7 +1,7 @@
 <table cellspacing="0" cellpadding="0" align="center" width="100%" class="block-divider"><tr><td><img src="{site_url}/images/speck.gif" width="1" height="2" alt=""></td></tr></table>
 <a name="comments"></a>
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
-  <tr><td align="center" class="commentbar1"><b><a href="{story_link}" class="non-ul">{story_title}</a></b> | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" class="commentbar1">{lang_login_logout}</a></td></tr>
+  <tr><td align="center" class="commentbar1"><b>{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</b> | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" class="commentbar1">{lang_login_logout}</a></td></tr>
   <tr>
     <td align="center" class="commentbar2">
       <form style="display: inline" action="{parent_url}" method="POST">
