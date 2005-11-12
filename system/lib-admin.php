@@ -32,12 +32,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.18 2005/11/12 18:03:37 ospiess Exp $
+// $Id: lib-admin.php,v 1.19 2005/11/12 20:42:03 dhaun Exp $
 
 function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
                             $text_arr, $data_arr, $menu_arr)
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE, $MESSAGE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array ('topmenu' => 'topmenu_nosearch.thtml',
                                        'list' => 'list.thtml',
@@ -115,7 +115,7 @@ function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
                     $menu_arr, $defsort_arr)
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $_IMAGE_TYPE, $MESSAGE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
     
     $order_var = $_GET['order'];
     if (!empty($order_var)) {
