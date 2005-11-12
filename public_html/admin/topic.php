@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.53 2005/11/05 14:02:11 dhaun Exp $
+// $Id: topic.php,v 1.54 2005/11/12 10:28:46 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -258,6 +258,11 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
         }
 
         DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+
+        // update feed(s) and Older Stories block
+        COM_rdfUpToDateCheck ('geeklog', $tid);
+        COM_olderStuff ();
+
         $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
     } else {
         $retval .= COM_siteHeader('menu');
