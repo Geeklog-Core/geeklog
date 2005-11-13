@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.20 2005/11/13 09:18:30 mjervis Exp $
+// $Id: lib-admin.php,v 1.21 2005/11/13 18:27:12 dhaun Exp $
 
 function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
                             $text_arr, $data_arr, $menu_arr)
@@ -112,8 +112,7 @@ function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
 
 }
 
-function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr,
-                    $menu_arr, $defsort_arr)
+function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr, $menu_arr, $defsort_arr, $extra = '')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
@@ -231,7 +230,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
             $order_var = $i;
             $onclick="onclick=\"window.location.href='$form_url?"
                     ."order=$order_var&prevorder=$order&direction=$direction"
-                    ."&page=$page&q=$query&query_limit=$query_limit';\"";
+                    ."&page=$page&q=$query&query_limit=$query_limit$extra';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
         $admin_templates->parse('header_row', 'header', true);

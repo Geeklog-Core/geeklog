@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.58 2005/11/13 09:18:29 mjervis Exp $
+// $Id: group.php,v 1.59 2005/11/13 18:27:12 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -549,15 +549,13 @@ function getGroupList ($basegroup)
 /**
 * Display a list of all users in a given group.
 *
-* @param   grp_id        int      group id
-* @param   curpage       int      page number
-* @param   query_limit   int      users per page
-* @return                string   HTML for user listing
+* @param   grp_id   int      group id
+* @return           string   HTML for user listing
 *
 */
-function listusers ($grp_id, $curpage = 1, $query_limit = 50)
+function listusers ($grp_id)
 {
-    global $_TABLES, $_CONF, $LANG28, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $LANG28, $LANG_ACCESS, $LANG_ADMIN, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -574,69 +572,61 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
         return $retval;
     }
 
-    if ($curpage <= 0) {
-        $curpage = 1;
-    }
-    if ($query_limit == 0) {
-        $limit = 50;
+    if ($_CONF['lastlogin']) {
+        $login_text = $LANG28[41];
+        $login_field = 'lastlogin';
     } else {
-        $limit = $query_limit;
+        $login_text = $LANG28[40];
+        $login_field = 'regdate';
     }
-    $offset = (($curpage - 1) * $limit);
+
+    $header_arr = array (
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG28[37], 'field' => 'uid', 'sort' => true),
+        array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
+        array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true),
+        array('text' => $login_text, 'field' => $login_field, 'sort' => true),
+        array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
+    );
+
+    $defsort_arr = array ('field'     => 'username',
+                          'direction' => 'asc'
+    );
+
+    $groupname = DB_getItem ($_TABLES['groups'], 'grp_name',
+                             "grp_id = '$grp_id'");
+    $headline = sprintf ($LANG_ACCESS['usersingroup'], $groupname);
+
+    $text_arr = array ('has_menu'     => false,
+                       'has_extras'   => false,
+                       'title'        => $headline,
+                       'instructions' => '',
+                       'icon'         => '',
+                       'form_url'     => '',
+                       'help_url'     => ''
+    );
+
+    $join_userinfo = '';
+    $select_userinfo = '';
+    if ($_CONF['lastlogin']) {
+        $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+        $select_userinfo = ",lastlogin ";
+    }
 
     $groups = getGroupList ($grp_id);
     $groupList = implode (',', $groups);
 
-    $sql = "FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
-    $result = DB_query ("SELECT DISTINCT uid,username,fullname,email " . $sql
-                        . " ORDER BY username LIMIT $offset,$limit");
-    $nrows = DB_numRows ($result);
+    $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']},{$_TABLES['group_assignments']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
 
-    $cntresult = DB_query ("SELECT COUNT(DISTINCT {$_TABLES['users']}.uid) AS count " . $sql);
-    $C = DB_fetchArray ($cntresult);
-    $num_pages = ceil ($C['count'] / $limit);
-    $groupname = DB_getItem ($_TABLES['groups'], 'grp_name',"grp_id = '$grp_id'");
-    $headline = sprintf ($LANG_ACCESS['usersingroup'],$groupname);
-    $retval .= COM_startBlock ($headline . ' (' . $C['count'] . ')', '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $query_arr = array ('table' => 'users',
+                        'sql' => $sql,
+                        'query_fields' => array('username', 'email', 'fullname'),
+                        'default_filter' => "{$_TABLES['users']}.uid > 1",
+                        'query' => $_REQUEST['q'],
+                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true)
+    );
 
-    $user_templates = new Template ($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file (array ('list' => 'plainlist.thtml',
-                                      'row' => 'listitem.thtml'));
-    $user_templates->set_var ('site_url', $_CONF['site_url']);
-    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var ('layout_url', $_CONF['layout_url']);
-    $user_templates->set_var ('lang_adminhome', $LANG28[16]);
-    $user_templates->set_var ('lang_grouplist', $LANG28[38]);
-    $user_templates->set_var ('lang_home', $LANG28[39]);
-    $user_templates->set_var('lang_instructions', sprintf($LANG_ACCESS['listgroupmsg'],$groupname));
-    $user_templates->set_var ('lang_uid', $LANG28[37]);
-    $user_templates->set_var ('lang_username', $LANG28[3]);
-    $user_templates->set_var ('lang_fullname', $LANG28[4]);
-    $user_templates->set_var ('lang_emailaddress', $LANG28[7]);
-
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $user_templates->set_var ('user_id', $A['uid']);
-        $user_templates->set_var ('username', $A['username']);
-        $user_templates->set_var ('user_fullname', $A['fullname']);
-        $user_templates->set_var ('user_email', $A['email']);
-        $user_templates->set_var ('cssid', ($i%2)+1);
-        $user_templates->parse ('user_row', 'row', true);
-    }
-
-    if ($num_pages > 1) {
-        $base_url = $_CONF['site_admin_url']
-                  . '/group.php?mode=listusers&amp;grp_id=' . $grp_id;
-        $user_templates->set_var ('google_paging',
-                COM_printPageNavigation ($base_url, $curpage, $num_pages));
-    } else {
-        $user_templates->set_var ('google_paging', '');
-    }
-    $user_templates->parse ('output', 'list');
-    $retval .= $user_templates->finish ($user_templates->get_var ('output'));
-
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= ADMIN_list ('user', 'ADMIN_getListField_users', $header_arr, $text_arr, $query_arr, array(), $defsort_arr, "&mode=listusers&grp_id=$grp_id");
 
     return $retval;
 }
@@ -794,9 +784,8 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $display .= COM_siteFooter ();
 } else if ($mode == 'listusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
-    $page = COM_applyFilter ($_REQUEST['page'], true);
     $display .= COM_siteHeader ('menu');
-    $display .= listusers ($grp_id, $page);
+    $display .= listusers ($grp_id);
     $display .= COM_siteFooter ();
 } else if ($mode == 'editusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
@@ -810,7 +799,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
                     array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true),
