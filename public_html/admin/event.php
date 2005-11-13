@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.69 2005/11/12 17:18:48 dhaun Exp $
+// $Id: event.php,v 1.70 2005/11/13 19:07:14 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -279,15 +279,16 @@ function editevent ($mode, $A, $msg = '')
     $event_templates->set_var('lang_city',$LANG12[46]);
     $event_templates->set_var('event_city', stripslashes ($A['city']));
     $event_templates->set_var('lang_state',$LANG12[47]);
+
     $state_options = '';
-    for ($i = 1; $i <= count($_STATES); $i++) {
-        $state_options .= '<option value="' . key($_STATES) . '" ';
-        if (key($_STATES) == $A['state']) {
+    foreach ($_STATES as $abbr => $state) {
+        $state_options .= '<option value="' . $abbr . '" ';
+        if ($abbr == $A['state']) {
             $state_options .= 'selected="selected"';
         }
-        $state_options .= '>' . current($_STATES) . '</option>';
-        next($_STATES);
+        $state_options .= '>' . $state . '</option>';
     }
+
     $event_templates->set_var('state_options',$state_options);
     $event_templates->set_var('lang_zipcode',$LANG12[48]);
     $event_templates->set_var('event_zipcode', $A['zipcode']);
