@@ -1,22 +1,23 @@
 <?php
 
+/* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Universal Plugin 1.0 for Geeklog - The Ultimate Weblog                    |
+// | Polls plugin 1.0 for Geeklog                                              |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
-// | This file installs the data structures for the polls Plugin               |
-// |                                                                           |
+// | This file installs and removes the data structures for the                |
+// | Links plugin for Geeklog.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Author:                                                                   |
-// | Constructed with the Universal Plugin                                     |
-// | Copyright (C) 2002 by the following authors:                              |
-// | Tom Willett                 -    tomw@pigstye.net                         |
-// | Blaine Lang                 -    geeklog@langfamily.ca                    |
-// | The Universal Plugin is based on prior work by:                           |
-// | Tony Bibbs                  -    tony@tonybibbs.com                       |
+// | Copyright (C) 2002-2005 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Tom Willett       - tom AT pigstye DOT net                       |
+// |          Blaine Lang       - blaine AT portalparts DOT com                |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,212 +36,249 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: install.php,v 1.4 2005/11/13 13:46:07 dhaun Exp $
 
-require_once('../../../lib-common.php');
-require_once($_CONF['path'] . 'plugins/polls/config.php');
-require_once($_CONF['path'] . 'plugins/polls/functions.inc');
+require_once ('../../../lib-common.php');
 
+// Plugin information
 //
-// Universal plugin install variables
-// Change these to match your plugin
+// ----------------------------------------------------------------------------
 //
+$pi_display_name = 'Polls';
+$pi_name         = 'polls';
+$pi_version      = '1.0';
+$gl_version      = '1.3.12';
+$pi_url          = 'http://www.geeklog.net/';
 
-$pi_name    = 'polls';                  // Plugin name
-$pi_version = '1.0';                    // Plugin Version
-$gl_version = '1.3.12';                 // GL Version the plugin requires
-$pi_url = 'http://www.geeklog.net/';    // Plugin Homepage
+// name of the Admin group
+$pi_admin        = $pi_display_name . ' Admin';
 
+// the plugin's groups - assumes first group to be the Admin group
+$GROUPS = array();
+$GROUPS[$pi_admin] = 'Has full access to ' . $pi_name . ' features';
 
-// Default data
+$FEATURES = array();
+$FEATURES['polls.edit']         = 'Access to polls editor';
+
+$MAPPINGS = array();
+$MAPPINGS['polls.edit']         = array ($pi_admin);
+
+// (optional) data to pre-populate tables with
 // Insert table name and sql to insert default data for your plugin.
-
+// Note: '#group#' will be replaced with the id of the plugin's admin group.
 $DEFVALUES = array();
+$DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date, display, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,NOW(),1,0,0,{$_USER['uid']},#group#,3,3)";
+// more default data is in the install SQL file in the plugin's directory
 
+/**
+* Checks the requirements for this plugin and if it is compatible with this
+* version of Geeklog.
+*
+* @return   boolean     true = proceed with install, false = not compatible
+*
+*/
+function plugin_compatible_with_this_geeklog_version ()
+{
+    return true;
+}
 //
-// Security Feature to add
-// Fill in your security features here
-// Note you must add these features to the uninstall routine in function.inc so that they will
-// be removed when the uninstall routine runs.
-// You do not have to use these particular features.  You can edit/add/delete them
-// to fit your plugins security model
+// ----------------------------------------------------------------------------
 //
+// The code below should be the same for most plugins and usually won't
+// require modifications.
 
-$NEWFEATURE = array();
-$NEWFEATURE['polls.edit'] = 'Access to polls editor';
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
+$langfile = $base_path . $_CONF['language'] . '.php';
+if (file_exists ($langfile)) {
+    require_once ($langfile);
+} else {
+    require_once ($base_path . 'language/english.php');
+}
+require_once ($base_path . 'config.php');
+require_once ($base_path . 'functions.inc');
+
 
 // Only let Root users access this page
-if (!SEC_inGroup('Root')) {
+if (!SEC_inGroup ('Root')) {
     // Someone is trying to illegally access this page
-    COM_errorLog("Someone has tried to illegally access the polls install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
-    $display = COM_siteHeader();
-    $display .= COM_startBlock($LANG_REG00['access_denied']);
-    $display .= $LANG_REG00['access_denied_msg'];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter(true);
+    COM_accessLog ("Someone has tried to illegally access the {$pi_display_name} install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
+
+    $display = COM_siteHeader ('menu', $LANG_ACCESS['accessdenied'])
+             . COM_startBlock ($LANG_ACCESS['accessdenied'])
+             . $LANG_ACCESS['plugin_access_denied_msg']
+             . COM_endBlock ()
+             . COM_siteFooter ();
+
     echo $display;
     exit;
 }
  
+
 /**
 * Puts the datastructures for this plugin into the Geeklog database
 *
-* Note: Corresponding uninstall routine is in functions.inc
-*
-* @return    boolean    True if successful False otherwise
-*
 */
-function plugin_install_polls()
+function plugin_install_now()
 {
-    global $pi_name, $pi_version, $gl_version, $pi_url, $NEWTABLE, $DEFVALUES, $NEWFEATURE;
-    global $_TABLES, $_CONF,$_ENV;
+    global $_CONF, $_TABLES, $_USER, $GROUPS, $FEATURES, $MAPPINGS, $DEFVALUES,
+           $base_path,
+           $pi_name, $pi_display_name, $pi_version, $gl_version, $pi_url;
 
-    COM_errorLog("Attempting to install the $pi_name Plugin",1);
+    COM_errorLog ("Attempting to install the $pi_display_name plugin", 1);
 
-    // Create the Plugins Tables
+    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
 
-    require_once($_CONF['path'] . 'plugins/polls/sql/polls_install_1.0.php');
+    // create the plugin's groups
+    $admin_group_id = 0;
+    foreach ($GROUPS as $name => $desc) {
+        COM_errorLog ("Attempting to create $name group", 1);
 
-        COM_errorLog("executing " . $_SQL[1]);
-        DB_query($_SQL[1]);
-        if (DB_error()) {
-            COM_errorLog("Error Creating $table table",1);
-            plugin_uninstall_polls();
+        $grp_name = addslashes ($name);
+        $grp_desc = addslashes ($desc);
+        DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', 'grp_desc')", 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
             return false;
-            exit;
         }
 
-	COM_errorLog("executing " . $_SQL[2]);
-        DB_query($_SQL[2]);
-        if (DB_error()) {
-            COM_errorLog("Error Creating $table table",1);
-            plugin_uninstall_polls();
-            return false;
-            exit;
+        // replace the description with the new group id so we can use it later
+        $GROUPS[$name] = DB_insertId ();
+
+        // assume that the first group is the plugin's Admin group
+        if ($admin_group_id == 0) {
+            $admin_group_id = $GROUPS[$name];
         }
- 
-	COM_errorLog("executing " . $_SQL[3]);
-        DB_query($_SQL[3]);
-        if (DB_error()) {
-            COM_errorLog("Error Creating $table table",1);
-            plugin_uninstall_polls();
-            return false;
-            exit;
-        }
-
-
-
-    // Insert Default Data
-
-    foreach ($DEFVALUES as $table => $sql) {
-        COM_errorLog("Inserting default data into $table table",1);
-        DB_query($sql,1);
-        if (DB_error()) {
-            COM_errorLog("Error inserting default data into $table table",1);
-            plugin_uninstall_polls();
-            return false;
-            exit;
-        }
-        COM_errorLog("Success - inserting data into $table table",1);
     }
 
-    // Create the plugin admin security group
-    COM_errorLog("Attempting to create $pi_name admin group", 1);
-    DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) "
-        . "VALUES ('Polls Admin', 'Users in this group can administer the $pi_name plugin')",1);
-    if (DB_error()) {
-        plugin_uninstall_polls();
+    // Create the plugin's table(s)
+    $_SQL = array ();
+    require_once ($base_path . 'sql/install.php');
+
+    foreach ($_SQL as $sql) {
+        $sql = str_replace ('#group#', $admin_group_id, $sql);
+        DB_query ($sql);
+        if (DB_error ()) {
+            COM_errorLog ('Error creating table', 1);
+            $uninstall_plugin ();
+
+            return false;
+        }
+    }
+
+    // Add the plugin's features
+    COM_errorLog ("Attempting to add $pi_display_name feature(s)", 1);
+
+    foreach ($FEATURES as $feature => $desc) {
+        $ft_name = addslashes ($feature);
+        $ft_desc = addslashes ($desc);
+        DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
+                  . "VALUES ('$ft_name', '$ft_desc')", 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
+            return false;
+        }
+
+        $feat_id = DB_insertId ();
+
+        if (isset ($MAPPINGS[$feature])) {
+            foreach ($MAPPINGS[$feature] as $group) {
+                COM_errorLog ("Adding $feature feature to the $group group", 1);
+                DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$GROUPS[$group]})");
+                if (DB_error ()) {
+                    $uninstall_plugin ();
+
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Add plugin's Admin group to the Root user group
+    // (assumes that the Root group's ID is always 1)
+    COM_errorLog ("Attempting to give all users in the Root group access to the $pi_display_name's Admin group", 1);
+
+    DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+              . "($admin_group_id, NULL, 1)");
+    if (DB_error ()) {
+        $uninstall_plugin ();
+
         return false;
-        exit;
     }
-    COM_errorLog('...success',1);
-    $group_id = DB_insertId();
 
-    // Add plugin Features
-    foreach ($NEWFEATURE as $feature => $desc) {
-        COM_errorLog("Adding $feature feature",1);
-        DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
-            . "VALUES ('$feature','$desc')",1);
-        if (DB_error()) {
-            COM_errorLog("Failure adding $feature feature",1);
-            plugin_uninstall_polls();
+    // Pre-populate tables or run any other SQL queries
+    COM_errorLog ('Inserting default data', 1);
+    foreach ($DEFVALUES as $sql) {
+        $sql = str_replace ('#group#', $admin_group_id, $sql);
+        DB_query ($sql, 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
             return false;
-            exit;
         }
-        $feat_id = DB_insertId();
-        COM_errorLog("Success",1);
-        COM_errorLog("Adding $feature feature to admin group",1);
-        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, $group_id)");
-        if (DB_error()) {
-            COM_errorLog("Failure adding $feature feature to admin group",1);
-            plugin_uninstall_polls();
-            return false;
-            exit;
-        }
-        COM_errorLog("Success",1);
     }
 
-    // OK, now give Root users access to this plugin now! NOTE: Root group should always be 1
-    COM_errorLog("Attempting to give all users in Root group access to $pi_name admin group",1);
-    DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
-    if (DB_error()) {
-        plugin_uninstall_polls();
+    // Finally, register the plugin with Geeklog
+    COM_errorLog ("Registering $pi_display_name plugin with Geeklog", 1);
+
+    // silently delete an existing entry
+    DB_delete ($_TABLES['plugins'], 'pi_name', $pi_name);
+
+    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) VALUES "
+        . "('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
+
+    if (DB_error ()) {
+        $uninstall_plugin ();
+
         return false;
-        exit;
     }
 
-    // Register the plugin with Geeklog
-    COM_errorLog("Registering $pi_name plugin with Geeklog", 1);
-    DB_delete($_TABLES['plugins'],'pi_name',$pi_name);
-    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) "
-        . "VALUES ('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
+    COM_errorLog ("Successfully installed the $pi_display_name plugin!", 1);
 
-    if (DB_error()) {
-        plugin_uninstall_polls();
-        return false;
-        exit;
-    }
-
-    COM_errorLog("Succesfully installed the $pi_name Plugin!",1);
     return true;
 }
 
-/*
-* Main Function
-*/
 
-$display = COM_siteHeader();
-$T = new Template($_CONF['path'] . 'plugins/polls/templates/admin');
-$T->set_file('install', 'install.thtml');
-$T->set_var('install_header', $LANG_REG00['install_header']);
-$T->set_var('img',$_CONF['site_url'] . '/polls/images/polls.gif');
-$T->set_var('cgiurl', $_CONF['site_admin_url'] . '/plugins/polls/install.php');
-$T->set_var('admin_url', $_CONF['site_admin_url']);
+// MAIN
+$display = '';
 
-if ($action == 'install') {
-    if (plugin_install_polls()) {
-        $install_msg = sprintf($LANG_REG00['install_success'],$_CONF['site_admin_url'] .'/plugins/polls/install_doc.htm');
-        $T->set_var('installmsg1',$install_msg);
-        $T->set_var('editor',$LANG_REG00['editor']);
+if ($_REQUEST['action'] == 'uninstall') {
+    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
+    if ($uninstall_plugin ()) {
+        $display = COM_refresh ($_CONF['site_admin_url']
+                                . '/plugins.php?msg=45');
     } else {
-        $T->set_var('installmsg1',$LANG_REG00['install_failed']);
+        $display = COM_refresh ($_CONF['site_admin_url']
+                                . '/plugins.php?msg=73');
     }
-} else if ($action == "uninstall") {
-   plugin_uninstall_polls('installed');
-   $T->set_var('installmsg1',$LANG_REG00['uninstall_msg']);
-}
+} else if (DB_count ($_TABLES['plugins'], 'pi_name', $pi_name) == 0) {
+    // plugin not installed
 
-if (DB_count($_TABLES['plugins'], 'pi_name', $pi_name) == 0) {
-    $T->set_var('installmsg2', $LANG_REG00['uninstalled']);
-    $T->set_var('btnmsg', $LANG_REG00['install']);
-    $T->set_var('action','install');
+    if (plugin_compatible_with_this_geeklog_version ()) {
+        if (plugin_install_now ()) {
+            $display = COM_refresh ($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=44');
+        } else {
+            $display = COM_refresh ($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=72');
+        }
+    } else {
+        // plugin needs a newer version of Geeklog
+        $display .= COM_siteHeader ('menu', $LANG32[8])
+                 . COM_startBlock ($LANG32[8])
+                 . '<p>' . $LANG32[9] . '</p>'
+                 . COM_endBlock ()
+                 . COM_siteFooter ();
+    }
 } else {
-    $T->set_var('installmsg2', $LANG_REG00['installed']);
-    $T->set_var('btnmsg', $LANG_REG00['uninstall']);
-    $T->set_var('action','uninstall');
+    // plugin already installed
+    $display .= COM_siteHeader ('menu', $LANG01[77])
+             . COM_startBlock ($LANG32[6])
+             . '<p>' . $LANG32[7] . '</p>'
+             . COM_endBlock ()
+             . COM_siteFooter();
 }
-$T->parse('output','install');
-$display .= $T->finish($T->get_var('output'));
-$display .= COM_siteFooter(true);
 
 echo $display;
 

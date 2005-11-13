@@ -13,10 +13,11 @@
 // |                                                                           |
 // | Copyright (C) 2002-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
-// |          Tom Willett      - tom AT pigstye DOT net                        |
-// |          Blaine Lang      - blaine AT portalparts DOT com                 |
-// |          Dirk Haun        - dirk AT haun-online DOT de                    |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Tom Willett       - tom AT pigstye DOT net                       |
+// |          Blaine Lang       - blaine AT portalparts DOT com                |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.6 2005/07/19 10:45:52 dhaun Exp $
+// $Id: install.php,v 1.7 2005/11/13 13:46:07 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -49,18 +50,28 @@ $pi_version      = '1.0';
 $gl_version      = '1.3.12';
 $pi_url          = 'http://www.geeklog.net/';
 
+// name of the Admin group
 $pi_admin        = $pi_display_name . ' Admin';
-$pi_admin_desc   = 'Has full access to ' . $pi_name . ' features';
 
-$NEWFEATURE = array();
-$NEWFEATURE['links.edit']       = 'Access to links editor';
-$NEWFEATURE['links.moderate']   = 'Ability to moderate pending links';
-$NEWFEATURE['links.submit']     = 'May skip the links submission queue';
+// the plugin's groups - assumes first group to be the Admin group
+$GROUPS = array();
+$GROUPS[$pi_admin] = 'Has full access to ' . $pi_name . ' features';
+
+$FEATURES = array();
+$FEATURES['links.edit']         = 'Access to links editor';
+$FEATURES['links.moderate']     = 'Ability to moderate pending links';
+$FEATURES['links.submit']       = 'May skip the links submission queue';
+
+$MAPPINGS = array();
+$MAPPINGS['links.edit']         = array ($pi_admin);
+$MAPPINGS['links.moderate']     = array ($pi_admin);
+$MAPPINGS['links.submit']       = array ($pi_admin);
 
 // (optional) data to pre-populate tables with
 // Insert table name and sql to insert default data for your plugin.
+// Note: '#group#' will be replaced with the id of the plugin's admin group.
 $DEFVALUES = array();
-$DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, date) VALUES ('20050717191600683', 'Geeklog Sites', 'http://www.geeklog.net/', 'All you ever need to know about GeekLog - and more ...', 'Geeklog Project Homepage', NOW())";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, date, owner_id, group_id, perm_group) VALUES ('geeklog.net', 'Geeklog Sites', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', NOW(), 1, #group#, 3)";
 
 /**
 * Checks the requirements for this plugin and if it is compatible with this
@@ -112,19 +123,43 @@ if (!SEC_inGroup ('Root')) {
 */
 function plugin_install_now()
 {
-    global $_TABLES, $_CONF, $NEWFEATURE, $DEFVALUES,
-           $base_path, $pi_admin, $pi_admin_desc,
+    global $_CONF, $_TABLES, $_USER, $GROUPS, $FEATURES, $MAPPINGS, $DEFVALUES,
+           $base_path,
            $pi_name, $pi_display_name, $pi_version, $gl_version, $pi_url;
 
     COM_errorLog ("Attempting to install the $pi_display_name plugin", 1);
 
     $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
 
+    // create the plugin's groups
+    $admin_group_id = 0;
+    foreach ($GROUPS as $name => $desc) {
+        COM_errorLog ("Attempting to create $name group", 1);
+
+        $grp_name = addslashes ($name);
+        $grp_desc = addslashes ($desc);
+        DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', 'grp_desc')", 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
+            return false;
+        }
+
+        // replace the description with the new group id so we can use it later
+        $GROUPS[$name] = DB_insertId ();
+
+        // assume that the first group is the plugin's Admin group
+        if ($admin_group_id == 0) {
+            $admin_group_id = $GROUPS[$name];
+        }
+    }
+
     // Create the plugin's table(s)
-    require_once ($base_path . 'sql/'
-                  . $pi_name . '_install_' . $pi_version . '.php');
+    $_SQL = array ();
+    require_once ($base_path . 'sql/install.php');
 
     foreach ($_SQL as $sql) {
+        $sql = str_replace ('#group#', $admin_group_id, $sql);
         DB_query ($sql);
         if (DB_error ()) {
             COM_errorLog ('Error creating table', 1);
@@ -134,29 +169,14 @@ function plugin_install_now()
         }
     }
 
-    // Create the plugin's Admin group
-    COM_errorLog ("Attempting to create $pi_admin group", 1);
-
-    $pi_admin_desc = addslashes ($pi_admin_desc);
-    DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES "
-              . "('$pi_admin', '$pi_admin_desc')", 1);
-    if (DB_error ()) {
-        $uninstall_plugin ();
-
-        return false;
-    }
-
-    // get the group ID for the newly created Admin group
-    $group_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                            "grp_name = '$pi_admin'");
-
     // Add the plugin's features
     COM_errorLog ("Attempting to add $pi_display_name feature(s)", 1);
 
-    foreach ($NEWFEATURE as $feature => $desc) {
-        $desc = addslashes ($desc);
+    foreach ($FEATURES as $feature => $desc) {
+        $ft_name = addslashes ($feature);
+        $ft_desc = addslashes ($desc);
         DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
-                  . "VALUES ('$feature', '$desc')", 1);
+                  . "VALUES ('$ft_name', '$ft_desc')", 1);
         if (DB_error ()) {
             $uninstall_plugin ();
 
@@ -164,22 +184,26 @@ function plugin_install_now()
         }
 
         $feat_id = DB_insertId ();
-        COM_errorLog ("Adding $feature feature to the $pi_admin group", 1);
-        DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) "
-                  . "VALUES ($feat_id, $group_id)");
-        if (DB_error ()) {
-            $uninstall_plugin ();
 
-            return false;
+        if (isset ($MAPPINGS[$feature])) {
+            foreach ($MAPPINGS[$feature] as $group) {
+                COM_errorLog ("Adding $feature feature to the $group group", 1);
+                DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$GROUPS[$group]})");
+                if (DB_error ()) {
+                    $uninstall_plugin ();
+
+                    return false;
+                }
+            }
         }
     }
 
     // Add plugin's Admin group to the Root user group
     // (assumes that the Root group's ID is always 1)
-    COM_errorLog ("Attempting to give all users in the Root group access to the $pi_admin group", 1);
+    COM_errorLog ("Attempting to give all users in the Root group access to the $pi_display_name's Admin group", 1);
 
     DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES "
-              . "($group_id, NULL, 1)");
+              . "($admin_group_id, NULL, 1)");
     if (DB_error ()) {
         $uninstall_plugin ();
 
@@ -189,6 +213,7 @@ function plugin_install_now()
     // Pre-populate tables or run any other SQL queries
     COM_errorLog ('Inserting default data', 1);
     foreach ($DEFVALUES as $sql) {
+        $sql = str_replace ('#group#', $admin_group_id, $sql);
         DB_query ($sql, 1);
         if (DB_error ()) {
             $uninstall_plugin ();
