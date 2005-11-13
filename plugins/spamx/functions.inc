@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.13 2005/09/16 07:16:34 dhaun Exp $
+ * $Id: functions.inc,v 1.14 2005/11/13 14:07:02 dhaun Exp $
  */
 
 /**
@@ -356,6 +356,7 @@ function plugin_uninstall_spamx($installCheck = '')
     COM_errorLog("Removing $pi_name Admin Group", 1);
     DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id", 1);
     DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = '{$pi_name}_gid'");
+    DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = 'spamx.counter'");
     COM_errorLog("Removing root users from admin of $pi_name");
     DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id", 1); 
     // Remove all the associated features -- access rights
