@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.84 2005/11/06 16:39:19 mjervis Exp $
+// $Id: lib-plugins.php,v 1.85 2005/11/13 20:54:40 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -536,6 +536,8 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 {
     global $_PLUGINS;
 
+    $plgresults = array ();
+
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
         $function = $function_name . $pi_name;
@@ -570,6 +572,7 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
             }
         }
     }
+
     return $plgresults;
 }
 
@@ -1026,7 +1029,7 @@ function PLG_templateSetVars ($templatename, &$template)
 {
     global $_PLUGINS;
 
-    if (function_exists(CUSTOM_templatesetvars)) {
+    if (function_exists ('CUSTOM_templatesetvars')) {
         CUSTOM_templatesetvars($templatename, $template);
     }
 
