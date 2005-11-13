@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.17 2005/11/05 14:02:11 dhaun Exp $
+// $Id: index.php,v 1.18 2005/11/13 14:32:11 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -425,7 +425,7 @@ if ($mode == 'edit') {
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php");
 
     $query_arr = array('table' => 'pollquestions',
-                       'sql' => "SELECT * FROM {$_TABLES['pollquestions']} WHERE 1",
+                       'sql' => "SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['pollquestions']} WHERE 1",
                        'query_fields' => array('question'),
                        'default_filter' => '',
                        'query' => $_REQUEST['q'],
