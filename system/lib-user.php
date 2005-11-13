@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.19 2005/11/13 21:13:20 mjervis Exp $
+// $Id: lib-user.php,v 1.20 2005/11/13 23:31:08 trinity Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -450,5 +450,76 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
     }
 
     return $photo;
+}
+/**
+* Add user to group if user does not belong to specified group
+*
+* This is part of the Geeklog user implementation. This function
+* looks up whether a user belongs to a specified group and if not 
+* adds them to the group
+*
+* @param        int      $groupid     Group we want to see if user belongs to and if not add to group
+* @param        int         $uid        ID for user to check if in group and if not add user. If empty current user.
+* @return       boolean     true if user is added to group, otherwise false
+*
+*/
+function USER_addGroup($groupid, $uid='')
+{
+    global $_CONF, $_USER, $_TABLES;
+
+     // set $uid if $uid is empty
+    if (empty ($uid)) {
+        // If not logged in set to 1
+        if (empty ($_USER['uid'])) {
+            $uid = 1;
+            return false;
+        } else {
+            // If logged in set to current uid
+            $uid = $_USER['uid'];
+        }
+    }
+
+    if (SEC_inGroup($groupid,$uid) || $groupid > 0){
+     return false;
+     } else {
+    DB_query("INSERT INTO ". $_TABLES['group_assignments'] ." (ug_main_grp_id, ug_uid) VALUES ('$groupid', $uid )");
+    return true;
+    }
+}
+
+/**
+* Delete from group if user belongs to specified group
+*
+* This is part of the Geeklog user implementation. This function
+* looks up whether a user belongs to a specified group and if so 
+* removes them from the group
+*
+* @param        int      $groupid      Group we want to see if user belongs to and if so delete user from group
+* @param        int         $uid          ID for user to delete. If empty current user.
+* @return       boolean     true if user is removed from group, otherwise false
+*
+*/
+function  USER_delGroup($groupid, $uid='')
+{
+    global $_CONF, $_USER, $_TABLES;
+    
+    // set $uid if $uid is empty
+    if (empty ($uid)) {
+        // If not logged in set to 1
+        if (empty ($_USER['uid'])) {
+            $uid = 1;
+            return false;
+        } else {
+            // If logged in set to current uid
+            $uid = $_USER['uid'];
+        }
+    }
+
+    If (SEC_inGroup($groupid,$uid) || $groupid > 0){
+    DB_query("DELETE FROM ". $_TABLES['group_assignments'] ." WHERE ug_main_grp_id=$groupid AND ug_uid = $uid ");
+    return true;
+    } else {
+    return false;
+    }
 }
 ?>
