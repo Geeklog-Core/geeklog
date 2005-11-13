@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.33 2005/11/03 10:09:04 ospiess Exp $
+// $Id: functions.inc,v 1.34 2005/11/13 21:04:03 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -89,6 +89,8 @@ function plugin_whatsnewsupported_links()
 function plugin_getwhatsnew_links()
 {
     global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG_LINKS;
+
+    $retval = '';
 
     // Get newest links
     $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
