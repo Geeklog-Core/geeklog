@@ -240,7 +240,7 @@ $display = COM_siteHeader();
 $T = new Template($_CONF['path'] . 'plugins/spamx/templates');
 $T->set_file('install', 'install.thtml');
 $T->set_var('install_header', $LANG_SX00['install_header']);
-$T->set_var('img',$_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.gif');
+$T->set_var('img',$_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.png');
 $T->set_var('cgiurl', $_CONF['site_admin_url'] . '/plugins/spamx/install.php');
 $T->set_var('admin_url', $_CONF['site_admin_url'] . '/plugins/spamx/index.php');
 $T->set_var('plugin_name', $LANG_SX00['plugin_name']);
