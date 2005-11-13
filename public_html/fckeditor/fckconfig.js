@@ -69,10 +69,19 @@ FCKConfig.ToolbarCanCollapse    = true ;
 FCKConfig.IEForceVScroll = false ;
 FCKConfig.IgnoreEmptyParagraphValue = true ;
 
+FCKConfig.Plugins.Add( 'FullWindow' ) ;
+FCKConfig.Plugins.Add( 'CloseWindow' ) ;
+
+FCKConfig.ToolbarSets["NewToolbarClose"] = [
+    ['Source','-','Undo','Redo','-','Link','Unlink','-','Bold','Italic','Underline','StrikeThrough',
+    '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull',
+    '-','OrderedList','UnorderedList','Outdent','Indent'],
+    ['PasteText','PasteWord','-','FontName','FontSize','TextColor','BGColor','-','Rule','-','Image','Table','CloseWindow','-','About']
+] ;
 FCKConfig.ToolbarSets["editor-toolbar1"] = [
     ['Source','-','Undo','Redo','-','Link','Unlink','-','Bold','Italic',
     '-','JustifyLeft','JustifyCenter','JustifyRight',
-    '-','OrderedList','UnorderedList','Outdent','Indent','About']
+    '-','OrderedList','UnorderedList','Outdent','Indent','FullWindow','About']
 ] ;
 
 
@@ -80,7 +89,7 @@ FCKConfig.ToolbarSets["editor-toolbar2"] = [
     ['Source','-','Undo','Redo','-','Link','Unlink','-','Bold','Italic','Underline','StrikeThrough',
     '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull',
     '-','OrderedList','UnorderedList','Outdent','Indent'],
-    ['PasteText','PasteWord','-','FontName','FontSize','TextColor','BGColor','-','Rule','-','Image','Table','-','About']
+    ['PasteText','PasteWord','-','FontName','FontSize','TextColor','BGColor','-','Rule','-','Image','Table','FullWindow','-','About']
 ] ;
 
 FCKConfig.ToolbarSets["editor-toolbar3"] = [
