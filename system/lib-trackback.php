@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.14 2005/10/17 11:59:09 dhaun Exp $
+// $Id: lib-trackback.php,v 1.15 2005/11/13 21:41:05 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -486,7 +486,7 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
     $numrows = DB_numRows ($result);
 
     $template->set_var ('trackback_comment_count', $numrows);
-    $num_comments = sprintf ($LANG['num_comments'], $numrows);
+    $num_comments = sprintf ($LANG_TRB['num_comments'], $numrows);
     $template->set_var ('trackback_comment_text', $num_comments);
     if ($numrows == 0) {
         $template->set_var ('lang_trackback_comments',
