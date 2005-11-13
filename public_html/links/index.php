@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2005/09/15 07:19:22 ospiess Exp $
+// $Id: index.php,v 1.4 2005/11/13 09:51:12 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -147,7 +147,7 @@ if (empty ($_USER['username']) &&
                         nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon']) == 3) && SEC_hasRights ('link.edit')) {
+                        $A['perm_anon']) == 3) && SEC_hasRights('links.edit')) {
                     $editurl = $_CONF['site_admin_url']
                              . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
                     $linklist->set_var ('link_edit', '<a href="' . $editurl
@@ -204,7 +204,7 @@ if (empty ($_USER['username']) &&
                         nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon']) == 3) && SEC_hasRights ('link.edit')) {
+                        $A['perm_anon']) == 3) && SEC_hasRights('links.edit')) {
                     $editurl = $_CONF['site_admin_url']
                              . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
                     $linklist->set_var ('link_edit', '<a href="' . $editurl
