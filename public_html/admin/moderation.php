@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.71 2005/11/13 16:17:38 blaine Exp $
+// $Id: moderation.php,v 1.72 2005/11/13 21:08:03 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -87,7 +87,7 @@ function commandcontrol()
 
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
-                               
+
     $cc_arr = array(
                   array('condition' => SEC_hasRights('story.edit'),
                         'url' => $_CONF['site_admin_url'] . '/story.php',
@@ -279,7 +279,7 @@ function itemlist($type)
             $A['row'] = $i;
             $data_arr[$i] = $A;
         }
-        
+
         $header_arr = array(      # dislay 'text' and use table field 'field'
             array('text' => $LANG_ADMIN['edit'], 'field' => 0),
             array('text' => $H[0], 'field' => 1),
@@ -288,12 +288,12 @@ function itemlist($type)
             array('text' => $LANG29[2], 'field' => 'delete'),
             array('text' => $LANG29[1], 'field' => 'approve')
         );
-        
+
         $text_arr = array('has_menu'     =>  false,
                           'title'        => $section_title,
                           'help_url' => $section_help,
         );
-        
+
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
                     ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
@@ -323,49 +323,50 @@ function itemlist($type)
 */
 function userlist ()
 {
-    global $_CONF, $_TABLES, $LANG29;
+    global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
 
-    $retval = COM_startBlock ($LANG29[40], '',
-                              COM_getBlockTemplate ('_admin_block', 'header'));
-    $result = DB_query ("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2");
+    $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
+    $result = DB_query ($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
-        $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
-        $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
-                                       'itemrows'=>'itemlistrows.thtml'));
-        $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
-        $mod_templates->set_var('item_type', 'user');
-        $mod_templates->set_var('num_rows', $nrows);
-        $mod_templates->set_var('heading_col1', $LANG29[16]);
-        $mod_templates->set_var('heading_col2', $LANG29[17]);
-        $mod_templates->set_var('heading_col3', $LANG29[18]);
-        $mod_templates->set_var('lang_approve', $LANG29[2]);
-        $mod_templates->set_var('lang_delete', $LANG29[1]);
-
-        for ($i = 1; $i <= $nrows; $i++) {
+        for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $mod_templates->set_var ('edit_submission_url',
-                $_CONF['site_admin_url'] . '/user.php?mode=edit&amp;uid='
-                . $A['uid']);
-            $mod_templates->set_var('lang_edit', $LANG29[3]);
-            $mod_templates->set_var ('data_col1', '<a href="'
-                . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-                . $A['uid'] . '">' . stripslashes ($A['username']) . '</a>');
-            $mod_templates->set_var('data_col2', stripslashes($A['fullname']));
-            $mod_templates->set_var('data_col3', stripslashes($A['email']));
-            $mod_templates->set_var('cur_row', $i);
-            $mod_templates->set_var('item_id', $A['uid']);
-            $mod_templates->parse('list_of_items','itemrows',true);
+            $A['edit'] = $_CONF['site_admin_url'].'/user.php?mode=edit&amp;uid='.$A['id'];
+            $A['row'] = $i;
+            $A['fullname'] = stripslashes($A['fullname']);
+            $A['email'] = stripslashes($A['email']);
+            $data_arr[$i] = $A;
         }
-        $mod_templates->set_var('lang_submit', $LANG29[38]);
-        $mod_templates->parse('output','itemlist');
-        $retval .= $mod_templates->finish($mod_templates->get_var('output'));
+        $header_arr = array(
+            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+            array('text' => $LANG29[16], 'field' => 1),
+            array('text' => $LANG29[17], 'field' => 2),
+            array('text' => $LANG29[18], 'field' => 3),
+            array('text' => $LANG29[2], 'field' => 'delete'),
+            array('text' => $LANG29[1], 'field' => 'approve')
+        );
+
+        $text_arr = array('has_menu'    => false,
+                            'title'     => $LANG29[40],
+                            'help_url'  => ''
+        );
+        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
+                    ."<input type=\"hidden\" name=\"type\" value=\"user\">"
+                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
+        $retval .= ADMIN_simpleList($type, "ADMIN_getListField_moderation", $header_arr, $field_arr, $text_arr, $data_arr, $menu_arr);
+        $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+
+
+        //    $mod_templates->set_var ('data_col1', '<a href="'
+        //        . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+        //        . $A['uid'] . '">' . stripslashes ($A['username']) . '</a>');
     } else {
         if ($nrows <> -1) {
+            $retval .= COM_startBlock($LANG29[40]);
             $retval .= $LANG29[39] . "<br>";
+            $retval .= COM_endBlock();
         }
     }
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -546,13 +547,14 @@ function moderation($mid,$action,$type)
 * @return            string   HTML for "command and control" page
 *
 */
-function moderateusers ($uid, $action, $count)
+function moderateusers ($uid, $action)
 {
     global $_CONF, $_TABLES, $LANG04;
 
     $retval = '';
-
-    for ($i = 1; $i <= $count; $i++) {
+    $count = count($action);
+    for ($i = 0; $i < $count; $i++) {
+        echo("$action[$i] = {$action[$i]}");
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
                 if ($uid[$i] > 1) {
@@ -566,8 +568,8 @@ function moderateusers ($uid, $action, $count)
                     $A = DB_fetchArray($result);
                     $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
                     DB_Query($sql);
-                    USER_sendActivationEmail($A['username'], $A['email']);
-                    //USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
+                    //USER_sendActivationEmail($A['username'], $A['email']);
+                    USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
                 }
                 break;
         }
@@ -588,8 +590,7 @@ if (isset ($_GET['msg'])) {
 
 if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
     if ($_POST['type'] == 'user') {
-        $display .= moderateusers ($_POST['id'], $_POST['action'],
-                                   $_POST['count']);
+        $display .= moderateusers ($_POST['id'], $_POST['action']);
     } else {
         $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type']);
     }
