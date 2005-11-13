@@ -117,6 +117,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['userindex']} CHANGE etids etids text";
 // add a hits counter for events
 $_SQL[] = "ALTER TABLE {$_TABLES['events']} ADD hits mediumint(8) unsigned NOT NULL default '0' AFTER url";
 
+// allow up to 40 characters for a link id
+$_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE lid lid varchar(40) NOT NULL default ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE lid lid varchar(40) NOT NULL default ''";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {
