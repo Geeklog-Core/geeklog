@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.24 2005/06/26 08:38:31 mjervis Exp $
+// $Id: auth.inc.php,v 1.25 2005/11/13 20:30:30 mjervis Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
@@ -42,7 +42,7 @@ if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
 // MAIN
 $uid = '';
 if (!empty($loginname) && !empty($passwd)) {
-    $status = SEC_authenticate($loginname, $passwd, &$uid);
+    $status = SEC_authenticate($loginname, $passwd, $uid);
 }
 $display = '';
 
@@ -65,7 +65,7 @@ if ($status == 3) {
         $cooktime = COM_getUserCookieTimeout();
 
         if (!empty($cooktime)) {
-		
+
             // They want their cookie to persist for some amount of time so set it now
 
             setcookie ($_CONF['cookie_name'], $_USER['uid'],
@@ -88,7 +88,7 @@ if ($status == 3) {
         .'<br><br>'
         .COM_accessLog($LANG20[03] . ' ' . $loginname);
     }
-	
+
     $display .= '<form action="' . $_SERVER['PHP_SELF']
              . '" method="POST">'
         .'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
