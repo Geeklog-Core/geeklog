@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.70 2005/11/12 18:03:36 ospiess Exp $
+// $Id: moderation.php,v 1.71 2005/11/13 16:17:38 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -130,7 +130,7 @@ function commandcontrol()
     for ($i=0; $i < count ($cc_arr); $i++) {
         if ($cc_arr[$i]['condition']) {
             $item = render_cc_item ($admin_templates,
-                            $_CONF['site_admin_url'] . $cc_arr[$i]['url'],
+                            $cc_arr[$i]['url'],
                             $_CONF['layout_url'] . $cc_arr[$i]['image'] . $_IMAGE_TYPE,
                             $cc_arr[$i]['lang']);
             $items[$cc_arr[$i]['lang']] = $item;
