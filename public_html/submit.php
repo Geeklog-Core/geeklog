@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.89 2005/11/08 08:37:55 dhaun Exp $
+// $Id: submit.php,v 1.90 2005/11/13 18:40:30 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -859,8 +859,11 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
         case 'event':
             $pagetitle = $LANG12[4];
             break;
-        default:
+        case 'story':
             $pagetitle = $LANG12[6];
+            break;
+        default:
+            $pagetitle = '';
             break;
     }
     $display .= COM_siteHeader ('menu', $pagetitle);
