@@ -74,5 +74,5 @@
 
 .FCK__FieldNumeric
 {
-	behavior: url(fcknumericfield.htc) ;
+	behavior: url(common/fcknumericfield.htc) ;
 }

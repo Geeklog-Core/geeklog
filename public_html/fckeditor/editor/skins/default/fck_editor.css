@@ -69,6 +69,11 @@ body
 	border-bottom: #efefde 1px outset;
 }
 
+.TB_SideBorder
+{
+	background-color: #696969;
+}
+
 .TB_ToolbarSet, .TB_ToolbarSet *
 {
 	font-size: 11px;
