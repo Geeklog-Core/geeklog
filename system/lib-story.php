@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.49 2005/11/12 14:15:56 dhaun Exp $
+// $Id: lib-story.php,v 1.50 2005/11/13 22:17:10 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -217,6 +217,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         {
             if(( $_CONF['allow_page_breaks'] == 1 ) and ( $index == 'n' ))
             {
+                $story_page = 0;
+
                 // page selector
                 if( is_numeric( $mode ))
                 {
@@ -227,7 +229,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
                     $story_page = 1;
                     $mode = 0;
                 }
-                elseif ( $story_page > 1 )
+                elseif( $story_page > 1 )
                 {
                     $introtext = '';
                 }

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.495 2005/11/12 12:18:49 dhaun Exp $
+// $Id: lib-common.php,v 1.496 2005/11/13 22:17:10 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3907,7 +3907,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
         if( $nrows > 0 )
         {
-            $newmsg .= COM_formatTimeString( $LANG_WHATSNEW['new_string'],
+            $newmsg = COM_formatTimeString( $LANG_WHATSNEW['new_string'],
                         $_CONF['newstoriesinterval'], $LANG01[11], $nrows);
 
             if( $newstories && ( $page < 2 ))
