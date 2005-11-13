@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.57 2005/11/12 17:18:48 dhaun Exp $
+// $Id: group.php,v 1.58 2005/11/13 09:18:29 mjervis Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -58,7 +58,7 @@ require_once ('auth.inc.php');
 
 $display = '';
 
-// Make sure user has rights to access this page 
+// Make sure user has rights to access this page
 if (!SEC_hasRights ('group.edit')) {
     $display .= COM_siteHeader ('menu');
     $display .= COM_startBlock ($MESSAGE[30], '',
@@ -78,15 +78,17 @@ if (!SEC_hasRights ('group.edit')) {
 * @return   string      HTML for group editor
 *
 */
-function editgroup($grp_id = '') 
+function editgroup($grp_id = '')
 {
     global $_TABLES, $_CONF, $_USER, $LANG_ACCESS;
 
     $retval = '';
 
     $thisUsersGroups = SEC_getUserGroups ();
-    if (!empty ($grp_id) && ($grp_id > 0) &&
-            !in_array ($grp_id, $thisUsersGroups)) {
+    if (!empty ($grp_id) &&
+        ($grp_id > 0) &&
+        !in_array ($grp_id, $thisUsersGroups) &&
+        !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $thisUsersGroups)) {
         $retval .= COM_startBlock ($LANG_ACCESS['groupeditor'], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         if (!SEC_inGroup ('Root') && (DB_getItem ($_TABLES['groups'],
@@ -116,7 +118,7 @@ function editgroup($grp_id = '')
         $A['owner_id'] = $_USER['uid'];
 
         // this is the one instance where we default the group
-        // most topics should belong to the normal user group 
+        // most topics should belong to the normal user group
         $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Normal User'");
         $A['grp_gl_core'] = 0;
     }
@@ -139,7 +141,7 @@ function editgroup($grp_id = '')
 
     $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
 
-    if ($A['grp_gl_core'] == 0) {    
+    if ($A['grp_gl_core'] == 0) {
         $group_templates->set_var('groupname_inputtype', 'text');
         $group_templates->set_var('groupname_static', '');
     } else {
@@ -155,7 +157,7 @@ function editgroup($grp_id = '')
     //$groups = SEC_getUserGroups('','',$grp_id);
     $selected = '';
     if (!empty($grp_id)) {
-        $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id"); 
+        $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
         $num_groups = DB_numRows($tmp);
         for ($x = 1; $x <= $num_groups; $x++) {
             $G = DB_fetchArray($tmp);
@@ -283,7 +285,7 @@ function getIndirectFeatures ($grp_id)
 * @return   string      HTML for rights
 *
 */
-function printrights ($grp_id = '', $core = 0) 
+function printrights ($grp_id = '', $core = 0)
 {
     global $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
@@ -317,35 +319,35 @@ function printrights ($grp_id = '', $core = 0)
 
         // Build an array of indirect features
         $grpftarray = array ();
-        for ($i = 0; $i < sizeof($indirectfeatures); $i++) {        
-            $grpftarray[current($indirectfeatures)] = 'indirect'; 
+        for ($i = 0; $i < sizeof($indirectfeatures); $i++) {
+            $grpftarray[current($indirectfeatures)] = 'indirect';
             next($indirectfeatures);
         }
 
-        // Build an arrray of direct features    
+        // Build an arrray of direct features
         $grpftarray1 = array ();
         $ndirect = DB_numRows($directfeatures);
         for ($i = 0; $i < $ndirect; $i++) {
             $A = DB_fetchArray($directfeatures);
-            $grpftarray1[$A['ft_name']] = 'direct'; 
+            $grpftarray1[$A['ft_name']] = 'direct';
         }
 
-        // Now merge the two arrays    
+        // Now merge the two arrays
         $grpftarray = array_merge ($grpftarray, $grpftarray1);
         if ($VERBOSE) {
             // this is for debugging purposes
             for ($i = 1; $i < sizeof($grpftarray); $i++) {
                 COM_errorLog("element $i is feature " . key($grpftarray) . " and is " . current($grpftarray),1);
-                next($grpftarray); 
+                next($grpftarray);
             }
         }
-    } 
+    }
 
     // OK, now loop through and print all the features giving edit rights
     // to only the ones that are direct features
     $ftcount = 0;
     $retval = '<tr>' . LB;
-    for ($i = 1; $i <= $nfeatures; $i++) {        
+    for ($i = 1; $i <= $nfeatures; $i++) {
         if ($i > 0 AND ($i % 3 == 1)) {
             $retval .= "</tr>\n<tr>";
         }
@@ -356,7 +358,7 @@ function printrights ($grp_id = '', $core = 0)
             $retval .= '<td><input type="checkbox" name="features[]" value="'. $A['ft_id'] . '"';
             if ($grpftarray[$A['ft_name']] == 'direct') {
                 $retval .= ' checked="checked"';
-            } 
+            }
             $retval .= '><span title="' . $A['ft_descr'] . '">' . $A['ft_name']
                     . '</span></td>';
         } else {
@@ -372,7 +374,7 @@ function printrights ($grp_id = '', $core = 0)
         // This group doesn't have rights to any features
         $retval .= '<td colspan="3">' . $LANG_ACCESS['grouphasnorights'] . '</td>';
     }
-    
+
     $retval .= '</tr>' . LB;
 
     return $retval;
@@ -390,14 +392,16 @@ function printrights ($grp_id = '', $core = 0)
 * @return   string                  HTML refresh or error message
 *
 */
-function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $groups) 
+function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $groups)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
     if (!empty ($grp_name) && !empty ($grp_descr)) {
         $GroupAdminGroups = SEC_getUserGroups ();
-        if (!empty ($grp_id) && ($grp_id > 0) &&
-                !in_array ($grp_id, $GroupAdminGroups)) {
+        if (!empty ($grp_id) &&
+            ($grp_id > 0) &&
+            !in_array ($grp_id, $GroupAdminGroups) &&
+            !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $GroupAdminGroups)) {
             COM_accessLog ("User {$_USER['username']} tried to edit group '$grp_name' ($grp_id) with insufficient privileges.");
 
             return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
@@ -503,7 +507,7 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
         $retval .= COM_siteFooter ();
 
         return $retval;
-    }   
+    }
 }
 
 /**
@@ -558,8 +562,10 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     $retval = '';
 
     $thisUsersGroups = SEC_getUserGroups ();
-    if (!empty ($grp_id) && ($grp_id > 0) &&
-            !in_array ($grp_id, $thisUsersGroups)) {
+    if (!empty ($grp_id) &&
+        ($grp_id > 0) &&
+        !in_array ($grp_id, $thisUsersGroups) &&
+        !SEC_groupIsRemoteUserAndHaveAccess( $grp_id, $thisUsersGroups)) {
         $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG_ACCESS['cantlistgroup'];
@@ -603,7 +609,7 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     $user_templates->set_var ('lang_adminhome', $LANG28[16]);
     $user_templates->set_var ('lang_grouplist', $LANG28[38]);
     $user_templates->set_var ('lang_home', $LANG28[39]);
-    $user_templates->set_var('lang_instructions', sprintf($LANG_ACCESS['listgroupmsg'],$groupname)); 
+    $user_templates->set_var('lang_instructions', sprintf($LANG_ACCESS['listgroupmsg'],$groupname));
     $user_templates->set_var ('lang_uid', $LANG28[37]);
     $user_templates->set_var ('lang_username', $LANG28[3]);
     $user_templates->set_var ('lang_fullname', $LANG28[4]);
@@ -623,7 +629,7 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
         $base_url = $_CONF['site_admin_url']
                   . '/group.php?mode=listusers&amp;grp_id=' . $grp_id;
         $user_templates->set_var ('google_paging',
-                COM_printPageNavigation ($base_url, $curpage, $num_pages));    
+                COM_printPageNavigation ($base_url, $curpage, $num_pages));
     } else {
         $user_templates->set_var ('google_paging', '');
     }
@@ -650,7 +656,7 @@ function grp_selectUsers ($group_id = '0', $allusers = false)
     } else {
         $groups = getGroupList ($group_id);
         $groupList = implode (',', $groups);
-        $sql = "FROM {$_TABLES['users']},{$_TABLES['group_assignments']} 
+        $sql = "FROM {$_TABLES['users']},{$_TABLES['group_assignments']}
             WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
         $result = DB_query ("SELECT DISTINCT uid,username " . $sql . " ORDER BY username");
         while(list($uid,$username) = DB_fetchArray($result)) {
@@ -668,8 +674,11 @@ function editusers ($group)
 
     $thisUsersGroups = SEC_getUserGroups ();
 	$groupName = DB_getItem($_TABLES['groups'],'grp_name',"grp_id='$group'");
-    if (!empty ($group) && ($group > 0) &&
-            !in_array ($group, $thisUsersGroups)) {
+    if (!empty ($group) &&
+       ($group > 0) &&
+       !in_array ($group, $thisUsersGroups) &&
+       !SEC_groupIsRemoteUserAndHaveAccess($group, $thisUsersGroups)
+       ) {
         $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         if (!SEC_inGroup ('Root') && (DB_getItem ($_TABLES['groups'],
@@ -693,7 +702,7 @@ function editusers ($group)
     $groupmembers->set_var ('layout_url', $_CONF['layout_url']);
     $groupmembers->set_var ('phpself', $_CONF['site_admin_url'] . '/group.php');
     $groupmembers->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);
-    $groupmembers->set_var('lang_instructions', $LANG_ACCESS['editgroupmsg']); 
+    $groupmembers->set_var('lang_instructions', $LANG_ACCESS['editgroupmsg']);
     $groupmembers->set_var ('LANG_sitemembers',$LANG_ACCESS['availmembers']);
     $groupmembers->set_var ('LANG_grpmembers',$LANG_ACCESS['groupmembers']);
     $groupmembers->set_var ('sitemembers', grp_selectUsers($group,true) );
@@ -744,7 +753,7 @@ function deleteGroup ($grp_id)
     }
 
     $GroupAdminGroups = SEC_getUserGroups ();
-    if (!in_array ($grp_id, $GroupAdminGroups)) {
+    if (!in_array ($grp_id, $GroupAdminGroups) && !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $GroupAdminGroups)) {
         COM_accessLog ("User {$_USER['username']} tried to delete group $grp_id with insufficient privileges.");
 
         return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
@@ -800,7 +809,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
-                            
+
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),

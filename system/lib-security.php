@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.41 2005/10/03 19:00:34 mjervis Exp $
+// $Id: lib-security.php,v 1.42 2005/11/13 09:18:30 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -147,6 +147,45 @@ function SEC_getUserGroups($uid='')
     }
 
     return $groups;
+}
+
+/**
+  * Checks to see if a user has admin access to the "Remote Users" group
+  * Admin users will probably not be members, but, User Admin, Root, and
+  * group admin will have access to it. However, we can not be sure what
+  * the group id for "Remote User" group is, because it's a later static
+  * group, and upgraded systems could have it in any id slot.
+  *
+  * @param      groupid     int     The id of a group, which might be the remote users group
+  * @param      groups      array   Array of group ids the user has access to.
+  * @return     boolean
+  */
+function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
+{
+    global $_TABLES, $_CONF;
+    if( $_CONF['remote_users_group_id'] == '' )
+    {
+        $result = DB_Query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name='Remote Users'");
+        if( $result )
+        {
+            $row = DB_fetchArray( $result );
+            $_CONF['remote_users_group_id'] = $row['grp_id'];
+        }
+    }
+    if( $groupid == $_CONF['remote_users_group_id'] )
+    {
+        if( in_array( 1, $groups ) || // root
+            in_array( 9, $groups ) || // user admin
+            in_array( 11, $groups ) // Group admin
+          )
+        {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 /**

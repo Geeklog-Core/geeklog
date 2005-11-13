@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.129 2005/11/12 20:36:05 dhaun Exp $
+// $Id: user.php,v 1.130 2005/11/13 09:18:29 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -220,6 +220,7 @@ function edituser($uid = '', $msg = '')
             $selected .= DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
         }
         $thisUsersGroups = SEC_getUserGroups ();
+        $thisUsersGroups[] = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name='Remote users'");
         $where = 'grp_id IN (' . implode (',', $thisUsersGroups) . ')';
         $user_templates->set_var ('group_options',
                 COM_checkList ($_TABLES['groups'], 'grp_id,grp_name',

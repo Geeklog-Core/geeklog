@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.19 2005/11/12 20:42:03 dhaun Exp $
+// $Id: lib-admin.php,v 1.20 2005/11/13 09:18:30 mjervis Exp $
 
 function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
                             $text_arr, $data_arr, $menu_arr)
@@ -49,9 +49,9 @@ function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $text_arr['form_url']);
     $admin_templates->set_var('icon', $text_arr['icon']);
-    
+
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    
+
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
             $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
@@ -80,7 +80,7 @@ function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
 
     $retval .= COM_startBlock ($text_arr['title'], $text_arr['help_url'],
                                COM_getBlockTemplate ('_admin_block', 'header'));
-                               
+
     # HEADER FIELDS array(text, field, sort)
     for ($i=0; $i < count( $header_arr ); $i++) {
         $admin_templates->set_var('header_text', $header_arr[$i]['text']);
@@ -104,7 +104,7 @@ function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
         $admin_templates->parse('item_row', 'row', true);
         $admin_templates->clear_var('item_field');
     }
-    
+
     $admin_templates->parse('output', 'list');
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -116,7 +116,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
                     $menu_arr, $defsort_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
-    
+
     $order_var = $_GET['order'];
     if (!empty($order_var)) {
         $order_var = COM_applyFilter ($order_var, true);
@@ -151,7 +151,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $text_arr['form_url']);
     $admin_templates->set_var('icon', $text_arr['icon']);
-    
+
     $query = $query_arr['query'];
 
     if ($text_arr['has_menu']) {
@@ -172,9 +172,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->set_var('filter', $filter);
         $admin_templates->parse('top_menu', 'topmenu', true);
     }
-    
+
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    
+
     $icon_arr = array(
         'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
@@ -194,7 +194,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $query = str_replace ('*', '%', $query);
     $sql_query = addslashes ($query);
     $sql = $query_arr['sql'];
-    
+
     if (empty($direction)) {
         if (empty($order) && !empty($defsort_arr['field'])) {
             $order = $defsort_arr['field'];
@@ -219,7 +219,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
 
     $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
             . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
-    
+
     # HEADER FIELDS array(text, field, sort)
     for ($i=0; $i < count( $header_arr ); $i++) {
         $admin_templates->set_var('header_text', $header_arr[$i]['text']);
@@ -240,7 +240,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->clear_var('on_click');
         $admin_templates->clear_var('arrow');
     }
-    
+
     if ($text_arr['has_extras']) {
         if (empty($query_arr['query_limit'])) {
             $limit = 50;
@@ -305,11 +305,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->parse('item_row', 'row', true);
         $admin_templates->clear_var('item_field');
     }
-    
+
     if ($nrows==0) {
         $admin_templates->set_var('message', $LANG_ADMIN['no_results']);
     }
-    
+
     if ($text_arr['has_extras']) {
         if (!empty($query)) {
             $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order_var}&amp;direction={$prevdirection}";
@@ -423,8 +423,13 @@ function ADMIN_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
 }
 
 function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
-    if (in_array ($A['grp_id'], SEC_getUserGroups() )) {
+    global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $thisUsersGroups;
+    if( !is_array($thisUsersGroups) )
+    {
+        $thisUsersGroups = SEC_getUserGroups();
+    }
+    if (in_array ($A['grp_id'], $thisUsersGroups ) ||
+        SEC_groupIsRemoteUserAndHaveAccess( $A['grp_id'], $thisUsersGroups )) {
         switch($fieldname) {
             case "edit":
                 $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
