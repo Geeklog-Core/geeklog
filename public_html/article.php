@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.71 2005/11/06 14:05:42 dhaun Exp $
+// $Id: article.php,v 1.72 2005/11/13 22:13:46 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -59,6 +59,7 @@ if ($_CONF['trackback_enabled']) {
 // echo COM_debug($_POST);
 
 // MAIN
+$display = '';
 
 if (isset ($_POST['mode'])) {
     $story = COM_applyFilter ($_POST['story']);
@@ -83,13 +84,11 @@ if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
     $order = '';
 }
 
-
-$result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$story'" 
-                 . COM_getPermSql ('AND'));
+$result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$story'" . COM_getPermSql ('AND'));
 $A = DB_fetchArray($result);
 
 if ($A['count'] > 0) {
-    $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+    $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
      . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
      . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
      . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$story')");
@@ -245,7 +244,7 @@ if ($A['count'] > 0) {
         } else {
             $show_comments = true;
         }
-                                  
+
         // Display the comments, if there are any ..
         if (($A['commentcode'] >= 0) and $show_comments) {
             $delete_option = (SEC_hasRights('story.edit') && ($access == 3)
@@ -258,7 +257,7 @@ if ($A['count'] > 0) {
         if ($_CONF['trackback_enabled'] && ($A['trackbackcode'] >= 0) &&
                 $show_comments) {
             if (SEC_hasRights ('story.ping')) {
-                if (($A['draft'] == 0) && ($A['day'] < time ())) {
+                if (($A['draft_flag'] == 0) && ($A['day'] < time ())) {
                     $url = $_CONF['site_admin_url']
                          . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
                     $story_template->set_var ('send_trackback_link', '<a href="'
