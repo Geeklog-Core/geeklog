@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.42 2005/11/13 09:18:30 mjervis Exp $
+// $Id: lib-security.php,v 1.43 2005/11/13 21:13:20 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -711,29 +711,13 @@ function SEC_authenticate($username, $password, &$uid)
             return 0; // banned, jump to here to save an md5 calc.
         } elseif ($U['passwd'] != md5( $password )) {
             return -1; // failed login
+        } elseif ($U['status'] == 2) {
+            //awaiting approval, jump to msg.
+            echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
+            exit;
         } elseif ($U['status'] == 1) {
-            // Awaiting user activation, activate and move to:
-            if ($_CONF['usersubmission'])
-            {
-                $newstatus = 2; // require admin approval
-                // Notify the admin?
-                if (isset ($_CONF['notification']) &&
-                    in_array ('user', $_CONF['notification'])) {
-                    USER_sendNotification ($username, $U['email'], $U['uid'], 'inactive');
-                }
-            } else {
-                $newstatus = 3; // live
-                // Notify the admin?
-                if (isset ($_CONF['notification']) &&
-                    in_array ('user', $_CONF['notification'])) {
-                    USER_sendNotification ($username, $U['email'], $U['uid'], 'active');
-                }
-            }
-            DB_change($_TABLES['users'],'status',$newstatus,'username',$username);
-            if ($newstatus == 2)
-            {
-                echo COM_refresh($_CONF['site_url'] . '/index.php?msg=71');
-            }
+            // Awaiting user activation, activate:
+            DB_change($_TABLES['users'],'status',3,'username',$username);
             return $newstatus;
         } else {
             return $U['status']; // just return their status
@@ -774,20 +758,7 @@ function SEC_checkUserStatus($userid)
     }
     if ($status == 1)
     {
-        // Awaiting user activation, activate and move to:
-        if ($_CONF['usersubmission'])
-        {
-            // require admin approval
-            DB_change($_TABLES['users'], 'status', 2, 'uid', $userid);
-            if ($redirect)
-            {
-                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
-                exit;
-            }
-        } else {
-            // live
-            DB_change($_TABLES['users'], 'status',3 , 'uid', $userid);
-        }
+        DB_change($_TABLES['users'], 'status',3 , 'uid', $userid);
     } elseif ($status == 2) {
         // If we aren't on users.php with a default action then go to it
         if ($redirect)

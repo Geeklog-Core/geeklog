@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.130 2005/11/13 09:18:29 mjervis Exp $
+// $Id: user.php,v 1.131 2005/11/13 21:13:20 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -357,7 +357,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             if( ($_CONF['usersubmission'] == 1) && ($oldstatus == 2)
                    && ($userstatus == 3) )
             {
-                USER_sendActivationEmail($username, $email);
+                //USER_sendActivationEmail($username, $email);
+                USER_createAndSendPassword ($username, $email, $uid);
             }
             $userChanged = true;
         }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.120 2005/11/07 11:10:41 ospiess Exp $
+// $Id: users.php,v 1.121 2005/11/13 21:13:20 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -454,7 +454,10 @@ function createuser ($username, $email)
 
             $uid = USER_createAccount ($username, $email);
 
-            $retval = emailpassword ($username, 1, $msg);
+            if (!$_CONF['usersubmission'] == 1)
+            {
+                $retval = emailpassword ($username, 1, $msg);
+            }
 
 
             return $retval;

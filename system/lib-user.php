@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.18 2005/11/03 11:04:24 ospiess Exp $
+// $Id: lib-user.php,v 1.19 2005/11/13 21:13:20 mjervis Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -268,13 +268,19 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
         $fields .= ',homepage';
         $values .= ",'$homepage'";
     }
-    if (!empty($remoteusername)) {
-        $fields .= ',remoteusername';
-        $values .= ",'$remoteusername'";
-    }
-    if (!empty($service)) {
-        $fields .= ',remoteservice';
-        $values .= ",'$service'";
+    if ($_CONF['usersubmission'] == 1)
+    {
+        $fields .= ',status';
+        $values .= ',2';
+    } else {
+        if (!empty($remoteusername)) {
+            $fields .= ',remoteusername';
+            $values .= ",'$remoteusername'";
+        }
+        if (!empty($service)) {
+            $fields .= ',remoteservice';
+            $values .= ",'$service'";
+        }
     }
 
     DB_query ("INSERT INTO {$_TABLES['users']} ($fields) VALUES ($values)");
@@ -310,6 +316,18 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
     }
     PLG_createUser ($uid);
 
+    // Notify the admin?
+    if (isset ($_CONF['notification']) &&
+        in_array ('user', $_CONF['notification'])) {
+        if ($_CONF['usersubmission'] == 1)
+        {
+            $mode = 'inactive';
+        } else {
+            $mode = 'active';
+        }
+        USER_sendNotification ($username, $email, $uid, $mode);
+    }
+
     return $uid;
 }
 
@@ -329,7 +347,7 @@ function USER_sendNotification ($username, $email, $uid, $mode='inactive')
     $mailbody = "$LANG04[2]: $username\n"
               . "$LANG04[5]: $email\n"
               . "$LANG28[14]: " . strftime ($_CONF['date']) . "\n\n";
-    
+
     if ($mode == 'inactive') {
         // user needs admin approval
         $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
