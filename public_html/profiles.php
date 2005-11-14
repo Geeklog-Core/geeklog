@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.44 2005/11/12 12:59:04 dhaun Exp $
+// $Id: profiles.php,v 1.45 2005/11/14 12:21:13 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -168,9 +168,17 @@ function contactform($uid, $subject='', $message='')
             $mail_template->set_var ('site_url', $_CONF['site_url']);
             $mail_template->set_var ('lang_description', $LANG08[26]);
             $mail_template->set_var ('lang_username', $LANG08[11]);
-            $mail_template->set_var ('username', $_USER['username']);
+            if (empty ($_USER['username'])) {
+                $mail_template->set_var ('username', '');
+            } else {
+                $mail_template->set_var ('username', $_USER['username']);
+            }
             $mail_template->set_var ('lang_useremail', $LANG08[12]);
-            $mail_template->set_var ('useremail', $_USER['email']);
+            if (empty ($_USER['email'])) {
+                $mail_template->set_var ('useremail', '');
+            } else {
+                $mail_template->set_var ('useremail', $_USER['email']);
+            }
             $mail_template->set_var ('lang_subject', $LANG08[13]);
             $mail_template->set_var ('subject', $subject);
             $mail_template->set_var ('lang_message', $LANG08[14]);
@@ -314,7 +322,10 @@ function mailstoryform($sid)
         return $retval;
     }
 
-    if (!empty ($_USER['username'])) {
+    if (empty ($_USER['username'])) {
+        $from = '';
+        $fromemail = '';
+    } else {
         $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE uid = {$_USER['uid']}");
         $A = DB_fetchArray($result);
 

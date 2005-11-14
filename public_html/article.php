@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.72 2005/11/13 22:13:46 dhaun Exp $
+// $Id: article.php,v 1.73 2005/11/14 12:21:13 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -61,19 +61,34 @@ if ($_CONF['trackback_enabled']) {
 // MAIN
 $display = '';
 
+$order = '';
+$query = '';
+$reply = '';
 if (isset ($_POST['mode'])) {
     $story = COM_applyFilter ($_POST['story']);
     $mode = COM_applyFilter ($_POST['mode']);
-    $order = COM_applyFilter ($_POST['order']);
-    $query = COM_applyFilter ($_POST['query']);
-    $reply = COM_applyFilter ($_POST['reply']);
+    if (isset ($_POST['order'])) {
+        $order = COM_applyFilter ($_POST['order']);
+    }
+    if (isset ($_POST['query'])) {
+        $query = COM_applyFilter ($_POST['query']);
+    }
+    if (isset ($_POST['reply'])) {
+        $reply = COM_applyFilter ($_POST['reply']);
+    }
 } else {
     COM_setArgNames (array ('story', 'mode'));
     $story = COM_applyFilter (COM_getArgument ('story'));
     $mode = COM_applyFilter (COM_getArgument ('mode'));
-    $order = COM_applyFilter ($_GET['order']);
-    $query = COM_applyFilter ($_GET['query']);
-    $reply = COM_applyFilter ($_GET['reply']);
+    if (isset ($_GET['order'])) {
+        $order = COM_applyFilter ($_GET['order']);
+    }
+    if (isset ($_GET['query'])) {
+        $query = COM_applyFilter ($_GET['query']);
+    }
+    if (isset ($_GET['reply'])) {
+        $reply = COM_applyFilter ($_GET['reply']);
+    }
 }
 
 if (empty ($story)) {

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.121 2005/11/13 21:13:20 mjervis Exp $
+// $Id: users.php,v 1.122 2005/11/14 12:21:13 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -681,7 +681,10 @@ case 'logout':
 case 'profile':
     $uid = COM_applyFilter ($_GET['uid'], true);
     if (is_numeric ($uid) && ($uid > 0)) {
-        $msg = COM_applyFilter ($_GET['msg'], true);
+        $msg = 0;
+        if (isset ($_GET['msg'])) {
+            $msg = COM_applyFilter ($_GET['msg'], true);
+        }
         $display .= userprofile ($uid, $msg);
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -857,7 +860,10 @@ default:
     if (isset ($_POST['passwd'])) {
         $passwd = $_POST['passwd'];
     }
-    $service = COM_applyFilter($_POST['service']);
+    $service = '';
+    if (isset ($_POST['service'])) {
+        $service = COM_applyFilter($_POST['service']);
+    }
     $uid = '';
     if (!empty($loginname) && !empty($passwd) && empty($service)) {
         $status = SEC_authenticate($loginname, $passwd, $uid);

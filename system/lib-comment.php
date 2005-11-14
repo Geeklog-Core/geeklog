@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.23 2005/11/12 14:15:55 dhaun Exp $
+// $Id: lib-comment.php,v 1.24 2005/11/14 12:21:13 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -95,7 +95,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/$type/index.php?id=$sid" );
     }
 
-    if( $_USER['uid'] > 1 ) {
+    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) {
         $username = $_USER['username'];
         $fullname = DB_getItem( $_TABLES['users'], 'fullname',
                                 "uid = '{$_USER['uid']}'" ); 
