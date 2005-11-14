@@ -8,12 +8,12 @@
 // |                                                                           |
 // | This is the pollbooth page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.9 2005/09/17 16:01:03 dhaun Exp $
+// $Id: index.php,v 1.10 2005/11/14 16:26:21 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -52,7 +52,9 @@ define ('POLLS_PER_PAGE', 50);
 */
 function pollsave($qid = '', $aid = 0) 
 {
-    global $_TABLES, $LANG_POLLS, $_SERVER;
+    global $_TABLES, $LANG_POLLS;
+
+    $retval = '';
 
     $pcount = DB_count ($_TABLES['pollvoters'], array ('ipaddress', 'qid' ),
                         array ($_SERVER['REMOTE_ADDR'], $qid));
@@ -173,25 +175,31 @@ if (isset ($_POST['reply'])
     exit;			
 }
 
+$qid = 0;
+$aid = -1;
 if (isset ($_POST['qid'])) {
     $qid = COM_applyFilter ($_POST['qid']);
-    $aid = COM_applyFilter ($_POST['aid'], true);
+    if (isset ($_POST['aid'])) {
+        $aid = COM_applyFilter ($_POST['aid'], true);
+    }
 } else {
-    $qid = COM_applyFilter ($_GET['qid']);
-    $aid = COM_applyFilter ($_GET['aid']);
-    if ($aid > 0) { // you can't vote with a GET request
-        $aid = -1;
+    if (isset ($_GET['qid'])) {
+        $qid = COM_applyFilter ($_GET['qid']);
+    }
+    if (isset ($_GET['aid'])) {
+        $aid = COM_applyFilter ($_GET['aid'], true);
+        if ($aid > 0) { // you can't vote with a GET request
+            $aid = -1;
+        }
     }
 }
-if (isset ($_POST['order'])) {
-    $order = COM_applyFilter ($_POST['order']);
-} else {
-    $order = COM_applyFilter ($_GET['order']);
+$order = '';
+if (isset ($_REQUEST['order'])) {
+    $order = COM_applyFilter ($_REQUEST['order']);
 }
-if (isset ($_POST['mode'])) {
-    $mode = COM_applyFilter ($_POST['mode']);
-} else {
-    $mode = COM_applyFilter ($_GET['mode']);
+$mode = '';
+if (isset ($_REQUEST['mode'])) {
+    $mode = COM_applyFilter ($_REQUEST['mode']);
 }
 
 if (empty($qid)) {
