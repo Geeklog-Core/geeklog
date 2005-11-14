@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.35 2005/11/14 10:36:02 ospiess Exp $
+// $Id: functions.inc,v 1.36 2005/11/14 11:08:19 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -228,7 +228,7 @@ function plugin_showstats_links ($showsitestats)
     if ($nrows > 0) {
         $header_arr = array(
             array('text' => $LANG_LINKS_STATS['stats_page_title'], 'field' => 'sid'),
-            array('text' => $LANG_LINKS_STATS['stats_hits'], 'field' => 'links'),
+            array('text' => $LANG_LINKS_STATS['stats_hits'], 'field' => 'hits'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     =>  false,
@@ -239,7 +239,7 @@ function plugin_showstats_links ($showsitestats)
             $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
             $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
                       . "/links/portal.php?what=link&amp;item={$A['lid']}"). "\">{$A['title']}</a>";
-            $A['links'] = COM_NumberFormat ($A['links']);
+            $A['hits'] = COM_numberFormat ($A['hits']);
             $data_arr[$i] = $A;
         }
         $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
