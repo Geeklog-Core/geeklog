@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2005/11/13 14:32:11 dhaun Exp $
+// $Id: index.php,v 1.19 2005/11/14 19:50:53 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -406,7 +406,7 @@ if ($mode == 'edit') {
                     array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
                     array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
                     array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG25[3], 'field' => 'date', 'sort' => true),
+                    array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
                     array('text' => $LANG25[8], 'field' => 'display', 'sort' => true)
     );
 

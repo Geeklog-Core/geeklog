@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.28 2005/11/14 10:36:02 ospiess Exp $
+// $Id: functions.inc,v 1.29 2005/11/14 19:50:52 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -845,7 +845,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr) {
                     $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">{$icon_arr['edit']}</a>";
                 }
                 break;
-            case 'date':
+            case 'unixdate':
                 $retval = strftime ($_CONF['daytime'], $A['unixdate']);
                 break;
             case 'question':
