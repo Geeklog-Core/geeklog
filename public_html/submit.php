@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.90 2005/11/13 18:40:30 dhaun Exp $
+// $Id: submit.php,v 1.91 2005/11/14 08:53:45 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -145,7 +145,8 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour = -1)
     $eventform->set_var('lang_addeventto', $LANG12[38]);
     $eventform->set_var('lang_mastercalendar', $LANG12[39]);
 
-    if ($_CONF['personalcalendars'] == 1 AND $_USER['uid'] > 1) {
+    if (($_CONF['personalcalendars'] == 1) &&
+            isset ($_USER['uid']) && $_USER['uid'] > 1) {
         $eventform->set_var('lang_personalcalendar', $LANG12[40]);
         if ($mode == 'personal') {
             $eventform->set_var('personal_option', '<option value="personal" selected="selected">' . $LANG12[40] . '</option>');
@@ -230,7 +231,7 @@ function submitstory($topic = '')
 
     $retval = '';
 
-    if ($_POST['mode'] == $LANG12[32]) { // preview
+    if (isset ($_POST['mode']) && ($_POST['mode'] == $LANG12[32])) { // preview
         $A = $_POST;
     } else {
         $A['sid'] = COM_makeSid();
@@ -763,7 +764,10 @@ if (isset ($_POST['type'])) {
     $type = COM_applyFilter ($_GET['type']);
 }
 
-$mode = COM_applyFilter ($_REQUEST['mode']);
+$mode = '';
+if (isset ($_REQUEST['mode'])) {
+    $mode = COM_applyFilter ($_REQUEST['mode']);
+}
 
 if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
     if (empty ($_USER['username']) &&
@@ -845,15 +849,27 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
             break;
     }
 
-    $year = COM_applyFilter ($_REQUEST['year'], true);
-    $month = COM_applyFilter ($_REQUEST['month'], true);
-    $day = COM_applyFilter ($_REQUEST['day'], true);
+    $year = 0;
+    if (isset ($_REQUEST['year'])) {
+        $year = COM_applyFilter ($_REQUEST['year'], true);
+    }
+    $month = 0;
+    if (isset ($_REQUEST['month'])) {
+        $month = COM_applyFilter ($_REQUEST['month'], true);
+    }
+    $day = 0;
+    if (isset ($_REQUEST['day'])) {
+        $day = COM_applyFilter ($_REQUEST['day'], true);
+    }
     if (isset ($_REQUEST['hour'])) {
         $hour = COM_applyFilter ($_REQUEST['hour'], true);
     } else {
         $hour = -1;
     }
-    $topic = COM_applyFilter ($_REQUEST['topic']);
+    $topic = '';
+    if (isset ($_REQUEST['topic'])) {
+        $topic = COM_applyFilter ($_REQUEST['topic']);
+    }
 
     switch ($type) {
         case 'event':
