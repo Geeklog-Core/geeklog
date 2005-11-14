@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.2 2005/01/17 12:42:05 dhaun Exp $
+// $Id: directory.php,v 1.3 2005/11/14 11:20:39 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -94,7 +94,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     $retval .= '</select>' . LB;
     $retval .= '<input type="hidden" name="year" value="' . $year . '">';
     $retval .= '<input type="hidden" name="month" value="' . $month . '">';
-    $retval .= '</form>' . $LB;
+    $retval .= '</form>' . LB;
 
     return $retval;
 }
