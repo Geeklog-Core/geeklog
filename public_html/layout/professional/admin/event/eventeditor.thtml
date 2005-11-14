@@ -119,6 +119,16 @@
                                         <td align="right" valign="top"><b>{lang_eventdescription}:</b></td>
                                         <td><textarea name="description" cols="50" rows="8">{event_description}</textarea></td>
                                     </tr>
+                                    <tr valign="top">
+                                        <td align="right"><b>{lang_postmode}:</b></td>
+                                        <td>
+                                            <select name="postmode">
+                                                {post_options}
+                                            </select>
+                                            <br>
+                                            {lang_allowed_html}
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td align="right"><b>{lang_hits}:</b></td>
                                         <td>{hits}</td>

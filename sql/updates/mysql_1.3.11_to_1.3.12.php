@@ -116,6 +116,8 @@ $_SQL[] = "ALTER TABLE {$_TABLES['userindex']} CHANGE etids etids text";
 
 // add a hits counter for events
 $_SQL[] = "ALTER TABLE {$_TABLES['events']} ADD hits mediumint(8) unsigned NOT NULL default '0' AFTER url";
+$_SQL[] = "ALTER TABLE {$_TABLES['events']} ADD postmode varchar(10) NOT NULL default 'plaintext' AFTER description";
+$_SQL[] = "ALTER TABLE {$_TABLES['personal_events']} ADD postmode varchar(10) NOT NULL default 'plaintext' AFTER description";
 
 // allow up to 40 characters for a link id
 $_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE lid lid varchar(40) NOT NULL default ''";

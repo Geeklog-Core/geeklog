@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.44 2005/11/14 09:22:04 dhaun Exp $
+// $Id: calendar_event.php,v 1.45 2005/11/14 10:28:00 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -667,8 +667,11 @@ default:
                 }
 
                 $cal_templates->set_var ('lang_description', $LANG02[5]);
+                if ($A['postmode'] == 'plaintext') {
+                    $A['description'] = nl2br ($A['description']);
+                }
                 $cal_templates->set_var ('event_description',
-                        nl2br (stripslashes ($A['description'])));
+                                            stripslashes ($A['description']));
                 $cal_templates->set_var ('lang_event_type', $LANG12[49]);
                 $cal_templates->set_var ('event_type', $A['event_type']);
                 $cal_templates->parse ('event_details', 'details', true); 

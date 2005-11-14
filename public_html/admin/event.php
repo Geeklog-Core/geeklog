@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.70 2005/11/13 19:07:14 dhaun Exp $
+// $Id: event.php,v 1.71 2005/11/14 10:27:59 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -89,6 +89,8 @@ function editevent ($mode, $A, $msg = '')
     $event_templates->set_var('site_url', $_CONF['site_url']);
     $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
+    $event_templates->set_var('lang_allowed_html', COM_allowedHTML());
+    $event_templates->set_var('lang_postmode', $LANG22[3]);
 
     if ($mode <> 'editsubmission' AND !empty($A['eid'])) {
         // Get what level of access user has to this object
@@ -111,6 +113,12 @@ function editevent ($mode, $A, $msg = '')
         }
         SEC_setDefaultPermissions ($A, $_CONF['default_permissions_event']);
         $access = 3;
+    }
+    
+    if ($mode == 'editsubmission') {
+        $event_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name','plaintext'));
+    } else {
+        $event_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
     }
 
     $retval .= COM_startBlock($LANG22[1], '',
@@ -347,6 +355,7 @@ function editevent ($mode, $A, $msg = '')
 * @param    string  $dateend        Date the event ends on
 * @param    string  $location       Where the event will be held at
 * @param    string  $description    Description about the event
+* @param    string  $postmode       Is this HTML or plain text?
 * @param    string  $owner_id       ID of owner
 * @param    string  $group_id       ID of group event belongs to
 * @param    string  $perm_owner     Permissions the owner has on event
@@ -356,7 +365,7 @@ function editevent ($mode, $A, $msg = '')
 * @return   string                  HTML redirect or error message
 *
 */
-function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode, $description, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $mode) 
+function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode, $description, $postmode, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $mode)
 {
     global $_CONF, $_TABLES, $_USER, $LANG22;
 
@@ -439,7 +448,12 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
     }
 
     // clean 'em up 
-    $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
+    if ($postmode == 'html') {
+        $description = COM_checkHTML (COM_checkWords ($description));
+    } else {
+        $description = htmlspecialchars (COM_checkWords ($description));
+    }
+    $description = addslashes ($description);
     $title = addslashes (COM_checkHTML (COM_checkWords ($title)));
     $location = addslashes (COM_checkHTML (COM_checkWords ($location)));
     $address1 = addslashes (COM_checkHTML (COM_checkWords ($address1)));
@@ -470,14 +484,14 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
     if (!empty ($eid) AND !empty ($description) AND !empty ($title)) {
         DB_delete ($_TABLES['eventsubmission'], 'eid', $eid);
 
-        DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+        DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description','$postmode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         if (DB_count ($_TABLES['personal_events'], 'eid', $eid) > 0) {
             $result = DB_query ("SELECT uid FROM {$_TABLES['personal_events']} WHERE eid = '{$eid}'");
             $numrows = DB_numRows ($result);
             for ($i = 1; $i <= $numrows; $i++) {
                 $P = DB_fetchArray ($result);
-                DB_save ($_TABLES['personal_events'], 'eid,title,event_type,datestart,dateend,address1,address2,city,state,zipcode,allday,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,uid,location,timestart,timeend',
-                    "$eid,'$title','$event_type','$datestart','$dateend','$address1','$address2','$city','$state','$zipcode',$allday,'$url','$description',$group_id,$owner_id,$perm_owner,$perm_group,$perm_members,$perm_anon,{$P['uid']},'$location','$timestart','$timeend'");
+                DB_save ($_TABLES['personal_events'], 'eid,title,event_type,datestart,dateend,address1,address2,city,state,zipcode,allday,url,description,postmode,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,uid,location,timestart,timeend',
+                    "$eid,'$title','$event_type','$datestart','$dateend','$address1','$address2','$city','$state','$zipcode',$allday,'$url','$description','$postmode',$group_id,$owner_id,$perm_owner,$perm_group,$perm_members,$perm_anon,{$P['uid']},'$location','$timestart','$timeend'");
             }
         }
         COM_rdfUpToDateCheck ('geeklog', '::events', $eid);
@@ -545,10 +559,10 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
             $_POST['location'], $_POST['address1'],
             $_POST['address2'], $_POST['city'],
             $_POST['state'], $_POST['zipcode'],
-            $_POST['description'], $_POST['owner_id'],
-            $_POST['group_id'], $_POST['perm_owner'],
-            $_POST['perm_group'], $_POST['perm_members'],
-            $_POST['perm_anon'], $mode);
+            $_POST['description'], $_POST['postmode'] ,
+            $_POST['owner_id'], $_POST['group_id'],
+            $_POST['perm_owner'], $_POST['perm_group'],
+            $_POST['perm_members'], $_POST['perm_anon'], $mode);
 } else if ($mode == 'editsubmission') {
     $id = COM_applyFilter ($_REQUEST['id']);
     $result = DB_query ("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
