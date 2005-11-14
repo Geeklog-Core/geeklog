@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.49 2005/11/05 14:02:11 dhaun Exp $
+// $Id: index.php,v 1.50 2005/11/14 10:32:29 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -502,7 +502,7 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
                     array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
-                    array('text' => $LANG28[3], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
                     array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => false),
                     array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
                     array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
