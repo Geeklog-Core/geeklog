@@ -8,11 +8,11 @@
 // |                                                                           |
 // | Geeklog search tool.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,14 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.56 2004/12/10 10:33:30 dhaun Exp $
+// $Id: search.php,v 1.57 2005/11/14 11:36:41 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/search.class.php');
 
 $searchObj = new Search();
 
-if ($_GET['mode'] == 'search') {
+if (isset ($_GET['mode']) && ($_GET['mode'] == 'search')) {
     $display = COM_siteHeader('menu', $LANG09[11]);
     $display .= $searchObj->doSearch();
 } else {

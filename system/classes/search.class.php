@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.45 2005/08/21 18:20:56 dhaun Exp $
+// $Id: search.class.php,v 1.46 2005/11/14 11:36:41 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -114,17 +114,33 @@ class Search {
         global $_CONF;
 
         // Set search criteria
-        $this->_query = strip_tags (COM_stripslashes ($_REQUEST['query']));
-        $this->_topic = COM_applyFilter ($_REQUEST['topic']);
-        $this->_dateStart = COM_applyFilter ($_REQUEST['datestart']);
-        $this->_dateEnd = COM_applyFilter ($_REQUEST['dateend']);
-        $this->_author = COM_applyFilter ($_REQUEST['author']);
-        $this->_type = COM_applyFilter ($_REQUEST['type']);
+        if (isset ($_REQUEST['query'])) {
+            $this->_query = strip_tags (COM_stripslashes ($_REQUEST['query']));
+        }
+        if (isset ($_REQUEST['topic'])) {
+            $this->_topic = COM_applyFilter ($_REQUEST['topic']);
+        }
+        if (isset ($_REQUEST['datestart'])) {
+            $this->_dateStart = COM_applyFilter ($_REQUEST['datestart']);
+        }
+        if (isset ($_REQUEST['dateend'])) {
+            $this->_dateEnd = COM_applyFilter ($_REQUEST['dateend']);
+        }
+        if (isset ($_REQUEST['author'])) {
+            $this->_author = COM_applyFilter ($_REQUEST['author']);
+        }
+        if (isset ($_REQUEST['type'])) {
+            $this->_type = COM_applyFilter ($_REQUEST['type']);
+        }
         if (empty ($this->_type)) {
             $this->_type = 'all';
         }
-        $this->_keyType = COM_applyFilter ($_REQUEST['keyType']);
-        $this->_per_page = COM_applyFilter ($_REQUEST['results'], true);
+        if (isset ($_REQUEST['keyType'])) {
+            $this->_keyType = COM_applyFilter ($_REQUEST['keyType']);
+        }
+        if (isset ($_REQUEST['results'])) {
+            $this->_per_page = COM_applyFilter ($_REQUEST['results'], true);
+        }
         if ($this->_per_page < 1) {
             if (isset ($_CONF['num_search_results']) &&
                     ($_CONF['num_search_results'] > 0)) {
@@ -133,7 +149,9 @@ class Search {
                 $this->_per_page = 10;
             }
         }
-        $this->_page = COM_applyFilter ($_REQUEST['page'], true);
+        if (isset ($_REQUEST['page'])) {
+            $this->_page = COM_applyFilter ($_REQUEST['page'], true);
+        }
         if ($this->_page < 1) {
             $this->_page = 1;
         }
@@ -469,7 +487,7 @@ class Search {
 
         if (($this->_type == 'events') OR
             (($this->_type == 'all') AND empty($this->_author))) {
-            $select = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,UNIX_TIMESTAMP(datestart) AS day";
+            $select = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,allday,UNIX_TIMESTAMP(datestart) AS day";
             $sql = " FROM {$_TABLES['events']} WHERE ";
 
             if($this->_keyType == 'phrase') {
@@ -545,7 +563,7 @@ class Search {
             // NOTE if any of your data items need to be links then add them
             // here! Make sure data elements are in an array and in the same
             // order as your headings above!
-            while ($A = DB_fetchArray($result_events)) {
+            while ($A = DB_fetchArray ($result_events)) {
                 if ($A['allday'] == 0) {
                     $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - '
                               . $A['dateend'] . ' ' . $A['timeend'];
@@ -632,6 +650,8 @@ class Search {
     {
         global $_CONF, $_USER, $LANG09;
 
+        $retval = '';
+
         $searchmain = new Template ($_CONF['path_layout'] . 'search');
         $searchmain->set_file(array ('searchresults' => 'searchresults.thtml'));
         $searchmain->set_var ('num_matches', '');
@@ -648,7 +668,7 @@ class Search {
             }
         }
         $searchmain->set_var('lang_matchesfor', $LANG09[25] . " $searchQuery.");
-        $searchmain->set_var('num_items_searched', $total);
+        $searchmain->set_var('num_items_searched', 0);
         $searchmain->set_var('lang_itemsin', $LANG09[26]);
         $searchmain->set_var('search_time', $searchtime);
         $searchmain->set_var('lang_seconds', $LANG09[27]);
@@ -661,6 +681,7 @@ class Search {
 
         $maxdisplayed = 0;
         $totalfound = 0;
+        $searchblocks = '';
         for ($i = 1; $i <= count ($result_plugins); $i++) {
             $displayed = 0;
             $searchresults->set_file (array (
