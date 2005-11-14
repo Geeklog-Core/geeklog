@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.14 2005/11/13 14:07:02 dhaun Exp $
+ * $Id: functions.inc,v 1.15 2005/11/14 10:36:02 ospiess Exp $
  */
 
 /**
@@ -49,56 +49,29 @@ function plugin_showstats_spamx($showsitestats)
 
     $retval = '';
 
-    if ($showsitestats == 1) {
-        // overall stats: number of deleted posts
-        $counter = DB_getItem ($_TABLES['vars'], 'value',
-                                                 "name = 'spamx.counter'");
-        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
-        $retval .= '<tr><td>' . $LANG_SX00['stats_deleted'] . '</td>';
-        $retval .= '<td align="right">' . COM_numberFormat ($counter)
-                . '&nbsp;&nbsp;</td></tr></table>';
-    } else if (SEC_hasRights('spamx.admin')) {
+    if (SEC_hasRights('spamx.admin')) {
         // detailed stats are only visible to Spam-X admins
-        $retval .= COM_startBlock ($LANG_SX00['stats_headline']);
-
-        $templates = new Template ($_CONF['path_layout'] . 'stats');
-        $templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
-                                     'statrow'   => 'singlestat.thtml'));
-        $templates->set_var ('item_label', $LANG_SX00['stats_page_title']);
-        $templates->set_var ('stat_name', $LANG_SX00['stats_entries']);
-
-        // we need a URL - link to the plugin's admin page
-        $templates->set_var ('item_url',
-                $_CONF['site_admin_url'] . '/plugins/spamx/index.php');
-
-        $templates->set_var ('item_text', $LANG_SX00['stats_mtblacklist']);
-        $templates->set_var ('item_stat',
-                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'MTBlacklist')));
-        $templates->parse ('stat_row', 'statrow', true);
-
-        $templates->set_var ('item_text', $LANG_SX00['stats_pblacklist']);
-        $templates->set_var ('item_stat',
-                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'Personal')));
-        $templates->parse ('stat_row', 'statrow', true);
-
-        $templates->set_var ('item_text', $LANG_SX00['stats_ip']);
-        $templates->set_var ('item_stat',
-                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'IP')));
-        $templates->parse ('stat_row', 'statrow', true);
-
-        $templates->set_var ('item_text', $LANG_SX00['stats_ipofurl']);
-        $templates->set_var ('item_stat',
-                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'IPofUrl')));
-        $templates->parse ('stat_row', 'statrow', true);
-
-        $templates->set_var ('item_text', $LANG_SX00['stats_header']);
-        $templates->set_var ('item_stat',
-                COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'HTTPHeader')));
-        $templates->parse ('stat_row', 'statrow', true);
-
-        $templates->parse ('output', 'itemstats');
-        $retval .= $templates->finish ($templates->get_var ('output'));
-        $retval .= COM_endBlock ();
+        $header_arr = array(
+            array('text' => $LANG_SX00['stats_page_title'], 'field' => 'label'),
+            array('text' => $LANG_SX00['stats_entries'], 'field' => 'stats'),
+        );
+        $data_arr = array();
+        $text_arr = array('has_menu'     => false,
+                          'title'        => $LANG_SX00['stats_headline'],
+        );
+        $data_arr = array(
+            array('label' => $LANG_SX00['stats_mtblacklist'],
+                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'MTBlacklist'))),
+            array('label' => $LANG_SX00['stats_pblacklist'],
+                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'Personal'))),
+            array('label' => $LANG_SX00['stats_ip'],
+                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'IP'))),
+            array('label' => $LANG_SX00['stats_ipofurl'],
+                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'IPofUrl'))),
+            array('label' => $LANG_SX00['stats_header'],
+                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'HTTPHeader')))
+        );
+        $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     }
 
     return $retval;

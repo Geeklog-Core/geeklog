@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.34 2005/11/13 21:04:03 dhaun Exp $
+// $Id: functions.inc,v 1.35 2005/11/14 10:36:02 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -223,45 +223,33 @@ function plugin_showstats_links ($showsitestats)
 
     $retval = '';
 
-    if ($showsitestats == 1) {
-        list($total_links, $total_clicks) = LINKS_countLinksAndClicks ();
-
-        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
-        $retval .= '<tr><td>' . $LANG_LINKS_STATS['links'] . '</td>';
-        $retval .= '<td align="right">' . COM_NumberFormat ($total_links) . '('. COM_NumberFormat ($total_clicks) . ')&nbsp;&nbsp;</td></tr></table>';
-    } else {
-        $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
-        $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
-                                          'statrow'   => 'singlestat.thtml'));
-
-        $result = DB_query("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
-        $nrows  = DB_numRows ($result);
-        $retval .= COM_startBlock ($LANG_LINKS_STATS['stats_headline']);
-        if ($nrows > 0) {
-            $stat_templates->set_var ('item_label',
-                                      $LANG_LINKS_STATS['stats_page_title']);
-            $stat_templates->set_var ('stat_name',
-                                      $LANG_LINKS_STATS['stats_hits']);
-
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray ($result);
-                $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/links/portal.php?what=link&amp;item=' . $A['lid']));
-                $stat_templates->set_var ('item_text',
-                        stripslashes (str_replace ('$', '&#36;', $A['title'])));
-                $stat_templates->set_var ('item_stat',
-                        COM_numberFormat ($A['hits']));
-                $stat_templates->parse ('stat_row', 'statrow', true);
-            }
-            $stat_templates->parse ('output', 'itemstats');
-            $retval .= $stat_templates->finish ($stat_templates->get_var ('output'));
-
-        } else {
-            $retval .= $LANG_LINKS_STATS['stats_no_hits'];
+    $result = DB_query("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
+    $nrows  = DB_numRows ($result);
+    if ($nrows > 0) {
+        $header_arr = array(
+            array('text' => $LANG_LINKS_STATS['stats_page_title'], 'field' => 'sid'),
+            array('text' => $LANG_LINKS_STATS['stats_hits'], 'field' => 'links'),
+        );
+        $data_arr = array();
+        $text_arr = array('has_menu'     =>  false,
+                          'title'        => $LANG_LINKS_STATS['stats_headline'],
+        );
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                      . "/links/portal.php?what=link&amp;item={$A['lid']}"). "\">{$A['title']}</a>";
+            $A['links'] = COM_NumberFormat ($A['links']);
+            $data_arr[$i] = $A;
         }
-        $retval .= COM_endBlock ();
+        $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+    } else {
+        $display .= COM_startBlock($LANG_LINKS_STATS['stats_headline']);
+        $display .= $LANG_LINKS_STATS['stats_no_hits'];
+        $display .= COM_endBlock();
     }
 
-    return $retval;
+    return $display;
 }
 
 /**

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.27 2005/11/13 14:32:11 dhaun Exp $
+// $Id: functions.inc,v 1.28 2005/11/14 10:36:02 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -205,45 +205,33 @@ function POLLS_countPollsAndVotes ()
 function plugin_showstats_polls ($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
-
     $retval = '';
+    $result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
+    $nrows  = DB_numRows ($result);
 
-    if ($showsitestats == 1) {
-        list($total_polls, $total_answers) = POLLS_countPollsAndVotes ();
-
-        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
-        $retval .= '<tr><td>' . $LANG_POLLS['stats_summary'] . '</td>';
-        $retval .= '<td align="right">' . COM_numberFormat ($total_polls) . '(' . COM_numberFormat ($total_answers) . ')' . '&nbsp;&nbsp;</td></tr></table>';
-    } else {
-        $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
-        $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
-                                          'statrow'   => 'singlestat.thtml'));
-        $stat_templates->set_var ('site_url', $_CONF['site_url']);
-        $stat_templates->set_var ('layout_url', $_CONF['layout_url']);
-
-        $result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
-        $nrows  = DB_numRows ($result);
-        $retval .= COM_startBlock ($LANG_POLLS['stats_top10']);
-        if ($nrows > 0) {
-            $stat_templates->set_var ('item_label',
-                                      $LANG_POLLS['stats_questions']);
-            $stat_templates->set_var ('stat_name', $LANG_POLLS['stats_votes']);
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray ($result);
-                $stat_templates->set_var ('item_url', $_CONF['site_url']
-                    . '/polls/index.php?qid=' . $A['qid'] . '&amp;aid=-1');
-                $stat_templates->set_var ('item_text', $A['question']);
-                $stat_templates->set_var ('item_stat',
-                                          COM_numberFormat ($A['voters']));
-                $stat_templates->parse ('stat_row', 'statrow', true);
-            }
-            $stat_templates->parse ('output', 'itemstats');
-            $retval .= $stat_templates->finish ($stat_templates->get_var ('output'));
-        } else {
-            $retval .= $LANG_POLLS['stats_none'];
+    if ($nrows > 0) {
+        $header_arr = array(
+            array('text' => $LANG_POLLS['stats_questions'], 'field' => 'qid'),
+            array('text' => $LANG_LINKS_STATS['stats_headline'], 'field' => 'sp_title'),
+        );
+        $data_arr = array();
+        $text_arr = array('has_menu'     => false,
+                          'title'        => $LANG_POLLS['stats_top10'],
+        );
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);
+            $A['qid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                      . "/polls/index.php?qid={$A['qid']}&amp;aid=-1"). "\">{$A['question']}</a>";
+            $A['voters'] = COM_NumberFormat ($A['voters']);
+            $data_arr[$i] = $A;
+            $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
         }
+    } else {
+        $retval .= COM_startBlock ($LANG_POLLS['stats_top10']);
+        $retval .= $LANG_POLLS['stats_none'];
         $retval .= COM_endBlock ();
     }
+    
 
     return $retval;
 }

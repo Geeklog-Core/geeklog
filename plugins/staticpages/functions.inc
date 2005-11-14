@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.56 2005/11/05 14:14:03 ospiess Exp $
+// $Id: functions.inc,v 1.57 2005/11/14 10:36:02 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -136,44 +136,36 @@ function plugin_showstats_staticpages($showsitestats)
     global $_CONF, $_TABLES, $LANG_STATIC;
 
     $retval = '';
-
-    if ($showsitestats == 1) {
-        $total_pages = SP_countVisiblePages ();
-        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
-        $retval .= '<tr><td>' . $LANG_STATIC['staticpages'] . '</td>';
-        $retval .= '<td align="right">' . COM_numberFormat ($total_pages)
-                . '&nbsp;&nbsp;</td></tr></table>';
-    } else {
-        $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
-        $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
-                                          'statrow'   => 'singlestat.thtml'));
-
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
-            $perms = ' AND ' . $perms;
-        }
-        $result = DB_query ("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
-        $nrows  = DB_numRows ($result);
-        $retval .= COM_startBlock ($LANG_STATIC['stats_headline']);
-        if ($nrows > 0) {
-            $stat_templates->set_var ('item_label', $LANG_STATIC['stats_page_title']);
-            $stat_templates->set_var ('stat_name', $LANG_STATIC['stats_hits']);
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray ($result);
-                $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']));
-                $stat_templates->set_var ('item_text',
-                                          stripslashes ($A['sp_title']));
-                $stat_templates->set_var ('item_stat',
-                                          COM_numberFormat ($A['sp_hits']));
-                $stat_templates->parse ('stat_row','statrow',true); 
-            }
-            $stat_templates->parse ('output','itemstats');
-            $retval .= $stat_templates->finish ($stat_templates->get_var ('output'));
-        } else {
-            $retval .= $LANG_STATIC['stats_no_hits'];
-        }	
-        $retval .= COM_endBlock();
+    $perms = SP_getPerms ();
+    if (!empty ($perms)) {
+        $perms = ' AND ' . $perms;
     }
+    $result = DB_query ("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
+    $nrows  = DB_numRows ($result);
+    if ($nrows > 0) {
+        $header_arr = array(
+            array('text' => $LANG_STATIC['stats_page_title'], 'field' => 'sid'),
+            array('text' => $LANG_STATIC['stats_hits'], 'field' => 'sp_title'),
+        );
+        $data_arr = array();
+        $text_arr = array('has_menu'     => false,
+                          'title'        => $LANG_STATIC['stats_headline'],
+        );
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);
+            $A['sp_title'] = stripslashes ($A['sp_title']);
+            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                      . "/staticpages/index.php?page={$A['sp_id']}"). "\">{$A['sp_title']}</a>";
+            $A['sp_hits'] = COM_NumberFormat ($A['sp_hits']);
+            $data_arr[$i] = $A;
+        }
+        $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+    } else {
+        $retval .= COM_startBlock ($LANG_STATIC['stats_headline']);
+        $retval .= $LANG_STATIC['stats_no_hits'];
+        $retval .= COM_endBlock();
+    }	
+
     return $retval;
 }
 

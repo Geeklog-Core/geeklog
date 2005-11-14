@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.40 2005/11/08 17:47:09 dhaun Exp $
+// $Id: stats.php,v 1.41 2005/11/14 10:36:02 ospiess Exp $
 
 require_once('lib-common.php');
 
@@ -59,19 +59,21 @@ if (empty ($_USER['username']) &&
 
 // MAIN
 
-$display .= COM_siteHeader ('menu', $LANG10[1]) . COM_startBlock ($LANG10[1]);
-
-$stat_templates = new Template($_CONF['path_layout'] . 'stats');
-$stat_templates->set_file (array ('sitestats' => 'sitestatistics.thtml',
-                                  'itemstats' => 'itemstatistics.thtml',
-                                  'statrow'   => 'singlestat.thtml',
-                                  'summary'   => 'singlesummary.thtml'));
+$display .= COM_siteHeader ('menu', $LANG10[1]);
 
 // Overall Site Statistics
 
+$header_arr = array(
+    array('text' => $LANG10[1], 'field' => 'title'),
+    array('text' => "", 'field' => 'stats'),
+);
+$data_arr = array();
+$text_arr = array('has_menu'     =>  false,
+                  'title'        => $LANG10[7],
+);
+
 $totalhits = DB_getItem ($_TABLES['vars'], 'value', "name = 'totalhits'");
-$stat_templates->set_var ('lang_totalhitstosystem', $LANG10[2]);
-$stat_templates->set_var ('total_hits', COM_NumberFormat ($totalhits));
+$data_arr[] = array('title' => $LANG10[2], 'stats' => COM_NumberFormat ($totalhits));
 
 if ($_CONF['lastlogin']) {
     // if we keep track of the last login date, count the number of users
@@ -84,8 +86,7 @@ if ($_CONF['lastlogin']) {
     $active_users = DB_count ($_TABLES['users'], 'status', 3);
     $active_users--; // don't count the anonymous user account
 }
-$stat_templates->set_var ('lang_active_users', $LANG10[27]);
-$stat_templates->set_var ('active_users', COM_NumberFormat ($active_users));
+$data_arr[] = array('title' => $LANG10[27], 'stats' => COM_NumberFormat ($active_users));
 
 $topicsql = COM_getTopicSql ('AND');
 
@@ -93,20 +94,16 @@ $id = array ('draft_flag', 'date');
 $values = array ('0', 'NOW()');	
 $result = DB_query ("SELECT COUNT(*) AS count,SUM(comments) AS ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql);
 $A = DB_fetchArray ($result);
-$total_stories = $A['count'];
-$comments = $A['ccount'];
-if (empty ($comments)) {
-    $comments = 0;
+if (empty ($A['ccount'])) {
+    $A['ccount'] = 0;
 }
-$stat_templates->set_var ('lang_stories_comments', $LANG10[3]);
-$stat_templates->set_var ('total_stories', COM_NumberFormat ($total_stories));
-$stat_templates->set_var ('total_comments', COM_NumberFormat ($comments));
+$data_arr[] = array('title' => $LANG10[3],
+                    'stats' => COM_NumberFormat ($A['count'])
+                           . " (". COM_NumberFormat ($A['ccount']) . ")");
 
 $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
 $A = DB_fetchArray ($result);
-$total_events = $A['count'];
-$stat_templates->set_var ('lang_events', $LANG10[6]);
-$stat_templates->set_var ('total_events', COM_NumberFormat ($total_events));
+$data_arr[] = array('title' => $LANG10[6], 'stats' => COM_NumberFormat ($A['count']));
 
 // new stats plugin API call
 $plg_stats = PLG_getPluginStats (3);
@@ -114,150 +111,166 @@ if (count ($plg_stats) > 0) {
     foreach ($plg_stats as $pstats) {
         if (is_array ($pstats[0])) {
             foreach ($pstats as $pmstats) {
-                $stat_templates->set_var ('item_text', $pmstats[0]);
-                $stat_templates->set_var ('item_stat', $pmstats[1]);
-                $stat_templates->parse ('summary_row', 'summary', true);
+                $data_arr[] = array('title' => $pmstats[0], 'stats' => $pmstats[1]);
             }
         } else {
-            $stat_templates->set_var ('item_text', $pstats[0]);
-            $stat_templates->set_var ('item_stat', $pstats[1]);
-            $stat_templates->parse ('summary_row', 'summary', true);
+            $data_arr[] = array('title' => $pstats[0], 'stats' => $pstats[1]);
         }
     }
 }
 
-$stat_templates->parse ('output', 'sitestats');
-$display .= $stat_templates->finish ($stat_templates->get_var ('output'));
+$display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 
 // old stats plugin API call, for backward compatibilty
 $display .= PLG_getPluginStats (1);
-
-$display .= COM_endBlock ();
 
 // Detailed story statistics
 
 $result = DB_query("SELECT sid,title,hits FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY hits DESC LIMIT 10");
 $nrows  = DB_numRows($result);
 
-$display .= COM_startBlock($LANG10[7]);
 if ($nrows > 0) {
-    $stat_templates->set_var('item_label',$LANG10[8]);
-    $stat_templates->set_var('stat_name',$LANG10[9]);
+    $header_arr = array(
+        array('text' => $LANG10[8], 'field' => 'sid'),
+        array('text' => $LANG10[9], 'field' => 'hits'),
+    );
+    $data_arr = array();
+    $text_arr = array('has_menu'     =>  false,
+                      'title'        => $LANG10[7],
+    );
+
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
-                                    . '/article.php?story=' . $A['sid']));
-        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['hits']) );
-        $stat_templates->parse('stat_row','statrow',true); 
-    }
-    $stat_templates->parse('output','itemstats');
-    $display .= $stat_templates->finish($stat_templates->get_var('output'));
-} else {
-    $display .= $LANG10[10];
-}
+        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+        $A['hits'] = COM_NumberFormat ($A['hits']);
+        $data_arr[$i] = $A;
 
-$display .= COM_endBlock();
-$stat_templates->set_var('stat_row','');
+    }
+    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+} else {
+    $display .= COM_startBlock($LANG10[7]);
+    $display .= $LANG10[10];
+    $display .= COM_endBlock();
+}
 
 // Top Ten Commented Stories
 
 $result = DB_query("SELECT sid,title,comments FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10");
 $nrows  = DB_numRows($result);
-$display .= COM_startBlock($LANG10[11]);
 if ($nrows > 0) {
-    $stat_templates->set_var('item_label',$LANG10[8]);
-    $stat_templates->set_var('stat_name',$LANG10[12]);
+    $header_arr = array(
+        array('text' => $LANG10[8], 'field' => 'sid'),
+        array('text' => $LANG10[12], 'field' => 'comments'),
+    );
+    $data_arr = array();
+    $text_arr = array('has_menu'     =>  false,
+                      'title'        => $LANG10[11],
+    );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);	
-        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
-                                    . '/article.php?story=' . $A['sid']));
-        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['comments']) );
-        $stat_templates->parse('stat_row','statrow',true); 
+        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+        $A['comments'] = COM_NumberFormat ($A['comments']);
+        $data_arr[$i] = $A;
     }
-    $stat_templates->parse('output','itemstats');
-    $display .= $stat_templates->finish($stat_templates->get_var('output'));
+    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+
 } else {
+    $display .= COM_startBlock($LANG10[11]);
     $display .= $LANG10[13];
+    $display .= COM_endBlock();
 }
-$display .= COM_endBlock();
-$stat_templates->set_var('stat_row','');
 
 // Top Ten Trackback Comments
 
 $result = DB_query ("SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title,COUNT(*) AS count FROM {$_TABLES['stories']},{$_TABLES['trackback']} AS t WHERE (draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ({$_TABLES['stories']}.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid ORDER BY count DESC LIMIT 10");
 $nrows = DB_numRows ($result);
-$display .= COM_startBlock ($LANG10[25]);
 if ($nrows > 0) {
-    $stat_templates->set_var ('item_label', $LANG10[8]);
-    $stat_templates->set_var ('stat_name', $LANG10[12]);
+    $header_arr = array(
+        array('text' => $LANG10[8], 'field' => 'sid'),
+        array('text' => $LANG10[12], 'field' => 'count'),
+    );
+    $data_arr = array();
+    $text_arr = array('has_menu'     =>  false,
+                      'title'        => $LANG10[25],
+    );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray ($result);
-        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
-                                        . '/article.php?story=' . $A['sid']));
-        $stat_templates->set_var ('item_text',
-                stripslashes (str_replace ('$', '&#36;', $A['title'])));
-        $stat_templates->set_var ('item_stat', COM_NumberFormat ( $A['count']) );
-        $stat_templates->parse ('stat_row', 'statrow', true);
+        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+        $A['count'] = COM_NumberFormat ($A['count']);
+        $data_arr[$i] = $A;
+        $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     }
-    $stat_templates->parse ('output', 'itemstats');
-    $display .= $stat_templates->finish ($stat_templates->get_var ('output'));
+
 } else {
+    $display .= COM_startBlock ($LANG10[25]);
     $display .= $LANG10[26];
+    $display .= COM_endBlock ();
 }
-$display .= COM_endBlock ();
-$stat_templates->set_var ('stat_row', '');
 
 // Top Ten Emailed Stories
 
 $result = DB_query("SELECT sid,title,numemails FROM {$_TABLES['stories']} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY numemails DESC LIMIT 10");
 $nrows = DB_numRows($result);
-$display .= COM_startBlock($LANG10[22]);
 
 if ($nrows > 0) {
-    $stat_templates->set_var('item_label',$LANG10[8]);
-    $stat_templates->set_var('stat_name',$LANG10[23]);
+    $header_arr = array(
+        array('text' => $LANG10[8], 'field' => 'sid'),
+        array('text' => $LANG10[23], 'field' => 'numemails'),
+    );
+    $data_arr = array();
+    $text_arr = array('has_menu'     =>  false,
+                      'title'        => $LANG10[22],
+    );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
-                                    . '/article.php?story=' . $A['sid']));
-        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', COM_NumberFormat ( $A['numemails']) );
-        $stat_templates->parse('stat_row','statrow',true); 
+        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+        $A['numemails'] = COM_NumberFormat ($A['numemails']);
+        $data_arr[$i] = $A;
+
     }
-    $stat_templates->parse('output','itemstats');
-    $display .= $stat_templates->finish($stat_templates->get_var('output'));
+    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 } else {
+    $display .= COM_startBlock($LANG10[22]);
     $display .= $LANG10[24];
+    $display .= COM_endBlock();
 }
-$display .= COM_endBlock();
-$stat_templates->set_var('stat_row','');
 
 // Top Ten Events
 
 $result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
 $nrows  = DB_numRows($result);
-$display .= COM_startBlock($LANG10[28]);
 if ($nrows > 0) {
-    $stat_templates->set_var('item_label',$LANG10[29]);
-    $stat_templates->set_var('stat_name',$LANG10[30]);
+    $header_arr = array(
+        array('text' => $LANG10[29], 'field' => 'sid'),
+        array('text' => $LANG10[30], 'field' => 'hits'),
+    );
+    $data_arr = array();
+    $text_arr = array('has_menu'     =>  false,
+                      'title'        => $LANG10[28],
+    );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $stat_templates->set_var('item_url', $_CONF['site_url']
-                . '/calendar_event.php?eid=' . $A['eid']);
-        $stat_templates->set_var('item_text',
-                stripslashes (str_replace ('$', '&#36;', $A['title'])));
-        $stat_templates->set_var('item_stat', COM_numberFormat ($A['hits']));
-        $stat_templates->parse('stat_row', 'statrow', true);
+        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                  . "/calendar_event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
+        $A['hits'] = COM_NumberFormat ($A['hits']);
+        $data_arr[$i] = $A;
     }
-    $stat_templates->parse('output','itemstats');
-    $display .= $stat_templates->finish($stat_templates->get_var('output'));
+    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 } else {
+    $display .= COM_startBlock($LANG10[28]);
     $display .= $LANG10[31];
+    $display .= COM_endBlock();
 }
-$display .= COM_endBlock();
-$stat_templates->set_var('stat_row','');
+
 
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);
