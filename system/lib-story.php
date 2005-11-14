@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.50 2005/11/13 22:17:10 dhaun Exp $
+// $Id: lib-story.php,v 1.51 2005/11/14 08:43:30 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -178,7 +178,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     $article->set_var( 'story_topic_name', $topicname );
 
     $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
-    if( $_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1 )
+    if(( !isset( $_USER['noicons'] ) OR ( $_USER['noicons'] != 1 )) AND
+            $A['show_topic_icon'] == 1 )
     {
         if( !empty( $A['imageurl'] ))
         {
