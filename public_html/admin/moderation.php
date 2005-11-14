@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.74 2005/11/14 10:48:36 ospiess Exp $
+// $Id: moderation.php,v 1.75 2005/11/14 20:28:35 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -379,48 +379,48 @@ function userlist ()
 */
 function draftlist ()
 {
-    global $_CONF, $_TABLES, $LANG24, $LANG29;
+    global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
 
-    $retval = COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
-            COM_getBlockTemplate ('_admin_block', 'header'));
-
-    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
+    $sql = "SELECT sid AS id,title,date AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC";
+    $result = DB_query ($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
-        $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
-        $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
-                                       'itemrows'=>'itemlistrows.thtml'));
-        $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
-        $mod_templates->set_var('item_type', 'draft');
-        $mod_templates->set_var('num_rows', $nrows);
-        $mod_templates->set_var('heading_col1', $LANG29[10]);
-        $mod_templates->set_var('heading_col2', $LANG29[14]);
-        $mod_templates->set_var('heading_col3', $LANG29[15]);
-        $mod_templates->set_var('lang_approve', $LANG29[2]);
-        $mod_templates->set_var('lang_delete', $LANG29[1]);
-
-        for ($i = 1; $i <= $nrows; $i++) {
+        for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $mod_templates->set_var('edit_submission_url',
-                    $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
-                    . $A['id']);
-            $mod_templates->set_var('lang_edit', $LANG29[3]);
-            $mod_templates->set_var('data_col1', stripslashes($A['title']));
-            $mod_templates->set_var('data_col2', strftime ("%c", $A['day']));
-            $mod_templates->set_var('data_col3', stripslashes($A['tid']));
-            $mod_templates->set_var('cur_row', $i);
-            $mod_templates->set_var('item_id', $A['id']);
-            $mod_templates->parse('list_of_items','itemrows',true);
+            $A['edit'] = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
+                        . $A['id'];
+            $A['row'] = $i;
+            $A['title'] = stripslashes($A['title']);
+            $A['tid'] = stripslashes($A['tid']);
+            $data_arr[$i] = $A;
         }
-        $mod_templates->set_var('lang_submit', $LANG29[38]);
-        $mod_templates->parse('output','itemlist');
-        $retval .= $mod_templates->finish($mod_templates->get_var('output'));
+        $header_arr = array(
+            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+            array('text' => $LANG29[10], 'field' => 1),
+            array('text' => $LANG29[14], 'field' => 2),
+            array('text' => $LANG29[15], 'field' => 3),
+            array('text' => $LANG29[2], 'field' => 'delete'),
+            array('text' => $LANG29[1], 'field' => 'approve')
+        );
+
+        $text_arr = array('has_menu'    => false,
+                            'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
+                            'help_url'  => ''
+        );
+
+         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
+                    ."<input type=\"hidden\" name=\"type\" value=\"draft\">"
+                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
+        $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
+        $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+
     } else {
         if ($nrows <> -1) {
-            $retval .= $LANG29[39] . "<br>";
+            $retval .= COM_startBlock($LANG29[35] . ' (' . $LANG24[34] . ')');
+            $retval .= $LANG29[39] .'<br/>';
+            $retval .= COM_endBlock();
         }
     }
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -512,7 +512,7 @@ function moderation($mid,$action,$type)
                                            $_CONF['default_permissions_event']);
                 DB_query ("UPDATE {$_TABLES['events']} SET perm_owner = {$A['perm_owner']}, perm_group = {$A['perm_group']}, perm_members = {$A['perm_members']}, perm_anon = {$A['perm_anon']} WHERE eid = {$mid[$i]}");
             } else if ($type == 'draft') {
-                DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = {$mid[$i]}");
+                DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = '{$mid[$i]}'");
 
                 COM_rdfUpToDateCheck ();
                 COM_olderStuff ();
