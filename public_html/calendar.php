@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.55 2005/06/25 17:14:34 dhaun Exp $
+// $Id: calendar.php,v 1.56 2005/11/14 09:22:04 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -78,6 +78,7 @@ function getDayViewData($result, $cur_time = '')
     $thedata = array();
     $nrows = DB_numRows($result);
 
+    $alldaydata = array ();
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
         if ($A['allday'] == 1 OR (($A['datestart'] < date('Y-m-d',$cur_time)) AND ($A['dateend'] > date('Y-m-d',$cur_time)))) {
@@ -393,9 +394,18 @@ if (!in_array ($view, array ('month', 'week', 'day'))) {
     $view = '';
 }
 
-$year = COM_applyFilter ($_REQUEST['year'], true);
-$month = COM_applyFilter ($_REQUEST['month'], true);
-$day = COM_applyFilter ($_REQUEST['day'], true);
+$year = 0;
+if (isset ($_REQUEST['year'])) {
+    $year = COM_applyFilter ($_REQUEST['year'], true);
+}
+$month = 0;
+if (isset ($_REQUEST['month'])) {
+    $month = COM_applyFilter ($_REQUEST['month'], true);
+}
+$day = 0;
+if (isset ($_REQUEST['day'])) {
+    $day = COM_applyFilter ($_REQUEST['day'], true);
+}
 
 // Create new calendar object
 $cal = new Calendar();
@@ -931,7 +941,8 @@ if ($mode == 'personal') {
     $cal_templates->set_var('lang_mastercal', $LANG30[25] . $LANG30[11]);
     $cal_templates->parse('master_calendar_option','mastercal',true); 
 } else {
-    if ($_USER['uid'] > 1 AND $_CONF['personalcalendars'] == 1) {
+    if (isset ($_USER['uid']) && ($_USER['uid'] > 1) &&
+            ($_CONF['personalcalendars'] == 1)) {
         $cal_templates->set_var('lang_mycalendar', $LANG30[12]);
         $cal_templates->parse('personal_calendar_option','personalcal',true); 
     } else {

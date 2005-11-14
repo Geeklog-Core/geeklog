@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.43 2005/11/08 17:47:08 dhaun Exp $
+// $Id: calendar_event.php,v 1.44 2005/11/14 09:22:04 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -462,8 +462,14 @@ case 'edit':
     break;
 
 default:
-    $mode = COM_applyFilter ($_GET['mode']);
-    $eid = COM_applyFilter ($_GET['eid']);
+    $mode = '';
+    if (isset ($_GET['mode'])) {
+        $mode = COM_applyFilter ($_GET['mode']);
+    }
+    $eid = '';
+    if (isset ($_GET['eid'])) {
+        $eid = COM_applyFilter ($_GET['eid']);
+    }
     if (!empty ($eid)) {
         if (($mode == 'personal') && ($_CONF['personalcalendars'] == 1) &&
                 (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
@@ -483,9 +489,18 @@ default:
         $display .= COM_startBlock ($pagetitle);
 
     } else {
-        $year = COM_applyFilter ($_GET['year'], true);
-        $month = COM_applyFilter ($_GET['month'], true);
-        $day = COM_applyFilter ($_GET['day'], true);
+        $year = 0;
+        if (isset ($_GET['year'])) {
+            $year = COM_applyFilter ($_GET['year'], true);
+        }
+        $month = 0;
+        if (isset ($_GET['month'])) {
+            $month = COM_applyFilter ($_GET['month'], true);
+        }
+        $day = 0;
+        if (isset ($_GET['day'])) {
+            $day = COM_applyFilter ($_GET['day'], true);
+        }
         if (($year == 0) || ($month == 0) || ($day == 0)) {
             $year = date ('Y');
             $month = date ('n');
@@ -660,7 +675,7 @@ default:
             }
         }
 
-        if ($mode == personal) {
+        if ($mode == 'personal') {
             $editurl = $_CONF['site_url'] . '/calendar_event.php?action=edit'
                      . '&amp;eid=' . $eid;
             $cal_templates->set_var ('event_edit', '<a href="' .$editurl . '">'

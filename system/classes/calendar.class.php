@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.class.php,v 1.5 2004/07/26 14:32:43 dhaun Exp $
+// $Id: calendar.class.php,v 1.6 2005/11/14 09:22:04 dhaun Exp $
 
 /**
 * This file contains the two classes used to help support the calendar pages.
@@ -518,7 +518,11 @@ class Calendar {
     *
     */
     function getDayData($week,$daynum) {
-        return $this->_matrix[$week][$daynum];
+        if (isset ($this->_matrix[$week][$daynum])) {
+            return $this->_matrix[$week][$daynum];
+        }
+
+        return '';
     }
 
 }
