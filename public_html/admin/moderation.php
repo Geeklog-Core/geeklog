@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.72 2005/11/13 21:08:03 mjervis Exp $
+// $Id: moderation.php,v 1.73 2005/11/14 10:33:30 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -298,7 +298,7 @@ function itemlist($type)
                     ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
                     ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
 
-        $retval .= ADMIN_simpleList($type, "ADMIN_getListField_moderation", $header_arr, $field_arr, $text_arr, $data_arr, $menu_arr);
+        $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
         $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
     } else {
         if ($nrows <> -1) {
@@ -307,8 +307,6 @@ function itemlist($type)
             $retval .= COM_endBlock();
         }
     }
-
-    # $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
