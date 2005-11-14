@@ -261,7 +261,7 @@ CREATE TABLE {$_TABLES['personal_events']} (
   allday tinyint(1) NOT NULL default '0',
   url varchar(255) default NULL,
   description text,
-  postmode varchar(10) NOT NULL default 'html',
+  postmode varchar(10) NOT NULL default 'plaintext',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
