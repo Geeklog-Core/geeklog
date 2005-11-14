@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.73 2005/11/14 10:33:30 ospiess Exp $
+// $Id: moderation.php,v 1.74 2005/11/14 10:48:36 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -351,7 +351,7 @@ function userlist ()
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"user\">"
                     ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
-        $retval .= ADMIN_simpleList($type, "ADMIN_getListField_moderation", $header_arr, $field_arr, $text_arr, $data_arr, $menu_arr);
+        $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
         $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
 
 
