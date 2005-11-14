@@ -1,0 +1,32 @@
+// Register the related command.
+
+var FCKFullWindow = function(name) 
+{ 
+this.Name = name; 
+}
+
+
+FCKFullWindow.prototype.Execute = function() 
+{ 
+	//open window with new editor. parameter is not used now
+	//oDialog = new FCKDialog;
+	FCKDialog.Show('', 'FullScreen', FCKConfig.PluginsPath + 'FullWindow/fullwindow.html?name=' + FCK.Name,
+                640, 480, window, true);
+    FCK.EditorDocument.designMode = "off";
+} 
+ 
+// manage the plugins' button behavior 
+FCKFullWindow.prototype.GetState = function() 
+{ 
+  return FCK_TRISTATE_OFF; 
+  // default behavior, sometimes you wish to have some kind of if statement here 
+} 
+
+FCKCommands.RegisterCommand( 'My_FullWindow', new FCKFullWindow('FullWindow'));
+
+// Create the "Plaholder" toolbar button.
+var oFullWindowItem = new FCKToolbarButton( 'My_FullWindow', FCKLang.FullWindow ) ;
+oFullWindowItem.IconPath = FCKConfig.PluginsPath + 'FullWindow/fullwindow.gif' ;
+FCKToolbarItems.RegisterItem( 'FullWindow', oFullWindowItem ) ;
+
+
