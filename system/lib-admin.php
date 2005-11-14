@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.21 2005/11/13 18:27:12 dhaun Exp $
+// $Id: lib-admin.php,v 1.22 2005/11/14 10:30:41 ospiess Exp $
 
-function ADMIN_simpleList($component, $fieldfunction, $header_arr, $field_arr,
-                            $text_arr, $data_arr, $menu_arr)
+function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
+                           $data_arr, $menu_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
