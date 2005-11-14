@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.496 2005/11/13 22:17:10 dhaun Exp $
+// $Id: lib-common.php,v 1.497 2005/11/14 08:33:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1755,7 +1755,7 @@ function COM_showTopics( $topic='' )
            $_THEME_URL, $_BLOCK_TEMPLATE, $page, $newstories;
 
     $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
-    if( $_USER['uid'] > 1 )
+    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
     {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
@@ -1938,7 +1938,7 @@ function COM_userMenu( $help='', $title='' )
 
     $retval = '';
 
-    if( $_USER['uid'] > 1 )
+    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
     {
         $usermenu = new Template( $_CONF['path_layout'] );
         if( isset( $_BLOCK_TEMPLATE['useroption'] ))
@@ -3534,10 +3534,13 @@ function COM_printUpcomingEvents( $help='', $title='' )
         . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
         . 'ORDER BY datestart,timestart';
 
-    $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
-        . "FROM {$_TABLES['personal_events']} "
-        . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
-        . 'ORDER BY datestart, dateend';
+    if(( $_CONF['personalcalendars'] == 1 ) && !empty( $_USER['uid'] ))
+    {
+        $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
+            . "FROM {$_TABLES['personal_events']} "
+            . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
+            . 'ORDER BY datestart, dateend';
+    }
 
     $allEvents = DB_query( $eventSql );
     $numRows = DB_numRows( $allEvents );
@@ -4330,7 +4333,7 @@ function COM_getUserDateTimeFormat( $date='' )
 
     // Get display format for time
 
-    if( $_USER['uid'] > 1 )
+    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
     {
         if( empty( $_USER['format'] ))
         {
