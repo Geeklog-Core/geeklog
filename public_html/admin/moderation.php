@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.75 2005/11/14 20:28:35 mjervis Exp $
+// $Id: moderation.php,v 1.76 2005/11/14 20:36:59 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -219,8 +219,6 @@ function itemlist($type)
 
     switch ($type) {
     case 'event':
-        // $retval .= COM_startBlock ($LANG29[37], 'cceventsubmission.html',
-        //         COM_getBlockTemplate ('_admin_block', 'header'));
         $sql = "SELECT eid AS id,title,datestart as day,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
         $H = array($LANG29[10],$LANG29[11],$LANG29[12]);
         $section_title = $LANG29[37];
@@ -234,8 +232,6 @@ function itemlist($type)
                 $plugin = new Plugin();
                 $plugin = $function();
                 $helpfile = $plugin->submissionhelpfile;
-                // $retval .= COM_startBlock ($plugin->submissionlabel, $helpfile,
-                //                COM_getBlockTemplate ('_admin_block', 'header'));
                 $sql = $plugin->getsubmissionssql;
                 $H = $plugin->submissionheading;
                 $isplugin = true;
@@ -244,8 +240,6 @@ function itemlist($type)
                 break;
             }
         } else { # story submission
-            //$retval .= COM_startBlock ($LANG29[35], 'ccstorysubmission.html',
-            //        COM_getBlockTemplate ('_admin_block', 'header'));
             $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
             $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
             $section_title = $LANG29[35];
@@ -326,6 +320,7 @@ function userlist ()
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
     $result = DB_query ($sql);
     $nrows = DB_numRows($result);
+    $data_arr = array();
     if ($nrows > 0) {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
@@ -353,11 +348,6 @@ function userlist ()
                     ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
         $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
         $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
-
-
-        //    $mod_templates->set_var ('data_col1', '<a href="'
-        //        . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-        //        . $A['uid'] . '">' . stripslashes ($A['username']) . '</a>');
     } else {
         if ($nrows <> -1) {
             $retval .= COM_startBlock($LANG29[40]);
@@ -381,9 +371,9 @@ function draftlist ()
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
 
-    $sql = "SELECT sid AS id,title,date AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC";
-    $result = DB_query ($sql);
+    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
     $nrows = DB_numRows($result);
+    $data_arr = array();
     if ($nrows > 0) {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
@@ -396,24 +386,22 @@ function draftlist ()
         }
         $header_arr = array(
             array('text' => $LANG_ADMIN['edit'], 'field' => 0),
-            array('text' => $LANG29[10], 'field' => 1),
-            array('text' => $LANG29[14], 'field' => 2),
-            array('text' => $LANG29[15], 'field' => 3),
+            array('text' => $LANG29[10], 'field' => 'title'),
+            array('text' => $LANG29[14], 'field' => 'day'),
+            array('text' => $LANG29[15], 'field' => 'tid'),
             array('text' => $LANG29[2], 'field' => 'delete'),
             array('text' => $LANG29[1], 'field' => 'approve')
         );
-
         $text_arr = array('has_menu'    => false,
                             'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
                             'help_url'  => ''
         );
 
-         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
+        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"draft\">"
                     ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
         $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
         $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
-
     } else {
         if ($nrows <> -1) {
             $retval .= COM_startBlock($LANG29[35] . ' (' . $LANG24[34] . ')');
@@ -552,7 +540,6 @@ function moderateusers ($uid, $action)
     $retval = '';
     $count = count($action);
     for ($i = 0; $i < $count; $i++) {
-        echo("$action[$i] = {$action[$i]}");
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
                 if ($uid[$i] > 1) {
