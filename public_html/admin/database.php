@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.27 2005/11/14 10:48:36 ospiess Exp $
+// $Id: database.php,v 1.28 2005/11/15 06:18:50 ospiess Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -152,44 +152,40 @@ if (is_writable ($_CONF['backup_path'])) {
             $backups[] = $file;
         }
     }
-    if (is_array($backups) AND $index > 0) {
-        // AS, 2004-03-29 - Sort backup files by date, newest first.
-        // Order given by 'readdir' might not be correct.
-        usort ($backups, 'compareBackupFiles');
-        $backups = array_slice ($backups, 0, 10);
-        reset($backups);
-        
-        $data_arr = array();
-        for ($i = 0; $i < count ($backups); $i++) {
-            $backupfile = $_CONF['backup_path'] . $backups[$i];
-            $backupfilesize = filesize ($backupfile);
-            $data_arr[$i] = array('file' => $backups[$i],
-                                  'size' => $backupfilesize . " <b>"
-                                            .$LANG_DB_BACKUP['bytes'] . "</b>");
-        }
-        
-        $menu_arr = array (
-                        array('url' => $_CONF['site_admin_url']
-                                       . '/database.php?mode=' . $LANG_DB_BACKUP['do_backup'],
-                              'text' => $LANG_ADMIN['create_new']),
-                        array('url' => $_CONF['site_admin_url'],
-                              'text' => $LANG_ADMIN['admin_home'])
-        );
-         
-        $header_arr = array(      # dislay 'text' and use table field 'field'
-            array('text' => $LANG_DB_BACKUP['backup_file'], 'field' => 'file'),
-            array('text' => $LANG_DB_BACKUP['size'], 'field' => 'size')
-        );
-
-        $text_arr = array('has_menu' => true,
-                          'instructions' => $LANG_DB_BACKUP['db_explanation']
-                                            . "<br>" . sprintf ($LANG_DB_BACKUP['total_number'], $index),
-                          'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
-        );
-        $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr, $menu_arr);
-    } else {
-        $display .= '<p>' . $LANG_DB_BACKUP['no_backups'] . '</p>';
+    // AS, 2004-03-29 - Sort backup files by date, newest first.
+    // Order given by 'readdir' might not be correct.
+    usort ($backups, 'compareBackupFiles');
+    $backups = array_slice ($backups, 0, 10);
+    reset($backups);
+    
+    $data_arr = array();
+    for ($i = 0; $i < count ($backups); $i++) {
+        $backupfile = $_CONF['backup_path'] . $backups[$i];
+        $backupfilesize = filesize ($backupfile);
+        $data_arr[$i] = array('file' => $backups[$i],
+                              'size' => $backupfilesize . " <b>"
+                                        .$LANG_DB_BACKUP['bytes'] . "</b>");
     }
+    
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url']
+                                   . '/database.php?mode=' . $LANG_DB_BACKUP['do_backup'],
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+     
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+        array('text' => $LANG_DB_BACKUP['backup_file'], 'field' => 'file'),
+        array('text' => $LANG_DB_BACKUP['size'], 'field' => 'size')
+    );
+
+    $text_arr = array('has_menu' => true,
+                      'instructions' => $LANG_DB_BACKUP['db_explanation']
+                                        . "<br>" . sprintf ($LANG_DB_BACKUP['total_number'], $index),
+                      'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
+    );
+    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr, $menu_arr);
 } else {
     $display .= COM_startBlock ($LANG08[06], '',
                         COM_getBlockTemplate ('_msg_block', 'header'));
