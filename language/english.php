@@ -1022,7 +1022,10 @@ $LANG32 = array(
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
     34 => 'Update',
-    35 => 'Edit'
+    35 => 'Edit',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1233,7 +1236,6 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Last 10 Backups',
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
-    'no_backups' => 'No backups in the system',
     'db_explanation' => 'To create a new backup of your site\'s database, click on "Create New" above.',
     'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
@@ -1440,7 +1442,8 @@ $LANG_ADMIN = array (
     'cancel'        => 'Cancel',
     'delete'        => 'Delete',
     'copy'          => 'Copy',
-    'no_results'    => '- No entries found -'
+    'no_results'    => '- No entries found -',
+    'data_error'    => 'There was an error processing the subscription data. Please check the data source.'
 
 );
 
