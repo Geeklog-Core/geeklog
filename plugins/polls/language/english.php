@@ -48,7 +48,8 @@ $LANG_POLLS = array(
     'stats_questions'   => 'Poll Question',
     'stats_votes'       => 'Votes',
     'stats_none'        => 'It appears that there are no polls on this site or no one has ever voted.',
-    'stats_summary'     => 'Polls (Answers) in the system'
+    'stats_summary'     => 'Polls (Answers) in the system',
+    'open_poll'         => 'Open for Voting'
 );
 
 ###############################################################################

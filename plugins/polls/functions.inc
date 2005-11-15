@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.29 2005/11/14 19:50:52 ospiess Exp $
+// $Id: functions.inc,v 1.30 2005/11/15 06:21:14 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -642,7 +642,7 @@ function POLLS_showPoll( $size, $qid='' )
 /**
 * Shows the results of a poll
 *
-* Shows the poll results for a give poll question
+* Shows the poll results for a given poll question
 *
 * @param        string      $qid        ID for poll question to show
 * @param        int         $scale      Size in pixels to scale formatted results to
