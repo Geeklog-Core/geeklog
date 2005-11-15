@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.121 2005/11/07 11:10:41 ospiess Exp $
+// $Id: usersettings.php,v 1.122 2005/11/15 10:40:57 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -519,6 +519,7 @@ function editpreferences()
         $nrows = DB_numRows($query );
         $authors = explode(" ",$A['aids']);
 
+        $selauthors = '';
         for( $i = 0; $i < $nrows; $i++ ) {
             $B = DB_fetchArray($query);
             $selauthors .= '<option value="' . $B['uid'] . '"';
@@ -767,7 +768,7 @@ function handlePhotoUpload ($delete_photo = '')
 */
 function saveuser($A)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG24, $_US_VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG24, $_US_VERBOSE;
 
     if ($_US_VERBOSE) {
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
@@ -889,7 +890,11 @@ function saveuser($A)
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
-            $filename = handlePhotoUpload ($A['delete_photo']);
+            $delete_photo = '';
+            if (isset ($A['delete_photo'])) {
+                $delete_photo = $A['delete_photo'];
+            }
+            $filename = handlePhotoUpload ($delete_photo);
         }
 
         if (!empty ($A['homepage'])) {
@@ -1097,9 +1102,12 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     switch ($mode) {
     case 'edit':
         $display .= COM_siteHeader ('menu', $LANG04[16]);
-        $msg = COM_applyFilter ($_GET['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage ($msg);
+        $msg = 0;
+        if (isset ($_GET['msg'])) {
+            $msg = COM_applyFilter ($_GET['msg'], true);
+            if ($msg > 0) {
+                $display .= COM_showMessage ($msg);
+            }
         }
         $display .= edituser();
         $display .= COM_siteFooter();
@@ -1150,9 +1158,12 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
 
     default: // also if $mode == 'preferences' or 'comments'
         $display .= COM_siteHeader ('menu', $LANG01[49]);
-        $msg = COM_applyFilter ($_GET['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage ($msg);
+        $msg = 0;
+        if (isset ($_GET['msg'])) {
+            $msg = COM_applyFilter ($_GET['msg'], true);
+            if ($msg > 0) {
+                $display .= COM_showMessage ($msg);
+            }
         }
         $display .= editpreferences();
         $display .= COM_siteFooter();
