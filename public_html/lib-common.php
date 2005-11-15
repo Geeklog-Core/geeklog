@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.497 2005/11/14 08:33:26 dhaun Exp $
+// $Id: lib-common.php,v 1.498 2005/11/15 09:53:09 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4413,13 +4413,10 @@ function phpblock_whosonline()
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
 
+    $byname = 'username';
     if( $_CONF['show_fullname'] == 1 )
     {
-        $byname = 'fullname,username';
-    }
-    else
-    {
-        $byname = 'username';
+        $byname .= ',fullname';
     }
     if( $_CONF['remoteauthentication'] )
     {
@@ -4438,7 +4435,21 @@ function phpblock_whosonline()
 
         if( $A['showonline'] == 1 )
         {
-            $username = COM_getDisplayName( $A['uid'], $A['username'], $A['fullname'], $A['remoteusername'], $A['remoteservice']);
+            $fullname = '';
+            if( $_CONF['show_fullname'] == 1 )
+            {
+                $fullname = $A['fullname'];
+            }
+            if( $_CONF['remoteauthentication'] )
+            {
+                $username = COM_getDisplayName( $A['uid'], $A['username'],
+                        $fullname, $A['remoteusername'], $A['remoteservice'] );
+            }
+            else
+            {
+                $username = COM_getDisplayName( $A['uid'], $A['username'],
+                                                $fullname );
+            }
             $retval .= '<a href="' . $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
                     . $username . '</a>';
