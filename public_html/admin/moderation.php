@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.76 2005/11/14 20:36:59 ospiess Exp $
+// $Id: moderation.php,v 1.77 2005/11/15 06:22:12 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -260,48 +260,43 @@ function itemlist($type)
         $nrows = DB_numRows($result);
     }
     $data_arr = array();
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            if ($isplugin)  {
-                $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
-                         . '/index.php?mode=editsubmission&amp;id=' . $A[0];
-            } else {
-                $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
-                         . '.php?mode=editsubmission&amp;id=' . $A[0];
-            }
-            $A['row'] = $i;
-            $data_arr[$i] = $A;
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        if ($isplugin)  {
+            $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
+                     . '/index.php?mode=editsubmission&amp;id=' . $A[0];
+        } else {
+            $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
+                     . '.php?mode=editsubmission&amp;id=' . $A[0];
         }
-
-        $header_arr = array(      # dislay 'text' and use table field 'field'
-            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
-            array('text' => $H[0], 'field' => 1),
-            array('text' => $H[1], 'field' => 2),
-            array('text' => $H[2], 'field' => 3),
-            array('text' => $LANG29[2], 'field' => 'delete'),
-            array('text' => $LANG29[1], 'field' => 'approve')
-        );
-
-        $text_arr = array('has_menu'     =>  false,
-                          'title'        => $section_title,
-                          'help_url' => $section_help,
-        );
-
-        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
-                    ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
-                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
-
-        $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
-        $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
-    } else {
-        if ($nrows <> -1) {
-            $retval .= COM_startBlock( ucfirst($type) . " " . $LANG29[13]);
-            $retval .= $LANG29[39] . "<br>";
-            $retval .= COM_endBlock();
-        }
+        $A['row'] = $i;
+        $data_arr[$i] = $A;
     }
 
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+        array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+        array('text' => $H[0], 'field' => 1),
+        array('text' => $H[1], 'field' => 2),
+        array('text' => $H[2], 'field' => 3),
+        array('text' => $LANG29[2], 'field' => 'delete'),
+        array('text' => $LANG29[1], 'field' => 'approve')
+    );
+
+    $text_arr = array('has_menu'    => false,
+                      'title'       => $section_title,
+                      'help_url'    => $section_help,
+                      'no_data'     => $LANG29[39]
+    );
+    $table .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
+    if ($nrows > 0) {
+        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
+                    ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
+                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">"
+                    .$table
+                    ."<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+    } else {
+        $retval .= $table;
+    }
     return $retval;
 }
 
@@ -321,39 +316,37 @@ function userlist ()
     $result = DB_query ($sql);
     $nrows = DB_numRows($result);
     $data_arr = array();
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $A['edit'] = $_CONF['site_admin_url'].'/user.php?mode=edit&amp;uid='.$A['id'];
-            $A['row'] = $i;
-            $A['fullname'] = stripslashes($A['fullname']);
-            $A['email'] = stripslashes($A['email']);
-            $data_arr[$i] = $A;
-        }
-        $header_arr = array(
-            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
-            array('text' => $LANG29[16], 'field' => 1),
-            array('text' => $LANG29[17], 'field' => 2),
-            array('text' => $LANG29[18], 'field' => 3),
-            array('text' => $LANG29[2], 'field' => 'delete'),
-            array('text' => $LANG29[1], 'field' => 'approve')
-        );
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $A['edit'] = $_CONF['site_admin_url'].'/user.php?mode=edit&amp;uid='.$A['id'];
+        $A['row'] = $i;
+        $A['fullname'] = stripslashes($A['fullname']);
+        $A['email'] = stripslashes($A['email']);
+        $data_arr[$i] = $A;
+    }
+    $header_arr = array(
+        array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+        array('text' => $LANG29[16], 'field' => 1),
+        array('text' => $LANG29[17], 'field' => 2),
+        array('text' => $LANG29[18], 'field' => 3),
+        array('text' => $LANG29[2], 'field' => 'delete'),
+        array('text' => $LANG29[1], 'field' => 'approve')
+    );
 
-        $text_arr = array('has_menu'    => false,
-                            'title'     => $LANG29[40],
-                            'help_url'  => ''
-        );
+    $text_arr = array('has_menu'    => false,
+                        'title'     => $LANG29[40],
+                        'help_url'  => '',
+                        'no_data'   => $LANG29[39]
+    );
+    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
+    if ($nrows > 0) {
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"user\">"
-                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
-        $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
-        $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">"
+                    .$table
+                    ."<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
     } else {
-        if ($nrows <> -1) {
-            $retval .= COM_startBlock($LANG29[40]);
-            $retval .= $LANG29[39] . "<br>";
-            $retval .= COM_endBlock();
-        }
+        $retval .= $table;
     }
 
     return $retval;
@@ -374,40 +367,39 @@ function draftlist ()
     $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
     $nrows = DB_numRows($result);
     $data_arr = array();
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $A['edit'] = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
-                        . $A['id'];
-            $A['row'] = $i;
-            $A['title'] = stripslashes($A['title']);
-            $A['tid'] = stripslashes($A['tid']);
-            $data_arr[$i] = $A;
-        }
-        $header_arr = array(
-            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
-            array('text' => $LANG29[10], 'field' => 'title'),
-            array('text' => $LANG29[14], 'field' => 'day'),
-            array('text' => $LANG29[15], 'field' => 'tid'),
-            array('text' => $LANG29[2], 'field' => 'delete'),
-            array('text' => $LANG29[1], 'field' => 'approve')
-        );
-        $text_arr = array('has_menu'    => false,
-                            'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
-                            'help_url'  => ''
-        );
+    
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $A['edit'] = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
+                    . $A['id'];
+        $A['row'] = $i;
+        $A['title'] = stripslashes($A['title']);
+        $A['tid'] = stripslashes($A['tid']);
+        $data_arr[$i] = $A;
+    }
+    $header_arr = array(
+        array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+        array('text' => $LANG29[10], 'field' => 'title'),
+        array('text' => $LANG29[14], 'field' => 'day'),
+        array('text' => $LANG29[15], 'field' => 'tid'),
+        array('text' => $LANG29[2], 'field' => 'delete'),
+        array('text' => $LANG29[1], 'field' => 'approve')
+    );
+    $text_arr = array('has_menu'    => false,
+                        'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
+                        'help_url'  => '',
+                        'no_data'   => $LANG29[39]
+    );
 
+    $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
+    if ($nrows > 0) {
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"draft\">"
-                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">";
-        $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
-        $retval .= "<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">"
+                    .$table
+                    ."<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
     } else {
-        if ($nrows <> -1) {
-            $retval .= COM_startBlock($LANG29[35] . ' (' . $LANG24[34] . ')');
-            $retval .= $LANG29[39] .'<br/>';
-            $retval .= COM_endBlock();
-        }
+        $retval .= $table;
     }
 
     return $retval;
