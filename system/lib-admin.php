@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.23 2005/11/14 20:37:41 ospiess Exp $
+// $Id: lib-admin.php,v 1.24 2005/11/15 06:17:22 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr)
@@ -87,23 +87,35 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $admin_templates->parse('header_row', 'header', true);
     }
 
-    for ($i = 0; $i < count($data_arr); $i++) {
-        for ($j = 0; $j < count($header_arr); $j++) {
-            $fieldname = $header_arr[$j]['field'];
-            if (!empty($fieldfunction)) {
-                $fieldvalue = $fieldfunction($fieldname, $data_arr[$i][$fieldname], $data_arr[$i], $icon_arr);
-            } else {
-                $fieldvalue = $data_arr[$i][$fieldname];
-            }
-            if ($fieldvalue !== false) {
-                $admin_templates->set_var('itemtext', $fieldvalue);
-                $admin_templates->parse('item_field', 'field', true);
-            }
+    if (count($data_arr)==0) {
+        if (isset($text_arr['no_data'])) {
+            $message = $text_arr['no_data'];
+        } else {
+            $message = $LANG_ADMIN['no_results'];
         }
-        $admin_templates->set_var('cssid', ($i%2)+1);
-        $admin_templates->parse('item_row', 'row', true);
-        $admin_templates->clear_var('item_field');
+        $admin_templates->set_var('message', $message);
+    } else if ($data_arr == false) {
+        $admin_templates->set_var('message', $LANG_ADMIN['data_error']);
+    } else {
+        for ($i = 0; $i < count($data_arr); $i++) {
+            for ($j = 0; $j < count($header_arr); $j++) {
+                $fieldname = $header_arr[$j]['field'];
+                if (!empty($fieldfunction)) {
+                    $fieldvalue = $fieldfunction($fieldname, $data_arr[$i][$fieldname], $data_arr[$i], $icon_arr);
+                } else {
+                    $fieldvalue = $data_arr[$i][$fieldname];
+                }
+                if ($fieldvalue !== false) {
+                    $admin_templates->set_var('itemtext', $fieldvalue);
+                    $admin_templates->parse('item_field', 'field', true);
+                }
+            }
+            $admin_templates->set_var('cssid', ($i%2)+1);
+            $admin_templates->parse('item_row', 'row', true);
+            $admin_templates->clear_var('item_field');
+        }
     }
+
 
     $admin_templates->parse('output', 'list');
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
@@ -117,7 +129,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
     $order_var = $_GET['order'];
-    if (!empty($order_var)) {
+    if (isset($order_var)) {
         $order_var = COM_applyFilter ($order_var, true);
         $order = $header_arr[$order_var]['field'];
     }
@@ -195,7 +207,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     $sql = $query_arr['sql'];
 
     if (empty($direction)) {
-        if (empty($order) && !empty($defsort_arr['field'])) {
+        if (!isset($order) && !empty($defsort_arr['field'])) {
             $order = $defsort_arr['field'];
             $direction = $defsort_arr['direction'];
         } else {
@@ -212,7 +224,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     } else {
         $arrow = 'bararrowup';
     }
-    if (!empty($order)) {
+    if (isset($order)) {
         $order_sql = "ORDER BY $order $direction";
     }
 
@@ -309,6 +321,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $admin_templates->set_var('message', $LANG_ADMIN['no_results']);
     }
 
+
     if ($text_arr['has_extras']) {
         if (!empty($query)) {
             $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order_var}&amp;direction={$prevdirection}";
@@ -329,6 +342,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
 
     return $retval;
 }
+
+
 
 function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
@@ -599,7 +614,7 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
 }
 
 function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ADMIN, $LANG28;
+    global $_CONF, $LANG_ADMIN, $LANG32;
 
     switch($fieldname) {
         case "edit":
@@ -611,7 +626,11 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
                 $plugin_code_version = 'N/A';
             }
             $pi_installed_version = $A['pi_version'];
-            $retval = "$pi_installed_version&nbsp;/&nbsp;$plugin_code_version";
+            if ($pi_installed_version == $plugin_code_version) {
+                $retval = $pi_installed_version;
+            } else {
+                $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version <b>{$LANG32[38]}</b>";
+            }
             break;
         case 'enabled':
             if ($A['pi_enabled'] == 1) {
