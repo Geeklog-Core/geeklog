@@ -123,6 +123,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['personal_events']} ADD postmode varchar(10) NO
 $_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE lid lid varchar(40) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE lid lid varchar(40) NOT NULL default ''";
 
+// make sure static pages plugin has the correct version
+$_SQL[] = "UPDATE `{$_TABLES['plugins']}` SET `pi_version` = '1.4.2' WHERE `pi_name` = 'staticpages' LIMIT 1 ;";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {
