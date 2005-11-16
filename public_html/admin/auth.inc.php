@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.25 2005/11/13 20:30:30 mjervis Exp $
+// $Id: auth.inc.php,v 1.26 2005/11/16 20:10:00 mjervis Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
@@ -43,6 +43,8 @@ if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
 $uid = '';
 if (!empty($loginname) && !empty($passwd)) {
     $status = SEC_authenticate($loginname, $passwd, $uid);
+} else {
+    $status == 0;
 }
 $display = '';
 
@@ -78,7 +80,7 @@ if ($status == 3) {
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
-} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR') && (count (PLG_getAdminOptions()) == 0)) {
+} else if (($status == 0) || (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR') && (count (PLG_getAdminOptions()) == 0))) {
     $display .= COM_siteHeader();
 
     $display .= COM_startBlock($LANG20[01]);
