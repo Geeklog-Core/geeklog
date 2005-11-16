@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.71 2005/11/14 10:27:59 ospiess Exp $
+// $Id: event.php,v 1.72 2005/11/16 19:28:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -603,6 +603,7 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
                     array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG22[13], 'field' => 'username', 'sort' => true),
                     array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
                     array('text' => $LANG22[14], 'field' => 'datestart', 'sort' => true),
                     array('text' => $LANG22[15], 'field' => 'dateend', 'sort' => true)
@@ -623,16 +624,14 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
                       'icon' => $_CONF['layout_url'] . '/images/icons/event.'
                                 . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/event.php");
-
-    if ($_CONF['lastlogin']==true) {
-        $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
-        $select_userinfo=",lastlogin ";
-    }
+    $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username FROM {$_TABLES['events']} "
+          ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['events']}.owner_id={$_TABLES['users']}.uid "
+          ."WHERE 1 ";
 
     $query_arr = array('table' => 'events',
-                       'sql' => $sql = "SELECT * FROM {$_TABLES['events']} WHERE 1 " . COM_getPermSQL(),
+                       'sql' => $sql,
                        'query_fields' => array('title', 'datestart', 'dateend'),
-                       'default_filter' => "",
+                       'default_filter' => COM_getPermSQL(),
                        'query' => $_REQUEST['q'],
                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.184 2005/11/12 17:18:48 dhaun Exp $
+// $Id: story.php,v 1.185 2005/11/16 19:28:57 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1087,7 +1087,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
             $trows = DB_numRows( $tresult );
             if( $trows > 0 )
             {
-                $excludetopics .= ' AND (';
+                $excludetopics .= ' (';
                 for( $i = 1; $i <= $trows; $i++ )  {
                     $T = DB_fetchArray ($tresult);
                     if ($i > 1)  {
@@ -1103,7 +1103,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                 $excludetopics .= ') ';
             }
         } else {
-            $excludetopics = " AND tid = '$current_topic' ";
+            $excludetopics = " tid = '$current_topic' ";
             $seltopics = COM_topicList ('tid,topic', $current_topic);
         }
         
@@ -1120,7 +1120,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
                         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
                         array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true),
-                        array('text' => $LANG24[7], 'field' => 'author', 'sort' => false), //author
+                        array('text' => $LANG24[7], 'field' => 'username', 'sort' => true), //author
                         array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true), //date
                         array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
                         array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true),
@@ -1142,11 +1142,15 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                           'icon' => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                           'form_url' => $_CONF['site_admin_url'] . "/story.php");
 
-        $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
+        $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, "
+              ."UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} "
+              ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid "
+              ."WHERE 1 ";
+
         $query_arr = array('table' => 'stories',
                            'sql' => $sql,
                            'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
-                           'default_filter' => '',
+                           'default_filter' => $excludetopics . COM_getPermSQL ('AND'),
                            'query' => $_REQUEST['q'],
                            'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 

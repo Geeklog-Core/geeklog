@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.24 2005/11/15 06:17:22 ospiess Exp $
+// $Id: lib-admin.php,v 1.25 2005/11/16 19:28:57 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr)
@@ -539,9 +539,6 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
                 $access = $LANG_ACCESS['readonly'];
             }
             $retval = $access;
-            break;
-        case "author":
-            $retval = DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}");
             break;
         case "featured":
             if ($A['featured'] == 1) {
