@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.16 2005/04/03 21:52:22 blaine Exp $
+// $Id: lib-custom.php,v 1.17 2005/11/16 18:17:20 mjervis Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -81,7 +81,7 @@ function phpblock_showrights()
 * Get Bent()
 *
 * Php function to tell you how if your site is grossly insecure
-* 
+*
 **/
 function phpblock_getBent()
 {
@@ -154,19 +154,19 @@ function CUSTOM_runSheduledTask() {
 */
 function CUSTOM_templatesetvars($templatename, &$template) {
 
-    if ($type == 'header') {
+    if ($templatename == 'header') {
         $template->set_var( 'myvar', $mycontent );
     }
 }
 
 
-/*  Sample Custom Member Functions to create and update Custom Membership registration and profile 
+/*  Sample Custom Member Functions to create and update Custom Membership registration and profile
 
     Note1: Enable CustomRegistration Feature in config.php
     $_CONF['custom_registration'] = true;  // Set to true if you have custom code
 
     Note2: This example requries a template file called memberdetail.thtml to be
-    located under the theme_dir/custom directory. 
+    located under the theme_dir/custom directory.
     Sample is provided under /system with the distribution.
 
     Functions have been provided that are called from the Core Geeklog user and admin functions
@@ -174,7 +174,7 @@ function CUSTOM_templatesetvars($templatename, &$template) {
     - Admin will see the new registration info when checking a members profile only
     - All other users will see the standard User profile with the optional extended custom information
     - Customization requires changes to a few of the core template files to add {customfields} variable
-    - See notes below in the custom function about the template changes 
+    - See notes below in the custom function about the template changes
 */
 
 /* Create any new records in additional tables you may have added  */
@@ -335,7 +335,7 @@ function custom_usercheck ($username, $email)
 * Custom function to retrieve and return a formatted list of blocks
 * Can be used when calling COM_siteHeader or COM_SiteFooter
 
-* Example: 
+* Example:
 * 1: Setup an array of blocks to display
 * 2: Call COM_siteHeader or COM_siteFooter
 *
