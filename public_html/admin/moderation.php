@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.77 2005/11/15 06:22:12 ospiess Exp $
+// $Id: moderation.php,v 1.78 2005/11/16 20:07:14 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -159,9 +159,10 @@ function commandcontrol()
     $items[$LANG01[35]] = $item;
     reset($items);
     $cols = 0;
+    $cc_main_options = '';
     while (list($key, $val) = each($items))
     {
-        $cc_main_options .= "$val\n";
+        $cc_main_options .= $val . LB;
         $cols++;
         if ($cols == ICONS_PER_ROW)
         {
@@ -287,7 +288,7 @@ function itemlist($type)
                       'help_url'    => $section_help,
                       'no_data'     => $LANG29[39]
     );
-    $table .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
+    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
@@ -311,6 +312,8 @@ function itemlist($type)
 function userlist ()
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
+
+    $retval = '';
 
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
     $result = DB_query ($sql);
@@ -338,7 +341,7 @@ function userlist ()
                         'help_url'  => '',
                         'no_data'   => $LANG29[39]
     );
-    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
+    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"user\">"
@@ -363,6 +366,8 @@ function userlist ()
 function draftlist ()
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
+
+    $retval = '';
 
     $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
     $nrows = DB_numRows($result);
@@ -391,7 +396,7 @@ function draftlist ()
                         'no_data'   => $LANG29[39]
     );
 
-    $retval .= ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, $menu_arr);
+    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
                     ."<input type=\"hidden\" name=\"type\" value=\"draft\">"
