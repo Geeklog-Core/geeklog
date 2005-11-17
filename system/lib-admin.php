@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.26 2005/11/17 15:00:24 ospiess Exp $
+// $Id: lib-admin.php,v 1.27 2005/11/17 15:31:30 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr)
@@ -147,6 +147,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $retval = '';
     $filter_str = '';
     $order_sql = '';
+    $limit = '';
     $page = "";
     if (isset($_GET['page'])) {
         $page = COM_applyFilter ($_GET['page'], true);
@@ -305,7 +306,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->clear_var('arrow');
     }
 
-    if ($text_arr['has_extras']) {
+    $has_extras = '';
+    if (isset($text_arr['has_extras'])) {
+        $has_extras = $text_arr['has_extras'];
+    }
+    if ($has_extras) {
         $limit = 50;
         if (!empty($query_arr['query_limit'])) {
             $limit = $query_arr['query_limit'];
@@ -377,7 +382,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
 
-    if ($text_arr['has_extras']) {
+    if ($has_extras) {
         if (!empty($query)) {
             $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit=$query_limit&amp;order=$order_var&amp;direction=$direction";
         } else {

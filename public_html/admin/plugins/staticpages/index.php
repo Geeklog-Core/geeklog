@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.50 2005/11/14 10:32:29 ospiess Exp $
+// $Id: index.php,v 1.51 2005/11/17 15:31:30 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -311,6 +311,48 @@ function form ($A, $error = false)
     return $retval;
 }
 
+function liststaticpages()
+{
+    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_STATIC;
+    $retval = '';
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
+                    array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => false),
+                    array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
+                    array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
+                      'title' => $LANG_STATIC['staticpagelist'],
+                      'instructions' => $LANG_STATIC['instructions'],
+                      'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
+
+    $query_arr = array('table' => 'staticpage',
+                       'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate "
+                               ."FROM {$_TABLES['staticpage']} WHERE 1 ",
+                       'query_fields' => array('sp_title', 'sp_id'),
+                       'default_filter' => COM_getPermSQL ('AND', 0, 3));
+
+    $retval = ADMIN_list ("static pages", "plugin_getListField_staticpages", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    return $retval;
+
+}
+
 /**
 * Displays the Static Page Editor
 *
@@ -459,8 +501,15 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
 
 
 // MAIN
-$mode = COM_applyFilter ($_REQUEST['mode']);
-$sp_id = COM_applyFilter ($_REQUEST['sp_id']);
+$mode = '';
+if (isset($_REQUEST['mode'])) {
+    $mode = COM_applyFilter ($_REQUEST['mode']);
+}
+$sp_id = '';
+if (isset($_REQUEST['sp_id'])) {
+    $sp_id = COM_applyFilter ($_REQUEST['sp_id']);
+}
+
 
 if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
@@ -495,45 +544,8 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
 } else {
-    $page = COM_applyFilter ($_GET['page'], true);
     $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpagelist']);
-                           
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
-                    array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => false),
-                    array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
-                    array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
-    );
-
-    $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
-
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_STATIC['staticpagelist'],
-                      'instructions' => $LANG_STATIC['instructions'],
-                      'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
-
-    $query_arr = array('table' => 'staticpage',
-                       'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE 1 " . COM_getPermSQL ('AND', 0, 3),
-                       'query_fields' => array('sp_title', 'sp_id'),
-                       'default_filter' => "",
-                       'query' => $_REQUEST['q'],
-                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-
-    $display .= ADMIN_list ("static pages", "plugin_getListField_staticpages", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
-                           
+    $display .= liststaticpages();
     $display .= COM_siteFooter ();
 }
 

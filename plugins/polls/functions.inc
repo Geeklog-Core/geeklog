@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.31 2005/11/16 20:33:51 dhaun Exp $
+// $Id: functions.inc,v 1.32 2005/11/17 15:31:30 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -842,7 +842,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr) {
         switch($fieldname) {
             case "edit":
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">{$icon_arr['edit']}</a>";
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">{$icon_arr['edit']}</a>";
                 }
                 break;
             case 'unixdate':
