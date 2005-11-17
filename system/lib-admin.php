@@ -32,12 +32,29 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.25 2005/11/16 19:28:57 ospiess Exp $
+// $Id: lib-admin.php,v 1.26 2005/11/17 15:00:24 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
+    $retval = '';
+
+    $help_url = "";
+    if (!empty($text_arr['help_url'])) {
+        $help_url = $text_arr['help_url'];
+    }
+    
+    $title = "";
+    if (!empty($text_arr['title'])) {
+        $title = $text_arr['title'];
+    }
+    
+    $form_url = '';
+    if (!empty($text_arr['form_url'])) {
+        $form_url = $text_arr['form_url'];
+    }
+
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array ('topmenu' => 'topmenu_nosearch.thtml',
                                        'list' => 'list.thtml',
@@ -47,7 +64,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                                        'menufields' => 'menufields.thtml'
                                       ));
     $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('form_url', $text_arr['form_url']);
+    $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('icon', $text_arr['icon']);
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
@@ -78,7 +95,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
 
-    $retval .= COM_startBlock ($text_arr['title'], $text_arr['help_url'],
+    $retval .= COM_startBlock ($title, $help_url,
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     # HEADER FIELDS array(text, field, sort)
@@ -116,7 +133,6 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         }
     }
 
-
     $admin_templates->parse('output', 'list');
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -124,19 +140,32 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 
 }
 
-function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_arr, $menu_arr, $defsort_arr, $extra = '')
+function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
+            $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
-
-    $order_var = $_GET['order'];
-    if (isset($order_var)) {
-        $order_var = COM_applyFilter ($order_var, true);
-        $order = $header_arr[$order_var]['field'];
-    }
-    $prevorder = COM_applyFilter ($_GET['prevorder']);
-    $direction = COM_applyFilter ($_GET['direction']);
-
     $retval = '';
+    $filter_str = '';
+    $order_sql = '';
+    $page = "";
+    if (isset($_GET['page'])) {
+        $page = COM_applyFilter ($_GET['page'], true);
+    }
+
+    $prevorder = "";
+    if (isset($_GET['prevorder'])) {
+        $prevorder = COM_applyFilter ($_GET['prevorder']);
+    }
+
+    $query = "";
+    if (isset($_REQUEST['q'])) {
+        $query = $_REQUEST['q'];
+    }
+
+    $query_limit = "";
+    if (isset($_REQUEST['query_limit'])) {
+        $query_limit = COM_applyFilter ($_REQUEST['query_limit'], true);
+    }
 
     $offset = 0;
     if (isset ($_REQUEST['offset'])) {
@@ -146,9 +175,28 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     if (isset ($_REQUEST['page'])) {
         $curpage = COM_applyFilter ($_REQUEST['page'], true);
     }
-
     if ($curpage <= 0) {
         $curpage = 1;
+    }
+    
+    $unfiltered='';
+    if (!empty($query_arr['unfiltered'])) {
+        $unfiltered = $query_arr['unfiltered'];
+    }
+
+    $help_url = "";
+    if (!empty($text_arr['help_url'])) {
+        $help_url = $text_arr['help_url'];
+    }
+    
+    $form_url = "";
+    if (!empty($text_arr['form_url'])) {
+        $form_url = $text_arr['form_url'];
+    }
+
+    $title = "";
+    if (!empty($text_arr['title'])) {
+        $title = $text_arr['title'];
     }
 
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
@@ -160,10 +208,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
                                        'menufields' => 'menufields.thtml'
                                       ));
     $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('form_url', $text_arr['form_url']);
+    $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('icon', $text_arr['icon']);
-
-    $query = $query_arr['query'];
 
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
@@ -197,23 +243,30 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
-
-    $retval .= COM_startBlock ($text_arr['title'], $text_arr['help_url'],
+    
+    $retval .= COM_startBlock ($title, $help_url,
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
-    $query = $query_arr['query'];
     $query = str_replace ('*', '%', $query);
     $sql_query = addslashes ($query);
     $sql = $query_arr['sql'];
 
-    if (empty($direction)) {
-        if (!isset($order) && !empty($defsort_arr['field'])) {
-            $order = $defsort_arr['field'];
-            $direction = $defsort_arr['direction'];
-        } else {
-            $direction = 'asc';
-        }
-    } else if ($order == $prevorder) {
+    $order_var = ""; # number that is displayed in URL
+    $order = "";     # field that is used in SQL
+    if (!isset($_GET['order'])) {
+        $order = $defsort_arr['field'];
+    } else {
+        $order_var = COM_applyFilter ($_GET['order'], true);
+        $order = $header_arr[$order_var]['field'];
+    }
+
+    $direction = "";
+    if (!isset($_GET['direction'])) {
+        $direction = $defsort_arr['direction'];
+    } else {
+        $direction = $_GET['direction'];
+    }
+    if ($order == $prevorder) {
         $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
         $direction = ($direction == 'desc') ? 'desc' : 'asc';
@@ -224,7 +277,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     } else {
         $arrow = 'bararrowup';
     }
-    if (isset($order)) {
+    if (!empty($order)) {
         $order_sql = "ORDER BY $order $direction";
     }
 
@@ -253,9 +306,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     }
 
     if ($text_arr['has_extras']) {
-        if (empty($query_arr['query_limit'])) {
-            $limit = 50;
-        } else {
+        $limit = 50;
+        if (!empty($query_arr['query_limit'])) {
             $limit = $query_arr['query_limit'];
         }
         if ($query != '') {
@@ -263,8 +315,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         } else {
             $admin_templates->set_var ('query', '');
         }
-        $admin_templates->set_var ('query_limit', $query_arr['query_limit']);
-
+        $admin_templates->set_var ('query_limit', $query_limit);
         $admin_templates->set_var($limit . '_selected', 'selected="selected"');
 
         if (!empty($query_arr['default_filter'])){
@@ -286,7 +337,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
             }
         } else {
             $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
-                                           $query_arr['unfiltered']) / $limit);
+                                           $unfiltered) / $limit);
         }
 
         $offset = (($curpage - 1) * $limit);
@@ -302,10 +353,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
         $A = DB_fetchArray($result);
         for ($j = 0; $j < count($header_arr); $j++) {
             $fieldname = $header_arr[$j]['field'];
-            if (!empty($fieldfunction)) {
-                $fieldvalue = $fieldfunction($fieldname, $A[$fieldname], $A, $icon_arr);
-            } else {
+            $fieldvalue = '';
+            if (!empty($A[$fieldname])) {
                 $fieldvalue = $A[$fieldname];
+            }
+            if (!empty($fieldfunction)) {
+                $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A, $icon_arr);
+            } else {
+                $fieldvalue = $fieldvalue;
             }
             if ($fieldvalue !== false) {
                 $admin_templates->set_var('itemtext', $fieldvalue);
@@ -324,9 +379,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
 
     if ($text_arr['has_extras']) {
         if (!empty($query)) {
-            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit={$query_arr['query_limit']}&amp;order={$order_var}&amp;direction={$prevdirection}";
+            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit=$query_limit&amp;order=$order_var&amp;direction=$direction";
         } else {
-            $base_url = $form_url . "?query_limit={$query_arr['query_limit']}&amp;order={$order_var}&amp;direction={$prevdirection}";
+            $base_url = $form_url . "?query_limit=$query_limit&amp;order=$order_var&amp;direction=$direction";
         }
 
         if ($num_pages > 1) {
@@ -337,8 +392,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
     }
 
     $admin_templates->parse('output', 'list');
-    $retval .= $admin_templates->finish($admin_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
+    $retval .= $admin_templates->finish($admin_templates->get_var('output'))
+             . COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -347,6 +403,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr, $query_a
 
 function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
+    $retval = '';
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
@@ -354,7 +411,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
         switch($fieldname) {
             case "edit":
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF[site_admin_url]}/block.php?mode=edit&amp;bid={$A['bid']}\">{$icon_arr['edit']}</a>";
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/block.php?mode=edit&amp;bid={$A['bid']}\">{$icon_arr['edit']}</a>";
                 }
                 break;
             case 'title':
@@ -405,18 +462,19 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
 
 function ADMIN_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
+    $retval = '';
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     switch($fieldname) {
         case "edit":
             if ($access == 3) {
-                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=edit&amp;eid={$A['eid']}\">{$icon_arr['edit']}</a>";
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/event.php?mode=edit&amp;eid={$A['eid']}\">{$icon_arr['edit']}</a>";
             }
             break;
         case "copy":
             if ($access == 3) {
-                $retval = "<a href=\"{$_CONF[site_admin_url]}/event.php?mode=clone&amp;eid={$A['eid']}\">{$icon_arr['copy']}</a>";
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/event.php?mode=clone&amp;eid={$A['eid']}\">{$icon_arr['copy']}</a>";
             }
             break;
         case 'access':
@@ -438,6 +496,8 @@ function ADMIN_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
 
 function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $thisUsersGroups;
+    $retval = '';
+    
     if( !is_array($thisUsersGroups) )
     {
         $thisUsersGroups = SEC_getUserGroups();
@@ -446,7 +506,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
         SEC_groupIsRemoteUserAndHaveAccess( $A['grp_id'], $thisUsersGroups )) {
         switch($fieldname) {
             case "edit":
-                $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
                 break;
             case 'grp_gl_core':
                 if ($A['grp_gl_core'] == 1) {
@@ -456,9 +516,9 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
                 }
                 break;
             case 'list':
-                $retval = "<a href=\"{$_CONF[site_admin_url]}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}\">"
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}\">"
                          ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
-                         ."<a href=\"{$_CONF[site_admin_url]}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
+                         ."<a href=\"{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
                          ."{$icon_arr['edit']}</a>";
                 break;
             default:
@@ -471,10 +531,11 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
 
 function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG28;
+    $retval = '';
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
+            $retval = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
             break;
         case 'username':
             $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
@@ -503,6 +564,7 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr) {
 
 function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_TABLES, $_IMAGE_TYPE;
+    $retval = '';
 
     switch($fieldname) {
         case "unixdate":
@@ -510,7 +572,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
             $retval = strftime($_CONF['daytime'], $curtime[1]);
             break;
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
+            $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
             break;
         case "title":
             $A['title'] = str_replace('$', '&#36;', $A['title']);
@@ -569,9 +631,11 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
 
 function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
+    $retval = '';
+    
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/syndication.php?mode=edit&amp;fid={$A['fid']}\">{$icon_arr['edit']}</a>";
+            $retval = "<a href=\"{$_CONF['site_admin_url']}/syndication.php?mode=edit&amp;fid={$A['fid']}\">{$icon_arr['edit']}</a>";
             break;
         case 'type':
             $retval = ucwords($A['type']);
@@ -612,10 +676,11 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
 
 function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG32;
+    $retval = '';
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}\">{$icon_arr['edit']}</a>";
+            $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}\">{$icon_arr['edit']}</a>";
             break;
         case 'pi_version':
             $plugin_code_version = PLG_chkVersion($A['pi_name']);
@@ -635,7 +700,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF[site_admin_url]}/plugins.php\" method=\"POST\">"
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/plugins.php\" method=\"POST\">"
                      ."<input type=\"checkbox\" name=\"pluginenable\" onclick=\"submit()\" value=\"{$A['pi_name']}\" $switch>"
                      ."<input type=\"hidden\" name=\"pluginChange\" value=\"{$A['pi_name']}\">"
                      ."</form>";
@@ -649,6 +714,8 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
 
 function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $type;
+    $retval = '';
+    
     switch($fieldname) {
         case "edit":
             $retval = "<a href=\"{$A['edit']}\">{$icon_arr['edit']}</a>";
@@ -665,6 +732,45 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr) {
             break;
         default:
             $retval = COM_makeClickableLinks (stripslashes ( $fieldvalue));
+            break;
+    }
+    return $retval;
+}
+
+function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr) {
+    global $_CONF, $LANG_TRB, $type;
+    $retval = '';
+    
+    switch($fieldname) {
+        case "edit":
+            $retval = "<a href=\"{$_CONF['site_admin_url']}/trackback.php?mode=editservice&amp;service_id={$A['pid']}\">{$icon_arr['edit']}</a>";
+            break;
+        case "name":
+            $retval = "<a href=\"{$A['site_url']}\">{$A['name']}</a>";
+            break;
+        case "method":
+            if ($A['method'] == 'weblogUpdates.ping') {
+                $retval = $LANG_TRB['ping_standard'];
+            } else if ($A['method'] == 'weblogUpdates.extendedPing') {
+                $retval = $LANG_TRB['ping_extended'];
+            } else {
+                $retval = '<span class="warningsmall">' .
+                        $LANG_TRB['ping_unknown'] .  '</span>';
+            }
+            break;
+        case "is_enabled":
+            if ($A['is_enabled'] == 1) {
+                $switch = 'checked="checked"';
+            } else {
+                $switch = '';
+            }
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/trackback.php\" method=\"POST\">"
+                     ."<input type=\"checkbox\" name=\"serviceenable\" onclick=\"submit()\" value=\"{$A['pid']}\" $switch>"
+                     ."<input type=\"hidden\" name=\"serviceChange\" value=\"{$A['pid']}\">"
+                     ."</form>";
+            break;
+        default:
+            $retval = $fieldvalue;
             break;
     }
     return $retval;

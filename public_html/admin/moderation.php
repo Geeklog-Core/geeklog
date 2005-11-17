@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.78 2005/11/16 20:07:14 dhaun Exp $
+// $Id: moderation.php,v 1.79 2005/11/17 15:00:22 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -280,14 +280,13 @@ function itemlist($type)
         array('text' => $H[1], 'field' => 2),
         array('text' => $H[2], 'field' => 3),
         array('text' => $LANG29[2], 'field' => 'delete'),
-        array('text' => $LANG29[1], 'field' => 'approve')
-    );
+        array('text' => $LANG29[1], 'field' => 'approve'));
 
     $text_arr = array('has_menu'    => false,
                       'title'       => $section_title,
                       'help_url'    => $section_help,
-                      'no_data'     => $LANG29[39]
-    );
+                      'no_data'     => $LANG29[39]);
+                      
     $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
         $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
@@ -382,19 +381,19 @@ function draftlist ()
         $A['tid'] = stripslashes($A['tid']);
         $data_arr[$i] = $A;
     }
+    
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 0),
         array('text' => $LANG29[10], 'field' => 'title'),
         array('text' => $LANG29[14], 'field' => 'day'),
         array('text' => $LANG29[15], 'field' => 'tid'),
         array('text' => $LANG29[2], 'field' => 'delete'),
-        array('text' => $LANG29[1], 'field' => 'approve')
-    );
+        array('text' => $LANG29[1], 'field' => 'approve'));
+        
     $text_arr = array('has_menu'    => false,
                         'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
                         'help_url'  => '',
-                        'no_data'   => $LANG29[39]
-    );
+                        'no_data'   => $LANG29[39]);
 
     $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {

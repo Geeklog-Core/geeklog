@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.72 2005/11/16 19:28:57 ospiess Exp $
+// $Id: event.php,v 1.73 2005/11/17 15:00:22 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -509,6 +509,51 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
     }
 }
 
+function listevents()
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE;
+    $retval = '';
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG22[13], 'field' => 'username', 'sort' => true),
+                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+                    array('text' => $LANG22[14], 'field' => 'datestart', 'sort' => true),
+                    array('text' => $LANG22[15], 'field' => 'dateend', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/event.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
+                      'title' => $LANG22[11], 'instructions' => $LANG22[12],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/event.'
+                                . $_IMAGE_TYPE,
+                      'form_url' => $_CONF['site_admin_url'] . "/event.php");
+
+    $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username FROM {$_TABLES['events']} "
+          ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['events']}.owner_id={$_TABLES['users']}.uid "
+          ."WHERE 1 ";
+
+    $query_arr = array('table' => 'events',
+                       'sql' => $sql,
+                       'query_fields' => array('title', 'datestart', 'dateend'),
+                       'default_filter' => COM_getPermSQL());
+
+    $retval .= ADMIN_list ("events", "ADMIN_getListField_events", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    return $retval;
+
+}
+
 /**
 * Delete an event
 *
@@ -535,7 +580,10 @@ function deleteEvent ($eid)
 }
 
 // MAIN
-$mode = $_REQUEST['mode'];
+$mode = '';
+if (isset($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
+}
 
 if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     $eid = COM_applyFilter ($_REQUEST['eid']);
@@ -598,45 +646,7 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
                                                       true));
     }
-                           
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG22[13], 'field' => 'username', 'sort' => true),
-                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG22[14], 'field' => 'datestart', 'sort' => true),
-                    array('text' => $LANG22[15], 'field' => 'dateend', 'sort' => true)
-    );
-
-    $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
-
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/event.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG22[11], 'instructions' => $LANG22[12],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/event.'
-                                . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/event.php");
-    $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username FROM {$_TABLES['events']} "
-          ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['events']}.owner_id={$_TABLES['users']}.uid "
-          ."WHERE 1 ";
-
-    $query_arr = array('table' => 'events',
-                       'sql' => $sql,
-                       'query_fields' => array('title', 'datestart', 'dateend'),
-                       'default_filter' => COM_getPermSQL(),
-                       'query' => $_REQUEST['q'],
-                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-
-    $display .= ADMIN_list ("events", "ADMIN_getListField_events", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+    $display .= listevents();
     $display .= COM_siteFooter ();
 }
 

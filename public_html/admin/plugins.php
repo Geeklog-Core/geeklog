@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.53 2005/11/12 17:09:55 dhaun Exp $
+// $Id: plugins.php,v 1.54 2005/11/17 15:00:23 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -411,7 +411,7 @@ function do_uninstall ($pi_name)
 * @return   string                  formatted list of plugins
 *
 */
-function listplugins ($query = '', $query_limit = 0)
+function listplugins ()
 {
     global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
 
@@ -427,8 +427,7 @@ function listplugins ($query = '', $query_limit = 0)
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
+                          'text' => $LANG_ADMIN['admin_home']));
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras' => true,
@@ -439,11 +438,10 @@ function listplugins ($query = '', $query_limit = 0)
                       'form_url' => $_CONF['site_admin_url'] . '/plugins.php');
 
     $query_arr = array('table' => 'plugins',
-                       'sql' => "SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1",
+                       'sql' => "SELECT pi_name, pi_version, pi_gl_version, "
+                               ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1",
                        'query_fields' => array('pi_name'),
-                       'default_filter' => '',
-                       'query' => $query,
-                       'query_limit' => $query_limit);
+                       'default_filter' => '');
 
     return ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
                        $text_arr, $query_arr, $menu_arr, $defsort_arr);
@@ -507,8 +505,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     if (!empty ($msg)) {
         $display .= COM_showMessage ($msg);
     }
-    $display .= listplugins ($_REQUEST['q'],
-                             COM_applyFilter ($_REQUEST['query_limit'], true));
+    $display .= listplugins ();
     $display .= show_newplugins();
     $display .= COM_siteFooter();
 }

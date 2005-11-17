@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.59 2005/11/13 18:27:12 dhaun Exp $
+// $Id: group.php,v 1.60 2005/11/17 15:00:22 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -631,6 +631,45 @@ function listusers ($grp_id)
     return $retval;
 }
 
+function listgroups()
+{
+    global $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $_CONF, $_TABLES;
+    $retval = "";
+
+    $header_arr = array(      # display 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
+                    array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true),
+                    array('text' => $LANG_ACCESS['coregroup'], 'field' => 'grp_gl_core', 'sort' => true),
+                    array('text' => $LANG_ACCESS['listusers'], 'field' => 'list', 'sort' => false)
+    );
+
+    $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/group.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']));
+
+    $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
+                      'title' => $LANG_ACCESS['groupmanager'],
+                      'instructions' => $LANG_ACCESS['newgroupmsg'],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/group.'
+                                . $_IMAGE_TYPE,
+                      'form_url' => $_CONF['site_admin_url'] . "/group.php");
+
+    $query_arr = array('table' => 'groups',
+                       'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1",
+                       'query_fields' => array('grp_name', 'grp_descr'),
+                       'default_filter' => "");
+
+    $retval .= ADMIN_list ("groups", "ADMIN_getListField_groups", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    return $retval;
+}
+
 function grp_selectUsers ($group_id = '0', $allusers = false)
 {
     global $_TABLES, $_USER;
@@ -760,7 +799,11 @@ function deleteGroup ($grp_id)
 }
 
 // MAIN
-$mode = $_REQUEST['mode'];
+$mode = '';
+if (isset($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
+}
+
 
 if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
@@ -798,41 +841,7 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
-
-    $header_arr = array(      # display 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
-                    array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true),
-                    array('text' => $LANG_ACCESS['coregroup'], 'field' => 'grp_gl_core', 'sort' => true),
-                    array('text' => $LANG_ACCESS['listusers'], 'field' => 'list', 'sort' => false)
-    );
-
-    $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
-
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/group.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_ACCESS['groupmanager'],
-                      'instructions' => $LANG_ACCESS['newgroupmsg'],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/group.'
-                                . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/group.php");
-
-    $query_arr = array('table' => 'groups',
-                       'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1",
-                       'query_fields' => array('grp_name', 'grp_descr'),
-                       'default_filter' => "",
-                       'query' => $_REQUEST['q'],
-                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-
-    $display .= ADMIN_list ("groups", "ADMIN_getListField_groups", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+    $display .= listgroups();
     $display .= COM_siteFooter();
 }
 

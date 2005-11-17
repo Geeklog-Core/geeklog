@@ -30,10 +30,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.30 2005/11/12 17:18:48 dhaun Exp $
+// $Id: syndication.php,v 1.31 2005/11/17 15:00:23 ospiess Exp $
 
 
 require_once ('../lib-common.php');
+require_once ('auth.inc.php');
 
 if (!SEC_inGroup ('Root')) {
     $display .= COM_siteHeader ()
@@ -122,6 +123,47 @@ function get_geeklogFeeds ()
     $options[] = array ('id' => '::events', 'name' => $LANG33[42]);
 
     return $options;
+}
+
+function listfeeds()
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
+    $retval = '';
+
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
+                    array('text' => $LANG33[17], 'field' => 'format', 'sort' => true),
+                    array('text' => $LANG33[16], 'field' => 'filename', 'sort' => true),
+                    array('text' => $LANG_ADMIN['topic'], 'field' => 'header_tid', 'sort' => true),
+                    array('text' => $LANG33[18], 'field' => 'updated', 'sort' => true),
+                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'title', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/syndication.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
+                      'title' => $LANG33[10], 'instructions' => $LANG33[13],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
+                      'form_url' => $_CONF['site_admin_url'] . "/syndication.php");
+
+    $query_arr = array('table' => 'syndication',
+                       'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1",
+                       'query_fields' => array('title', 'filename'),
+                       'default_filter' => '');
+
+    $retval .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    return $retval;
 }
 
 /**
@@ -441,8 +483,11 @@ $display = '';
 if ($_CONF['backend'] && isset ($_POST['feedChange'])) {
     changeFeedStatus ($_POST['feedChange']);
 }
-
-if ($_REQUEST['mode'] == 'edit') {
+$mode = '';
+if (isset($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
+}
+if ($mode == 'edit') {
     if ($_REQUEST['fid'] == 0) {
         $display .= newfeed ();
     } else {
@@ -451,17 +496,17 @@ if ($_REQUEST['mode'] == 'edit') {
                  . COM_siteFooter ();
     }
 }
-else if (($_REQUEST['mode'] == $LANG33[1]) && !empty ($LANG33[1]))
+else if (($mode == $LANG33[1]) && !empty ($LANG33[1]))
 {
     $display .= COM_siteHeader ('menu', $LANG33[24])
              . editfeed (0, $_REQUEST['type'])
              . COM_siteFooter ();
 }
-else if (($_REQUEST['mode'] == $LANG33[2]) && !empty ($LANG33[2]))
+else if (($mode == $LANG33[2]) && !empty ($LANG33[2]))
 {
     $display .= savefeed ($_POST);
 }
-else if (($_REQUEST['mode'] == $LANG33[3]) && !empty ($LANG33[3]))
+else if (($mode == $LANG33[3]) && !empty ($LANG33[3]))
 {
     $display .= deletefeed ($_REQUEST['fid']);
 }
@@ -471,43 +516,7 @@ else
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage ($_REQUEST['msg']);
     }
-
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
-                    array('text' => $LANG33[17], 'field' => 'format', 'sort' => true),
-                    array('text' => $LANG33[16], 'field' => 'filename', 'sort' => true),
-                    array('text' => $LANG_ADMIN['topic'], 'field' => 'header_tid', 'sort' => true),
-                    array('text' => $LANG33[18], 'field' => 'updated', 'sort' => true),
-                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
-    );
-
-    $defsort_arr = array('field' => 'title', 'direction' => 'asc');
-
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/syndication.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG33[10], 'instructions' => $LANG33[13],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/syndication.php");
-
-    $query_arr = array('table' => 'syndication',
-                       'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1",
-                       'query_fields' => array('title', 'filename'),
-                       'default_filter' => '',
-                       'query' => $_REQUEST['q'],
-                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-
-    $display .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
-
+    $display .= listfeeds();
     $display .= COM_siteFooter ();
 }
 

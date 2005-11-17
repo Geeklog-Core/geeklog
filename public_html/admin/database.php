@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.28 2005/11/15 06:18:50 ospiess Exp $
+// $Id: database.php,v 1.29 2005/11/17 15:00:22 ospiess Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -61,6 +61,66 @@ function compareBackupFiles ($pFileA, $pFileB)
     }
 
     return ($lFiletimeA > $lFiletimeB) ? -1 : 1;
+}
+
+function listbackups()
+{
+    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_DB_BACKUP;
+    $retval = '';
+    if (is_writable ($_CONF['backup_path'])) {
+        $backups = array();
+        $fd = opendir($_CONF['backup_path']);
+        $index = 0;
+        while ((false !== ($file = @readdir ($fd)))) {
+            if ($file <> '.' && $file <> '..' && $file <> 'CVS' &&
+                    preg_match ('/\.sql$/i', $file)) {
+                $index++;
+                clearstatcache();
+                $backups[] = $file;
+            }
+        }
+        // AS, 2004-03-29 - Sort backup files by date, newest first.
+        // Order given by 'readdir' might not be correct.
+        usort ($backups, 'compareBackupFiles');
+        $backups = array_slice ($backups, 0, 10);
+        reset($backups);
+
+        $data_arr = array();
+        for ($i = 0; $i < count ($backups); $i++) {
+            $backupfile = $_CONF['backup_path'] . $backups[$i];
+            $backupfilesize = filesize ($backupfile);
+            $data_arr[$i] = array('file' => $backups[$i],
+                                  'size' => $backupfilesize . " <b>"
+                                            .$LANG_DB_BACKUP['bytes'] . "</b>");
+        }
+
+        $menu_arr = array (
+                        array('url' => $_CONF['site_admin_url']
+                                       . '/database.php?mode=' . $LANG_DB_BACKUP['do_backup'],
+                              'text' => $LANG_ADMIN['create_new']),
+                        array('url' => $_CONF['site_admin_url'],
+                              'text' => $LANG_ADMIN['admin_home'])
+        );
+
+        $header_arr = array(      # dislay 'text' and use table field 'field'
+            array('text' => $LANG_DB_BACKUP['backup_file'], 'field' => 'file'),
+            array('text' => $LANG_DB_BACKUP['size'], 'field' => 'size')
+        );
+
+        $text_arr = array('has_menu' => true,
+                          'instructions' => $LANG_DB_BACKUP['db_explanation']
+                                            . "<br>" . sprintf ($LANG_DB_BACKUP['total_number'], $index),
+                          'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
+        );
+        $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr, $menu_arr);
+    } else {
+        $retval .= COM_startBlock ($LANG08[06], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= $LANG_DB_BACKUP['no_access'];
+        COM_errorLog ($_CONF['backup_path'] . ' is not writable.', 1);
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+    return $retval;
 }
 
 
@@ -140,59 +200,7 @@ if (isset ($_GET['mode']) &&
 
 // Show last ten backups
 
-if (is_writable ($_CONF['backup_path'])) {
-    $backups = array();
-    $fd = opendir($_CONF['backup_path']);
-    $index = 0;
-    while ((false !== ($file = @readdir ($fd)))) {
-        if ($file <> '.' && $file <> '..' && $file <> 'CVS' &&
-                preg_match ('/\.sql$/i', $file)) {
-            $index++;
-            clearstatcache();
-            $backups[] = $file;
-        }
-    }
-    // AS, 2004-03-29 - Sort backup files by date, newest first.
-    // Order given by 'readdir' might not be correct.
-    usort ($backups, 'compareBackupFiles');
-    $backups = array_slice ($backups, 0, 10);
-    reset($backups);
-    
-    $data_arr = array();
-    for ($i = 0; $i < count ($backups); $i++) {
-        $backupfile = $_CONF['backup_path'] . $backups[$i];
-        $backupfilesize = filesize ($backupfile);
-        $data_arr[$i] = array('file' => $backups[$i],
-                              'size' => $backupfilesize . " <b>"
-                                        .$LANG_DB_BACKUP['bytes'] . "</b>");
-    }
-    
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url']
-                                   . '/database.php?mode=' . $LANG_DB_BACKUP['do_backup'],
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-     
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-        array('text' => $LANG_DB_BACKUP['backup_file'], 'field' => 'file'),
-        array('text' => $LANG_DB_BACKUP['size'], 'field' => 'size')
-    );
-
-    $text_arr = array('has_menu' => true,
-                      'instructions' => $LANG_DB_BACKUP['db_explanation']
-                                        . "<br>" . sprintf ($LANG_DB_BACKUP['total_number'], $index),
-                      'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
-    );
-    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr, $menu_arr);
-} else {
-    $display .= COM_startBlock ($LANG08[06], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $LANG_DB_BACKUP['no_access'];
-    COM_errorLog ($_CONF['backup_path'] . ' is not writable.', 1);
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-}
+$display .= listbackups();
 
 $display .= COM_siteFooter ();
 

@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.36 2005/11/14 11:08:19 dhaun Exp $
+// $Id: functions.inc,v 1.37 2005/11/17 15:00:21 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -1073,7 +1073,7 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
     if ($access > 0) {
         switch($fieldname) {
             case "edit":
-                $retval = "<a href=\"{$_CONF[site_admin_url]}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
                 break;
             case "access":
                 if ($access == 3) {

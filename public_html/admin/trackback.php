@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.27 2005/11/06 20:16:39 dhaun Exp $
+// $Id: trackback.php,v 1.28 2005/11/17 15:00:23 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -466,170 +466,46 @@ function getItemInfo ($type, $id, $what)
 /**
 * Display a list of all weblog directory services in the system
 *
-* @param    int     $page   page to start
-* @param    int     $msg    ID of a message to display or 0
 * @return   string          HTML for the list
 *
 */
-function listServices ($offset, $curpage, $query = '', $query_limit = 50)
+function listServices ()
 {
-    global $_CONF, $_TABLES, $LANG_TRB, $_IMAGE_TYPE, $LANG_ADMIN;
-
-    $order = COM_applyFilter ($_GET['order'], true);
-    $prevorder = COM_applyFilter ($_GET['prevorder'], true);
-    $direction = COM_applyFilter ($_GET['direction']);
-
+    global $LANG_ADMIN, $LANG_TRB, $_CONF, $_IMAGE_TYPE, $_TABLES;
     $retval = '';
-    $retval .= COM_startBlock ($LANG_TRB['services_headline'],
-                               $_CONF['site_url'] . '/docs/trackback.html#ping',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $header_arr = array(      # display 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_TRB['service'], 'field' => 'name', 'sort' => true),
+                    array('text' => $LANG_TRB['ping_method'], 'field' => 'method', 'sort' => true),
+                    array('text' => $LANG_TRB['service_ping_url'], 'field' => 'ping_url', 'sort' => true),
+                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => false));
 
-    $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
-    $template->set_file (array ('list' => 'servicelist.thtml',
-                                'row'  => 'serviceitem.thtml'));
-    $template->set_var ('site_url', $_CONF['site_url']);
-    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $template->set_var ('layout_url', $_CONF['layout_url']);
+    $defsort_arr = array('field' => 'name', 'direction' => 'asc');
 
-    $template->set_var ('lang_adminhome', $LANG_ADMIN['admin_home']);
-    $template->set_var ('lang_newservice', $LANG_ADMIN['create_new']);
-    $template->set_var ('lang_instructions', $LANG_TRB['service_explain']);
-    $template->set_var ('lang_name', $LANG_TRB['service']);
-    $template->set_var ('lang_method', $LANG_TRB['ping_method']);
-    $template->set_var ('lang_enabled', $LANG_ADMIN['enabled']);
-    $template->set_var ('lang_site', $LANG_TRB['service_website']);
-    $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
-             . '" title="' . $LANG_ADMIN['edit'] . '">';
-    $template->set_var('edit_icon', $editico);
-    $template->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $template->set_var('last_query', $query);
-    $template->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-    $template->set_var('lang_search', $LANG_ADMIN['search']);
-    $template->set_var('lang_submit', $LANG_ADMIN['submit']);
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/trackback.php?mode=editservice',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']));
 
-    switch ($order) {
-        case 1:
-            $orderby = 'name';
-            break;
-        case 2:
-            $orderby = 'method';
-            break;
-        case 3:
-            $orderby = 'ping_url';
-            break;
-        case 4:
-            $orderby = 'is_enabled';
-            break;
-        default:
-            $orderby = 'name';
-            $order = 1;
-            break;
-    }
-    if (empty ($direction)) {
-        $direction = 'asc';
-    } else if ($order == $prevorder) {
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
-    } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
-    }
+    $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
+                      'title' => $LANG_TRB['services_headline'],
+                      'instructions' =>  $LANG_TRB['service_explain'],
+                      'icon' => $_CONF['layout_url'] . '/images/icons/trackback.'
+                                . $_IMAGE_TYPE,
+                      'form_url' => $_CONF['site_admin_url'] . "/trackback.php",
+                      'help_url' => $_CONF['site_url'] . '/docs/trackback.html#ping');
 
-    if ($direction == 'asc') {
-        $arrow = 'bararrowdown';
-    } else {
-        $arrow = 'bararrowup';
-    }
-    $template->set_var ('img_arrow' . $order, '&nbsp;<img src="'
-            . $_CONF['layout_url'] . '/images/' . $arrow . '.' . $_IMAGE_TYPE
-            . '" border="0" alt="">');
+    $query_arr = array('table' => 'trackback',
+                       'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1",
+                       'query_fields' => array('name', 'ping_url'),
+                       'default_filter' => "",
+                       'no_data' => $LANG_TRB['no_services']);
 
-    $template->set_var ('direction', $direction);
-    $template->set_var ('page', $page);
-    $template->set_var ('prevorder', $order);
-    if (empty ($query_limit)) {
-        $limit = 50;
-    } else {
-        $limit = $query_limit;
-    }
-    if ($query != '') {
-        $template->set_var ('query', urlencode($query) );
-    } else {
-        $template->set_var ('query', '');
-    }
-    $template->set_var ('query_limit', $query_limit);
-    $template->set_var ($limit . '_selected', 'selected="selected"');
+    $retval .= ADMIN_list ("groups", "ADMIN_getListField_trackback", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
 
-    if (!empty ($query)) {
-        $query = addslashes (str_replace ('*', '%', $query));
-        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'COUNT(*)',
-                "(name LIKE '$query' OR ping_url LIKE '$query')") / $limit);
-        if ($num_pages < $curpage) {
-            $curpage = 1;
-        }
-    } else {
-        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'COUNT(*)') / $limit);
-    }
-
-    $offset = (($curpage - 1) * $limit);
-
-    $sql = "SELECT * FROM {$_TABLES['pingservice']}";
-    if (!empty($query)) {
-         $sql .= " WHERE (name LIKE '$query' OR ping_url LIKE '$query')";
-    }
-    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
-
-    $result = DB_query ($sql);
-    $nrows = DB_numRows($result);
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray ($result);
-            $template->set_var ('row_num', $i + $limit + 1);
-            $template->set_var ('service_id', $A['pid']);
-            $template->set_var ('service_name', $A['name']);
-            $template->set_var ('service_ping_url', $A['ping_url']);
-            $template->set_var ('service_site_url', $A['site_url']);
-            $template->set_var ('service_method_name', $A['method']);
-            if ($A['method'] == 'weblogUpdates.ping') {
-                $template->set_var ('service_method',
-                                    $LANG_TRB['ping_standard']);
-            } else if ($A['method'] == 'weblogUpdates.extendedPing') {
-                $template->set_var ('service_method',
-                                    $LANG_TRB['ping_extended']);
-            } else {
-                $template->set_var ('service_method',
-                        '<span class="warningsmall">' .
-                        $LANG_TRB['ping_unknown'] .  '</span>');
-            }
-            if ($A['is_enabled'] == 1) {
-                $template->set_var ('is_enabled', 'checked="checked"');
-            } else {
-                $template->set_var ('is_enabled', '');
-            }
-            $template->set_var ('cssid', ($i % 2) + 1);
-            $template->parse ('services_list', 'row', true);
-        }
-    } else {
-        $template->set_var ('services_list', '<tr><td colspan="5">'
-                            . $LANG_TRB['no_services'] . '</td></tr>');
-    }
-
-    if (!empty($query)) {
-        $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_admin_url'] . '/trackback.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    } else {
-        $base_url = $_CONF['site_admin_url'] . "/trackback.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
-    }
-
-    if ($num_pages > 1) {
-        $template->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
-    } else {
-        $template->set_var('google_paging', '');
-    }
-
-    $template->parse ('output', 'list');
-    $retval .= $template->finish ($template->get_var ('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     if ($_CONF['trackback_enabled']) {
         $retval .= freshTrackback ();
@@ -1249,19 +1125,7 @@ if ($mode == 'delete') {
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
-    $page = 1;
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_REQUEST['page'], true);
-    }
-    if ($page < 1) {
-        $page = 1;
-    }
-    $display .= listServices ($offset, $page, $_REQUEST['q'],
-                           COM_applyFilter ($_REQUEST['query_limit'], true));
+    $display .= listServices ();
     $display .= COM_siteFooter();
 } else if ($mode == 'freepb') {
     $display .= COM_siteHeader ('menu', $LANG_TRB['pingback']);

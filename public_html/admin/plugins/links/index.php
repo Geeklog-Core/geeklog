@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2005/11/05 14:02:11 dhaun Exp $
+// $Id: index.php,v 1.19 2005/11/17 15:00:24 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -284,6 +284,42 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
     }
 }
 
+function listlinks ()
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_LINKS_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE;
+    $retval = '';
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG_LINKS_ADMIN[2], 'field' => 'lid', 'sort' => true),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+                    array('text' => $LANG_LINKS_ADMIN[14], 'field' => 'category', 'sort' => true));
+
+    $defsort_arr = array('field' => 'title', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_url'] . '/admin/plugins/links/index.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']));
+
+    $text_arr = array('has_menu' =>  true,
+                      'has_extras'   => true,
+                      'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
+                      'icon' => $_CONF['site_url'] . '/links/images/links.png',
+                      'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php");
+
+    $query_arr = array('table' => 'links',
+                       'sql' => "SELECT * FROM {$_TABLES['links']} WHERE 1",
+                       'query_fields' => array('title', 'category', 'url'),
+                       'default_filter' => COM_getPermSql (''));
+
+    $retval .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    return $retval;
+
+}
+
 /**
 * Delete a link
 *
@@ -310,6 +346,7 @@ function deleteLink ($lid)
 }
 
 // MAIN
+$mode = '';
 if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
@@ -347,40 +384,7 @@ if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // del
             $display .= COM_showMessage ($msg, 'links');
         }
     }
-                           
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_LINKS_ADMIN[2], 'field' => 'lid', 'sort' => true),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG_LINKS_ADMIN[14], 'field' => 'category', 'sort' => true)
-    );
-
-    $defsort_arr = array('field' => 'title', 'direction' => 'asc');
-
-    $menu_arr = array (
-                    array('url' => $_CONF['site_url'] . '/admin/plugins/links/index.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
-                      'icon' => $_CONF['site_url'] . '/links/images/links.png',
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php");
-
-    $query_arr = array('table' => 'links',
-                       'sql' => "SELECT * FROM {$_TABLES['links']} WHERE 1",
-                       'query_fields' => array('title', 'category', 'url'),
-                       'default_filter' => COM_getPermSql (''),
-                       'query' => $_REQUEST['q'],
-                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-
-    $display .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
-    $display .= COM_siteFooter();
+    $display .= listlinks();
     $display .= COM_siteFooter ();
 }
 
