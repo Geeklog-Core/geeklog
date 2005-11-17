@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.86 2005/11/14 09:18:44 dhaun Exp $
+// $Id: lib-plugins.php,v 1.87 2005/11/17 03:56:25 vinny Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -221,6 +221,24 @@ function PLG_getMenuItems()
         }
     }
     return $menu;
+}
+
+/**
+ * Get view URL and name of unique identifier
+ *
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @param   string  $type   Plugin to delete comment
+ * @return  array   string of URL of view page, name of unique identifier
+ */
+function PLG_getCommentUrlId($type) {
+    $ret = PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type);
+    if (empty($ret[0])) {
+        $ret[0] = $_CONF['site_url'] . "/$type/index.php";
+    }
+    if (empty($ret[1])) {
+        $ret[1] = 'id';
+    }
+    return $ret;
 }
 
 /**

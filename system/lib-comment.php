@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.24 2005/11/14 12:21:13 dhaun Exp $
+// $Id: lib-comment.php,v 1.25 2005/11/17 03:56:25 vinny Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -91,8 +91,9 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
             $commentbar->set_var( 'end_storylink_anchortag', '</a>' );
         }
     } else { // for a plugin
-        // Link to generic link the plugin should support (hopefully)
-        $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/$type/index.php?id=$sid" );
+        // Link to plugin defined link or lacking that a generic link that the plugin should support (hopefully)
+        list($plgurl, $plgid) = PLG_getCommentUrlId($type);
+        $commentbar->set_var( 'story_link', "$plgurl?$plgid=$sid" );
     }
 
     if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) {
@@ -149,10 +150,11 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'hidden_field',
                 '<input type="hidden" name="story" value="' . $sid . '">' );
     } else { // plugin
-        // Direct plugins to a generic location and hope it exists
-        $commentbar->set_var( 'parent_url', $_CONF['site_url'] . "/$type/index.php" );
+        // Link to plugin defined link or lacking that a generic link that the plugin should support (hopefully)
+        list($plgurl, $plgid) = PLG_getCommentUrlId($type);
+        $commentbar->set_var( 'parent_url', $plgurl );
         $commentbar->set_var( 'hidden_field',
-                '<input type="hidden" name="id" value="' . $sid . '">' );
+                '<input type="hidden" name="' . $plgid . '" value="' . $sid . '">' );
     }
 
     // Order
