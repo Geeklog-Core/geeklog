@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.4 2005/11/13 09:51:12 dhaun Exp $
+// $Id: index.php,v 1.5 2005/11/17 20:30:27 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -55,8 +55,14 @@ if (empty ($_USER['username']) &&
     $display .= $login->finish ($login->get_var ('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 } else {
-    $category = strip_tags (COM_stripslashes ($_GET['category']));
-    $page = COM_applyFilter ($_GET['page'], true);
+    $category = '';
+    if (isset ($_GET['category'])) {
+        $category = strip_tags (COM_stripslashes ($_GET['category']));
+    }
+    $page = 0;
+    if (isset ($_GET['page'])) {
+        $page = COM_applyFilter ($_GET['page'], true);
+    }
 
     $display .= COM_startBlock ($LANG_LINKS[114]);
 
