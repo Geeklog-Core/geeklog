@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.17 2005/11/16 18:17:20 mjervis Exp $
+// $Id: lib-custom.php,v 1.18 2005/11/17 15:05:10 ospiess Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -155,7 +155,9 @@ function CUSTOM_runSheduledTask() {
 function CUSTOM_templatesetvars($templatename, &$template) {
 
     if ($templatename == 'header') {
-        $template->set_var( 'myvar', $mycontent );
+        if (isset($mycontent)) {
+            $template->set_var( 'myvar', $mycontent );
+        }
     }
 }
 

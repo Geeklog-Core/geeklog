@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.43 2005/11/13 21:13:20 mjervis Exp $
+// $Id: lib-security.php,v 1.44 2005/11/17 15:05:10 ospiess Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -163,7 +163,7 @@ function SEC_getUserGroups($uid='')
 function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
 {
     global $_TABLES, $_CONF;
-    if( $_CONF['remote_users_group_id'] == '' )
+    if(!isset($_CONF['remote_users_group_id']))
     {
         $result = DB_Query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name='Remote Users'");
         if( $result )
