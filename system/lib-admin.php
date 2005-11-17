@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.27 2005/11/17 15:31:30 ospiess Exp $
+// $Id: lib-admin.php,v 1.28 2005/11/17 15:41:45 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr)
@@ -55,6 +55,10 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $form_url = $text_arr['form_url'];
     }
 
+    $icon = '';
+    if (isset($text_arr['icon'])) {
+        $icon = $text_arr['icon'];
+    }
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array ('topmenu' => 'topmenu_nosearch.thtml',
                                        'list' => 'list.thtml',
@@ -65,7 +69,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                                       ));
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $form_url);
-    $admin_templates->set_var('icon', $text_arr['icon']);
+    $admin_templates->set_var('icon', $icon);
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
 
@@ -117,10 +121,14 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         for ($i = 0; $i < count($data_arr); $i++) {
             for ($j = 0; $j < count($header_arr); $j++) {
                 $fieldname = $header_arr[$j]['field'];
-                if (!empty($fieldfunction)) {
-                    $fieldvalue = $fieldfunction($fieldname, $data_arr[$i][$fieldname], $data_arr[$i], $icon_arr);
-                } else {
+                $fieldvalue = '';
+                if (!empty($data_arr[$i][$fieldname])) {
                     $fieldvalue = $data_arr[$i][$fieldname];
+                }
+                if (!empty($fieldfunction)) {
+                    $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $data_arr[$i], $icon_arr);
+                } else {
+                    $fieldvalue = $fieldvalue;
                 }
                 if ($fieldvalue !== false) {
                     $admin_templates->set_var('itemtext', $fieldvalue);

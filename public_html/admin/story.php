@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.186 2005/11/17 15:00:23 ospiess Exp $
+// $Id: story.php,v 1.187 2005/11/17 15:41:45 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1041,7 +1041,11 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 }
 
 // MAIN
-$mode = COM_applyFilter ($_REQUEST['mode']);
+$mode = '';
+if (isset($_REQUEST['mode'])){
+    $mode = COM_applyFilter ($_REQUEST['mode']);
+}
+
 
 $display = '';
 if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
@@ -1146,13 +1150,20 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                  COM_applyFilter ($_POST['show_topic_icon']),
                  COM_applyFilter ($_POST['old_sid']));
 } else { // 'cancel' or no mode at all
-    $type = COM_applyFilter ($_POST['type']);
+    $type = '';
+    if (isset($_POST['type'])){
+        $type = COM_applyFilter ($_POST['type']);
+    }
     if (($mode == $LANG24[10]) && !empty ($LANG24[10]) &&
             ($type == 'submission')) {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $display .= COM_siteHeader('menu', $LANG24[22]);
-        $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
+        $msg = "";
+        if (isset($_GET['msg'])) {
+            $msg = COM_applyFilter($_GET['msg'], true);
+        }
+        $display .= COM_showMessage ($msg);
         $display .= liststories();
         $display .= COM_siteFooter();
     }
