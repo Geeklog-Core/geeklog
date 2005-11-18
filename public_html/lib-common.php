@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.498 2005/11/15 09:53:09 dhaun Exp $
+// $Id: lib-common.php,v 1.499 2005/11/18 20:14:03 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -685,6 +685,11 @@ function COM_renderMenu( &$header, $plugin_menu )
                 {
                     $allowed = false;
                 }
+                break;
+
+            default: // unknown entry
+                $url = '';
+                $label = '';
                 break;
         }
 
