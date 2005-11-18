@@ -364,18 +364,6 @@ $LANG05 = array(
 );
 
 ###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => 'Vote Saved',
-    2 => 'Your vote was saved for the poll',
-    3 => 'Vote',
-    4 => 'Polls in System',
-    5 => 'Votes',
-    6 => 'View other poll questions'
-);
-
-###############################################################################
 # profiles.php
 
 $LANG08 = array(

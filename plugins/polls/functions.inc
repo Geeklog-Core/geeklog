@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.33 2005/11/18 02:53:45 ospiess Exp $
+// $Id: functions.inc,v 1.34 2005/11/18 13:56:58 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -655,8 +655,7 @@ function POLLS_showPoll( $size, $qid='' )
 */
 function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 {
-    global $_CONF, $_TABLES, $_PO_CONF, $LANG01, $LANG_POLLS, $LANG07,
-           $_COM_VERBOSE;
+    global $_CONF, $_TABLES, $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE;
 
     $retval = '';
 
