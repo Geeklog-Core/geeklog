@@ -367,24 +367,6 @@ $LANG05 = array(
 );
 
 ###############################################################################
-# links.php
-
-$LANG06 = array(
-);
-
-###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => 'Stimme gespeichert',
-    2 => 'Deine Stimme wurde für die Umfrage gespeichert: ',
-    3 => 'Stimme',
-    4 => 'Umfragen im System',
-    5 => 'Stimme(n)',
-    6 => 'Ältere Umfragen'
-);
-
-###############################################################################
 # profiles.php
 
 $LANG08 = array(
@@ -683,7 +665,8 @@ $LANG21 = array(
     61 => 'Ohne Titel',
     62 => 'Artikel-Limit',
     63 => 'Block-Titel nicht erlaubt',
-    64 => 'Der Titel kann nicht leer sein und darf kein HTML enthalten!'
+    64 => 'Der Titel kann nicht leer sein und darf kein HTML enthalten!',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -714,18 +697,7 @@ $LANG22 = array(
     22 => 'Löschen',
     23 => 'Ungültiges Startdatum.',
     24 => 'Ungültiges Enddatum.',
-    25 => 'Enddatum ist vor dem Startdatum.',
-    26 => 'Abschicken',
-    27 => 'Limit Results',
-    28 => 'Suchen',
-    29 => 'Ändern',
-    30 => 'Kopieren'
-);
-
-###############################################################################
-# admin/link.php
-
-$LANG23 = array(
+    25 => 'Enddatum ist vor dem Startdatum.'
 );
 
 ###############################################################################
@@ -794,42 +766,19 @@ $LANG24 = array(
     60 => 'Aktiv',
     61 => 'automatisch archivieren',
     62 => 'automatisch löschen',
-    63 => 'Ändern',
-    64 => 'Abschicken',
-    65 => 'Suchen',
-    66 => 'Limit Results'
-);
-
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'Modus',
-    2 => 'Bitte eine Frage und mindestens eine Antwort eingeben.',
-    3 => 'angelegt',
-    4 => 'Umfrage %s wurde gespeichert',
-    5 => 'Umfrage editieren',
-    6 => 'Umfrage-ID',
-    7 => '(keine Leerzeichen!)',
-    8 => 'Erscheint auf der Startseite',
-    9 => 'Frage',
-    10 => 'Antworten / Stimmen',
-    11 => 'Beim Abrufen der Stimmen von Umfrage %s trat ein Fehler auf.',
-    12 => 'Beim Abrufen der Fragen von Umfrage %s trat ein Fehler auf.',
-    13 => 'Umfrage anlegen',
-    14 => 'Speichern',
-    15 => 'Abbruch',
-    16 => 'Löschen',
-    17 => 'Bitte eine Umfrage-ID eingeben.',
-    18 => 'Liste der Umfragen',
-    19 => 'Um eine Umfrage zu ändern oder löschen, auf die Umfrage klicken. Mit Neue Umfrage (s.o.) wird eine neue Umfrage angelegt.',
-    20 => 'Stimmen',
-    21 => 'Zugriff verweigert',
-    22 => "Du hast keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/poll.php\">Zurück zum Administrator-Menü</a>.",
-    23 => 'Neue Umfrage',
-    24 => 'Admin Home',
-    25 => 'Ja',
-    26 => 'Nein'
+    63 => '',
+    64 => '',
+    65 => '',
+    66 => '',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
 ###############################################################################
@@ -1063,7 +1012,10 @@ $LANG32 = array(
     32 => '<p><b>Fehler: Ungültiges Format für Autolink.</b></p>',
     33 => 'Code-Version',
     34 => 'Aktualisieren',
-    35 => 'Ändern'
+    35 => 'Ändern',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1495,7 +1447,8 @@ $LANG_ADMIN = array (
     'cancel'        => 'Abbruch',
     'delete'        => 'Löschen',
     'copy'          => 'Kopieren',
-    'no_results'    => '- Keine Einträge gefunden -'
+    'no_results'    => '- Keine Einträge gefunden -',
+    'data_error'    => 'There was an error processing the subscription data. Please check the data source.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1528,6 +1481,10 @@ $LANG_cookiecodes = array(
     86400   => '1 Tag',
     604800  => '1 Woche',
     2678400 => '1 Monat'
+);
+
+$LANG_dateformats = array(
+    0   => 'Defaulteinstellung'
 );
 
 $LANG_featurecodes = array(
