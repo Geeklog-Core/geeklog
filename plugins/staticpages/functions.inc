@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.1                                                 |
+// | Static Pages Plugin 1.4.2                                                 |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.57 2005/11/14 10:36:02 ospiess Exp $
+// $Id: functions.inc,v 1.58 2005/11/18 19:58:00 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -768,7 +768,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
         case "copy":
             $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}\">{$icon_arr['copy']}</a>";
             break;
-        case "title":
+        case "sp_title":
             $sp_title = stripslashes ($A['sp_title']);
             $retval = "<a href=\"{$_CONF['site_url']}/staticpages/index.php?page={$A['sp_id']}\" title=\"{$LANG_STATIC['title_display']}\">$sp_title</a>";
             break;
