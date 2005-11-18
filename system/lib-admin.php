@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.29 2005/11/18 02:53:46 ospiess Exp $
+// $Id: lib-admin.php,v 1.30 2005/11/18 20:52:38 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -704,7 +704,11 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             if ($pi_installed_version == $plugin_code_version) {
                 $retval = $pi_installed_version;
             } else {
-                $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version <b>{$LANG32[38]}</b>";
+                //$retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version <b>{$LANG32[38]}</b>";
+                $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
+                if ($A['pi_enabled'] == 1) {
+                    $retval .= " <b>{$LANG32[38]}</b>";
+                }
             }
             break;
         case 'enabled':
