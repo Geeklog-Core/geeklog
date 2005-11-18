@@ -1,7 +1,8 @@
 GeekLog History/Changes:
 
-??? ??, 2005 (1.3.12)
+Nov 20, 2005 (1.4.0b1)
 ------------
+
 - Introduced {start_storylink_anchortag} and {end_storylink_anchortag} template
   variables in the story and commentbar template files which only produce a
   link to the story when not on article.php, thus avoiding links back to the
@@ -23,7 +24,7 @@ GeekLog History/Changes:
   autotags (bug #492) [Dirk]
 - Group names are now unique (as they should have been from the beginning). The
   install script takes care of existing duplicate group names when upgrading
-  to 1.3.12 (bug #367) [Dirk]
+  to 1.4.0 (bug #367) [Dirk]
 - Allow for more topic IDs in the user's preferences (bug #490) [Dirk]
 - Replace autotags in the Daily Digest (bug #484) [Dirk]
 - Explicitly link to /docs/index.html for the documentation link in the Admin's

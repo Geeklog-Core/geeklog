@@ -62,7 +62,7 @@ require_once($_CONF['path'] . 'plugins/spamx/functions.inc');
 
 $pi_name = 'spamx';                   // Plugin name  Must be 15 chars or less
 $pi_version = $_SPX_CONF['version'];  // Plugin Version
-$gl_version = '1.3.12';               // min. GL Version the plugin is for
+$gl_version = '1.4.0';                // min. GL Version the plugin is for
 $pi_url = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';      // Plugin Homepage
 
 //

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.81 2005/11/06 10:01:12 dhaun Exp $
+// $Id: install.php,v 1.82 2005/11/18 20:58:24 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -48,7 +48,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.12');
+    define('VERSION', '1.4.0');
 }
 
 
@@ -256,10 +256,10 @@ function INST_identifyGeeklogVersion ()
     // warn the user if they try to run the update again.
 
     $test = array(
-        '1.3.12' => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
+        '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
         '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
         '1.3.10' => array("DESCRIBE {$_TABLES['comments']} lft",''),
-        '1.3.9'  => array("DESCRIBE {$_TABLES['blocks']} blockorder",'blockorder,smallint(5)'),
+        '1.3.9'  => array("DESCRIBE {$_TABLES['syndication']}",''),
         '1.3.8'  => array("DESCRIBE {$_TABLES['userprefs']} showonline",'')
 
         // It's hard to (reliably) test for 1.3.7 - let's just hope nobody uses
@@ -822,7 +822,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             break;
 
     case '1.3.11':
-            require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.11_to_1.3.12.php');
+            require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.11_to_1.4.0.php');
             for ($i = 0; $i < count ($_SQL); $i++) {
                 DB_query (current ($_SQL));
                 next ($_SQL);
@@ -831,7 +831,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             upgrade_addFeature ();
             upgrade_uniqueGroupNames ();
 
-            $current_gl_version = '1.3.12';
+            $current_gl_version = '1.4.0';
             $_SQL = '';
             break;
 

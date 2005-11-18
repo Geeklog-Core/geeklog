@@ -81,17 +81,18 @@ $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD header_tid varchar(48) NOT 
 // add logo
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD feedlogo varchar(255) AFTER description;";
 // Upgrade format values
-$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='Atom-0.3' WHERE format='atom'";
-$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RDF-1.0' WHERE format='rdf'";
-$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RSS-0.9x' WHERE format='rss'";
-$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RSS-2.0' WHERE format='rss2'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='Atom-0.3' WHERE format='atom'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='RDF-1.0' WHERE format='rdf'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='RSS-0.9x' WHERE format='rss'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='RSS-2.0' WHERE format='rss2'";
 
 // add links plugin
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.3.12', 1, 'http://www.geeklog.net/')";
-// update links Rss to links plugin
-$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `type` = 'links', `topic` = 'all' WHERE `topic` = '::links';";
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.4.0', 1, 'http://www.geeklog.net/')";
+// update links feeds to links plugin
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET type = 'links', topic = 'all' WHERE topic = '::links';";
+
 // add polls plugin
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.3.12', '1', 'http://www.geeklog.net/')";
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.4.0', '1', 'http://www.geeklog.net/')";
 
 // updates core -> plugin
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'phpblock', phpblockfn ='phpblock_polls' WHERE name = 'poll_block';";
@@ -105,8 +106,11 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.moderate', ft_gl_c
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.edit', ft_gl_core = '0' WHERE ft_name = 'link.edit';";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.submit', ft_gl_core = '0' WHERE ft_name = 'link.submit';";
 
-// the included Spam-X requires Geeklog 1.3.12 now (for the MassDelete module)
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.3', pi_gl_version = '1.3.12' WHERE pi_name = 'spamx'";
+// the included Spam-X requires Geeklog 1.4.0 now (for the MassDelete modules)
+$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.3', pi_gl_version = '1.4.0' WHERE pi_name = 'spamx'";
+
+// Static Pages plugin is version 1.4.2 now
+$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.2', pi_gl_version = '1.4.0', pi_homepage = 'http://www.geeklog.net/' WHERE pi_name = 'staticpages'";
 
 // update poll(s) comments
 $_SQL[] = "UPDATE {$_TABLES['comments']} SET type = 'polls' WHERE type = 'poll'";
@@ -122,9 +126,6 @@ $_SQL[] = "ALTER TABLE {$_TABLES['personal_events']} ADD postmode varchar(10) NO
 // allow up to 40 characters for a link id
 $_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE lid lid varchar(40) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE lid lid varchar(40) NOT NULL default ''";
-
-// make sure static pages plugin has the correct version
-$_SQL[] = "UPDATE `{$_TABLES['plugins']}` SET `pi_version` = '1.4.2' WHERE `pi_name` = 'staticpages' LIMIT 1 ;";
 
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
@@ -159,7 +160,7 @@ function upgrade_uniqueGroupNames()
             $names[] = $A['grp_name'];
         }
 
-        // then search for names that occure more than once
+        // then search for names that occur more than once
         foreach ($names as $name) {
             $result = DB_query ("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name = '$name'");
             $num = DB_numRows ($result);

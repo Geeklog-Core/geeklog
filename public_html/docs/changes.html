@@ -22,11 +22,17 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
-<h2><a name="changes1312">Geeklog 1.3.12</a></h2>
+<h2><a name="changes140">Geeklog 1.4.0</a></h2>
+
+<p><small>(Geeklog 1.4.0 was originally supposed to be called 1.3.12, so any
+references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
 
 <h3>New Features</h3>
 
 <ul>
+<li>Geeklog now officially works with <code>register_globals = off</code>.
+    Please note that some plugins may still require it to be <code>on</code>,
+    though.</li>
 <li>Added support for sending and receiving <a
     href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> (Feature
     Request #34) and <a
@@ -42,13 +48,14 @@ of files that have been changed since the last release.</p>
     articles, sorted by year and month.</li>
 <li>New syndication framework so that Geeklog can now <strong>read and
     write</strong> feeds in different formats (currently supported: RSS, RDF,
-    and Atom), provided by Michael Jervis.</li>
-<li>New administrator controlled user status. Including banning and administrator
-    activation of accounts.</li>
+    and Atom).</li>
+<li>New administrator controlled user status. Including banning and
+    administrator activation of accounts.</li>
 <li>New Remote Authentication system to allow people with accounts on remote
     services such as Blogger.com or LiveJournal.com to login to your site
     without having to directly register on your site. (Remote accounts can be
     banned as normal accounts).</li>
+<li>Ships with FCKeditor (WYSIWYG editor).</li>
 </ul>
 
 

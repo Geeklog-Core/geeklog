@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.4 2005/11/13 13:46:07 dhaun Exp $
+// $Id: install.php,v 1.5 2005/11/18 20:58:24 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -47,7 +47,7 @@ require_once ('../../../lib-common.php');
 $pi_display_name = 'Polls';
 $pi_name         = 'polls';
 $pi_version      = '1.0';
-$gl_version      = '1.3.12';
+$gl_version      = '1.4.0';
 $pi_url          = 'http://www.geeklog.net/';
 
 // name of the Admin group
