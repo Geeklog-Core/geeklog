@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.28 2005/11/17 15:41:45 ospiess Exp $
+// $Id: lib-admin.php,v 1.29 2005/11/18 02:53:46 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
-                           $data_arr, $menu_arr)
+                           $data_arr, $menu_arr = '')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
     $retval = '';

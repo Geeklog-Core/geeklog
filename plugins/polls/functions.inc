@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.32 2005/11/17 15:31:30 ospiess Exp $
+// $Id: functions.inc,v 1.33 2005/11/18 02:53:45 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -212,7 +212,7 @@ function plugin_showstats_polls ($showsitestats)
     if ($nrows > 0) {
         $header_arr = array(
             array('text' => $LANG_POLLS['stats_questions'], 'field' => 'qid'),
-            array('text' => $LANG_LINKS_STATS['stats_headline'], 'field' => 'sp_title'),
+            array('text' => $LANG_POLLS['stats_votes'], 'field' => 'voters'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     => false,
@@ -224,8 +224,8 @@ function plugin_showstats_polls ($showsitestats)
                       . "/polls/index.php?qid={$A['qid']}&amp;aid=-1"). "\">{$A['question']}</a>";
             $A['voters'] = COM_NumberFormat ($A['voters']);
             $data_arr[$i] = $A;
-            $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
         }
+        $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     } else {
         $retval .= COM_startBlock ($LANG_POLLS['stats_top10']);
         $retval .= $LANG_POLLS['stats_none'];

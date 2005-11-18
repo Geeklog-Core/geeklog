@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.20 2005/11/17 15:31:30 ospiess Exp $
+// $Id: index.php,v 1.21 2005/11/18 02:53:45 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -74,7 +74,7 @@ function listpolls()
                     array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
                     array('text' => $LANG25[8], 'field' => 'display', 'sort' => true));
 
-    $defsort_arr = array('field' => 'date', 'direction' => 'asc');
+    $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php?mode=edit',
@@ -382,8 +382,8 @@ function deletePoll ($qid)
 $display = '';
 
 $mode = '';
-if (isset ($_REUQEST['mode'])) {
-    $mode = COM_applyFilter($_REUQEST['mode']);
+if (isset ($_REQUEST['mode'])) {
+    $mode = COM_applyFilter($_REQUEST['mode']);
 }
 
 if ($mode == 'edit') {

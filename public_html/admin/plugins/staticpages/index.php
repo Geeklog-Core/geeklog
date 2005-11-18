@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.51 2005/11/17 15:31:30 ospiess Exp $
+// $Id: index.php,v 1.52 2005/11/18 02:53:45 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -319,7 +319,7 @@ function liststaticpages()
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
                     array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+                    array('text' => $LANG_ADMIN['title'], 'field' => 'sp_title', 'sort' => true),
                     array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => false),
                     array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
                     array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
