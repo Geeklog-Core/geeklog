@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.28 2005/11/17 15:00:23 ospiess Exp $
+// $Id: trackback.php,v 1.29 2005/11/18 03:10:41 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -753,7 +753,7 @@ function freshPingback ()
 
 // MAIN
 $display = '';
-
+$mode = '';
 if ($_CONF['ping_enabled'] && isset ($_POST['serviceChange'])) {
     changeServiceStatus ($_POST['serviceChange']);
 }
@@ -779,7 +779,10 @@ if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
         $mode = '';
     }
 } else {
-    $mode = COM_applyFilter ($_REQUEST['mode']);
+    if (isset($_REQUEST['mode'])) {
+        $mode = COM_applyFilter ($_REQUEST['mode']);
+    }
+    
 }
 
 // sanity check for modes, depending on enabled features ...
