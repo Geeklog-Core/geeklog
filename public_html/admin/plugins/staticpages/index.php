@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Geeklog Plugin 1.4.1                                         |
+// | Static Pages Geeklog Plugin 1.4.2                                         |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.52 2005/11/18 02:53:45 ospiess Exp $
+// $Id: index.php,v 1.53 2005/11/18 19:58:34 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -325,7 +325,7 @@ function liststaticpages()
                     array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
     );
 
-    $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
+    $defsort_arr = array('field' => 'sp_title', 'direction' => 'desc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
