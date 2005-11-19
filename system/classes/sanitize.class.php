@@ -121,7 +121,7 @@ class sanitize extends kses {
             $this->Protocols( array( 'http:', 'https:', 'ftp:' ));
         }
 
-        if( empty( $this->permissions) || !SEC_hasRights( $permissions ) ||
+        if( empty( $this->permissions) || !SEC_hasRights( $this->permissions ) ||
                 empty( $_CONF['admin_html'] ))
         {
             $html = $_CONF['user_html'];
