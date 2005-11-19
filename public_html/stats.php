@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.42 2005/11/19 14:42:02 dhaun Exp $
+// $Id: stats.php,v 1.43 2005/11/19 20:27:24 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -205,8 +205,8 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
                       . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
             $A['count'] = COM_NumberFormat ($A['count']);
             $data_arr[$i] = $A;
-            $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
         }
+        $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 
     } else {
         $display .= COM_startBlock ($LANG10[25]);
