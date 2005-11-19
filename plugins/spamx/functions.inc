@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.15 2005/11/14 10:36:02 ospiess Exp $
+ * $Id: functions.inc,v 1.16 2005/11/19 10:25:31 dhaun Exp $
  */
 
 /**
@@ -263,7 +263,7 @@ function SPAMX_log($logentry)
 {
     global $_CONF, $LANG01, $_SPAMX_log_flg;
 
-    if ($_SPAMX_log_flg == true) {
+    if ($_SPAMX_log_flg) {
         $timestamp = strftime("%c");
         $logfile = $_CONF['path_log'] . 'spamx.log';
 
@@ -273,7 +273,6 @@ function SPAMX_log($logentry)
 
         fputs($file, "$timestamp - $logentry \n");
     } 
-    return $retval;
 } 
 
 /**
