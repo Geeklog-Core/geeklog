@@ -154,7 +154,17 @@ $LANG01 = array(
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
     112 => 'Registered Users',
-    113 => 'Documentation'
+    113 => 'Documentation',
+    114 => 'TRACKBACKS',
+    115 => 'No new trackback comments',
+    116 => 'Trackback',
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    120 => 'Permanent link to this comment',
+    121 => 'Comments (%d)',
+    122 => 'Trackbacks (%d)',
+    123 => 'All HTML is allowed'
 );
 
 ###############################################################################
@@ -321,7 +331,23 @@ $LANG04 = array(
     104 => 'N‰yt‰ linjalla -tila',
     105 => 'N‰y Ket‰ on linjalla -lohkossa',
     106 => 'Location',
-    107 => 'Shown in your public profile'
+    107 => 'Shown in your public profile',
+    108 => 'Confirm new password',
+    109 => 'Enter the New password again here',
+    110 => 'Current Password',
+    111 => 'Please enter your Current password',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
+    119 => 'If you have forgotten your password, you may request a new one at this url:',
+    120 => 'Account Activated',
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
 ###############################################################################
@@ -336,27 +362,6 @@ $LANG05 = array(
     6 => 'Edellinen',
     7 => 'First',
     8 => 'Last'
-);
-
-###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => 'Verkkoresurssit',
-    2 => 'Ei n‰ytett‰vi‰ resursseja.',
-    3 => 'Lis‰‰ linkki'
-);
-
-###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => 'ƒ‰ni tallennettu',
-    2 => 'ƒ‰nesi on tallennettu kyselyyn',
-    3 => 'ƒ‰nest‰',
-    4 => 'ƒ‰nestyksi‰ j‰rjestelm‰ss‰',
-    5 => 'ƒ‰nt‰',
-    6 => 'N‰yt‰ muut ‰‰nestykset'
 );
 
 ###############################################################################
@@ -460,7 +465,11 @@ $LANG09 = array(
     54 => 'Tulokset kommenteista',
     55 => 'lause',
     56 => 'JA',
-    57 => 'TAI'
+    57 => 'TAI',
+    58 => 'More results &gt;&gt;',
+    59 => 'Results',
+    60 => 'per page',
+    61 => 'Refine search'
 );
 
 ###############################################################################
@@ -490,7 +499,14 @@ $LANG10 = array(
     21 => 'N‰ytt‰‰ silt‰ ettei sivustolla ole linkkej‰ tai kukaan ei ole niit‰ ladannut.',
     22 => 'Kymmenen postitetuinta artikkelia',
     23 => 'L‰hetyksi‰',
-    24 => 'N‰ytt‰‰ silt‰ ettei kukaan ole l‰hett‰nyt s‰hkˆpostitse artikkeleita sivustolta.'
+    24 => 'N‰ytt‰‰ silt‰ ettei kukaan ole l‰hett‰nyt s‰hkˆpostitse artikkeleita sivustolta.',
+    25 => 'Top Ten Trackback Commented Stories',
+    26 => 'No trackback comments found.',
+    27 => 'Number of active users',
+    28 => 'Top Ten Events',
+    29 => 'Event',
+    30 => 'Hits',
+    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
 ###############################################################################
@@ -643,7 +659,12 @@ $LANG21 = array(
     57 => 'Siirr‰ lohkoa alasp‰in',
     58 => 'Siirr‰ lohkoa ylˆsp‰in',
     59 => 'Siirr‰ lohko oikealle puolelle',
-    60 => 'Siirr‰ lohko vasemmalle puolelle'
+    60 => 'Siirr‰ lohko vasemmalle puolelle',
+    61 => 'No Title',
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -678,35 +699,6 @@ $LANG22 = array(
 );
 
 ###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => 'Linkkieditori',
-    2 => '',
-    3 => 'Linkin otsikko',
-    4 => 'Linkin URL',
-    5 => 'Aihepiiri',
-    6 => '(sis‰llyt‰ http://)',
-    7 => 'Muu',
-    8 => 'Osumia linkkiin',
-    9 => 'Linkin kuvaus',
-    10 => 'Syˆt‰ linkin otsikko, URL ja kuvaus.',
-    11 => 'Linkkien hallinta',
-    12 => 'Klikkaa linkki‰ muokataksesi tai poistaaksesi sen. Luodaksesi uuden, klikkaa uusi linkki ylh‰‰lt‰.',
-    13 => 'Linkin otsikko',
-    14 => 'Linkin aihepiiri',
-    15 => 'Linkin URL',
-    16 => 'P‰‰sy kielletty',
-    17 => "Olet muokkaamassa linkki‰ johon sinulla ei ole oikeuksia. Yritys on kirjattu logiin. <a href=\"{$_CONF['site_admin_url']}/link.php\">Siirry takaisin linnkien hallinnan ruutuun</a>.",
-    18 => 'Uusi linkki',
-    19 => 'Yll‰pidon sivu',
-    20 => 'Jos muu, tarkenna',
-    21 => 'tallenna',
-    22 => 'peruuta',
-    23 => 'poista'
-);
-
-###############################################################################
 # admin/story.php
 
 $LANG24 = array(
@@ -729,16 +721,16 @@ $LANG24 = array(
     17 => 'Leip‰teksti',
     18 => 'Osumia',
     19 => 'Kommentteja',
-    20 => '',
-    21 => '',
+    20 => 'Ping',
+    21 => 'Send Ping',
     22 => 'Lista artikkeleista',
     23 => 'Muokataksesi tai poistaaksesi artikkelin, klikkaa artikkelin numeroa. N‰hd‰ksesi artikkelin, klikkaa haluamaasi otsikkoa. Luodaksesi uuden artikkelin, valitse uusi artikkeli.',
     24 => 'The ID you chose for this story is already in use. Please use another ID.',
-    25 => '',
+    25 => 'Error when saving story',
     26 => 'Artikkelin esikatselu',
-    27 => '',
-    28 => '',
-    29 => '',
+    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
+    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    29 => 'Trackbacks',
     30 => 'Tiedoston l‰hetys-virhe',
     31 => 'T‰yt‰ otsikko ja alkuteksti kent‰t',
     32 => 'Erikoisartikkeli',
@@ -771,39 +763,20 @@ $LANG24 = array(
     59 => 'Option',
     60 => 'Enabled',
     61 => 'Auto Archive',
-    62 => 'Auto Delete'
-);
-
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'Tila',
-    2 => 'Syˆt‰ kysymys ja ainakin yksi vastaus.',
-    3 => 'Kysely luotu',
-    4 => 'Kysely %s tallennettu',
-    5 => 'Muokkaa kysely‰',
-    6 => 'Kyselyn ID',
-    7 => '(‰l‰ k‰yt‰ v‰lilyˆntej‰)',
-    8 => 'N‰ytet‰‰n etusivulla',
-    9 => 'Kysymys',
-    10 => 'Kysymykset / ƒ‰net',
-    11 => 'Tapahtui virhe vastauksen saamiseksi kyselyyn %s',
-    12 => 'Tapahtui virhe kysymyksen saamisessa kyselyyn %s',
-    13 => 'Luo kysely',
-    14 => 'tallenna',
-    15 => 'peruuta',
-    16 => 'poista',
-    17 => 'Syˆt‰ kyselyn ID',
-    18 => 'Lista kyselyist‰',
-    19 => 'Valitse kysely muokataksesi tai poistaaksesi sen. Luodaksesi uuden kyselyn, valitse uusi kysely.',
-    20 => 'ƒ‰nest‰ji‰',
-    21 => 'P‰‰sy kielletty',
-    22 => "Olet pyrkim‰ss‰ ‰‰nestykseen johon sinulla ei ole oikeuksia. Yritys on kirjattu lokitiedostoon. <a href=\"{$_CONF['site_admin_url']}/poll.php\">Siirry takaisin ‰‰nestysten hallintaan</a>.",
-    23 => 'Uusi kysely',
-    24 => 'Yll‰pidon sivu',
-    25 => 'Kyll‰',
-    26 => 'Ei'
+    62 => 'Auto Delete',
+    63 => '',
+    64 => '',
+    65 => '',
+    66 => '',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
 ###############################################################################
@@ -835,7 +808,10 @@ $LANG27 = array(
     23 => 'tee t‰st‰ oletus aihe uusille artikkeleille',
     24 => '(*)',
     25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    26 => 'make this the default topic for archived stories. Only one topic allowed.',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################
@@ -877,7 +853,18 @@ $LANG28 = array(
     33 => 'l‰het‰',
     34 => 'Virhe: valitse l‰hetett‰v‰ tiedosto.',
     35 => 'Viimeksi kirjautunut',
-    36 => '(ei koskaan)'
+    36 => '(ei koskaan)',
+    37 => 'UID',
+    38 => 'Group Listing',
+    39 => 'Password (again)',
+    40 => 'Registration Date',
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status',
+    47 => 'Edit'
 );
 
 ###############################################################################
@@ -1022,7 +1009,11 @@ $LANG32 = array(
     31 => 'Oletko varma ett‰ haluat poistaa laajennuksen? Poistamalla poistat myˆs kaiken tiedot ja tietorakenteen jotka liittyv‰t t‰h‰n laajennukseen. Jos olet varma, valitse poista uudelleen alta lˆytyv‰st‰ lomakkeesta.',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
-    34 => 'Update'
+    34 => 'Update',
+    35 => 'Edit',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1065,7 +1056,15 @@ $LANG33 = array(
     39 => 'T‰yt‰ syˆtteen otsikko, kuvaus ja tiedoston nimi.',
     40 => 'Syˆt‰ kirjauksien m‰‰r‰ tai tuntien lukum‰‰r‰.',
     41 => 'Linkit',
-    42 => 'Tapahtumat'
+    42 => 'Tapahtumat',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1132,7 +1131,21 @@ $MESSAGE = array(
     58 => 'Syˆtteesi on tallennettu.',
     59 => 'Syˆte on poistettu.',
     60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    61 => 'Plugin %s: Unknown message placeholder',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occurred when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.',
+    65 => 'Weblog directory service successfully saved.',
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
@@ -1192,7 +1205,16 @@ $LANG_ACCESS = array(
     'availmembers' => 'Saatavilla olevat j‰senet',
     'groupmembers' => 'Ryhm‰n j‰senet',
     'canteditgroup' => 'Sinun tulee olla ryhm‰n j‰sen muokataksesi t‰t‰ ryhm‰‰. Jos t‰m‰ tuntuu virheelt‰, ota yhteytt‰ j‰rjestelm‰n yll‰pitoon.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
+    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Group name already exists',
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
 );
 
 ###############################################################################
@@ -1202,7 +1224,6 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Viimeiset 10 varmuuskopiota',
     'do_backup' => 'Tee varmuuskopio',
     'backup_successful' => 'Tietokannan varmistus onnistui.',
-    'no_backups' => 'Ei varmuuskopioita j‰rjestelm‰ss‰',
     'db_explanation' => 'Luodaksesi uuden varmuuskopion Geeklogista, klikkaa alta lˆytyv‰‰ nappia',
     'not_found' => "Viallinen polku tai mysqldump apuohjelma ei ole suoritettavissa.<br>Tarkista <strong>\$_DB_mysqldump_path</strong> m‰‰ritys config.php -tiedostossa.<br>Muuttujan nykyinen m‰‰rittely: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Varmuuskopiointi ep‰onnistui: tiedoston koko 0 tavua',
@@ -1226,7 +1247,8 @@ $LANG_BUTTONS = array(
     7 => 'Sivuston tilastot',
     8 => 'Mukauta',
     9 => 'Etsi',
-    10 => 'laajennettu haku'
+    10 => 'laajennettu haku',
+    11 => 'Directory'
 );
 
 ###############################################################################
@@ -1266,6 +1288,212 @@ $LANG_PDF = array(
     12 => 'Generate PDF!',
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
     14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
+###############################################################################
+# trackback.php
+
+$LANG_TRB = array(
+    'trackback' => 'Trackback',
+    'from' => 'from',
+    'tracked_on' => 'Tracked on',
+    'read_more' => '[read more]',
+    'intro_text' => 'Here\'s what others have to say about \'%s\':',
+    'no_comments' => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments' => '%d trackback comments',
+    'send_trackback' => 'Send Pings',
+    'preview' => 'Preview',
+    'editor_title' => 'Send trackback comment',
+    'trackback_url' => 'Trackback URL',
+    'entry_url' => 'Entry URL',
+    'entry_title' => 'Entry Title',
+    'blog_name' => 'Site Name',
+    'excerpt' => 'Excerpt',
+    'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
+    'button_send' => 'Send',
+    'button_preview' => 'Preview',
+    'send_error' => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing' => 'No Entry URL',
+    'url_required' => 'Please enter at least a URL for the entry.',
+    'target_missing' => 'No Trackback URL',
+    'target_required' => 'Please enter a trackback URL',
+    'error_socket' => 'Could not open socket.',
+    'error_response' => 'Response not understood.',
+    'error_unspecified' => 'Unspecified error.',
+    'select_url' => 'Select Trackback URL',
+    'not_found' => 'Trackback URL not found',
+    'autodetect_failed' => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
+    'trackback_explain' => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
+    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'pingback' => 'Pingback',
+    'pingback_results' => 'Pingback results',
+    'send_pings' => 'Send Pings',
+    'send_pings_for' => 'Send Pings for "%s"',
+    'no_links_pingback' => 'No links found. No Pingbacks were sent for this entry.',
+    'pingback_success' => 'Pingback sent.',
+    'no_pingback_url' => 'No pingback URL found.',
+    'resend' => 'Resend',
+    'ping_all_explain' => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'pingback_button' => 'Send Pingback',
+    'pingback_short' => 'Send Pingbacks to all sites linked from this entry.',
+    'pingback_disabled' => '(Pingback disabled)',
+    'ping_button' => 'Send Ping',
+    'ping_short' => 'Ping weblog directory services.',
+    'ping_disabled' => '(Ping disabled)',
+    'trackback_button' => 'Send Trackback',
+    'trackback_short' => 'Send a Trackback comment.',
+    'trackback_disabled' => '(Trackback disabled)',
+    'may_take_a_while' => 'Please note that sending Pingbacks and Pings may take a while.',
+    'ping_results' => 'Ping results',
+    'unknown_method' => 'Unknown ping method',
+    'ping_success' => 'Ping sent.',
+    'error_site_name' => 'Please enter the site\'s name.',
+    'error_site_url' => 'Please enter the site\'s URL.',
+    'error_ping_url' => 'Please enter a valid Ping URL.',
+    'no_services' => 'No weblog directory services configured.',
+    'services_headline' => 'Weblog Directory Services',
+    'service_explain' => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service, click on "Create New" above.',
+    'service' => 'Service',
+    'ping_method' => 'Ping method',
+    'service_website' => 'Website',
+    'service_ping_url' => 'URL to ping',
+    'ping_standard' => 'Standard Ping',
+    'ping_extended' => 'Extended Ping',
+    'ping_unknown' => '(unknown method)',
+    'edit_service' => 'Edit Weblog Directory Service',
+    'trackbacks' => 'Trackbacks',
+    'editor_intro' => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none' => 'Prepare your trackback comment.',
+    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url' => 'Pingback URL',
+    'site_url' => 'This site\'s URL',
+    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing' => 'No Pingback URL',
+    'pbtarget_required' => 'Please enter a pingback URL',
+    'pb_error_details' => 'Error when sending the pingback:'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array(
+    'title' => 'Article Directory',
+    'title_year' => 'Article Directory for %d',
+    'title_month_year' => 'Article Directory for %s %d',
+    'nav_top' => 'Back to Article Directory',
+    'no_articles' => 'No articles.'
+);
+
+###############################################################################
+# "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
+
+$LANG_WHATSNEW = array(
+    'new_string' => '%n new %i in the last %t %s',
+    'new_last' => 'last %t %s',
+    'minutes' => 'minutes',
+    'hours' => 'hours',
+    'days' => 'days',
+    'weeks' => 'weeks',
+    'months' => 'months',
+    'minute' => 'minute',
+    'hour' => 'hour',
+    'day' => 'day',
+    'week' => 'week',
+    'month' => 'month'
+);
+
+###############################################################################
+# Admin - Strings
+# 
+# These are some standard strings used by core functions as well as plugins to
+# display administration lists and edit pages
+
+$LANG_ADMIN = array(
+    'search' => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit' => 'Submit',
+    'edit' => 'Edit',
+    'admin_home' => 'Admin Home',
+    'create_new' => 'Create New',
+    'enabled' => 'Enabled',
+    'title' => 'Title',
+    'type' => 'Type',
+    'topic' => 'Topic',
+    'help_url' => 'Help File URL',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'copy' => 'Copy',
+    'no_results' => '- No entries found -',
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+);
+
+###############################################################################
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0 => 'Comments Enabled',
+    -1 => 'Comments Disabled'
+);
+
+
+$LANG_commentmodes = array(
+    'flat' => 'Flat',
+    'nested' => 'Nested',
+    'threaded' => 'Threaded',
+    'nocomment' => 'No Comments'
+);
+
+$LANG_cookiecodes = array(
+    0 => '(don\'t)',
+    3600 => '1 Hour',
+    7200 => '2 Hours',
+    10800 => '3 Hours',
+    28800 => '8 Hours',
+    86400 => '1 Day',
+    604800 => '1 Week',
+    2678400 => '1 Month'
+);
+
+$LANG_dateformats = array(
+    0 => 'System Default'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Not Featured',
+    1 => 'Featured'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Show Only in Topic',
+    1 => 'Show on Front Page'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'Plain Old Text',
+    'html' => 'HTML Formatted'
+);
+
+$LANG_sortcodes = array(
+    'ASC' => 'Oldest First',
+    'DESC' => 'Newest First'
+);
+
+$LANG_trackbackcodes = array(
+    0 => 'Trackback Enabled',
+    -1 => 'Trackback Disabled'
 );
 
 ?>

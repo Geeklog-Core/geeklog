@@ -12,6 +12,7 @@
 ###############################################################################
 
 $LANG_CHARSET = 'utf-8';
+$LANG_DIRECTION = 'rtl';
 
 ###############################################################################
 # Array Format:
@@ -21,7 +22,7 @@ $LANG_CHARSET = 'utf-8';
 ###############################################################################
 
 ###############################################################################
-#عبارت كاربران - اين عبارات در بخش كاربران مورد استفاده است
+# USER PHRASES - These are file phrases used in end user scripts
 ###############################################################################
 
 ###############################################################################
@@ -140,10 +141,20 @@ $LANG01 = array(
     110 => 'گزارش دادن اين پست به ريس سايت',
     111 => ' مشاهده نسخه Pdf ',
     112 => 'كاربران ثبت شده',
-    113 => 'مستندات سطح بالا'
+    113 => 'مستندات سطح بالا',
+    114 => 'TRACKBACKS',
+    115 => 'No new trackback comments',
+    116 => 'Trackback',
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    120 => 'Permanent link to this comment',
+    121 => 'Comments (%d)',
+    122 => 'Trackbacks (%d)',
+    123 => 'All HTML is allowed'
 );
 
-############################4shir.com###################################################
+###############################################################################
 # calendar.php
 
 $LANG02 = array(
@@ -164,7 +175,7 @@ $LANG02 = array(
     15 => 'بازگشت به تقويم'
 );
 
-#########################4shir######################################################
+###############################################################################
 # comment.php
 
 $LANG03 = array(
@@ -197,7 +208,7 @@ $LANG03 = array(
     27 => 'پست خلاف قوانين'
 );
 
-#########################4shir######################################################
+###############################################################################
 # users.php
 
 $LANG04 = array(
@@ -307,10 +318,26 @@ $LANG04 = array(
     104 => 'نشان دادن وضعيت حضور در سايت',
     105 => 'نشان دادن كساني كه حضور در سايت را انتخاب نكرده اند',
     106 => 'محل زندگي',
-    107 => 'نشان دادن در پروفايل عمومي'
+    107 => 'نشان دادن در پروفايل عمومي',
+    108 => 'Confirm new password',
+    109 => 'Enter the New password again here',
+    110 => 'Current Password',
+    111 => 'Please enter your Current password',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
+    119 => 'If you have forgotten your password, you may request a new one at this url:',
+    120 => 'Account Activated',
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
-##########################4shir#####################################################
+###############################################################################
 # index.php
 
 $LANG05 = array(
@@ -324,28 +351,7 @@ $LANG05 = array(
     8 => 'آخرين'
 );
 
-##########################4shir#####################################################
-# links.php
-
-$LANG06 = array(
-    1 => 'Web منابع',
-    2 => 'هيچ منبعي براي نمايش وجود ندارد',
-    3 => 'اضافه كردن لينك'
-);
-
-###########################4shir####################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => 'ذخيره راي',
-    2 => 'راي شما براي اين راي گيري ذخيره شد',
-    3 => 'دادن راي',
-    4 => 'راي گيري در مورد سيستم',
-    5 => 'نظرات',
-    6 => 'ديدن ديگر سوالات راي گيري'
-);
-
-#########################4SHir######################################################
+###############################################################################
 # profiles.php
 
 $LANG08 = array(
@@ -386,7 +392,7 @@ $LANG08 = array(
     35 => 'متاسفيم تنظيمات اين كاربر براي دريافت اي ميل تنظيم نشده'
 );
 
-#######################4SHIr########################################################
+###############################################################################
 # search.php
 
 $LANG09 = array(
@@ -446,7 +452,11 @@ $LANG09 = array(
     54 => 'نتايج توضيحات',
     55 => 'اصطلاح',
     56 => 'و',
-    57 => 'يا'
+    57 => 'يا',
+    58 => 'More results &gt;&gt;',
+    59 => 'Results',
+    60 => 'per page',
+    61 => 'Refine search'
 );
 
 ###############################################################################
@@ -476,7 +486,14 @@ $LANG10 = array(
     21 => 'هيچ لينکي وجود ندارد يا تا به حال بر روي آنها کليک نشده',
     22 => 'برترين 10 اي -ميل مقالات',
     23 => 'اي -ميل ها',
-    24 => 'هيچ اي -ميل در مقالات وجود ندارد'
+    24 => 'هيچ اي -ميل در مقالات وجود ندارد',
+    25 => 'Top Ten Trackback Commented Stories',
+    26 => 'No trackback comments found.',
+    27 => 'Number of active users',
+    28 => 'Top Ten Events',
+    29 => 'Event',
+    30 => 'Hits',
+    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
 ###############################################################################
@@ -550,7 +567,7 @@ $LANG12 = array(
 );
 
 ###############################################################################
-# اصطلاحات رييس - اين فايلها در اطلاعات ادمين استفاده ميشود
+# ADMIN PHRASES - These are file phrases used in admin scripts
 ###############################################################################
 
 ###############################################################################
@@ -629,7 +646,12 @@ $LANG21 = array(
     57 => 'حركت  دادن بلاك به سمت پايين',
     58 => 'حركت بلاك به سمت بالا',
     59 => 'حركت بلاك به سمت راست',
-    60 => 'حركت بلاك به سمت چپ'
+    60 => 'حركت بلاك به سمت چپ',
+    61 => 'No Title',
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -664,35 +686,6 @@ $LANG22 = array(
 );
 
 ###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => 'ويراستار لينك',
-    2 => '',
-    3 => 'عنوان لينك',
-    4 => 'لينك URL',
-    5 => 'دسته و گروه مربوطه',
-    6 => '(بايد شامل http://)',
-    7 => 'بقيه..ميباشد',
-    8 => 'بازديد از لينك',
-    9 => 'شرح لينك',
-    10 => 'شما نياز داريد به وارد كردن عنوان لينك و شرح "URL" تا صحيح شود',
-    11 => 'مديريت لينك',
-    12 => 'براي تغيير يا پاك كردن يك لينك رو آن لينك در زير كليك كنيد. براي ساختن يك لينك جديد روي "لينك جديد" دربالا كليك كنيد',
-    13 => 'عنوان لينك',
-    14 => 'دسته و نوع لينك',
-    15 => 'لينك URL',
-    16 => 'غير قابل دسترسي',
-    17 => "شما در حال دسترسي به لينكي هستيد كه اجازه دسترسي آن براي شما وجود ندارد. اين تلاش شما گزارش شد.  لطفا<a href=\"{$_CONF['site_admin_url']}/link.php\">بازگرديد به صفحه مديريت لينكها</a>.",
-    18 => 'لينك جديد',
-    19 => 'خانه رييس',
-    20 => 'اگر مورد ديگري هست لطفا ذكر كنيد',
-    21 => 'ذخيره',
-    22 => 'لغو',
-    23 => 'پاك كردن'
-);
-
-###############################################################################
 # admin/story.php
 
 $LANG24 = array(
@@ -715,16 +708,16 @@ $LANG24 = array(
     17 => 'نوشته بدنه و اصلي',
     18 => 'نمايش',
     19 => 'توضيحات',
-    20 => '',
-    21 => '',
+    20 => 'Ping',
+    21 => 'Send Ping',
     22 => 'ليست مقالات',
     23 => 'براي تغيير يا پاك كردن يك مفاله روي شماره مقاله در زير كليك كنيد . براي ديدن يك مقاله بر روي عنوان آن كليك كنيد. و براي ساختن يك مقاله جديدروي "مقاله جديد" در بالا كليك كنيد',
     24 => 'مشخصه "ID" مورد نظر شما براي اين مقاله قبلا استفاده شده لطفا يك مشخصه ديگر وارد كنيد',
-    25 => '',
+    25 => 'Error when saving story',
     26 => 'پيش نمايش مقاله',
-    27 => '',
-    28 => '',
-    29 => '',
+    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
+    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    29 => 'Trackbacks',
     30 => 'خطا در فرستادن مقاله',
     31 => ' لطفا عنوان و نوشته دروني را كامل كنيد',
     32 => 'تركيب وسيما',
@@ -757,39 +750,20 @@ $LANG24 = array(
     59 => 'گزينه ها ',
     60 => 'فعال شده',
     61 => 'بايگاني خودكار',
-    62 => 'حذف خودكار'
-);
-
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'مد',
-    2 => 'لطفا يك پاسخ با دست كم يك جواب وارد كنيد',
-    3 => 'نظر سنجي ساخته شده',
-    4 => 'نظر %s ذخيره شد',
-    5 => 'ويرايش راي',
-    6 => ' شناسه راي ',
-    7 => '(از فضاي خالي استفاده نكنيد)',
-    8 => 'در صفحه اصلي ظاهر شود',
-    9 => 'سوال',
-    10 => 'پاسخها / آرا',
-    11 => 'براي گرفتن پاسخ راي خطايي رخ داده داده ها درباره راي %s',
-    12 => 'براي گرفتن سوال راي خطايي رخ داده داده هاي سوال راي %s',
-    13 => 'ساختن راي گيري',
-    14 => 'ذخيره',
-    15 => 'لغو',
-    16 => 'خذف كردن',
-    17 => 'لطفا شناسه راي گيري را وارد نماييد ',
-    18 => 'ليست راي',
-    19 => 'براي تغيير يا پاك كردن يك راي روي آن راي كليك كنيد .و براي ساختن يك راي جديد روي راي جديد در بالا كليك كنيد',
-    20 => 'راي دهندگان',
-    21 => 'غير قابل دسترسي',
-    22 => "شما در حال دسترسي يه راي هستيد كه اجازه دسترسي به آن را نداريد. اين تلاش شما گزارش شدلطفا برويد به <a href=\"{$_CONF['site_admin_url']}/poll.php\">صفحه مديريت آرا</a>.",
-    23 => 'راي جديد',
-    24 => 'خانه راي',
-    25 => 'بله',
-    26 => 'خير'
+    62 => 'حذف خودكار',
+    63 => '',
+    64 => '',
+    65 => '',
+    66 => '',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
 ###############################################################################
@@ -821,7 +795,10 @@ $LANG27 = array(
     23 => 'اين را قرار بده اين را به عنوان  تاپيك پيش فرض مقالات',
     24 => '(*)',
     25 => 'آرشيو تاپيك ها',
-    26 => 'اين را به عنوان تاپيك پيش فرض براي آرشيو مقالات استفاده كن. تنها يك تاپيك قابل قبول است'
+    26 => 'اين را به عنوان تاپيك پيش فرض براي آرشيو مقالات استفاده كن. تنها يك تاپيك قابل قبول است',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################
@@ -863,7 +840,18 @@ $LANG28 = array(
     33 => 'ثبت کردن',
     34 => 'خطا: شما بايد فايلي را براي فرستادن انتخاب كنيد',
     35 => 'آخرين ورود',
-    36 => '(هيچوقت)'
+    36 => '(هيچوقت)',
+    37 => 'UID',
+    38 => 'Group Listing',
+    39 => 'Password (again)',
+    40 => 'Registration Date',
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status',
+    47 => 'Edit'
 );
 
 ###############################################################################
@@ -1008,7 +996,11 @@ $LANG32 = array(
     31 => 'آيابراي پاك كردن اين پلاگين مطمين هستيد؟ شما به اين وسيله بسياري از اطلاعات و ساختار اطلاعاتي خود را از دست خواهيد داد. اگر مطمين هستيد روي خذف دوباره كليك كنيد در فرم بالا',
     32 => '<p><b>خطاي /AutoLink tag فرمت درستي ندارد</b></p>',
     33 => 'كد ورژن',
-    34 => 'به روز آوري'
+    34 => 'به روز آوري',
+    35 => 'Edit',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1040,8 +1032,8 @@ $LANG33 = array(
     28 => '("صفر" بيانگر اينكه هيچ متني نيست  و " يك " بيانگر انكه پر از نوشته است  و "اعداد ديگر" محدود شده به آن تعداد كاراكتر" )',
     29 => 'شرح',
     30 => 'آخرين به روز آوري',
-    32 => 'زبان',
     31 => 'مجموعه کاراکترها',
+    32 => 'زبان',
     33 => 'محتويات',
     34 => 'ركوردها',
     35 => 'ساعت ها',
@@ -1051,7 +1043,15 @@ $LANG33 = array(
     39 => 'لطفا عنوان "فيد" را بنويسيدبهمراه شرح و نام فايل',
     40 => 'لطفا يك عدد از محتويات يا يك عدد از ساعات بنويسيد',
     41 => 'لينكها',
-    42 => 'وقايع'
+    42 => 'وقايع',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1118,7 +1118,21 @@ $MESSAGE = array(
     58 => ' شما با موفقيت ذخيره شدfeed',
     59 => ' مورد نظر شما با موفقيت حذف گرديدfeed ',
     60 => 'پلاگين با موفقيت به روز شد',
-    61 => 'پلاگين %s: خطاي نا مشخص نامي'
+    61 => 'پلاگين %s: خطاي نا مشخص نامي',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occurred when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.',
+    65 => 'Weblog directory service successfully saved.',
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
@@ -1155,7 +1169,7 @@ $LANG_ACCESS = array(
     'members' => 'اعضا',
     'anonymous' => 'ناشناس',
     'permissions' => 'پرميشن ها/اجازه دسترسي',
-    'كليد محدوديت=' => 'R = خواندن, E = ويرايش, ويرايش به شما التزام خواندن ميدهد',
+    'permissionskey' => 'R = read, E = edit, edit rights assume read rights',
     'edit' => 'ويرايش',
     'none' => 'خالي',
     'accessdenied' => 'غير قابل دسترسي ',
@@ -1178,7 +1192,16 @@ $LANG_ACCESS = array(
     'availmembers' => 'كاربران حاضر',
     'groupmembers' => 'اعضاي گروهها',
     'canteditgroup' => 'براي ويرايش اين گروه شما بايد عضوي از اين گروه شويد . اگر احساس ميكنيد خطايي رخ داده با رييس سايت تماس بگيريد',
-    'cantlistgroup' => 'براي ديدن اعضاي اين گروه شما بايد خودتان را عضو آن نماييد. اگر احساس ميكنيد خطايي رخ داده با رييس سايت تماس بگيريد'
+    'cantlistgroup' => 'براي ديدن اعضاي اين گروه شما بايد خودتان را عضو آن نماييد. اگر احساس ميكنيد خطايي رخ داده با رييس سايت تماس بگيريد',
+    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Group name already exists',
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
 );
 
 ###############################################################################
@@ -1188,9 +1211,8 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'آخرين 10 پشتيبان گرفته شده',
     'do_backup' => 'پشتيبان بگير',
     'backup_successful' => 'پشتيبان گيري از ديتا بيس با موفقيت انجام شد',
-    'no_backups' => 'هيچ پشتيباني  در سيستم موجود نمي باشد',
     'db_explanation' => 'براي ساختن يك پشتيبان جدبد براي سيستم جيك لاگ خود كليد زير را كليك كنيد',
-    'not_found' => "مسير اشتباه- يا مسير |ماي اس كيو ال| شما قابل اجرا نيست<br>چك كردن<strong>$_DB_mysqldump_path</strong> مشخص شده درconfig.php.<br>متغيرها كنوني شناخته شده با نام<var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "مسير اشتباه- يا مسير |ماي اس كيو ال| شما قابل اجرا نيست<br>چك كردن<strong>{$_DB_mysqldump_path}</strong> مشخص شده درconfig.php.<br>متغيرها كنوني شناخته شده با نام<var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'پشتيبان گيري ناقص ماند: سايز فايل 0 بايت بود',
     'path_not_found' => "{$_CONF['backup_path']} وجود ندارد يا در دايركتوري موجود نيست",
     'no_access' => "خطا: دايركتوري {$_CONF['backup_path']} مورددسترسي نيست.",
@@ -1212,7 +1234,8 @@ $LANG_BUTTONS = array(
     7 => 'آمار و ارقام سايت',
     8 => 'شخصي/دلخواه',
     9 => 'جستجو',
-    10 => 'جستجوي پيشرفته'
+    10 => 'جستجوي پيشرفته',
+    11 => 'Directory'
 );
 
 ###############################################################################
@@ -1241,21 +1264,223 @@ $LANG_PDF = array(
     1 => 'قابليت ساختن |PDF |در اين سايت محدود شده است',
     2 => 'اين پرونده در حال حاضر قابل نمايش نيست. پرونده دريافت شده اما قابل پردازش نميباشدو. لطفا از اينكه در آن تنها از عبارات |HTML| استفاده شده كه از استاندارد "xHTML" استفاده شده بهيچ وجه پرونده هاي بيش از اندازه پيچيده نمايش داده نخواهند شد. نتيجه پرونده شما 0 بايت ميباشد و پاك خواهد شد . اگر شما مطمين هستيد كه پرونده ارساليتان به طور صحيح به نمايش در خواهد آمد لطفا دوباره سعي كنيد',
     3 => 'خطاي ناشناخته هنگام ساختن پي دي اف',
-    4 => "هيچ صفحه اي انتخاب نشده يا شما خواستار استفاده از ابزار ad-hokدر زير هستيد.  اگر فكر ميكنيد خطايي رخ داده لطفا با ادمين سايت تماس بگيريديا براي ساختار از فرم زير براي ساخت |PDF| در |AD-HOK| بهره بگيريد",
+    4 => 'هيچ صفحه اي انتخاب نشده يا شما خواستار استفاده از ابزار ad-hokدر زير هستيد.  اگر فكر ميكنيد خطايي رخ داده لطفا با ادمين سايت تماس بگيريديا براي ساختار از فرم زير براي ساخت |PDF| در |AD-HOK| بهره بگيريد',
     5 => 'بارگذاري ‌داكيومنت شما',
     6 => 'لطفا تا هنگام لود شدن پرونده خود صبر كنيد',
     7 => 'شما بايد راست كليك كنيد روي دكمه زير و انتخاب كنيد\'save target...\'يا \'save link location...\' براي ذخيره كردن داكيومنت خود',
-    8 => "مسير داده شده در فايل پيكره بندي براي داكيومنت  |HTML| شما موجود نيست يل اين سيستم قادر به اجراي آن نميباشد . اگر اين  خطا ول كن شما نيست ! لطفا با ادمين سايت تماس بگيريد",
+    8 => 'مسير داده شده در فايل پيكره بندي براي داكيومنت  |HTML| شما موجود نيست يل اين سيستم قادر به اجراي آن نميباشد . اگر اين  خطا ول كن شما نيست ! لطفا با ادمين سايت تماس بگيريد',
     9 => ' توليد کننده PDF ',
-    10 => "اين يك  ابزار توليد كننده پي دي اف به نام  | |Ad-hocميباشد . اين نرم افزار خواهد توانست|URL| داده شده از طرف شما را به |PDF| تبديل نمايد.ممكن است بعضي از صفحات قابل نمايش نباشند. اين نرم افزار يكسري محدوديت ها دارد . لطفا همه خطا ها را به رييس سايت منتقل نكنيد . وعبارات ساده را مورد استفاده قرار دهيدتا به مشكلي بر نخوريد",
+    10 => 'اين يك  ابزار توليد كننده پي دي اف به نام  | |Ad-hocميباشد . اين نرم افزار خواهد توانست|URL| داده شده از طرف شما را به |PDF| تبديل نمايد.ممكن است بعضي از صفحات قابل نمايش نباشند. اين نرم افزار يكسري محدوديت ها دارد . لطفا همه خطا ها را به رييس سايت منتقل نكنيد . وعبارات ساده را مورد استفاده قرار دهيدتا به مشكلي بر نخوريد',
     11 => 'URL',
     12 => 'ساختن PDF!',
     13 => 'تنظيمات |PHP| اين سرور اجازه استفاده از دستور fopen()را نميدهد.با ادمين سايت تماس بگيريد',
     14 => 'مورد درخواست شما وجود ندارد يا اينكه شما اجازه دسترسي به آن را نداريد و دسترسي شما غير قانوني ميباشد '
 );
-##############################################################################
-#به پايان آمد اين دفتر حكايت همچنان باقيست
-#دوستان من اگر مشكلي بوود حتما با من تماس بگيريد و اميدوارم اين سيستم در بين ما بيشتر جا باز كند
-#فارسي شده توسط حسام .ح در تاريخ 10/11/1383---29/1/2005
-#e-mail:info1@4shir.com  OR  ir.security@gmail.com
+
+###############################################################################
+# trackback.php
+
+$LANG_TRB = array(
+    'trackback' => 'Trackback',
+    'from' => 'from',
+    'tracked_on' => 'Tracked on',
+    'read_more' => '[read more]',
+    'intro_text' => 'Here\'s what others have to say about \'%s\':',
+    'no_comments' => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments' => '%d trackback comments',
+    'send_trackback' => 'Send Pings',
+    'preview' => 'Preview',
+    'editor_title' => 'Send trackback comment',
+    'trackback_url' => 'Trackback URL',
+    'entry_url' => 'Entry URL',
+    'entry_title' => 'Entry Title',
+    'blog_name' => 'Site Name',
+    'excerpt' => 'Excerpt',
+    'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
+    'button_send' => 'Send',
+    'button_preview' => 'Preview',
+    'send_error' => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing' => 'No Entry URL',
+    'url_required' => 'Please enter at least a URL for the entry.',
+    'target_missing' => 'No Trackback URL',
+    'target_required' => 'Please enter a trackback URL',
+    'error_socket' => 'Could not open socket.',
+    'error_response' => 'Response not understood.',
+    'error_unspecified' => 'Unspecified error.',
+    'select_url' => 'Select Trackback URL',
+    'not_found' => 'Trackback URL not found',
+    'autodetect_failed' => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
+    'trackback_explain' => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
+    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'pingback' => 'Pingback',
+    'pingback_results' => 'Pingback results',
+    'send_pings' => 'Send Pings',
+    'send_pings_for' => 'Send Pings for "%s"',
+    'no_links_pingback' => 'No links found. No Pingbacks were sent for this entry.',
+    'pingback_success' => 'Pingback sent.',
+    'no_pingback_url' => 'No pingback URL found.',
+    'resend' => 'Resend',
+    'ping_all_explain' => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'pingback_button' => 'Send Pingback',
+    'pingback_short' => 'Send Pingbacks to all sites linked from this entry.',
+    'pingback_disabled' => '(Pingback disabled)',
+    'ping_button' => 'Send Ping',
+    'ping_short' => 'Ping weblog directory services.',
+    'ping_disabled' => '(Ping disabled)',
+    'trackback_button' => 'Send Trackback',
+    'trackback_short' => 'Send a Trackback comment.',
+    'trackback_disabled' => '(Trackback disabled)',
+    'may_take_a_while' => 'Please note that sending Pingbacks and Pings may take a while.',
+    'ping_results' => 'Ping results',
+    'unknown_method' => 'Unknown ping method',
+    'ping_success' => 'Ping sent.',
+    'error_site_name' => 'Please enter the site\'s name.',
+    'error_site_url' => 'Please enter the site\'s URL.',
+    'error_ping_url' => 'Please enter a valid Ping URL.',
+    'no_services' => 'No weblog directory services configured.',
+    'services_headline' => 'Weblog Directory Services',
+    'service_explain' => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service, click on "Create New" above.',
+    'service' => 'Service',
+    'ping_method' => 'Ping method',
+    'service_website' => 'Website',
+    'service_ping_url' => 'URL to ping',
+    'ping_standard' => 'Standard Ping',
+    'ping_extended' => 'Extended Ping',
+    'ping_unknown' => '(unknown method)',
+    'edit_service' => 'Edit Weblog Directory Service',
+    'trackbacks' => 'Trackbacks',
+    'editor_intro' => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none' => 'Prepare your trackback comment.',
+    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url' => 'Pingback URL',
+    'site_url' => 'This site\'s URL',
+    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing' => 'No Pingback URL',
+    'pbtarget_required' => 'Please enter a pingback URL',
+    'pb_error_details' => 'Error when sending the pingback:'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array(
+    'title' => 'Article Directory',
+    'title_year' => 'Article Directory for %d',
+    'title_month_year' => 'Article Directory for %s %d',
+    'nav_top' => 'Back to Article Directory',
+    'no_articles' => 'No articles.'
+);
+
+###############################################################################
+# "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
+
+$LANG_WHATSNEW = array(
+    'new_string' => '%n new %i in the last %t %s',
+    'new_last' => 'last %t %s',
+    'minutes' => 'minutes',
+    'hours' => 'hours',
+    'days' => 'days',
+    'weeks' => 'weeks',
+    'months' => 'months',
+    'minute' => 'minute',
+    'hour' => 'hour',
+    'day' => 'day',
+    'week' => 'week',
+    'month' => 'month'
+);
+
+###############################################################################
+# Admin - Strings
+# 
+# These are some standard strings used by core functions as well as plugins to
+# display administration lists and edit pages
+
+$LANG_ADMIN = array(
+    'search' => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit' => 'Submit',
+    'edit' => 'Edit',
+    'admin_home' => 'Admin Home',
+    'create_new' => 'Create New',
+    'enabled' => 'Enabled',
+    'title' => 'Title',
+    'type' => 'Type',
+    'topic' => 'Topic',
+    'help_url' => 'Help File URL',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'copy' => 'Copy',
+    'no_results' => '- No entries found -',
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+);
+
+###############################################################################
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0 => 'Comments Enabled',
+    -1 => 'Comments Disabled'
+);
+
+
+$LANG_commentmodes = array(
+    'flat' => 'Flat',
+    'nested' => 'Nested',
+    'threaded' => 'Threaded',
+    'nocomment' => 'No Comments'
+);
+
+$LANG_cookiecodes = array(
+    0 => '(don\'t)',
+    3600 => '1 Hour',
+    7200 => '2 Hours',
+    10800 => '3 Hours',
+    28800 => '8 Hours',
+    86400 => '1 Day',
+    604800 => '1 Week',
+    2678400 => '1 Month'
+);
+
+$LANG_dateformats = array(
+    0 => 'System Default'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Not Featured',
+    1 => 'Featured'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Show Only in Topic',
+    1 => 'Show on Front Page'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'Plain Old Text',
+    'html' => 'HTML Formatted'
+);
+
+$LANG_sortcodes = array(
+    'ASC' => 'Oldest First',
+    'DESC' => 'Newest First'
+);
+
+$LANG_trackbackcodes = array(
+    0 => 'Trackback Enabled',
+    -1 => 'Trackback Disabled'
+);
+
 ?>

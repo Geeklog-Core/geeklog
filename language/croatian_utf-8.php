@@ -155,7 +155,17 @@ $LANG01 = array(
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
     112 => 'Registered Users',
-    113 => 'Documentation'
+    113 => 'Documentation',
+    114 => 'TRACKBACKS',
+    115 => 'No new trackback comments',
+    116 => 'Trackback',
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    120 => 'Permanent link to this comment',
+    121 => 'Comments (%d)',
+    122 => 'Trackbacks (%d)',
+    123 => 'All HTML is allowed'
 );
 
 ###############################################################################
@@ -322,7 +332,23 @@ $LANG04 = array(
     104 => 'Prika¾i online status',
     105 => 'Poka¾i tko je online u bloku',
     106 => 'Location',
-    107 => 'Shown in your public profile'
+    107 => 'Shown in your public profile',
+    108 => 'Confirm new password',
+    109 => 'Enter the New password again here',
+    110 => 'Current Password',
+    111 => 'Please enter your Current password',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
+    119 => 'If you have forgotten your password, you may request a new one at this url:',
+    120 => 'Account Activated',
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
 ###############################################################################
@@ -337,27 +363,6 @@ $LANG05 = array(
     6 => 'Prija¹nji',
     7 => 'First',
     8 => 'Last'
-);
-
-###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => 'Web izvori',
-    2 => 'Nema linkova za prikazati.',
-    3 => 'Dodaj link'
-);
-
-###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => 'Va¹ glas je uspje¹no zaprimljen',
-    2 => 'Va¹ glas je poslan u abketu.',
-    3 => 'Glas',
-    4 => 'Anketa na stranicama',
-    5 => 'Glasa',
-    6 => 'Pogledajte ostale ankete'
 );
 
 ###############################################################################
@@ -461,7 +466,11 @@ $LANG09 = array(
     54 => 'Rezultati komentara',
     55 => 'izraz(e)',
     56 => 'I',
-    57 => 'ILI'
+    57 => 'ILI',
+    58 => 'More results &gt;&gt;',
+    59 => 'Results',
+    60 => 'per page',
+    61 => 'Refine search'
 );
 
 ###############################################################################
@@ -491,7 +500,14 @@ $LANG10 = array(
     21 => 'Na stranicama nema niti jednog linka ili nema linka na koji je kliknuto bar jedanput.',
     22 => 'Prvih deset prièa poslanih emailom',
     23 => 'Emailovi',
-    24 => 'Nitko nije poslao tekst emailom s ovih stranica.'
+    24 => 'Nitko nije poslao tekst emailom s ovih stranica.',
+    25 => 'Top Ten Trackback Commented Stories',
+    26 => 'No trackback comments found.',
+    27 => 'Number of active users',
+    28 => 'Top Ten Events',
+    29 => 'Event',
+    30 => 'Hits',
+    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
 ###############################################################################
@@ -644,7 +660,12 @@ $LANG21 = array(
     57 => 'Move Block Down',
     58 => 'Move Block Up',
     59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    60 => 'Move block to the left side',
+    61 => 'No Title',
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -679,35 +700,6 @@ $LANG22 = array(
 );
 
 ###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => 'Link Editor',
-    2 => '',
-    3 => 'Link Title',
-    4 => 'Link URL',
-    5 => 'Category',
-    6 => '(include http://)',
-    7 => 'Other',
-    8 => 'Link Hits',
-    9 => 'Link Description',
-    10 => 'You need to provide a link Title, URL and Description.',
-    11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that link below.  To create a new link click new link above.',
-    13 => 'Link Title',
-    14 => 'Link Category',
-    15 => 'Link URL',
-    16 => 'Access Denied',
-    17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/link.php\">go back to the link administration screen</a>.",
-    18 => 'New Link',
-    19 => 'Admin Home',
-    20 => 'If other, specify',
-    21 => 'save',
-    22 => 'cancel',
-    23 => 'delete'
-);
-
-###############################################################################
 # admin/story.php
 
 $LANG24 = array(
@@ -730,16 +722,16 @@ $LANG24 = array(
     17 => 'Body Text',
     18 => 'Posjeta',
     19 => 'Komentari',
-    20 => '',
-    21 => '',
+    20 => 'Ping',
+    21 => 'Send Ping',
     22 => 'Popis tekstova',
     23 => 'To modify or delete a story, click on that story\'s number below. To view a story, click on the title of the story you wish to view. To create a new story click on new story above.',
     24 => 'The ID you chose for this story is already in use. Please use another ID.',
-    25 => '',
+    25 => 'Error when saving story',
     26 => 'Story Preview',
-    27 => '',
-    28 => '',
-    29 => '',
+    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
+    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    29 => 'Trackbacks',
     30 => 'Gre¹ka u uploadanju datoteke',
     31 => 'Please fill in the Title and Intro Text fields',
     32 => 'Featured',
@@ -772,39 +764,20 @@ $LANG24 = array(
     59 => 'Option',
     60 => 'Enabled',
     61 => 'Auto Archive',
-    62 => 'Auto Delete'
-);
-
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'Mode',
-    2 => 'Please enter a question and at least one answer.',
-    3 => 'Poll Created',
-    4 => 'Poll %s saved',
-    5 => 'Edit Poll',
-    6 => 'Poll ID',
-    7 => '(do not use spaces)',
-    8 => 'Appears on Homepage',
-    9 => 'Question',
-    10 => 'Answers / Votes',
-    11 => 'There was an error getting poll answer data about the poll %s',
-    12 => 'There was an error getting poll question data about the poll %s',
-    13 => 'Create Poll',
-    14 => 'snimi',
-    15 => 'poni¹ti',
-    16 => 'obri¹i',
-    17 => 'Please enter a Poll ID',
-    18 => 'Poll List',
-    19 => 'To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.',
-    20 => 'Voters',
-    21 => 'Access Denied',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
-    23 => 'New Poll',
-    24 => 'Admin Home',
-    25 => 'Da',
-    26 => 'Ne'
+    62 => 'Auto Delete',
+    63 => '',
+    64 => '',
+    65 => '',
+    66 => '',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
 ###############################################################################
@@ -836,7 +809,10 @@ $LANG27 = array(
     23 => 'make this the default topic for new story submissions',
     24 => '(*)',
     25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    26 => 'make this the default topic for archived stories. Only one topic allowed.',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################
@@ -878,7 +854,18 @@ $LANG28 = array(
     33 => 'potvrdi',
     34 => 'Error: You must specify a file to upload.',
     35 => 'Zadnji put prijavljen',
-    36 => '(nikada)'
+    36 => '(nikada)',
+    37 => 'UID',
+    38 => 'Group Listing',
+    39 => 'Password (again)',
+    40 => 'Registration Date',
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status',
+    47 => 'Edit'
 );
 
 ###############################################################################
@@ -1023,7 +1010,11 @@ $LANG32 = array(
     31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
-    34 => 'Update'
+    34 => 'Update',
+    35 => 'Edit',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1066,7 +1057,15 @@ $LANG33 = array(
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
     41 => 'Linkovi',
-    42 => 'Dogaðanja'
+    42 => 'Dogaðanja',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1133,7 +1132,21 @@ $MESSAGE = array(
     58 => 'Your feed has been successfully saved.',
     59 => 'The feed has been successfully deleted.',
     60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    61 => 'Plugin %s: Unknown message placeholder',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occurred when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.',
+    65 => 'Weblog directory service successfully saved.',
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
@@ -1193,7 +1206,16 @@ $LANG_ACCESS = array(
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
     'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
+    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Group name already exists',
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
 );
 
 ###############################################################################
@@ -1203,9 +1225,8 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Last 10 Back-ups',
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
-    'no_backups' => 'No backups in the system',
     'db_explanation' => 'To create a new backup of your Geeklog system, hit the button below',
-    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>{$_DB_mysqldump_path}</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
     'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
@@ -1227,7 +1248,8 @@ $LANG_BUTTONS = array(
     7 => 'Statistika stranice',
     8 => 'Personalizacija',
     9 => 'Tra¾ilica',
-    10 => 'napredna tra¾ilica'
+    10 => 'napredna tra¾ilica',
+    11 => 'Directory'
 );
 
 ###############################################################################
@@ -1267,6 +1289,212 @@ $LANG_PDF = array(
     12 => 'Generate PDF!',
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
     14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
+###############################################################################
+# trackback.php
+
+$LANG_TRB = array(
+    'trackback' => 'Trackback',
+    'from' => 'from',
+    'tracked_on' => 'Tracked on',
+    'read_more' => '[read more]',
+    'intro_text' => 'Here\'s what others have to say about \'%s\':',
+    'no_comments' => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments' => '%d trackback comments',
+    'send_trackback' => 'Send Pings',
+    'preview' => 'Preview',
+    'editor_title' => 'Send trackback comment',
+    'trackback_url' => 'Trackback URL',
+    'entry_url' => 'Entry URL',
+    'entry_title' => 'Entry Title',
+    'blog_name' => 'Site Name',
+    'excerpt' => 'Excerpt',
+    'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
+    'button_send' => 'Send',
+    'button_preview' => 'Preview',
+    'send_error' => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing' => 'No Entry URL',
+    'url_required' => 'Please enter at least a URL for the entry.',
+    'target_missing' => 'No Trackback URL',
+    'target_required' => 'Please enter a trackback URL',
+    'error_socket' => 'Could not open socket.',
+    'error_response' => 'Response not understood.',
+    'error_unspecified' => 'Unspecified error.',
+    'select_url' => 'Select Trackback URL',
+    'not_found' => 'Trackback URL not found',
+    'autodetect_failed' => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
+    'trackback_explain' => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
+    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'pingback' => 'Pingback',
+    'pingback_results' => 'Pingback results',
+    'send_pings' => 'Send Pings',
+    'send_pings_for' => 'Send Pings for "%s"',
+    'no_links_pingback' => 'No links found. No Pingbacks were sent for this entry.',
+    'pingback_success' => 'Pingback sent.',
+    'no_pingback_url' => 'No pingback URL found.',
+    'resend' => 'Resend',
+    'ping_all_explain' => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'pingback_button' => 'Send Pingback',
+    'pingback_short' => 'Send Pingbacks to all sites linked from this entry.',
+    'pingback_disabled' => '(Pingback disabled)',
+    'ping_button' => 'Send Ping',
+    'ping_short' => 'Ping weblog directory services.',
+    'ping_disabled' => '(Ping disabled)',
+    'trackback_button' => 'Send Trackback',
+    'trackback_short' => 'Send a Trackback comment.',
+    'trackback_disabled' => '(Trackback disabled)',
+    'may_take_a_while' => 'Please note that sending Pingbacks and Pings may take a while.',
+    'ping_results' => 'Ping results',
+    'unknown_method' => 'Unknown ping method',
+    'ping_success' => 'Ping sent.',
+    'error_site_name' => 'Please enter the site\'s name.',
+    'error_site_url' => 'Please enter the site\'s URL.',
+    'error_ping_url' => 'Please enter a valid Ping URL.',
+    'no_services' => 'No weblog directory services configured.',
+    'services_headline' => 'Weblog Directory Services',
+    'service_explain' => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service, click on "Create New" above.',
+    'service' => 'Service',
+    'ping_method' => 'Ping method',
+    'service_website' => 'Website',
+    'service_ping_url' => 'URL to ping',
+    'ping_standard' => 'Standard Ping',
+    'ping_extended' => 'Extended Ping',
+    'ping_unknown' => '(unknown method)',
+    'edit_service' => 'Edit Weblog Directory Service',
+    'trackbacks' => 'Trackbacks',
+    'editor_intro' => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none' => 'Prepare your trackback comment.',
+    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url' => 'Pingback URL',
+    'site_url' => 'This site\'s URL',
+    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing' => 'No Pingback URL',
+    'pbtarget_required' => 'Please enter a pingback URL',
+    'pb_error_details' => 'Error when sending the pingback:'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array(
+    'title' => 'Article Directory',
+    'title_year' => 'Article Directory for %d',
+    'title_month_year' => 'Article Directory for %s %d',
+    'nav_top' => 'Back to Article Directory',
+    'no_articles' => 'No articles.'
+);
+
+###############################################################################
+# "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
+
+$LANG_WHATSNEW = array(
+    'new_string' => '%n new %i in the last %t %s',
+    'new_last' => 'last %t %s',
+    'minutes' => 'minutes',
+    'hours' => 'hours',
+    'days' => 'days',
+    'weeks' => 'weeks',
+    'months' => 'months',
+    'minute' => 'minute',
+    'hour' => 'hour',
+    'day' => 'day',
+    'week' => 'week',
+    'month' => 'month'
+);
+
+###############################################################################
+# Admin - Strings
+# 
+# These are some standard strings used by core functions as well as plugins to
+# display administration lists and edit pages
+
+$LANG_ADMIN = array(
+    'search' => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit' => 'Submit',
+    'edit' => 'Edit',
+    'admin_home' => 'Admin Home',
+    'create_new' => 'Create New',
+    'enabled' => 'Enabled',
+    'title' => 'Title',
+    'type' => 'Type',
+    'topic' => 'Topic',
+    'help_url' => 'Help File URL',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'copy' => 'Copy',
+    'no_results' => '- No entries found -',
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+);
+
+###############################################################################
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0 => 'Comments Enabled',
+    -1 => 'Comments Disabled'
+);
+
+
+$LANG_commentmodes = array(
+    'flat' => 'Flat',
+    'nested' => 'Nested',
+    'threaded' => 'Threaded',
+    'nocomment' => 'No Comments'
+);
+
+$LANG_cookiecodes = array(
+    0 => '(don\'t)',
+    3600 => '1 Hour',
+    7200 => '2 Hours',
+    10800 => '3 Hours',
+    28800 => '8 Hours',
+    86400 => '1 Day',
+    604800 => '1 Week',
+    2678400 => '1 Month'
+);
+
+$LANG_dateformats = array(
+    0 => 'System Default'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Not Featured',
+    1 => 'Featured'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Show Only in Topic',
+    1 => 'Show on Front Page'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'Plain Old Text',
+    'html' => 'HTML Formatted'
+);
+
+$LANG_sortcodes = array(
+    'ASC' => 'Oldest First',
+    'DESC' => 'Newest First'
+);
+
+$LANG_trackbackcodes = array(
+    0 => 'Trackback Enabled',
+    -1 => 'Trackback Disabled'
 );
 
 ?>

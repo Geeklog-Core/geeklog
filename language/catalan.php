@@ -151,7 +151,17 @@ $LANG01 = array(
     110 => 'Denúncia aquest missatge a l\'administrador d\'aquest lloc',
     111 => 'Veure la versió PDF',
     112 => 'Usuaris inscrits',
-    113 => 'Documentació'
+    113 => 'Documentació',
+    114 => 'TRACKBACKS',
+    115 => 'No new trackback comments',
+    116 => 'Trackback',
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    120 => 'Permanent link to this comment',
+    121 => 'Comments (%d)',
+    122 => 'Trackbacks (%d)',
+    123 => 'All HTML is allowed'
 );
 
 ###############################################################################
@@ -318,7 +328,23 @@ $LANG04 = array(
     104 => 'Mostra l\'estat de qui està conectat/da',
     105 => 'Mostra al bloc Who\'s Online (usuaris conectats)',
     106 => 'Ubicació',
-    107 => 'Mostrat en el teu perfil public'
+    107 => 'Mostrat en el teu perfil public',
+    108 => 'Confirm new password',
+    109 => 'Enter the New password again here',
+    110 => 'Current Password',
+    111 => 'Please enter your Current password',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
+    119 => 'If you have forgotten your password, you may request a new one at this url:',
+    120 => 'Account Activated',
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
 ###############################################################################
@@ -333,27 +359,6 @@ $LANG05 = array(
     6 => 'Anterior',
     7 => 'Primer',
     8 => 'Últim'
-);
-
-###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => 'Enllaços',
-    2 => 'No hi ha enllaços per mostrar.',
-    3 => 'Afegeix un enllaç'
-);
-
-###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => 'Vot guardat',
-    2 => 'El teu vot s\'ha computat per l\'enquesta',
-    3 => 'Vota',
-    4 => 'Enquestes al sistema',
-    5 => 'Vots',
-    6 => 'Veure les altres preguntes de l\'enquesta'
 );
 
 ###############################################################################
@@ -457,7 +462,11 @@ $LANG09 = array(
     54 => 'Resultats de Comentari',
     55 => 'la frase',
     56 => 'I',
-    57 => 'O'
+    57 => 'O',
+    58 => 'More results &gt;&gt;',
+    59 => 'Results',
+    60 => 'per page',
+    61 => 'Refine search'
 );
 
 ###############################################################################
@@ -487,7 +496,14 @@ $LANG10 = array(
     21 => 'Sembla que en aquest lloc no hi ha enllaços o que ningú els ha visitat.',
     22 => 'Les 10 Noticies més enviades per correu electrònic',
     23 => 'missatges per correu electrònic',
-    24 => 'Sembla que ningú ha enviat una notícia per correu electrònic en aquest lloc.'
+    24 => 'Sembla que ningú ha enviat una notícia per correu electrònic en aquest lloc.',
+    25 => 'Top Ten Trackback Commented Stories',
+    26 => 'No trackback comments found.',
+    27 => 'Number of active users',
+    28 => 'Top Ten Events',
+    29 => 'Event',
+    30 => 'Hits',
+    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
 ###############################################################################
@@ -640,7 +656,12 @@ $LANG21 = array(
     57 => 'Mou el bloc aball',
     58 => 'Mou el bloc amunt',
     59 => 'Mou el bloc a la dreta',
-    60 => 'Mou el bloc a l\'esquerra'
+    60 => 'Mou el bloc a l\'esquerra',
+    61 => 'No Title',
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -675,35 +696,6 @@ $LANG22 = array(
 );
 
 ###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => 'Editor d\'Enllaços',
-    2 => '',
-    3 => 'Títol',
-    4 => 'URL',
-    5 => 'Categoria',
-    6 => '(incluir http://)',
-    7 => 'Un altre',
-    8 => 'Quantitat d\'accessos',
-    9 => 'Descripció',
-    10 => 'Has de completar els camps Títol, URL i Descripció.',
-    11 => 'Administrador',
-    12 => 'Per modificar o borrar un Enllaç selecciona\'l més avall. Per crear-ne un de nou selecciona \'Nou Enllaç\' més amunt.',
-    13 => 'Títol',
-    14 => 'Categoría',
-    15 => 'URL',
-    16 => 'Accés Denegat',
-    17 => "No tens permís per accedir a aquest Enllaç. Tot intent d\'accés serà registrat. Siusplau, torna a <a href=\"{$_CONF['site_admin_url']}/link.php\">la pàgina d\'Administració d\'Enllaços</a>.",
-    18 => 'Nou Enllaç',
-    19 => 'Pàgina d\'Inici - Administrador',
-    20 => 'Si es una altre, especifica',
-    21 => 'guardar',
-    22 => 'cancelar',
-    23 => 'borrar'
-);
-
-###############################################################################
 # admin/story.php
 
 $LANG24 = array(
@@ -726,16 +718,16 @@ $LANG24 = array(
     17 => 'Text',
     18 => 'Accessos',
     19 => 'Comentaris',
-    20 => '',
-    21 => '',
+    20 => 'Ping',
+    21 => 'Send Ping',
     22 => 'Llista de Noticies',
     23 => 'Per modificar o borrar una Notícia selecciona el numero de Notícia mes avall. Per veure la Notícia selecciona el títol de la mateixa. Per crear una nova Notícia selecciona \'Enviar Notícia\' més amunt.',
     24 => 'L\'ID que has escollit per aquest tema ja està sent utilitzada. Siusplau, utilitza un altre ID.',
-    25 => '',
+    25 => 'Error when saving story',
     26 => 'Lectura Previa',
-    27 => '',
-    28 => '',
-    29 => '',
+    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
+    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    29 => 'Trackbacks',
     30 => 'Errors al Pujar Arxius',
     31 => 'Siusplau omple els camps d\'Autor, Títol i Text',
     32 => 'Destacada',
@@ -768,39 +760,20 @@ $LANG24 = array(
     59 => 'Opció',
     60 => 'Habilitat',
     61 => 'Auto arxiu',
-    62 => 'Auto borrat'
-);
-
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => 'Mode',
-    2 => 'Siusplau tecleja una pregunta i com a mínim una resposta.',
-    3 => 'Data de creació',
-    4 => 'Enquesta %s guardada',
-    5 => 'Editar l\'Enquesta',
-    6 => 'Identificació',
-    7 => '(no utilitzis espais)',
-    8 => 'Apareix a la Portada',
-    9 => 'Pregunta',
-    10 => 'Respostes / Vots',
-    11 => 'Hi ha hagut un error al buscar les dades per la resposta de l\'Enquesta %s',
-    12 => 'Hi ha hagut un error al buscar les dades per la pregunta de l\'Enquesta %s',
-    13 => 'Crear Enquesta',
-    14 => 'guardar',
-    15 => 'cancelar',
-    16 => 'borrar',
-    17 => 'Siusplau tecleja un nom d\'identificació (ID) de l\'enquesta',
-    18 => 'Llistat d\'Enquestes',
-    19 => 'Per modificar o borrar una Enquesta triala a la lista de sota. Per crear-ne una de nova, selecciona \'Nova Enquesta\' més amunt.',
-    20 => 'Votants',
-    21 => 'Accés Denegat',
-    22 => "Estàs intentant accedir a una Enquesta a la que no tens drets d\'accés. Siusplau torna a la <a href=\"{$_CONF['site_admin_url']}/poll.php\">pàgina d\'administració.",
-    23 => 'Nova Enquesta',
-    24 => 'Pàgina d\'Inici - Administrador',
-    25 => 'Si',
-    26 => 'No'
+    62 => 'Auto borrat',
+    63 => '',
+    64 => '',
+    65 => '',
+    66 => '',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
 ###############################################################################
@@ -832,7 +805,10 @@ $LANG27 = array(
     23 => 'converteix-lo en el tema per defecte per a noves col·laboracions',
     24 => '(*)',
     25 => 'Arxiva el tema',
-    26 => 'converteix-lo en el tema per defecte per a notícies arxivades. Només es permet un tema.'
+    26 => 'converteix-lo en el tema per defecte per a notícies arxivades. Només es permet un tema.',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################
@@ -874,7 +850,18 @@ $LANG28 = array(
     33 => 'enviar',
     34 => 'Error: Has d\'especificar l\'arxiu que vols pujar.',
     35 => 'Últim accés',
-    36 => '(mai)'
+    36 => '(mai)',
+    37 => 'UID',
+    38 => 'Group Listing',
+    39 => 'Password (again)',
+    40 => 'Registration Date',
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status',
+    47 => 'Edit'
 );
 
 ###############################################################################
@@ -1019,7 +1006,11 @@ $LANG32 = array(
     31 => 'Estàs segur/a de que vols esborrar aquest Plug-in? Al fer-ho borraràs tots els arxius, estructures i dades associades. Si estàs segur/a selecciona "Borrar" al formulari de sota.',
     32 => '<p><b>Error, l\'etiqueta AutoLink no té el format correcte</b></p>',
     33 => 'Versió del codi',
-    34 => 'Actualització'
+    34 => 'Actualització',
+    35 => 'Edit',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1062,7 +1053,15 @@ $LANG33 = array(
     39 => 'Siusplau, omple el Títol, Descripció i Nom de l\'arxiu de la transmissió.',
     40 => 'Siusplau inclueix el nombre d\'entrades o nombre d\'hores.',
     41 => 'Enllaços',
-    42 => 'Esdeveniments'
+    42 => 'Esdeveniments',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1129,7 +1128,21 @@ $MESSAGE = array(
     58 => 'La teva transmissió s\'ha guardat satisfactoriament.',
     59 => 'La teva transmissió s\'ha borrat satisfactoriament.',
     60 => 'El plugin s\'ha actualitzat satisfactoriament',
-    61 => 'Plugin %s: marcador de missatge desconegut'
+    61 => 'Plugin %s: marcador de missatge desconegut',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occurred when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.',
+    65 => 'Weblog directory service successfully saved.',
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
@@ -1189,7 +1202,16 @@ $LANG_ACCESS = array(
     'availmembers' => 'Membres disponibles',
     'groupmembers' => 'Membres del grup',
     'canteditgroup' => 'Per editar aquest grup, has de ser un membre del grup. Siusplau, contacta amb l\'administrador del sistema si creus que això es un error.',
-    'cantlistgroup' => 'Per veure els membres d\'aquest grup, n\'has de ser membre. Siusplau contacta amb l\'administrador del sistema si creus que això es un error.'
+    'cantlistgroup' => 'Per veure els membres d\'aquest grup, n\'has de ser membre. Siusplau contacta amb l\'administrador del sistema si creus que això es un error.',
+    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Group name already exists',
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
 );
 
 ###############################################################################
@@ -1199,7 +1221,6 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Últimes 10 còpies de seguretat',
     'do_backup' => 'Fer una còpia de seguretat',
     'backup_successful' => 'La còpia de seguretat de la base de dades s\'ha realitzat satisfactoriament.',
-    'no_backups' => 'No hi ha còpies de seguretat al sistema',
     'db_explanation' => 'Per crear una còpia de seguretat del sistema utilitza el botó de sota',
     'not_found' => "Ruta incorrecta o la utilitat mysqldump no es pot executar.<br>Comprova la definició de <strong>\$_DB_mysqldump_path</strong> al config.php.<br>La variable està definida actualment com: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Error de la còpia de seguretat: La grandària era de 0 bytes',
@@ -1223,7 +1244,8 @@ $LANG_BUTTONS = array(
     7 => 'Estadístiques',
     8 => 'Personalització',
     9 => 'Cerca',
-    10 => 'Cerca avançada'
+    10 => 'Cerca avançada',
+    11 => 'Directory'
 );
 
 ###############################################################################
@@ -1252,17 +1274,223 @@ $LANG_PDF = array(
     1 => 'La funció PDF està inhabilitada',
     2 => 'El document facilitat no s\'ha reproduit. S\'ha rebut el document però no s\'ha processat. Siusplau, assegura\'t de que només s\'enviin documents en format html amb l\'estàndar xHTML. Siusplau, pensa que els documents molt complexes en html és possible que no es reprodueixin correctament o que no apareguin. El document resultant del teu intent té 0 bytes d\'extensió, i ha sigut borrat. Si no estàs segur/a de que el teu document es reprodueixi bé, siusplau, torna a enviar-lo.',
     3 => 'Error desconegut durant la generació de PDF',
-    4 => "No has donat dades de la pàgina o vols utilitzar l\'eina de generació ad-hoc de PDF. Si creus que estàs rebent aquesta pàgina per error, contacta amb l\'administrador del sistema. Sinó, pots utilitzar el formulari que hi ha a sota per generar PDFs.",
+    4 => 'No has donat dades de la pàgina o vols utilitzar l\'eina de generació ad-hoc de PDF. Si creus que estàs rebent aquesta pàgina per error, contacta amb l\'administrador del sistema. Sinó, pots utilitzar el formulari que hi ha a sota per generar PDFs.',
     5 => 'Cargant el teu document.',
     6 => 'Siusplau, espera mentres es carrega el teu document.',
     7 => 'Pots apretar el botó dret del ratolí sobre el botó de sota i escollir \'save target...\' o \'save link location...\' per guardar una còpia del teu document.',
-    8 => "La ruta donada per l\'arxiu de configuració a l\'HTMLDoc binari no és vàlida o aquest sistema no el pot executar.  Siusplau contacta amb l\'administrador del sistema si aquest problema continua.",
+    8 => 'La ruta donada per l\'arxiu de configuració a l\'HTMLDoc binari no és vàlida o aquest sistema no el pot executar.  Siusplau contacta amb l\'administrador del sistema si aquest problema continua.',
     9 => 'Creador de PDF',
-    10 => "Aquesta es l\'eina ad-hoc de creació de PDF. Intentarà convertir qualsevol URL que li donguis en un PDF.  Siusplau, pensa que algunes pàgines de la xarxa (Web) no es generaràn correctament amb aquesta funció.  Això és una limitació de l\'eina generadora d\'HTMLDoc PDF i aquests errors no haurien de ser enviats a l\'administrador d\'aquest lloc",
+    10 => 'Aquesta es l\'eina ad-hoc de creació de PDF. Intentarà convertir qualsevol URL que li donguis en un PDF.  Siusplau, pensa que algunes pàgines de la xarxa (Web) no es generaràn correctament amb aquesta funció.  Això és una limitació de l\'eina generadora d\'HTMLDoc PDF i aquests errors no haurien de ser enviats a l\'administrador d\'aquest lloc',
     11 => 'URL',
     12 => 'Crea un PDF!',
     13 => 'La configuració PHP en aquest servidor no permet que les URL s\'utilitzin amb la instrucció fopen.  L\'administrador del sistema ha d\'editar l\'arxiu php.ini i que estigui conectat allow_url_fopen',
     14 => 'El PDF que has solicitat o no existeix o has intentat accedir a un arxiu ilegalment.'
+);
+
+###############################################################################
+# trackback.php
+
+$LANG_TRB = array(
+    'trackback' => 'Trackback',
+    'from' => 'from',
+    'tracked_on' => 'Tracked on',
+    'read_more' => '[read more]',
+    'intro_text' => 'Here\'s what others have to say about \'%s\':',
+    'no_comments' => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments' => '%d trackback comments',
+    'send_trackback' => 'Send Pings',
+    'preview' => 'Preview',
+    'editor_title' => 'Send trackback comment',
+    'trackback_url' => 'Trackback URL',
+    'entry_url' => 'Entry URL',
+    'entry_title' => 'Entry Title',
+    'blog_name' => 'Site Name',
+    'excerpt' => 'Excerpt',
+    'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
+    'button_send' => 'Send',
+    'button_preview' => 'Preview',
+    'send_error' => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing' => 'No Entry URL',
+    'url_required' => 'Please enter at least a URL for the entry.',
+    'target_missing' => 'No Trackback URL',
+    'target_required' => 'Please enter a trackback URL',
+    'error_socket' => 'Could not open socket.',
+    'error_response' => 'Response not understood.',
+    'error_unspecified' => 'Unspecified error.',
+    'select_url' => 'Select Trackback URL',
+    'not_found' => 'Trackback URL not found',
+    'autodetect_failed' => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
+    'trackback_explain' => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
+    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'pingback' => 'Pingback',
+    'pingback_results' => 'Pingback results',
+    'send_pings' => 'Send Pings',
+    'send_pings_for' => 'Send Pings for "%s"',
+    'no_links_pingback' => 'No links found. No Pingbacks were sent for this entry.',
+    'pingback_success' => 'Pingback sent.',
+    'no_pingback_url' => 'No pingback URL found.',
+    'resend' => 'Resend',
+    'ping_all_explain' => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'pingback_button' => 'Send Pingback',
+    'pingback_short' => 'Send Pingbacks to all sites linked from this entry.',
+    'pingback_disabled' => '(Pingback disabled)',
+    'ping_button' => 'Send Ping',
+    'ping_short' => 'Ping weblog directory services.',
+    'ping_disabled' => '(Ping disabled)',
+    'trackback_button' => 'Send Trackback',
+    'trackback_short' => 'Send a Trackback comment.',
+    'trackback_disabled' => '(Trackback disabled)',
+    'may_take_a_while' => 'Please note that sending Pingbacks and Pings may take a while.',
+    'ping_results' => 'Ping results',
+    'unknown_method' => 'Unknown ping method',
+    'ping_success' => 'Ping sent.',
+    'error_site_name' => 'Please enter the site\'s name.',
+    'error_site_url' => 'Please enter the site\'s URL.',
+    'error_ping_url' => 'Please enter a valid Ping URL.',
+    'no_services' => 'No weblog directory services configured.',
+    'services_headline' => 'Weblog Directory Services',
+    'service_explain' => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service, click on "Create New" above.',
+    'service' => 'Service',
+    'ping_method' => 'Ping method',
+    'service_website' => 'Website',
+    'service_ping_url' => 'URL to ping',
+    'ping_standard' => 'Standard Ping',
+    'ping_extended' => 'Extended Ping',
+    'ping_unknown' => '(unknown method)',
+    'edit_service' => 'Edit Weblog Directory Service',
+    'trackbacks' => 'Trackbacks',
+    'editor_intro' => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none' => 'Prepare your trackback comment.',
+    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url' => 'Pingback URL',
+    'site_url' => 'This site\'s URL',
+    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing' => 'No Pingback URL',
+    'pbtarget_required' => 'Please enter a pingback URL',
+    'pb_error_details' => 'Error when sending the pingback:'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array(
+    'title' => 'Article Directory',
+    'title_year' => 'Article Directory for %d',
+    'title_month_year' => 'Article Directory for %s %d',
+    'nav_top' => 'Back to Article Directory',
+    'no_articles' => 'No articles.'
+);
+
+###############################################################################
+# "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
+
+$LANG_WHATSNEW = array(
+    'new_string' => '%n new %i in the last %t %s',
+    'new_last' => 'last %t %s',
+    'minutes' => 'minutes',
+    'hours' => 'hours',
+    'days' => 'days',
+    'weeks' => 'weeks',
+    'months' => 'months',
+    'minute' => 'minute',
+    'hour' => 'hour',
+    'day' => 'day',
+    'week' => 'week',
+    'month' => 'month'
+);
+
+###############################################################################
+# Admin - Strings
+# 
+# These are some standard strings used by core functions as well as plugins to
+# display administration lists and edit pages
+
+$LANG_ADMIN = array(
+    'search' => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit' => 'Submit',
+    'edit' => 'Edit',
+    'admin_home' => 'Admin Home',
+    'create_new' => 'Create New',
+    'enabled' => 'Enabled',
+    'title' => 'Title',
+    'type' => 'Type',
+    'topic' => 'Topic',
+    'help_url' => 'Help File URL',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'copy' => 'Copy',
+    'no_results' => '- No entries found -',
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+);
+
+###############################################################################
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0 => 'Comments Enabled',
+    -1 => 'Comments Disabled'
+);
+
+
+$LANG_commentmodes = array(
+    'flat' => 'Flat',
+    'nested' => 'Nested',
+    'threaded' => 'Threaded',
+    'nocomment' => 'No Comments'
+);
+
+$LANG_cookiecodes = array(
+    0 => '(don\'t)',
+    3600 => '1 Hour',
+    7200 => '2 Hours',
+    10800 => '3 Hours',
+    28800 => '8 Hours',
+    86400 => '1 Day',
+    604800 => '1 Week',
+    2678400 => '1 Month'
+);
+
+$LANG_dateformats = array(
+    0 => 'System Default'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Not Featured',
+    1 => 'Featured'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Show Only in Topic',
+    1 => 'Show on Front Page'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'Plain Old Text',
+    'html' => 'HTML Formatted'
+);
+
+$LANG_sortcodes = array(
+    'ASC' => 'Oldest First',
+    'DESC' => 'Newest First'
+);
+
+$LANG_trackbackcodes = array(
+    0 => 'Trackback Enabled',
+    -1 => 'Trackback Disabled'
 );
 
 ?>

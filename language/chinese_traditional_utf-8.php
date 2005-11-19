@@ -156,7 +156,17 @@ $LANG01 = array(
     110 => '報告此濫登文給網站管理員',
     111 => '看PDF 版本',
     112 => '登記用戶',
-    113 => '使用說明'
+    113 => '使用說明',
+    114 => 'TRACKBACKS',
+    115 => 'No new trackback comments',
+    116 => 'Trackback',
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:',
+    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    120 => 'Permanent link to this comment',
+    121 => 'Comments (%d)',
+    122 => 'Trackbacks (%d)',
+    123 => 'All HTML is allowed'
 );
 
 ###############################################################################
@@ -323,7 +333,23 @@ $LANG04 = array(
     104 => '顯示聯機狀況',
     105 => '讓在“誰在聯機”元件裏顯示',
     106 => '位置',
-    107 => '顯示在你的公開簡介'
+    107 => '顯示在你的公開簡介',
+    108 => 'Confirm new password',
+    109 => 'Enter the New password again here',
+    110 => 'Current Password',
+    111 => 'Please enter your Current password',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
+    119 => 'If you have forgotten your password, you may request a new one at this url:',
+    120 => 'Account Activated',
+    121 => 'Service',
+    122 => 'Sorry, new user registration is disabled',
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
 );
 
 ###############################################################################
@@ -338,27 +364,6 @@ $LANG05 = array(
     6 => '上頁',
     7 => '第一',
     8 => '最終'
-);
-
-###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => '網路資源',
-    2 => '沒有資源可顯示',
-    3 => '加一連結'
-);
-
-###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => '投票保存了',
-    2 => '你的投票已被保存了',
-    3 => '投票',
-    4 => '系統中的投票',
-    5 => '投票',
-    6 => '看其他投票問題'
 );
 
 ###############################################################################
@@ -462,7 +467,11 @@ $LANG09 = array(
     54 => '評論結果',
     55 => '句子',
     56 => '和',
-    57 => '或'
+    57 => '或',
+    58 => 'More results &gt;&gt;',
+    59 => 'Results',
+    60 => 'per page',
+    61 => 'Refine search'
 );
 
 ###############################################################################
@@ -492,7 +501,14 @@ $LANG10 = array(
     21 => '看來本站沒有連結或是沒人點擊過本站的連結。',
     22 => '最多人寄出的十個文章',
     23 => '電郵',
-    24 => '看來沒人寄出過本站的文章'
+    24 => '看來沒人寄出過本站的文章',
+    25 => 'Top Ten Trackback Commented Stories',
+    26 => 'No trackback comments found.',
+    27 => 'Number of active users',
+    28 => 'Top Ten Events',
+    29 => 'Event',
+    30 => 'Hits',
+    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
 ###############################################################################
@@ -645,7 +661,12 @@ $LANG21 = array(
     57 => '下移組件',
     58 => '上移組件',
     59 => '移組件到右邊',
-    60 => '移組件到左邊'
+    60 => '移組件到左邊',
+    61 => 'No Title',
+    62 => 'Article Limit',
+    63 => 'Bad Block Title',
+    64 => 'Your Title must not be empty and cannot contain HTML!',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -680,35 +701,6 @@ $LANG22 = array(
 );
 
 ###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => '連結編輯器',
-    2 => '',
-    3 => '連結標題',
-    4 => '連結 URL',
-    5 => '類別',
-    6 => '(包括 http://)',
-    7 => '其他',
-    8 => '連結被擊次數',
-    9 => '連結描述',
-    10 => '你需要提供連結標題、 URL 和描述！',
-    11 => '連結管理員',
-    12 => '點擊下面的連結可修改或刪除它，點擊上面的新連結可創造一個新的。',
-    13 => '連結標題',
-    14 => '連結類別',
-    15 => '連結 URL',
-    16 => '存取被拒絕',
-    17 => "企圖存取不允許的連結已被記錄。請<a href=\"{$_CONF['site_admin_url']}/link.php\">反回連結管理員晝面</a>。",
-    18 => '新連結',
-    19 => '管理員首頁',
-    20 => '如果是其他，請指定',
-    21 => '保存',
-    22 => '取消',
-    23 => '刪除'
-);
-
-###############################################################################
 # admin/story.php
 
 $LANG24 = array(
@@ -731,16 +723,16 @@ $LANG24 = array(
     17 => '文章內容',
     18 => '點擊次數',
     19 => '評論',
-    20 => '',
-    21 => '',
+    20 => 'Ping',
+    21 => 'Send Ping',
     22 => '文章清單',
     23 => '點擊下面的文章編號可修改或刪除它，點擊下面的文章標題可觀看它，點擊上面的新文章可創造一個新的。',
     24 => '你選的用戶名以有人在用。請用另一個用戶名。',
-    25 => '',
+    25 => 'Error when saving story',
     26 => '文章預覽',
-    27 => '',
-    28 => '',
-    29 => '',
+    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
+    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    29 => 'Trackbacks',
     30 => '上載錯誤',
     31 => '你需要提供作者、標題和文章簡介！',
     32 => '頭條的',
@@ -773,39 +765,20 @@ $LANG24 = array(
     59 => '選項',
     60 => '已啟動',
     61 => '自動保存',
-    62 => '自動刪除'
-);
-
-###############################################################################
-# admin/poll.php
-
-$LANG25 = array(
-    1 => '模式',
-    2 => '請輸入一個問題和最少一個答案.',
-    3 => '投票發起日',
-    4 => '投票 %s 被保存了',
-    5 => '編輯投票',
-    6 => '投票編號',
-    7 => '(不可有空隔)',
-    8 => '出現在首頁上',
-    9 => '問題',
-    10 => '答案 / 投票',
-    11 => '取得投票 (%s) 答案時發生錯誤。',
-    12 => '取得投票 (%s) 問題時發生錯誤。',
-    13 => '新加投票',
-    14 => '保存',
-    15 => '取消',
-    16 => '刪除',
-    17 => '請輸入一個投票 ID',
-    18 => '投票清單',
-    19 => '點擊下面的投票可修改或刪除它，點擊上面的新投票可創造一個新的。',
-    20 => '投票者',
-    21 => '存取被拒絕',
-    22 => "企圖存取不允許的投票已被記錄。請<a href=\"{$_CONF['site_admin_url']}/poll.php\">反回投票管理員晝面</a>。",
-    23 => '新投票',
-    24 => '管理員首頁',
-    25 => '是',
-    26 => '否'
+    62 => '自動刪除',
+    63 => '',
+    64 => '',
+    65 => '',
+    66 => '',
+    67 => 'Expand the Content Edit Area size',
+    68 => 'Reduce the Content Edit Area size',
+    69 => 'Publish Story Date',
+    70 => 'Toolbar Selection',
+    71 => 'Basic Toolbar',
+    72 => 'Common Toolbar',
+    73 => 'Advanced Toolbar',
+    74 => 'Advanced II Toolbar',
+    75 => 'Full Featured'
 );
 
 ###############################################################################
@@ -837,7 +810,10 @@ $LANG27 = array(
     23 => '用此主題作為新稿的預設主體',
     24 => '(*)',
     25 => '保存檔的題目',
-    26 => '用此題目作保存檔的默認題目。只准許一個題目。'
+    26 => '用此題目作保存檔的默認題目。只准許一個題目。',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################
@@ -879,7 +855,18 @@ $LANG28 = array(
     33 => '遞交',
     34 => '錯誤︰你必須指定上載檔案。',
     35 => '最後一次登入',
-    36 => '(從未)'
+    36 => '(從未)',
+    37 => 'UID',
+    38 => 'Group Listing',
+    39 => 'Password (again)',
+    40 => 'Registration Date',
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status',
+    47 => 'Edit'
 );
 
 ###############################################################################
@@ -1024,7 +1011,11 @@ $LANG32 = array(
     31 => '你肯定要刪除這個插件嗎？這麽會刪除所有有關這插件的檔、資料和資料結構。如果你肯定的，請再點擊下面表格中的刪除鈕。',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => '代碼版本',
-    34 => '更新'
+    34 => '更新',
+    35 => 'Edit',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1067,7 +1058,15 @@ $LANG33 = array(
     39 => '請填入文流標題, 說明, 和檔案名.',
     40 => '請輸入條目數目或小時數目.',
     41 => '連結',
-    42 => '事件'
+    42 => '事件',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit',
+    49 => 'Feed Logo',
+    50 => "Relative to site url ({$_CONF['site_url']})"
 );
 
 ###############################################################################
@@ -1134,7 +1133,21 @@ $MESSAGE = array(
     58 => '你的文流已成功的保存了.',
     59 => '你的文流已成功的刪除了.',
     60 => '插件已經更新成功',
-    61 => '插件 %s: 不知名的資訊占位元符'
+    61 => '插件 %s: 不知名的資訊占位元符',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occurred when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.',
+    65 => 'Weblog directory service successfully saved.',
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
+    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
+    74 => 'The pingback has been successfully sent.',
+    75 => 'Trackbacks must be sent using a POST request.'
 );
 
 ###############################################################################
@@ -1194,7 +1207,16 @@ $LANG_ACCESS = array(
     'availmembers' => '可用的成員',
     'groupmembers' => '小組成員',
     'canteditgroup' => '若要修改此小組, 你必要時這個小組的成員. 若你認為這是錯誤, 請你聯絡系統管理員.',
-    'cantlistgroup' => '要看此小組的會員，你必須是此小組的會員。你若認為這是錯誤，請聯絡系統管理員。'
+    'cantlistgroup' => '要看此小組的會員，你必須是此小組的會員。你若認為這是錯誤，請聯絡系統管理員。',
+    'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID',
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Group name already exists',
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
 );
 
 ###############################################################################
@@ -1204,9 +1226,8 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => '最後十個備份',
     'do_backup' => '做備份',
     'backup_successful' => '資料庫備份完成。',
-    'no_backups' => '沒有備份',
     'db_explanation' => '要做新的 Geeklog 備份，點擊以下的按鈕',
-    'not_found' => "不正確的路徑或 mysqldump 程式不可執行。<br>檢查<strong>$_DB_mysqldump_path</strong>定義在 config.php.<br>變數現在被定義為︰<var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "不正確的路徑或 mysqldump 程式不可執行。<br>檢查<strong>{$_DB_mysqldump_path}</strong>定義在 config.php.<br>變數現在被定義為︰<var>{$_DB_mysqldump_path}</var>",
     'zero_size' => '備份失敗︰檔案是 0 大小',
     'path_not_found' => "{$_CONF['backup_path']} 不存在或不是目錄",
     'no_access' => "錯誤︰目錄 {$_CONF['backup_path']} ，不能存取。",
@@ -1228,7 +1249,8 @@ $LANG_BUTTONS = array(
     7 => '本站統計資料',
     8 => '個人化',
     9 => '搜索',
-    10 => '進階搜尋'
+    10 => '進階搜尋',
+    11 => 'Directory'
 );
 
 ###############################################################################
@@ -1257,17 +1279,223 @@ $LANG_PDF = array(
     1 => 'PDF 版本的作用已被禁止',
     2 => '所提供的檔沒有呈遞。檔已收到，但是無法處理。請肯定你所提交的檔是 html 格式的檔寫於 xHTML 的標準。請注意過分複雜的 html 檔也可能無法正確呈遞。你的檔提交的結果是 0 bytes 而且已被刪除。你若肯定你的檔應該順利的呈遞，其再次提交。',
     3 => '不知名的PDF 檔製作錯誤。',
-    4 => "沒提供頁數資料或你要用以下的特別 PDF 製作工具。若你認為你所得到的這頁是錯誤。 請聯絡系統管理員。要不然，你可用以下的表格來特別製作 PDF。",
+    4 => '沒提供頁數資料或你要用以下的特別 PDF 製作工具。若你認為你所得到的這頁是錯誤。 請聯絡系統管理員。要不然，你可用以下的表格來特別製作 PDF。',
     5 => '正在裝置你的檔。',
     6 => '你的檔被裝置時請等待。',
     7 => '你可用右擊以下的按鈕，然後選 \'save target...\' or \'save link location...\' 來存續你的檔的一個拷貝。',
-    8 => "在配置檔案裏的 HTMLDoc二進位檔案路徑有錯誤，或此系統無法執行此檔案。若此問題繼續發生，請聯絡網站管理員。",
+    8 => '在配置檔案裏的 HTMLDoc二進位檔案路徑有錯誤，或此系統無法執行此檔案。若此問題繼續發生，請聯絡網站管理員。',
     9 => 'PDF 製作器',
-    10 => "這是特別的 PDF 製作工具。它會將任何 URL 轉換成 PDF 版本。請注意，有些網頁不會正確的被這工具處理成功。這是 HTMLDoc PDF 製作工具的有限之處，而這樣的錯誤不需要報告給此網站的管理員。",
+    10 => '這是特別的 PDF 製作工具。它會將任何 URL 轉換成 PDF 版本。請注意，有些網頁不會正確的被這工具處理成功。這是 HTMLDoc PDF 製作工具的有限之處，而這樣的錯誤不需要報告給此網站的管理員。',
     11 => 'URL',
     12 => '製作 PDF!',
     13 => '此伺服器的 PHP 配置不准許 fopen() 命令用在 URL 上。 系統管理員必須先修改  php.ini 檔案，然後設定 allow_url_fopen 到 On',
     14 => '你要求的 PDF 不存在或你在非法的入取一個檔案。'
+);
+
+###############################################################################
+# trackback.php
+
+$LANG_TRB = array(
+    'trackback' => 'Trackback',
+    'from' => 'from',
+    'tracked_on' => 'Tracked on',
+    'read_more' => '[read more]',
+    'intro_text' => 'Here\'s what others have to say about \'%s\':',
+    'no_comments' => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments' => '%d trackback comments',
+    'send_trackback' => 'Send Pings',
+    'preview' => 'Preview',
+    'editor_title' => 'Send trackback comment',
+    'trackback_url' => 'Trackback URL',
+    'entry_url' => 'Entry URL',
+    'entry_title' => 'Entry Title',
+    'blog_name' => 'Site Name',
+    'excerpt' => 'Excerpt',
+    'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
+    'button_send' => 'Send',
+    'button_preview' => 'Preview',
+    'send_error' => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing' => 'No Entry URL',
+    'url_required' => 'Please enter at least a URL for the entry.',
+    'target_missing' => 'No Trackback URL',
+    'target_required' => 'Please enter a trackback URL',
+    'error_socket' => 'Could not open socket.',
+    'error_response' => 'Response not understood.',
+    'error_unspecified' => 'Unspecified error.',
+    'select_url' => 'Select Trackback URL',
+    'not_found' => 'Trackback URL not found',
+    'autodetect_failed' => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
+    'trackback_explain' => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
+    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'pingback' => 'Pingback',
+    'pingback_results' => 'Pingback results',
+    'send_pings' => 'Send Pings',
+    'send_pings_for' => 'Send Pings for "%s"',
+    'no_links_pingback' => 'No links found. No Pingbacks were sent for this entry.',
+    'pingback_success' => 'Pingback sent.',
+    'no_pingback_url' => 'No pingback URL found.',
+    'resend' => 'Resend',
+    'ping_all_explain' => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'pingback_button' => 'Send Pingback',
+    'pingback_short' => 'Send Pingbacks to all sites linked from this entry.',
+    'pingback_disabled' => '(Pingback disabled)',
+    'ping_button' => 'Send Ping',
+    'ping_short' => 'Ping weblog directory services.',
+    'ping_disabled' => '(Ping disabled)',
+    'trackback_button' => 'Send Trackback',
+    'trackback_short' => 'Send a Trackback comment.',
+    'trackback_disabled' => '(Trackback disabled)',
+    'may_take_a_while' => 'Please note that sending Pingbacks and Pings may take a while.',
+    'ping_results' => 'Ping results',
+    'unknown_method' => 'Unknown ping method',
+    'ping_success' => 'Ping sent.',
+    'error_site_name' => 'Please enter the site\'s name.',
+    'error_site_url' => 'Please enter the site\'s URL.',
+    'error_ping_url' => 'Please enter a valid Ping URL.',
+    'no_services' => 'No weblog directory services configured.',
+    'services_headline' => 'Weblog Directory Services',
+    'service_explain' => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service, click on "Create New" above.',
+    'service' => 'Service',
+    'ping_method' => 'Ping method',
+    'service_website' => 'Website',
+    'service_ping_url' => 'URL to ping',
+    'ping_standard' => 'Standard Ping',
+    'ping_extended' => 'Extended Ping',
+    'ping_unknown' => '(unknown method)',
+    'edit_service' => 'Edit Weblog Directory Service',
+    'trackbacks' => 'Trackbacks',
+    'editor_intro' => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none' => 'Prepare your trackback comment.',
+    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'pingback_url' => 'Pingback URL',
+    'site_url' => 'This site\'s URL',
+    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pbtarget_missing' => 'No Pingback URL',
+    'pbtarget_required' => 'Please enter a pingback URL',
+    'pb_error_details' => 'Error when sending the pingback:'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array(
+    'title' => 'Article Directory',
+    'title_year' => 'Article Directory for %d',
+    'title_month_year' => 'Article Directory for %s %d',
+    'nav_top' => 'Back to Article Directory',
+    'no_articles' => 'No articles.'
+);
+
+###############################################################################
+# "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
+
+$LANG_WHATSNEW = array(
+    'new_string' => '%n new %i in the last %t %s',
+    'new_last' => 'last %t %s',
+    'minutes' => 'minutes',
+    'hours' => 'hours',
+    'days' => 'days',
+    'weeks' => 'weeks',
+    'months' => 'months',
+    'minute' => 'minute',
+    'hour' => 'hour',
+    'day' => 'day',
+    'week' => 'week',
+    'month' => 'month'
+);
+
+###############################################################################
+# Admin - Strings
+# 
+# These are some standard strings used by core functions as well as plugins to
+# display administration lists and edit pages
+
+$LANG_ADMIN = array(
+    'search' => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit' => 'Submit',
+    'edit' => 'Edit',
+    'admin_home' => 'Admin Home',
+    'create_new' => 'Create New',
+    'enabled' => 'Enabled',
+    'title' => 'Title',
+    'type' => 'Type',
+    'topic' => 'Topic',
+    'help_url' => 'Help File URL',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'copy' => 'Copy',
+    'no_results' => '- No entries found -',
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+);
+
+###############################################################################
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0 => 'Comments Enabled',
+    -1 => 'Comments Disabled'
+);
+
+
+$LANG_commentmodes = array(
+    'flat' => 'Flat',
+    'nested' => 'Nested',
+    'threaded' => 'Threaded',
+    'nocomment' => 'No Comments'
+);
+
+$LANG_cookiecodes = array(
+    0 => '(don\'t)',
+    3600 => '1 Hour',
+    7200 => '2 Hours',
+    10800 => '3 Hours',
+    28800 => '8 Hours',
+    86400 => '1 Day',
+    604800 => '1 Week',
+    2678400 => '1 Month'
+);
+
+$LANG_dateformats = array(
+    0 => 'System Default'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Not Featured',
+    1 => 'Featured'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Show Only in Topic',
+    1 => 'Show on Front Page'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'Plain Old Text',
+    'html' => 'HTML Formatted'
+);
+
+$LANG_sortcodes = array(
+    'ASC' => 'Oldest First',
+    'DESC' => 'Newest First'
+);
+
+$LANG_trackbackcodes = array(
+    0 => 'Trackback Enabled',
+    -1 => 'Trackback Disabled'
 );
 
 ?>
