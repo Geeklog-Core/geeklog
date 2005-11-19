@@ -205,13 +205,13 @@
                     $xml .= $ext."\n";
                 }
             } else {
-                $xml .= $ext."\n";
+                $xml .= $value."\n";
             }
         }
 
       }
       $xml .= "</article>\n";
-      return $xl;
+      return $xml;
     }
 
     /**
