@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.131 2005/11/13 21:13:20 mjervis Exp $
+// $Id: user.php,v 1.132 2005/11/19 04:26:46 vinny Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -341,7 +341,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                                 $imgpath . $newphoto) === false) {
                         $display = COM_siteHeader ('menu');
                         $display .= COM_errorLog ('Could not rename userphoto "'
-                                        . $photo . '" to "' . $newphoto . '".');
+                                        . $curphoto . '" to "' . $newphoto . '".');
                         $display .= COM_siteFooter ();
                         return $display;
                     }
