@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.41 2005/11/12 13:33:29 dhaun Exp $
+// $Id: upload.class.php,v 1.42 2005/11/19 04:26:00 vinny Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -841,7 +841,7 @@ class upload
     {
         if (is_array($validIPS)) {
             $this->_limitByIP = true;
-            $this->_allowedIPS = $valid_IPS;
+            $this->_allowedIPS = $validIPS;
             return true;
         } else {
             $this->_addError('Bad call to method limitByIP(), must pass array of valid IP addresses');
