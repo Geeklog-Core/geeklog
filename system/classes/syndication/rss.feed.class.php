@@ -300,7 +300,7 @@
           $xml .= '<description>'.$this->_safeXML( $article['summary'] )."</description>\n";
         }
       }
-      if( is_array($article['extensions']) )
+      if( isset($article['extensions']) &&  is_array($article['extensions']) )
       {
         foreach( $article['extensions'] as $extensionTag )
         {
