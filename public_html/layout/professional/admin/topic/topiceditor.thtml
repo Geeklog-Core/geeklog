@@ -30,7 +30,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_archivetopic}:</td>
-                                        <td><input type="checkbox" name="is_archive" value="1" {archive_checked} {archive_disabled}> ({lang_archivetext})</td>
+                                        <td><input type="checkbox" name="is_archive" {archive_checked} {archive_disabled}> ({lang_archivetext})</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><hr><td>
