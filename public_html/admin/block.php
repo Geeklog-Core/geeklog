@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | block.php                                                                 |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.85 2005/11/17 15:00:21 ospiess Exp $
+// $Id: block.php,v 1.86 2005/11/19 14:08:25 dhaun Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -659,7 +659,7 @@ function deleteBlock ($bid)
 // MAIN
 $mode = '';
 if (!empty($_REQUEST['mode'])) {
-    $bid = $_REQUEST['mode'];
+    $mode = $_REQUEST['mode'];
 }
 
 $bid = '';
