@@ -163,7 +163,8 @@ $LANG01 = array(
     119 => "<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">パスワードの再発行</a>?",
     120 => 'このコメントへの永続リンク（Permanent link）',
     121 => 'コメント (%d件)',
-    122 => 'トラックバック (%d件)'
+    122 => 'トラックバック (%d件)',
+    123 => 'All HTML is allowed'
 
 );
 
@@ -366,18 +367,6 @@ $LANG05 = array(
 );
 
 ###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => '投票が登録されました',
-    2 => '今の投票が登録されました',
-    3 => '投票する',
-    4 => '件の投票を募集中',
-    5 => '件の投票',
-    6 => '他の投票を見る'
-);
-
-###############################################################################
 # profiles.php
 
 $LANG08 = array(
@@ -516,7 +505,11 @@ $LANG10 = array(
     24 => '友達に紹介された記事はないようです',
     25 => 'トラックバックが多い記事（上位10件）',
     26 => 'トラックバックはありません',
-    27 => '登録ユーザーの数'
+    27 => '登録ユーザーの数',
+    28 => 'Top Ten Events',
+    29 => 'Event',
+    30 => 'Hits',
+    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
 ###############################################################################
@@ -673,7 +666,8 @@ $LANG21 = array(
     61 => 'タイトルなし',
     62 => 'Article Limit',
     63 => 'Bad Block Title',
-    64 => 'タイトルは空欄ではいけませんし、HTMLを含んでもいけません。'
+    64 => 'タイトルは空欄ではいけませんし、HTMLを含んでもいけません。',
+    65 => 'Order'
 );
 
 ###############################################################################
@@ -1025,7 +1019,11 @@ $LANG32 = array(
     32 => '<p><b>AutoLingタグのフォーマットが正しくありません。</b></p>',
     33 => '最新のバージョン',
     34 => '更新',
-    35 => '編集'
+    35 => '編集',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
+
 );
 
 ###############################################################################
@@ -1224,7 +1222,10 @@ $LANG_ACCESS = array(
     'submit' => '登録',
     'limitresults' => '結果の絞り込み',
     'group_id' => 'Group ID',
-    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.'
+    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Group name already exists',
+    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
+
 );
 
 ###############################################################################
@@ -1305,90 +1306,90 @@ $LANG_PDF = array(
 # trackback
 
 $LANG_TRB = array (
-    'trackback'          => 'Trackback',
+    'trackback'          => 'トラックバック',
     'from'               => 'from',
     'tracked_on'         => 'Tracked on',
-    'read_more'          => '[read more]',
+    'read_more'          => '[続きを読む]',
     'intro_text'         => "Here's what others have to say about '%s':",
-    'no_comments'        => 'No trackback comments for this entry.',
-    'this_trackback_url' => 'Trackback URL for this entry:',
-    'num_comments'       => '%d trackback comments',
-    'send_trackback'     => 'Send Pings',
-    'preview'            => 'Preview',
-    'editor_title'       => 'Send trackback comment',
-    'trackback_url'      => 'Trackback URL',
-    'entry_url'          => 'Entry URL',
-    'entry_title'        => 'Entry Title',
-    'blog_name'          => 'Site Name',
-    'excerpt'            => 'Excerpt',
-    'truncate_warning'   => 'Note: The receiving site may truncate your excerpt',
-    'button_send'        => 'Send',
-    'button_preview'     => 'Preview',
-    'send_error'         => 'Error',
-    'send_error_details' => 'Error when sending trackback comment:',
-    'url_missing'        => 'No Entry URL',
-    'url_required'       => 'Please enter at least a URL for the entry.',
-    'target_missing'     => 'No Trackback URL',
-    'target_required'    => 'Please enter a trackback URL',
-    'error_socket'       => 'Could not open socket.',
-    'error_response'     => 'Response not understood.',
-    'error_unspecified'  => 'Unspecified error.',
-    'select_url'         => 'Select Trackback URL',
-    'not_found'          => 'Trackback URL not found',
-    'autodetect_failed'  => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
-    'trackback_explain'  => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
-    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'no_comments'        => 'このエントリにはトラックバックがありません。',
+    'this_trackback_url' => 'このエントリのトラックバックURL:',
+    'num_comments'       => '%d件のトラックバック',
+    'send_trackback'     => 'Pingを送る',
+    'preview'            => 'プレビュー',
+    'editor_title'       => 'トラックバックを送る',
+    'trackback_url'      => 'トラックバックURL',
+    'entry_url'          => 'エントリのURL',
+    'entry_title'        => 'エントリのタイトル',
+    'blog_name'          => 'サイト名',
+    'excerpt'            => '概要',
+    'truncate_warning'   => '注: 受信したサイト側で概要を切り詰めることがあります',
+    'button_send'        => '送信',
+    'button_preview'     => 'プレビュー',
+    'send_error'         => 'エラー',
+    'send_error_details' => 'トラックバックの送信中にエラーが発生しました:',
+    'url_missing'        => 'エントリのURL',
+    'url_required'       => 'エントリのURLは必ず入力してください。',
+    'target_missing'     => 'トラックバックURLがありません',
+    'target_required'    => 'トラックバックURLを入力してください',
+    'error_socket'       => 'ソケットをオープンできませんでした。',
+    'error_response'     => '不明な応答が返されました。',
+    'error_unspecified'  => '不明なエラーです。',
+    'select_url'         => 'トラックバックURLを選択してください',
+    'not_found'          => 'トラックバックURLが見つかりません',
+    'autodetect_failed'  => 'コメントを送ろうとした記事のトラックバックURLを見つけられませんでした。URLを下に入力してください。',
+    'trackback_explain'  => '以下のリンクからトラックバックを送りたいURLを選択してください。その記事の正しいトラックバックURLを決定します。URLがわかっているなら<a href="%s">自分で入力</a>することもできます。',
+    'no_links_trackback' => 'リンクが見つかりません。このエントリにトラックバックを送信できません。',
     'pingback'           => 'Pingback',
-    'pingback_results'   => 'Pingback results',
-    'send_pings'         => 'Send Pings',
-    'send_pings_for'     => 'Send Pings for "%s"',
-    'no_links_pingback'  => 'No links found. No Pingbacks were sent for this entry.',
-    'pingback_success'   => 'Pingback sent.',
-    'no_pingback_url'    => 'No pingback URL found.',
-    'resend'             => 'Resend',
-    'ping_all_explain'   => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
-    'pingback_button'    => 'Send Pingback',
-    'pingback_short'     => 'Send Pingbacks to all sites linked from this entry.',
-    'pingback_disabled'  => '(Pingback disabled)',
-    'ping_button'        => 'Send Ping',
-    'ping_short'         => 'Ping weblog directory services.',
-    'ping_disabled'      => '(Ping disabled)',
-    'trackback_button'   => 'Send Trackback',
-    'trackback_short'    => 'Send a Trackback comment.',
-    'trackback_disabled' => '(Trackback disabled)',
-    'may_take_a_while'   => 'Please note that sending Pingbacks and Pings may take a while.',
-    'ping_results'       => 'Ping results',
-    'unknown_method'     => 'Unknown ping method',
-    'ping_success'       => 'Ping sent.',
-    'error_site_name'    => 'Please enter the site\'s name.',
-    'error_site_url'     => 'Please enter the site\'s URL.',
-    'error_ping_url'     => 'Please enter a valid Ping URL.',
-    'no_services'        => 'No weblog directory services configured.',
-    'services_headline'  => 'Weblog Directory Services',
-    'admin_home'         => 'Admin Home',
-    'new_service'        => 'New Service',
-    'service_explain'    => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service click on New Service above.',
-    'service'            => 'Service',
-    'ping_method'        => 'Ping method',
-    'service_enabled'    => 'Enabled',
-    'service_website'    => 'Website',
-    'service_ping_url'   => 'URL to ping',
+    'pingback_results'   => 'Pingbackの結果',
+    'send_pings'         => 'Pingを送信',
+    'send_pings_for'     => '"%s"にpingを送信',
+    'no_links_pingback'  => 'リンクが見つかりません。このエントリへのpingbackは送信されませんでした。',
+    'pingback_success'   => 'Pingbackを送信しました。',
+    'no_pingback_url'    => 'Pingback URLが見つかりません。',
+    'resend'             => '再送',
+    'ping_all_explain'   => 'あなたがリンクしたことを相手のサイトに知らせたり(<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>)、Weblogディレクトリサービスにpingを送ってサイトが更新されたことを知らせたり、誰かのサイトの記事について書いたときに<a href="http://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A9%E3%83%83%E3%82%AF%E3%83%90%E3%83%83%E3%82%AF">トラックバック</a>を送ったりすることができます。',
+    'pingback_button'    => 'Pingbackを送信',
+    'pingback_short'     => 'このエントリからリンクされたすべてのサイトにPingbackを送信',
+    'pingback_disabled'  => '(Pingbackは無効です)',
+    'ping_button'        => 'Pingを送信',
+    'ping_short'         => 'WeblogディレクトリサービスにPing。',
+    'ping_disabled'      => '(Pingは無効です)',
+    'trackback_button'   => 'トラックバックを送信',
+    'trackback_short'    => 'トラックバックを送信。',
+    'trackback_disabled' => '(トラックバックは無効です)',
+    'may_take_a_while'   => 'PingbackやPingの送信は時間がかかります。ご注意ください。',
+    'ping_results'       => 'Pingの結果',
+    'unknown_method'     => '不明なPingメソッドです。',
+    'ping_success'       => 'Pingを送信しました。',
+    'error_site_name'    => 'サイト名を入力してください。',
+    'error_site_url'     => 'サイトのURLを入力してください。',
+    'error_ping_url'     => '正しいPing URLを入力してください。',
+    'no_services'        => 'Weblogディレクトリサービスが設定されていません。',
+    'services_headline'  => 'Weblogディレクトリサービス',
+    'admin_home'         => '管理画面',
+    'new_service'        => '新規サービス',
+    'service_explain'    => 'Weblogディレクトリサービス修正・削除する場合は、編集アイコンをクリックしてください。新しいWeblogディレクトリサービスを作成する場合は、「新規サービス」をクリックしてください。',
+    'service'            => 'サービス',
+    'ping_method'        => 'Pingメソッド',
+    'service_enabled'    => '有効にする',
+    'service_website'    => 'Webサイト',
+    'service_ping_url'   => 'Ping URL',
     'ping_standard'      => 'Standard Ping',
     'ping_extended'      => 'Extended Ping',
-    'ping_unknown'       => '(unknown method)',
-    'edit_service'       => 'Edit Weblog Directory Service',
-    'button_save'        => 'Save',
-    'button_cancel'      => 'Cancel',
-    'button_delete'      => 'Delete',
-    'trackbacks'         => 'Trackbacks',
-    'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.',
-    'editor_intro_none'  => 'Prepare your trackback comment.',
-    'trackback_note'     => 'To send a trackback comment for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
-    'edit'               => 'Edit',
-    'search'             => 'Search',
-    'limit_results'      => 'Limit Results',
-    'submit'             => 'Submit',
-    'pingback_explain'   => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'ping_unknown'       => '(不明なメソッド)',
+    'edit_service'       => 'Weblogディレクトリサービスの編集',
+    'button_save'        => '保存',
+    'button_cancel'      => 'キャンセル',
+    'button_delete'      => '削除',
+    'trackbacks'         => 'トラックバック',
+    'editor_intro'       => '<a href="%s">%s</a>へのトラックバックを準備してください。',
+    'editor_intro_none'  => 'トラックバックを準備してください。',
+    'trackback_note'     => '記事にトラックバックを送るには、記事一覧でその記事の"' . $LANG24[21] . '"をクリックしてください。 記事に関係のないトラックバックを送るには <a href="%s">ここをクリック</a>。',
+    'edit'               => '編集',
+    'search'             => '検索',
+    'limit_results'      => '結果を制限する',
+    'submit'             => '送信',
+    'pingback_explain'   => 'PngbackするURLを記入してください。The pingback will point to your site\'s homepage.',
     'pingback_url'       => 'Pingback URL',
     'site_url'           => 'This site\'s URL',
     'pingback_note'      => 'To send a pingback for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
@@ -1433,5 +1434,31 @@ $LANG_WHATSNEW = array (
     'month'       => 'ヶ月'
 );
 
+################################################################################
+# Admin - Strings
+#
+# These are some standard strings used by core functions as well as plugins to
+# display adminiatration lists and edit pages
+
+$LANG_ADMIN = array (
+    'search'        => 'Search',
+    'limit_results' => 'Limit Results',
+    'submit'        => 'Submit',
+    'edit'          => 'Edit',
+    'admin_home'    => 'Admin Home',
+    'create_new'    => 'Create New',
+    'enabled'       => 'Enabled',
+    'title'         => 'Title',
+    'type'          => 'Type',
+    'topic'         => 'Topic',
+    'help_url'      => 'Help File URL',
+    'save'          => 'Save',
+    'cancel'        => 'Cancel',
+    'delete'        => 'Delete',
+    'copy'          => 'Copy',
+    'no_results'    => '- No entries found -',
+    'data_error'    => 'There was an error processing the subscription data. Please check the data source.'
+
+);
 
 ?>
