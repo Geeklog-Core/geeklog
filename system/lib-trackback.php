@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.15 2005/11/13 21:41:05 dhaun Exp $
+// $Id: lib-trackback.php,v 1.16 2005/11/19 04:23:30 vinny Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -543,7 +543,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
 
     $sock = fsockopen ($target['host'], $target['port']);
     if (!is_resource ($sock)) {
-        COM_errorLog ('Trackback: Could not connect to ' . $t);
+        COM_errorLog ('Trackback: Could not connect to ' . $targeturl);
 
         return $LANG_TRB['error_socket'];
     }
