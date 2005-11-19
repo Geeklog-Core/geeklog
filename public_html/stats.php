@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.41 2005/11/14 10:36:02 ospiess Exp $
+// $Id: stats.php,v 1.42 2005/11/19 14:42:02 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -186,31 +186,33 @@ if ($nrows > 0) {
 
 // Top Ten Trackback Comments
 
-$result = DB_query ("SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title,COUNT(*) AS count FROM {$_TABLES['stories']},{$_TABLES['trackback']} AS t WHERE (draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ({$_TABLES['stories']}.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid ORDER BY count DESC LIMIT 10");
-$nrows = DB_numRows ($result);
-if ($nrows > 0) {
-    $header_arr = array(
-        array('text' => $LANG10[8], 'field' => 'sid'),
-        array('text' => $LANG10[12], 'field' => 'count'),
-    );
-    $data_arr = array();
-    $text_arr = array('has_menu'     =>  false,
-                      'title'        => $LANG10[25],
-    );
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
-        $A['count'] = COM_NumberFormat ($A['count']);
-        $data_arr[$i] = $A;
-        $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
-    }
+if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
+    $result = DB_query ("SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title,COUNT(*) AS count FROM {$_TABLES['stories']},{$_TABLES['trackback']} AS t WHERE (draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ({$_TABLES['stories']}.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid ORDER BY count DESC LIMIT 10");
+    $nrows = DB_numRows ($result);
+    if ($nrows > 0) {
+        $header_arr = array(
+            array('text' => $LANG10[8], 'field' => 'sid'),
+            array('text' => $LANG10[12], 'field' => 'count'),
+        );
+        $data_arr = array();
+        $text_arr = array('has_menu'     =>  false,
+                          'title'        => $LANG10[25],
+        );
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);
+            $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                      . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+            $A['count'] = COM_NumberFormat ($A['count']);
+            $data_arr[$i] = $A;
+            $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+        }
 
-} else {
-    $display .= COM_startBlock ($LANG10[25]);
-    $display .= $LANG10[26];
-    $display .= COM_endBlock ();
+    } else {
+        $display .= COM_startBlock ($LANG10[25]);
+        $display .= $LANG10[26];
+        $display .= COM_endBlock ();
+    }
 }
 
 // Top Ten Emailed Stories
