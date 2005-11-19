@@ -666,7 +666,7 @@ $LANG21 = array(
     62 => 'Artikel-Limit',
     63 => 'Block-Titel nicht erlaubt',
     64 => 'Der Titel kann nicht leer sein und darf kein HTML enthalten!',
-    65 => 'Order'
+    65 => 'Reihenfolge'
 );
 
 ###############################################################################
@@ -1061,7 +1061,7 @@ $LANG33 = array(
     42 => 'Termine',
     43 => 'Alle',
     44 => 'Keine',
-    45 => 'Header-link in topic',
+    45 => 'Feed-Link für Kategorie',
     46 => 'Limit Results',
     47 => 'Suchen',
     48 => 'Ändern',
@@ -1460,11 +1460,6 @@ $LANG_commentcodes = array(
     -1  => 'Keine Kommentare'
 );
 
-$LANG_trackbackcodes = array(
-    0   => 'Trackbacks erlaubt',
-    -1  => 'Keine Trackbacks'
-);
-
 $LANG_commentmodes = array(
     'flat'      => 'Flach',
     'nested'    => 'Verschachtelt',
@@ -1505,6 +1500,11 @@ $LANG_postmodes = array(
 $LANG_sortcodes = array(
     'ASC'  => 'Älteste zuerst',
     'DESC' => 'Neueste zuerst'
+);
+
+$LANG_trackbackcodes = array(
+    0   => 'Trackbacks erlaubt',
+    -1  => 'Keine Trackbacks'
 );
 
 ?>
