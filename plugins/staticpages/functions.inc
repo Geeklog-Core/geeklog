@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.58 2005/11/18 19:58:00 dhaun Exp $
+// $Id: functions.inc,v 1.59 2005/11/19 20:20:36 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -145,7 +145,7 @@ function plugin_showstats_staticpages($showsitestats)
     if ($nrows > 0) {
         $header_arr = array(
             array('text' => $LANG_STATIC['stats_page_title'], 'field' => 'sid'),
-            array('text' => $LANG_STATIC['stats_hits'], 'field' => 'sp_title'),
+            array('text' => $LANG_STATIC['stats_hits'], 'field' => 'sp_hits'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     => false,
