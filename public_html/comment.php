@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.98 2005/09/29 02:19:44 vinny Exp $
+// $Id: comment.php,v 1.99 2005/11/19 03:56:08 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -86,8 +86,8 @@ function handleSubmit() {
 
             if ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
                 $display .= COM_siteHeader()
-                    . CMT_commentform ($uid, $title, $comment, $sid, $pid, 
-                            $type, $LANG03[14], $postmode)
+                    . CMT_commentform ($_USER['uid'], $_POST['title'], $_POST['comment'], $sid, 
+                                       $_POST['pid'], $type, $LANG03[14], $_POST['postmode'])
                     . COM_siteFooter();
             } else { // success
                 $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
