@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.34 2005/11/18 13:56:58 dhaun Exp $
+// $Id: functions.inc,v 1.35 2005/11/19 04:05:11 vinny Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -102,7 +102,7 @@ function plugin_commentsupport_polls()
  */
 function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 {
-    global $_CONF, $_TABLES, $LANG03;
+    global $_CONF, $_TABLES, $LANG03, $_USER;
 
     $retval = '';
 
@@ -115,8 +115,8 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     $ret = CMT_saveComment ($title, $comment, $id, $pid, 'polls', $postmode);
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= COM_siteHeader()
-            . CMT_commentForm ($uid, $title, $comment, $id, $pid,
-                    $type, $LANG03[14], $postmode)
+            . CMT_commentForm ($_USER['uid'], $title, $comment, $id, $pid,
+                    'polls', $LANG03[14], $postmode)
             . COM_siteFooter();
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
