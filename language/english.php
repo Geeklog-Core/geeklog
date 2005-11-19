@@ -1435,4 +1435,60 @@ $LANG_ADMIN = array (
 
 );
 
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0   => 'Comments Enabled',
+    -1  => 'Comments Disabled'
+);
+
+$LANG_commentmodes = array(
+    'flat'      => 'Flat',
+    'nested'    => 'Nested',
+    'threaded'  => 'Threaded',
+    'nocomment' => 'No Comments'
+);
+
+$LANG_cookiecodes = array(
+    0       => '(don\'t)',
+    3600    => '1 Hour',
+    7200    => '2 Hours',
+    10800   => '3 Hours',
+    28800   => '8 Hours',
+    86400   => '1 Day',
+    604800  => '1 Week',
+    2678400 => '1 Month'
+);
+
+$LANG_dateformats = array(
+    0   => 'System Default'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Not Featured',
+    1 => 'Featured'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Show Only in Topic',
+    1 => 'Show on Front Page'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'Plain Old Text',
+    'html'      => 'HTML Formatted'
+);
+
+$LANG_sortcodes = array(
+    'ASC'  => 'Oldest First',
+    'DESC' => 'Newest First'
+);
+
+$LANG_trackbackcodes = array(
+    0   => 'Trackback Enabled',
+    -1  => 'Trackback Disabled'
+);
+
 ?>

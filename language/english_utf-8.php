@@ -9,7 +9,7 @@
 # jwhitten AT securitygeeks DOT com
 #
 # Converted to Unicode (UTF-8) by Samuel M Stone <sam AT stonemicro DOT com>
-# 
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -366,18 +366,6 @@ $LANG05 = array(
 );
 
 ###############################################################################
-# pollbooth.php
-
-$LANG07 = array(
-    1 => 'Vote Saved',
-    2 => 'Your vote was saved for the poll',
-    3 => 'Vote',
-    4 => 'Polls in System',
-    5 => 'Votes',
-    6 => 'View other poll questions'
-);
-
-###############################################################################
 # profiles.php
 
 $LANG08 = array(
@@ -686,7 +674,7 @@ $LANG21 = array(
 $LANG22 = array(
     1 => 'Event Editor',
     2 => 'Error',
-    3 => '',
+    3 => 'Post Mode',
     4 => 'Event URL',
     5 => 'Event Start Date',
     6 => 'Event End Date',
@@ -696,7 +684,7 @@ $LANG22 = array(
     10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
     12 => 'To modify or delete an event, click on that event\'s edit icon below.  To create a new event, click on "Create New" above. Click on the copy icon to create a copy of an existing event.',
-    13 => '',
+    13 => 'Author',
     14 => 'Start Date',
     15 => 'End Date',
     16 => '',
@@ -1024,7 +1012,10 @@ $LANG32 = array(
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
     34 => 'Update',
-    35 => 'Edit'
+    35 => 'Edit',
+    36 => 'Code',
+    37 => 'Data',
+    38 => 'Update!'
 );
 
 ###############################################################################
@@ -1235,7 +1226,6 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Last 10 Backups',
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
-    'no_backups' => 'No backups in the system',
     'db_explanation' => 'To create a new backup of your site\'s database, click on "Create New" above.',
     'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
@@ -1442,8 +1432,65 @@ $LANG_ADMIN = array (
     'cancel'        => 'Cancel',
     'delete'        => 'Delete',
     'copy'          => 'Copy',
-    'no_results'    => '- No entries found -'
+    'no_results'    => '- No entries found -',
+    'data_error'    => 'There was an error processing the subscription data. Please check the data source.'
 
+);
+
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0   => 'Comments Enabled',
+    -1  => 'Comments Disabled'
+);
+
+$LANG_commentmodes = array(
+    'flat'      => 'Flat',
+    'nested'    => 'Nested',
+    'threaded'  => 'Threaded',
+    'nocomment' => 'No Comments'
+);
+
+$LANG_cookiecodes = array(
+    0       => '(don\'t)',
+    3600    => '1 Hour',
+    7200    => '2 Hours',
+    10800   => '3 Hours',
+    28800   => '8 Hours',
+    86400   => '1 Day',
+    604800  => '1 Week',
+    2678400 => '1 Month'
+);
+
+$LANG_dateformats = array(
+    0   => 'System Default'
+);
+
+$LANG_featurecodes = array(
+    0 => 'Not Featured',
+    1 => 'Featured'
+);
+
+$LANG_frontpagecodes = array(
+    0 => 'Show Only in Topic',
+    1 => 'Show on Front Page'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'Plain Old Text',
+    'html'      => 'HTML Formatted'
+);
+
+$LANG_sortcodes = array(
+    'ASC'  => 'Oldest First',
+    'DESC' => 'Newest First'
+);
+
+$LANG_trackbackcodes = array(
+    0   => 'Trackback Enabled',
+    -1  => 'Trackback Disabled'
 );
 
 ?>
