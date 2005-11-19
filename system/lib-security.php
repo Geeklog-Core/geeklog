@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.44 2005/11/17 15:05:10 ospiess Exp $
+// $Id: lib-security.php,v 1.45 2005/11/19 04:20:39 vinny Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -579,7 +579,7 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
     if ($_SEC_VERBOSE) {
         COM_errorlog('perm_owner = ' . $perm_owner, 1);
         COM_errorlog('perm_group = ' . $perm_group, 1);
-        COM_errorlog('perm_member = ' . $perm_member, 1);
+        COM_errorlog('perm_member = ' . $perm_members, 1);
         COM_errorlog('perm_anon = ' . $perm_anon, 1);
         COM_errorLog('**** Leaving SEC_getPermissionValues ****', 1);
     }
@@ -718,14 +718,14 @@ function SEC_authenticate($username, $password, &$uid)
         } elseif ($U['status'] == 1) {
             // Awaiting user activation, activate:
             DB_change($_TABLES['users'],'status',3,'username',$username);
-            return $newstatus;
+            return 3;
         } else {
             return $U['status']; // just return their status
         }
     }
     else
     {
-        $tmp = $LANG01[32] . ": '" . $loginname . "'";
+        $tmp = $LANG01[32] . ": '" . $username . "'";
         COM_errorLog( $tmp, 1 );
         return -1;
     }
