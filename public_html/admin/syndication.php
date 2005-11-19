@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | syndication.php                                                           |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.31 2005/11/17 15:00:23 ospiess Exp $
+// $Id: syndication.php,v 1.32 2005/11/19 09:27:53 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -187,12 +187,21 @@ function editfeed ($fid = 0, $type = '')
         if (!empty ($type)) { // set defaults
             $A['fid'] = $fid;
             $A['type'] = $type;
+            $A['topic'] = '::all';
+            $A['header_tid'] = 'none';
             $A['format'] = 'RSS-2.0';
             $A['limits'] = $_CONF['rdf_limit'];
             $A['content_length'] = $_CONF['rdf_storytext'];
-            $A['language'] = $_CONF['rdf_language'];
+            $A['title'] = $_CONF['site_name'];
+            $A['description'] = $_CONF['site_slogan'];
+            $A['feedlogo'] = '';
+            $A['filename'] = '';
             $A['charset'] = $_CONF['default_charset'];
+            $A['language'] = $_CONF['rdf_language'];
             $A['is_enabled'] = 1;
+            $A['updated'] = '';
+            $A['update_info'] = '';
+            $A['date'] = time ();
         } else {
             return COM_refresh ($_CONF['site_admin_url'] . '/syndication.php');
         }
@@ -488,7 +497,7 @@ if (isset($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 if ($mode == 'edit') {
-    if ($_REQUEST['fid'] == 0) {
+    if (empty ($_REQUEST['fid'])) {
         $display .= newfeed ();
     } else {
         $display .= COM_siteHeader ('menu', $LANG33[24])
