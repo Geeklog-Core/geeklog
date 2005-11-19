@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.132 2005/11/19 04:26:46 vinny Exp $
+// $Id: user.php,v 1.133 2005/11/19 04:27:24 vinny Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -507,7 +507,7 @@ function importusers ($file)
                 $uid = USER_createAccount ($userName, $emailAddr, '',
                                            $fullName);
 
-                USER_createAndSendPassword ($username, $emailAddr, $uid);
+                USER_createAndSendPassword ($userName, $emailAddr, $uid);
 
                 if ($verbose_import) {
                     $retval .= "<br> Account for <b>$u_name</b> created successfully.<br>\n";
