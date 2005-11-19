@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.87 2005/11/17 03:56:25 vinny Exp $
+// $Id: lib-plugins.php,v 1.88 2005/11/19 03:37:48 vinny Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -231,6 +231,8 @@ function PLG_getMenuItems()
  * @return  array   string of URL of view page, name of unique identifier
  */
 function PLG_getCommentUrlId($type) {
+    global $_CONF;
+    
     $ret = PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type);
     if (empty($ret[0])) {
         $ret[0] = $_CONF['site_url'] . "/$type/index.php";
