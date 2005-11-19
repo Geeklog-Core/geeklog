@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.60 2005/11/17 15:00:22 ospiess Exp $
+// $Id: group.php,v 1.61 2005/11/19 04:09:59 vinny Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -80,7 +80,7 @@ if (!SEC_hasRights ('group.edit')) {
 */
 function editgroup($grp_id = '')
 {
-    global $_TABLES, $_CONF, $_USER, $LANG_ACCESS;
+    global $_TABLES, $_CONF, $_USER, $LANG_ACCESS, $VERBOSE;
 
     $retval = '';
 
