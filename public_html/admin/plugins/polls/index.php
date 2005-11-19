@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.21 2005/11/18 02:53:45 ospiess Exp $
+// $Id: index.php,v 1.22 2005/11/19 04:12:56 vinny Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -172,7 +172,7 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
         if ($_POLL_VERBOSE) {
             COM_errorLog('owner permissions: ' . $perm_owner, 1);
             COM_errorLog('group permissions: ' . $perm_group, 1);
-            COM_errorLog('member permissions: ' . $perm_member, 1);
+            COM_errorLog('member permissions: ' . $perm_members, 1);
             COM_errorLog('anonymous permissions: ' . $perm_anon, 1);
         }
 
