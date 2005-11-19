@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | topic.php                                                                 |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.55 2005/11/12 21:03:47 dhaun Exp $
+// $Id: topic.php,v 1.56 2005/11/19 11:06:04 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -65,6 +65,8 @@ if (!SEC_hasRights('topic.edit')) {
 function edittopic ($tid = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG27, $LANG_ACCESS;
+
+    $retval = '';
 
     if (!empty($tid)) {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid ='$tid'");
@@ -252,8 +254,11 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
         } else {
             $is_default = 0;
         }
-        // Only 1 topic can be the archive topic - so check if there already is one
-        if (DB_count($_TABLES['topics'],'archive_flag', '1') > 0) {
+
+        if ($is_archive == 'on') {
+            $is_archive = 1;
+            DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+        } else {
             $is_archive = 0;
         }
 
