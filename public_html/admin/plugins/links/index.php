@@ -2,18 +2,18 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Links Plugin 1.0                                                          |
 // +---------------------------------------------------------------------------+
-// | /admin/plugins/links/index.php                                            |
+// | index.php                                                                 |
 // |                                                                           |
 // | Geeklog links administration page.                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.19 2005/11/17 15:00:24 ospiess Exp $
+// $Id: index.php,v 1.20 2005/11/19 10:51:56 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -98,6 +98,10 @@ function editlink ($mode, $lid = '')
             $A = DB_fetchArray($result);
         } else {
             $A['lid'] = COM_makesid();
+            $A['category'] = '';
+            $A['url'] = '';
+            $A['description'] = '';
+            $A['title']= '';
         }
         $A['hits'] = 0;
         $A['owner_id'] = $_USER['uid'];
@@ -125,13 +129,14 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('link_url', $A['url']);
     $link_templates->set_var('lang_includehttp', $LANG_LINKS_ADMIN[6]);
     $link_templates->set_var('lang_category', $LANG_LINKS_ADMIN[5]);
-    $result    = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} GROUP BY category");
-    $nrows    = DB_numRows($result);
+    $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} GROUP BY category");
+    $nrows = DB_numRows($result);
 
-    $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">' . $LANG_LINKS_ADMIN[7] . '</option>';
+    $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">'
+           . $LANG_LINKS_ADMIN[7] . '</option>';
     if ($nrows > 0) {
-        for ($i = 1; $i <= $nrows; $i++) {
-            $C = DB_fetchArray($result);
+        for ($i = 0; $i < $nrows; $i++) {
+            $C = DB_fetchArray ($result);
             $category = $C['category'];
             $catdd .= '<option value="' . $category . '"';
             if ($A['category'] == $category) {
@@ -210,6 +215,8 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $MESSAGE, $LANG_LINKS_ADMIN;
 
+    $retval = '';
+
     // Convert array values to numeric permission values
     if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
@@ -221,7 +228,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
     $category = addslashes ($category);
 
     if (empty ($owner_id)) {
-        // this is new link form admin, set default values
+        // this is new link from admin, set default values
         $owner_id = $_USER['uid'];
         if (isset ($_GROUPS['Links Admin'])) {
             $group_id = $_GROUPS['Links Admin'];
@@ -232,6 +239,14 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         $perm_group = 2;
         $perm_members = 2;
         $perm_anon = 2;
+    }
+
+    if (empty ($lid)) {
+        if (empty ($old_lid)) {
+            $lid = COM_makeSid ();
+        } else {
+            $lid = $old_lid;
+        }
     }
 
     $access = 0;
@@ -275,11 +290,12 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         $retval .= COM_siteHeader('menu');
         $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
         if (DB_count ($_TABLES['links'], 'lid', $old_lid) > 0) {
-            $retval .= editlink ($mode, $old_lid);
+            $retval .= editlink ('edit', $old_lid);
         } else {
-            $retval .= editlink ($mode, '');
+            $retval .= editlink ('edit', '');
         }
         $retval .= COM_siteFooter();
+
         return $retval;
     }
 }
@@ -374,7 +390,11 @@ if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // del
     $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[1]);
-    $display .= editlink ($mode, COM_applyFilter ($_GET['lid']));
+    if (empty ($_GET['lid'])) {
+        $display .= editlink ($mode);
+    } else {
+        $display .= editlink ($mode, COM_applyFilter ($_GET['lid']));
+    }
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
