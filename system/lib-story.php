@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-story.php                                                             |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.51 2005/11/14 08:43:30 dhaun Exp $
+// $Id: lib-story.php,v 1.52 2005/11/19 12:37:29 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -73,13 +73,19 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     $A['day'] = $curtime[0];
 
     $introtext = stripslashes( $A['introtext'] );
-    $bodytext  = stripslashes( $A['bodytext'] );
+    $bodytext = '';
+    if( !empty( $A['bodytext'] ))
+    {
+        $bodytext  = stripslashes( $A['bodytext'] );
+    }
 
     // If plain text then replace newlines with <br> tags
     if( $A['postmode'] == 'plaintext' )
     {
         $introtext = nl2br( $introtext );
-        $bodytext  = nl2br( $bodytext );
+        if( !empty( $bodytext )) {
+            $bodytext  = nl2br( $bodytext );
+        }
     }
 
     $introtext = str_replace( '$', '&#36;', $introtext );

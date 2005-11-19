@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | story.php                                                                 |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.187 2005/11/17 15:41:45 ospiess Exp $
+// $Id: story.php,v 1.188 2005/11/19 12:37:29 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -218,10 +218,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
-    if (!empty($sid) && $mode == 'edit') {
-        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
+    if (!empty ($sid) && ($mode == 'edit')) {
+        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl, UNIX_TIMESTAMP(s.expire) AS expiredate "
-         . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
+         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -247,11 +247,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
             $A['bodytext'] = COM_undoClickableLinks ($A['bodytext']);
         }
-    } elseif (!empty($sid) && $mode == 'editsubmission') {
-        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
+    } elseif (!empty ($sid) && ($mode == 'editsubmission')) {
+        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl, t.group_id, "
          . "t.perm_owner, t.perm_group, t.perm_members, t.perm_anon "
-         . "FROM {$_TABLES['storysubmission']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
+         . "FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         if (DB_numRows ($result) > 0) {
             $A = DB_fetchArray($result);
@@ -263,20 +263,30 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $A['commentcode'] = $_CONF['comment_code'];
             $A['trackbackcode'] = $_CONF['trackback_code'];
             $A['featured'] = 0;
+            $A['expire'] = '0000-00-00 00:00:00';
+            $A['expiredate'] = 0;
             if (DB_getItem ($_TABLES['topics'], 'archive_flag',
                     "tid = '{$A['tid']}'") == 1) {
                 $A['frontpage'] = 0;
             } else {
                 $A['frontpage'] = 1;
             }
+            $A['comments'] = 0;
+            $A['trackbacks'] = 0;
+            $A['numemails'] = 0;
             $A['statuscode'] = 0;
             $A['owner_id'] = $A['uid'];
             $access = 3;
-            $A['title'] = htmlspecialchars ($A['title']);
             $A['old_sid'] = $A['sid'];
+            $A['title'] = htmlspecialchars ($A['title']);
+            if (!isset ($A['bodytext'])) {
+                $A['bodytext'] = '';
+            }
             if ($A['postmode'] == 'plaintext') {
                 $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
-                $A['bodytext'] = COM_undoClickableLinks ($A['bodytext']);
+                if (!empty ($A['bodytext'])) {
+                    $A['bodytext'] = COM_undoClickableLinks ($A['bodytext']);
+                }
             }
         } else {
             // that submission doesn't seem to be there any more (may have been
@@ -296,6 +306,14 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $A['expiredate'] = time();
         $A['commentcode'] = $_CONF['comment_code'];
         $A['trackbackcode'] = $_CONF['trackback_code'];
+        $A['title'] = '';
+        $A['introtext'] = '';
+        $A['bodytext'] = '';
+        $A['frontpage'] = 1;
+        $A['hits'] = 0;
+        $A['comments'] = 0;
+        $A['trackbacks'] = 0;
+        $A['numemails'] = 0;
 
         /* @TODO -o"Blaine" Add a user-preference option to set if user wants to use advanced-editor */
         if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
@@ -323,15 +341,18 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         if (empty ($A['ampm'])) {
             $A['ampm'] = $A['publish_ampm'];
         }
-        if ($A['draft_flag'] == 'on') {
+        if (isset ($A['draft_flag']) && ($A['draft_flag'] == 'on')) {
             $A['draft_flag'] = 1;
         } else {
             $A['draft_flag'] = 0;
         }
-        if ($A['show_topic_icon'] == 'on') {
+        if (isset ($A['show_topic_icon']) && ($A['show_topic_icon'] == 'on')) {
             $A['show_topic_icon'] = 1;
         } else {
             $A['show_topic_icon'] = 0;
+        }
+        if (!isset ($A['statuscode'])) {
+            $A['statuscode'] = 0;
         }
 
         // Convert array values to numeric permission values
@@ -346,6 +367,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
         }
         $A['title'] = strip_tags($A['title']);
+        $access = 3;
     }
 
     // Load HTML templates
@@ -432,18 +454,20 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             }
 
             $B['introtext'] = COM_makeClickableLinks ($B['introtext']);
-            $B['bodytext'] = COM_makeClickableLinks ($B['bodytext']);
+            if (!empty ($B['bodytext'])) {
+                $B['bodytext'] = COM_makeClickableLinks ($B['bodytext']);
+            }
 
             if ($has_images) {
                 list ($errors, $B['introtext'], $B['bodytext']) = STORY_insert_images ($A['sid'], $B['introtext'], $B['bodytext']);
             }
-            $previewContent .= STORY_renderArticle ($B, 'p');
+            $previewContent = STORY_renderArticle ($B, 'p');
 
         } else {
             if ($has_images) {
                 list ($errors, $A['introtext'], $A['bodytext']) = STORY_insert_images ($A['sid'], $A['introtext'], $A['bodytext']);
             }
-            $previewContent .= STORY_renderArticle ($A, 'p');
+            $previewContent = STORY_renderArticle ($A, 'p');
         }
 
         if ($advanced_editormode) {
@@ -463,7 +487,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $story_templates->set_var ('delete_option',
             '<input type="submit" value="' . $LANG24[11] . '" name="mode" onClick="return delconfirm()">');
     }
-    if ($A['type'] == 'editsubmission' || $mode == 'editsubmission') {
+    if ($mode == 'editsubmission') {
         $story_templates->set_var ('submission_option',
                 '<input type="hidden" name="type" value="submission">');
     }
@@ -547,7 +571,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     $story_templates->set_var('story_unixstamp', $A['unixdate']);
     /* Auto Story Archive or Delete Feature */
-    if ($A['expiredate'] == 0 or date('Y', $A['expiredate']) < 2000) {
+    if (empty ($A['expiredate']) or date('Y', $A['expiredate']) < 2000) {
         $A['expiredate'] = time();
     }
     $expire_month = date('m', $A['expiredate']);
@@ -618,7 +642,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $story_templates->set_var('show_topic_icon_checked', '');
     }
     $story_templates->set_var('lang_draft', $LANG24[34]);
-    if ($A['draft_flag'] == 1) {
+    if (isset ($A['draft_flag']) && ($A['draft_flag'] == 1)) {
         $story_templates->set_var('is_checked', 'checked="checked"');
     }
     $story_templates->set_var ('lang_mode', $LANG24[3]);
@@ -640,7 +664,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     if ($A['postmode'] == 'plaintext') {
         $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
-        $A['bodytext']  = COM_undoClickableLinks ($A['bodytext']);
+        if (!empty ($A['bodytext'])) {
+            $A['bodytext']  = COM_undoClickableLinks ($A['bodytext']);
+        }
     }
 
     list($newintro, $newbody) = STORY_replace_images ($A['sid'],
@@ -1073,7 +1099,11 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     echo $display;
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG24[5]);
-    $display .= storyeditor (COM_applyFilter ($_GET['sid']), $mode);
+    $sid = '';
+    if (isset ($_GET['sid'])) {
+        $sid = COM_applyFilter ($_GET['sid']);
+    }
+    $display .= storyeditor ($sid, $mode);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'editsubmission') {
