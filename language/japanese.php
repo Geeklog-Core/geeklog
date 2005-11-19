@@ -510,7 +510,6 @@ $LANG10 = array(
     29 => 'Event',
     30 => 'Hits',
     31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
-
 );
 
 ###############################################################################
@@ -1024,6 +1023,7 @@ $LANG32 = array(
     36 => 'Code',
     37 => 'Data',
     38 => 'Update!'
+
 );
 
 ###############################################################################
@@ -1142,20 +1142,20 @@ $MESSAGE = array(
     59 => 'フィードが削除されました。',
     60 => 'プラグインが更新されました。',
     61 => 'Plugin %s: Unknown message placeholder',
-    62 => 'The trackback comment has been deleted.',
-    63 => 'An error occurred when deleting the trackback comment.',
-    64 => 'Your trackback comment has been successfully sent.',
+    62 => 'トラックバックのコメントが削除されました。',
+    63 => 'トラックバックのコメントを削除する際に問題が発生しました。',
+    64 => 'トラックバックが無事送られました。',
     65 => 'Weblog directory service successfully saved.',
     66 => 'The weblog directory service has been deleted.',
     67 => 'The new password does not match the confirmation password!',
-    68 => 'You have to enter the correct current password.',
-    69 => 'Your account has been blocked!',
-    70 => 'Your account is awaiting administrator approval.',
-    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
-    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
-    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
-    74 => 'The pingback has been successfully sent.',
-    75 => 'Trackbacks must be sent using a POST request.'
+    68 => '正しいパスワードを入力してください。',
+    69 => 'アカウントが停止されています。',
+    70 => 'アカウントは管理者の承認を待っています。',
+    71 => 'アカウントが登録されて、管理者の承認を待っています。',
+    72 => 'プラグインのインストール時にエラーがありました。error.logを確認してください。',
+    73 => 'プラグインの削除時にエラーがありました。See error.logを確認してください。',
+    74 => 'pingbackが無事送られました。',
+    75 => 'TrackbackはPOST requestで送る必要があります。'
 );
 
 ###############################################################################
@@ -1225,6 +1225,7 @@ $LANG_ACCESS = array(
     'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
     'groupexists' => 'Group name already exists',
     'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
+
 );
 
 ###############################################################################
@@ -1393,34 +1394,34 @@ $LANG_TRB = array (
     'site_url'           => 'This site\'s URL',
     'pingback_note'      => 'To send a pingback for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
     'pbtarget_missing'   => 'No Pingback URL',
-    'pbtarget_required'  => 'Please enter a pingback URL',
-    'pb_error_details'   => 'Error when sending the pingback:'
+    'pbtarget_required'  => 'pingback URLを入力してください',
+    'pb_error_details'   => '次のpingbackの送信中にエラーがありました:'
 );
 
 ###############################################################################
 # directory.php
 
 $LANG_DIR = array (
-    'title'            => 'Article Directory',
-    'title_year'       => 'Article Directory for %d',
-    'title_month_year' => 'Article Directory for %s %d',
-    'nav_top'          => 'Back to Article Directory',
-    'no_articles'      => 'No articles.'
+    'title'            => '記事の一覧',
+    'title_year'       => '%dの記事一覧',
+    'title_month_year' => '%d年%s月の記事一覧',
+    'nav_top'          => '記事一覧のトップに戻る',
+    'no_articles'      => '記事はありません'
 );
 
 ################################################################################
 # "What's New" Time Strings
-#
-# This here determines the order of the sentence "No new stories in 2 hrs"
-# order it so it makes sense in your language:
-# %i    item, "Stories"
-# %n    amount, "2", "20" etc
-# %t    time, "2" (weeks)
-# %s    scale, "hrs", "weeks"
-$WHATS_NEW_STRING = '%n new %i in the last %t %s';
-$WHATS_NEW_LAST   = 'last %t %s';
 
 $LANG_WHATSNEW = array (
+    # This here determines the order of the sentence "No new stories in 2 hrs"
+    # order it so it makes sense in your language:
+    # %i    item, "Stories"
+    # %n    amount, "2", "20" etc
+    # %t    time, "2" (weeks)
+    # %s    scale, "hrs", "weeks"
+    'new_string'  => '最近%t %sの間に%n %i件の更新',
+    'new_last'    => '最近 %t %s',
+    # other strings
     'minutes'     => '分',
     'hours'       => '時間',
     'days'        => '日',
@@ -1440,24 +1441,23 @@ $LANG_WHATSNEW = array (
 # display adminiatration lists and edit pages
 
 $LANG_ADMIN = array (
-    'search'        => 'Search',
-    'limit_results' => 'Limit Results',
-    'submit'        => 'Submit',
-    'edit'          => 'Edit',
-    'admin_home'    => 'Admin Home',
-    'create_new'    => 'Create New',
-    'enabled'       => 'Enabled',
-    'title'         => 'Title',
-    'type'          => 'Type',
-    'topic'         => 'Topic',
-    'help_url'      => 'Help File URL',
-    'save'          => 'Save',
-    'cancel'        => 'Cancel',
-    'delete'        => 'Delete',
-    'copy'          => 'Copy',
-    'no_results'    => '- No entries found -',
-    'data_error'    => 'There was an error processing the subscription data. Please check the data source.'
-
+    'search'        => '検索',
+    'limit_results' => '結果の絞り込み',
+    'submit'        => '登録',
+    'edit'          => '編集',
+    'admin_home'    => '管理画面',
+    'create_new'    => '新規作成',
+    'enabled'       => '有効にする',
+    'title'         => 'タイトル',
+    'type'          => 'タイプ',
+    'topic'         => '話題',
+    'help_url'      => 'ヘルプファイルのURL',
+    'save'          => '保存',
+    'cancel'        => 'キャンセル',
+    'delete'        => '削除',
+    'copy'          => 'コピー',
+    'no_results'    => '- 記事が見つかりませんでした -',
+    'data_error'    => '送られたデータに問題があります。データをチェックしてください'
 );
 
 ?>
