@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | pollbooth.php                                                            |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2005/11/16 20:33:14 dhaun Exp $
+// $Id: index.php,v 1.13 2005/11/19 21:37:16 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -71,7 +71,7 @@ function pollsave($qid = '', $aid = 0)
     DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
     // This always does an insert so no need to provide key_field and key_value args
     DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$qid'");
-    $retval .= COM_startBlock ($LANG_POLLS['savedvotemsg'], '',
+    $retval .= COM_startBlock ($LANG_POLLS['savedvotetitle'], '',
                        COM_getBlockTemplate ('_msg_block', 'header'))
         . $LANG_POLLS['savedvotemsg'] . ' "'
         . DB_getItem ($_TABLES['pollquestions'], 'question', "qid = '{$qid}'")
