@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.11 2005/09/09 08:58:24 dhaun Exp $
+// $Id: downloader.class.php,v 1.12 2005/11/19 03:58:20 vinny Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -241,7 +241,7 @@ class downloader
     {
         if (is_array($validIPS)) {
             $this->_limitByIP = true;
-            $this->_allowedIPS = $valid_IPS;
+            $this->_allowedIPS = $validIPS;
             return true;
         } else {
             $this->_addError('Bad call to method limitByIP(), must pass array of valid IP addresses');
