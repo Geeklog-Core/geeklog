@@ -1,0 +1,118 @@
+<?php
+
+###############################################################################
+# german.php
+# This is the German language file for the Geeklog Links Plug-in!
+#
+# Copyright (C) 2005 Dirk Haun
+# dirk AT haun-online DOT de
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#
+###############################################################################
+# $Id: german.php,v 1.1 2005/11/19 21:10:49 dhaun Exp $
+
+###############################################################################
+# Array Format:
+# $LANGXX[YY]:	$LANG - variable name
+#		  	XX - file id number
+#			YY - phrase id number
+###############################################################################
+
+
+$LANG_LINKS= array(
+    10 => 'Beiträge',
+    14 => 'Links',
+    84 => 'LINKS',
+    88 => 'Es gibt keine Links anzuzeigen.',
+    114 => 'Links',
+    116 => 'Link hinzufügen'
+);
+
+###############################################################################
+# for stats
+
+$LANG_LINKS_STATS = array(
+    'links' => 'Anzahl Links (Klicks)',
+    'stats_headline' => 'Top Ten der Links',
+    'stats_page_title' => 'Links',
+    'stats_hits' => 'Angeklickt',
+    'stats_no_hits' => 'Es gibt keine Links oder sie wurden von niemandem angeklickt.'
+);
+
+###############################################################################
+# for the search
+
+$LANG_LINKS_SEARCH = array(
+ 'results' => 'Ergebnisse: Links',
+ 'title' => 'Titel',
+ 'date' => 'Hinzugefügt',
+ 'author' => 'Eingereicht von',
+ 'hits' => 'Angeklickt'
+);
+###############################################################################
+# for the submission form
+
+$LANG_LINKS_SUBMIT = array(
+    1 => 'Einen Link einreichen',
+    2 => 'Link',
+    3 => 'Kategorie',
+    4 => 'Andere',
+    5 => 'oder neue Kategorie',
+    6 => 'Fehler: Kategorie fehlt',
+    7 => 'Wenn Du "Andere" auswählst, gib bitte auch eine neue Kategorie ein',
+    8 => 'Titel',
+    9 => 'URL',
+    10 => 'Kategorie',
+    11 => 'Beiträge: Links'
+);
+
+###############################################################################
+# Messages for COM_showMessage the submission form
+
+$PLG_links_MESSAGE1 = "Thank-you for submitting a link to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
+$PLG_links_MESSAGE2 = 'Your link has been successfully saved.';
+$PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
+$PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
+
+###############################################################################
+# admin/link.php
+
+$LANG_LINKS_ADMIN = array(
+    1 => 'Link-Editor',
+    2 => 'Link-ID',
+    3 => 'Titel',
+    4 => 'URL',
+    5 => 'Kategorie',
+    6 => '(mit http://)',
+    7 => 'Andere',
+    8 => 'Angeklickt',
+    9 => 'Beschreibung',
+    10 => 'Du musst einen Titel, eine URL und eine Beschreibung für den Link eben.',
+    11 => 'Link-Manager',
+    12 => 'Auf das Ändern-Icon klicken, um einen Link zu ändern oder zu löschen.  
+Mit Neu anlegen (s.o.) kann ein neuer Link angelegt werden.',
+    13 => 'Titel',
+    14 => 'Kategorie',
+    15 => 'URL',
+    16 => 'Zugriff verweigert',
+    17 => "Du hast keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch  wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Zurück zum  Administrator-Menü</a>.",
+    20 => 'Andere bitte eingeben',
+    21 => 'Speichern',
+    22 => 'Abbruch',
+    23 => 'Löschen'
+);
+
+?>
