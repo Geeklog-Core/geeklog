@@ -18,7 +18,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_description}:</b></td>
+                                        <td align="right" valign="top"><b>{lang_description}:</b></td>
                                         <td><textarea name="description" cols="45" rows="8"></textarea></td>
                                     </tr>
                                     <tr>
