@@ -10,10 +10,11 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.6 2005/09/25 16:41:28 dhaun Exp $
+* $Id: MassDelete.Admin.class.php,v 1.7 2005/11/19 16:09:09 mjervis Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
+require_once($_CONF['path_system'] . 'lib-comment.php');
 
 
 class MassDelete extends BaseAdmin {
