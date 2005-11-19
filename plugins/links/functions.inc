@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.37 2005/11/17 15:00:21 ospiess Exp $
+// $Id: functions.inc,v 1.38 2005/11/19 04:03:58 vinny Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -896,7 +896,7 @@ function plugin_savesubmission_links($A)
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . submissionform($type)
+            . submissionform('links')
             . COM_siteFooter ();
     }
 
@@ -957,7 +957,7 @@ function plugin_save_submit_links ($A)
                        COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG_LINKS_SUBMIT[7]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform ($type)
+                . submissionform ('links')
                 . COM_siteFooter ();
 
         return $retval;
