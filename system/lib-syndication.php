@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-syndication.php                                                       |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.28 2005/11/06 19:57:54 dhaun Exp $
+// $Id: lib-syndication.php,v 1.29 2005/11/19 11:57:00 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -343,7 +343,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $storytitle = stripslashes( $row['title'] );
             $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
             $fulltext = PLG_replaceTags( $fulltext );
-            $storytext = SYND_truncateSummary( $fulltext, $contentLength);
+            $storytext = SYND_truncateSummary( $fulltext, $contentLength );
 
             $fulltext = trim( $fulltext );
             $fulltext = preg_replace( "/(\015)/", "", $fulltext );
@@ -489,7 +489,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentEvents( $limit, &$link, &$update, $updated_id, $feedType, $feedVersion )
+function SYND_getFeedContentEvents( $limit, &$link, &$update, $contentLength, $feedType, $feedVersion )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -689,25 +689,38 @@ function SYND_updateFeed( $fid )
     }
 }
 
-function SYND_truncateSummary($text, $length)
+/**
+* Truncate a feed item's text to a given max. length of characters
+*
+* @param    string  $text       the item's text
+* @param    int     $length     max. length
+* @return   string              truncated text
+*
+*/
+function SYND_truncateSummary( $text, $length )
 {
-    if ($length == 0)
+    if( $length == 0 )
     {
         return '';
-    } else {
+    }
+    else
+    {
         $text = stripslashes( $text );
         $text = trim( $text );
         $text = preg_replace( "/(\015)/", "", $text );
-        if (($length > 1) && (strlen( $text ) > $length))
+        if(( $length > 3 ) && ( strlen( $text ) > $length ))
         {
-            $text = substr($text, 0, $length - 3).'...';
+            $text = substr( $text, 0, $length - 3 ) . '...';
         }
+
         // Check if we broke html tag and storytext is now something
         // like "blah blah <a href= ...". Delete "<*" if so.
-        if (strrpos($storytext, "<") > strrpos($storytext, ">")) {
-            $storytext = substr ($storytext, 0, strrpos($storytext, "<") - 1)
-                . " ...";
-         }
+        if( strrpos( $text, '<' ) > strrpos( $text, '>' ))
+        {
+            $text = substr( $text, 0, strrpos( $text, '<' ) - 1 )
+                  . ' ...';
+        }
+
         return $text;
     }
 }
