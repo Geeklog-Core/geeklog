@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | links Plugin 1.0                                                          |
+// | Links Plugin 1.0                                                          |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -12,11 +12,11 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Tom Willett      - twillett@users.sourceforge.net                |
-// |          Blaine Lang      - langmail@sympatico.ca                         |
-// |          Dirk Haun        - dirk@haun-online.de                           |
-// |          Trinity Bays     - trinity@steubentech.com                       |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
+// |          Blaine Lang      - langmail AT sympatico DOT ca                  |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
+// |          Trinity Bays     - trinity AT steubentech DOT com                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.38 2005/11/19 04:03:58 vinny Exp $
+// $Id: functions.inc,v 1.39 2005/11/19 09:28:20 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -534,6 +534,8 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
         $lids[] = $row['lid'];
 
         $linktitle = stripslashes( $row['title'] );
+        $linkdesc = stripslashes( $row['description'] );
+
         $linklink = COM_buildUrl( $_CONF['site_url']
                   . '/links/portal.php?what=link&item=' . $row['lid'] );
 
