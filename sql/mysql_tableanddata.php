@@ -445,7 +445,7 @@ CREATE TABLE {$_TABLES['syndication']} (
   type varchar(30) NOT NULL default 'geeklog',
   topic varchar(48) NOT NULL default '::all',
   header_tid varchar(48) NOT NULL default 'none',
-  format varchar(20) NOT NULL default 'rss',
+  format varchar(20) NOT NULL default 'RSS-2.0',
   limits varchar(5) NOT NULL default '10',
   content_length smallint(5) unsigned NOT NULL default '0',
   title varchar(40) NOT NULL default '',

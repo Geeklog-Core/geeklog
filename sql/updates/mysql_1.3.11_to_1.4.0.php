@@ -80,6 +80,8 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD trackbacks mediumint(8) unsigne
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD header_tid varchar(48) NOT NULL default 'none' AFTER topic;";
 // add logo
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD feedlogo varchar(255) AFTER description;";
+// change default format to RSS-2.0
+$_SQL[] = "ALTER TABLE {$_TABLES['syndication']} CHANGE format format varchar(20) NOT NULL default 'RSS-2.0';";
 // Upgrade format values
 $_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='Atom-0.3' WHERE format='atom'";
 $_SQL[] = "UPDATE {$_TABLES['syndication']} SET format='RDF-1.0' WHERE format='rdf'";
