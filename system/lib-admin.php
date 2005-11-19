@@ -2,18 +2,19 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-admin.php                                                             |
 // |                                                                           |
 // | Admin-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
+// |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
+// |          Jason Whittenburg  - jwhitten AT securitygeeks DOT com           |
+// |          Dirk Haun          - dirk AT haun-online DOT de                  |
+// |          Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,12 +33,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.30 2005/11/18 20:52:38 dhaun Exp $
+// $Id: lib-admin.php,v 1.31 2005/11/19 08:47:51 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
+
     $retval = '';
 
     $help_url = "";
@@ -542,8 +544,10 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
     return $retval;
 }
 
-function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ADMIN, $LANG28;
+function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
+
     $retval = '';
 
     switch($fieldname) {
@@ -551,8 +555,9 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr) {
             $retval = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
             break;
         case 'username':
-            $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
-                      . $_IMAGE_TYPE . '" border="0" alt="">';
+            $photoico = '<img src="' . $_CONF['layout_url']
+                      . '/images/smallcamera.' . $_IMAGE_TYPE
+                      . '" border="0" alt="">';
             if (!empty($A['photo']))
                  {$photoico = "&nbsp;" . $photoico;}
             else

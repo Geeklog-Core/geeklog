@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | plugins.php                                                               |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.54 2005/11/17 15:00:23 ospiess Exp $
+// $Id: plugins.php,v 1.55 2005/11/19 08:47:51 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -323,7 +323,7 @@ function show_newplugins ()
 */
 function do_update ($pi_name)
 {
-    global $_CONF, $LANG32, $LANG08, $MESSAGE;
+    global $_CONF, $LANG32, $LANG08, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -358,9 +358,6 @@ function do_update ($pi_name)
 }
 
 
-
-
-
 /**
 * Uninstall a plugin (call its uninstall function).
 *
@@ -370,7 +367,7 @@ function do_update ($pi_name)
 */
 function do_uninstall ($pi_name)
 {
-    global $_CONF, $LANG32, $LANG08, $MESSAGE;
+    global $_CONF, $LANG32, $LANG08, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
 
