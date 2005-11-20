@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | user.php                                                                  |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.133 2005/11/19 04:27:24 vinny Exp $
+// $Id: user.php,v 1.134 2005/11/20 11:21:57 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -278,8 +278,15 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                                   "username = '$uname'");
         } else {
-            $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
-                                  "username = '$uname' AND uid <> $uid");
+            $uservice = DB_getItem ($_TABLES['users'], 'remoteservice', "uid = $uid");
+            if ($uservice != '') {
+                $uservice = addslashes($uservice);
+                $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
+                            "username = '$uname' AND uid <> $uid AND remoteservice = '$uservice'");
+            } else {
+                $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
+                                  "username = '$uname' AND uid <> $uid AND (remoteservice = '' OR remoteservice is null)");
+            }
         }
         if ($ucount > 0) {
             // Admin just changed a user's username to one that already exists
