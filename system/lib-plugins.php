@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.88 2005/11/19 03:37:48 vinny Exp $
+// $Id: lib-plugins.php,v 1.89 2005/11/20 11:39:38 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -232,7 +232,7 @@ function PLG_getMenuItems()
  */
 function PLG_getCommentUrlId($type) {
     global $_CONF;
-    
+
     $ret = PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type);
     if (empty($ret[0])) {
         $ret[0] = $_CONF['site_url'] . "/$type/index.php";
@@ -1347,7 +1347,6 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
         if (function_exists($function))
         {
             $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion));
-            var_dump($extensions);
         }
     }
     return $extensions;
