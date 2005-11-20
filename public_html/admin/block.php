@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.86 2005/11/19 14:08:25 dhaun Exp $
+// $Id: block.php,v 1.87 2005/11/20 21:48:47 mjervis Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -88,8 +88,8 @@ function hasBlockTopicAccess ($tid)
 * @param    int     $access Permissions this user has
 * @return   string          HTML for default block editor
 *
-*/ 
-function editdefaultblock ($A, $access) 
+*/
+function editdefaultblock ($A, $access)
 {
     global $_CONF, $_TABLES, $_USER, $LANG21, $LANG_ACCESS, $LANG_ADMIN;
 
@@ -171,7 +171,7 @@ function editdefaultblock ($A, $access)
 * @return   string          HTML for block editor
 *
 */
-function editblock ($bid = '') 
+function editblock ($bid = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG21, $LANG_ACCESS, $LANG_ADMIN;
 
@@ -189,7 +189,7 @@ function editblock ($bid = '')
             COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
             return $retval;
-        } 
+        }
         if ($A['type'] == 'gldefault') {
             $retval .= editdefaultblock($A,$access);
             return $retval;
@@ -215,7 +215,7 @@ function editblock ($bid = '')
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('start_block_editor', COM_startBlock ($LANG21[3],
             '', COM_getBlockTemplate ('_admin_block', 'header')));
-        
+
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.delete')) {
             $block_templates->set_var('delete_option',"<input type=\"submit\" value=\"{$LANG_ADMIN['delete']}\" name=\"mode\">");
@@ -231,7 +231,7 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $block_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $block_templates->set_var('lang_blocktype', $LANG_ADMIN['type']);
-    
+
     $block_templates->set_var('block_title', stripslashes ($A['title']));
     $block_templates->set_var('lang_enabled', $LANG21[53]);
     if ($A['is_enabled'] == 1) {
@@ -272,7 +272,7 @@ function editblock ($bid = '')
         $block_templates->set_var('php_selected', 'selected="selected"');
     } else if ($A['type'] == 'portal') {
         $block_templates->set_var('portal_selected', 'selected="selected"');
-    } 
+    }
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = '{$A['owner_id']}'"));
@@ -301,7 +301,7 @@ function editblock ($bid = '')
     $block_templates->set_var('group_dropdown', $groupdd);
     $block_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
-    $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));    
+    $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $block_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $block_templates->set_var('lang_phpblockoptions', $LANG21[28]);
     $block_templates->set_var('lang_blockfunction', $LANG21[29]);
@@ -321,7 +321,7 @@ function editblock ($bid = '')
     $block_templates->set_var ('end_block',
             COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
     $block_templates->parse('output', 'editor');
-    $retval .= $block_templates->finish($block_templates->get_var('output')); 
+    $retval .= $block_templates->finish($block_templates->get_var('output'));
 
     return $retval;
 }
@@ -408,7 +408,7 @@ function listblocks()
 * @return   string                  HTML redirect or error message
 *
 */
-function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled) 
+function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE, $_POST;
 
@@ -457,7 +457,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
         } else {
             $is_enabled = 0;
         }
-        
+
         if ($type == 'portal') {
             $content = '';
             $rdfupdated = '';
@@ -504,7 +504,16 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             $rdflimit = 0;
         }
 
-        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled");
+        if ($bid > 0)
+        {
+            DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled");
+        } else {
+            $sql = "INSERT INTO {$_TABLES['blocks']} "
+             .'(name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled) '
+             ."VALUES ('$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled)";
+             DB_query($sql);
+             $bid = DB_insertId();
+        }
 
         if (($type == 'gldefault') && ($name == 'older_stories')) {
             COM_olderStuff ();
@@ -525,7 +534,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             // Normal block is missing field
             $retval .= $LANG21[35];
         } else if ($type == 'gldefault') {
-            // Default geeklog field missing 
+            // Default geeklog field missing
             $retval .= $LANG21[42];
         } else {
             // Layout block missing content
@@ -535,7 +544,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
                 . editblock ($bid)
                 . COM_siteFooter ();
     }
-    
+
     return $retval;
 }
 /**
@@ -549,14 +558,14 @@ function reorderblocks()
     $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft asc, blockorder asc;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
-    
+
     $lastside = 0;
     $blockOrd = 10;
     $stepNumber = 10;
-    
+
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-    
+
         if ($lastside != $A['onleft']) { // we are switching left/right blocks
             $blockOrd = 10;              // so start with 10 again
         }
@@ -709,7 +718,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= COM_showMessage ($msg);
     }
     $display .= listblocks();
-                           
+
     $display .= COM_siteFooter();
 }
 
