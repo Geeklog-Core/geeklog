@@ -178,7 +178,7 @@ default theme (Professional) that ships with Geeklog.</p>
 theme changes. We therefore suggest that you simply replace the entire
 <tt>admin</tt> directory of your theme with the <tt>admin</tt> directory
 from Geeklog's default theme (Professional) as it ships with Geeklog 1.4.0
-and apply any modfications you may have made to your Admin templates
+and apply any modfications you may have made to your Admin templates again
 afterwards.</p>
 
 <h3>Other changes</h3>
@@ -194,6 +194,26 @@ afterwards.</p>
     article template files. They provide a complete link as well as the URL and
     link text allowing you to send a trackback comment for the current
     story.</li>
+<li>The <tt>links</tt> and <tt>admin/link</tt> directories have been
+    removed. Links are now a plugin and the plugin's templates can be found in
+    <tt>/path/to/geeklog/plugins/links/templates</tt>.</li>
+<li>The <tt>pollbooth</tt> and <tt>admin/poll</tt> directories have been
+    removed. Polls are now a plugin and the plugin's templates can be found in
+    <tt>/path/to/geeklog/plugins/polls/templates</tt>.</li>
+<li>The <tt>preferences/profile.thtml</tt> template now has additional fields
+    for the password change (old password, confirmation field for the new
+    password).</li>
+<li>The search form, <tt>search/searchform.thtml</tt> has a new option for the
+    number of search results per page, while the hard-coded option to search
+    for links has been removed (since Links are in plugin now, it will show up
+    as part of the <code>{plugin_types}</tt> option).</li>
+<li>An additional variable, <code>{services}</code>, has to be added to the
+    <tt>loginform.thtml</tt> template file if you plan to allow users to log in
+    to your site using remote authentication.</li>
+<li>If you plan to enable Trackbacks on your site, you may want to add links to
+    a story's trackbacks section to your story template files, e.g.
+    <code>{start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}</code>. See the Professional theme's story template files for
+    examples.</li>
 </ul>
 
 

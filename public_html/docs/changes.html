@@ -34,18 +34,15 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
     Please note that some plugins may still require it to be <code>on</code>,
     though.</li>
 <li>Added support for sending and receiving <a
-    href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> (Feature
-    Request #34) and <a
+    href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> and <a
     href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> comments. Both
-    are only supported fo stories, but there is also a new plugin API so that
-    plugins can use this feature, too.<br>
-    Trackback and Pingback can be disabled in <tt>config.php</tt>.</li>
+    are supported for stories, but there is also a new plugin API so that
+    plugins can use this feature, too.  Trackback and Pingback can be disabled
+    in <tt>config.php</tt>.</li>
 <li>Added the ability to "ping" weblog directory services (like e.g. <a
-    href="http://blo.gs/">blo.gs</a>) to advertise site updates (Feature Request
-    #35). As with Trackback and Pingback, this is only supported for stories,
-    but plugins can make use of this feature via the plugin API.</li>
-<li>Introduced an "Article Directory", providing an overview of all past
-    articles, sorted by year and month.</li>
+    href="http://blo.gs/">blo.gs</a>) to advertise site updates. As with
+    Trackback and Pingback, this is supported for stories, but plugins can also
+    make use of this feature via the plugin API.</li>
 <li>New syndication framework so that Geeklog can now <strong>read and
     write</strong> feeds in different formats (currently supported: RSS, RDF,
     and Atom).</li>
@@ -55,8 +52,36 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
     services such as Blogger.com or LiveJournal.com to login to your site
     without having to directly register on your site. (Remote accounts can be
     banned as normal accounts).</li>
-<li>Ships with FCKeditor (WYSIWYG editor).</li>
+<li>The Admin sections have been revamped to provide a more consistent look and
+    sortable lists. "Command and Control" (<tt>moderation.php</tt>) now also
+    comes with a new set of icons and has one icon for every Admin section.
+    Furthermore, the Admin block and Command and Control can be sorted
+    alphabetically.</li>
+<li>Ships with FCKeditor (WYSIWYG editor). To enable, set <code>$_CONF['advanced_editor'] = true;</code> in your <tt>config.php</tt>.</li>
+<li>The search now only displays a specified amount of results per page to
+    avoid running into timeouts when searching through large databases.<br>
+    <b>Note:</b> Plugins will have to be updated to support the "paged" search.
+    Until then, Geeklog fakes the paged results for plugin searches, which
+    means that a plugin that hasn't been updated will still search through the
+    entire database, but Geeklog will only display the results for the current
+    result page.</li>
+<li>Introduced an "Article Directory", providing an overview of all past
+    articles, sorted by year and month.</li>
+<li>The default permissions for new objects (stories, topics, blocks, etc.) can
+    now be set in config.php.</li>
 </ul>
+
+<h3>Compatibility</h3>
+
+<ul>
+<li>Due to the changes, themes will have to be updated to work with Geeklog
+    1.4.0. See the <a href="theme.html#changes">list of theme changes</a> for
+    details.</li>
+<li>The plugin API for comments has changed. Plugins using comments will have
+    to be updated to work with Geeklog 1.4.0.</li>
+
+</ul>
+
 
 
 <h2><a name="changes1311sr2">Geeklog 1.3.11sr2</a></h2>

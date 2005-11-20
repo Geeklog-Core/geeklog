@@ -204,6 +204,7 @@ Nov 20, 2005 (1.4.0b1)
 - Alphabet Sort on Admin Menu and C&C Block [Mike]
 
 - New Farsi (Persian) language file, provided by Hesam.H
+- Updated Japanese language file, provided by Yusuke Sakata
 
 - New Farsi (Persian) language file for the static pages plugin,
   provided by Hesam.H
@@ -221,6 +222,9 @@ Polls plugin 1.0.0
 
 Spam-X plugin 1.0.3
 -------------
+- The LogView module now automatically truncates the Spam-X logfile to 100KB
+  [Tom Willet]
+- The IP Blacklist module now supports regular expressions [Mike]
 - Added a Mass Delete module for Trackback comments [Dirk]
 - Added an "admin override" option, so that postings by members of the 'spamx
   Admin' group will not be checked for spam [Dirk]
