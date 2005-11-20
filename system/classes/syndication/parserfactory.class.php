@@ -172,7 +172,7 @@
       */
     function _getFeed( $url )
     {
-      $req =& new HTTP_Request($url);
+      $req =& new HTTP_Request($url, array('allowRedirects' => true));
       if (!PEAR::isError($req->sendRequest())) {
         return $req->getResponseBody();
       } else {
