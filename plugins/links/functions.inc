@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.39 2005/11/19 09:28:20 dhaun Exp $
+// $Id: functions.inc,v 1.40 2005/11/21 08:42:41 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -70,15 +70,15 @@ function plugin_getmenuitems_links()
 
 function plugin_whatsnewsupported_links()
 {
-    global $_TABLES, $_LI_CONF, $LANG_LINKS, $WHATS_NEW_LAST;
+    global $_TABLES, $_LI_CONF, $LANG_LINKS, $LANG_WHATSNEW;
 
     $hidewhatsnew = $_LI_CONF['hidenewlinks'];
     if ( $hidewhatsnew == 0 ) {
-        $retval = array ( $LANG_LINKS[84],
-                          '<small>' . COM_formatTimeString( $WHATS_NEW_LAST,
-                                            $_LI_CONF['newlinksinterval'] )
-                          . '</small>'
-                        );
+        $retval = array( $LANG_LINKS[84], '<small>'
+                         . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
+                                                 $_LI_CONF['newlinksinterval'] )
+                         . '</small>'
+                       );
     } else {
         $retval = false;
     }

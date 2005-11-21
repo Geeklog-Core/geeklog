@@ -1,5 +1,13 @@
 GeekLog History/Changes:
 
+??? ??, 2005 (1.4.0b2)
+------------
+- For the Links plugin, the "last x days" text in the What's New block was
+  missing [Dirk]
+- Fixed an SQL error when creating new blocks [Mike]
+- The feed reader will now also follow redirects [Mike]
+
+
 Nov 20, 2005 (1.4.0b1)
 ------------
 
