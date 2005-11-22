@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.4.0b2)
 ------------
+- The search by author or by date switched to searching for everything on
+  page 2 of the results [Dirk]
 - For the Links plugin, the "last x days" text in the What's New block was
   missing [Dirk]
 - Fixed an SQL error when creating new blocks [Mike]

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | search.php                                                                |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.46 2005/11/14 11:36:41 dhaun Exp $
+// $Id: search.class.php,v 1.47 2005/11/22 08:45:03 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -779,8 +779,17 @@ class Search {
         }
         $queryUrl .= '&amp;keyType=' . $this->_keyType
                   . '&amp;type=' . $this->_type;
+        if (!empty ($this->_dateStart)) {
+            $queryUrl .= '&amp;datestart=' . $this->_dateStart;
+        }
+        if (!empty ($this->_dateEnd)) {
+            $queryUrl .= '&amp;dateend=' . $this->_dateEnd;
+        }
         if (!empty ($this->_topic)) {
             $queryUrl .= '&amp;topic=' . $this->_topic;
+        }
+        if (!empty ($this->_author) && ($this->_author > 0)) {
+            $queryUrl .= '&amp;author=' . $this->_author;
         }
         $queryUrl .= '&amp;results=' . $this->_per_page;
         if ($this->_page > 1) {
