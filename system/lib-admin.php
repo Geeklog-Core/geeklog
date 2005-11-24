@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.32 2005/11/24 09:35:26 ospiess Exp $
+// $Id: lib-admin.php,v 1.33 2005/11/24 09:57:05 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -497,6 +497,8 @@ function ADMIN_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
             break;
         case 'title':
             $retval = stripslashes ($A['title']);
+            $retval = "<a href=\"{$_CONF['site_url']}/calendar_event.php?eid="
+                    . "{$A['eid']}\">$retval</a>";
             break;
         default:
             $retval = $fieldvalue;
