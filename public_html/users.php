@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.123 2005/11/23 08:09:02 mjervis Exp $
+// $Id: users.php,v 1.124 2005/11/24 14:27:56 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -205,22 +205,10 @@ function userprofile ($user, $msg = 0)
         }
     }
 
-/*
-    // add all polls the current visitor has access to
-    $sql = "SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ();
-    $result = DB_query($sql);
-    $numqids = DB_numRows($result);
-
-    for ($i = 1; $i <= $numqids; $i++) {
-        $Q = DB_fetchArray ($result);
-        $sidArray[] = $Q['qid'];
-    }
-*/
-
     $sidList = implode("', '",$sidArray);
     $sidList = "'$sidList'";
 
-    // then, find all comments by the user in those stories and polls
+    // then, find all comments by the user in those stories
     $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user)";
 
     // SQL NOTE:  Using a HAVING clause is usually faster than a where if the

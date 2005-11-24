@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.45 2005/11/19 04:20:39 vinny Exp $
+// $Id: lib-security.php,v 1.46 2005/11/24 14:27:56 ospiess Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -404,7 +404,7 @@ function SEC_hasRights($features,$operator='AND')
 * Shows security control for an object
 *
 * This will return the HTML needed to create the security control see on the admin
-* screen for GL objects (i.e. stories, links, etc)
+* screen for GL objects (i.e. stories, etc)
 *
 * @param        int     $perm_owner     Permissions the owner has 1 = edit 2 = read 3 = read/edit
 * @param        int     $perm_group     Permission the group has

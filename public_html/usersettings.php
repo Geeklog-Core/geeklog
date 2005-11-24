@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.122 2005/11/15 10:40:57 dhaun Exp $
+// $Id: usersettings.php,v 1.123 2005/11/24 14:27:56 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -575,7 +575,7 @@ function editpreferences()
     if (!empty ($permissions)) {
         $whereblock .= $permissions . ' AND ';
     }
-    $whereblock .= "((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block','older_stories'))) ORDER BY onleft desc,blockorder,title";
+    $whereblock .= "((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','events_block','older_stories'))) ORDER BY onleft desc,blockorder,title";
     $preferences->set_var ('boxes_checklist', COM_checkList ($_TABLES['blocks'],
             'bid,title,type', $whereblock, $selectedblocks));
     $preferences->parse ('boxes_block', 'boxes', true);

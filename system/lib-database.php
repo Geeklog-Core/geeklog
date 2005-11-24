@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.37 2005/10/31 19:04:46 dhaun Exp $
+// $Id: lib-database.php,v 1.38 2005/11/24 14:27:56 ospiess Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -61,15 +61,10 @@ $_TABLES['features']            = $_DB_table_prefix . 'features';
 $_TABLES['frontpagecodes']      = $_DB_table_prefix . 'frontpagecodes';
 $_TABLES['group_assignments']   = $_DB_table_prefix . 'group_assignments';
 $_TABLES['groups']              = $_DB_table_prefix . 'groups';
-$_TABLES['links']               = $_DB_table_prefix . 'links';
-$_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
 $_TABLES['maillist']            = $_DB_table_prefix . 'maillist';
 $_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
 $_TABLES['pingservice']         = $_DB_table_prefix . 'pingservice';
 $_TABLES['plugins']             = $_DB_table_prefix . 'plugins';
-$_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
-$_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';
-$_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
 $_TABLES['postmodes']           = $_DB_table_prefix . 'postmodes';
 $_TABLES['sessions']            = $_DB_table_prefix . 'sessions';
 $_TABLES['sortcodes']           = $_DB_table_prefix . 'sortcodes';
