@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.73 2005/11/14 12:21:13 dhaun Exp $
+// $Id: article.php,v 1.74 2005/11/24 14:29:28 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -174,7 +174,7 @@ if ($A['count'] > 0) {
 
         DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '$story') AND (date <= NOW()) AND (draft_flag = 0)");
 
-        // Display whats related any polls configured for this page
+        // Display whats related
 
         $story_template = new Template($_CONF['path_layout'] . 'article');
         $story_template->set_file('article','article.thtml');

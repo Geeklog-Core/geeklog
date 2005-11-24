@@ -7,7 +7,7 @@
 // | install.php                                                               |
 // |                                                                           |
 // | This file installs and removes the data structures for the                |
-// | Links plugin for Geeklog.                                                 |
+// | Polls plugin for Geeklog.                                                 |
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.5 2005/11/18 20:58:24 dhaun Exp $
+// $Id: install.php,v 1.6 2005/11/24 14:29:28 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 
