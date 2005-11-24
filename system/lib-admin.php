@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.31 2005/11/19 08:47:51 dhaun Exp $
+// $Id: lib-admin.php,v 1.32 2005/11/24 09:35:26 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -190,10 +190,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $curpage = 1;
     }
     
-    $unfiltered='';
-    if (!empty($query_arr['unfiltered'])) {
-        $unfiltered = $query_arr['unfiltered'];
-    }
+    #$unfiltered='';
+    #if (!empty($query_arr['unfiltered'])) {
+    #    $unfiltered = $query_arr['unfiltered'];
+    #}
 
     $help_url = "";
     if (!empty($text_arr['help_url'])) {
@@ -245,11 +245,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     $icon_arr = array(
         'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
-             . $LANG_ADMIN['edit'] . '">',
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
+             . '" title="' . $LANG_ADMIN['edit'] . '">',
         'copy' => '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
-             . $LANG_ADMIN['copy'] . '">',
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy']
+             . '" title="' . $LANG_ADMIN['copy'] . '">',
         'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
@@ -322,8 +322,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
     if ($has_extras) {
         $limit = 50;
-        if (!empty($query_arr['query_limit'])) {
-            $limit = $query_arr['query_limit'];
+        if (!empty($query_limit)) {
+            $limit = $query_limit;
         }
         if ($query != '') {
             $admin_templates->set_var ('query', urlencode($query) );
@@ -345,16 +345,12 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                 }
             }
             $filter_str .= ")";
-            $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
-                               "1 " . $filter_str) / $limit);
             if ($num_pages < $curpage) {
                 $curpage = 1;
             }
-        } else {
-            $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
-                                           $unfiltered) / $limit);
         }
-
+        $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
+                            "1 " . $filter_str) / $limit);
         $offset = (($curpage - 1) * $limit);
         $limit = "LIMIT $offset,$limit";
     }
