@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.199 2005/11/18 20:58:24 dhaun Exp $
+// $Id: config.php,v 1.200 2005/11/25 09:25:54 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -88,7 +88,8 @@ $_CONF['site_url']          = 'http://www.example.com';
 // problems accessing Geeklog's admin menu.
 $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 
-// This is the return address for all email sent by Geeklog:
+// This is the return address for all email sent by Geeklog and contact info
+// displayed in syndication feeds:
 $_CONF['site_mail']         = 'admin@example.com';
 
 // Name and slogan of your site
