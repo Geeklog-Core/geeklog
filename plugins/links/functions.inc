@@ -40,7 +40,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.41 2005/11/26 06:37:32 trinity Exp $
+// $Id: functions.inc,v 1.42 2005/11/26 06:52:48 ospiess Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -888,7 +888,7 @@ function plugin_moderationdelete_links($id)
 }
 
 /**
-* Shows link submission form
+* Check submission form values and save if OK. Else show form again
 *
 */
 function plugin_savesubmission_links($A)
