@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.16 2005/11/19 04:23:30 vinny Exp $
+// $Id: lib-trackback.php,v 1.17 2005/11/26 13:18:55 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -491,9 +491,13 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
     if ($numrows == 0) {
         $template->set_var ('lang_trackback_comments',
                             $LANG_TRB['no_comments']);
+        $template->set_var ('lang_trackback_comments_no_link',
+                            $LANG_TRB['no_comments']);
     } else {
         $template->set_var ('lang_trackback_comments',
                             sprintf ($LANG_TRB['intro_text'], $link_and_title));
+        $template->set_var ('lang_trackback_comments_no_link',
+                            sprintf ($LANG_TRB['intro_text'], $title));
     }
 
     $delete_option = TRB_allowDelete ($sid, $type);

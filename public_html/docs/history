@@ -2,6 +2,10 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.4.0b2)
 ------------
+- Introduced {lang_trackback_comments_no_link} (in trackback/trackback.thtml)
+  so that you can have an article page entirely without links back to itself
+  (for picky spiders such as the one for Google News) [Dirk]
+- Call COM_refresh when creating a user with usersubmission = 1 [Mike]
 - Fixed sorting of Trackbacks in the What's New block [Dirk]
 - The search by author or by date switched to searching for everything on
   page 2 of the results [Dirk]
