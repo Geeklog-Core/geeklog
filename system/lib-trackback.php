@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-trackback.php                                                         |
 // |                                                                           |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.17 2005/11/26 13:18:55 dhaun Exp $
+// $Id: lib-trackback.php,v 1.18 2005/11/26 15:19:02 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -397,10 +397,7 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
         'speedlimit' => 'Your last trackback comment was %d seconds ago. This site requires at least %d seconds between trackback comments.'
     );
 
-    // Note: Preferred method for trackback pings is POST, but we accept
-    //       GET requests for now as well ...
-
-    if (isset ($_REQUEST['url'])) { // a URL is mandatory ...
+    if (isset ($_POST['url'])) { // a URL is mandatory ...
 
         // the speed limit applies to trackback comments, too
         COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'trackback');
@@ -413,10 +410,10 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             return false;
         }
 
-        $url = COM_applyFilter ($_REQUEST['url']);
-        $title = TRB_filterTitle ($_REQUEST['title']);
-        $excerpt = TRB_filterExcerpt ($_REQUEST['excerpt']);
-        $blog = TRB_filterBlogname ($_REQUEST['blog_name']);
+        $url = COM_applyFilter ($_POST['url']);
+        $title = TRB_filterTitle ($_POST['title']);
+        $excerpt = TRB_filterExcerpt ($_POST['excerpt']);
+        $blog = TRB_filterBlogname ($_POST['blog_name']);
 
         $saved = TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog,
                                            $excerpt);
