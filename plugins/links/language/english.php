@@ -24,7 +24,26 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.9 2005/11/14 10:29:34 ospiess Exp $
+# $Id: english.php,v 1.10 2005/11/26 06:37:32 trinity Exp $
+
+/** 
+ * This is the english language page for the Geeklog links Plug-in! 
+ * 
+ * @package Links
+ * @subpackage Language
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ * 
+ */
+
 
 ###############################################################################
 # Array Format:
@@ -32,8 +51,11 @@
 #		  	XX - file id number
 #			YY - phrase id number
 ###############################################################################
-
-
+/**
+* the link plugin's lang array
+* 
+* @global array $LANG_LINKS 
+*/
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
@@ -45,7 +67,11 @@ $LANG_LINKS= array(
 
 ###############################################################################
 # for stats
-
+/**
+* the link plugin's lang stats array
+* 
+* @global array $LANG_LINKS_STATS
+*/
 $LANG_LINKS_STATS = array(
     'links' => 'Links (Clicks) in the System',
     'stats_headline' => 'Top Ten Links',
@@ -56,7 +82,11 @@ $LANG_LINKS_STATS = array(
 
 ###############################################################################
 # for the search
-
+/**
+* the link plugin's lang search array
+* 
+* @global array $LANG_LINKS_SEARCH 
+*/
 $LANG_LINKS_SEARCH = array(
  'results' => 'Link Results',
  'title' => 'Title',
@@ -66,7 +96,11 @@ $LANG_LINKS_SEARCH = array(
 );
 ###############################################################################
 # for the submission form
-
+/**
+* the link plugin's lang submit form array
+* 
+* @global array $LANG_LINKS_SUBMIT 
+*/
 $LANG_LINKS_SUBMIT = array(
     1 => 'Submit a Link',
     2 => 'Link',
@@ -91,7 +125,11 @@ $PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.
 
 ###############################################################################
 # admin/link.php
-
+/**
+* the link plugin's lang admin array
+* 
+* @global array $LANG_LINKS_ADMIN 
+*/
 $LANG_LINKS_ADMIN = array(
     1 => 'Link Editor',
     2 => 'Link ID',

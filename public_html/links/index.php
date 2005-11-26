@@ -33,7 +33,24 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.5 2005/11/17 20:30:27 dhaun Exp $
+/** 
+ * This is the links page   
+ * 
+ * @package Links
+ * @subpackage public_html
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ * 
+ */
+// $Id: index.php,v 1.6 2005/11/26 06:37:32 trinity Exp $
 
 require_once ('../lib-common.php');
 

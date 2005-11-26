@@ -1,24 +1,7 @@
 <?php
-
-/* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0                                                          |
-// +---------------------------------------------------------------------------+
-// | functions.inc                                                             |
-// |                                                                           |
-// | This file does two things: 1) it implements the necessary Geeklog Plugin  |
-// | API method and 2) implements all the common code needed by the links      |
-// | Plugins' PHP files.                                                       |
-// +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
-// |                                                                           |
-// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
-// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
-// |          Blaine Lang      - langmail AT sympatico DOT ca                  |
-// |          Dirk Haun        - dirk AT haun-online DOT de                    |
-// |          Trinity Bays     - trinity AT steubentech DOT com                |
-// +---------------------------------------------------------------------------+
-// |                                                                           |
+// | Links Plugin 1.0  functions.inc                                                          |
+// +---------------------------------------------------------------------------+                                                                           |
 // | This program is free software; you can redistribute it and/or             |
 // | modify it under the terms of the GNU General Public License               |
 // | as published by the Free Software Foundation; either version 2            |
@@ -34,8 +17,31 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: functions.inc,v 1.40 2005/11/21 08:42:41 dhaun Exp $
+
+
+/** 
+ * This file does two things: 1) it implements the necessary Geeklog Plugin  
+ * API method and 2) implements all the common code needed by the links     
+ * Plugins' PHP files. 
+ * 
+ * @package Links
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ * 
+ */
+
+
+// Reminder: always indent with 4 spaces (no tabs).
+// $Id: functions.inc,v 1.41 2005/11/26 06:37:32 trinity Exp $
+
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';

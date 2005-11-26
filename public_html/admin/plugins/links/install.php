@@ -1,6 +1,6 @@
 <?php
 
-/* Reminder: always indent with 4 spaces (no tabs). */
+// Reminder: always indent with 4 spaces (no tabs). 
 // +---------------------------------------------------------------------------+
 // | Links plugin 1.0 for Geeklog                                              |
 // +---------------------------------------------------------------------------+
@@ -36,50 +36,105 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.8 2005/11/18 20:58:24 dhaun Exp $
+
+/** 
+ * This file installs and removes the data structures for the    
+ * Links plugin for Geeklog.  
+ * 
+ * @package Links
+ * @subpackage admin
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ * 
+ */
+// $Id: install.php,v 1.9 2005/11/26 06:37:33 trinity Exp $
 
 require_once ('../../../lib-common.php');
 
 // Plugin information
-//
-// ----------------------------------------------------------------------------
-//
+/**
+ * plugin display name
+ * @global string $pi_display_name
+ */
 $pi_display_name = 'Links';
+/**
+ * plugin name
+ * @global string $pi_name
+ */
 $pi_name         = 'links';
+/**
+ * plugin version
+ * @global string $pi_version
+ */
 $pi_version      = '1.0';
+/**
+ * plugin suported GL version
+ * @global string $gl_version
+ */
 $gl_version      = '1.4.0';
+/**
+ * plugin suport website url
+ * @global string $pi_url
+ */
 $pi_url          = 'http://www.geeklog.net/';
-
-// name of the Admin group
+/**
+ * name of the Admin group
+ * @global string $pi_admin
+ */
 $pi_admin        = $pi_display_name . ' Admin';
 
-// the plugin's groups - assumes first group to be the Admin group
+
+/**
+ * the plugin's groups - assumes first group to be the Admin group
+ * @global array $GROUPS
+ * 
+ */
 $GROUPS = array();
 $GROUPS[$pi_admin] = 'Has full access to ' . $pi_name . ' features';
 
+/**
+* @global array $FEATURES
+* 
+*/
 $FEATURES = array();
 $FEATURES['links.edit']         = 'Access to links editor';
 $FEATURES['links.moderate']     = 'Ability to moderate pending links';
 $FEATURES['links.submit']       = 'May skip the links submission queue';
 
+/**
+ * @global array $MAPPINGS
+ * 
+ */
 $MAPPINGS = array();
 $MAPPINGS['links.edit']         = array ($pi_admin);
 $MAPPINGS['links.moderate']     = array ($pi_admin);
 $MAPPINGS['links.submit']       = array ($pi_admin);
 
-// (optional) data to pre-populate tables with
-// Insert table name and sql to insert default data for your plugin.
-// Note: '#group#' will be replaced with the id of the plugin's admin group.
+/**
+ * (optional) data to pre-populate tables with
+ * Insert table name and sql to insert default data for your plugin.
+ * Note: '#group#' will be replaced with the id of the plugin's admin group.
+ * @global array $DEFVALUES
+ * @name $DEFVALUES
+ */
 $DEFVALUES = array();
 $DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, date, owner_id, group_id, perm_group) VALUES ('geeklog.net', 'Geeklog Sites', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', NOW(), 1, #group#, 3)";
 
 /**
-* Checks the requirements for this plugin and if it is compatible with this
-* version of Geeklog.
-*
-* @return   boolean     true = proceed with install, false = not compatible
-*
-*/
+ * Checks the requirements for this plugin and if it is compatible with this
+ * version of Geeklog.
+ *
+ * @return   boolean     true = proceed with install, false = not compatible
+ *
+ */
 function plugin_compatible_with_this_geeklog_version ()
 {
     return true;
@@ -119,7 +174,20 @@ if (!SEC_inGroup ('Root')) {
 
 /**
 * Puts the datastructures for this plugin into the Geeklog database
-*
+* @global array core config vars
+* @global array core table data
+* @global array core user data
+* @global array plugin group data
+* @global array plugin feature data
+* @global array plugin feature mapping data
+* @global array data to preopulate db
+* @global string path data
+* @global string plugin name
+* @global string plugin display name
+* @global string plugin version
+* @global string geeklog supported version
+* @global string plugin support url
+* @return boolean true if compleated false if failed
 */
 function plugin_install_now()
 {

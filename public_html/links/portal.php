@@ -32,7 +32,26 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.1 2005/09/15 07:19:22 ospiess Exp $
+
+/** 
+ * Geeklog portal page that tracks link click throughs. 
+ * 
+ * @package Links
+ * @subpackage public_html
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ * 
+ */
+
+// $Id: portal.php,v 1.2 2005/11/26 06:37:32 trinity Exp $
 
 require_once('./../lib-common.php');
 

@@ -1,6 +1,6 @@
 <?php
 
-/* Reminder: always indent with 4 spaces (no tabs). */
+// Reminder: always indent with 4 spaces (no tabs). 
 // +---------------------------------------------------------------------------+
 // | Links Plugin 1.0                                                          |
 // +---------------------------------------------------------------------------+
@@ -32,7 +32,25 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.20 2005/11/19 10:51:56 dhaun Exp $
+
+/** 
+ * Geeklog links administration page. 
+ * 
+ * @package Links
+ * @subpackage admin
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ */
+ 
+// $Id: index.php,v 1.21 2005/11/26 06:37:34 trinity Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -63,9 +81,16 @@ if (!SEC_hasRights ('links.edit')) {
 /**
 * Shows the links editor
 *
-* @param    string  $mode   Used to see if we are moderating a link or simply editing one 
-* @param    string  $lid    ID of link to edit
-* @return   string          HTML for the link editor form
+* @param  string  $mode   Used to see if we are moderating a link or simply editing one 
+* @param  string  $lid    ID of link to edit
+* @global array core config vars
+* @global array core group data
+* @global array core table data
+* @global array core user data
+* @global array links plugin config vars
+* @global array links plugin lang vars
+* @global array core lang access vars
+* @return string HTML for the link editor form
 *
 */
 function editlink ($mode, $lid = '') 
@@ -209,6 +234,12 @@ function editlink ($mode, $lid = '')
 * @param    int     $perm_members   Permissions members have
 * @param    int     $perm_anon      Permissions anonymous users have
 * @return   string                  HTML redirect or error message
+* @global array core config vars
+* @global array core group data
+* @global array core table data
+* @global array core user data
+* @global array core msg data
+* @global array links plugin lang admin vars
 *
 */
 function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $title, $hits, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
@@ -299,7 +330,15 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         return $retval;
     }
 }
-
+/**
+ * List links
+ * @global array core config vars
+ * @global array core table data
+ * @global array core user data
+ * @global array core lang admin vars
+ * @global array links plugin lang vars
+ * @global array core lang access vars
+ */
 function listlinks ()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_LINKS_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE;

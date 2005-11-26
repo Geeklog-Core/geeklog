@@ -30,7 +30,27 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.1 2005/11/13 13:46:06 dhaun Exp $
+
+/** 
+ * Links plugin Installation SQL  
+ * 
+ * @package Links
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ * 
+ */
+
+
+
+// $Id: install.php,v 1.2 2005/11/26 06:37:34 trinity Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['links']} (
