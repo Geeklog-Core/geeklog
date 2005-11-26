@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | database.php                                                              |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.29 2005/11/17 15:00:22 ospiess Exp $
+// $Id: database.php,v 1.30 2005/11/26 18:59:16 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -110,7 +110,8 @@ function listbackups()
         $text_arr = array('has_menu' => true,
                           'instructions' => $LANG_DB_BACKUP['db_explanation']
                                             . "<br>" . sprintf ($LANG_DB_BACKUP['total_number'], $index),
-                          'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
+                          'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE,
+                          'title' => $LANG_DB_BACKUP['last_ten_backups']
         );
         $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr, $menu_arr);
     } else {

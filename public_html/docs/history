@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.4.0b2)
 ------------
+- The block around the list of backups was missing the title [Dirk]
 - Don't emit the Trackback and Pingback headers when trackbacks have been
   disabled for a story [Dirk]
 - Introduced {lang_trackback_comments_no_link} (in trackback/trackback.thtml)
