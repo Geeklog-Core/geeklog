@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.74 2005/11/24 14:29:28 ospiess Exp $
+// $Id: article.php,v 1.75 2005/11/26 15:02:18 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -157,18 +157,19 @@ if ($A['count'] > 0) {
         // Set page title
         $pagetitle = stripslashes (str_replace ('$', '&#36;', $A['title']));
 
-        if ($_CONF['trackback_enabled']) {
-            $permalink = COM_buildUrl ($_CONF['site_url']
-                                       . '/article.php?story=' . $story);
-            $trackbackurl = TRB_makeTrackbackUrl ($story);
-            $rdf = '<!--' . LB
-                 . TRB_trackbackRdf ($permalink, $A['title'], $trackbackurl)
-                 . LB . '-->' . LB;
-        } else {
-            $rdf = '';
-        }
-        if ($_CONF['pingback_enabled']) {
-            header ('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
+        $rdf = '';
+        if ($A['trackbackcode'] == 0) {
+            if ($_CONF['trackback_enabled']) {
+                $permalink = COM_buildUrl ($_CONF['site_url']
+                                           . '/article.php?story=' . $story);
+                $trackbackurl = TRB_makeTrackbackUrl ($story);
+                $rdf = '<!--' . LB
+                     . TRB_trackbackRdf ($permalink, $A['title'], $trackbackurl)
+                     . LB . '-->' . LB;
+            }
+            if ($_CONF['pingback_enabled']) {
+                header ('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
+            }
         }
         $display .= COM_siteHeader ('menu', $pagetitle, $rdf);
 
