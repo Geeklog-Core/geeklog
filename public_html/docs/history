@@ -2,6 +2,12 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.4.0b2)
 ------------
+- In Command and Control, show the Trackback icon only when at least one of the
+  Trackback, Pingback, or Ping features is enabled (in addition to 'story.ping'
+  permissions for the current user) [Dirk]
+- Replaced the delete_event.gif icon (in layout/professional/images/icons) with
+  a PNG, since the Professional theme uses PNGs now and the icon wouldn't show
+  up otherwise [Dirk]
 - The block around the list of backups was missing the title [Dirk]
 - Don't emit the Trackback and Pingback headers when trackbacks have been
   disabled for a story [Dirk]

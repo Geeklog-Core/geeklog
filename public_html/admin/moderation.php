@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | moderation.php                                                            |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.79 2005/11/17 15:00:22 ospiess Exp $
+// $Id: moderation.php,v 1.80 2005/11/27 09:47:05 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -88,6 +88,9 @@ function commandcontrol()
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
+    $showTrackbackIcon = (($_CONF['trackback_enabled'] ||
+                          $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])
+                         && SEC_hasRights('story.ping'));
     $cc_arr = array(
                   array('condition' => SEC_hasRights('story.edit'),
                         'url' => $_CONF['site_admin_url'] . '/story.php',
@@ -110,7 +113,7 @@ function commandcontrol()
                   array('condition' => SEC_inGroup('Root'),
                         'url' => $_CONF['site_admin_url'] . '/syndication.php',
                         'lang' => $LANG01[38], 'image' => '/images/icons/syndication.'),
-                  array('condition' => SEC_hasRights('story.ping'),
+                  array('condition' => $showTrackbackIcon,
                         'url' => $_CONF['site_admin_url'] . '/trackback.php',
                         'lang' => $LANG01[116], 'image' => '/images/icons/trackback.'),
                   array('condition' => SEC_hasRights('plugin.edit'),
