@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */                         
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | trackback.php                                                             |
 // |                                                                           |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.29 2005/11/18 03:10:41 ospiess Exp $
+// $Id: trackback.php,v 1.30 2005/11/27 15:25:37 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -164,8 +164,6 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
 function deleteTrackbackComment ($id)
 {
     global $_TABLES;
-
-    $retval = COM_refresh ($_CONF['site_admin_url'] . '/trackback.php?mgs=63');
 
     $cid = addslashes ($id);
     $result = DB_query ("SELECT sid,type FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
