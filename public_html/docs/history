@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.4.0b2)
 ------------
+- The "Mail Users" icon was missing from Command and Control [Dirk]
 - In Command and Control, show the Trackback icon only when at least one of the
   Trackback, Pingback, or Ping features is enabled (in addition to 'story.ping'
   permissions for the current user) [Dirk]

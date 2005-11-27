@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.80 2005/11/27 09:47:05 dhaun Exp $
+// $Id: moderation.php,v 1.81 2005/11/27 10:21:30 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -110,6 +110,9 @@ function commandcontrol()
                   array('condition' => SEC_hasRights('group.edit'),
                         'url' => $_CONF['site_admin_url'] . '/group.php',
                         'lang' => $LANG01[96], 'image' => '/images/icons/group.'),
+                  array('condition' => SEC_hasRights('user.mail'),
+                        'url' => $_CONF['site_admin_url'] . '/mail.php',
+                        'lang' => $LANG01[105], 'image' => '/images/icons/mail.'),
                   array('condition' => SEC_inGroup('Root'),
                         'url' => $_CONF['site_admin_url'] . '/syndication.php',
                         'lang' => $LANG01[38], 'image' => '/images/icons/syndication.'),
