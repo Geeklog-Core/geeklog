@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.47 2005/11/22 08:45:03 dhaun Exp $
+// $Id: search.class.php,v 1.48 2005/11/29 19:17:20 mjervis Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -96,7 +96,7 @@ class Search {
 
     /**
     * @access private
-    * @var integer 
+    * @var integer
     */
     var $_per_page = 10;
 
@@ -171,12 +171,12 @@ class Search {
     function _convertAuthor()
     {
         global $_TABLES;
-        
+
         if (is_numeric ($this->_author) &&
                 preg_match ('/^([0-9]+)$/', $this->_author)) {
             return;
         }
-        
+
         if (!empty ($this->_author)) {
             $this->_author = DB_getItem ($_TABLES['users'], 'uid',
                     "username='" . addslashes ($this->_author) . "'");
@@ -260,11 +260,13 @@ class Search {
             }
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
+                if (!empty($delim)) {
+                    $DS = explode($delim, $this->_dateStart);
+                    $DE = explode($delim, $this->_dateEnd);
+                    $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+                    $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
+                    $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
+                }
             }
             if (!empty($this->_topic)) {
                 $sql .= "AND (tid = '$this->_topic') ";
@@ -296,7 +298,7 @@ class Search {
             // here! Make sure data elements are in an array and in the same
             // order as your headings above!
             while ($A = DB_fetchArray($result_stories)) {
-                // get rows    
+                // get rows
                 $A['title'] = str_replace ('$', '&#36;', $A['title']);
                 $thetime = COM_getUserDateTimeFormat ($A['day']);
                 if (empty ($urlQuery)) {
@@ -406,11 +408,13 @@ class Search {
 
             if (!empty($this->_dateStart) && !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP({$_TABLES['comments']}.date) BETWEEN '$startdate' AND '$enddate') ";
+                if (!empty($delim)) {
+                    $DS = explode($delim, $this->_dateStart);
+                    $DE = explode($delim, $this->_dateEnd);
+                    $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+                    $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
+                    $sql .= "AND (UNIX_TIMESTAMP({$_TABLES['comments']}.date) BETWEEN '$startdate' AND '$enddate') ";
+                }
             }
             if (!empty($this->_author)) {
                 $sql .= "AND ({$_TABLES['comments']}.uid = '$this->_author') ";
@@ -471,9 +475,9 @@ class Search {
             $comment_results->num_itemssearched = 0;
         }
 
-        return $comment_results;        
+        return $comment_results;
     }
-    
+
     /**
     * Performs search on all events
     *
@@ -497,7 +501,7 @@ class Search {
                 $sql .= "(location LIKE '%$mysearchterm%'  ";
                 $sql .= "OR description LIKE '%$mysearchterm%' ";
                 $sql .= "OR title LIKE '%$mysearchterm%') ";
-            } 
+            }
             elseif($this->_keyType == 'all') {
                 //must contain ALL of the keywords
                 $mywords = explode(' ', $this->_query);
@@ -534,11 +538,13 @@ class Search {
 
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
-                $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
+                if (!empty($delim)) {
+                    $DS = explode($delim, $this->_dateStart);
+                    $DE = explode($delim, $this->_dateEnd);
+                    $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
+                    $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
+                    $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
+                }
             }
             $sql .= COM_getPermSQL ('AND');
             $sql .= ' ORDER BY datestart DESC ';
@@ -559,7 +565,7 @@ class Search {
             $event_results->num_searchresults = 0;
             $event_results->num_itemssearched = $B[0];
             $event_results->supports_paging = true;
-    
+
             // NOTE if any of your data items need to be links then add them
             // here! Make sure data elements are in an array and in the same
             // order as your headings above!
@@ -598,7 +604,7 @@ class Search {
     function _showPager($resultPage, $pages, $extra='')
     {
         global $_CONF, $LANG09;
-        
+
         $urlQuery = urlencode($this->_query);
         $pager = '';
         if ($pages > 1) {
@@ -863,7 +869,7 @@ class Search {
         }
         return false;
     }
-    
+
     /**
     * Shows an error message to anonymous users
     *
@@ -890,10 +896,10 @@ class Search {
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    
+
         return $retval;
     }
-    
+
     /**
     * Determines if user is allowed to perform a search
     *
@@ -984,7 +990,7 @@ class Search {
         $searchform->set_var('lang_keywords', $LANG09[2]);
         $searchform->set_var('lang_date', $LANG09[20]);
         $searchform->set_var('lang_to', $LANG09[21]);
-        $searchform->set_var('date_format', $LANG09[22]);    
+        $searchform->set_var('date_format', $LANG09[22]);
         $searchform->set_var('lang_topic', $LANG09[3]);
         $searchform->set_var('lang_all', $LANG09[4]);
         $searchform->set_var('topic_option_list',
@@ -996,7 +1002,7 @@ class Search {
         $searchform->set_var('lang_events', $LANG09[40]);
         $searchform->set_var('lang_results', $LANG09[59]);
         $searchform->set_var('lang_per_page', $LANG09[60]);
-        
+
         $searchform->set_var('lang_exact_phrase', $LANG09[43]);
         $searchform->set_var('lang_all_words', $LANG09[44]);
         $searchform->set_var('lang_any_word', $LANG09[45]);
@@ -1006,7 +1012,7 @@ class Search {
         $searchform->set_var ('dateend', $this->_dateEnd);
         $searchform->set_var ($this->_per_page . '_selected',
                               'selected="selected"');
-        
+
         $phrase_selected = '';
         $all_selected = '';
         $any_selected = '';
@@ -1031,7 +1037,7 @@ class Search {
                 $pluginoptions .= ' selected="selected"';
                 $plugin_selected = true;
             }
-            $pluginoptions .= '>' . current ($plugintypes) . '</option>' . LB; 
+            $pluginoptions .= '>' . current ($plugintypes) . '</option>' . LB;
             next($plugintypes);
         }
         $searchform->set_var('plugin_types', $pluginoptions);
@@ -1055,7 +1061,7 @@ class Search {
         $searchform->set_var ('stories_selected', $stories_selected);
         $searchform->set_var ('comments_selected', $comments_selected);
         $searchform->set_var ('events_selected', $events_selected);
-    
+
         if ($_CONF['contributedbyline'] == 1) {
             $searchform->set_var('lang_authors', $LANG09[8]);
             $searchusers = array();
@@ -1067,9 +1073,9 @@ class Search {
             while ($A = DB_fetchArray($result)) {
                 $searchusers[$A['uid']] = $A['uid'];
             }
-            
+
             $inlist = implode(',', $searchusers);
-            
+
             if (!empty ($inlist)) {
                 $sql = "SELECT uid,username,fullname FROM {$_TABLES['users']} WHERE uid IN ($inlist)";
                 if (isset ($_CONF['show_fullname']) &&
@@ -1101,7 +1107,7 @@ class Search {
             $searchform->set_var ('author_form_element',
                     '<input type="hidden" name="author" value="0">');
         }
-        $searchform->set_var('lang_search', $LANG09[10]);    
+        $searchform->set_var('lang_search', $LANG09[10]);
         $searchform->parse('output', 'searchform');
 
         $retval .= $searchform->finish($searchform->get_var('output'));
@@ -1129,7 +1135,7 @@ class Search {
         // Start search timer
         $searchtimer = new timerobject();
         $searchtimer->setPercision(4);
-        $searchtimer->startTimer();    
+        $searchtimer->startTimer();
 
         // Do searches
         $this->story_results = $this->_searchStories();

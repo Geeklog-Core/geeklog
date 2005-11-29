@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.59 2005/11/19 20:20:36 dhaun Exp $
+// $Id: functions.inc,v 1.60 2005/11/29 19:17:20 mjervis Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -98,7 +98,7 @@ function plugin_getmenuitems_staticpages()
 * does comments.
 *
 */
-function plugin_commentsupport_staticpages() 
+function plugin_commentsupport_staticpages()
 {
     // Static Pages will not use comments
     return false;
@@ -131,7 +131,7 @@ function SP_countVisiblePages ()
 *
 * @param    int     showsitestate   Flag to let us know which stats to get
 */
-function plugin_showstats_staticpages($showsitestats) 
+function plugin_showstats_staticpages($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_STATIC;
 
@@ -164,16 +164,16 @@ function plugin_showstats_staticpages($showsitestats)
         $retval .= COM_startBlock ($LANG_STATIC['stats_headline']);
         $retval .= $LANG_STATIC['stats_no_hits'];
         $retval .= COM_endBlock();
-    }	
+    }
 
     return $retval;
 }
 
 /**
 * New stats plugin API function for proper integration with the site stats
-* 
+*
 * @return   array(item text, item count);
-* 
+*
 */
 function plugin_statssummary_staticpages ()
 {
@@ -189,7 +189,7 @@ function plugin_statssummary_staticpages ()
 * drop-down on search.php.  Let's let users search static pages!
 *
 */
-function plugin_searchtypes_staticpages() 
+function plugin_searchtypes_staticpages()
 {
     global $LANG_STATIC;
 
@@ -202,7 +202,7 @@ function plugin_searchtypes_staticpages()
 /**
 * this searches for static pages matching the user query and returns an array of
 * for the header and table rows back to search.php where it will be formated and
-* printed 
+* printed
 *
 * @param    string  $query      Keywords user is looking for
 * @param    date    $datestart  Start date to get results for
@@ -215,7 +215,7 @@ function plugin_searchtypes_staticpages()
 * @param    int     $perpage    number of results per page
 *
 */
-function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage) 
+function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
     global $_CONF, $_TABLES, $LANG_STATIC;
 
@@ -276,11 +276,13 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     if (!empty ($datestart) && !empty ($dateend)) {
         $delim = substr ($datestart, 4, 1);
-        $DS = explode ($delim, $datestart);
-        $DE = explode ($delim, $dateend);
-        $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
-        $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
-        $sql .= " AND (UNIX_TIMESTAMP(sp_date) BETWEEN '$startdate' AND '$enddate')";
+        if (!empty($delim)) {
+            $DS = explode ($delim, $datestart);
+            $DE = explode ($delim, $dateend);
+            $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
+            $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
+            $sql .= " AND (UNIX_TIMESTAMP(sp_date) BETWEEN '$startdate' AND '$enddate')";
+        }
     }
 
     if (!empty ($author)) {
@@ -308,7 +310,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $plugin_results->num_itemssearched = $B[0];
     $plugin_results->supports_paging = true;
 
-    // NOTE if any of your data items need to be links then add them here! 
+    // NOTE if any of your data items need to be links then add them here!
     // make sure data elements are in an array and in the same order as your
     // headings above!
     for ($i = 0; $i < $mycount; $i++) {
@@ -343,7 +345,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 * moderation.php
 *
 */
-function plugin_cclabel_staticpages() 
+function plugin_cclabel_staticpages()
 {
     global $LANG_STATIC, $_CONF;
 
@@ -360,7 +362,7 @@ function plugin_cclabel_staticpages()
 * returns the administrative option for this plugin
 *
 */
-function plugin_getadminoption_staticpages() 
+function plugin_getadminoption_staticpages()
 {
     global $_CONF, $LANG_STATIC, $_TABLES;
 
@@ -369,7 +371,7 @@ function plugin_getadminoption_staticpages()
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
         return array ($LANG_STATIC['staticpages'], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);
-    }	
+    }
 }
 
 /**
@@ -378,12 +380,12 @@ function plugin_getadminoption_staticpages()
 * Takes User id and permission and returns SQL where clause which will return
 * the appropriate objects.
 * This assumes that the table has the following security structure:
-* owner_id        | mediumint(8)          
-* group_id        | mediumint(8)          
-* perm_owner      | tinyint(1) unsigned   
-* perm_group      | tinyint(1) unsigned   
-* perm_members    | tinyint(1) unsigned  
-* perm_anon       | tinyint(1) unsigned  
+* owner_id        | mediumint(8)
+* group_id        | mediumint(8)
+* perm_owner      | tinyint(1) unsigned
+* perm_group      | tinyint(1) unsigned
+* perm_members    | tinyint(1) unsigned
+* perm_anon       | tinyint(1) unsigned
 * This will work with the standard GL tables
 *
 * @param    string  $table  Table name (used in joins)
@@ -583,7 +585,7 @@ function plugin_user_delete_staticpages($uid)
 
 
 /**
-* Return the current version of code. 
+* Return the current version of code.
 * Used in the Plugin Editor to show the registered version and code version
 */
 function plugin_chkVersion_staticpages()
@@ -641,7 +643,7 @@ function plugin_geticon_staticpages ()
 *
 * @steps   Array    Holds all the steps that have been completed by the install
 *
-*/  
+*/
 function plugin_uninstall_staticpages($steps = '')
 {
     global $_TABLES;
@@ -649,7 +651,7 @@ function plugin_uninstall_staticpages($steps = '')
     // Uninstalls the static pages plugin
 
     if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the staticpage table 
+        // Remove the staticpage table
         COM_errorLog('Dropping staticpage table',1);
         DB_query("DROP TABLE {$_TABLES['staticpage']}");
         COM_errorLog('...success',1);
@@ -672,21 +674,21 @@ function plugin_uninstall_staticpages($steps = '')
     $php_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'staticpages.PHP'");
 
     if (empty($steps) OR $steps['addededittogroup'] == 1) {
-        // Remove access to those features 
+        // Remove access to those features
         COM_errorLog('Attempting to remove rights to staticpage.edit from all groups',1);
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
         COM_errorLog('...success',1);
     }
 
     if (empty($steps) OR $steps['addeddeletetogroup'] == 1) {
-        // Remove access to those features 
+        // Remove access to those features
         COM_errorLog('Attempting to remove rights to staticpage.delete from all groups',1);
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $delete_id");
         COM_errorLog('...success',1);
     }
 
     if (empty($steps) OR $steps['addedphptogroup'] == 1) {
-        // Remove access to those features 
+        // Remove access to those features
         COM_errorLog('Attempting to remove rights to staticpage.PHP from all groups',1);
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $php_id");
         COM_errorLog('...success',1);

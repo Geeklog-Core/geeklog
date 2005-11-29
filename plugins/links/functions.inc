@@ -40,7 +40,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.42 2005/11/26 06:52:48 ospiess Exp $
+// $Id: functions.inc,v 1.43 2005/11/29 19:17:19 mjervis Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -367,11 +367,13 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
 
     if (!empty ($datestart) && !empty ($dateend)) {
         $delim = substr ($datestart, 4, 1);
-        $DS = explode ($delim, $datestart);
-        $DE = explode ($delim, $dateend);
-        $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
-        $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
-        $sql .= " AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate')";
+        if (!empty($delim)) {
+            $DS = explode ($delim, $datestart);
+            $DE = explode ($delim, $dateend);
+            $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
+            $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
+            $sql .= " AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate')";
+        }
     }
 
     if (!empty ($author)) {
