@@ -11,7 +11,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.2 2005/04/10 10:02:44 dhaun Exp $
+* $Id: EditHeader.Admin.class.php,v 1.3 2005/12/01 08:55:29 dhaun Exp $
 */
 
 /**
@@ -72,9 +72,9 @@ class EditHeader extends BaseAdmin {
         $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditHeader">';
         $display .= '<table border="0" width="100%">' . LB;
         $display .= '<tr><td align="right"><b>Header:</b></td>' . LB;
-        $display .= '<td><input type="text" site="40" name="header-name"> e.g. <tt>User-Agent</tt></td></tr>' . LB;
+        $display .= '<td><input type="text" size="40" name="header-name"> e.g. <tt>User-Agent</tt></td></tr>' . LB;
         $display .= '<tr><td align="right"><b>Content:</b></td>' . LB;
-        $display .= '<td><input type="text" site="40" name="header-value"> e.g. <tt>Mozilla</tt></td></tr>' . LB;
+        $display .= '<td><input type="text" size="40" name="header-value"> e.g. <tt>Mozilla</tt></td></tr>' . LB;
         $display .= '</table>' . LB;
         $display .= '<p><input type="Submit" name="paction" value="' . $LANG_SX00['addentry'] . '">';
         $display .= '</form>';
