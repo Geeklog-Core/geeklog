@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | stats.php                                                                 |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.43 2005/11/19 20:27:24 dhaun Exp $
+// $Id: stats.php,v 1.44 2005/12/02 19:53:43 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -69,7 +69,7 @@ $header_arr = array(
 );
 $data_arr = array();
 $text_arr = array('has_menu'     =>  false,
-                  'title'        => $LANG10[7],
+                  'title'        => $LANG10[1],
 );
 
 $totalhits = DB_getItem ($_TABLES['vars'], 'value', "name = 'totalhits'");
