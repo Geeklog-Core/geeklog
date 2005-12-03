@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.134 2005/11/20 11:21:57 mjervis Exp $
+// $Id: user.php,v 1.135 2005/12/03 11:58:31 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -112,7 +112,7 @@ function edituser($uid = '', $msg = '')
         $curtime =  COM_getUserDateTimeFormat();
         $lastlogin = '';
         $lasttime = '';
-        $A['status'] = 3;
+        $A['status'] = USER_ACCOUNT_ACTIVE;
     }
 
     $retval .= COM_startBlock ($LANG28[1], '',
@@ -175,10 +175,12 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('user_homepage', htmlspecialchars($A['homepage']));
     $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
 
-    $statusarray = array(0 => $LANG28[42], 1 => $LANG28[43], 3 => $LANG28[45] );
+    $statusarray = array(USER_ACCOUNT_DISABLED => $LANG28[42],
+                        USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
+                        USER_ACCOUNT_ACTIVE => $LANG28[45] );
     if ($_CONF['usersubmission'] == 1)
     {
-        $statusarray[2] = $LANG28[44];
+        $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
         asort($statusarray);
     }
     $statusselect = '<select name="userstatus">';
@@ -361,8 +363,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
                 custom_usersave($uid);
             }
-            if( ($_CONF['usersubmission'] == 1) && ($oldstatus == 2)
-                   && ($userstatus == 3) )
+            if( ($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL)
+                   && ($userstatus == USER_ACCOUNT_ACTIVE) )
             {
                 //USER_sendActivationEmail($username, $email);
                 USER_createAndSendPassword ($username, $email, $uid);

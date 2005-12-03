@@ -32,11 +32,17 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.21 2005/11/24 14:27:56 ospiess Exp $
+// $Id: lib-user.php,v 1.22 2005/12/03 11:58:31 mjervis Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
+
+/* Constants for acount stats */
+define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
+define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login.
+define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
+define('USER_ACCOUNT_ACTIVE', 3); // active account
 
 
 /**
@@ -270,7 +276,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
     if ($_CONF['usersubmission'] == 1)
     {
         $fields .= ',status';
-        $values .= ',2';
+        $values .= ','.USER_ACCOUNT_AWAITING_APPROVAL;
     } else {
         if (!empty($remoteusername)) {
             $fields .= ',remoteusername';
@@ -454,7 +460,7 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
 * Add user to group if user does not belong to specified group
 *
 * This is part of the Geeklog user implementation. This function
-* looks up whether a user belongs to a specified group and if not 
+* looks up whether a user belongs to a specified group and if not
 * adds them to the group
 *
 * @param        int      $groupid     Group we want to see if user belongs to and if not add to group
@@ -490,7 +496,7 @@ function USER_addGroup($groupid, $uid='')
 * Delete from group if user belongs to specified group
 *
 * This is part of the Geeklog user implementation. This function
-* looks up whether a user belongs to a specified group and if so 
+* looks up whether a user belongs to a specified group and if so
 * removes them from the group
 *
 * @param        int      $groupid      Group we want to see if user belongs to and if so delete user from group
@@ -501,7 +507,7 @@ function USER_addGroup($groupid, $uid='')
 function  USER_delGroup($groupid, $uid='')
 {
     global $_CONF, $_USER, $_TABLES;
-    
+
     // set $uid if $uid is empty
     if (empty ($uid)) {
         // If not logged in set to 1

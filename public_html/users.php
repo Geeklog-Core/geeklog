@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.124 2005/11/24 14:27:56 ospiess Exp $
+// $Id: users.php,v 1.125 2005/12/03 11:58:31 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -297,7 +297,7 @@ function emailpassword ($username, $msg = 0)
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
-        if (($_CONF['usersubmission'] == 1) && ($A['status'] == 2))
+        if (($_CONF['usersubmission'] == 1) && ($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL))
         {
             return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
         }
@@ -335,7 +335,7 @@ function requestpassword ($username, $msg = 0)
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
-        if (($_CONF['usersubmission'] == 1) && ($A['status'] == 2)) {
+        if (($_CONF['usersubmission'] == 1) && ($A['status'] == USER_ACCOUNT_AWAITING_APPROVAL)) {
             return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
         }
         $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
@@ -865,7 +865,7 @@ default:
         $status = -1;
     }
 
-    if ($status == 3) { // logged in AOK.
+    if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
         $userdata = SESS_getUserDataFromId($uid);
         $_USER=$userdata;

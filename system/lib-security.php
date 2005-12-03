@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.46 2005/11/24 14:27:56 ospiess Exp $
+// $Id: lib-security.php,v 1.47 2005/12/03 11:58:31 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -706,19 +706,19 @@ function SEC_authenticate($username, $password, &$uid)
     {
         $U = DB_fetchArray( $result );
         $uid = $U['uid'];
-        if ($U['status'] == 0)
+        if ($U['status'] == USER_ACCOUNT_DISABLED)
         {
-            return 0; // banned, jump to here to save an md5 calc.
+            return USER_ACCOUNT_DISABLED; // banned, jump to here to save an md5 calc.
         } elseif ($U['passwd'] != md5( $password )) {
             return -1; // failed login
-        } elseif ($U['status'] == 2) {
+        } elseif ($U['status'] == USER_ACCOUNT_AWAITING_APPROVAL) {
             //awaiting approval, jump to msg.
             echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
             exit;
-        } elseif ($U['status'] == 1) {
+        } elseif ($U['status'] == USER_ACCOUNT_AWAITING_ACTIVATION) {
             // Awaiting user activation, activate:
-            DB_change($_TABLES['users'],'status',3,'username',$username);
-            return 3;
+            DB_change($_TABLES['users'],'status',USER_ACCOUNT_ACTIVE,'username',$username);
+            return USER_ACCOUNT_ACTIVE;
         } else {
             return $U['status']; // just return their status
         }
@@ -756,10 +756,10 @@ function SEC_checkUserStatus($userid)
             $redirect = true;
         }
     }
-    if ($status == 1)
+    if ($status == USER_ACCOUNT_AWAITING_ACTIVATION)
     {
-        DB_change($_TABLES['users'], 'status',3 , 'uid', $userid);
-    } elseif ($status == 2) {
+        DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $userid);
+    } elseif ($status == USER_ACCOUNT_AWAITING_APPROVAL) {
         // If we aren't on users.php with a default action then go to it
         if ($redirect)
         {
@@ -767,7 +767,7 @@ function SEC_checkUserStatus($userid)
             echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
             exit;
         }
-    } elseif ($status == 0) {
+    } elseif ($status == USER_ACCOUNT_DISABLED) {
         if ($redirect)
         {
             COM_accessLog("SECURITY: Attempted Cookie Session login from banned user $userid.");
