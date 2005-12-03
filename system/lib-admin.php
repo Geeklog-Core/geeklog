@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.34 2005/11/26 18:31:46 ospiess Exp $
+// $Id: lib-admin.php,v 1.35 2005/12/03 11:25:31 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -268,6 +268,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $order = $defsort_arr['field'];
     } else {
         $order_var = COM_applyFilter ($_GET['order'], true);
+        $order_var_link = "&amp;order=$order_var"; # keep the variable for the google paging
         $order = $header_arr[$order_var]['field'];
     }
 
@@ -390,9 +391,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     if ($has_extras) {
         if (!empty($query)) {
-            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit=$query_limit&amp;order=$order_var&amp;direction=$direction";
+            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit=$query_limit$order_var_link&amp;direction=$direction";
         } else {
-            $base_url = $form_url . "?query_limit=$query_limit&amp;order=$order_var&amp;direction=$direction";
+            $base_url = $form_url . "?query_limit=$query_limit$order_var_link&amp;direction=$direction";
         }
 
         if ($num_pages > 1) {
