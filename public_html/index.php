@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.74 2005/12/03 12:16:28 ospiess Exp $
+// $Id: index.php,v 1.75 2005/12/03 12:45:29 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -238,15 +238,6 @@ if ( $A = DB_fetchArray( $result ) ) {
 $display .= COM_siteFooter (true); // The true value enables right hand blocks.
 
 // Output page 
-if( empty( $LANG_CHARSET )) {
-    $charset = $_CONF['default_charset'];
-    if( empty( $charset )) {
-        $charset = 'iso-8859-1';
-    }
-} else {
-    $charset = $LANG_CHARSET;
-}
-header ('Content-Type: text/html; charset=' . $charset);
 echo $display;
 
 ?>

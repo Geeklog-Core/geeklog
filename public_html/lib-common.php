@@ -1,5 +1,4 @@
 <?php
-
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
@@ -33,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.500 2005/11/22 20:39:02 dhaun Exp $
+// $Id: lib-common.php,v 1.501 2005/12/03 12:45:29 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -794,6 +793,18 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     {
         return $function( $what, $pagetitle );
     }
+    
+    // send out the charset header
+    
+    if( empty( $LANG_CHARSET )) {
+        $charset = $_CONF['default_charset'];
+        if( empty( $charset )) {
+            $charset = 'iso-8859-1';
+        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+    header ('Content-Type: text/html; charset=' . $charset);
 
     // If we reach here then either we have the default theme OR
     // the current theme only needs the default variable substitutions
@@ -3037,7 +3048,8 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     {
         if( !empty( $_USER['uid'] ))
         {
-            $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'" );
+            $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} "
+                               ."WHERE uid = '{$_USER['uid']}'" );
             list($_USER['boxes'], $_USER['noboxes']) = DB_fetchArray( $result );
         }
         else
@@ -3049,11 +3061,13 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     if( $side == 'left' )
     {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1";
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date "
+              ."FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1";
     }
     else
     {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 0 AND is_enabled = 1";
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date "
+              ."FROM {$_TABLES['blocks']} WHERE onleft = 0 AND is_enabled = 1";
     }
 
     if( !empty( $topic ))
