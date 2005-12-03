@@ -253,10 +253,16 @@
       */
     var $_permaLink;
 
+    /**
+      * Have we used GUID for link?
+      */
+    var $_linkGUID;
+
     function RSS20()
     {
       $this->FeedParserBase();
       $this->_inItem = false;
+      $this->_linkGUID = false;
     }
 
     /**
@@ -273,7 +279,7 @@
       $xml .= '<title>'.$this->_safeXML( $article['title'] )."</title>\n";
       $xml .= '<link>'.$this->_safeXML( $article['link'] )."</link>\n";
       $xml .= '<guid isPermaLink="true">'.$this->_safeXML( $article['link'] )."</guid>\n";
-      $xml .= '<pubDate>'.date( 'r', $article['date'] )."</pubDate>\n";
+      $xml .= '<pubDate>'.strftime( '%a, %d %b %Y %H:%M:%S %z', $article['date'] )."</pubDate>\n";
       if( array_key_exists( 'commenturl', $article ) )
       {
         $xml .= '<comments>'.$this->_safeXML( $article['commenturl'] )."</comments>\n";
@@ -349,7 +355,7 @@
       {
         $xml .= '<generator>'.$this->_safeXML( $this->system )."</generator>\n";
       }
-      $xml .= '<pubDate>'.date( 'r' )."</pubDate>\n";
+      $xml .= '<pubDate>'.strftime( '%a, %d %b %Y %H:%M:%S %z' )."</pubDate>\n";
       $xml .= "<language>{$this->lang}</language>\n";
 
       if( strlen($this->feedlogo) > 0 )
@@ -422,6 +428,7 @@
       } elseif( $name == 'GUID' && $this->_permaLink ) {
         /* if we have a guid that is ALSO a permalink, override link with it */
         $this->_currentItem['link'] = $this->_currentItem['guid'];
+        $this->_linkGUID = true;
       }
       $this->_currentTag = '';
     }
@@ -444,11 +451,14 @@
             $this->_currentItem['title'] .= $data;
           }
         } else if( $this->_currentTag == 'LINK' ) {
-          if( empty( $this->_currentItem['link'] ) )
+          if( !$this->_linkGUID )
           {
-            $this->_currentItem['link'] = $data;
-          } else {
-            $this->_currentItem['link'] .= $data;
+              if( empty( $this->_currentItem['link'] ) )
+              {
+                $this->_currentItem['link'] = $data;
+              } else {
+                $this->_currentItem['link'] .= $data;
+              }
           }
         } else if( $this->_currentTag == 'DESCRIPTION' ) {
           if( empty( $this->_currentItem['summary'] ) )

@@ -26,7 +26,7 @@
   /*  3. This notice may not be removed or altered from any source            */
   /*     distribution.                                                        */
   /****************************************************************************/
-  // $Id: atom.feed.class.php,v 1.8 2005/11/06 12:15:36 mjervis Exp $
+  // $Id: atom.feed.class.php,v 1.9 2005/12/03 11:57:40 mjervis Exp $
 
   /**
     * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -62,6 +62,20 @@
       $this->_inItem = false;
     }
 
+    function _RFC3339Date($timestamp='')
+    {
+        $return = '';
+        if( !empty($timestamp) )
+        {
+            $return = strftime("%Y-%m-%dT%T", $timestamp);
+            $suffix = strftime("%z", $timestamp);
+        } else {
+            $return = strftime("%Y-%m-%dT%T");
+            $suffix = strftime("%z");
+        }
+        return $return.substr($suffix,0,3).':'.substr($suffix,3,2);
+    }
+
     /**
       * Format an article into an Atom 0.3 <entry> tag.
       *
@@ -76,8 +90,8 @@
       $xml .= '<title mode="escaped">'.$this->_safeXML( $article['title'] )."</title>\n";
       $xml .= '<link rel="alternate" type="text/html" href="'.$this->_safeXML( $article['link'] )."\"/>\n";
       $xml .= '<id>'.htmlspecialchars( $article['link'] )."</id>\n";
-      $xml .= '<issued>'.date( "Y-m-d\TH:i:s", $article['date'] )."</issued>\n";
-      $xml .= '<modified>'.date( "Y-m-d\TH:i:s\Z", $article['date'] )."</modified>\n";
+      $xml .= '<issued>'.$this->_RFC3339Date( $article['date'] )."</issued>\n";
+      $xml .= '<modified>'.$this->_RFC3339Date( $article['date'] )."</modified>\n";
       if( array_key_exists( 'author', $article ) )
       {
         $xml .= "<author>\n<name>{$article['author']}</name>\n</author>\n";
@@ -115,7 +129,7 @@
            . '<title mode="escaped">' . $this->_safeXML( $this->title ) . '</title>' . LB
            . '<tagline mode="escaped">' . $this->_safeXML( $this->description ) . '</tagline>' . LB
            . '<link rel="alternate" type="text/html" href="' . $this->_safeXML( $this->sitelink ) . '"/>' . LB
-           . '<modified>'.date("Y-m-d\TH:i:s\Z").'</modified>' . LB
+           . '<modified>'.$this->_RFC3339Date().'</modified>' . LB
            . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
            . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
       if( is_array( $this->extensions ) )
@@ -267,8 +281,8 @@
       $xml .= '<title type="html">'.$this->_safeXML( $article['title'] )."</title>\n";
       $xml .= '<link rel="alternate" type="text/html" href="'.$this->_safeXML( $article['link'] )."\"/>\n";
       $xml .= '<id>' . $this->_createId($article['link'], $article['date']) . "</id>\n";
-      $xml .= '<published>'.date( "Y-m-d\TH:i:s\Z", $article['date'] )."</published>\n";
-      $xml .= '<updated>'.date( "Y-m-d\TH:i:s\Z", $article['date'] )."</updated>\n";
+      $xml .= '<published>'.$this->_RFC3339Date( $article['date'] )."</published>\n";
+      $xml .= '<updated>'.$this->_RFC3339Date( $article['date'] )."</updated>\n";
       if( array_key_exists( 'author', $article ) )
       {
         $xml .= "<author>\n<name>{$article['author']}</name>\n</author>\n";
@@ -298,8 +312,22 @@
         $start = strpos($url, '/') + 2;
         $end = strpos($url, '/', $start);
         $tag = 'tag:'.substr($url, $start, $end-$start);
-        $tag .= date(",Y-m-d", $date).':'.substr($url, $end);
+        $tag .= strftime(",%Y-%m-%d", $date).':'.substr($url, $end);
         return $tag;
+    }
+
+    function _RFC3339Date($timestamp='')
+    {
+        $return = '';
+        if( !empty($timestamp) )
+        {
+            $return = strftime("%Y-%m-%dT%T", $timestamp);
+            $suffix = strftime("%z", $timestamp);
+        } else {
+            $return = strftime("%Y-%m-%dT%T");
+            $suffix = strftime("%z");
+        }
+        return $return.substr($suffix,0,3).':'.substr($suffix,3,2);
     }
 
     /**
@@ -321,7 +349,7 @@
            $xml .= '<logo>' . $this->_safeXML( $this->feedlogo ) . '</logo>' . LB;
       }
       $xml .= '<id>' . $this->_safeXML( $this->sitelink ) . '/</id>' . LB
-           . '<updated>'.date("Y-m-d\TH:i:s\Z").'</updated>' . LB
+           . '<updated>'.$this->_RFC3339Date().'</updated>' . LB
            . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
            . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
       if( is_array( $this->extensions ) )
