@@ -19,28 +19,28 @@
 // +---------------------------------------------------------------------------+
 
 
-/** 
- * This file does two things: 1) it implements the necessary Geeklog Plugin  
- * API method and 2) implements all the common code needed by the links     
- * Plugins' PHP files. 
- * 
+/**
+ * This file does two things: 1) it implements the necessary Geeklog Plugin
+ * API method and 2) implements all the common code needed by the links
+ * Plugins' PHP files.
+ *
  * @package Links
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
- * 
+ *
  */
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.43 2005/11/29 19:17:19 mjervis Exp $
+// $Id: functions.inc,v 1.44 2005/12/03 12:05:05 mjervis Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -622,7 +622,7 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
         $updated_id = '';
     }
 
-    $sql = "SELECT lid FROM {$_TABLES['links']}" . links_buildSql ($category, $limits);
+    $sql = "SELECT lid FROM {$_TABLES['links']}" . links_buildSql ($topic, $limit);
     $result = DB_query ($sql);
     $num = DB_numRows ($result);
 
