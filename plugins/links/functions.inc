@@ -1,7 +1,9 @@
 <?php
+
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0  functions.inc                                                          |
-// +---------------------------------------------------------------------------+                                                                           |
+// | Links Plugin 1.0  functions.inc                                           |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
 // | modify it under the terms of the GNU General Public License               |
 // | as published by the Free Software Foundation; either version 2            |
@@ -40,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.44 2005/12/03 12:05:05 mjervis Exp $
+// $Id: functions.inc,v 1.45 2005/12/03 15:16:48 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
