@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.75 2005/11/26 15:02:18 dhaun Exp $
+// $Id: article.php,v 1.76 2005/12/03 12:16:28 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -126,6 +126,15 @@ if ($A['count'] > 0) {
         $story_template->set_var('page_title',
                 $_CONF['site_name'] . ': ' . stripslashes($A['title'])); 
         $story_template->set_var('story_title',stripslashes($A['title']));
+        if( empty( $LANG_CHARSET )) {
+            $charset = $_CONF['default_charset'];
+            if( empty( $charset )) {
+                $charset = 'iso-8859-1';
+            }
+        } else {
+            $charset = $LANG_CHARSET;
+        }
+        header ('Content-Type: text/html; charset='. $charset);
         $curtime = COM_getUserDateTimeFormat($A['day']);
         $story_template->set_var('story_date', $curtime[0]);
 
