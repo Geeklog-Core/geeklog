@@ -2,6 +2,16 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.4.0b2)
 ------------
+- Send the character set as an HTTP header from COM_siteHeader now [Oliver]
+- Fixed updating Links feeds [Mike]
+- Corrected RSS handling of GUID or LINK [Mike]
+- Fixed date format in Atom feeds [Mike]
+- Fixed loss of sort setting when browsing the user list [Oliver]
+- Fixed block title of the site stats (reported by Tom Willet) [Dirk]
+- Fixed an SQL error when approving the default story submission ("Are you
+  secure?") after a fresh install (reported by suvi) [Dirk]
+- Fixed warnings that exposed the full path to Geeklog when attempting SQL
+  injections on the advanced search [Mike]
 - The "Mail Users" icon was missing from Command and Control [Dirk]
 - In Command and Control, show the Trackback icon only when at least one of the
   Trackback, Pingback, or Ping features is enabled (in addition to 'story.ping'
