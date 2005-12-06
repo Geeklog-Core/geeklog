@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.99 2005/11/19 03:56:08 vinny Exp $
+// $Id: comment.php,v 1.100 2005/12/06 05:03:15 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -75,8 +75,8 @@ function handleSubmit() {
     switch ( $type ) {
         case 'article':
             $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
-                                       "sid = '$sid'");
-            if ($commentcode < 0) {
+                                       "sid = '$sid'" . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
+            if (!isset($commentcode) || $commentcode < 0) {
                 return COM_refresh ($_CONF['site_url'] . '/index.php');
             }
 
@@ -284,7 +284,7 @@ default:  // New Comment
         if (empty ($title)) {
             if ($type == 'article') {
                 $title = DB_getItem ($_TABLES['stories'], 'title',
-                                     "sid = '{$sid}'");
+                                     "sid = '{$sid}'" . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
             }
             $title = str_replace ('$', '&#36;', $title);
             // CMT_commentForm expects non-htmlspecial chars for title...
