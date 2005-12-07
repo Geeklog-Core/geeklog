@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.35 2005/12/03 11:25:31 ospiess Exp $
+// $Id: lib-admin.php,v 1.36 2005/12/07 13:53:14 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -306,8 +306,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $admin_templates->set_var('mouse_over', "OnMouseOver=\"this.style.cursor='pointer';\"");
             $order_var = $i;
             $onclick="onclick=\"window.location.href='$form_url?"
-                    ."order=$order_var&prevorder=$order&direction=$direction"
-                    ."&page=$page&q=$query&query_limit=$query_limit$extra';\"";
+                    ."order=$order_var&amp;prevorder=$order&amp;direction=$direction"
+                    ."&amp;page=$page&amp;q=$query&amp;query_limit=$query_limit$extra';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
         $admin_templates->parse('header_row', 'header', true);
