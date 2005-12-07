@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.4.0b2)
 ------------
+- Fixed small HTML validation issues with adv. editor and admin lists [Oliver]
 - Fixed comment bug that allowed comments to be saved even when user did not
   have the correct story/topic permissions. [Vinny]
 - Send the character set as an HTTP header from COM_siteHeader now [Oliver]
