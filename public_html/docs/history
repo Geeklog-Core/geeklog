@@ -37,6 +37,8 @@ GeekLog History/Changes:
 - Fixed an SQL error when creating new blocks [Mike]
 - The feed reader will now also follow redirects [Mike]
 
+- New Ukrainian language file, provided by Vitaliy Biliyenko
+
 
 Nov 20, 2005 (1.4.0b1)
 ------------
