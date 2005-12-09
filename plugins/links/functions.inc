@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.45 2005/12/03 15:16:48 dhaun Exp $
+// $Id: functions.inc,v 1.46 2005/12/09 12:05:23 ospiess Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -69,10 +69,11 @@ require_once ($_CONF['path'] . 'plugins/links/config.php');
 */
 function plugin_getmenuitems_links()
 {
-    global $_CONF, $LANG_LINKS;
+    global $_CONF, $LANG_LINKS, $_LI_CONF;
 
-    $menuitems[$LANG_LINKS[114]] = $_CONF['site_url'] . '/links/index.php';
-
+    if ($_LI_CONF['hidelinksmenu'] == 0) {
+        $menuitems[$LANG_LINKS[114]] = $_CONF['site_url'] . '/links/index.php';
+    }
     return $menuitems;
 }
 

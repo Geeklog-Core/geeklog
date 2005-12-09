@@ -28,7 +28,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.6 2005/11/26 06:37:32 trinity Exp $
+// $Id: config.php,v 1.7 2005/12/09 12:05:22 ospiess Exp $
 /** 
  * Links plugin configuration file
  * 
@@ -87,6 +87,13 @@ $_LI_CONF['newlinksinterval']    = 1209600; // = 14 days
  * @global array $_LI_CONF['hidenewlinks']
  */ 
 $_LI_CONF['hidenewlinks']    = 0;
+
+/**
+ * Set to 1 to hide a section from the Top menu:
+ *
+ * @global array $_LI_CONF['hidenewlinks']
+ */
+$_LI_CONF['hidelinksmenu']    = 0;
 
 /**
  * categories per column
