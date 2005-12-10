@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.135 2005/12/03 11:58:31 mjervis Exp $
+// $Id: user.php,v 1.136 2005/12/10 12:07:56 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -148,7 +148,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('username', $A['username']);
 
-    if ($_CONF['allow_user_photo']) {
+    if ($_CONF['allow_user_photo'] && ($A['uid'] > 0)) {
         $photo = USER_getPhoto ($A['uid'], $A['photo'], $A['email'], -1);
         $user_templates->set_var ('user_photo', $photo);
         if (empty ($A['photo'])) {
