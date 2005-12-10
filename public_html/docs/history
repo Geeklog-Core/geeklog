@@ -48,7 +48,9 @@ Dec ??, 2005 (1.4.0rc1)
 - Fixed an SQL error when creating new blocks [Mike]
 - The feed reader will now also follow redirects [Mike]
 
-- New Ukrainian language file, provided by Vitaliy Biliyenko
+- New Ukrainian language file (Windows-1252), provided by Vitaliy Biliyenko
+- New Ukrainian language files (UTF-8 and KOI8-U encoding) for Geeklog, the
+  Spam-X, and Static Pages plugins, provided by Yaroslav Fedevych
 
 
 Nov 20, 2005 (1.4.0b1)
