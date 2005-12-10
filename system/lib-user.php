@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-user.php                                                              |
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.22 2005/12/03 11:58:31 mjervis Exp $
+// $Id: lib-user.php,v 1.23 2005/12/10 11:58:57 dhaun Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -456,6 +456,7 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
 
     return $photo;
 }
+
 /**
 * Add user to group if user does not belong to specified group
 *
@@ -468,15 +469,14 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
 * @return       boolean     true if user is added to group, otherwise false
 *
 */
-function USER_addGroup($groupid, $uid='')
+function USER_addGroup ($groupid, $uid = '')
 {
-    global $_CONF, $_USER, $_TABLES;
+    global $_CONF, $_TABLES, $_USER;
 
      // set $uid if $uid is empty
     if (empty ($uid)) {
-        // If not logged in set to 1
-        if (empty ($_USER['uid'])) {
-            $uid = 1;
+        // bail for anonymous users
+        if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
             return false;
         } else {
             // If logged in set to current uid
@@ -484,11 +484,11 @@ function USER_addGroup($groupid, $uid='')
         }
     }
 
-    if (SEC_inGroup($groupid,$uid) || $groupid > 0){
-     return false;
-     } else {
-    DB_query("INSERT INTO ". $_TABLES['group_assignments'] ." (ug_main_grp_id, ug_uid) VALUES ('$groupid', $uid )");
-    return true;
+    if (($groupid < 1) || SEC_inGroup ($groupid, $uid)) {
+        return false;
+    } else {
+        DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', $uid)");
+        return true;
     }
 }
 
@@ -504,15 +504,14 @@ function USER_addGroup($groupid, $uid='')
 * @return       boolean     true if user is removed from group, otherwise false
 *
 */
-function  USER_delGroup($groupid, $uid='')
+function  USER_delGroup ($groupid, $uid = '')
 {
-    global $_CONF, $_USER, $_TABLES;
+    global $_CONF, $_TABLES, $_USER;
 
     // set $uid if $uid is empty
     if (empty ($uid)) {
-        // If not logged in set to 1
-        if (empty ($_USER['uid'])) {
-            $uid = 1;
+        // bail for anonymous users
+        if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
             return false;
         } else {
             // If logged in set to current uid
@@ -520,11 +519,11 @@ function  USER_delGroup($groupid, $uid='')
         }
     }
 
-    If (SEC_inGroup($groupid,$uid) || $groupid > 0){
-    DB_query("DELETE FROM ". $_TABLES['group_assignments'] ." WHERE ug_main_grp_id=$groupid AND ug_uid = $uid ");
-    return true;
+    if (($groupid > 0) && SEC_inGroup ($groupid, $uid)) {
+        DB_query ("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $groupid AND ug_uid = $uid");
+        return true;
     } else {
-    return false;
+        return false;
     }
 }
 ?>

@@ -1,7 +1,8 @@
 GeekLog History/Changes:
 
-??? ??, 2005 (1.4.0b2)
+Dec ??, 2005 (1.4.0rc1)
 ------------
+- Fixed sanity checks in USER_addGroup and USER_delGroup [Trinity, Dirk]
 - Allowed the Links-entry from the top menu to be hidden by config.php in links
   [Oliver]
 - Fixed small HTML validation issues with adv. editor and admin lists [Oliver]
