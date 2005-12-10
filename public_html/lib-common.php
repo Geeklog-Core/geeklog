@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.502 2005/12/10 16:01:35 dhaun Exp $
+// $Id: lib-common.php,v 1.503 2005/12/10 20:30:30 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4211,10 +4211,10 @@ function COM_showMessage( $msg, $plugin='' )
         $timestamp = strftime( $_CONF['daytime'] );
         $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate( '_msg_block', 'header' ))
-            . '<table><tr><td><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.' . $_IMAGE_TYPE
-            . '" border="0" align="top" alt=""></td>'
-            . '<td style="padding:5px;">' . $message . '</td></tr></table>'
+            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
+            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
+            . $message . '</p>'
             . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     }
 
