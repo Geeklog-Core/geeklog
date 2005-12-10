@@ -1,7 +1,7 @@
 <?php
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-common.php                                                            |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.501 2005/12/03 12:45:29 ospiess Exp $
+// $Id: lib-common.php,v 1.502 2005/12/10 16:01:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5215,6 +5215,13 @@ function COM_highlightQuery( $text, $query )
     // escape all the other PCRE special characters
     $query = preg_quote( $query );
 
+    // ugly workaround:
+    // Using the /e modifier in preg_replace will cause all double quotes to
+    // be returned as \" - so we replace all \" in the result with unescaped
+    // double quotes. Any actual \" in the original text therefore have to be
+    // turned into \\" first ...
+    $text = str_replace( '\\"', '\\\\"', $text );
+
     $mywords = explode( ' ', $query );
     foreach( $mywords as $searchword )
     {
@@ -5223,6 +5230,9 @@ function COM_highlightQuery( $text, $query )
             $text = preg_replace( '/(\>(((?>[^><]+)|(?R))*)\<)/ie', "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", '<x>' . $text . '<x>' );
         }
     }
+
+    // ugly workaround, part 2
+    $text = str_replace( '\\"', '"', $text );
 
     return $text;
 }

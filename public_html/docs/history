@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Fixed problems with the query highlighting code escaping double quotes [Dirk]
 - In the list of plugins, display only the plugin's current version number as
   long as it's in sync with the code version or the plugin hasn't implemented
   the chkVersion API function [Dirk]
