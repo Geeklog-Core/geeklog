@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Limit length of a new user's username to 16 characters in the
+  admin/user/edituser.thtml template file [Dirk]
 - Don't display the current user's userphoto when creating a new user in
   admin/user.php [Dirk]
 - Fixed sanity checks in USER_addGroup and USER_delGroup [Trinity, Dirk]
