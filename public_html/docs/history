@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- In the list of plugins, display only the plugin's current version number as
+  long as it's in sync with the code version or the plugin hasn't implemented
+  the chkVersion API function [Dirk]
 - Limit length of a new user's username to 16 characters in the
   admin/user/edituser.thtml template file [Dirk]
 - Don't display the current user's userphoto when creating a new user in
