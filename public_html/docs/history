@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Grant users with 'plugin.edit' permission access to the plugin editor [Dirk]
 - Changed admin-lists 'default-filter' to require 'AND' [Oliver]
 - Fixed admin lists for events & static pages for non-root users [Oliver]
 - Fixed invalid language string in submit.php [Oliver]

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.55 2005/11/19 08:47:51 dhaun Exp $
+// $Id: plugins.php,v 1.56 2005/12/11 12:33:30 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -49,7 +49,7 @@ define ('PLUGINS_PER_PAGE', 25);
 
 $display = '';
 
-if (!SEC_inGroup('Root')) {
+if (!SEC_hasrights ('plugin.edit')) {
     $display .= COM_siteHeader ('menu');
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
