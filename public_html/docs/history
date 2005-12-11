@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Fixed handling of items in the submission queues (it was only possible to
+  approve / delete the first item in a queue) [Dirk]
 - Grant users with 'plugin.edit' permission access to the plugin editor [Dirk]
 - Changed admin-lists 'default-filter' to require 'AND' [Oliver]
 - Fixed admin lists for events & static pages for non-root users [Oliver]

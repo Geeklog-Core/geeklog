@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.82 2005/12/02 11:21:45 dhaun Exp $
+// $Id: moderation.php,v 1.83 2005/12/11 18:44:45 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -295,11 +295,14 @@ function itemlist($type)
                       
     $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
-        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
-                    ."<input type=\"hidden\" name=\"type\" value=\"$type\">"
-                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">"
-                    .$table
-                    ."<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+        $retval .= LB . '<form action="' . $_CONF['site_admin_url']
+                . '/moderation.php" method="POST">' . LB
+                . '<input type="hidden" name="type" value="' . $type . '">' . LB
+                . '<input type="hidden" name="mode" value="moderation">' . LB
+                . '<input type="hidden" name="count" value="' . $nrows . '">'
+                . LB . $table . LB
+                . '<p align="center"><input type="submit" value="'
+                . $LANG_ADMIN['submit'] . '"></p></form>' . LB;
     } else {
         $retval .= $table;
     }
@@ -420,12 +423,14 @@ function draftlist ()
 *
 * This will actually perform moderation (approve or delete) one or more items
 *
-* @mid          array       Array of items
-* @action       array       Array of actions to perform on items
-* @count        int         Number of items to moderate
+* @param    array   $mid        Array of items
+* @param    array   $action     Array of actions to perform on items
+* @param    string  $type       Type of items ('story', 'event', etc.)
+* @param    int     $count      Number of items to moderate
+* @return   string              HTML for "command and control" page
 *
 */
-function moderation($mid,$action,$type)
+function moderation ($mid, $action, $type, $count)
 {
     global $_CONF, $_TABLES;
 
@@ -453,10 +458,10 @@ function moderation($mid,$action,$type)
         list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
     }
 
-    for ($i = 0; $i < count($action); $i++) {
+    for ($i = 0; $i < $count; $i++) {
         switch ($action[$i]) {
         case 'delete':
-            if ((strlen($type) > 0) && ($type <> 'story') && ($type <> 'draft')) {
+            if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
                 // There may be some plugin specific processing that needs to
                 // happen first.
                 $retval .= PLG_deleteSubmission($type, $mid[$i]);
@@ -527,20 +532,17 @@ function moderation($mid,$action,$type)
 * Users from the user submission queue are either appoved (an email containing
 * the password is sent out) or deleted.
 *
-* Note: The code for sending the password is coped&pasted from users.php
-*
-* @param    uid      int      array of items
-* @param    action   string   action to perform ('delete', 'approve')
-* @param    count    int      number of items
-* @return            string   HTML for "command and control" page
+* @param    int     $uid        Array of items
+* @param    array   $action     Action to perform ('delete', 'approve')
+* @param    int     $count      Number of items
+* @return   string              HTML for "command and control" page
 *
 */
-function moderateusers ($uid, $action)
+function moderateusers ($uid, $action, $count)
 {
     global $_CONF, $_TABLES, $LANG04;
 
     $retval = '';
-    $count = count($action);
     for ($i = 0; $i < $count; $i++) {
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
@@ -554,7 +556,7 @@ function moderateusers ($uid, $action)
                 if ($nrows == 1) {
                     $A = DB_fetchArray($result);
                     $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
-                    DB_Query($sql);
+                    DB_query($sql);
                     //USER_sendActivationEmail($A['username'], $A['email']);
                     USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
                 }
@@ -577,9 +579,10 @@ if (isset ($_GET['msg'])) {
 
 if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
     if ($_POST['type'] == 'user') {
-        $display .= moderateusers ($_POST['id'], $_POST['action']);
+        $display .= moderateusers ($_POST['id'], $_POST['action'],
+                                  COM_applyFilter ($_POST['count'], true));
     } else {
-        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type']);
+        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type'],                                 COM_applyFilter ($_POST['count'], true));
     }
 } else {
     $display .= commandcontrol();
