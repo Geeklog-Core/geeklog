@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.190 2005/12/11 11:57:39 ospiess Exp $
+// $Id: story.php,v 1.191 2005/12/11 12:09:24 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -168,25 +168,15 @@ function liststories()
 
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
-     $menu_arr = array ();
-     if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
-         $std_editor = ' ' . $LANG_ADMIN['std_editor'];
-         $std_link = "&amp;editor=std";
-         $adv_editor = ' ' . $LANG_ADMIN['adv_editor'];
-         $js_warning = ' ' . $LANG_ADMIN['js_warning'];
-         $menu_arr[] = array('url' => $_CONF['site_admin_url'] .
-"/story.php?mode=edit$std_link",
-                           'text' => $LANG_ADMIN['create_new'] . $std_editor);
-     }
-
-     $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/story.php?mode=edit",
-                           'text' => $LANG_ADMIN['create_new'] . $adv_editor);
-     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
-                           'text' => $LANG_ADMIN['admin_home']);
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']));
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
-                      'title' => $LANG24[22], 'instructions' => $LANG24[23] . $js_warning,
+                      'title' => $LANG24[22], 'instructions' => $LANG24[23],
                       'icon' => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/story.php");
 
@@ -198,7 +188,7 @@ function liststories()
     $query_arr = array('table' => 'stories',
                        'sql' => $sql,
                        'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
-                       'default_filter' => $excludetopics . COM_getPermSQL ('AND'),);
+                       'default_filter' => 'AND ' . $excludetopics . COM_getPermSQL ('AND'),);
 
     $retval .= ADMIN_list ("story", "ADMIN_getListField_stories", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr, $filter);
@@ -215,7 +205,7 @@ function liststories()
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '', $errormsg = '', $editor='')
+function storyeditor($sid = '', $mode = '', $errormsg = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN;
 
@@ -325,7 +315,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $editor='')
         $A['trackbacks'] = 0;
         $A['numemails'] = 0;
 
-        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && $editor!='std') {
+        /* @TODO -o"Blaine" Add a user-preference option to set if user wants to`use advanced-editor */
+        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
             $A['postmode'] = 'html';
         } else {
             $A['postmode'] = $_CONF['postmode'];
@@ -382,7 +373,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $editor='')
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
     if ( $A['postmode'] == 'html' AND isset ($_CONF['advanced_editor'])
-        && ($_CONF['advanced_editor'] == 1 && $editor!='std') && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+        && ($_CONF['advanced_editor'] == 1 ) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
@@ -1112,10 +1103,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     if (isset ($_GET['sid'])) {
         $sid = COM_applyFilter ($_GET['sid']);
     }
-    if (isset ($_GET['editor'])) {
-        $editor = COM_applyFilter ($_GET['editor']);
-    }
-    $display .= storyeditor ($sid, $mode,'',$editor);
+    $display .= storyeditor ($sid, $mode);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'editsubmission') {
