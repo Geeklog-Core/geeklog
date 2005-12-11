@@ -2,6 +2,11 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- In the Admin's list of stories, show the display name of the topic (i.e. the
+  same as in the Topics block) instead of the topic ID [Dirk]
+- Hide the edit icon in the Admin's list of stories when the current user
+  doesn't have edit access to a story (since they only got a note saying they
+  can't edit that story anyway) [Dirk]
 - Fixed alternating row colors in admin lsits if one row has no data [Oliver]
 - Made it impossible to switch off blocks if there is no access [Oliver]
 - Fixed handling of items in the submission queues (it was only possible to

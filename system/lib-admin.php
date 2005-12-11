@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.40 2005/12/11 22:14:25 dhaun Exp $
+// $Id: lib-admin.php,v 1.41 2005/12/11 22:51:03 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -612,17 +612,22 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
-function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_TABLES, $_IMAGE_TYPE;
+function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_IMAGE_TYPE;
+
+    static $topics;
+
+    if (!isset ($topics)) {
+        $topics = array ();
+    }
+
     $retval = '';
 
     switch($fieldname) {
         case "unixdate":
             $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
             $retval = strftime($_CONF['daytime'], $curtime[1]);
-            break;
-        case "edit":
-            $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
             break;
         case "title":
             $A['title'] = str_replace('$', '&#36;', $A['title']);
@@ -638,6 +643,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
             }
             break;
         case "access":
+        case "edit":
             $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
                                      $A['perm_owner'], $A['perm_group'],
                                      $A['perm_members'], $A['perm_anon']);
@@ -650,7 +656,11 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
             } else {
                 $access = $LANG_ACCESS['readonly'];
             }
-            $retval = $access;
+            if ($fieldname == 'access') {
+                $retval = $access;
+            } else if ($access == $LANG_ACCESS['edit']) {
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
+            }
             break;
         case "featured":
             if ($A['featured'] == 1) {
@@ -670,6 +680,13 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr) {
             } else {
                 $retval = '';
             }
+            break;
+        case 'tid':
+            if (!isset ($topics[$A['tid']])) {
+                $topics[$A['tid']] = DB_getItem ($_TABLES['topics'], 'topic',
+                                                 "tid = '{$A['tid']}'");
+            }
+            $retval = $topics[$A['tid']];
             break;
         default:
             $retval = $fieldvalue;
