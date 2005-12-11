@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.91 2005/11/14 08:53:45 dhaun Exp $
+// $Id: submit.php,v 1.92 2005/12/11 11:30:26 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -366,7 +366,7 @@ function submitstory($topic = '')
 function sendNotification ($table, $A)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG02, $LANG06, $LANG08, $LANG09,
-           $LANG12, $LANG24, $LANG29, $LANG30;
+           $LANG12, $LANG24, $LANG29, $LANG30, $LANG_ADMIN;
 
     switch ($table) {
         case $_TABLES['storysubmission']:
@@ -384,7 +384,7 @@ function sendNotification ($table, $A)
             $mailbody = "$LANG08[31]: {$title}\n"
                       . "$LANG24[7]: {$storyauthor}\n"
                       . "$LANG08[32]: " . strftime ($_CONF['date']) . "\n"
-                      . "$LANG24[14]: {$topic}\n\n";
+                      . "{$LANG_ADMIN['topic']}: {$topic}\n\n";
 
             if ($_CONF['emailstorieslength'] > 0) {
                 if ($_CONF['emailstorieslength'] > 1) {
