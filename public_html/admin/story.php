@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.189 2005/12/11 11:36:10 ospiess Exp $
+// $Id: story.php,v 1.190 2005/12/11 11:57:39 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -168,20 +168,21 @@ function liststories()
 
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
-    $menu_arr = array ();
-    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
-        $std_editor = ' ' . $LANG_ADMIN['std_editor'];
-        $std_link = "&amp;editor=std";
-        $adv_editor = ' ' . $LANG_ADMIN['adv_editor'];
-        $js_warning = ' ' . $LANG_ADMIN['js_warning'];
-        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/story.php?mode=edit$std_link",
-                          'text' => $LANG_ADMIN['create_new'] . $std_editor);
-    }
-    
-    $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/story.php?mode=edit",
-                          'text' => $LANG_ADMIN['create_new'] . $adv_editor);
-    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']);
+     $menu_arr = array ();
+     if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
+         $std_editor = ' ' . $LANG_ADMIN['std_editor'];
+         $std_link = "&amp;editor=std";
+         $adv_editor = ' ' . $LANG_ADMIN['adv_editor'];
+         $js_warning = ' ' . $LANG_ADMIN['js_warning'];
+         $menu_arr[] = array('url' => $_CONF['site_admin_url'] .
+"/story.php?mode=edit$std_link",
+                           'text' => $LANG_ADMIN['create_new'] . $std_editor);
+     }
+
+     $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/story.php?mode=edit",
+                           'text' => $LANG_ADMIN['create_new'] . $adv_editor);
+     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
+                           'text' => $LANG_ADMIN['admin_home']);
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
