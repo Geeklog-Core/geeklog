@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.39 2005/12/11 13:33:03 ospiess Exp $
+// $Id: lib-admin.php,v 1.40 2005/12/11 22:14:25 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -733,15 +733,17 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}\">{$icon_arr['edit']}</a>";
             break;
         case 'pi_version':
-            $plugin_code_version = PLG_chkVersion($A['pi_name']);
-            if ($plugin_code_version == '') {
-                $plugin_code_version = 'N/A';
+            $plugin_code_version = PLG_chkVersion ($A['pi_name']);
+            if (empty ($plugin_code_version)) {
+                $code_version = 'N/A';
+            } else {
+                $code_version = $plugin_code_version;
             }
             $pi_installed_version = $A['pi_version'];
-            if ($pi_installed_version == $plugin_code_version) {
+            if (empty ($plugin_code_version) ||
+                    ($pi_installed_version == $code_version)) {
                 $retval = $pi_installed_version;
             } else {
-                //$retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version <b>{$LANG32[38]}</b>";
                 $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
                 if ($A['pi_enabled'] == 1) {
                     $retval .= " <b>{$LANG32[38]}</b>";
