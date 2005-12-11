@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.53 2005/11/18 19:58:34 dhaun Exp $
+// $Id: index.php,v 1.54 2005/12/11 11:36:10 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -85,7 +85,7 @@ function form ($A, $error = false)
     } else {
         $template_path = staticpages_templatePath ('admin');
         $sp_template = new Template ($template_path);
-        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($template_path . '/editor_advanced.thtml')) {
+        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($template_path . '/editor_advanced.thtml') && $A['editor'] != 'std') {
             $sp_template->set_file ('form', 'editor_advanced.thtml');
             $sp_template->set_var ('lang_expandhelp', $LANG24[67]);
             $sp_template->set_var ('lang_reducehelp', $LANG24[68]);
@@ -327,17 +327,25 @@ function liststaticpages()
 
     $defsort_arr = array('field' => 'sp_title', 'direction' => 'desc');
 
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
+    $menu_arr = array ();
+    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
+        $std_editor = ' ' . $LANG_ADMIN['std_editor'];
+        $std_link = "&amp;editor=std";
+        $adv_editor = ' ' . $LANG_ADMIN['adv_editor'];
+        $js_warning = ' ' . $LANG_ADMIN['js_warning'];
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php?mode=edit$std_link",
+                          'text' => $LANG_ADMIN['create_new'] . $std_editor);
+    }
+
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php?mode=edit",
+                          'text' => $LANG_ADMIN['create_new'] . $adv_editor);
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']);
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
                       'title' => $LANG_STATIC['staticpagelist'],
-                      'instructions' => $LANG_STATIC['instructions'],
+                      'instructions' => $LANG_STATIC['instructions'] . $js_warning,
                       'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
 
@@ -360,7 +368,7 @@ function liststaticpages()
 * @mode         string      Mode
 *
 */
-function staticpageeditor ($sp_id, $mode = '') 
+function staticpageeditor ($sp_id, $mode = '', $editor = '')
 {
     global $_CONF, $_TABLES, $_USER;
 
@@ -387,7 +395,7 @@ function staticpageeditor ($sp_id, $mode = '')
         $A['sp_content'] = COM_checkHTML (COM_checkWords ($A['sp_content']));
     }
     $A['sp_title'] = strip_tags ($A['sp_title']);
-
+    $A['editor'] = $editor;
     return form ($A);
 }
 
@@ -520,7 +528,10 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     }
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
-    $display .= staticpageeditor ($sp_id, $mode);
+    if (isset ($_GET['editor'])) {
+        $editor = COM_applyFilter ($_GET['editor']);
+    }
+    $display .= staticpageeditor ($sp_id, $mode,$editor);
     $display .= COM_siteFooter ();
 } else if ($mode == 'clone') {
     if (!empty ($sp_id)) {

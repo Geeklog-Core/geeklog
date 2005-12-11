@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.21 2005/11/26 06:37:34 trinity Exp $
+// $Id: index.php,v 1.22 2005/12/11 11:36:10 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -367,7 +367,7 @@ function listlinks ()
     $query_arr = array('table' => 'links',
                        'sql' => "SELECT * FROM {$_TABLES['links']} WHERE 1",
                        'query_fields' => array('title', 'category', 'url'),
-                       'default_filter' => COM_getPermSql (''));
+                       'default_filter' => COM_getPermSql ('AND'));
 
     $retval .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);

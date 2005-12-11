@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.137 2005/12/10 18:41:22 dhaun Exp $
+// $Id: user.php,v 1.138 2005/12/11 11:36:10 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -243,6 +243,63 @@ function edituser($uid = '', $msg = '')
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
+}
+
+function listusers() {
+    global $LANG_ADMIN, $_TABLES, $_CONF, $LANG28, $_IMAGE_TYPE;
+
+    if ($_CONF['lastlogin']==true) {
+        $login_text = $LANG28[41];
+        $login_field = 'lastlogin';
+    } else {
+        $login_text = $LANG28[40];
+        $login_field = 'regdate';
+    }
+    
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+                    array('text' => $LANG28[37], 'field' => 'uid', 'sort' => true),
+                    array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
+                    array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true),
+                    array('text' => $login_text, 'field' => $login_field, 'sort' => true),
+                    array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'uid',
+                         'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
+                          'text' => $LANG28[23]),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu'     => true,
+                      'has_extras'   => true,
+                      'title'        => $LANG28[11],
+                      'instructions' => $LANG28[12],
+                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
+                      'form_url'     => $_CONF['site_admin_url'] . "/user.php",
+                      'help_url'     => ''
+    );
+
+    if ($_CONF['lastlogin']) {
+        $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+        $select_userinfo=",lastlogin ";
+    }
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1";
+
+    $query_arr = array('table' => 'users',
+                       'sql' => $sql,
+                       'query_fields' => array('username', 'email', 'fullname'),
+                       'default_filter' => "AND {$_TABLES['users']}.uid > 1");
+
+    $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    return $display;
 }
 
 /**
@@ -649,60 +706,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
-
-    if ($_CONF['lastlogin']==true) {
-        $login_text = $LANG28[41];
-        $login_field = 'lastlogin';
-    } else {
-        $login_text = $LANG28[40];
-        $login_field = 'regdate';
-    }
-
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG28[37], 'field' => 'uid', 'sort' => true),
-                    array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
-                    array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true),
-                    array('text' => $login_text, 'field' => $login_field, 'sort' => true),
-                    array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
-    );
-
-    $defsort_arr = array('field' => 'uid',
-                         'direction' => 'asc');
-
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
-                          'text' => $LANG28[23]),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu'     => true,
-                      'has_extras'   => true,
-                      'title'        => $LANG28[11],
-                      'instructions' => $LANG28[12],
-                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
-                      'form_url'     => $_CONF['site_admin_url'] . "/user.php",
-                      'help_url'     => ''
-    );
-
-    if ($_CONF['lastlogin']) {
-        $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
-        $select_userinfo=",lastlogin ";
-    }
-    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1";
-
-    $query_arr = array('table' => 'users',
-                       'sql' => $sql,
-                       'query_fields' => array('username', 'email', 'fullname'),
-                       'default_filter' => "{$_TABLES['users']}.uid > 1",
-                       'query' => $_REQUEST['q'],
-                       'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
-
-    $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+    $display .= listusers();
     $display .= COM_siteFooter();
 }
 

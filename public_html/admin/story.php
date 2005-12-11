@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.188 2005/11/19 12:37:29 dhaun Exp $
+// $Id: story.php,v 1.189 2005/12/11 11:36:10 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -168,15 +168,24 @@ function liststories()
 
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']));
+    $menu_arr = array ();
+    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
+        $std_editor = ' ' . $LANG_ADMIN['std_editor'];
+        $std_link = "&amp;editor=std";
+        $adv_editor = ' ' . $LANG_ADMIN['adv_editor'];
+        $js_warning = ' ' . $LANG_ADMIN['js_warning'];
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/story.php?mode=edit$std_link",
+                          'text' => $LANG_ADMIN['create_new'] . $std_editor);
+    }
+    
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/story.php?mode=edit",
+                          'text' => $LANG_ADMIN['create_new'] . $adv_editor);
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']);
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
-                      'title' => $LANG24[22], 'instructions' => $LANG24[23],
+                      'title' => $LANG24[22], 'instructions' => $LANG24[23] . $js_warning,
                       'icon' => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/story.php");
 
@@ -205,7 +214,7 @@ function liststories()
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '', $errormsg = '')
+function storyeditor($sid = '', $mode = '', $errormsg = '', $editor='')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN;
 
@@ -315,8 +324,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $A['trackbacks'] = 0;
         $A['numemails'] = 0;
 
-        /* @TODO -o"Blaine" Add a user-preference option to set if user wants to use advanced-editor */
-        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
+        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && $editor!='std') {
             $A['postmode'] = 'html';
         } else {
             $A['postmode'] = $_CONF['postmode'];
@@ -373,7 +381,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
     if ( $A['postmode'] == 'html' AND isset ($_CONF['advanced_editor'])
-        && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+        && ($_CONF['advanced_editor'] == 1 && $editor!='std') && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
@@ -1103,7 +1111,10 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     if (isset ($_GET['sid'])) {
         $sid = COM_applyFilter ($_GET['sid']);
     }
-    $display .= storyeditor ($sid, $mode);
+    if (isset ($_GET['editor'])) {
+        $editor = COM_applyFilter ($_GET['editor']);
+    }
+    $display .= storyeditor ($sid, $mode,'',$editor);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'editsubmission') {

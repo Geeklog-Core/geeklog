@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.73 2005/11/17 15:00:22 ospiess Exp $
+// $Id: event.php,v 1.74 2005/12/11 11:36:10 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -546,7 +546,7 @@ function listevents()
     $query_arr = array('table' => 'events',
                        'sql' => $sql,
                        'query_fields' => array('title', 'datestart', 'dateend'),
-                       'default_filter' => COM_getPermSQL());
+                       'default_filter' => COM_getPermSQL('AND'));
 
     $retval .= ADMIN_list ("events", "ADMIN_getListField_events", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);

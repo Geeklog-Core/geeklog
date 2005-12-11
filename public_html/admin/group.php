@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.61 2005/11/19 04:09:59 vinny Exp $
+// $Id: group.php,v 1.62 2005/12/11 11:36:10 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -621,7 +621,7 @@ function listusers ($grp_id)
     $query_arr = array ('table' => 'users',
                         'sql' => $sql,
                         'query_fields' => array('username', 'email', 'fullname'),
-                        'default_filter' => "{$_TABLES['users']}.uid > 1",
+                        'default_filter' => "AND {$_TABLES['users']}.uid > 1",
                         'query' => $_REQUEST['q'],
                         'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true)
     );

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.89 2005/11/30 19:44:52 ospiess Exp $
+// $Id: block.php,v 1.90 2005/12/11 11:36:10 ospiess Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -362,7 +362,7 @@ function listblocks()
     $query_arr = array('table' => 'blocks',
                        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE 1",
                        'query_fields' => array('title', 'content'),
-                       'default_filter' => 'onleft=1');
+                       'default_filter' => 'AND onleft=1');
 
     $retval .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
@@ -370,7 +370,7 @@ function listblocks()
     $query_arr = array('table' => 'blocks',
                        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE 1",
                        'query_fields' => array('title', 'content'),
-                       'default_filter' => 'onleft=0');
+                       'default_filter' => 'AND onleft=0');
 
     $text_arr = array('has_menu' =>  false,
                       'has_extras'   => true,
