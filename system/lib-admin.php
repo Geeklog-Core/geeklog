@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.38 2005/12/11 12:53:48 ospiess Exp $
+// $Id: lib-admin.php,v 1.39 2005/12/11 13:33:03 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -376,9 +376,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $sql .= "$filter_str $order_sql $limit;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
-
+    $r = 1; # r is the counter for the actual displayed rows for correct coloring
     for ($i = 0; $i < $nrows; $i++) { # now go through actual data
         $A = DB_fetchArray($result);
+        $this_row = false; # as long as no fields are returned, dont print row
         for ($j = 0; $j < count($header_arr); $j++) {
             $fieldname = $header_arr[$j]['field']; # get field name from headers
             $fieldvalue = '';
@@ -390,16 +391,19 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             } else { # if not just take the value
                 $fieldvalue = $fieldvalue;
             }
-            if ($fieldvalue !== false) { # return was good, so insert data
-                $admin_templates->set_var('itemtext', $fieldvalue);
-                $admin_templates->parse('item_field', 'field', true);
+            if ($fieldvalue !== false) { # return was there, so write line
+                $this_row = true;
+            } else {
+                $fieldvalue = ''; # set field = ''
             }
+            $admin_templates->set_var('itemtext', $fieldvalue); # write field
+            $admin_templates->parse('item_field', 'field', true);
         }
-        $admin_templates->set_var('cssid', ($i%2)+1); # make alternating table color
-        $admin_templates->parse('item_row', 'row', true); # process the complete row
-        # maybe there could be a check if _no_ field in the row has data. then its not
-        # only empty, but completely missing. now, data that is removed in the field
-        # function returns an empty row.
+        if ($this_row) { # there was data in at least one field, so print line
+            $r++; # switch to next color
+            $admin_templates->set_var('cssid', ($r%2)+1); # make alternating table color
+            $admin_templates->parse('item_row', 'row', true); # process the complete row
+        }
         $admin_templates->clear_var('item_field'); # clear field
     }
 
@@ -441,7 +445,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
 function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
-    $retval = '';
+    $retval = false;
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
@@ -462,13 +466,16 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
                 $retval .= $A['blockorder'];
                 break;
             case 'is_enabled':
-                if ($A['is_enabled'] == 1) {
-                    $switch = 'checked="checked"';
-                } else {
-                    $switch = '';
+                if ($access == 3) {
+                    if ($A['is_enabled'] == 1) {
+                        $switch = 'checked="checked"';
+                    } else {
+                        $switch = '';
+                    }
+                    $retval = "<form action=\"{$_CONF['site_admin_url']}/block.php\" method=\"post\">"
+                             ."<input type=\"checkbox\" name=\"blkenable\" onclick=\"submit()\" value=\"{$A['bid']}\" $switch>"
+                             ."<input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></form>";
                 }
-                $retval = "<form action=\"{$_CONF['site_admin_url']}/block.php\" method=\"post\">"
-                         ."<input type=\"checkbox\" name=\"blkenable\" onclick=\"submit()\" value=\"{$A['bid']}\" $switch><input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></form>";
                 break;
             case 'move':
                 if ($access == 3) {
