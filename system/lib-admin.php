@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.36 2005/12/07 13:53:14 ospiess Exp $
+// $Id: lib-admin.php,v 1.37 2005/12/11 11:45:31 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -335,7 +335,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var($limit . '_selected', 'selected="selected"');
 
         if (!empty($query_arr['default_filter'])){
-            $filter_str = " AND {$query_arr['default_filter']}";
+            $filter_str = " {$query_arr['default_filter']}";
         }
         if (!empty ($query)) {
             $filter_str .= " AND (";
