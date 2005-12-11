@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.37 2005/12/11 11:45:31 ospiess Exp $
+// $Id: lib-admin.php,v 1.38 2005/12/11 12:53:48 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -149,7 +149,21 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     return $retval;
 
 }
-
+/**
+* Creates a list of data with a menu, search, filter, clickable headers etc.
+*
+* @param    string  $component      name of the list
+* @param    string  $fieldfunction  name of the function that handles special entries
+* @param    array   $header_arr     array of header fields with sortables and table fields
+* @param    array   $text_arr       array with different text strings
+* @param    array   $query_arr      array with sql-options
+* @param    array   $menu_arr       menu-entries
+* @param    array   $defsort_arr    default sorting values
+* @param    string  $filter         additional drop-down filters
+* @param    string  $extra          additional values passed to fieldfunction
+* @return   string                  HTML output of function
+*
+*/
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '')
 {
@@ -158,36 +172,33 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $filter_str = '';
     $order_sql = '';
     $limit = '';
-    $page = "";
-    if (isset($_GET['page'])) {
-        $page = COM_applyFilter ($_GET['page'], true);
-    }
-
     $prevorder = "";
-    if (isset($_GET['prevorder'])) {
+    if (isset($_GET['prevorder'])) { # what was the last sorting?
         $prevorder = COM_applyFilter ($_GET['prevorder']);
     }
 
     $query = "";
-    if (isset($_REQUEST['q'])) {
+    if (isset($_REQUEST['q'])) { # get query (text-search)
         $query = $_REQUEST['q'];
     }
 
     $query_limit = "";
-    if (isset($_REQUEST['query_limit'])) {
+    if (isset($_REQUEST['query_limit'])) { # get query-limit (list-length)
         $query_limit = COM_applyFilter ($_REQUEST['query_limit'], true);
     }
 
     $offset = 0;
-    if (isset ($_REQUEST['offset'])) {
+    if (isset ($_REQUEST['offset'])) { # get offset (where does next page start?)
         $offset = COM_applyFilter ($_REQUEST['offset'], true);
     }
     $curpage = 1;
+    $page = "";
     if (isset ($_REQUEST['page'])) {
-        $curpage = COM_applyFilter ($_REQUEST['page'], true);
+        $page = COM_applyFilter ($_GET['page'], true);
+        $curpage = $page;
     }
     if ($curpage <= 0) {
-        $curpage = 1;
+        $curpage = 1; #current page has to be larger 0
     }
     
     #$unfiltered='';
@@ -195,21 +206,22 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     #    $unfiltered = $query_arr['unfiltered'];
     #}
 
-    $help_url = "";
+    $help_url = ""; # do we have a help url for the block-header?
     if (!empty($text_arr['help_url'])) {
         $help_url = $text_arr['help_url'];
     }
     
-    $form_url = "";
+    $form_url = ""; # what is the form-url for the search button?
     if (!empty($text_arr['form_url'])) {
         $form_url = $text_arr['form_url'];
     }
 
-    $title = "";
+    $title = ""; # what is the title of the page?
     if (!empty($text_arr['title'])) {
         $title = $text_arr['title'];
     }
 
+    # get all template fields. Maybe menufields can be only loaded if used?
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array ('topmenu' => 'topmenu.thtml',
                                        'list' => 'list.thtml',
@@ -218,31 +230,13 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                                        'field' => 'field.thtml',
                                        'menufields' => 'menufields.thtml'
                                       ));
+    # inserty some values into the template
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('icon', $text_arr['icon']);
-
-    if ($text_arr['has_menu']) {
-        for ($i = 0; $i < count($menu_arr); $i++) {
-            $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
-            $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
-            if ($i < (count($menu_arr) -1)) {
-                $admin_templates->set_var('line', '|' );
-            }
-            $admin_templates->parse('menu_fields', 'menufields', true);
-            $admin_templates->clear_var('line');
-        }
-        $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
-        $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-        $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
-        $admin_templates->set_var('last_query', $query);
-        $admin_templates->set_var('filter', $filter);
-        $admin_templates->parse('top_menu', 'topmenu', true);
-    }
-
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-
+    
+    # define icon paths. Those will be transmitted to $fieldfunction.
     $icon_arr = array(
         'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
@@ -254,13 +248,31 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
+    # the user can disable the menu. if used, create it.
+    if ($text_arr['has_menu']) {
+        for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
+            $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
+            $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
+            if ($i < (count($menu_arr) -1)) {
+                $admin_templates->set_var('line', '|' ); # add separator
+            }
+            $admin_templates->parse('menu_fields', 'menufields', true);
+            $admin_templates->clear_var('line'); # clear separator after use
+        }
+        # add text strings to template
+        $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
+        $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
+        $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
+        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
+        $admin_templates->set_var('last_query', $query);
+        $admin_templates->set_var('filter', $filter);
+        $admin_templates->parse('top_menu', 'topmenu', true);
+    }
     
-    $retval .= COM_startBlock ($title, $help_url,
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-
+    # since people search with ...* replace with ....% for SQL
     $query = str_replace ('*', '%', $query);
-    $sql_query = addslashes ($query);
-    $sql = $query_arr['sql'];
+    $sql_query = addslashes ($query); # replace quotes etc for security
+    $sql = $query_arr['sql']; # get sql from array that builds data
 
     $order_var = ""; # number that is displayed in URL
     $order = "";     # field that is used in SQL
@@ -269,75 +281,79 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     } else {
         $order_var = COM_applyFilter ($_GET['order'], true);
         $order_var_link = "&amp;order=$order_var"; # keep the variable for the google paging
-        $order = $header_arr[$order_var]['field'];
+        $order = $header_arr[$order_var]['field'];  # current order field name
     }
 
     $direction = "";
-    if (!isset($_GET['direction'])) {
+    if (!isset($_GET['direction'])) { # get direction to sort after
         $direction = $defsort_arr['direction'];
     } else {
         $direction = $_GET['direction'];
     }
-    if ($order == $prevorder) {
+    if ($order == $prevorder) { #reverse direction if prev. order was the same
         $direction = ($direction == 'desc') ? 'asc' : 'desc';
     } else {
         $direction = ($direction == 'desc') ? 'desc' : 'asc';
     }
 
-    if ($direction == 'asc') {
+    if ($direction == 'asc') { # assign proper arrow img name dep. on sort order
         $arrow = 'bararrowdown';
     } else {
         $arrow = 'bararrowup';
     }
-    if (!empty($order)) {
+    # make actual order arrow image
+    $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
+            . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
+    
+    if (!empty($order)) { # concat order string
         $order_sql = "ORDER BY $order $direction";
     }
 
-    $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
-            . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
-
     # HEADER FIELDS array(text, field, sort)
-    for ($i=0; $i < count( $header_arr ); $i++) {
-        $admin_templates->set_var('header_text', $header_arr[$i]['text']);
-        if ($header_arr[$i]['sort'] != false) {
-            if ($order==$header_arr[$i]['field']) {
+    for ($i=0; $i < count( $header_arr ); $i++) { #iterate through all headers
+        $admin_templates->set_var('header_text', $header_arr[$i]['text']); # title
+        if ($header_arr[$i]['sort'] != false) { # is this sortable?
+            if ($order==$header_arr[$i]['field']) { # is this currently sorted?
                 $admin_templates->set_var('img_arrow', $img_arrow);
             }
+            # make the mouseover effect is sortable
             $admin_templates->set_var('mouse_over', "OnMouseOver=\"this.style.cursor='pointer';\"");
-            $order_var = $i;
-            $onclick="onclick=\"window.location.href='$form_url?"
+            $order_var = $i; # assign number to field so we know what to sort
+            $onclick="onclick=\"window.location.href='$form_url?" #onclick action
                     ."order=$order_var&amp;prevorder=$order&amp;direction=$direction"
                     ."&amp;page=$page&amp;q=$query&amp;query_limit=$query_limit$extra';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
         $admin_templates->parse('header_row', 'header', true);
-        $admin_templates->clear_var('img_arrow');
+        $admin_templates->clear_var('img_arrow'); # clear all for next header
         $admin_templates->clear_var('mouse_over');
         $admin_templates->clear_var('on_click');
         $admin_templates->clear_var('arrow');
     }
 
     $has_extras = '';
-    if (isset($text_arr['has_extras'])) {
+    if (isset($text_arr['has_extras'])) { # does this one use extras? (google paging)
         $has_extras = $text_arr['has_extras'];
     }
     if ($has_extras) {
-        $limit = 50;
+        $limit = 50; # default query limit if not other chosen.
+                     # maybe this could be a setting from the list?
         if (!empty($query_limit)) {
             $limit = $query_limit;
         }
-        if ($query != '') {
+        if ($query != '') { # set query into form after search
             $admin_templates->set_var ('query', urlencode($query) );
         } else {
             $admin_templates->set_var ('query', '');
         }
         $admin_templates->set_var ('query_limit', $query_limit);
+        # choose proper dropdown field for query limit
         $admin_templates->set_var($limit . '_selected', 'selected="selected"');
 
-        if (!empty($query_arr['default_filter'])){
+        if (!empty($query_arr['default_filter'])){ # add default filter to sql
             $filter_str = " {$query_arr['default_filter']}";
         }
-        if (!empty ($query)) {
+        if (!empty ($query)) { # add query fields with search term
             $filter_str .= " AND (";
             for ($f = 0; $f < count($query_arr['query_fields']); $f++) {
                 $filter_str .= $query_arr['query_fields'][$f] . " LIKE '$sql_query'";
@@ -346,14 +362,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                 }
             }
             $filter_str .= ")";
-            if ($num_pages < $curpage) {
-                $curpage = 1;
-            }
         }
         $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
                             "1 " . $filter_str) / $limit);
+        if ($num_pages < $curpage) { # make sure we dont go beyond possible results
+               $curpage = 1;
+        }
         $offset = (($curpage - 1) * $limit);
-        $limit = "LIMIT $offset,$limit";
+        $limit = "LIMIT $offset,$limit"; # get only current page data
     }
 
     # SQL
@@ -361,51 +377,61 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
-    for ($i = 0; $i < $nrows; $i++) {
+    for ($i = 0; $i < $nrows; $i++) { # now go through actual data
         $A = DB_fetchArray($result);
         for ($j = 0; $j < count($header_arr); $j++) {
-            $fieldname = $header_arr[$j]['field'];
+            $fieldname = $header_arr[$j]['field']; # get field name from headers
             $fieldvalue = '';
-            if (!empty($A[$fieldname])) {
-                $fieldvalue = $A[$fieldname];
+            if (!empty($A[$fieldname])) { # is there a field in data like that?
+                $fieldvalue = $A[$fieldname]; # yes, get its data
             }
-            if (!empty($fieldfunction)) {
+            if (!empty($fieldfunction)) { # do we have a fieldfunction?
                 $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A, $icon_arr);
-            } else {
+            } else { # if not just take the value
                 $fieldvalue = $fieldvalue;
             }
-            if ($fieldvalue !== false) {
+            if ($fieldvalue !== false) { # return was good, so insert data
                 $admin_templates->set_var('itemtext', $fieldvalue);
                 $admin_templates->parse('item_field', 'field', true);
             }
         }
-        $admin_templates->set_var('cssid', ($i%2)+1);
-        $admin_templates->parse('item_row', 'row', true);
-        $admin_templates->clear_var('item_field');
+        $admin_templates->set_var('cssid', ($i%2)+1); # make alternating table color
+        $admin_templates->parse('item_row', 'row', true); # process the complete row
+        # maybe there could be a check if _no_ field in the row has data. then its not
+        # only empty, but completely missing. now, data that is removed in the field
+        # function returns an empty row.
+        $admin_templates->clear_var('item_field'); # clear field
     }
 
-    if ($nrows==0) {
-        $admin_templates->set_var('message', $LANG_ADMIN['no_results']);
+    if ($nrows==0) { # there is no data. return notification message.
+        if (isset($text_arr['no_data'])) {
+            $message = $text_arr['no_data']; # there is a user-message
+        } else {
+            $message = $LANG_ADMIN['no_results']; # take std.
+        }
+        $admin_templates->set_var('message', $message);
     }
 
-
-    if ($has_extras) {
-        if (!empty($query)) {
+    if ($has_extras) { # now make google-paging
+        if (!empty($query)) { # port query to next page
             $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit=$query_limit$order_var_link&amp;direction=$direction";
         } else {
             $base_url = $form_url . "?query_limit=$query_limit$order_var_link&amp;direction=$direction";
         }
 
-        if ($num_pages > 1) {
-            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
+        if ($num_pages > 1) { # print actual google-paging
+            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'page'));
         } else {
             $admin_templates->set_var('google_paging', '');
         }
     }
 
     $admin_templates->parse('output', 'list');
-
-    $retval .= $admin_templates->finish($admin_templates->get_var('output'))
+    
+    # Do the actual output
+    $retval .= COM_startBlock ($title, $help_url,
+                               COM_getBlockTemplate ('_admin_block', 'header'))
+             . $admin_templates->finish($admin_templates->get_var('output'))
              . COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
