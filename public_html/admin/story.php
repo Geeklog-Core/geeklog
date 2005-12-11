@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.191 2005/12/11 12:09:24 ospiess Exp $
+// $Id: story.php,v 1.192 2005/12/11 14:42:28 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -227,7 +227,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         $access = min ($access, SEC_hasTopicAccess ($A['tid']));
         if ($access == 2) {
-            $display .= COM_startBlock($LANG_ADMIN['access_denied'], '',
+            $display .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[41];
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
@@ -235,7 +235,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
             return $display;
         } else if ($access == 0) {
-            $display .= COM_startBlock($LANG_ADMIN['access_denied'], '',
+            $display .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[42];
             $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
