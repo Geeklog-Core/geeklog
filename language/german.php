@@ -647,7 +647,7 @@ $LANG21 = array(
     43 => 'Nur auf der Startseite',
     44 => 'Zugriff verweigert',
     45 => "Du hast keine Zugriffsrechte für diesen Block. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/block.php\">Zurück zum Administrator-Menü</a>.",
-    46 => 'Neuer Block',
+    46 => 'Bewegen',
     47 => 'Admin Home',
     48 => 'Block-Name',
     49 => ' (keine Leerzeichen, muss eindeutig sein)',
