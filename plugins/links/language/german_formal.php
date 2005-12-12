@@ -1,9 +1,10 @@
 <?php
 
 ###############################################################################
-# german.php
+# german_formal.php
 #
-# This is the German language file for the Geeklog Links Plugin
+# This is the German language file for the Geeklog Links Plugin,
+# addressing the user as "Sie" (formal German).
 #
 # Copyright (C) 2005 Dirk Haun
 # dirk AT haun-online DOT de
@@ -23,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german.php,v 1.2 2005/12/12 21:01:30 dhaun Exp $
+# $Id: german_formal.php,v 1.1 2005/12/12 21:01:30 dhaun Exp $
 
 ###############################################################################
 # Array Format:
@@ -74,7 +75,7 @@ $LANG_LINKS_SUBMIT = array(
     4 => 'Andere',
     5 => 'oder neue Kategorie',
     6 => 'Fehler: Kategorie fehlt',
-    7 => 'Wenn Du "Andere" auswählst, gib bitte auch eine neue Kategorie ein',
+    7 => 'Wenn Sie "Andere" auswählen, geben Sie bitte auch eine neue Kategorie ein',
     8 => 'Titel',
     9 => 'URL',
     10 => 'Kategorie',
@@ -84,10 +85,10 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a> aufgelistet werden.";
-$PLG_links_MESSAGE2 = 'Dein Link wurde gespeichert.';
+$PLG_links_MESSAGE1 = "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a> aufgelistet werden.";
+$PLG_links_MESSAGE2 = 'Ihr Link wurde gespeichert.';
 $PLG_links_MESSAGE3 = 'Der Link wurde gelöscht.';
-$PLG_links_MESSAGE4 = "Danke für Deinen Link. Du findest ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
+$PLG_links_MESSAGE4 = "Danke für Ihren Link. Sie finden ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
 
 ###############################################################################
 # admin/link.php
@@ -102,7 +103,7 @@ $LANG_LINKS_ADMIN = array(
     7 => 'Andere',
     8 => 'Angeklickt',
     9 => 'Beschreibung',
-    10 => 'Du musst einen Titel, eine URL und eine Beschreibung für den Link eben.',
+    10 => 'Sie müssen einen Titel, eine URL und eine Beschreibung für den Link eben.',
     11 => 'Link-Manager',
     12 => 'Auf das Ändern-Icon klicken, um einen Link zu ändern oder zu löschen.  
 Mit Neu anlegen (s.o.) kann ein neuer Link angelegt werden.',
@@ -110,7 +111,7 @@ Mit Neu anlegen (s.o.) kann ein neuer Link angelegt werden.',
     14 => 'Kategorie',
     15 => 'URL',
     16 => 'Zugriff verweigert',
-    17 => "Du hast keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch  wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Zurück zum  Administrator-Menü</a>.",
+    17 => "Sie haben keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch  wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Zurück zum  Administrator-Menü</a>.",
     20 => 'Andere bitte eingeben',
     21 => 'Speichern',
     22 => 'Abbruch',

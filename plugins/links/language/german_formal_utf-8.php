@@ -1,9 +1,10 @@
 <?php
 
 ###############################################################################
-# german.php
+# german_formal_utf-8.php
 #
-# This is the German language file for the Geeklog Links Plugin
+# This is the German language file for the Geeklog Links Plugin,
+# addressing the user as "Sie" (formal German).
 #
 # Copyright (C) 2005 Dirk Haun
 # dirk AT haun-online DOT de
@@ -23,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german.php,v 1.2 2005/12/12 21:01:30 dhaun Exp $
+# $Id: german_formal_utf-8.php,v 1.1 2005/12/12 21:01:30 dhaun Exp $
 
 ###############################################################################
 # Array Format:
@@ -34,12 +35,12 @@
 
 
 $LANG_LINKS= array(
-    10 => 'Beiträge',
+    10 => 'BeitrÃ¤ge',
     14 => 'Links',
     84 => 'LINKS',
     88 => 'Es gibt keine Links anzuzeigen.',
     114 => 'Links',
-    116 => 'Link hinzufügen'
+    116 => 'Link hinzufÃ¼gen'
 );
 
 ###############################################################################
@@ -59,7 +60,7 @@ $LANG_LINKS_STATS = array(
 $LANG_LINKS_SEARCH = array(
  'results' => 'Ergebnisse: Links',
  'title' => 'Titel',
- 'date' => 'Hinzugefügt',
+ 'date' => 'HinzugefÃ¼gt',
  'author' => 'Eingereicht von',
  'hits' => 'Angeklickt'
 );
@@ -74,20 +75,20 @@ $LANG_LINKS_SUBMIT = array(
     4 => 'Andere',
     5 => 'oder neue Kategorie',
     6 => 'Fehler: Kategorie fehlt',
-    7 => 'Wenn Du "Andere" auswählst, gib bitte auch eine neue Kategorie ein',
+    7 => 'Wenn Sie "Andere" auswÃ¤hlen, geben Sie bitte auch eine neue Kategorie ein',
     8 => 'Titel',
     9 => 'URL',
     10 => 'Kategorie',
-    11 => 'Beiträge: Links'
+    11 => 'BeitrÃ¤ge: Links'
 );
 
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a> aufgelistet werden.";
-$PLG_links_MESSAGE2 = 'Dein Link wurde gespeichert.';
-$PLG_links_MESSAGE3 = 'Der Link wurde gelöscht.';
-$PLG_links_MESSAGE4 = "Danke für Deinen Link. Du findest ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
+$PLG_links_MESSAGE1 = "Danke fÃ¼r Ihren Beitrag zu {$_CONF['site_name']}. Ihr Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a> aufgelistet werden.";
+$PLG_links_MESSAGE2 = 'Ihr Link wurde gespeichert.';
+$PLG_links_MESSAGE3 = 'Der Link wurde gelÃ¶scht.';
+$PLG_links_MESSAGE4 = "Danke fÃ¼r Ihren Link. Sie finden ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
 
 ###############################################################################
 # admin/link.php
@@ -102,19 +103,19 @@ $LANG_LINKS_ADMIN = array(
     7 => 'Andere',
     8 => 'Angeklickt',
     9 => 'Beschreibung',
-    10 => 'Du musst einen Titel, eine URL und eine Beschreibung für den Link eben.',
+    10 => 'Sie mÃ¼ssen einen Titel, eine URL und eine Beschreibung fÃ¼r den Link eben.',
     11 => 'Link-Manager',
-    12 => 'Auf das Ändern-Icon klicken, um einen Link zu ändern oder zu löschen.  
+    12 => 'Auf das Ã„ndern-Icon klicken, um einen Link zu Ã¤ndern oder zu lÃ¶schen.  
 Mit Neu anlegen (s.o.) kann ein neuer Link angelegt werden.',
     13 => 'Titel',
     14 => 'Kategorie',
     15 => 'URL',
     16 => 'Zugriff verweigert',
-    17 => "Du hast keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch  wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Zurück zum  Administrator-Menü</a>.",
+    17 => "Sie haben keine Zugriffsrechte fÃ¼r diesen Link. Dieser Zugriffsversuch  wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">ZurÃ¼ck zum  Administrator-MenÃ¼</a>.",
     20 => 'Andere bitte eingeben',
     21 => 'Speichern',
     22 => 'Abbruch',
-    23 => 'Löschen'
+    23 => 'LÃ¶schen'
 );
 
 ?>
