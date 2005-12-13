@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.83 2005/12/11 18:44:45 dhaun Exp $
+// $Id: moderation.php,v 1.84 2005/12/13 19:22:11 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -292,7 +292,7 @@ function itemlist($type)
                       'title'       => $section_title,
                       'help_url'    => $section_help,
                       'no_data'     => $LANG29[39]);
-                      
+
     $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
         $retval .= LB . '<form action="' . $_CONF['site_admin_url']
@@ -380,7 +380,7 @@ function draftlist ()
     $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
     $nrows = DB_numRows($result);
     $data_arr = array();
-    
+
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $A['edit'] = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
@@ -390,7 +390,7 @@ function draftlist ()
         $A['tid'] = stripslashes($A['tid']);
         $data_arr[$i] = $A;
     }
-    
+
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 0),
         array('text' => $LANG29[10], 'field' => 'title'),
@@ -398,7 +398,7 @@ function draftlist ()
         array('text' => $LANG29[15], 'field' => 'tid'),
         array('text' => $LANG29[2], 'field' => 'delete'),
         array('text' => $LANG29[1], 'field' => 'approve'));
-        
+
     $text_arr = array('has_menu'    => false,
                         'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
                         'help_url'  => '',
@@ -556,8 +556,7 @@ function moderateusers ($uid, $action, $count)
                 if ($nrows == 1) {
                     $A = DB_fetchArray($result);
                     $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
-                    DB_query($sql);
-                    //USER_sendActivationEmail($A['username'], $A['email']);
+                    DB_Query($sql);
                     USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
                 }
                 break;
