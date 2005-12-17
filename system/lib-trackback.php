@@ -29,13 +29,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.18 2005/11/26 15:19:02 dhaun Exp $
+// $Id: lib-trackback.php,v 1.19 2005/12/17 15:19:37 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 
-// error result codes for TRB_saveTrackbackComment
+// result codes for TRB_saveTrackbackComment
+define ('TRB_SAVE_OK',      0);
 define ('TRB_SAVE_SPAM',   -1);
 define ('TRB_SAVE_REJECT', -2);
 
@@ -197,10 +198,35 @@ function TRB_allowDelete ($sid, $type)
 }
 
 /**
+* Check a trackback / pingback for spam
+*
+* @param    string  $url        URL of the trackback comment
+* @param    string  $title      title of the comment (set to $url if empty)
+* @param    string  $blog       name of the blog that sent the comment
+* @param    string  $excerpt    excerpt from the comment
+* @return   int                 TRB_SAVE_OK or TRB_SAVE_SPAM
+*
+*/
+function TRB_checkForSpam ($url, $title = '', $blog = '', $excerpt = '')
+{
+    global $_CONF;
+
+    $comment = TRB_formatComment ($url, $title, $blog, $excerpt);
+    $result = PLG_checkforSpam ($comment, $_CONF['spamx']);
+
+    if ($result > 0) {
+        return TRB_SAVE_SPAM;
+    }
+
+    return TRB_SAVE_OK;
+}
+
+/**
 * Save a trackback (or pingback) comment.
 *
-* Also handles spam, multiple trackbacks from the same source and sends the
-* notification email.
+* Also filters parameters and handles multiple trackbacks from the same source.
+*
+* Note: Spam check should have been done before calling this function.
 *
 * @param    string  $sid        entry id
 * @param    string  $type       type of entry ('article' = story, etc.)
@@ -215,12 +241,10 @@ function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $
 {
     global $_CONF, $_TABLES;
 
-    // Spam will be inevitable ...
-    $comment = TRB_formatComment ($url, $title, $blog, $excerpt);
-    $result = PLG_checkforSpam ($comment, $_CONF['spamx']);
-    if ($result > 0) {
-        return TRB_SAVE_SPAM;
-    }
+    $url = COM_applyFilter ($url);
+    $title = TRB_filterTitle ($title);
+    $blog = TRB_filterBlogname ($blog_name);
+    $excerpt = TRB_filterExcerpt ($excerpt);
 
     // MT does that, so follow its example ...
     if (strlen ($excerpt) > 255) {
@@ -410,22 +434,23 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             return false;
         }
 
-        $url = COM_applyFilter ($_POST['url']);
-        $title = TRB_filterTitle ($_POST['title']);
-        $excerpt = TRB_filterExcerpt ($_POST['excerpt']);
-        $blog = TRB_filterBlogname ($_POST['blog_name']);
-
-        $saved = TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog,
-                                           $excerpt);
+        // do spam check on the unfiltered post
+        $result = TRB_checkForSpam ($_POST['url'], $_POST['title'],
+                                    $_POST['blog_name'], $_POST['excerpt']);
 
         // update speed limit in any case
         COM_updateSpeedlimit ('trackback');
 
-        if ($saved == TRB_SAVE_SPAM) {
+        if ($result == TRB_SAVE_SPAM) {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['spam'], 403, 'Forbidden');
 
             return false;
-        } else if ($saved == TRB_SAVE_REJECT) {
+        }
+
+        $saved = TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog,
+                                           $excerpt);
+
+        if ($saved == TRB_SAVE_REJECT) {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['rejected']);
 
             return false;

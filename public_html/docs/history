@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Changed spam handling for Trackbacks and Pingbacks to check for spam on the
+  unfiltered Trackback/Pingback content [Dirk]
 - When editing a link submission with a new link category (i.e. the submitter
   selected "other" and entered a non-existing category), make sure that new
   category actually shows up in the links editor [Dirk]
@@ -64,7 +66,7 @@ Dec ??, 2005 (1.4.0rc1)
 - Fixed an SQL error when creating new blocks [Mike]
 - The feed reader will now also follow redirects [Mike]
 
-- New Ukrainian language file (Windows-1252), provided by Vitaliy Biliyenko
+- New Ukrainian language file (Windows-1251), provided by Vitaliy Biliyenko
 - New Ukrainian language files (UTF-8 and KOI8-U encoding) for Geeklog, the
   Spam-X, and Static Pages plugins, provided by Yaroslav Fedevych
 

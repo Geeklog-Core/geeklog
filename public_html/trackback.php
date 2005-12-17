@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: trackback.php,v 1.7 2005/10/31 19:04:45 dhaun Exp $
+// $Id: trackback.php,v 1.8 2005/12/17 15:19:37 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-trackback.php');
@@ -55,9 +55,8 @@ if (isset ($_SERVER['REQUEST_METHOD'])) {
     }
 }
 
-COM_setArgNames (array ('id', 'type'));
-$id = COM_applyFilter (COM_getArgument ('id'));
-$type = COM_applyFilter (COM_getArgument ('type'));
+$id = COM_applyFilter ($_POST['id']);
+$type = COM_applyFilter ($_POST['type']);
 
 if (empty ($id)) {
     TRB_sendTrackbackResponse (1, $TRB_ERROR['illegal_request']);
