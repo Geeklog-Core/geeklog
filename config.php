@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.201 2005/12/17 20:53:47 blaine Exp $
+// $Id: config.php,v 1.202 2005/12/17 21:17:45 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -696,6 +696,7 @@ $_CONF['login_speedlimit'] = 300; // wait (in seconds) after $_CONF['login_attem
 $_CONF['user_html'] = array (
     'p'    => array(),
     'b'    => array(),
+    'strong'  => array(),
     'i'    => array(),
     'a'    => array('href' => 1, 'title' => 1),
     'em'   => array(),
