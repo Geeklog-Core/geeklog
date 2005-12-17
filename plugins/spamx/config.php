@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: config.php,v 1.12 2005/11/19 10:25:31 dhaun Exp $
+ * $Id: config.php,v 1.13 2005/12/17 20:37:50 dhaun Exp $
  */
 
 $_SPX_CONF['version'] = '1.0.3';
@@ -45,7 +45,5 @@ $_SPX_table_prefix = $_DB_table_prefix;
 // DO NOT CHANGE THE STUFF BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
 // Add Spam-X Plugin table to $_TABLES array
 $_TABLES['spamx'] = $_SPX_table_prefix . 'spamx';
-
-$_SPX_CONF['wordpress_api_key'] = '876b14c115ba';
 
 ?>
