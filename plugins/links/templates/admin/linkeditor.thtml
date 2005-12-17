@@ -25,7 +25,7 @@
                                                 <select name="categorydd">
                                                     {category_options}
                                                 </select>
-                                                {lang_ifotherspecify}: <input type="text" name="category" size="12" maxlength="32">
+                                                {lang_ifotherspecify}: <input type="text" name="category" size="12" maxlength="32" value="{category}">
                                             </td>
                                         </tr>
                                         <tr>

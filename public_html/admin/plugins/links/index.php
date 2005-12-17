@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.22 2005/12/11 11:36:10 ospiess Exp $
+// $Id: index.php,v 1.23 2005/12/17 14:29:20 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -157,6 +157,7 @@ function editlink ($mode, $lid = '')
     $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} GROUP BY category");
     $nrows = DB_numRows($result);
 
+    $othercategory = $A['category'];
     $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">'
            . $LANG_LINKS_ADMIN[7] . '</option>';
     if ($nrows > 0) {
@@ -165,13 +166,15 @@ function editlink ($mode, $lid = '')
             $category = $C['category'];
             $catdd .= '<option value="' . $category . '"';
             if ($A['category'] == $category) {
-                $catdd .= ' selected="selected"'; 
+                $catdd .= ' selected="selected"';
+                $othercategory = '';
             }
             $catdd .= '>' . $category . '</option>';
         }
     }
     $link_templates->set_var('category_options', $catdd); 
     $link_templates->set_var('lang_ifotherspecify', $LANG_LINKS_ADMIN[20]);
+    $link_templates->set_var('category', $othercategory);
     $link_templates->set_var('lang_linkhits', $LANG_LINKS_ADMIN[8]);
     $link_templates->set_var('link_hits', $A['hits']);
     $link_templates->set_var('lang_linkdescription', $LANG_LINKS_ADMIN[9]);
