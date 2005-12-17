@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.200 2005/11/25 09:25:54 ospiess Exp $
+// $Id: config.php,v 1.201 2005/12/17 20:53:47 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -732,8 +732,18 @@ $_CONF['admin_html'] = array (
  * Posible to add tags to the allowable general USER $_CONF['user_html'] as well
 */
 if ($_CONF['advanced_editor']) {
-    $_CONF['admin_html']['img']  = array('src' => 1, 'width' => 1, 'height' => 1);
-    $_CONF['admin_html']['font'] = array('face' => 1, 'size' => 1);
+    $_CONF['admin_html']['a']       = array('href' => 1, 'title' => 1, 'id' => 1, 'lang' => 1, 'name' => 1, 'type' => 1 );
+    $_CONF['admin_html']['hr']      = array ('style' => 1);
+    $_CONF['admin_html']['ol']      = array ('style' => 1);
+    $_CONF['admin_html']['ul']      = array ('style' => 1);
+    $_CONF['admin_html']['caption'] = array ();
+    $_CONF['admin_html']['table']   = array ('class' => 1, 'id' => 1, 'style' => 1, 'align' => 1, 'width' => 1,
+                                             'border' => 1, 'cellspacing' => 1, 'cellpadding' => 1);
+    $_CONF['admin_html']['tbody']   = array ();
+    $_CONF['admin_html']['img']     = array('src' => 1, 'width' => 1, 'height' => 1, 'vspace' => 1, 'hspace' => 1,
+                                            'dir' => 1, 'align' => 1, 'valign' => 1, 'border' => 1, 'lang' => 1,
+                                            'longdesc' => 1, 'title' => 1, 'id' => 1, 'alt' => 1);
+    $_CONF['admin_html']['font']    = array('face' => 1, 'size' => 1, 'style' => 1);
 }
 
 // When set to 1, disables the HTML filter for all users in the 'Root' group.
