@@ -698,7 +698,7 @@ TD.forumRollOut   {
 .pluginLinks A:hover    { color: #0000FF; font-style: normal; font-weight: normal; text-decoration: underline }
 .pluginBreadCrumbs, .pluginBreadCrumbs A:link     { color: #EFEFEF; font-style: normal; font-weight: normal; text-decoration: none }
 .pluginBreadCrumbs A:visited  { color: #EFEFEF; font-style: normal; font-weight: normal; text-decoration: none }
-.pluginBreadCrumbs A:hover    { color: gold; font-style: normal; font-weight: normal; text-decoration: none }
+.pluginBreadCrumbs A:hover    { color: #FFD700; font-style: normal; font-weight: normal; text-decoration: none }
 
 A.pluginButton:link, A.pluginButton:visited {
     color: #000;
