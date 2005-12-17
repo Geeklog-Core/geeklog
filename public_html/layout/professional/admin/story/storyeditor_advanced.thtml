@@ -1,3 +1,9 @@
+<!-- Hide the Advanced Editor as Javascript is required. If JS is not enabled then the message below in the <nonscript> tags will be displayed -->
+<noscript>
+    <div class="pluginAlert" style="border:1px dashed #ccc;text-align:center;margin-top:10px;padding:15px;">{lang_nojavascript}
+    <p>{no_javascript_return_link}</p>
+    </div>
+</noscript>
 <script type="text/javascript">
     // Setup editor path for FCKeditor JS Functions
     geeklogEditorBasePath = "{site_url}/fckeditor/" ;
@@ -5,6 +11,11 @@
 <script type="text/JavaScript" src="{site_url}/javascript/advanced_editor.js"></script>
 <script type="text/JavaScript" src="{site_url}/javascript/storyeditor_fckeditor.js"></script>
 <br>
+<div id="advanced_editor" style="display:none;">
+<!-- Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it -->
+<script type="text/javascript">
+    document.getElementById('advanced_editor').style.display=''
+</script>
 {navbar}
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
                                 <table id='adveditor' border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
@@ -159,18 +170,29 @@
                                                                 <br>{publish_date_explanation}
                                                             </td>
                                                         </tr>
+                                                    </table>
+                                                </fieldset>
+                                                <fieldset style="margin-top:10px;"><legend>{lang_publishoptions}</legend>
+                                                    <table border="0" cellspacing="3" cellpadding="3" width="100%">
                                                         <tr>
-                                                            <td valign="top" align="right">{lang_mode}:</td>
                                                             <td>
                                                                 <select name="featured">
                                                                     {featured_options}
-                                                                </select> 
+                                                                </select>
+                                                            </td>
+                                                            <td width="75%">
                                                                 <select name="frontpage">
                                                                     {frontpage_options}
-                                                                </select><br>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
                                                                 <select name="commentcode">
                                                                     {comment_options}
                                                                 </select>
+                                                            </td>
+                                                            <td>
                                                                 <select name="trackbackcode">
                                                                     {trackback_options}
                                                                 </select>
@@ -305,3 +327,4 @@ if (jstest) {
     document.frmstory.storycode11.disabled=true;
 }
 </script>
+</div>

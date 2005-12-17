@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.192 2005/12/11 14:42:28 dhaun Exp $
+// $Id: story.php,v 1.193 2005/12/17 20:11:15 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -70,6 +70,7 @@ if (!SEC_hasRights('story.edit')) {
     echo $display;
     exit;
 }
+
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -694,6 +695,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $newbody = str_replace('}','&#125;',$newbody);
     $story_templates->set_var('story_bodytext', $newbody);
     $story_templates->set_var('lang_postmode', $LANG24[4]);
+    $story_templates->set_var('lang_publishoptions',$LANG24[76]);
+    $story_templates->set_var('lang_nojavascript',$LANG24[77]);
+    $story_templates->set_var('no_javascript_return_link',sprintf($LANG24[78],$_CONF['site_admin_url'], $sid));
+
     $story_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
     $story_templates->set_var('lang_allowed_html', COM_allowedHTML());
     $fileinputs = '';
@@ -1072,6 +1077,12 @@ if (isset($_REQUEST['mode'])){
     $mode = COM_applyFilter ($_REQUEST['mode']);
 }
 
+if (isset($_REQUEST['editopt'])){
+    $editopt = COM_applyFilter ($_REQUEST['editopt']);
+    if ($editopt == 'default') {
+        $_CONF['advanced_editor'] = false;
+    }
+}
 
 $display = '';
 if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
