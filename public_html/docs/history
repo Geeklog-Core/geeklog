@@ -2,9 +2,12 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- The Spam-X plugin now uses the same "universal" install script as the other
+  three preinstalled plugins [Dirk]
 - Added more allowable HTML tags and attributes if Advanced_Editor enabled 
   config.php setting [Blaine]
-- Added logic to detect if Javascript was not enabled and Advanced Editor was enabled.
+- Added logic to detect if Javascript was not enabled and Advanced Editor was
+  enabled.
   User will be prompted with alert and able to use the default editor [Blaine]
 - Changed spam handling for Trackbacks and Pingbacks to check for spam on the
   unfiltered Trackback/Pingback content [Dirk]

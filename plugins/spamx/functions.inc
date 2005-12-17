@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.16 2005/11/19 10:25:31 dhaun Exp $
+ * $Id: functions.inc,v 1.17 2005/12/17 21:06:03 dhaun Exp $
  */
 
 /**
@@ -340,7 +340,7 @@ function plugin_uninstall_spamx($installCheck = '')
     } 
 
     COM_errorLog ('Dropping ' . $_TABLES['spamx'] . ' table.', 1);
-    DB_query ("DROP TABLE {$_TABLES['spamx']}");
+    DB_query ("DROP TABLE {$_TABLES['spamx']}", 1);
 
     COM_errorLog('...success', 1);
     return true;

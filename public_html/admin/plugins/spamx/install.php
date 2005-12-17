@@ -1,38 +1,24 @@
 <?php
 
+/* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Universal Plugin 1.0 for Geeklog - The Ultimate Weblog                    |
+// | Spam-X plugin 1.0.3                                                       |
 // +---------------------------------------------------------------------------+
-// | install.php for spamx plugin                                              |
+// | install.php                                                               |
 // |                                                                           |
 // | This file installs and removes the data structures for the                |
-// | plugin for Geeklog.                                                       |
-// | This is a complete functioning install routine.  All you have to do is    |
-// | remove the sample data from the arrays and fill in the $NEWTABLE,         |
-// | $DEFVALUES, and $NEWFEATURE arrays with your data.  Then replace all      |
-// | occurances of spamx with the name of your plugin and you will have a   |
-// | functioning install page for your plugin.  Then customize the install     |
-// | display language in english.php and you are ready to distribute your      |
-// | plugin.                                                                   |
-// | Simply put here is what this install does:                                |
-// | 1) It creates the tables                                                  |
-// | 2) It creates an admin security group for you plugin                      |
-// | 3) It adds the security features and adds them to the admin group         |
-// | 4) It adds the plugin to the gl_plugins table                             |
-// | 5) It adds any default data you have provided                             |
+// | Spam-X plugin for Geeklog.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Author:                                                                   |
-// | Constructed with the Universal Plugin                                     |
-// | Copyright (C) 2002 by the following authors:                              |
-// | Tom Willett                 -    twillett@users.sourceforge.net           |
-// | Blaine Lang                 -    langmail@sympatico.ca                    |
-// | The Universal Plugin is based on prior work by:                           |
-// | Tony Bibbs                  -    tony@tonybibbs.com                       |
+// | Copyright (C) 2002-2005 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Tom Willett       - tom AT pigstye DOT net                       |
+// |          Blaine Lang       - blaine AT portalparts DOT com                |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
-// | Spamx Plugin Copyright (C) 2004 by                                        |
-// | Tom Willett             -   tomw@pigstye.net                              |
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
 // | modify it under the terms of the GNU General Public License               |
@@ -50,226 +36,248 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: install.php,v 1.12 2005/12/17 21:06:03 dhaun Exp $
 
-require_once('../../../lib-common.php');
-require_once($_CONF['path'] . 'plugins/spamx/config.php');
-require_once($_CONF['path'] . 'plugins/spamx/functions.inc');
+require_once ('../../../lib-common.php');
 
+// Plugin information
 //
-// Universal plugin install variables
-// Change these to match your plugin
+// ----------------------------------------------------------------------------
 //
+$pi_display_name = 'Spam-X';
+$pi_name         = 'spamx';
+$pi_version      = '1.0.3';
+$gl_version      = '1.4.0';
+$pi_url          = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';
 
-$pi_name = 'spamx';                   // Plugin name  Must be 15 chars or less
-$pi_version = $_SPX_CONF['version'];  // Plugin Version
-$gl_version = '1.4.0';                // min. GL Version the plugin is for
-$pi_url = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';      // Plugin Homepage
+// name of the Admin group
+$pi_admin        = $pi_name . ' Admin';
 
-//
-// $NEWTABLE contains table name(s) and sql to create it(them)
-// Fill it in and you are ready to go.
-// Note: you must put the table names in the uninstall routine in functions.inc 
-// and in the $_TABLES array in config.php.
-// Note: Be sure to replace table1, table2 with the actual names of your tables.
-// and the table definition with the definition of your table
-//
+// the plugin's groups - assumes first group to be the Admin group
+$GROUPS = array();
+$GROUPS[$pi_admin] = 'Users in this group can administer the Spam-X plugin';
 
-$NEWTABLE = array();
-$NEWTABLE['spamx'] = "CREATE TABLE {$_TABLES['spamx']} ("
-	. " name varchar(20) NOT NULL default '',"
-	. " value varchar(255) NOT NULL default '',"
-	. " INDEX spamx_name(name)"
-	. ") TYPE=MyISAM";
-	
-//
-// Default data
+$FEATURES = array();
+$FEATURES['spamx.admin']    = 'Full access to Spam-X plugin';
+
+$MAPPINGS = array();
+$MAPPINGS['spamx.admin']    = array ($pi_admin);
+
+// (optional) data to pre-populate tables with
 // Insert table name and sql to insert default data for your plugin.
-//
+// Note: '#group#' will be replaced with the id of the plugin's admin group.
 $DEFVALUES = array();
-$DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
-$DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
-$DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
-
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')";
- 
-//
-// Security Feature to add
-// Fill in your security features here
-// Note you must add these features to the uninstall routine in function.inc so that they will
-// be removed when the uninstall routine runs.
-// You do not have to use these particular features.  You can edit/add/delete them
-// to fit your plugins security model
-//
 
-$NEWFEATURE = array();
-$NEWFEATURE['spamx.admin']='spamx Admin';
+/**
+* Checks the requirements for this plugin and if it is compatible with this
+* version of Geeklog.
+*
+* @return   boolean     true = proceed with install, false = not compatible
+*
+*/
+function plugin_compatible_with_this_geeklog_version ()
+{
+    return true;
+}
+//
+// ----------------------------------------------------------------------------
+//
+// The code below should be the same for most plugins and usually won't
+// require modifications.
+
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
+$langfile = $base_path . $_CONF['language'] . '.php';
+if (file_exists ($langfile)) {
+    require_once ($langfile);
+} else {
+    require_once ($base_path . 'language/english.php');
+}
+require_once ($base_path . 'config.php');
+require_once ($base_path . 'functions.inc');
+
 
 // Only let Root users access this page
-if (!SEC_inGroup('Root')) {
+if (!SEC_inGroup ('Root')) {
     // Someone is trying to illegally access this page
-    COM_errorLog("Someone has tried to illegally access the spamx install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}",1);
-    $display = COM_siteHeader();
-    $display .= COM_startBlock($LANG_SX00['access_denied']);
-    $display .= $LANG_SX00['access_denied_msg'];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter(true);
+    COM_accessLog ("Someone has tried to illegally access the {$pi_display_name} install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
+
+    $display = COM_siteHeader ('menu', $LANG_ACCESS['accessdenied'])
+             . COM_startBlock ($LANG_ACCESS['accessdenied'])
+             . $LANG_ACCESS['plugin_access_denied_msg']
+             . COM_endBlock ()
+             . COM_siteFooter ();
+
     echo $display;
     exit;
 }
  
+
 /**
 * Puts the datastructures for this plugin into the Geeklog database
 *
-* Note: Corresponding uninstall routine is in functions.inc
-* 
-* @return   boolean True if successful False otherwise
-*
 */
-function plugin_install_spamx()
+function plugin_install_now()
 {
-    global $pi_name, $pi_version, $gl_version, $pi_url, $NEWTABLE, $DEFVALUES, $NEWFEATURE;
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES, $_USER, $GROUPS, $FEATURES, $MAPPINGS, $DEFVALUES,
+           $base_path,
+           $pi_name, $pi_display_name, $pi_version, $gl_version, $pi_url;
 
-    COM_errorLog("Attempting to install the $pi_name Plugin",1);
+    COM_errorLog ("Attempting to install the $pi_display_name plugin", 1);
 
-    // Create the Plugins Tables
-    
-    foreach ($NEWTABLE as $table => $sql) {
-        COM_errorLog("Creating $table table",1);
-        DB_query($sql,1);
-        if (DB_error()) {
-            COM_errorLog("Error Creating $table table",1);
-            plugin_uninstall_spamx();
+    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
+
+    // create the plugin's groups
+    $admin_group_id = 0;
+    foreach ($GROUPS as $name => $desc) {
+        COM_errorLog ("Attempting to create $name group", 1);
+
+        $grp_name = addslashes ($name);
+        $grp_desc = addslashes ($desc);
+        DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', 'grp_desc')", 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
             return false;
-            exit;
         }
-        COM_errorLog("Success - Created $table table",1);
+
+        // replace the description with the new group id so we can use it later
+        $GROUPS[$name] = DB_insertId ();
+
+        // assume that the first group is the plugin's Admin group
+        if ($admin_group_id == 0) {
+            $admin_group_id = $GROUPS[$name];
+        }
     }
-     
-    // Insert Default Data
-    
+
+    // Create the plugin's table(s)
+    $_SQL = array ();
+    require_once ($base_path . 'sql/install.php');
+
+    foreach ($_SQL as $sql) {
+        $sql = str_replace ('#group#', $admin_group_id, $sql);
+        DB_query ($sql);
+        if (DB_error ()) {
+            COM_errorLog ('Error creating table', 1);
+            $uninstall_plugin ();
+
+            return false;
+        }
+    }
+
+    // Add the plugin's features
+    COM_errorLog ("Attempting to add $pi_display_name feature(s)", 1);
+
+    foreach ($FEATURES as $feature => $desc) {
+        $ft_name = addslashes ($feature);
+        $ft_desc = addslashes ($desc);
+        DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
+                  . "VALUES ('$ft_name', '$ft_desc')", 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
+            return false;
+        }
+
+        $feat_id = DB_insertId ();
+
+        if (isset ($MAPPINGS[$feature])) {
+            foreach ($MAPPINGS[$feature] as $group) {
+                COM_errorLog ("Adding $feature feature to the $group group", 1);
+                DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$GROUPS[$group]})");
+                if (DB_error ()) {
+                    $uninstall_plugin ();
+
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Add plugin's Admin group to the Root user group
+    // (assumes that the Root group's ID is always 1)
+    COM_errorLog ("Attempting to give all users in the Root group access to the $pi_display_name's Admin group", 1);
+
+    DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+              . "($admin_group_id, NULL, 1)");
+    if (DB_error ()) {
+        $uninstall_plugin ();
+
+        return false;
+    }
+
+    // Pre-populate tables or run any other SQL queries
+    COM_errorLog ('Inserting default data', 1);
     foreach ($DEFVALUES as $sql) {
-		$table = $_TABLES['spamx'];
-        COM_errorLog("Inserting default data into $table table",1);
-        DB_query($sql,1);
-        if (DB_error()) {
-            COM_errorLog("Error inserting default data into $table table",1);
-            plugin_uninstall_spamx();
+        $sql = str_replace ('#group#', $admin_group_id, $sql);
+        DB_query ($sql, 1);
+        if (DB_error ()) {
+            $uninstall_plugin ();
+
             return false;
-            exit;
         }
-        COM_errorLog("Success - inserting data into $table table",1);
     }
 
-    // Create the plugin admin security group
-    COM_errorLog("Attempting to create $pi_name admin group", 1);
-    DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) "
-        . "VALUES ('$pi_name Admin', 'Users in this group can administer the $pi_name plugin')",1);
-    if (DB_error()) {
-        plugin_uninstall_spamx();
+    // Finally, register the plugin with Geeklog
+    COM_errorLog ("Registering $pi_display_name plugin with Geeklog", 1);
+
+    // silently delete an existing entry
+    DB_delete ($_TABLES['plugins'], 'pi_name', $pi_name);
+
+    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) VALUES "
+        . "('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
+
+    if (DB_error ()) {
+        $uninstall_plugin ();
+
         return false;
-        exit;
-    }
-    COM_errorLog('...success',1);
-    $group_id = DB_insertId();
-    
-    // Save the grp id for later uninstall
-    COM_errorLog('About to save group_id to vars table for use during uninstall',1);
-    DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_gid', $group_id)",1);
-    if (DB_error()) {
-        plugin_uninstall_spamx();
-        return false;
-        exit;
-    }
-    COM_errorLog('...success',1);
-    
-    // Add plugin Features
-    foreach ($NEWFEATURE as $feature => $desc) {
-        COM_errorLog("Adding $feature feature",1);
-        DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
-            . "VALUES ('$feature','$desc')",1);
-        if (DB_error()) {
-            COM_errorLog("Failure adding $feature feature",1);
-            plugin_uninstall_spamx();
-            return false;
-            exit;
-        }
-        $feat_id = DB_insertId();
-        COM_errorLog("Success",1);
-        COM_errorLog("Adding $feature feature to admin group",1);
-        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, $group_id)");
-        if (DB_error()) {
-            COM_errorLog("Failure adding $feature feature to admin group",1);
-            plugin_uninstall_spamx();
-            return false;
-            exit;
-        }
-        COM_errorLog("Success",1);
-    }        
-    
-    // OK, now give Root users access to this plugin now! NOTE: Root group should always be 1
-    COM_errorLog("Attempting to give all users in Root group access to $pi_name admin group",1);
-    DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
-    if (DB_error()) {
-        plugin_uninstall_spamx();
-        return false;
-        exit;
     }
 
-    // Register the plugin with Geeklog
-    COM_errorLog("Registering $pi_name plugin with Geeklog", 1);
-    DB_delete($_TABLES['plugins'],'pi_name','spamx');
-    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) "
-        . "VALUES ('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
+    COM_errorLog ("Successfully installed the $pi_display_name plugin!", 1);
 
-    if (DB_error()) {
-        plugin_uninstall_spamx();
-        return false;
-        exit;
-    }
-
-    COM_errorLog("Succesfully installed the $pi_name Plugin!",1);
     return true;
 }
 
-/* 
-* Main Function
-*/
 
-$display = COM_siteHeader();
-$T = new Template($_CONF['path'] . 'plugins/spamx/templates');
-$T->set_file('install', 'install.thtml');
-$T->set_var('install_header', $LANG_SX00['install_header']);
-$T->set_var('img',$_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.png');
-$T->set_var('cgiurl', $_CONF['site_admin_url'] . '/plugins/spamx/install.php');
-$T->set_var('admin_url', $_CONF['site_admin_url'] . '/plugins/spamx/index.php');
-$T->set_var('plugin_name', $LANG_SX00['plugin_name']);
+// MAIN
+$display = '';
 
-if ($_POST['action'] == 'install') {
-    if (plugin_install_spamx()) {
-        $T->set_var('installmsg1',$LANG_SX00['install_success']);
+if ($_REQUEST['action'] == 'uninstall') {
+    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
+    if ($uninstall_plugin ()) {
+        $display = COM_refresh ($_CONF['site_admin_url']
+                                . '/plugins.php?msg=45');
     } else {
-        $T->set_var('installmsg1',$LANG_SX00['install_failed']);
+        $display = COM_refresh ($_CONF['site_admin_url']
+                                . '/plugins.php?msg=73');
     }
-} else if ($_POST['action'] == "uninstall") {
-   plugin_uninstall_spamx('installed');
-   $T->set_var('installmsg1',$LANG_SX00['uninstall_msg']);
-}
+} else if (DB_count ($_TABLES['plugins'], 'pi_name', $pi_name) == 0) {
+    // plugin not installed
 
-if (DB_count($_TABLES['plugins'], 'pi_name', 'spamx') == 0) {
-    $T->set_var('installmsg2', $LANG_SX00['uninstalled']);
-    $T->set_var('readme', $LANG_SX00['readme']);
-    $T->set_var('installdoc', $LANG_SX00['installdoc']);
-	$T->set_var('btnmsg', $LANG_SX00['install']);
-	$T->set_var('action','install');
+    if (plugin_compatible_with_this_geeklog_version ()) {
+        if (plugin_install_now ()) {
+            $display = COM_refresh ($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=44');
+        } else {
+            $display = COM_refresh ($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=72');
+        }
+    } else {
+        // plugin needs a newer version of Geeklog
+        $display .= COM_siteHeader ('menu', $LANG32[8])
+                 . COM_startBlock ($LANG32[8])
+                 . '<p>' . $LANG32[9] . '</p>'
+                 . COM_endBlock ()
+                 . COM_siteFooter ();
+    }
 } else {
-    $T->set_var('installmsg2', $LANG_SX00['installed']);
-	$T->set_var('btnmsg', $LANG_SX00['uninstall']);
-	$T->set_var('action','uninstall');
+    // plugin already installed
+    $display .= COM_siteHeader ('menu', $LANG01[77])
+             . COM_startBlock ($LANG32[6])
+             . '<p>' . $LANG32[7] . '</p>'
+             . COM_endBlock ()
+             . COM_siteFooter();
 }
-$T->parse('output','install');
-$display .= $T->finish($T->get_var('output'));
-$display .= COM_siteFooter(true);
 
 echo $display;
 
