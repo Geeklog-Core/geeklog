@@ -1,9 +1,10 @@
 <?php
 
 ###############################################################################
-# german.php
+# german_formal.php
 #
-# This is the German language file for the Geeklog Polls Plugin
+# This is the German language file for the Geeklog Polls Plugin,
+# addressing the user as "Sie" (formal German).
 #
 # Copyright (C) 2005 Dirk Haun
 # dirk AT haun-online DOT de
@@ -23,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german.php,v 1.2 2005/12/17 19:52:22 dhaun Exp $
+# $Id: german_formal.php,v 1.1 2005/12/17 19:52:22 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -40,7 +41,7 @@ $LANG_POLLS = array(
     'vote'              => 'Abstimmen',
     'pastpolls'         => 'Ältere Umfragen',
     'savedvotetitle'    => 'Stimme gespeichert',
-    'savedvotemsg'      => 'Deine Stimme wurde für die Umfrage gespeichert: ',
+    'savedvotemsg'      => 'Ihre Stimme wurde für die Umfrage gespeichert: ',
     'pollstitle'        => 'Umfragen im System',
     'pollquestions'     => 'Ältere Umfragen ansehen',
     'stats_top10'       => 'Top Ten der Umfragen',
@@ -76,7 +77,7 @@ $LANG25 = array(
     19 => 'Um eine Umfrage zu ändern oder zu löschen, auf das Ändern-Icon klicken. Mit Neu anlegen (s.o.) wird eine neue Umfrage angelegt.',
     20 => 'Stimmen',
     21 => 'Zugriff verweigert',
-    22 => "Du hast keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php\">Zurück zum Administrator-Menü</a>.",
+    22 => "Sie haben keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php\">Zurück zum Administrator-Menü</a>.",
     23 => 'Neue Umfrage',
     24 => 'Admin Home',
     25 => 'Ja',
@@ -87,6 +88,6 @@ $LANG25 = array(
     30 => 'Anzahl Ergebnisse'
 );
 
-$PLG_polls_MESSAGE19 = 'Deine Umfrage wurde gespeichert.';
+$PLG_polls_MESSAGE19 = 'Ihre Umfrage wurde gespeichert.';
 
 ?>

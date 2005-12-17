@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# german.php
+# german_utf-8.php
 #
 # This is the German language file for the Geeklog Polls Plugin
 #
@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german.php,v 1.2 2005/12/17 19:52:22 dhaun Exp $
+# $Id: german_utf-8.php,v 1.1 2005/12/17 19:52:22 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -38,17 +38,17 @@ $LANG_POLLS = array(
     'pollresults'       => 'Umfrage-Ergebnisse',
     'votes'             => 'Stimmen',
     'vote'              => 'Abstimmen',
-    'pastpolls'         => 'Ältere Umfragen',
+    'pastpolls'         => 'Ã„ltere Umfragen',
     'savedvotetitle'    => 'Stimme gespeichert',
-    'savedvotemsg'      => 'Deine Stimme wurde für die Umfrage gespeichert: ',
+    'savedvotemsg'      => 'Deine Stimme wurde fÃ¼r die Umfrage gespeichert: ',
     'pollstitle'        => 'Umfragen im System',
-    'pollquestions'     => 'Ältere Umfragen ansehen',
+    'pollquestions'     => 'Ã„ltere Umfragen ansehen',
     'stats_top10'       => 'Top Ten der Umfragen',
     'stats_questions'   => 'Thema der Umfrage',
     'stats_votes'       => 'Stimmen',
     'stats_none'        => 'Es gibt keine Umfragen oder es wurden keine Stimmen abgegeben.',
     'stats_summary'     => 'Anzahl Umfragen (Stimmen)',
-    'open_poll'         => 'Abstimmen möglich'
+    'open_poll'         => 'Abstimmen mÃ¶glich'
 );
 
 ###############################################################################
@@ -70,18 +70,18 @@ $LANG25 = array(
     13 => 'Umfrage anlegen',
     14 => 'Speichern',
     15 => 'Abbruch',
-    16 => 'Löschen',
+    16 => 'LÃ¶schen',
     17 => 'Bitte eine Umfrage-ID eingeben.',
     18 => 'Liste der Umfragen',
-    19 => 'Um eine Umfrage zu ändern oder zu löschen, auf das Ändern-Icon klicken. Mit Neu anlegen (s.o.) wird eine neue Umfrage angelegt.',
+    19 => 'Um eine Umfrage zu Ã¤ndern oder zu lÃ¶schen, auf das Ã„ndern-Icon klicken. Mit Neu anlegen (s.o.) wird eine neue Umfrage angelegt.',
     20 => 'Stimmen',
     21 => 'Zugriff verweigert',
-    22 => "Du hast keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php\">Zurück zum Administrator-Menü</a>.",
+    22 => "Du hast keine Zugriffsrechte fÃ¼r diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php\">ZurÃ¼ck zum Administrator-MenÃ¼</a>.",
     23 => 'Neue Umfrage',
     24 => 'Admin Home',
     25 => 'Ja',
     26 => 'Nein',
-    27 => 'Ändern',
+    27 => 'Ã„ndern',
     28 => 'Abschicken',
     29 => 'Suchen',
     30 => 'Anzahl Ergebnisse'
