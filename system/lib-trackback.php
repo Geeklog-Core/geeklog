@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.19 2005/12/17 15:19:37 dhaun Exp $
+// $Id: lib-trackback.php,v 1.20 2005/12/20 10:19:25 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -447,8 +447,8 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             return false;
         }
 
-        $saved = TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog,
-                                           $excerpt);
+        $saved = TRB_saveTrackbackComment ($sid, $type, $_POST['url'],
+                    $_POST['title'], $_POST['blog_name'], $_POST['excerpt']);
 
         if ($saved == TRB_SAVE_REJECT) {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['rejected']);
