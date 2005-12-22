@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.56 2005/12/11 12:33:30 dhaun Exp $
+// $Id: plugins.php,v 1.57 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -403,15 +403,14 @@ function do_uninstall ($pi_name)
 /**
 * List available plugins
 *
-* @param    string  $query          search query string
-* @param    int     $query_limit    limit for search query
 * @return   string                  formatted list of plugins
 *
 */
 function listplugins ()
 {
     global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    
     $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),

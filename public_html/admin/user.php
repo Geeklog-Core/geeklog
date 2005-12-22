@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.138 2005/12/11 11:36:10 ospiess Exp $
+// $Id: user.php,v 1.139 2005/12/22 14:39:46 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -247,6 +247,8 @@ function edituser($uid = '', $msg = '')
 
 function listusers() {
     global $LANG_ADMIN, $_TABLES, $_CONF, $LANG28, $_IMAGE_TYPE;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    $display = '';
 
     if ($_CONF['lastlogin']==true) {
         $login_text = $LANG28[41];

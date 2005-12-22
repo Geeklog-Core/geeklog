@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.46 2005/12/09 12:05:23 ospiess Exp $
+// $Id: functions.inc,v 1.47 2005/12/22 14:39:45 ospiess Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -229,7 +229,7 @@ function LINKS_countLinksAndClicks ()
 function plugin_showstats_links ($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_LINKS_STATS;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     $result = DB_query("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");

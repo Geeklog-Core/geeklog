@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.30 2005/11/26 18:59:16 dhaun Exp $
+// $Id: database.php,v 1.31 2005/12/22 14:39:46 ospiess Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -66,7 +66,9 @@ function compareBackupFiles ($pFileA, $pFileB)
 function listbackups()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_DB_BACKUP;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
+
     if (is_writable ($_CONF['backup_path'])) {
         $backups = array();
         $fd = opendir($_CONF['backup_path']);

@@ -32,9 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.44 2005/12/02 19:53:43 dhaun Exp $
+// $Id: stats.php,v 1.45 2005/12/22 14:39:47 ospiess Exp $
 
 require_once('lib-common.php');
+require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
 $display = '';
 

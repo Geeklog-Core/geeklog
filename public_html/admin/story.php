@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.193 2005/12/17 20:11:15 blaine Exp $
+// $Id: story.php,v 1.194 2005/12/22 14:39:46 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -107,6 +107,7 @@ function userlist ($uid = 0)
 function liststories()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG09, $LANG_ADMIN, $LANG_ACCESS, $LANG24;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
     
     if (!empty ($_GET['tid'])) {

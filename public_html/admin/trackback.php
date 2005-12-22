@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.30 2005/11/27 15:25:37 dhaun Exp $
+// $Id: trackback.php,v 1.31 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -470,7 +470,9 @@ function getItemInfo ($type, $id, $what)
 function listServices ()
 {
     global $LANG_ADMIN, $LANG_TRB, $_CONF, $_IMAGE_TYPE, $_TABLES;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
+
     $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_TRB['service'], 'field' => 'name', 'sort' => true),

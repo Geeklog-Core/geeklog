@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.74 2005/12/11 11:36:10 ospiess Exp $
+// $Id: event.php,v 1.75 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -74,7 +74,7 @@ function editevent ($mode, $A, $msg = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG10, $LANG12, $LANG22,
            $LANG30, $LANG_ACCESS, $_STATES, $LANG_ADMIN;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     if (!empty ($msg)) {
@@ -512,6 +512,7 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
 function listevents()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG22, $LANG_ACCESS, $_IMAGE_TYPE;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),

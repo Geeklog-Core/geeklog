@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2005/11/19 21:37:16 dhaun Exp $
+// $Id: index.php,v 1.14 2005/12/22 14:39:47 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -143,6 +143,7 @@ if (empty($qid)) {
         $retval .= $login->finish ($login->get_var('output'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
+        require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(      # dislay 'text' and use table field 'field'
                         array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
                         array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.35 2005/11/19 04:05:11 vinny Exp $
+// $Id: functions.inc,v 1.36 2005/12/22 14:39:46 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -205,11 +205,13 @@ function POLLS_countPollsAndVotes ()
 function plugin_showstats_polls ($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
     $result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
     $nrows  = DB_numRows ($result);
 
     if ($nrows > 0) {
+        require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(
             array('text' => $LANG_POLLS['stats_questions'], 'field' => 'qid'),
             array('text' => $LANG_POLLS['stats_votes'], 'field' => 'voters'),

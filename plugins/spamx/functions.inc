@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.17 2005/12/17 21:06:03 dhaun Exp $
+ * $Id: functions.inc,v 1.18 2005/12/22 14:39:46 ospiess Exp $
  */
 
 /**
@@ -46,11 +46,12 @@ require_once ($_CONF['path'] . 'plugins/spamx/config.php');
 function plugin_showstats_spamx($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_SX00;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     if (SEC_hasRights('spamx.admin')) {
         // detailed stats are only visible to Spam-X admins
+        require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(
             array('text' => $LANG_SX00['stats_page_title'], 'field' => 'label'),
             array('text' => $LANG_SX00['stats_entries'], 'field' => 'stats'),

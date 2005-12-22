@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.84 2005/12/13 19:22:11 mjervis Exp $
+// $Id: moderation.php,v 1.85 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -220,7 +220,7 @@ function commandcontrol()
 function itemlist($type)
 {
     global $_TABLES, $LANG29, $_CONF, $LANG_ADMIN;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $isplugin = false;
     $retval = '';
 
@@ -320,7 +320,7 @@ function itemlist($type)
 function userlist ()
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
@@ -374,7 +374,7 @@ function userlist ()
 function draftlist ()
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");

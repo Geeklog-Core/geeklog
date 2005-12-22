@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.62 2005/12/11 11:36:10 ospiess Exp $
+// $Id: group.php,v 1.63 2005/12/22 14:39:46 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -556,7 +556,7 @@ function getGroupList ($basegroup)
 function listusers ($grp_id)
 {
     global $_CONF, $_TABLES, $LANG28, $LANG_ACCESS, $LANG_ADMIN, $_IMAGE_TYPE;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     $thisUsersGroups = SEC_getUserGroups ();
@@ -634,6 +634,7 @@ function listusers ($grp_id)
 function listgroups()
 {
     global $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $_CONF, $_TABLES;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = "";
 
     $header_arr = array(      # display 'text' and use table field 'field'

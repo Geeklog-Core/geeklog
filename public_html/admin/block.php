@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.90 2005/12/11 11:36:10 ospiess Exp $
+// $Id: block.php,v 1.91 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -329,7 +329,9 @@ function editblock ($bid = '')
 function listblocks()
 {
     global $LANG_ADMIN, $LANG21, $_CONF, $_TABLES, $_IMAGE_TYPE;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
+    
     reorderblocks();
 
     $header_arr = array(      # dislay 'text' and use table field 'field'

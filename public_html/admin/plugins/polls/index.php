@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2005/11/19 04:12:56 vinny Exp $
+// $Id: index.php,v 1.23 2005/12/22 14:39:46 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -65,7 +65,9 @@ if (!SEC_hasRights ('polls.edit')) {
 function listpolls()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG25, $LANG_ACCESS;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
+
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),

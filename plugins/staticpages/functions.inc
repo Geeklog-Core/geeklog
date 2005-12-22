@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.60 2005/11/29 19:17:20 mjervis Exp $
+// $Id: functions.inc,v 1.61 2005/12/22 14:39:46 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -134,8 +134,9 @@ function SP_countVisiblePages ()
 function plugin_showstats_staticpages($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_STATIC;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
+
     $perms = SP_getPerms ();
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
@@ -143,6 +144,7 @@ function plugin_showstats_staticpages($showsitestats)
     $result = DB_query ("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
     $nrows  = DB_numRows ($result);
     if ($nrows > 0) {
+        require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(
             array('text' => $LANG_STATIC['stats_page_title'], 'field' => 'sid'),
             array('text' => $LANG_STATIC['stats_hits'], 'field' => 'sp_hits'),

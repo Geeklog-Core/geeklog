@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.32 2005/11/19 09:27:53 dhaun Exp $
+// $Id: syndication.php,v 1.33 2005/12/22 14:39:46 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -128,6 +128,7 @@ function get_geeklogFeeds ()
 function listfeeds()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     $header_arr = array(      # dislay 'text' and use table field 'field'

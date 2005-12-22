@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.23 2005/12/17 14:29:20 dhaun Exp $
+// $Id: index.php,v 1.24 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -345,7 +345,9 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
 function listlinks ()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_LINKS_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
+
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_LINKS_ADMIN[2], 'field' => 'lid', 'sort' => true),

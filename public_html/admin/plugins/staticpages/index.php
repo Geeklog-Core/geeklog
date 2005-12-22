@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.54 2005/12/11 11:36:10 ospiess Exp $
+// $Id: index.php,v 1.55 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -85,7 +85,8 @@ function form ($A, $error = false)
     } else {
         $template_path = staticpages_templatePath ('admin');
         $sp_template = new Template ($template_path);
-        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($template_path . '/editor_advanced.thtml') && $A['editor'] != 'std') {
+        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)
+&& file_exists ($template_path . '/editor_advanced.thtml')) {
             $sp_template->set_file ('form', 'editor_advanced.thtml');
             $sp_template->set_var ('lang_expandhelp', $LANG24[67]);
             $sp_template->set_var ('lang_reducehelp', $LANG24[68]);
@@ -314,7 +315,9 @@ function form ($A, $error = false)
 function liststaticpages()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_STATIC;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
+
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
@@ -324,30 +327,21 @@ function liststaticpages()
                     array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
                     array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
     );
-
     $defsort_arr = array('field' => 'sp_title', 'direction' => 'desc');
 
-    $menu_arr = array ();
-    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
-        $std_editor = ' ' . $LANG_ADMIN['std_editor'];
-        $std_link = "&amp;editor=std";
-        $adv_editor = ' ' . $LANG_ADMIN['adv_editor'];
-        $js_warning = ' ' . $LANG_ADMIN['js_warning'];
-        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php?mode=edit$std_link",
-                          'text' => $LANG_ADMIN['create_new'] . $std_editor);
-    }
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
 
-    $menu_arr[] = array('url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php?mode=edit",
-                          'text' => $LANG_ADMIN['create_new'] . $adv_editor);
-    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']);
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_STATIC['staticpagelist'],
-                      'instructions' => $LANG_STATIC['instructions'] . $js_warning,
-                      'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
+     $text_arr = array('has_menu' =>  true,
+                       'has_extras'   => true,
+                       'title' => $LANG_STATIC['staticpagelist'],
+                       'instructions' => $LANG_STATIC['instructions'],
+                       'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',
+                       'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
 
     $query_arr = array('table' => 'staticpage',
                        'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate "

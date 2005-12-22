@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.56 2005/11/19 11:06:04 dhaun Exp $
+// $Id: topic.php,v 1.57 2005/12/22 14:39:46 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -290,7 +290,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 function listtopics()
 {
     global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN, $_THEME_URL;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     $retval .= COM_startBlock ($LANG27[8], '',
