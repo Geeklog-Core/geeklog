@@ -780,7 +780,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
@@ -1229,7 +1232,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Maak een Backup',
     'backup_successful' => 'Database backup met succes uitgevoerd.',
     'db_explanation' => 'Om een nieuwe backup van het portaal te (laten) maken, klik op de knop hieronder',
-    'not_found' => "Incorrect pad of mysqldump utility is niet uitvoerbaar.<br>Controleer de definitie voor <strong>\{$_DB_mysqldump_path}</strong> in config.php.<br>De variabele is momenteel opgenomen als: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Incorrect pad of mysqldump utility is niet uitvoerbaar.<br>Controleer de definitie voor <strong>\$_DB_mysqldump_path</strong> in config.php.<br>De variabele is momenteel opgenomen als: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup mislukt: bestandsgrootte was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} bestaat niet of is geen directory",
     'no_access' => "FOUT: Directory {$_CONF['backup_path']} is niet benaderbaar.",

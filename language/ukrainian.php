@@ -778,7 +778,10 @@ $LANG24 = array(
     72 => 'Звичайна панель',
     73 => 'Розширена панель',
     74 => 'Розширена панель II',
-    75 => 'Всі можливості'
+    75 => 'Всі можливості',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 

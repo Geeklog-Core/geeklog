@@ -776,7 +776,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
@@ -1225,7 +1228,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Зробити резервну копію',
     'backup_successful' => 'Резервне копіювання бази даних відбулося успішно.',
     'db_explanation' => 'Для створення нової резервної копії системи Geeklog, натисніть кнопку, що нижче',
-    'not_found' => "Невірний шлях, або ж утиліта mysqldump не є виконуваною.<br>Перевірте означення <strong>$_DB_mysqldump_path</strong> в config.php.<br>Наразі змінну означено як: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Невірний шлях, або ж утиліта mysqldump не є виконуваною.<br>Перевірте означення <strong>\$_DB_mysqldump_path</strong> в config.php.<br>Наразі змінну означено як: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Резервне копіювання не вдалося: розмір файлу становив 0 байтів',
     'path_not_found' => "{$_CONF['backup_path']} не існує або не є каталогом",
     'no_access' => "ПОМИЛКА: Каталог {$_CONF['backup_path']} недоступний.",

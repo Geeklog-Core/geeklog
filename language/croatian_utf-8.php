@@ -777,7 +777,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
@@ -1226,7 +1229,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
     'db_explanation' => 'To create a new backup of your Geeklog system, hit the button below',
-    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>{$_DB_mysqldump_path}</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
     'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",

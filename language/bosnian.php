@@ -779,7 +779,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################

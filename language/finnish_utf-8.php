@@ -778,7 +778,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
@@ -1227,7 +1230,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Tee varmuuskopio',
     'backup_successful' => 'Tietokannan varmistus onnistui.',
     'db_explanation' => 'Luodaksesi uuden varmuuskopion Geeklogista, klikkaa alta löytyvää nappia',
-    'not_found' => "Viallinen polku tai mysqldump apuohjelma ei ole suoritettavissa.<br>Tarkista <strong>{$_DB_mysqldump_path}</strong> määritys config.php -tiedostossa.<br>Muuttujan nykyinen määrittely: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Viallinen polku tai mysqldump apuohjelma ei ole suoritettavissa.<br>Tarkista <strong>\$_DB_mysqldump_path</strong> määritys config.php -tiedostossa.<br>Muuttujan nykyinen määrittely: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Varmuuskopiointi epäonnistui: tiedoston koko 0 tavua',
     'path_not_found' => "{$_CONF['backup_path']} ei ole olemassa tai ei ole hakemisto",
     'no_access' => "VIRHE: Hakemisto {$_CONF['backup_path']} ei ole saatavilla.",

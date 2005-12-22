@@ -791,7 +791,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
@@ -1240,7 +1243,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Сделать Бэкап',
     'backup_successful' => 'Резервное копирование базы данных успешно завершено.',
     'db_explanation' => 'Для создания новой резервной копии Вашей системы Geeklog, нажмите кнопку ниже',
-    'not_found' => "Неправильный путь или утилита mysqldump не может выполняться.<br>Проверьте <strong>$_DB_mysqldump_path</strong> определение в файле config.php.<br>Переменная в данный момент установлена в: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Неправильный путь или утилита mysqldump не может выполняться.<br>Проверьте <strong>\$_DB_mysqldump_path</strong> определение в файле config.php.<br>Переменная в данный момент установлена в: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Неудачный бэкап: Размер файла 0 байт',
     'path_not_found' => "{$_CONF['backup_path']} не существует или не является директорией",
     'no_access' => "Ошибка: Директория {$_CONF['backup_path']} не доступна.",

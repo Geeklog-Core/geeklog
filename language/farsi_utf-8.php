@@ -763,7 +763,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
@@ -1212,7 +1215,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'پشتيبان بگير',
     'backup_successful' => 'پشتيبان گيري از ديتا بيس با موفقيت انجام شد',
     'db_explanation' => 'براي ساختن يك پشتيبان جدبد براي سيستم جيك لاگ خود كليد زير را كليك كنيد',
-    'not_found' => "مسير اشتباه- يا مسير |ماي اس كيو ال| شما قابل اجرا نيست<br>چك كردن<strong>{$_DB_mysqldump_path}</strong> مشخص شده درconfig.php.<br>متغيرها كنوني شناخته شده با نام<var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "مسير اشتباه- يا مسير |ماي اس كيو ال| شما قابل اجرا نيست<br>چك كردن<strong>\$_DB_mysqldump_path</strong> مشخص شده درconfig.php.<br>متغيرها كنوني شناخته شده با نام<var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'پشتيبان گيري ناقص ماند: سايز فايل 0 بايت بود',
     'path_not_found' => "{$_CONF['backup_path']} وجود ندارد يا در دايركتوري موجود نيست",
     'no_access' => "خطا: دايركتوري {$_CONF['backup_path']} مورددسترسي نيست.",

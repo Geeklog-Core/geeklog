@@ -778,7 +778,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
@@ -1227,7 +1230,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => '做備份',
     'backup_successful' => '資料庫備份完成。',
     'db_explanation' => '要做新的 Geeklog 備份，點擊以下的按鈕',
-    'not_found' => "不正確的路徑或 mysqldump 程式不可執行。<br>檢查<strong>{$_DB_mysqldump_path}</strong>定義在 config.php.<br>變數現在被定義為︰<var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "不正確的路徑或 mysqldump 程式不可執行。<br>檢查<strong>\$_DB_mysqldump_path</strong>定義在 config.php.<br>變數現在被定義為︰<var>{$_DB_mysqldump_path}</var>",
     'zero_size' => '備份失敗︰檔案是 0 大小',
     'path_not_found' => "{$_CONF['backup_path']} 不存在或不是目錄",
     'no_access' => "錯誤︰目錄 {$_CONF['backup_path']} ，不能存取。",
