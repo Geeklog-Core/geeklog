@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# hebrew.php # last Update  5/12/2005
+# hebrew.php # last Update  13/12/2005
 # Version 1.3.11#1.3
 # http://lior.weissbrod.com
 #
@@ -208,7 +208,7 @@ $LANG03 = array(
     8 => " שניות. אתר זה דורש לפחות {$_CONF['commentspeedlimit']} שניות בין תגובות",
     9 => 'תגובה',
     10 => 'שליחת דיווח',
-    11 => 'שליחת תגובה',
+    11 => 'הוספת תגובה',
     12 => 'נא למלא את שדות הכותרת והתגובה, מפני שהם נחוצים כדי להגיב.',
     13 => 'המידע שלך',
     14 => 'צפייה לפני ההוספה',
@@ -782,7 +782,10 @@ $LANG24 = array(
     72 => 'Common Toolbar',
     73 => 'Advanced Toolbar',
     74 => 'Advanced II Toolbar',
-    75 => 'Full Featured'
+    75 => 'Full Featured',
+    76 => 'Publish Options',
+    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor'
 );
 
 ###############################################################################
