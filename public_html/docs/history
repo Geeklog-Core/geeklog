@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Added a workaround to produce abbreviated day names in the calendar for UTF-8
+  language files (reported by Euan McKay) [Dirk]
 - The Spam-X plugin now uses the same "universal" install script as the other
   three preinstalled plugins [Dirk]
 - Added more allowable HTML tags and attributes if Advanced_Editor enabled 

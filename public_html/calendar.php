@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.56 2005/11/14 09:22:04 dhaun Exp $
+// $Id: calendar.php,v 1.57 2005/12/22 09:01:26 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -134,27 +134,66 @@ function setCalendarLanguage (&$aCalendar)
     $aCalendar->setLanguage ($lang_days, $lang_months, $_CONF['week_start']);
 }
 
+/**
+* Returns an abbreviated day's name
+*
+* Note: This is a workaround, to be replaced with something more sensible
+*       in future versions ...
+*
+* @param    int     $day    1 = Sunday, 2 = Monday, ...
+* @return   string          abbreviated day's name (3 characters)
+*
+* The problem here is that substr may return nonsense for UTF-8 strings, but
+* mb_substr may not be available.
+*
+*/
+function shortDaysName ($day)
+{
+    global $LANG_CHARSET, $LANG30;
+
+    static $mb_enabled;
+
+    if (!isset ($mb_enabled)) {
+        $mb_enabled = function_exists ('mb_substr');
+    }
+
+    $shortday = '';
+    if ($mb_enabled) {
+        // when mb_substr is available, use it
+        $shortday = mb_substr ($LANG30[$day], 0, 2, $LANG_CHARSET);
+    } else if ($LANG_CHARSET == 'utf-8') {
+        // no mb_substr, but UTF-8 string: cheat and hope that the locale
+        // matches the current language ...
+        // Note: May 1st, 2005 was a Sunday
+        $shortday = date ('D', mktime (0, 0, 0, 5, $day, 2005));
+    } else {
+        $shortday = substr ($LANG30[$day], 0, 2);
+    }
+
+    return $shortday;
+}
+
 function makeDaysHeadline ()
 {
     global $_CONF, $LANG30;
 
     $retval = '<tr><th>';
     if ($_CONF['week_start'] == 'Mon') {
-        $retval .= substr ($LANG30[2], 0, 2) . '</th><th>'
-                . substr ($LANG30[3], 0, 2) . '</th><th>'
-                . substr ($LANG30[4], 0, 2) . '</th><th>'
-                . substr ($LANG30[5], 0, 2) . '</th><th>'
-                . substr ($LANG30[6], 0, 2) . '</th><th>'
-                . substr ($LANG30[7], 0, 2) . '</th><th>'
-                . substr ($LANG30[1], 0, 2) . '</th></tr>';
+        $retval .= shortDaysName (2) . '</th><th>'
+                . shortDaysName (3) . '</th><th>'
+                . shortDaysName (4) . '</th><th>'
+                . shortDaysName (5) . '</th><th>'
+                . shortDaysName (6) . '</th><th>'
+                . shortDaysName (7) . '</th><th>'
+                . shortDaysName (1) . '</th></tr>';
     } else {
-        $retval .= substr ($LANG30[1], 0, 2) . '</th><th>'
-                . substr ($LANG30[2], 0, 2) . '</th><th>'
-                . substr ($LANG30[3], 0, 2) . '</th><th>'
-                . substr ($LANG30[4], 0, 2) . '</th><th>'
-                . substr ($LANG30[5], 0, 2) . '</th><th>'
-                . substr ($LANG30[6], 0, 2) . '</th><th>'
-                . substr ($LANG30[7], 0, 2) . '</th></tr>';
+        $retval .= shortDaysName (1) . '</th><th>'
+                . shortDaysName (2) . '</th><th>'
+                . shortDaysName (3) . '</th><th>'
+                . shortDaysName (4) . '</th><th>'
+                . shortDaysName (5) . '</th><th>'
+                . shortDaysName (6) . '</th><th>'
+                . shortDaysName (7) . '</th></tr>';
     }
 
     return $retval;
