@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.61 2005/12/22 14:39:46 ospiess Exp $
+// $Id: functions.inc,v 1.62 2005/12/22 18:50:33 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -134,7 +134,6 @@ function SP_countVisiblePages ()
 function plugin_showstats_staticpages($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_STATIC;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     $perms = SP_getPerms ();
