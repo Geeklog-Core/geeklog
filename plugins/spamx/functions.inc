@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.18 2005/12/22 14:39:46 ospiess Exp $
+ * $Id: functions.inc,v 1.19 2005/12/22 14:50:25 ospiess Exp $
  */
 
 /**
@@ -46,7 +46,6 @@ require_once ($_CONF['path'] . 'plugins/spamx/config.php');
 function plugin_showstats_spamx($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_SX00;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
     if (SEC_hasRights('spamx.admin')) {
