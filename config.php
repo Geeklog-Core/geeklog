@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.202 2005/12/17 21:17:45 blaine Exp $
+// $Id: config.php,v 1.203 2005/12/28 10:11:47 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -215,7 +215,7 @@ $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] . '/';
 
-// stops new regisrations if set to true.
+// stops new registrations if set to true.
 $_CONF['disable_new_user_registration'] = false; // set to true to block users.
 
 // optional settings (1 = on, 0 = off)
@@ -807,7 +807,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.4.0b1');
+    define('VERSION', '1.4.0rc1');
 }
 
 $_STATES = array(

@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  * 
  */
-// $Id: index.php,v 1.6 2005/11/26 06:37:32 trinity Exp $
+// $Id: index.php,v 1.7 2005/12/28 10:11:52 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -110,7 +110,8 @@ if (empty ($_USER['username']) &&
                 }
                 $linklist->set_var ('category_link', $_CONF['site_url'] .
                     '/links/index.php?category=' . urlencode ($C['category']));
-                $linklist->set_var ('category_count', $D['count']);
+                $linklist->set_var ('category_count',
+                                    COM_numberFormat ($D['count']));
                 $linklist->set_var ('width', floor (100 / $_LI_CONF['linkcols']));
                 if (!empty ($category) && ($category == $C['category'])) {
                     $linklist->parse ('category_col', 'actcol', true);
@@ -165,7 +166,7 @@ if (empty ($_USER['username']) &&
                     . '/links/portal.php?what=link&amp;item=' . $A['lid']));
                 $linklist->set_var ('link_actual_url', $A['url']);
                 $linklist->set_var ('link_name', stripslashes($A['title']));
-                $linklist->set_var ('link_hits', $A['hits']);
+                $linklist->set_var ('link_hits', COM_numberFormat ($A['hits']));
                 $linklist->set_var ('link_description',
                         nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
@@ -222,14 +223,15 @@ if (empty ($_USER['username']) &&
                     . '/links/portal.php?what=link&amp;item=' . $A['lid']));
                 $linklist->set_var ('link_actual_url', $A['url']);
                 $linklist->set_var ('link_name', stripslashes ($A['title']));
-                $linklist->set_var ('link_hits', $A['hits']);
+                $linklist->set_var ('link_hits', COM_numberFormat ($A['hits']));
                 $linklist->set_var ('link_description',
                         nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                         $A['perm_anon']) == 3) && SEC_hasRights('links.edit')) {
                     $editurl = $_CONF['site_admin_url']
-                             . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
+                             . '/plugins/links/index.php?mode=edit&amp;lid='
+                             . $A['lid'];
                     $linklist->set_var ('link_edit', '<a href="' . $editurl
                             . '">' . $LANG01[4] . '</a>');
                     $linklist->set_var ('edit_icon', '<a href="' . $editurl

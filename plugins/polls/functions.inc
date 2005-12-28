@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.36 2005/12/22 14:39:46 ospiess Exp $
+// $Id: functions.inc,v 1.37 2005/12/28 10:11:48 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -499,7 +499,7 @@ function POLLS_pollVote( $qid )
 
                 $poll->set_var( 'poll_question', $Q['question'] );
                 $poll->set_var( 'poll_id', $qid );
-                $poll->set_var( 'num_votes', $Q['voters'] );
+                $poll->set_var( 'num_votes', COM_numberFormat( $Q['voters'] ));
                 $poll->set_var( 'poll_vote_url', $_CONF['site_url']
                         . '/polls/index.php');
                 $poll->set_var( 'poll_results_url', $_CONF['site_url']
@@ -520,7 +520,8 @@ function POLLS_pollVote( $qid )
                 if( $Q['commentcode'] >= 0 )
                 {
                     $poll->set_var( 'num_comments',
-                            DB_count( $_TABLES['comments'], 'sid', $qid ));
+                            COM_numberFormat( DB_count( $_TABLES['comments'],
+                                                        'sid', $qid )));
                     $poll->set_var( 'lang_comments', $LANG01[3] );
                     $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
                         '/polls/index.php?qid=' . $qid . '&amp;aid=-1#comments');
@@ -701,7 +702,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 
             $poll->set_var( 'poll_question', $Q['question'] );
             $poll->set_var( 'poll_id', $qid );
-            $poll->set_var( 'num_votes', $Q['voters'] );
+            $poll->set_var( 'num_votes', COM_numberFormat( $Q['voters'] ));
 
             $poll->set_var( 'lang_votes', $LANG_POLLS['votes'] );
 
@@ -721,7 +722,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
                 $poll->set_var( 'answer_text', $A['answer'] );
                 $poll->set_var( 'answer_counter', $i );
                 $poll->set_var( 'answer_odd', (( $i - 1 ) % 2 ));
-                $poll->set_var( 'answer_num', $A['votes'] );
+                $poll->set_var( 'answer_num', COM_numberFormat( $A['votes'] ));
                 $poll->set_var( 'answer_percent',
                                 sprintf( '%.2f', $percent * 100 ));
                 if( $scale < 120 )
@@ -739,7 +740,8 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
             if( $Q['commentcode'] >= 0 )
             {
                 $poll->set_var( 'num_comments',
-                        DB_count( $_TABLES['comments'], 'sid', $qid ));
+                        COM_numberFormat( DB_count( $_TABLES['comments'],
+                                                    'sid', $qid )));
                 $poll->set_var( 'lang_comments', $LANG01[3] );
                 $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
                         '/polls/index.php?qid=' . $qid . '&amp;aid=-1#comments');
@@ -833,7 +835,8 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
     return $retval;
 }
 
-function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr) {
+function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
+{
     global $_CONF, $LANG25, $LANG_ACCESS;
 
     $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
@@ -841,7 +844,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr) {
                              $A['perm_members'], $A['perm_anon']);
     if ($access > 0) {
         switch($fieldname) {
-            case "edit":
+            case 'edit':
                 if ($access == 3) {
                     $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">{$icon_arr['edit']}</a>";
                 }
@@ -867,6 +870,9 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr) {
                     $retval = $LANG25[26];
                 }
                 break;
+            case 'voters':
+                $retval = COM_numberFormat ($A['voters']);
+                break;
             default:
                 $retval = $fieldvalue;
                 break;
@@ -874,6 +880,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr) {
     } else {
         $retval = false;
     }
+
     return $retval;
 }
 

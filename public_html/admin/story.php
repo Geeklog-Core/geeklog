@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.194 2005/12/22 14:39:46 ospiess Exp $
+// $Id: story.php,v 1.195 2005/12/28 10:11:50 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -202,12 +202,14 @@ function liststories()
 *
 * Displays the story entry form
 *
-* @param    string      $sid    ID of story to edit
-* @param    string      $mode   mode: 'preview', 'edit', 'editsubmission'
+* @param    string      $sid            ID of story to edit
+* @param    string      $mode           'preview', 'edit', 'editsubmission'
+* @param    string      $errormsg       a message to display on top of the page
+* @param    string      $currenttopic   topic selection for drop-down menu
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '', $errormsg = '')
+function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN;
 
@@ -218,6 +220,16 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $errormsg;
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+
+    if (!empty ($currenttopic)) {
+        $allowed = DB_getItem ($_TABLES['topics'], 'tid',
+                                "tid = '" . addslashes ($currenttopic) . "'" .
+                                COM_getTopicSql ('AND'));
+
+        if ($allowed != $currenttopic) {
+            $currenttopic = '';
+        }
     }
 
     if (!empty ($sid) && ($mode == 'edit')) {
@@ -633,8 +645,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $A['title'] = str_replace('"','&quot;',$A['title']);
     $story_templates->set_var('story_title', stripslashes ($A['title']));
     $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
+    if (empty ($A['tid']) && !empty ($currenttopic)) {
+        $A['tid'] = $currenttopic;
+    }
     if (empty ($A['tid'])) {
-        $A['tid'] = DB_getItem ($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL ('AND'));
+        $A['tid'] = DB_getItem ($_TABLES['topics'], 'tid',
+                                'is_default = 1' . COM_getPermSQL ('AND'));
     }
     $story_templates->set_var ('topic_options', COM_topicList ('tid,topic', $A['tid']));
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
@@ -1115,7 +1131,10 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     if (isset ($_GET['sid'])) {
         $sid = COM_applyFilter ($_GET['sid']);
     }
-    $display .= storyeditor ($sid, $mode);
+    if (isset ($_GET['topic'])) {
+        $topic = COM_applyFilter ($_GET['topic']);
+    }
+    $display .= storyeditor ($sid, $mode, '', $topic);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'editsubmission') {

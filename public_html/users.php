@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | users.php                                                                 |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.125 2005/12/03 11:58:31 mjervis Exp $
+// $Id: users.php,v 1.126 2005/12/28 10:11:50 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -248,7 +248,7 @@ function userprofile ($user, $msg = 0)
     $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
     $result = DB_query($sql);
     $N = DB_fetchArray ($result);
-    $user_templates->set_var ('number_stories', $N['count']);
+    $user_templates->set_var ('number_stories', COM_numberFormat ($N['count']));
     $user_templates->set_var ('lang_number_comments', $LANG04[85]);
     $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $user)";
     if (!empty ($sidList)) {
@@ -256,7 +256,7 @@ function userprofile ($user, $msg = 0)
     }
     $result = DB_query ($sql);
     $N = DB_fetchArray ($result);
-    $user_templates->set_var ('number_comments', $N['count']);
+    $user_templates->set_var ('number_comments', COM_numberFormat($N['count']));
     $user_templates->set_var ('lang_all_postings_by',
                               $LANG04[86] . ' ' . $A['username']);
 

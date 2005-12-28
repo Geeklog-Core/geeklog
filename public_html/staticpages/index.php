@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Page Geeklog Plugin 1.4.1                                          |
+// | Static Page Geeklog Plugin 1.4.2                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2005/08/31 11:58:03 dhaun Exp $
+// $Id: index.php,v 1.26 2005/12/28 10:11:53 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -164,7 +164,7 @@ function print_page ($page, $A)
     $print->set_var ('sp_title', stripslashes ($A['sp_title']));
     $print->set_var ('sp_content',
             render_content (stripslashes ($A['sp_content']), $A['sp_php']));
-    $print->set_var ('sp_hits', $A['sp_hits']);
+    $print->set_var ('sp_hits', COM_numberFormat ($A['sp_hits']));
     $print->parse ('output', 'print');
 
     return $print->finish ($print->get_var ('output'));

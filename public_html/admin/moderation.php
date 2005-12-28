@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.85 2005/12/22 14:39:46 ospiess Exp $
+// $Id: moderation.php,v 1.86 2005/12/28 10:11:50 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -121,24 +121,14 @@ function commandcontrol()
                         'lang' => $LANG01[116], 'image' => '/images/icons/trackback.'),
                   array('condition' => SEC_hasRights('plugin.edit'),
                         'url' => $_CONF['site_admin_url'] . '/plugins.php',
-                        'lang' => $LANG01[98], 'image' => '/images/icons/plugins.'),
-                  array('condition' => ($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root'),
-                        'url' => $_CONF['site_admin_url'] . '/database.php',
-                        'lang' => $LANG01[103], 'image' => '/images/icons/database.'),
-                  array('condition' => ($_CONF['link_documentation'] == 1),
-                        'url' => $_CONF['site_url'] . '/docs/',
-                        'lang' => $LANG01[113], 'image' => '/images/icons/docs.'),
-                  array('condition' => (SEC_inGroup ('Root')),
-                        'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
-                        'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.')
+                        'lang' => $LANG01[98], 'image' => '/images/icons/plugins.')
     );
 
-    for ($i=0; $i < count ($cc_arr); $i++) {
+    for ($i = 0; $i < count ($cc_arr); $i++) {
         if ($cc_arr[$i]['condition']) {
-            $item = render_cc_item ($admin_templates,
-                            $cc_arr[$i]['url'],
-                            $_CONF['layout_url'] . $cc_arr[$i]['image'] . $_IMAGE_TYPE,
-                            $cc_arr[$i]['lang']);
+            $item = render_cc_item ($admin_templates, $cc_arr[$i]['url'],
+                    $_CONF['layout_url'] . $cc_arr[$i]['image'] . $_IMAGE_TYPE,
+                    $cc_arr[$i]['lang']);
             $items[$cc_arr[$i]['lang']] = $item;
         }
     }
@@ -151,6 +141,28 @@ function commandcontrol()
                         $cur_plugin->plugin_image, $cur_plugin->adminlabel);
         $items[$cur_plugin->adminlabel] = $item;
         next ($plugins);
+    }
+
+    // and finally, add the remaining admin items
+    $cc_arr = array(
+                  array('condition' => ($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/database.php',
+                        'lang' => $LANG01[103], 'image' => '/images/icons/database.'),
+                  array('condition' => ($_CONF['link_documentation'] == 1),
+                        'url' => $_CONF['site_url'] . '/docs/',
+                        'lang' => $LANG01[113], 'image' => '/images/icons/docs.'),
+                  array('condition' => (SEC_inGroup ('Root')),
+                        'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
+                        'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.')
+    );
+
+    for ($i = 0; $i < count ($cc_arr); $i++) {
+        if ($cc_arr[$i]['condition']) {
+            $item = render_cc_item ($admin_templates, $cc_arr[$i]['url'],
+                    $_CONF['layout_url'] . $cc_arr[$i]['image'] . $_IMAGE_TYPE,
+                    $cc_arr[$i]['lang']);
+            $items[$cc_arr[$i]['lang']] = $item;
+        }
     }
 
     if ($_CONF['sort_admin'])

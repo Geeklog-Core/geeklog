@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.82 2005/11/18 20:58:24 dhaun Exp $
+// $Id: install.php,v 1.83 2005/12/28 10:11:51 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -244,7 +244,9 @@ function INST_welcomePage()
 
 function INST_identifyGeeklogVersion ()
 {
-    global $_TABLES, $_DB_dbms;
+    global $_TABLES, $_DB, $_DB_dbms;
+
+    $_DB->setDisplayError (true);
 
     // simple tests for the version of the database:
     // "DESCRIBE sometable somefield", ''
@@ -259,7 +261,7 @@ function INST_identifyGeeklogVersion ()
         '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
         '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
         '1.3.10' => array("DESCRIBE {$_TABLES['comments']} lft",''),
-        '1.3.9'  => array("DESCRIBE {$_TABLES['syndication']}",''),
+        '1.3.9'  => array("DESCRIBE {$_TABLES['syndication']} fid",''),
         '1.3.8'  => array("DESCRIBE {$_TABLES['userprefs']} showonline",'')
 
         // It's hard to (reliably) test for 1.3.7 - let's just hope nobody uses
@@ -270,12 +272,10 @@ function INST_identifyGeeklogVersion ()
 
     if ($_DB_dbms == 'mysql') {
         foreach ($test as $v => $qarray) {
-            $result = DB_query ($qarray[0]);
+            $result = DB_query ($qarray[0], 1);
             if ($result === false) {
-                // error - get out of here
-                break;
-            }
-            if (DB_numRows ($result) > 0) {
+                // error - continue with next test
+            } else if (DB_numRows ($result) > 0) {
                 $A = DB_fetchArray ($result);
                 if (empty ($qarray[1])) {
                     // test only for existence of field - succeeded

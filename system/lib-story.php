@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.52 2005/11/19 12:37:29 dhaun Exp $
+// $Id: lib-story.php,v 1.53 2005/12/28 10:11:54 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -62,7 +62,7 @@ if( $_CONF['allow_user_photo'] )
 function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query='' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
-           $_THEME_URL, $_IMAGE_TYPE, $mode;
+           $_IMAGE_TYPE, $mode;
 
     if( empty( $storytpl ))
     {
@@ -189,17 +189,10 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     {
         if( !empty( $A['imageurl'] ))
         {
-            if( isset( $_THEME_URL ))
-            {
-                $imagebase = $_THEME_URL;
-            }
-            else
-            {
-                $imagebase = $_CONF['site_url'];
-            }
+            $imageurl = COM_getTopicImageUrl( $A['imageurl'] );
             $topicimage = '<img align="' . $_CONF['article_image_align']
-                    . '" src="' . $imagebase . $A['imageurl'] . '" alt="'
-                    . $topicname . '" title="' . $topicname . '" border="0">';
+                        . '" src="' . $imageurl . '" alt="' . $topicname
+                        . '" title="' . $topicname . '" border="0">';
             $article->set_var( 'story_anchortag_and_image', '<a href="'
                     . $topicurl . '">' . $topicimage . '</a>' );
             $article->set_var( 'story_topic_image', $topicimage );

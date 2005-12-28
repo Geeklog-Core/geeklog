@@ -2,6 +2,19 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Added trackback.php and pingback.php to the included robots.txt [Dirk]
+- Added a few more calls to COM_numberFormat all over the place (links and polls
+  plugins, Admins Only block, ...) [Dirk]
+- Fixed test for a Geeklog 1.3.9 database in the install script [Dirk]
+- When emailing a story, make sure all fields are filled in [Dirk]
+- Don't lose the current topic selection when a Story Admin uses the Contribute
+  link [Dirk]
+- Fixed highlighting of search query in comments when register_globals = off
+  [Dirk]
+- When the entries in the Admin's block are not sorted, make sure the icons in
+  Command and Control are in the same order as the block entries [Dirk]
+- Allow topic icons to be uploaded to and retrieved from a 'topics' directory
+  outside of the document root [Dirk]
 - Added a workaround to produce abbreviated day names in the calendar for UTF-8
   language files (reported by Euan McKay) [Dirk]
 - The Spam-X plugin now uses the same "universal" install script as the other
@@ -75,7 +88,9 @@ Dec ??, 2005 (1.4.0rc1)
 - Fixed an SQL error when creating new blocks [Mike]
 - The feed reader will now also follow redirects [Mike]
 
-- New Ukrainian language file (Windows-1251), provided by Vitaliy Biliyenko
+- Updated Japanese language files, provided by Yusuke Sakate
+- New Ukrainian language files (Windows-1251) for Geeklog and all four plugins,
+  provided by Vitaliy Biliyenko
 - New Ukrainian language files (UTF-8 and KOI8-U encoding) for Geeklog, the
   Spam-X, and Static Pages plugins, provided by Yaroslav Fedevych
 

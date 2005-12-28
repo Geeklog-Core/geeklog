@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.31 2005/12/22 14:39:46 ospiess Exp $
+// $Id: database.php,v 1.32 2005/12/28 10:11:50 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -90,7 +90,7 @@ function listbackups()
         $data_arr = array();
         for ($i = 0; $i < count ($backups); $i++) {
             $backupfile = $_CONF['backup_path'] . $backups[$i];
-            $backupfilesize = filesize ($backupfile);
+            $backupfilesize = COM_numberFormat (filesize ($backupfile));
             $data_arr[$i] = array('file' => $backups[$i],
                                   'size' => $backupfilesize . " <b>"
                                             .$LANG_DB_BACKUP['bytes'] . "</b>");

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.57 2005/12/22 14:39:46 ospiess Exp $
+// $Id: topic.php,v 1.58 2005/12/28 10:11:50 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -289,8 +289,10 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 */
 function listtopics()
 {
-    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN, $_THEME_URL;
+    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $retval = '';
 
     $retval .= COM_startBlock ($LANG27[8], '',
@@ -330,15 +332,12 @@ function listtopics()
             } else {
                 $topic_templates->set_var ('default_topic', '');
             }
-            if (!empty($A['imageurl'])) {
-                if (isset ($_THEME_URL)) {
-                    $imagebase = $_THEME_URL;
-                } else {
-                    $imagebase = $_CONF['site_url'];
-                }
-                $topic_templates->set_var('image_tag', '<img src="' . $imagebase . $A['imageurl'] . '" border="0" alt=""><br>');
+            if (empty ($A['imageurl'])) {
+                $topic_templates->set_var ('image_tag', '');
             } else {
-                $topic_templates->set_var('image_tag', '');
+                $imageurl = COM_getTopicImageUrl ($A['imageurl']);
+                $topic_templates->set_var ('image_tag', '<img src="' . $imageurl
+                                           . '" border="0" alt=""><br>');
             }
             if ($counter == 5) {
                 $counter = 1;

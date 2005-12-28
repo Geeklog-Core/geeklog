@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | submit.php                                                                |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.92 2005/12/11 11:30:26 ospiess Exp $
+// $Id: submit.php,v 1.93 2005/12/28 10:11:50 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -245,6 +245,15 @@ function submitstory($topic = '')
 
     if (empty ($A['postmode'])) {
         $A['postmode'] = $_CONF['postmode'];
+    }
+
+    if (!empty ($topic)) {
+        $allowed = DB_getItem ($_TABLES['topics'], 'tid',
+            "tid = '" . addslashes ($topic) . "'" . COM_getTopicSql ('AND'));
+
+        if ($allowed != $topic) {
+            $topic = '';
+        }
     }
 
     $title = '';
@@ -842,8 +851,12 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
                     exit;
                 }
             } elseif (SEC_hasRights ('story.edit')) {
+                $topic = '';
+                if (isset ($_REQUEST['topic'])) {
+                    $topic = '&topic=' . $_REQUEST['topic'];
+                }
                 echo COM_refresh ($_CONF['site_admin_url']
-                     . '/story.php?mode=edit');
+                     . '/story.php?mode=edit' . $topic);
                 exit;
             }
             break;

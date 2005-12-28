@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-comment.php                                                           |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.25 2005/11/17 03:56:25 vinny Exp $
+// $Id: lib-comment.php,v 1.26 2005/12/28 10:11:53 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -75,7 +75,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'lang_disclaimer', $LANG01[26] );
 
     $commentbar->set_var( 'story_title', stripslashes( $title ));
-    $commentbar->set_var( 'num_comments', $nrows );
+    $commentbar->set_var( 'num_comments', COM_numberFormat( $nrows ));
     $commentbar->set_var( 'comment_type', $type );
     $commentbar->set_Var( 'sid', $sid );
 
@@ -192,8 +192,9 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
 * @return    string     HTML       Formated Comment 
 *
 */
-function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false ) {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $_IMAGE_TYPE, $query;
+function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
+{
+    global $_CONF, $_TABLES, $_USER, $LANG01, $_IMAGE_TYPE;
 
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
@@ -354,8 +355,9 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         }
 
         // highlight search terms if specified
-        if( !empty( $query )) {
-            $A['comment'] = COM_highlightQuery( $A['comment'], $query );
+        if( !empty( $_REQUEST['query'] )) {
+            $A['comment'] = COM_highlightQuery( $A['comment'],
+                                                $_REQUEST['query'] );
         }
 
         $A['comment'] = str_replace( '$', '&#36;',  $A['comment'] );

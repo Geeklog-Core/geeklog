@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.55 2005/12/22 14:39:46 ospiess Exp $
+// $Id: index.php,v 1.56 2005/12/28 10:11:52 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -302,7 +302,7 @@ function form ($A, $error = false)
         if (empty($A['sp_hits'])) {
             $sp_template->set_var('sp_hits', '0');
         } else {
-            $sp_template->set_var('sp_hits', $A['sp_hits']);
+            $sp_template->set_var('sp_hits', COM_numberFormat ($A['sp_hits']));
         }
         $sp_template->set_var('end_block',
                 COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
@@ -447,7 +447,9 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
     } elseif (!empty ($sp_title) && !empty ($sp_content)) {
         $date = date ('Y-m-d H:i:s', $unixdate);
 
-        if (empty ($sp_hits)) $sp_hits = 0;
+        if (empty ($sp_hits)) {
+            $sp_hits = 0;
+        }
 
         if ($sp_onmenu== 'on') {
             $sp_onmenu = 1;

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | profiles.php                                                              |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.45 2005/11/14 12:21:13 dhaun Exp $
+// $Id: profiles.php,v 1.46 2005/12/28 10:11:50 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -130,7 +130,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 * @return   string              HTML for the contact form
 *
 */
-function contactform($uid, $subject='', $message='') 
+function contactform ($uid, $subject = '', $message = '') 
 {
     global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
 
@@ -171,7 +171,9 @@ function contactform($uid, $subject='', $message='')
             if (empty ($_USER['username'])) {
                 $mail_template->set_var ('username', '');
             } else {
-                $mail_template->set_var ('username', $_USER['username']);
+                $mail_template->set_var ('username',
+                        COM_getDisplayName ($_USER['uid'], $_USER['username'],
+                                            $_USER['fullname']));
             }
             $mail_template->set_var ('lang_useremail', $LANG08[12]);
             if (empty ($_USER['email'])) {
@@ -299,13 +301,14 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 * @return   string          HTML for email story form
 *
 */
-function mailstoryform($sid)
+function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
+                        $fromemail = '', $shortmsg = '', $msg = 0) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
 
     $retval = '';
 
-    if (empty($_USER['username']) &&
+    if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
         $retval = COM_startBlock ($LANG_LOGIN[1], '',
                           COM_getBlockTemplate ('_msg_block', 'header'));
@@ -322,18 +325,17 @@ function mailstoryform($sid)
         return $retval;
     }
 
-    if (empty ($_USER['username'])) {
-        $from = '';
-        $fromemail = '';
-    } else {
-        $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE uid = {$_USER['uid']}");
-        $A = DB_fetchArray($result);
+    if ($msg > 0) {
+        $retval .= COM_showMessage ($msg);
+    }
 
-        $from = $_USER['username'];
-        if (($_CONF['show_fullname'] == 1) && !empty ($_USER['fullname'])) {
-            $from = $_USER['fullname'];
+    if (empty ($from) && empty ($fromemail)) {
+        if (!empty ($_USER['username'])) {
+            $from = COM_getDisplayName ($_USER['uid'], $_USER['username'],
+                                        $_USER['fullname']);
+            $fromemail = DB_getItem ($_TABLES['users'], 'email',
+                                     "uid = {$_USER['uid']}");
         }
-        $fromemail = $A['email'];
     }
 
     $mail_template = new Template($_CONF['path_layout'] . 'profiles');
@@ -345,8 +347,11 @@ function mailstoryform($sid)
     $mail_template->set_var('lang_fromemailaddress', $LANG08[21]);
     $mail_template->set_var('email', $fromemail);
     $mail_template->set_var('lang_toname', $LANG08[18]);
+    $mail_template->set_var('toname', $to);
     $mail_template->set_var('lang_toemailaddress', $LANG08[19]);
+    $mail_template->set_var('toemail', $toemail);
     $mail_template->set_var('lang_shortmessage', $LANG08[27]);
+    $mail_template->set_var('shortmsg', $shortmsg);
     $mail_template->set_var('lang_warning', $LANG08[22]);
     $mail_template->set_var('lang_sendmessage', $LANG08[16]);
     $mail_template->set_var('story_id',$sid);
@@ -400,8 +405,25 @@ switch ($what) {
         if (empty ($sid)) {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         } else {
-            $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
+            if (empty ($_POST['toemail']) || empty ($_POST['fromemail'])
+                    || !COM_isEmail ($_POST['toemail'])
+                    || !COM_isEmail ($_POST['fromemail'])) {
+                $display .= COM_siteHeader ('menu', $LANG08[17])
+                         . mailstoryform ($sid, $_POST['to'], $_POST['toemail'],
+                                          $_POST['from'], $_POST['fromemail'],
+                                          $_POST['shortmsg'], 52)
+                         . COM_siteFooter ();
+            } else if (empty ($_POST['to']) || empty ($_POST['from']) ||
+                    empty ($_POST['shortmsg'])) {
+                $display .= COM_siteHeader ('menu', $LANG08[17])
+                         . mailstoryform ($sid, $_POST['to'], $_POST['toemail'],
+                                          $_POST['from'], $_POST['fromemail'],
+                                          $_POST['shortmsg'])
+                         . COM_siteFooter ();
+            } else {
+                $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
                     $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
+            }
         }
         break;
 

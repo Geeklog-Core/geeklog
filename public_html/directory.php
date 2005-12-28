@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | directory.php                                                             |
 // |                                                                           |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.3 2005/11/14 11:20:39 dhaun Exp $
+// $Id: directory.php,v 1.4 2005/12/28 10:11:48 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -121,7 +121,8 @@ function DIR_monthLink ($topic, $year, $month, $count)
                 . $year . '&amp;month=' . $month) . '">';
     }
 
-    $retval .= $LANG30[$month + 12] . ' (' . $count . ')' . LB;
+    $retval .= $LANG30[$month + 12] . ' (' . COM_numberFormat ($count) . ')'
+            . LB;
 
     if ($count > 0) {
         $retval .= '</a>';

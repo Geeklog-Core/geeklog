@@ -17,15 +17,15 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="right"><b>{lang_toname}:</b></td>
-                                                                    <td><input type="text" name="to" size="30" maxlength="96" value=""></td>
+                                                                    <td><input type="text" name="to" size="30" maxlength="96" value="{toname}"></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="right"><b>{lang_toemailaddress}:</b></td>
-                                                                    <td><input type="text" name="toemail" size="30" maxlength="96" value=""></td>
+                                                                    <td><input type="text" name="toemail" size="30" maxlength="96" value="{toemail}"></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td align="right" valign="top"><b>{lang_shortmessage}:</b></td>
-                                                                    <td><textarea name="shortmsg" rows="8" cols="60"></textarea></td>
+                                                                    <td><textarea name="shortmsg" rows="8" cols="60">{shortmsg}</textarea></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2" class="warning" align="center"><br>{lang_warning}<br><br>

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.41 2005/12/11 22:51:03 dhaun Exp $
+// $Id: lib-admin.php,v 1.42 2005/12/28 10:11:53 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -168,7 +168,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
+
     $retval = '';
+
     $filter_str = '';
     $order_sql = '';
     $limit = '';
@@ -424,7 +426,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         }
 
         if ($num_pages > 1) { # print actual google-paging
-            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'page'));
+            //$admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'page'));
+            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
         } else {
             $admin_templates->set_var('google_paging', '');
         }

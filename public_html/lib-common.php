@@ -1,4 +1,5 @@
 <?php
+
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.4                                                               |
@@ -32,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.504 2005/12/22 14:39:47 ospiess Exp $
+// $Id: lib-common.php,v 1.505 2005/12/28 10:11:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1760,8 +1761,8 @@ function COM_accessLog( $logentry )
 
 function COM_showTopics( $topic='' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01,
-           $_THEME_URL, $_BLOCK_TEMPLATE, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $_BLOCK_TEMPLATE,
+           $page, $newstories;
 
     $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
     if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
@@ -1877,7 +1878,7 @@ function COM_showTopics( $topic='' )
                 }
                 else
                 {
-                    $countstring .= $storycount[$A['tid']];
+                    $countstring .= COM_numberFormat( $storycount[$A['tid']] );
                 }
             }
 
@@ -1893,7 +1894,7 @@ function COM_showTopics( $topic='' )
                 }
                 else
                 {
-                    $countstring .= $submissioncount[$A['tid']];
+                    $countstring .= COM_numberFormat( $submissioncount[$A['tid']] );
                 }
             }
 
@@ -1904,16 +1905,9 @@ function COM_showTopics( $topic='' )
         $topicimage = '';
         if( !empty( $A['imageurl'] ))
         {
-            if( isset( $_THEME_URL ))
-            {
-                $imagebase = $_THEME_URL;
-            }
-            else
-            {
-                $imagebase = $_CONF['site_url'];
-            }
-            $topicimage = '<img src="' . $imagebase . $A['imageurl'] . '" alt="'
-                        . $topicname . '" title="' . $topicname . '">';
+            $imageurl = COM_getTopicImageUrl( $A['imageurl'] );
+            $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
+                        . '" title="' . $topicname . '" border="0">';
         }
         $sections->set_var( 'topic_image', $topicimage );
 
@@ -2249,7 +2243,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/moderation.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[10] );
-            $adminmenu->set_var( 'option_count', $num );
+            $adminmenu->set_var( 'option_count', COM_numberFormat( $num ));
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
             $link_array[$LANG01[10]] = $menu_item;
@@ -2270,7 +2264,8 @@ function COM_adminMenu( $help = '', $title = '' )
                 $N = DB_fetchArray( $nresult );
                 $numstories = $N['count'];
             }
-            $adminmenu->set_var( 'option_count', $numstories );
+            $adminmenu->set_var( 'option_count',
+                                 COM_numberFormat( $numstories ));
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
             $link_array[$LANG01[11]] = $menu_item;
@@ -2281,7 +2276,8 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/block.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[12] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['blocks'] ));
+            $adminmenu->set_var( 'option_count',
+                    COM_numberFormat( DB_count( $_TABLES['blocks'] )));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -2293,7 +2289,8 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/topic.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[13] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['topics'] ));
+            $adminmenu->set_var( 'option_count',
+                    COM_numberFormat( DB_count( $_TABLES['topics'] )));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -2305,7 +2302,8 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/event.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[15] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['events'] ));
+            $adminmenu->set_var( 'option_count',
+                    COM_numberFormat( DB_count( $_TABLES['events'] )));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -2317,7 +2315,8 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/user.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[17] );
-            $adminmenu->set_var( 'option_count', ( DB_count( $_TABLES['users'] ) -1 ));
+            $adminmenu->set_var( 'option_count',
+                    COM_numberFormat( DB_count( $_TABLES['users'] ) -1 ));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -2334,7 +2333,8 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/group.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[96] );
-            $adminmenu->set_var( 'option_count', $A['count'] );
+            $adminmenu->set_var( 'option_count',
+                                 COM_numberFormat( $A['count'] ));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -2358,7 +2358,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/syndication.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[38] );
-            $count = DB_count( $_TABLES['syndication'] );
+            $count = COM_numberFormat( DB_count( $_TABLES['syndication'] ));
             $adminmenu->set_var( 'option_count', $count );
 
             $menu_item = $adminmenu->parse( 'item',
@@ -2374,7 +2374,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_label', $LANG01[116] );
             if( $_CONF['ping_enabled'] )
             {
-                $count = DB_count( $_TABLES['pingservice'] );
+                $count = COM_numberFormat( DB_count( $_TABLES['pingservice'] ));
                 $adminmenu->set_var( 'option_count', $count );
             }
             else
@@ -2392,7 +2392,8 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/plugins.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[77] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['plugins'] ));
+            $adminmenu->set_var( 'option_count',
+                    COM_numberFormat( DB_count( $_TABLES['plugins'] )));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -2414,7 +2415,8 @@ function COM_adminMenu( $help = '', $title = '' )
             }
             else
             {
-                $adminmenu->set_var( 'option_count', $plg->numsubmissions );
+                $adminmenu->set_var( 'option_count',
+                                     COM_numberFormat( $plg->numsubmissions ));
             }
 
             $menu_item = $adminmenu->parse( 'item',
@@ -2932,7 +2934,7 @@ function COM_olderStuff()
 
             $oldnews[] = '<a href="' . COM_buildUrl( $_CONF['site_url']
                 . '/article.php?story=' . $A['sid'] ) . '">' . $A['title']
-                . '</a> (' . $A['comments'] . ')';
+                . '</a> (' . COM_numberFormat( $A['comments'] ) . ')';
         }
 
         if( !empty( $oldnews ))
@@ -5466,7 +5468,7 @@ function COM_sanitizeID( $id, $new_id = true )
 *        @param        float        $number        Number that will be formatted
 *        @return        string                        formatted number
 */
-function COM_NumberFormat( $number )
+function COM_numberFormat( $number )
 {
     global $_CONF;
 
@@ -5566,6 +5568,50 @@ function COM_displayMessageAndAbort( $msg, $plugin = '', $http_status = 200, $ht
     }
     echo $display;
     exit;
+}
+
+/**
+* Return full URL of of topic icon
+*
+* @param    string  $imageurl   (relative) topic icon URL
+* @return   string              Full URL
+*
+*/
+function COM_getTopicImageUrl( $imageurl )
+{
+    global $_CONF, $_THEME_URL;
+
+    $iconurl = '';
+
+    if( !empty( $imageurl ))
+    {
+        if( isset( $_THEME_URL ))
+        {
+            $iconurl = $_THEME_URL . $imageurl;
+        }
+        else
+        {
+            $stdImageLoc = true;
+            if( !strstr( $_CONF['path_images'], $_CONF['path_html'] ))
+            {
+                $stdImageLoc = false;
+            }
+
+            if( $stdImageLoc )
+            {
+                $iconurl = $_CONF['site_url'] . $imageurl;
+            }
+            else
+            {
+                $t = explode( '/', $imageurl );
+                $topicicon = $t[count( $t ) - 1];
+                $iconurl = $_CONF['site_url']
+                         . '/getimage.php?mode=topics&amp;image=' . $topicicon;
+            }
+        }
+    }
+
+    return $iconurl;
 }
 
 // Now include all plugin functions
