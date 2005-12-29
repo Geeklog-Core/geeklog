@@ -4,7 +4,7 @@
 </script>
 <script type="text/JavaScript" src="{site_url}/javascript/submitstory_fckeditor.js"></script>
 
-                            <form action="{site_url}/submit.php" method="post">
+                            <form action="{site_url}/submit.php" method="post" onSubmit='set_postcontent();'>
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td align="right"><b>{lang_username}:</b></td>

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.26 2005/12/28 10:11:53 dhaun Exp $
+// $Id: lib-comment.php,v 1.27 2005/12/29 18:44:10 blaine Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -703,6 +703,14 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $comment_template->set_var('username', $LANG03[24]);
                 $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=new'); 
                 $comment_template->set_var('lang_logoutorcreateaccount', $LANG03[04]);
+            }
+
+            if ($postmode == 'html') {
+                $comment_template->set_var ('show_texteditor', 'none');
+                $comment_template->set_var ('show_htmleditor', '');
+            } else {
+                $comment_template->set_var ('show_texteditor', '');
+                $comment_template->set_var ('show_htmleditor', 'none');
             }
 
             $comment_template->set_var('lang_title', $LANG03[16]);
