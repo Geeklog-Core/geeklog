@@ -83,6 +83,24 @@ references you may find to a version 1.3.12 apply to version 1.4.0)</small></p>
 </ul>
 
 
+<h2><a name="changes1311sr3">Geeklog 1.3.11sr3</a></h2>
+
+<p>This release addresses the following security issues:</p>
+
+<ol>
+<li>Provided you knew the story id, it was possible to submit comments for
+    stories even if you did not have access to those stories
+    (reported by LWC). The same problem also existed with poll comments.</li>
+<li>Supplying an illegal start or end date to the advanced search resulted in a
+    warning message that disclosed the path to the Geeklog install on the
+    server (reported by r0t3d3Vil).<br>
+    It was <strong>not</strong> possible to use this for SQL injections.</li>
+</ol>
+
+<p>Also included in this release are bugfixes, e.g. for the problems editing
+static pages when URL rewriting was enabled, that were introduced in 
+1.3.11sr2.</p>
+
 
 <h2><a name="changes1311sr2">Geeklog 1.3.11sr2</a></h2>
 
