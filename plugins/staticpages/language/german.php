@@ -2,12 +2,13 @@
 
 ###############################################################################
 # german.php
-# This is the German language file for the Geeklog Static Pages Plug-in.
+#
+# This is the German language file for the Geeklog Static Pages plugin
 #
 # Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
+# tony AT tonybibbs DOT com
 #
-# German translation by Dirk Haun <dirk@haun-online.de>
+# German translation by Dirk Haun <dirk AT haun-online DOT de>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

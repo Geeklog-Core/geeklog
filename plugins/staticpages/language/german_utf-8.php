@@ -1,9 +1,9 @@
 <?php
 
 ###############################################################################
-# german_formal.php
+# german_utf-8.php
 #
-# This is the formal German language file for the Geeklog Static Pages plugin
+# This is the German language file for the Geeklog Static Pages plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony AT tonybibbs DOT com
@@ -38,49 +38,49 @@ $LANG_STATIC= array(
     'newpage' => 'Neue Seite',
     'adminhome' => 'Admin Home',
     'staticpages' => 'Statische Seiten',
-    'staticpageeditor' => 'Editor für Statische Seiten',
+    'staticpageeditor' => 'Editor fÃ¼r Statische Seiten',
     'writtenby' => 'Autor',
-    'date' => 'Letzte Änderung',
+    'date' => 'Letzte Ã„nderung',
     'title' => 'Titel',
     'content' => 'Inhalt',
     'hits' => 'Abrufe',
     'staticpagelist' => 'Liste der Statischen Seiten',
     'url' => 'URL',
-    'edit' => 'Ändern',
-    'lastupdated' => 'Letzte Änderung',
+    'edit' => 'Ã„ndern',
+    'lastupdated' => 'Letzte Ã„nderung',
     'pageformat' => 'Seitenformat',
-    'leftrightblocks' => 'Blöcke links &amp; rechts',
+    'leftrightblocks' => 'BlÃ¶cke links &amp; rechts',
     'blankpage' => 'Leere Seite',
-    'noblocks' => 'Keine Blöcke',
-    'leftblocks' => 'Blöcke links',
-    'addtomenu' => 'Ins Menü aufnehmen',
+    'noblocks' => 'Keine BlÃ¶cke',
+    'leftblocks' => 'BlÃ¶cke links',
+    'addtomenu' => 'Ins MenÃ¼ aufnehmen',
     'label' => 'Label',
     'nopages' => 'Es sind keine statischen Seiten vorhanden.',
     'save' => 'Speichern',
     'preview' => 'Vorschau',
-    'delete' => 'Löschen',
+    'delete' => 'LÃ¶schen',
     'cancel' => 'Abbruch',
     'access_denied' => 'Zugriff verweigert',
-    'access_denied_msg' => 'Sie haben unerlaubter Weise versucht, auf eine der Admin-Seiten für Statische Seiten zuzugreifen. Hinweis: Alle derartigen Versuche werden protokolliert',
+    'access_denied_msg' => 'Du hast unerlaubter Weise versucht, auf eine der Admin-Seiten fÃ¼r Statische Seiten zuzugreifen. Hinweis: Alle derartigen Versuche werden protokolliert',
     'all_html_allowed' => 'Alle HTML-Tags sind erlaubt',
     'results' => 'Gefundene Statische Seiten',
     'author' => 'Autor',
-    'no_title_or_content' => 'Bitte füllen Sie mindestens die Felder <b>Titel</b> und <b>Inhalt</b> aus.',
+    'no_title_or_content' => 'Bitte mindestens die Felder <b>Titel</b> und <b>Inhalt</b> ausfÃ¼llen.',
     'no_such_page_logged_in' => 'Sorry, ' . $_USER['username'] . ' ...',
     'no_such_page_anon' => 'Bitte einloggen.',
     'no_page_access_msg' => "This could be because you're not logged in, or not a member of {$_CONF["site_name"]}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF["site_name"]} to receive full membership access.",
     'php_msg' => 'PHP: ',
-    'php_warn' => 'Hinweis: Wenn diese Option aktiviert ist, wird in der Seite enthaltener PHP-Code ausgeführt. <em>Bitte mit Bedacht verwenden!</em>',
+    'php_warn' => 'Hinweis: Wenn diese Option aktiviert ist, wird in der Seite enthaltener PHP-Code ausgefÃ¼hrt. <em>Bitte mit Bedacht verwenden!</em>',
     'exit_msg' => 'Hinweistext: ',
     'exit_info' => 'Art des Hinweistextes, wenn kein Zugriff auf die Seite erlaubt ist: Aktiviert = "Anmeldung erforderlich", nicht aktiviert = "Zugriff verweigert".',
-    'deny_msg' => 'Zugriff auf diese Seite ist nicht möglich. Die Seite wurde entweder umbenannt oder gelöscht oder Sie haben nicht die nötigen Zugriffsrechte.',
+    'deny_msg' => 'Zugriff auf diese Seite ist nicht mÃ¶glich. Die Seite wurde entweder umbenannt oder gelÃ¶scht oder Du hast nicht die nÃ¶tigen Zugriffsrechte.',
     'stats_headline' => 'Top Ten der Statischen Seiten',
     'stats_page_title' => 'Titel',
     'stats_hits' => 'Angezeigt',
     'stats_no_hits' => 'Es gibt keine Statischen Seiten oder sie wurden von niemandem gelesen.',
     'id' => 'ID',
-    'duplicate_id' => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte wählen Sie eine andere ID.',
-    'instructions' => 'Um eine Statische Seite zu ändern oder zu löschen, auf das Ändern-Icon klicken. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neu anlegen (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das Kopie-Icon klicken, um eine Kopie einer vorhandenen Seite zu erhalten.',
+    'duplicate_id' => 'Diese ID wird bereits fÃ¼r eine andere Statische Seite benutzt. Bitte wÃ¤hle eine andere ID.',
+    'instructions' => 'Um eine Statische Seite zu Ã¤ndern oder zu lÃ¶schen, auf das Ã„ndern-Icon klicken. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neu anlegen (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das Kopie-Icon klicken, um eine Kopie einer vorhandenen Seite zu erhalten.',
     'centerblock' => 'Centerblock: ',
     'centerblock_msg' => 'Wenn angekreuzt wird diese Seite als Block auf der Index-Seite angezeigt.',
     'topic' => 'Kategorie: ',
@@ -99,14 +99,14 @@ $LANG_STATIC= array(
     'centerblock_entire' => 'Ganze Seite',
     'inblock_msg' => 'Im Block: ',
     'inblock_info' => 'Seite in einen Block packen.',
-    'title_edit' => 'Seite ändern',
+    'title_edit' => 'Seite Ã¤ndern',
     'title_copy' => 'Seite kopieren',
     'title_display' => 'Seite anzeigen',
-    'select_php_none' => 'PHP nicht ausführen',
-    'select_php_return' => 'PHP ausführen (mit return)',
-    'select_php_free' => 'PHP ausführen',
+    'select_php_none' => 'PHP nicht ausfÃ¼hren',
+    'select_php_return' => 'PHP ausfÃ¼hren (mit return)',
+    'select_php_free' => 'PHP ausfÃ¼hren',
     'php_not_activated' => 'Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">Dokumentation</a>.',
-    'printable_format' => 'Druckfähige Version'
+    'printable_format' => 'DruckfÃ¤hige Version'
 );
 
 ?>
