@@ -89,6 +89,9 @@ Dec ??, 2005 (1.4.0rc1)
 - Fixed an SQL error when creating new blocks [Mike]
 - The feed reader will now also follow redirects [Mike]
 
+- Updated Chinese traditional and simplified language files, and new Chinese
+  language files for the Links, Polls, and Static Pages plugins, provided by
+  Samuel M. Stone
 - German language files now exist in 4 combinations (formal / informal German,
   ISO-8859-15 / UTF-8 encoding) for Geeklog, the Links, Polls and Static Pages
   plugins [Dirk]
