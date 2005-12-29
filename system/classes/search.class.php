@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.48 2005/11/29 19:17:20 mjervis Exp $
+// $Id: search.class.php,v 1.49 2005/12/29 09:24:47 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -361,7 +361,7 @@ class Search {
 
             $mysearchterm = addslashes ($this->_query);
             $select = "SELECT {$_TABLES['users']}.username,{$_TABLES['users']}.fullname,{$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,cid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type";
-            $sql = " FROM {$_TABLES['comments']},{$_TABLES['users']} ";
+            $sql = " FROM {$_TABLES['users']},{$_TABLES['comments']} ";
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "WHERE ";
             $sql .= " {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND ";
