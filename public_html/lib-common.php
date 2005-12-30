@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.505 2005/12/28 10:11:48 dhaun Exp $
+// $Id: lib-common.php,v 1.506 2005/12/30 10:47:52 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -787,9 +787,9 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     {
         return $function( $what, $pagetitle );
     }
-    
+
     // send out the charset header
-    
+
     if( empty( $LANG_CHARSET )) {
         $charset = $_CONF['default_charset'];
         if( empty( $charset )) {
@@ -2077,7 +2077,7 @@ function COM_userMenu( $help='', $title='' )
         if( $_CONF['remoteauthentication'] && !$_CONF['usersubmission'] )
         {
             // Build select
-            $select = '<select name="service"><option value="">' .
+            $select = '<select name="service" id="service"><option value="">' .
                             $_CONF['site_name'] . '</option>';
             if( is_dir( $_CONF['path_system'] . 'classes/authentication/' ))
             {
