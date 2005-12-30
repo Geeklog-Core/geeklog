@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.203 2005/12/28 10:11:47 dhaun Exp $
+// $Id: config.php,v 1.204 2005/12/30 16:48:30 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -698,7 +698,7 @@ $_CONF['user_html'] = array (
     'b'    => array(),
     'strong'  => array(),
     'i'    => array(),
-    'a'    => array('href' => 1, 'title' => 1),
+    'a'    => array('href' => 1, 'title' => 1, 'rel' => 1),
     'em'   => array(),
     'br'   => array(),
     'tt'   => array(),
@@ -733,7 +733,7 @@ $_CONF['admin_html'] = array (
  * Posible to add tags to the allowable general USER $_CONF['user_html'] as well
 */
 if ($_CONF['advanced_editor']) {
-    $_CONF['admin_html']['a']       = array('href' => 1, 'title' => 1, 'id' => 1, 'lang' => 1, 'name' => 1, 'type' => 1 );
+    $_CONF['admin_html']['a']       = array('href' => 1, 'title' => 1, 'id' => 1, 'lang' => 1, 'name' => 1, 'type' => 1, 'rel' => 1);
     $_CONF['admin_html']['hr']      = array ('style' => 1);
     $_CONF['admin_html']['ol']      = array ('style' => 1);
     $_CONF['admin_html']['ul']      = array ('style' => 1);
