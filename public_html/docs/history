@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 Dec ??, 2005 (1.4.0rc1)
 ------------
+- Added support for Advanced Editor in the Add Comment Feature [Blaine]
 - Fixed SQL error in search on MySQL 5 (fix suggested by dariball) [Dirk]
 - Added trackback.php and pingback.php to the included robots.txt [Dirk]
 - Added a few more calls to COM_numberFormat all over the place (links and polls
