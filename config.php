@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.204 2005/12/30 16:48:30 dhaun Exp $
+// $Id: config.php,v 1.205 2006/01/01 22:30:19 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -263,13 +263,6 @@ $_CONF['remoteauthentication'] = false;  // Set to true to enable remote logins.
 $_CONF['spamx'] = 128;  // Default to ignore comment.
 
 // +---------------------------------------------------------------------------+
-// | Support for custom templaes to support advanced Rich Text Editor          |
-// | Checked in comment.php, submit.php, admin/story.php and                   |
-// | staticpages/index.php. If set true and advanced template exists           |
-// +---------------------------------------------------------------------------+
-$_CONF['advanced_editor'] = false;
-
-// +---------------------------------------------------------------------------+
 // | Sort the links in the admin block and the admin panel.                    |
 // +---------------------------------------------------------------------------+
 $_CONF['sort_admin'] = true;
@@ -425,6 +418,14 @@ $_CONF['notification'] = array ();
 $_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
 $_CONF['speedlimit']    = 45;           // in seconds
 $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and stories without previewing
+
+// +---------------------------------------------------------------------------+
+// | Support for custom templaes to support advanced Rich Text Editor          |
+// | Checked in comment.php, submit.php, admin/story.php and                   |
+// | staticpages/index.php. If set true and advanced template exists           |
+// | Note: If enabled, the default postmode will be html                       |
+// +---------------------------------------------------------------------------+
+$_CONF['advanced_editor'] = false;
 
 // +---------------------------------------------------------------------------+
 // | Internal Geeklog CRON or scheduled Task/Function setting                  |

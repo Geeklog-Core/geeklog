@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.27 2005/12/29 18:44:10 blaine Exp $
+// $Id: lib-comment.php,v 1.28 2006/01/01 22:30:19 blaine Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -607,7 +607,9 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         } else {
 
-            if (empty ($postmode)) {
+            if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'comment/commentform_advanced.thtml')) {
+                $postmode = 'html';
+            } elseif (empty ($postmode)) {
                 $postmode = $_CONF['postmode'];
             }
 
