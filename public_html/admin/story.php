@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.195 2005/12/28 10:11:50 dhaun Exp $
+// $Id: story.php,v 1.196 2006/01/01 16:01:45 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -395,13 +395,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         include ($_CONF['path_system'] . 'classes/navbar.class.php');
 
         $navbar = new navbar;
-        $navbar->add_menuitem('Preview','showhideEditorDiv("preview");return false;',true);
-        $navbar->add_menuitem('Editor','showhideEditorDiv("editor");return false;',true);
-        $navbar->add_menuitem('Publish Options','showhideEditorDiv("publish");return false;',true);
-        $navbar->add_menuitem('Images','showhideEditorDiv("images");return false;',true);
-        $navbar->add_menuitem('Archive Options','showhideEditorDiv("archive");return false;',true);
-        $navbar->add_menuitem('Permissions','showhideEditorDiv("perms");return false;',true);
-        $navbar->add_menuitem('Show All','showhideEditorDiv("all");return false',true);
+        $navbar->add_menuitem($LANG24[79],'showhideEditorDiv("preview");return false;',true);
+        $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor");return false;',true);
+        $navbar->add_menuitem($LANG24[81],'showhideEditorDiv("publish");return false;',true);
+        $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images");return false;',true);
+        $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive");return false;',true);
+        $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms");return false;',true);
+        $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all");return false',true);
 
         $story_templates->set_var ('navbar', $navbar->generate() );
         $story_templates->set_var ('show_preview', 'none');
