@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.56 2005/12/28 10:11:52 dhaun Exp $
+// $Id: index.php,v 1.57 2006/01/06 09:58:18 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -298,11 +298,14 @@ function form ($A, $error = false)
         } else {
             $sp_template->set_var('lang_allowedhtml', $LANG_STATIC['all_html_allowed']);
         }
-        $sp_template->set_var('lang_hits', $LANG_STATIC['hits']);
-        if (empty($A['sp_hits'])) {
-            $sp_template->set_var('sp_hits', '0');
+        $sp_template->set_var ('lang_hits', $LANG_STATIC['hits']);
+        if (empty ($A['sp_hits'])) {
+            $sp_template->set_var ('sp_hits', '0');
+            $sp_template->set_var ('sp_hits_formatted', '0');
         } else {
-            $sp_template->set_var('sp_hits', COM_numberFormat ($A['sp_hits']));
+            $sp_template->set_var ('sp_hits', $A['sp_hits']);
+            $sp_template->set_var ('sp_hits_formatted',
+                                   COM_numberFormat ($A['sp_hits']));
         }
         $sp_template->set_var('end_block',
                 COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));

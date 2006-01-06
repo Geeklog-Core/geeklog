@@ -133,7 +133,7 @@
           </tr>
           <tr>
               <td align="right">{lang_hits}:</td>
-              <td><input type="hidden" name="sp_hits" value="{sp_hits}">{sp_hits}</td>
+              <td><input type="hidden" name="sp_hits" value="{sp_hits}">{sp_hits_formatted}</td>
           </tr>
           <tr><td>&nbsp;</td></tr>
           <tr>
