@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.86 2005/12/28 10:11:50 dhaun Exp $
+// $Id: moderation.php,v 1.87 2006/01/06 11:03:48 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -332,7 +332,9 @@ function itemlist($type)
 function userlist ()
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
+    require_once ($_CONF['path_system'] . 'lib-admin.php');
+
     $retval = '';
 
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
@@ -363,11 +365,14 @@ function userlist ()
     );
     $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
-        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
-                    ."<input type=\"hidden\" name=\"type\" value=\"user\">"
-                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">"
-                    .$table
-                    ."<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+        $retval .= LB . '<form action="' . $_CONF['site_admin_url']
+                . '/moderation.php" method="POST">' . LB
+                . '<input type="hidden" name="type" value="user">' . LB
+                . '<input type="hidden" name="mode" value="moderation">' . LB
+                . '<input type="hidden" name="count" value="' . $nrows . '">'
+                . LB . $table . LB
+                . '<p align="center"><input type="submit" value="'
+                . $LANG_ADMIN['submit'] . '"></p></form>' . LB;
     } else {
         $retval .= $table;
     }
@@ -555,6 +560,7 @@ function moderateusers ($uid, $action, $count)
     global $_CONF, $_TABLES, $LANG04;
 
     $retval = '';
+
     for ($i = 0; $i < $count; $i++) {
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
