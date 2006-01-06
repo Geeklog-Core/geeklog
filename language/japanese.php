@@ -786,7 +786,14 @@ $LANG24 = array(
     75 => '全機能',
     76 => '公開用オプション',
     77 => 'Advanced Editorを使うためには、Javascriptが使えるようになっている必要があります。このオプションはconfig.phpで無効にできます。 ',
-    78 => '通常のエディタを使うには、<a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">ここ</a> をクリックしてください。'
+    78 => '通常のエディタを使うには、<a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">ここ</a> をクリックしてください。',
+    79 => 'Preview',
+    80 => 'Editor',
+    81 => 'Publish Options',
+    82 => 'Images',
+    83 => 'Archive Options',
+    84 => 'Permissions',
+    85 => 'Show All'
 );
 
 ###############################################################################
