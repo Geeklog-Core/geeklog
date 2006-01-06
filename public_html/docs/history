@@ -1,5 +1,20 @@
 GeekLog History/Changes:
 
+Jan ??, 2006 (1.4.0rc2)
+------------
+
+- Fixed user submission queue (reported by Andrew Lawlor) [Dirk]
+- Fixed handling of integer fields in the Admin's story editor (reported by 
+  Ron Ackerman) [Dirk]
+- Fixed handling of checkboxes in the static pages editor (reported by
+  Ron Ackerman) [Dirk]
+- Fixed SQL error when saving a static page that had had more than 1000 hits
+  (reported by Euan McKay) [Dirk]
+- Removed visible table border from advanced comment editor form [Blaine]
+- Moved some hard-coded text strings from the advanced editor into the
+  language files [Blaine]
+
+
 Dec 31, 2005 (1.4.0rc1)
 ------------
 
