@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.196 2006/01/01 16:01:45 blaine Exp $
+// $Id: story.php,v 1.197 2006/01/06 10:24:47 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1197,11 +1197,11 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                  COM_applyFilter ($_POST['hits'], true), $unixdate, $expiredate,
                  COM_applyFilter ($_POST['comments'], true),
                  COM_applyFilter ($_POST['featured'], true),
-                 COM_applyFilter ($_POST['commentcode']),
-                 COM_applyFilter ($_POST['trackbackcode']),
-                 COM_applyFilter ($_POST['statuscode']),
+                 COM_applyFilter ($_POST['commentcode'], true),
+                 COM_applyFilter ($_POST['trackbackcode'], true),
+                 COM_applyFilter ($_POST['statuscode'], ture),
                  COM_applyFilter ($_POST['postmode']),
-                 COM_applyFilter ($_POST['frontpage']),
+                 COM_applyFilter ($_POST['frontpage'], true),
                  COM_applyFilter ($_POST['draft_flag']),
                  COM_applyFilter ($_POST['numemails'], true),
                  COM_applyFilter ($_POST['owner_id'], true),

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Administration page.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Phill Gillespie  - phill AT mediaaustralia DOT com DOT au        |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.57 2006/01/06 09:58:18 dhaun Exp $
+// $Id: index.php,v 1.58 2006/01/06 10:24:48 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -406,7 +406,7 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 * @param unixdate        string  date page was last updated
 * @param sp_hits         int     Number of page views
 * @param sp_format       string  HTML or plain text
-* @param sp_onmenu       int     Flag to place entry on menu
+* @param sp_onmenu       string  Flag to place entry on menu
 * @param sp_label        string  Menu Entry
 * @param owner_id        int     Permission bits
 * @param group_id        int
@@ -414,12 +414,12 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 * @param perm_members    int
 * @param perm_anon       int
 * @param sp_php          int     Flag to indicate PHP usage
-* @param sp_nf           int     Flag to indicate type of not found message
+* @param sp_nf           string  Flag to indicate type of not found message
 * @param sp_old_id       string  original ID of this static page
-* @param sp_centerblock  int     Flag to indicate display as a center block
+* @param sp_centerblock  string  Flag to indicate display as a center block
 * @param sp_tid          string  topid id (for center block)
 * @param sp_where        int     position of center block
-* @param sp_inblock      int     Flag: wrap page in a block (or not)
+* @param sp_inblock      string  Flag: wrap page in a block (or not)
 *
 */
 function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock)
@@ -454,15 +454,25 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
             $sp_hits = 0;
         }
 
-        if ($sp_onmenu== 'on') {
+        if ($sp_onmenu == 'on') {
             $sp_onmenu = 1;
         } else {
             $sp_onmenu = 0;
         }
-        if ($sp_centerblock== 'on') {
+        if ($sp_nf == 'on') {
+            $sp_nf = 1;
+        } else {
+            $sp_nf = 0;
+        }
+        if ($sp_centerblock == 'on') {
             $sp_centerblock = 1;
         } else {
             $sp_centerblock = 0;
+        }
+        if ($sp_inblock == 'on') {
+            $sp_inblock = 1;
+        } else {
+            $sp_inblock = 0;
         }
 
         // Clean up the text
