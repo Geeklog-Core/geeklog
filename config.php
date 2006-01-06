@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog configuration file.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2005 by the following authors:                         |
+// | Copyright (C) 2001-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
 // |          Dirk Haun  - dirk AT haun-online DOT de                          |
@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.205 2006/01/01 22:30:19 blaine Exp $
+// $Id: config.php,v 1.206 2006/01/06 19:55:36 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -289,7 +289,7 @@ $_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['default_charset'] = 'iso-8859-1';
 
 // Number formatting
-$_CONF['thousand_separator'] = "'";  // could be ' , . etc.
+$_CONF['thousand_separator'] = ",";  // could be ' , . etc.
 $_CONF['decimal_separator']  = ".";  // could be , . etc.
 $_CONF['decimal_count']      = "2";  // if a number has decimals,
                                      //  force to this depth
@@ -808,7 +808,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.4.0rc1');
+    define('VERSION', '1.4.0rc2');
 }
 
 $_STATES = array(
