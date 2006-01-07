@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.93 2005/12/28 10:11:50 dhaun Exp $
+// $Id: submit.php,v 1.94 2006/01/07 20:05:10 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -307,8 +307,17 @@ function submitstory($topic = '')
         $storyform->set_var ('change_editormode', 'onChange="change_editmode(this);"');
         $storyform->set_var ('lang_expandhelp', $LANG24[67]);
         $storyform->set_var ('lang_reducehelp', $LANG24[68]);
+        $storyform->set_var ('show_texteditor', 'none');
+        $storyform->set_var ('show_htmleditor', '');
     } else {
         $storyform->set_file('storyform','submitstory.thtml');
+        if ($A['postmode'] == 'html') {
+            $storyform->set_var ('show_texteditor', 'none');
+            $storyform->set_var ('show_htmleditor', '');
+        } else {
+            $storyform->set_var ('show_texteditor', '');
+            $storyform->set_var ('show_htmleditor', 'none');
+        }
     }
     $storyform->set_var ('site_url', $_CONF['site_url']);
     $storyform->set_var ('layout_url', $_CONF['layout_url']);
@@ -326,14 +335,6 @@ function submitstory($topic = '')
         $storyform->set_var('create_account','<a href="' . $_CONF['site_url'] . '/users.php?mode=new">' . $LANG12[53] . '</a>');
     }
     
-    if ($A['postmode'] == 'html') {
-        $storyform->set_var ('show_texteditor', 'none');
-        $storyform->set_var ('show_htmleditor', '');
-    } else {
-        $storyform->set_var ('show_texteditor', '');
-        $storyform->set_var ('show_htmleditor', 'none');
-    }
-
     $storyform->set_var('lang_title', $LANG12[10]);
     $storyform->set_var('story_title', htmlspecialchars ($title));
     $storyform->set_var('lang_topic', $LANG12[28]);
