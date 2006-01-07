@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.506 2005/12/30 10:47:52 mjervis Exp $
+// $Id: lib-common.php,v 1.507 2006/01/07 09:16:36 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3309,7 +3309,7 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
         }
 
         // build a list
-        $content = COM_makeList( $articles );
+        $content = COM_makeList( $articles, 'list-feed' );
         $content = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $content );
 
         // Standard theme based function to put it in the block

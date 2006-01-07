@@ -3,6 +3,7 @@ GeekLog History/Changes:
 Jan ??, 2006 (1.4.0rc2)
 ------------
 
+- Added missing CSS class name "list-feed" for portal blocks [Dirk]
 - Fixed user submission queue (reported by Andrew Lawlor) [Dirk]
 - Fixed handling of integer fields in the Admin's story editor (reported by 
   Ron Ackerman) [Dirk]
