@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Functions needed to handle trackback comments.                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005 by the following authors:                              |
+// | Copyright (C) 2005-2006 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.20 2005/12/20 10:19:25 dhaun Exp $
+// $Id: lib-trackback.php,v 1.21 2006/01/08 11:20:44 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -675,9 +675,14 @@ function TRB_detectTrackbackUrl ($url)
 
     // no luck with the RDF? try searching for a rel="trackback" link
     if ($retval === false) {
+        // remove all linefeeds first to help the regexp below
+        $page = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $page);
+
         preg_match_all( "/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $page, $matches );
+COM_errorLog("links found: " . count ($matches[0]));
         for ($i = 0; $i < count ($matches[0]); $i++) {
             $link = $matches[0][$i];
+COM_errorLog($link);
             if (strpos ($link, 'rel="trackback"') !== false) {
                 $retval = $matches[1][$i];
                 break;
