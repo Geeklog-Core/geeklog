@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.197 2006/01/06 10:24:47 dhaun Exp $
+// $Id: story.php,v 1.198 2006/01/08 19:25:57 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1199,7 +1199,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                  COM_applyFilter ($_POST['featured'], true),
                  COM_applyFilter ($_POST['commentcode'], true),
                  COM_applyFilter ($_POST['trackbackcode'], true),
-                 COM_applyFilter ($_POST['statuscode'], ture),
+                 COM_applyFilter ($_POST['statuscode'], true),
                  COM_applyFilter ($_POST['postmode']),
                  COM_applyFilter ($_POST['frontpage'], true),
                  COM_applyFilter ($_POST['draft_flag']),
