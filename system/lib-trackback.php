@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.21 2006/01/08 11:20:44 dhaun Exp $
+// $Id: lib-trackback.php,v 1.22 2006/01/08 11:24:31 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -679,10 +679,8 @@ function TRB_detectTrackbackUrl ($url)
         $page = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $page);
 
         preg_match_all( "/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $page, $matches );
-COM_errorLog("links found: " . count ($matches[0]));
         for ($i = 0; $i < count ($matches[0]); $i++) {
             $link = $matches[0][$i];
-COM_errorLog($link);
             if (strpos ($link, 'rel="trackback"') !== false) {
                 $retval = $matches[1][$i];
                 break;
