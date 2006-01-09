@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.126 2005/12/28 10:11:50 dhaun Exp $
+// $Id: users.php,v 1.127 2006/01/09 02:57:23 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -825,7 +825,7 @@ case 'new':
         // Call custom registration and account record create function
         // if enabled and exists
         if ($_CONF['custom_registration'] AND (function_exists('custom_userform'))) {
-            $display .= custom_userform('new');
+            $display .= custom_userform();
         } else {
             $display .= newuserform();
         }
@@ -949,7 +949,7 @@ default:
             // Got bad account info from registration process, show error
             // message and display form again
             if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
-                $display .= custom_userform ('new');
+                $display .= custom_userform ();
             } else {
                 $display .= newuserform ();
             }
