@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.53 2005/12/28 10:11:54 dhaun Exp $
+// $Id: lib-story.php,v 1.54 2006/01/10 10:47:09 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -223,15 +223,15 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
                 if( is_numeric( $mode ))
                 {
                     $story_page = $mode;
-                }
-                if( $story_page <= 0 )
-                {
-                    $story_page = 1;
-                    $mode = 0;
-                }
-                elseif( $story_page > 1 )
-                {
-                    $introtext = '';
+                    if( $story_page <= 0 )
+                    {
+                        $story_page = 1;
+                        $mode = 0;
+                    }
+                    elseif( $story_page > 1 )
+                    {
+                        $introtext = '';
+                    }
                 }
                 $article_array = explode( '[page_break]', $bodytext );
                 $pagelinks = COM_printPageNavigation( $articleUrl, $story_page,
