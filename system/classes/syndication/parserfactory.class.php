@@ -46,6 +46,7 @@
   {
     var $readerName;
     var $reader;
+    var $userAgent;
 
     /**
       * Constructor, loads feedparser classes into memory.
@@ -173,6 +174,10 @@
     function _getFeed( $url )
     {
       $req =& new HTTP_Request($url, array('allowRedirects' => true));
+      if ($this->userAgent != '')
+      {
+        $req->addHeader('User-Agent', $this->userAgent);
+      }
       if (!PEAR::isError($req->sendRequest())) {
         return $req->getResponseBody();
       } else {
