@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Jan ??, 2006 (1.4.0rc2)
 ------------
 
+- Fixed a typo in all the plugin install script which set the group
+  description to "grp_desc" instead of $grp_desc (found by Ingo Schaefer) [Dirk]
 - Improved autodetect of Trackback URLs [Dirk]
 - The submit story form was not selecting the advanced Editor if user was not
   logged in or did not have Story Editor permissions [Blaine]

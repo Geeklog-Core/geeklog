@@ -11,7 +11,7 @@
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Copyright (C) 2002-2005 by the following authors:                         |
+// | Copyright (C) 2002-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Tom Willett       - tom AT pigstye DOT net                       |
@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.6 2005/11/24 14:29:28 ospiess Exp $
+// $Id: install.php,v 1.7 2006/01/11 19:41:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -135,7 +135,7 @@ function plugin_install_now()
 
         $grp_name = addslashes ($name);
         $grp_desc = addslashes ($desc);
-        DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', 'grp_desc')", 1);
+        DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
         if (DB_error ()) {
             $uninstall_plugin ();
 
