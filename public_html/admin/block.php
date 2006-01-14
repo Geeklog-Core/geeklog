@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.91 2005/12/22 14:39:46 ospiess Exp $
+// $Id: block.php,v 1.92 2006/01/14 16:58:01 dhaun Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -314,7 +314,11 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_rdflimit', $LANG21[62]);
     $block_templates->set_var('block_rdflimit', $A['rdflimit']);
     $block_templates->set_var('lang_lastrdfupdate', $LANG21[15]);
-    $block_templates->set_var('block_rdfupdated', $A['rdfupdated']);
+    if ($A['rdfupdated'] == '0000-00-00 00:00:00') {
+        $block_templates->set_var ('block_rdfupdated', '');
+    } else {
+        $block_templates->set_var ('block_rdfupdated', $A['rdfupdated']);
+    }
     $block_templates->set_var('lang_normalblockoptions', $LANG21[16]);
     $block_templates->set_var('lang_blockcontent', $LANG21[17]);
     $block_templates->set_var('block_content', htmlspecialchars (stripslashes ($A['content'])));
@@ -504,6 +508,10 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
         }
         if ($rdflimit < 0) {
             $rdflimit = 0;
+        }
+
+        if (empty ($rdfupdated)) {
+            $rdfupdated = '0000-00-00 00:00:00';
         }
 
         if ($bid > 0)
