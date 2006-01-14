@@ -1,14 +1,14 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the Chinese Simplified Unicode (utf-8) language set
+# chinese_traditional_utf-8.php
+# This is the Chinese Traditional Unicode (utf-8) language set
 # for the Geeklog Static Page Plug-in!
 #
-# Last updated December 24, 2005
+# Last updated January 10, 2006
 #
 # Copyright (C) 2005 Samuel M. Stone
-# stonemicro@gmail.com
+# sam@stonemicro.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ $LANG_STATIC= array(
     'noblocks' => '無組件',
     'leftblocks' => '左組件',
     'addtomenu' => '加入菜單',
-    'label' => '標籤',
+    'label' => '標簽',
     'nopages' => '此系統無靜態頁',
     'save' => '存續',
     'preview' => '預覽',
@@ -97,8 +97,8 @@ $LANG_STATIC= array(
     'centerblock_feat' => '重要文章',
     'centerblock_bottom' => '底',
     'centerblock_entire' => '整頁',
-    'inblock_msg' => '在一個元件內: ',
-    'inblock_info' => '將靜態頁包在元件框裏.',
+    'inblock_msg' => '在一個組件內: ',
+    'inblock_info' => '將靜態頁包在組件框裏.',
     'title_edit' => '編輯此頁',
     'title_copy' => '複製此頁',
     'title_display' => '顯示此頁',
@@ -106,7 +106,7 @@ $LANG_STATIC= array(
     'select_php_return' => '執行 PHP (return)',
     'select_php_free' => '執行 PHP',
     'php_not_activated' => '使用 PHP 的功能為開啟.',
-    'printable_format' => '列印格式',
+    'printable_format' => '打印格式',
     'edit' => '編輯',
     'copy' => '複製',
     'limit_results' => '限制結果',

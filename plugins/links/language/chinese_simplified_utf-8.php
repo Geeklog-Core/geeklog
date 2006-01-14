@@ -5,10 +5,10 @@
 #
 # This is the Chinese Simplified (UTF-8) language set for GeekLog Links plugin
 # 
-# Last updated December 24, 2005
+# Last updated January 10, 2006
 #
 # Copyright (C) 2005 Samuel M. Stone
-# stonemicro@gmail.com
+# sam@stonemicro.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: chinese_simplified_utf-8.php,v 1.1 2005/12/29 15:18:54 dhaun Exp $
 
 ###############################################################################
 # Array Format:

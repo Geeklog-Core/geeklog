@@ -1,14 +1,14 @@
 <?php
 
 ###############################################################################
-# english.php
+# chinese_simplified_utf-8.php
 # This is the Chinese Simplified UTF-8 language page for 
 # the Geeklog Polls Plug-in!
 #
-# Last updated on December 25, 2005
+# Last updated on January 10, 2006
 #
 # Copyright (C) 2005 Samuel Maung Stone
-# stonemicro@gmail.com
+# sam@stonemicro.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

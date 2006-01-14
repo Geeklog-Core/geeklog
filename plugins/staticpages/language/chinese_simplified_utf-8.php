@@ -1,14 +1,14 @@
 <?php
 
 ###############################################################################
-# english.php
+# chinese_simplified_utf-8.php
 # This is the Chinese Simplified Unicode (utf-8) language set
 # for the Geeklog Static Page Plug-in!
 #
-# Last updated December 24, 2005
+# Last updated January 10, 2006
 #
 # Copyright (C) 2005 Samuel M. Stone
-# stonemicro@gmail.com
+# sam@stonemicro.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
