@@ -417,7 +417,7 @@ $LANG09 = array(
     5 => '種別',
     6 => '記事の数',
     7 => 'コメント数',
-    8 => '書いた人',
+    8 => 'ユーザー',
     9 => 'すべて',
     10 => '検索',
     11 => '検索結果',
@@ -427,7 +427,7 @@ $LANG09 = array(
     15 => 'キーワードを変えて再検索してみてください',
     16 => 'タイトル',
     17 => '日付',
-    18 => '書いた人',
+    18 => 'ユーザー',
     19 => " {$_CONF['site_name']} 全体のすべての記事を検索する",
     20 => '日付',
     21 => '〜',
@@ -715,7 +715,7 @@ $LANG24 = array(
     4 => '投稿モード',
     5 => '記事の編集',
     6 => 'このページに記事は一件もありませんでした',
-    7 => '書いた人：',
+    7 => 'ユーザー',
     8 => '保存',
     9 => 'プレビュー',
     10 => '中止',
@@ -787,13 +787,13 @@ $LANG24 = array(
     76 => '公開用オプション',
     77 => 'Advanced Editorを使うためには、Javascriptが使えるようになっている必要があります。このオプションはconfig.phpで無効にできます。 ',
     78 => '通常のエディタを使うには、<a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">ここ</a> をクリックしてください。',
-    79 => 'Preview',
-    80 => 'Editor',
-    81 => 'Publish Options',
-    82 => 'Images',
-    83 => 'Archive Options',
-    84 => 'Permissions',
-    85 => 'Show All'
+    79 => 'プレビュー',
+    80 => 'エディタ',
+    81 => '公開用オプション',
+    82 => '画像',
+    83 => '保存用オプション',
+    84 => '利用権限',
+    85 => '全て表示'
 );
 
 ###############################################################################
@@ -1467,5 +1467,60 @@ $LANG_ADMIN = array (
     'data_error'    => '送られたデータに問題があります。データをチェックしてください'
 );
 
+# Localisation of the texts for the various drop-down menus that are actually
+# stored in the database. If these exist, they override the texts from the
+# database.
+
+$LANG_commentcodes = array(
+    0   => 'コメント有効',
+    -1  => 'コメント停止'
+);
+
+$LANG_commentmodes = array(
+    'flat'      => '一覧',
+    'nested'    => '入れ子',
+    'threaded'  => 'ツリー',
+    'nocomment' => '表示しない'
+);
+
+$LANG_cookiecodes = array(
+    0       => '受け付けない',
+    3600    => '１時間',
+    7200    => '２時間',
+    10800   => '３時間',
+    28800   => '８時間',
+    86400   => '１日',
+    604800  => '１週間',
+    2678400 => '１ヶ月'
+);
+
+$LANG_dateformats = array(
+    0   => 'デフォルト'
+);
+
+$LANG_featurecodes = array(
+    0 => '通常の記事',
+    1 => '注目記事'
+);
+
+$LANG_frontpagecodes = array(
+    0 => '該当する話題にだけ表示',
+    1 => 'トップページに表示'
+);
+
+$LANG_postmodes = array(
+    'plaintext' => 'テキスト',
+    'html'      => 'HTML形式'
+);
+
+$LANG_sortcodes = array(
+    'ASC'  => '古い順に',
+    'DESC' => '新しい順に'
+);
+
+$LANG_trackbackcodes = array(
+    0   => 'トラックバック有効',
+    -1  => 'トラックバック停止'
+);
 
 ?>

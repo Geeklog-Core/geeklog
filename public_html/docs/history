@@ -23,6 +23,9 @@ Jan ??, 2006 (1.4.0rc2)
 - Moved some hard-coded text strings from the advanced editor into the
   language files [Blaine]
 
+- Updated Chinese language files, provided by Samuel M. Stone
+- Updated Japanese language files, provided by Yusuke Sakate
+
 
 Dec 31, 2005 (1.4.0rc1)
 ------------
