@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.507 2006/01/07 09:16:36 dhaun Exp $
+// $Id: lib-common.php,v 1.508 2006/01/14 13:39:00 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3986,7 +3986,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
                 if(( $A['type'] == 'article' ) || empty( $A['type'] ))
                 {
-                    $titletouse = stripslashes( $A['title'] );
+                    $titletouse = COM_undoSpecialChars( stripslashes( $A['title'] ));
                     $itemlen = strlen( $titletouse );
                     $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
                         . '/article.php?story=' . $A['sid'] ) . '#comments' . '"';
@@ -4047,7 +4047,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
             {
                 $A = DB_fetchArray( $result );
 
-                $titletouse = stripslashes( $A['title'] );
+                $titletouse = COM_undoSpecialChars( stripslashes( $A['title'] ));
                 $itemlen = strlen( $titletouse );
                 $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#trackback' . '"';

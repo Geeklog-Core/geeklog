@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Jan ??, 2006 (1.4.0rc2)
 ------------
 
+- Fixed with story titles in the What's New block when they contained HTML
+  entities (entities where sometimes cut off and/or encoded twice) [Dirk]
 - Fixed a typo in all the plugin install script which set the group
   description to "grp_desc" instead of $grp_desc (found by Ingo Schaefer) [Dirk]
 - Improved autodetect of Trackback URLs [Dirk]
