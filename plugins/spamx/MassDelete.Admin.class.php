@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.8 2006/01/15 09:09:51 dhaun Exp $
+* $Id: MassDelete.Admin.class.php,v 1.9 2006/01/15 10:32:31 dhaun Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -38,7 +38,7 @@ class MassDelete extends BaseAdmin {
                     if (is_file($_CONF['path'] . 'plugins/spamx/' . $file))
                     {
                         if (substr($file,-18) == '.Examine.class.php') {
-                            $tmp = str_replace('.Examine.class.php',''.$file);
+                            $tmp = str_replace('.Examine.class.php','',$file);
                             $Spamx_Examine[]=$tmp;
                         }
                     }
