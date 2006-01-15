@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.9 2006/01/15 10:32:31 dhaun Exp $
+* $Id: MassDelete.Admin.class.php,v 1.10 2006/01/15 10:40:04 dhaun Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -33,31 +33,31 @@ class MassDelete extends BaseAdmin {
 
         if (($act == $LANG_SX00['deletespam']) && ($lmt>0)) {
             $numc = 0;
-            if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {
+            $spamx_path = $_CONF['path'] . 'plugins/spamx/';
+
+            if ($dir = @opendir($spamx_path)) {
                 while(($file = readdir($dir)) !== false) {
-                    if (is_file($_CONF['path'] . 'plugins/spamx/' . $file))
-                    {
-                        if (substr($file,-18) == '.Examine.class.php') {
-                            $tmp = str_replace('.Examine.class.php','',$file);
-                            $Spamx_Examine[]=$tmp;
+                    if (is_file($spamx_path . $file)) {
+                        if (substr($file, -18) == '.Examine.class.php') {
+                            $tmp = str_replace('.Examine.class.php', '', $file);
+                            $Spamx_Examine[] = $tmp;
+
+                            require_once ($spamx_path . $file);
                         }
                     }
                 }
                 closedir($dir);
             }
+
             $result = DB_query("SELECT comment,cid,sid,type FROM {$_TABLES['comments']} ORDER BY date DESC LIMIT $lmt");
             $nrows = DB_numRows($result);
             for ($i = 0; $i < $nrows; $i++) {
-                $A=DB_fetchArray($result);
+                $A = DB_fetchArray($result);
                 foreach($Spamx_Examine as $Examine) {
-                    $filename=$Examine . '.Examine.class.php';
-                    if (file_exists($_CONF['path'] . 'plugins/spamx/' . $filename)) {
-                        require_once($_CONF['path'] . 'plugins/spamx/' . $filename);
-                        $EX = new $Examine;
-                        $res = $EX->execute($A['comment']);
-                        if ($res == 1) {
-                            break;
-                        }
+                    $EX = new $Examine;
+                    $res = $EX->execute($A['comment']);
+                    if ($res == 1) {
+                        break;
                     }
                 }
                 if ($res == 1) {

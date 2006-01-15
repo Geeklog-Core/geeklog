@@ -12,7 +12,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelTrackback.Admin.class.php,v 1.2 2006/01/15 09:40:02 dhaun Exp $
+* $Id: MassDelTrackback.Admin.class.php,v 1.3 2006/01/15 10:40:04 dhaun Exp $
 */
 
 require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -27,17 +27,20 @@ class MassDelTrackback extends BaseAdmin {
         $display = $LANG_SX00['masstb'];
 
         $act = $_POST['action'];
-        $lmt = $_POST['limit'];
+        $lmt = COM_applyFilter ($_POST['limit'], true);
 
         if (($act == $LANG_SX00['deletespam']) && ($lmt > 0)) {
             $numc = 0;
-            if ($dir = @opendir ($_CONF['path'] . 'plugins/spamx/')) {
+            $spamx_path = $_CONF['path'] . 'plugins/spamx/';
+
+            if ($dir = @opendir ($spamx_path)) {
                 while (($file = readdir ($dir)) !== false) {
-                    if (is_file ($_CONF['path'] . 'plugins/spamx/' . $file))
-                    {
+                    if (is_file ($spamx_path . $file)) {
                         if (substr ($file, -18) == '.Examine.class.php') {
                             $tmp = str_replace ('.Examine.class.php', '', $file);
                             $Spamx_Examine[] = $tmp;
+
+                            require_once ($spamx_path . $file);
                         }
                     }
                 }
@@ -54,14 +57,10 @@ class MassDelTrackback extends BaseAdmin {
                                               $A['blog'], $A['excerpt']);
 
                 foreach ($Spamx_Examine as $Examine) {
-                    $filename = $Examine . '.Examine.class.php';
-                    if (file_exists ($_CONF['path'] . 'plugins/spamx/' . $filename)) {
-                        require_once ($_CONF['path'] . 'plugins/spamx/' . $filename);
-                        $EX = new $Examine;
-                        $res = $EX->execute ($comment);
-                        if ($res == 1) {
-                            break;
-                        }
+                    $EX = new $Examine;
+                    $res = $EX->execute ($comment);
+                    if ($res == 1) {
+                        break;
                     }
                 }
                 if ($res == 1) {
