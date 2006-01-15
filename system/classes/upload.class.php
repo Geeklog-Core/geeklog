@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | upload.class.php                                                          |
 // |                                                                           |
 // | Geeklog file upload class library.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2004 by the following authors:                         |
+// | Copyright (C) 2002-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Dirk Haun        - dirk@haun-online.de                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.42 2005/11/19 04:26:00 vinny Exp $
+// $Id: upload.class.php,v 1.43 2006/01/15 20:59:11 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -1143,12 +1143,12 @@ class upload
 	function numFiles()
 	{
         if (empty($this->_filesToUpload)) {
-            $this->_filesToUpload = $GLOBALS['HTTP_POST_FILES'];
+            $this->_filesToUpload = $_FILES;
         }
 
         $fcount = 0;
 
-        for ($i = 1; $i <= count($GLOBALS['HTTP_POST_FILES']); $i++) {
+        for ($i = 1; $i <= count($_FILES); $i++) {
             $curFile = current($this->_filesToUpload);
         
             // Make sure file field on HTML form wasn't empty
@@ -1157,7 +1157,7 @@ class upload
             }
             next($this->_filesToUpload);
         }
-        reset($GLOBALS['HTTP_POST_FILES']);
+        reset($_FILES);
 
         return $fcount;
 	}
@@ -1182,7 +1182,7 @@ class upload
             }
         }
 
-		$this->_filesToUpload = $GLOBALS['HTTP_POST_FILES'];
+		$this->_filesToUpload = $_FILES;
 		$numFiles = count($this->_filesToUpload);
 
         // For security sake, check to make sure a DOS isn't happening by making
@@ -1205,7 +1205,7 @@ class upload
 
         for ($i = 1; $i <= $numFiles; $i++) {
 
-            $this->_currentFile = current($GLOBALS['HTTP_POST_FILES']);
+            $this->_currentFile = current($_FILES);
 
             // Make sure file field on HTML form wasn't empty before proceeding
             if (!empty($this->_currentFile['name'])) {
@@ -1232,7 +1232,7 @@ class upload
                 // No file name specified...send as warning.
                 $this->_addWarning('File #' . $i . ' on the HTML form was empty...ignoring it and continuing');
             }
-            next($GLOBALS['HTTP_POST_FILES']);
+            next($_FILES);
         }
 
 		// This function returns false if any errors were encountered
