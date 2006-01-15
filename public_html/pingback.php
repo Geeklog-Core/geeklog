@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | pingback.php                                                              |
 // |                                                                           |
 // | Handle pingbacks for stories and plugins.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005 by the following authors:                              |
+// | Copyright (C) 2005-2006 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.11 2005/12/17 15:19:37 dhaun Exp $
+// $Id: pingback.php,v 1.12 2006/01/15 18:57:16 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -107,7 +107,7 @@ function PNB_handlePingback ($id, $type, $url)
             if (empty ($content[1])) {
                 $title = ''; // no title found
             } else {
-                $title = trim ($content[1]);
+                $title = trim (COM_undoSpecialChars ($content[1]));
             }
 
             // we could also run the rest of the other site's page
