@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Jan ??, 2006 (1.4.0rc2)
 ------------
 
+- Fixed Spam-X Mass Delete Trackback Spam module to update the story's trackback
+  count when deleting trackbacks [Dirk]
 - Fixed a possible SQL error when saving a block (reported by BDUB) [Dirk]
 - Fixed with story titles in the What's New block when they contained HTML
   entities (entities where sometimes cut off and/or encoded twice) [Dirk]
