@@ -5,14 +5,14 @@
 *
 * Mass delete trackback spam
 *
-* Copyright (C) 2004-2005 by the following authors:
+* Copyright (C) 2004-2006 by the following authors:
 *
 * @author   Tom Willett     tomw AT pigstye DOT net
 * @author   Dirk Haun       dirk AT haun-online DOT de
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelTrackback.Admin.class.php,v 1.1 2005/09/25 16:39:12 dhaun Exp $
+* $Id: MassDelTrackback.Admin.class.php,v 1.2 2006/01/15 09:40:02 dhaun Exp $
 */
 
 require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -36,7 +36,7 @@ class MassDelTrackback extends BaseAdmin {
                     if (is_file ($_CONF['path'] . 'plugins/spamx/' . $file))
                     {
                         if (substr ($file, -18) == '.Examine.class.php') {
-                            $tmp = str_replace (".Examine.class.php", "", $file);
+                            $tmp = str_replace ('.Examine.class.php', '', $file);
                             $Spamx_Examine[] = $tmp;
                         }
                     }
@@ -48,7 +48,7 @@ class MassDelTrackback extends BaseAdmin {
 
             $result = DB_query ("SELECT cid,sid,type,url,title,blog,excerpt FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
             $nrows = DB_numRows ($result);
-            for ($i = 1; $i <= $nrows; $i++) {
+            for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
                 $comment = TRB_formatComment ($A['url'], $A['title'],
                                               $A['blog'], $A['excerpt']);
@@ -111,10 +111,17 @@ class MassDelTrackback extends BaseAdmin {
     */
     function deltrackback ($cid, $sid, $type)
     {
-        global $LANG_SX00;
+        global $_TABLES, $LANG_SX00;
 
         if (TRB_allowDelete ($sid, $type)) {
             TRB_deleteTrackbackComment ($cid);
+
+            if ($type == 'article') {
+                $tbcount = DB_count ($_TABLES['trackback'],
+                                     array ('type', 'sid'),
+                                     array ('article', $sid));
+                DB_query ("UPDATE {$_TABLES['stories']} SET trackbacks = $tbcount WHERE sid = '$sid'");
+            }
 
             SPAMX_log ($LANG_SX00['spamdeleted']);
         }
