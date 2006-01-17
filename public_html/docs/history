@@ -15,7 +15,7 @@ Jan ??, 2006 (1.4.0rc2)
   logged in or did not have Story Editor permissions [Blaine]
 - Added missing CSS class name "list-feed" for portal blocks [Dirk]
 - Fixed user submission queue (reported by Andrew Lawlor) [Dirk]
-- Fixed handling of integer fields in the Admin's story editor (reported by 
+- Fixed handling of integer fields in the Admin's story editor (reported by
   Ron Ackerman) [Dirk]
 - Fixed handling of checkboxes in the static pages editor (reported by
   Ron Ackerman) [Dirk]
@@ -24,6 +24,7 @@ Jan ??, 2006 (1.4.0rc2)
 - Removed visible table border from advanced comment editor form [Blaine]
 - Moved some hard-coded text strings from the advanced editor into the
   language files [Blaine]
+- Pass GeekLog as user agent when fetching RSS feeds [Mike]
 
 - Updated Chinese language files, provided by Samuel M. Stone
 - Updated Japanese language files, provided by Yusuke Sakate
@@ -51,7 +52,7 @@ Dec 31, 2005 (1.4.0rc1)
   language files (reported by Euan McKay) [Dirk]
 - The Spam-X plugin now uses the same "universal" install script as the other
   three preinstalled plugins [Dirk]
-- Added more allowable HTML tags and attributes if Advanced_Editor enabled 
+- Added more allowable HTML tags and attributes if Advanced_Editor enabled
   config.php setting [Blaine]
 - Added logic to detect if Javascript was not enabled and Advanced Editor was
   enabled.
