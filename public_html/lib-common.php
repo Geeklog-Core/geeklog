@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.509 2006/01/17 19:42:35 mjervis Exp $
+// $Id: lib-common.php,v 1.510 2006/01/18 19:43:20 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3270,7 +3270,7 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
     // Load the actual feed handlers:
     $factory = new FeedParserFactory( $_CONF['path_system']
                                       . '/classes/syndication/' );
-    $factory->userAgent = 'GeekLog';
+    $factory->userAgent = 'GeekLog ' . VERSION;
     $feed = $factory->reader( $rdfurl, $_CONF['default_charset'] );
 
     // Aquire a reader:
