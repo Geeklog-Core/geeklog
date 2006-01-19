@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.42 2005/12/28 10:11:53 dhaun Exp $
+// $Id: lib-admin.php,v 1.43 2006/01/19 09:52:57 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -323,7 +323,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $order_var = $i; # assign number to field so we know what to sort
             $onclick="onclick=\"window.location.href='$form_url?" #onclick action
                     ."order=$order_var&amp;prevorder=$order&amp;direction=$direction"
-                    ."&amp;page=$page&amp;q=$query&amp;query_limit=$query_limit$extra';\"";
+                    ."&amp;" . $component . "listpage=$page"
+                    ."&amp;q=$query&amp;query_limit=$query_limit$extra';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
         $admin_templates->parse('header_row', 'header', true);
@@ -426,7 +427,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         }
 
         if ($num_pages > 1) { # print actual google-paging
-            //$admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'page'));
+            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'listpage'));
             $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
         } else {
             $admin_templates->set_var('google_paging', '');
