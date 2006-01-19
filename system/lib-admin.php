@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.43 2006/01/19 09:52:57 ospiess Exp $
+// $Id: lib-admin.php,v 1.44 2006/01/19 19:50:09 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -428,7 +428,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
         if ($num_pages > 1) { # print actual google-paging
             $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'listpage'));
-            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
         } else {
             $admin_templates->set_var('google_paging', '');
         }
