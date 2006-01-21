@@ -3,13 +3,24 @@ GeekLog History/Changes:
 Jan ??, 2006 (1.4.0rc2)
 ------------
 
+- Fixed "Cannot modify header ..." message when logging in from the admin
+  pages (reported by Samuel M. Stone). This also fixes confusing intermittent
+  displays during the login (e.g. only some of the "Command and Control" icons
+  showing up, messages about missing permissions flashing up) [Dirk]
+- Removed Geeklog version number from feed files due to security concerns
+  (pointed out by Samuel M. Stone) [Dirk]
+- Login through the admin pages didn't work with register_globals=off [Dirk]
+- Fixed admin lists so pagination works also in static pages [Oliver]
+- Pass GeekLog as user agent when fetching RSS feeds [Mike]
+- Made the image upload work with out-of-the-box PHP 5 configurations [Dirk]
+- Fixed handling of HTML entities in Pingbacks [Dirk]
 - Fixed Spam-X Mass Delete Trackback Spam module to update the story's trackback
   count when deleting trackbacks [Dirk]
 - Fixed a possible SQL error when saving a block (reported by BDUB) [Dirk]
-- Fixed with story titles in the What's New block when they contained HTML
-  entities (entities where sometimes cut off and/or encoded twice) [Dirk]
-- Fixed a typo in all the plugin install script which set the group
-  description to "grp_desc" instead of $grp_desc (found by Ingo Schaefer) [Dirk]
+- Fixed story titles in the What's New block when they contained HTML entities
+  (entities where sometimes cut off and/or encoded twice) [Dirk]
+- Fixed a typo in all the plugin install script which set the group description
+  to "grp_desc" instead of $grp_desc (found by Ingo Schaefer) [Dirk]
 - Improved autodetect of Trackback URLs [Dirk]
 - The submit story form was not selecting the advanced Editor if user was not
   logged in or did not have Story Editor permissions [Blaine]
@@ -24,7 +35,6 @@ Jan ??, 2006 (1.4.0rc2)
 - Removed visible table border from advanced comment editor form [Blaine]
 - Moved some hard-coded text strings from the advanced editor into the
   language files [Blaine]
-- Pass GeekLog as user agent when fetching RSS feeds [Mike]
 
 - Updated Chinese language files, provided by Samuel M. Stone
 - Updated Japanese language files, provided by Yusuke Sakate
