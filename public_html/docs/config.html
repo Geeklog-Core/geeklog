@@ -539,6 +539,12 @@ options:</p>
     If your article contains more than one link to other stories on your site,
     then option 1 is probably of limited use, as it would only pingback the
     first linked story and run into the speed limit for the others.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_advanced_editor">advanced_editor</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
+    story and comment submissions and static pages. Geeklog ships with <a
+    href="http://www.fckeditor.net/">FCKeditor</a>.</td></tr>
 </table>
 
 
@@ -639,7 +645,7 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
   <td valign="top"><i>not set</i></td>
-  <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report missuse to ISPs, etc.<br>
+  <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br>
 <code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
 <tr>
   <td valign="top"><a name="desc_num_search_results">num_search_results</a></td>
@@ -1029,9 +1035,9 @@ admin panel.</p>
 
 <p>Geeklog includes a simple but useful URL rewriting feature which can help
 make your site more crawler friendly (i.e. the URLs of your site are more
-likely to be picked up by the search engine's indexing bots). Currently, this
-feature is only supported for URLs to stories and by the Static Pages
-plugin.</p>
+likely to be picked up by the search engine's indexing bots). This feature is
+supported for URLs to stories, static pages, the article directory, and links.
+</p>
 <p>URL rewriting means that your URLs will look like this</p>
 <p align="center"><tt>http://www.geeklog.net/article.php/20021022234959146</tt></p>
 <p>instead of like this</p>

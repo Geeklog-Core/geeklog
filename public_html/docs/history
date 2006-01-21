@@ -1,8 +1,13 @@
 GeekLog History/Changes:
 
-Jan ??, 2006 (1.4.0rc2)
+Jan 22, 2006 (1.4.0rc2)
 ------------
 
+- header.thtml now specifies the CSS Class Declaration to use for the body.
+  This addresses the issue with FCKEditor when displayed, its CSS was
+  over-riding the main site <body> tag and the site margin padding was being
+  affected [Blaine]
+- Removed CSS for the Forum plugin from style.css [Blaine]
 - Fixed "Cannot modify header ..." message when logging in from the admin
   pages (reported by Samuel M. Stone). This also fixes confusing intermittent
   displays during the login (e.g. only some of the "Command and Control" icons
