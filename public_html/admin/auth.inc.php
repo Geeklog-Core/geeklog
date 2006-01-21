@@ -2,17 +2,17 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | auth.inc.php                                                              |
 // |                                                                           |
 // | Geeklog admin authentication module                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.28 2005/11/24 14:27:56 ospiess Exp $
+// $Id: auth.inc.php,v 1.29 2006/01/21 12:16:00 dhaun Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
@@ -41,8 +41,8 @@ if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
 
 // MAIN
 $uid = '';
-if (!empty($loginname) && !empty($passwd)) {
-    $status = SEC_authenticate($loginname, $passwd, $uid);
+if (!empty ($_POST['loginname']) && !empty ($_POST['passwd'])) {
+    $status = SEC_authenticate ($_POST['loginname'], $_POST['passwd'], $uid);
 } else {
     $status = '';
 }
@@ -88,7 +88,7 @@ if ($status == 3) {
     if (!empty($warn)) {
         $display .= $LANG20[02]
         .'<br><br>'
-        .COM_accessLog($LANG20[03] . ' ' . $loginname);
+        .COM_accessLog($LANG20[03] . ' ' . $_POST['loginname']);
     }
 
     $display .= '<form action="' . $_SERVER['PHP_SELF']
