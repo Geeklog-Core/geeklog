@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2005 by the following authors:                         |
+// | Copyright (C) 2003-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.29 2005/11/19 11:57:00 dhaun Exp $
+// $Id: lib-syndication.php,v 1.30 2006/01/21 12:18:37 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -643,7 +643,7 @@ function SYND_updateFeed( $fid )
             $feed->copyright = 'Copyright ' . strftime( '%Y' ) . ' '
                              . $_CONF['site_name'];
             $feed->sitecontact = $_CONF['site_mail'];
-            $feed->system = 'Geeklog ' . VERSION;
+            $feed->system = 'GeekLog';
 
             /* Gather any other stuff */
             $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $format[0], $format[1]);
