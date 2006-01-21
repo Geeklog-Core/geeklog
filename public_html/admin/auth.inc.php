@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.29 2006/01/21 12:16:00 dhaun Exp $
+// $Id: auth.inc.php,v 1.30 2006/01/21 13:32:34 dhaun Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
@@ -80,6 +80,8 @@ if ($status == 3) {
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
+    echo $display;
+    exit;
 } else if (!SEC_hasRights('story.edit,block.edit,topic.edit,event.edit,user.edit,plugin.edit,user.mail','OR') && (count (PLG_getAdminOptions()) == 0)) {
     $display .= COM_siteHeader();
 
@@ -111,7 +113,5 @@ if ($status == 3) {
         echo $display;
         exit;
 }
-
-echo $display;
 
 ?>
