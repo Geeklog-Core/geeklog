@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.22 2006/01/08 11:24:31 dhaun Exp $
+// $Id: lib-trackback.php,v 1.23 2006/01/25 09:01:07 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -593,7 +593,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
     fputs ($sock, 'Content-type: application/x-www-form-urlencoded; charset='
                   . $charset . "\r\n");
     fputs ($sock, 'Content-length: ' . strlen ($toSend) . "\r\n");
-    fputs ($sock, 'User-Agent: GeekLog ' . VERSION . "\r\n");
+    fputs ($sock, 'User-Agent: GeekLog/' . VERSION . "\r\n");
     fputs ($sock, "Connection: close\r\n\r\n");
     fputs ($sock, $toSend);
 

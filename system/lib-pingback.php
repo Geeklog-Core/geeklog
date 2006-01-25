@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.5 2005/06/06 19:24:11 dhaun Exp $
+// $Id: lib-pingback.php,v 1.6 2006/01/25 09:01:07 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -55,7 +55,7 @@ function PNB_getPingbackUrl ($url)
 
     $req =& new HTTP_Request ($url);
     $req->setMethod (HTTP_REQUEST_METHOD_HEAD);
-    $req->addHeader ('User-Agent', 'GeekLog ' . VERSION);
+    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
 
     $response = $req->sendRequest ();
     if (PEAR::isError ($response)) {
