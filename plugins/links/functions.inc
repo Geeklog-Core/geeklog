@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.48 2006/01/28 14:13:46 dhaun Exp $
+// $Id: functions.inc,v 1.49 2006/01/28 14:50:28 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -933,7 +933,9 @@ function plugin_submit_links()
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
     $linkform->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
-    $linkform->set_var('link_category_options', links_getCategoryList ());
+    $dummycategory = '';
+    $linkform->set_var('link_category_options',
+                       links_getCategoryList ($dummycategory));
     $linkform->set_var('lang_other', $LANG_LINKS_SUBMIT[4]);
     $linkform->set_var('lang_ifother', $LANG_LINKS_SUBMIT[5]);
     $linkform->set_var('lang_description', $LANG12[15]);
@@ -1118,7 +1120,7 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
 *       submissions.
 *
 */
-function links_getCategoryList (&$current_category = '')
+function links_getCategoryList (&$current_category)
 {
     global $_TABLES, $LANG_LINKS_ADMIN;
 
