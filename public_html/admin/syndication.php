@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2005 by the following authors:                         |
+// | Copyright (C) 2003-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.33 2005/12/22 14:39:46 ospiess Exp $
+// $Id: syndication.php,v 1.34 2006/01/28 12:26:34 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -446,7 +446,7 @@ function savefeed ($A)
             $A['language'] = $_CONF['locale'];
         }
     }
-    if ($A['content_length'] < 0) {
+    if (empty ($A['content_length']) || ($A['content_length'] < 0)) {
         $A['content_length'] = 0;
     }
 
