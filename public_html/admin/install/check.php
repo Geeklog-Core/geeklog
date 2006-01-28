@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | check.php                                                                 |
 // |                                                                           |
 // | Geeklog check installation script                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2005 by the following authors:                         |
+// | Copyright (C) 2002-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.7 2005/10/16 16:59:11 dhaun Exp $
+// $Id: check.php,v 1.8 2006/01/28 17:48:49 dhaun Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
@@ -41,7 +41,7 @@
 
 require_once ('../../lib-common.php');
 
-$numTests   = 5;  // total number of tests to perform
+$numTests   = 7;  // total number of tests to perform
 $successful = 0;  // number of successful tests
 $failed     = 0;  // number of failed tests
 $notTested  = 0;  // number of tests that were skipped (for disabled features)
@@ -86,11 +86,11 @@ if (!$errfile || !$accfile) {
     $successful++;
 }
 
-echo '<p>Testing <b>backend</b> directory ' . $_CONF['path_html'] . 'backend/ ...<br>' . LB;
+echo '<p>Testing <b>backend</b> directory ' . SYND_getFeedPath() . ' ...<br>' . LB;
 if ($_CONF['backend'] > 0) {
     if (!$file = @fopen ($_CONF['rdf_file'], 'w')) {
         echo '<font color="#ff0000">Could not open the RSS file ' . $_CONF['rdf_file'] . ' for writing.</font><br>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rss</b> file in that directory to <b>chmod 775</b>.' . LB;
-        $endPerms = sprintf ("%3o", @fileperms ($_CONF['path_html'] . 'backend/') & 0777);
+        $endPerms = sprintf ("%3o", @fileperms (SYND_getFeedPath()) & 0777);
         $rdfPerms = sprintf ("%3o", @fileperms ($_CONF['rdf_file']) & 0777);
         echo '<table cellspacing="0" cellpadding="0" border="0">' . LB;
         echo "<tr><td>Current permissions for <b>backend</b>:&nbsp;</td><td>$endPerms</td></tr>" . LB;
@@ -108,14 +108,14 @@ if ($_CONF['backend'] > 0) {
 }
 
 if ($_CONF['allow_user_photo'] > 0) {
-    echo '<p>Testing <b>userphotos</b> directory ' . $_CONF['path_html'] . 'images/userphotos/ ...<br>' . LB;
-    if (!$file = @fopen ($_CONF['path_html'] . 'images/userphotos/test.gif', 'w')) {
-        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/userphotos/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
-        echo 'Current permissions for <b>userphotos</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_html'] . 'images/userphotos/') & 0777);
+    echo '<p>Testing <b>userphotos</b> directory ' . $_CONF['path_images'] . 'userphotos/ ...<br>' . LB;
+    if (!$file = @fopen ($_CONF['path_images'] . 'userphotos/test.gif', 'w')) {
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'userphotos/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo 'Current permissions for <b>userphotos</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_images'] . 'userphotos/') & 0777);
         $failed++;
     } else {
         fclose ($file);
-        unlink ($_CONF['path_html'] . 'images/userphotos/test.gif');
+        unlink ($_CONF['path_images'] . 'userphotos/test.gif');
         echo '<b>userphotos</b> directory is okay.' . LB;
         $successful++;
     }
@@ -125,14 +125,14 @@ if ($_CONF['allow_user_photo'] > 0) {
 }
 
 if ($_CONF['maximagesperarticle'] > 0) {
-    echo '<p>Testing <b>articles</b> directory ' . $_CONF['path_html'] . 'images/articles/ ...<br>' . LB;
-    if (!$file = @fopen ($_CONF['path_html'] . 'images/articles/test.gif', 'w')) {
-        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/articles/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
-        echo 'Current permissions for <b>articles</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_html'] . 'images/articles/') & 0777);
+    echo '<p>Testing <b>articles</b> directory ' . $_CONF['path_images'] . 'articles/ ...<br>' . LB;
+    if (!$file = @fopen ($_CONF['path_images'] . 'articles/test.gif', 'w')) {
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'articles/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo 'Current permissions for <b>articles</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_images'] . 'articles/') & 0777);
         $failed++;
     } else {
         fclose ($file);
-        unlink ($_CONF['path_html'] . 'images/articles/test.gif');
+        unlink ($_CONF['path_images'] . 'articles/test.gif');
         echo '<b>articles</b> directory is okay.' . LB;
         $successful++;
     }
@@ -140,6 +140,20 @@ if ($_CONF['maximagesperarticle'] > 0) {
     echo '<p>Images in articles are disabled - <b>articles</b> directory not tested.' . LB;
     $notTested++;
 }
+
+echo '<p>Testing <b>topics</b> directory ' . $_CONF['path_images'] . 'topics/ ...<br>' . LB;
+if (!$file = @fopen ($_CONF['path_images'] . 'topics/test.gif', 'w')) {
+    echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'topics/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+    echo 'Current permissions for <b>topics</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_images'] . 'articles/') & 0777);
+    $failed++;
+} else {
+    fclose ($file);
+    unlink ($_CONF['path_images'] . 'topics/test.gif');
+    echo '<b>topics</b> directory is okay.' . LB;
+    $successful++;
+}
+
+/*
 
 if ($_CONF['pdf_enabled'] != 0) {
     echo '<p>Testing <b>pdfs</b> directory ' . $_CONF['path_pdf'] . ' ...<br>' . LB;
@@ -153,9 +167,28 @@ if ($_CONF['pdf_enabled'] != 0) {
         echo '<b>pdfs</b> directory is okay.' . LB;
         $successful++;
     }
-//} else {
-//    echo '<p>PDF support is disabled - <b>pdfs</b> directory not tested.' . LB;
-//    $notTested++;
+} else {
+    echo '<p>PDF support is disabled - <b>pdfs</b> directory not tested.' . LB;
+    $notTested++;
+}
+
+*/
+
+if ($_CONF['allow_mysqldump'] == 1) {
+    echo '<p>Testing <b>backups</b> directory ' . $_CONF['backup_path'] . ' ...<br>' . LB;
+    if (!$file = @fopen ($_CONF['backup_path'] . 'test.txt', 'w')) {
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['backup_path'] . '</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo 'Current permissions for <b>backups</b>: ' . sprintf ("%3o", @fileperms ($_CONF['backup_path']) & 0777);
+        $failed++;
+    } else {
+        fclose ($file);
+        unlink ($_CONF['backup_path'] . 'test.txt');
+        echo '<b>backups</b> directory is okay.' . LB;
+        $successful++;
+    }
+} else {
+    echo '<p>Database backups are disabled - <b>backups</b> directory not tested.' . LB;
+    $notTested++;
 }
 
 echo '<p>Testing <b>data</b> directory ' . $_CONF['path_data'] . ' ...<br>' . LB;
