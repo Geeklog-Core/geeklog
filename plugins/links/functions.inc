@@ -30,7 +30,7 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.47 2005/12/22 14:39:45 ospiess Exp $
+// $Id: functions.inc,v 1.48 2006/01/28 14:13:46 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -933,8 +933,7 @@ function plugin_submit_links()
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
     $linkform->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
-    $linkform->set_var('link_category_options',
-        COM_optionList($_TABLES['links'],'DISTINCT category,category', '', 0));
+    $linkform->set_var('link_category_options', links_getCategoryList ());
     $linkform->set_var('lang_other', $LANG_LINKS_SUBMIT[4]);
     $linkform->set_var('lang_ifother', $LANG_LINKS_SUBMIT[5]);
     $linkform->set_var('lang_description', $LANG12[15]);
@@ -1104,6 +1103,43 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                 break;
         }
     }
+    return $retval;
+}
+
+/**
+* Return a list of all link categories
+*
+* @param    string  $current_category   currently selected category
+* @return   string                      <option> list containing all categories
+*
+* Note: $current_category will be returned as an empty string when found in the
+*       current list of categories and left untouched when it's a new category,
+*       i.e. the user selected "Other". This is needed for moderating link
+*       submissions.
+*
+*/
+function links_getCategoryList (&$current_category = '')
+{
+    global $_TABLES, $LANG_LINKS_ADMIN;
+
+    $retval = '';
+
+    $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} GROUP BY category");
+    $nrows = DB_numRows($result);
+
+    $retval = '<option value="' . $LANG_LINKS_ADMIN[7] . '">'
+            . $LANG_LINKS_ADMIN[7] . '</option>';
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $category = $A['category'];
+        $retval .= '<option value="' . $category . '"';
+        if ($category == $current_category) {
+            $retval .= ' selected="selected"';
+            $current_category = '';
+        }
+        $retval .= '>' . $category . '</option>';
+    }
+
     return $retval;
 }
 

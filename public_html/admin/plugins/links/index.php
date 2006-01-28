@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog links administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.24 2005/12/22 14:39:46 ospiess Exp $
+// $Id: index.php,v 1.25 2006/01/28 14:13:48 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -154,25 +154,9 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('link_url', $A['url']);
     $link_templates->set_var('lang_includehttp', $LANG_LINKS_ADMIN[6]);
     $link_templates->set_var('lang_category', $LANG_LINKS_ADMIN[5]);
-    $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} GROUP BY category");
-    $nrows = DB_numRows($result);
-
     $othercategory = $A['category'];
-    $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">'
-           . $LANG_LINKS_ADMIN[7] . '</option>';
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $C = DB_fetchArray ($result);
-            $category = $C['category'];
-            $catdd .= '<option value="' . $category . '"';
-            if ($A['category'] == $category) {
-                $catdd .= ' selected="selected"';
-                $othercategory = '';
-            }
-            $catdd .= '>' . $category . '</option>';
-        }
-    }
-    $link_templates->set_var('category_options', $catdd); 
+    $link_templates->set_var('category_options',
+                             links_getCategoryList ($othercategory));
     $link_templates->set_var('lang_ifotherspecify', $LANG_LINKS_ADMIN[20]);
     $link_templates->set_var('category', $othercategory);
     $link_templates->set_var('lang_linkhits', $LANG_LINKS_ADMIN[8]);
