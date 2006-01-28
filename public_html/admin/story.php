@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.198 2006/01/08 19:25:57 dhaun Exp $
+// $Id: story.php,v 1.199 2006/01/28 18:59:46 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -624,11 +624,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     if ($A['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) {
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked3', 'checked="checked"');
+        $story_templates->set_var('showarchivedisabled', 'false');
     } elseif ($A['statuscode'] == STORY_DELETE_ON_EXPIRE) {
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked4', 'checked="checked"');
+        $story_templates->set_var('showarchivedisabled', 'false');
     } else {
-        $story_templates->set_var('showarchivedisabled', true);
+        $story_templates->set_var('showarchivedisabled', 'true');
     }
     $story_templates->set_var('lang_archivetitle', $LANG24[58]);
     $story_templates->set_var('lang_option', $LANG24[59]);
