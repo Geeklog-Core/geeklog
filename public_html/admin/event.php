@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | event.php                                                                 |
 // |                                                                           |
 // | Geeklog event administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.75 2005/12/22 14:39:46 ospiess Exp $
+// $Id: event.php,v 1.76 2006/01/28 12:16:28 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -74,7 +74,9 @@ function editevent ($mode, $A, $msg = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG10, $LANG12, $LANG22,
            $LANG30, $LANG_ACCESS, $_STATES, $LANG_ADMIN;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $retval = '';
 
     if (!empty ($msg)) {
@@ -171,10 +173,18 @@ function editevent ($mode, $A, $msg = '')
     $event_templates->set_var('lang_starttime', $LANG12[42]);
 
     // Combine date/time for easier manipulation
-    $A['datestart'] = $A['datestart'] . ' ' . $A['timestart'];
-    $start_stamp = strtotime($A['datestart']);
-    $A['dateend'] = $A['dateend'] . ' ' . $A['timeend'];
-    $end_stamp = strtotime($A['dateend']);
+    $A['datestart'] = trim ($A['datestart'] . ' ' . $A['timestart']);
+    if (empty ($A['datestart'])) {
+        $start_stamp = time ();
+    } else {
+        $start_stamp = strtotime ($A['datestart']);
+    }
+    $A['dateend'] = trim ($A['dateend'] . ' ' . $A['timeend']);
+    if (empty ($A['dateend'])) {
+        $end_stamp = time ();
+    } else {
+        $end_stamp = strtotime ($A['dateend']);
+    }
     $start_month = date('m', $start_stamp);
     $start_day = date('d', $start_stamp);
     $start_year = date('Y', $start_stamp);
