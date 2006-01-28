@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.54 2006/01/10 10:47:09 ospiess Exp $
+// $Id: lib-story.php,v 1.55 2006/01/28 15:58:40 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -194,7 +194,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
                         . '" src="' . $imageurl . '" alt="' . $topicname
                         . '" title="' . $topicname . '" border="0">';
             $article->set_var( 'story_anchortag_and_image', '<a href="'
-                    . $topicurl . '">' . $topicimage . '</a>' );
+                        . $topicurl . '" rel="category tag">' . $topicimage
+                        . '</a>' );
             $article->set_var( 'story_topic_image', $topicimage );
         }
     }
