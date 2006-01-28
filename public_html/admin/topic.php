@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.58 2005/12/28 10:11:50 dhaun Exp $
+// $Id: topic.php,v 1.59 2006/01/28 10:26:44 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -146,13 +146,20 @@ function edittopic ($tid = '')
     // show sort order only if they specified sortnum as the sort method
     if ($_CONF['sortmethod'] <> 'alpha') {
         $topic_templates->set_var('lang_sortorder', $LANG27[10]);
+        if ($A['sortnum'] == 0) {
+            $A['sortnum'] = '';
+        }
         $topic_templates->set_var('sort_order', '<input type="text" size="3" maxlength="3" name="sortnum" value="' . $A['sortnum'] . '">');
     } else {
         $topic_templates->set_var('lang_sortorder', $LANG27[14]);
         $topic_templates->set_var('sort_order', $LANG27[15]);
     }
     $topic_templates->set_var('lang_storiesperpage', $LANG27[11]);
-    $topic_templates->set_var('story_limit', $A['limitnews']);
+    if ($A['limitnews'] == 0) {
+        $topic_templates->set_var('story_limit', '');
+    } else {
+        $topic_templates->set_var('story_limit', $A['limitnews']);
+    }
     $topic_templates->set_var('default_limit', $_CONF['limitnews']);
     $topic_templates->set_var('lang_defaultis', $LANG27[16]);
     $topic_templates->set_var('lang_topicname', $LANG27[3]);
@@ -525,8 +532,8 @@ if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
     }
     $display .= savetopic (COM_applyFilter ($_POST['tid']), $_POST['topic'],
                            $imageurl,
-                           COM_applyFilter ($_POST['sortnum']),
-                           COM_applyFilter ($_POST['limitnews']),
+                           COM_applyFilter ($_POST['sortnum'], true),
+                           COM_applyFilter ($_POST['limitnews'], true),
                            COM_applyFilter ($_POST['owner_id'], true),
                            COM_applyFilter ($_POST['group_id'], true),
                            $_POST['perm_owner'], $_POST['perm_group'],
