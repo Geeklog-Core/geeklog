@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.89 2005/11/20 11:39:38 mjervis Exp $
+// $Id: lib-plugins.php,v 1.90 2006/01/29 19:42:18 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -149,6 +149,7 @@ function PLG_upgrade($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_upgrade_' . $type);
 }
+
 /**
 * Calls the plugin function to return the current version of code.
 * Used to indicate to admin if an update or upgrade is requied.
@@ -162,7 +163,6 @@ function PLG_chkVersion($type)
     return PLG_callFunctionForOnePlugin('plugin_chkVersion_' . $type);
 }
 
-
 /**
 * Tells a plugin to uninstall itself.
 *
@@ -172,7 +172,10 @@ function PLG_chkVersion($type)
 */
 function PLG_uninstall($type)
 {
-    if (empty($type)) return false;
+    if (empty($type)) {
+        return false;
+    }
+
     $retval = PLG_callFunctionForOnePlugin('plugin_uninstall_' . $type);
 
     if (empty($retval)) {
@@ -220,6 +223,7 @@ function PLG_getMenuItems()
             }
         }
     }
+
     return $menu;
 }
 
@@ -230,7 +234,8 @@ function PLG_getMenuItems()
  * @param   string  $type   Plugin to delete comment
  * @return  array   string of URL of view page, name of unique identifier
  */
-function PLG_getCommentUrlId($type) {
+function PLG_getCommentUrlId($type)
+{
     global $_CONF;
 
     $ret = PLG_callFunctionForOnePlugin('plugin_getcommenturlid_' . $type);
@@ -240,6 +245,7 @@ function PLG_getCommentUrlId($type) {
     if (empty($ret[1])) {
         $ret[1] = 'id';
     }
+
     return $ret;
 }
 
@@ -341,6 +347,7 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
             }
         }
     }
+
     return false;
 }
 
@@ -466,6 +473,7 @@ function PLG_supportsExpandedSearch($type)
     if (empty($retval) OR !is_bool($retval)) {
         $retval = false;
     }
+
     return $retval;
 }
 
@@ -503,6 +511,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
             $search_results[] = $plugin_result;
         } // no else because implementation of this API function not required
     }
+
     return array($nrows_plugins, $total_plugins, $search_results);
 }
 
@@ -524,6 +533,7 @@ function PLG_getSubmissionCount()
             $num = $num + $function();
         }
     }
+
     return $num;
 }
 
@@ -612,9 +622,7 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 */
 function PLG_getCCOptions()
 {
-    global $_PLUGINS;
-
-    $var_names = array("adminlabel", "adminurl", "plugin_image");
+    $var_names = array('adminlabel', 'adminurl', 'plugin_image');
     $required_names = array(true, true, true);
     $function_name = 'plugin_cclabel_';
     $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
@@ -640,9 +648,7 @@ function PLG_getCCOptions()
 */
 function PLG_getAdminOptions()
 {
-    global $_PLUGINS;
-
-    $var_names = array("adminlabel", "adminurl", "numsubmissions");
+    $var_names = array('adminlabel', 'adminurl', 'numsubmissions');
     $required_names = array(true, true, false);
     $function_name = 'plugin_getadminoption_';
     $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
@@ -1037,9 +1043,11 @@ function PLG_profileExtrasSave ($plugin = '')
 }
 
 /**
-* This function can be called to check if an plugin wants to set a template variable
+* This function can be called to check if an plugin wants to set a template
+* variable
 * Example in COM_siteHeader, the API call is now added
-* A plugin can now check for templatename == 'header' and then set additional template variables
+* A plugin can now check for templatename == 'header' and then set additional 
+* template variables
 *
 * @param   string   $templatename     Name of calling template - used as test in plugin function
 * @param   ref      $template         reference for the Template
@@ -1062,8 +1070,9 @@ function PLG_templateSetVars ($templatename, &$template)
 }
 
 /**
-* This function is called from COM_siteHeader and will return additional Header information
-* This can be Javascript functions required for the plugin or extra Metatags
+* This function is called from COM_siteHeader and will return additional header
+* information. This can be used for JavaScript functions required for the plugin
+* or extra Metatags
 *
 * @return   string      returns a concatenated string of all plugins extra header code
 */
@@ -1135,7 +1144,7 @@ function PLG_collectTags ()
 */
 function PLG_replaceTags ($content, $plugin = '')
 {
-    global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
+    global $_CONF, $_TABLES, $LANG32;
 
     if (isset ($_CONF['disable_autolinks']) && ($_CONF['disable_autolinks'] == 1)) {
         // autolinks are disabled - return $content unchanged
@@ -1340,6 +1349,7 @@ function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data, $feedType, $
 function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feedVersion)
 {
     global $_PLUGINS;
+
     $extensions = array();
     foreach( $_PLUGINS as $plugin )
     {
@@ -1363,6 +1373,7 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
 function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion)
 {
     global $_PLUGINS;
+
     $namespaces = array();
     foreach( $_PLUGINS as $plugin )
     {
@@ -1386,6 +1397,7 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion)
 function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion)
 {
     global $_PLUGINS;
+
     $tags = array();
     foreach( $_PLUGINS as $plugin )
     {
@@ -1499,6 +1511,7 @@ function PLG_checkforSpam($content, $action = -1)
             }
         }
     }
+
     return false;
 }
 
@@ -1520,8 +1533,6 @@ function PLG_checkforSpam($content, $action = -1)
 * returned in the order they are listed in $what. Properties that are not
 * available should return an empty string.
 * Return false for errors (e.g. access denied, item does not exist, etc.).
-*
-* Note: This API function has not been finalized yet ...
 *
 */
 function PLG_getItemInfo ($type, $id, $what)
@@ -1554,8 +1565,6 @@ function PLG_getItemInfo ($type, $id, $what)
 *                 returns: the item's ID for accept, false for reject
 * 'delete'      - is the current user allowed to delete item with ID $id?
 *                 returns: true for accept, false for reject
-*
-* Note: This API function has not been finalized yet ...
 *
 */
 function PLG_handlePingComment ($type, $id, $operation)
@@ -1604,8 +1613,6 @@ function PLG_runScheduledTask ()
 * @param    string  $type   type of the item, e.g. 'article'
 * @returns  mixed           Boolean false for "no error", or an error msg text
 *
-* Note: This API function has not been finalized yet ...
-*
 */
 function PLG_itemSaved ($id, $type)
 {
@@ -1636,7 +1643,7 @@ function PLG_itemSaved ($id, $type)
 }
 
 /**
-* gets Geeklog blocks from plugin's
+* Gets Geeklog blocks from plugins
 *
 * Returns data for blocks on a given side and, potentially, for
 * a given topic.
@@ -1673,6 +1680,7 @@ function PLG_getBlocks( $side, $topic='')
        }
     }
     */
+
     return $ret;
 }
 
@@ -1708,7 +1716,7 @@ function PLG_getIcon ($type)
         }
     }
 
-    // lastly, search for the icon (assuming it's GIF)
+    // lastly, search for the icon (assuming it's a GIF)
     if (empty ($retval)) {
         $icon = $_CONF['site_url'] . '/' . $type . '/images/' . $type . '.gif';
         $fh = @fopen ($icon, 'r');
