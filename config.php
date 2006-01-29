@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.206 2006/01/06 19:55:36 dhaun Exp $
+// $Id: config.php,v 1.207 2006/01/29 20:03:10 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -598,7 +598,7 @@ $_CONF['syndication_max_headlines'] = 0;
 
 // Uncomment the following line to set the copyright year in the site's footer
 // to a specific year. Otherwise, the current year will be used.
-// $_CONF['copyrightyear'] = '2005';
+// $_CONF['copyrightyear'] = '2006';
 
 
 // Optional Image Settings
@@ -808,7 +808,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.4.0rc2');
+    define('VERSION', '1.4.0');
 }
 
 $_STATES = array(
