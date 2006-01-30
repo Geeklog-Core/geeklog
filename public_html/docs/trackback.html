@@ -31,11 +31,6 @@ E.g. Mary posts something on her blog. Peter reads that, makes a post about Mary
 <p>For more information, please consult Wikipedia on <a href="http://en.wikipedia.org/wiki/Trackback">TrackBack</a> and <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>. You can also spend some time reading up on <a href="http://en.wikipedia.org/wiki/Weblog">Weblog</a>s in general there ...</p>
 
 
-<h2>Disabling Trackbacks</h2>
-
-<p>Since these functions may not be needed on certain sites (e.g. corporate sites), they can be switched off individually in <a href="config.html#desc_trackback_enabled">config.php</a>.</p>
-
-
 <h2><a name="usage">Usage</a></h2>
 
 <p>To pick up the above example, here's how trackback, etc. work: Assume you're Peter and just read a post on Mary's blog about her little lamb. Say that post has the URL <tt>http://www.example.com/article.php/little-lamb</tt>.</p>
@@ -45,7 +40,8 @@ E.g. Mary posts something on her blog. Peter reads that, makes a post about Mary
 I just read that Mary &lt;a href="http://www.example.com/article.php/little-lamb"&gt;has
 a little lamb&lt;/a&gt;. Hope she posts some pictures soon!
 </pre>
-<p>After saving that story, there is an option "send ping" in the Admin's list of stories (last column). Clicking on the link presents you with a list of options: Send Pingback, Send Ping, Send Trackback (some of those may have been disabled and not show up, of course - see above).</p>
+<p>After saving that story, there is an option "send ping" in the Admin's list of stories (last column). Clicking on the link presents you with a list of options: Send Pingback, Send Ping, Send Trackback (some of those may have been disabled and not show up - <a href="#disable" title="How to disable Trackbacks">see
+below</a>).</p>
 
 <h3><a name="pingback">Pingback</a></h3>
 
@@ -53,8 +49,8 @@ a little lamb&lt;/a&gt;. Hope she posts some pictures soon!
 
 <h3><a name="trackback">Trackback</a></h3>
 
-<p><small>(We're skipping sending Pings for the moment - <a
-href="#ping">see below</a>)</small></p>
+<p><small>(We're skipping sending Pings for the moment - <a href="#ping"
+title="Jump to the explanation of Pings">see below</a>)</small></p>
 
 <p>A Trackback can only be sent to one site, so you are now presented with a list of all the links in your story and have to choose which site should receive the trackback. Geeklog will then check if the site accepts trackbacks and try to determine the actual trackback URL to send the Trackback to.</p>
 
@@ -79,13 +75,38 @@ href="#ping">see below</a>)</small></p>
 
 <h2><a name="ping">Ping</a></h2>
 
-<p>Pings are meant to be sent to certain websites that keep track of blog posts. Geeklog comes pre-configured for pinging <a href="http://pingomatic.com/">Ping-o-Matic</a>, a service that in turn will ping other services (see their site for <a href="http://pingomatic.com/about/">details</a>). You can easily add others or delete / disable the existing entry (from the Admin's "Trackback" entry).</p>
+<p>Pings are meant to be sent to certain websites that keep track of blog posts. Geeklog comes pre-configured for pinging <a href="http://pingomatic.com/">Ping-o-Matic</a>, a service that in turn will ping other services (see their site for details). You can easily add others or delete / disable the existing entry (from the Admin's "Trackback" entry).</p>
 
 <p>Weblog directory services will usually accept either a standard or an extended ping. The difference is that the "extended" Ping will also include a link to your site's feed (RSS, Atom, or whatever you chose).</p>
 
 <p>When you click on the "Send Ping" button for a story, all currently enabled weblog directories will be notified automatically.</p>
 
 <p>Pinging a weblog directory service will also <a href="http://www.google.com/help/about_blogsearch.html#getlisted">ensure</a> that your site is included in Google's <a href="http://blogsearch.google.com/">blog search</a>.</p>
+
+
+<h2><a name="disable">Disabling Trackbacks</a></h2>
+
+<p>Since these functions may not be needed on certain sites (e.g. corporate sites), they can be switched off individually in <a href="config.html#desc_trackback_enabled">config.php</a>.</p>
+
+<p>Note that "Trackback" is sometimes used as a generic term for both trackbacks
+and pingbacks. So when you disable trackbacks but leave pingbacks enabled, you
+will still see references to "Trackback" in a few places.</p>
+
+<p>Only when all three, i.e. trackbacks, pingbacks, and pings are disabled will
+the "Trackback" entry vanish from the Admins Only block. At that point, the
+only reference to trackbacks that you'll still see is the drop-down menu entry
+in the Admin's story editor (to enable/disable trackbacks on a per-story basis).
+But its setting is overridden by the <tt>config.php</tt> entries, so it can be
+ignores.</p>
+
+
+<h2>Further reading</h2>
+
+<p>Also see the following two articles on the Geeklog homepage:</p>
+<ul>
+<li><a href="http://www.geeklog.net/article.php/trackback-pingback">Trackback and Pingback in Geeklog 1.4</a></li>
+<li><a href="http://www.geeklog.net/article.php/ping">Sending a Ping in Geeklog 1.4</a></li>
+</ul>
 
 
 <table border="0" width="100%" class="footer">
