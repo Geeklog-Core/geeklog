@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.58 2006/01/06 10:24:48 dhaun Exp $
+// $Id: index.php,v 1.59 2006/01/30 14:50:14 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -234,7 +234,7 @@ function form ($A, $error = false)
         $sp_template->set_var ('php_type', 'hidden');
 
         if ($A['sp_nf'] == 1) {
-            $sp_template->set_var('exit_checked','checked');
+            $sp_template->set_var('exit_checked','checked="checked"');
         } else {
             $sp_template->set_var('exit_checked','');
         }
@@ -242,7 +242,7 @@ function form ($A, $error = false)
         $sp_template->set_var('exit_info',$LANG_STATIC['exit_info']);
 
         if ($A['sp_inblock'] == 1) {
-            $sp_template->set_var ('inblock_checked', 'checked');
+            $sp_template->set_var ('inblock_checked', 'checked="checked"');
         } else {
             $sp_template->set_var ('inblock_checked', '');
         }

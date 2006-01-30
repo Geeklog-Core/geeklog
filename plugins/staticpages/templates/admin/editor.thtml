@@ -62,7 +62,7 @@
           </tr>
           <tr>
               <td align="right" valign="top">{inblock_msg}</td>
-              <td valign="top"><input type="checkbox" name="sp_inblock" value="1" {inblock_checked}>&nbsp;&nbsp;{inblock_info}</td>
+              <td valign="top"><input type="checkbox" name="sp_inblock" {inblock_checked}>&nbsp;&nbsp;{inblock_info}</td>
           </tr>
           <tr>
               <td align="right" valign="top">{php_msg}</td>
@@ -70,7 +70,7 @@
           </tr>
           <tr>
               <td align="right" valign="top">{exit_msg}</td>
-              <td valign="top"><input type="checkbox" name="sp_nf" value="1" {exit_checked}>&nbsp;&nbsp;{exit_info}</td>
+              <td valign="top"><input type="checkbox" name="sp_nf" {exit_checked}>&nbsp;&nbsp;{exit_info}</td>
           </tr>
           <tr>
               <td colspan="2"><hr></td>

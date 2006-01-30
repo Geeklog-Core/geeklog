@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.62 2005/12/22 18:50:33 ospiess Exp $
+// $Id: functions.inc,v 1.63 2006/01/30 14:50:14 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -773,7 +773,10 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
             break;
         case "sp_title":
             $sp_title = stripslashes ($A['sp_title']);
-            $retval = "<a href=\"{$_CONF['site_url']}/staticpages/index.php?page={$A['sp_id']}\" title=\"{$LANG_STATIC['title_display']}\">$sp_title</a>";
+            $url = COM_buildUrl ($_CONF['site_url'] .
+                                 '/staticpages/index.php?page=' . $A['sp_id']);
+            $retval = '<a href="' . $url . '" title="'
+                    . $LANG_STATIC['title_display'] . '">' . $sp_title . '</a>';
             break;
         case "sp_uid":
             $nresult = DB_query ("SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = {$A['sp_uid']}");
