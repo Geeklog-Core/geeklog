@@ -2,7 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.0)
 ------------
-
+- Fixed another bug in google pagination of admin-lists [Oliver]
 - Fixed "wrap static page in a block" and "exit type" options in the static
   page editor. Also link to the "rewritten" URL from the list of static pages
   when URL rewriting is on [Dirk]

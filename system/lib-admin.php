@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.44 2006/01/19 19:50:09 ospiess Exp $
+// $Id: lib-admin.php,v 1.45 2006/01/31 19:43:17 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -195,8 +195,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
     $curpage = 1;
     $page = "";
-    if (isset ($_REQUEST['page'])) {
-        $page = COM_applyFilter ($_GET['page'], true);
+    if (isset ($_REQUEST[$component . 'listpage'])) {
+        $page = COM_applyFilter ($_GET[$component . 'listpage'], true);
         $curpage = $page;
     }
     if ($curpage <= 0) {
@@ -427,7 +427,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         }
 
         if ($num_pages > 1) { # print actual google-paging
-            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'listpage'));
+            $admin_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages, $component . 'listpage='));
         } else {
             $admin_templates->set_var('google_paging', '');
         }
@@ -776,7 +776,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/plugins.php\" method=\"POST\">"
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/plugins.php\" method=\"post\">"
                      ."<input type=\"checkbox\" name=\"pluginenable\" onclick=\"submit()\" value=\"{$A['pi_name']}\" $switch>"
                      ."<input type=\"hidden\" name=\"pluginChange\" value=\"{$A['pi_name']}\">"
                      ."</form>";
