@@ -196,6 +196,19 @@ may want to convert those icons to normal transparency or simply set the
 background to that of your theme).</p>
 
 
+<h3>Advanced editor</h3>
+
+<p>To use the included advanced editor (FCKeditor) you will need the following
+new template files:</p>
+<ul>
+<li><tt>comment/commentform_advanced.thtml</tt> (for comments)</li>
+<li><tt>submit/submitstory_advanced.thtml</tt> (for story submissions)</li>
+<li><tt>admin/story/storyeditor_advanced.thtml</tt> (Admin's story editor)</li>
+<li><tt>staticpages/templates/admin/editor_advanced.thtml</tt> (for the Static
+    Pages editor, located in <tt>/path/to/geeklog/plugins</tt>)</li>
+<li><tt>advanced_editor_header.thtml</tt> (included by all of the above)</li>
+</ul>
+
 <h3>Other changes</h3>
 
 <ul>
@@ -229,6 +242,10 @@ background to that of your theme).</p>
     a story's trackbacks section to your story template files, e.g.
     <code>{start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}</code>. See the Professional theme's story template files for
     examples.</li>
+<li>For the site statistics, the file <tt>stats/sitestatistics.thtml</tt> has
+    changed (entries for the links and poll have been removed and a new entry
+    for the number of active users has been added). There is also a new file,
+    <tt>stats/singlesummary.thtml</tt>, that is used for plugin entries.</li>
 </ul>
 
 
