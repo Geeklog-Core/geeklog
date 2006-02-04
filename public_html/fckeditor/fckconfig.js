@@ -38,6 +38,7 @@ FCKConfig.ProtectedSource.Add( /<script[\s\S]*?\/script>/gi ) ;	// <SCRIPT> tags
 // FCKConfig.ProtectedSource.Add( /<%[\s\S]*?%>/g ) ;	// ASP style server side code <%...%>
 // FCKConfig.ProtectedSource.Add( /<\?[\s\S]*?\?>/g ) ;	// PHP style server side code <?...?>
 // FCKConfig.ProtectedSource.Add( /(<asp:[^\>]+>[\s|\S]*?<\/asp:[^\>]+>)|(<asp:[^\>]+\/>)/gi ) ;	// ASP.Net style tags <asp:control>
+
 FCKConfig.AutoDetectLanguage    = true ;
 FCKConfig.DefaultLanguage        = 'en' ;
 FCKConfig.ContentLangDirection    = 'ltr' ;
@@ -55,8 +56,10 @@ FCKConfig.FormatSource        = true ;
 FCKConfig.FormatOutput        = true ;
 FCKConfig.FormatIndentator    = '    ' ;
 
-FCKConfig.ForceStrongEm = true ;
-FCKConfig.GeckoUseSPAN    = true ;
+// Determine how Bold and Italic emphasis are treated - what html format to use.
+FCKConfig.ForceStrongEm = false ;   // Setting of True use <strong> else <b> tag
+FCKConfig.GeckoUseSPAN  = false ;   // Setting of True use <span> tags
+
 FCKConfig.StartupFocus    = true ;
 FCKConfig.ForcePasteAsPlainText    = false ;
 FCKConfig.AutoDetectPasteFromWord = true ;	// IE only.
