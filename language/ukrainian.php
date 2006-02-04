@@ -775,16 +775,16 @@ $LANG24 = array(
     73 => 'Розширена панель',
     74 => 'Розширена панель II',
     75 => 'Всі можливості',
-    76 => 'Publish Options',
-    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
-    79 => 'Preview',
-    80 => 'Editor',
-    81 => 'Publish Options',
-    82 => 'Images',
-    83 => 'Archive Options',
-    84 => 'Permissions',
-    85 => 'Show All'
+    76 => 'Опції публікації',
+    77 => 'Для роботи Розширеного Редактора потрібно дозволити виконання Javascript. Цю опцію можна відключити у файлі config.php',
+    78 => 'Натисніть <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">тут</a>, щоб використовувати звичайний редактор',
+    79 => 'Перегляд',
+    80 => 'Редактор',
+    81 => 'Опції публікації',
+    82 => 'Зображення',
+    83 => 'Опції архівування',
+    84 => 'Права доступу',
+    85 => 'Показати все'
 );
 
 ###############################################################################
