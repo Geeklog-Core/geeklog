@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.511 2006/01/25 09:01:06 dhaun Exp $
+// $Id: lib-common.php,v 1.512 2006/02/04 18:16:10 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3196,6 +3196,7 @@ function COM_formatBlock( $A, $noboxes = false )
     if( !empty( $A['content'] ) && !$_USER['noboxes'] )
     {
         $blockcontent = stripslashes( $A['content'] );
+        $blockcontent = str_replace( array( '<?', '?>' ), '', $blockcontent );
 
         // Hack: If the block content starts with a '<' assume it
         // contains HTML and do not call nl2br() which would only add
