@@ -1,44 +1,40 @@
 GeekLog History/Changes:
 
-??? ??, 2006 (1.4.0)
+Feb 5, 2006 (1.4.0)
 ------------
+
+- Prevent execution of PHP code in "normal" blocks [Dirk]
+- Added missing navbar images - used for CSS based buttons as part of the
+  standard Plugin CSS [Blaine]
+- Set options in FCKConfig to have Firefox browsers by default not using the
+  <span> and font tags to format Bold and Italic [Blaine]
 - Fixed another bug in google pagination of admin-lists [Oliver]
 - Fixed "wrap static page in a block" and "exit type" options in the static
   page editor. Also link to the "rewritten" URL from the list of static pages
   when URL rewriting is on [Dirk]
-  (plugins/staticpages/templates/admin/editor.thtml and editor_advanced.thtml,
-  plugins/staticpages/functions.inc, admin/plugins/staticpages/index.php)
 - Fixed JavaScript error in the Admin's story editor (bug #479) [Dirk]
-  (admin/story.php, layout/professional/admin/story/storyeditor.thtml,
-  layout/professional/admin/story/storyeditor_advanced.thtml)
 - Fixed hard-coded paths in the check.php script and added tests for missing
   directories (reported by Markus Wollschlaeger) [Dirk]
-  (admin/install/check.php)
 - A humble attempt to add some semantics [Dirk]
   + Added rel="category tag" to a story's topic link
-    (system/lib-story.php)
   + Added rel="self bookmark" for a comment's permalink
-    (layout/professional/comment/comment.thtml)
 - Cosmetics: Moved the number of links per category out of the actual link to
   the category [Dirk]
-  (plugins/links/templates/categorycol.thtml)
 - On MySQL 5, the drop-down list of link categories presented to a user when
   submitting a new link came out wrong (while the one in the Admin's link
   editor worked just fine). Moved the working code into a new function in the
   plugin's functions.inc and changed the code to use it in both cases now [Dirk]
-  (plugins/links/functions.inc, admin/plugins/links/index.php)
 - Fixed an SQL error when the "length of entries" field in the Feed Editor was
   left empty [Dirk]
-  (admin/syndication.php)
 - Fixed date and time defaulting to the current date and time when creating
   a new event as an Admin user (adding a workaround for changes of strtotime()
   behavior in PHP 5) [Dirk]
-  (admin/event.php)
 - Fixed SQL error on MySQL 5 when creating a new topic (bug #517) [Dirk]
-  (admin/topic.php)
 - In HTTP requests, format the user agent string according to the RFCs 1945 /
   2068 / 2616, i.e. "Geeklog/1.4.0" [Dirk]
-  (lib-common.php, lib-pingback.php, lib-trackback.php)
+
+- Updated Japanese language files, provided by Yusuke Sakata
+- Updated Ukrainian (Windows-1251) language file, provided by Vitaliy Biliyenko
 
 
 Jan 22, 2006 (1.4.0rc2)
