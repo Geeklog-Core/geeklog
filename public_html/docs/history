@@ -1,5 +1,10 @@
 GeekLog History/Changes:
 
+(1.4.x)
+------------
+- Added all UTF-8 Language files for core [Oliver]
+- Fixed Story [page-break] showing only intro on first page [Oliver]
+
 Feb 5, 2006 (1.4.0)
 ------------
 
