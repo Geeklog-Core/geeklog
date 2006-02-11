@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 (1.4.x)
 ------------
+- Fixed Static pages dutch language file [Oliver]
+- Fixed bug in page-break combined with url rewrite [Oliver]
 - Added all UTF-8 Language files for core [Oliver]
 - Fixed Story [page-break] showing only intro on first page [Oliver]
 
