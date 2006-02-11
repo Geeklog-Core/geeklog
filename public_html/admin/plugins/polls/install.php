@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.7 2006/01/11 19:41:42 dhaun Exp $
+// $Id: install.php,v 1.8 2006/02/11 10:21:06 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -153,7 +153,9 @@ function plugin_install_now()
 
     // Create the plugin's table(s)
     $_SQL = array ();
-    require_once ($base_path . 'sql/install.php');
+    if (file_exists ($base_path . 'sql/install.php')) {
+        require_once ($base_path . 'sql/install.php');
+    }
 
     foreach ($_SQL as $sql) {
         $sql = str_replace ('#group#', $admin_group_id, $sql);
