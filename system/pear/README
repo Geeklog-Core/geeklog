@@ -13,4 +13,8 @@ Currently, Geeklog uses the following PEAR packages:
 - Net_SMTP
 - Net_Socket
 - Net_URL
+- PHP_Compat
+- XML_RPC
 
+The Archive and Console packages are included as they are used by the base PEAR
+package (e.g. when you try to update PEAR) but are not used by Geeklog itself.
