@@ -292,7 +292,7 @@ $LANG04 = array(
     63 => "Dein Passwort sollte in Kürze per E-Mail eintreffen. Bitte beachte die Hinweise in der E-Mail und Danke für Dein Interesse an {$_CONF['site_name']}",
     64 => 'Kommentar-Einstellungen für',
     65 => 'Bitte noch einmal versuchen, Dich anzumelden',
-    66 => "Hast Du Dich vertippt? Bitte versuch noch einmal, Dich hier anzumelden. Oder möchtest Du Dich <a href=\"{$_CONF['site_url']}/users.php?mode=new\">als neuer User registrieren</a>?",
+    66 => "Hast Du Dich vertippt? Bitte versuch noch einmal, Dich hier anzumelden.",
     67 => 'Mitglied seit',
     68 => 'Angemeldet für',
     69 => 'Wie lange soll das System Dich nach dem Anmelden erkennen?',
@@ -357,7 +357,7 @@ $LANG04 = array(
 
 $LANG05 = array(
     1 => 'Keine Artikel',
-    2 => 'Es gibt keine Artikel, die angezeigt werden könnten. Entweder gibt es für diese Kategorie keine Artikel oder Deine Einstellungen sind zu restriktiv',
+    2 => 'Es gibt keine Artikel, die angezeigt werden könnten. Entweder gibt es für diese Kategorie keine Artikel oder Deine Einstellungen sind zu restriktiv.',
     3 => ' für die Kategorie %s.',
     4 => 'Hauptartikel',
     5 => 'weiter',

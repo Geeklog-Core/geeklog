@@ -102,7 +102,7 @@ $LANG01 = array(
     55 => 'Fehler in',
     56 => 'Abstimmen',
     57 => 'Passwort',
-    58 => 'Log-In',
+    58 => 'Anmelden',
     59 => "Melden Sie sich jetzt als <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User</a> an.",
     60 => 'Kommentar schreiben',
     61 => 'Neuen Account anlegen',
@@ -293,7 +293,7 @@ $LANG04 = array(
     63 => "Ihr Passwort sollte in Kürze per E-Mail eintreffen. Bitte beachten Sie die Hinweise in der E-Mail und Danke für Ihr Interesse an {$_CONF['site_name']}",
     64 => 'Kommentar-Einstellungen für',
     65 => 'Bitte noch einmal versuchen, sich anzumelden',
-    66 => "Haben Sie sich vertippt? Bitte versuchen Sie noch einmal, sich hier anzumelden. Oder möchten Sie sich <a href=\"{$_CONF['site_url']}/users.php?mode=new\">als neuer User registrieren</a>?",
+    66 => "Haben Sie sich vertippt? Bitte versuchen Sie noch einmal, sich hier anzumelden.",
     67 => 'Mitglied seit',
     68 => 'Angemeldet für',
     69 => 'Wie lange soll das System Sie nach dem Anmelden erkennen?',
@@ -358,7 +358,7 @@ $LANG04 = array(
 
 $LANG05 = array(
     1 => 'Keine Artikel',
-    2 => 'Es gibt keine Artikel, die angezeigt werden könnten. Entweder gibt es für diese Kategorie keine Artikel oder Ihre Einstellungen sind zu restriktiv',
+    2 => 'Es gibt keine Artikel, die angezeigt werden könnten. Entweder gibt es für diese Kategorie keine Artikel oder Ihre Einstellungen sind zu restriktiv.',
     3 => ' für die Kategorie %s.',
     4 => 'Hauptartikel',
     5 => 'weiter',
