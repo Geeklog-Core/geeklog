@@ -1,11 +1,21 @@
 GeekLog History/Changes:
 
-(1.4.x)
+??? ??, 2006 (1.4.1)
 ------------
-- Fixed Static pages dutch language file [Oliver]
+
 - Fixed bug in page-break combined with url rewrite [Oliver]
-- Added all UTF-8 Language files for core [Oliver]
 - Fixed Story [page-break] showing only intro on first page [Oliver]
+- Fixed install script for the Spam-X plugin (was trying to include an SQL file
+  that doesn't exist - and wasn't needed) [Dirk]
+
+- New Russian language files for the Links and Polls plugins, provided by
+  Volodymyr V. Prokurashko
+- Fixed Static pages dutch language file [Oliver]
+- New Polish language file for the Links plugin, provided by Robert Stadnik
+- Added UTF-8 English versions of the Links, Polls, Static Pages, and Spam-X
+  language files [Dirk]
+- Added all UTF-8 Language files for core [Oliver]
+
 
 Feb 5, 2006 (1.4.0)
 ------------
