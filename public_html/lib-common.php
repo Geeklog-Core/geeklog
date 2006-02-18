@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.513 2006/02/11 21:19:36 ospiess Exp $
+// $Id: lib-common.php,v 1.514 2006/02/18 14:18:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -242,20 +242,28 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 // way if user logged in and set theme and then logged out we would still know
 // which theme to show them.
 
-if( !empty( $_POST['usetheme'] ) && is_dir( $_CONF['path_themes']
-        . $_POST['usetheme'] ))
+$usetheme = '';
+if( isset( $_POST['usetheme'] ))
 {
-    $_CONF['theme'] = $_POST['usetheme'];
+    $usetheme = preg_replace( '/[^a-zA-Z0-9\-_\.]/', '', $_POST['usetheme'] );
+    $usetheme = str_replace( '..', '', $usetheme );
+}
+if( !empty( $usetheme ) && is_dir( $_CONF['path_themes'] . $usetheme ))
+{
+    $_CONF['theme'] = $usetheme;
     $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
     $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 }
 else if( $_CONF['allow_user_themes'] == 1 )
 {
-    if( isset( $_COOKIE[$_CONF['cookie_theme']]) && empty($_USER['theme'] ))
+    if( isset( $_COOKIE[$_CONF['cookie_theme']] ) && empty( $_USER['theme'] ))
     {
-        if( is_dir( $_CONF['path_themes'] . $_COOKIE[$_CONF['cookie_theme']] ))
+        $theme = preg_replace( '/[^a-zA-Z0-9\-_\.]/', '',
+                               $_COOKIE[$_CONF['cookie_theme']] );
+        $theme = str_replace( '..', '', $theme );
+        if( is_dir( $_CONF['path_themes'] . $theme ))
         {
-            $_USER['theme'] = $_COOKIE[$_CONF['cookie_theme']];
+            $_USER['theme'] = $theme;
         }
     }
 
@@ -295,12 +303,14 @@ if( empty( $_IMAGE_TYPE ))
 
 // Similarly set language
 
-if( isset( $_COOKIE[$_CONF['cookie_language']]) && empty( $_USER['language'] ))
+if( isset( $_COOKIE[$_CONF['cookie_language']] ) && empty( $_USER['language'] ))
 {
-    if( is_file( $_CONF['path_language'] . $_COOKIE[$_CONF['cookie_language']] . '.php' ))
+    $language = preg_replace( '/[^a-z0-9\-_]/', '',
+                              $_COOKIE[$_CONF['cookie_language']] );
+    if( is_file( $_CONF['path_language'] . $language . '.php' ))
     {
-        $_USER['language'] = $_COOKIE[$_CONF['cookie_language']];
-        $_CONF['language'] = $_COOKIE[$_CONF['cookie_language']];
+        $_USER['language'] = $language;
+        $_CONF['language'] = $language;
     }
 }
 else if( !empty( $_USER['language'] ))
@@ -3034,7 +3044,7 @@ function COM_showBlock( $name, $help='', $title='' )
 
 function COM_showBlocks( $side, $topic='', $name='all' )
 {
-      global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
 
     $retval = '';
 
@@ -3056,12 +3066,12 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     if( $side == 'left' )
     {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date "
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date "
               ."FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1";
     }
     else
     {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date "
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date "
               ."FROM {$_TABLES['blocks']} WHERE onleft = 0 AND is_enabled = 1";
     }
 
