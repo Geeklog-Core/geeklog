@@ -1,13 +1,22 @@
 GeekLog History/Changes:
 
-??? ??, 2006 (1.4.1)
+Feb 19, 2006 (1.4.0sr1)
 ------------
 
-- Fixed bug in page-break combined with url rewrite [Oliver]
-- Fixed Story [page-break] showing only intro on first page [Oliver]
-- Fixed install script for the Spam-X plugin (was trying to include an SQL file
-  that doesn't exist - and wasn't needed) [Dirk]
+Security issues:
 
+- James Bercegay of GulfTech Security Research reported several issues with
+  Geeklog's cookie handling that made it vulnerable to SQL injections, arbitrary
+  file access, and even injection and execution of arbitrary code.
+
+Bugfixes:
+
+- Fixed bug in page-break combined with url rewrite (bug #521) [Oliver]
+- Fixed Story [page_break] showing only intro on first page [Oliver]
+- Fixed install script for the Spam-X plugin which was trying to include an SQL
+  file that doesn't exist - and wasn't needed (part of bug #520) [Dirk]
+
+- Updated Hebrew language file, provided by LWC
 - New Russian language files for the Links and Polls plugins, provided by
   Volodymyr V. Prokurashko
 - Fixed Static pages dutch language file [Oliver]
@@ -431,6 +440,17 @@ Spam-X plugin 1.0.3
 - Added a Mass Delete module for Trackback comments [Dirk]
 - Added an "admin override" option, so that postings by members of the 'spamx
   Admin' group will not be checked for spam [Dirk]
+
+
+Feb 19, 2006 (1.3.11sr4)
+------------
+
+Security issues:
+
+- James Bercegay of GulfTech Security Research reported several issues with
+  Geeklog's cookie handling that made it vulnerable to SQL injections, arbitrary
+  file access, and even injection and execution of arbitrary code.
+- Prevent execution of PHP code in "normal" blocks
 
 
 Dec 12, 2005 (1.3.11sr3)
