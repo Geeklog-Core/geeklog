@@ -208,6 +208,7 @@ new template files:</p>
     Pages editor, located in <tt>/path/to/geeklog/plugins</tt>)</li>
 <li><tt>advanced_editor_header.thtml</tt> (included by all of the above)</li>
 </ul>
+<p>You also have to add <code>{advanced_editor}</code> to the <code>&lt;head&gt;</code> section of your theme's <tt>header.thtml</tt> file.</p>
 
 <h3>Other changes</h3>
 
@@ -246,6 +247,10 @@ new template files:</p>
     changed (entries for the links and poll have been removed and a new entry
     for the number of active users has been added). There is also a new file,
     <tt>stats/singlesummary.thtml</tt>, that is used for plugin entries.</li>
+<li>The <tt>navbar</tt> directory is now part of a Geeklog theme (previously
+    used by some plugins, e.g. the Forum plugin). It contains two files,
+    <tt>menuitem.thtml</tt> and <tt>navbar.thtml</tt>, as well as two images,
+    <tt>button.gif</tt> and <tt>button_over.gif</tt>.</li>
 </ul>
 
 
