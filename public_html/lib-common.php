@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.514 2006/02/18 14:18:29 dhaun Exp $
+// $Id: lib-common.php,v 1.515 2006/02/24 11:32:43 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2148,9 +2148,9 @@ function COM_adminMenu( $help = '', $title = '' )
     }
 
     $plugin_options = PLG_getAdminOptions();
-    $nrows = count( $plugin_options );
+    $num_plugins = count( $plugin_options );
 
-    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,event.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $nrows > 0 ))
+    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,event.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $num_plugins > 0 ))
     {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
@@ -2201,9 +2201,9 @@ function COM_adminMenu( $help = '', $title = '' )
             }
         }
 
-        if( SEC_isModerator()  || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
+        $num = 0;
+        if( SEC_hasRights( 'story.edit,event.edit', 'OR' )  || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
         {
-            $num = 0;
 
             if( SEC_hasrights( 'story.edit' ))
             {
@@ -2241,23 +2241,21 @@ function COM_adminMenu( $help = '', $title = '' )
             {
                 if( SEC_hasrights( 'user.edit' ) && SEC_hasrights( 'user.delete' ))
                 {
-                    $emptypwd = md5( '' );
                     $num += DB_count( $_TABLES['users'], 'status', '2' );
                 }
             }
 
             // now handle submissions for plugins
-
             $num = $num + PLG_getSubmissionCount();
-
-            $url = $_CONF['site_admin_url'] . '/moderation.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[10] );
-            $adminmenu->set_var( 'option_count', COM_numberFormat( $num ));
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[10]] = $menu_item;
         }
+
+        $url = $_CONF['site_admin_url'] . '/moderation.php';
+        $adminmenu->set_var( 'option_url', $url );
+        $adminmenu->set_var( 'option_label', $LANG01[10] );
+        $adminmenu->set_var( 'option_count', COM_numberFormat( $num ));
+        $menu_item = $adminmenu->parse( 'item',
+                    ( $thisUrl == $url ) ? 'current' : 'option' );
+        $link_array[$LANG01[10]] = $menu_item;
 
         if( SEC_hasrights( 'story.edit' ))
         {
@@ -2412,7 +2410,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
         // This will show the admin options for all installed plugins (if any)
 
-        for( $i = 1; $i <= $nrows; $i++ )
+        for( $i = 0; $i < $num_plugins; $i++ )
         {
             $plg = current( $plugin_options );
 
@@ -2449,7 +2447,7 @@ function COM_adminMenu( $help = '', $title = '' )
         }
 
         // Add PDF Generator Link if the feature is enabled
-        if(( $_CONF['pdf_enabled'] == 1 ) AND ( SEC_inGroup( 'Root' )))
+        if(( $_CONF['pdf_enabled'] == 1 ) AND SEC_inGroup( 'Root' ))
         {
             $url = $_CONF['site_url'] . '/pdfgenerator.php';
             $adminmenu->set_var( 'option_url', $url );
@@ -2481,15 +2479,17 @@ function COM_adminMenu( $help = '', $title = '' )
             $menu_item = $adminmenu->parse( 'item', 'option' );
             $link_array[$LANG01[107]] = $menu_item;
         }
-        if ($_CONF['sort_admin'] )
+
+        if( $_CONF['sort_admin'] )
         {
-            ksort($link_array);
+            ksort( $link_array );
         }
-        reset($link_array);
-        while (list($key, $val) = each($link_array))
+
+        foreach( $link_array as $link )
         {
-          $retval .= "$val\n";
+            $retval .= $link . LB;
         }
+
         $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
     }
 
