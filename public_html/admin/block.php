@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.92 2006/01/14 16:58:01 dhaun Exp $
+// $Id: block.php,v 1.93 2006/02/26 18:12:07 dhaun Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -44,10 +44,10 @@ require_once ('../lib-common.php');
 require_once ('auth.inc.php');
 
 if (!SEC_hasrights ('block.edit')) {
-    $display .= COM_siteHeader ()
+    $display .= COM_siteHeader ('menu', $MESSAGE[30])
         . COM_startBlock ($MESSAGE[30], '',
                           COM_getBlockTemplate ('_msg_block', 'header'))
-        . $MESSAGE[31]
+        . $MESSAGE[33]
         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
         . COM_siteFooter ();
     COM_accessLog ("User {$_USER['username']} tried to illegally access the block administration screen");
@@ -448,10 +448,10 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !hasBlockTopicAccess ($tid) || !SEC_inGroup ($group_id)) {
-        $retval .= COM_siteHeader('menu');
+        $retval .= COM_siteHeader('menu', $MESSAGE[30]);
         $retval .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $MESSAGE[31];
+        $retval .= $MESSAGE[33];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter();
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.199 2006/01/28 18:59:46 dhaun Exp $
+// $Id: story.php,v 1.200 2006/02/26 18:12:12 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -60,7 +60,7 @@ $_STORY_VERBOSE = false;
 $display = '';
 
 if (!SEC_hasRights('story.edit')) {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[31];
@@ -830,7 +830,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || (SEC_hasTopicAccess ($tid) < 2) || !SEC_inGroup ($group_id)) {
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $MESSAGE[30]);
         $display .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $MESSAGE[31];

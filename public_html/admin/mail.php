@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | mail.php                                                                  |
 // |                                                                           |
 // | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2005 by the following authors:                         |
+// | Copyright (C) 2001-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
 // |          Dirk Haun  - dirk AT haun-online DOT de                          |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.31 2005/11/05 14:02:11 dhaun Exp $
+// $Id: mail.php,v 1.32 2006/02/26 18:12:10 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -39,10 +39,10 @@ $display = '';
 
 // Make sure user has access to this page  
 if (!SEC_inGroup ('Mail Admin') && !SEC_hasrights ('user.mail')) {
-    $retval .= COM_siteHeader ('menu');
+    $retval .= COM_siteHeader ('menu', $MESSAGE[30]);
     $retval .= COM_startBlock ($MESSAGE[30], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $retval .= $MESSAGE[37];
+    $retval .= $MESSAGE[39];
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $retval .= COM_siteFooter ();
     COM_accessLog ("User {$_USER['username']} tried to illegally access the mail administration screen.");

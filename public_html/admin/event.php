@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.76 2006/01/28 12:16:28 dhaun Exp $
+// $Id: event.php,v 1.77 2006/02/26 18:12:09 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -46,7 +46,7 @@ $display = '';
 
 // Ensure user even has the rights to access this page
 if (!SEC_hasRights('event.edit')) {
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[35];
@@ -396,10 +396,10 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $retval .= COM_siteHeader('menu');
+        $retval .= COM_siteHeader('menu', $MESSAGE[30]);
         $retval .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $MESSAGE[31];
+        $retval .= $MESSAGE[35];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter();
         COM_accessLog ("User {$_USER['username']} tried to illegally submit or edit event $eid.");

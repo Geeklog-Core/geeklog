@@ -32,14 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.59 2006/01/28 10:26:44 dhaun Exp $
+// $Id: topic.php,v 1.60 2006/02/26 18:12:17 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
 
 if (!SEC_hasRights('topic.edit')) {
-    $display = COM_siteHeader ('menu');
+    $display = COM_siteHeader ('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[32];
@@ -242,10 +242,10 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $MESSAGE[30]);
         $retval .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $MESSAGE[31];
+        $retval .= $MESSAGE[32];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter ();
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");

@@ -30,17 +30,17 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.34 2006/01/28 12:26:34 dhaun Exp $
+// $Id: syndication.php,v 1.35 2006/02/26 18:12:16 dhaun Exp $
 
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
 
 if (!SEC_inGroup ('Root')) {
-    $display .= COM_siteHeader ()
+    $display .= COM_siteHeader ('menu', $MESSAGE[30])
         . COM_startBlock ($MESSAGE[30], '',
                           COM_getBlockTemplate ('_msg_block', 'header'))
-        . $MESSAGE[31]
+        . $MESSAGE[34]
         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
         . COM_siteFooter ();
     COM_accessLog("User {$_USER['username']} tried to illegally access the content syndication administration screen.");

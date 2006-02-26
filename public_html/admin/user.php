@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.139 2005/12/22 14:39:46 ospiess Exp $
+// $Id: user.php,v 1.140 2006/02/26 18:12:18 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -45,7 +45,7 @@ $display = '';
 
 // Make sure user has access to this page
 if (!SEC_hasRights('user.edit')) {
-    $retval .= COM_siteHeader ('menu');
+    $retval .= COM_siteHeader ('menu', $MESSAGE[30]);
     $retval .= COM_startBlock ($MESSAGE[30], '',
                COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= $MESSAGE[37];

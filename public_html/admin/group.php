@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | group.php                                                                 |
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.63 2005/12/22 14:39:46 ospiess Exp $
+// $Id: group.php,v 1.64 2006/02/26 18:12:10 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -60,10 +60,10 @@ $display = '';
 
 // Make sure user has rights to access this page
 if (!SEC_hasRights ('group.edit')) {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[32];
+    $display .= $MESSAGE[37];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
     COM_accessLog ("User {$_USER['username']} tried to illegally access the group administration screen.");

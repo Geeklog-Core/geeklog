@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog plugin administration page.                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.57 2005/12/22 14:39:46 ospiess Exp $
+// $Id: plugins.php,v 1.58 2006/02/26 18:12:12 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -50,7 +50,7 @@ define ('PLUGINS_PER_PAGE', 25);
 $display = '';
 
 if (!SEC_hasrights ('plugin.edit')) {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[38];
