@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.128 2006/02/18 12:39:23 dhaun Exp $
+// $Id: users.php,v 1.129 2006/02/26 14:42:50 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -99,7 +99,9 @@ function userprofile ($user, $msg = 0)
     }
     $A = DB_fetchArray ($result);
 
-    $retval .= COM_siteHeader ('menu', $LANG04[1] . ' ' . $A['username']);
+    $display_name = COM_getDisplayName ($user, $A['username'], $A['fullname']);
+
+    $retval .= COM_siteHeader ('menu', $LANG04[1] . ' ' . $display_name);
     if ($msg > 0) {
         $retval .= COM_showMessage ($msg);
     }
@@ -114,15 +116,20 @@ function userprofile ($user, $msg = 0)
                                       'strow'   => 'storyrow.thtml'));
     $user_templates->set_var ('site_url', $_CONF['site_url']);
     $user_templates->set_var ('start_block_userprofile',
-            COM_startBlock ($LANG04[1] . ' ' . $A['username']));
+            COM_startBlock ($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var ('end_block', COM_endBlock ());
     $user_templates->set_var ('lang_username', $LANG04[2]);
-    $user_templates->set_var ('username', $A['username']);
+    if ($_CONF['show_fullname'] == 1) {
+        $user_templates->set_var ('username', $A['fullname']);
+        $user_templates->set_var ('user_fullname', $A['username']);
+    } else {
+        $user_templates->set_var ('username', $A['username']);
+        $user_templates->set_var ('user_fullname', $A['fullname']);
+    }
 
     $photo = USER_getPhoto ($user, $A['photo'], $A['email'], -1);
     $user_templates->set_var ('user_photo', $photo);
 
-    $user_templates->set_var ('user_fullname', $A['fullname']);
     $user_templates->set_var ('lang_membersince', $LANG04[67]);
     $user_templates->set_var ('user_regdate', $A['regdate']);
     $user_templates->set_var ('lang_email', $LANG04[5]);
@@ -137,11 +144,11 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_var ('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var ('user_pgp', nl2br ($A['pgpkey']));
     $user_templates->set_var ('start_block_last10stories',
-            COM_startBlock ($LANG04[82] . ' ' . $A['username']));
+            COM_startBlock ($LANG04[82] . ' ' . $display_name));
     $user_templates->set_var ('start_block_last10comments',
-            COM_startBlock($LANG04[10] . ' ' . $A['username']));
+            COM_startBlock($LANG04[10] . ' ' . $display_name));
     $user_templates->set_var ('start_block_postingstats',
-            COM_startBlock ($LANG04[83] . ' ' . $A['username']));
+            COM_startBlock ($LANG04[83] . ' ' . $display_name));
     $user_templates->set_var ('lang_title', $LANG09[16]);
     $user_templates->set_var ('lang_date', $LANG09[17]);
 
@@ -258,7 +265,7 @@ function userprofile ($user, $msg = 0)
     $N = DB_fetchArray ($result);
     $user_templates->set_var ('number_comments', COM_numberFormat($N['count']));
     $user_templates->set_var ('lang_all_postings_by',
-                              $LANG04[86] . ' ' . $A['username']);
+                              $LANG04[86] . ' ' . $display_name);
 
     // Call custom registration function if enabled and exists
     if ($_CONF['custom_registration'] && function_exists ('custom_userdisplay') ) {
@@ -452,7 +459,7 @@ function createuser ($username, $email)
 
             return $retval;
         } else {
-            $retval .= COM_siteHeader ('Menu');
+            $retval .= COM_siteHeader ('menu');
             if ($_CONF['custom_registration'] &&
                     function_exists ('custom_userform')) {
                 $retval .= custom_userform ($LANG04[19]);
@@ -488,7 +495,7 @@ function createuser ($username, $email)
 * @return   string      HTML for login form
 *
 */
-function loginform ($hide_forgotpw_link = false, $statusmode=-1)
+function loginform ($hide_forgotpw_link = false, $statusmode = -1)
 {
     global $_CONF, $LANG04;
 
@@ -616,7 +623,7 @@ function getpasswordform()
 }
 
 /**
-* Shows user their account info form
+* Account does not exist - show both the login and register forms
 *
 * @param    string  $msg        message to display if one is needed
 * @return   string  HTML for form
