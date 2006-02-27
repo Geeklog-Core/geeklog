@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | usersettings.php                                                          |
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.123 2005/11/24 14:27:56 ospiess Exp $
+// $Id: usersettings.php,v 1.124 2006/02/27 10:46:31 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -93,12 +93,14 @@ function edituser()
     $preferences->set_var ('lang_pgpkey_text', $LANG04[39]);
     $preferences->set_var ('lang_submit', $LANG04[9]);
 
+    $display_name = COM_getDisplayName ($_USER['uid']);
+
     $preferences->set_var ('start_block_profile',
-            COM_startBlock ($LANG04[1] . ' ' . $_USER['username']));
+            COM_startBlock ($LANG04[1] . ' ' . $display_name));
     $preferences->set_var ('end_block', COM_endBlock ());
 
     $preferences->set_var ('profile_headline',
-                           $LANG04[1] . ' ' . $_USER['username']);
+                           $LANG04[1] . ' ' . $display_name);
 
     if ($_CONF['allow_user_photo'] == 1) {
         $preferences->set_var ('enctype', 'enctype="multipart/form-data"');
@@ -160,7 +162,7 @@ function edituser()
 
     if ($_CONF['allow_account_delete'] == 1) {
         $preferences->set_var ('start_block_delete_account',
-                COM_startBlock (sprintf ($LANG04[94], $_USER['username'])));
+                COM_startBlock (sprintf ($LANG04[94], $display_name)));
         $preferences->set_var ('end_block_delete_account', COM_endBlock ());
         $preferences->set_var ('delete_text', $LANG04[95]);
         $preferences->set_var ('lang_button_delete', $LANG04[96]);
@@ -211,15 +213,17 @@ function confirmAccountDelete ($form_reqid)
     $confirm->set_var ('site_url', $_CONF['site_url']);
     $confirm->set_var ('layout_url', $_CONF['layout_url']);
 
+    $display_name = COM_getDisplayName ($_USER['uid']);
+
     $confirm->set_var ('start_block_delete_account',
-            COM_startBlock (sprintf ($LANG04[94], $_USER['username'])));
+            COM_startBlock (sprintf ($LANG04[94], $display_name)));
     $confirm->set_var ('end_block_delete_account', COM_endBlock ());
     $confirm->set_var ('delete_text', $LANG04[95]);
     $confirm->set_var ('lang_button_delete', $LANG04[96]);
     $confirm->set_var ('delete_mode', 'deleteconfirmed');
     $confirm->set_var ('account_id', $reqid);
 
-    $retval .= COM_siteHeader ('menu');
+    $retval .= COM_siteHeader ('menu', $LANG04[97]);
     $retval .= COM_startBlock ($LANG04[97], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= $LANG04[98];
@@ -231,7 +235,7 @@ function confirmAccountDelete ($form_reqid)
 }
 
 /**
-* Delete an account (keep in sync with delete_user() in admin/user.php).
+* Delete an account
 *
 * @param    string   form_reqid   request id
 * @return   string   redirection to main page (+ success msg)
@@ -352,32 +356,34 @@ function editpreferences()
     $preferences->set_var ('lang_showonline_text', $LANG04[105]);
     $preferences->set_var ('lang_submit', $LANG04[9]);
 
+    $display_name = COM_getDisplayName ($_USER['uid']);
+
     $preferences->set_var ('start_block_display',
-            COM_startBlock ($LANG04[45] . ' ' . $_USER['username']));
+            COM_startBlock ($LANG04[45] . ' ' . $display_name));
     $preferences->set_var ('start_block_exclude',
-            COM_startBlock ($LANG04[46] . ' ' . $_USER['username']));
+            COM_startBlock ($LANG04[46] . ' ' . $display_name));
     $preferences->set_var ('start_block_digest',
-            COM_startBlock ($LANG04[75] . ' ' . $_USER['username']));
+            COM_startBlock ($LANG04[75] . ' ' . $display_name));
     $preferences->set_var ('start_block_boxes',
-            COM_startBlock ($LANG04[47] . ' ' . $_USER['username']));
+            COM_startBlock ($LANG04[47] . ' ' . $display_name));
     $preferences->set_var ('start_block_comment',
-            COM_startBlock ($LANG04[64] . ' ' . $_USER['username']));
+            COM_startBlock ($LANG04[64] . ' ' . $display_name));
     $preferences->set_var ('start_block_privacy',
-            COM_startBlock ($LANG04[99] . ' ' . $_USER['username']));
+            COM_startBlock ($LANG04[99] . ' ' . $display_name));
     $preferences->set_var ('end_block', COM_endBlock ());
 
     $preferences->set_var ('display_headline',
-                           $LANG04[45] . ' ' . $_USER['username']);
+                           $LANG04[45] . ' ' . $display_name);
     $preferences->set_var ('exclude_headline',
-                           $LANG04[46] . ' ' . $_USER['username']);
+                           $LANG04[46] . ' ' . $display_name);
     $preferences->set_var ('digest_headline',
-                           $LANG04[75] . ' ' . $_USER['username']);
+                           $LANG04[75] . ' ' . $display_name);
     $preferences->set_var ('boxes_headline',
-                           $LANG04[47] . ' ' . $_USER['username']);
+                           $LANG04[47] . ' ' . $display_name);
     $preferences->set_var ('comment_headline',
-                           $LANG04[64] . ' ' . $_USER['username']);
+                           $LANG04[64] . ' ' . $display_name);
     $preferences->set_var ('privacy_headline',
-                           $LANG04[99] . ' ' . $_USER['username']);
+                           $LANG04[99] . ' ' . $display_name);
 
     // display preferences block
     if ($_CONF['allow_user_language'] == 1) {
