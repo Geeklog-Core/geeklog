@@ -9,7 +9,7 @@
 // | This pages lets GL users communicate with each other without risk of      |
 // | their email address being intercepted by spammers.                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.46 2005/12/28 10:11:50 dhaun Exp $
+// $Id: profiles.php,v 1.47 2006/02/27 19:39:53 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -248,7 +248,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         return $retval;
     }
 
-    $sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
+    $sql = "SELECT uid,title,introtext,bodytext,commentcode,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
     $result = DB_query ($sql);
     $A = DB_fetchArray ($result);
     $shortmsg = COM_stripslashes ($shortmsg);
@@ -270,16 +270,22 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
               . strftime ($_CONF['date'], $A['day']) . LB;
 
     if ($_CONF['contributedbyline'] == 1) {
-        $author = DB_getItem ($_TABLES['users'], 'username', "uid={$A['uid']}");
+        $author = COM_getDisplayName ($A['uid']);
         $mailtext .= $LANG01[1] . ' ' . $author . LB;
     }
     $mailtext .= LB
-		. COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
-		. COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
-		. '------------------------------------------------------------'.LB
-		. $LANG08[24] . LB
-        . COM_buildUrl ($_CONF['site_url'] . '/article.php?story=' . $sid
-                        . '#comments');
+        . COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
+        . COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
+        . '------------------------------------------------------------'.LB;
+    if ($A['commentcode'] == 0) { // comments allowed
+        $mailtext .= $LANG08[24] . LB
+                  . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                                  . $sid . '#comments');
+    } else { // comments not allowed - just add the story's URL
+        $mailtext .= $LANG08[33] . LB
+                  . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                                  . $sid);
+    }
 
     $mailto = COM_formatEmailAddress ($to, $toemail);
     $mailfrom = COM_formatEmailAddress ($from, $fromemail);
