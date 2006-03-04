@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.64 2006/02/26 18:12:10 dhaun Exp $
+// $Id: group.php,v 1.65 2006/03/04 12:14:25 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -556,6 +556,7 @@ function getGroupList ($basegroup)
 function listusers ($grp_id)
 {
     global $_CONF, $_TABLES, $LANG28, $LANG_ACCESS, $LANG_ADMIN, $_IMAGE_TYPE;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
@@ -616,7 +617,7 @@ function listusers ($grp_id)
     $groups = getGroupList ($grp_id);
     $groupList = implode (',', $groups);
 
-    $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']},{$_TABLES['group_assignments']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
+    $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['group_assignments']},{$_TABLES['users']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
 
     $query_arr = array ('table' => 'users',
                         'sql' => $sql,
