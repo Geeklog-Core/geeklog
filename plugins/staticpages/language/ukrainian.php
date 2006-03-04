@@ -33,7 +33,7 @@
 
 $LANG_STATIC= array(
     'newpage' => 'Нова сторінка',
-    'adminhome' => 'Home адміністратора',
+    'adminhome' => 'Адміністрування',
     'staticpages' => 'Статичні сторінки',
     'staticpageeditor' => 'Редактор статичних сторінок',
     'writtenby' => 'Автор',
