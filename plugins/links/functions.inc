@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.49 2006/01/28 14:50:28 dhaun Exp $
+// $Id: functions.inc,v 1.50 2006/03/04 11:58:20 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -83,10 +83,9 @@ function plugin_whatsnewsupported_links()
 
     $hidewhatsnew = $_LI_CONF['hidenewlinks'];
     if ( $hidewhatsnew == 0 ) {
-        $retval = array( $LANG_LINKS[84], '<small>'
-                         . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
-                                                 $_LI_CONF['newlinksinterval'] )
-                         . '</small>'
+        $retval = array( $LANG_LINKS[84],
+                         COM_formatTimeString( $LANG_WHATSNEW['new_last'],
+                                               $_LI_CONF['newlinksinterval'] )
                        );
     } else {
         $retval = false;
