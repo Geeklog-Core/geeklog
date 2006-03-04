@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.45 2006/01/31 19:43:17 ospiess Exp $
+// $Id: lib-admin.php,v 1.46 2006/03/04 19:19:35 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -700,9 +700,10 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
 }
 
 function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
+
     $retval = '';
-    
+
     switch($fieldname) {
         case "edit":
             $retval = "<a href=\"{$_CONF['site_admin_url']}/syndication.php?mode=edit&amp;fid={$A['fid']}\">{$icon_arr['edit']}</a>";
@@ -731,6 +732,9 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
                 $retval = $LANG33[43];
             } elseif ($A['header_tid'] == 'none') {
                 $retval = $LANG33[44];
+            } else {
+                $retval = DB_getItem ($_TABLES['topics'], 'topic',
+                                      "tid = '{$A['header_tid']}'");
             }
             break;
         case 'filename':
