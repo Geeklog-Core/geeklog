@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.124 2006/02/27 10:46:31 dhaun Exp $
+// $Id: usersettings.php,v 1.125 2006/03/04 18:28:03 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -126,7 +126,8 @@ function edituser()
     $preferences->set_var ('email_value', htmlspecialchars ($A['email']));
     $preferences->set_var ('homepage_value',
                            htmlspecialchars (COM_killJS ($A['homepage'])));
-    $preferences->set_var ('location_value', htmlspecialchars ($A['location']));
+    $preferences->set_var ('location_value',
+                           htmlspecialchars (strip_tags ($A['location'])));
     $preferences->set_var ('signature_value', htmlspecialchars ($A['sig']));
 
     if ($_CONF['allow_user_photo'] == 1) {
@@ -829,25 +830,25 @@ function saveuser($A)
 
     // no need to filter the password as it's md5 encoded anyway
     if (!empty ($A['passwd'])) {
-            if (($A['passwd']==$A['passwd_conf']) 
-                AND (md5($A['old_passwd'])==$_USER['passwd'])) {
-                $passwd = md5 ($A['passwd']);
-                DB_change($_TABLES['users'], 'passwd', 
+        if (($A['passwd'] == $A['passwd_conf']) 
+                AND (md5 ($A['old_passwd']) == $_USER['passwd'])) {
+            $passwd = md5 ($A['passwd']);
+            DB_change($_TABLES['users'], 'passwd', 
                       "$passwd", "uid", $_USER['uid']);
-                if ($A['cooktime'] > 0) {
-                    $cooktime = $A['cooktime'];
-                } else {
-                    $cooktime = -1000;
-                }
-                setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
-                           $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                           $_CONF['cookiesecure']);        
+            if ($A['cooktime'] > 0) {
+                $cooktime = $A['cooktime'];
+            } else {
+                $cooktime = -1000;
+            }
+            setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
+                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                       $_CONF['cookiesecure']);        
         }
-        elseif (md5($A['old_passwd'])!=$_USER['passwd']) {
+        elseif (md5 ($A['old_passwd']) != $_USER['passwd']) {
                 return COM_refresh ($_CONF['site_url']
                         . '/usersettings.php?mode=edit&msg=68');
         }
-        elseif ($A['passwd']!=$A['passwd_conf']) {
+        elseif ($A['passwd'] != $A['passwd_conf']) {
                 return COM_refresh ($_CONF['site_url']
                         . '/usersettings.php?mode=edit&msg=67');
         }
@@ -865,10 +866,10 @@ function saveuser($A)
 
     $A['email'] = COM_applyFilter ($A['email']);
     $A['homepage'] = COM_applyFilter ($A['homepage']);
-    $A['location'] = addslashes ($A['location']);
 
     // basic filtering only
     $A['fullname'] = strip_tags (COM_stripslashes ($A['fullname']));
+    $A['location'] = strip_tags (COM_stripslashes ($A['location']));
     $A['sig'] = strip_tags (COM_stripslashes ($A['sig']));
     $A['about'] = strip_tags (COM_stripslashes ($A['about']));
     $A['pgpkey'] = strip_tags (COM_stripslashes ($A['pgpkey']));
@@ -919,6 +920,7 @@ function saveuser($A)
 
         $A['fullname'] = addslashes ($A['fullname']);
         $A['email'] = addslashes ($A['email']);
+        $A['location'] = addslashes ($A['location']);
         $A['sig'] = addslashes ($A['sig']);
         $A['about'] = addslashes ($A['about']);
         $A['pgpkey'] = addslashes ($A['pgpkey']);
