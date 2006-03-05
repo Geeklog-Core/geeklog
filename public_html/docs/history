@@ -1,5 +1,35 @@
 GeekLog History/Changes:
 
+??? ??, 2006 (1.4.1)
+------------
+
+- The "Topic" column in the list of feeds was empty for feeds that are only
+  linked from a topic page [Dirk]
+- Only use the mb_substr workaround in the calendar when the current character
+  set is UTF-8 (bug #524) [Dirk]
+- Fixed SQL error on MySQL 5 when listing the members of a group (bug #527)
+  [Dirk]
+- Removed extra <small> tags from the Links plugin's What's New section
+  (bug #526) [Dirk]
+- When emailing a story, don't include the text "Comment on this story at ..."
+  when comments have been switched off for that story [Dirk]
+- Added support for COM_getDisplayName in users.php, usersettings.php [Dirk]
+- Fixed wrong wording of some of the "access denied" messages when trying to
+  access Admin panels without proper privileges [Dirk]
+- Fixed display of Admin block for users that only had certain Admin privileges
+  [Dirk]
+
+
+Mar 5, 2006 (1.4.0sr2)
+-----------
+
+Security issues:
+
+- Konstantin Dyakoff found an old bug in the session handling that would allow
+  anyone to log in as any user.
+- HTML was not stripped from the Location field in a user's profile.
+
+
 Feb 19, 2006 (1.4.0sr1)
 ------------
 
@@ -440,6 +470,15 @@ Spam-X plugin 1.0.3
 - Added a Mass Delete module for Trackback comments [Dirk]
 - Added an "admin override" option, so that postings by members of the 'spamx
   Admin' group will not be checked for spam [Dirk]
+
+
+Mar 5, 2006 (1.3.11sr5)
+-----------
+
+Security issue:
+
+- Konstantin Dyakoff found an old bug in the session handling that would allow
+  anyone to log in as any user.
 
 
 Feb 19, 2006 (1.3.11sr4)
@@ -1187,6 +1226,28 @@ Static Pages Plugin 1.4.1
   static page ID, while installs upgraded from an earlier version allowed up
   to 40 characters [Dirk]
 - New Portuguese (Brazil) language file, provided by Alcides Soares Filho.
+
+
+Mar 5, 2006 (1.3.9sr5)
+-----------
+
+This release addresses the following security issues:
+
+- Konstantin Dyakoff found an old bug in the session handling that would allow
+  anyone to log in as any user.
+- James Bercegay of GulfTech Security Research reported several issues with
+  Geeklog's cookie handling that made it vulnerable to SQL injections, arbitrary
+  file access, and even injection and execution of arbitrary code.
+- Prevent execution of PHP code in "normal" blocks
+
+
+Jul 3, 2005 (1.3.9sr4)
+-----------
+
+This release addresses the following security issue:
+
+Stefan Esser found an SQL injection that can, under certain circumstances,
+be exploited to extract user data such as the user's password hash.
 
 
 Dec 31, 2004 (1.3.9sr3)
