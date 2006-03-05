@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.39 2006/02/18 12:39:23 dhaun Exp $
+// $Id: lib-sessions.php,v 1.40 2006/03/05 09:11:31 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -356,11 +356,7 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
     }
 
     if (!$row) {
-        if (isset ($_COOKIE[$_CONF['cookie_name']])) {
-            return COM_applyFilter ($_COOKIE[$_CONF['cookie_name']], true);
-        } else {
-            return 0;
-        }
+        return 0;
     } else {
         return $row['uid'];
     }
