@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.90 2006/01/29 19:42:18 dhaun Exp $
+// $Id: lib-plugins.php,v 1.91 2006/03/06 11:38:31 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -170,19 +170,26 @@ function PLG_chkVersion($type)
 * @return       boolean     Returns true on success otherwise false
 *
 */
-function PLG_uninstall($type)
+function PLG_uninstall ($type)
 {
-    if (empty($type)) {
+    global $_PLUGINS;
+
+    if (empty ($type)) {
         return false;
     }
 
-    $retval = PLG_callFunctionForOnePlugin('plugin_uninstall_' . $type);
+    $retval = PLG_callFunctionForOnePlugin ('plugin_uninstall_' . $type);
 
-    if (empty($retval)) {
-        return false;
-    } else {
-        return $retval;
+    if ($retval === true) {
+        $plg = array_search ($type, $_PLUGINS);
+        if ($plg !== false) {
+            unset ($_PLUGINS[$plg]);
+        }
+
+        return true;
     }
+
+    return false;
 }
 
 /**
