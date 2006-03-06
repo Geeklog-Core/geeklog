@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.46 2006/03/04 19:19:35 dhaun Exp $
+// $Id: lib-admin.php,v 1.47 2006/03/06 17:26:03 mjervis Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -278,6 +278,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     $order_var = ""; # number that is displayed in URL
     $order = "";     # field that is used in SQL
+    $order_var_link = ''; # Variable for google paging.
     if (!isset($_GET['order'])) {
         $order = $defsort_arr['field'];
     } else {
