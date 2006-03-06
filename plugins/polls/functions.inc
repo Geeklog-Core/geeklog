@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Polls      |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.37 2005/12/28 10:11:48 dhaun Exp $
+// $Id: functions.inc,v 1.38 2006/03/06 11:29:04 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -373,6 +373,10 @@ function plugin_uninstall_polls($steps = '')
         DB_query("DROP TABLE {$_TABLES['pollvoters']}");
         COM_errorLog('...success',1);
     }
+
+    // Remove polls block
+    DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
+                                   array ('phpblock', 'phpblock_polls'));
 
     // Remove security for this plugin
 
