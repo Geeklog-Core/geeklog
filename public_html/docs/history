@@ -3,6 +3,16 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Added multi-language support, based on earlier works by Euan McKay and LWC.
+  Also see http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support
+- Changed the default path for topic icons to /images/topics [Dirk]
+- Fixed an SQL error when calling up the Admin's list of stories without any
+  topics [Dirk]
+- Removed the portal.php script, as it is no longer needed [Dirk]
+- Remove the polls block when uninstalling the Polls plugin (another part of
+  bug #520) [Dirk]
+- Remove uninstalled plugins from the global $_PLUGINS array immediately
+  (just in case the array would be used to trigger any actions) [Dirk]
 - The "Topic" column in the list of feeds was empty for feeds that are only
   linked from a topic page [Dirk]
 - Only use the mb_substr workaround in the calendar when the current character
