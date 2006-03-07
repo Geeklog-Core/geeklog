@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.60 2006/02/26 18:12:17 dhaun Exp $
+// $Id: topic.php,v 1.61 2006/03/07 12:37:40 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -165,7 +165,7 @@ function edittopic ($tid = '')
     $topic_templates->set_var('lang_topicname', $LANG27[3]);
     $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
     if (empty($A['tid'])) { 
-        $A['imageurl'] = '/images/icons/'; 
+        $A['imageurl'] = '/images/topics/'; 
     }
     $topic_templates->set_var('lang_topicimage', $LANG27[4]);
     $topic_templates->set_var('lang_uploadimage', $LANG27[27]);
