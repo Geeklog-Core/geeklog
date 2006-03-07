@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.209 2006/03/05 09:19:48 dhaun Exp $
+// $Id: config.php,v 1.210 2006/03/07 14:56:03 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -293,6 +293,38 @@ $_CONF['thousand_separator'] = ",";  // could be ' , . etc.
 $_CONF['decimal_separator']  = ".";  // could be , . etc.
 $_CONF['decimal_count']      = "2";  // if a number has decimals,
                                      //  force to this depth
+
+// Multi-language support
+// (note that this section is commented out - remove the '/*' and '*/' lines
+//  below to activate it and make sure you understand what it does)
+/*
+
+// IMPORTANT!
+// 1) Both the $_CONF['language_files'] and the $_CONF['languages'] arrays
+//    (see below) must have the same number of elements.
+// 2) The shortcuts used must be the same in both arrays.
+// 3) All shortcuts must have the same length, e.g. 2 characters.
+
+// The shortcuts are to be used in IDs of objects that are multi-language
+// aware, e.g. /article.php/introduction_en and /article.php/introduction_de
+// for the English and German version of an introductory article.
+
+// Supported languages
+// Maps a shortcut to a Geeklog language file (without the '.php' extension)
+$_CONF['language_files'] = array (
+    'en' => 'english',
+    'de' => 'german_formal'
+);
+
+// Display names of supported languages
+// Maps the same shortcuts as above to a language name. The language names
+// are used to let users switch languages, e.g. in a drop-down menu.
+$_CONF['languages'] = array (
+    'en' => 'English',
+    'de' => 'Deutsch'
+);
+
+*/
 
 // "Timezone Hack"
 // If your webserver is located in a different timezone than yourself but you

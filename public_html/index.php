@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog homepage.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.75 2005/12/03 12:45:29 ospiess Exp $
+// $Id: index.php,v 1.76 2006/03/07 14:56:04 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -150,6 +150,10 @@ while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray (
 }
 
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
+
+if (empty ($topic)) {
+    $sql .= COM_getLangSQL ('tid', 'AND', 's');
+}
 
 // if a topic was provided only select those stories.
 if (!empty($topic)) {

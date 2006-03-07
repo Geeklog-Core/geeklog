@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.515 2006/02/24 11:32:43 dhaun Exp $
+// $Id: lib-common.php,v 1.516 2006/03/07 14:56:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1774,24 +1774,34 @@ function COM_showTopics( $topic='' )
     global $_CONF, $_TABLES, $_USER, $LANG01, $_BLOCK_TEMPLATE,
            $page, $newstories;
 
-    $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
+    $langsql = COM_getLangSQL( 'tid' );
+    if( empty( $langsql ))
+    {
+        $op = 'WHERE';
+    }
+    else
+    {
+        $op = 'AND';
+    }
+
+    $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}" . $langsql;
     if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
     {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
         if( !empty( $tids ))
         {
-            $sql .= " WHERE (tid NOT IN ('" . str_replace( ' ', "','", $tids )
+            $sql .= " $op (tid NOT IN ('" . str_replace( ' ', "','", $tids )
                  . "'))" . COM_getPermSQL( 'AND' );
         }
         else
         {
-            $sql .= COM_getPermSQL();
+            $sql .= COM_getPermSQL( $op );
         }
     }
     else
     {
-        $sql .= COM_getPermSQL();
+        $sql .= COM_getPermSQL( $op );
     }
     if( $_CONF['sortmethod'] == 'alpha' )
     {
@@ -1808,12 +1818,12 @@ function COM_showTopics( $topic='' )
     if( isset( $_BLOCK_TEMPLATE['topicoption'] ))
     {
         $templates = explode( ',', $_BLOCK_TEMPLATE['topicoption'] );
-        $sections->set_file( array( 'option' => $templates[0],
-                                     'current' => $templates[1] ));
+        $sections->set_file( array( 'option'  => $templates[0],
+                                    'current' => $templates[1] ));
     }
     else
     {
-        $sections->set_file( array( 'option' => 'topicoption.thtml',
+        $sections->set_file( array( 'option'   => 'topicoption.thtml',
                                     'inactive' => 'topicoption_off.thtml' ));
     }
     $sections->set_var( 'site_url', $_CONF['site_url'] );
@@ -5583,7 +5593,7 @@ function COM_displayMessageAndAbort( $msg, $plugin = '', $http_status = 200, $ht
 }
 
 /**
-* Return full URL of of topic icon
+* Return full URL of a topic icon
 *
 * @param    string  $imageurl   (relative) topic icon URL
 * @return   string              Full URL
@@ -5625,6 +5635,228 @@ function COM_getTopicImageUrl( $imageurl )
 
     return $iconurl;
 }
+
+/**
+* Try to determine the user's preferred language by looking at the
+* "Accept-Language" header sent by their browser (assuming they bothered
+* to select a preferred language there).
+*
+* @return   string  name of the language file to use or an empty string
+*
+* Bugs: Does not take the quantity ('q') parameter into account, but only
+*       looks at the order of language codes.
+*
+* Sample header: Accept-Language: en-us,en;q=0.7,de-de;q=0.3
+*
+*/
+function COM_getLanguageFromBrowser()
+{
+    global $_CONF;
+
+    $retval = '';
+
+    if( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ))
+    {
+        $accept = explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
+        foreach( $accept as $l )
+        {
+            $l = explode( ';', trim( $l ));
+            $l = $l[0];
+            if( array_key_exists( $l, $_CONF['language_files'] ))
+            {
+                $retval = $_CONF['language_files'][$l];
+                break;
+            }
+            else
+            {
+                $l = explode( '-', $l );
+                $l = $l[0];
+                if( array_key_exists( $l, $_CONF['language_files'] ))
+                {
+                    $retval = $_CONF['language_files'][$l];
+                    break;
+                }
+            }
+        }
+        
+    }
+
+    return $retval;
+}
+
+/**
+* Determine current language
+*
+* @return   string  name of the language file (minus the '.php' extension)
+*
+*/
+function COM_getLanguage()
+{
+    global $_CONF, $_USER;
+
+    $langfile = '';
+
+    if( !empty( $_USER['language'] ))
+    {
+        $langfile = $_USER['language'];
+    }
+    else if( !empty( $_COOKIE[$_CONF['cookie_language']] ))
+    {
+        $langfile = $_COOKIE[$_CONF['cookie_language']];
+    }
+    else
+    {
+        $langfile = COM_getLanguageFromBrowser();
+    }
+
+    $langfile = preg_replace( '/[^a-z0-9\-_]/', '', $langfile );
+    if( !empty( $langfile ))
+    {
+        if( is_file( $_CONF['path_language'] . $langfile . '.php' ))
+        {
+            return $langfile;
+        }
+    }
+
+    // if all else fails, return the default language
+    return $_CONF['language'];
+}
+
+/**
+* Determine the ID to use for the current language
+*
+* The $_CONF['language_files'] array maps language IDs to language file names.
+* This function returns the language ID for a certain language file, to be
+* used in language-dependent URLs.
+*
+* @param    string  $language   current language file name (optional)
+* @return   string              language ID, e.g 'en'; empty string on error
+*
+*/
+function COM_getLanguageId( $language = '' )
+{
+    global $_CONF;
+
+    if( empty( $language ))
+    {
+        $language = COM_getLanguage();
+    }
+
+    $lang_id = array_search( $language, $_CONF['language_files'] );
+    if( $lang_id === false)
+    {
+        // that looks like a misconfigured $_CONF['language_files'] array ...
+        COM_errorLog( 'Language "' . $language . '" not found in $_CONF[\'language_files\'] array!' );
+
+        $lang_id = ''; // not much we can do here ...
+    }
+
+    return $lang_id;
+}
+
+/**
+* Return SQL expression to request language-specific content
+*
+* Creates part of an SQL expression that can be used to request items in the
+* current language only.
+*
+* @param    string  $field  name of the "id" field, e.g. 'sid' for stories
+* @param    string  $type   part of the SQL expression, e.g. 'WHERE', 'AND'
+* @param    string  $table  table name if ambiguous, e.g. in JOINs
+* @return   string          SQL expression string (may be empty)
+*
+*/
+function COM_getLangSQL( $field, $type = 'WHERE', $table = '' )
+{
+    global $_CONF;
+
+    $sql = '';
+
+    if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+    {
+        if( !empty( $table ))
+        {
+            $table .= '.';
+        }
+
+        $lang_id = COM_getLanguageId();
+
+        if( !empty( $lang_id ))
+        {
+            $sql = ' ' . $type . " ({$table}$field LIKE '%_$lang_id')";
+        }
+    }
+
+    return $sql;
+}
+
+/**
+* Provides a drop-down menu (or simple link, if you only have two languages)
+* to switch languages. This can be used as a PHP block or called from within
+* your theme's header.thtml: <?php print phpblock_switch_language(); ?>
+*
+* @return   string  HTML for drop-down or link to switch languages
+*
+*/
+function phpblock_switch_language()
+{
+    global $_CONF;
+
+    $retval = '';
+
+    if( !isset( $_CONF['languages'] ) || !isset( $_CONF['language_files'] ) ||
+          ( count( $_CONF['languages'] ) != count( $_CONF['language_files'] )))
+    {
+        return $retval;
+    }
+
+    $lang = COM_getLanguage();
+    $langId = COM_getLanguageId( $lang );
+
+    if( count( $_CONF['languages'] ) == 2 )
+    {
+        foreach( $_CONF['languages'] as $key => $value )
+        {
+            if( $key != $langId )
+            {
+                $newLang = $value;
+                $newLangId = $key;
+                break;
+            }
+        }
+
+        $switchUrl = COM_buildUrl( $_CONF['site_url'] . '/switchlang.php?lang='
+                                   . $newLangId );
+        $retval .= '<a href="' . $switchUrl . '">' . $newLang . '</a>';
+    }
+    else
+    {
+        $retval .= '<form name="change" action="'. $_CONF['site_url']
+                . '/switchlang.php" method="GET">' . LB;
+        $retval .= '<input type="hidden" name="oldlang" value="' . $langId
+                . '">' . LB;
+
+        $retval .= '<select onchange="change.submit()" name="lang">';
+        foreach( $_CONF['languages'] as $key => $value )
+        {
+            if( $lang == $_CONF['language_files'][$key] )
+            {
+                $selected = ' selected="selected"';
+            }
+            else
+            {
+                $selected = '';
+            }
+            $retval .= '<option value="' . $key . '"' . $selected . '>'
+                    . $value . '</option>' . LB;
+        }
+        $retval .= '</select>' . LB;
+        $retval .= '</form>' . LB;
+    }
+
+    return $retval;
+}
+
 
 // Now include all plugin functions
 foreach( $_PLUGINS as $pi_name )
