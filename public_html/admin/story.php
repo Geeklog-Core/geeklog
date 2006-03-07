@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.200 2006/02/26 18:12:12 dhaun Exp $
+// $Id: story.php,v 1.201 2006/03/07 12:32:15 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -106,8 +106,11 @@ function userlist ($uid = 0)
 
 function liststories()
 {
-    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG09, $LANG_ADMIN, $LANG_ACCESS, $LANG24;
+    global $_CONF, $_TABLES, $_IMAGE_TYPE,
+           $LANG09, $LANG_ADMIN, $LANG_ACCESS, $LANG24;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $retval = '';
     
     if (!empty ($_GET['tid'])) {
@@ -187,10 +190,13 @@ function liststories()
           ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid "
           ."WHERE 1 ";
 
+    if (!empty ($excludetopics)) {
+        $excludetopics = 'AND ' . $excludetopics;
+    }
     $query_arr = array('table' => 'stories',
                        'sql' => $sql,
                        'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
-                       'default_filter' => 'AND ' . $excludetopics . COM_getPermSQL ('AND'),);
+                       'default_filter' => $excludetopics . COM_getPermSQL ('AND'),);
 
     $retval .= ADMIN_list ("story", "ADMIN_getListField_stories", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr, $filter);
