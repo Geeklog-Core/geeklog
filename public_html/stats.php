@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.45 2005/12/22 14:39:47 ospiess Exp $
+// $Id: stats.php,v 1.46 2006/03/08 05:01:57 ospiess Exp $
 
 require_once('lib-common.php');
 require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -65,8 +65,8 @@ $display .= COM_siteHeader ('menu', $LANG10[1]);
 // Overall Site Statistics
 
 $header_arr = array(
-    array('text' => $LANG10[1], 'field' => 'title'),
-    array('text' => "", 'field' => 'stats'),
+    array('text' => $LANG10[1], 'field' => 'title', 'width' => '90%', 'header_class' => 'stats-header-title'),
+    array('text' => "", 'field' => 'stats', 'width' => '10%', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
 );
 $data_arr = array();
 $text_arr = array('has_menu'     =>  false,
@@ -132,8 +132,8 @@ $nrows  = DB_numRows($result);
 
 if ($nrows > 0) {
     $header_arr = array(
-        array('text' => $LANG10[8], 'field' => 'sid'),
-        array('text' => $LANG10[9], 'field' => 'hits'),
+        array('text' => $LANG10[8], 'field' => 'sid', 'header_class' => 'stats-header-title'),
+        array('text' => $LANG10[9], 'field' => 'hits', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
     );
     $data_arr = array();
     $text_arr = array('has_menu'     =>  false,
@@ -162,8 +162,8 @@ $result = DB_query("SELECT sid,title,comments FROM {$_TABLES['stories']} WHERE (
 $nrows  = DB_numRows($result);
 if ($nrows > 0) {
     $header_arr = array(
-        array('text' => $LANG10[8], 'field' => 'sid'),
-        array('text' => $LANG10[12], 'field' => 'comments'),
+        array('text' => $LANG10[8], 'field' => 'sid', 'header_class' => 'stats-header-title'),
+        array('text' => $LANG10[12], 'field' => 'comments', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
     );
     $data_arr = array();
     $text_arr = array('has_menu'     =>  false,
@@ -192,8 +192,8 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
     $nrows = DB_numRows ($result);
     if ($nrows > 0) {
         $header_arr = array(
-            array('text' => $LANG10[8], 'field' => 'sid'),
-            array('text' => $LANG10[12], 'field' => 'count'),
+            array('text' => $LANG10[8], 'field' => 'sid', 'header_class' => 'stats-header-title'),
+            array('text' => $LANG10[12], 'field' => 'count', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     =>  false,
@@ -223,8 +223,8 @@ $nrows = DB_numRows($result);
 
 if ($nrows > 0) {
     $header_arr = array(
-        array('text' => $LANG10[8], 'field' => 'sid'),
-        array('text' => $LANG10[23], 'field' => 'numemails'),
+        array('text' => $LANG10[8], 'field' => 'sid', 'header_class' => 'stats-header-title'),
+        array('text' => $LANG10[23], 'field' => 'numemails', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
     );
     $data_arr = array();
     $text_arr = array('has_menu'     =>  false,
@@ -252,8 +252,8 @@ $result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits 
 $nrows  = DB_numRows($result);
 if ($nrows > 0) {
     $header_arr = array(
-        array('text' => $LANG10[29], 'field' => 'sid'),
-        array('text' => $LANG10[30], 'field' => 'hits'),
+        array('text' => $LANG10[29], 'field' => 'sid', 'header_class' => 'stats-header-title'),
+        array('text' => $LANG10[30], 'field' => 'hits', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
     );
     $data_arr = array();
     $text_arr = array('has_menu'     =>  false,

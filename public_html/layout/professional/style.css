@@ -511,6 +511,23 @@ th {
   background:#E7E7E7;
   color:#000000;
 }
+.stats-list-count {
+  text-align:right;
+  padding-left:5px;
+  padding-right:5px;
+}
+.stats-header-title {
+  text-align:left;
+  width:90%;
+  padding-left:5px;
+  padding-right:5px;
+}
+.stats-header-count {
+  text-align:left;
+  width:10%;
+  padding-left:5px;
+  padding-right:5px;
+}
 .story-box {
   background:transparent;
   color:#000000;
