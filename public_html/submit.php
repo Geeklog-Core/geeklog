@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let users submit stories, events and plugin stuff.                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.94 2006/01/07 20:05:10 blaine Exp $
+// $Id: submit.php,v 1.95 2006/03/08 20:39:16 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -261,6 +261,7 @@ function submitstory($topic = '')
 
     if (!empty($A['title'])) {
         $introtext = stripslashes ($A['introtext']);
+        $introtext = htmlspecialchars ($introtext);
         $introtext = str_replace('$','&#36;',$introtext);
         $title = stripslashes ($A['title']);
         $title = str_replace('$','&#36;',$title);

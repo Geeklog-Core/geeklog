@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.203 2006/03/08 16:28:54 dhaun Exp $
+// $Id: story.php,v 1.204 2006/03/08 20:39:16 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -699,16 +699,15 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
 
     list($newintro, $newbody) = STORY_replace_images ($A['sid'],
-        stripslashes ($A['introtext']), stripslashes ($A['bodytext']));
-
-    $story_templates->set_var('lang_introtext', $LANG24[16]);
-    $newintro = htmlspecialchars ($newintro);
-    $newbody = htmlspecialchars ($newbody);
+            stripslashes ($A['introtext']), stripslashes ($A['bodytext']));
 
     if ($A['postmode'] == 'plaintext') {
         $newintro = str_replace('$','&#36;',$newintro);
         $newbody = str_replace('$','&#36;',$newbody);
     } else {
+        $newintro = htmlspecialchars ($newintro);
+        $newbody = htmlspecialchars ($newbody);
+
         // Insert [code] and [/code] if needed
         $newintro = str_replace('<pre><code>','[code]',$newintro);
         $newbody = str_replace('<pre><code>','[code]',$newbody);
@@ -719,13 +718,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $newintro = str_replace('{','&#123;',$newintro);
     $newintro = str_replace('}','&#125;',$newintro);
     $story_templates->set_var('story_introtext', $newintro);
-    $story_templates->set_var('lang_bodytext', $LANG24[17]);
-    if ($A['postmode'] == 'plaintext') {
-    }
 
     $newbody = str_replace('{','&#123;',$newbody);
     $newbody = str_replace('}','&#125;',$newbody);
     $story_templates->set_var('story_bodytext', $newbody);
+
+    $story_templates->set_var('lang_introtext', $LANG24[16]);
+    $story_templates->set_var('lang_bodytext', $LANG24[17]);
     $story_templates->set_var('lang_postmode', $LANG24[4]);
     $story_templates->set_var('lang_publishoptions',$LANG24[76]);
     $story_templates->set_var('lang_nojavascript',$LANG24[77]);
