@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.47 2006/03/06 17:26:03 mjervis Exp $
+// $Id: lib-admin.php,v 1.48 2006/03/08 04:59:17 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -107,6 +107,11 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     # HEADER FIELDS array(text, field, sort)
     for ($i=0; $i < count( $header_arr ); $i++) {
         $admin_templates->set_var('header_text', $header_arr[$i]['text']);
+        if (!empty($header_arr[$i]['header_class'])) {
+			$admin_templates->set_var('class', $header_arr[$i]['header_class']);
+		} else {
+			$admin_templates->set_var('class', "admin-list-headerfield");
+		}
         $admin_templates->parse('header_row', 'header', true);
     }
 
@@ -132,6 +137,11 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                 } else {
                     $fieldvalue = $fieldvalue;
                 }
+                if (!empty($header_arr[$j]['field_class'])) {
+					$admin_templates->set_var('class', $header_arr[$j]['field_class']);
+				} else {
+				  	$admin_templates->set_var('class', "admin-list-field");
+				}
                 if ($fieldvalue !== false) {
                     $admin_templates->set_var('itemtext', $fieldvalue);
                     $admin_templates->parse('item_field', 'field', true);
@@ -320,17 +330,23 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                 $admin_templates->set_var('img_arrow', $img_arrow);
             }
             # make the mouseover effect is sortable
-            $admin_templates->set_var('mouse_over', "OnMouseOver=\"this.style.cursor='pointer';\"");
+            $admin_templates->set_var('mouse_over', " OnMouseOver=\"this.style.cursor='pointer';\"");
             $order_var = $i; # assign number to field so we know what to sort
-            $onclick="onclick=\"window.location.href='$form_url?" #onclick action
+            $onclick = " onclick=\"window.location.href='$form_url?" #onclick action
                     ."order=$order_var&amp;prevorder=$order&amp;direction=$direction"
                     ."&amp;" . $component . "listpage=$page"
                     ."&amp;q=$query&amp;query_limit=$query_limit$extra';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
+        if (!empty($header_arr[$i]['header_class'])) {
+			$admin_templates->set_var('class', $header_arr[$i]['header_class']);
+		} else {
+			$admin_templates->set_var('class', "admin-list-headerfield");
+		}
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('img_arrow'); # clear all for next header
         $admin_templates->clear_var('mouse_over');
+        $admin_templates->clear_var('width');
         $admin_templates->clear_var('on_click');
         $admin_templates->clear_var('arrow');
     }
@@ -400,6 +416,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             } else {
                 $fieldvalue = ''; # set field = ''
             }
+	        if (!empty($header_arr[$j]['field_class'])) {
+				$admin_templates->set_var('class', $header_arr[$j]['field_class']);
+			} else {
+				$admin_templates->set_var('class', "admin-list-field");
+			}
             $admin_templates->set_var('itemtext', $fieldvalue); # write field
             $admin_templates->parse('item_field', 'field', true);
         }
