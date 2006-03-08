@@ -2,6 +2,11 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+
+- Fixed handling of HTML entities in stories (bug #99) [Dirk]
+- Added a JavaScript confirmation box to most delete buttons/links [Dirk]
+- Removed obsolete "do not use spaces" warning from user editor (bug #530)
+  [Dirk]
 - show fullname/username according to config.php settings in stories [Oliver]
 - Added calendar plugin initial version [Oliver]
 - Added possibility to change the css-class for admin list headers and fields
