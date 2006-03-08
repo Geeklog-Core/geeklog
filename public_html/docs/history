@@ -2,7 +2,10 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
-
+- Added possibility to change the css-class for admin list headers and fields
+  [Oliver]
+- Added unified new style class to stats.php/style.css to have all lists on
+  the page look the same [Oliver]
 - Added multi-language support, based on earlier works by Euan McKay and LWC.
   Also see http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support
 - Changed the default path for topic icons to /images/topics [Dirk]
