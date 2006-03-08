@@ -17,7 +17,7 @@
                                     <tr>
                                         <td align="right"><b>{lang_topic}:</b></td>
                                         <td>
-                                            <select name=tid>
+                                            <select name="tid">
                                                 {story_topic_options}
                                             </select>
                                         </td>
