@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- show fullname/username according to config.php settings in stories [Oliver]
+- Added calendar plugin initial version [Oliver]
 - Added possibility to change the css-class for admin list headers and fields
   [Oliver]
 - Added unified new style class to stats.php/style.css to have all lists on
