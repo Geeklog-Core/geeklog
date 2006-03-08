@@ -1,5 +1,5 @@
 <div id="commentarea">
 {commentbar}
 {comments}
-<center>{pagenav}</center>
+<p align="center">{pagenav}</p>
 </div>

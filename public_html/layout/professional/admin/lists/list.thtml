@@ -5,5 +5,5 @@
                                 </tr>
                                 {item_row}
                             </table>
-                            <center><b>{message}</b></center><br>
+                            <p align="center"><b>{message}</b></p>
                             {google_paging}
