@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.25 2006/01/28 14:13:48 dhaun Exp $
+// $Id: index.php,v 1.26 2006/03/08 16:35:41 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -96,7 +96,7 @@ if (!SEC_hasRights ('links.edit')) {
 function editlink ($mode, $lid = '') 
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $_LI_CONF,
-           $LANG_LINKS_ADMIN, $LANG_ACCESS;
+           $LANG_LINKS_ADMIN, $LANG_ACCESS, $MESSAGE;
 
     $retval = '';
 
@@ -143,7 +143,10 @@ function editlink ($mode, $lid = '')
 
     $link_templates->set_var('link_id', $A['lid']);
     if (!empty($lid) && SEC_hasRights('links.edit')) {
-        $link_templates->set_var ('delete_option', '<input type="submit" value="' . $LANG_LINKS_ADMIN[23] . '" name="mode">');
+        $link_templates->set_var ('delete_option',
+                '<input type="submit" value="' . $LANG_LINKS_ADMIN[23]
+                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+                . '\');">');
     }
     $link_templates->set_var('lang_linktitle', $LANG_LINKS_ADMIN[3]);
     $link_templates->set_var('link_title',

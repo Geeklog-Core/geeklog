@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.1 2006/03/08 13:23:25 ospiess Exp $
+// $Id: functions.inc,v 1.2 2006/03/08 16:35:40 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -767,8 +767,8 @@ function CALENDAR_deleteEvent ($eid)
 */
 function CALENDAR_editevent ($mode, $A, $msg = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG10, $LANG12, $LANG_CAL_ADMIN,
-            $LANG_ACCESS, $_CA_CONF, $LANG_ADMIN;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG10, $LANG12,
+           $LANG_CAL_ADMIN, $LANG_ACCESS, $_CA_CONF, $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -821,7 +821,9 @@ function CALENDAR_editevent ($mode, $A, $msg = '')
 
     if (!empty($A['eid']) && SEC_hasRights('event.edit')) {
         $event_templates->set_var ('delete_option',
-            '<input type="submit" value="' . $LANG_CAL_ADMIN[22] . '" name="mode">');
+                '<input type="submit" value="' . $LANG_CAL_ADMIN[22]
+                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+                . '\');">');
     }
 
     if (empty ($A['eid'])) { // new event

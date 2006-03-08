@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.59 2006/01/30 14:50:14 dhaun Exp $
+// $Id: index.php,v 1.60 2006/03/08 16:35:43 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -59,8 +59,8 @@ if (!SEC_hasRights ('staticpages.edit')) {
 */ 
 function form ($A, $error = false) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS;
-    global $mode, $sp_id, $LANG24;
+    global $_CONF, $_TABLES, $_USER, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS,
+           $mode, $sp_id, $LANG24, $MESSAGE;
 
     if (!empty($sp_id) && $mode=='edit') {
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -139,7 +139,10 @@ function form ($A, $error = false)
         $sp_template->set_var('lang_preview', $LANG_STATIC['preview']);
         if (SEC_hasRights ('staticpages.delete') && ($mode != 'clone') &&
                 !empty ($A['sp_old_id'])) {
-            $sp_template->set_var ('delete_option', '<input type="submit" value="' . $LANG_STATIC['delete'] . '" name="mode">');
+            $sp_template->set_var ('delete_option',
+                    '<input type="submit" value="' . $LANG_STATIC['delete']
+                    . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+                    . '\');">');
         } else {
             $sp_template->set_var('delete_option','');
         }

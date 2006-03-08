@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2005/12/22 14:39:46 ospiess Exp $
+// $Id: index.php,v 1.24 2006/03/08 16:35:41 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -238,7 +238,8 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
 */
 function editpoll ($qid = '')
 {
-    global $_CONF, $_PO_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS;
+    global $_CONF, $_PO_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS,
+           $MESSAGE;
 
     $retval = '';
 
@@ -273,7 +274,8 @@ function editpoll ($qid = '')
 
     if (!empty ($qid) AND ($access == 3) AND !empty ($Q['owner_id'])) {
         $poll_templates->set_var('delete_option',
-            '<input type="submit" name="mode" value="' . $LANG25[16] . '">');
+                '<input type="submit" name="mode" value="' . $LANG25[16]
+                . '" onclick="return confirm(\'' . $MESSAGE[76] . '\');">');
     } else {
         $Q['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Polls Admin'])) {
