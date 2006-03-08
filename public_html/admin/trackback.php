@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.32 2006/02/26 18:12:18 dhaun Exp $
+// $Id: trackback.php,v 1.33 2006/03/08 16:28:55 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -531,7 +531,7 @@ function listServices ()
 */
 function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $new_ping_url = '', $new_method = '', $new_enabled = -1)
 {
-    global $_CONF, $_TABLES, $LANG_TRB, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $LANG_TRB, $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -589,8 +589,10 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
     $template->set_var ('lang_cancel', $LANG_ADMIN['cancel']);
 
     if ($pid > 0) {
-        $template->set_var ('delete_option', '<input type="submit" value="'
-                . $LANG_ADMIN['delete'] . '" name="servicemode[2]">');
+        $template->set_var ('delete_option',
+                '<input type="submit" value="' . $LANG_ADMIN['delete']
+                . '" name="servicemode[2]" onclick="return confirm(\''
+                . $MESSAGE[76] . '\');">');
     } else {
         $template->set_var ('delete_option', '');
     }

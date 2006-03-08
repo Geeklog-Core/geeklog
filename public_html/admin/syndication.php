@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.35 2006/02/26 18:12:16 dhaun Exp $
+// $Id: syndication.php,v 1.36 2006/03/08 16:28:54 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -177,7 +177,7 @@ function listfeeds()
 */
 function editfeed ($fid = 0, $type = '')
 {
-    global $_CONF, $_TABLES, $LANG33;
+    global $_CONF, $_TABLES, $LANG33, $MESSAGE;
 
     if ($fid > 0) {
         $result = DB_query ("SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE fid = '$fid'");
@@ -251,8 +251,10 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var('lang_save', $LANG33[2]);
     $feed_template->set_var('lang_cancel', $LANG33[4]);
     if ($A['fid'] > 0) {
-        $feed_template->set_var ('delete_option', '<input type="submit" value="'
-                                 . $LANG33[3] . '" name="mode">');
+        $feed_template->set_var ('delete_option',
+                '<input type="submit" value="' . $LANG33[3]
+                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+                . '\');">');
     }
     $feed_template->set_var ('feed_id', $A['fid']);
     $feed_template->set_var ('feed_title', $A['title']);

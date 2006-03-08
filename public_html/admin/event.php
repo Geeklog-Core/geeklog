@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.77 2006/02/26 18:12:09 dhaun Exp $
+// $Id: event.php,v 1.78 2006/03/08 16:28:53 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -73,7 +73,7 @@ if (!SEC_hasRights('event.edit')) {
 function editevent ($mode, $A, $msg = '') 
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG10, $LANG12, $LANG22,
-           $LANG30, $LANG_ACCESS, $_STATES, $LANG_ADMIN;
+           $LANG30, $LANG_ACCESS, $_STATES, $LANG_ADMIN, $MESSAGE;
 
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
@@ -128,7 +128,9 @@ function editevent ($mode, $A, $msg = '')
 
     if (!empty($A['eid']) && SEC_hasRights('event.edit')) {
         $event_templates->set_var ('delete_option',
-            '<input type="submit" value="' . $LANG22[22] . '" name="mode">');
+            '<input type="submit" value="' . $LANG22[22]
+            . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+            . '\');">');
     }
 
     if (empty ($A['eid'])) { // new event

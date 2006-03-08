@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.93 2006/02/26 18:12:07 dhaun Exp $
+// $Id: block.php,v 1.94 2006/03/08 16:28:53 dhaun Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -173,7 +173,8 @@ function editdefaultblock ($A, $access)
 */
 function editblock ($bid = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG21, $LANG_ACCESS, $LANG_ADMIN;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG21, $LANG_ACCESS,
+           $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -218,7 +219,10 @@ function editblock ($bid = '')
 
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.delete')) {
-            $block_templates->set_var('delete_option',"<input type=\"submit\" value=\"{$LANG_ADMIN['delete']}\" name=\"mode\">");
+            $block_templates->set_var('delete_option',
+                '<input type="submit" value="' . $LANG_ADMIN['delete']
+                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+                . '\');">');
         }
     }
 

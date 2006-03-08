@@ -1158,7 +1158,8 @@ $MESSAGE = array(
     72 => 'Bei der Installation des Plugins trat ein Fehler auf. Siehe error.log für weitere Informationen.',
     73 => 'Bei der Deinstallation des Plugins trat ein Fehler aus. Siehe error.log für weitere Informationen.',
     74 => 'Der Pingback wurde erfolgreich verschickt.',
-    75 => 'Trackbacks müssen als POST-Request verschickt werden.'
+    75 => 'Trackbacks müssen als POST-Request verschickt werden.',
+    76 => 'Wollen Sie diesen Eintrag wirklich löschen?'
 );
 
 ###############################################################################

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.202 2006/03/08 15:44:53 dhaun Exp $
+// $Id: story.php,v 1.203 2006/03/08 16:28:54 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -217,7 +217,8 @@ function liststories()
 */
 function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS,
+           $LANG_ADMIN, $MESSAGE;
 
     $display = '';
 
@@ -505,7 +506,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     if ($access == 3) {
         $story_templates->set_var ('delete_option',
-            '<input type="submit" value="' . $LANG24[11] . '" name="mode" onClick="return delconfirm()">');
+            '<input type="submit" value="' . $LANG24[11]
+            . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+            . '\');">');
     }
     if ($mode == 'editsubmission') {
         $story_templates->set_var ('submission_option',

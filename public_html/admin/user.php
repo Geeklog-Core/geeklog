@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.141 2006/03/08 12:08:01 dhaun Exp $
+// $Id: user.php,v 1.142 2006/03/08 16:28:55 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -66,7 +66,8 @@ if (!SEC_hasRights('user.edit')) {
 */
 function edituser($uid = '', $msg = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $MESSAGE, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $LANG_ADMIN,
+           $MESSAGE;
 
     $retval = '';
 
@@ -126,7 +127,10 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
-        $user_templates->set_var('delete_option', '<input type="submit" value="' . $LANG_ADMIN['delete'] . '" name="mode">');
+        $user_templates->set_var ('delete_option',
+                '<input type="submit" value="' . $LANG_ADMIN['delete']
+                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
+                . '\');">');
     }
     $user_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog comment library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.28 2006/01/01 22:30:19 blaine Exp $
+// $Id: lib-comment.php,v 1.29 2006/03/08 16:28:52 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -194,7 +194,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
 */
 function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $MESSAGE, $_IMAGE_TYPE;
 
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
@@ -327,7 +327,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $deloption = '| <a href="' . $_CONF['site_url']
                        . '/comment.php?mode=delete&amp;cid='
                        . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type='
-                       . $type . '">' . $LANG01[28] . '</a> ';
+                       . $type . '" onclick="return confirm(\'' . $MESSAGE[76]
+                       . '\');">' . $LANG01[28] . '</a> ';
             if( !empty( $A['ipaddress'] )) {
                 if( empty( $_CONF['ip_lookup'] )) {
                     $deloption .= '| ' . $A['ipaddress'] . ' ';

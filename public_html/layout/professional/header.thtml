@@ -10,18 +10,6 @@
 {feed_url}
 {plg_headercode}
 {advanced_editor}
-
-<script type="text/javascript">
-    function delconfirm()
-    {
-        if (confirm("Do you really want to delete this item?"))
-        {
-          return true;
-        } else {
-          return false;
-        }
-    }
-</script>
 </head>
 
 <body class="sitebody" dir="{direction}">
