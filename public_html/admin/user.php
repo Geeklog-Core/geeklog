@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.140 2006/02/26 18:12:18 dhaun Exp $
+// $Id: user.php,v 1.141 2006/03/08 12:08:01 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -173,7 +173,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('user_email', htmlspecialchars($A['email']));
     $user_templates->set_var('lang_homepage', $LANG28[8]);
     $user_templates->set_var('user_homepage', htmlspecialchars($A['homepage']));
-    $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
+    $user_templates->set_var('do_not_use_spaces', '');
 
     $statusarray = array(USER_ACCOUNT_DISABLED => $LANG28[42],
                         USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],

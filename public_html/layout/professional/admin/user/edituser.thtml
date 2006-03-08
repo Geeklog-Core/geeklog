@@ -16,7 +16,7 @@
                                     <tr>
                                         <td align="right" valign="top">{lang_username}:</td>
                                         <td>
-                                            <input type="text" size="16" maxlength="16" name="username" value="{username}"> {do_not_use_spaces}<br>
+                                            <input type="text" size="16" maxlength="16" name="username" value="{username}"><br>
                                             {user_photo}<br>
                                             {lang_delete_photo} {delete_photo_option}
                                         </td>
