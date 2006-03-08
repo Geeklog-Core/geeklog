@@ -1,1 +1,1 @@
-<th class="admin-list-headerfield" {mouse_over} {on_click}>{header_text}{img_arrow}</th>
+<th class="{class}"{mouse_over}{on_click}>{header_text}{img_arrow}</th>

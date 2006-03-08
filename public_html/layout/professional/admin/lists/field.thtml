@@ -1,1 +1,1 @@
-                                    <td class="admin-list-field" {colspan}>{itemtext}</td>
+                                    <td class="{class}"{colspan}>{itemtext}</td>

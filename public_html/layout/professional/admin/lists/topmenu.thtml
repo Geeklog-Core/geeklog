@@ -3,8 +3,7 @@
                                     <td rowspan="2">
                                         <img src="{icon}" alt="">
                                     </td>
-                                    <td>[ {menu_fields} ]
-                                    </td>
+                                    <td>{menu_fields_pre}{menu_fields}{menu_fields_aft}</td>
                                 </tr>
                                 <tr>
                                     <td>{lang_instructions}</td>
