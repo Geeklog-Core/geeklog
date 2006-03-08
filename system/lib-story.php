@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.56 2006/02/11 20:12:52 ospiess Exp $
+// $Id: lib-story.php,v 1.57 2006/03/08 14:11:53 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -136,16 +136,17 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         $article->set_var( 'lang_contributed_by', $LANG01[1] );
         $article->set_var( 'contributedby_uid', $A['uid'] );
         $username = $A['username'];
+		$fullname = $A['fullname'];
         $article->set_var( 'contributedby_user', $username );
 
-        $fullname = $A['fullname'];
-        if( empty( $fullname ))
+        
+        if( empty( $fullname ) or ( $_CONF['show_fullname'] == 1))
         {
-            $article->set_var( 'contributedby_fullname', $username );
+            $article->set_var( 'contributedby_author', $username );
         }
         else
         {
-            $article->set_var( 'contributedby_fullname', $fullname );
+            $article->set_var( 'contributedby_author', $fullname );   
         }
 
         if( $A['uid'] > 1 )
