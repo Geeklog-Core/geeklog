@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.19 2005/12/22 14:50:25 ospiess Exp $
+ * $Id: functions.inc,v 1.20 2006/03/08 05:16:02 ospiess Exp $
  */
 
 /**
@@ -52,8 +52,8 @@ function plugin_showstats_spamx($showsitestats)
         // detailed stats are only visible to Spam-X admins
         require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(
-            array('text' => $LANG_SX00['stats_page_title'], 'field' => 'label'),
-            array('text' => $LANG_SX00['stats_entries'], 'field' => 'stats'),
+            array('text' => $LANG_SX00['stats_page_title'], 'field' => 'label', 'header_class' => 'stats-header-title'),
+            array('text' => $LANG_SX00['stats_entries'], 'field' => 'stats', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     => false,

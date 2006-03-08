@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.38 2006/03/06 11:29:04 dhaun Exp $
+// $Id: functions.inc,v 1.39 2006/03/08 05:16:02 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -213,8 +213,8 @@ function plugin_showstats_polls ($showsitestats)
     if ($nrows > 0) {
         require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(
-            array('text' => $LANG_POLLS['stats_questions'], 'field' => 'qid'),
-            array('text' => $LANG_POLLS['stats_votes'], 'field' => 'voters'),
+            array('text' => $LANG_POLLS['stats_questions'], 'field' => 'qid', 'header_class' => 'stats-header-title'),
+            array('text' => $LANG_POLLS['stats_votes'], 'field' => 'voters', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     => false,

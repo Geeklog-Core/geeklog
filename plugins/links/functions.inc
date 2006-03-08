@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.50 2006/03/04 11:58:20 dhaun Exp $
+// $Id: functions.inc,v 1.51 2006/03/08 05:16:02 ospiess Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -235,8 +235,8 @@ function plugin_showstats_links ($showsitestats)
     $nrows  = DB_numRows ($result);
     if ($nrows > 0) {
         $header_arr = array(
-            array('text' => $LANG_LINKS_STATS['stats_page_title'], 'field' => 'sid'),
-            array('text' => $LANG_LINKS_STATS['stats_hits'], 'field' => 'hits'),
+            array('text' => $LANG_LINKS_STATS['stats_page_title'], 'field' => 'sid', 'header_class' => 'stats-header-title'),
+            array('text' => $LANG_LINKS_STATS['stats_hits'], 'field' => 'hits', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     =>  false,
