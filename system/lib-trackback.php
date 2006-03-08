@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.24 2006/03/08 16:28:53 dhaun Exp $
+// $Id: lib-trackback.php,v 1.25 2006/03/08 16:30:12 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -322,7 +322,7 @@ function TRB_deleteTrackbackComment ($cid)
 */
 function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date = 0, $delete_option = false, $cid = '', $ipaddress = '')
 {
-    global $_CONF, $LANG01, $LANG_TRB;
+    global $_CONF, $LANG01, $LANG_TRB, $MESSAGE;
 
     if (empty ($title)) {
         $title = $url;
