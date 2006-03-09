@@ -53,8 +53,8 @@
                                     <tr>
                                         <td colspan="2">
                                             <input type="submit" value="{lang_save}" name="mode"> 
-                                            {delete_option}
                                             <input type="submit" value="{lang_cancel}" name="mode"> 
+                                            {delete_option}
                                         </td>
                                     </tr>
                                 </table>
