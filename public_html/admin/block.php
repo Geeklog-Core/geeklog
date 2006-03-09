@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.94 2006/03/08 16:28:53 dhaun Exp $
+// $Id: block.php,v 1.95 2006/03/09 09:38:36 dhaun Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -219,10 +219,13 @@ function editblock ($bid = '')
 
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.delete')) {
-            $block_templates->set_var('delete_option',
-                '<input type="submit" value="' . $LANG_ADMIN['delete']
-                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
-                . '\');">');
+            $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                       . '" name="mode"%s>';
+            $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
+            $block_templates->set_var ('delete_option',
+                                       sprintf ($delbutton, $jsconfirm));
+            $block_templates->set_var ('delete_option_no_confirmation',
+                                       sprintf ($delbutton, ''));
         }
     }
 

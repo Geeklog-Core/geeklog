@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.142 2006/03/08 16:28:55 dhaun Exp $
+// $Id: user.php,v 1.143 2006/03/09 09:38:39 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -127,10 +127,13 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
+        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                   . '" name="mode"%s>';
+        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $user_templates->set_var ('delete_option',
-                '<input type="submit" value="' . $LANG_ADMIN['delete']
-                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
-                . '\');">');
+                                  sprintf ($delbutton, $jsconfirm));
+        $user_templates->set_var ('delete_option_no_confirmation',
+                                  sprintf ($delbutton, ''));
     }
     $user_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 

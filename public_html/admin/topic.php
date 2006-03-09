@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.62 2006/03/08 16:28:55 dhaun Exp $
+// $Id: topic.php,v 1.63 2006/03/09 09:38:38 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -64,7 +64,8 @@ if (!SEC_hasRights('topic.edit')) {
 */ 
 function edittopic ($tid = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG27, $LANG_ACCESS, $MESSAGE;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG27, $LANG_ACCESS,
+           $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -103,10 +104,13 @@ function edittopic ($tid = '')
     $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $topic_templates->set_var('layout_url', $_CONF['layout_url']);
     if (!empty($tid) && SEC_hasRights('topic.edit')) {
+        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                   . '" name="mode"%s>';
+        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $topic_templates->set_var ('delete_option',
-                '<input type="submit" value="' . $LANG27[21]
-                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
-                . '\');">');
+                                   sprintf ($delbutton, $jsconfirm));
+        $topic_templates->set_var ('delete_option_no_confirmation',
+                                   sprintf ($delbutton, ''));
     }
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);

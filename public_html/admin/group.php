@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.66 2006/03/08 16:28:54 dhaun Exp $
+// $Id: group.php,v 1.67 2006/03/09 09:38:37 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -80,7 +80,8 @@ if (!SEC_hasRights ('group.edit')) {
 */
 function editgroup($grp_id = '')
 {
-    global $_TABLES, $_CONF, $_USER, $LANG_ACCESS, $MESSAGE, $VERBOSE;
+    global $_TABLES, $_CONF, $_USER, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE,
+           $VERBOSE;
 
     $retval = '';
 
@@ -127,19 +128,22 @@ function editgroup($grp_id = '')
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (!empty($grp_id)) {
+        // Groups tied to Geeklog's functionality shouldn't be deleted
         if ($A['grp_gl_core'] == 0) {
-            // Groups tied to Geeklogs functionality shouldn't be deleted
+            $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                       . '" name="mode"%s>';
+            $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
             $group_templates->set_var ('delete_option',
-                    '<input type="submit" value="' . $LANG_ACCESS['delete']
-                    . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
-                    . '\');">');
-            $group_templates->set_var('group_core', 0);
+                                       sprintf ($delbutton, $jsconfirm));
+            $group_templates->set_var ('delete_option_no_confirmation',
+                                       sprintf ($delbutton, ''));
+            $group_templates->set_var ('group_core', 0);
         } else {
-            $group_templates->set_var('group_core', 1);
+            $group_templates->set_var ('group_core', 1);
         }
-        $group_templates->set_var('group_id', $A['grp_id']);
+        $group_templates->set_var ('group_id', $A['grp_id']);
     } else {
-        $group_templates->set_var('group_core', 0);
+        $group_templates->set_var ('group_core', 0);
     }
 
     $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);

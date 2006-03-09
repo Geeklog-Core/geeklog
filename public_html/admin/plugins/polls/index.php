@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.24 2006/03/08 16:35:41 dhaun Exp $
+// $Id: index.php,v 1.25 2006/03/09 09:38:40 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -239,7 +239,7 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
 function editpoll ($qid = '')
 {
     global $_CONF, $_PO_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS,
-           $MESSAGE;
+           $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -273,9 +273,13 @@ function editpoll ($qid = '')
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (!empty ($qid) AND ($access == 3) AND !empty ($Q['owner_id'])) {
-        $poll_templates->set_var('delete_option',
-                '<input type="submit" name="mode" value="' . $LANG25[16]
-                . '" onclick="return confirm(\'' . $MESSAGE[76] . '\');">');
+        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                   . '" name="mode"%s>';
+        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
+        $poll_templates->set_var ('delete_option',
+                                  sprintf ($delbutton, $jsconfirm));
+        $poll_templates->set_var ('delete_option_no_confirmation',
+                                  sprintf ($delbutton, ''));
     } else {
         $Q['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Polls Admin'])) {

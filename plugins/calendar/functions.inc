@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.2 2006/03/08 16:35:40 dhaun Exp $
+// $Id: functions.inc,v 1.3 2006/03/09 09:38:33 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -767,8 +767,8 @@ function CALENDAR_deleteEvent ($eid)
 */
 function CALENDAR_editevent ($mode, $A, $msg = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG10, $LANG12,
-           $LANG_CAL_ADMIN, $LANG_ACCESS, $_CA_CONF, $LANG_ADMIN, $MESSAGE;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $_CA_CONF, $LANG10, $LANG12,
+           $LANG_CAL_ADMIN, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -820,10 +820,13 @@ function CALENDAR_editevent ($mode, $A, $msg = '')
                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (!empty($A['eid']) && SEC_hasRights('event.edit')) {
+        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                   . '" name="mode"%s>';
+        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $event_templates->set_var ('delete_option',
-                '<input type="submit" value="' . $LANG_CAL_ADMIN[22]
-                . '" name="mode" onclick="return confirm(\'' . $MESSAGE[76]
-                . '\');">');
+                                   sprintf ($delbutton, $jsconfirm));
+        $event_templates->set_var ('delete_option_no_confirmation',
+                                   sprintf ($delbutton, ''));
     }
 
     if (empty ($A['eid'])) { // new event

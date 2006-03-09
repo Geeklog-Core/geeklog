@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.33 2006/03/08 16:28:55 dhaun Exp $
+// $Id: trackback.php,v 1.34 2006/03/09 09:38:39 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -589,10 +589,13 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
     $template->set_var ('lang_cancel', $LANG_ADMIN['cancel']);
 
     if ($pid > 0) {
+        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                   . '" name="mode"%s>';
+        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $template->set_var ('delete_option',
-                '<input type="submit" value="' . $LANG_ADMIN['delete']
-                . '" name="servicemode[2]" onclick="return confirm(\''
-                . $MESSAGE[76] . '\');">');
+                            sprintf ($delbutton, $jsconfirm));
+        $template->set_var ('delete_option_no_confirmation',
+                            sprintf ($delbutton, ''));
     } else {
         $template->set_var ('delete_option', '');
     }
