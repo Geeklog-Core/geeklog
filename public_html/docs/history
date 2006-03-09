@@ -38,6 +38,8 @@ GeekLog History/Changes:
   access Admin panels without proper privileges [Dirk]
 - Fixed display of Admin block for users that only had certain Admin privileges
   [Dirk]
+- Fixed RSS Feed parser to create RFC 822 dates in en_GB or en_US locale as per
+  the RFC spec [Mike]
 
 
 Mar 5, 2006 (1.4.0sr2)

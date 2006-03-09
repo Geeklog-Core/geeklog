@@ -266,6 +266,31 @@
     }
 
     /**
+      * Generate an RFC-822 compliant date-time stamp.
+      *
+      * @param timestamp $timestamp Date time to format.
+      */
+    function _RFC822DateFormat($timestamp='')
+    {
+    	// Cache the current timezone:
+    	$cache_timezone = setlocale(LC_TIME,0);
+    	// Time locales that will give us the required output
+    	$timezones = array('en_GB','en_US');
+    	setlocale(LC_TIME,$timezones); // set to whichever the system supports.
+    	// format the date
+    	if(!empty($timestamp))
+    	{
+    		$time = strftime( '%a, %d %b %Y %H:%M:%S %z', $timestamp);
+    	} else {
+    		$time = strftime( '%a, %d %b %Y %H:%M:%S %z' );
+    	}
+    	// Set the timezone back
+    	setlocale(LC_TIME, $cache_timezone);
+    	// return the time
+    	return $time;
+    }
+
+    /**
       * Format an article into an RSS 2.0 <item> tag.
       *
       * Takes an associative article array and turns it into an XML definition
@@ -279,7 +304,7 @@
       $xml .= '<title>'.$this->_safeXML( $article['title'] )."</title>\n";
       $xml .= '<link>'.$this->_safeXML( $article['link'] )."</link>\n";
       $xml .= '<guid isPermaLink="true">'.$this->_safeXML( $article['link'] )."</guid>\n";
-      $xml .= '<pubDate>'.strftime( '%a, %d %b %Y %H:%M:%S %z', $article['date'] )."</pubDate>\n";
+      $xml .= '<pubDate>'.$this->_RFC822DateFormat( $article['date'] )."</pubDate>\n";
       if( array_key_exists( 'commenturl', $article ) )
       {
         $xml .= '<comments>'.$this->_safeXML( $article['commenturl'] )."</comments>\n";
@@ -355,7 +380,7 @@
       {
         $xml .= '<generator>'.$this->_safeXML( $this->system )."</generator>\n";
       }
-      $xml .= '<pubDate>'.strftime( '%a, %d %b %Y %H:%M:%S %z' )."</pubDate>\n";
+      $xml .= '<pubDate>'.$this->_RFC822DateFormat()."</pubDate>\n";
       $xml .= "<language>{$this->lang}</language>\n";
 
       if( strlen($this->feedlogo) > 0 )
