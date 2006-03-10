@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.516 2006/03/07 14:56:04 dhaun Exp $
+// $Id: lib-common.php,v 1.517 2006/03/10 12:18:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1422,7 +1422,7 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where=''
 *
 */
 
-function COM_topicList( $selection, $selected='', $sortcol=1 )
+function COM_topicList( $selection, $selected = '', $sortcol = 1, $ignorelang = false )
 {
     global $_TABLES;
 
@@ -1431,8 +1431,26 @@ function COM_topicList( $selection, $selected='', $sortcol=1 )
     $tmp = str_replace( 'DISTINCT ', '', $selection );
     $select_set = explode( ',', $tmp );
 
-    $result = DB_query( "SELECT * FROM {$_TABLES['topics']}" . COM_getPermSQL()
-            . " ORDER BY $select_set[$sortcol]" );
+    $sql = "SELECT $selection FROM {$_TABLES['topics']}";
+    if( $ignorelang )
+    {
+        $sql .= COM_getPermSQL();
+    }
+    else
+    {
+        $permsql = COM_getPermSQL();
+        if( empty( $permsql ))
+        {
+            $sql .= COM_getLangSQL( 'tid' );
+        }
+        else
+        {
+            $sql .= $permsql . COM_getLangSQL( 'tid', 'AND' );
+        }
+    }
+    $sql .=  " ORDER BY $select_set[$sortcol]";
+
+    $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
     for( $i = 0; $i < $nrows; $i++ )
