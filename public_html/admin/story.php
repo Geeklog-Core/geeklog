@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.205 2006/03/09 09:38:37 dhaun Exp $
+// $Id: story.php,v 1.206 2006/03/10 11:53:47 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -708,14 +708,14 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $newintro = str_replace('$','&#36;',$newintro);
         $newbody = str_replace('$','&#36;',$newbody);
     } else {
-        $newintro = htmlspecialchars ($newintro);
-        $newbody = htmlspecialchars ($newbody);
-
         // Insert [code] and [/code] if needed
         $newintro = str_replace('<pre><code>','[code]',$newintro);
         $newbody = str_replace('<pre><code>','[code]',$newbody);
         $newintro = str_replace('</code></pre>','[/code]',$newintro);
         $newbody = str_replace('</code></pre>','[/code]',$newbody);
+
+        $newintro = htmlspecialchars ($newintro);
+        $newbody = htmlspecialchars ($newbody);
     }
 
     $newintro = str_replace('{','&#123;',$newintro);
