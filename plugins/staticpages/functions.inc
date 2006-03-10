@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.64 2006/03/08 05:16:02 ospiess Exp $
+// $Id: functions.inc,v 1.65 2006/03/10 14:06:47 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -744,9 +744,9 @@ function staticpages_templatePath ($path = '')
     global $_CONF;
 
     if (empty ($path)) {
-        $layout_path = $_CONF['path_layout'] . staticpages;
+        $layout_path = $_CONF['path_layout'] . 'staticpages';
     } else {
-        $layout_path = $_CONF['path_layout'] . staticpages . '/' . $path;
+        $layout_path = $_CONF['path_layout'] . 'staticpages/' . $path;
     }
 
     if (is_dir ($layout_path)) {

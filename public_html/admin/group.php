@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.67 2006/03/09 09:38:37 dhaun Exp $
+// $Id: group.php,v 1.68 2006/03/10 14:06:51 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -155,10 +155,18 @@ function editgroup($grp_id = '')
         $group_templates->set_var('groupname_inputtype', 'hidden');
         $group_templates->set_var('groupname_static', $A['grp_name']);
     }
-    $group_templates->set_var('group_name', $A['grp_name']);
+    if (isset ($A['grp_name'])) {
+        $group_templates->set_var('group_name', $A['grp_name']);
+    } else {
+        $group_templates->set_var('group_name', '');
+    }
 
     $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
-    $group_templates->set_var('group_description', $A['grp_descr']);
+    if (isset ($A['grp_descr'])) {
+        $group_templates->set_var('group_description', $A['grp_descr']);
+    } else {
+        $group_templates->set_var('group_description', '');
+    }
     $group_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
 
     //$groups = SEC_getUserGroups('','',$grp_id);
@@ -314,6 +322,7 @@ function printrights ($grp_id = '', $core = 0)
     $features = DB_query ("SELECT ft_id,ft_name,ft_descr FROM {$_TABLES['features']}{$ftWhere} ORDER BY ft_name");
     $nfeatures = DB_numRows($features);
 
+    $grpftarray = array ();
     if (!empty($grp_id)) {
         // now get all the feature this group gets directly
          $directfeatures = DB_query("SELECT acc_ft_id,ft_name FROM {$_TABLES['access']},{$_TABLES['features']} WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
@@ -325,7 +334,6 @@ function printrights ($grp_id = '', $core = 0)
         $indirectfeatures = explode (',', $indirectfeatures);
 
         // Build an array of indirect features
-        $grpftarray = array ();
         for ($i = 0; $i < sizeof($indirectfeatures); $i++) {
             $grpftarray[current($indirectfeatures)] = 'indirect';
             next($indirectfeatures);
@@ -360,11 +368,13 @@ function printrights ($grp_id = '', $core = 0)
         }
         $A = DB_fetchArray($features);
 
-        if ((($grpftarray[$A['ft_name']] == 'direct') OR empty($grpftarray[$A['ft_name']])) AND ($core == 0)) {
+        if ((empty($grpftarray[$A['ft_name']]) OR ($grpftarray[$A['ft_name']] == 'direct')) AND ($core == 0)) {
             $ftcount++;
             $retval .= '<td><input type="checkbox" name="features[]" value="'. $A['ft_id'] . '"';
-            if ($grpftarray[$A['ft_name']] == 'direct') {
-                $retval .= ' checked="checked"';
+            if (!empty ($grpftarray[$A['ft_name']])) {
+                if ($grpftarray[$A['ft_name']] == 'direct') {
+                    $retval .= ' checked="checked"';
+                }
             }
             $retval .= '><span title="' . $A['ft_descr'] . '">' . $A['ft_name']
                     . '</span></td>';
@@ -830,7 +840,10 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
 } else if ($mode == 'edit') {
-    $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
+    $grp_id = 0;
+    if (isset ($_REQUEST['grp_id'])) {
+        $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
+    }
     $display .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
     $display .= editgroup ($grp_id);
     $display .= COM_siteFooter ();

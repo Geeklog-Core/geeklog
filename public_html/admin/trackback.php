@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.34 2006/03/09 09:38:39 dhaun Exp $
+// $Id: trackback.php,v 1.35 2006/03/10 14:06:52 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -600,10 +600,26 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $template->set_var ('delete_option', '');
     }
 
-    $template->set_var ('service_id', $A['pid']);
-    $template->set_var ('service_name', $A['name']);
-    $template->set_var ('service_site_url', $A['site_url']);
-    $template->set_var ('service_ping_url', $A['ping_url']);
+    if (isset ($A['pid'])) {
+        $template->set_var ('service_id', $A['pid']);
+    } else {
+        $template->set_var ('service_id', '');
+    }
+    if (isset ($A['name'])) {
+        $template->set_var ('service_name', $A['name']);
+    } else {
+        $template->set_var ('service_name', '');
+    }
+    if (isset ($A['site_url'])) {
+        $template->set_var ('service_site_url', $A['site_url']);
+    } else {
+        $template->set_var ('service_site_url', '');
+    }
+    if (isset ($A['ping_url'])) {
+        $template->set_var ('service_ping_url', $A['ping_url']);
+    } else {
+        $template->set_var ('service_ping_url', '');
+    }
     if ($A['is_enabled'] == 1) {
         $template->set_var ('is_enabled', 'checked="checked"');
     } else {
@@ -1125,7 +1141,11 @@ if ($mode == 'delete') {
                              $_POST['is_enabled']);
 
 } else if ($mode == 'editservice') {
-    $pid = COM_applyFilter ($_GET['service_id'], true);
+    $service_id = 0;
+    if (isset ($_GET['service_id'])) {
+        $service_id = COM_applyFilter ($_GET['service_id'], true);
+    }
+    $pid = COM_applyFilter ($service_id, true);
 
     $display .= editServiceForm ($pid);
 } else if ($mode == 'listservice') {

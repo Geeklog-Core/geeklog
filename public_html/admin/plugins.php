@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.58 2006/02/26 18:12:12 dhaun Exp $
+// $Id: plugins.php,v 1.59 2006/03/10 14:06:51 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -497,9 +497,11 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
 
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG32[5]);
-    $msg = COM_applyFilter ($_REQUEST['msg'], true);
-    if (!empty ($msg)) {
-        $display .= COM_showMessage ($msg);
+    if (isset ($_REQUEST['msg'])) {
+        $msg = COM_applyFilter ($_REQUEST['msg'], true);
+        if (!empty ($msg)) {
+            $display .= COM_showMessage ($msg);
+        }
     }
     $display .= listplugins ();
     $display .= show_newplugins();

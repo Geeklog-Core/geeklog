@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.91 2006/03/06 11:38:31 dhaun Exp $
+// $Id: lib-plugins.php,v 1.92 2006/03/10 14:06:53 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -91,6 +91,10 @@ function PLG_callFunctionForAllPlugins($function_name)
 function PLG_callFunctionForOnePlugin($function, $args='')
 {
     if (function_exists($function)) {
+        if (empty ($args)) {
+            $args = array ();
+        }
+
         // great, function exists, run it
         switch (count($args)) {
         case 0:
@@ -596,8 +600,12 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
                     $plugin = new Plugin();
                     $good_array = true;
                     for ($n = 0; $n < count($var_names); $n++) {
-                        $plugin -> $var_names[$n] = $val[$n];
-                        if (empty ($plugin -> $var_names[$n]) && $required_names[$n]) {
+                        if (isset ($val[$n])) {
+                            $plugin->$var_names[$n] = $val[$n];
+                        } else {
+                            $plugin->$var_names[$n] = '';
+                        }
+                        if (empty ($plugin->$var_names[$n]) && $required_names[$n]) {
                             $good_array = false;
                         }
                     }

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.58 2006/03/08 14:17:41 ospiess Exp $
+// $Id: lib-story.php,v 1.59 2006/03/10 14:06:54 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -438,9 +438,13 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
                 . $LANG01[4] . '" title="' . $LANG01[4] . '" border="0">' );
     }
 
-    // Need to convert text date/time to a timestamp
-    $t = explode( ' ', $A['expire'] );
-    $archiveDateTime = COM_convertDate2Timestamp( $t[0], $t[1] );
+    if (empty ($A['expire'])) { // e.g. in a preview
+        $archiveDateTime = time ();
+    } else {
+        // Need to convert text date/time to a timestamp
+        $t = explode( ' ', $A['expire'] );
+        $archiveDateTime = COM_convertDate2Timestamp( $t[0], $t[1] );
+    }
     if( $A['featured'] == 1 )
     {
         $article->set_var( 'lang_todays_featured_article', $LANG05[4] );

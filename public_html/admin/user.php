@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.143 2006/03/09 09:38:39 dhaun Exp $
+// $Id: user.php,v 1.144 2006/03/10 14:06:53 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -153,7 +153,11 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var('user_lastlogin', $lasttime[0]);
     }
     $user_templates->set_var('lang_username', $LANG28[3]);
-    $user_templates->set_var('username', $A['username']);
+    if (isset ($A['username'])) {
+        $user_templates->set_var('username', $A['username']);
+    } else {
+        $user_templates->set_var('username', '');
+    }
 
     if ($_CONF['allow_user_photo'] && ($A['uid'] > 0)) {
         $photo = USER_getPhoto ($A['uid'], $A['photo'], $A['email'], -1);
@@ -173,13 +177,27 @@ function edituser($uid = '', $msg = '')
     }
 
     $user_templates->set_var('lang_fullname', $LANG28[4]);
-    $user_templates->set_var('user_fullname', htmlspecialchars($A['fullname']));
+    if (isset ($A['fullname'])) {
+        $user_templates->set_var ('user_fullname',
+                                  htmlspecialchars ($A['fullname']));
+    } else {
+        $user_templates->set_var ('user_fullname', '');
+    }
     $user_templates->set_var('lang_password', $LANG28[5]);
     $user_templates->set_var('lang_password_conf', $LANG28[39]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
-    $user_templates->set_var('user_email', htmlspecialchars($A['email']));
+    if (isset ($A['email'])) {
+        $user_templates->set_var('user_email', htmlspecialchars($A['email']));
+    } else {
+        $user_templates->set_var('user_email', '');
+    }
     $user_templates->set_var('lang_homepage', $LANG28[8]);
-    $user_templates->set_var('user_homepage', htmlspecialchars($A['homepage']));
+    if (isset ($A['homepage'])) {
+        $user_templates->set_var ('user_homepage',
+                                  htmlspecialchars ($A['homepage']));
+    } else {
+        $user_templates->set_var ('user_homepage', '');
+    }
     $user_templates->set_var('do_not_use_spaces', '');
 
     $statusarray = array(USER_ACCOUNT_DISABLED => $LANG28[42],
@@ -671,9 +689,16 @@ if (isset ($_GET['direction'])) {
     $direction =  COM_applyFilter ($_GET['direction']);
 }
 
-if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
-        $display .= COM_refresh($_CONF['site_admin_url']
-                            . '/user.php?mode=edit&msg=67&uid='.$_POST['uid']);
+if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
+        ($_POST['passwd'] != $_POST['passwd_conf'])) {
+    // entered passwords were different
+    $uid = COM_applyFilter ($_POST['uid'], true);
+    if ($uid > 1) {
+        $display .= COM_refresh ($_CONF['site_admin_url']
+                                 . '/user.php?mode=edit&msg=67&uid=' . $uid);
+    } else {
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=67');
+    }
 } else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
     $uid = COM_applyFilter ($_POST['uid'], true);
     if ($uid > 1) {
@@ -697,8 +722,15 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
     }
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
-    $display .= edituser (COM_applyFilter ($_GET['uid']),
-                                              COM_applyFilter ($_GET['msg']));
+    $msg = '';
+    if (isset ($_GET['msg'])) {
+        $msg = COM_applyFilter ($_GET['msg'], true);
+    }
+    $uid = '';
+    if (isset ($_GET['uid'])) {
+        $uid = COM_applyFilter ($_GET['uid'], true);
+    }
+    $display .= edituser ($uid, $msg);
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
     $display .= importusers ($_POST['file']);
