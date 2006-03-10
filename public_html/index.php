@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.76 2006/03/07 14:56:04 dhaun Exp $
+// $Id: index.php,v 1.77 2006/03/10 22:42:39 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -161,8 +161,9 @@ if (!empty($topic)) {
 } elseif (!$newstories) {
     $sql .= " AND frontpage = 1 ";
 }
-if ($topic != $_CONF['archivetopic']) {
-    $sql .= " AND s.tid != '{$_CONF['archivetopic']}' ";
+
+if ($topic != $archivetid) {
+    $sql .= " AND s.tid != '{$archivetid}' ";
 }
 
 $sql .= COM_getPermSQL ('AND', 0, 2, 's');
