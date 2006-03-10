@@ -3,8 +3,11 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Fixed paging for the list of static pages (bug #528) [Dirk]
 - Fixed handling of HTML entities in stories (bug #99) [Dirk]
-- Added a JavaScript confirmation box to most delete buttons/links [Dirk]
+- Added a JavaScript confirmation box to most delete buttons/links. If you'd
+  rather not have such a confirmation, use {delete_option_no_confirmation}
+  instead of {delete_option} in the admin templates [Dirk]
 - Removed obsolete "do not use spaces" warning from user editor (bug #530)
   [Dirk]
 - show fullname/username according to config.php settings in stories [Oliver]
