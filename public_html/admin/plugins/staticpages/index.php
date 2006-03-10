@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.61 2006/03/09 09:38:40 dhaun Exp $
+// $Id: index.php,v 1.62 2006/03/10 10:52:55 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -358,7 +358,7 @@ function liststaticpages()
                        'query_fields' => array('sp_title', 'sp_id'),
                        'default_filter' => COM_getPermSQL ('AND', 0, 3));
 
-    $retval = ADMIN_list ("static pages", "plugin_getListField_staticpages", $header_arr, $text_arr,
+    $retval = ADMIN_list ("static_pages", "plugin_getListField_staticpages", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
     return $retval;
 
