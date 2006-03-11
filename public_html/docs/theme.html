@@ -171,7 +171,24 @@ recommended to leave the <code>$_CONF</code> variable unchanged in
 instead. That way, you can even leave your users a choice between, for example,
 a "normal" theme and one with the blocks on the right.</p>
 
-<h2><a name="changes">Theme changes in Geeklog 1.4.0</a></h2>
+<h2><a name="changes">Theme changes in Geeklog 1.4.1</a></h2>
+
+<ul>
+<li>All the "delete" buttons in the admin's editors (story editor, etc.) now
+    pop up a JavaScript confirmation box as a simple measure against
+    accidental deletion. If you'd rather not have that confirmation box,
+    replace the <code>{delete_option}</code> variable with
+    <code>{delete_option_no_confirmation}</code> in the admin templates.</li>
+<li>The order of the save / cancel / delete buttons is now consistent across
+    all admin template files (changed <tt>group/groupeditor.thtml</tt> and
+    <tt>user/edituser.thtml</tt>).</li>
+<li>Changed the top links in <tt>lists/topmenu_nosearch.thtml</tt> and
+    <tt>topic/topiclist.thtml</tt> to be consistent with the other admin areas
+    (i.e. the links are no longer enclosed in square brackets).</li>
+</ul>
+
+
+<h2><a name="changes140">Theme changes in Geeklog 1.4.0</a></h2>
 
 <p>As usual, any missing new theme files can simply be copied over from the
 default theme (Professional) that ships with Geeklog.</p>
