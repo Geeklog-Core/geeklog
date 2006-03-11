@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.49 2005/12/29 09:24:47 dhaun Exp $
+// $Id: search.class.php,v 1.50 2006/03/11 15:28:48 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -288,8 +288,12 @@ class Search {
             $story_results->searchlabel = $LANG09[53];
             $story_results->addSearchHeading($LANG09[16]);
             $story_results->addSearchHeading($LANG09[17]);
-            $story_results->addSearchHeading($LANG09[18]);
-            $story_results->addSearchHeading($LANG09[23]);
+            if ($_CONF['contributedbyline'] == 1) {
+                $story_results->addSearchHeading($LANG09[18]);
+            }
+            if ($_CONF['hideviewscount'] == 0) {
+                $story_results->addSearchHeading($LANG09[23]);
+            }
             $story_results->num_searchresults = 0;
             $story_results->num_itemssearched = $B[0];
             $story_results->supports_paging = true;
@@ -317,9 +321,14 @@ class Search {
                              . '">' . $author . '</a>';
                 }
                 $row = array ('<a href="' . $articleUrl . '">'
-                              . stripslashes ($A['title']) . '</a>',
-                              $thetime[0], $profile,
-                              COM_NumberFormat ($A['hits']));
+                                          . stripslashes ($A['title']) . '</a>',
+                              $thetime[0]);
+                if ($_CONF['contributedbyline'] == 1) {
+                    $row[] = $profile;
+                }
+                if ($_CONF['hideviewscount'] == 0) {
+                    $row[] = COM_NumberFormat ($A['hits']);
+                }
                 $story_results->addSearchResult ($row);
                 $story_results->num_searchresults++;
             }
