@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.51 2006/03/08 05:16:02 ospiess Exp $
+// $Id: functions.inc,v 1.52 2006/03/11 18:08:19 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -420,7 +420,8 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
                 $profile = $submitter;
             }
             $linkUrl = COM_buildURL ($_CONF['site_url']
-                                     . '/links/index.php?page=' . $A['lid']);
+                                     . '/links/portal.php?what=link&amp;item='
+                                     . $A['lid']);
             $row = array ('<a href="' . $linkUrl . '">' . $A['title'] . '</a>',
                     $thetime[0], $profile, COM_NumberFormat ($A['hits']));
             $plugin_results->addSearchResult ($row);
