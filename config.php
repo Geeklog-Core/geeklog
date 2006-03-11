@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.210 2006/03/07 14:56:03 dhaun Exp $
+// $Id: config.php,v 1.211 2006/03/11 13:22:47 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -524,6 +524,9 @@ $_CONF['hidenewstories']    = 0;
 $_CONF['hidenewcomments']   = 0;
 $_CONF['hidenewtrackbacks'] = 0;
 $_CONF['hidenewplugins']    = 0;
+
+// max. length of titles to be displayed in the What's New block
+$_CONF['title_trim_length'] = 20;
 
 // Disable trackback comments by setting this to 'false'
 $_CONF['trackback_enabled'] = true;

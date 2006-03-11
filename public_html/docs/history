@@ -3,6 +3,11 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Introduced $_CONF['title_trim_length'] to make the max. title length of items
+  in the What's New block configurable (feature request #525). Also implemented
+  a new function COM_truncate (based on a patch by Yusuke Sakate) that properly
+  handles truncation of multi-byte text strings if the mb_ functions are
+  available [Dirk]
 - Fixed paging for the list of static pages (bug #528) [Dirk]
 - Fixed handling of HTML entities in stories (bug #99) [Dirk]
 - Added a JavaScript confirmation box to most delete buttons/links. If you'd

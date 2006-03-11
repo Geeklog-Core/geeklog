@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.517 2006/03/10 12:18:12 dhaun Exp $
+// $Id: lib-common.php,v 1.518 2006/03/11 13:22:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3895,10 +3895,8 @@ function COM_emailUserTopics()
 
                 if( $_CONF['emailstorieslength'] > 1 )
                 {
-                   if( strlen( $storytext ) > $_CONF['emailstorieslength'] )
-                   {
-                       $storytext = substr( $storytext, 0, $_CONF['emailstorieslength'] ) . '...';
-                   }
+                    $storytext = COM_truncate( $storytext,
+                                    $_CONF['emailstorieslength'], '...' );
                 }
 
                 $mailtext .= $storytext . "\n\n";
@@ -4026,17 +4024,17 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
                 if(( $A['type'] == 'article' ) || empty( $A['type'] ))
                 {
-                    $titletouse = COM_undoSpecialChars( stripslashes( $A['title'] ));
-                    $itemlen = strlen( $titletouse );
                     $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
                         . '/article.php?story=' . $A['sid'] ) . '#comments' . '"';
                 }
 
-                // Trim the length if over 20 characters
-                if( $itemlen > 20 )
+                $title = COM_undoSpecialChars( stripslashes( $A['title'] ));
+                $titletouse = COM_truncate( $title, $_CONF['title_trim_length'],
+                                            '...' );
+
+                if( $title != $titletouse )
                 {
-                    $urlstart .= ' title="' . htmlspecialchars( $titletouse ) . '">';
-                    $titletouse = substr( $titletouse, 0, 17 ) . '...';
+                    $urlstart .= ' title="' . htmlspecialchars( $title ) . '">';
                 }
                 else
                 {
@@ -4087,16 +4085,16 @@ function COM_whatsNewBlock( $help = '', $title = '' )
             {
                 $A = DB_fetchArray( $result );
 
-                $titletouse = COM_undoSpecialChars( stripslashes( $A['title'] ));
-                $itemlen = strlen( $titletouse );
                 $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#trackback' . '"';
 
-                // Trim the length if over 20 characters
-                if( $itemlen > 20 )
+                $title = COM_undoSpecialChars( stripslashes( $A['title'] ));
+                $titletouse = COM_truncate( $title, $_CONF['title_trim_length'],
+                                            '...' );
+
+                if( $title != $titletouse )
                 {
-                    $urlstart .= ' title="' . htmlspecialchars( $titletouse ) . '">';
-                    $titletouse = substr( $titletouse, 0, 17 ) . '...';
+                    $urlstart .= ' title="' . htmlspecialchars( $title ) . '">';
                 }
                 else
                 {
@@ -5873,6 +5871,55 @@ function phpblock_switch_language()
     }
 
     return $retval;
+}
+
+/**
+* Truncate a string
+*
+* Truncates a string to a max. length and optionally adds a filler string,
+* e.g. '...', to indicate the truncation.
+* This function is multi-byte string aware, based on a patch by Yusuke Sakata.
+*
+* @param    string  $text   the text string to truncate
+* @param    int     $maxlen max. number of characters in the truncated string
+* @param    string  $filler optional filler string, e.g. '...'
+* @return   string          truncated string
+*
+* @note The truncated string may be shorter but will never be longer than
+*       $maxlen characters, i.e. the $filler string is taken into account.
+*
+*/
+function COM_truncate( $text, $maxlen, $filler = '' )
+{
+    static $mb_enabled;
+
+    if( !isset( $mb_enabled ))
+    {
+        $mb_enabled = function_exists( 'mb_substr' ) &&
+                      function_exists( 'mb_strlen' ) &&
+                      function_exists( 'mb_detect_encoding' );
+    }
+
+    $newlen = $maxlen - strlen( $filler );
+    if( $mb_enabled )
+    {
+        $len = mb_strlen( $text, mb_detect_encoding( $text ));
+        if( $len > $maxlen )
+        {
+            $text = mb_substr( $text, 0, $newlen, mb_detect_encoding( $text ))
+                  . $filler;
+        }
+    }
+    else
+    {
+        $len = strlen( $text );
+        if( $len > $maxlen )
+        {
+            $text = substr( $text, 0, $newlen ) . $filler;
+        }
+    }
+
+    return $text;
 }
 
 
