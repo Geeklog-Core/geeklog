@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.39 2006/03/08 05:16:02 ospiess Exp $
+// $Id: functions.inc,v 1.40 2006/03/12 13:24:47 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -205,35 +205,44 @@ function POLLS_countPollsAndVotes ()
 function plugin_showstats_polls ($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_POLLS;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
+    require_once ($_CONF['path_system'] . 'lib-admin.php');
+
     $retval = '';
-    $result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
+
+    $result = DB_query ("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
     $nrows  = DB_numRows ($result);
 
     if ($nrows > 0) {
-        require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(
-            array('text' => $LANG_POLLS['stats_questions'], 'field' => 'qid', 'header_class' => 'stats-header-title'),
-            array('text' => $LANG_POLLS['stats_votes'], 'field' => 'voters', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
+            array('text'         => $LANG_POLLS['stats_questions'],
+                  'field'        => 'qid',
+                  'header_class' => 'stats-header-title'
+            ),
+            array('text'         => $LANG_POLLS['stats_votes'],
+                  'field'        => 'voters',
+                  'header_class' => 'stats-header-count',
+                  'field_class'  => 'stats-list-count'
+            ),
         );
         $data_arr = array();
-        $text_arr = array('has_menu'     => false,
-                          'title'        => $LANG_POLLS['stats_top10'],
+        $text_arr = array('has_menu' => false,
+                          'title'    => $LANG_POLLS['stats_top10'],
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
-            $A['qid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                      . "/polls/index.php?qid={$A['qid']}&amp;aid=-1"). "\">{$A['question']}</a>";
-            $A['voters'] = COM_NumberFormat ($A['voters']);
-            $data_arr[$i] = $A;
+            $url = $_CONF['site_url'] . '/polls/index.php?qid=' . $A['qid']
+                 . '&amp;aid=-1';
+            $qid = '<a href="' . $url . '">' . $A['question'] . '</a>';
+            $voters = COM_NumberFormat ($A['voters']);
+            $data_arr[] = array ('qid' => $qid, 'voters' => $voters);
         }
-        $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+        $retval .= ADMIN_simpleList ('', $header_arr, $text_arr, $data_arr);
     } else {
         $retval .= COM_startBlock ($LANG_POLLS['stats_top10']);
         $retval .= $LANG_POLLS['stats_none'];
         $retval .= COM_endBlock ();
     }
-    
 
     return $retval;
 }
