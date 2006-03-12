@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Polls plugin configuration file                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.6 2005/09/18 12:09:45 dhaun Exp $
+// $Id: config.php,v 1.7 2006/03/12 16:31:45 dhaun Exp $
 
 $_PO_CONF['version']            = '1.0'; // Plugin Version
 
@@ -42,6 +42,13 @@ $_PO_CONF['version']            = '1.0'; // Plugin Version
 // when set to 1 will only allow logged-in users to view the list of past polls
 // (also see $_CONF['loginrequired'] in Geeklog's config.php)
 $_PO_CONF['pollsloginrequired'] = 0;
+
+/**
+ * Set to 1 to hide the "Polls" entry from the top menu:
+ * 
+ * @global array $_PO_CONF['hidepollsmenu']                                     
+ */
+$_PO_CONF['hidepollsmenu']      = 0;
 
 $_PO_CONF['maxanswers']         = 10; // max. number of options in a poll
 

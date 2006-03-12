@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | config.php   Links plugin configuration file                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users.sourceforge DOT net        |
@@ -15,7 +15,6 @@
 // | This program is licensed under the terms of the GNU General Public License|
 // | as published by the Free Software Foundation; either version 2            |
 // | of the License, or (at your option) any later version.                    |
-// |                                                                           |
 // |                                                                           |
 // | This program is distributed in the hope that it will be useful,           |
 // | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
@@ -28,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.7 2005/12/09 12:05:22 ospiess Exp $
+// $Id: config.php,v 1.8 2006/03/12 16:31:44 dhaun Exp $
 /** 
  * Links plugin configuration file
  * 
@@ -36,7 +35,7 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -52,6 +51,7 @@
 * @global array $_LI_CONF 
 */
 $_LI_CONF = array();
+
 /**
 * the link plugin's version setting
 * 
@@ -89,18 +89,18 @@ $_LI_CONF['newlinksinterval']    = 1209600; // = 14 days
 $_LI_CONF['hidenewlinks']    = 0;
 
 /**
- * Set to 1 to hide a section from the Top menu:
+ * Set to 1 to hide the "Web Resources" entry from the top menu:
  *
- * @global array $_LI_CONF['hidenewlinks']
+ * @global array $_LI_CONF['hidelinksmenu']
  */
 $_LI_CONF['hidelinksmenu']    = 0;
 
 /**
  * categories per column
- * You can set this and $_LI_CONF['linksperpage'] to 0 to get back the old (pre-1.3.6)
- * style of the links section. Setting only linkcols to 0 will hide the
- * categories but keep the paging. Setting only linksperpage to 0 will list
- * all the links of the selected category on one page.
+ * You can set this and $_LI_CONF['linksperpage'] to 0 to get back the old
+ * (pre-1.3.6) style of the links section. Setting only linkcols to 0 will hide
+ * the * categories but keep the paging. Setting only linksperpage to 0 will
+ * list all the links of the selected category on one page.
  * 
  * @global array $_LI_CONF['linkcols'] 
  */ 

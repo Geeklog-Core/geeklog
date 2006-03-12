@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.40 2006/03/12 13:24:47 dhaun Exp $
+// $Id: functions.inc,v 1.41 2006/03/12 16:31:45 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -61,15 +61,15 @@ require_once ($_CONF['path'] . 'plugins/polls/config.php');
 */
 function plugin_getmenuitems_polls ()
 {
-    global $_CONF, $_PO_CONF, $LANG_POLLS;
+    global $_CONF, $_USER, $_PO_CONF, $LANG_POLLS;
 
     $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
-    if($anon && ($_CONF['loginrequired'] || $_PO_CONF['pollsloginrequired'])) {
+    if (($_PO_CONF['hidepollsmenu'] == 1) || ($anon &&
+                ($_CONF['loginrequired'] || $_PO_CONF['pollsloginrequired']))) {
         return false;
-    } else {
-        $menuitems[$LANG_POLLS['polls']] = $_CONF['site_url']
-                                         . '/polls/index.php';
     }
+
+    $menuitems[$LANG_POLLS['polls']] = $_CONF['site_url'] . '/polls/index.php';
 
     return $menuitems;
 }
