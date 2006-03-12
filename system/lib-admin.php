@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.48 2006/03/08 04:59:17 ospiess Exp $
+// $Id: lib-admin.php,v 1.49 2006/03/12 09:56:50 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -206,7 +206,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $curpage = 1;
     $page = "";
     if (isset ($_REQUEST[$component . 'listpage'])) {
-        $page = COM_applyFilter ($_GET[$component . 'listpage'], true);
+        $page = COM_applyFilter ($_REQUEST[$component . 'listpage'], true);
         $curpage = $page;
     }
     if ($curpage <= 0) {
