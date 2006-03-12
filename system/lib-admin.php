@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.49 2006/03/12 09:56:50 dhaun Exp $
+// $Id: lib-admin.php,v 1.50 2006/03/12 10:41:32 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -281,8 +281,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->parse('top_menu', 'topmenu', true);
     }
     
-    # since people search with ...* replace with ....% for SQL
-    $query = str_replace ('*', '%', $query);
     $sql_query = addslashes ($query); # replace quotes etc for security
     $sql = $query_arr['sql']; # get sql from array that builds data
 
@@ -376,7 +374,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         if (!empty ($query)) { # add query fields with search term
             $filter_str .= " AND (";
             for ($f = 0; $f < count($query_arr['query_fields']); $f++) {
-                $filter_str .= $query_arr['query_fields'][$f] . " LIKE '$sql_query'";
+                $filter_str .= $query_arr['query_fields'][$f]
+                            . " LIKE '%$sql_query%'";
                 if ($f < (count($query_arr['query_fields']) - 1)) {
                     $filter_str .= " OR ";
                 }
