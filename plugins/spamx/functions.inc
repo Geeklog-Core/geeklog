@@ -4,13 +4,13 @@
  * File: functions.inc
  * This is the functions.inc for the Geeklog Spam-X Plug-in!
  * 
- * Copyright (C) 2004-2005 by the following authors:
+ * Copyright (C) 2004-2006 by the following authors:
  * Authors      Tom Willett     tomw AT pigstye DOT net
  *              Dirk Haun       dirk AT haun-online DOT de
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.20 2006/03/08 05:16:02 ospiess Exp $
+ * $Id: functions.inc,v 1.21 2006/03/12 09:02:06 dhaun Exp $
  */
 
 /**
@@ -259,19 +259,22 @@ function plugin_checkforSpam_spamx($comment, $action)
 
 $_SPAMX_log_flg = true; // Set to false to turn of logging
 
-function SPAMX_log($logentry)
+function SPAMX_log ($logentry)
 {
     global $_CONF, $LANG01, $_SPAMX_log_flg;
 
-    if ($_SPAMX_log_flg) {
-        $timestamp = strftime("%c");
+    if ($_SPAMX_log_flg && !empty ($logentry)) {
+        $logentry = str_replace( array( '<?', '?>' ), array( '(@', '@)' ),
+                                 $logentry );
+
+        $timestamp = strftime ('%c');
         $logfile = $_CONF['path_log'] . 'spamx.log';
 
-        if (!$file = fopen($logfile, "a")) {
-            COM_errorLog($LANG01[33] . $logfile . ' (' . $timestamp . ')', 1);
+        if (!$file = fopen ($logfile, 'a')) {
+            COM_errorLog ($LANG01[33] . $logfile . ' (' . $timestamp . ')', 1);
         } 
 
-        fputs($file, "$timestamp - $logentry \n");
+        fputs ($file, "$timestamp - $logentry \n");
     } 
 } 
 

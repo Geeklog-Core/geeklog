@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.518 2006/03/11 13:22:50 dhaun Exp $
+// $Id: lib-common.php,v 1.519 2006/03/12 09:02:06 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1689,6 +1689,9 @@ function COM_errorLog( $logentry, $actionid = '' )
 
     if( !empty( $logentry ))
     {
+        $logentry = str_replace( array( '<?', '?>' ), array( '(@', '@)' ),
+                                 $logentry );
+
         $timestamp = strftime( '%c' );
 
         switch( $actionid )
@@ -1754,24 +1757,30 @@ function COM_accessLog( $logentry )
 
     $retval = '';
 
-    $timestamp = strftime( '%c' );
-    $logfile = $_CONF['path_log'] . 'access.log';
-
-    if( !$file = fopen( $logfile, 'a' ))
+    if( !empty( $logentry ))
     {
-        return $LANG01[33] . $logfile . ' (' . $timestamp . ')<br>' . LB;
-    }
+        $logentry = str_replace( array( '<?', '?>' ), array( '(@', '@)' ),
+                                 $logentry );
 
-    if( isset( $_USER['uid'] ))
-    {
-        $byuser = $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR'];
-    }
-    else
-    {
-        $byuser = 'anon@' . $_SERVER['REMOTE_ADDR'];
-    }
+        $timestamp = strftime( '%c' );
+        $logfile = $_CONF['path_log'] . 'access.log';
 
-    fputs( $file, "$timestamp ($byuser) - $logentry\n" );
+        if( !$file = fopen( $logfile, 'a' ))
+        {
+            return $LANG01[33] . $logfile . ' (' . $timestamp . ')<br>' . LB;
+        }
+
+        if( isset( $_USER['uid'] ))
+        {
+            $byuser = $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR'];
+        }
+        else
+        {
+            $byuser = 'anon@' . $_SERVER['REMOTE_ADDR'];
+        }
+
+        fputs( $file, "$timestamp ($byuser) - $logentry\n" );
+    }
 
     return $retval;
 }
