@@ -27,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.8 2006/03/12 16:31:44 dhaun Exp $
+// $Id: config.php,v 1.9 2006/03/12 19:55:35 dhaun Exp $
 /** 
  * Links plugin configuration file
  * 
@@ -99,8 +99,8 @@ $_LI_CONF['hidelinksmenu']    = 0;
  * categories per column
  * You can set this and $_LI_CONF['linksperpage'] to 0 to get back the old
  * (pre-1.3.6) style of the links section. Setting only linkcols to 0 will hide
- * the * categories but keep the paging. Setting only linksperpage to 0 will
- * list all the links of the selected category on one page.
+ * the categories but keep the paging. Setting only linksperpage to 0 will list
+ * all the links of the selected category on one page.
  * 
  * @global array $_LI_CONF['linkcols'] 
  */ 
@@ -108,14 +108,22 @@ $_LI_CONF['linkcols']     =  3;
 
 /**
  * links per page
- * You can set this and $_LI_CONF['linkcols'] to 0 to get back the old (pre-1.3.6)
- * style of the links section. Setting only linkcols to 0 will hide the
- * categories but keep the paging. Setting only linksperpage to 0 will list
+ * You can set this and $_LI_CONF['linkcols'] to 0 to get back the old
+ * (pre-1.3.6) style of the links section. Setting only linkcols to 0 will hide
+ * the categories but keep the paging. Setting only linksperpage to 0 will list
  * all the links of the selected category on one page.
  * 
  * @global array $_LI_CONF['linksperpage']
  */ 
 $_LI_CONF['linksperpage'] = 10;
+
+/**
+ * show top ten links
+ * Whether to show the Top Ten Links on the main page or not.
+ *
+ * @global array $_LI_CONF['show_top10']
+ */
+$_LI_CONF['show_top10']   = true;
 
 /**
  * notify when a new link was submitted
