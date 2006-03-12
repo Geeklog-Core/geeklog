@@ -4,17 +4,17 @@
 // +---------------------------------------------------------------------------+
 // | Links Plugin 1.0                                                          |
 // +---------------------------------------------------------------------------+
-// | /links/index.php                                                          |
+// | index.php                                                                 |
 // |                                                                           |
-// | This is the links page                                                    |
+// | This is the main page for the Geeklog Links Plugin                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Tom Willett       - tomw@pigstye.net                             |
-// |          Trinity Bays      - trinity@steubentech.com                      |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Tom Willett       - tomw AT pigstye DOT net                      |
+// |          Trinity Bays      - trinity AT steubentech DOT com               |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -41,25 +41,26 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93@steubentech.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * @author Blaine Lang <langmail@sympatico.ca>
- * @author Dirk Haun <dirk@haun-online.de>
+ * @author Tony Bibbs <tony AT tonybibbs DOT com>
+ * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
+ * @author Jason Whittenburg <jwhitten AT securitygeeks DOT com>
+ * @author Tom Willett <tomw AT pigstye DOT net>
+ * @author Trinity Bays <trinity AT steubentech DOT com>
  * 
  */
-// $Id: index.php,v 1.7 2005/12/28 10:11:52 dhaun Exp $
+// $Id: index.php,v 1.8 2006/03/12 18:16:14 dhaun Exp $
 
 require_once ('../lib-common.php');
 
 // MAIN
 
-$display = COM_siteHeader ('menu', $LANG_LINKS[114]);
+$display = '';
 
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
+    $display .= COM_siteHeader ('menu', $LANG_LINKS[114]);
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template ($_CONF['path_layout'] . 'submit');
@@ -81,6 +82,22 @@ if (empty ($_USER['username']) &&
         $page = COM_applyFilter ($_GET['page'], true);
     }
 
+    if (empty ($category)) {
+        if ($page > 1) {
+            $page_title = sprintf ($LANG_LINKS[114] . ' (%d)', $page);
+        } else {
+            $page_title = $LANG_LINKS[114];
+        }
+    } else {
+        if ($page > 1) {
+            $page_title = sprintf ($LANG_LINKS[114] . ': %s (%d)', $category,
+                                                                   $page);
+        } else {
+            $page_title = sprintf ($LANG_LINKS[114] . ': %s', $category);
+        }
+    }
+    $display .= COM_siteHeader ('menu', $page_title);
+
     $display .= COM_startBlock ($LANG_LINKS[114]);
 
     $linklist = new Template ($_CONF['path'] . 'plugins/links/templates/');
@@ -98,8 +115,8 @@ if (empty ($_USER['username']) &&
         $nrows  = DB_numRows ($result);
         if ($nrows > 0) {
             $linklist->set_var ('lang_categories', $LANG_LINKS_ADMIN[14]);
-            for ($i = 1; $i <= $nrows; $i++) {
-                $C = DB_fetchArray($result);
+            for ($i = 0; $i < $nrows; $i++) {
+                $C = DB_fetchArray ($result);
                 $cat = addslashes ($C['category']);
                 $result1 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}'" . COM_getPermSQL ('AND'));
                 $D = DB_fetchArray ($result1);
@@ -153,13 +170,13 @@ if (empty ($_USER['username']) &&
     $nrows = DB_numRows ($result);
     if ($nrows == 0) {
         $page = 0;
-        $end = 10;
 
         $result = DB_query ("SELECT lid,url,title,description,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
         $nrows  = DB_numRows ($result);
         if ($nrows > 0) {
             $linklist->set_var ('link_details', '');
-            $linklist->set_var ('link_category', $LANG_LINKS_STATS['stats_headline']);
+            $linklist->set_var ('link_category',
+                                $LANG_LINKS_STATS['stats_headline']);
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
                 $linklist->set_var ('link_url', COM_buildUrl ($_CONF['site_url']
@@ -173,13 +190,15 @@ if (empty ($_USER['username']) &&
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                         $A['perm_anon']) == 3) && SEC_hasRights('links.edit')) {
                     $editurl = $_CONF['site_admin_url']
-                             . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
+                             . '/plugins/links/index.php?mode=edit&amp;lid='
+                             . $A['lid'];
                     $linklist->set_var ('link_edit', '<a href="' . $editurl
-                            . '">' . $LANG01[4] . '</a>');
+                            . '">' . $LANG_ADMIN['edit'] . '</a>');
                     $linklist->set_var ('edit_icon', '<a href="' . $editurl
                             . '"><img src="' . $_CONF['layout_url']
-                            . '/images/edit.gif" alt="' . $LANG01[4]
-                            . '" title="' . $LANG01[4] . '" border="0"></a>');
+                            . '/images/edit.' . $_IMAGE_TYPE . '" alt="'
+                            . $LANG_ADMIN['edit'] . '" title="'
+                            . $LANG_ADMIN['edit'] . '" border="0"></a>');
                 } else {
                     $linklist->set_var ('link_edit', '');
                     $linklist->set_var ('edit_icon', '');
@@ -212,12 +231,12 @@ if (empty ($_USER['username']) &&
                 if ((strcasecmp ($A['category'], $currentcategory) != 0) AND ($i > $start)) {
                     // print the category and link
                     $linklist->parse ('category_links', 'catlinks', true);
-                    $linklist->set_var ('link_details','');
+                    $linklist->set_var ('link_details', '');
                     $currentcategory = $A['category'];
                     $linklist->set_var ('link_category', $currentcategory);
                 } else if (strcasecmp ($A['category'], $currentcategory) != 0) {
                     $currentcategory = $A['category'];
-                    $linklist->set_var ('link_category',$currentcategory);
+                    $linklist->set_var ('link_category', $currentcategory);
                 }
                 $linklist->set_var ('link_url', COM_buildUrl ($_CONF['site_url']
                     . '/links/portal.php?what=link&amp;item=' . $A['lid']));
@@ -233,11 +252,12 @@ if (empty ($_USER['username']) &&
                              . '/plugins/links/index.php?mode=edit&amp;lid='
                              . $A['lid'];
                     $linklist->set_var ('link_edit', '<a href="' . $editurl
-                            . '">' . $LANG01[4] . '</a>');
+                            . '">' . $LANG_ADMIN['edit'] . '</a>');
                     $linklist->set_var ('edit_icon', '<a href="' . $editurl
                             . '"><img src="' . $_CONF['layout_url']
-                            . '/images/edit.gif" alt="' . $LANG01[4]
-                            . '" title="' . $LANG01[4] . '" border="0"></a>');
+                            . '/images/edit.' . $_IMAGE_TYPE . '" alt="'
+                            . $LANG_ADMIN['edit'] . '" title="'
+                            . $LANG_ADMIN['edit'] . '" border="0"></a>');
                 } else {
                     $linklist->set_var ('link_edit', '');
                     $linklist->set_var ('edit_icon', '');
