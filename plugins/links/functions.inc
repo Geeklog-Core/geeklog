@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.52 2006/03/11 18:08:19 dhaun Exp $
+// $Id: functions.inc,v 1.53 2006/03/12 11:09:35 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -228,36 +228,50 @@ function LINKS_countLinksAndClicks ()
 function plugin_showstats_links ($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_LINKS_STATS;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
+    require_once ($_CONF['path_system'] . 'lib-admin.php');
+
     $retval = '';
 
-    $result = DB_query("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
+    $result = DB_query ("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
     $nrows  = DB_numRows ($result);
     if ($nrows > 0) {
         $header_arr = array(
-            array('text' => $LANG_LINKS_STATS['stats_page_title'], 'field' => 'sid', 'header_class' => 'stats-header-title'),
-            array('text' => $LANG_LINKS_STATS['stats_hits'], 'field' => 'hits', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
+            array('text'         => $LANG_LINKS_STATS['stats_page_title'],
+                  'field'        => 'sid',
+                  'header_class' => 'stats-header-title'
+            ),
+            array('text'         => $LANG_LINKS_STATS['stats_hits'],
+                  'field'        => 'hits',
+                  'header_class' => 'stats-header-count',
+                  'field_class'  => 'stats-list-count'
+            )
         );
         $data_arr = array();
-        $text_arr = array('has_menu'     =>  false,
-                          'title'        => $LANG_LINKS_STATS['stats_headline'],
+        $text_arr = array('has_menu' => false,
+                          'title'    => $LANG_LINKS_STATS['stats_headline'],
         );
         for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                      . "/links/portal.php?what=link&amp;item={$A['lid']}"). "\">{$A['title']}</a>";
-            $A['hits'] = COM_numberFormat ($A['hits']);
-            $data_arr[$i] = $A;
+            $A = DB_fetchArray ($result);
+            $title = stripslashes (str_replace ('$', '&#36;', $A['title']));
+            $url = COM_buildUrl ($_CONF['site_url']
+                        . '/links/portal.php?what=link&amp;item=' . $A['lid']);
+            $sid = '<a href="' . $url . '" title="' . $A['url'] . '">' . $title
+                 . '</a>';
+            $hits = COM_numberFormat ($A['hits']);
+            $data_arr[] = array('title' => $title,
+                                'sid' => $sid,
+                                'hits' => $hits
+                          );
         }
-        $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+        $retval .= ADMIN_simpleList ('', $header_arr, $text_arr, $data_arr);
     } else {
-        $display .= COM_startBlock($LANG_LINKS_STATS['stats_headline']);
-        $display .= $LANG_LINKS_STATS['stats_no_hits'];
-        $display .= COM_endBlock();
+        $retval .= COM_startBlock ($LANG_LINKS_STATS['stats_headline']);
+        $retval .= $LANG_LINKS_STATS['stats_no_hits'];
+        $retval .= COM_endBlock ();
     }
 
-    return $display;
+    return $retval;
 }
 
 /**
