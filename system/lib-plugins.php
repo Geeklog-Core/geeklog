@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.92 2006/03/10 14:06:53 dhaun Exp $
+// $Id: lib-plugins.php,v 1.93 2006/03/17 05:45:16 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -176,7 +176,7 @@ function PLG_chkVersion($type)
 */
 function PLG_uninstall ($type)
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_TABLES;
 
     if (empty ($type)) {
         return false;
@@ -191,6 +191,86 @@ function PLG_uninstall ($type)
         }
 
         return true;
+    /** 
+    } else if ($PLG_$type['auto_uninstall'] == true)
+        
+        // removing tables 
+        $i = count($PLG_$type['tables']);
+        for ($i=0; $i < count; $i++) {
+            COM_errorLog ('Dropping table' . $_PLG_$type['tables'][$i], 1);
+            DB_query ("DROP TABLE {$_TABLES[$_PLG_$type['tables'][$i]]}");
+            COM_errorLog ('...success', 1);
+        }
+        
+        // removing groups
+        $i = count($PLG_$type['groups']);
+        for ($i=0; $i < count; $i++) {
+            $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                  "grp_name = '{$_PLG_$type['groups'][$i]}'");
+            if (!empty ($grp_id)) {
+                COM_errorLog ('Attempting to remove the {$_PLG_$type['groups'][$i]} group', 1);
+                DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
+                COM_errorLog ('...success', 1);
+                COM_errorLog ('Attempting to {$_PLG_$type['groups'][$i]} group from all groups.', 1);
+                DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
+                COM_errorLog ('...success', 1);
+            }
+        }    
+
+        // removing features
+        $i = count($PLG_$type['features']);
+        for ($i=0; $i < count; $i++) {
+            $access_id = DB_getItem ($_TABLES['features'], 'ft_id',
+                                    "ft_name = '{$_PLG_$type['features'][$i]}'");
+            if (!empty ($acess_id)) {
+                COM_errorLog ('Attempting to remove {$_PLG_$type['features'][$i]} rights from all groups' ,1);
+                DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
+                COM_errorLog ('...success', 1);
+                COM_errorLog ('Attempting to remove the {$_PLG_$type['features'][$i]} feature', 1);
+                DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
+                COM_errorLog ('...success', 1);
+            }
+        }
+
+        #uninstall feeds
+        $sql = "SELECT filename FROM {$_TABLES['syndication']} WHERE type = '$type';";
+        $result = DB_query( $sql );
+        $nrows = DB_numRows( $result );
+        if ( $nrows > 0 ) {
+            COM_errorLog ('removing feed files', 1);
+            COM_errorLog ($nrows. ' files stored in table.', 1);
+            for ( $i = 0; $i < $nrows; $i++ ) {
+                $fcount = $i + 1;
+                $A = DB_fetchArray( $result );
+                $fullpath = SYND_getFeedPath( $A[0] );
+                if ( file_exists( $fullpath ) ) {
+                    unlink ($fullpath);
+                    COM_errorLog ("removed file $fcount of $nrows: $fullpath", 1);
+                } else {
+                    COM_errorLog ("cannot remove file $fcount of $nrows, it does not exist! ($fullpath)", 1);
+                }
+            }
+            COM_errorLog ('...success', 1);
+            // Remove Links Feeds from syndiaction table
+            COM_errorLog ('removing links feeds from table', 1);
+            DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE `type` = '$type'");
+            COM_errorLog ('...success', 1);
+        }
+        
+        // uninstall php-blocks
+        $i = count($PLG_$type['php_blocks']);
+        for ($i=0; $i < count; $i++) {
+            DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
+                                           array ('phpblock', 'phpblock_{$_PLG_$type['php_blocks'][$i]}'));
+        }
+        
+        // uninstall the plugin 
+        COM_errorLog ('Attempting to unregister the $type plugin from Geeklog', 1);
+        DB_query ("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = '$type'");
+        COM_errorLog ('...success',1);
+
+        COM_errorLog ('Finished uninstalling the $type plugin.', 1);
+    **/       
     }
 
     return false;
