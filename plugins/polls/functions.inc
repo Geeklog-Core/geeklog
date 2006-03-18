@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.41 2006/03/12 16:31:45 dhaun Exp $
+// $Id: functions.inc,v 1.42 2006/03/18 13:00:38 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -897,5 +897,27 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
+/**
+* Set template variables
+*
+* @param    string  $templatename   name of template, e.g. 'header'
+* @param    ref     $template       reference of actual template
+* @return   void
+*
+* Note: A plugin should use its name as a prefix for the names of its
+* template variables, e.g. 'polls_xxx' and 'lang_polls_xxx'.
+* 'button_polls' is an exception, as such a variable existed for header.thtml
+* in Geeklog 1.3.11 and earlier, where the Polls were an integral part
+* of Geeklog. It is added here for backward-compatibility.
+*
+*/
+function plugin_templatesetvars_polls ($templatename, &$template)
+{
+    global $LANG_POLLS;
+
+    if ($templatename == 'header') {
+        $template->set_var ('button_polls', $LANG_POLLS['polls']);
+    }
+}
 
 ?>
