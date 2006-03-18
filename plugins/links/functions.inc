@@ -42,7 +42,7 @@
 
 
 // Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.54 2006/03/12 16:31:44 dhaun Exp $
+// $Id: functions.inc,v 1.55 2006/03/18 13:00:05 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -1162,6 +1162,29 @@ function links_getCategoryList (&$current_category)
     }
 
     return $retval;
+}
+
+/**
+* Set template variables
+*
+* @param    string  $templatename   name of template, e.g. 'header'
+* @param    ref     $template       reference of actual template
+* @return   void
+*
+* Note: A plugin should use its name as a prefix for the names of its
+* template variables, e.g. 'links_xxx' and 'lang_links_xxx'.
+* 'button_links' is an exception, as such a variable existed for header.thtml
+* in Geeklog 1.3.11 and earlier, where the Links section was an integral part
+* of Geeklog. It is added here for backward-compatibility.
+*
+*/
+function plugin_templatesetvars_links ($templatename, &$template)
+{
+    global $LANG_LINKS;
+
+    if ($templatename == 'header') {
+        $template->set_var ('button_links', $LANG_LINKS[14]);
+    }
 }
 
 ?>
