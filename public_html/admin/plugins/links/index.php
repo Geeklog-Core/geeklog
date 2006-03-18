@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
-// | Geeklog links administration page.                                        |
+// | Geeklog Links Plugin administration page.                                 |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
@@ -41,7 +41,7 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.28 2006/03/11 17:22:31 dhaun Exp $
+// $Id: index.php,v 1.29 2006/03/18 15:04:19 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -60,9 +60,6 @@ require_once ('../../auth.inc.php');
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 // exit;
-
-// number of links to list per page
-define ('LINKS_PER_PAGE', 50);
 
 $display = '';
 
@@ -323,6 +320,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         return $retval;
     }
 }
+
 /**
  * List links
  * @global array core config vars
@@ -338,7 +336,7 @@ function listlinks ()
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $retval = '';
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_LINKS_ADMIN[2], 'field' => 'lid', 'sort' => true),
                     array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
@@ -366,8 +364,8 @@ function listlinks ()
 
     $retval .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
-    return $retval;
 
+    return $retval;
 }
 
 /**
@@ -392,7 +390,8 @@ function deleteLink ($lid)
 
     DB_delete ($_TABLES['links'], 'lid', $lid);
 
-    return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=3');
+    return COM_refresh ($_CONF['site_admin_url']
+                        . '/plugins/links/index.php?msg=3');
 }
 
 // MAIN
