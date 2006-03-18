@@ -1,5 +1,6 @@
 <?php
 
+// Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
 // | Links Plugin 1.0  functions.inc                                           |
 // +---------------------------------------------------------------------------+
@@ -19,6 +20,8 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
+//
+// $Id: functions.inc,v 1.56 2006/03/18 15:03:07 dhaun Exp $
 
 
 /**
@@ -32,17 +35,13 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93@steubentech.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * @author Blaine Lang <langmail@sympatico.ca>
- * @author Dirk Haun <dirk@haun-online.de>
+ * @author Trinity Bays <trinity93 AT steubentech DOT com>
+ * @author Tony Bibbs <tony AT tonybibbs DOT com>
+ * @author Tom Willett <tom AT pigstye DOT net>
+ * @author Blaine Lang <langmail AT sympatico DOT ca>
+ * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-
-
-// Reminder: always indent with 4 spaces (no tabs).
-// $Id: functions.inc,v 1.55 2006/03/18 13:00:05 dhaun Exp $
 
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
@@ -57,7 +56,7 @@ if (file_exists ($langfile)) {
 require_once ($_CONF['path'] . 'plugins/links/config.php');
 
 // +---------------------------------------------------------------------------+
-// | Geeklog Plugin API Implementations                                        |
+// | Geeklog Plugin API Implementation                                         |
 // +---------------------------------------------------------------------------+
 
 /**
@@ -65,6 +64,8 @@ require_once ($_CONF['path'] . 'plugins/links/config.php');
 *
 * NOTE: this MUST return the url/value pairs in the following format
 * $<arrayname>[<label>] = <url>
+*
+* @return   mixed   menu entry, or boolean false if disabled / hidden
 *
 */
 function plugin_getmenuitems_links()
@@ -82,12 +83,17 @@ function plugin_getmenuitems_links()
     return $menuitems;
 }
 
+/**
+* Return headlines for New Links section in the What's New block, if enabled
+*
+* @return   mixed       array(headline, byline), or boolean false is disabled
+*
+*/
 function plugin_whatsnewsupported_links()
 {
     global $_TABLES, $_LI_CONF, $LANG_LINKS, $LANG_WHATSNEW;
 
-    $hidewhatsnew = $_LI_CONF['hidenewlinks'];
-    if ( $hidewhatsnew == 0 ) {
+    if ( $_LI_CONF['hidenewlinks'] == 0 ) {
         $retval = array( $LANG_LINKS[84],
                          COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                                $_LI_CONF['newlinksinterval'] )
@@ -99,6 +105,12 @@ function plugin_whatsnewsupported_links()
     return $retval;
 }
 
+/**
+* Return new links for the What's New block
+*
+* @return   string  HTML list of new links
+*
+*/
 function plugin_getwhatsnew_links()
 {
     global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG_LINKS;
@@ -106,7 +118,7 @@ function plugin_getwhatsnew_links()
     $retval = '';
 
     // Get newest links
-    $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
+    $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (DATE_SUB(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
@@ -126,7 +138,7 @@ function plugin_getwhatsnew_links()
             $itemlen = strlen( $A['title'] );
             if( $itemlen > 16 )
             {
-                $newlinks [] = '<a href="' . $lcount . '" title="'
+                $newlinks[] = '<a href="' . $lcount . '" title="'
                     . $A['title'] . '">' . substr( $A['title'], 0, 16 )
                     . '...</a>' . LB;
             }
@@ -150,6 +162,11 @@ function plugin_getwhatsnew_links()
 /**
 * Implements the [link:] autotag.
 *
+* @param    string  $op         operation to perform
+* @param    string  $content    item (e.g. story text), including the autotag
+* @param    array   $autotag    parameters used in the autotag
+* @param    mixed               tag names (for $op='tagname') or formatted content
+*
 */
 function plugin_autotags_links ($op, $content = '', $autotag = '')
 {
@@ -159,8 +176,8 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
         return 'link';
     } else if ($op == 'parse') {
         $lid = COM_applyFilter ($autotag['parm1']);
-        $url = COM_buildUrl ($_CONF['site_url'] . '/links/portal.php?what=link&item='
-                             . $lid);
+        $url = COM_buildUrl ($_CONF['site_url']
+                             . '/links/portal.php?what=link&item=' . $lid);
         if (empty ($autotag['parm2'])) {
             $linktext = stripslashes (DB_getItem ($_TABLES['links'],
                                       'title', "lid = '$lid'"));
@@ -175,25 +192,12 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
 }
 
 /**
-* Geeklog is checking to see if this plugin supports comments, tell it no.
-*
-* NOTE: to support comments you must used the same date/time based ID for your
-* widget.  In other words, to make primary keys for your plugin you should call
-* makesid().  Comments are keyed off of that...it is a limitation on how Geeklog
-* does comments.
-*
-*/
-function plugin_commentsupport_links()
-{
-    // links will not use comments
-    return false;
-}
-
-
-/**
 * Called by the plugin Editor to display the current plugin code version
-* This may be different then the version installed and registered currently.
+* This may be different than the version installed and registered currently.
 * If newer then you may want to run the update
+*
+* @return   string  version number
+*
 */
 function plugin_chkVersion_links ()
 {
@@ -213,7 +217,7 @@ function LINKS_countLinksAndClicks ()
     global $_TABLES;
 
     $result = DB_query ("SELECT COUNT(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
-    $A = DB_fetchArray($result);
+    $A = DB_fetchArray ($result);
     $total_links = $A['count'];
     $total_clicks = $A['clicks'];
     if (empty ($total_clicks)) {
@@ -228,7 +232,9 @@ function LINKS_countLinksAndClicks ()
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
 *
-* @param    int     showsitestate   Flag to let us know which stats to get
+* @param    int     $showsitestate  Flag to let us know which stats to get
+* @param    string                  HTML for the stats section
+*
 */
 function plugin_showstats_links ($showsitestats)
 {
@@ -299,8 +305,10 @@ function plugin_statssummary_links ()
 }
 
 /**
-* Geeklog is asking us to provide any new items that show up in the type
+* Geeklog is asking us to provide any items that show up in the type
 * drop-down on search.php.  Let's users search for links.
+*
+* @return   array   (plugin name/entry title) pair for the dropdown
 *
 */
 function plugin_searchtypes_links()
@@ -314,9 +322,8 @@ function plugin_searchtypes_links()
 
 
 /**
-* This searches for links matching the user query and returns an array of
-* for the header and table rows back to search.php where it will be formated and
-* printed
+* This searches for links matching the user query and returns an array for the
+* header and table rows back to search.php where it will be formated and printed
 *
 * @param    string  $query      Keywords user is looking for
 * @param    date    $datestart  Start date to get results for
@@ -327,13 +334,14 @@ function plugin_searchtypes_links()
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
 * @param    int     $page       page number of current search
 * @param    int     $perpage    number of results per page
+* @return   object              search result object
 *
 */
 function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
     global $_CONF, $_TABLES, $LANG_LINKS_SEARCH;
 
-    if (empty($type)) {
+    if (empty ($type)) {
         $type = 'all';
     }
 
@@ -342,10 +350,11 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
         $plugin_results = new Plugin();
         $plugin_results->plugin_name = 'links';
         $plugin_results->searchlabel = $LANG_LINKS_SEARCH['results'];
+
         return $plugin_results;
     }
 
-    $select = "SELECT *,UNIX_TIMESTAMP(date) AS day";
+    $select = 'SELECT lid,title,url,owner_id,hits,UNIX_TIMESTAMP(date) AS day';
     $sql = " FROM {$_TABLES['links']} WHERE date <> 1 ";
 
     if (!empty ($query)) {
@@ -400,9 +409,10 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author')";
     }
-    $sql .= " ORDER BY date DESC ";
+    $sql .= COM_getPermSQL ('AND');
+    $sql .= ' ORDER BY date DESC';
     $l = ($perpage * $page) - $perpage;
-    $sql .= 'LIMIT ' . $l . ',' . $perpage;
+    $sql .= ' LIMIT ' . $l . ',' . $perpage;
 
     // Perform search
     $result = DB_query ($select . $sql);
@@ -427,25 +437,24 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     for ($i = 0; $i < $mycount; $i++) {
         $A = DB_fetchArray ($result);
 
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'])) {
-            $thetime = COM_getUserDateTimeFormat ($A['day']);
-            $A['title'] = stripslashes ($A['title']);
-            $submitter = COM_getDisplayName ($A['owner_id']);
-            if ($A['owner_id'] > 1) {
-                $profile = '<a href="' . $_CONF['site_url']
-                         . '/users.php?mode=profile&amp;uid=' . $A['owner_id']
-                         . '">' . $submitter . '</a>';
-            } else {
-                $profile = $submitter;
-            }
-            $linkUrl = COM_buildURL ($_CONF['site_url']
-                                     . '/links/portal.php?what=link&amp;item='
-                                     . $A['lid']);
-            $row = array ('<a href="' . $linkUrl . '">' . $A['title'] . '</a>',
-                    $thetime[0], $profile, COM_NumberFormat ($A['hits']));
-            $plugin_results->addSearchResult ($row);
-            $plugin_results->num_searchresults++;
+        $thetime = COM_getUserDateTimeFormat ($A['day']);
+        $A['title'] = stripslashes ($A['title']);
+        $submitter = COM_getDisplayName ($A['owner_id']);
+        if ($A['owner_id'] > 1) {
+            $profile = '<a href="' . $_CONF['site_url']
+                     . '/users.php?mode=profile&amp;uid=' . $A['owner_id']
+                     . '">' . $submitter . '</a>';
+        } else {
+            $profile = $submitter;
         }
+        $linkUrl = COM_buildURL ($_CONF['site_url']
+                                 . '/links/portal.php?what=link&amp;item='
+                                 . $A['lid']);
+        $anchor = '<a href="' . $linkUrl . '" title="' . $A['url'] . '">';
+        $row = array ($anchor . $A['title'] . '</a>', $thetime[0], $profile,
+                      COM_NumberFormat ($A['hits']));
+        $plugin_results->addSearchResult ($row);
+        $plugin_results->num_searchresults++;
     }
 
     return $plugin_results;
@@ -455,6 +464,8 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
 /**
 * This will put an option for links in the command and control block on
 * moderation.php
+*
+* @return   mixed   array(title, url, icon), or boolean false when not allowed
 *
 */
 function plugin_cclabel_links()
@@ -472,6 +483,8 @@ function plugin_cclabel_links()
 
 /**
 * returns the administrative option for this plugin
+*
+* @return   mixed   array(title, url, num. links), or void when not allowed
 *
 */
 function plugin_getadminoption_links()
@@ -492,7 +505,8 @@ function plugin_getadminoption_links()
 * A user is about to be deleted. Update ownership of any links owned
 * by that user or delete them.
 *
-* @param   uid   int   User id of deleted user
+* @param    int     $uid    User id of deleted user
+* @return   void
 *
 */
 function plugin_user_delete_links ($uid)
@@ -504,7 +518,7 @@ function plugin_user_delete_links ($uid)
     }
 
     if ($_LI_CONF['delete_links'] == 1) {
-        // delete the pages
+        // delete the links
         DB_query ("DELETE FROM {$_TABLES['links']} WHERE owner_id = $uid");
     } else {
         // assign ownership to a user from the Root group
@@ -517,8 +531,11 @@ function plugin_user_delete_links ($uid)
     }
 }
 
-/*
+/**
 * Do we support feeds?
+*
+* @return   array   id/name pairs of all supported feeds
+*
 */
 function plugin_getfeednames_links()
 {
@@ -526,23 +543,29 @@ function plugin_getfeednames_links()
 
     $feeds = array ();
 
-    $result = DB_query ("SELECT lid,category FROM {$_TABLES['links']} GROUP BY category ORDER BY category ASC");
+    $result = DB_query ("SELECT category FROM {$_TABLES['links']} GROUP BY category ORDER BY category ASC");
     $num = DB_numRows ($result);
 
     if ($num > 0) {
         $feeds[] = array ('id' => 'all', 'name' => 'all categories');
-    }
 
-    for ($i = 0; $i < $num; $i++) {
-        $A = DB_fetchArray ($result);
-        $feeds[] = array ('id' => $A['category'], 'name' => $A['category']);
+        for ($i = 0; $i < $num; $i++) {
+            $A = DB_fetchArray ($result);
+            $feeds[] = array ('id' => $A['category'], 'name' => $A['category']);
+        }
     }
 
     return $feeds;
 }
 
-/*
+/**
 * Provide feed data
+*
+* @param    int     $feed       feed ID
+* @param    ref     $link
+* @param    ref     $update
+* @return   array               feed entries
+*
 */
 function plugin_getfeedcontent_links ($feed, &$link, &$update)
 {
@@ -550,7 +573,6 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
 
     $result = DB_query( "SELECT topic,limits,content_length FROM {$_TABLES['syndication']} WHERE fid = '$feed'" );
     $S = DB_fetchArray( $result );
-
 
     $result = DB_query( "SELECT lid,owner_id,title,description,UNIX_TIMESTAMP(date) AS modified FROM " . $_TABLES['links'] . links_buildSql ($S['topic'], $S['limits']) );
 
@@ -585,6 +607,14 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
     return $content;
 }
 
+/**
+* Helper function: Build part of an SQL request
+*
+* @param    string  $category   category name
+* @param    string  $limits     limit (number of entries or number of hours)
+* @return   string              part of an SQL request
+*
+*/
 function links_buildSql ($category, $limits)
 {
     $where = '';
@@ -629,6 +659,7 @@ function links_buildSql ($category, $limits)
 * @param    string  $updated_type   (optional) type of feed to be updated
 * @param    string  $updated_topic  (optional) feed's "topic" to be updated
 * @param    string  $updated_id     (optional) id of entry that has changed
+* @return   boolean                 true: feed data is up to date; false: isn't
 *
 */
 function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
@@ -670,12 +701,12 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 * This may get called by the install routine to undo anything done to this
 * point.
 *
-* @steps   Array    Holds all the steps that have been completed by the install
+* @return   boolean     true: uninstalled successfully
 *
 */
 function plugin_uninstall_links ()
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES;
 
     // Uninstalls the links plugin
 
@@ -712,7 +743,7 @@ function plugin_uninstall_links ()
 
     // Remove Links Feeds from syndiaction table
     COM_errorLog ('removing links feeds from table', 1);
-    DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE `type` = 'links'");
+    DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE type = 'links'");
     COM_errorLog ('...success', 1);
 
     // Remove security for this plugin
@@ -793,8 +824,9 @@ function plugin_uninstall_links ()
 }
 
 /**
-*
 * Counts the items that are submitted
+*
+* @return   int     number of items in submission queue
 *
 */
 function plugin_submissioncount_links()
@@ -805,7 +837,6 @@ function plugin_submissioncount_links()
 }
 
 /**
-*
 * Checks that the current user has the rights to moderate the
 * plugin, returns true if this is the case, false otherwise
 *
@@ -820,6 +851,9 @@ function plugin_ismoderator_links()
 
 /**
 * Returns SQL & Language texts to moderation.php
+*
+* @return   mixed   plugin object or void if not allowed
+*
 */
 function plugin_itemlist_links()
 {
@@ -865,8 +899,8 @@ function plugin_moderationvalues_links()
 * to links tables, within the function we handle all other approval
 * relate tasks
 *
-* @param      string       $id      Identifying string
-* @return     string       Any wanted HTML output
+* @param    string  $id     Identifying string
+* @return   string          Any wanted HTML output
 *
 */
 function plugin_moderationapprove_links ($id)
@@ -894,10 +928,10 @@ function plugin_moderationapprove_links ($id)
 *
 * While moderation.php handles the actual removal from <plugin>submission
 * table, within this function we handle all other deletion
-* relate tasks
+* related tasks
 *
-* @param      string       $id      Identifying string
-* @return     string       Any wanted HTML output
+* @param    string  $id     Identifying string
+* @return   string          Any wanted HTML output
 *
 */
 function plugin_moderationdelete_links($id)
@@ -914,10 +948,13 @@ function plugin_moderationdelete_links($id)
 /**
 * Check submission form values and save if OK. Else show form again
 *
+* @param    array   $A  The link record
+* @return   string      Any wanted HTML output
+*
 */
 function plugin_savesubmission_links($A)
 {
-    global $_CONF, $_TABLES, $LANG12;
+    global $LANG12;
 
     if (!empty ($A['title']) && !empty ($A['description']) &&
                 !empty ($A['url'])) {
@@ -938,10 +975,12 @@ function plugin_savesubmission_links($A)
 /**
 * Shows link submission form
 *
+* @return   string  HTML for the link submission form
+*
 */
 function plugin_submit_links()
 {
-    global $_CONF, $_TABLES, $LANG_LINKS_SUBMIT, $LANG12;
+    global $_CONF, $LANG_LINKS_SUBMIT, $LANG12;
 
     $retval = COM_startBlock ($LANG_LINKS_SUBMIT[1], 'submitlink.html');
 
@@ -1063,8 +1102,8 @@ function plugin_save_submit_links ($A)
 */
 function LINKS_sendNotification ($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT,
-           $LANG08;
+    global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08;
+
     $title = stripslashes ($A['title']);
     $description = stripslashes ($A['description']);
 
@@ -1102,20 +1141,21 @@ function plugin_geticon_links ()
 function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $LANG_ADMIN, $LANG_ACCESS;
+
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
     if ($access > 0) {
         switch($fieldname) {
-            case "edit":
+            case 'edit':
                 $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
                 break;
-            case "access":
+            case 'access':
                 if ($access == 3) {
                    $retval = $LANG_ACCESS['edit'];
                 } else {
                    $retval = $LANG_ACCESS['readonly'];
                 }
                 break;
-            case "title":
+            case 'title':
                 $title = stripslashes($A['title']);
                 $retval = "<a href=\"{$A['url']}\">$title</a>";
                 break;
@@ -1124,13 +1164,14 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                 break;
         }
     }
+
     return $retval;
 }
 
 /**
 * Return a list of all link categories
 *
-* @param    string  $current_category   currently selected category
+* @param    ref     $current_category   currently selected category
 * @return   string                      <option> list containing all categories
 *
 * Note: $current_category will be returned as an empty string when found in the
@@ -1145,7 +1186,7 @@ function links_getCategoryList (&$current_category)
 
     $retval = '';
 
-    $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} GROUP BY category");
+    $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " GROUP BY category");
     $nrows = DB_numRows($result);
 
     $retval = '<option value="' . $LANG_LINKS_ADMIN[7] . '">'
