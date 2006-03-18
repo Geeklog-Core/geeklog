@@ -2,12 +2,12 @@
 
 ###############################################################################
 # english.php
-# This is the english language page for the Geeklog links Plug-in!
+# This is the english language file for the Geeklog Links Plugin
 #
 # Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
+# tony AT tonybibbs DOT com
 # Copyright (C) 2005 Trinity Bays
-# trinity93@gmail.com
+# trinity93 AT gmail DOT com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.10 2005/11/26 06:37:32 trinity Exp $
+# $Id: english.php,v 1.11 2006/03/18 12:59:23 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -34,13 +34,11 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93@steubentech.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * @author Blaine Lang <langmail@sympatico.ca>
- * @author Dirk Haun <dirk@haun-online.de>
+ * @author Trinity Bays <trinity93 AT steubentech DOT com>
+ * @author Tony Bibbs <tony AT tonybibbs DOT com>
+ * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
  * 
  */
 
@@ -94,6 +92,7 @@ $LANG_LINKS_SEARCH = array(
  'author' => 'Submited by',
  'hits' => 'Clicks'
 );
+
 ###############################################################################
 # for the submission form
 /**
