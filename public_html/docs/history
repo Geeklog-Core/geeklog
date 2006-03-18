@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Made the search option on the Admin pages behave like the site search, i.e.
+  it doesn't require you to pad queries with '*' any longer [Dirk]
 - In story search results, show/hide the "Author" and "Views" columns based on
   the $_CONF['contributedbyline'] and $_CONF['hideviewscount'] settings [Dirk]
 - Introduced $_CONF['title_trim_length'] to make the max. title length of items
@@ -51,12 +53,27 @@ Calendar plugin
 
 Links plugin
 ------------
+- Optimized SQL requests for the plugin's What's New section [Dirk]
+- Re-introduced {button_links} header variable [Dirk]
+- Added an option to hide the Top Ten Links on the first page [Dirk]
+- Made the page title on the Web Resources page more informative by adding the
+  category and page number [Dirk]
+- The edit icon (only visible for Links Admins) now uses the same image type
+  as the current theme (was previously hardcoded to "edit.gif") [Dirk]
+- Hide the "Web Resources" link from the menu when login is required to see
+  the links (for consistency with the Polls plugin) [Dirk]
+- Added a title attribute to the links on the site stats page that contains
+  the link's actual URL [Dirk]
 - Fixed site link in search results which wasn't using portal.php [Dirk]
 - The Admin's search option now also searches the link description [Dirk]
 - Removed extra <small> tags from the What's New section (bug #526) [Dirk]
 
 Polls plugin
 ------------
+- Re-introduced {button_polls} header variable [Dirk]
+- Added an option to hide the link to the polls from the menu (for consistency
+  with the Links plugin) [Dirk]
+- Fixed poll URLs on the site stats page [Dirk]
 - Remove the polls block when uninstalling the Polls plugin (another part of
   bug #520) [Dirk]
 
