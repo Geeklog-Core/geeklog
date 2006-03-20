@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.47 2005/12/03 11:58:31 mjervis Exp $
+// $Id: lib-security.php,v 1.48 2006/03/20 00:08:46 blaine Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -918,5 +918,32 @@ function SEC_setDefaultPermissions (&$A, $use_permissions = array ())
     $A['perm_members'] = $use_permissions[2];
     $A['perm_anon']    = $use_permissions[3];
 }
+
+
+/**
+* Common function used to build group access SQL
+*
+* @param   string  $clause    Optional parm 'WHERE' - default is 'AND'
+* @return  string  $groupsql  Formatted SQL string to be appended in calling script SQL statement
+*/
+function SEC_buildAccessSql($clause='AND') {
+    global $_TABLES,$_USER;
+
+    if (isset($_USER) AND $_USER['uid'] > 1) {
+        $uid = $_USER['uid'];
+    } else {
+        $uid = 1;
+    }
+
+    $_GROUPS = SEC_getUserGroups($uid);
+    $groupsql = '';
+    if (count($_GROUPS) == 1) {
+        $groupsql .= " $clause grp_access = '" . current($_GROUPS) ."'";
+    } else {
+        $groupsql .= " $clause grp_access IN (" . implode(',',array_values($_GROUPS)) .")";
+    }
+    return $groupsql;
+}
+
 
 ?>
