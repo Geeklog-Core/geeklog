@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.50 2006/03/12 10:41:32 dhaun Exp $
+// $Id: lib-admin.php,v 1.51 2006/03/22 02:55:56 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -441,10 +441,16 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
     if ($has_extras) { # now make google-paging
-        if (!empty($query)) { # port query to next page
-            $base_url = $form_url . '?q=' . urlencode($query) . "&amp;query_limit=$query_limit$order_var_link&amp;direction=$direction";
+        $hasargs = strstr( $form_url, '?' );
+        if( $hasargs ) {
+            $sep = '&amp;';
         } else {
-            $base_url = $form_url . "?query_limit=$query_limit$order_var_link&amp;direction=$direction";
+            $sep = '?';
+        }
+        if (!empty($query)) { # port query to next page
+            $base_url = $form_url . $sep . 'q=' . urlencode($query) . "&amp;query_limit=$query_limit$order_var_link&amp;direction=$direction";
+        } else {
+            $base_url = $form_url . $sep ."query_limit=$query_limit$order_var_link&amp;direction=$direction";
         }
 
         if ($num_pages > 1) { # print actual google-paging
