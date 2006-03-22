@@ -2,7 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
-
+- Fixed admin lists google paging for use in static pages etc. [Oliver]
 - Made the search option on the Admin pages behave like the site search, i.e.
   it doesn't require you to pad queries with '*' any longer [Dirk]
 - In story search results, show/hide the "Author" and "Views" columns based on
