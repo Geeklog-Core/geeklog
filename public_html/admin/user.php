@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.144 2006/03/10 14:06:53 dhaun Exp $
+// $Id: user.php,v 1.145 2006/03/23 19:56:05 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -538,6 +538,9 @@ function importusers ($file)
     $verbose_import = true;
 
     $retval = '';
+    
+    // Bulk import implies admin authorisation:
+    $_CONF['usersubmission'] = 0;
 
     // First, upload the file
     require_once ($_CONF['path_system'] . 'classes/upload.class.php');
