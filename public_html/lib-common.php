@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.521 2006/03/24 14:16:41 ospiess Exp $
+// $Id: lib-common.php,v 1.522 2006/03/24 14:41:43 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4149,7 +4149,12 @@ function COM_whatsNewBlock( $help = '', $title = '' )
                 }
                 else
                 {
-                    $retval .= $content[$i] . '<br>' . LB;
+                    $retval .= $content[$i];
+                }
+
+                if( $i + 1 < $plugins )
+                {
+                    $retval .= '<br>';
                 }
             }
         }
