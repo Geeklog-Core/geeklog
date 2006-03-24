@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.146 2006/03/24 10:38:48 dhaun Exp $
+// $Id: user.php,v 1.147 2006/03/24 10:41:02 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -292,7 +292,7 @@ function listusers() {
                     array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
     );
 
-    $defsort_arr = array('field'     => $_TABLES['users'] '.uid',
+    $defsort_arr = array('field'     => $_TABLES['users'] . '.uid',
                          'direction' => 'ASC');
 
     $menu_arr = array (
