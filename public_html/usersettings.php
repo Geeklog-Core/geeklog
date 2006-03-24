@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.125 2006/03/04 18:28:03 dhaun Exp $
+// $Id: usersettings.php,v 1.126 2006/03/24 09:22:36 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -54,7 +54,7 @@ function edituser()
 {
     global $_CONF, $_TABLES, $_USER, $LANG04;
 
-    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray ($result);
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
@@ -522,7 +522,7 @@ function editpreferences()
     if (($_CONF['contributedbyline'] == 1) &&
         ($_CONF['hide_author_exclusion'] == 0)) {
         $preferences->set_var ('lang_authors', $LANG04[56]);
-        $query = DB_query ("SELECT DISTINCT story.uid, user.username FROM {$_TABLES['stories']} story, {$_TABLES['users']} user WHERE story.uid = user.uid ORDER BY user.username");
+        $query = DB_query ("SELECT DISTINCT story.uid, users.username FROM {$_TABLES['stories']} story, {$_TABLES['users']} users WHERE story.uid = users.uid ORDER BY users.username");
         $nrows = DB_numRows($query );
         $authors = explode(" ",$A['aids']);
 
