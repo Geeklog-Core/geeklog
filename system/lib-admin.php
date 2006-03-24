@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.52 2006/03/24 11:50:41 dhaun Exp $
+// $Id: lib-admin.php,v 1.53 2006/03/24 17:07:49 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -640,7 +640,7 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
              if ($fieldvalue < 1) {
                  $retval = $LANG28[36];
              } else {
-                 $retval = strftime ($_CONF['daytime'], $A['lastlogin']);
+                 $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
              }
 
             break;
