@@ -2,7 +2,18 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+
+- Made changes to ensure compatibility with MSSQL, as suggested by
+  Randy Kolenko [Dirk]
+- The "last login date" column in the Admin's list of users now uses
+  $_CONF['shortdate'] so that it includes the year [Dirk]
+- Fixed batch user import (which set all imported users to status "Awaiting
+  Authorization" instead of "Awaiting Activation") [Mike]
 - Fixed admin lists google paging for use in static pages etc. [Oliver]
+- Added support for a custom login error handler function,
+  CUSTOM_loginErrHandler [Blaine]
+- Format the user agent string according to the RFCs 1945 / 2068 / 2616, i.e.
+  "Geeklog/1.4.1" when trying to detect a Trackback URL [Dirk]
 - Made the search option on the Admin pages behave like the site search, i.e.
   it doesn't require you to pad queries with '*' any longer [Dirk]
 - In story search results, show/hide the "Author" and "Views" columns based on
