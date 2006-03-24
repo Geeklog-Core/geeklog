@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.1 2006/03/08 13:23:26 ospiess Exp $
+// $Id: index.php,v 1.2 2006/03/24 19:32:24 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -134,27 +134,68 @@ function setCalendarLanguage (&$aCalendar)
     $aCalendar->setLanguage ($lang_days, $lang_months, $_CONF['week_start']);
 }
 
+/**                     
+* Returns an abbreviated day's name 
+*                       
+* Note: This is a workaround, to be replaced with something more sensible
+*       in future versions ...
+*
+* @param    int     $day    1 = Sunday, 2 = Monday, ...
+* @return   string          abbreviated day's name (3 characters)
+*
+* The problem here is that substr may return nonsense for UTF-8 strings, but
+* mb_substr may not be available.
+*
+*/
+function shortDaysName ($day)
+{
+    global $LANG_CHARSET, $LANG30;
+
+    static $mb_enabled;
+
+    if (!isset ($mb_enabled)) {
+        $mb_enabled = function_exists ('mb_substr');
+    }
+
+    $shortday = '';
+    if ($LANG_CHARSET == 'utf-8') {
+        if ($mb_enabled) {
+            // when mb_substr is available, use it
+            $shortday = mb_substr ($LANG30[$day], 0, 2, $LANG_CHARSET);
+        } else {
+            // no mb_substr, but UTF-8 string: cheat and hope that the locale
+            // matches the current language ...
+            // Note: May 1st, 2005 was a Sunday
+            $shortday = date ('D', mktime (0, 0, 0, 5, $day, 2005));
+        }
+    } else {
+        $shortday = substr ($LANG30[$day], 0, 2);
+    }
+
+    return $shortday;
+}
+
 function makeDaysHeadline ()
 {
-    global $_CONF, $LANG_CAL_2;
+    global $_CONF;
 
     $retval = '<tr><th>';
     if ($_CONF['week_start'] == 'Mon') {
-        $retval .= substr ($LANG_CAL_2[2], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[3], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[4], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[5], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[6], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[7], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[1], 0, 2) . '</th></tr>';
+        $retval .= shortDaysName (2) . '</th><th>'
+                . shortDaysName (3) . '</th><th>'
+                . shortDaysName (4) . '</th><th>'
+                . shortDaysName (5) . '</th><th>'
+                . shortDaysName (6) . '</th><th>'
+                . shortDaysName (7) . '</th><th>'
+                . shortDaysName (1) . '</th></tr>';
     } else {
-        $retval .= substr ($LANG_CAL_2[1], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[2], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[3], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[4], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[5], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[6], 0, 2) . '</th><th>'
-                . substr ($LANG_CAL_2[7], 0, 2) . '</th></tr>';
+        $retval .= shortDaysName (1) . '</th><th>'
+                . shortDaysName (2) . '</th><th>'
+                . shortDaysName (3) . '</th><th>'
+                . shortDaysName (4) . '</th><th>'
+                . shortDaysName (5) . '</th><th>'
+                . shortDaysName (6) . '</th><th>'
+                . shortDaysName (7) . '</th></tr>';
     }
 
     return $retval;
@@ -215,8 +256,9 @@ function getDeleteImageLink ($mode, $A)
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
 
             $retval = '<a href="' . $_CONF['site_admin_url']
-                    . '/event.php?mode=' . $LANG_CAL_ADMIN[22] . '&amp;eid='
-                    . $A['eid'] . '"><img src="' . $_CONF['layout_url']
+                    . '/plugins/calendar/index.php?mode=' . $LANG_CAL_ADMIN[22]
+                    . '&amp;eid=' . $A['eid'] . '"><img src="'
+                    . $_CONF['layout_url']
                     . '/calendar/images/delete_event.' . $_IMAGE_TYPE
                     . '" border="0" alt="' . $LANG_CAL_2[30] . '" title="'
                     . $LANG_CAL_2[30] . '"></a>';
@@ -249,8 +291,8 @@ function getSmallCalendar ($m, $y, $mode = '')
 
     $retval .= '<table class="smallcal">' . LB 
             . '<tr class="smallcal-headline"><td align="center" colspan="7">'
-            . '<a href="' . $_CONF['site_url'] . '/calendar/index.php?month=' . $m
-            . '&amp;year=' . $y . $mode . '">' . $mycal->getMonthName ($m)
+            . '<a href="' . $_CONF['site_url'] . '/calendar/index.php?month='
+            . $m . '&amp;year=' . $y . $mode . '">' . $mycal->getMonthName ($m)
             . '</a></td></tr>' . makeDaysHeadline () . LB;
 
     for ($i = 1; $i <= 6; $i++) {
