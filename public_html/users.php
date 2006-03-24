@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.131 2006/03/20 00:13:49 blaine Exp $
+// $Id: users.php,v 1.132 2006/03/24 16:38:43 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -216,7 +216,7 @@ function userprofile ($user, $msg = 0)
     $sidList = "'$sidList'";
 
     // then, find all comments by the user in those stories
-    $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user)";
+    $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
 
     // SQL NOTE:  Using a HAVING clause is usually faster than a where if the
     // field is part of the select
