@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.68 2006/03/10 14:06:51 dhaun Exp $
+// $Id: group.php,v 1.69 2006/03/24 10:33:51 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -451,16 +451,20 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
         $grp_descr = COM_stripslashes ($grp_descr);
         $grp_descr = addslashes ($grp_descr);
         if (empty ($grp_id)) {
-            DB_query("REPLACE INTO {$_TABLES['groups']} (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
-            $grp_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = '$grp_name'");
+            DB_save ($_TABLES['groups'], 'grp_name,grp_descr,grp_gl_core',
+                     "'$grp_name','$grp_descr',$grp_gl_core");
+            $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                  "grp_name = '$grp_name'");
             $new_group = true;
         } else {
-            DB_query("REPLACE INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ($grp_id,'$grp_name', '$grp_descr',$grp_gl_core)");
+            DB_save ($_TABLES['groups'],
+                     'grp_id,grp_name,grp_descr,grp_gl_core',
+                     "$grp_id,'$grp_name','$grp_descr',$grp_gl_core");
             $new_group = false;
         }
 
         // now save the features
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_grp_id = $grp_id");
+        DB_delete ($_TABLES['access'], 'acc_grp_id', $grp_id);
         if (SEC_inGroup ('Root')) {
             for ($i = 1; $i <= sizeof ($features); $i++) {
                 DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current ($features) . ",$grp_id)");
@@ -481,7 +485,7 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
             COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
         }
 
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
+        DB_delete ($_TABLES['group_assignments'], 'ug_grp_id', $grp_id);
         if (!empty ($groups)) {
             for ($i = 1; $i <= sizeof ($groups); $i++) {
                 if (in_array ($grp_id, $GroupAdminGroups)) {
@@ -773,7 +777,7 @@ function savegroupusers ($groupid, $groupmembers)
     global $_CONF, $_TABLES;
 
     // Delete all the current buddy records for this user and add all the selected ones
-    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid != 'NULL' ");
+    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid != NULL");
     $adduser = explode("|",$groupmembers);
     for( $i = 0; $i < count($adduser); $i++ )    {
         DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', '$adduser[$i]')");
