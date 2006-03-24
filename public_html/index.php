@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.77 2006/03/10 22:42:39 blaine Exp $
+// $Id: index.php,v 1.78 2006/03/24 18:04:12 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -183,16 +183,14 @@ if ($newstories) {
 }
 
 $offset = ($page - 1) * $limit;
-$sql .= "ORDER BY featured DESC, date DESC";
-
-$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
-         . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, "
-	 . "{$_TABLES['topics']} as t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
-         . $sql . " LIMIT $offset, $limit");
+         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
+         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
+         . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit");
 $nrows = DB_numRows ($result);
 
-$data = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} as s WHERE" . $sql);
+$data = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} AS s WHERE" . $sql);
 $D = DB_fetchArray ($data);
 $num_pages = ceil ($D['count'] / $limit);
 
