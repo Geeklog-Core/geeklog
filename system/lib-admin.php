@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.51 2006/03/22 02:55:56 ospiess Exp $
+// $Id: lib-admin.php,v 1.52 2006/03/24 11:50:41 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -184,13 +184,13 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $filter_str = '';
     $order_sql = '';
     $limit = '';
-    $prevorder = "";
-    if (isset($_GET['prevorder'])) { # what was the last sorting?
+    $prevorder = '';
+    if (isset ($_GET['prevorder'])) { # what was the last sorting?
         $prevorder = COM_applyFilter ($_GET['prevorder']);
     }
 
-    $query = "";
-    if (isset($_REQUEST['q'])) { # get query (text-search)
+    $query = '';
+    if (isset ($_REQUEST['q'])) { # get query (text-search)
         $query = $_REQUEST['q'];
     }
 
@@ -204,7 +204,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $offset = COM_applyFilter ($_REQUEST['offset'], true);
     }
     $curpage = 1;
-    $page = "";
+    $page = '';
     if (isset ($_REQUEST[$component . 'listpage'])) {
         $page = COM_applyFilter ($_REQUEST[$component . 'listpage'], true);
         $curpage = $page;
@@ -218,18 +218,18 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     #    $unfiltered = $query_arr['unfiltered'];
     #}
 
-    $help_url = ""; # do we have a help url for the block-header?
-    if (!empty($text_arr['help_url'])) {
+    $help_url = ''; # do we have a help url for the block-header?
+    if (!empty ($text_arr['help_url'])) {
         $help_url = $text_arr['help_url'];
     }
     
-    $form_url = ""; # what is the form-url for the search button?
-    if (!empty($text_arr['form_url'])) {
+    $form_url = ''; # what is the form-url for the search button?
+    if (!empty ($text_arr['form_url'])) {
         $form_url = $text_arr['form_url'];
     }
 
-    $title = ""; # what is the title of the page?
-    if (!empty($text_arr['title'])) {
+    $title = ''; # what is the title of the page?
+    if (!empty ($text_arr['title'])) {
         $title = $text_arr['title'];
     }
 
@@ -242,7 +242,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                                        'field' => 'field.thtml',
                                        'menufields' => 'menufields.thtml'
                                       ));
-    # inserty some values into the template
+    # insert some values into the template
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('icon', $text_arr['icon']);
@@ -284,30 +284,38 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $sql_query = addslashes ($query); # replace quotes etc for security
     $sql = $query_arr['sql']; # get sql from array that builds data
 
-    $order_var = ""; # number that is displayed in URL
-    $order = "";     # field that is used in SQL
+    $order_var = ''; # number that is displayed in URL
+    $order = '';     # field that is used in SQL
     $order_var_link = ''; # Variable for google paging.
-    if (!isset($_GET['order'])) {
+    if (!isset ($_GET['order'])) {
         $order = $defsort_arr['field'];
     } else {
         $order_var = COM_applyFilter ($_GET['order'], true);
         $order_var_link = "&amp;order=$order_var"; # keep the variable for the google paging
         $order = $header_arr[$order_var]['field'];  # current order field name
     }
+    $order_for_query = $order;
+    $order = explode ('.', $order);
+    if (count ($order) > 1) {
+        $order = $order[1];
+    } else {
+        $order = $order[0];
+    }
 
-    $direction = "";
-    if (!isset($_GET['direction'])) { # get direction to sort after
+    $direction = '';
+    if (!isset ($_GET['direction'])) { # get direction to sort after
         $direction = $defsort_arr['direction'];
     } else {
-        $direction = $_GET['direction'];
+        $direction = COM_applyFilter ($_GET['direction']);
     }
+    $direction = strtoupper ($direction);
     if ($order == $prevorder) { #reverse direction if prev. order was the same
-        $direction = ($direction == 'desc') ? 'asc' : 'desc';
+        $direction = ($direction == 'DESC') ? 'ASC' : 'DESC';
     } else {
-        $direction = ($direction == 'desc') ? 'desc' : 'asc';
+        $direction = ($direction == 'DESC') ? 'DESC' : 'ASC';
     }
 
-    if ($direction == 'asc') { # assign proper arrow img name dep. on sort order
+    if ($direction == 'ASC') { # assign proper arrow img name dep. on sort order
         $arrow = 'bararrowdown';
     } else {
         $arrow = 'bararrowup';
@@ -316,8 +324,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
             . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
     
-    if (!empty($order)) { # concat order string
-        $order_sql = "ORDER BY $order $direction";
+    if (!empty ($order_for_query)) { # concat order string
+        $order_sql = "ORDER BY $order_for_query $direction";
     }
 
     # HEADER FIELDS array(text, field, sort)
@@ -405,8 +413,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             if (!empty($A[$fieldname])) { # is there a field in data like that?
                 $fieldvalue = $A[$fieldname]; # yes, get its data
             }
-            if (!empty($fieldfunction)) { # do we have a fieldfunction?
-                $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A, $icon_arr);
+            if (!empty ($fieldfunction)) { # do we have a fieldfunction?
+                $fieldvalue = $fieldfunction ($fieldname, $fieldvalue, $A, $icon_arr);
             } else { # if not just take the value
                 $fieldvalue = $fieldvalue;
             }
@@ -612,26 +620,27 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
 
     $retval = '';
 
-    switch($fieldname) {
-        case "edit":
+    switch ($fieldname) {
+        case 'edit':
             $retval = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
             break;
         case 'username':
             $photoico = '<img src="' . $_CONF['layout_url']
                       . '/images/smallcamera.' . $_IMAGE_TYPE
                       . '" border="0" alt="">';
-            if (!empty($A['photo']))
-                 {$photoico = "&nbsp;" . $photoico;}
-            else
-                 {$photoico = '';}
+            if (!empty ($A['photo'])) {
+                 $photoico = '&nbsp;' . $photoico;
+            } else {
+                 $photoico = '';
+            }
             $retval = '<a href="'. $_CONF['site_url']. '/users.php?mode=profile&amp;uid='
                       . $A['uid'].'">' . $fieldvalue.'</a>' . $photoico;
             break;
-        case "lastlogin":
+        case 'lastlogin':
              if ($fieldvalue < 1) {
                  $retval = $LANG28[36];
              } else {
-                 $retval = strftime ($_CONF['daytime'],$A['lastlogin']);
+                 $retval = strftime ($_CONF['daytime'], $A['lastlogin']);
              }
 
             break;
