@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.65 2006/03/10 14:06:47 dhaun Exp $
+// $Id: functions.inc,v 1.66 2006/03/24 09:17:58 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -563,8 +563,8 @@ function plugin_user_delete_staticpages($uid)
 {
     global $_TABLES, $_SP_CONF;
 
-    if (DB_count ($_TABLES['staticpage'],
-            "(sp_uid = $uid) OR (owner_id = $uid)") == 0) {
+    if (DB_count ($_TABLES['staticpage'], 'sp_uid', $uid) +
+            DB_count ($_TABLES['staticpage'], 'owner_id', $uid) == 0) {
         return;
     }
 

@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.56 2006/03/18 15:03:07 dhaun Exp $
+// $Id: functions.inc,v 1.57 2006/03/24 09:17:56 dhaun Exp $
 
 
 /**
@@ -513,7 +513,7 @@ function plugin_user_delete_links ($uid)
 {
     global $_TABLES, $_LI_CONF;
 
-    if (DB_count ($_TABLES['links'], "owner_id = $uid") == 0) {
+    if (DB_count ($_TABLES['links'], 'owner_id', $uid) == 0) {
         return;
     }
 

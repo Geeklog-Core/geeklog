@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.42 2006/03/18 13:00:38 dhaun Exp $
+// $Id: functions.inc,v 1.43 2006/03/24 09:17:57 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -316,7 +316,7 @@ function plugin_user_delete_polls ($uid)
 {
     global $_TABLES, $_PO_CONF;
 
-    if (DB_count ($_TABLES['pollquestions'], "owner_id = $uid") == 0) {
+    if (DB_count ($_TABLES['pollquestions'], 'owner_id', $uid) == 0) {
         // there are no polls owned by this user
         return;
     }
