@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.132 2006/03/24 16:38:43 dhaun Exp $
+// $Id: users.php,v 1.133 2006/03/24 20:25:41 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -979,7 +979,7 @@ default:
             } else { // Show login form
                 if( ($msg != 69) && ($msg != 70) )
                 {
-                    if (function_exists(CUSTOM_loginErrHandler)) {
+                    if (function_exists ('CUSTOM_loginErrHandler')) {
                         // Typically this will be used if you have a custom main site page and need to control the login process
                         $display .= CUSTOM_loginErrHandler();
                     } else {
