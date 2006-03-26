@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.93 2006/03/17 05:45:16 ospiess Exp $
+// $Id: lib-plugins.php,v 1.94 2006/03/26 08:50:20 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1152,7 +1152,7 @@ function PLG_templateSetVars ($templatename, &$template)
 {
     global $_PLUGINS;
 
-    if (function_exists ('CUSTOM_templatesetvars')) {
+    if (function_exists ('CUSTOM_templateSetVars')) {
         CUSTOM_templatesetvars($templatename, $template);
     }
 

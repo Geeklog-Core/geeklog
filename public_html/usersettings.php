@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.126 2006/03/24 09:22:36 dhaun Exp $
+// $Id: usersettings.php,v 1.127 2006/03/26 08:50:20 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -175,8 +175,8 @@ function edituser()
     }
 
     // Call custom account form and edit function if enabled and exists
-    if ($_CONF['custom_registration'] AND (function_exists(custom_useredit))) {
-        $preferences->set_var ('customfields', custom_useredit($_USER['uid']) );
+    if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userEdit'))) {
+        $preferences->set_var ('customfields', CUSTOM_userEdit($_USER['uid']) );
     }
 
     PLG_profileVariablesEdit ($_USER['uid'], $preferences);
@@ -935,8 +935,8 @@ function saveuser($A)
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}',location='{$A['location']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists
-        if ($_CONF['custom_registration'] AND (function_exists(custom_usersave))) {
-            custom_usersave($_USER['uid']);
+        if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userSave'))) {
+            CUSTOM_userSave($_USER['uid']);
         }
 
         PLG_userInfoChanged ($_USER['uid']);

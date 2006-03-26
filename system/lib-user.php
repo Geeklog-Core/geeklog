@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.23 2005/12/10 11:58:57 dhaun Exp $
+// $Id: lib-user.php,v 1.24 2006/03/26 08:50:20 dhaun Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -94,8 +94,8 @@ function USER_deleteAccount ($uid)
     PLG_deleteUser ($uid);
 
     // Call custom account profile delete function if enabled and exists
-    if ($_CONF['custom_registration'] && function_exists (custom_userdelete)) {
-        custom_userdelete ($uid);
+    if ($_CONF['custom_registration'] && function_exists ('CUSTOM_userDelete')) {
+        CUSTOM_userDelete ($uid);
     }
 
     // remove from all security groups
@@ -316,8 +316,8 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
     DB_query ("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
 
     // call custom registration function and plugins
-    if ($_CONF['custom_registration'] && (function_exists ('custom_usercreate'))) {
-        custom_usercreate ($uid);
+    if ($_CONF['custom_registration'] && (function_exists ('CUSTOM_userCreate'))) {
+        CUSTOM_userCreate ($uid);
     }
     PLG_createUser ($uid);
 

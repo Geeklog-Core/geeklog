@@ -2,22 +2,25 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-custom.php                                                            |
+// |                                                                           |
 // | Your very own custom Geeklog library.                                     |
 // |                                                                           |
 // | This is the file where you should put all of your custom code.  When      |
 // | possible you should not alter lib-common.php but, instead, put code here. |
 // | This will make upgrading to future versions of Geeklog easier for you     |
-// | because you will always be gauranteed that the Geeklog developers will    |
-// | NOT add code to this file. NOTE: we have already gone through the trouble |
-// | of making sure that we always include this file when lib-common.php is    |
-// | included some place so you will have access to lib-common.php.  It        |
-// | follows then that you should not include lib-common.php in this file      |
+// | because you will always be guaranteed that the Geeklog developers will    |
+// | NOT add required code to this file.                                       |
+// |                                                                           |
+// | NOTE: we have already gone through the trouble of making sure that we     |
+// | always include this file when lib-common.php is included some place so    |
+// | you will have access to lib-common.php.  It follows then that you should  |
+// | not include lib-common.php in this file.                                  |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -40,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.18 2005/11/17 15:05:10 ospiess Exp $
+// $Id: lib-custom.php,v 1.19 2006/03/26 08:50:20 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -152,7 +155,7 @@ function CUSTOM_runSheduledTask() {
 * Include any code in this function that will be called by Plugin API to set template variables
 * Initially this API is only called in the COM_siteHeader function to set header.thtml variables
 */
-function CUSTOM_templatesetvars($templatename, &$template) {
+function CUSTOM_templateSetVars($templatename, &$template) {
 
     if ($templatename == 'header') {
         if (isset($mycontent)) {
@@ -182,7 +185,7 @@ function CUSTOM_templatesetvars($templatename, &$template) {
 /* Create any new records in additional tables you may have added  */
 /* Update any fields in the core GL tables for this user as needed */
 /* Called when user is first created */
-function custom_usercreate($uid)
+function CUSTOM_userCreate($uid)
 {
     global $_CONF, $_TABLES;
 
@@ -193,7 +196,7 @@ function custom_usercreate($uid)
 }
 
 // Delete any records from custom tables you may have used
-function custom_userdelete($uid)
+function CUSTOM_userDelete($uid)
 {
     return true;
 }
@@ -203,7 +206,7 @@ function custom_userdelete($uid)
 /* Output is then replaced in {customfields) -- This variable needs to be added to your templates */
 /* Template: path_layout/users/profile/profile.thtml */
 
-function custom_userdisplay($uid)
+function CUSTOM_userDisplay($uid)
 {
     global $_CONF, $_TABLES;
 
@@ -228,7 +231,7 @@ function custom_userdisplay($uid)
 /* As noted: You need to add the {customfields} template variable. */
 /* For the edituser.thtml - maybe it would be added about the {group_edit} variable. */
 
-function custom_useredit($uid)
+function CUSTOM_userEdit($uid)
 {
     global $_CONF, $_TABLES;
 
@@ -252,7 +255,7 @@ function custom_useredit($uid)
 
 /* Function called when saving the user profile. */
 /* This function can now update any extra fields  */
-function custom_usersave($uid)
+function CUSTOM_userSave($uid)
 {
     global $_CONF, $_TABLES;
 
@@ -270,7 +273,7 @@ function custom_usersave($uid)
 * @return   string          HTML for the registration form
 *
 */
-function custom_userform ($msg = '')
+function CUSTOM_userForm ($msg = '')
 {
     global $_CONF, $_TABLES, $LANG04;
 
@@ -319,7 +322,7 @@ function custom_userform ($msg = '')
 * @return   string              an error message or an empty string for "OK"
 *
 */
-function custom_usercheck ($username, $email)
+function CUSTOM_userCheck ($username, $email)
 {
     $msg = '';
 
@@ -335,21 +338,21 @@ function custom_usercheck ($username, $email)
 
 /**
 * Custom function to retrieve and return a formatted list of blocks
-* Can be used when calling COM_siteHeader or COM_SiteFooter
-
+* Can be used when calling COM_siteHeader or COM_siteFooter
+*
 * Example:
 * 1: Setup an array of blocks to display
 * 2: Call COM_siteHeader or COM_siteFooter
 *
-*  $myblocks = array ('site_menu','site_news','poll_block');
-
-* COM_siteHeader( array('COM_showCustomBlocks',$myblocks) ) ;
-* COM_siteFooter( true, array('COM_showCustomBlocks',$myblocks));
-
+*  $myblocks = array( 'site_menu', 'site_news', 'poll_block' );
+*
+* COM_siteHeader( array( 'CUSTOM_showBlocks', $myblocks )) ;
+* COM_siteFooter( true, array( 'CUSTOM_showBlocks', $myblocks ));
+*
 * @param   array   $showblocks    An array of block names to retrieve and format
 * @return  string                 Formated HTML containing site footer and optionally right blocks
 */
-function custom_showBlocks($showblocks)
+function CUSTOM_showBlocks($showblocks)
 {
     global $_CONF, $_TABLES;
 

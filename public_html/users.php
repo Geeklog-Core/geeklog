@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.133 2006/03/24 20:25:41 dhaun Exp $
+// $Id: users.php,v 1.134 2006/03/26 08:50:20 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -268,8 +268,8 @@ function userprofile ($user, $msg = 0)
                               $LANG04[86] . ' ' . $display_name);
 
     // Call custom registration function if enabled and exists
-    if ($_CONF['custom_registration'] && function_exists ('custom_userdisplay') ) {
-        $user_templates->set_var ('customfields', custom_userdisplay ($user));
+    if ($_CONF['custom_registration'] && function_exists ('CUSTOM_userDisplay') ) {
+        $user_templates->set_var ('customfields', CUSTOM_userDisplay ($user));
     }
     PLG_profileVariablesDisplay ($user, $user_templates);
 
@@ -435,12 +435,12 @@ function createuser ($username, $email)
             // For Geeklog, it would be okay to create this user now. But check
             // with a custom userform first, if one exists.
             if ($_CONF['custom_registration'] &&
-                    function_exists ('custom_usercheck')) {
-                $msg = custom_usercheck ($username, $email);
+                    function_exists ('CUSTOM_userCheck')) {
+                $msg = CUSTOM_userCheck ($username, $email);
                 if (!empty ($msg)) {
                     // no, it's not okay with the custom userform
                     $retval = COM_siteHeader ('menu')
-                            . custom_userform ($msg)
+                            . CUSTOM_userForm ($msg)
                             . COM_siteFooter ();
 
                     return $retval;
@@ -461,8 +461,8 @@ function createuser ($username, $email)
         } else {
             $retval .= COM_siteHeader ('menu');
             if ($_CONF['custom_registration'] &&
-                    function_exists ('custom_userform')) {
-                $retval .= custom_userform ($LANG04[19]);
+                    function_exists ('CUSTOM_userForm')) {
+                $retval .= CUSTOM_userForm ($LANG04[19]);
             } else {
                 $retval .= newuserform ($LANG04[19]);
             }
@@ -477,8 +477,8 @@ function createuser ($username, $email)
             $msg = $LANG04[18]; // invalid email address
         }
         $retval .= COM_siteHeader ('menu');
-        if ($_CONF['custom_registration'] && function_exists(custom_userform)) {
-            $retval .= custom_userform ($msg);
+        if ($_CONF['custom_registration'] && function_exists('CUSTOM_userForm')) {
+            $retval .= CUSTOM_userForm ($msg);
         } else {
             $retval .= newuserform ($msg);
         }
@@ -835,8 +835,8 @@ case 'new':
     } else {
         // Call custom registration and account record create function
         // if enabled and exists
-        if ($_CONF['custom_registration'] AND (function_exists('custom_userform'))) {
-            $display .= custom_userform();
+        if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userForm'))) {
+            $display .= CUSTOM_userForm();
         } else {
             $display .= newuserform();
         }
@@ -959,8 +959,8 @@ default:
         case 'create':
             // Got bad account info from registration process, show error
             // message and display form again
-            if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
-                $display .= custom_userform ();
+            if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userForm'))) {
+                $display .= CUSTOM_userForm ();
             } else {
                 $display .= newuserform ();
             }

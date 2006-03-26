@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.147 2006/03/24 10:41:02 dhaun Exp $
+// $Id: user.php,v 1.148 2006/03/26 08:50:20 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -223,11 +223,11 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
 
-    if ($_CONF['custom_registration'] AND (function_exists('custom_useredit'))) {
+    if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userEdit'))) {
         if (!empty ($uid) && ($uid > 1)) {
-            $user_templates->set_var('customfields', custom_useredit($uid) );
+            $user_templates->set_var('customfields', CUSTOM_userEdit($uid) );
         } else {
-            $user_templates->set_var('customfields', custom_useredit($A['uid']) );
+            $user_templates->set_var('customfields', CUSTOM_userEdit($A['uid']) );
         }
     }
 
@@ -448,8 +448,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 
             $curphoto = addslashes ($curphoto);
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
-            if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
-                custom_usersave($uid);
+            if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userSave'))) {
+                CUSTOM_userSave($uid);
             }
             if( ($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL)
                    && ($userstatus == USER_ACCOUNT_ACTIVE) )
