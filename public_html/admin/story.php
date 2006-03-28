@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.206 2006/03/10 11:53:47 dhaun Exp $
+// $Id: story.php,v 1.207 2006/03/28 12:36:50 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -157,14 +157,17 @@ function liststories()
     $filter = $LANG_ADMIN['topic'] . ': <select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>';
 
     $header_arr = array(
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true),
-                    array('text' => $LANG24[7], 'field' => 'username', 'sort' => true), //author
-                    array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true), //date
-                    array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
-                    array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true));
+    	array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false));
+    if ($_CONF['advanced_editor']) {
+		$header_arr[] = array('text' => $LANG_ADMIN['edit_adv'], 'field' => 'edit_adv', 'sort' => false);
+	}
+    $header_arr[] = array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true);
+    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false);
+    $header_arr[] = array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true);
+    $header_arr[] = array('text' => $LANG24[7], 'field' => 'username', 'sort' => true); //author
+    $header_arr[] = array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true); //date
+    $header_arr[] = array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true);
+    $header_arr[] = array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true);
 
     if (SEC_hasRights ('story.ping') && ($_CONF['trackback_enabled'] ||
             $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])) {
@@ -174,10 +177,15 @@ function liststories()
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']));
+    	array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=std',
+              'text' => $LANG_ADMIN['create_new'])
+	);
+    if ($_CONF['advanced_editor']) {
+		$menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=adv',
+                            'text' => $LANG_ADMIN['create_new_adv']);
+	}
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']);
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
@@ -215,7 +223,7 @@ function liststories()
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
+function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', $editor ='')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS,
            $LANG_ADMIN, $MESSAGE;
@@ -337,7 +345,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $A['numemails'] = 0;
 
         /* @TODO -o"Blaine" Add a user-preference option to set if user wants to`use advanced-editor */
-        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
+        if (isset ($_CONF['advanced_editor']) && 
+		    ($_CONF['advanced_editor'] == 1) &&
+			($editor == 'adv')
+			) 
+		
+		{
             $A['postmode'] = 'html';
         } else {
             $A['postmode'] = $_CONF['postmode'];
@@ -393,8 +406,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if ( $A['postmode'] == 'html' AND isset ($_CONF['advanced_editor'])
-        && ($_CONF['advanced_editor'] == 1 ) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+    if ( $A['postmode'] == 'html' 
+	    AND isset ($_CONF['advanced_editor'])
+        && ($_CONF['advanced_editor'] == 1 ) 
+		&& file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')
+		&& $editor == 'adv') {
         $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
@@ -823,6 +839,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
+	// fix for bug in advanced editor
+	if ($_CONF['advanced_editor'] && ($bodytext='<br>')) {
+		$bodytext = '';
+	}
     $sid = COM_sanitizeID ($sid);
 
     $duplicate_sid = false;
@@ -1139,7 +1159,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     }
 } else if (($mode == $LANG24[9]) && !empty ($LANG24[9])) { // preview
     $display .= COM_siteHeader('menu', $LANG24[5]);
-    $display .= storyeditor (COM_applyFilter ($_POST['sid']), $mode);
+    $display .= storyeditor (COM_applyFilter ($_POST['sid']), $mode, '', '', COM_applyFilter ($_GET['editor']));
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'edit') {
@@ -1151,7 +1171,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     if (isset ($_GET['topic'])) {
         $topic = COM_applyFilter ($_GET['topic']);
     }
-    $display .= storyeditor ($sid, $mode, '', $topic);
+    $display .= storyeditor ($sid, $mode, '', $topic, COM_applyFilter ($_GET['editor']));
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'editsubmission') {

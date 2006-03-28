@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.53 2006/03/24 17:07:49 dhaun Exp $
+// $Id: lib-admin.php,v 1.54 2006/03/28 12:36:51 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -698,7 +698,26 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             if ($fieldname == 'access') {
                 $retval = $access;
             } else if ($access == $LANG_ACCESS['edit']) {
-                $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=std&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
+            }
+            break;
+        case "edit_adv":
+            $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                                     $A['perm_owner'], $A['perm_group'],
+                                     $A['perm_members'], $A['perm_anon']);
+            if ($access == 3) {
+                if (SEC_hasTopicAccess ($A['tid']) == 3) {
+                    $access = $LANG_ACCESS['edit'];
+                } else {
+                    $access = $LANG_ACCESS['readonly'];
+                }
+            } else {
+                $access = $LANG_ACCESS['readonly'];
+            }
+            if ($fieldname == 'access') {
+                $retval = $access;
+            } else if ($access == $LANG_ACCESS['edit']) {
+                $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=adv&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
             }
             break;
         case "featured":
