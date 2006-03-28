@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.211 2006/03/11 13:22:47 dhaun Exp $
+// $Id: config.php,v 1.212 2006/03/28 05:34:42 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -278,7 +278,7 @@ $_CONF_FCK['imagelibrary'] = '/images/library';
 // |                                                                           |
 // | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
-$_CONF['language']        = 'english';
+$_CONF['language']        = 'english_iso-8859-1';
 $_CONF['locale']          = 'en_GB';
 $_CONF['date']            = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']         = '%m/%d %I:%M%p';
@@ -287,6 +287,11 @@ $_CONF['dateonly']        = '%d-%b';
 $_CONF['timeonly']        = '%I:%M%p';
 $_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['default_charset'] = 'iso-8859-1';
+$_CONF['allow_mixed_charsets'] = true; // this option should be removed later.
+// one should never allow users to select a charset that does not match the
+// content of the site. this feature is here only for transition reasons between
+// the old and new setting
+
 
 // Number formatting
 $_CONF['thousand_separator'] = ",";  // could be ' , . etc.
