@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.128 2006/03/28 06:16:08 ospiess Exp $
+// $Id: usersettings.php,v 1.129 2006/03/28 14:02:36 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -389,7 +389,7 @@ function editpreferences()
                            $LANG04[99] . ' ' . $display_name);
 
     // display preferences block
-    if ($_CONF['allow_user_language'] == 1) {
+    if ($_CONF['allow_user_language'] == 1 && ($_CONF['default_charset'] == 'utf-8')) {
 
         if (empty($_USER['language'])) {
             $userlang = $_CONF['language'];

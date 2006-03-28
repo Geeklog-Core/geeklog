@@ -29,28 +29,21 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib_mbyte.php,v 1.1 2006/03/28 06:15:11 ospiess Exp $
+// $Id: lib_mbyte.php,v 1.2 2006/03/28 14:02:37 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
-// downs that are compatible with the default language encoding
+// downs that are utf-8
 function MBYTE_languageList() { 
   	global $_CONF;
-  	 
-  	$def_charset = $_CONF['default_charset'];
+
     $language = array ();
     $fd = opendir ($_CONF['path_language']);
     
     while (($file = @readdir ($fd)) !== false) {
-
-		if ($_CONF['allow_mixed_charsets']) {
-			$filter = true;  
-		} else {
-		  	$filter = strstr($file, $def_charset);
-		}	
         if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
                 && is_file ($_CONF['path_language'] . $file)
-				&& ($filter)) {
+				&& (strstr($file, '_utf-8'))) {
             clearstatcache ();
             $file = str_replace ('.php', '', $file);
             $uscore = strpos ($file, '_');
