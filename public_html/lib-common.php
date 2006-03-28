@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.522 2006/03/24 14:41:43 dhaun Exp $
+// $Id: lib-common.php,v 1.523 2006/03/28 15:47:37 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -307,7 +307,9 @@ if( isset( $_COOKIE[$_CONF['cookie_language']] ) && empty( $_USER['language'] ))
 {
     $language = preg_replace( '/[^a-z0-9\-_]/', '',
                               $_COOKIE[$_CONF['cookie_language']] );
-    if( is_file( $_CONF['path_language'] . $language . '.php' ))
+    if(is_file( $_CONF['path_language'] . $language . '.php' ) &&
+       $_CONF['default_charset'] == 'utf-8' &&  // only switch to cookie lang if enabled
+       $_CONF['allow_user_language'] == 1)
     {
         $_USER['language'] = $language;
         $_CONF['language'] = $language;
@@ -315,7 +317,9 @@ if( isset( $_COOKIE[$_CONF['cookie_language']] ) && empty( $_USER['language'] ))
 }
 else if( !empty( $_USER['language'] ))
 {
-    if( is_file( $_CONF['path_language'] . $_USER['language'] . '.php' ))
+    if( is_file( $_CONF['path_language'] . $_USER['language'] . '.php' ) &&
+        $_CONF['default_charset'] == 'utf-8' &&  // only switch to user lang if enabled
+        $_CONF['allow_user_language'] == 1)
     {
         $_CONF['language'] = $_USER['language'];
     }
