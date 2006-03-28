@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.207 2006/03/28 12:36:50 ospiess Exp $
+// $Id: story.php,v 1.208 2006/03/28 13:11:41 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -840,7 +840,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
 	// fix for bug in advanced editor
-	if ($_CONF['advanced_editor'] && ($bodytext='<br>')) {
+	if ($_CONF['advanced_editor'] && ($bodytext == '<br>')) {
 		$bodytext = '';
 	}
     $sid = COM_sanitizeID ($sid);
