@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.127 2006/03/26 08:50:20 dhaun Exp $
+// $Id: usersettings.php,v 1.128 2006/03/28 06:16:08 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -294,6 +294,8 @@ function editpreferences()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
 
+	require_once( $_CONF['path_system'] . 'lib_mbyte.php' );
+
     $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
 
     $A = DB_fetchArray($result);
@@ -394,43 +396,24 @@ function editpreferences()
         } else {
             $userlang = $_USER['language'];
         }
-
         // Get available languages
-        $language = array ();
-        $fd = opendir ($_CONF['path_language']);
-        while (($file = @readdir ($fd)) !== false) {
-            if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
-                    && is_file ($_CONF['path_language'] . $file)) {
-                clearstatcache ();
-                $file = str_replace ('.php', '', $file);
-                $uscore = strpos ($file, '_');
-                if ($uscore === false) {
-                    $lngname = ucfirst ($file);
-                } else {
-                    $lngname = ucfirst (substr ($file, 0, $uscore));
-                    $lngadd = substr ($file, $uscore + 1);
-                    $lngadd = str_replace ('_', ', ', $lngadd);
-                    $word = explode (' ', $lngadd);
-                    $lngadd = '';
-                    foreach ($word as $w) {
-                        if (preg_match ('/[0-9]+/', $w)) {
-                            $lngadd .= strtoupper ($w) . ' ';
-                        } else {
-                            $lngadd .= ucfirst ($w) . ' ';
-                        }
-                    }
-                    $lngname .= ' (' . trim ($lngadd) . ')';
-                }
-                $language[$file] = $lngname;
-            }
-        }
-        asort ($language);
+		$language = MBYTE_languageList();
+		// this is an attempt to make sure the user gets a valid pre-selection
+		// on opening the preferences if his own language is not in the 
+		// list of the dropdown.
+		// this seems not to be the best way since CONF['language']
+        // seems to be changed by code to $_USER['language'] somewhere
+        // how to retrieve the acutal value from config.php?
+		$has_valid_language = count(array_keys($language, $userlang));
         $selection = '<select name="language">' . LB;
         foreach ($language as $langFile => $langName) {
             $selection .= '<option value="' . $langFile . '"';
-            if ($userlang == $langFile) {
-                $selection .= ' selected="selected"';
-            }
+            if (($has_valid_language == 0) && ($langFile == $_CONF['language'])) {
+                	$selection .= ' selected="selected"';
+			} else if ($userlang == $langFile) {
+                	$selection .= ' selected="selected"';
+			}
+
             $selection .= '>' . $langName . '</option>' . LB;
         }
         $selection .= '</select>';
