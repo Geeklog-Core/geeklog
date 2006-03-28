@@ -1156,7 +1156,8 @@ $MESSAGE = array(
     73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
     74 => 'The pingback has been successfully sent.',
     75 => 'Trackbacks must be sent using a POST request.',
-    76 => 'Do you really want to delete this item?'
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<BR>You have set your default encoding to UTF-8. However, your server does not support mulitbyte encodings. Please install mbstring functions for PHP or choose a different charachterset/language.'
 );
 
 ###############################################################################
