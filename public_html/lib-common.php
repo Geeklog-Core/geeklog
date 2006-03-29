@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.525 2006/03/29 09:30:27 ospiess Exp $
+// $Id: lib-common.php,v 1.526 2006/03/29 11:02:16 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5910,32 +5910,11 @@ function phpblock_switch_language()
 */
 function COM_truncate( $text, $maxlen, $filler = '' )
 {
-    static $mb_enabled;
-
-    if( !isset( $mb_enabled ))
+    $newlen = $maxlen - MBYTE_strlen( $filler );
+    $len = MBYTE_strlen( $text );
+    if( $len > $maxlen )
     {
-        $mb_enabled = function_exists( 'mb_substr' ) &&
-                      function_exists( 'mb_strlen' ) &&
-                      function_exists( 'mb_detect_encoding' );
-    }
-
-    $newlen = $maxlen - strlen( $filler );
-    if( $mb_enabled )
-    {
-        $len = mb_strlen( $text, mb_detect_encoding( $text ));
-        if( $len > $maxlen )
-        {
-            $text = mb_substr( $text, 0, $newlen, mb_detect_encoding( $text ))
-                  . $filler;
-        }
-    }
-    else
-    {
-        $len = strlen( $text );
-        if( $len > $maxlen )
-        {
-            $text = substr( $text, 0, $newlen ) . $filler;
-        }
+        $text = MBYTE_substr( $text, 0, $newlen ) . $filler;
     }
 
     return $text;
