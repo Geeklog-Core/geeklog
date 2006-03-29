@@ -47,6 +47,7 @@
     var $readerName;
     var $reader;
     var $userAgent;
+    var $errorStatus;
 
     /**
       * Constructor, loads feedparser classes into memory.
@@ -181,6 +182,7 @@
       if (!PEAR::isError($req->sendRequest())) {
         return $req->getResponseBody();
       } else {
+      	$this->errorStatus = array('HTTP Fetch Failed', $req->getCode(), $req->getMessage());
         return false;
       }
     }
@@ -204,6 +206,10 @@
 
       if( !xml_parse( $xml_parser, $data ) )
       {
+        $this->errorStatus = array( 'Unable to parse XML',
+                'Error Code: '.xml_get_error_code( $xml_parser  ),
+                'Error Message: '.xml_error_string( xml_get_error_code( $xml_parser  ) )
+        		    );
         xml_parser_free( $xml_parser );
         return false;
       }
@@ -213,6 +219,7 @@
       {
         return $this->reader;
       } else {
+      	$this->errorStatus = array( 'Unidentified feed type.', '', '' );
         return false;
       }
     }

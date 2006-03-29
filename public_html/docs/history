@@ -57,6 +57,10 @@ GeekLog History/Changes:
   access Admin panels without proper privileges [Dirk]
 - Fixed display of Admin block for users that only had certain Admin privileges
   [Dirk]
+- Improved error log contents when unable to acquire a feed reader for a portal
+  block. [Mike]
+- Extended plugin API for feed extensions to include feed id and the topic (for
+  adding topic/feed specific data) [Mike]
 
 Calendar plugin
 ---------------

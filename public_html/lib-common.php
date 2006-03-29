@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.528 2006/03/29 19:42:37 ospiess Exp $
+// $Id: lib-common.php,v 1.529 2006/03/29 19:54:52 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3378,6 +3378,9 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
     {
         // failed to aquire info, 0 out the block and log an error
         COM_errorLog( "Unable to aquire feed reader for $rdfurl", 1 );
+        COM_errorLog( $factory->errorStatus[0] . ' ' .
+        							$factory->errorStatus[1] . ' ' .
+        							$factory->errorStatus[2] );
         $result = DB_change( $_TABLES['blocks'], 'content',
                              addslashes( $LANG21[4] ), 'bid', $bid );
     }

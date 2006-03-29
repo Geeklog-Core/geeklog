@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.94 2006/03/26 08:50:20 dhaun Exp $
+// $Id: lib-plugins.php,v 1.95 2006/03/29 19:54:53 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1440,8 +1440,10 @@ function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data, $feedType, $
   * @param  string  contentID       Unique identifier of content item to extend
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
+  * @param  string  topic           The topic for the feed.
+  * @param  string  fid             The ID of the feed being fethed.
   */
-function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feedVersion)
+function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feedVersion, $topic, $fid)
 {
     global $_PLUGINS;
 
@@ -1451,7 +1453,7 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
         $function = 'plugin_feedElementExtensions_'.$plugin;
         if (function_exists($function))
         {
-            $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion));
+            $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
         }
     }
     return $extensions;
@@ -1464,8 +1466,10 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
   * @param string contentType   Type of feed content, article, event or a plugin specific type
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
+  * @param  string  topic           The topic for the feed.
+  * @param  string  fid             The ID of the feed being fethed.
   */
-function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion)
+function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, $fid)
 {
     global $_PLUGINS;
 
@@ -1475,7 +1479,7 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion)
         $function = 'plugin_feedNSExtensions_'.$plugin;
         if (function_exists($function))
         {
-            $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion));
+            $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
     }
 
@@ -1488,8 +1492,10 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion)
   * @param  string contentType      Type of feed content, article, event or a plugin specific type
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
+  * @param  string  topic           The topic for the feed.
+  * @param  string  fid             The ID of the feed being fethed.
   */
-function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion)
+function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic, $fid)
 {
     global $_PLUGINS;
 
@@ -1499,7 +1505,7 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion)
         $function = 'plugin_feedExtensionTags_'.$plugin;
         if (function_exists($function))
         {
-            $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion));
+            $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
     }
 
