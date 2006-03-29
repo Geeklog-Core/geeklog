@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.19 2006/03/26 08:50:20 dhaun Exp $
+// $Id: lib-custom.php,v 1.20 2006/03/29 18:00:44 ospiess Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -88,17 +88,21 @@ function phpblock_showrights()
 **/
 function phpblock_getBent()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $MESSAGE, $mb_enabled;
+
+    $retval = '';
+    $insecure_msg = '';
 
     $secure = true;
 
-    $retval = '';
+    if (!$mb_enabled && $_CONF['default_charset'] == 'utf-8') {
+        $secure = false;
+        $insecure_msg = $MESSAGE[77];
+    }
 
-    $secure_msg = 'Could not find any gross insecurities in your site.  Do not take this ';
+    $secure_msg .= 'Could not find any gross insecurities in your site.  Do not take this ';
     $secure_msg .= 'as meaning your site is 100% secure, as no site ever is.  I can only ';
     $secure_msg .= 'check things that should be blatantly obvious.';
-
-    $insecure_msg = '';
 
     // we don't have the path to the admin directory, so try to figure it out
     // from $_CONF['site_admin_url']

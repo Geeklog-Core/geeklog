@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.526 2006/03/29 11:02:16 ospiess Exp $
+// $Id: lib-common.php,v 1.527 2006/03/29 18:00:43 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -240,8 +240,13 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 * Multibyte functions
 *
 */
-
 require_once( $_CONF['path_system'] . 'lib-mbyte.php' );  
+// check for mbyte
+if ($_CONF['default_charset'] == 'utf-8' && !isset($mb_enabled)) 
+{
+    MBYTE_enabled();
+}
+
 
 // Set theme
 // Need to modify this code to check if theme was cached in user cookie.  That

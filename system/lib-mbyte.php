@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.1 2006/03/29 09:19:12 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.2 2006/03/29 18:00:44 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -71,8 +71,22 @@ function MBYTE_languageList() {
   	return $language;
 }
 
+// replacement functions for UTF-8 functions
+function MBYTE_enabled() {
+    global $mb_enabled;
+ 
+    if (
+        function_exists( 'mb_substr' ) {
+        $mb_enabled = true;
+    } else {
+        $mb_enabled = false;
+    }
+}
+
+
 function MBYTE_strlen($str) {
-	if (function_exists('mb_strlen')) {
+    global $mb_enabled;
+	if ($mb_enabled) {
 		$result = mb_strlen($str, 'utf-8');
 	} else {
 		$result = strlen($str);
@@ -81,7 +95,8 @@ function MBYTE_strlen($str) {
 }
 
 function MBYTE_substr($str, $start, $length = NULL) {
-	if (function_exists('mb_substr')) {
+    global $mb_enabled;
+	if ($mb_enabled) {
 		$result = mb_substr($str, $start, $length, 'utf-8');
 	} else {
 		$result = substr($str, $start, $length);
@@ -90,7 +105,8 @@ function MBYTE_substr($str, $start, $length = NULL) {
 }
 
 function MBYTE_substr_count($hay, $needle) {
-	if (function_exists('mb_substr_count')) {
+    global $mb_enabled;
+	if ($mb_enabled) {
 		$result = mb_substr_count($hay, $needle, 'utf-8');
 	} else {
 		$result = substr_count($hay, $needle);
@@ -99,7 +115,8 @@ function MBYTE_substr_count($hay, $needle) {
 }
 
 function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
-	if (function_exists('mb_send_mail')) {
+    global $mb_enabled;
+	if ($mb_enabled) {
 	  	if (mb_language('uni')) {
 			$result = mb_send_mail($to, $subj, $mess, $header, $param);
 		} else {
