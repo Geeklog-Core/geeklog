@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.58 2006/03/04 13:29:10 dhaun Exp $
+// $Id: calendar.php,v 1.59 2006/03/29 10:44:30 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -158,20 +158,7 @@ function shortDaysName ($day)
     }
 
     $shortday = '';
-    if ($LANG_CHARSET == 'utf-8') {
-        if ($mb_enabled) {
-            // when mb_substr is available, use it
-            $shortday = mb_substr ($LANG30[$day], 0, 2, $LANG_CHARSET);
-        } else {
-            // no mb_substr, but UTF-8 string: cheat and hope that the locale
-            // matches the current language ...
-            // Note: May 1st, 2005 was a Sunday
-            $shortday = date ('D', mktime (0, 0, 0, 5, $day, 2005));
-        }
-    } else {
-        $shortday = substr ($LANG30[$day], 0, 2);
-    }
-
+    $shortday = MBYTE_substr ($LANG30[$day], 0, 2);
     return $shortday;
 }
 
