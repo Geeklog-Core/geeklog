@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.2 2006/03/29 18:00:44 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.3 2006/03/29 18:14:46 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -74,9 +74,8 @@ function MBYTE_languageList() {
 // replacement functions for UTF-8 functions
 function MBYTE_enabled() {
     global $mb_enabled;
- 
     if (
-        function_exists( 'mb_substr' ) {
+        function_exists( 'mb_substr' )) {
         $mb_enabled = true;
     } else {
         $mb_enabled = false;
