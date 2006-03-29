@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.3 2006/03/29 18:14:46 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.4 2006/03/29 19:42:37 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -72,19 +72,22 @@ function MBYTE_languageList() {
 }
 
 // replacement functions for UTF-8 functions
-function MBYTE_enabled() {
-    global $mb_enabled;
-    if (
-        function_exists( 'mb_substr' )) {
+function MBYTE_checkEnabled() {
+    static $mb_enabled;
+    if (function_exists( 'mb_substr' )) {
         $mb_enabled = true;
     } else {
         $mb_enabled = false;
     }
+    return $mb_enabled;
 }
 
 
 function MBYTE_strlen($str) {
-    global $mb_enabled;
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }
 	if ($mb_enabled) {
 		$result = mb_strlen($str, 'utf-8');
 	} else {
@@ -94,7 +97,10 @@ function MBYTE_strlen($str) {
 }
 
 function MBYTE_substr($str, $start, $length = NULL) {
-    global $mb_enabled;
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }
 	if ($mb_enabled) {
 		$result = mb_substr($str, $start, $length, 'utf-8');
 	} else {
@@ -104,7 +110,10 @@ function MBYTE_substr($str, $start, $length = NULL) {
 }
 
 function MBYTE_substr_count($hay, $needle) {
-    global $mb_enabled;
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }
 	if ($mb_enabled) {
 		$result = mb_substr_count($hay, $needle, 'utf-8');
 	} else {
@@ -114,7 +123,10 @@ function MBYTE_substr_count($hay, $needle) {
 }
 
 function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
-    global $mb_enabled;
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }
 	if ($mb_enabled) {
 	  	if (mb_language('uni')) {
 			$result = mb_send_mail($to, $subj, $mess, $header, $param);
