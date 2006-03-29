@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.79 2006/03/28 16:38:35 ospiess Exp $
+// $Id: index.php,v 1.80 2006/03/29 10:53:39 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -71,7 +71,14 @@ if (isset ($_GET['msg'])) {
     $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true),COM_applyFilter ($_GET['plugin']));
 }
 
-if (!function_exists('mb_substr') && 
+if (
+    function_exists( 'mb_substr' ) &&
+    function_exists( 'mb_strlen' ) &&
+    function_exists( 'mb_detect_encoding' )) {
+    $mb_enabled = true;
+}
+
+if (!$mb_enabled &&
     $_CONF['default_charset'] == 'utf-8' && 
     SEC_inGroup(1)) {
         $display .= COM_showMessage(77);
