@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.58 2006/03/29 10:33:50 ospiess Exp $
+// $Id: functions.inc,v 1.59 2006/03/29 10:40:04 ospiess Exp $
 
 
 /**
@@ -374,7 +374,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
                          . " OR (title LIKE '%$mysearchterm%') AND ";
                 }
             }
-            $tmp = MBYTE_substr ($tmp, 0, strlen ($tmp) - 5);
+            $tmp = substr ($tmp, 0, strlen ($tmp) - 5);
             $sql .= $tmp . ')';
         } else if ($keyType == 'any') {
             $mywords = explode (' ', $query);
@@ -387,7 +387,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
                          . " OR (title LIKE '%$mysearchterm%') OR ";
                 }
             }
-            $tmp = MBYTE_substr ($tmp, 0, strlen ($tmp) - 4);
+            $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
             $sql .= $tmp . ')';
         } else {  // quick search
             $mysearchterm = addslashes ($query);
