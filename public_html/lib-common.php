@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.523 2006/03/28 15:47:37 ospiess Exp $
+// $Id: lib-common.php,v 1.524 2006/03/29 09:25:22 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -236,6 +236,12 @@ require_once( $_CONF['path_system'] . 'lib-sessions.php' );
 
 require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 
+/** 
+* Multibyte functions
+*
+*/
+
+require_once( $_CONF['path_system'] . 'lib_mbyte.php' );  
 
 // Set theme
 // Need to modify this code to check if theme was cached in user cookie.  That

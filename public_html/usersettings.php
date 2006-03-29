@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.129 2006/03/28 14:02:36 ospiess Exp $
+// $Id: usersettings.php,v 1.130 2006/03/29 09:25:23 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -293,8 +293,6 @@ function buildTopicList ()
 function editpreferences()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
-
-	require_once( $_CONF['path_system'] . 'lib_mbyte.php' );
 
     $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
 
