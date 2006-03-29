@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.130 2006/03/29 09:25:23 ospiess Exp $
+// $Id: usersettings.php,v 1.131 2006/03/29 18:53:58 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -780,19 +780,21 @@ function saveuser($A)
                 if ($_CONF['allow_user_photo'] == 1) {
                     $photo = DB_getItem ($_TABLES['users'], 'photo',
                                          "uid = {$_USER['uid']}");
-                    $newphoto = preg_replace ('/' . $_USER['username'] . '/',
+                    if (!empty ($photo)) {
+                        $newphoto = preg_replace ('/' . $_USER['username'] . '/',
                                     $A['new_username'], $photo, 1);
-                    $imgpath = $_CONF['path_images'] . 'userphotos/';
-                    if (rename ($imgpath . $photo,
-                                $imgpath . $newphoto) === false) {
-                        $display = COM_siteHeader ('menu');
-                        $display .= COM_errorLog ('Could not rename userphoto "'
-                                        . $photo . '" to "' . $newphoto . '".');
-                        $display .= COM_siteFooter ();
-                        return $display;
-                    }
-                    DB_change ($_TABLES['users'], 'photo',
+                        $imgpath = $_CONF['path_images'] . 'userphotos/';
+                        if (rename ($imgpath . $photo,
+                                    $imgpath . $newphoto) === false) {
+                            $display = COM_siteHeader ('menu');
+                            $display .= COM_errorLog ('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
+                            $display .= COM_siteFooter ();
+
+                            return $display;
+                        }
+                        DB_change ($_TABLES['users'], 'photo',
                                addslashes ($newphoto), "uid", $_USER['uid']);
+                    }
                 }
 
                 DB_change ($_TABLES['users'], 'username', $A['new_username'],
