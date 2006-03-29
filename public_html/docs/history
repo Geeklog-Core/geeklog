@@ -3,6 +3,13 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Improved error log contents when unable to acquire a feed reader for a portal
+  block. [Mike]
+- Extended plugin API for feed extensions to include feed id and the topic (for
+  adding topic/feed specific data) [Mike]
+- Don't attempt to rename a non-existing user photo when
+  $_CONF['allow_username_change'] is enabled (reported and fix suggested by
+  Yusuke Sakata) [Dirk]
 - Made changes to ensure compatibility with MSSQL, as suggested by
   Randy Kolenko [Dirk]
 - The "last login date" column in the Admin's list of users now uses
@@ -57,10 +64,6 @@ GeekLog History/Changes:
   access Admin panels without proper privileges [Dirk]
 - Fixed display of Admin block for users that only had certain Admin privileges
   [Dirk]
-- Improved error log contents when unable to acquire a feed reader for a portal
-  block. [Mike]
-- Extended plugin API for feed extensions to include feed id and the topic (for
-  adding topic/feed specific data) [Mike]
 
 Calendar plugin
 ---------------
