@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.59 2006/03/29 10:40:04 ospiess Exp $
+// $Id: functions.inc,v 1.60 2006/03/30 11:16:21 dhaun Exp $
 
 
 /**
@@ -134,19 +134,17 @@ function plugin_getwhatsnew_links()
             $lcount = COM_buildUrl( $_CONF['site_url']
                     . '/links/portal.php?what=link&amp;item=' . $A['lid'] );
 
-            // Trim the length if over 16 characters
-            $itemlen = strlen( $A['title'] );
-            if( $itemlen > 16 )
+            $title = COM_truncate( $A['title'], $_CONF['title_trim_length'],
+                                   '...' );
+            if( $title != $A['title'] )
             {
                 $newlinks[] = '<a href="' . $lcount . '" title="'
-                    . $A['title'] . '">' . MBYTE_substr( $A['title'], 0, 16 )
-                    . '...</a>' . LB;
+                            . $A['title'] . '">' . $title . '</a>' . LB;
             }
             else
             {
-                $newlinks[] = '<a href="' . $lcount . '">'
-                    // below: why trim something to its own length?
-                    . MBYTE_substr( $A['title'], 0, $itemlen ) . '</a>' . LB; 
+                $newlinks[] = '<a href="' . $lcount . '">' . $A['title']
+                            . '</a>' . LB; 
             }
         }
 
