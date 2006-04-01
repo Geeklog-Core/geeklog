@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.96 2006/04/01 10:52:40 dhaun Exp $
+// $Id: lib-plugins.php,v 1.97 2006/04/01 12:34:25 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -143,7 +143,7 @@ function PLG_install($type)
 }
 
 /**
-* Upgrades a plugin. Tells a plugin to upgrade itself. NOTE: not currently used
+* Upgrades a plugin. Tells a plugin to upgrade itself.
 *
 * @param        string      $type       Plugin name
 * @return       boolean     Returns true on success otherwise false
