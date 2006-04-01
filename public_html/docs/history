@@ -3,6 +3,9 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Renamed the misnamed CUSTOM_runSheduledTask function (in lib-custom.php) to
+  CUSTOM_runScheduledTask. Don't forget to make that change in your copy of
+  lib-custom.php if you're using that functionality! [Dirk]
 - Improved error log contents when unable to acquire a feed reader for a portal
   block. [Mike]
 - Extended plugin API for feed extensions to include feed id and the topic (for

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.97 2006/04/01 12:34:25 dhaun Exp $
+// $Id: lib-plugins.php,v 1.98 2006/04/01 17:22:50 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1688,7 +1688,7 @@ function PLG_runScheduledTask ()
     global $_PLUGINS;
 
     if (function_exists ('CUSTOM_runScheduledTask')) {
-        CUSTOM_runSheduledTask();
+        CUSTOM_runScheduledTask();
     }
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_runScheduledTask_' . $pi_name;
