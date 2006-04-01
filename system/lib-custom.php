@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.20 2006/03/29 18:00:44 ospiess Exp $
+// $Id: lib-custom.php,v 1.21 2006/04/01 10:52:40 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -150,7 +150,7 @@ function phpblock_getBent()
 * Include any code in this function that will be called by the internal CRON API
 * The interval between runs is determined by $_CONF['cron_schedule_interval']
 */
-function CUSTOM_runSheduledTask() {
+function CUSTOM_runScheduledTask() {
 
 }
 
