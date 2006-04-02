@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog poll administration page                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2006/03/09 09:38:40 dhaun Exp $
+// $Id: index.php,v 1.26 2006/04/02 09:23:37 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -425,7 +425,7 @@ if ($mode == 'edit') {
         $display .= editpoll ();
         $display .= COM_siteFooter ();
     }
-} else if (($mode == $LANG25[16]) && !empty ($LANG25[16])) { // delete
+} else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $qid = COM_applyFilter ($_POST['qid']);
     if (!isset ($qid) || empty ($qid)) {
         COM_errorLog ('Attempted to delete poll qid=' . $_POST['qid']);

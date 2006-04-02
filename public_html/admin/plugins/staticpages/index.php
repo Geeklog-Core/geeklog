@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.62 2006/03/10 10:52:55 dhaun Exp $
+// $Id: index.php,v 1.63 2006/04/02 09:23:37 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -534,7 +534,7 @@ if (isset($_REQUEST['sp_id'])) {
 }
 
 
-if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
         COM_errorLog ('Attempted to delete static page sp_id=' . $sp_id);
     } else {

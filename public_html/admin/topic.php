@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.63 2006/03/09 09:38:38 dhaun Exp $
+// $Id: topic.php,v 1.64 2006/04/02 09:23:35 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -521,7 +521,7 @@ if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
-if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $tid = COM_applyFilter ($_POST['tid']);
     if (!isset ($tid) || empty ($tid)) {
         COM_errorLog ('Attempted to delete topic tid=' . $tid);

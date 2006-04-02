@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.37 2006/03/09 09:38:38 dhaun Exp $
+// $Id: syndication.php,v 1.38 2006/04/02 09:23:35 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -521,7 +521,7 @@ else if (($mode == $LANG33[2]) && !empty ($LANG33[2]))
 {
     $display .= savefeed ($_POST);
 }
-else if (($mode == $LANG33[3]) && !empty ($LANG33[3]))
+else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete']))
 {
     $display .= deletefeed ($_REQUEST['fid']);
 }

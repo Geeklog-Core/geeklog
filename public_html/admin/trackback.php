@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.35 2006/03/10 14:06:52 dhaun Exp $
+// $Id: trackback.php,v 1.36 2006/04/02 09:23:35 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -590,7 +590,7 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
 
     if ($pid > 0) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="servicemode[2]"%s>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $template->set_var ('delete_option',
                             sprintf ($delbutton, $jsconfirm));

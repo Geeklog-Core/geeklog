@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.69 2006/03/24 10:33:51 dhaun Exp $
+// $Id: group.php,v 1.70 2006/04/02 09:23:34 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -827,8 +827,7 @@ if (isset($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
-
-if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
         COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);

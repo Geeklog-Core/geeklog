@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.208 2006/03/28 13:11:41 dhaun Exp $
+// $Id: story.php,v 1.209 2006/04/02 09:23:35 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1139,7 +1139,7 @@ if (isset($_REQUEST['editopt'])){
 }
 
 $display = '';
-if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $sid = COM_applyFilter ($_POST['sid']);
     $type = COM_applyFilter ($_POST['type']);
     if (!isset ($sid) || empty ($sid)) {

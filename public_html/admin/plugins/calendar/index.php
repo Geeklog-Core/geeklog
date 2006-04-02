@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.1 2006/03/08 13:23:26 ospiess Exp $
+// $Id: index.php,v 1.2 2006/04/02 09:23:35 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -67,7 +67,7 @@ if (isset($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
-if (($mode == $LANG_CAL_ADMIN[22]) && !empty ($LANG_CAL_ADMIN[22])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $eid = COM_applyFilter ($_REQUEST['eid']);
     if (!isset ($eid) || empty ($eid) || ($eid == 0)) {
         COM_errorLog ('Attempted to delete event eid=\''

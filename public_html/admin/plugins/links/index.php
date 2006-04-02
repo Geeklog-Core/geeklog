@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.29 2006/03/18 15:04:19 dhaun Exp $
+// $Id: index.php,v 1.30 2006/04/02 09:23:36 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -400,7 +400,7 @@ if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
-if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $lid = COM_applyFilter ($_POST['lid']);
     if (!isset ($lid) || empty ($lid)) {  // || ($lid == 0)
         COM_errorLog ('Attempted to delete link lid=' . $lid );
