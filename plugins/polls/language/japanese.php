@@ -1,8 +1,8 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for the Geeklog Polls Plug-in!
+# japanese.php
+# This is the Japanese language page for the Geeklog Polls Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -84,5 +84,6 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = 'アンケートが登録されました。';
+$PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
 ?>

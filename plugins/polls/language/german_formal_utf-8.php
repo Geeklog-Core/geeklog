@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german_formal_utf-8.php,v 1.1 2005/12/17 19:52:22 dhaun Exp $
+# $Id: german_formal_utf-8.php,v 1.2 2006/04/02 09:21:54 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -89,5 +89,6 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = 'Ihre Umfrage wurde gespeichert.';
+$PLG_polls_MESSAGE20 = 'Ihre Umfrage wurde gelöscht.';
 
 ?>

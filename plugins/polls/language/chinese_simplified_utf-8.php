@@ -90,5 +90,6 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = '你的民意调查已顺利的存续了.';
+$PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
 ?>

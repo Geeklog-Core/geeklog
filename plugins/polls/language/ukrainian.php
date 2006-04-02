@@ -87,5 +87,6 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = 'Ваше опитування успішно збережено.';
+$PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
 ?>

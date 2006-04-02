@@ -1,8 +1,8 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for the Geeklog Polls Plug-in!
+# japanese_utf-8.php
+# This is the Japanese language page for the Geeklog Polls Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com

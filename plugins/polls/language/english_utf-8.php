@@ -89,5 +89,6 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = 'Your poll has been successfully saved.';
+$PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
 ?>
