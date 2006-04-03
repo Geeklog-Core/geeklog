@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.3 2006/03/09 09:38:33 dhaun Exp $
+// $Id: functions.inc,v 1.4 2006/04/03 11:57:21 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1312,10 +1312,18 @@ function CALENDAR_sendNotification ($table, $A)
 */
 function plugin_submissioncount_calendar()
 {
-   global $_TABLES;
+    global $_TABLES;
 
-   return DB_count ($_TABLES['eventsubmission']);
+    $num = 0;
+
+    if( SEC_hasRights( 'event.moderate' ))
+    {
+        $num += DB_count( $_TABLES['eventsubmission'] );
+    }
+
+    return $num;
 }
+
 /**
 * Implements the [calendar:] autotag.
 *
