@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.55 2006/03/28 13:32:25 ospiess Exp $
+// $Id: lib-admin.php,v 1.56 2006/04/03 11:16:59 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -579,9 +579,11 @@ function ADMIN_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
     return $retval;
 }
 
-function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
+function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
+{
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $thisUsersGroups;
-    $retval = '';
+
+    $retval = false;
     
     if( !is_array($thisUsersGroups) )
     {
@@ -590,7 +592,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
     if (in_array ($A['grp_id'], $thisUsersGroups ) ||
         SEC_groupIsRemoteUserAndHaveAccess( $A['grp_id'], $thisUsersGroups )) {
         switch($fieldname) {
-            case "edit":
+            case 'edit':
                 $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
                 break;
             case 'grp_gl_core':
@@ -611,6 +613,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr) {
                 break;
         }
     }
+
     return $retval;
 }
 
