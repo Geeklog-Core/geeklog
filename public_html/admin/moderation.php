@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.87 2006/01/06 11:03:48 dhaun Exp $
+// $Id: moderation.php,v 1.88 2006/04/03 11:40:51 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -202,7 +202,9 @@ function commandcontrol()
 
     if (SEC_hasRights('story.moderate')) {
         $retval .= itemlist('story');
+    }
 
+    if (SEC_hasRights('story.edit')) {
         if ($_CONF['listdraftstories'] == 1) {
             $retval .= draftlist ();
         }
