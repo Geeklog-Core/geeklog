@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.59 2006/03/10 14:06:54 dhaun Exp $
+// $Id: lib-story.php,v 1.60 2006/04/03 12:56:51 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -138,25 +138,23 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         $username = $A['username'];
         $fullname = $A['fullname'];
         $article->set_var( 'contributedby_user', $username );
-
+        if (empty ($fullname)) {
+            $article->set_var( 'contributedby_fullname', $username );
+        } else {
+            $article->set_var( 'contributedby_fullname', $fullname );
+        }
         
-        if( empty( $fullname ) or ( $_CONF['show_fullname'] == 1))
-        {
-            $article->set_var( 'contributedby_author', $username );
-        }
-        else
-        {
-            $article->set_var( 'contributedby_author', $fullname );   
-        }
+        $article->set_var( 'contributedby_author',
+                COM_getDisplayName( $A['uid'], $username, $fullname ));
 
         if( $A['uid'] > 1 )
         {
+            $profileUrl = $_CONF['site_url']
+                        . '/users.php?mode=profile&amp;uid=' . $A['uid'];
             $article->set_var( 'start_contributedby_anchortag',
-                    '<a class="storybyline" href="' . $_CONF['site_url']
-                    . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' );
+                    '<a class="storybyline" href="' . $profileUrl . '">' );
             $article->set_var( 'end_contributedby_anchortag', '</a>' );
-            $article->set_var( 'contributedby_url', $_CONF['site_url']
-                    . '/users.php?mode=profile&amp;uid=' . $A['uid'] );
+            $article->set_var( 'contributedby_url', $profileUrl );
         }
 
         $photo = '';
@@ -531,7 +529,7 @@ function STORY_whatsRelated( $related, $uid, $tid )
         // add a link to "search by author"
         if( $_CONF['contributedbyline'] == 1 )
         {
-            $author = DB_getItem( $_TABLES['users'], 'username', "uid = $uid" );
+            $author = COM_getDisplayName( $uid );
             $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
         }
 
