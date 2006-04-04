@@ -2,7 +2,7 @@
     <table border="0" cellspacing="0" cellpadding="3">
         <tr valign="top">
             <td align="right"><b>{lang_username}:</b></td>
-            <td>{username} ({user_fullname})<br> {user_photo}</td>
+            <td>{username} ({user_fullname}) {edit_link}<br> {user_photo}</td>
         </tr>
         <tr valign="top">
             <td align="right"><b>{lang_membersince}:</b></td>

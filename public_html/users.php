@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.134 2006/03/26 08:50:20 dhaun Exp $
+// $Id: users.php,v 1.135 2006/04/04 02:32:55 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -92,7 +92,7 @@ function userprofile ($user, $msg = 0)
         return $retval;
     }
 
-    $result = DB_query ("SELECT username,fullname,regdate,homepage,about,location,pgpkey,photo,email FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
+    $result = DB_query ("SELECT gl_users.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $nrows = DB_numRows ($result);
     if ($nrows == 0) { // no such user
         return COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -125,6 +125,15 @@ function userprofile ($user, $msg = 0)
     } else {
         $user_templates->set_var ('username', $A['username']);
         $user_templates->set_var ('user_fullname', $A['fullname']);
+    }
+    
+    if (SEC_hasRights('user.edit')) {
+        global $_IMAGE_TYPE, $LANG_ADMIN;
+        $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
+             . '" title="' . $LANG_ADMIN['edit'] . '">';
+        $edit_link_url = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">$edit_icon</a>";
+        $user_templates->set_var ('edit_link', $edit_link_url);
     }
 
     $photo = USER_getPhoto ($user, $A['photo'], $A['email'], -1);
