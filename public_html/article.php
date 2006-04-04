@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.76 2005/12/03 12:16:28 ospiess Exp $
+// $Id: article.php,v 1.77 2006/04/04 08:32:13 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -181,6 +181,10 @@ if ($A['count'] > 0) {
             }
         }
         $display .= COM_siteHeader ('menu', $pagetitle, $rdf);
+        
+        if (isset ($_GET['msg'])) {
+            $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
+        }
 
         DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '$story') AND (date <= NOW()) AND (draft_flag = 0)");
 
