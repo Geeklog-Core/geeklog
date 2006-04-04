@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.27 2006/04/04 08:31:16 ospiess Exp $
+// $Id: lib-trackback.php,v 1.28 2006/04/04 08:35:19 ospiess Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -702,7 +702,7 @@ function TRB_detectTrackbackUrl ($url)
 */
 function TRB_sendNotificationEmail ($cid, $what = 'trackback')
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09, $LANG29, $LANG_TRB;
+    global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09, $LANG29, $LANG_TRB;
 
     $cid = addslashes ($cid);
     $result = DB_query ("SELECT sid,type,title,excerpt,url,blog,ipaddress FROM {$_TABLES['trackback']} WHERE (cid = '$cid')");
