@@ -686,7 +686,7 @@ $LANG22 = array(
     10 => 'Es müssen mindestens Datum und Uhrzeit, Titel und Beschreibung angegeben werden!',
     11 => 'Termin-Manager',
     12 => 'Auf das Ändern-Icon klicken, um einen Termin zu ändern oder zu löschen. Mit Neu anlegen (s.o.) wird ein neuer Termin angelegt. Das Kopie-Icon erzeugt eine Kopie eines vorhandenen Termins.',
-    13 => 'Titel',
+    13 => 'Autor',
     14 => 'Startdatum',
     15 => 'Enddatum',
     16 => 'Zugriff verweigert',
@@ -1379,7 +1379,7 @@ $LANG_TRB = array(
     'edit_service' => 'Weblog-Verzeichnis bearbeiten',
     'trackbacks' => 'Trackbacks',
     'editor_intro' => 'Hier können Sie Ihren Trackback-Kommentar für <a href="%s">%s</a> eingeben.',
-    'editor_intro_none' => 'Prepare your trackback comment.',
+    'editor_intro_none' => 'Trackback-Kommentar eingeben.',
     'trackback_note' => 'Um einen Trackback-Kommentar für einen Artikel zu verschicken, benutzen Sie bitte den "' . $LANG24[20] . '"-Eintrag in der Liste der Artikel. Um einen Trackback unabhängig von einem Artikel zu verschicken, bitte <a href="%s">hier klicken</a>.',
     'pingback_explain' => 'Geben Sie eine URL ein, an die der Pingback geschickt werden soll. Der Pingback wird auf die Startseite Ihrer Website verweisen.',
     'pingback_url' => 'Pingback-URL',
@@ -1387,7 +1387,8 @@ $LANG_TRB = array(
     'pingback_note' => 'Um einen Pingback für einen Artikel zu verschicken, benutzen Sie bitte den "' . $LANG24[20] . '"-Eintrag in der Liste der Artikel. Um einen Pingback unabhängig von einem Artikel zu verschicken, bitte <a href="%s">hier klicken</a>.',
     'pbtarget_missing' => 'Keine Pingback-URL',
     'pbtarget_required' => 'Geben Sie bitte die Pingback-URL ein',
-    'pb_error_details' => 'Fehler beim Senden des Pingbacks:'
+    'pb_error_details' => 'Fehler beim Senden des Pingbacks:',
+    'delete_trackback'   => 'Trackback direkt löschen: '
 );
 
 ###############################################################################
