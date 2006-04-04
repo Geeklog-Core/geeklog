@@ -1383,7 +1383,8 @@ $LANG_TRB = array (
     'pingback_note'      => 'To send a pingback for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
     'pbtarget_missing'   => 'No Pingback URL',
     'pbtarget_required'  => 'Please enter a pingback URL',
-    'pb_error_details'   => 'Error when sending the pingback:'
+    'pb_error_details'   => 'Error when sending the pingback:',
+    'delete_trackback'   => 'To delete this Trackback click: '
 );
 
 ###############################################################################
