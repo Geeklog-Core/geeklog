@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.214 2006/04/01 17:22:48 dhaun Exp $
+// $Id: config.php,v 1.215 2006/04/05 18:02:50 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -453,7 +453,7 @@ $_CONF['speedlimit']    = 45;           // in seconds
 $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and stories without previewing
 
 // +---------------------------------------------------------------------------+
-// | Support for custom templaes to support advanced Rich Text Editor          |
+// | Support for custom templates to support advanced Rich Text Editor         |
 // | Checked in comment.php, submit.php, admin/story.php and                   |
 // | staticpages/index.php. If set true and advanced template exists           |
 // | Note: If enabled, the default postmode will be html                       |
