@@ -3,6 +3,16 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Introduced 'syndication.edit' permission and 'Syndication Admin' group so
+  that access to the Content Syndication panel is no longer dependent on
+  'Root' permissions [Dirk]
+- For the "Submissions" entry in the Admins Only block, only count story and
+  event submissions when the current user has story.moderate or event.moderate
+  permissions, respectively [Dirk]
+- On admin/moderation.php, list the stories that have their draft flag set only
+  when the current user has story.edit permission [Dirk]
+- Fixed empty lines in a Group Admin's list of groups when that Group Admin
+  was not a member of all groups [Dirk]
 - Renamed the misnamed CUSTOM_runSheduledTask function (in lib-custom.php) to
   CUSTOM_runScheduledTask. Don't forget to make that change in your copy of
   lib-custom.php if you're using that functionality! [Dirk]

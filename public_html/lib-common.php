@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.530 2006/04/03 11:42:08 dhaun Exp $
+// $Id: lib-common.php,v 1.531 2006/04/06 08:35:16 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2407,7 +2407,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $link_array[$LANG01[105]] = $menu_item;
         }
 
-        if(( $_CONF['backend'] == 1 ) && SEC_inGroup( 'Root' ))
+        if(( $_CONF['backend'] == 1 ) && SEC_hasRights( 'syndication.edit' ))
         {
             $url = $_CONF['site_admin_url'] . '/syndication.php';
             $adminmenu->set_var( 'option_url', $url );

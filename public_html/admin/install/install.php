@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.83 2005/12/28 10:11:51 dhaun Exp $
+// $Id: install.php,v 1.84 2006/04/06 08:35:19 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -48,7 +48,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.4.0');
+    define('VERSION', '1.4.1');
 }
 
 
@@ -258,6 +258,7 @@ function INST_identifyGeeklogVersion ()
     // warn the user if they try to run the update again.
 
     $test = array(
+        '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
         '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
         '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
         '1.3.10' => array("DESCRIBE {$_TABLES['comments']} lft",''),
@@ -282,12 +283,20 @@ function INST_identifyGeeklogVersion ()
                     $version = $v;
                     break;
                 } else {
-                    // test for certain type of field
-                    $tst = explode (',', $qarray[1]);
+                    if (substr ($qarray[0], 0, 6) == 'SELECT') {
+                        // text for a certain value
+                        if($A[0] == $qarray[1]) {
+                            $version = $v;
+                            break;
+                        }
+                    } else {
+                        // test for certain type of field
+                        $tst = explode (',', $qarray[1]);
 
-                    if (($A['Field'] == $tst[0]) && ($A['Type'] == $tst[1])) {
-                        $version = $v;
-                        break;
+                        if (($A['Field'] == $tst[0]) && ($A['Type'] == $tst[1])) {
+                            $version = $v;
+                            break;
+                        }
                     }
                 }
             }
@@ -308,7 +317,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var ('upgrade', 1);
 
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0');
 
         $curv = INST_identifyGeeklogVersion ();
         if (empty ($curv)) {
@@ -832,6 +841,19 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             upgrade_uniqueGroupNames ();
 
             $current_gl_version = '1.4.0';
+            $_SQL = '';
+            break;
+
+    case '1.4.0':
+            require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.0_to_1.4.1.php');
+            for ($i = 0; $i < count ($_SQL); $i++) {
+                DB_query (current ($_SQL));
+                next ($_SQL);
+            }
+
+            upgrade_addSyndicationFeature ();
+
+            $current_gl_version = '1.4.1';
             $_SQL = '';
             break;
 

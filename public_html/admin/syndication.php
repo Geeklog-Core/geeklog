@@ -30,13 +30,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.38 2006/04/02 09:23:35 dhaun Exp $
+// $Id: syndication.php,v 1.39 2006/04/06 08:35:18 dhaun Exp $
 
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
 
-if (!SEC_inGroup ('Root')) {
+if (!SEC_hasRights ('syndication.edit')) {
     $display .= COM_siteHeader ('menu', $MESSAGE[30])
         . COM_startBlock ($MESSAGE[30], '',
                           COM_getBlockTemplate ('_msg_block', 'header'))
