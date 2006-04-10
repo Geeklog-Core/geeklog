@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.531 2006/04/06 08:35:16 dhaun Exp $
+// $Id: lib-common.php,v 1.532 2006/04/10 20:16:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -328,6 +328,10 @@ else if( !empty( $_USER['language'] ))
     {
         $_CONF['language'] = $_USER['language'];
     }
+}
+else if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+{
+    $_CONF['language'] = COM_getLanguage();
 }
 
 // Handle Who's Online block
