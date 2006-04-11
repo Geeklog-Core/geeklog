@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: switchlang.php,v 1.1 2006/03/07 14:56:04 dhaun Exp $
+// $Id: switchlang.php,v 1.2 2006/04/11 12:08:01 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -55,7 +55,8 @@ function switch_language ($url, $newlang, $oldlang)
     }
 
     $lang_len = strlen ($oldlang);
-    if ((strpos ($url, '&') === false)  && $_CONF['url_rewrite']) {
+    if ((strpos ($url, '&') === false) && (strpos ($url, '?') === false) &&
+            $_CONF['url_rewrite']) {
         // for "rewritten" URLs we assume that the first parameter after
         // the script name is the ID, e.g. /article.php/story-id-here_en
         $changed = false;
@@ -79,9 +80,13 @@ function switch_language ($url, $newlang, $oldlang)
         }
 
         $retval = $url;
-    } else { // URL contains '&'
+    } else { // URL contains '?' or '&'
         $url = split ('&', $url);
-        $extra_vars = '&' . $url[1];
+        if (count ($url) > 1) {
+            $extra_vars = '&' . $url[1];
+        } else {
+            $extra_vars = '';
+        }
         $url = $url[0];
 
         if (substr ($url, -($lang_len + 1)) == '_' . $oldlang) {
