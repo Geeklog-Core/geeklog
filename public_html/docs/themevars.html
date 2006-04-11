@@ -58,7 +58,7 @@ created when you use an undefined variable.</p>
         <code>$_CONF['site_url']</code> in your <tt>config.php</tt>
         file).</td></tr>
 <tr><td><code>layout_url</code></td>
-    <td><tt>http://www.example.com/layout/XSilver</tt></td>
+    <td><tt>http://www.example.com/layout/professional</tt></td>
     <td>The URL of the layout folder of the user's current theme.</td></tr>
 <tr><td><code>page_title</code></td>
     <td>Geeklog Site - Another Nifty Geeklog Site</td>
@@ -91,15 +91,17 @@ created when you use an undefined variable.</p>
     <td>The current date and time, formatted according to
         <code>$_CONF['date']</code>.</td></tr>
 <tr><td><code>site_logo</code></td>
-    <td><tt>http://www.example.com/layout/<br>XSilver/images/logo.gif</tt></td>
-    <td>Points to a file named <tt>logo.gif</tt> in the <tt>images</tt>
-        directory of the current theme, intended to be used as the site's
-        logo.</td></tr>
+    <td><tt>http://www.example.com/layout/<br>professional/images/logo.png</tt></td>
+    <td>Points to the logo image in the <tt>images</tt> directory of the
+        current theme, intended to be used as the site's logo. This is usually
+        a GIF image (<tt>logo.gif</tt>), but the image type can be overwritten
+        by the theme (the Professional theme, for example, uses PNG images, and
+        so the logo is a PNG file, <tt>logo.png</tt>, too).</td></tr>
 <tr><td><code>css_url</code></td>
-    <td><tt>http://www.example.com/layout/<br>XSilver/style.css</tt></td>
+    <td><tt>http://www.example.com/layout/<br>professional/style.css</tt></td>
     <td>Points to the style sheet of the current theme.</td></tr>
 <tr><td><code>theme</code></td>
-    <td>XSilver</td>
+    <td>professional</td>
     <td>Name of the current theme.</td></tr>
 <tr><td><code>charset</code></td>
     <td>iso-8859-1</td>
@@ -137,12 +139,20 @@ file (which is used to display a story on its own page).</p>
         <code>$_CONF['site_url']</code> in your <tt>config.php</tt>
         file).</td></tr>
 <tr><td><code>layout_url</code></td>
-    <td><tt>http://www.example.com/layout/XSilver</tt></td>
+    <td><tt>http://www.example.com/layout/professional</tt></td>
     <td>The URL of the layout folder of the user's current theme.</td></tr>
 <tr><td><code>story_date</code></td>
     <td>Tuesday, October 22 2002 @ 11:50 PM PDT</td>
     <td>The date and time of the story, formatted according to the user's
         preferred date and time format.</td></tr>
+<tr><td><code>story_date_only</code></td>
+    <td>22-Oct</td>
+    <td>The date of the story, formatted using
+        $_CONF['<a href="config.html#desc_dateonly">dateonly</a>'].</td></tr>
+<tr><td><code>story_date_short</code></td>
+    <td>10/22/02</td>
+    <td>The date of the story, formatted using
+        $_CONF['<a href="config.html#desc_shortdate">shortdate</a>'].</td></tr>
 <tr><td><code>lang_views</code></td>
     <td>Views</td>
     <td>The word "Views" in the user's preferred language.</td></tr>
