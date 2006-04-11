@@ -84,6 +84,8 @@ Calendar plugin
 
 Links plugin
 ------------
+- Fixed hard-coded link to the "admin" directory when editing a link (reported
+  by Ronnie Rigl) [Dirk]
 - Optimized SQL requests for the plugin's What's New section [Dirk]
 - Re-introduced {button_links} header variable [Dirk]
 - Added an option to hide the Top Ten Links on the first page [Dirk]

@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.30 2006/04/02 09:23:36 dhaun Exp $
+// $Id: index.php,v 1.31 2006/04/11 17:49:29 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -346,7 +346,7 @@ function listlinks ()
     $defsort_arr = array('field' => 'title', 'direction' => 'asc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_url'] . '/admin/plugins/links/index.php?mode=edit',
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
                           'text' => $LANG_ADMIN['create_new']),
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
