@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.60 2006/04/03 12:56:51 dhaun Exp $
+// $Id: lib-story.php,v 1.61 2006/04/11 13:46:47 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -70,6 +70,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     }
 
     $curtime = COM_getUserDateTimeFormat( $A['day'] );
+    $shortdate = strftime( $_CONF['shortdate'], $A['day'] );
+    $dateonly = strftime( $_CONF['dateonly'], $A['day'] );
     $A['day'] = $curtime[0];
 
     $introtext = stripslashes( $A['introtext'] );
@@ -125,6 +127,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     $article->set_var( 'layout_url', $_CONF['layout_url'] );
     $article->set_var( 'site_url', $_CONF['site_url'] );
     $article->set_var( 'story_date', $A['day'] );
+    $article->set_var( 'story_date_short', $shortdate );
+    $article->set_var( 'story_date_only', $dateonly );
     if( $_CONF['hideviewscount'] != 1 ) {
         $article->set_var( 'lang_views', $LANG01[106] );
         $article->set_var( 'story_hits', COM_NumberFormat( $A['hits'] ));
@@ -251,13 +255,14 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
                        ($story_page < count($article_array)) )
                     or
                      ( ($_CONF['page_break_comments'] == 'first')  and
-                       ($story_page!=1) )
+                       ($story_page != 1) )
                    )
                 {
                     $show_comments = false;
                 }
+                $article->set_var( 'story_page', $story_page );
             }
-            
+
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
             $article->set_var( 'story_text_no_br', $introtext . $bodytext );
@@ -276,6 +281,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
             $article->set_var( 'lang_send_trackback_text',
                                $LANG_TRB['send_trackback'] );
         }
+        $article->set_var( 'story_display',
+                           ( $index == 'p' ) ? 'preview' : 'article' );
     }
     else
     {
@@ -415,6 +422,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         {
             $article->set_var( 'pdf_icon', '' );
         }
+        $article->set_var( 'story_display', 'index' );
     }
     $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
