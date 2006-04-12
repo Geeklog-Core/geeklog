@@ -33,15 +33,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.96 2006/04/12 14:12:04 dhaun Exp $
+// $Id: block.php,v 1.97 2006/04/12 15:28:27 dhaun Exp $
 
 require_once ('../lib-common.php');
+require_once ('auth.inc.php');
+
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-# echo COM_debug($_POST);
-
-require_once ('auth.inc.php');
+// echo COM_debug($_POST);
 
 if (!SEC_hasrights ('block.edit')) {
     $display .= COM_siteHeader ('menu', $MESSAGE[30])
@@ -75,6 +75,44 @@ function hasBlockTopicAccess ($tid)
     }
 
     return $access;
+}
+
+/**
+* Create a group dropdown
+*
+* @param    int     $group_id   current group id (to be selected)
+* @param    int     $access     access permission
+* @return   string              HTML for the dropdown
+*
+*/
+function groupDropdown ($group_id, $access)
+{
+    global $_TABLES;
+
+    $groupdd = '';
+
+    if ($access == 3) {
+        $usergroups = SEC_getUserGroups ();
+
+        $groupdd .= '<select name="group_id">' . LB;
+        for ($i = 0; $i < count ($usergroups); $i++) {
+            $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
+            if ($group_id == $usergroups[key($usergroups)]) {
+                $groupdd .= ' selected="selected"';
+            }
+            $groupdd .= '>' . key($usergroups) . '</option>' . LB;
+            next ($usergroups);
+        }
+        $groupdd .= '</select>' . LB;
+    } else {
+        // They can't set the group then
+        $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
+                                "grp_id = '$group_id'")
+                 . '<input type="hidden" name="group_id" value="' . $group_id
+                 . '">';
+    }
+
+    return $groupdd;
 }
 
 /**
@@ -146,10 +184,15 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('block_order', $A['blockorder']);
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = '{$A['owner_id']}'"));
+    $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
+                                    'username', "uid = '{$A['owner_id']}'"));
+    $block_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
     $block_templates->set_var('owner_id', $A['owner_id']);
     $block_templates->set_var('lang_group', $LANG_ACCESS['group']);
-    $block_templates->set_var('group_name', DB_getItem($_TABLES['groups'],'grp_name', "grp_id = '{$A['group_id']}'"));
+    $block_templates->set_var('group_dropdown',
+                              groupDropdown ($A['group_id'], $access));
+    $block_templates->set_var('group_name', DB_getItem ($_TABLES['groups'],
+                                    'grp_name', "grp_id = '{$A['group_id']}'"));
     $block_templates->set_var('group_id', $A['group_id']);
     $block_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
@@ -284,30 +327,13 @@ function editblock ($bid = '')
     }
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = '{$A['owner_id']}'"));
+    $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
+                                    'username', "uid = '{$A['owner_id']}'"));
+    $block_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
     $block_templates->set_var('owner_id', $A['owner_id']);
     $block_templates->set_var('lang_group', $LANG_ACCESS['group']);
-
-    $usergroups = SEC_getUserGroups();
-
-    $groupdd = '';
-    if ($access == 3) {
-        $groupdd .= '<select name="group_id">' . LB;
-        for ($i = 0; $i < count($usergroups); $i++) {
-            $groupdd .= '<option value="'.$usergroups[key($usergroups)].'"';
-            if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                $groupdd .= ' selected="selected"';
-            }
-            $groupdd .= '>'.key($usergroups).'</option>' . LB;
-            next($usergroups);
-        }
-    $groupdd .= '</select>' . LB;
-    } else {
-        // They can't set the group then
-        $groupdd.= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = '{$A['group_id']}'")
-            .'<input type="hidden" name="group_id" value="'.$A['group_id'].'">';
-    }
-    $block_templates->set_var('group_dropdown', $groupdd);
+    $block_templates->set_var('group_dropdown',
+                              groupDropdown ($A['group_id'], $access));
     $block_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
