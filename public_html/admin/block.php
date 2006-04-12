@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.95 2006/03/09 09:38:36 dhaun Exp $
+// $Id: block.php,v 1.96 2006/04/12 14:12:04 dhaun Exp $
 
 require_once ('../lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -115,7 +115,7 @@ function editdefaultblock ($A, $access)
 
     $block_templates->set_var('block_title', stripslashes ($A['title']));
     if ($A['is_enabled'] == 1) {
-        $block_templates->set_var('is_enabled', 'checked="CHECKED"');
+        $block_templates->set_var('is_enabled', 'checked="checked"');
     } else {
         $block_templates->set_var('is_enabled', '');
     }
@@ -130,7 +130,8 @@ function editdefaultblock ($A, $access)
     } else if ($A['tid'] == 'homeonly') {
         $block_templates->set_var('homeonly_selected', 'selected="selected"');
     }
-    $block_templates->set_var('topic_options', COM_topicList('tid,topic',$A['tid']));
+    $block_templates->set_var('topic_options',
+                              COM_topicList ('tid,topic', $A['tid'], 1, true));
     $block_templates->set_var('lang_all', $LANG21[7]);
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
@@ -242,7 +243,7 @@ function editblock ($bid = '')
     $block_templates->set_var('block_title', stripslashes ($A['title']));
     $block_templates->set_var('lang_enabled', $LANG21[53]);
     if ($A['is_enabled'] == 1) {
-        $block_templates->set_var('is_enabled', 'checked="CHECKED"');
+        $block_templates->set_var('is_enabled', 'checked="checked"');
     } else {
         $block_templates->set_var('is_enabled', '');
     }
@@ -259,7 +260,8 @@ function editblock ($bid = '')
     } else if ($A['tid'] == 'homeonly') {
         $block_templates->set_var('homeonly_selected', 'selected="selected"');
     }
-    $block_templates->set_var('topic_options', COM_topicList('tid,topic',$A['tid']));
+    $block_templates->set_var('topic_options',
+                              COM_topicList('tid,topic', $A['tid'], 1, true));
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
