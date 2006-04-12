@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.148 2006/03/26 08:50:20 dhaun Exp $
+// $Id: user.php,v 1.149 2006/04/12 13:04:12 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -200,23 +200,21 @@ function edituser($uid = '', $msg = '')
     }
     $user_templates->set_var('do_not_use_spaces', '');
 
-    $statusarray = array(USER_ACCOUNT_DISABLED => $LANG28[42],
-                        USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
-                        USER_ACCOUNT_ACTIVE => $LANG28[45] );
-    if ($_CONF['usersubmission'] == 1)
-    {
+    $statusarray = array (USER_ACCOUNT_DISABLED            => $LANG28[42],
+                          USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
+                          USER_ACCOUNT_ACTIVE              => $LANG28[45]
+                   );
+    if ($_CONF['usersubmission'] == 1) {
         $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
-        asort($statusarray);
     }
+    asort($statusarray);
     $statusselect = '<select name="userstatus">';
-    while (list($key, $value) = each($statusarray))
-    {
-        if ($key == $A['status'])
-        {
-            $statusselect .= "<option selected=\"true\" value=\"$key\">$value</option>\n";
-        } else {
-            $statusselect .= "<option value=\"$key\">$value</option>\n";
+    while (list($key, $value) = each($statusarray)) {
+        $statusselect .= '<option value="' . $key . '"';
+        if ($key == $A['status']) {
+            $statusselect .= ' selected="selected"';
         }
+        $statusselect .= '>' . $value . '</option>' . LB;
     }
     $statusselect .= '</select><input type="hidden" name="oldstatus" value="'.
                         $A['status'].'"/>';
@@ -270,9 +268,12 @@ function edituser($uid = '', $msg = '')
     return $retval;
 }
 
-function listusers() {
-    global $LANG_ADMIN, $_TABLES, $_CONF, $LANG28, $_IMAGE_TYPE;
+function listusers()
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $display = '';
 
     if ($_CONF['lastlogin']==true) {
@@ -414,6 +415,10 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 
             $uid = USER_createAccount ($username, $email, $passwd, $fullname,
                                        $homepage);
+            if (($uid > 1) && ($_CONF['usersubmission'] == 1)) {
+                // we don't want to queue new users created by a User Admin
+                DB_query ("UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_ACTIVE . " WHERE uid = $uid");
+            }
         } else {
             $fullname = addslashes ($fullname);
             $homepage = addslashes ($homepage);

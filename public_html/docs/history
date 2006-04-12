@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Users created by a User Admin should not be queued for approval, even when
+  $_CONF['usersubmission'] = 1 [Dirk]
 - Introduced 'syndication.edit' permission and 'Syndication Admin' group so
   that access to the Content Syndication panel is no longer dependent on
   'Root' permissions [Dirk]
