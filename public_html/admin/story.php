@@ -32,13 +32,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.209 2006/04/02 09:23:35 dhaun Exp $
+// $Id: story.php,v 1.210 2006/04/12 12:40:23 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
 *
 * @author   Jason Whittenburg
-* @author   Tony Bibbs <tony@tonybibbs.com>
+* @author   Tony Bibbs <tony AT tonybibbs DOT com>
 *
 */
 
@@ -146,7 +146,7 @@ function liststories()
         }
     } else {
         $excludetopics = " tid = '$current_topic' ";
-        $seltopics = COM_topicList ('tid,topic', $current_topic);
+        $seltopics = COM_topicList ('tid,topic', $current_topic, 1, true);
     }
 
     $alltopics = '<option value="' .$LANG09[9]. '"';
@@ -533,10 +533,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
         $story_templates->set_var ('submission_option',
                 '<input type="hidden" name="type" value="submission">');
     }
-    $story_templates->set_var('lang_author', $LANG24[7]);
-    $story_templates->set_var ('story_author', DB_getItem ($_TABLES['users'],
-                               'username', "uid = {$A['uid']}"));
-    $story_templates->set_var('story_uid', $A['uid']);
+    $story_templates->set_var ('lang_author', $LANG24[7]);
+    $story_templates->set_var ('story_author', COM_getDisplayName ($A['uid']));
+    $story_templates->set_var ('story_uid', $A['uid']);
 
     // user access info
     $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
@@ -682,7 +681,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
         $A['tid'] = DB_getItem ($_TABLES['topics'], 'tid',
                                 'is_default = 1' . COM_getPermSQL ('AND'));
     }
-    $story_templates->set_var ('topic_options', COM_topicList ('tid,topic', $A['tid']));
+    $story_templates->set_var ('topic_options',
+                               COM_topicList ('tid,topic', $A['tid'], 1, true));
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
     if ($A['show_topic_icon'] == 1) {
         $story_templates->set_var('show_topic_icon_checked', 'checked="checked"');
