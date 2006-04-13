@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.149 2006/04/12 13:04:12 dhaun Exp $
+// $Id: user.php,v 1.150 2006/04/13 07:38:29 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -417,7 +417,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                                        $homepage);
             if (($uid > 1) && ($_CONF['usersubmission'] == 1)) {
                 // we don't want to queue new users created by a User Admin
-                DB_query ("UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_ACTIVE . " WHERE uid = $uid");
+                DB_query ("UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_AWAITING_ACTIVATION . " WHERE uid = $uid");
             }
         } else {
             $fullname = addslashes ($fullname);
