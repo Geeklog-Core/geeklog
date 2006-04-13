@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.77 2006/04/04 08:32:13 ospiess Exp $
+// $Id: article.php,v 1.78 2006/04/13 09:05:02 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -121,26 +121,28 @@ if ($A['count'] > 0) {
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                  . COM_siteFooter ();
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
-        $story_template = new Template($_CONF['path_layout'] . 'article');
-        $story_template->set_file('article','printable.thtml');
-        $story_template->set_var('page_title',
-                $_CONF['site_name'] . ': ' . stripslashes($A['title'])); 
-        $story_template->set_var('story_title',stripslashes($A['title']));
-        if( empty( $LANG_CHARSET )) {
+        $story_template = new Template ($_CONF['path_layout'] . 'article');
+        $story_template->set_file ('article', 'printable.thtml');
+        $story_template->set_var ('page_title',
+                $_CONF['site_name'] . ': ' . stripslashes ($A['title'])); 
+        $story_template->set_var ('story_title', stripslashes ($A['title']));
+        if (empty ($LANG_CHARSET)) {
             $charset = $_CONF['default_charset'];
-            if( empty( $charset )) {
+            if (empty( $charset)) {
                 $charset = 'iso-8859-1';
             }
         } else {
             $charset = $LANG_CHARSET;
         }
         header ('Content-Type: text/html; charset='. $charset);
-        $curtime = COM_getUserDateTimeFormat($A['day']);
-        $story_template->set_var('story_date', $curtime[0]);
+        $curtime = COM_getUserDateTimeFormat ($A['day']);
+        $story_template->set_var ('story_date', $curtime[0]);
 
         if ($_CONF['contributedbyline'] == 1) {
-            $story_template->set_var('lang_contributedby', $LANG01[1]);
-            $story_template->set_var('story_author', $A['username']);
+            $story_template->set_var ('lang_contributedby', $LANG01[1]);
+            $story_template->set_var ('story_author',
+                                      COM_getDisplayName ($A['uid']));
+            $story_template->set_var ('story_author_username', $A['username']);
         }
 
         if ($A['postmode'] == 'plaintext') {
@@ -152,16 +154,36 @@ if ($A['count'] > 0) {
         $story_template->set_var ('story_bodytext',
                 PLG_replaceTags (stripslashes ($A['bodytext'])));
 
-        $story_template->set_var('site_url', $_CONF['site_url']);
-        $story_template->set_var('layout_url', $_CONF['layout_url']);
-        $story_template->set_var('story_id', $A['sid']);
-        $story_template->set_var('story_comments', DB_count($_TABLES['comments'],'sid',$A['sid']));
-        $story_template->set_var('lang_comments', $LANG01[3]);
+        $story_template->set_var ('site_url', $_CONF['site_url']);
+        $story_template->set_var ('layout_url', $_CONF['layout_url']);
+        $story_template->set_var ('site_name', $_CONF['site_name']);
+        $story_template->set_var ('site_slogan', $_CONF['site_slogan']);
+        $story_template->set_var ('story_id', $A['sid']);
         $articleUrl = COM_buildUrl ($_CONF['site_url']
                                     . '/article.php?story=' . $A['sid']);
+        if ($A['commentcode'] >= 0) {
+            $commentsUrl = $articleUrl . '#comments';
+            $comments = DB_count ($_TABLES['comments'], 'sid', $A['sid']);
+            $numComments = COM_numberFormat ($comments);
+            $story_template->set_var ('story_comments', $numComments);
+            $story_template->set_var ('comments_url', $commentsUrl);
+            $story_template->set_var ('comments_text',
+                    $numComments . ' ' . $LANG01[3]);
+            $story_template->set_var ('comments_count', $numComments);
+            $story_template->set_var ('lang_comments', $LANG01[3]);
+            $story_template->set_var ('comments_with_count',
+                    sprintf ($LANG01[121], $numComments));
+
+            if ($comments > 0) {
+                $story_template->set_var ('start_comments_anchortag',
+                        '<a href="' . $commentsUrl . '">');
+                $story_template->set_var ('end_comments_anchortag', '</a>');
+            }
+        }
+        $story_template->set_var ('lang_full_article', $LANG08[33]);
         $story_template->set_var ('article_url', $articleUrl);
-        $story_template->parse('output','article');
-        $display = $story_template->finish($story_template->get_var('output')); 
+        $story_template->parse ('output', 'article');
+        $display = $story_template->finish ($story_template->get_var('output'));
     } else {
         // Set page title
         $pagetitle = stripslashes (str_replace ('$', '&#36;', $A['title']));
