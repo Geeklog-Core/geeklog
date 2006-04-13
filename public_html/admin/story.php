@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.210 2006/04/12 12:40:23 dhaun Exp $
+// $Id: story.php,v 1.211 2006/04/13 11:45:15 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -540,8 +540,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
     // user access info
     $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $story_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $story_templates->set_var ('owner_username', DB_getItem ($_TABLES['users'],
-                               'username', "uid = {$A['owner_id']}"));
+    $story_templates->set_var('owner_username', DB_getItem ($_TABLES['users'],
+                              'username', "uid = {$A['owner_id']}"));
+    $story_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
     $story_templates->set_var('owner_id', $A['owner_id']);
     $story_templates->set_var('lang_group', $LANG_ACCESS['group']);
 
