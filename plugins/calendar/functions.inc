@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.4 2006/04/03 11:57:21 dhaun Exp $
+// $Id: functions.inc,v 1.5 2006/04/13 11:14:02 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1012,7 +1012,9 @@ function CALENDAR_editevent ($mode, $A, $msg = '')
     // user access info
     $event_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $event_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $event_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
+    $event_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
+                              'username', "uid = {$A['owner_id']}"));
+    $event_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
     $event_templates->set_var('owner_id', $A['owner_id']);
     $event_templates->set_var('lang_group', $LANG_ACCESS['group']);
 

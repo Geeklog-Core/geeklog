@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.26 2006/04/02 09:23:37 dhaun Exp $
+// $Id: index.php,v 1.27 2006/04/13 11:14:02 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -310,7 +310,9 @@ function editpoll ($qid = '')
     // user access info 
     $poll_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $poll_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $poll_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$Q['owner_id']}"));
+    $poll_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
+                             'username', "uid = {$Q['owner_id']}"));
+    $poll_templates->set_var('owner_name', COM_getDisplayName($Q['owner_id']));
     $poll_templates->set_var('owner_id', $Q['owner_id']);
     $poll_templates->set_var('lang_group', $LANG_ACCESS['group']);
    

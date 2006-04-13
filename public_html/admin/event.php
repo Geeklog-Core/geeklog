@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.80 2006/04/02 09:23:34 dhaun Exp $
+// $Id: event.php,v 1.81 2006/04/13 11:14:02 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -327,7 +327,9 @@ function editevent ($mode, $A, $msg = '')
     // user access info
     $event_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $event_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $event_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
+    $event_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
+                              'username',"uid = {$A['owner_id']}"));
+    $event_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
     $event_templates->set_var('owner_id', $A['owner_id']);
     $event_templates->set_var('lang_group', $LANG_ACCESS['group']);
 

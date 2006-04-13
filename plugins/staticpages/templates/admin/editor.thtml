@@ -40,7 +40,7 @@
           </tr>
           <tr>
               <td align="right">{lang_writtenby}:</td>
-              <td>{username}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
+              <td>{name}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
           </tr>
           <tr>
               <td align="right">{lang_lastupdated}:</td>
@@ -80,7 +80,7 @@
           </tr>
           <tr>
               <td align="right">{lang_owner}:</td>
-              <td>{owner_username}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+              <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></td>
           </tr>
           <tr>
               <td align="right">{lang_group}:</td>

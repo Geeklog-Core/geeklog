@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.63 2006/04/02 09:23:37 dhaun Exp $
+// $Id: index.php,v 1.64 2006/04/13 11:14:02 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -103,7 +103,9 @@ function form ($A, $error = false)
         
         $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
         $sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
-        $sp_template->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
+        $sp_template->set_var('owner_username', DB_getItem($_TABLES['users'],
+                              'username',"uid = {$A['owner_id']}"));
+        $sp_template->set_var('owner_name', COM_getDisplayName($A['owner_id']));
         $sp_template->set_var('owner_id', $A['owner_id']);
         $sp_template->set_var('lang_group', $LANG_ACCESS['group']);
         $usergroups = SEC_getUserGroups();
@@ -150,7 +152,9 @@ function form ($A, $error = false)
             $sp_template->set_var('delete_option','');
         }
         $sp_template->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
-        $sp_template->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A['sp_uid']}"));
+        $sp_template->set_var('username', DB_getItem($_TABLES['users'],
+                              'username', "uid = {$A['sp_uid']}"));
+        $sp_template->set_var('name', COM_getDisplayName ($A['sp_uid']));
         $sp_template->set_var ('lang_url', $LANG_STATIC['url']);
         $sp_template->set_var ('lang_id', $LANG_STATIC['id']);
         $sp_template->set_var('sp_uid', $A['sp_uid']);
