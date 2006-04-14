@@ -4,7 +4,9 @@ GeekLog History/Changes:
 ------------
 
 - Allow changing of group ownership for "gldefault" blocks. Requires a change
-  in admin/block/defaultblockeditor.thtml to enable the group dropdown [Dirk]
+  in admin/block/defaultblockeditor.thtml to enable the group dropdown. On a
+  fresh install, all the blocks (with the exception of "Are you secure?") are
+  now owned by the Block Admin group [Dirk]
 - Users created by a User Admin should not be queued for approval, even when
   $_CONF['usersubmission'] = 1 [Dirk]
 - Introduced 'syndication.edit' permission and 'Syndication Admin' group so
