@@ -118,6 +118,10 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- When creating a new page, don't set the default group ownership to the Static
+  Page Admin group if the current user is not a member of that group. Instead,
+  pick a group with staticpages.edit permission that the user is a member of
+  [Dirk]
 - Fixed paging for the list of static pages (bug #528) [Dirk]
 
 

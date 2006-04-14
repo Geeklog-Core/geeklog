@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.64 2006/04/13 11:14:02 dhaun Exp $
+// $Id: index.php,v 1.65 2006/04/14 18:02:50 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -59,14 +59,18 @@ if (!SEC_hasRights ('staticpages.edit')) {
 */ 
 function form ($A, $error = false) 
 {
-    global $_CONF, $_TABLES, $_USER, $_SP_CONF, $mode, $sp_id,
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
            $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24, $MESSAGE;
 
     if (!empty($sp_id) && $mode=='edit') {
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
     } else {
         $A['owner_id'] = $_USER['uid'];
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Static Page Admin'");
+        if (isset ($_GROUPS['Static Page Admin'])) {
+            $A['group_id'] = $_GROUPS['Static Page Admin'];
+        } else {
+            $A['group_id'] = SEC_getFeatureGroup ('staticpages.edit');
+        }
         SEC_setDefaultPermissions ($A, $_SP_CONF['default_permissions']);
         $A['sp_inblock'] = $_SP_CONF['in_block'];
         $access = 3;
