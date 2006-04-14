@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | url.class.php                                                             |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: url.class.php,v 1.9 2005/06/26 08:38:32 mjervis Exp $
+// $Id: url.class.php,v 1.10 2006/04/14 17:44:33 mjervis Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
@@ -77,10 +77,21 @@ class url {
     function _getArguments()
     {
         global $_SERVER;
-
         if (isset ($_SERVER['PATH_INFO'])) {
-            $this->_arguments = explode ('/', $_SERVER['PATH_INFO']);
+            if ($_SERVER['PATH_INFO'] == '')
+            {
+                if (isset ($_ENV['ORIG_PATH_INFO']))
+                {
+                    $this->_arguments = explode('/', $_ENV['ORIG_PATH_INFO']);
+                } else {
+                    $this->_arguments = array();
+                }
+            } else {
+                $this->_arguments = explode ('/', $_SERVER['PATH_INFO']);
+            }
             array_shift ($this->_arguments);
+        } else if (isset ($_ENV['ORIG_PATH_INFO'])) {
+            $this->_arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'],1));
         } else {
             $this->_arguments = array ();
         }
