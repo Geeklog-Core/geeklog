@@ -84,6 +84,8 @@ GeekLog History/Changes:
 - Fixed display of Admin block for users that only had certain Admin privileges
   [Dirk]
 
+- New Afrikaans language file, provided by Renier Maritz
+
 Calendar plugin
 ---------------
 - Added calendar plugin initial version [Oliver]
