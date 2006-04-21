@@ -143,11 +143,11 @@ function enablearchive(obj) {
                                     </tr>
                                     <tr>
                                         <td valign="top" align="right">{lang_introtext}:</td>
-                                        <td><textarea name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
+                                        <td><textarea name="introtext" rows="12" style="width:100%">{story_introtext}</textarea></td>
                                     </tr>
                                     <tr>
                                         <td valign="top" align="right">{lang_bodytext}:</td>
-                                        <td><textarea name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
+                                        <td><textarea name="bodytext" rows="20" style="width:100%">{story_bodytext}</textarea></td>
                                     </tr>
                                     <tr valign="top">
                                         <td align="right"><b>{lang_postmode}:</b></td>
