@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.70 2006/04/02 09:23:34 dhaun Exp $
+// $Id: group.php,v 1.71 2006/04/24 14:58:52 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -624,7 +624,7 @@ function listusers ($grp_id)
                        'title'        => $headline,
                        'instructions' => '',
                        'icon'         => '',
-                       'form_url'     => '',
+                       'form_url'     => $_CONF['site_admin_url'] . '/group.php?mode=listusers&grp_id=23',
                        'help_url'     => ''
     );
 
@@ -638,7 +638,11 @@ function listusers ($grp_id)
     $groups = getGroupList ($grp_id);
     $groupList = implode (',', $groups);
 
-    $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['group_assignments']},{$_TABLES['users']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
+    $sql = "SELECT DISTINCT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo "
+          ."FROM {$_TABLES['group_assignments']},{$_TABLES['users']} $join_userinfo "
+          ."WHERE {$_TABLES['users']}.uid > 1 "
+          ."AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid " 
+          ."AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
 
     $query_arr = array ('table' => 'users',
                         'sql' => $sql,
@@ -648,7 +652,7 @@ function listusers ($grp_id)
                         'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true)
     );
 
-    $retval .= ADMIN_list ('user', 'ADMIN_getListField_users', $header_arr, $text_arr, $query_arr, array(), $defsort_arr, "&mode=listusers&grp_id=$grp_id");
+    $retval .= ADMIN_list ('user', 'ADMIN_getListField_users', $header_arr, $text_arr, $query_arr, array(), $defsort_arr);
 
     return $retval;
 }
