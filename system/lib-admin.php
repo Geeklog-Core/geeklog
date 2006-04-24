@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.56 2006/04/03 11:16:59 dhaun Exp $
+// $Id: lib-admin.php,v 1.57 2006/04/24 14:56:59 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -338,10 +338,15 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             # make the mouseover effect is sortable
             $admin_templates->set_var('mouse_over', " OnMouseOver=\"this.style.cursor='pointer';\"");
             $order_var = $i; # assign number to field so we know what to sort
-            $onclick = " onclick=\"window.location.href='$form_url?" #onclick action
+            if (strpos($form_url,'?') > 0 ) {
+                $seperator = "&amp;";
+            } else {
+                $seperator = "?";
+            }
+            $onclick = " onclick=\"window.location.href='$form_url$seperator" #onclick action
                     ."order=$order_var&amp;prevorder=$order&amp;direction=$direction"
                     ."&amp;" . $component . "listpage=$page"
-                    ."&amp;q=$query&amp;query_limit=$query_limit$extra';\"";
+                    ."&amp;q=$query&amp;query_limit=$query_limit';\"";
             $admin_templates->set_var('on_click', $onclick);
         }
         if (!empty($header_arr[$i]['header_class'])) {
@@ -413,7 +418,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             if (!empty($A[$fieldname])) { # is there a field in data like that?
                 $fieldvalue = $A[$fieldname]; # yes, get its data
             }
-            if (!empty ($fieldfunction)) { # do we have a fieldfunction?
+            if (!empty ($fieldfunction) && !empty ($extra)) {
+                $fieldvalue = $fieldfunction ($fieldname, $fieldvalue, $A, $icon_arr, $extra);
+            } else if (!empty ($fieldfunction)) { # do we have a fieldfunction?
                 $fieldvalue = $fieldfunction ($fieldname, $fieldvalue, $A, $icon_arr);
             } else { # if not just take the value
                 $fieldvalue = $fieldvalue;
