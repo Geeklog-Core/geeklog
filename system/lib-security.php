@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.48 2006/03/20 00:08:46 blaine Exp $
+// $Id: lib-security.php,v 1.49 2006/04/26 19:51:53 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -66,6 +66,12 @@ $_SEC_VERBOSE = false;
 if (eregi ('lib-security.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
+
+/* Constants for acount stats */
+define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
+define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login.
+define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
+define('USER_ACCOUNT_ACTIVE', 3); // active account
 
 /**
 * Returns the groups a user belongs to

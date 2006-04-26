@@ -32,18 +32,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.24 2006/03/26 08:50:20 dhaun Exp $
+// $Id: lib-user.php,v 1.25 2006/04/26 19:51:53 mjervis Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
-
-/* Constants for acount stats */
-define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
-define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login.
-define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
-define('USER_ACCOUNT_ACTIVE', 3); // active account
-
 
 /**
 * Delete a user account
