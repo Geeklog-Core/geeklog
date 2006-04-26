@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.215 2006/04/05 18:02:50 dhaun Exp $
+// $Id: config.php,v 1.216 2006/04/26 19:44:17 mjervis Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -707,6 +707,8 @@ $_CONF['use_gravatar'] = false;
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;         // minimum time between comment posts, in seconds
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
+// Trackback Comment Settings
+$_CONF['trackbackspeedlimit']		= 45;         // Min time between trackback comments, in seconds.
 // Default Comment Mode; from 'threaded','nested', 'nocomments', or 'flat'
 $_CONF['comment_mode']          = 'threaded';
 // Allow / disallow comments to stories by default (can be changed individually for every story)

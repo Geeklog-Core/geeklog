@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.28 2006/04/04 08:35:19 ospiess Exp $
+// $Id: lib-trackback.php,v 1.29 2006/04/26 19:44:17 mjervis Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -425,11 +425,17 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
     if (isset ($_POST['url'])) { // a URL is mandatory ...
 
         // the speed limit applies to trackback comments, too
-        COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'trackback');
+        if(array_key_exists($_CONF, 'trackbackspeedlimit'))
+        {
+        	$speedlimit = $_CONF['trackbackspeedlimit'];
+        } else {
+        	$speedlimit = $_CONF['commentspeedlimit'];
+        }
+        COM_clearSpeedlimit ($speedlimit, 'trackback');
         $last = COM_checkSpeedlimit ('trackback');
         if ($last > 0) {
             TRB_sendTrackbackResponse (1, sprintf ($TRB_ERROR['speedlimit'],
-                                       $last, $_CONF['commentspeedlimit']),
+                                       $last, $speedlimit),
                                        403, 'Forbidden');
 
             return false;
