@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.49 2006/04/26 19:51:53 mjervis Exp $
+// $Id: lib-security.php,v 1.50 2006/04/27 11:30:44 ospiess Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -421,59 +421,41 @@ function SEC_hasRights($features,$operator='AND')
 */
 function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
 {
-    global $LANG_ACCESS;
+    global $LANG_ACCESS, $_CONF;
+    
+    $perm_templates = new Template($_CONF['path_layout'] . 'admin/common');
+    $perm_templates->set_file(array('editor'=>'edit_permissions.thtml'));
 
-    $retval = '<table cellpadding="0" cellspacing="0" border="0">' . LB . '<tr>' . LB
-        . '<td colspan="3"><b>' . $LANG_ACCESS['owner'] . '</b></td>'  .LB
-        . '<td colspan="3"><b>' . $LANG_ACCESS['group'] . '</b></td>' . LB
-        . '<td><b>' . $LANG_ACCESS['members'] . '</b></td>' . LB
-        . '<td><b>' . $LANG_ACCESS['anonymous'] . '</b></td>' . LB
-        . '</tr>' . LB . '<tr>' . LB;
+    $perm_templates->set_var ('owner', $LANG_ACCESS['owner']);
+    $perm_templates->set_var ('group', $LANG_ACCESS['group']);
+    $perm_templates->set_var ('members', $LANG_ACCESS['members']);
+    $perm_templates->set_var ('anonymous', $LANG_ACCESS['anonymous']);
 
     // Owner Permissions
-    $retval .= '<td align="center"><b>R</b><br><input type="checkbox" name="perm_owner[]" value="2"';
     if ($perm_owner >= 2) {
-        $retval .= ' checked="checked"';
+        $perm_templates->set_var ('owner_r_checked',' checked="checked"');
     }
-    $retval .= '></td>' . LB
-        .'<td align="center"><b>E</b><br><input type="checkbox" name="perm_owner[]" value="1"';
     if ($perm_owner == 3) {
-        $retval .= ' checked="checked"';
+        $perm_templates->set_var ('owner_e_checked',' checked="checked"');
     }
-    $retval .= '></td>' . LB .'<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>' . LB;
-
     // Group Permissions
-
-    $retval .= '<td align="center"><b>R</b><br><input type="checkbox" name="perm_group[]" value="2"';
     if ($perm_group >= 2) {
-        $retval .= ' checked="checked"';
+        $perm_templates->set_var ('group_r_checked',' checked="checked"');
     }
-    $retval .= '></td>'.LB
-        .'<td align="center"><b>E</b><br><input type="checkbox" name="perm_group[]" value="1"';
     if ($perm_group == 3) {
-        $retval .= ' checked="checked"';
+        $perm_templates->set_var ('group_e_checked',' checked="checked"');
     }
-    $retval .= '></td>' . LB . '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>' . LB;
-
     // Member Permissions
-    $retval .= '<td align="center"><b>R</b><br><input type="checkbox" name="perm_members[]" value="2"';
     if ($perm_members == 2) {
-        $retval .= ' checked="checked"';
+        $perm_templates->set_var ('members_checked',' checked="checked"');
     }
-    $retval .= '></td>' . LB;
-
     // Anonymous Permissions
-
-    $retval .= '<td align="center"><b>R</b><br><input type="checkbox" name="perm_anon[]" value="2"';
     if ($perm_anon == 2) {
-        $retval .= ' checked="checked"';
+        $perm_templates->set_var ('anon_checked',' checked="checked"');
     }
-    $retval .= '></td>' . LB;
 
-    // Finish off and return
-
-    $retval .= '</tr>' . LB . '</table>';
-
+    $perm_templates->parse('output','editor');
+    $retval .= $perm_templates->finish($perm_templates->get_var('output'));
     return $retval;
 }
 

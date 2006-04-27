@@ -372,6 +372,14 @@ th {
   font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif;
   padding:3px 0px 3px 10px;
 }
+.edit_perm_down {
+  text-align:center;
+}
+.edit_perm_up{
+  text-align:center;
+  padding-right:10px;
+  padding-left:10px;
+}
 .footerblock {
   background:#1A3955;
   border-top:1px solid #CCCCCC;
