@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.66 2006/03/24 09:17:58 dhaun Exp $
+// $Id: functions.inc,v 1.67 2006/04/27 11:24:41 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -529,6 +529,15 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 } else {
                     $retval .= stripslashes ($spresult['sp_content']);
                 }
+            }
+            
+            if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+                SEC_hasRights ('staticpages.edit')) {
+                $retval .= '<p align="center"><a href="' . $_CONF['site_admin_url']
+                        . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
+                        . $spresult['sp_id'] . '">';
+                $retval .= $LANG_STATIC['edit'] . '</a></p>';
             }
 
             if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
