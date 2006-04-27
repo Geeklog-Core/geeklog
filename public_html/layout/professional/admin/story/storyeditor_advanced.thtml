@@ -176,9 +176,7 @@
                                                     <table border="0" cellspacing="3" cellpadding="3" width="100%">
                                                         <tr>
                                                             <td>
-                                                                <select name="featured">
-                                                                    {featured_options}
-                                                                </select>
+                                                                {featured_options}
                                                             </td>
                                                             <td width="75%">
                                                                 <select name="frontpage">

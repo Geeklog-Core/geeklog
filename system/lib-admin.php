@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.57 2006/04/24 14:56:59 ospiess Exp $
+// $Id: lib-admin.php,v 1.58 2006/04/27 11:35:19 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -357,7 +357,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('img_arrow'); # clear all for next header
         $admin_templates->clear_var('mouse_over');
-        $admin_templates->clear_var('width');
+        $admin_templates->clear_var('class');
         $admin_templates->clear_var('on_click');
         $admin_templates->clear_var('arrow');
     }

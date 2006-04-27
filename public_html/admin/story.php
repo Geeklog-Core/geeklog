@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.211 2006/04/13 11:45:15 dhaun Exp $
+// $Id: story.php,v 1.212 2006/04/27 11:35:19 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -704,9 +704,16 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
     $story_templates->set_var ('trackback_options',
             COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
                             $A['trackbackcode']));
-    $story_templates->set_var ('featured_options',
-            COM_optionList ($_TABLES['featurecodes'], 'code,name',
-                            $A['featured']));
+
+    if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root')) 
+        or ($_CONF['onlyrootfeatures'] !== 1)) {
+        $featured_options = "<select name=\"featured\">" . LB 
+                          . COM_optionList ($_TABLES['featurecodes'], 'code,name', $A['featured'])
+                          . "</select>" . LB;
+    } else {
+        $featured_options = "<input type=\"hidden\" name=\"featured\" value=\"0\">";  
+    }
+    $story_templates->set_var ('featured_options',$featured_options);
     $story_templates->set_var ('frontpage_options',
             COM_optionList ($_TABLES['frontpagecodes'], 'code,name',
                             $A['frontpage']));

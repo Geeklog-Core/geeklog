@@ -123,9 +123,7 @@ function enablearchive(obj) {
                                     <tr>
                                         <td valign="top" align="right">{lang_mode}:</td>
                                         <td>
-                                            <select name="featured">
-                                                {featured_options}
-                                            </select> 
+                                            {featured_options}
                                             <select name="frontpage">
                                                 {frontpage_options}
                                             </select><br>
