@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.40 2006/03/05 09:11:31 dhaun Exp $
+// $Id: lib-sessions.php,v 1.41 2006/04/27 18:51:11 mjervis Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -197,7 +197,13 @@ function SESS_sessionCheck()
         COM_errorLog("***Leaving SESS_sessionCheck***",1);
     }
 
-    return $_USER;
+    // Ensure $_USER is set to avoid warnings (path exposure...)
+    if(isset($_USER))
+    {
+        return $_USER;
+    } else {
+        return NULL;
+    }
 }
 
 /**

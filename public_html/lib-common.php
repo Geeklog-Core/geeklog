@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.532 2006/04/10 20:16:48 dhaun Exp $
+// $Id: lib-common.php,v 1.533 2006/04/27 18:51:11 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3184,7 +3184,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     // Loop though resulting sorted array aand pass associative arays to COM_formatBlock
     foreach( $blocks as $A )
     {
-        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 or $A['type'] == 'dynamic' )
+        if( $A['type'] == 'dynamic' or SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
         {
            $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
         }
