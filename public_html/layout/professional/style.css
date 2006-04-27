@@ -372,10 +372,10 @@ th {
   font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif;
   padding:3px 0px 3px 10px;
 }
-.edit_perm_down {
+.edit-perm-down {
   text-align:center;
 }
-.edit_perm_up{
+.edit-perm-up{
   text-align:center;
   padding-right:10px;
   padding-left:10px;
