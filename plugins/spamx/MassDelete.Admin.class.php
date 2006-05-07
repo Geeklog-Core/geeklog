@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.10 2006/01/15 10:40:04 dhaun Exp $
+* $Id: MassDelete.Admin.class.php,v 1.11 2006/05/07 20:44:42 mjervis Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -49,13 +49,18 @@ class MassDelete extends BaseAdmin {
                 closedir($dir);
             }
 
-            $result = DB_query("SELECT comment,cid,sid,type FROM {$_TABLES['comments']} ORDER BY date DESC LIMIT $lmt");
+            $result = DB_query("SELECT comment,cid,sid,type,UNIX_TIMESTAMP(date) as date,ipaddress FROM {$_TABLES['comments']} ORDER BY date DESC LIMIT $lmt");
             $nrows = DB_numRows($result);
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
                 foreach($Spamx_Examine as $Examine) {
                     $EX = new $Examine;
-                    $res = $EX->execute($A['comment']);
+                    if(method_exists($EX, 'reexecute'))
+                    {
+                    	$res = $EX->reexecute($A['comment'], $A['date'], $A['ipaddress'], $A['type']);
+                    } else {
+                    	$res = $EX->execute ($A['comment']);
+                    }
                     if ($res == 1) {
                         break;
                     }

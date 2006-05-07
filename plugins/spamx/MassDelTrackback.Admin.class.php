@@ -12,7 +12,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelTrackback.Admin.class.php,v 1.3 2006/01/15 10:40:04 dhaun Exp $
+* $Id: MassDelTrackback.Admin.class.php,v 1.4 2006/05/07 20:44:42 mjervis Exp $
 */
 
 require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -49,7 +49,7 @@ class MassDelTrackback extends BaseAdmin {
 
             require_once ($_CONF['path_system'] . 'lib-trackback.php');
 
-            $result = DB_query ("SELECT cid,sid,type,url,title,blog,excerpt FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
+            $result = DB_query ("SELECT cid,sid,type,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) as date FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
             $nrows = DB_numRows ($result);
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
@@ -58,7 +58,12 @@ class MassDelTrackback extends BaseAdmin {
 
                 foreach ($Spamx_Examine as $Examine) {
                     $EX = new $Examine;
-                    $res = $EX->execute ($comment);
+                    if(method_exists($EX, 'reexecute'))
+                    {
+                    	$res = $EX->reexecute($comment, $A['date'], $A['ipaddress'], $A['type']);
+                    } else {
+                    	$res = $EX->execute ($comment);
+                    }
                     if ($res == 1) {
                         break;
                     }
