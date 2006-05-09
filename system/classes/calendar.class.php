@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.class.php,v 1.6 2005/11/14 09:22:04 dhaun Exp $
+// $Id: calendar.class.php,v 1.7 2006/05/09 04:58:03 ospiess Exp $
 
 /**
 * This file contains the two classes used to help support the calendar pages.
@@ -160,7 +160,7 @@ class Calendar {
     * Initializes calendar object
     *
     */
-    function Calender()
+    function Calendar()
     {
         $this->setRollingMode(false);
         $dateArray = getdate(time());
