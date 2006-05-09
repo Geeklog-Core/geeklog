@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.58 2006/04/27 11:35:19 ospiess Exp $
+// $Id: lib-admin.php,v 1.59 2006/05/09 01:58:20 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -245,7 +245,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # insert some values into the template
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('form_url', $form_url);
-    $admin_templates->set_var('icon', $text_arr['icon']);
+    if ($text_arr['icon'] !== false) {
+        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"icon\">");
+    }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     
     # define icon paths. Those will be transmitted to $fieldfunction.
