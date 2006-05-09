@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.5 2006/04/13 11:14:02 dhaun Exp $
+// $Id: functions.inc,v 1.6 2006/05/09 04:23:58 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1076,8 +1076,7 @@ function CALENDAR_listevents()
                       'has_extras'   => true,
                       'title' => $LANG_CAL_ADMIN[11],
                       'instructions' => $LANG_CAL_ADMIN[12],
-                      'icon' => $_CONF['site_url'] . '/calendar/images/event.'
-                                . $_IMAGE_TYPE,
+                      'icon' => $_CONF['site_url'] . '/calendar/images/calendar.' . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php");
 
     $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username "
@@ -1606,6 +1605,15 @@ function plugin_getadminoption_calendar()
         return array ($LANG_CAL_1[16],
                       $_CONF['site_admin_url'] . '/plugins/calendar/index.php',
                       $total_events);
+    }
+}
+
+function plugin_getuseroption_calendar() {
+    global $_CONF, $LANG_CAL_1, $_CA_CONF;
+
+    if( $_CA_CONF['personalcalendars'] == 1 ) {
+        $url = $_CONF['site_url'] . '/calendar/index.php?mode=personal';
+        return array ($LANG_CAL_1[42], $url, '');
     }
 }
 
