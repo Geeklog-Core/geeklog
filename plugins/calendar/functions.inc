@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.6 2006/05/09 04:23:58 ospiess Exp $
+// $Id: functions.inc,v 1.7 2006/05/09 05:28:44 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -101,7 +101,7 @@ function phpblock_calendar( $help='', $title='' ) {
         . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
         . 'ORDER BY datestart,timestart';
 
-        if(( $_CONF['personalcalendars'] == 1 ) && !empty( $_USER['uid'] )) {
+        if(( $_CA_CONF['personalcalendars'] == 1 ) && !empty( $_USER['uid'] )) {
             $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
             . "FROM {$_TABLES['personal_events']} "
             . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
@@ -117,7 +117,7 @@ function phpblock_calendar( $help='', $title='' ) {
         $oldDate1 = 'no_day';  // Invalid Date!
         $oldDate2 = 'last_d';  // Invalid Date!
 
-        if( $_CONF['personalcalendars'] == 1 AND !empty( $_USER['uid'] )) {
+        if( $_CA_CONF['personalcalendars'] == 1 AND !empty( $_USER['uid'] )) {
             $iterations = 2;
         } else {
             $iterations = 1;
@@ -142,7 +142,7 @@ function phpblock_calendar( $help='', $title='' ) {
                 $classname = 'list-site-events';
                 $headline = false;
             }
-            if( $_CONF['personalcalendars'] == 0 ) {
+            if( $_CA_CONF['personalcalendars'] == 0 ) {
                 $headline = true; // no headline needed
                 $skipFirstBreak = true;
             }
@@ -400,7 +400,7 @@ function plugin_submit_calendar($mode = 'master')
         $mode = $_POST['calendar_type'];
     }
     
-    if (($_CONF['personalcalendars'] == 1) && ($mode == 'personal')) { // quick add form
+    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'personal')) { // quick add form
        $display = saveevent ($_POST);
     } else if (SEC_hasRights('event.edit') && ($mode != 'personal')) {
         if (isset ($_REQUEST['year'])) {
@@ -458,7 +458,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_addeventto', $LANG_CAL_1[40]);
     $eventform->set_var('lang_mastercalendar', $LANG_CAL_1[41]);
 
-    if (($_CONF['personalcalendars'] == 1) &&
+    if (($_CA_CONF['personalcalendars'] == 1) &&
             isset ($_USER['uid']) && $_USER['uid'] > 1) {
         $eventform->set_var('lang_personalcalendar', $LANG_CAL_1[42]);
         if ($mode == 'personal') {
@@ -848,7 +848,7 @@ function CALENDAR_editevent ($mode, $A, $msg = '')
     $A['title'] = str_replace('}','&#125;',$A['title']);
     $A['title'] = str_replace('"','&quot;',$A['title']);
     $event_templates->set_var('event_title', stripslashes ($A['title']));
-    $types  = explode(',',$_CONF['event_types']);
+    $types  = explode(',',$_CA_CONF['event_types']);
     asort ($types);
     $catdd = '';
     for ($i = 1; $i <= count($types); $i++) {
@@ -1245,7 +1245,7 @@ function plugin_save_submit_calendar ($A)
             $retval = COM_refresh ($_CONF['site_url'] . '/calendar.php');
         }
 
-    } else if ($_CONF['personalcalendars'] == 1) { // add to personal calendar
+    } else if ($_CA_CONF['personalcalendars'] == 1) { // add to personal calendar
 
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             DB_save ($_TABLES['personal_events'], 
