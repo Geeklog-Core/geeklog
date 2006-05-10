@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.136 2006/04/06 13:29:57 dhaun Exp $
+// $Id: users.php,v 1.137 2006/05/10 07:02:38 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -423,17 +423,19 @@ function newpasswordform ($uid, $requestid)
 *
 * @param    string      $username       username to create user for
 * @param    string      $email          email address to assign to user
+* @param    string      $email_conf     confirmation email address check
 * @return   string      HTML for the form again if error occurs, otherwise nothing.
 *
 */
-function createuser ($username, $email)
+function createuser ($username, $email, $email_conf)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG04;
 
     $username = trim ($username);
     $email = trim ($email);
+    $email_conf = trim ($email_conf);
 
-    if (COM_isEmail ($email) && !empty ($username)) {
+    if (COM_isEmail ($email) && !empty ($username) && ($email === $email_conf)) {
 
         $ucount = DB_count ($_TABLES['users'], 'username',
                             addslashes ($username));
@@ -477,7 +479,15 @@ function createuser ($username, $email)
             }
             $retval .= COM_siteFooter ();
         }
-
+    } else if ($email !== $email_conf) {
+        $msg = $LANG04[125];
+        $retval .= COM_siteHeader ('menu');
+        if ($_CONF['custom_registration'] && function_exists('CUSTOM_userForm')) {
+            $retval .= CUSTOM_userForm ($msg);
+        } else {
+            $retval .= newuserform ($msg);
+        }
+        $retval .= COM_siteFooter();
     } else { // invalid username or email address
 
         if (empty ($username)) {
@@ -594,6 +604,7 @@ function newuserform($msg = '')
     $user_templates->set_var('lang_instructions', $LANG04[23]);
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('lang_email', $LANG04[5]);
+    $user_templates->set_var('lang_email_conf', $LANG04[124]);
     $user_templates->set_var('lang_warning', $LANG04[24]);
     $user_templates->set_var('lang_register', $LANG04[27]);
     $user_templates->set_var('end_block', COM_endBlock());
@@ -725,8 +736,9 @@ case 'create':
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter ();
     } else {
-        $display .= createuser (COM_applyFilter ($_POST['username']),
-                                COM_applyFilter ($_POST['email']));
+        $email = COM_applyFilter ($_POST['email']);
+        $email_conf = COM_applyFilter ($_POST['email_conf']);
+        $display .= createuser(COM_applyFilter ($_POST['username']), $email, $email_conf);
     }
     break;
 

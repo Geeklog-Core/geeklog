@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.131 2006/03/29 18:53:58 dhaun Exp $
+// $Id: usersettings.php,v 1.132 2006/05/10 07:02:38 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -79,6 +79,8 @@ function edituser()
     $preferences->set_var ('lang_cooktime_text', $LANG04[69]);
     $preferences->set_var ('lang_email', $LANG04[5]);
     $preferences->set_var ('lang_email_text', $LANG04[33]);
+    $preferences->set_var ('lang_email_conf', $LANG04[124]);
+    $preferences->set_var ('lang_email_conf_text', $LANG04[126]);
     $preferences->set_var ('lang_homepage', $LANG04[6]);
     $preferences->set_var ('lang_homepage_text', $LANG04[36]);
     $preferences->set_var ('lang_location', $LANG04[106]);
@@ -848,6 +850,7 @@ function saveuser($A)
     }
 
     $A['email'] = COM_applyFilter ($A['email']);
+    $A['email_conf'] = COM_applyFilter ($A['email_conf']);
     $A['homepage'] = COM_applyFilter ($A['homepage']);
 
     // basic filtering only
@@ -860,6 +863,9 @@ function saveuser($A)
     if (!COM_isEmail ($A['email'])) {
         return COM_refresh ($_CONF['site_url']
                 . '/usersettings.php?mode=edit&msg=52');
+    } else if ($A['email'] !== $A['email_conf']) {
+        return COM_refresh ($_CONF['site_url']
+                . '/usersettings.php?mode=edit&msg=78');
     } else if (emailAddressExists ($A['email'], $_USER['uid'])) {
         return COM_refresh ($_CONF['site_url']
                 . '/usersettings.php?mode=edit&msg=56');

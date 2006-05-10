@@ -346,7 +346,10 @@ $LANG04 = array(
     120 => 'Account Activated',
     121 => 'Service',
     122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
 );
 
 ###############################################################################
@@ -1157,7 +1160,8 @@ $MESSAGE = array(
     74 => 'The pingback has been successfully sent.',
     75 => 'Trackbacks must be sent using a POST request.',
     76 => 'Do you really want to delete this item?',
-    77 => 'WARNING:<BR>You have set your default encoding to UTF-8. However, your server does not support mulitbyte encodings. Please install mbstring functions for PHP or choose a different charachterset/language.'
+    77 => 'WARNING:<BR>You have set your default encoding to UTF-8. However, your server does not support mulitbyte encodings. Please install mbstring functions for PHP or choose a different charachterset/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.'
 );
 
 ###############################################################################
