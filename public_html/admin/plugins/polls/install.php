@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.8 2006/02/11 10:21:06 dhaun Exp $
+// $Id: install.php,v 1.9 2006/05/12 09:38:41 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -46,7 +46,7 @@ require_once ('../../../lib-common.php');
 //
 $pi_display_name = 'Polls';
 $pi_name         = 'polls';
-$pi_version      = '1.0';
+$pi_version      = '1.1';
 $gl_version      = '1.4.0';
 $pi_url          = 'http://www.geeklog.net/';
 
