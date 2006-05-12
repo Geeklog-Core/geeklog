@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.1 2005/11/13 13:46:06 dhaun Exp $
+// $Id: install.php,v 1.2 2006/05/12 09:37:14 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
@@ -38,6 +38,7 @@ CREATE TABLE {$_TABLES['pollanswers']} (
   aid tinyint(3) unsigned NOT NULL default '0',
   answer varchar(255) default NULL,
   votes mediumint(8) unsigned default NULL,
+  remark varchar(255) NULL,
   PRIMARY KEY  (qid,aid)
 ) TYPE=MyISAM
 ";
