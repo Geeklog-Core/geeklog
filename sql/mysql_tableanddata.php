@@ -294,6 +294,7 @@ CREATE TABLE {$_TABLES['pollanswers']} (
   aid tinyint(3) unsigned NOT NULL default '0',
   answer varchar(255) default NULL,
   votes mediumint(8) unsigned default NULL,
+  remark varchar( 255 ) NULL,
   PRIMARY KEY  (qid,aid)
 ) TYPE=MyISAM
 ";

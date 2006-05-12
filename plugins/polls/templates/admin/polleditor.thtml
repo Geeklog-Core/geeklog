@@ -27,7 +27,7 @@
                                             <td align="right" valign="top">{lang_answersvotes}:</td>
                                             <td>
                                                 {answer_option}
-                                                <input type="text" name="answer[]" value="{answer_text}" size="30" maxlength="255"> / <input type="text" name="votes[]" value="{answer_votes}" size="5"><BR>
+                                                <input type="text" name="answer[]" value="{answer_text}" size="30" maxlength="255"> / <input type="text" name="votes[]" value="{answer_votes}" size="5"> / <input type="text" name="remark[]" value="{remark_text}" size="50" maxlength="255"><BR>
                                             </td>
                                         </tr>
                                         <tr>

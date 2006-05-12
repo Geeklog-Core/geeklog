@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.43 2006/03/24 09:17:57 dhaun Exp $
+// $Id: functions.inc,v 1.44 2006/05/12 09:12:17 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -688,12 +688,14 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
     {
         if( $_PO_CONF['answerorder'] == 'voteorder' )
         {
-            $answers = DB_query( "SELECT votes,answer FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC" );
+            $order = "votes DESC";
         }
         else
         {
-            $answers = DB_query( "SELECT votes,answer FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
+            $order = "aid";
         }
+
+        $answers = DB_query( "SELECT votes,answer,remark FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY $order" );
 
         $nanswers = DB_numRows( $answers );
 
@@ -731,8 +733,10 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
                 {
                     $percent = $A['votes'] / $Q['voters'];
                 }
-
+                $poll->set_var( 'cssida', 1);
+                $poll->set_var( 'cssidb', 2);
                 $poll->set_var( 'answer_text', $A['answer'] );
+                $poll->set_var( 'remark_text', $A['remark'] );
                 $poll->set_var( 'answer_counter', $i );
                 $poll->set_var( 'answer_odd', (( $i - 1 ) % 2 ));
                 $poll->set_var( 'answer_num', COM_numberFormat( $A['votes'] ));

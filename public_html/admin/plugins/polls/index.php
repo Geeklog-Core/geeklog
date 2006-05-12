@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.27 2006/04/13 11:14:02 dhaun Exp $
+// $Id: index.php,v 1.28 2006/05/12 09:12:18 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -121,7 +121,7 @@ function listpolls()
 * @return   string                  HTML redirect or error message
 *
 */
-function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcode, $A, $V, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon) 
+function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcode, $A, $V, $R, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon) 
 {
     global $_CONF, $_TABLES, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE;
 
@@ -202,8 +202,9 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
                     $V[$i] = "0"; 
                 }
                 $A[$i] = addslashes ($A[$i]);
-                DB_save ($_TABLES['pollanswers'], 'qid, aid, answer, votes',
-                         "'$qid', $i+1, '$A[$i]', $V[$i]");
+                $R[$i] = addslashes ($R[$i]);
+                DB_save ($_TABLES['pollanswers'], 'qid, aid, answer, votes, remark',
+                         "'$qid', $i+1, '$A[$i]', $V[$i], '$R[$i]'");
             }
         }
 
@@ -251,7 +252,7 @@ function editpoll ($qid = '')
 
     if (!empty ($qid)) {
         $question = DB_query("SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'");
-        $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid");
+        $answers = DB_query("SELECT answer,aid,votes,remark FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid");
         $Q = DB_fetchArray($question);
 
         // Get permissions for poll
@@ -347,6 +348,7 @@ function editpoll ($qid = '')
         $A = DB_fetchArray($answers);
         $poll_templates->set_var('answer_text', htmlspecialchars ($A['answer']));
         $poll_templates->set_var('answer_votes', $A['votes']);
+        $poll_templates->set_var('remark_text', $A['remark']);
         if ($i < $_PO_CONF['maxanswers']) {
             $poll_templates->parse('answer_option','answer',true);
         }
@@ -411,7 +413,7 @@ if ($mode == 'edit') {
                         $_POST['question'], $voters,
                         COM_applyFilter ($_POST['statuscode'], true),
                         COM_applyFilter ($_POST['commentcode'], true),
-                        $_POST['answer'], $_POST['votes'],
+                        $_POST['answer'], $_POST['votes'], $_POST['remark'],
                         $_POST['owner_id'],
                         $_POST['group_id'],
                         $_POST['perm_owner'],
