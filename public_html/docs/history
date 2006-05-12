@@ -118,6 +118,7 @@ Polls plugin
 - Fixed poll URLs on the site stats page [Dirk]
 - Remove the polls block when uninstalling the Polls plugin (another part of
   bug #520) [Dirk]
+- Added a remark field for polls answers [Oliver]
 
 Static Pages plugin
 -------------------
