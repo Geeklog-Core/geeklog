@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.59 2006/05/09 01:58:20 ospiess Exp $
+// $Id: lib-admin.php,v 1.60 2006/05/13 10:13:30 mjervis Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -197,12 +197,12 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $query_limit = "";
     if (isset($_REQUEST['query_limit'])) { # get query-limit (list-length)
         $query_limit = COM_applyFilter ($_REQUEST['query_limit'], true);
+        if($query_limit == 0)
+        {
+            $query_limit = 50;
+        }
     }
 
-    $offset = 0;
-    if (isset ($_REQUEST['offset'])) { # get offset (where does next page start?)
-        $offset = COM_applyFilter ($_REQUEST['offset'], true);
-    }
     $curpage = 1;
     $page = '';
     if (isset ($_REQUEST[$component . 'listpage'])) {
@@ -278,7 +278,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
         $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
         $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
-        $admin_templates->set_var('last_query', $query);
+        $admin_templates->set_var('last_query', COM_applyFilter($query));
         $admin_templates->set_var('filter', $filter);
         $admin_templates->parse('top_menu', 'topmenu', true);
     }

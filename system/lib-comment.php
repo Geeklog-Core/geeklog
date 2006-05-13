@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.29 2006/03/08 16:28:52 dhaun Exp $
+// $Id: lib-comment.php,v 1.30 2006/05/13 10:13:30 mjervis Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -657,12 +657,19 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             }
             $_POST['comment'] = $newcomment;
 
+            // Preview mode:
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 $start = new Template( $_CONF['path_layout'] . 'comment' );
                 $start->set_file( array( 'comment' => 'startcomment.thtml' ));
                 $start->set_var( 'site_url', $_CONF['site_url'] );
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
                 $start->set_var( 'hide_if_preview', 'style="display:none"' );
+                
+                // Clean up all the vars
+                while(list($key, $value) = each($_POST))
+                {
+                    $_POST[$key] = COM_applyFilter($_POST[$key]);
+                }
 
                 if (empty ($_POST['username'])) {
                     $_POST['username'] = DB_getItem ($_TABLES['users'],
