@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.81 2006/04/13 11:14:02 dhaun Exp $
+// $Id: event.php,v 1.82 2006/05/13 19:48:20 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -607,7 +607,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $eid = COM_applyFilter ($_REQUEST['eid']);
     if (!isset ($eid) || empty ($eid) || ($eid == 0)) {
         COM_errorLog ('Attempted to delete event eid=\''
-                      . $_REQUEST['eid'] . "'");
+                      . $eid . "'");
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/event.php');
     } else {
         $display .= deleteEvent ($eid);

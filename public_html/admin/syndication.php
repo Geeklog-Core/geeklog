@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.40 2006/04/12 16:00:55 dhaun Exp $
+// $Id: syndication.php,v 1.41 2006/05/13 19:48:20 mjervis Exp $
 
 
 require_once ('../lib-common.php');
@@ -508,14 +508,14 @@ if ($mode == 'edit') {
         $display .= newfeed ();
     } else {
         $display .= COM_siteHeader ('menu', $LANG33[24])
-                 . editfeed ($_REQUEST['fid'])
+                 . editfeed (COM_applyFilter($_REQUEST['fid']))
                  . COM_siteFooter ();
     }
 }
 else if (($mode == $LANG33[1]) && !empty ($LANG33[1]))
 {
     $display .= COM_siteHeader ('menu', $LANG33[24])
-             . editfeed (0, $_REQUEST['type'])
+             . editfeed (0, COM_applyFilter($_REQUEST['type']))
              . COM_siteFooter ();
 }
 else if (($mode == $LANG33[2]) && !empty ($LANG33[2]))
@@ -524,13 +524,13 @@ else if (($mode == $LANG33[2]) && !empty ($LANG33[2]))
 }
 else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete']))
 {
-    $display .= deletefeed ($_REQUEST['fid']);
+    $display .= deletefeed (COM_applyFilter($_REQUEST['fid']));
 }
 else
 {
     $display .= COM_siteHeader ('menu', $LANG33[10]);
     if (isset ($_REQUEST['msg'])) {
-        $display .= COM_showMessage ($_REQUEST['msg']);
+        $display .= COM_showMessage (COM_applyFilter($_REQUEST['msg']));
     }
     $display .= listfeeds();
     $display .= COM_siteFooter ();

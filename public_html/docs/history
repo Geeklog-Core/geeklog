@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- SpamX - Mass delete by IP now uses stored IP address [Mike]
 - Added email confirmation fields for new user and usersettings [Oliver]
 - Allow changing of group ownership for "gldefault" blocks. Requires a change
   in admin/block/defaultblockeditor.thtml to enable the group dropdown. On a

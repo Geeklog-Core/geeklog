@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.2 2006/04/02 09:23:35 dhaun Exp $
+// $Id: index.php,v 1.3 2006/05/13 19:48:21 mjervis Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -71,7 +71,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $eid = COM_applyFilter ($_REQUEST['eid']);
     if (!isset ($eid) || empty ($eid) || ($eid == 0)) {
         COM_errorLog ('Attempted to delete event eid=\''
-                      . $_REQUEST['eid'] . "'");
+                      . $eid . "'");
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/calendar/index.php');
     } else {
         $display .= CALENDAR_deleteEvent ($eid);
