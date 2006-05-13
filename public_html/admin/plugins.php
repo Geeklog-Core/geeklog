@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.59 2006/03/10 14:06:51 dhaun Exp $
+// $Id: plugins.php,v 1.60 2006/05/13 17:05:12 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -341,8 +341,9 @@ function do_update ($pi_name)
             $retval .= COM_refresh ($_CONF['site_admin_url']
                     . '/plugins.php?msg=60');
         } else {  // Plugin returned a message number
-            $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg='
-                    . $result . '&amp;plugin=' . $pi_name);
+            $retval = COM_refresh ($_CONF['site_admin_url']
+                    . '/plugins.php?msg=' . $result . '&amp;plugin='
+                    . $pi_name);
         }
     } else {  // Plugin function returned a false
         $timestamp = strftime ($_CONF['daytime']);
@@ -500,7 +501,11 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
         if (!empty ($msg)) {
-            $display .= COM_showMessage ($msg);
+            $plugin = '';
+            if (isset ($_REQUEST['plugin'])) {
+                $plugin = COM_applyFilter ($_REQUEST['plugin']);
+            }
+            $display .= COM_showMessage ($msg, $plugin);
         }
     }
     $display .= listplugins ();
