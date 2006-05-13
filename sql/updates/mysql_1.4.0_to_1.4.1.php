@@ -7,7 +7,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VA
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Syndication Admin', 'Can create and modify web feeds for the site',1) ";
 
 // add remarks-field to polls
-$_SQL[] = "ALTER TABLE {$_TABLES['gl_pollanswers']} ADD remark varchar( 255 ) NULL AFTER `votes`;";
+$_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AFTER votes";
 
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
