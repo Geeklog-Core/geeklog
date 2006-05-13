@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2005/12/22 14:39:47 ospiess Exp $
+// $Id: index.php,v 1.15 2006/05/13 11:18:54 mjervis Exp $
 
 require_once ('../lib-common.php');
 
@@ -163,7 +163,7 @@ if (empty($qid)) {
                            'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) as unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1",
                            'query_fields' => array('question'),
                            'default_filter' => COM_getPermSQL (),
-                           'query' => $_REQUEST['q'],
+                           'query' => COM_ApplyFilter($_REQUEST['q']),
                            'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
 
         $display .= ADMIN_list ("polls", "plugin_getListField_polls", $header_arr, $text_arr,

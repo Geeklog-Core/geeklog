@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.95 2006/03/08 20:39:16 dhaun Exp $
+// $Id: submit.php,v 1.96 2006/05/13 11:18:54 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -855,7 +855,7 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
             } elseif (SEC_hasRights ('story.edit')) {
                 $topic = '';
                 if (isset ($_REQUEST['topic'])) {
-                    $topic = '&topic=' . $_REQUEST['topic'];
+                    $topic = '&topic=' . urlencode(COM_applyFilter($_REQUEST['topic']));
                 }
                 echo COM_refresh ($_CONF['site_admin_url']
                      . '/story.php?mode=edit' . $topic);
