@@ -2,7 +2,7 @@
 
 // Reminder: always indent with 4 spaces (no tabs). 
 // +---------------------------------------------------------------------------+
-// | Links plugin 1.0 for Geeklog                                              |
+// | Links plugin 1.0.1 for Geeklog                                            |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -44,9 +44,9 @@
  * @package Links
  * @subpackage admin
  * @filesource
- * @version 1.0
+ * @version 1.0.1
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -55,7 +55,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  * 
  */
-// $Id: install.php,v 1.11 2006/02/11 10:21:05 dhaun Exp $
+// $Id: install.php,v 1.12 2006/05/13 17:13:08 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -74,12 +74,12 @@ $pi_name         = 'links';
  * plugin version
  * @global string $pi_version
  */
-$pi_version      = '1.0';
+$pi_version      = '1.0.1';
 /**
  * plugin suported GL version
  * @global string $gl_version
  */
-$gl_version      = '1.4.0';
+$gl_version      = '1.4.1';
 /**
  * plugin suport website url
  * @global string $pi_url
@@ -137,6 +137,10 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description
  */
 function plugin_compatible_with_this_geeklog_version ()
 {
+    if (!function_exists ('COM_truncate')) {
+        return false;
+    }
+
     return true;
 }
 //

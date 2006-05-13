@@ -2,7 +2,7 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0  functions.inc                                           |
+// | Links Plugin 1.0.1  functions.inc                                         |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.60 2006/03/30 11:16:21 dhaun Exp $
+// $Id: functions.inc,v 1.61 2006/05/13 17:13:08 dhaun Exp $
 
 
 /**
@@ -31,7 +31,7 @@
  *
  * @package Links
  * @filesource
- * @version 1.0
+ * @version 1.0.1
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -692,6 +692,27 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
     $current = implode (',', $lids);
 
     return ($current != $update_data) ? false : true;
+}
+
+/**
+* Update the Links plugin
+*
+* @return   int     Number of message to display (true = generic success msg)
+*
+*/ 
+function plugin_upgrade_links ()
+{
+    global $_TABLES, $_LI_CONF;
+
+    // the plugin needs this function so complain when it doesn't exist
+    if (!function_exists ('COM_truncate')) {
+        return 3002;
+    }
+
+    // no db changes - just update the version numbers
+    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'links'");
+
+    return true;
 }
 
 /**

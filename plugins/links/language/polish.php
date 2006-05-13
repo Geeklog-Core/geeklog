@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: polish.php,v 1.1 2006/02/11 14:02:09 dhaun Exp $
+# $Id: polish.php,v 1.2 2006/05/13 17:13:08 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -119,6 +119,9 @@ $PLG_links_MESSAGE1 = "Dziêkujê za przes³anie linka.  Po zatwierdzeniu link poja
 $PLG_links_MESSAGE2 = 'Link zosta³ zapisany.';
 $PLG_links_MESSAGE3 = 'Link zosta³ wykasowany.';
 $PLG_links_MESSAGE4 = "Dziêkujê za przes³anie linka.  Link jest dostêpny w sekcji <a href={$_CONF['site_url']}/links/index.php>linki</a>.";
+
+// Messages for the plugin upgrade
+$PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
 # admin/link.php

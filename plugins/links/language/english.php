@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.11 2006/03/18 12:59:23 dhaun Exp $
+# $Id: english.php,v 1.12 2006/05/13 17:13:08 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -121,6 +121,9 @@ $PLG_links_MESSAGE1 = "Thank-you for submitting a link to {$_CONF['site_name']}.
 $PLG_links_MESSAGE2 = 'Your link has been successfully saved.';
 $PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
 $PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
+
+// Messages for the plugin upgrade
+$PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
 # admin/link.php

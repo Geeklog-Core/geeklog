@@ -27,13 +27,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.9 2006/03/12 19:55:35 dhaun Exp $
+// $Id: config.php,v 1.10 2006/05/13 17:13:08 dhaun Exp $
 /** 
  * Links plugin configuration file
  * 
  * @package Links
  * @filesource
- * @version 1.0
+ * @version 1.0.1
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
@@ -57,7 +57,7 @@ $_LI_CONF = array();
 * 
 * @global array $_LI_CONF['version']
 */
-$_LI_CONF['version'] = '1.0';          // Plugin Version
+$_LI_CONF['version'] = '1.0.1';          // Plugin Version
 
 /**
  * this lets you select which functions are available for registered users only

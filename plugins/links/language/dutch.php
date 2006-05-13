@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: dutch.php,v 1.1 2006/03/04 20:32:12 dhaun Exp $
+# $Id: dutch.php,v 1.2 2006/05/13 17:13:08 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -122,6 +122,9 @@ $PLG_links_MESSAGE1 = "Hartelijk dank voor het voorstellen van uw link op {$_CON
 $PLG_links_MESSAGE2 = 'De link is opgeslagen.';
 $PLG_links_MESSAGE3 = 'De link is verwijderd.';
 $PLG_links_MESSAGE4 = "Hartelijk dank voor het toevoegen van uw link op {$_CONF['site_name']}.  De link is opgenomen in de <a href={$_CONF['site_url']}/links/index.php>links</a> directory.";
+
+// Messages for the plugin upgrade
+$PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
 # admin/link.php

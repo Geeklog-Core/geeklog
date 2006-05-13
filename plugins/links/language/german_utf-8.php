@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german_utf-8.php,v 1.1 2005/12/12 21:01:30 dhaun Exp $
+# $Id: german_utf-8.php,v 1.2 2006/05/13 17:13:08 dhaun Exp $
 
 ###############################################################################
 # Array Format:
@@ -88,6 +88,9 @@ $PLG_links_MESSAGE1 = "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein 
 $PLG_links_MESSAGE2 = 'Dein Link wurde gespeichert.';
 $PLG_links_MESSAGE3 = 'Der Link wurde gelöscht.';
 $PLG_links_MESSAGE4 = "Danke für Deinen Link. Du findest ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
+
+// Messages for the plugin upgrade
+$PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
 # admin/link.php

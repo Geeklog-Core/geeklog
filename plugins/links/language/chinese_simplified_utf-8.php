@@ -75,6 +75,7 @@ $LANG_LINKS_SEARCH = array(
  'author' => '提交者',
  'hits' => '点击'
 );
+
 ###############################################################################
 # for the submission form
 /**
@@ -103,6 +104,9 @@ $PLG_links_MESSAGE1 = "谢谢你给本站提交一个联结. 此联结已提交�
 $PLG_links_MESSAGE2 = '你的连接已存续成功.';
 $PLG_links_MESSAGE3 = '联结已成功的删除.';
 $PLG_links_MESSAGE4 = "谢谢你为本站提交一个联结.  你的连接现在已显现在<a href={$_CONF['site_url']}/links/index.php>联结</a>处.";
+
+// Messages for the plugin upgrade
+$PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
 # admin/link.php

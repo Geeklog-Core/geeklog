@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: japanese_utf-8.php,v 1.3 2005/12/22 11:37:04 dhaun Exp $
+# $Id: japanese_utf-8.php,v 1.4 2006/05/13 17:13:08 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -87,6 +87,9 @@ $PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンクを登録してくれて
 $PLG_links_MESSAGE2 = 'リンクは無事登録されました。';
 $PLG_links_MESSAGE3 = 'リンクの削除が完了しました。';
 $PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンクを登録してくれてありがとうございます。リンクは<a href={$_CONF['site_url']}/links.php>links</a>で確認できます。";
+
+// Messages for the plugin upgrade
+$PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
 # admin/link.php
