@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.2                                                 |
+// | Static Pages Plugin 1.4.3                                                 |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.67 2006/04/27 11:24:41 ospiess Exp $
+// $Id: functions.inc,v 1.68 2006/05/13 18:49:23 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -646,7 +646,23 @@ function plugin_geticon_staticpages ()
 }
 
 /**
-* Removes the datastructures for this plugin from the Geeklog database
+* Update the Static Pages plugin
+*
+* @return   int     Number of message to display (true = generic success msg)
+*
+*/ 
+function plugin_upgrade_staticpages ()
+{
+    global $_TABLES, $_SP_CONF;
+
+    // no db changes - just update the version number
+    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SP_CONF['version']}' WHERE pi_name = 'staticpages'");
+
+    return true;
+}
+
+/**
+* Removes the data structures for this plugin from the Geeklog database
 *
 * This may get called by the install routine to undo anything done to this
 * point.  To do that, $steps will have a list of steps to undo
@@ -770,7 +786,8 @@ function staticpages_templatePath ($path = '')
     return $retval;
 }
 
-function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr) {
+function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
+{
     global $_CONF, $LANG_ADMIN, $LANG_STATIC, $_TABLES;
 
     switch($fieldname) {

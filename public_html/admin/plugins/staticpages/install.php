@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.2                                                 |
+// | Static Pages Plugin 1.4.3                                                 |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.20 2006/02/11 10:21:06 dhaun Exp $
+// $Id: install.php,v 1.21 2006/05/13 18:49:24 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -46,7 +46,7 @@ require_once ('../../../lib-common.php');
 //
 $pi_display_name = 'Static Page';
 $pi_name         = 'staticpages';
-$pi_version      = '1.4.2';
+$pi_version      = '1.4.3';
 $gl_version      = '1.4.0';
 $pi_url          = 'http://www.geeklog.net/';
 
