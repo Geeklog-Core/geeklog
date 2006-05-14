@@ -11,7 +11,7 @@
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Copyright (C) 2002-2005 by the following authors:                         |
+// | Copyright (C) 2002-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Tom Willett       - tom AT pigstye DOT net                       |
@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.2 2006/05/14 08:40:41 dhaun Exp $
+// $Id: install.php,v 1.3 2006/05/14 08:55:08 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/calendar/config.php');
@@ -141,7 +141,7 @@ function plugin_install_now()
 
         $grp_name = addslashes ($name);
         $grp_desc = addslashes ($desc);
-        DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', 'grp_desc')", 1);
+        DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
         if (DB_error ()) {
             $uninstall_plugin ();
 
