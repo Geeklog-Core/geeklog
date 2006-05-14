@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.44 2006/05/12 09:12:17 ospiess Exp $
+// $Id: functions.inc,v 1.45 2006/05/14 18:05:09 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -922,6 +922,19 @@ function plugin_templatesetvars_polls ($templatename, &$template)
     if ($templatename == 'header') {
         $template->set_var ('button_polls', $LANG_POLLS['polls']);
     }
+}
+
+function plugin_upgrade_polls() 
+{
+    global $_PO_CONF, $_TABLES;
+    $current_version = DB_getItem($_TABLES['plugins'], 'version','name="polls"');
+    if ($current_version == "1.0") 
+    {
+        $sql = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar( 255 ) NULL AFTER `votes`;";  
+    }
+    
+    $result = DB_query($sql);
+    return true;
 }
 
 ?>
