@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.31 2006/03/29 19:54:53 mjervis Exp $
+// $Id: lib-syndication.php,v 1.32 2006/05/14 16:40:25 ospiess Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -176,63 +176,6 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
 }
 
 /**
-* Check if a feed for the events needs to be updated.
-*
-* @param    string  $update_info    list of event ids
-* @param    string  $limit          number of entries or number of hours
-* @param    string  $updated_id     (optional) entry id to be updated
-* @return   bool                    false = feed needs to be updated
-*
-*/
-function SYND_feedUpdateCheckEvents( $update_info, $limit, $updated_id = '' )
-{
-    global $_CONF, $_TABLES, $_SYND_DEBUG;
-
-    $where = '';
-    if( !empty( $limit ))
-    {
-        if( substr( $limit, -1 ) == 'h' ) // next xx hours
-        {
-            $limitsql = '';
-            $hours = substr( $limit, 0, -1 );
-            $where = " AND (datestart <= DATE_ADD(NOW(), INTERVAL $hours HOUR))";
-        }
-        else
-        {
-            $limitsql = ' LIMIT ' . $limit;
-        }
-    }
-    else
-    {
-        $limitsql = ' LIMIT 10';
-    }
-
-    $result = DB_query( "SELECT eid FROM {$_TABLES['events']} WHERE perm_anon > 0 AND dateend >= NOW()$where ORDER BY datestart,timestart $limitsql" );
-    $nrows = DB_numRows( $result );
-
-    $eids = array();
-    for( $i = 0; $i < $nrows; $i++ )
-    {
-        $A = DB_fetchArray( $result );
-
-        if( $A['eid'] == $updated_id )
-        {
-            // no need to look any further - this feed has to be updated
-            return false;
-        }
-
-        $eids[] = $A['eid'];
-    }
-    $current = implode( ',', $eids );
-
-    if ($_SYND_DEBUG) {
-        COM_errorLog ("Update check for events: comparing new list ($current) with old list ($update_info)", 1);
-    }
-
-    return ( $current != $update_info ) ? false : true;
-}
-
-/**
 * Check if the contents of Geeklog's built-in feeds need to be updated.
 *
 * @param    string  topic           indicator of the feed's "topic"
@@ -244,24 +187,7 @@ function SYND_feedUpdateCheckEvents( $update_info, $limit, $updated_id = '' )
 */
 function SYND_feedUpdateCheck( $topic, $update_data, $limit, $updated_topic = '', $updated_id = '' )
 {
-    $is_current = true;
-
-    if( $topic == '::events' )
-    {
-        if( $updated_topic != '::events' )
-        {
-            $updated_topic = '';
-            $updated_id = '';
-        }
-    }
-    else
-    {
-        if( $updated_topic == '::events' )
-        {
-            $updated_topic = '';
-            $updated_id = '';
-        }
-    }
+    $is_current = true; 
 
     switch( $topic )
     {
@@ -271,14 +197,6 @@ function SYND_feedUpdateCheck( $topic, $update_data, $limit, $updated_topic = ''
                             $updated_topic, $updated_id );
         }
         break;
-
-        case '::events':
-        {
-            $is_current = SYND_feedUpdateCheckEvents( $update_data, $limit,
-                            $updated_id );
-        }
-        break;
-
         default:
         {
             $is_current = SYND_feedUpdateCheckTopic( $topic, $update_data,
@@ -482,81 +400,6 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
 }
 
 /**
-* Get content for a feed that holds all events.
-*
-* @param    string   $limit    number of entries or number of stories
-* @param    string   $link     link to homepage
-* @param    string   $update   list of story ids
-* @return   array              content of the feed
-*
-*/
-function SYND_getFeedContentEvents( $limit, &$link, &$update, $contentLength, $feedType, $feedVersion, $fid )
-{
-    global $_TABLES, $_CONF, $LANG01;
-
-    $where = '';
-    if( !empty( $limit ))
-    {
-        if( substr( $limit, -1 ) == 'h' ) // next xx hours
-        {
-            $limitsql = '';
-            $hours = substr( $limit, 0, -1 );
-            $where = " AND (datestart <= DATE_ADD(NOW(), INTERVAL $hours HOUR))";
-        }
-        else
-        {
-            $limitsql = ' LIMIT ' . $limit;
-        }
-    }
-    else
-    {
-        $limitsql = ' LIMIT 10';
-    }
-
-    $result = DB_query( "SELECT eid,owner_id,title,description FROM {$_TABLES['events']} WHERE perm_anon > 0 AND dateend >= NOW()$where ORDER BY datestart,timestart $limitsql" );
-
-    $content = array();
-    $eids = array();
-    $nrows = DB_numRows( $result );
-
-    for( $i = 1; $i <= $nrows; $i++ )
-    {
-        $row = DB_fetchArray( $result );
-        $eids[] = $row['eid'];
-
-        $eventtitle = stripslashes( $row['title'] );
-        $eventtext = SYND_truncateSummary( $row['description'], $contentLength);
-        $eventlink  = $_CONF['site_url'] . '/calendar_event.php?eid='
-                    . $row['eid'];
-
-        // Need to reparse the date from the event id
-        $myyear = substr( $row['eid'], 0, 4 );
-        $mymonth = substr( $row['eid'], 4, 2 );
-        $myday = substr( $row['eid'], 6, 2 );
-        $myhour = substr( $row['eid'], 8, 2 );
-        $mymin = substr( $row['eid'], 10, 2 );
-        $mysec = substr( $row['eid'], 12, 2 );
-        $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
-        $creationtime = strtotime( $newtime );
-        $extensionTags = PLG_getFeedElementExtensions('event', $row['eid'], $feedType, $feedVersion, '', $fid);
-        $content[] = array( 'title'  => $eventtitle,
-                            'summary'   => $eventtext,
-                            'link'   => $eventlink,
-                            'uid'    => $row['owner_id'],
-                            'author' => COM_getDisplayName( $row['owner_id'] ),
-                            'date'   => $creationtime,
-                            'format' => 'plaintext',
-                            'extensions' => $extensionTags
-                          );
-    }
-
-    $link = $_CONF['site_url'] . '/calendar.php';
-    $update = implode( ',', $eids );
-
-    return $content;
-}
-
-/**
 * Update a feed.
 * Re-written by Michael Jervis (mike AT fuckingbrit DOT com)
 * to use the new architecture
@@ -596,13 +439,7 @@ function SYND_updateFeed( $fid )
                     $content = SYND_getFeedContentAll( $A['limits'], $link,
                                                        $data, $A['content_length'],
                                                        $format[0], $format[1], $fid );
-                }
-                elseif( $A['topic'] == '::events')
-                {
-                    $content = SYND_getFeedContentEvents( $A['limits'], $link,
-                                                          $data, $A['content_length'],
-                                                          $format[0], $format[1], $fid );
-                }
+                } 
                 else // feed for a single topic only
                 {
                     $content = SYND_getFeedContentPerTopic( $A['topic'],
