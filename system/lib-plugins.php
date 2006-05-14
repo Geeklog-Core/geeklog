@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.99 2006/05/14 16:38:52 ospiess Exp $
+// $Id: lib-plugins.php,v 1.100 2006/05/14 17:58:52 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1206,9 +1206,7 @@ function PLG_collectTags ()
 
     // Determine which Core Modules and Plugins support AutoLinks
     //                        'tag'   => 'module'
-    $autolinkModules = array ('story' => 'geeklog',
-                              'event' => 'geeklog'
-                             );
+    $autolinkModules = array ('story' => 'geeklog');
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;

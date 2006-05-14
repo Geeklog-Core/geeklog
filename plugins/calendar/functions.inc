@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.15 2006/05/14 17:32:18 ospiess Exp $
+// $Id: functions.inc,v 1.16 2006/05/14 17:58:51 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -338,8 +338,8 @@ function plugin_moderationapprove_calendar ($id)
     // Since the eventsubmission table does not contain fields for the owner
     // and group, we set those to the current user. Also set the default
     // permissions as specified in the plugin's config.php
-    if (isset ($_GROUPS['Event Admin'])) {
-        $group_id = $_GROUPS['Event Admin'];
+    if (isset ($_GROUPS['Calendar Admin'])) {
+        $group_id = $_GROUPS['Calendar Admin'];
     } else {
         $group_id = SEC_getFeatureGroup ('calendar.moderate');
     }
@@ -1217,7 +1217,7 @@ function plugin_showstats_calendar ($showsitestats)
             $A = DB_fetchArray($result);
             $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
             $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                      . "/calendar_event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
+                      . "/calendar/event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
             $A['hits'] = COM_NumberFormat ($A['hits']);
             $data_arr[$i] = $A;
         }

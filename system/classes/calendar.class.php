@@ -32,14 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.class.php,v 1.7 2006/05/09 04:58:03 ospiess Exp $
+// $Id: calendar.class.php,v 1.8 2006/05/14 17:58:52 ospiess Exp $
 
 /**
 * This file contains the two classes used to help support the calendar pages.
 * Please note that our calendar code is in shambles and is hard to understand.
-* Not so much this file as calendar.php and calendar_event.php.  Those files
-* along with this class need to be reworked to be easier to maintain and
-* support rich calendaring features
+* Not so much this file as /calendar/index.php and calendar/event.php.  
+* Those files along with this class need to be reworked to be easier 
+* to maintain and support rich calendaring features
 *
 * @author   Tony Bibbs  <tony@tonybibbs.com>
 */
