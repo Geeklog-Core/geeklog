@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.9 2006/05/14 09:31:43 dhaun Exp $
+// $Id: functions.inc,v 1.10 2006/05/14 09:36:59 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1231,8 +1231,8 @@ function plugin_save_submit_calendar ($A)
         if (($_CONF['eventsubmission'] == 1) &&
                 !SEC_hasRights ('event.submit')) {
             DB_save ($_TABLES['eventsubmission'], 
-			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
-					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
+                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
 
             if (isset ($_CONF['notification']) &&
                     in_array ('event', $_CONF['notification'])) {
@@ -1248,8 +1248,8 @@ function plugin_save_submit_calendar ($A)
             }
 
             DB_save ($_TABLES['events'], 
-			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id', 
-					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
+                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id', 
+                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
             if (isset ($_CONF['notification']) &&
                     in_array ('event', $_CONF['notification'])) {
                 CALENDAR_sendNotification ($_TABLES['events'], $A);
@@ -1263,8 +1263,8 @@ function plugin_save_submit_calendar ($A)
 
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             DB_save ($_TABLES['personal_events'], 
-			         'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
-					 "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+                     'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
+                     "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
             $retval = COM_refresh ($_CONF['site_url']
                                    . '/calendar.php?mode=personal&msg=17');
         } else {
@@ -1297,27 +1297,27 @@ function CALENDAR_sendNotification ($table, $A)
     $mailbody .= "\n------------------------------\n";
 
     COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
-	$title = stripslashes ($A['title']);
-	$description = stripslashes ($A['description']);
-	
-	$mailbody = "$LANG09[16]: $title\n"
-	          . "$LANG09[17]: " . strftime ($_CONF['date'],
-	            strtotime ($A['datestart'] . ' ' . $A['timestart']));
-	if ($A['allday']) {
-	    $mailbody .= ' (' . $LANG30[26] . ')';
-	}
-	$mailbody .= "\n";
-	if (!empty ($A['url']) && ($A['url'] != 'http://')) {
-	    $mailbody .= "$LANG09[33]: <" . $A['url'] . ">\n";
-	}
-	$mailbody .= "\n" . $description . "\n\n";
-	if ($table == $_TABLES['eventsubmission']) {
-	    $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
-	} else {
-	    $mailbody .= "$LANG02[12] <{$_CONF['site_url']}/calendar_event.php?eid={$A['eid']}>\n\n";
-	}
-	$mailsubject = $_CONF['site_name'] . ' ' . $LANG29[37];
-	break;
+    $title = stripslashes ($A['title']);
+    $description = stripslashes ($A['description']);
+    
+    $mailbody = "$LANG09[16]: $title\n"
+              . "$LANG09[17]: " . strftime ($_CONF['date'],
+                strtotime ($A['datestart'] . ' ' . $A['timestart']));
+    if ($A['allday']) {
+        $mailbody .= ' (' . $LANG30[26] . ')';
+    }
+    $mailbody .= "\n";
+    if (!empty ($A['url']) && ($A['url'] != 'http://')) {
+        $mailbody .= "$LANG09[33]: <" . $A['url'] . ">\n";
+    }
+    $mailbody .= "\n" . $description . "\n\n";
+    if ($table == $_TABLES['eventsubmission']) {
+        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
+    } else {
+        $mailbody .= "$LANG02[12] <{$_CONF['site_url']}/calendar_event.php?eid={$A['eid']}>\n\n";
+    }
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[37];
+    break;
 }
 
 
@@ -1538,31 +1538,31 @@ function plugin_showstats_calendar ($showsitestats)
     global $_CONF, $_TABLES, $LANG_CAL_1;
 
     // Top Ten Events
-	$result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
-	$nrows  = DB_numRows($result);
-	if ($nrows > 0) {
-	    $header_arr = array(
-	        array('text' => $LANG_CAL_1[12], 'field' => 'sid'),
-	        array('text' => $LANG_CAL_1[48], 'field' => 'hits'),
-	    );
-	    $data_arr = array();
-	    $text_arr = array('has_menu'     => false,
-	                      'title'        => $LANG_CAL_1[47],
-	    );
-	    for ($i = 0; $i < $nrows; $i++) {
-	        $A = DB_fetchArray($result);
-	        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-	        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-	                  . "/calendar_event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
-	        $A['hits'] = COM_NumberFormat ($A['hits']);
-	        $data_arr[$i] = $A;
-	    }
-	    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
-	} else {
-	    $display .= COM_startBlock($LANG_CAL_1[47]);
-	    $display .= $LANG_CAL_1[49];
-	    $display .= COM_endBlock();
-	}
+    $result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
+    $nrows  = DB_numRows($result);
+    if ($nrows > 0) {
+        $header_arr = array(
+            array('text' => $LANG_CAL_1[12], 'field' => 'sid'),
+            array('text' => $LANG_CAL_1[48], 'field' => 'hits'),
+        );
+        $data_arr = array();
+        $text_arr = array('has_menu'     => false,
+                          'title'        => $LANG_CAL_1[47],
+        );
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
+            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+                      . "/calendar_event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
+            $A['hits'] = COM_NumberFormat ($A['hits']);
+            $data_arr[$i] = $A;
+        }
+        $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
+    } else {
+        $display .= COM_startBlock($LANG_CAL_1[47]);
+        $display .= $LANG_CAL_1[49];
+        $display .= COM_endBlock();
+    }
 
     return $display;
 }
@@ -1577,8 +1577,8 @@ function plugin_statssummary_calendar ()
 {
     global $LANG_CAL_1, $_TABLES;
 
-	$result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
-	$A = DB_fetchArray ($result);
+    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
+    $A = DB_fetchArray ($result);
     return array ($LANG_CAL_1[46], COM_NumberFormat ($A['count']));
 }
 
