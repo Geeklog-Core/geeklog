@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2006/05/14 20:23:32 dhaun Exp $
+// $Id: index.php,v 1.8 2006/05/14 20:32:16 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -119,6 +119,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     if ($mode == 'editsubmission') {
         $event_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name','plaintext'));
     } else {
+        if (!isset ($A['postmode'])) {
+            $A['postmode'] = $_CONF['postmode'];
+        }
         $event_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
     }
 
@@ -146,6 +149,8 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         if (empty ($A['timeend'])) {
             $A['timeend'] = $A['timestart'];
         }
+        $A['event_type'] = '';
+        $A['state'] = '';
     }
 
     $event_templates->set_var('event_id', $A['eid']);
