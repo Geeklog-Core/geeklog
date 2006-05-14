@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.2 2006/03/24 19:32:24 dhaun Exp $
+// $Id: index.php,v 1.3 2006/05/14 17:08:05 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -251,7 +251,7 @@ function getDeleteImageLink ($mode, $A)
                     . '" border="0" alt="' . $LANG_CAL_2[30] . '" title="'
                     . $LANG_CAL_2[30] . '"></a>';
         }
-    } else if (SEC_hasRights ('event.edit')) {
+    } else if (SEC_hasRights ('calendar.edit')) {
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
 
@@ -392,7 +392,7 @@ if (isset ($_REQUEST['mode'])) {
     $mode = COM_applyFilter ($_REQUEST['mode']);
 }
 
-if ($mode != 'personal') {
+if ($mode != 'personal' && $mode != 'quickadd') {
     $mode = '';
 }
 
@@ -407,7 +407,7 @@ if (($mode == 'personal') && (!isset ($_USER['uid']) || ($_USER['uid'] <= 1))) {
     $mode = '';
 }
 
-if ($mode == 'personal' AND $_CONF['personalcalendars'] == 0) {
+if ($mode == 'personal' AND $_CA_CONF['personalcalendars'] == 0) {
     // User is trying to use the personal calendar feature even though it isn't
     // turned on.
     $display .= $LANG_CAL_2[37];
@@ -432,7 +432,7 @@ if (isset ($_REQUEST['view'])) {
     $view = COM_applyFilter ($_REQUEST['view']);
 }
 
-if (!in_array ($view, array ('month', 'week', 'day'))) {
+if (!in_array ($view, array ('month', 'week', 'day', 'addentry'))) {
     $view = '';
 }
 
@@ -533,7 +533,7 @@ case 'day':
                                . $_CONF['site_url'] . "/calendar/index.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG_CAL_2[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
-        if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
+        if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="'
                                    . $_CONF['site_url'] . "/calendar/index.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG_CAL_2[12] . '</a>]');
         } else {
@@ -644,7 +644,7 @@ case 'week':
                                                  . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
-        if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
+        if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="' . $_CONF['site_url']
                                                      . "/calendar/inedx.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">"
                                                      . $LANG_CAL_2[12] . '</a>]');
@@ -783,9 +783,14 @@ case 'week':
     $display .= $cal_templates->parse('output','week');
     $display .= COM_siteFooter();
     break;
+    
+case 'addentry':
+    $display .= plugin_submit_calendar($mode);
+    break;
 
 default: // month view
 // Load templates
+
 $cal_templates = new Template($_CONF['path'] . '/plugins/calendar/templates');
 $cal_templates->set_file (array (
         'calendar'    => 'calendar.thtml',
@@ -920,17 +925,25 @@ for ($i = 1; $i <= 6; $i++) {
                 . $month . '&amp;year=' . $year . '" class="cal-date">'
                 . $curday->daynumber. '</a><hr>');
 
-            if ($mode == 'personal') {
-                if (strlen($month) == 1) {
-                    $month = '0' . $month;
-                }
-                $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart,timestart";
-            } else {
-                if (strlen($month) == 1) {
-                    $month = '0' . $month;
-                }
-                $calsql = "SELECT * FROM {$_TABLES['events']} WHERE ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend))" . COM_getPermSql ('AND') . " ORDER BY datestart,timestart";
+            if (strlen($month) == 1) {
+                $month = '0' . $month;
             }
+
+            if ($mode == 'personal') {
+                $calsql_tbl = $_TABLES['personal_events'];
+                $calsql_filt = "AND (uid = {$_USER['uid']})";
+            } else {
+                $calsql_tbl = $_TABLES['events'];
+                $calsql_filt = COM_getPermSql ('AND');
+            }
+            
+            $calsql = "SELECT * FROM $calsql_tbl WHERE "
+                    . "((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" "
+                    . "AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") "
+                    . "OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" "
+                    . "AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") "
+                    . "OR (\"$year-$month-$curday->daynumber\" between datestart and dateend))"
+                    . $calsql_filt . " ORDER BY datestart,timestart";
 
             $query2 = DB_query($calsql);
             $q2_numrows = DB_numRows($query2);
@@ -1006,22 +1019,29 @@ if ($mode == 'personal') {
     $cal_templates->parse('master_calendar_option','mastercal',true); 
 } else {
     if (isset ($_USER['uid']) && ($_USER['uid'] > 1) &&
-            ($_CONF['personalcalendars'] == 1)) {
+            ($_CA_CONF['personalcalendars'] == 1)) {
         $cal_templates->set_var('lang_mycalendar', $LANG_CAL_2[12]);
         $cal_templates->parse('personal_calendar_option','personalcal',true); 
     } else {
         $cal_templates->set_var('personal_calendar_option','&nbsp;');
     }
 }
-$cal_templates->set_var('lang_addevent', $LANG_CAL_2[8]);
+
+
 $cal_templates->set_var('lang_cal_curmo', $LANG_CAL_2[12 + $currentmonth]);
 $cal_templates->set_var('cal_curmo_num', $currentmonth);
 $cal_templates->set_var('cal_curyr_num', $currentyear);
 $cal_templates->set_var('lang_cal_displaymo', $LANG_CAL_2[12 + $month]);
 $cal_templates->set_var('cal_displaymo_num', $month);
 $cal_templates->set_var('cal_displayyr_num', $year);
+if ($mode == 'personal') {
+    $cal_templates->set_var('lang_addevent', $LANG_CAL_2[8]);
+    $cal_templates->set_var('addevent_formurl', '/calendar/index.php');
+} else {
+    $cal_templates->set_var('lang_addevent', $LANG_CAL_2[42]);
+    $cal_templates->set_var('addevent_formurl', '/submit.php?type=calendar');   
+}
 $cal_templates->parse('add_event_option','addevent',true);
-
 $cal_templates->parse('output','calendar');
 $display .= $cal_templates->finish($cal_templates->get_var('output'));
 
