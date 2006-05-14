@@ -22,6 +22,10 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core = '0' WHERE ft_name = 'e
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core = '0' WHERE ft_name = 'event.submit'";
 $_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core = '0' WHERE grp_name = 'Event Admin'";
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'phpblock', phpblockfn ='phpblock_calendar' WHERE name = 'events_block'";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name='calendar.moderate' WHERE ft_name='event.moderate'";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name='calendar.edit' WHERE ft_name='event.edit'";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name='calendar.submit' WHERE ft_name='event.submit'";
+$_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_name='Calendar Admin' WHERE grp_name='Event Admin'";
 
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
