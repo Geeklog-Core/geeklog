@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.218 2006/05/14 16:45:29 ospiess Exp $
+// $Id: config.php,v 1.219 2006/05/14 16:51:44 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -80,7 +80,7 @@ $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 
 // Make sure this is the correct URL to your site, i.e. to where Geeklog's
 // index.php file resides (no trailing slash).
-$_CONF['site_url']          = 'http://example.com';
+$_CONF['site_url']          = 'http://www.example.com';
 
 // Some hosting services have a preconfigured admin directory. In that case,
 // you need to rename Geeklog's admin directory to something like "myadmin"
