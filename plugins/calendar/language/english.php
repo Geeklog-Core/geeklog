@@ -96,7 +96,7 @@ $LANG_CAL_2 = array(
     5 => 'Thursday',
     6 => 'Friday',
     7 => 'Saturday',
-    8 => 'Add Event',
+    8 => 'Add Personal Event',
     9 => '%s Event',
     10 => 'Events for',
     11 => 'Master Calendar',
@@ -129,7 +129,8 @@ $LANG_CAL_2 = array(
     38 => 'Personal Event Editor',
     39 => 'Day',
     40 => 'Week',
-    41 => 'Month'
+    41 => 'Month',
+    42 => 'Add Master Event'
 );
 
 ###############################################################################
