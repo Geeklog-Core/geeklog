@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.217 2006/04/27 11:35:19 ospiess Exp $
+// $Id: config.php,v 1.218 2006/05/14 16:45:29 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -80,7 +80,7 @@ $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 
 // Make sure this is the correct URL to your site, i.e. to where Geeklog's
 // index.php file resides (no trailing slash).
-$_CONF['site_url']          = 'http://www.example.com';
+$_CONF['site_url']          = 'http://example.com';
 
 // Some hosting services have a preconfigured admin directory. In that case,
 // you need to rename Geeklog's admin directory to something like "myadmin"
@@ -201,7 +201,6 @@ $_CONF['menu_elements'] = array
 (
     // 'home',      // link to homepage
     'contribute',   // contribute / "submit a story" link
-    'calendar',     // link to the site calendar
     'search',       // link to advanced search
     'stats',        // link to site stats
     'directory',    // link to list of past stories
@@ -422,7 +421,6 @@ $_CONF['num_search_results'] = 10;
 $_CONF['loginrequired'] = 0; // all of them, if set to 1 will override all else
 $_CONF['submitloginrequired']     = 0;
 $_CONF['commentsloginrequired']   = 0;
-$_CONF['calendarloginrequired']   = 0;
 $_CONF['statsloginrequired']      = 0;
 $_CONF['searchloginrequired']     = 0;
 $_CONF['profileloginrequired']    = 0;
@@ -434,7 +432,6 @@ $_CONF['directoryloginrequired']  = 0;
 
 // enable (set to 1) or disable (set to 0) submission queues:
 $_CONF['storysubmission'] = 1;
-$_CONF['eventsubmission'] = 1;
 $_CONF['usersubmission']  = 0; // 1 = new users must be approved
 
 // When set to 1, this will display an additional block on the submissions page
@@ -443,8 +440,8 @@ $_CONF['listdraftstories'] = 0;
 
 // Send an email notification when a new submission has been made. The contents
 // of the array can be any combination of 'story', 'comment', 'trackback',
-// 'pingback', 'event', and 'user'.
-// Example: $_CONF['notification'] = array ('story', 'event');
+// 'pingback', and 'user'.
+// Example: $_CONF['notification'] = array ('story');
 // The email will be sent to $_CONF['site_mail'] (see above).
 $_CONF['notification'] = array ();
 
@@ -552,12 +549,6 @@ $_CONF['pingback_self'] = 0;
 
 // Link to the documentation from the Admin block (0 = hide link, 1 = show)
 $_CONF['link_documentation'] = 1;
-
-// Calendar Settings
-$_CONF['personalcalendars']     = 1;
-$_CONF['showupcomingevents']    = 1;
-$_CONF['upcomingeventsrange']   = 14; // days
-$_CONF['event_types']           = 'Anniversary,Appointment,Birthday,Business,Education,Holiday,Meeting,Miscellaneous,Personal,Phone Call,Special Occasion,Travel,Vacation';
 
 // Story Settings
 $_CONF['maximagesperarticle']   = 5;
@@ -835,7 +826,6 @@ $_CONF['url_rewrite'] = false; // false = off, true = on
 // 0 = neither read nor write permissions
 // (a value of 1, ie. write-only, does not make sense and is not allowed)
 $_CONF['default_permissions_block'] = array (3, 2, 2, 2);
-$_CONF['default_permissions_event'] = array (3, 2, 2, 2);
 $_CONF['default_permissions_story'] = array (3, 2, 2, 2);
 $_CONF['default_permissions_topic'] = array (3, 2, 2, 2);
 
