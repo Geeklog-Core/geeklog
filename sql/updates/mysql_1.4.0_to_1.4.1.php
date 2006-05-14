@@ -12,7 +12,15 @@ $_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AF
 // update plugin version numbers
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1' WHERE pi_name = 'polls'";
+$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.4' WHERE pi_name = 'spamx'";
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.3' WHERE pi_name = 'staticpages'";
+
+// Calendar plugin
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0', '1.4.1', 1, 'http://www.geeklog.net/')";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core = '0' WHERE ft_name = 'event.edit'";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core = '0' WHERE ft_name = 'event.moderate'";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core = '0' WHERE ft_name = 'event.submit'";
+$_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core = '0' WHERE grp_name = 'Event Admin'";
 
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
