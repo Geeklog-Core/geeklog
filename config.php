@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.219 2006/05/14 16:51:44 ospiess Exp $
+// $Id: config.php,v 1.220 2006/05/14 19:18:53 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -277,8 +277,8 @@ $_CONF_FCK['imagelibrary'] = '/images/library';
 // |                                                                           |
 // | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
-$_CONF['language']        = 'english'; // set this to a utf-8 language if you want
-// users to be able to change language
+$_CONF['language']        = 'english'; // set this to a utf-8 language if you
+                            // want users to be able to change their language
 $_CONF['locale']          = 'en_GB';
 $_CONF['date']            = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']         = '%m/%d %I:%M%p';
@@ -441,7 +441,7 @@ $_CONF['listdraftstories'] = 0;
 // Send an email notification when a new submission has been made. The contents
 // of the array can be any combination of 'story', 'comment', 'trackback',
 // 'pingback', and 'user'.
-// Example: $_CONF['notification'] = array ('story');
+// Example: $_CONF['notification'] = array ('story', 'comment');
 // The email will be sent to $_CONF['site_mail'] (see above).
 $_CONF['notification'] = array ();
 
@@ -841,60 +841,5 @@ if (!defined ('LB')) {
 if (!defined ('VERSION')) {
     define('VERSION', '1.4.1cvs');
 }
-
-$_STATES = array(
-        '--'=>'',
-        'AL'=>'Alabama',
-        'AK'=>'Alaska',
-        'AZ'=>'Arizona',
-        'AR'=>'Arkansas',
-        'CA'=>'California',
-        'CO'=>'Colorado',
-        'CT'=>'Connecticut',
-        'DE'=>'Delaware',
-        'DC'=>'District of Columbia',
-        'FL'=>'Florida',
-        'GA'=>'Georgia',
-        'HI'=>'Hawaii',
-        'ID'=>'Idaho',
-        'IL'=>'Illinois',
-        'IN'=>'Indiana',
-        'IA'=>'Iowa',
-        'KS'=>'Kansas',
-        'KY'=>'Kentucky',
-        'LA'=>'Louisiana',
-        'ME'=>'Maine',
-        'MD'=>'Maryland',
-        'MA'=>'Massachusetts',
-        'MI'=>'Michigan',
-        'MN'=>'Minnesota',
-        'MS'=>'Mississippi',
-        'MO'=>'Missouri',
-        'MT'=>'Montana',
-        'NE'=>'Nebraska',
-        'NV'=>'Nevada',
-        'NH'=>'New Hampshire',
-        'NJ'=>'New Jersey',
-        'NM'=>'New Mexico',
-        'NY'=>'New York',
-        'NC'=>'North Carolina',
-        'ND'=>'North Dakota',
-        'OH'=>'Ohio',
-        'OK'=>'Oklahoma',
-        'OR'=>'Oregon',
-        'PA'=>'Pennsylvania',
-        'RI'=>'Rhode Island',
-        'SC'=>'South Carolina',
-        'SD'=>'South Dakota',
-        'TN'=>'Tennessee',
-        'TX'=>'Texas',
-        'UT'=>'Utah',
-        'VT'=>'Vermont',
-        'VA'=>'Virginia',
-        'WA'=>'Washington',
-        'WV'=>'West Virginia',
-        'WI'=>'Wisconsin',
-        'WY'=>'Wyoming'
-    );
 
 ?>

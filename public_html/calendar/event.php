@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | event.php                                                                 |
 // |                                                                           |
 // | Shows details of an event or events                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.2 2006/05/14 17:10:13 ospiess Exp $
+// $Id: event.php,v 1.3 2006/05/14 19:18:53 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -151,7 +151,8 @@ function saveuserevent ($eid)
 */
 function editpersonalevent ($A)
 {
-    global $_CONF, $LANG12, $_STATES;
+    global $_CONF, $LANG12;
+
     $cal_templates = new Template($_CONF['path'] . '/plugins/calendar/templates/');
     $cal_templates->set_file('form','editpersonalevent.thtml');
     $cal_templates->set_var('site_url', $_CONF['site_url']);
@@ -315,14 +316,12 @@ function editpersonalevent ($A)
     $cal_templates->set_var('event_city', stripslashes ($A['city']));
 
     $state_options = '';
-    reset($_STATES);
-    for ($i = 1; $i <= count($_STATES); $i++) {
-        $state_options .= '<option value="' . key($_STATES) . '"';
-        if ($A['state'] == key($_STATES)) {
+    foreach ($_CA_CONF['states'] as $abbr => $state) {
+        $state_options .= '<option value="' . $abbr . '"';
+        if ($abbr == $A['state']) {
             $state_options .= ' selected="selected"';
         }
-        $state_options .= '>' . current($_STATES) . '</option>';
-        next($_STATES);
+        $state_options .= '>' . $state . '</option>';
     }
     $cal_templates->set_var('lang_state', $LANG12[47]);
     $cal_templates->set_var('state_options', $state_options);
@@ -645,9 +644,9 @@ default:
                 } else {
                     $cal_templates->set_var ('event_state', ', ' . $A['state']);
                     $cal_templates->set_var ('event_state_name',
-                                             ', ' . $_STATES[$A['state']]);
+                            ', ' . $_CA_CONF['states'][$A['state']]);
                     $cal_templates->set_var ('event_state_name_only',
-                                             $_STATES[$A['state']]);
+                            $_CA_CONF['states'][$A['state']]);
                 }
 
                 // now figure out which of the {brX} variables to set ...

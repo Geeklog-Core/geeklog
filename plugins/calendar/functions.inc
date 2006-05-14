@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.16 2006/05/14 17:58:51 ospiess Exp $
+// $Id: functions.inc,v 1.17 2006/05/14 19:18:53 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -567,7 +567,7 @@ function plugin_save_submit_calendar ($A)
 */
 function plugin_submit_calendar($mode = 'master')
 {
-    global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1, $_STATES;
+    global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
 
     if (isset ($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
@@ -678,7 +678,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_city',$LANG_CAL_1[34]);
     $eventform->set_var('lang_state',$LANG_CAL_1[35]);
     $state_options = '';
-    foreach ($_STATES as $statekey => $state) {
+    foreach ($_CA_CONF['states'] as $statekey => $state) {
         $state_options .= '<option value="' . $statekey . '">'
                        . $state . '</option>';
     }
