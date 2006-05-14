@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-security.php                                                          |
 // |                                                                           |
 // | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.50 2006/04/27 11:30:44 ospiess Exp $
+// $Id: lib-security.php,v 1.51 2006/05/14 15:35:53 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -914,8 +914,9 @@ function SEC_setDefaultPermissions (&$A, $use_permissions = array ())
 * @param   string  $clause    Optional parm 'WHERE' - default is 'AND'
 * @return  string  $groupsql  Formatted SQL string to be appended in calling script SQL statement
 */
-function SEC_buildAccessSql($clause='AND') {
-    global $_TABLES,$_USER;
+function SEC_buildAccessSql ($clause = 'AND')
+{
+    global $_TABLES, $_USER;
 
     if (isset($_USER) AND $_USER['uid'] > 1) {
         $uid = $_USER['uid'];
@@ -930,8 +931,49 @@ function SEC_buildAccessSql($clause='AND') {
     } else {
         $groupsql .= " $clause grp_access IN (" . implode(',',array_values($_GROUPS)) .")";
     }
+
     return $groupsql;
 }
 
+/**
+* Remove a feature from the database entirely.
+*
+* This function can be used by plugins during uninstall.
+*
+* @param    string  $feature_name   name of the feature, e.g. 'foo.edit'
+* @param    bool    $logging        whether to log progress in error.log
+* @return   void
+*
+*/
+function SEC_removeFeatureFromDB ($feature_name, $logging = false)
+{
+    global $_TABLES;
+
+    if (!empty ($feature_name)) {
+        $feat_id = DB_getItem ($_TABLES['features'], 'ft_id',
+                               "ft_name = '$feature_name'");
+        if (!empty ($feat_id)) {
+            // Before removing the feature itself, remove it from all groups
+            if ($logging) {
+                COM_errorLog ("Attempting to remove '$feature_name' rights from all groups", 1);
+            }
+            DB_delete ($_TABLES['access'], 'acc_ft_id', $feat_id);
+            if ($logging) {
+                COM_errorLog ('...success', 1);
+            }
+
+            // now remove the feature itself
+            if ($logging) {
+                COM_errorLog ("Attempting to remove the '$feature_name' feature", 1);
+            }
+            DB_delete ($_TABLES['features'], 'ft_id', $feat_id);
+            if ($logging) {
+                COM_errorLog ('...success', 1);
+            }
+        } else if ($logging) {
+            COM_errorLog ("SEC_removeFeatureFromDB: Feature '$feature_name' not found.");
+        }
+    }
+}
 
 ?>
