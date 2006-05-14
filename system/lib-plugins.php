@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.98 2006/04/01 17:22:50 dhaun Exp $
+// $Id: lib-plugins.php,v 1.99 2006/05/14 16:38:52 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1323,14 +1323,8 @@ function PLG_replaceTags ($content, $plugin = '')
                     if (empty ($linktext)) {
                         $linktext = stripslashes (DB_getItem ($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
                     }
-                } else if ($autotag['tag'] == 'event') {
-                    $autotag['parm1'] = COM_applyFilter ($autotag['parm1']);
-                    $url = $_CONF['site_url'] . '/calendar_event.php?eid='
-                         . $autotag['parm1'];
-                    if (empty ($linktext)) {
-                        $linktext = stripslashes (DB_getItem ($_TABLES['events'], 'title', "eid = '{$autotag['parm1']}'"));
-                    }
                 }
+
                 if (!empty ($url)) {
                     $filelink = '<a href="' . $url . '">' . $linktext . '</a>';
                     $content = str_replace ($autotag['tagstr'], $filelink,
@@ -1436,7 +1430,7 @@ function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data, $feedType, $
   * available elements for an RSS 2.0 feed for articles. For some reason. This
   * function allows that.
   *
-  * @param  string  contentType     Type of feed content, article, event or a plugin specific type
+  * @param  string  contentType     Type of feed content, article or a plugin specific type
   * @param  string  contentID       Unique identifier of content item to extend
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
@@ -1463,7 +1457,7 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
   * Get namespaces extensions for a feed. If a plugin has added extended tags
   * to a feed, then it may also need to insert some extensions to the name
   * spaces.
-  * @param string contentType   Type of feed content, article, event or a plugin specific type
+  * @param string contentType   Type of feed content, article or a plugin specific type
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
   * @param  string  topic           The topic for the feed.
@@ -1489,7 +1483,7 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, 
 /**
   * Get meta tag extensions for a feed. Add extended tags to the meta
   * area of a feed.
-  * @param  string contentType      Type of feed content, article, event or a plugin specific type
+  * @param  string contentType      Type of feed content, article or a plugin specific type
   * @param  string  feedType        Type of feed format (RSS/Atom/etc)
   * @param  string  feedVersion     Type of feed version (RSS 1.0 etc)
   * @param  string  topic           The topic for the feed.
