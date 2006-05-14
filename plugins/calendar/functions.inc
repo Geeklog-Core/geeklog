@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.11 2006/05/14 10:04:34 dhaun Exp $
+// $Id: functions.inc,v 1.12 2006/05/14 11:31:03 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -313,7 +313,7 @@ function plugin_moderationvalues_calendar()
         'eid',
         $_TABLES['events'],
         "eid,title,description,location,address1,address2,city,state,zipcode,datestart,timestart,dateend,timeend,url",
-        $_TABLES['eventubmission']
+        $_TABLES['eventsubmission']
     );
 }
 
