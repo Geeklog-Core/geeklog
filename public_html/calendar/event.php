@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.1 2006/03/08 13:23:26 ospiess Exp $
+// $Id: event.php,v 1.2 2006/05/14 17:10:13 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -135,7 +135,7 @@ function saveuserevent ($eid)
             DB_query ($savesql);
 
             return COM_refresh ($_CONF['site_url']
-                                . '/calendar.php?mode=personal&amp;msg=24');
+                                . '/calendar/index.php?mode=personal&amp;msg=24');
         }
     }
 
@@ -152,8 +152,7 @@ function saveuserevent ($eid)
 function editpersonalevent ($A)
 {
     global $_CONF, $LANG12, $_STATES;
-
-    $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
+    $cal_templates = new Template($_CONF['path'] . '/plugins/calendar/templates/');
     $cal_templates->set_file('form','editpersonalevent.thtml');
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -391,7 +390,7 @@ if (isset ($_REQUEST['action'])) {
 
 switch ($action) {
 case 'addevent':
-    if (($_CONF['personalcalendars'] == 1) &&
+    if (($_CA_CONF['personalcalendars'] == 1) &&
             isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         $display .= COM_siteHeader ();
 
@@ -409,7 +408,7 @@ case 'addevent':
     break;
 
 case 'saveuserevent':
-    if ($_CONF['personalcalendars'] == 1) {
+    if ($_CA_CONF['personalcalendars'] == 1) {
         $eid = COM_applyFilter ($_POST['eid']);
         if (!empty ($eid)) {
             $display .= saveuserevent ($eid);
@@ -424,13 +423,15 @@ case 'saveuserevent':
     break;
 
 case 'deleteevent':
-    if ($_CONF['personalcalendars'] == 1) {
-        $eid = COM_applyFilter ($_GET['eid']);
+case $LANG12[52]:
+    if ($_CA_CONF['personalcalendars'] == 1) {
+        $eid = COM_applyFilter ($_REQUEST['eid']);
         if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
             DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
             $display .= COM_refresh ($_CONF['site_url']
-                     . '/calendar.php?mode=personal&amp;msg=26');
+                     . '/calendar/index.php?mode=personal&amp;msg=26');
         } else {
+            echo $eid, $_USER['uid'];
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         }
     } else {
@@ -439,7 +440,7 @@ case 'deleteevent':
     break;
 
 case 'edit':
-    if ($_CONF['personalcalendars'] == 1) {
+    if ($_CA_CONF['personalcalendars'] == 1) {
         $eid = COM_applyFilter ($_GET['eid']);
         if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
             $result = DB_query ("SELECT * FROM {$_TABLES['personal_events']} WHERE (eid = '$eid') AND (uid = {$_USER['uid']})");
@@ -471,7 +472,7 @@ default:
         $eid = COM_applyFilter ($_GET['eid']);
     }
     if (!empty ($eid)) {
-        if (($mode == 'personal') && ($_CONF['personalcalendars'] == 1) &&
+        if (($mode == 'personal') && ($_CA_CONF['personalcalendars'] == 1) &&
                 (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
             $datesql = "SELECT *,datestart AS start,dateend AS end "
                      . "FROM {$_TABLES['personal_events']} "
@@ -522,7 +523,7 @@ default:
                  . "and DATE_FORMAT(dateend,'%Y-%m-%d') "
                  . "ORDER BY datestart ASC,timestart ASC,title";
     }
-    $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
+    $cal_templates = new Template($_CONF['path'] . '/plugins/calendar/templates/');
     $cal_templates->set_file (array (
             'events'    => 'events.thtml',
             'details'   => 'eventdetails.thtml',
@@ -577,7 +578,7 @@ default:
                 }
 
                 if (!empty ($_USER['uid']) && ($_USER['uid'] > 1) &&
-                        ($_CONF['personalcalendars'] == 1)) {
+                        ($_CA_CONF['personalcalendars'] == 1)) {
                     $tmpresult = DB_query("SELECT * FROM {$_TABLES['personal_events']} "
                                         . "WHERE eid='{$A['eid']}' AND uid={$_USER['uid']}");
                     $tmpnrows = DB_numRows($tmpresult);
@@ -700,7 +701,7 @@ default:
                     . '" title="' . $LANG01[4] . '" border="0"></a>');
         } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                $A['perm_anon']) == 3) && SEC_hasRights ('event.edit')) {
+                $A['perm_anon']) == 3) && SEC_hasRights ('calendar.edit')) {
             $editurl = $_CONF['site_admin_url']
                      . '/plugins/calendar/index.php?mode=edit&amp;eid=' . $eid;
             $cal_templates->set_var ('event_edit', '<a href="' .$editurl . '">'
