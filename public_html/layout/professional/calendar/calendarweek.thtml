@@ -1,4 +1,0 @@
-                                    <tr>
-                                        <td class="cal-weekpointers" valign="middle" align="center"><b><a href="{site_url}/calendar.php?mode={mode}&amp;view=week&amp;month={wmonth}&amp;day={wday}&amp;year={wyear}">&gt;&gt;</a></b></td>
-                                        {cal_days}
-                                    </tr>

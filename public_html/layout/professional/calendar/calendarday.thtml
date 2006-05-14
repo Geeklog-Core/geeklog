@@ -1,4 +1,0 @@
-                                        <td valign="top" class="{cal_day_style}">
-                                            {cal_day_anchortags}
-                                            {cal_day_entries}
-                                        </td>
