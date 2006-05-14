@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.6 2006/05/14 17:13:18 ospiess Exp $
+// $Id: index.php,v 1.7 2006/05/14 20:23:32 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -108,9 +108,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     } else {
         $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Event Admin'])) {
-            $A['group_id'] = $_GROUPS['Event Admin'];
+            $A['group_id'] = $_GROUPS['Calendar Admin'];
         } else {
-            $A['group_id'] = SEC_getFeatureGroup ('event.edit');
+            $A['group_id'] = SEC_getFeatureGroup ('calendar.edit');
         }
         SEC_setDefaultPermissions ($A, $_CA_CONF['default_permissions']);
         $access = 3;
@@ -125,7 +125,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $retval .= COM_startBlock($LANG_CAL_ADMIN[1], '',
                               COM_getBlockTemplate ('_admin_block', 'header'));
 
-    if (!empty($A['eid']) && SEC_hasRights('event.edit')) {
+    if (!empty($A['eid']) && SEC_hasRights('calendar.edit')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
                    . '" name="mode"%s>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
