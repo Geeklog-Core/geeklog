@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.14 2006/05/14 14:13:00 dhaun Exp $
+// $Id: functions.inc,v 1.15 2006/05/14 17:32:18 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -269,9 +269,8 @@ function phpblock_calendar( $help='', $title='' )
 * @return        boolean       Returns true if moderator
 *
 */
-function plugin_ismoderator_calendar()
-{
-    return SEC_hasRights ('event.moderate');
+function plugin_ismoderator_calendar() {
+    return SEC_hasRights ('calendar.moderate');
 }
 
 /**
@@ -342,7 +341,7 @@ function plugin_moderationapprove_calendar ($id)
     if (isset ($_GROUPS['Event Admin'])) {
         $group_id = $_GROUPS['Event Admin'];
     } else {
-        $group_id = SEC_getFeatureGroup ('event.moderate');
+        $group_id = SEC_getFeatureGroup ('calendar.moderate');
     }
     DB_query ("UPDATE {$_TABLES['events']} SET owner_id = '{$_USER['uid']}',"
              ."group_id = '$group_id',perm_owner = {$A['perm_owner']}, "
@@ -399,6 +398,170 @@ function plugin_savesubmission_calendar($A)
 }
 
 /**
+* Saves a calendar submission
+*
+* @param    array   $A  Data for that submission
+* @return   string      HTML redirect
+*
+*/
+function plugin_save_submit_calendar ($A)
+{
+    global $_CONF, $_CA_CONF, $_TABLES, $_USER, $LANG12;
+    
+    $retval = '';
+    $A['title'] = strip_tags (COM_checkWords ($A['title']));
+    $A['start_year'] = COM_applyFilter ($A['start_year'], true);
+    $A['start_month'] = COM_applyFilter ($A['start_month'], true);
+    $A['start_day'] = COM_applyFilter ($A['start_day'], true);
+
+    if (empty ($A['title']) || empty ($A['start_month']) ||
+            empty ($A['start_day']) || empty ($A['start_year'])) {
+        $retval .= COM_siteHeader ('menu', $LANG12[4])
+            . COM_startBlock ($LANG12[22], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+            . $LANG12[23]
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+            . plugin_submit_calendar (($A['calendar_type'] == 'master') ? '' : 'personal')
+            . COM_siteFooter ();
+
+        return $retval;
+    }
+    
+    $A['end_year'] = COM_applyFilter ($A['end_year'], true);
+    $A['end_month'] = COM_applyFilter ($A['end_month'], true);
+    $A['end_day'] = COM_applyFilter ($A['end_day'], true);
+
+    $A['datestart'] = sprintf ('%4d-%02d-%02d',
+                        $A['start_year'], $A['start_month'], $A['start_day']);
+    if (empty ($A['end_year']) || empty ($A['end_month']) ||
+            empty ($A['end_day'])) {
+        $A['dateend'] = $A['datestart'];
+    } else {
+        $A['dateend'] = sprintf ('%4d-%02d-%02d',
+                            $A['end_year'], $A['end_month'], $A['end_day']);
+    }
+
+    // pseudo-formatted event description for the spam check
+    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a><br>'
+               . $A['location'] . '<br>' . $A['address1'] . '<br>'
+               . $A['address2'] . '<br>' . $A['city'] . ', ' . $A['zipcode']
+               . '<br>' . $A['description'] . '</p>';
+    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
+    if ($result > 0) {
+        COM_updateSpeedlimit ('submit');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+    }
+
+    $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
+    $A['address1'] = addslashes (strip_tags (COM_checkWords ($A['address1'])));
+    $A['address2'] = addslashes (strip_tags (COM_checkWords ($A['address2'])));
+    $A['city'] = addslashes (strip_tags (COM_checkWords ($A['city'])));
+    $A['zipcode'] = addslashes (strip_tags (COM_checkWords ($A['zipcode'])));
+    $A['state'] = addslashes (strip_tags (COM_checkWords ($A['state'])));
+    $A['location'] = addslashes (strip_tags (COM_checkWords ($A['location'])));
+    $A['event_type'] = addslashes (strip_tags (COM_checkWords ($A['event_type'])));
+    $A['title'] = addslashes ($A['title']);
+
+    $A['url'] = strip_tags ($A['url']);
+    if (!empty ($A['url'])) {
+        $pos = strpos ($A['url'], ':');
+        if ($pos === false) {
+            $A['url'] = 'http://' . $A['url'];
+        } else {
+            $prot = substr ($A['url'], 0, $pos + 1);
+            if (($prot != 'http:') && ($prot != 'https:')) {
+                $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+            }
+        }
+        $A['url'] = addslashes ($A['url']);
+    }
+    if ($A['url'] == 'http://') {
+        $A['url'] = '';
+    }
+
+    $A['eid'] = addslashes (COM_makeSid ());
+
+    COM_updateSpeedlimit ('submit');
+
+    if ($A['allday'] == 'on') {
+        $A['allday'] = 1;
+    } else {
+        $A['allday'] = 0;
+    }
+
+    $A['start_hour'] = COM_applyFilter ($A['start_hour'], true);
+    $A['start_minute'] = COM_applyFilter ($A['start_minute'], true);
+    $A['end_hour'] = COM_applyFilter ($A['end_hour'], true);
+    $A['end_minute'] = COM_applyFilter ($A['end_minute'], true);
+
+    if ($A['start_ampm'] == 'pm' AND $A['start_hour'] <> 12) {
+        $A['start_hour'] = $A['start_hour'] + 12;
+    }
+    if ($A['start_ampm'] == 'am' AND $A['start_hour'] == 12) {
+        $A['start_hour'] = '00';
+    }
+    if ($A['end_ampm'] == 'pm' AND $A['end_hour'] <> 12) {
+        $A['end_hour'] = $A['end_hour'] + 12;
+    }
+    if ($A['end_ampm'] == 'am' AND $A['end_hour'] == 12) {
+        $A['end_hour'] = '00';
+    }
+    $A['timestart'] = $A['start_hour'] . ':' . $A['start_minute'] . ':00';
+    $A['timeend'] = $A['end_hour'] . ':' . $A['end_minute'] . ':00';
+    if ($A['calendar_type'] == 'master') { // add to site calendar
+
+        if (($_CONF['eventsubmission'] == 1) &&
+                !SEC_hasRights ('calendar.submit')) {
+            DB_save ($_TABLES['eventsubmission'], 
+			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
+					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+
+            if (isset ($_CONF['notification']) &&
+                    in_array ('event', $_CONF['notification'])) {
+                CALENDAR_sendNotification ($_TABLES['eventsubmission'], $A);
+            }
+
+            $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=4');
+        } else {
+            if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+                $owner_id = $_USER['uid'];
+            } else {
+                $owner_id = 1; // anonymous user
+            }
+
+            DB_save ($_TABLES['events'], 
+			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id', 
+					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
+            if (isset ($_CONF['notification']) &&
+                    in_array ('event', $_CONF['notification'])) {
+                CALENDAR_sendNotification ($_TABLES['events'], $A);
+            }
+            COM_rdfUpToDateCheck ();
+
+            $retval = COM_refresh ($_CONF['site_url'] . '/calendar/index.php');
+        }
+
+    } else if ($_CA_CONF['personalcalendars'] == 1) { // add to personal calendar
+        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+            DB_save ($_TABLES['personal_events'], 
+			         'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
+					 "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+            $retval = COM_refresh ($_CONF['site_url']
+                                   . '/calendar/index.php?mode=personal&msg=17');
+        } else {
+            // anonymous users don't have personal calendars - bail
+            COM_accessLog ("Attempt to write to the personal calendar of user '{$A['uid']}'.");
+
+            $retval = COM_refresh ($_CONF['site_url'] . '/calendar/index.php');
+        }
+
+    } else { // personal calendars are disabled
+        $retval = COM_refresh ($_CONF['site_url'] . '/calendar/index.php');
+    }
+    return $retval;
+}
+
+/**
 * Shows event submission form or diverts to event editor if admin calls in
 *
 */
@@ -409,10 +572,11 @@ function plugin_submit_calendar($mode = 'master')
     if (isset ($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
     }
-    
-    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'personal')) { // quick add form
-       $display = saveevent ($_POST);
-    } else if (SEC_hasRights('event.edit') && ($mode != 'personal')) {
+
+    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) { // quick add form
+       $display = plugin_save_submit_calendar ($_POST);
+       return $display;
+    } else if (SEC_hasRights('calendar.edit') && ($mode != 'personal')) {
         if (isset ($_REQUEST['year'])) {
             $year = COM_applyFilter ($_REQUEST['year'], true);
         } else {
@@ -450,9 +614,13 @@ function plugin_submit_calendar($mode = 'master')
     $retval = '';
 
     $retval .= COM_startBlock ($LANG_CAL_1[26], 'submitevent.html');
-    $eventform = new Template ($_CONF['path_layout'] . 'submit');
+    $eventform = new Template ($_CONF['path'] . 'plugins/calendar/templates/');
     $eventform->set_file ('eventform', 'submitevent.thtml');
-    $eventform->set_var ('explanation', $LANG_CAL_1[27]);
+    if ($mode != 'personal') {
+        $eventform->set_var ('explanation', $LANG_CAL_1[27]);
+    } else {
+        $eventform->set_var ('explanation', "");
+    }
     $eventform->set_var ('site_url', $_CONF['site_url']);
     $eventform->set_var ('layout_url', $_CONF['layout_url']);
     $eventform->set_var ('lang_title', $LANG_CAL_1[28]);
@@ -465,22 +633,6 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_eventtype', $LANG_CAL_1[37]);
     $eventform->set_var('lang_editeventtypes', $LANG_CAL_1[38]);
     $eventform->set_var('type_options', $catdd);
-    $eventform->set_var('lang_addeventto', $LANG_CAL_1[40]);
-    $eventform->set_var('lang_mastercalendar', $LANG_CAL_1[41]);
-
-    if (($_CA_CONF['personalcalendars'] == 1) &&
-            isset ($_USER['uid']) && $_USER['uid'] > 1) {
-        $eventform->set_var('lang_personalcalendar', $LANG_CAL_1[42]);
-        if ($mode == 'personal') {
-            $eventform->set_var('personal_option', '<option value="personal" selected="selected">' . $LANG_CAL_1[42] . '</option>');
-        } else {
-            $eventform->set_var('personal_option', '<option value="personal">' . $LANG_CAL_1[42] . '</option>');
-            $eventform->set_var('master_checked', 'selected="selected"');
-        }
-    } else {
-        $eventform->set_var('master_checked', 'selected="selected"');
-        $eventform->set_var('personal_option', '');
-    }
 
     $eventform->set_var('lang_link', $LANG_CAL_1[43]);
     $eventform->set_var('max_url_length', 255);
@@ -844,7 +996,7 @@ function plugin_submissioncount_calendar()
 
     $num = 0;
 
-    if( SEC_hasRights( 'event.moderate' ))
+    if( SEC_hasRights( 'calendar.moderate' ))
     {
         $num += DB_count( $_TABLES['eventsubmission'] );
     }
@@ -1104,7 +1256,7 @@ function plugin_cclabel_calendar()
 {
     global $_CONF, $LANG_CAL_1;
 
-    if (SEC_hasRights ('event.edit')) {
+    if (SEC_hasRights ('calendar.edit')) {
         return array ($LANG_CAL_1[16],
                 $_CONF['site_admin_url'] . '/plugins/calendar/index.php',
                 plugin_geticon_calendar ());
@@ -1122,7 +1274,7 @@ function plugin_getadminoption_calendar()
 {
     global $_CONF, $_TABLES, $LANG_CAL_1;
 
-    if (SEC_hasRights ('event.edit')) {
+    if (SEC_hasRights ('calendar.edit')) {
         $result = DB_query ("SELECT COUNT(*) AS cnt FROM {$_TABLES['events']}" . COM_getPermSQL ());
         $A = DB_fetchArray ($result);
         $total_events = $A['cnt'];
