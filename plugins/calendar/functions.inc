@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.8 2006/05/14 08:39:43 dhaun Exp $
+// $Id: functions.inc,v 1.9 2006/05/14 09:31:43 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1680,70 +1680,63 @@ function plugin_chkVersion_calendar()
 * @steps   Array    Holds all the steps that have been completed by the install
 *
 */
-function plugin_uninstall_calendar($steps = '')
+function plugin_uninstall_calendar ($steps = '')
 {
     global $_TABLES;
 
-    // Uninstalls the polls plugin
+    // Uninstalls the calendar plugin
 
-    if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the pollquestions and pollanswers tables
-        COM_errorLog('Dropping events table',1);
-        DB_query("DROP TABLE {$_TABLES['events']}");
-        COM_errorLog('...success',1);
-        COM_errorLog('Dropping event submission table',1);
-        DB_query("DROP TABLE {$_TABLES['eventsubmission']}");
-        COM_errorLog('...success',1);
-        COM_errorLog('Dropping personal events table',1);
-        DB_query("DROP TABLE {$_TABLES['personal_events']}");
-        COM_errorLog('...success',1);
-    }
+    COM_errorLog('Dropping events table', 1);
+    DB_query("DROP TABLE {$_TABLES['events']}");
+    COM_errorLog('...success', 1);
+    COM_errorLog('Dropping event submission table', 1);
+    DB_query("DROP TABLE {$_TABLES['eventsubmission']}");
+    COM_errorLog('...success', 1);
+    COM_errorLog('Dropping personal events table', 1);
+    DB_query("DROP TABLE {$_TABLES['personal_events']}");
+    COM_errorLog('...success', 1);
 
     // Remove security for this plugin
 
-    // Remove the events admin group
-    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Event Admin'");
+    // Remove the event admin group
+    $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                          "grp_name = 'Event Admin'");
 
-    if (empty($steps) OR $steps['insertgroup'] == 1) {
+    // Remove Event Admin group from all other groups
+    if (!empty ($grp_id)) {
+        COM_errorLog ('Attempting to remove Event Admin group from all groups' , 1);
+        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
+        COM_errorLog ('...success', 1);
+
         COM_errorLog('Attempting to remove the Event Admin Group', 1);
         DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
-        COM_errorLog('...success',1);
+        COM_errorLog('...success', 1);
     }
-
-    if (empty($steps) OR $steps['addedrootuserstogroup'] == 1) {
-        // Remove root users from the group
-        COM_errorLog('Attempting to remove root users from admin of event pages');
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
-        COM_errorLog('...success',1);
-    }
-    
-    $feat = array('event.submit','event.moderate','event.edit');
 
     // Remove related features
-    $e_id[0] = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '{$feat[0]}'");
-    $e_id[1] = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '{$feat[1]}'");
-    $e_id[2] = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '{$feat[2]}'");
+    $features = array ('event.edit', 'event.moderate', 'event.submit');
 
-    if (empty($steps) OR $steps['addededittogroup'] == 1) {
-        // Remove access to those features
-        COM_errorLog("Attempting to remove rights to $edit_id from all groups",1);
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = {$e_id[0]} OR acc_ft_id = {$e_id[1]} OR acc_ft_id = {$e_id[2]}");
-        COM_errorLog('...success',1);
-    }
-    if (empty($steps) OR $steps['insertedfeatureedit'] == 1) {
-        COM_errorLog('Attempting to remove the event.edit feature',1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = {$e_id[0]} OR ft_id = {$e_id[1]} OR ft_id = {$e_id[2]}");
-        COM_errorLog('...success',1);
+    foreach ($features as $f) {
+        $feat_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$f'");
+        if (!empty ($feat_id)) {
+            COM_errorLog ("Attempting to remove $f rights from all groups", 1);
+            DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $feat_id");
+            COM_errorLog ('...success', 1);
+
+            COM_errorLog ("Attempting to remove the $f feature", 1);
+            DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $feat_id");
+            COM_errorLog ('...success', 1);
+        }
     }
 
     // Unregister the plugin with Geeklog
-    // Always attempt to remove these entries or lib-common.php would still
+    // Always attempt to remove this entry or lib-common.php would still
     // try and read our functions.inc file ...
-    COM_errorLog('Attempting to unregister the calendar plugin from Geeklog',1);
+    COM_errorLog('Attempting to unregister the calendar plugin from Geeklog', 1);
     DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'calendar'");
-    COM_errorLog('...success',1);
+    COM_errorLog('...success', 1);
 
-    COM_errorLog('leaving plugin_uninstall_calendar',1);
+    COM_errorLog ('Finished uninstalling the Calendar plugin.', 1);
 
     return true;
 }
