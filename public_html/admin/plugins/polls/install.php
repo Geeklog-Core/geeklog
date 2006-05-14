@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls plugin 1.0 for Geeklog                                              |
+// | Polls plugin 1.1 for Geeklog                                              |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -36,9 +36,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.9 2006/05/12 09:38:41 ospiess Exp $
+// $Id: install.php,v 1.10 2006/05/14 08:40:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
+require_once ($_CONF['path'] . 'plugins/polls/config.php');
 
 // Plugin information
 //
@@ -46,7 +47,7 @@ require_once ('../../../lib-common.php');
 //
 $pi_display_name = 'Polls';
 $pi_name         = 'polls';
-$pi_version      = '1.1';
+$pi_version      = $_PO_CONF['version'];
 $gl_version      = '1.4.0';
 $pi_url          = 'http://www.geeklog.net/';
 

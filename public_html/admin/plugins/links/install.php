@@ -55,9 +55,10 @@
  * @author Dirk Haun <dirk@haun-online.de>
  * 
  */
-// $Id: install.php,v 1.12 2006/05/13 17:13:08 dhaun Exp $
+// $Id: install.php,v 1.13 2006/05/14 08:40:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
+require_once ($_CONF['path'] . 'plugins/links/config.php');
 
 // Plugin information
 /**
@@ -74,7 +75,7 @@ $pi_name         = 'links';
  * plugin version
  * @global string $pi_version
  */
-$pi_version      = '1.0.1';
+$pi_version      = $_LI_CONF['version'];
 /**
  * plugin suported GL version
  * @global string $gl_version

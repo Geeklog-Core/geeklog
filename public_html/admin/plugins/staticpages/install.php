@@ -36,9 +36,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.21 2006/05/13 18:49:24 dhaun Exp $
+// $Id: install.php,v 1.22 2006/05/14 08:40:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
+require_once ($_CONF['path'] . 'plugins/staticpages/config.php');
 
 // Plugin information
 //
@@ -46,7 +47,7 @@ require_once ('../../../lib-common.php');
 //
 $pi_display_name = 'Static Page';
 $pi_name         = 'staticpages';
-$pi_version      = '1.4.3';
+$pi_version      = $_SP_CONF['version'];
 $gl_version      = '1.4.0';
 $pi_url          = 'http://www.geeklog.net/';
 

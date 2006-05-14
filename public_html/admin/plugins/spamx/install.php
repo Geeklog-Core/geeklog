@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X plugin 1.0.3                                                       |
+// | Spam-X plugin 1.0.4                                                       |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -36,9 +36,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.14 2006/02/11 09:25:33 dhaun Exp $
+// $Id: install.php,v 1.15 2006/05/14 08:40:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
+require_once ($_CONF['path'] . 'plugins/spamx/config.php');
 
 // Plugin information
 //
@@ -46,7 +47,7 @@ require_once ('../../../lib-common.php');
 //
 $pi_display_name = 'Spam-X';
 $pi_name         = 'spamx';
-$pi_version      = '1.0.3';
+$pi_version      = $_SPX_CONF['version'];
 $gl_version      = '1.4.0';
 $pi_url          = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';
 

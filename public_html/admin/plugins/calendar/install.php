@@ -2,12 +2,12 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls plugin 1.0 for Geeklog                                              |
+// | Calendar plugin 1.0 for Geeklog                                           |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
 // | This file installs and removes the data structures for the                |
-// | Links plugin for Geeklog.                                                 |
+// | Calendar plugin for Geeklog.                                              |
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
@@ -36,39 +36,42 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.1 2006/03/08 13:23:26 ospiess Exp $
+// $Id: install.php,v 1.2 2006/05/14 08:40:41 dhaun Exp $
 
 require_once ('../../../lib-common.php');
+require_once ($_CONF['path'] . 'plugins/calendar/config.php');
 
 // Plugin information
 //
 // ----------------------------------------------------------------------------
 //
-$pi_display_name = 'Polls';
-$pi_name         = 'polls';
-$pi_version      = '1.0';
-$gl_version      = '1.4.0';
+$pi_display_name = 'Calendar';
+$pi_name         = 'calendar';
+$pi_version      = $_CA_CONF['version'];
+$gl_version      = '1.4.1';
 $pi_url          = 'http://www.geeklog.net/';
 
 // name of the Admin group
-$pi_admin        = $pi_display_name . ' Admin';
+$pi_admin        = 'Event Admin';
 
 // the plugin's groups - assumes first group to be the Admin group
 $GROUPS = array();
 $GROUPS[$pi_admin] = 'Has full access to ' . $pi_name . ' features';
 
 $FEATURES = array();
-$FEATURES['polls.edit']         = 'Access to polls editor';
+$FEATURES['event.moderate']     = 'Ability to moderate pending events';
+$FEATURES['event.edit']         = 'Access to event editor';
+$FEATURES['event.submit']       = 'May skip the event submission queue';
 
 $MAPPINGS = array();
-$MAPPINGS['polls.edit']         = array ($pi_admin);
+$MAPPINGS['event.moderate']     = array ($pi_admin);
+$MAPPINGS['event.edit']         = array ($pi_admin);
+$MAPPINGS['event.submit']       = array ($pi_admin);
 
 // (optional) data to pre-populate tables with
 // Insert table name and sql to insert default data for your plugin.
 // Note: '#group#' will be replaced with the id of the plugin's admin group.
 $DEFVALUES = array();
-$DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date, display, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,NOW(),1,0,0,{$_USER['uid']},#group#,3,3)";
-// more default data is in the install SQL file in the plugin's directory
 
 /**
 * Checks the requirements for this plugin and if it is compatible with this
@@ -79,6 +82,9 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, 
 */
 function plugin_compatible_with_this_geeklog_version ()
 {
+    // TODO: Check that we're on Geeklog 1.4.1 or later, e.g. by checking that
+    // COM_printUpcomingEvents does _not_ exist
+
     return true;
 }
 //
