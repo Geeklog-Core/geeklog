@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.13 2006/05/14 11:41:52 dhaun Exp $
+// $Id: functions.inc,v 1.14 2006/05/14 14:13:00 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1289,6 +1289,28 @@ function plugin_geticon_calendar ()
     return $_CONF['site_url'] . '/calendar/images/calendar.png';
 }
 
+/**
+* Set template variables
+*
+* @param    string  $templatename   name of template, e.g. 'header'
+* @param    ref     $template       reference of actual template
+* @return   void
+*
+* Note: A plugin should use its name as a prefix for the names of its
+* template variables, e.g. 'calendar_xxx' and 'lang_calendar_xxx'.
+* 'button_calendar' is an exception, as such a variable existed for header.thtml
+* in Geeklog 1.4.0 and earlier, where the Calendar was an integral part
+* of Geeklog. It is added here for backward-compatibility.
+*
+*/
+function plugin_templatesetvars_calendar ($templatename, &$template)
+{
+    global $LANG_CAL_1;
+
+    if ($templatename == 'header') {
+        $template->set_var ('button_calendar', $LANG_CAL_1[16]);
+    }
+}
 
 function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
 {
