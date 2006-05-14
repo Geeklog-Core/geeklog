@@ -4,15 +4,15 @@
  * File: config.php
  * This is the config file for the Geeklog Spam-X Plug-in!
  * 
- * Copyright (C) 2004-2005 by the following authors:
+ * Copyright (C) 2004-2006 by the following authors:
  * Author		Tom Willett		tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: config.php,v 1.13 2005/12/17 20:37:50 dhaun Exp $
+ * $Id: config.php,v 1.14 2006/05/14 11:14:05 dhaun Exp $
  */
 
-$_SPX_CONF['version'] = '1.0.3';
+$_SPX_CONF['version'] = '1.0.4';
 
 // Default Spam-X Action
 $_SPX_CONF['action'] = 128; // Default is ignore comment
