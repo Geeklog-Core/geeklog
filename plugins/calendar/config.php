@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calednar Plugin 1.0                                                       |
+// | Calendar Plugin 1.0                                                       |
 // +---------------------------------------------------------------------------+
 // | config.php                                                                |
 // |                                                                           |
 // | Calendar plugin configuration file                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.1 2006/03/08 13:23:25 ospiess Exp $
+// $Id: config.php,v 1.2 2006/05/14 08:39:43 dhaun Exp $
 
 $_CA_CONF['version']            = '1.0'; // Plugin Version
 
@@ -70,9 +70,9 @@ $_CA_CONF['delete_event'] = 0;
 $_CA_CONF['default_permissions'] = array (3, 2, 2, 2);
 
 // database table names - don't change
-$_TABLES['events']         = $_DB_table_prefix . 'events';
-$_TABLES['eventsubmission']       = $_DB_table_prefix . 'eventsubmission';
-$_TABLES['personal_events']       = $_DB_table_prefix . 'personal_events';
+$_TABLES['events']              = $_DB_table_prefix . 'events';
+$_TABLES['eventsubmission']     = $_DB_table_prefix . 'eventsubmission';
+$_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
 
 $_CA_CONF['states'] = array(
         '--'=>'',

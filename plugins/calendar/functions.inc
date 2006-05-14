@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the CAlendar   |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.7 2006/05/09 05:28:44 ospiess Exp $
+// $Id: functions.inc,v 1.8 2006/05/14 08:39:43 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -79,10 +79,11 @@ function plugin_getmenuitems_calendar ()
 * @param        string      $title      Title to be used in block header
 * @return   string  HTML formatted block containing events.
 */
-function phpblock_calendar( $help='', $title='' ) {
-    if( !$_USER['noboxes'] && $_CA_CONF['showupcomingevents'] ) {
-        global $_TABLES, $LANG_CAL_1, $_CONF, $_USER;
+function phpblock_calendar( $help='', $title='' )
+{
+    global $_CONF, $_TABLES, $_USER, $LANG_CAL_1;
 
+    if( !$_USER['noboxes'] && $_CA_CONF['showupcomingevents'] ) {
         $range = $_CONF['upcomingeventsrange'];
         if( $range == 0 ) {
             $range = 14; // fallback: 14 days
@@ -268,15 +269,18 @@ function phpblock_calendar( $help='', $title='' ) {
 * @return        boolean       Returns true if moderator
 *
 */
-function plugin_ismoderator_calendar() {
+function plugin_ismoderator_calendar()
+{
     return SEC_hasRights ('event.moderate');
 }
 
 /**
 * Returns SQL & Language texts to moderation.php
 */
-function plugin_itemlist_calendar() {
+function plugin_itemlist_calendar()
+{
     global $_TABLES, $LANG_CAL_1;
+
     if (plugin_ismoderator_calendar()) {
         $plugin = new Plugin();
         $plugin->submissionlabel = $LANG_CAL_1[19];
@@ -301,7 +305,8 @@ function plugin_itemlist_calendar() {
 * @return       array        Returns array of useful moderation values
 *
 */
-function plugin_moderationvalues_calendar() {
+function plugin_moderationvalues_calendar()
+{
     global $_TABLES;
 
     return array (
@@ -324,8 +329,10 @@ function plugin_moderationvalues_calendar() {
 * @return     string       Any wanted HTML output
 *
 */
-function plugin_moderationapprove_calendar ($id) {
+function plugin_moderationapprove_calendar ($id)
+{
     global $_CA_CONF, $_GROUPS, $_TABLES, $_USER;
+
     $A = array ();
     SEC_setDefaultPermissions ($A, $_CA_CONF['default_permissions']);
 
@@ -354,7 +361,8 @@ function plugin_moderationapprove_calendar ($id) {
 * @return     string       Any wanted HTML output
 *
 */
-function plugin_moderationdelete_calendar($id) {
+function plugin_moderationdelete_calendar($id)
+{
     global $_TABLES;
 
     // these tables should not contain any rows with ml_id = $id
@@ -368,7 +376,9 @@ function plugin_moderationdelete_calendar($id) {
 * Check calendar submission form for missing fields
 *
 */
-function plugin_savesubmission_calendar($A) {
+function plugin_savesubmission_calendar($A)
+{
+    global $LANG12;
 
     $A['title'] = strip_tags (COM_checkWords ($A['title']));
     $A['start_year'] = COM_applyFilter ($A['start_year'], true);
@@ -395,7 +405,7 @@ function plugin_savesubmission_calendar($A) {
 function plugin_submit_calendar($mode = 'master')
 {
     global $_CONF, $_USER, $LANG_CAL_1, $_STATES;
-    
+
     if (isset ($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
     }
@@ -560,7 +570,8 @@ function CALENDAR_saveevent ($eid, $title, $event_type, $url, $allday,
                              $location, $address1, $address2, $city, $state,
                              $zipcode, $description, $postmode, $owner_id,
                              $group_id, $perm_owner, $perm_group, $perm_members,
-                             $perm_anon, $mode) {
+                             $perm_anon, $mode)
+{
     global $_CONF, $_TABLES, $_USER, $LANG22;
 
     $retval = '';
@@ -1049,8 +1060,11 @@ function CALENDAR_editevent ($mode, $A, $msg = '')
 
 function CALENDAR_listevents()
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS,
+           $_IMAGE_TYPE;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $retval = '';
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
@@ -1090,12 +1104,12 @@ function CALENDAR_listevents()
                        'query_fields' => array('title', 'datestart', 'dateend'),
                        'default_filter' => COM_getPermSQL('AND'));
 
-    $retval .= ADMIN_list ("calendar", "plugin_getListField_calendar", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+    $retval .= ADMIN_list ('calendar', 'plugin_getListField_calendar',
+                           $header_arr, $text_arr, $query_arr, $menu_arr,
+                           $defsort_arr);
+
     return $retval;
-
 }
-
 
 
 /**
@@ -1277,6 +1291,7 @@ function plugin_save_submit_calendar ($A)
 function CALENDAR_sendNotification ($table, $A)
 {
     global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08;
+
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
     $mailbody .= "\n------------------------------\n";
@@ -1349,7 +1364,6 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
 
         return $content;
     }
-
 }
 
 /*
@@ -1521,10 +1535,9 @@ function plugin_commentsupport_calendar()
 */
 function plugin_showstats_calendar ($showsitestats)
 {
-
     global $_CONF, $_TABLES, $LANG_CAL_1;
-	// Top Ten Events
-	
+
+    // Top Ten Events
 	$result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
 	$nrows  = DB_numRows($result);
 	if ($nrows > 0) {
@@ -1608,7 +1621,8 @@ function plugin_getadminoption_calendar()
     }
 }
 
-function plugin_getuseroption_calendar() {
+function plugin_getuseroption_calendar()
+{
     global $_CONF, $LANG_CAL_1, $_CA_CONF;
 
     if( $_CA_CONF['personalcalendars'] == 1 ) {
@@ -1744,6 +1758,7 @@ function plugin_uninstall_calendar($steps = '')
 function calendar_templatePath ($path = '')
 {
     global $_CONF;
+
     if (is_dir ($layout_path)) {
         $retval = $layout_path;
     } else {
@@ -1765,12 +1780,15 @@ function calendar_templatePath ($path = '')
 function plugin_geticon_calendar ()
 {
     global $_CONF;
+
     return $_CONF['site_url'] . '/calendar/images/calendar.png';
 }
 
 
-function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr) {
+function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
+{
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
+
     $retval = '';
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],
