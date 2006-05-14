@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.46 2006/03/08 05:01:57 ospiess Exp $
+// $Id: stats.php,v 1.47 2006/05/14 16:24:37 ospiess Exp $
 
 require_once('lib-common.php');
 require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -101,10 +101,6 @@ if (empty ($A['ccount'])) {
 $data_arr[] = array('title' => $LANG10[3],
                     'stats' => COM_NumberFormat ($A['count'])
                            . " (". COM_NumberFormat ($A['ccount']) . ")");
-
-$result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
-$A = DB_fetchArray ($result);
-$data_arr[] = array('title' => $LANG10[6], 'stats' => COM_NumberFormat ($A['count']));
 
 // new stats plugin API call
 $plg_stats = PLG_getPluginStats (3);
@@ -245,35 +241,6 @@ if ($nrows > 0) {
     $display .= $LANG10[24];
     $display .= COM_endBlock();
 }
-
-// Top Ten Events
-
-$result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
-$nrows  = DB_numRows($result);
-if ($nrows > 0) {
-    $header_arr = array(
-        array('text' => $LANG10[29], 'field' => 'sid', 'header_class' => 'stats-header-title'),
-        array('text' => $LANG10[30], 'field' => 'hits', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
-    );
-    $data_arr = array();
-    $text_arr = array('has_menu'     =>  false,
-                      'title'        => $LANG10[28],
-    );
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                  . "/calendar_event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
-        $A['hits'] = COM_NumberFormat ($A['hits']);
-        $data_arr[$i] = $A;
-    }
-    $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
-} else {
-    $display .= COM_startBlock($LANG10[28]);
-    $display .= $LANG10[31];
-    $display .= COM_endBlock();
-}
-
 
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);
