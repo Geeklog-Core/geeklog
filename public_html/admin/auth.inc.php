@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.31 2006/05/14 16:47:32 ospiess Exp $
+// $Id: auth.inc.php,v 1.32 2006/05/14 20:25:42 mjervis Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
@@ -42,7 +42,7 @@ if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
 // MAIN
 $uid = '';
 if (!empty ($_POST['loginname']) && !empty ($_POST['passwd'])) {
-    $status = SEC_authenticate ($_POST['loginname'], $_POST['passwd'], $uid);
+    $status = SEC_authenticate (COM_applyFilter($_POST['loginname']), COM_applyFilter($_POST['passwd']), $uid);
 } else {
     $status = '';
 }

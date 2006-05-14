@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.97 2006/04/12 15:28:27 dhaun Exp $
+// $Id: block.php,v 1.98 2006/05/14 20:25:42 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -635,8 +635,8 @@ function moveBlock()
 
     $retval = '';
 
-    $bid = $_GET['bid'];
-    $where = $_GET['where'];
+    $bid = COM_applyFilter($_GET['bid']);
+    $where = COM_applyFilter($_GET['where']);
 
     // if the block id exists
     if (DB_count($_TABLES['blocks'], "bid", $bid) == 1) {
@@ -675,6 +675,8 @@ function moveBlock()
 function changeBlockStatus ($bid)
 {
     global $_CONF, $_TABLES;
+    
+    $bid = COM_applyFilter($bid);
 
     if (DB_getItem($_TABLES['blocks'],"is_enabled", "bid=$bid")) {
         DB_query("UPDATE {$_TABLES['blocks']} set is_enabled = '0' WHERE bid=$bid");

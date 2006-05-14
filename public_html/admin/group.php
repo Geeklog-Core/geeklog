@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.72 2006/05/13 19:48:20 mjervis Exp $
+// $Id: group.php,v 1.73 2006/05/14 20:25:42 mjervis Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -784,6 +784,7 @@ function savegroupusers ($groupid, $groupmembers)
     DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid != NULL");
     $adduser = explode("|",$groupmembers);
     for( $i = 0; $i < count($adduser); $i++ )    {
+        $adduser[$i] = COM_applyFilter($adduser[$i], true);
         DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', '$adduser[$i]')");
     }
 
@@ -840,9 +841,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= deleteGroup ($grp_id);
     }
 } else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
-    $display .= savegroup ($_POST['grp_id'], $_POST['grp_name'],
-                           $_POST['grp_descr'], $_POST['grp_gl_core'],
-                           $_POST['features'], $_POST[$_TABLES['groups']]);
+    $display .= savegroup (COM_applyFilter($_POST['grp_id'],true),
+                            COM_applyFilter($_POST['grp_name']),
+                           COM_applyFilter($_POST['grp_descr']), COM_applyFilter($_POST['grp_gl_core']),
+                           COM_applyFilter($_POST['features']), COM_applyFilter($_POST[$_TABLES['groups']]));
 } else if ($mode == 'savegroupusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= savegroupusers ($grp_id, $_POST['groupmembers']);

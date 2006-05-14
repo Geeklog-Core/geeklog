@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.97 2006/05/14 17:58:52 ospiess Exp $
+// $Id: submit.php,v 1.98 2006/05/14 20:25:43 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -176,6 +176,7 @@ function submitstory($topic = '')
         $A['hits'] = 0;
         $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
         $A += DB_fetchArray($res);
+        $A['tid'] = COM_applyFilter($A['tid']);
         $res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
         $A += DB_fetchArray($res);
         if ($A['postmode'] == 'plaintext') {
@@ -334,6 +335,7 @@ function savestory ($A)
         $introtext = COM_checkHTML (COM_checkWords ($A['introtext']));
     } else {
         $introtext = COM_makeClickableLinks (htmlspecialchars (COM_checkWords ($A['introtext'])));
+        $A['postmode'] = 'plaintext';
     }
 
     $A['sid'] = addslashes (COM_makeSid ());

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.212 2006/04/27 11:35:19 ospiess Exp $
+// $Id: story.php,v 1.213 2006/05/14 20:25:42 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -114,9 +114,9 @@ function liststories()
     $retval = '';
     
     if (!empty ($_GET['tid'])) {
-        $current_topic = $_GET['tid'];
+        $current_topic = COM_applyFilter($_GET['tid']);
     } elseif (!empty ($_POST['tid'])) {
-        $current_topic = $_POST['tid'];
+        $current_topic = COM_applyFilter($_POST['tid']);
     } else {
         $current_topic = $LANG09[9];
     }

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.47 2006/02/27 19:39:53 dhaun Exp $
+// $Id: profiles.php,v 1.48 2006/05/14 20:25:42 mjervis Exp $
 
 require_once ('lib-common.php');
 
@@ -415,16 +415,16 @@ switch ($what) {
                     || !COM_isEmail ($_POST['toemail'])
                     || !COM_isEmail ($_POST['fromemail'])) {
                 $display .= COM_siteHeader ('menu', $LANG08[17])
-                         . mailstoryform ($sid, $_POST['to'], $_POST['toemail'],
-                                          $_POST['from'], $_POST['fromemail'],
-                                          $_POST['shortmsg'], 52)
+                         . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
+                                          COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
+                                          COM_applyFilter($_POST['shortmsg']), 52)
                          . COM_siteFooter ();
             } else if (empty ($_POST['to']) || empty ($_POST['from']) ||
                     empty ($_POST['shortmsg'])) {
                 $display .= COM_siteHeader ('menu', $LANG08[17])
-                         . mailstoryform ($sid, $_POST['to'], $_POST['toemail'],
-                                          $_POST['from'], $_POST['fromemail'],
-                                          $_POST['shortmsg'])
+                         . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
+                                          COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
+                                          COM_applyFilter($_POST['shortmsg']))
                          . COM_siteFooter ();
             } else {
                 $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],

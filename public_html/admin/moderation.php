@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.89 2006/05/14 13:57:05 dhaun Exp $
+// $Id: moderation.php,v 1.90 2006/05/14 20:25:42 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -548,6 +548,7 @@ function moderateusers ($uid, $action, $count)
                 }
                 break;
             case 'approve':
+                $uid[$i] = COM_applyFilter($uid[$i], true);
                 $result = DB_query ("SELECT email,username, uid FROM {$_TABLES['users']} WHERE uid = $uid[$i]");
                 $nrows = DB_numRows($result);
                 if ($nrows == 1) {
