@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog calendar.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2006/05/14 17:08:05 ospiess Exp $
+// $Id: index.php,v 1.4 2006/05/14 19:48:36 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -397,9 +397,9 @@ if ($mode != 'personal' && $mode != 'quickadd') {
 }
 
 if ($mode == 'personal') {
-    $display .= COM_siteHeader ('menu', $LANG_CAL_1[17]);
+    $display .= COM_siteHeader ('menu', $LANG_CAL_1[42]);
 } else {
-    $display .= COM_siteHeader ('menu', $LANG_CAL_1[18]);
+    $display .= COM_siteHeader ('menu', $LANG_CAL_1[41]);
 }
 
 // Set mode back to master if user refreshes screen after their session expires
