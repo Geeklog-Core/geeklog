@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.533 2006/04/27 18:51:11 mjervis Exp $
+// $Id: lib-common.php,v 1.534 2006/05/14 14:16:03 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -535,8 +535,7 @@ function COM_renderMenu( &$header, $plugin_menu )
     if( empty( $_CONF['menu_elements'] ))
     {
         $_CONF['menu_elements'] = array( // default set of links
-                'contribute', 'calendar', 'search', 'stats',
-                'directory', 'plugins' );
+                'contribute', 'search', 'stats', 'directory', 'plugins' );
     }
 
     $anon = ( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 )) ? true : false;
@@ -575,16 +574,6 @@ function COM_renderMenu( &$header, $plugin_menu )
 
         switch( $item )
         {
-            case 'calendar':
-                $url = $_CONF['site_url'] . '/calendar.php';
-                $label = $LANG01[74];
-                if( $anon && ( $_CONF['loginrequired'] ||
-                        $_CONF['calendarloginrequired'] ))
-                {
-                    $allowed = false;
-                }
-                break;
-
             case 'contribute':
                 if( empty( $topic ))
                 {
@@ -989,7 +978,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'button_home', $LANG_BUTTONS[1] );
     $header->set_var( 'button_contact', $LANG_BUTTONS[2] );
     $header->set_var( 'button_contribute', $LANG_BUTTONS[3] );
-    $header->set_var( 'button_calendar', $LANG_BUTTONS[6] );
     $header->set_var( 'button_sitestats', $LANG_BUTTONS[7] );
     $header->set_var( 'button_personalize', $LANG_BUTTONS[8] );
     $header->set_var( 'button_search', $LANG_BUTTONS[9] );
@@ -2031,29 +2019,13 @@ function COM_userMenu( $help='', $title='' )
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'user_block', 'header' ));
 
-        if( $_CONF['personalcalendars'] == 1 )
-        {
-            $url = $_CONF['site_url'] . '/calendar.php?mode=personal';
-            $usermenu->set_var( 'option_label', $LANG01[66] );
-            $usermenu->set_var( 'option_count', '' );
-            $usermenu->set_var( 'option_url', $url );
-            if( $thisUrl == $url )
-            {
-                $retval .= $usermenu->parse( 'item', 'current' );
-            }
-            else
-            {
-                $retval .= $usermenu->parse( 'item', 'option' );
-            }
-        }
-
         // This function will show the user options for all installed plugins
         // (if any)
 
         $plugin_options = PLG_getUserOptions();
         $nrows = count( $plugin_options );
 
-        for( $i = 1; $i <= $nrows; $i++ )
+        for( $i = 0; $i < $nrows; $i++ )
         {
             $plg = current( $plugin_options );
             $usermenu->set_var( 'option_label', $plg->adminlabel );
@@ -2200,7 +2172,7 @@ function COM_adminMenu( $help = '', $title = '' )
     $plugin_options = PLG_getAdminOptions();
     $num_plugins = count( $plugin_options );
 
-    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,event.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $num_plugins > 0 ))
+    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $num_plugins > 0 ))
     {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
@@ -2252,7 +2224,7 @@ function COM_adminMenu( $help = '', $title = '' )
         }
 
         $num = 0;
-        if( SEC_hasRights( 'story.edit,story.moderate,event.moderate', 'OR' )  || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
+        if( SEC_hasRights( 'story.edit,story.moderate', 'OR' )  || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
         {
 
             if( SEC_hasRights( 'story.moderate' ))
@@ -2280,12 +2252,6 @@ function COM_adminMenu( $help = '', $title = '' )
                 $A = DB_fetchArray( $result );
                 $num += $A['count'];
             }
-
-            if( SEC_hasRights( 'event.moderate' ))
-            {
-                $num += DB_count( $_TABLES['eventsubmission'] );
-            }
-
 
             if( $_CONF['usersubmission'] == 1 )
             {
@@ -2353,19 +2319,6 @@ function COM_adminMenu( $help = '', $title = '' )
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
             $link_array[$LANG01[13]] = $menu_item;
-        }
-
-        if( SEC_hasRights( 'event.edit' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/event.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[15] );
-            $adminmenu->set_var( 'option_count',
-                    COM_numberFormat( DB_count( $_TABLES['events'] )));
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[15]] = $menu_item;
         }
 
         if( SEC_hasRights( 'user.edit' ))
@@ -3015,7 +2968,7 @@ function COM_olderStuff()
 * This shows a single block and is typically called from
 * COM_showBlocks OR from plugin code
 *
-* @param        string      $name       Logical name of block (not same as title) -- 'user_block', 'admin_block', 'section_block', 'events_block', 'whats_new_block'.
+* @param        string      $name       Logical name of block (not same as title) -- 'user_block', 'admin_block', 'section_block', 'whats_new_block'.
 * @param        string      $help       Help file location
 * @param        string      $title      Title shown in block header
 * @see function COM_showBlocks
@@ -3057,13 +3010,6 @@ function COM_showBlock( $name, $help='', $title='' )
                                COM_getBlockTemplate( $name, 'header' ))
                 . COM_showTopics( $topic )
                 . COM_endBlock( COM_getBlockTemplate( $name, 'footer' ));
-            break;
-
-        case 'events_block':
-            if( !$_USER['noboxes'] && $_CONF['showupcomingevents'] )
-            {
-                $retval .= COM_printUpcomingEvents( $help, $title );
-            }
             break;
 
         case 'whats_new_block':
@@ -3573,242 +3519,6 @@ function COM_hit()
     global $_TABLES;
 
     DB_query( "UPDATE {$_TABLES['vars']} SET value = value + 1 WHERE name = 'totalhits'" );
-}
-
-/**
-* Returns the upcoming event block
-*
-* Returns the HTML for any upcoming events in the calendar
-*
-* @param        string      $help       Help file for block
-* @param        string      $title      Title to be used in block header
-* @return   string  HTML formatted block containing events.
-*/
-
-function COM_printUpcomingEvents( $help='', $title='' )
-{
-    global $_TABLES, $LANG01, $_CONF, $_USER;
-
-    $range = $_CONF['upcomingeventsrange'];
-    if( $range == 0 )
-    {
-        $range = 14; // fallback: 14 days
-    }
-    $dateonly = $_CONF['dateonly'];
-    if( empty( $dateonly ))
-    {
-        $dateonly = '%d-%b'; // fallback: day - abbrev. month name
-    }
-
-    if( empty( $title ))
-    {
-        $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'events_block'" );
-    }
-
-    $retval = COM_startBlock( $title, $help,
-                       COM_getBlockTemplate( 'events_block', 'header' ));
-
-    $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
-        . "FROM {$_TABLES['events']} "
-        . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
-        . 'ORDER BY datestart,timestart';
-
-    if(( $_CONF['personalcalendars'] == 1 ) && !empty( $_USER['uid'] ))
-    {
-        $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
-            . "FROM {$_TABLES['personal_events']} "
-            . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
-            . 'ORDER BY datestart, dateend';
-    }
-
-    $allEvents = DB_query( $eventSql );
-    $numRows = DB_numRows( $allEvents );
-    $totalrows = $numRows;
-
-    $numDays = 0;          // Without limits, I'll force them.
-    $theRow = 1;           // Start with today!
-    $oldDate1 = 'no_day';  // Invalid Date!
-    $oldDate2 = 'last_d';  // Invalid Date!
-
-    if( $_CONF['personalcalendars'] == 1 AND !empty( $_USER['uid'] ))
-    {
-        $iterations = 2;
-    }
-    else
-    {
-        $iterations = 1;
-    }
-
-    $eventsFound = 0;
-    $skipFirstBreak = false;
-
-    for( $z = 1; $z <= $iterations; $z++ )
-    {
-        if( $z == 2 )
-        {
-            $allEvents = DB_query( $personaleventsql );
-            $numRows = DB_numRows( $allEvents );
-            $totalrows = $totalrows + $numRows;
-
-            $numDays = 0;          // Without limits, I'll force them.
-            $theRow = 1;           // Start with today!
-            $oldDate1 = 'no_day';  // Invalid Date!
-            $oldDate2 = 'last_d';  // Invalid Date!
-            $classname = 'list-personal-events';
-            $headline = false;
-        }
-        else
-        {
-            $classname = 'list-site-events';
-            $headline = false;
-        }
-        if( $_CONF['personalcalendars'] == 0 )
-        {
-            $headline = true; // no headline needed
-            $skipFirstBreak = true;
-        }
-
-        while( $theRow <= $numRows AND $numDays < $range )
-        {
-            // Retreive the next event, and format the start date.
-            $theEvent = DB_fetchArray( $allEvents );
-
-            if( SEC_hasAccess( $theEvent['owner_id'], $theEvent['group_id'], $theEvent['perm_owner'], $theEvent['perm_group'], $theEvent['perm_members'], $theEvent['perm_anon'] ) > 0 )
-            {
-                $eventsFound++;
-
-                if( !$headline )
-                {
-                    if($z == 2)
-                    {
-                        if( $numRows > 0 )
-                        {
-                            $retval .= '<p><b>' . $LANG01[101] . '</b><br>';
-                        }
-                    }
-                    else
-                    {
-                        if( $totalrows > 0 )
-                        {
-                            $retval .= '<b>' . $LANG01[102] . '</b><br>';
-                        }
-                    }
-
-                    $headline = true;
-                }
-
-                // Start Date strings...
-                $startDate = $theEvent['datestart'];
-                $theTime1 = strtotime( $startDate );
-                $dayName1 = strftime( '%A', $theTime1 );
-                $abbrDate1 = strftime( $dateonly, $theTime1 );
-
-                // End Date strings...
-                $endDate = $theEvent['dateend'];
-                $theTime2 = strtotime( $endDate );
-                $dayName2 = strftime( '%A', $theTime2 );
-                $abbrDate2 = strftime( $dateonly, $theTime2 );
-
-                $todaysEvent = false;
-                if( date( 'Ymd', $theTime1 ) == date( 'Ymd', time()))
-                {
-                    $todaysEvent = true;
-                    if( $z == 2 )
-                    {
-                        $todaysClassName = 'personal-event-today';
-                    }
-                    else
-                    {
-                        $todaysClassName = 'site-event-today';
-                    }
-                }
-
-                // If either of the dates [start/end] change, then display a new header.
-                if( $oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2 )
-                {
-                    $oldDate1 = $abbrDate1;
-                    $oldDate2 = $abbrDate2;
-                    $numDays ++;
-
-                    if( $numDays < $range )
-                    {
-                        if( !empty( $newevents ))
-                        {
-                             $retval .= COM_makeList( $newevents, $classname );
-                        }
-
-                        if( $skipFirstBreak )
-                        {
-                            $skipFirstBreak = false;
-                        }
-                        else
-                        {
-                            $retval .= '<br>';
-                        }
-                        if( $todaysEvent )
-                        {
-                            $retval .= '<span class="' . $todaysClassName
-                                    . '">';
-                        }
-                        $retval .= '<b>' . $dayName1 . '</b>&nbsp;<small>'
-                                . $abbrDate1 . '</small>';
-
-                        // If different start and end dates, then display end date:
-                        if( $abbrDate1 != $abbrDate2 )
-                        {
-                            $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
-                        }
-                        if( $todaysEvent )
-                        {
-                            $retval .= '</span>';
-                        }
-                    }
-
-                    $newevents = array();
-                }
-
-                // Now display this event record.
-                if( $numDays < $range )
-                {
-                    // Display the url now!
-                    $newevent = '<a href="' . $_CONF['site_url']
-                              . '/calendar_event.php?';
-
-                    if( $z == 2 )
-                    {
-                        $newevent .= 'mode=personal&amp;';
-                    }
-
-                    $newevent .= 'eid=' . $theEvent['eid'] . '"';
-                    if( $todaysEvent )
-                    {
-                        $newevent .= ' class="' . $todaysClassName . '"';
-                    }
-                    $newevent .= '>' . stripslashes( $theEvent['title'] )
-                              . '</a>';
-                    $newevents[] = $newevent;
-                }
-
-                if( !empty( $newevents ))
-                {
-                    $retval .= COM_makeList( $newevents, $classname );
-                    $newevents = array();
-                }
-            }
-
-            $theRow++;
-        }
-    } // end for z
-
-    if( $eventsFound == 0 )
-    {
-        // There aren't any upcoming events, show a nice message
-        $retval .= $LANG01[89];
-    }
-
-    $retval .= COM_endBlock( COM_getBlockTemplate( 'events_block', 'footer' ));
-
-    return $retval;
 }
 
 /**
