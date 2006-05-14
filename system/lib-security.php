@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.51 2006/05/14 15:35:53 dhaun Exp $
+// $Id: lib-security.php,v 1.52 2006/05/14 20:16:08 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -423,6 +423,8 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 {
     global $LANG_ACCESS, $_CONF;
     
+    $retval = '';
+
     $perm_templates = new Template($_CONF['path_layout'] . 'admin/common');
     $perm_templates->set_file(array('editor'=>'edit_permissions.thtml'));
 
@@ -456,6 +458,7 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 
     $perm_templates->parse('output','editor');
     $retval .= $perm_templates->finish($perm_templates->get_var('output'));
+
     return $retval;
 }
 
