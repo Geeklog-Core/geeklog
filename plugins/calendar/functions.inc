@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.12 2006/05/14 11:31:03 dhaun Exp $
+// $Id: functions.inc,v 1.13 2006/05/14 11:41:52 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -81,10 +81,10 @@ function plugin_getmenuitems_calendar ()
 */
 function phpblock_calendar( $help='', $title='' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_CAL_1;
+    global $_CONF, $_TABLES, $_USER, $_CA_CONF, $LANG_CAL_1;
 
     if( !$_USER['noboxes'] && $_CA_CONF['showupcomingevents'] ) {
-        $range = $_CONF['upcomingeventsrange'];
+        $range = $_CA_CONF['upcomingeventsrange'];
         if( $range == 0 ) {
             $range = 14; // fallback: 14 days
         }
@@ -404,7 +404,7 @@ function plugin_savesubmission_calendar($A)
 */
 function plugin_submit_calendar($mode = 'master')
 {
-    global $_CONF, $_USER, $LANG_CAL_1, $_STATES;
+    global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1, $_STATES;
 
     if (isset ($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
@@ -456,7 +456,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var ('site_url', $_CONF['site_url']);
     $eventform->set_var ('layout_url', $_CONF['layout_url']);
     $eventform->set_var ('lang_title', $LANG_CAL_1[28]);
-    $types = explode (',', $_CONF['event_types']);
+    $types = explode (',', $_CA_CONF['event_types']);
     $catdd = '';
     foreach ($types as $event_type) {
         $catdd .= '<option value="' . $event_type . '">' . $event_type
@@ -633,7 +633,7 @@ function CALENDAR_listevents()
 */
 function plugin_save_submit_calendar ($A)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG12;
+    global $_CONF, $_TABLES, $_USER, $_CA_CONF, $LANG12;
 
     $retval = '';
 
@@ -740,14 +740,14 @@ function plugin_save_submit_calendar ($A)
 
     if ($A['calendar_type'] == 'master') { // add to site calendar
 
-        if (($_CONF['eventsubmission'] == 1) &&
+        if (($_CA_CONF['eventsubmission'] == 1) &&
                 !SEC_hasRights ('event.submit')) {
             DB_save ($_TABLES['eventsubmission'], 
                      'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
                      "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
 
-            if (isset ($_CONF['notification']) &&
-                    in_array ('event', $_CONF['notification'])) {
+            if (isset ($_CA_CONF['notification']) &&
+                    ($_CA_CONF['notification'] == 1)) {
                 CALENDAR_sendNotification ($_TABLES['eventsubmission'], $A);
             }
 
@@ -762,8 +762,8 @@ function plugin_save_submit_calendar ($A)
             DB_save ($_TABLES['events'], 
                      'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id', 
                      "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
-            if (isset ($_CONF['notification']) &&
-                    in_array ('event', $_CONF['notification'])) {
+            if (isset ($_CA_CONF['notification']) &&
+                    ($_CA_CONF['notification'] == 1)) {
                 CALENDAR_sendNotification ($_TABLES['events'], $A);
             }
             COM_rdfUpToDateCheck ();
@@ -904,7 +904,7 @@ function plugin_getfeednames_calendar()
 */
 function plugin_getfeedcontent_calendar( $limit, &$link, &$update, $feedType, $feedVersion )
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES;
 
     $where = '';
     if( !empty( $limit )) {
