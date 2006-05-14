@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.21 2006/04/01 10:52:40 dhaun Exp $
+// $Id: lib-custom.php,v 1.22 2006/05/14 16:35:07 ospiess Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -439,7 +439,7 @@ function CUSTOM_menuEntries ()
     // logged-in users
     if (!empty ($_USER['uid']) && ($_USER['uid'] > 1)) {
         $myentries[] = array ('url'   => $_CONF['site_url']
-                                         . '/calendar.php?mode=personal',
+                                         . '/calendar/index.php?mode=personal',
                               'label' => 'My Calendar');
     }
 
