@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.5 2006/05/14 11:43:41 dhaun Exp $
+// $Id: index.php,v 1.6 2006/05/14 17:13:18 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -45,7 +45,7 @@ require_once ('../../auth.inc.php');
 $display = '';
 
 // Ensure user even has the rights to access this page
-if (!SEC_hasRights('event.edit')) {
+if (!SEC_hasRights('calendar.edit')) {
     $display .= COM_siteHeader('menu');
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
