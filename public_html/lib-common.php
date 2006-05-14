@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.534 2006/05/14 14:16:03 dhaun Exp $
+// $Id: lib-common.php,v 1.535 2006/05/14 16:22:44 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,7 +66,7 @@ $_COM_VERBOSE = false;
 * Make sure to include the name of the config file,
 * i.e. the path should end in .../config.php
 */
-require_once( '/path/to/geeklog/config.php' );
+require_once( '/path/to/geeklog-calendar/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -3010,13 +3010,6 @@ function COM_showBlock( $name, $help='', $title='' )
                                COM_getBlockTemplate( $name, 'header' ))
                 . COM_showTopics( $topic )
                 . COM_endBlock( COM_getBlockTemplate( $name, 'footer' ));
-            break;
-
-        case 'whats_new_block':
-            if( !$_USER['noboxes'] )
-            {
-                $retval .= COM_whatsNewBlock( $help, $title );
-            }
             break;
     }
 
