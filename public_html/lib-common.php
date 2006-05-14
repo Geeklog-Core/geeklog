@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.536 2006/05/14 16:32:00 ospiess Exp $
+// $Id: lib-common.php,v 1.537 2006/05/14 16:39:02 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3010,6 +3010,13 @@ function COM_showBlock( $name, $help='', $title='' )
                                COM_getBlockTemplate( $name, 'header' ))
                 . COM_showTopics( $topic )
                 . COM_endBlock( COM_getBlockTemplate( $name, 'footer' ));
+            break;
+ 
+        case 'whats_new_block':
+            if( !$_USER['noboxes'] )
+            {
+                $retval .= COM_whatsNewBlock( $help, $title );
+            }
             break;
     }
 
