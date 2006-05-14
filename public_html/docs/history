@@ -3,7 +3,6 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
-- SpamX - Mass delete by IP now uses stored IP address [Mike]
 - Added email confirmation fields for new user and usersettings [Oliver]
 - Allow changing of group ownership for "gldefault" blocks. Requires a change
   in admin/block/defaultblockeditor.thtml to enable the group dropdown. On a
@@ -12,8 +11,8 @@ GeekLog History/Changes:
 - Users created by a User Admin should not be queued for approval, even when
   $_CONF['usersubmission'] = 1 [Dirk]
 - Introduced 'syndication.edit' permission and 'Syndication Admin' group so
-  that access to the Content Syndication panel is no longer dependent on
-  'Root' permissions [Dirk]
+  that access to the Content Syndication panel no longer requires 'Root'
+  permissions [Dirk]
 - For the "Submissions" entry in the Admins Only block, only count story and
   event submissions when the current user has story.moderate or event.moderate
   permissions, respectively [Dirk]
@@ -31,7 +30,7 @@ GeekLog History/Changes:
 - Don't attempt to rename a non-existing user photo when
   $_CONF['allow_username_change'] is enabled (reported and fix suggested by
   Yusuke Sakata) [Dirk]
-- Made changes to ensure compatibility with MSSQL, as suggested by
+- Made changes to ensure compatibility with MS SQL, as suggested by
   Randy Kolenko [Dirk]
 - The "last login date" column in the Admin's list of users now uses
   $_CONF['shortdate'] so that it includes the year [Dirk]
@@ -48,7 +47,7 @@ GeekLog History/Changes:
   the $_CONF['contributedbyline'] and $_CONF['hideviewscount'] settings [Dirk]
 - Introduced $_CONF['title_trim_length'] to make the max. title length of items
   in the What's New block configurable (feature request #525). Also implemented
-  a new function COM_truncate (based on a patch by Yusuke Sakate) that properly
+  a new function COM_truncate (based on a patch by Yusuke Sakata) that properly
   handles truncation of multi-byte text strings if the mb_ functions are
   available [Dirk]
 - Fixed handling of HTML entities in stories (bug #99) [Dirk]
@@ -88,11 +87,11 @@ GeekLog History/Changes:
 
 - New Afrikaans language file, provided by Renier Maritz
 
-Calendar plugin
+Calendar plugin (1.0)
 ---------------
 - Added calendar plugin initial version [Oliver]
 
-Links plugin
+Links plugin (1.0.1)
 ------------
 - Fixed hard-coded link to the "admin" directory when editing a link (reported
   by Ronnie Rigl) [Dirk]
@@ -111,17 +110,21 @@ Links plugin
 - The Admin's search option now also searches the link description [Dirk]
 - Removed extra <small> tags from the What's New section (bug #526) [Dirk]
 
-Polls plugin
+Polls plugin (1.1)
 ------------
+- Added a remark field for polls answers [Oliver]
 - Re-introduced {button_polls} header variable [Dirk]
 - Added an option to hide the link to the polls from the menu (for consistency
   with the Links plugin) [Dirk]
 - Fixed poll URLs on the site stats page [Dirk]
 - Remove the polls block when uninstalling the Polls plugin (another part of
   bug #520) [Dirk]
-- Added a remark field for polls answers [Oliver]
 
-Static Pages plugin
+Spam-X plugin (1.0.4)
+-------------
+- Mass delete by IP now uses stored IP address [Mike]
+
+Static Pages plugin (1.4.3)
 -------------------
 - When creating a new page, don't set the default group ownership to the Static
   Page Admin group if the current user is not a member of that group. Instead,
