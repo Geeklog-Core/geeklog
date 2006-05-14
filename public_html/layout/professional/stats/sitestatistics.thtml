@@ -11,9 +11,5 @@
                                     <td>{lang_stories_comments}</td>
                                     <td align="right">{total_stories} ({total_comments})</td>
                                 </tr>
-                                <tr>
-                                    <td>{lang_events}</td>
-                                    <td align="right">{total_events}</td>
-                                </tr>
                                 {summary_row}
                             </table>
