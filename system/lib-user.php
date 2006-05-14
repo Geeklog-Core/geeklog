@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.25 2006/04/26 19:51:53 mjervis Exp $
+// $Id: lib-user.php,v 1.26 2006/05/14 16:43:28 ospiess Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -104,13 +104,7 @@ function USER_deleteAccount ($uid)
     DB_query ("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
     DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
     DB_query ("UPDATE {$_TABLES['stories']} SET owner_id = 1 WHERE owner_id = $uid");
-
-    // same for events
-    DB_query ("UPDATE {$_TABLES['events']} SET owner_id = 1 WHERE owner_id = $uid");
-
-    // delete personal events
-    DB_delete ($_TABLES['personal_events'], 'owner_id', $uid);
-
+ 
     // delete story submissions
     DB_delete ($_TABLES['storysubmission'], 'uid', $uid);
 
