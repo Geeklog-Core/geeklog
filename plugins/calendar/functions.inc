@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.18 2006/05/14 19:35:36 dhaun Exp $
+// $Id: functions.inc,v 1.19 2006/05/14 21:26:19 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1030,6 +1030,8 @@ function plugin_commentsupport_calendar()
 function plugin_showstats_calendar ($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_CAL_1;
+
+    $display = '';
 
     // Top Ten Events
     $result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
