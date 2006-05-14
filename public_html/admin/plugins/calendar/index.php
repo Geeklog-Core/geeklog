@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.4 2006/05/14 10:04:34 dhaun Exp $
+// $Id: index.php,v 1.5 2006/05/14 11:43:41 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -112,7 +112,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         } else {
             $A['group_id'] = SEC_getFeatureGroup ('event.edit');
         }
-        SEC_setDefaultPermissions ($A, $_CONF['default_permissions_event']);
+        SEC_setDefaultPermissions ($A, $_CA_CONF['default_permissions']);
         $access = 3;
     }
 
