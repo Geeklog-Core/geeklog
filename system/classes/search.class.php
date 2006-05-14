@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.50 2006/03/11 15:28:48 dhaun Exp $
+// $Id: search.class.php,v 1.51 2006/05/14 16:55:18 ospiess Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -487,129 +487,6 @@ class Search {
         return $comment_results;
     }
 
-    /**
-    * Performs search on all events
-    *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
-    * @access private
-    *
-    */
-    function _searchEvents()
-    {
-        global $_CONF, $_TABLES, $LANG09, $LANG12;
-
-        if (($this->_type == 'events') OR
-            (($this->_type == 'all') AND empty($this->_author))) {
-            $select = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,allday,UNIX_TIMESTAMP(datestart) AS day";
-            $sql = " FROM {$_TABLES['events']} WHERE ";
-
-            if($this->_keyType == 'phrase') {
-                // do an exact phrase search (default)
-                $mywords[] = $this->_query;
-                $mysearchterm = addslashes ($this->_query);
-                $sql .= "(location LIKE '%$mysearchterm%'  ";
-                $sql .= "OR description LIKE '%$mysearchterm%' ";
-                $sql .= "OR title LIKE '%$mysearchterm%') ";
-            }
-            elseif($this->_keyType == 'all') {
-                //must contain ALL of the keywords
-                $mywords = explode(' ', $this->_query);
-                $tmp = '';
-                foreach ($mywords AS $mysearchterm) {
-                    $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(location LIKE '%$mysearchterm%' OR ";
-                    $tmp .= "description LIKE '%$mysearchterm%' OR ";
-                    $tmp .= "title LIKE '%$mysearchterm%') AND ";
-                }
-                $tmp = substr($tmp, 0, strlen($tmp) - 4);
-                $sql .= $tmp;
-            } elseif($this->_keyType == 'any') {
-                //must contain ANY of the keywords
-                $mywords = explode(' ', $this->_query);
-                $tmp = '';
-                foreach ($mywords AS $mysearchterm) {
-                    $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(location LIKE '%$mysearchterm%' OR ";
-                    $tmp .= "description LIKE '%$mysearchterm%' OR ";
-                    $tmp .= "title LIKE '%$mysearchterm%') OR ";
-                }
-                $tmp = substr($tmp, 0, strlen($tmp) - 3);
-                $sql .= "($tmp)";
-            }
-            else
-            {
-                $mywords[] = $this->_query;
-                $mysearchterm = addslashes ($this->_query);
-                $sql .= "(location LIKE '%$mysearchterm%' ";
-                $sql .= "OR description LIKE '%$mysearchterm%' ";
-                $sql .= "OR title LIKE '%$mysearchterm%') ";
-            }
-
-            if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
-                $delim = substr($this->_dateStart, 4, 1);
-                if (!empty($delim)) {
-                    $DS = explode($delim, $this->_dateStart);
-                    $DE = explode($delim, $this->_dateEnd);
-                    $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
-                    $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
-                    $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
-                }
-            }
-            $sql .= COM_getPermSQL ('AND');
-            $sql .= ' ORDER BY datestart DESC ';
-            $l = ($this->_per_page * $this->_page) - $this->_per_page;
-            $sql .= 'LIMIT ' . $l . ',' . $this->_per_page;
-
-            $result_events = DB_query ($select . $sql);
-            $result_count = DB_query ('SELECT COUNT(*)' . $sql);
-            $B = DB_fetchArray ($result_count, true);
-
-            $event_results = new Plugin();
-            $event_results->searchresults = array();
-            $event_results->searchlabel = $LANG09[37];
-            $event_results->addSearchHeading($LANG09[16]);
-            $event_results->addSearchHeading($LANG09[49]);
-            $event_results->addSearchHeading($LANG09[34]);
-            $event_results->addSearchHeading($LANG12[15]);
-            $event_results->num_searchresults = 0;
-            $event_results->num_itemssearched = $B[0];
-            $event_results->supports_paging = true;
-
-            // NOTE if any of your data items need to be links then add them
-            // here! Make sure data elements are in an array and in the same
-            // order as your headings above!
-            while ($A = DB_fetchArray ($result_events)) {
-                if ($A['allday'] == 0) {
-                    $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - '
-                              . $A['dateend'] . ' ' . $A['timeend'];
-                } else {
-                    if ($A['datestart'] <> $A['dateend']) {
-                        $fulldate = $A['datestart'] . ' - ' . $A['dateend']
-                                  . ' ' . $LANG09[35];
-                    } else {
-                        $fulldate = $A['datestart'] . ' ' . $LANG09[35];
-                    }
-                }
-                $thetime = COM_getUserDateTimeFormat ($A['day']);
-                $A['title'] = stripslashes ($A['title']);
-                $A['title'] = str_replace ('$', '&#36;', $A['title']);
-                $row = array ('<a href="' . $_CONF['site_url']
-                              . '/calendar_event.php?eid=' . $A['eid'] . '">'
-                              . $A['title'] . '</a>', $fulldate,
-                              stripslashes ($A['location']),
-                              stripslashes ($A['description']));
-                $event_results->addSearchResult($row);
-                $event_results->num_searchresults++;
-            }
-        } else {
-            $event_results = new Plugin();
-            $event_results->searchlabel = $LANG09[37];
-            $event_results->num_itemssearched = 0;
-        }
-
-        return $event_results;
-    }
-
     function _showPager($resultPage, $pages, $extra='')
     {
         global $_CONF, $LANG09;
@@ -1008,7 +885,6 @@ class Search {
         $searchform->set_var('lang_stories', $LANG09[6]);
         $searchform->set_var('lang_comments', $LANG09[7]);
         $searchform->set_var('lang_links', $LANG09[39]);
-        $searchform->set_var('lang_events', $LANG09[40]);
         $searchform->set_var('lang_results', $LANG09[59]);
         $searchform->set_var('lang_per_page', $LANG09[60]);
 
@@ -1054,14 +930,11 @@ class Search {
         $all_selected = '';
         $stories_selected = '';
         $comments_selected = '';
-        $events_selected = '';
         if (!$plugin_selected) {
             if ($this->_type == 'stories') {
                 $stories_selected = 'selected="selected"';
             } else if ($this->_type == 'comments') {
                 $comments_selected = 'selected="selected"';
-            } else if ($this->_type == 'events') {
-                $events_selected = 'selected="selected"';
             } else {
                 $all_selected = 'selected="selected"';
             }
@@ -1069,7 +942,6 @@ class Search {
         $searchform->set_var ('type_all_selected', $all_selected);
         $searchform->set_var ('stories_selected', $stories_selected);
         $searchform->set_var ('comments_selected', $comments_selected);
-        $searchform->set_var ('events_selected', $events_selected);
 
         if ($_CONF['contributedbyline'] == 1) {
             $searchform->set_var('lang_authors', $LANG09[8]);
@@ -1149,7 +1021,6 @@ class Search {
         // Do searches
         $this->story_results = $this->_searchStories();
         $this->comment_results = $this->_searchComments();
-        $this->event_results = $this->_searchEvents();
 
         // Have plugins do their searches
         list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType, $this->_page, $this->_per_page);
@@ -1157,15 +1028,12 @@ class Search {
         // Add the core GL object search results to plugin results
         $nrows_plugins += $this->story_results->num_searchresults;
         $nrows_plugins += $this->comment_results->num_searchresults;
-        $nrows_plugins += $this->event_results->num_searchresults;
-
         $total_plugins += $this->story_results->num_itemssearched;
         $total_plugins += $this->comment_results->num_itemssearched;
-        $total_plugins += $this->event_results->num_itemssearched;
 
         // Move GL core objects to front of array
         array_unshift ($result_plugins, $this->story_results,
-                       $this->comment_results, $this->event_results);
+                       $this->comment_results);
 
         // Searches are done, stop timer
         $searchtime = $searchtimer->stopTimer();
