@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.88 2006/04/03 11:40:51 dhaun Exp $
+// $Id: moderation.php,v 1.89 2006/05/14 13:57:05 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -58,16 +58,16 @@ define ('ICONS_PER_ROW', 6);
 */
 function render_cc_item (&$template, $url = '', $image = '', $label = '')
 {
-
     if (!empty ($url)) {
         $template->set_var ('page_url', $url);
         $template->set_var ('page_image', $image);
         $template->set_var ('option_label', $label);
         $template->set_var ('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
+
         return $template->parse ('cc_main_options', 'ccitem', false);
-    } else {
-        return '';
     }
+
+    return '';
 }
 
 /**
@@ -101,9 +101,6 @@ function commandcontrol()
                   array('condition' => SEC_hasRights('topic.edit'),
                         'url' => $_CONF['site_admin_url'] . '/topic.php',
                         'lang' => $LANG01[13], 'image' => '/images/icons/topic.'),
-                  array('condition' => SEC_hasRights('event.edit'),
-                        'url' => $_CONF['site_admin_url'] . '/event.php',
-                        'lang' => $LANG01[15], 'image' => '/images/icons/event.'),
                   array('condition' => SEC_hasRights('user.edit'),
                         'url' => $_CONF['site_admin_url'] . '/user.php',
                         'lang' => $LANG01[17], 'image' => '/images/icons/user.'),
@@ -113,7 +110,7 @@ function commandcontrol()
                   array('condition' => SEC_hasRights('user.mail'),
                         'url' => $_CONF['site_admin_url'] . '/mail.php',
                         'lang' => $LANG01[105], 'image' => '/images/icons/mail.'),
-                  array('condition' => SEC_inGroup('Root'),
+                  array('condition' => SEC_hasRights ('syndication.edit'),
                         'url' => $_CONF['site_admin_url'] . '/syndication.php',
                         'lang' => $LANG01[38], 'image' => '/images/icons/syndication.'),
                   array('condition' => $showTrackbackIcon,
@@ -209,9 +206,6 @@ function commandcontrol()
             $retval .= draftlist ();
         }
     }
-    if (SEC_hasRights('event.moderate')) {
-        $retval .= itemlist('event');
-    }
     if ($_CONF['usersubmission'] == 1) {
         if (SEC_hasRights ('user.edit') && SEC_hasRights ('user.delete')) {
             $retval .= userlist ();
@@ -224,7 +218,7 @@ function commandcontrol()
 }
 
 /**
-* Diplays items needing moderation
+* Displays items needing moderation
 *
 * Displays the moderation list of items from the submission tables
 *
@@ -234,44 +228,35 @@ function commandcontrol()
 function itemlist($type)
 {
     global $_TABLES, $LANG29, $_CONF, $LANG_ADMIN;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
-    $isplugin = false;
-    $retval = '';
 
-    switch ($type) {
-    case 'event':
-        $sql = "SELECT eid AS id,title,datestart as day,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
-        $H = array($LANG29[10],$LANG29[11],$LANG29[12]);
-        $section_title = $LANG29[37];
-        $section_help = 'cceventsubmission.html';
-        break;
-    default:
-        if ((strlen($type) > 0) && ($type <> 'story')) {
-            $function = 'plugin_itemlist_' . $type;
-            if (function_exists($function)) {
-                // Great, we found the plugin, now call it's itemlist method
-                $plugin = new Plugin();
-                $plugin = $function();
-                $helpfile = $plugin->submissionhelpfile;
-                $sql = $plugin->getsubmissionssql;
-                $H = $plugin->submissionheading;
-                $isplugin = true;
-                $section_title = $plugin->submissionlabel;
-                $section_help = $helpfile;
-                break;
-            }
-        } else { # story submission
-            $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
-            $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
-            $section_title = $LANG29[35];
-            $section_help = 'ccstorysubmission.html';
-            break;
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
+    $retval = '';
+    $isplugin = false;
+
+    if ((strlen ($type) > 0) && ($type <> 'story')) {
+        $function = 'plugin_itemlist_' . $type;
+        if (function_exists ($function)) {
+            // Great, we found the plugin, now call its itemlist method
+            $plugin = new Plugin();
+            $plugin = $function();
+            $helpfile = $plugin->submissionhelpfile;
+            $sql = $plugin->getsubmissionssql;
+            $H = $plugin->submissionheading;
+            $section_title = $plugin->submissionlabel;
+            $section_help = $helpfile;
+            $isplugin = true;
         }
+    } else { // story submission
+        $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
+        $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
+        $section_title = $LANG29[35];
+        $section_help = 'ccstorysubmission.html';
     }
 
     // run SQL but this time ignore any errors
     if (!empty ($sql)) {
-        $result = DB_query($sql,1);
+        $result = DB_query($sql, 1);
     }
     if (empty ($sql) || DB_error()) {
         // was more than likely a plugin that doesn't need moderation
@@ -294,7 +279,7 @@ function itemlist($type)
         $data_arr[$i] = $A;
     }
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      // display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 0),
         array('text' => $H[0], 'field' => 1),
         array('text' => $H[1], 'field' => 2),
@@ -307,7 +292,8 @@ function itemlist($type)
                       'help_url'    => $section_help,
                       'no_data'     => $LANG29[39]);
 
-    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
+    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                              $text_arr, $data_arr, array());
     if ($nrows > 0) {
         $retval .= LB . '<form action="' . $_CONF['site_admin_url']
                 . '/moderation.php" method="POST">' . LB
@@ -320,6 +306,7 @@ function itemlist($type)
     } else {
         $retval .= $table;
     }
+
     return $retval;
 }
 
@@ -360,12 +347,13 @@ function userlist ()
         array('text' => $LANG29[1], 'field' => 'approve')
     );
 
-    $text_arr = array('has_menu'    => false,
-                        'title'     => $LANG29[40],
-                        'help_url'  => '',
-                        'no_data'   => $LANG29[39]
+    $text_arr = array('has_menu'  => false,
+                      'title'     => $LANG29[40],
+                      'help_url'  => '',
+                      'no_data'   => $LANG29[39]
     );
-    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
+    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                              $text_arr, $data_arr, array());
     if ($nrows > 0) {
         $retval .= LB . '<form action="' . $_CONF['site_admin_url']
                 . '/moderation.php" method="POST">' . LB
@@ -393,7 +381,9 @@ function userlist ()
 function draftlist ()
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $retval = '';
 
     $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
@@ -425,11 +415,13 @@ function draftlist ()
 
     $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
     if ($nrows > 0) {
-        $retval .= "\n\n<form action=\"{$_CONF['site_admin_url']}/moderation.php\" method=\"POST\">"
-                    ."<input type=\"hidden\" name=\"type\" value=\"draft\">"
-                    ."<input type=\"hidden\" name=\"mode\" value=\"moderation\">"
-                    .$table
-                    ."<center><input type=\"submit\" value=\"{$LANG_ADMIN['submit']}\"></center></form>\n\n";
+        $retval .= LB . LB . '<form action="' . $_CONF['site_admin_url']
+                . '/moderation.php" method="POST">'
+                . '<input type="hidden" name="type" value="draft">'
+                . '<input type="hidden" name="mode" value="moderation">'
+                . $table
+                . '<p align="center"><input type="submit" value="'
+                . $LANG_ADMIN['submit'] . '"></p></form>' . LB . LB;
     } else {
         $retval .= $table;
     }
@@ -444,7 +436,7 @@ function draftlist ()
 *
 * @param    array   $mid        Array of items
 * @param    array   $action     Array of actions to perform on items
-* @param    string  $type       Type of items ('story', 'event', etc.)
+* @param    string  $type       Type of items ('story', etc.)
 * @param    int     $count      Number of items to moderate
 * @return   string              HTML for "command and control" page
 *
@@ -456,12 +448,6 @@ function moderation ($mid, $action, $type, $count)
     $retval = '';
 
     switch ($type) {
-    case 'event':
-        $id = 'eid';
-        $table = $_TABLES['events'];
-        $submissiontable = $_TABLES['eventsubmission'];
-        $fields = 'eid,title,description,location,address1,address2,city,state,zipcode,datestart,timestart,dateend,timeend,url';
-        break;
     case 'story':
         $id = 'sid';
         $table = $_TABLES['stories'];
@@ -516,15 +502,6 @@ function moderation ($mid, $action, $type, $count)
 
                 COM_rdfUpToDateCheck ();
                 COM_olderStuff ();
-            } else if ($type == 'event') {
-                // first, copy entry from the submission to the events table
-                DB_copy ($table, $fields, $fields, $submissiontable, $id,
-                         $mid[$i]);
-                // then set the default permissions
-                $A = array ();
-                SEC_setDefaultPermissions ($A,
-                                           $_CONF['default_permissions_event']);
-                DB_query ("UPDATE {$_TABLES['events']} SET perm_owner = {$A['perm_owner']}, perm_group = {$A['perm_group']}, perm_members = {$A['perm_members']}, perm_anon = {$A['perm_anon']} WHERE eid = {$mid[$i]}");
             } else if ($type == 'draft') {
                 DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = '{$mid[$i]}'");
 
