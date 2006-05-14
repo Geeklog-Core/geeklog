@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.60 2006/05/13 10:13:30 mjervis Exp $
+// $Id: lib-admin.php,v 1.61 2006/05/14 16:33:10 ospiess Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -548,42 +548,6 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
                 $retval = $fieldvalue;
                 break;
         }
-    }
-    return $retval;
-}
-
-function ADMIN_getListField_events($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ACCESS, $LANG_ADMIN;
-    $retval = '';
-
-    $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-
-    switch($fieldname) {
-        case "edit":
-            if ($access == 3) {
-                $retval = "<a href=\"{$_CONF['site_admin_url']}/event.php?mode=edit&amp;eid={$A['eid']}\">{$icon_arr['edit']}</a>";
-            }
-            break;
-        case "copy":
-            if ($access == 3) {
-                $retval = "<a href=\"{$_CONF['site_admin_url']}/event.php?mode=clone&amp;eid={$A['eid']}\">{$icon_arr['copy']}</a>";
-            }
-            break;
-        case 'access':
-            if ($access == 3) {
-                $retval = $LANG_ACCESS['edit'];
-            } else {
-                $retval = $LANG_ACCESS['readonly'];
-            }
-            break;
-        case 'title':
-            $retval = stripslashes ($A['title']);
-            $retval = "<a href=\"{$_CONF['site_url']}/calendar_event.php?eid="
-                    . "{$A['eid']}\">$retval</a>";
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
     }
     return $retval;
 }
