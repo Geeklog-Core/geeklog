@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.535 2006/05/14 16:22:44 ospiess Exp $
+// $Id: lib-common.php,v 1.536 2006/05/14 16:32:00 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,7 +66,7 @@ $_COM_VERBOSE = false;
 * Make sure to include the name of the config file,
 * i.e. the path should end in .../config.php
 */
-require_once( '/path/to/geeklog-calendar/config.php' );
+require_once( '/path/to/geeklog/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
