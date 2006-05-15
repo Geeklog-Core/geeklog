@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.540 2006/05/15 08:15:24 ospiess Exp $
+// $Id: lib-common.php,v 1.541 2006/05/15 09:00:55 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2568,7 +2568,7 @@ function COM_checkWords( $Message )
 
             for( $i = 0; $i < count( $_CONF['censorlist']); $i++ )
             {
-                $EditedMessage = eregi_replace( $RegExPrefix . $_CONF['censorlist'][$i] . $RegExSuffix, "\\1$Replacement\\2", $EditedMessage );
+                $EditedMessage = MBYTE_eregi_replace( $RegExPrefix . $_CONF['censorlist'][$i] . $RegExSuffix, "\\1$Replacement\\2", $EditedMessage );
             }
         }
     }
@@ -2781,7 +2781,7 @@ function COM_formatEmailAddress( $name, $address )
 {
     $formatted_name = $name;
 
-    if( eregi( '[^0-9a-z ]', $formatted_name ))
+    if( MBYTE_eregi( '[^0-9a-z ]', $formatted_name ))
     {
         $formatted_name = str_replace( '"', '\\"', $formatted_name );
         $formatted_name = '"' . $formatted_name . '"';

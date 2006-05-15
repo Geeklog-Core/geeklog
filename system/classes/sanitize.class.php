@@ -299,7 +299,7 @@ class sanitize extends kses {
 
                 for( $i = 0; $i < count( $_CONF['censorlist']); $i++ )
                 {
-                    $editedMessage = eregi_replace( $regExPrefix . $_CONF['censorlist'][$i] . $regExSuffix, "\\1$replacement\\2", $editedMessage );
+                    $editedMessage = MBYTE_eregi_replace( $regExPrefix . $_CONF['censorlist'][$i] . $regExSuffix, "\\1$replacement\\2", $editedMessage );
                 }
             }
         }

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.7 2006/05/15 08:15:24 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.8 2006/05/15 09:00:55 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -135,6 +135,31 @@ function MBYTE_strtolower($str) {
 	return $result;
 }
 
+function MBYTE_eregi($pattern, $str, $regs) {
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }  
+	if ($mb_enabled) {
+		$result = mb_eregi($pattern, $str, $regs);
+	} else {
+		$result = eregi($pattern, $str, $regs);
+	}
+	return $result;
+}
+
+function MBYTE_eregi_replace($pattern, $replace, $str) {
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }  
+	if ($mb_enabled) {
+		$result = mb_eregi_replace()($pattern, $replace, $str);
+	} else {
+		$result = eregi_replace($pattern, $replace, $str);
+	}
+	return $result;
+}
 
 /** those are currently not needed in GL, left here if needed later
 function MBYTE_substr_count($hay, $needle) {
@@ -162,6 +187,19 @@ function MBYTE_strtoupper($str) {
 	}
 	return $result;
 }
+
+function MBYTE_strrpos($hay, $needle, $offset='') {
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }  
+	if ($mb_enabled) {
+		$result = mb_strrpos($hay, $needle, $offset, 'utf-8');
+	} else {
+		$result = strrpos($hay, $needle, $offset);
+	}
+	return $result;
+}
  
 function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
     static $mb_enabled;
@@ -184,13 +222,11 @@ function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
 
 
 /**
-mb_convert_case -- Perform case folding on a string
 mb_decode_mimeheader -- Decode string in MIME header field
 mb_decode_numericentity --  Decode HTML numeric string reference to character
 mb_encode_mimeheader -- Encode string for MIME header
 mb_encode_numericentity --  Encode character to HTML numeric string reference
 mb_ereg_match --  Regular expression match for multibyte string
-mb_ereg_replace -- Replace regular expression with multibyte support
 mb_ereg_search_getpos --  Returns start point for next regular expression match
 mb_ereg_search_getregs --  Retrieve the result from the last multibyte regular expression match
 mb_ereg_search_init --  Setup string and regular expression for multibyte regular expression match
@@ -198,22 +234,14 @@ mb_ereg_search_pos --  Return position and length of matched part of multibyte r
 mb_ereg_search_regs --  Returns the matched part of multibyte regular expression
 mb_ereg_search_setpos --  Set start point of next regular expression match
 mb_ereg_search --  Multibyte regular expression match for predefined multibyte string
-mb_ereg -- Regular expression match with multibyte support
-mb_eregi_replace --  Replace regular expression with multibyte support ignoring case
-mb_eregi --  Regular expression match ignoring case with multibyte support
-mb_get_info -- Get internal settings of mbstring
-mb_list_encodings --  Returns an array of all supported encodings
 mb_parse_str --  Parse GET/POST/COOKIE data and set global variable
 mb_split -- Split multibyte string using regular expression
 mb_strcut -- Get part of string
 mb_strimwidth -- Get truncated string with specified width
-mb_strpos --  Find position of first occurrence of string in a string
 mb_strrpos --  Find position of last occurrence of a string in a string
-mb_strtoupper -- Make a string uppercase
 mb_strwidth -- Return width of string
 mb_substitute_character -- Set/Get substitution character
 mb_substr_count -- Count the number of substring occurrences
-
 */
 
 
