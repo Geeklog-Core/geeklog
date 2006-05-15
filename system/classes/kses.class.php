@@ -324,7 +324,7 @@
 			 *	or an array of strings.  Invalid data will be ignored.
 			 *
 			 *	@access public
-			 *	@param string $tag (X)HTML tag that will be allowed after stripping text.
+    		 *	@param string $tag (X)HTML tag that will be allowed after stripping text.
 			 *	@param array $attribs Associative array of allowed attributes - key => attribute name - value => attribute parameter
 			 *	@return bool Status of Adding (X)HTML and attributes.
 			 *	@since PHP4 OOP 0.0.1
@@ -661,7 +661,7 @@
 				$elem     = $matches[2];
 				$attrlist = $matches[3];
 
-				if (
+    			if (
 					!isset($this->allowed_html[strtolower($elem)]) ||
 					!is_array($this->allowed_html[strtolower($elem)])
 				)
@@ -740,7 +740,8 @@
 						{
 							# there are no checks
 							$attr2 .= ' '.$arreach['whole'];
-						}
+
+					}
 						else
 						{
 							# there are some checks
@@ -784,7 +785,7 @@
 			 *	@access private
 			 *	@param string $attr Text containing tag attributes for parsing
 			 *	@return array Associative array containing data on attribute and value
-			 *	@since PHP4 OOP 0.0.1
+      		 *	@since PHP4 OOP 0.0.1
 			 */
 			function _hair($attr)
 			{
@@ -975,7 +976,7 @@
 					foreach ($this->allowed_protocols as $one_protocol)
 					{
 						if (strtolower($one_protocol) == $string)
-						{
+    					{
 							$allowed = true;
 							break;
 						}
@@ -1155,8 +1156,5 @@
 				return 'PHP4 0.2.2 (OOP fork of procedural kses 0.2.2)';
 			}
 		}
-
-
-
 	}
 ?>
