@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.538 2006/05/15 05:58:55 ospiess Exp $
+// $Id: lib-common.php,v 1.539 2006/05/15 07:53:28 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4830,7 +4830,14 @@ function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
 
     if(( $u_id <= 0 ) || ( $u_id == $_USER['uid'] ))
     {
-        $uid = $_USER['uid'];
+        if( isset( $_USER['uid'] ))
+        {
+            $uid = $_USER['uid'];
+        }
+        else
+        {
+            $uid = 1;
+        }
         $GROUPS = $_GROUPS;
     }
     else
