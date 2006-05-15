@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.30 2006/05/13 10:13:30 mjervis Exp $
+// $Id: lib-comment.php,v 1.31 2006/05/15 06:18:06 ospiess Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -936,7 +936,7 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = substr ($comment, 0, $_CONF['emailstorieslength'])
+            $comment = MBYTE_substr ($comment, 0, $_CONF['emailstorieslength'])
                      . '...';
         }
         $mailbody .= $comment . "\n\n";
@@ -1148,7 +1148,7 @@ function CMT_sendReport ($cid, $type)
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = substr ($comment, 0, $_CONF['emailstorieslength'])
+            $comment = MBYTE_substr ($comment, 0, $_CONF['emailstorieslength'])
                      . '...';
         }
         $mailbody .= $comment . "\n\n";

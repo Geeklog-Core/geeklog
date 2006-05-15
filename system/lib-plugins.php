@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.101 2006/05/15 05:58:55 ospiess Exp $
+// $Id: lib-plugins.php,v 1.102 2006/05/15 06:18:06 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1264,18 +1264,18 @@ function PLG_replaceTags ($content, $plugin = '')
                 if (($end_pos > $start_pos) AND
                         (($next_tag === false) OR ($end_pos < $next_tag))) {
                     $taglength = $end_pos - $start_pos + 1;
-                    $tag = substr ($content, $start_pos, $taglength);
+                    $tag = MBYTE_substr ($content, $start_pos, $taglength);
                     $parms = explode (' ', $tag);
 
                     // Extra test to see if autotag was entered with a space
                     // after the module name
-                    if (substr ($parms[0], -1) == ':') {
+                    if (MBYTE_substr ($parms[0], -1) == ':') {
                         $startpos = MBYTE_strlen ($parms[0]) + MBYTE_strlen ($parms[1]) + 2;
-                        $label = str_replace (']', '', substr ($tag, $startpos));
+                        $label = str_replace (']', '', MBYTE_substr ($tag, $startpos));
                         $tagid = $parms[1];
                     } else {
                         $label = str_replace (']', '',
-                                 substr ($tag, MBYTE_strlen ($parms[0]) + 1));
+                                 MBYTE_substr ($tag, MBYTE_strlen ($parms[0]) + 1));
                         $parms = explode (':', $parms[0]);
                         if (count ($parms) > 2) {
                             // whoops, there was a ':' in the tag id ...

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.37 2006/05/15 05:58:55 ospiess Exp $
+// $Id: trackback.php,v 1.38 2006/05/15 06:18:05 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -88,7 +88,7 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
 
         // MT and other weblogs will shorten the excerpt like this
         if (MBYTE_strlen ($p_excerpt) > 255) {
-            $p_excerpt = substr ($p_excerpt, 0, 252) . '...';
+            $p_excerpt = MBYTE_substr ($p_excerpt, 0, 252) . '...';
         }
 
         $retval .= COM_startBlock ($LANG_TRB['preview']);

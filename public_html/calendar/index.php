@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.4 2006/05/14 19:48:36 dhaun Exp $
+// $Id: index.php,v 1.5 2006/05/15 06:18:05 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -143,35 +143,14 @@ function setCalendarLanguage (&$aCalendar)
 * @param    int     $day    1 = Sunday, 2 = Monday, ...
 * @return   string          abbreviated day's name (3 characters)
 *
-* The problem here is that substr may return nonsense for UTF-8 strings, but
-* mb_substr may not be available.
 *
 */
 function shortDaysName ($day)
 {
     global $LANG_CHARSET, $LANG30;
 
-    static $mb_enabled;
-
-    if (!isset ($mb_enabled)) {
-        $mb_enabled = function_exists ('mb_substr');
-    }
-
     $shortday = '';
-    if ($LANG_CHARSET == 'utf-8') {
-        if ($mb_enabled) {
-            // when mb_substr is available, use it
-            $shortday = mb_substr ($LANG30[$day], 0, 2, $LANG_CHARSET);
-        } else {
-            // no mb_substr, but UTF-8 string: cheat and hope that the locale
-            // matches the current language ...
-            // Note: May 1st, 2005 was a Sunday
-            $shortday = date ('D', mktime (0, 0, 0, 5, $day, 2005));
-        }
-    } else {
-        $shortday = substr ($LANG30[$day], 0, 2);
-    }
-
+    $shortday = MBYTE_substr ($LANG30[$day], 0, 2);
     return $shortday;
 }
 

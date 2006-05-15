@@ -208,17 +208,17 @@ class sanitize extends kses {
         // handle [code] ... [/code]
         do
         {
-            $start_pos = strpos( strtolower( $message ), '[code]' );
+            $start_pos = MBYTE_substr( strtolower( $message ), '[code]' );
             if( $start_pos !== false )
             {
-                $end_pos = strpos( strtolower( $message ), '[/code]' );
+                $end_pos = MBYTE_substr( strtolower( $message ), '[/code]' );
                 if( $end_pos !== false )
                 {
-                    $encoded = $this->_handleCode( substr( $message, $start_pos + 6,
+                    $encoded = $this->_handleCode( MBYTE_substr( $message, $start_pos + 6,
                             $end_pos - ( $start_pos + 6 )));
                     $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                    $message = substr( $message, 0, $start_pos ) . $encoded
-                         . substr( $message, $end_pos + 7 );
+                    $message = MBYTE_substr( $message, 0, $start_pos ) . $encoded
+                         . MBYTE_substr( $message, $end_pos + 7 );
                 }
                 else // missing [/code]
                 {
@@ -226,9 +226,9 @@ class sanitize extends kses {
                     // special characters). However, the calling entity should
                     // better be checking for missing [/code] before calling this
                     // function ...
-                    $encoded = $this->_handleCode( substr( $message, $start_pos + 6 ));
+                    $encoded = $this->_handleCode( MBYTE_substr( $message, $start_pos + 6 ));
                     $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                    $message = substr( $message, 0, $start_pos ) . $encoded;
+                    $message = MBYTE_substr( $message, 0, $start_pos ) . $encoded;
                 }
             }
         }

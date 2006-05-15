@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.31 2006/05/15 05:58:55 ospiess Exp $
+// $Id: lib-trackback.php,v 1.32 2006/05/15 06:18:06 ospiess Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -248,7 +248,7 @@ function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $
 
     // MT does that, so follow its example ...
     if (MBYTE_strlen ($excerpt) > 255) {
-        $excerpt = substr ($excerpt, 0, 252) . '...';
+        $excerpt = MBYTE_substr ($excerpt, 0, 252) . '...';
     }
 
     $title   = str_replace (array ('$',     '{',      '}'),

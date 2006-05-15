@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.98 2006/05/14 20:25:43 mjervis Exp $
+// $Id: submit.php,v 1.99 2006/05/15 06:18:05 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -284,7 +284,7 @@ function sendNotification ($table, $A)
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $introtext = substr ($introtext, 0,
+            $introtext = MBYTE_substr ($introtext, 0,
                     $_CONF['emailstorieslength']) . '...';
         }
         $mailbody .= $introtext . "\n\n";
