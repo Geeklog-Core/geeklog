@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.28 2006/05/12 09:12:18 ospiess Exp $
+// $Id: index.php,v 1.29 2006/05/15 04:10:38 vinny Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -333,7 +333,7 @@ function editpoll ($qid = '')
     } else {
         // they can't set the group then
         $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$Q['group_id']}");
-        $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
+        $groupdd .= '<input type="hidden" name="group_id" value="' . $Q['group_id'] . '">';
     }
     $poll_templates->set_var('group_dropdown', $groupdd);
     $poll_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);

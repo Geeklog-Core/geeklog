@@ -51,9 +51,9 @@
  * 
  */
 
-// $Id: portal.php,v 1.2 2005/11/26 06:37:32 trinity Exp $
+// $Id: portal.php,v 1.3 2006/05/15 04:10:38 vinny Exp $
 
-require_once('./../lib-common.php');
+require_once('../lib-common.php');
 
 // MAIN
 

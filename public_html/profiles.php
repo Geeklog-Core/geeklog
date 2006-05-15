@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.48 2006/05/14 20:25:42 mjervis Exp $
+// $Id: profiles.php,v 1.49 2006/05/15 04:10:38 vinny Exp $
 
 require_once ('lib-common.php');
 
@@ -49,7 +49,7 @@ require_once ('lib-common.php');
 */
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG08;
+    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG08;
 
     // check for correct $_CONF permission
     if (empty ($_USER['username']) &&

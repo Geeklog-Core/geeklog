@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.3 2006/05/14 19:18:53 dhaun Exp $
+// $Id: event.php,v 1.4 2006/05/15 04:10:38 vinny Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -151,7 +151,7 @@ function saveuserevent ($eid)
 */
 function editpersonalevent ($A)
 {
-    global $_CONF, $LANG12;
+    global $_CONF, $LANG12, $_CA_CONF;
 
     $cal_templates = new Template($_CONF['path'] . '/plugins/calendar/templates/');
     $cal_templates->set_file('form','editpersonalevent.thtml');

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.101 2006/05/14 20:25:42 mjervis Exp $
+// $Id: comment.php,v 1.102 2006/05/15 04:10:38 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -68,7 +68,7 @@ require_once( $_CONF['path_system'] . 'lib-comment.php' );
  * @return string HTML (possibly a refresh)
  */
 function handleSubmit() {
-    global $_POST, $_TABLES, $_CONF, $LANG03;
+    global $_POST, $_TABLES, $_CONF, $LANG03, $_USER;
 
     $type = COM_applyFilter ($_POST['type']);
     $sid = COM_applyFilter ($_POST['sid']);

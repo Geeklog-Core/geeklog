@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2006/05/14 20:32:16 dhaun Exp $
+// $Id: index.php,v 1.9 2006/05/15 04:10:38 vinny Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -74,7 +74,7 @@ if (!SEC_hasRights('calendar.edit')) {
 function CALENDAR_editEvent ($mode, $A, $msg = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $_CA_CONF, $LANG10, $LANG12,
-           $LANG_CAL_ADMIN, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE;
+           $LANG_CAL_ADMIN, $LANG22, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -395,7 +395,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                              $group_id, $perm_owner, $perm_group, $perm_members,
                              $perm_anon, $mode)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG22;
+    global $_CONF, $_TABLES, $_USER, $LANG22, $MESSAGE;
 
     $retval = '';
 

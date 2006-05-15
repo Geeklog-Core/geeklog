@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.11 2006/05/07 20:44:42 mjervis Exp $
+* $Id: MassDelete.Admin.class.php,v 1.12 2006/05/15 04:10:38 vinny Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -109,7 +109,7 @@ class MassDelete extends BaseAdmin {
     */
     function delcomment ($cid, $sid, $type)
     {
-        global $_CONF, $_TABLES;
+        global $_CONF, $_TABLES, $LANG_SX00;
 
         $type = COM_applyFilter ($type);
         $sid = COM_applyFilter ($sid);

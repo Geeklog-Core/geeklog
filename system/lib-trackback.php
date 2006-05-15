@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.29 2006/04/26 19:44:17 mjervis Exp $
+// $Id: lib-trackback.php,v 1.30 2006/05/15 04:10:38 vinny Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -243,7 +243,7 @@ function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $
 
     $url = COM_applyFilter ($url);
     $title = TRB_filterTitle ($title);
-    $blog = TRB_filterBlogname ($blog_name);
+    $blog = TRB_filterBlogname ($blog);
     $excerpt = TRB_filterExcerpt ($excerpt);
 
     // MT does that, so follow its example ...
