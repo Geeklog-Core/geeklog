@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.68 2006/05/13 18:49:23 dhaun Exp $
+// $Id: functions.inc,v 1.69 2006/05/15 02:07:06 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -483,7 +483,8 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
+    $spsql = "SELECT * FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " 
+           . $moresql . $perms . " ORDER BY " . $sort;
     $result = DB_query ($spsql);
 
     $pages = DB_numRows ($result);
@@ -531,8 +532,8 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 }
             }
             
-            if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+            if ((SEC_hasAccess ($spresult['owner_id'], $spresult['group_id'], $spresult['perm_owner'],
+                $spresult['perm_group'], $spresult['perm_members'], $spresult['perm_anon']) == 3) &&
                 SEC_hasRights ('staticpages.edit')) {
                 $retval .= '<p align="center"><a href="' . $_CONF['site_admin_url']
                         . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
