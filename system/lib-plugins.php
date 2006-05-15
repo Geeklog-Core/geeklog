@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.102 2006/05/15 06:18:06 ospiess Exp $
+// $Id: lib-plugins.php,v 1.103 2006/05/15 06:26:07 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1254,13 +1254,13 @@ function PLG_replaceTags ($content, $plugin = '')
         $prev_offset = 0;
         $contentlen = MBYTE_strlen ($content);
         while ($offset < $contentlen) {
-            $start_pos = strpos (strtolower ($content), $autotag_prefix,
+            $start_pos = MBYTE_strpos (strtolower ($content), $autotag_prefix,
                                  $offset);
             if ($start_pos === false) {
                 break;
             } else {
-                $end_pos = strpos (strtolower ($content), ']', $start_pos);
-                $next_tag = strpos (strtolower ($content), '[', $start_pos + 1);
+                $end_pos = MBYTE_strpos (strtolower ($content), ']', $start_pos);
+                $next_tag = MBYTE_strpos (strtolower ($content), '[', $start_pos + 1);
                 if (($end_pos > $start_pos) AND
                         (($next_tag === false) OR ($end_pos < $next_tag))) {
                     $taglength = $end_pos - $start_pos + 1;

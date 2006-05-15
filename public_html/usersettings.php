@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.134 2006/05/14 16:42:27 ospiess Exp $
+// $Id: usersettings.php,v 1.135 2006/05/15 06:26:06 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -896,7 +896,7 @@ function saveuser($A)
         }
 
         if (!empty ($A['homepage'])) {
-            $pos = strpos ($A['homepage'], ':');
+            $pos = MBYTE_strpos ($A['homepage'], ':');
             if ($pos === false) {
                 $A['homepage'] = 'http://' . $A['homepage'];
             }
