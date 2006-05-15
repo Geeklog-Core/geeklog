@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.5 2006/05/15 05:58:55 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.6 2006/05/15 06:21:49 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -109,6 +109,7 @@ function MBYTE_substr($str, $start, $length = NULL) {
 	return $result;	
 }
 
+/** this one is currently not needed in GL, left here if needed later
 function MBYTE_substr_count($hay, $needle) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
@@ -120,7 +121,7 @@ function MBYTE_substr_count($hay, $needle) {
 		$result = substr_count($hay, $needle);
 	}
 	return $result;
-}
+} */
 
 function MBYTE_strpos($hay, $needle, $offset='') {
     static $mb_enabled;
@@ -135,7 +136,7 @@ function MBYTE_strpos($hay, $needle, $offset='') {
 	return $result;
 }
 
-/** Not needed? Mail is handled by PEAR 
+/** Not needed either? Mail is handled by PEAR 
 function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
