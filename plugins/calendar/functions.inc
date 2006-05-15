@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.19 2006/05/14 21:26:19 dhaun Exp $
+// $Id: functions.inc,v 1.20 2006/05/15 03:31:02 vinny Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -784,13 +784,8 @@ function CALENDAR_listevents()
 */
 function CALENDAR_sendNotification ($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08;
+    global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08, $LANG29, $LANG30;
 
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
-
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
     $title = stripslashes ($A['title']);
     $description = stripslashes ($A['description']);
     
@@ -811,7 +806,12 @@ function CALENDAR_sendNotification ($table, $A)
         $mailbody .= "$LANG02[12] <{$_CONF['site_url']}/calendar_event.php?eid={$A['eid']}>\n\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[37];
-    break;
+
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
+
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 
@@ -918,7 +918,7 @@ function plugin_getfeedcontent_calendar( $limit, &$link, &$update, $feedType, $f
         $eids[] = $row['eid'];
 
         $eventtitle = stripslashes( $row['title'] );
-        $eventtext = SYND_truncateSummary( $row['description'], $contentLength);
+        $eventtext = SYND_truncateSummary( $row['description'], strlen($row['description']));
         $eventlink  = $_CONF['site_url'] . '/calendar/event.php?eid='
                     . $row['eid'];
 
@@ -1007,7 +1007,7 @@ function plugin_feedupdatecheck_calendar ($feed, $topic, $update_data, $limit,
         COM_errorLog ("Update check for events: comparing new list ($current) with old list ($update_info)", 1);
     }
 
-    return ( $current != $update_info ) ? false : true;
+    return ( $current != $update_data ) ? false : true;
 }
 
 
@@ -1247,6 +1247,12 @@ function plugin_uninstall_calendar ($steps = '')
 function calendar_templatePath ($path = '')
 {
     global $_CONF;
+
+    if (empty ($path)) {
+        $layout_path = $_CONF['path_layout'] . calendar;
+    } else {
+        $layout_path = $_CONF['path_layout'] . calendar . '/' . $path;
+    }
 
     if (is_dir ($layout_path)) {
         $retval = $layout_path;
