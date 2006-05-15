@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.20 2006/05/15 03:31:02 vinny Exp $
+// $Id: functions.inc,v 1.21 2006/05/15 05:58:54 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -464,13 +464,13 @@ function plugin_save_submit_calendar ($A)
 
     $A['url'] = strip_tags ($A['url']);
     if (!empty ($A['url'])) {
-        $pos = strpos ($A['url'], ':');
+        $pos = MBYTE_strpos ($A['url'], ':');
         if ($pos === false) {
             $A['url'] = 'http://' . $A['url'];
         } else {
-            $prot = substr ($A['url'], 0, $pos + 1);
+            $prot = MBYTE_substr ($A['url'], 0, $pos + 1);
             if (($prot != 'http:') && ($prot != 'https:')) {
-                $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+                $A['url'] = 'http:' . MBYTE_substr ($A['url'], $pos + 1);
             }
         }
         $A['url'] = addslashes ($A['url']);
@@ -918,7 +918,7 @@ function plugin_getfeedcontent_calendar( $limit, &$link, &$update, $feedType, $f
         $eids[] = $row['eid'];
 
         $eventtitle = stripslashes( $row['title'] );
-        $eventtext = SYND_truncateSummary( $row['description'], strlen($row['description']));
+        $eventtext = SYND_truncateSummary( $row['description'], MBYTE_strlen($row['description']));
         $eventlink  = $_CONF['site_url'] . '/calendar/event.php?eid='
                     . $row['eid'];
 

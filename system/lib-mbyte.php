@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.4 2006/03/29 19:42:37 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.5 2006/05/15 05:58:55 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -122,6 +122,20 @@ function MBYTE_substr_count($hay, $needle) {
 	return $result;
 }
 
+function MBYTE_strpos($hay, $needle, $offset='') {
+    static $mb_enabled;
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }  
+	if ($mb_enabled) {
+		$result = mb_strpos($hay, $needle, $offset, 'utf-8');
+	} else {
+		$result = strpos($hay, $needle, $offset);
+	}
+	return $result;
+}
+
+/** Not needed? Mail is handled by PEAR 
 function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
@@ -137,7 +151,8 @@ function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
 		$result = mail($to, $subj, $mess, $header, $param);
 	}
 	return $result;
-}
+} **/
+
 
 /**
 mb_convert_case -- Perform case folding on a string
@@ -160,11 +175,9 @@ mb_eregi --  Regular expression match ignoring case with multibyte support
 mb_get_info -- Get internal settings of mbstring
 mb_list_encodings --  Returns an array of all supported encodings
 mb_parse_str --  Parse GET/POST/COOKIE data and set global variable
-mb_send_mail --  Send encoded mail
 mb_split -- Split multibyte string using regular expression
 mb_strcut -- Get part of string
 mb_strimwidth -- Get truncated string with specified width
-mb_strlen -- Get string length
 mb_strpos --  Find position of first occurrence of string in a string
 mb_strrpos --  Find position of last occurrence of a string in a string
 mb_strtolower -- Make a string lowercase

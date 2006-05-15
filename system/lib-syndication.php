@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.32 2006/05/14 16:40:25 ospiess Exp $
+// $Id: lib-syndication.php,v 1.33 2006/05/15 05:58:55 ospiess Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -546,7 +546,7 @@ function SYND_truncateSummary( $text, $length )
         $text = stripslashes( $text );
         $text = trim( $text );
         $text = preg_replace( "/(\015)/", "", $text );
-        if(( $length > 3 ) && ( strlen( $text ) > $length ))
+        if(( $length > 3 ) && ( MBYTE_strlen( $text ) > $length ))
         {
             $text = substr( $text, 0, $length - 3 ) . '...';
         }

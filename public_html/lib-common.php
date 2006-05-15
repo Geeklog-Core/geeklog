@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.537 2006/05/14 16:39:02 ospiess Exp $
+// $Id: lib-common.php,v 1.538 2006/05/15 05:58:55 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2640,17 +2640,17 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     // handle [code] ... [/code]
     do
     {
-        $start_pos = strpos( strtolower( $str ), '[code]' );
+        $start_pos = MBYTE_strpos( strtolower( $str ), '[code]' );
         if( $start_pos !== false )
         {
-            $end_pos = strpos( strtolower( $str ), '[/code]' );
+            $end_pos = MBYTE_strpos( strtolower( $str ), '[/code]' );
             if( $end_pos !== false )
             {
-                $encoded = COM_handleCode( substr( $str, $start_pos + 6,
+                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6,
                         $end_pos - ( $start_pos + 6 )));
                 $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                $str = substr( $str, 0, $start_pos ) . $encoded
-                     . substr( $str, $end_pos + 7 );
+                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded
+                     . MBYTE_substr( $str, $end_pos + 7 );
             }
             else // missing [/code]
             {
@@ -2658,9 +2658,9 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
                 // special characters). However, the calling entity should
                 // better be checking for missing [/code] before calling this
                 // function ...
-                $encoded = COM_handleCode( substr( $str, $start_pos + 6 ));
+                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6 ));
                 $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                $str = substr( $str, 0, $start_pos ) . $encoded;
+                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded;
             }
         }
     }

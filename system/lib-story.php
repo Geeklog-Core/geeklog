@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.61 2006/04/11 13:46:47 dhaun Exp $
+// $Id: lib-story.php,v 1.62 2006/05/15 05:58:55 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -491,12 +491,12 @@ function STORY_extractLinks( $fulltext, $maxlength = 26 )
     for ( $i=0; $i< count( $matches[0] ); $i++ )
     {
         $matches[2][$i] = strip_tags( $matches[2][$i] );
-        if ( !strlen( trim( $matches[2][$i] ) ) ) {
+        if ( !MBYTE_strlen( trim( $matches[2][$i] ) ) ) {
             $matches[2][$i] = strip_tags( $matches[1][$i] );
         }
 
         // if link is too long, shorten it and add ... at the end
-        if ( ( $maxlength > 0 ) && ( strlen( $matches[2][$i] ) > $maxlength ) )
+        if ( ( $maxlength > 0 ) && ( MBYTE_strlen( $matches[2][$i] ) > $maxlength ) )
         {
             $matches[2][$i] = substr( $matches[2][$i], 0, $maxlength - 3 ) . '...';
         }

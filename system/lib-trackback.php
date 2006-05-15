@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.30 2006/05/15 04:10:38 vinny Exp $
+// $Id: lib-trackback.php,v 1.31 2006/05/15 05:58:55 ospiess Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -247,7 +247,7 @@ function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $
     $excerpt = TRB_filterExcerpt ($excerpt);
 
     // MT does that, so follow its example ...
-    if (strlen ($excerpt) > 255) {
+    if (MBYTE_strlen ($excerpt) > 255) {
         $excerpt = substr ($excerpt, 0, 252) . '...';
     }
 
@@ -599,7 +599,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
     fputs ($sock, 'Host: ' . $target['host'] . "\r\n");
     fputs ($sock, 'Content-type: application/x-www-form-urlencoded; charset='
                   . $charset . "\r\n");
-    fputs ($sock, 'Content-length: ' . strlen ($toSend) . "\r\n");
+    fputs ($sock, 'Content-length: ' . MBYTE_strlen ($toSend) . "\r\n");
     fputs ($sock, 'User-Agent: GeekLog/' . VERSION . "\r\n");
     fputs ($sock, "Connection: close\r\n\r\n");
     fputs ($sock, $toSend);

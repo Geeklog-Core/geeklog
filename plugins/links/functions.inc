@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.61 2006/05/13 17:13:08 dhaun Exp $
+// $Id: functions.inc,v 1.62 2006/05/15 05:58:54 ospiess Exp $
 
 
 /**
@@ -1071,13 +1071,13 @@ function plugin_save_submit_links ($A)
 
     $A['url'] = strip_tags ($A['url']);
     if (!empty ($A['url'])) {
-        $pos = strpos ($A['url'], ':');
+        $pos = MBYTE_strpos ($A['url'], ':');
         if ($pos === false) {
             $A['url'] = 'http://' . $A['url'];
         } else {
-            $prot = substr ($A['url'], 0, $pos + 1);
+            $prot = MBYTE_substr ($A['url'], 0, $pos + 1);
             if (($prot != 'http:') && ($prot != 'https:')) {
-                $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+                $A['url'] = 'http:' . MBYTE_substr ($A['url'], $pos + 1);
             }
         }
         $A['url'] = addslashes ($A['url']);
