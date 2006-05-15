@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.4.1                                                             |
 // +---------------------------------------------------------------------------+
 // | lib-multibyte.php                                                         |
 // |                                                                           |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.8 2006/05/15 09:00:55 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.9 2006/05/15 09:23:54 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
