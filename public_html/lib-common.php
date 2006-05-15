@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.539 2006/05/15 07:53:28 dhaun Exp $
+// $Id: lib-common.php,v 1.540 2006/05/15 08:15:24 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2640,10 +2640,10 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     // handle [code] ... [/code]
     do
     {
-        $start_pos = MBYTE_strpos( strtolower( $str ), '[code]' );
+        $start_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[code]' );
         if( $start_pos !== false )
         {
-            $end_pos = MBYTE_strpos( strtolower( $str ), '[/code]' );
+            $end_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[/code]' );
             if( $end_pos !== false )
             {
                 $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6,

@@ -208,10 +208,10 @@ class sanitize extends kses {
         // handle [code] ... [/code]
         do
         {
-            $start_pos = MBYTE_substr( strtolower( $message ), '[code]' );
+            $start_pos = MBYTE_substr( MBYTE_strtolower( $message ), '[code]' );
             if( $start_pos !== false )
             {
-                $end_pos = MBYTE_substr( strtolower( $message ), '[/code]' );
+                $end_pos = MBYTE_substr( MBYTE_strtolower( $message ), '[/code]' );
                 if( $end_pos !== false )
                 {
                     $encoded = $this->_handleCode( MBYTE_substr( $message, $start_pos + 6,
