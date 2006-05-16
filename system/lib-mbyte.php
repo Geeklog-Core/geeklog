@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.9 2006/05/15 09:23:54 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.10 2006/05/16 01:07:25 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -154,7 +154,7 @@ function MBYTE_eregi_replace($pattern, $replace, $str) {
         $mb_enabled = MBYTE_checkEnabled();
     }  
 	if ($mb_enabled) {
-		$result = mb_eregi_replace()($pattern, $replace, $str);
+		$result = mb_eregi_replace($pattern, $replace, $str);
 	} else {
 		$result = eregi_replace($pattern, $replace, $str);
 	}
