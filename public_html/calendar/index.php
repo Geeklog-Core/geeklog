@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.5 2006/05/15 06:18:05 ospiess Exp $
+// $Id: index.php,v 1.6 2006/05/16 02:37:07 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -411,7 +411,7 @@ if (isset ($_REQUEST['view'])) {
     $view = COM_applyFilter ($_REQUEST['view']);
 }
 
-if (!in_array ($view, array ('month', 'week', 'day', 'addentry'))) {
+if (!in_array ($view, array ('month', 'week', 'day', 'addentry', 'savepersonal'))) {
     $view = '';
 }
 
@@ -765,6 +765,9 @@ case 'week':
     
 case 'addentry':
     $display .= plugin_submit_calendar($mode);
+    break;
+case 'savepersonal':
+    $display = plugin_save_submit_calendar($_POST);
     break;
 
 default: // month view

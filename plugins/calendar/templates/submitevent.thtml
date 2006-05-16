@@ -1,5 +1,5 @@
                             {explanation}
-                            <form action="{site_url}/submit.php" method="post">
+                            <form action="{site_url}{submit_url}" method="post">
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td align="right"><b>{lang_title}:</b></td>
@@ -125,6 +125,7 @@
                                         <td align="center" colspan="2">
                                             <input type="hidden" name="mode" value="{lang_submit}">
                                             <input type="hidden" name="type" value="event">
+                                            <input type="hidden" name="calendar_type" value="{mode}">
                                             <input type="submit" value="{lang_submit}">
                                         </td>
                                     </tr>

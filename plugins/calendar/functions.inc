@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.21 2006/05/15 05:58:54 ospiess Exp $
+// $Id: functions.inc,v 1.22 2006/05/16 02:37:07 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -510,7 +510,7 @@ function plugin_save_submit_calendar ($A)
     $A['timeend'] = $A['end_hour'] . ':' . $A['end_minute'] . ':00';
     if ($A['calendar_type'] == 'master') { // add to site calendar
 
-        if (($_CONF['eventsubmission'] == 1) &&
+        if (($_CA_CONF['eventsubmission'] == 1) &&
                 !SEC_hasRights ('calendar.submit')) {
             DB_save ($_TABLES['eventsubmission'], 
 			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
@@ -573,10 +573,12 @@ function plugin_submit_calendar($mode = 'master')
         $mode = $_POST['calendar_type'];
     }
 
-    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) { // quick add form
+    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) { 
+    // quick add form, just save it.
        $display = plugin_save_submit_calendar ($_POST);
        return $display;
     } else if (SEC_hasRights('calendar.edit') && ($mode != 'personal')) {
+    // admin posts non-personal, go to editor
         if (isset ($_REQUEST['year'])) {
             $year = COM_applyFilter ($_REQUEST['year'], true);
         } else {
@@ -610,6 +612,7 @@ function plugin_submit_calendar($mode = 'master')
                           . '/plugins/calendar/index.php?mode=edit' . $startat);
         exit;
     }
+    // otherwise non-admin or admin-personal. do personal form or public submission.
 
     $retval = '';
 
@@ -618,8 +621,10 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_file ('eventform', 'submitevent.thtml');
     if ($mode != 'personal') {
         $eventform->set_var ('explanation', $LANG_CAL_1[27]);
+        $eventform->set_var ('submit_url', '/submit.php');
     } else {
         $eventform->set_var ('explanation', "");
+        $eventform->set_var ('submit_url', '/calendar/index.php?view=savepersonal');
     }
     $eventform->set_var ('site_url', $_CONF['site_url']);
     $eventform->set_var ('layout_url', $_CONF['layout_url']);
@@ -651,7 +656,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var ('day_options', COM_getDayFormOptions ($day));
     $eventform->set_var ('year_options', COM_getYearFormOptions ($year));
 
-    if ($hour < 0) {
+    if ($hour < 0 or empty($hour)) {
         $cur_hour = date ('H', time ());
     } else {
         $cur_hour = $hour;
@@ -688,6 +693,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_description', $LANG_CAL_1[5]);
     $eventform->set_var('lang_htmnotallowed', $LANG_CAL_1[44]);
     $eventform->set_var('lang_submit', $LANG_CAL_1[45]);
+    $eventform->set_var('mode', $mode);
     $eventform->parse('theform', 'eventform');
     $retval .= $eventform->finish($eventform->get_var('theform'));
     $retval .= COM_endBlock();
