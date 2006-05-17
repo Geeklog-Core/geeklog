@@ -85,7 +85,7 @@
                                         </tr>
                                         <tr>
                                             <td align="right" valign="top">{lang_blockcontent}:</td>
-                                            <td><textarea name="content" cols="50" rows="12">{block_content}</textarea></td>
+                                            <td><textarea name="content" cols="50" rows="12" style="width:100%;">{block_content}</textarea></td>
                                         </tr>
 		                                <tr>
                                             <td colspan="2"><hr></td>
