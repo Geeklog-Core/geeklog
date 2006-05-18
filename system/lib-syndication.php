@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.33 2006/05/15 05:58:55 ospiess Exp $
+// $Id: lib-syndication.php,v 1.34 2006/05/18 20:26:10 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -249,7 +249,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
         $topic = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
                                "tid = '$tid'" ));
 
-        $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+        $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
         $nrows = DB_numRows( $result );
 
@@ -274,7 +274,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
                 $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
                 $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
             }
-            $content[] = array( 'title'      => $storytitle,
+            $article = array( 'title'      => $storytitle,
                                 'summary'    => $storytext,
                                 'text'       => $fulltext,
                                 'link'       => $storylink,
@@ -282,10 +282,14 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
                                 'author'     => COM_getDisplayName( $row['uid'] ),
                                 'date'       => $row['modified'],
                                 'format'     => $row['postmode'],
-                                'commenturl' => $storylink . '#comments',
                                 'topic'      => $topic,
-                                'extensions' => $extensionTags,
+                                'extensions' => $extensionTags
                               );
+            if($row['commentcode'] >= 0)
+            {
+                $article['commenturl'] = $storylink . '#comments';
+            }
+            $content[] = $article;
         }
     }
 
@@ -350,7 +354,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
         $where .= " AND (tid IN ($tlist))";
     }
 
-    $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+    $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
     $content = array();
     $sids = array();
@@ -377,7 +381,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
             $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
             $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
         }
-        $content[] = array( 'title'      => $storytitle,
+        $article = array( 'title'      => $storytitle,
                             'summary'    => $storytext,
                             'text'       => $fulltext,
                             'link'       => $storylink,
@@ -385,10 +389,14 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
                             'author'     => COM_getDisplayName( $row['uid'] ),
                             'date'       => $row['modified'],
                             'format'     => $row['postmode'],
-                            'commenturl' => $storylink . '#comments',
                             'topic'      => $topics[$row['tid']],
                             'extensions' => $extensionTags
                           );
+        if($row['commentcode'] >= 0)
+        {
+            $article['commenturl'] = $storylink . '#comments';
+        }
+        $content[] = $article;
 
 
     }
