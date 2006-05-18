@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Stories with comments/trackbacks disabled, do not show comment/trackback
+  url in RSS feeds [Mike]
 - Added email confirmation fields for new user and usersettings [Oliver]
 - Allow changing of group ownership for "gldefault" blocks. Requires a change
   in admin/block/defaultblockeditor.thtml to enable the group dropdown. On a
