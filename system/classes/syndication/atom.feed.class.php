@@ -26,7 +26,7 @@
   /*  3. This notice may not be removed or altered from any source            */
   /*     distribution.                                                        */
   /****************************************************************************/
-  // $Id: atom.feed.class.php,v 1.10 2006/05/15 05:58:55 ospiess Exp $
+  // $Id: atom.feed.class.php,v 1.11 2006/05/18 20:27:31 mjervis Exp $
 
   /**
     * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -98,7 +98,7 @@
       }
       if( array_key_exists( 'summary', $article ) )
       {
-        if( MBYTE_strlen( $article['summary'] ) > 0 )
+        if( !empty( $article['summary'] ) )
         {
           $xml .= '<content type="text/html" mode="escaped">'
                           . $this->_safeXML ($article['summary'])
@@ -289,7 +289,7 @@
       }
       if( array_key_exists( 'summary', $article ) )
       {
-        if( MBYTE_strlen( $article['summary'] ) > 0 )
+        if( !empty( $article['summary'] ) )
         {
           $xml .= '<content type="html">'
                           . $this->_safeXML ($article['summary'])
