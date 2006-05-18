@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.34 2006/05/18 20:26:10 mjervis Exp $
+// $Id: lib-syndication.php,v 1.35 2006/05/18 20:32:06 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -249,7 +249,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
         $topic = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
                                "tid = '$tid'" ));
 
-        $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+        $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
         $nrows = DB_numRows( $result );
 
@@ -269,7 +269,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $storylink = COM_buildUrl( $_CONF['site_url']
                                        . '/article.php?story=' . $row['sid'] );
             $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion, $tid, $fid);
-            if( $_CONF['trackback_enabled'] && ($feedType == 'RSS'))
+            if( $_CONF['trackback_enabled'] && ($feedType == 'RSS') && ($row['trackbackcode'] >= 0))
             {
                 $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
                 $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
@@ -354,7 +354,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
         $where .= " AND (tid IN ($tlist))";
     }
 
-    $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+    $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
     $content = array();
     $sids = array();
@@ -376,7 +376,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
         $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion, $fid, '::all');
-        if( $_CONF['trackback_enabled'] && ($feedType == 'RSS'))
+        if( $_CONF['trackback_enabled'] && ($feedType == 'RSS') && ($row['trackbackcode'] >= 0))
         {
             $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
             $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
