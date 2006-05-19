@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.4 2006/05/15 04:10:38 vinny Exp $
+// $Id: event.php,v 1.5 2006/05/19 03:29:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -57,7 +57,7 @@ function adduserevent ($eid)
     if ($nrows == 1) {
         $retval .= COM_startBlock($LANG02[11]);
         $A = DB_fetchArray($result);
-        $cal_template = new Template($_CONF['path_layout'] . 'calendar');
+        $cal_template = new Template($_CONF['path'] . '/plugins/calendar/templates/');
         $cal_template->set_file (array ('addevent' => 'addevent.thtml'));
         $cal_template->set_var('site_url', $_CONF['site_url']);
         $cal_template->set_var('layout_url', $_CONF['layout_url']);
