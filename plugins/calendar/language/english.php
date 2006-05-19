@@ -82,7 +82,17 @@ $LANG_CAL_1 = array(
     46 => 'Events in the system',
     47 => 'Top Ten Events',
     48 => 'Hits',
-    49 => 'It appears that there are no events on this site or no one has ever clicked on one.'
+    49 => 'It appears that there are no events on this site or no one has ever clicked on one.',
+    50 => 'Events'
+);
+
+$_LANG_CAL_SEARCH = array(
+    'results' => 'Calendar Results',
+    'title' => 'Title',
+    'date_time' => 'Date & Time',
+    'location' => 'Location',
+    'description' => 'Description'
+
 );
 
 ###############################################################################

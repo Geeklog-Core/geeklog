@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.22 2006/05/16 02:37:07 ospiess Exp $
+// $Id: functions.inc,v 1.23 2006/05/19 04:04:06 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1284,6 +1284,159 @@ function plugin_geticon_calendar ()
 
     return $_CONF['site_url'] . '/calendar/images/calendar.png';
 }
+
+/**
+* Geeklog is asking us to provide any items that show up in the type
+* drop-down on search.php.  Let's users search for events.
+*
+* @return   array   (plugin name/entry title) pair for the dropdown
+*
+*/
+function plugin_searchtypes_calendar()
+{
+    global $LANG_CAL_1;
+
+    $tmp['calendar'] = $LANG_CAL_1[50];
+
+    return $tmp;
+}
+
+/**
+* This searches for events matching the user query and returns an array for the
+* header and table rows back to search.php where it will be formated and printed
+*
+* @param    string  $query      Keywords user is looking for
+* @param    date    $datestart  Start date to get results for
+* @param    date    $dateend    End date to get results for
+* @param    string  $topic      The topic they were searching in
+* @param    string  $type       Type of items they are searching, or 'all'
+* @param    int     $author     Get all results by this author
+* @param    string  $keyType    search key type: 'all', 'phrase', 'any'
+* @param    int     $page       page number of current search
+* @param    int     $perpage    number of results per page
+* @return   object              search result object
+*
+*/
+function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author, 
+                                        $keyType, $page, $perpage)
+{
+    global $_CONF, $_TABLES, $_LANG_CAL_SEARCH;
+    
+    if (empty ($type)) {
+        $type = 'all';
+    }
+
+    // Bail if we aren't supppose to do our search
+    if ($type <> 'all' AND $type <> 'calendar') {
+        $event_results = new Plugin();
+        $event_results->plugin_name = 'calendar';
+        $event_results->num_itemssearched = 0;
+        $event_results->searchlabel = $_LANG_CAL_SEARCH['results'];
+
+        return $event_results;
+    }
+    
+    $select = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,allday,UNIX_TIMESTAMP(datestart) AS day";
+    $sql = " FROM {$_TABLES['events']} WHERE ";
+
+    if($keyType == 'phrase') {
+        // do an exact phrase search (default)
+        $mywords[] = $query;
+        $mysearchterm = addslashes ($query);
+        $sql .= "(location LIKE '%$mysearchterm%'  ";
+        $sql .= "OR description LIKE '%$mysearchterm%' ";
+        $sql .= "OR title LIKE '%$mysearchterm%') ";
+    } elseif ($keyType == 'all') {
+        //must contain ALL of the keywords
+        $mywords = explode(' ', $query);
+        $tmp = '';
+        foreach ($mywords AS $mysearchterm) {
+            $mysearchterm = addslashes (trim ($mysearchterm));
+            $tmp .= "(location LIKE '%$mysearchterm%' OR ";
+            $tmp .= "description LIKE '%$mysearchterm%' OR ";
+            $tmp .= "title LIKE '%$mysearchterm%') AND ";
+        }
+        $tmp = substr($tmp, 0, strlen($tmp) - 4);
+        $sql .= $tmp;
+    } elseif ($keyType == 'any') {
+        //must contain ANY of the keywords
+        $mywords = explode(' ', $query);
+        $tmp = '';
+        foreach ($mywords AS $mysearchterm) {
+            $mysearchterm = addslashes (trim ($mysearchterm));
+            $tmp .= "(location LIKE '%$mysearchterm%' OR ";
+            $tmp .= "description LIKE '%$mysearchterm%' OR ";
+            $tmp .= "title LIKE '%$mysearchterm%') OR ";
+        }
+        $tmp = substr($tmp, 0, strlen($tmp) - 3);
+        $sql .= "($tmp)";
+    } else {
+        $mywords[] = $query;
+        $mysearchterm = addslashes ($query);
+        $sql .= "(location LIKE '%$mysearchterm%' ";
+        $sql .= "OR description LIKE '%$mysearchterm%' ";
+        $sql .= "OR title LIKE '%$mysearchterm%') ";
+    }
+
+    if (!empty($dateStart) AND !empty($dateEnd)) {
+        $delim = substr($dateStart, 4, 1);
+        if (!empty($delim)) {
+            $DS = explode($delim, $dateStart);
+            $DE = explode($delim, $dateEnd);
+            $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
+            $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
+            $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
+        }
+    }
+    $sql .= COM_getPermSQL ('AND');
+    $sql .= ' ORDER BY datestart DESC ';
+    $l = ($perpage * $page) - $perpage;
+    $sql .= 'LIMIT ' . $l . ',' . $perpage;
+
+    $result_events = DB_query ($select . $sql);
+    $result_count = DB_query ('SELECT COUNT(*)' . $sql);
+    $B = DB_fetchArray ($result_count, true);
+
+    $event_results = new Plugin();
+    $event_results->searchresults = array();
+    $event_results->searchlabel = $_LANG_CAL_SEARCH['results'];
+    $event_results->addSearchHeading($_LANG_CAL_SEARCH['title']);
+    $event_results->addSearchHeading($_LANG_CAL_SEARCH['date_time']);
+    $event_results->addSearchHeading($_LANG_CAL_SEARCH['location']);
+    $event_results->addSearchHeading($_LANG_CAL_SEARCH['description']);
+    $event_results->num_searchresults = 0;
+    $event_results->num_itemssearched = $B[0];
+    $event_results->supports_paging = true;
+
+    // NOTE if any of your data items need to be events then add them
+    // here! Make sure data elements are in an array and in the same
+    // order as your headings above!
+    while ($A = DB_fetchArray ($result_events)) {
+        if ($A['allday'] == 0) {
+            $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - '
+                        . $A['dateend'] . ' ' . $A['timeend'];
+        } else {
+            if ($A['datestart'] <> $A['dateend']) {
+                $fulldate = $A['datestart'] . ' - ' . $A['dateend']
+                                  . ' ' . $LANG09[35];
+            } else {
+                $fulldate = $A['datestart'] . ' ' . $LANG09[35];
+            }
+        }
+        $thetime = COM_getUserDateTimeFormat ($A['day']);
+        $A['title'] = stripslashes ($A['title']);
+        $A['title'] = str_replace ('$', '&#36;', $A['title']);
+        $row = array ('<a href="' . $_CONF['site_url']
+                            . '/calendar/event.php?eid=' . $A['eid'] . '">'
+                            . $A['title'] . '</a>', $fulldate,
+                            stripslashes ($A['location']),
+                            stripslashes ($A['description']));
+        $event_results->addSearchResult($row);
+        $event_results->num_searchresults++;
+    }
+    return $event_results;
+}
+
 
 /**
 * Set template variables
