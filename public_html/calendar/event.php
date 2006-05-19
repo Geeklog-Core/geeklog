@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.5 2006/05/19 03:29:57 ospiess Exp $
+// $Id: event.php,v 1.6 2006/05/19 03:33:59 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -57,7 +57,7 @@ function adduserevent ($eid)
     if ($nrows == 1) {
         $retval .= COM_startBlock($LANG02[11]);
         $A = DB_fetchArray($result);
-        $cal_template = new Template($_CONF['path'] . '/plugins/calendar/templates/');
+        $cal_template = new Template($_CONF['path'] . 'plugins/calendar/templates/');
         $cal_template->set_file (array ('addevent' => 'addevent.thtml'));
         $cal_template->set_var('site_url', $_CONF['site_url']);
         $cal_template->set_var('layout_url', $_CONF['layout_url']);
@@ -153,7 +153,7 @@ function editpersonalevent ($A)
 {
     global $_CONF, $LANG12, $_CA_CONF;
 
-    $cal_templates = new Template($_CONF['path'] . '/plugins/calendar/templates/');
+    $cal_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/');
     $cal_templates->set_file('form','editpersonalevent.thtml');
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -522,7 +522,7 @@ default:
                  . "and DATE_FORMAT(dateend,'%Y-%m-%d') "
                  . "ORDER BY datestart ASC,timestart ASC,title";
     }
-    $cal_templates = new Template($_CONF['path'] . '/plugins/calendar/templates/');
+    $cal_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/');
     $cal_templates->set_file (array (
             'events'    => 'events.thtml',
             'details'   => 'eventdetails.thtml',
