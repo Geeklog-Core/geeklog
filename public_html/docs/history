@@ -2,7 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
-
+- Made it impossible to save two syndication feeds with identical filenames
+  [Oliver]
 - Stories with comments/trackbacks disabled, do not show comment/trackback
   url in RSS feeds [Mike]
 - Added email confirmation fields for new user and usersettings [Oliver]
