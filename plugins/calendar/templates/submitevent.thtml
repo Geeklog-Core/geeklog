@@ -124,7 +124,7 @@
                                     <tr>
                                         <td align="center" colspan="2">
                                             <input type="hidden" name="mode" value="{lang_submit}">
-                                            <input type="hidden" name="type" value="event">
+                                            <input type="hidden" name="type" value="calendar">
                                             <input type="hidden" name="calendar_type" value="{mode}">
                                             <input type="submit" value="{lang_submit}">
                                         </td>

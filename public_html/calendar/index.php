@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2006/05/19 07:21:58 ospiess Exp $
+// $Id: index.php,v 1.9 2006/05/19 08:27:08 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -403,7 +403,7 @@ if (isset ($_REQUEST['msg'])) {
     $msg = COM_applyFilter ($_REQUEST['msg'], true);
 }
 if ($msg > 0) {
-    $display .= COM_showMessage ($msg);
+    $display .= COM_showMessage ($msg, 'calendar');
 }
 
 $view = '';

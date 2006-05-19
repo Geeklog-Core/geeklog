@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.543 2006/05/19 08:05:04 ospiess Exp $
+// $Id: lib-common.php,v 1.544 2006/05/19 08:27:08 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3968,7 +3968,7 @@ function COM_showMessage( $msg, $plugin='' )
             }
             else
             {
-                $message = sprintf( $MESSAGE[61], $plugin );
+                $message = sprintf( $MESSAGE[61] . ": " . $var, $plugin );
             }
         }
         else

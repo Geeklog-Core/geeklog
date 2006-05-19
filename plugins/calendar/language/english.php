@@ -167,4 +167,7 @@ $LANG_CAL_MESSAGE = array(
     'unauth'    => 'Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged',
 );
 
+$PLG_calendar_MESSAGE26 = 'The event has been saved to your calendar';
+$PLG_calendar_MESSAGE4  = "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen here, in our <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendar</a> section.";
+
 ?>
