@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.7 2006/05/19 06:36:06 ospiess Exp $
+// $Id: event.php,v 1.8 2006/05/19 19:49:06 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -358,7 +358,7 @@ function editpersonalevent ($A)
 */
 function setCalendarLanguage (&$aCalendar)
 { 
-    global $LANG_CAL_2;
+    global $LANG_WEEK, $LANG_MONTH, $LANG_CAL_2;
 
     $lang_days = array ('sunday'    => $LANG_WEEK[1],
                         'monday'    => $LANG_WEEK[2],
