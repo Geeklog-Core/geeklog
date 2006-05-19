@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | submit.php                                                                |
 // |                                                                           |
-// | Let users submit stories and plugin stuff.                        |
+// | Let users submit stories and plugin stuff.                                |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.101 2006/05/19 07:41:49 ospiess Exp $
+// $Id: submit.php,v 1.102 2006/05/19 07:49:29 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
