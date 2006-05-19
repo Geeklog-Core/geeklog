@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.11 2006/05/16 02:29:31 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.12 2006/05/19 09:34:50 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -109,7 +109,7 @@ function MBYTE_substr($str, $start, $length = NULL) {
 	return $result;	
 }
 
-function MBYTE_strpos($hay, $needle, $offset=NULL) {
+function MBYTE_strpos($hay, $needle, $offset = NULL) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
