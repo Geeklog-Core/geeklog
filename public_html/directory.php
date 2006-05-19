@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.4 2005/12/28 10:11:48 dhaun Exp $
+// $Id: directory.php,v 1.5 2006/05/19 06:10:51 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -111,7 +111,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
 */
 function DIR_monthLink ($topic, $year, $month, $count)
 {
-    global $_CONF, $LANG30;
+    global $_CONF, $LANG_MONTH;
 
     $retval = '';
 
@@ -121,7 +121,7 @@ function DIR_monthLink ($topic, $year, $month, $count)
                 . $year . '&amp;month=' . $month) . '">';
     }
 
-    $retval .= $LANG30[$month + 12] . ' (' . COM_numberFormat ($count) . ')'
+    $retval .= $LANG_MONTH[$month] . ' (' . COM_numberFormat ($count) . ')'
             . LB;
 
     if ($count > 0) {
