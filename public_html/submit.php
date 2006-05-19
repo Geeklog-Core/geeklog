@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | submit.php                                                                |
 // |                                                                           |
-// | Let users submit stories, events and plugin stuff.                        |
+// | Let users submit stories and plugin stuff.                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.100 2006/05/19 06:26:04 ospiess Exp $
+// $Id: submit.php,v 1.101 2006/05/19 07:41:49 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -47,14 +47,10 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 *
 * This is the submission it is modular to allow us to write as little as
 * possible.  It takes a type and formats a form for the user.  Currently the
-* types are story and event.  If no type is provided, Story is assumed.
+* types is story.  If no type is provided, Story is assumed.
 *
-* @param    string  $type   type of submission ('event', 'story')
+* @param    string  $type   type of submission ('story')
 * @param    string  $mode   calendar mode ('personal' or empty string)
-* @param    int     $month  month (for events)
-* @param    int     $day    day (for events)
-* @param    int     $year   year (for events)
-* @param    int     $hour   hour (for events)
 * @param    string  $topic  topic (for stories)
 * @return   string          HTML for submission form
 *
@@ -98,7 +94,13 @@ function submissionform($type='story', $mode = '', $hour='', $topic = '')
                     . COM_endBlock();
 
             if ((strlen($type) > 0) && ($type <> 'story')) {
-                $retval .= PLG_showSubmitForm($type);
+                $formresult = PLG_showSubmitForm($type);
+                if ($formresult == false) {
+                    $retval = $LANG12[4];
+                    COM_errorLog("Someone tried to submit an item to the $type-plugin, which cannot be found.", 1);
+                } else {
+                    $retval .= $formresult;
+                }
             } else {
                 $retval .= submitstory($topic);  
             }
