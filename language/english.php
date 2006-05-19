@@ -970,7 +970,7 @@ $LANG33 = array(
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
     41 => 'Submit',
-    42 => '',
+    42 => 'Error: existing Filename',
     43 => 'All',
     44 => 'None',
     45 => 'Header-link in topic',
@@ -978,7 +978,8 @@ $LANG33 = array(
     47 => 'Search',
     48 => 'Edit',
     49 => 'Feed Logo',
-    50 => "Relative to site url ({$_CONF['site_url']})"
+    50 => "Relative to site url ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.'
 );
 
 ###############################################################################
