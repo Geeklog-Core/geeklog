@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.99 2006/05/15 06:18:05 ospiess Exp $
+// $Id: submit.php,v 1.100 2006/05/19 06:26:04 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -114,7 +114,7 @@ function submissionform($type='story', $mode = '', $hour='', $topic = '')
 */
 function submitstory($topic = '') 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG12,$LANG24;
+    global $_CONF, $_TABLES, $_USER, $LANG12, $LANG24;
 
     $retval = '';
 
@@ -264,8 +264,7 @@ function submitstory($topic = '')
 */
 function sendNotification ($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG02, $LANG06, $LANG08, $LANG09,
-           $LANG12, $LANG24, $LANG29, $LANG30, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG24, $LANG29, $LANG_ADMIN;
            
     $title = COM_undoSpecialChars (stripslashes ($A['title']));
     if ($A['postmode'] == 'html') {

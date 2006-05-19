@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.541 2006/05/15 09:00:55 ospiess Exp $
+// $Id: lib-common.php,v 1.542 2006/05/19 06:26:03 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4297,7 +4297,7 @@ function phpblock_whosonline()
 
 function COM_getMonthFormOptions( $selected = '' )
 {
-    global $LANG30;
+    global $LANG_MONTH;
 
     $month_options = '';
 
@@ -4319,7 +4319,7 @@ function COM_getMonthFormOptions( $selected = '' )
             $month_options .= 'selected="selected"';
         }
 
-        $month_options .= '>' . $LANG30[$mval + 12] . '</option>';
+        $month_options .= '>' . $LANG_MONTH[$mval] . '</option>';
     }
 
     return $month_options;
