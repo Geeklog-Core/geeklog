@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2006/05/19 06:36:06 ospiess Exp $
+// $Id: index.php,v 1.8 2006/05/19 07:21:58 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -835,29 +835,29 @@ if ($_CONF['week_start'] == 'Mon') {
     $cal_templates->set_var('lang_saturday', $LANG_WEEK[7]);
 }
 
-$cal_templates->set_var('lang_january', $LANG_CAL_2[13]);
+$cal_templates->set_var('lang_january', $LANG_MONTH[1]);
 if ($month == 1) $cal_templates->set_var('selected_jan','selected="selected"');
-$cal_templates->set_var('lang_february', $LANG_CAL_2[14]);
+$cal_templates->set_var('lang_february', $LANG_MONTH[2]);
 if ($month == 2) $cal_templates->set_var('selected_feb','selected="selected"');
-$cal_templates->set_var('lang_march', $LANG_CAL_2[15]);
+$cal_templates->set_var('lang_march', $LANG_MONTH[3]);
 if ($month == 3) $cal_templates->set_var('selected_mar','selected="selected"');
-$cal_templates->set_var('lang_april', $LANG_CAL_2[16]);
+$cal_templates->set_var('lang_april', $LANG_MONTH[4]);
 if ($month == 4) $cal_templates->set_var('selected_apr','selected="selected"');
-$cal_templates->set_var('lang_may', $LANG_CAL_2[17]);
+$cal_templates->set_var('lang_may', $LANG_MONTH[5]);
 if ($month == 5) $cal_templates->set_var('selected_may','selected="selected"');
-$cal_templates->set_var('lang_june', $LANG_CAL_2[18]);
+$cal_templates->set_var('lang_june', $LANG_MONTH[6]);
 if ($month == 6) $cal_templates->set_var('selected_jun','selected="selected"');
-$cal_templates->set_var('lang_july', $LANG_CAL_2[19]);
+$cal_templates->set_var('lang_july', $LANG_MONTH[7]);
 if ($month == 7) $cal_templates->set_var('selected_jul','selected="selected"');
-$cal_templates->set_var('lang_august', $LANG_CAL_2[20]);
+$cal_templates->set_var('lang_august', $LANG_MONTH[8]);
 if ($month == 8) $cal_templates->set_var('selected_aug','selected="selected"');
-$cal_templates->set_var('lang_september', $LANG_CAL_2[21]);
+$cal_templates->set_var('lang_september', $LANG_MONTH[9]);
 if ($month == 9) $cal_templates->set_var('selected_sep','selected="selected"');
-$cal_templates->set_var('lang_october', $LANG_CAL_2[22]);
+$cal_templates->set_var('lang_october', $LANG_MONTH[10]);
 if ($month == 10) $cal_templates->set_var('selected_oct','selected="selected"');
-$cal_templates->set_var('lang_november', $LANG_CAL_2[23]);
+$cal_templates->set_var('lang_november', $LANG_MONTH[11]);
 if ($month == 11) $cal_templates->set_var('selected_nov','selected="selected"');
-$cal_templates->set_var('lang_december', $LANG_CAL_2[24]);
+$cal_templates->set_var('lang_december', $LANG_MONTH[12]);
 if ($month == 12) $cal_templates->set_var('selected_dec','selected="selected"');
 
 $cal_templates->set_var('lang_day', $LANG_CAL_2[39]);
@@ -1016,10 +1016,10 @@ if ($mode == 'personal') {
 }
 
 
-$cal_templates->set_var('lang_cal_curmo', $LANG_CAL_2[12 + $currentmonth]);
+$cal_templates->set_var('lang_cal_curmo', $LANG_MONTH[$currentmonth]);
 $cal_templates->set_var('cal_curmo_num', $currentmonth);
 $cal_templates->set_var('cal_curyr_num', $currentyear);
-$cal_templates->set_var('lang_cal_displaymo', $LANG_CAL_2[12 + $month]);
+$cal_templates->set_var('lang_cal_displaymo', $LANG_MONTH[$month]);
 $cal_templates->set_var('cal_displaymo_num', $month);
 $cal_templates->set_var('cal_displayyr_num', $year);
 if ($mode == 'personal') {
