@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.542 2006/05/19 06:26:03 ospiess Exp $
+// $Id: lib-common.php,v 1.543 2006/05/19 08:05:04 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4303,15 +4303,7 @@ function COM_getMonthFormOptions( $selected = '' )
 
     for( $i = 1; $i <= 12; $i++ )
     {
-        if( $i < 10 )
-        {
-            $mval = '0' . $i;
-        }
-        else
-        {
-            $mval = $i;
-        }
-
+        $mval = $i;
         $month_options .= '<option value="' . $mval . '" ';
 
         if( $i == $selected )
