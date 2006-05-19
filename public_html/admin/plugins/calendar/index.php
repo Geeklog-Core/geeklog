@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.9 2006/05/15 04:10:38 vinny Exp $
+// $Id: index.php,v 1.10 2006/05/19 20:14:12 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -140,6 +140,10 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
 
     if (empty ($A['eid'])) { // new event
         $A['eid'] = COM_makesid ();
+        $A['title'] = '';
+        $A['description'] = '';
+        $A['url'] = '';
+        $A['hits'] = 0;
 
         // in case a start date/time has been passed from the calendar,
         // pick it up for the end date/time
@@ -150,7 +154,13 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
             $A['timeend'] = $A['timestart'];
         }
         $A['event_type'] = '';
+        $A['location'] = '';
+        $A['address1'] = '';
+        $A['address2'] = '';
+        $A['city'] = '';
         $A['state'] = '';
+        $A['zipcode'] = '';
+        $A['allday'] = 0;
     }
 
     $event_templates->set_var('event_id', $A['eid']);
@@ -613,11 +623,20 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= CALENDAR_editEvent ($mode, $A);
     $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
-    $eid = COM_applyFilter ($_REQUEST['eid']);
+    $eid = '';
+    if (isset ($_REQUEST['eid'])) {
+        $eid = COM_applyFilter ($_REQUEST['eid']);
+    }
     if (empty ($eid)) {
         $A = array ();
-        $A['datestart'] = COM_applyFilter ($_REQUEST['datestart']);
-        $A['timestart'] = COM_applyFilter ($_REQUEST['timestart']);
+        $A['datestart'] = '';
+        $A['timestart'] = '';
+        if (isset ($_REQUEST['datestart'])) {
+            $A['datestart'] = COM_applyFilter ($_REQUEST['datestart']);
+        }
+        if (isset ($_REQUEST['timestart'])) {
+            $A['timestart'] = COM_applyFilter ($_REQUEST['timestart']);
+        }
     } else {
         $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
         $A = DB_fetchArray ($result);
