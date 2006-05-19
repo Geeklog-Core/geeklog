@@ -169,5 +169,6 @@ $LANG_CAL_MESSAGE = array(
 
 $PLG_calendar_MESSAGE26 = 'The event has been saved to your calendar';
 $PLG_calendar_MESSAGE4  = "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen here, in our <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendar</a> section.";
+$PLG_calendar_MESSAGE17 = 'Your event has been successfully saved.';
 
 ?>
