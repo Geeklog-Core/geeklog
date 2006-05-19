@@ -83,7 +83,8 @@ $LANG_CAL_1 = array(
     47 => 'Top Ten Events',
     48 => 'Hits',
     49 => 'It appears that there are no events on this site or no one has ever clicked on one.',
-    50 => 'Events'
+    50 => 'Events',
+    51 => 'Delete'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -140,7 +141,8 @@ $LANG_CAL_2 = array(
     39 => 'Day',
     40 => 'Week',
     41 => 'Month',
-    42 => 'Add Master Event'
+    42 => 'Add Master Event',
+    43 => 'Event Submissions',
 );
 
 ###############################################################################

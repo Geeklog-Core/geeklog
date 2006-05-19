@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.6 2006/05/16 02:37:07 ospiess Exp $
+// $Id: index.php,v 1.7 2006/05/19 06:36:06 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -108,28 +108,28 @@ function getDayViewData($result, $cur_time = '')
 
 function setCalendarLanguage (&$aCalendar)
 {
-    global $_CONF, $LANG_CAL_2;
+    global $_CONF, $LANG_WEEK, $LANG_MONTH;
 
-    $lang_days = array ('sunday'    => $LANG_CAL_2[1],
-                        'monday'    => $LANG_CAL_2[2],
-                        'tuesday'   => $LANG_CAL_2[3],
-                        'wednesday' => $LANG_CAL_2[4],
-                        'thursday'  => $LANG_CAL_2[5],
-                        'friday'    => $LANG_CAL_2[6],
-                        'saturday'  => $LANG_CAL_2[7]);
+    $lang_days = array ('sunday'    => $LANG_WEEK[1],
+                        'monday'    => $LANG_WEEK[2],
+                        'tuesday'   => $LANG_WEEK[3],
+                        'wednesday' => $LANG_WEEK[4],
+                        'thursday'  => $LANG_WEEK[5],
+                        'friday'    => $LANG_WEEK[6],
+                        'saturday'  => $LANG_WEEK[7]);
 
-    $lang_months = array ('january'   => $LANG_CAL_2[13],
-                          'february'  => $LANG_CAL_2[14],
-                          'march'     => $LANG_CAL_2[15],
-                          'april'     => $LANG_CAL_2[16],
-                          'may'       => $LANG_CAL_2[17],
-                          'june'      => $LANG_CAL_2[18],
-                          'july'      => $LANG_CAL_2[19],
-                          'august'    => $LANG_CAL_2[20],
-                          'september' => $LANG_CAL_2[21],
-                          'october'   => $LANG_CAL_2[22],
-                          'november'  => $LANG_CAL_2[23],
-                          'december'  => $LANG_CAL_2[24]);
+    $lang_months = array ('january'   => $LANG_MONTH[1],
+                          'february'  => $LANG_MONTH[2],
+                          'march'     => $LANG_MONTH[3],
+                          'april'     => $LANG_MONTH[4],
+                          'may'       => $LANG_MONTH[5],
+                          'june'      => $LANG_MONTH[6],
+                          'july'      => $LANG_MONTH[7],
+                          'august'    => $LANG_MONTH[8],
+                          'september' => $LANG_MONTH[9],
+                          'october'   => $LANG_MONTH[10],
+                          'november'  => $LANG_MONTH[11],
+                          'december'  => $LANG_MONTH[12]);
 
     $aCalendar->setLanguage ($lang_days, $lang_months, $_CONF['week_start']);
 }
@@ -147,10 +147,10 @@ function setCalendarLanguage (&$aCalendar)
 */
 function shortDaysName ($day)
 {
-    global $LANG_CHARSET, $LANG30;
+    global $LANG_CHARSET, $LANG_WEEK;
 
     $shortday = '';
-    $shortday = MBYTE_substr ($LANG30[$day], 0, 2);
+    $shortday = MBYTE_substr ($LANG_WEEK[$day], 0, 2);
     return $shortday;
 }
 
@@ -620,12 +620,12 @@ case 'week':
         $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . $_USER['username']);
         $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="' . $_CONF['site_url']
                                                  . "/calendar/index.php?view=week&amp;month=$month&amp;day=$day&amp;year=$year\">"
-                                                 . $LANG30[11] . '</a>]');
+                                                 . $LANG_CAL_2[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
         if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="' . $_CONF['site_url']
-                                                     . "/calendar/inedx.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">"
+                                                     . "/calendar/index.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">"
                                                      . $LANG_CAL_2[12] . '</a>]');
         } else {
             $cal_templates->set_var('calendar_toggle', ']');
@@ -645,9 +645,9 @@ case 'week':
     $cal_templates->set_var('nextmonth',strftime('%m',$nextstamp));
     $cal_templates->set_var('nextday',date('j',$nextstamp));
     $cal_templates->set_var('nextyear',strftime('%Y',$nextstamp));
-    $cal_templates->set_var ('lang_day', $LANG30[39]);
-    $cal_templates->set_var ('lang_week', $LANG30[40]);
-    $cal_templates->set_var ('lang_month', $LANG30[41]);
+    $cal_templates->set_var ('lang_day', $LANG_CAL_2[39]);
+    $cal_templates->set_var ('lang_week', $LANG_CAL_2[40]);
+    $cal_templates->set_var ('lang_month', $LANG_CAL_2[41]);
     if ($_CONF['week_start'] == 'Mon') {
         $time_day1 = mktime (0, 0, 0, $month, $day + 1, $year);
         $time_day7 = mktime (0, 0, 0, $month, $day + 7, $year);
@@ -703,10 +703,16 @@ case 'week':
             . 'view=day&amp;day=' . $daynum . '&amp;month=' . $monthnum
             . '&amp;year=' . $yearnum . '">' . strftime ('%x', $thedate[1])
             . '</a>');
+        if ($mode == 'personal') {
+            $add_str =  $LANG_CAL_2[8];
+        } else {
+            $add_str =  $LANG_CAL_2[42];
+        }    
+        
         $cal_templates->set_var ('langlink_addevent' . $i, '<a href="'
             . $_CONF['site_url'] . '/submit.php?type=calendar&amp;'
             . addMode ($mode) . 'day=' . $daynum . '&amp;month=' . $monthnum
-            . '&amp;year=' . $yearnum . '">' . $LANG30[8] . '</a>');
+            . '&amp;year=' . $yearnum . '">' . $add_str . '</a>');
         if ($mode == 'personal') {
             $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
         } else {
@@ -812,21 +818,21 @@ $cal_templates->set_var('cal_nextmo_num', $nextmonth);
 $cal_templates->set_var('cal_nextyr_num', $nextyear);
 
 if ($_CONF['week_start'] == 'Mon') {
-    $cal_templates->set_var('lang_sunday', $LANG_CAL_2[2]);
-    $cal_templates->set_var('lang_monday', $LANG_CAL_2[3]);
-    $cal_templates->set_var('lang_tuesday', $LANG_CAL_2[4]);
-    $cal_templates->set_var('lang_wednesday', $LANG_CAL_2[5]);
-    $cal_templates->set_var('lang_thursday', $LANG_CAL_2[6]);
-    $cal_templates->set_var('lang_friday', $LANG_CAL_2[7]);
-    $cal_templates->set_var('lang_saturday', $LANG_CAL_2[1]);
+    $cal_templates->set_var('lang_sunday', $LANG_WEEK[2]);
+    $cal_templates->set_var('lang_monday', $LANG_WEEK[3]);
+    $cal_templates->set_var('lang_tuesday', $LANG_WEEK[4]);
+    $cal_templates->set_var('lang_wednesday', $LANG_WEEK[5]);
+    $cal_templates->set_var('lang_thursday', $LANG_WEEK[6]);
+    $cal_templates->set_var('lang_friday', $LANG_WEEK[7]);
+    $cal_templates->set_var('lang_saturday', $LANG_WEEK[1]);
 } else {
-    $cal_templates->set_var('lang_sunday', $LANG_CAL_2[1]);
-    $cal_templates->set_var('lang_monday', $LANG_CAL_2[2]);
-    $cal_templates->set_var('lang_tuesday', $LANG_CAL_2[3]);
-    $cal_templates->set_var('lang_wednesday', $LANG_CAL_2[4]);
-    $cal_templates->set_var('lang_thursday', $LANG_CAL_2[5]);
-    $cal_templates->set_var('lang_friday', $LANG_CAL_2[6]);
-    $cal_templates->set_var('lang_saturday', $LANG_CAL_2[7]);
+    $cal_templates->set_var('lang_sunday', $LANG_WEEK[1]);
+    $cal_templates->set_var('lang_monday', $LANG_WEEK[2]);
+    $cal_templates->set_var('lang_tuesday', $LANG_WEEK[3]);
+    $cal_templates->set_var('lang_wednesday', $LANG_WEEK[4]);
+    $cal_templates->set_var('lang_thursday', $LANG_WEEK[5]);
+    $cal_templates->set_var('lang_friday', $LANG_WEEK[6]);
+    $cal_templates->set_var('lang_saturday', $LANG_WEEK[7]);
 }
 
 $cal_templates->set_var('lang_january', $LANG_CAL_2[13]);

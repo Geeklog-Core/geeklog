@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.23 2006/05/19 04:04:06 ospiess Exp $
+// $Id: functions.inc,v 1.24 2006/05/19 06:36:06 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -790,7 +790,7 @@ function CALENDAR_listevents()
 */
 function CALENDAR_sendNotification ($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08, $LANG29, $LANG30;
+    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG_CAL_1, $LANG_CAL_2;
 
     $title = stripslashes ($A['title']);
     $description = stripslashes ($A['description']);
@@ -799,7 +799,7 @@ function CALENDAR_sendNotification ($table, $A)
               . "$LANG09[17]: " . strftime ($_CONF['date'],
                 strtotime ($A['datestart'] . ' ' . $A['timestart']));
     if ($A['allday']) {
-        $mailbody .= ' (' . $LANG30[26] . ')';
+        $mailbody .= ' (' . $LANG_CAL_2[26] . ')';
     }
     $mailbody .= "\n";
     if (!empty ($A['url']) && ($A['url'] != 'http://')) {
@@ -809,9 +809,9 @@ function CALENDAR_sendNotification ($table, $A)
     if ($table == $_TABLES['eventsubmission']) {
         $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
-        $mailbody .= "$LANG02[12] <{$_CONF['site_url']}/calendar_event.php?eid={$A['eid']}>\n\n";
+        $mailbody .= "$LANG_CAL_1[12] <{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}>\n\n";
     }
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[37];
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG_CAL_2[43];
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
