@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.26 2006/05/19 08:44:00 ospiess Exp $
+// $Id: functions.inc,v 1.27 2006/05/19 09:12:20 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -910,7 +910,7 @@ function plugin_getfeedcontent_calendar( $limit, &$link, &$update, $feedType, $f
         $mysec = substr( $row['eid'], 12, 2 );
         $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
         $creationtime = strtotime( $newtime );
-        $extensionTags = PLG_getFeedElementExtensions('event', $row['eid'], $feedType, $feedVersion);
+        $extensionTags = array(); // PLG_getFeedElementExtensions('calendar', $row['eid'], $feedType, $feedVersion, $eventtitle, );
         $content[] = array( 'title'  => $eventtitle,
                             'summary'   => $eventtext,
                             'link'   => $eventlink,
