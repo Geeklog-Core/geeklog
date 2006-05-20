@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.43 2006/05/19 09:33:46 ospiess Exp $
+// $Id: syndication.php,v 1.44 2006/05/20 20:31:23 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -422,9 +422,10 @@ function savefeed ($A)
                 . COM_siteFooter ();
         return $retval;
     }
-    $result = DB_query("SELECT COUNT(*) FROM {$_TABLES['syndication']} WHERE filename = '{$A['filename']}';");
+
+    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['syndication']} WHERE filename = '{$A['filename']}' AND (fid <> '{$A['fid']}')");
     $C = DB_fetchArray($result);
-    if ($C[0] !== 0) {
+    if ($C['count'] > 0) {
         $retval = COM_siteHeader ('menu')
                 . COM_startBlock ($LANG33[42], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))
@@ -434,6 +435,7 @@ function savefeed ($A)
                 . COM_siteFooter ();  
         return $retval;
     }
+
     if ($A['limits'] <= 0) {
         $retval = COM_siteHeader ('menu')
                 . COM_startBlock ($LANG33[38], '',
