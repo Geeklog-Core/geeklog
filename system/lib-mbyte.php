@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.12 2006/05/19 09:34:50 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.13 2006/05/20 08:17:16 dhaun Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -135,7 +135,7 @@ function MBYTE_strtolower($str) {
 	return $result;
 }
 
-function MBYTE_eregi($pattern, $str, $regs) {
+function MBYTE_eregi($pattern, $str, $regs = NULL) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
