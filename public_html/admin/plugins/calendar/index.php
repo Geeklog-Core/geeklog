@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.10 2006/05/19 20:14:12 dhaun Exp $
+// $Id: index.php,v 1.11 2006/05/20 19:46:08 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -73,8 +73,9 @@ if (!SEC_hasRights('calendar.edit')) {
 */
 function CALENDAR_editEvent ($mode, $A, $msg = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $_CA_CONF, $LANG10, $LANG12,
-           $LANG_CAL_ADMIN, $LANG22, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $_CA_CONF, $LANG_CAL_1,
+           $LANG_CAL_ADMIN, $LANG10, $LANG12, $LANG22, $LANG_ACCESS,
+           $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -180,7 +181,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $catdd .= '>' . current($types) . '</option>';
         next($types);
     }
-    $event_templates->set_var('lang_eventtype', $LANG12[49]);
+    $event_templates->set_var('lang_eventtype', $LANG_CAL_1[37]);
     $event_templates->set_var('lang_editeventtypes', $LANG12[50]);
     $event_templates->set_var('type_options', $catdd);
     $event_templates->set_var('lang_eventurl', $LANG_CAL_ADMIN[4]);
@@ -303,7 +304,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('hour_options', $hour_options);
     $event_templates->set_var('lang_enddate', $LANG12[13]);
     $event_templates->set_var('lang_endtime', $LANG12[41]);
-    $event_templates->set_var('lang_alldayevent',$LANG12[43]);
+    $event_templates->set_var('lang_alldayevent', $LANG_CAL_1[31]);
     if ($A['allday'] == 1) {
         $event_templates->set_var('allday_checked', 'checked="checked"');
     }
