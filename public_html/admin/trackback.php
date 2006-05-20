@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.38 2006/05/15 06:18:05 ospiess Exp $
+// $Id: trackback.php,v 1.39 2006/05/20 16:22:39 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -928,7 +928,10 @@ if ($mode == 'delete') {
         echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
         exit;
     }
-    $type = COM_applyFilter ($_REQUEST['type']);
+    $type = '';
+    if (isset ($_REQUEST['type'])) {
+        $type = COM_applyFilter ($_REQUEST['type']);
+    }
     if (empty ($type)) {
         $type = 'article';
     }
@@ -1038,7 +1041,10 @@ if ($mode == 'delete') {
         echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
         exit;
     }
-    $type = COM_applyFilter ($_REQUEST['type']);
+    $type = '';
+    if (isset ($_REQUEST['type'])) {
+        $type = COM_applyFilter ($_REQUEST['type']);
+    }
     if (empty ($type)) {
         $type = 'article';
     }
@@ -1058,7 +1064,10 @@ if ($mode == 'delete') {
         echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
         exit;
     }
-    $type = COM_applyFilter ($_REQUEST['type']);
+    $type = '';
+    if (isset ($_REQUEST['type'])) {
+        $type = COM_applyFilter ($_REQUEST['type']);
+    }
     if (empty ($type)) {
         $type = 'article';
     }
