@@ -4,9 +4,9 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
-// | pollbooth.php                                                            |
+// | index.php                                                                |
 // |                                                                           |
-// | This is the pollbooth page.                                               |
+// | Display poll results and past polls.                                      |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2006/05/20 07:59:44 dhaun Exp $
+// $Id: index.php,v 1.17 2006/05/20 16:20:43 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -91,8 +91,7 @@ function pollsave($qid = '', $aid = 0)
 
 $display = '';
 
-if (isset ($_POST['reply'])
-        && ($_POST['reply'] == $LANG01[25])) {
+if (isset ($_POST['reply']) && ($_POST['reply'] == $LANG01[25])) {
     $display .= COM_refresh ($_CONF['site_url'] . '/comment.php?sid='
              . $_POST['qid'] . '&pid=' . $_POST['pid']
              . '&type=' . $_POST['type']);
@@ -133,8 +132,8 @@ if (empty($qid)) {
             ($_PO_CONF['pollsloginrequired'] == 1))) {
         $retval = COM_startBlock ($LANG_LOGIN[1], '',
                           COM_getBlockTemplate ('_msg_block', 'header'));
-        $login = new Template($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login = new Template ($_CONF['path_layout'] . 'submit');
+        $login->set_file (array ('login' => 'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -144,7 +143,7 @@ if (empty($qid)) {
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
         require_once( $_CONF['path_system'] . 'lib-admin.php' );
-        $header_arr = array(      # dislay 'text' and use table field 'field'
+        $header_arr = array(    // display 'text' and use table field 'field'
                         array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
                         array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
                         array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
@@ -159,24 +158,15 @@ if (empty($qid)) {
                           'title' => $LANG_POLLS['pollstitle'], 'instructions' => "",
                           'icon' => '', 'form_url' => '');
 
-        $q = '';
-        if (!empty ($_REQUEST['q'])) {
-            $q = COM_ApplyFilter($_REQUEST['q']);
-        }
-        $query_limit = 0;
-        if (!empty ($_REQUEST['query_limit'])) {
-            $query_limit = COM_applyFilter ($_REQUEST['query_limit'], true);
-        }
-
         $query_arr = array('table' => 'pollquestions',
                            'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) as unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1",
                            'query_fields' => array('question'),
                            'default_filter' => COM_getPermSQL (),
-                           'query' => $q,
-                           'query_limit' => $query_limit);
+                           'query' => '',
+                           'query_limit' => 0);
 
-        $display .= ADMIN_list ("polls", "plugin_getListField_polls", $header_arr, $text_arr,
-                                $query_arr, $menu_arr, $defsort_arr);
+        $display .= ADMIN_list ('polls', 'plugin_getListField_polls',
+                $header_arr, $text_arr, $query_arr, $menu_arr, $defsort_arr);
     }
     
 } else if ($aid == 0) {
