@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Added an option to check if the sites sending trackbacks are actually linking
+  to our site (see $_CONF['check_trackback_link'] in config.php) [Dirk]
 - Made it impossible to save two syndication feeds with identical filenames
   [Oliver]
 - Stories with comments/trackbacks disabled, do not show comment/trackback
