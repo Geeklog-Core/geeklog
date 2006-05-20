@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.10 2006/05/20 08:46:03 dhaun Exp $
+// $Id: event.php,v 1.11 2006/05/20 08:50:14 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -484,7 +484,7 @@ default:
             $datesql = "SELECT *,datestart AS start,dateend AS end "
                      . "FROM {$_TABLES['personal_events']} "
                      . "WHERE (eid = '$eid') AND (uid = {$_USER['uid']})";
-            $pagetitle = $LANG_CAL_2[28] . ' ' . $_USER['username'];
+            $pagetitle = $LANG_CAL_2[28] . ' ' . COM_getDisplayName();
         } else {
             $datesql = "SELECT *,datestart AS start,dateend AS end "
                      . "FROM {$_TABLES['events']} WHERE eid = '$eid'";

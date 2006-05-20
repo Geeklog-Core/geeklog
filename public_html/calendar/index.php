@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.10 2006/05/19 08:44:00 ospiess Exp $
+// $Id: index.php,v 1.11 2006/05/20 08:50:14 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -507,7 +507,7 @@ case 'day':
 
     $cal_templates->set_var('currentday', strftime('%A, %x',mktime(0, 0, 0,$month, $day, $year)));
     if ($mode == 'personal') {
-        $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . $_USER['username']);
+        $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
         $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="'
                                . $_CONF['site_url'] . "/calendar/index.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG_CAL_2[11] . '</a>]');
     } else {
@@ -617,7 +617,7 @@ case 'week':
     $cal_templates->set_var('mode', $mode);
     $cal_templates->set_var('lang_week', $LANG_CAL_2[27]);
     if ($mode == 'personal') {
-        $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . $_USER['username']);
+        $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
         $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="' . $_CONF['site_url']
                                                  . "/calendar/index.php?view=week&amp;month=$month&amp;day=$day&amp;year=$year\">"
                                                  . $LANG_CAL_2[11] . '</a>]');
@@ -866,7 +866,7 @@ $cal_templates->set_var('lang_month', $LANG_CAL_2[41]);
 
 if ($mode == 'personal') {
     $cal_templates->set_var ('calendar_title',
-                             $LANG_CAL_2[28] . ' ' . $_USER['username']);
+                             $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
 } else {
     $cal_templates->set_var ('calendar_title',
                              $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
@@ -1016,10 +1016,10 @@ if ($mode == 'personal') {
 }
 
 
-$cal_templates->set_var('lang_cal_curmo', $LANG_MONTH[$currentmonth]);
+$cal_templates->set_var('lang_cal_curmo', $LANG_MONTH[$currentmonth + 0]);
 $cal_templates->set_var('cal_curmo_num', $currentmonth);
 $cal_templates->set_var('cal_curyr_num', $currentyear);
-$cal_templates->set_var('lang_cal_displaymo', $LANG_MONTH[$month]);
+$cal_templates->set_var('lang_cal_displaymo', $LANG_MONTH[$month + 0]);
 $cal_templates->set_var('cal_displaymo_num', $month);
 $cal_templates->set_var('cal_displayyr_num', $year);
 if ($mode == 'personal') {
