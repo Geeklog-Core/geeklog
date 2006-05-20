@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.545 2006/05/19 08:30:36 ospiess Exp $
+// $Id: lib-common.php,v 1.546 2006/05/20 07:54:21 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -378,7 +378,14 @@ if( setlocale( LC_ALL, $_CONF['locale'] ) === false )
 *
 */
 
-$_GROUPS = SEC_getUserGroups( $_USER['uid'] );
+if( isset( $_USER['uid'] ))
+{
+    $_GROUPS = SEC_getUserGroups( $_USER['uid'] );
+}
+else
+{
+    $_GROUPS = SEC_getUserGroups( 1 );
+}
 
 /**
 * Global array of current user permissions [read,edit]
