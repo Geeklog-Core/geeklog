@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.61 2006/05/14 16:33:10 ospiess Exp $
+// $Id: lib-admin.php,v 1.62 2006/05/20 16:17:37 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -340,16 +340,24 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             # make the mouseover effect is sortable
             $admin_templates->set_var('mouse_over', " OnMouseOver=\"this.style.cursor='pointer';\"");
             $order_var = $i; # assign number to field so we know what to sort
-            if (strpos($form_url,'?') > 0 ) {
-                $seperator = "&amp;";
+            if (strpos ($form_url, '?') > 0) {
+                $separator = '&amp;';
             } else {
-                $seperator = "?";
+                $separator = '?';
             }
-            $onclick = " onclick=\"window.location.href='$form_url$seperator" #onclick action
-                    ."order=$order_var&amp;prevorder=$order&amp;direction=$direction"
-                    ."&amp;" . $component . "listpage=$page"
-                    ."&amp;q=$query&amp;query_limit=$query_limit';\"";
-            $admin_templates->set_var('on_click', $onclick);
+            $onclick = " onclick=\"window.location.href='$form_url$separator" #onclick action
+                    ."order=$order_var&amp;prevorder=$order&amp;direction=$direction";
+            if (!empty ($page)) {
+                $onclick = '&amp;' . $component . 'listpage=' . $page;
+            }
+            if (!empty ($query)) {
+                $onclick .= '&amp;q=' . $query;
+            }
+            if (!empty ($query_limit)) {
+                $onclick .= '&amp;query_limit=' . $query_limit;
+            }
+            $onclick .= "';\"";
+            $admin_templates->set_var ('on_click', $onclick);
         }
         if (!empty($header_arr[$i]['header_class'])) {
 			$admin_templates->set_var('class', $header_arr[$i]['header_class']);
@@ -397,6 +405,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             }
             $filter_str .= ")";
         }
+
         $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
                             "1 " . $filter_str) / $limit);
         if ($num_pages < $curpage) { # make sure we dont go beyond possible results
