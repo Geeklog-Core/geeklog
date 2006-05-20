@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.31 2006/05/15 06:18:06 ospiess Exp $
+// $Id: lib-comment.php,v 1.32 2006/05/20 08:14:52 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -223,9 +223,12 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         if( empty( $A['nice_date'] )) {
             $A['nice_date'] = time();
         }
+        if( !isset( $A['cid'] )) {
+            $A['cid'] = 0;
+        }
         $mode = 'flat';
     } else {
-        $A = DB_fetchArray($comments);
+        $A = DB_fetchArray( $comments );
     }
 
     if( empty( $A ) ) {
