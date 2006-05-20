@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.9 2006/05/20 08:42:39 dhaun Exp $
+// $Id: event.php,v 1.10 2006/05/20 08:46:03 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -50,6 +50,8 @@ require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
 function adduserevent ($eid) 
 {
     global $_CONF, $_TABLES, $LANG_CAL_1;
+
+    $retval = '';
 
     $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'" . COM_getPermSql ('AND');
     $result = DB_query($eventsql);
