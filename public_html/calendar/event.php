@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.8 2006/05/19 19:49:06 dhaun Exp $
+// $Id: event.php,v 1.9 2006/05/20 08:42:39 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -49,13 +49,14 @@ require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
 */
 function adduserevent ($eid) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_CAL_1;
+    global $_CONF, $_TABLES, $LANG_CAL_1;
 
     $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'" . COM_getPermSql ('AND');
     $result = DB_query($eventsql);
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
-        $retval .= COM_startBlock($LANG_CAL_1[11]);
+        $retval .= COM_startBlock (sprintf ($LANG_CAL_1[11],
+                                            COM_getDisplayName()));
         $A = DB_fetchArray($result);
         $cal_template = new Template($_CONF['path'] . 'plugins/calendar/templates/');
         $cal_template->set_file (array ('addevent' => 'addevent.thtml'));
@@ -721,8 +722,14 @@ default:
             $cal_templates->set_var ('event_edit', '');
             $cal_templates->set_var ('edit_icon', '');
         }
-        $cal_templates->set_var ('hits', COM_numberFormat ($A['hits']));
-        $cal_templates->set_var ('lang_hits', $LANG10[30]);
+        if ($mode == 'personal') {
+            // personal events don't have a hits counter
+            $cal_templates->set_var ('lang_hits', '');
+            $cal_templates->set_var ('hits', '');
+        } else {
+            $cal_templates->set_var ('lang_hits', $LANG10[30]);
+            $cal_templates->set_var ('hits', COM_numberFormat ($A['hits']));
+        }
 
         $cal_templates->parse ('output', 'events');
         $display .= $cal_templates->finish ($cal_templates->get_var ('output'));
