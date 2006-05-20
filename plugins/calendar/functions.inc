@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.27 2006/05/19 09:12:20 ospiess Exp $
+// $Id: functions.inc,v 1.28 2006/05/20 19:59:31 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -629,7 +629,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var ('day_options', COM_getDayFormOptions ($day));
     $eventform->set_var ('year_options', COM_getYearFormOptions ($year));
 
-    if ($hour < 0 or empty($hour)) {
+    if (empty ($hour) || ($hour < 0)) {
         $cur_hour = date ('H', time ());
     } else {
         $cur_hour = $hour;
