@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
 // | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.102 2006/05/15 04:10:38 vinny Exp $
+// $Id: comment.php,v 1.103 2006/05/20 08:09:48 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -237,14 +237,19 @@ if (isset ($_REQUEST['reply'])) {
     $_REQUEST['mode'] = '';
 }
 
-switch ( $_REQUEST['mode'] ) {
+$mode = '';
+if (!empty ($_REQUEST['mode'])) {
+    $mode = COM_applyFilter ($_REQUEST['mode']);
+}
+switch ($mode) {
 case $LANG03[14]: // Preview
     $display .= COM_siteHeader()
-        . CMT_commentForm ( strip_tags ($_POST['title']), $_POST['comment'],
-            COM_applyFilter ($_POST['sid']), COM_applyFilter ($_POST['pid'], true),
-            COM_applyFilter ($_POST['type']), COM_applyFilter ($_POST['mode']),
-            COM_applyFilter ($_POST['postmode']))
-        . COM_siteFooter(); 
+             . CMT_commentForm (strip_tags ($_POST['title']), $_POST['comment'],
+                    COM_applyFilter ($_POST['sid']),
+                    COM_applyFilter ($_POST['pid'], true),
+                    COM_applyFilter ($_POST['type']), $mode,
+                    COM_applyFilter ($_POST['postmode']))
+             . COM_siteFooter(); 
     break;
 
 case $LANG03[11]: // Submit Comment
@@ -279,6 +284,10 @@ default:  // New Comment
     $sid = COM_applyFilter ($_REQUEST['sid']);
     $type = COM_applyFilter ($_REQUEST['type']);
     $title = strip_tags ($_REQUEST['title']);
+    $postmode = $_CONF['postmode'];
+    if (isset ($_REQUEST['postmode'])) {
+        $postmode = COM_applyFilter ($_REQUEST['postmode']);
+    }
 
     if (!empty ($sid) && !empty ($type)) { 
         if (empty ($title)) {
@@ -294,9 +303,10 @@ default:  // New Comment
             $title = str_replace ( '&gt;', '>', $title );
         }
         $display .= COM_siteHeader('menu', $LANG03[1])
-            . CMT_commentForm ($title, '', $sid, COM_applyFilter ($_REQUEST['pid'], true),
-                $type, COM_applyFilter ($_REQUEST['mode']), COM_applyFilter ($_REQUEST['postmode']))
-            . COM_siteFooter();
+                 . CMT_commentForm ($title, '', $sid,
+                        COM_applyFilter ($_REQUEST['pid'], true), $type, $mode,
+                        $postmode)
+                 . COM_siteFooter();
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
