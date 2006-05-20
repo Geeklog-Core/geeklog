@@ -10,7 +10,7 @@
         <tr>
             <td align="right">{lang_blog_name}:</td>
             <td>
-                <input type="text" size="48" maxlength="80" name="blog_name" value="{blog_name}">
+                <input type="text" size="50" maxlength="80" name="blog_name" value="{blog_name}">
             </td>
         </tr>
         <tr>
@@ -22,13 +22,13 @@
         <tr>
             <td align="right">{lang_title}:</td>
             <td>
-                <input type="text" size="48" maxlength="255" name="title" value="{title}">
+                <input type="text" size="50" maxlength="255" name="title" value="{title}">
             </td>
         </tr>
         <tr>
             <td align="right" valign="top">{lang_excerpt}:</td>
             <td>
-                <textarea name="excerpt" cols="50" rows="8">{excerpt}</textarea><br>
+                <textarea name="excerpt" style="width:100%" rows="8">{excerpt}</textarea><br>
                 <p class="warningsmall">{lang_excerpt_truncated}</p>
             </td>
         </tr>
