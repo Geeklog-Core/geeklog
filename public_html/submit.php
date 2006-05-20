@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.102 2006/05/19 07:49:29 ospiess Exp $
+// $Id: submit.php,v 1.103 2006/05/20 18:04:15 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -427,7 +427,7 @@ function savesubmission($type, $A)
         // and should include its own redirect
         $retval = PLG_saveSubmission ($type, $A);
 
-        if (!retval) {
+        if (!$retval) {
             COM_errorLog("Could not save your submission. Bad type: $type");
         } elseif (empty($retval)) {
             // plugin should include its own redirect - but in case handle
