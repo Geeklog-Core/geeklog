@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the pollbooth page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2006/05/13 11:18:54 mjervis Exp $
+// $Id: index.php,v 1.16 2006/05/20 07:59:44 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -159,12 +159,21 @@ if (empty($qid)) {
                           'title' => $LANG_POLLS['pollstitle'], 'instructions' => "",
                           'icon' => '', 'form_url' => '');
 
+        $q = '';
+        if (!empty ($_REQUEST['q'])) {
+            $q = COM_ApplyFilter($_REQUEST['q']);
+        }
+        $query_limit = 0;
+        if (!empty ($_REQUEST['query_limit'])) {
+            $query_limit = COM_applyFilter ($_REQUEST['query_limit'], true);
+        }
+
         $query_arr = array('table' => 'pollquestions',
                            'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) as unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1",
                            'query_fields' => array('question'),
                            'default_filter' => COM_getPermSQL (),
-                           'query' => COM_ApplyFilter($_REQUEST['q']),
-                           'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true));
+                           'query' => $q,
+                           'query_limit' => $query_limit);
 
         $display .= ADMIN_list ("polls", "plugin_getListField_polls", $header_arr, $text_arr,
                                 $query_arr, $menu_arr, $defsort_arr);
