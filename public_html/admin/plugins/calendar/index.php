@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2006/05/20 19:46:08 dhaun Exp $
+// $Id: index.php,v 1.12 2006/05/20 20:02:04 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -190,7 +190,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('lang_includehttp', $LANG_CAL_ADMIN[9]);
     $event_templates->set_var('lang_eventstartdate', $LANG_CAL_ADMIN[5]);
     //$event_templates->set_var('event_startdate', $A['datestart']);
-    $event_templates->set_var('lang_starttime', $LANG12[42]);
+    $event_templates->set_var('lang_starttime', $LANG_CAL_1[30]);
 
     // Combine date/time for easier manipulation
     $A['datestart'] = trim ($A['datestart'] . ' ' . $A['timestart']);
@@ -303,7 +303,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('event_enddate', $A['dateend']);
     $event_templates->set_var('hour_options', $hour_options);
     $event_templates->set_var('lang_enddate', $LANG12[13]);
-    $event_templates->set_var('lang_endtime', $LANG12[41]);
+    $event_templates->set_var('lang_endtime', $LANG_CAL_1[29]);
     $event_templates->set_var('lang_alldayevent', $LANG_CAL_1[31]);
     if ($A['allday'] == 1) {
         $event_templates->set_var('allday_checked', 'checked="checked"');
