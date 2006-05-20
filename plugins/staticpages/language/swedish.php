@@ -65,7 +65,6 @@ $LANG_STATIC= array(
     results => 'Statiska sidor resultat',
     author => 'Författare',
     no_title_or_content => 'Du måste åtminstone fylla i <b>titel-</b> och <b>innehålls</b>fälten.',
-    no_such_page_logged_in => 'Sorry '.$_USER['username'].'..',
     no_such_page_anon => 'Du måste logga in..',
     no_page_access_msg => "Detta kan bero på att du inte är inloggad, eller att du inte ärmedlem i {$_CONF["site_name"]}.  <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Bli medlem</a> i {$_CONF["site_name"]} för att få åtkomst till medlemssidorna",
     php_msg => 'PHP: ',

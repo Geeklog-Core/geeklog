@@ -63,7 +63,6 @@ $LANG_STATIC= array(
     'results' => 'Результати для статичних сторінок',
     'author' => 'Автор',
     'no_title_or_content' => 'Ви повинні заповнити щонайменше поля <b>Назва</b> та <b>Вміст</b>.',
-    'no_such_page_logged_in' => 'Пробачте, '.$_USER['username'].'..',
     'no_such_page_anon' => 'Будь ласка, пройдіть реєстрацію..',
     'no_page_access_msg' => "Це могло бути через те, що ви не зареєструвались у системі, або не є учасником {$_CONF['site_name']}. Будь ласка, <a href=\"{$_CONF['site_url']}/users.php?mode=new\">запишіться як учасник</a> {$_CONF['site_name']} для отримання повного членського доступу",
     'php_msg' => 'PHP: ',

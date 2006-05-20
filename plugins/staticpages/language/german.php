@@ -34,7 +34,7 @@
 ###############################################################################
 
 
-$LANG_STATIC= array(
+$LANG_STATIC = array(
     'newpage' => 'Neue Seite',
     'adminhome' => 'Admin Home',
     'staticpages' => 'Statische Seiten',
@@ -66,7 +66,6 @@ $LANG_STATIC= array(
     'results' => 'Gefundene Statische Seiten',
     'author' => 'Autor',
     'no_title_or_content' => 'Bitte mindestens die Felder <b>Titel</b> und <b>Inhalt</b> ausfüllen.',
-    'no_such_page_logged_in' => 'Sorry, ' . $_USER['username'] . ' ...',
     'no_such_page_anon' => 'Bitte einloggen.',
     'no_page_access_msg' => "This could be because you're not logged in, or not a member of {$_CONF["site_name"]}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF["site_name"]} to receive full membership access.",
     'php_msg' => 'PHP: ',

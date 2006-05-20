@@ -64,7 +64,6 @@ $LANG_STATIC= array(
     'results' => 'Risultati Pagine Statiche',
     'author' => 'Autore',
     'no_title_or_content' => 'Devi almeno compilare i campi <b>Titolo</b> e <b>Contenuto</b>.',
-    'no_such_page_logged_in' => 'Spiacenti '.$_USER['username'].'..',
     'no_such_page_anon' => 'Prego entra nel sito..',
     'no_page_access_msg' => "Questo potrebbe indicare che tu non sei entrato nel sito, o non sei un membro di {$_CONF["site_name"]}. Prego <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> diventa un membro</a> di {$_CONF["site_name"]} per ricevere pieno accesso al sito",
     'php_msg' => 'PHP: ',

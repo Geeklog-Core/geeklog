@@ -66,7 +66,6 @@ $LANG_STATIC= array(
     'results' => '静态页结果',
     'author' => '作者',
     'no_title_or_content' => '你最少要填入<b>标题</b> 和 <b>内容</b>.',
-    'no_such_page_logged_in' => '对不起 '.$_USER['username'].'..',
     'no_such_page_anon' => '请登入..',
     'no_page_access_msg' => "这也许是你未登入, 或不是此站的用户. 请 <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> 申请成为用户 </a> 来得到登入权",
     'php_msg' => 'PHP: ',

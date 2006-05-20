@@ -65,7 +65,6 @@ $LANG_STATIC= array(
     'results' => 'Static Pages Results',
     'author' => '著者',
     'no_title_or_content' => '少なくとも、<b>タイトル</b>と<b>内容</b>は記入してください。',
-    'no_such_page_logged_in' => $_USER['username'].'さん、ごめんなさい',
     'no_such_page_anon' => 'まずログインしてください。',
     'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト（{$_CONF["site_name"]}）のメンバーではないためだと考えられます。{$_CONF["site_name"]}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',

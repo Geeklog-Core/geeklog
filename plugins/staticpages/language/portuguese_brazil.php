@@ -66,7 +66,6 @@ $LANG_STATIC= array(
     'results' => 'Resultado da Página Estática',
     'author' => 'Autor',
     'no_title_or_content' => 'Você deve ao menos preencher os campos de <b>Título</b> e <b>Conteúdo</b>.',
-    'no_such_page_logged_in' => 'Desculpe '.$_USER['username'].'..',
     'no_such_page_anon' => 'Por favor faça o LOGIN...',
     'no_page_access_msg' => "Isto pode ter acontecido porque você não efetuou o LOGIN, ou ainda porque não é membro do {$_CONF['site_name']}. Por favor <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> torne-se um membro usuário do site</a> {$_CONF['site_name']} para ter acesso a todos recursos disponíveis",
     'php_msg' => 'PHP: ',

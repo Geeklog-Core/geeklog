@@ -63,7 +63,6 @@ $LANG_STATIC= array(
     'results' => 'نتيجه آمار صفحات',
     'author' => 'نويسنده',
     'no_title_or_content' => 'شما بايد حداقل فيلد<b>عنوان</b>و<b>محتوي</b> پر نماييد',
-    'no_such_page_logged_in' => 'متاسفم '.$_USER['username'].'..',
     'no_such_page_anon' => 'لطفا وارد شويد',
     'no_page_access_msg' => "اين صفحه قابل دسترسي است يا شما وارد نشده ايد يا عضو سايت {$_CONF['site_name']} نيستيد.لطفا <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> عضو ما شويد</a> of {$_CONF['site_name']} براي دسترسي كامل و استفاده از سايت مانند اعضاي ما",
     'php_msg' => 'PHP: ',

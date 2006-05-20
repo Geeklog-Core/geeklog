@@ -64,7 +64,6 @@ $LANG_STATIC= array(
     results => 'Statik Sayfalar Sonuçlarý',
     author => 'Yazar',
     no_title_or_content => 'En azýndan <b>Baþlýk</b> ve <b>Ýçerik</b> bölümlerini doldurmalýsýnýz.',
-    no_such_page_logged_in => 'Özgünüz '.$_USER['username'].'..',
     no_such_page_anon => 'Lütfen giriþ yapýn..',
     no_page_access_msg => "Bu olabilir çünkü giriþ yapmadýnýz yada {$_CONF["site_name"]} nin kayýtlý bir üyesi deðilsiniz. {$_CONF["site_name"]} nin tüm üyelik giriþlerini elde etmek için lütfen <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> yeni bir üye olun</a>",
     php_msg => 'PHP: ',

@@ -63,7 +63,6 @@ $LANG_STATIC= array(
     'results' => 'Static Pages Results',
     'author' => 'Author',
     'no_title_or_content' => 'You must at least fill in the <b>Title</b> and <b>Content</b> fields.',
-    'no_such_page_logged_in' => 'Sorry '.$_USER['username'].'..',
     'no_such_page_anon' => 'Please log in..',
     'no_page_access_msg' => "This could be because you're not logged in, or not a member of {$_CONF['site_name']}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF['site_name']} to receive full membership access",
     'php_msg' => 'PHP: ',

@@ -64,7 +64,6 @@ $LANG_STATIC= array(
     results => 'Fast Side Resultat',
     author => 'Forfatter',
     no_title_or_content => 'You must at least fill in the <b>Title</b> and <b>Content</b> fields.',
-    no_such_page_logged_in => 'Desværre '.$_USER['username'].'..',
     no_such_page_anon => 'Log venligst ind..',
     no_page_access_msg => "Dette kan skyldes at du ikke er logget ind, eller ikke er oprettet som bruger af {$_CONF["site_name"]}. Bliv venligst <a href=\"{$_CONF['site_url']}/users.php?mode=new\">oprettet som bruger</a> af {$_CONF["site_name"]} for at få fuld brugeradgang",
     php_msg => 'PHP: ',

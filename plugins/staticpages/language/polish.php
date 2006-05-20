@@ -63,7 +63,6 @@ $LANG_STATIC= array(
     results => 'Wyniki Dla Stron Statycznych',
     author => 'Autor',
     no_title_or_content => 'Musisz wype³niæ co najmniej pola <b>Tytu³</b> i <b>Zawarto¶æ</b>.',
-    no_such_page_logged_in => 'Sorry '.$_USER['username'].'..',
     no_such_page_anon => 'Prosze siê zalogowaæ..',
     no_page_access_msg => "Mo¿e to byæ spowodowane tym, ¿e nie jeste¶ zalogowana/-y lub zarejestrowanan/-y w Serwisie {$_CONF["site_name"]}. Proszê <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> zarejestrowaæ siê</a> of {$_CONF["site_name"]} aby otrzymaæ przywileje u¿ytkowników zarejestrowanych",
     php_msg => 'PHP: ',

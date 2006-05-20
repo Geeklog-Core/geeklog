@@ -65,7 +65,6 @@ $LANG_STATIC= array(
     'results' => 'Static Pages Resultaten',
     'author' => 'Auteur',
     'no_title_or_content' => 'Gelieve de <b>Titel</b> en <b>Content</b> op te geven.',
-    'no_such_page_logged_in' => 'Helaas. '.$_USER['username'].'..',
     'no_such_page_anon' => 'Gelieve eerst in te loggen...',
     'no_page_access_msg' => "Dit kan optreden omdat u niet ingelogd bent, of geen lid bent van {$_CONF["site_name"]}. <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Meldt u aann</a> op {$_CONF["site_name"]} om alle faciliteiten te verkrijgen",
     'php_msg' => 'PHP: ',
