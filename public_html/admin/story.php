@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.213 2006/05/14 20:25:42 mjervis Exp $
+// $Id: story.php,v 1.214 2006/05/20 14:02:13 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1167,7 +1167,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
 } else if (($mode == $LANG24[9]) && !empty ($LANG24[9])) { // preview
     $display .= COM_siteHeader('menu', $LANG24[5]);
-    $display .= storyeditor (COM_applyFilter ($_POST['sid']), $mode, '', '', COM_applyFilter ($_GET['editor']));
+    $editor = '';
+    if (!empty ($_GET['editor'])) {
+        $editor = COM_applyFilter ($_GET['editor']);
+    }
+    $display .= storyeditor (COM_applyFilter ($_POST['sid']), $mode, '', '',
+                             $editor);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'edit') {
@@ -1176,10 +1181,15 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_GET['sid'])) {
         $sid = COM_applyFilter ($_GET['sid']);
     }
+    $topic = '';
     if (isset ($_GET['topic'])) {
         $topic = COM_applyFilter ($_GET['topic']);
     }
-    $display .= storyeditor ($sid, $mode, '', $topic, COM_applyFilter ($_GET['editor']));
+    $editor = '';
+    if (isset ($_GET['editor'])) {
+        $editor = COM_applyFilter ($_GET['editor']);
+    }
+    $display .= storyeditor ($sid, $mode, '', $topic, $editor);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'editsubmission') {
