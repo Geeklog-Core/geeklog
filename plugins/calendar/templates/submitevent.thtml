@@ -3,7 +3,7 @@
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td align="right"><b>{lang_title}:</b></td>
-                                        <td><input type="text" size="36" maxlength="96" name="title"></td>
+                                        <td><input type="text" size="48" maxlength="128" name="title"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_eventtype}:</b></td>
@@ -88,15 +88,15 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_addressline1}:</b></td>
-                                        <td><input type="text" name="address1" size="36"></td>
+                                        <td><input type="text" name="address1" size="40"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_addressline2}:</b></td>
-                                        <td><input type="text" name="address2" size="36"></td>
+                                        <td><input type="text" name="address2" size="40"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_city}:</b></td>
-                                        <td><input type="text" name="city" size="36"></td>
+                                        <td><input type="text" name="city" size="40" maxlength="60"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_state}:</b></td>
@@ -112,11 +112,11 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_link}:</b></td>
-                                        <td><input type="text" size="36" maxlength="{max_url_length}" name="url" value="http://"></td>
+                                        <td><input type="text" size="48" maxlength="{max_url_length}" name="url" value="http://"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_description}:</b></td>
-                                        <td><textarea name="description" cols="45" rows="8"></textarea></td>
+                                        <td><textarea name="description" style="width:100%" rows="8"></textarea></td>
                                     </tr>
                                     <tr>
                                         <td align="center" colspan="2">{lang_htmnotallowed}</td>

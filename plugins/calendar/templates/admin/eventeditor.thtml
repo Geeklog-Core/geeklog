@@ -3,7 +3,7 @@
                                     <tr>
                                         <td align="right"><b>{lang_eventtitle}:</b></td>
                                         <td>
-                                            <input type="text" size="48" maxlength="96" name="title" value="{event_title}">
+                                            <input type="text" size="48" maxlength="128" name="title" value="{event_title}">
                                         </td>
                                     </tr>
                                     <tr>
@@ -89,15 +89,15 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_addressline1}:</b></td>
-                                        <td><input type="text" name="address1" size="36" value="{event_address1}"></td>
+                                        <td><input type="text" name="address1" size="40" value="{event_address1}"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_addressline2}:</b></td>
-                                        <td><input type="text" name="address2" size="36" value="{event_address2}"></td>
+                                        <td><input type="text" name="address2" size="40" value="{event_address2}"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_city}:</b></td>
-                                        <td><input type="text" name="city" size="36" value="{event_city}"></td>
+                                        <td><input type="text" name="city" size="40" maxlength="60" value="{event_city}"></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_state}:</b></td>
@@ -117,7 +117,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_eventdescription}:</b></td>
-                                        <td><textarea name="description" cols="50" rows="8">{event_description}</textarea></td>
+                                        <td><textarea name="description" style="width:100%" rows="8">{event_description}</textarea></td>
                                     </tr>
                                     <tr valign="top">
                                         <td align="right"><b>{lang_postmode}:</b></td>
