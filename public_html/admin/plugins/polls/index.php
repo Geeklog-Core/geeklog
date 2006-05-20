@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.29 2006/05/15 04:10:38 vinny Exp $
+// $Id: index.php,v 1.30 2006/05/20 14:07:57 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -409,9 +409,12 @@ if ($mode == 'edit') {
         for ($i = 0; $i < sizeof ($_POST['answer']); $i++) {
             $voters = $voters + $_POST['votes'][$i];
         }
+        $statuscode = 0;
+        if (isset ($_POST['statuscode'])) {
+            $statuscode = COM_applyFilter ($_POST['statuscode'], true);
+        }
         $display .= savepoll ($qid, $_POST['mainpage'],
-                        $_POST['question'], $voters,
-                        COM_applyFilter ($_POST['statuscode'], true),
+                        $_POST['question'], $voters, $statuscode,
                         COM_applyFilter ($_POST['commentcode'], true),
                         $_POST['answer'], $_POST['votes'], $_POST['remark'],
                         $_POST['owner_id'],
