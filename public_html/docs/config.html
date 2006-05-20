@@ -35,11 +35,10 @@ defined below:</p>
 <li><a href="#email">E-Mail Settings</a></li>
 <li><a href="#login">Login Settings</a></li>
 <li><a href="#submission">Submission Settings</a></li>
-<li><a href="#misc">Topic, What's New &amp; E-mail Settings</a></li>
-<li><a href="#calendar">Calendar Settings</a></li>
+<li><a href="#trackback">Trackback, Pingback, and Ping Settings</a></li>
+<li><a href="#misc">Topic, What's New, and E-mail Settings</a></li>
 <li><a href="#story">Story Settings</a></li>
 <li><a href="#comment">Comment Settings</a></li>
-<li><a href="#poll">Poll Settings</a></li>
 <li><a href="#image">Image Settings</a>
     <ul><li><a href="#userphoto">User photo</a></li></ul></li>
 <li><a href="#rdf">Syndication Settings</a></li>
@@ -414,7 +413,7 @@ options:</p>
 <tr><td valign="top"><a name="desc_submitloginrequired">submitloginrequired</a></td>
     <td valign="top">0</td>
     <td valign="top">When set to 1, only registered users can submit stories
-      and events</td></tr>
+      and items handled by plugins, e.g. links and events</td></tr>
 <tr><td valign="top"><a name="desc_commentsloginrequired">commentsloginrequired</a></td>
     <td valign="top">0</td>
     <td valign="top">When set to 1, only registered users can submit comments</td></tr>
@@ -455,10 +454,6 @@ options:</p>
   <td valign="top">1</td>
   <td valign="top">Enable (1) or disable (0) the story submission queue</td></tr>
 <tr>
-  <td valign="top"><a name="desc_eventsubmission">eventsubmission</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Enable (1) or disable (0) the event submission queue</td></tr>
-<tr>
   <td valign="top"><a name="desc_usersubmission">usersubmission</a></td>
   <td valign="top">0</td>
   <td valign="top">Enable (1) or disable (0) the user submission queue (i.e.
@@ -479,16 +474,15 @@ options:</p>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>
   <td valign="top">Send an email notification to <tt>$_CONF['site_email']</tt>
-    when a new story, comment, event, trackback or pingback has been submitted
+    when a new story, comment, trackback or pingback has been submitted
     or a new user has registered with the site. The <tt>array()</tt> can hold
     any combination of  the strings <tt>'story'</tt>, <tt>'comment'</tt>,
-    <tt>'trackback'</tt>, <tt>'pingback'</tt>, <tt>'event'</tt>, and
-    <tt>'user'</tt> (separated by commas), depending on which notification(s)
-    you want.<br>
+    <tt>'trackback'</tt>, <tt>'pingback'</tt>, and <tt>'user'</tt> (separated
+    by commas), depending on which notification(s) you want.<br>
     <strong>Example:</strong> <code>array('story','user');</code> would
     send notifications when a new story has been submitted or a new user has
     registered. No notifications would be sent, for example, for new
-    events.</td>
+    comments.</td>
 <tr>
   <td valign="top"><a name="desc_listdraftstories">listdraftstories</a></td>
   <td valign="top">0</td>
@@ -508,6 +502,21 @@ options:</p>
   <td valign="top">0</td>
   <td valign="top">If 1, allows submission of stories and comments without previewing (i.e. the submission form will always have a Preview <em>and</em> a Submit button).</td></tr>
 <tr>
+  <td valign="top"><a name="desc_advanced_editor">advanced_editor</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
+    story and comment submissions and static pages. Geeklog ships with <a
+    href="http://www.fckeditor.net/">FCKeditor</a>.</td></tr>
+</table>
+
+
+<h3><a name="trackback">Trackback, Pingback, and Ping Settings</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
   <td valign="top"><a name="desc_trackback_enabled">trackback_enabled</a></td>
   <td valign="top">true</td>
   <td valign="top">Enable (true) or disable (true) <a href="http://en.wikipedia.org/wiki/Trackback">trackback</a> comments. This applies to both sending and receiving trackback comments.</td></tr>
@@ -518,7 +527,7 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_ping_enabled">ping_enabled</a></td>
   <td valign="top">true</td>
-  <td valign="top">Enable (true) or disable (true) the ability to ping weblog directory services like <a href="http://blo.gs/">blo.gs</a>.</td></tr>
+  <td valign="top">Enable (true) or disable (true) the ability to ping weblog directory services like <a href="http://technorati.com/">Technorati</a>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_trackback_code">trackback_code</a></td>
   <td valign="top">0</td>
@@ -547,16 +556,10 @@ options:</p>
     If your article contains more than one link to other stories on your site,
     then option 1 is probably of limited use, as it would only pingback the
     first linked story and run into the speed limit for the others.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_advanced_editor">advanced_editor</a></td>
-  <td valign="top">false</td>
-  <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
-    story and comment submissions and static pages. Geeklog ships with <a
-    href="http://www.fckeditor.net/">FCKeditor</a>.</td></tr>
 </table>
 
 
-<h3><a name="misc">Topic, What's New &amp; E-mail Settings</a></h3>
+<h3><a name="misc">Topic, What's New, and E-mail Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -667,31 +670,6 @@ options:</p>
 </table>
 
 
-<h3><a name="calendar">Calendar Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_personalcalendars">personalcalendars</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Allow account holders to have a personal calendar</td></tr>
-<tr>
-  <td valign="top"><a name="desc_showupcomingevents">showupcomingevents</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Show up-coming events (0=no, 1=yes)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_upcomingeventsrange">upcomingeventsrange</a></td>
-  <td valign="top">14</td>
-  <td valign="top">Number of days that &quot;Upcoming Events&quot; will look ahead.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_event_types">event_types</a></td>
-  <td valign="top">Anniversary, Appointment, Birthday, Business, Education, Holiday, Meeting, Miscellaneous, Personal, Phone Call, Special Occasion, Travel, Vacation</td>
-  <td valign="top">The set of event types that are used both on the public calendar and the user's personal calendars</td></tr>
-</table>
-
-
 <h3><a name="story">Story Settings</a></h3>
 
 <table border="1" width="100%">
@@ -735,6 +713,18 @@ options:</p>
     friendly&quot; format. It will also hide the printer icon from stories and
     the &quot;View Printable Version&quot; from the Story Options
     block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hide_no_news_msg">hide_no_news_msg</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, hide the "No News To Display" message on the index page (e.g. when viewing a topic without any stories in it)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_page_breaks">allow_page_breaks</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Allow usage of the <code>[page_break]</code> tag in stories (when set to 1), so that stories can spread over multiple pages.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_page_break_comments">page_break_comments</a></td>
+  <td valign="top">last</td>
+  <td valign="top">When the <code>[page_break]</code> tag is allowed in stories (see above), where should the story's comments be displayed: <code>'last'</code> = on the story's last page only, <code>'first'</code> = on the first page only, <code>'all'</code> = on every page.</td></tr>
 <tr>
   <td valign="top"><a name="desc_show_right_blocks">show_right_blocks</a></td>
   <td valign="top">false</td>
@@ -781,32 +771,6 @@ options:</p>
   <td valign="top"><a name="desc_comment_code">comment_code</a></td>
   <td valign="top">0</td>
   <td valign="top">Default value for new stories: Comments enabled (0) or disabled (-1)</td></tr>
-</table>
-
-
-<h3><a name="poll">Poll Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_maxanswers">maxanswers</a></td>
-  <td valign="top">10</td>
-  <td valign="top">Maximum number of possible answers for the poll editor</td></tr>
-<tr>
-  <td valign="top"><a name="desc_answerorder">answerorder</a></td>
-  <td valign="top">submitorder</td>
-  <td valign="top">Sort answers by the number of results ('voteorder') or keep the order 
-    in which they were entered ('submitorder')</td></tr>
-<tr>
-  <td valign="top"><a name="desc_pollcookietime">pollcookietime</a></td>
-  <td valign="top">86400</td>
-  <td valign="top">Number of seconds to set a poll answer cookie to time out on</td></tr>
-<tr>
-  <td valign="top"><a name="desc_polladdresstime">polladdresstime</a></td>
-  <td valign="top">604800</td>
-  <td valign="top">Number of seconds to set a poll answer IP address to time out on</td></tr>
 </table>
 
 
@@ -974,8 +938,8 @@ options:</p>
 
 <p>Starting with Geeklog 1.3.9, feeds can be created and configured from
 Geeklog's Admin menu ("Content Syndication"). The following settings will only
-be used as the default settings for any new feeds that you create from the
-admin panel.</p>
+be used as the <em>default settings</em> for any new feeds that you create from
+the admin panel.</p>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>

@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Added an option to hide the "No News To Display" message on the index page
+  (new config option $_CONF['hide_no_news_msg']) [Dirk]
 - Added an option to check if the sites sending trackbacks are actually linking
   to our site (see $_CONF['check_trackback_link'] in config.php) [Dirk]
 - Made it impossible to save two syndication feeds with identical filenames
@@ -117,6 +119,7 @@ Links plugin (1.0.1)
 
 Polls plugin (1.1)
 ------------
+- Fixed search [Dirk]
 - Added a remark field for polls answers [Oliver]
 - Re-introduced {button_polls} header variable [Dirk]
 - Added an option to hide the link to the polls from the menu (for consistency

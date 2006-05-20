@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.81 2006/03/29 18:00:43 ospiess Exp $
+// $Id: index.php,v 1.82 2006/05/20 21:09:51 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -227,13 +227,17 @@ if ( $A = DB_fetchArray( $result ) ) {
     }
     $display .= COM_printPageNavigation($base_url,$page, $num_pages);
 } else { // no stories to display
-    $display .= COM_startBlock ($LANG05[1], '',
+    if (!isset ($_CONF['hide_no_news_msg']) ||
+            ($_CONF['hide_no_news_msg'] == 0)) {
+        $display .= COM_startBlock ($LANG05[1], '',
                     COM_getBlockTemplate ('_msg_block', 'header')) . $LANG05[2];
-    if (!empty($topic)) {
-        $topicname = DB_getItem ($_TABLES['topics'], 'topic', "tid='{$topic}'");
-        $display .= sprintf ($LANG05[3], $topicname);
+        if (!empty ($topic)) {
+            $topicname = DB_getItem ($_TABLES['topics'], 'topic',
+                                     "tid = '$topic'");
+            $display .= sprintf ($LANG05[3], $topicname);
+        }
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 
     $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 }
