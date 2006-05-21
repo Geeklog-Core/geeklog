@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.214 2006/05/20 14:02:13 dhaun Exp $
+// $Id: story.php,v 1.215 2006/05/21 15:02:50 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1149,7 +1149,10 @@ if (isset($_REQUEST['editopt'])){
 $display = '';
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $sid = COM_applyFilter ($_POST['sid']);
-    $type = COM_applyFilter ($_POST['type']);
+    $type = '';
+    if (isset ($_POST['type'])) {
+        $type = COM_applyFilter ($_POST['type']);
+    }
     if (!isset ($sid) || empty ($sid)) {
         COM_errorLog ('Attempted to delete story sid=' . $sid);
         echo COM_refresh ($_CONF['site_admin_url'] . '/story.php');
@@ -1213,9 +1216,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $publish_year = COM_applyFilter ($_POST['publish_year'], true);
     $publish_month = COM_applyFilter ($_POST['publish_month'], true);
     $publish_day = COM_applyFilter ($_POST['publish_day'], true);
-    $archiveflag = COM_applyFilter ($_POST['archiveflag'], true);
-
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
+
+    $archiveflag = 0;
+    if (isset ($_POST['archiveflag'])) {
+        $archiveflag = COM_applyFilter ($_POST['archiveflag'], true);
+    }
     if ($archiveflag != 1) {
         $statuscode = 0;
     }
@@ -1228,7 +1234,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $expire_month = COM_applyFilter ($_POST['expire_month'], true);
     $expire_day = COM_applyFilter ($_POST['expire_day'], true);
 
-    if (isset($expire_hour))  {
+    if (isset ($expire_hour))  {
         if ($expire_ampm == 'pm') {
             if ($expire_hour < 12) {
                 $expire_hour = $expire_hour + 12;
