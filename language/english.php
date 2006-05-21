@@ -328,7 +328,7 @@ $LANG04 = array(
     123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
     124 => 'Confirm Email',
     125 => 'You have to enter the same email address in both fields!',
-    126 => 'Please repeat for confirmation',
+    126 => 'Please repeat for confirmation'
 );
 
 ###############################################################################
@@ -1062,7 +1062,7 @@ $MESSAGE = array(
     74 => 'The pingback has been successfully sent.',
     75 => 'Trackbacks must be sent using a POST request.',
     76 => 'Do you really want to delete this item?',
-    77 => 'WARNING:<BR>You have set your default encoding to UTF-8. However, your server does not support mulitbyte encodings. Please install mbstring functions for PHP or choose a different charachterset/language.',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
     78 => 'Please make sure that the email address and the confirmation email address are the same.'
 );
 
@@ -1350,6 +1350,7 @@ $LANG_WEEK = array(
     6 => 'Friday',
     7 => 'Saturday'
 );
+
 ################################################################################
 # Admin - Strings
 #
