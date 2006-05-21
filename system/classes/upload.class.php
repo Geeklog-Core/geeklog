@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.43 2006/01/15 20:59:11 dhaun Exp $
+// $Id: upload.class.php,v 1.44 2006/05/21 14:24:32 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -235,7 +235,7 @@ class upload
 	function _logItem($logtype, $text)
 	{
         $timestamp = strftime("%c");
-        if (!$file = fopen($this->_logFile,a)) {
+        if (!$file = fopen($this->_logFile, 'a')) {
             // couldn't open log file for writing so let's disable logging and add an error
             $this->setLogging(false);
             $this->_addError('Error writing to log file: ' . $this->_logFile . '.  Logging has been disabled');
