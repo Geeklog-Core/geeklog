@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.28 2006/05/20 19:59:31 dhaun Exp $
+// $Id: functions.inc,v 1.29 2006/05/21 13:42:37 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -82,6 +82,8 @@ function plugin_getmenuitems_calendar ()
 function phpblock_calendar( $help='', $title='' )
 {
     global $_CONF, $_TABLES, $_USER, $_CA_CONF, $LANG_CAL_1;
+
+    $retval = '';
 
     if( !$_USER['noboxes'] && $_CA_CONF['showupcomingevents'] ) {
         $range = $_CA_CONF['upcomingeventsrange'];
