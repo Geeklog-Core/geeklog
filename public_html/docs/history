@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Full sweep of all code for $_REQUEST/$_GET/$_POST and $_COOKIE use. Made sure
+  that COM_applyFilter, or other safe usage is made of the variables. [Mike]
 - Added an option to hide the "No News To Display" message on the index page
   (new config option $_CONF['hide_no_news_msg']) [Dirk]
 - Added an option to check if the sites sending trackbacks are actually linking
