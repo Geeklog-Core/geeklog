@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.12 2006/05/15 04:10:38 vinny Exp $
+* $Id: MassDelete.Admin.class.php,v 1.13 2006/05/21 18:05:53 mjervis Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
@@ -28,8 +28,8 @@ class MassDelete extends BaseAdmin {
 
         $display = $LANG_SX00['masshead'];
 
-        $act = $_POST['action'];
-        $lmt = $_POST['limit'];
+        $act = COM_applyFiler($_POST['action']);
+        $lmt = COM_applyFilter($_POST['limit'], true);
 
         if (($act == $LANG_SX00['deletespam']) && ($lmt>0)) {
             $numc = 0;
