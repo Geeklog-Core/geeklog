@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.547 2006/05/21 19:43:02 mjervis Exp $
+// $Id: lib-common.php,v 1.548 2006/05/21 20:57:02 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -65,8 +65,23 @@ $_COM_VERBOSE = false;
   * go someway towards preventing nasties like path exposures from ever being
   * possible. That is, unless someone has overridden our error handler with one
   * with a path exposure issue...
+  *
+  * Must make sure that the function hasn't been disabled before calling it. 
+  *
   */
-$defaultErrorHandler = set_error_handler('COM_handleError', E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
+if( function_exists('set_error_handler') )
+{
+    if( PHP_VERSION >= 5 )
+    {
+        /* Tell the error handler to use the default error reporting options.
+         * you may like to change this to use it in more/less cases, if so,
+         * just use the syntax used in the call to error_reporting() above.
+         */
+        $defaultErrorHandler = set_error_handler('COM_handleError', error_reporting());
+    } else {
+        $defaultErrorHandler = set_error_handler('COM_handleError');
+    }
+}
 
 /**
 * Configuration Include: You should ONLY have to modify this line.
@@ -5676,6 +5691,9 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
 {
     global $_CONF, $_USER;
     
+    /* If in PHP4, then respect error_reporting */
+    if( (PHP_VERSION < 5) && (($level & error_reporting()) == 0) ) return;
+    
     /*
      * If we have a root user, then output detailed error message:
      */
@@ -5710,7 +5728,6 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             }
         }
     }
-    
     
     /* Otherwise, display simple error message */
     echo("
