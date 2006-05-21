@@ -232,6 +232,7 @@ if (jstest) {
     document.frmstory.expire_year.disabled=true;
     document.frmstory.expire_hour.disabled=true;
     document.frmstory.expire_minute.disabled=true;
+    document.frmstory.expire_ampm.disabled=true;
     document.frmstory.storycode10.disabled=true;
     document.frmstory.storycode11.disabled=true;
 }
