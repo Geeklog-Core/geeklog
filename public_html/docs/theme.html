@@ -171,6 +171,13 @@ recommended to leave the <code>$_CONF</code> variable unchanged in
 instead. That way, you can even leave your users a choice between, for example,
 a "normal" theme and one with the blocks on the right.</p>
 
+<p><strong><a name="error-message">Error Message:</a></strong>
+    Since Geeklog 1.4.1 it is possible to control what HTML is displayed to
+    non-root users in the event of an error occurring (a crash bug). To do
+    so, you need to change the function <code>CUSTOM_handleError</code> in
+    lib-custom.php
+to output any HTML you like.</p>
+
 <h2><a name="changes">Theme changes in Geeklog 1.4.1</a></h2>
 
 <ul>

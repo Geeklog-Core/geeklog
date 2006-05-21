@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Implemented an error handler to supress all PHP level errors and display a
+  much more userfriendly error text to the end user. Prevents all path exposure,
+  prevents "white error page" mystery debugging fun. [Mike]
 - Full sweep of all code for $_REQUEST/$_GET/$_POST and $_COOKIE use. Made sure
   that COM_applyFilter, or other safe usage is made of the variables. [Mike]
 - Added an option to hide the "No News To Display" message on the index page

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.546 2006/05/20 07:54:21 dhaun Exp $
+// $Id: lib-common.php,v 1.547 2006/05/21 19:43:02 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -58,6 +58,15 @@ error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
 */
 
 $_COM_VERBOSE = false;
+
+/**
+  * Here, we shall establish an error handler. This will mean that whenever a
+  * php level error is encountered, our own code handles it. This will hopefuly
+  * go someway towards preventing nasties like path exposures from ever being
+  * possible. That is, unless someone has overridden our error handler with one
+  * with a path exposure issue...
+  */
+$defaultErrorHandler = set_error_handler('COM_handleError', E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
 
 /**
 * Configuration Include: You should ONLY have to modify this line.
@@ -5643,6 +5652,83 @@ function COM_truncate( $text, $maxlen, $filler = '' )
     return $text;
 }
 
+/**
+  * Handle errors.
+  *
+  * This function will handle all PHP errors thrown at it, without exposing
+  * paths, and hopefully, providing much more information to Root Users than
+  * the default white error page.
+  *
+  * This function will call out to CUSTOM_handleError if it exists, but, be
+  * advised, only override this function with a very, very stable function. I'd
+  * suggest one that outputs some static, basic HTML.
+  *
+  * The PHP feature that allows us to do so is documented here:
+  * http://uk2.php.net/manual/en/function.set-error-handler.php
+  *
+  * @param  int     $errno      Error Number.
+  * @param  string  $errstr     Error Message.
+  * @param  string  $errfile    The file the error was raised in.
+  * @param  int     $errline    The line of the file that the error was raised at.
+  * @param  array   $errcontext An array that points to the active symbol table at the point the error occurred.
+  */
+function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='')
+{
+    global $_CONF, $_USER;
+    
+    /*
+     * If we have a root user, then output detailed error message:
+     */
+    if( is_array($_USER) && function_exists('SEC_inGroup') )
+    {
+        if(SEC_inGroup('Root'))
+        {
+            echo("
+                An error has occurred:<br/>
+                $errno - $errstr @ $errfile line $errline<br/>
+            <pre>");
+            var_dump($errcontext);
+            echo("</pre>
+            (This text is only displayed to users in the group 'Root')
+            ");
+            exit;
+        }
+    }
+    
+    /* If there is a custom error handler, fail over to that, but only
+     * if the error wasn't in lib-custom.php
+     */
+    if( is_array($_CONF) && !(strstr($errfile, 'lib-custom.php')))
+    {
+        if( array_key_exists('path_system', $_CONF) )
+        {
+            require_once($_CONF['path_system'].'lib-custom.php');
+            if( function_exists('CUSTOM_handleError') )
+            {
+                CUSTOM_handleError($errno, $errstr, $errfile, $errline, $errcontext);
+                exit;
+            }
+        }
+    }
+    
+    
+    /* Otherwise, display simple error message */
+    echo("
+    <html>
+        <head>
+            <title>{$_CONF['site_name']} - An Error Occurred</title>
+        </head>
+        <body>
+        <div style=\"width: 100%; text-align: center;\">
+        Unfortunately, an error has occurred rendering this page. Please try
+        again later.
+        </div>
+        </body>
+    </html>
+    ");
+    
+    exit;
+}
 
 // Now include all plugin functions
 foreach( $_PLUGINS as $pi_name )
