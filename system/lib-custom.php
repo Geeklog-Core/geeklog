@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.22 2006/05/14 16:35:07 ospiess Exp $
+// $Id: lib-custom.php,v 1.23 2006/05/21 13:50:03 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -91,6 +91,7 @@ function phpblock_getBent()
     global $_CONF, $_TABLES, $MESSAGE, $mb_enabled;
 
     $retval = '';
+    $secure_msg = '';
     $insecure_msg = '';
 
     $secure = true;
