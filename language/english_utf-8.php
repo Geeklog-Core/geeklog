@@ -1,14 +1,12 @@
 <?php
 
 ###############################################################################
-# english.php
+# english_utf-8.php
 # This is the english language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten AT securitygeeks DOT com
-#
-# Converted to Unicode (UTF-8) by Samuel M Stone <sam AT stonemicro DOT com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -49,16 +47,16 @@ $LANG01 = array(
     4 => 'Edit',
     5 => 'Vote',
     6 => 'Results',
-    7 => 'Poll Results',
+    7 => '',
     8 => 'votes',
     9 => 'Admin Functions:',
     10 => 'Submissions',
     11 => 'Stories',
     12 => 'Blocks',
     13 => 'Topics',
-    14 => 'Links',
-    15 => 'Events',
-    16 => 'Polls',
+    14 => '',
+    15 => '',
+    16 => '',
     17 => 'Users',
     18 => 'SQL Query',
     19 => 'Log Out',
@@ -108,30 +106,30 @@ $LANG01 = array(
     63 => 'Comment Preferences',
     64 => 'Email Article To a Friend',
     65 => 'View Printable Version',
-    66 => 'My Calendar',
+    66 => '',
     67 => 'Welcome to ',
     68 => 'Home',
     69 => 'Contact',
     70 => 'Search',
     71 => 'Contribute',
     72 => 'Web Resources',
-    73 => 'Past Polls',
-    74 => 'Calendar',
+    73 => '',
+    74 => '',
     75 => 'Advanced Search',
     76 => 'Site Statistics',
     77 => 'Plugins',
-    78 => 'Upcoming Events',
+    78 => '',
     79 => 'What\'s New',
     80 => 'stories in last',
     81 => 'story in last',
     82 => 'hours',
     83 => 'COMMENTS',
-    84 => 'LINKS',
+    84 => '',
     85 => 'last 48 hrs',
     86 => 'No new comments',
     87 => 'last 2 wks',
-    88 => 'No recent new links',
-    89 => 'There are no upcoming events',
+    88 => '',
+    89 => '',
     90 => 'Home',
     91 => 'Created this page in',
     92 => 'seconds',
@@ -143,8 +141,8 @@ $LANG01 = array(
     98 => 'Plugins',
     99 => 'STORIES',
     100 => 'No new stories',
-    101 => 'Your Events',
-    102 => 'Site Events',
+    101 => '',
+    102 => '',
     103 => 'DB Backups',
     104 => 'by',
     105 => 'Mail Users',
@@ -166,27 +164,6 @@ $LANG01 = array(
     121 => 'Comments (%d)',
     122 => 'Trackbacks (%d)',
     123 => 'All HTML is allowed'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => 'Calendar of Events',
-    2 => 'I\'m sorry, there are no events to display.',
-    3 => 'When',
-    4 => 'Where',
-    5 => 'Description',
-    6 => 'Add An Event',
-    7 => 'Upcoming Events',
-    8 => 'By adding this event to your calendar you can quickly view only the events you are interested in by clicking "My Calendar" from the User Functions area.',
-    9 => 'Add to My Calendar',
-    10 => 'Remove from My Calendar',
-    11 => "Adding Event to {$_USER['username']}'s Calendar",
-    12 => 'Event',
-    13 => 'Starts',
-    14 => 'Ends',
-    15 => 'Back to Calendar'
 );
 
 ###############################################################################
@@ -348,7 +325,10 @@ $LANG04 = array(
     120 => 'Account Activated',
     121 => 'Service',
     122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation'
 );
 
 ###############################################################################
@@ -439,17 +419,17 @@ $LANG09 = array(
     27 => 'seconds',
     28 => 'No story or comment matches for your search',
     29 => 'Story and Comment Results',
-    30 => 'No links matched your search',
+    30 => '',
     31 => 'This plugin returned no matches',
-    32 => 'Event',
+    32 => '',
     33 => 'URL',
     34 => 'Location',
     35 => 'All Day',
-    36 => 'No events matched your search',
-    37 => 'Event Results',
-    38 => 'Link Results',
-    39 => 'Links',
-    40 => 'Events',
+    36 => '',
+    37 => '',
+    38 => '',
+    39 => '',
+    40 => '',
     41 => 'Your query string should have at least 3 characters.',
     42 => 'Please use a date formatted as YYYY-MM-DD (year-month-day).',
     43 => 'exact phrase',
@@ -460,7 +440,7 @@ $LANG09 = array(
     48 => 'Author',
     49 => 'Date',
     50 => 'Hits',
-    51 => 'Link',
+    51 => '',
     52 => 'Location',
     53 => 'Story Results',
     54 => 'Comment Results',
@@ -482,7 +462,7 @@ $LANG10 = array(
     3 => 'Stories (Comments) in the system',
     4 => '',
     5 => '',
-    6 => 'Events in the system',
+    6 => '',
     7 => 'Top Ten Viewed Stories',
     8 => 'Story Title',
     9 => 'Views',
@@ -497,17 +477,17 @@ $LANG10 = array(
     18 => '',
     19 => '',
     20 => '',
-    21 => 'It appears that there are no links on this site or no one has ever clicked on one.',
+    21 => '',
     22 => 'Top Ten Emailed Stories',
     23 => 'Emails',
     24 => 'It appears that no one has emailed a story on this site',
     25 => 'Top Ten Trackback Commented Stories',
     26 => 'No trackback comments found.',
     27 => 'Number of active users',
-    28 => 'Top Ten Events',
-    29 => 'Event',
+    28 => '',
+    29 => '',
     30 => 'Hits',
-    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
+    31 => ''
 );
 
 ###############################################################################
@@ -528,14 +508,14 @@ $LANG12 = array(
     1 => 'To submit a %s you are required to be logged in as a user.',
     2 => 'Login',
     3 => 'New User',
-    4 => 'Submit an Event',
+    4 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
     5 => '',
     6 => 'Submit a Story',
     7 => 'Login is Required',
     8 => 'Submit',
     9 => 'When submitting information for use on this site we ask that you follow the following suggestions...<ul><li>Fill in all the fields, they\'re required<li>Provide complete and accurate information<li>Double check those URLs</ul>',
     10 => 'Title',
-    11 => 'Link',
+    11 => '',
     12 => 'Start Date',
     13 => 'End Date',
     14 => 'Location',
@@ -561,20 +541,20 @@ $LANG12 = array(
     34 => 'Log Out',
     35 => 'HTML tags are not allowed',
     36 => 'Post Mode',
-    37 => "Submitting an event to {$_CONF['site_name']} will put your event on the master calendar where users can optionally add your event to their personal calendar. This feature is <b>NOT</b> meant to store your personal events such as birthdays and anniversaries.<br><br>Once you submit your event it will be sent to our administrators and if approved, your event will appear on the master calendar.",
-    38 => 'Add Event To',
-    39 => 'Master Calendar',
-    40 => 'Personal Calendar',
-    41 => 'End Time',
-    42 => 'Start Time',
-    43 => 'All Day Event',
+    37 => '',
+    38 => '',
+    39 => '',
+    40 => '',
+    41 => '',
+    42 => '',
+    43 => '',
     44 => 'Address Line 1',
     45 => 'Address Line 2',
     46 => 'City/Town',
     47 => 'State',
     48 => 'Zip Code',
-    49 => 'Event Type',
-    50 => 'Edit Event Types',
+    49 => '',
+    50 => '',
     51 => 'Location',
     52 => 'Delete',
     53 => 'Create Account'
@@ -669,37 +649,6 @@ $LANG21 = array(
 );
 
 ###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => 'Event Editor',
-    2 => 'Error',
-    3 => 'Post Mode',
-    4 => 'Event URL',
-    5 => 'Event Start Date',
-    6 => 'Event End Date',
-    7 => 'Event Location',
-    8 => 'Event Description',
-    9 => '(include http://)',
-    10 => 'You must provide the dates/times, event title, and description',
-    11 => 'Event Manager',
-    12 => 'To modify or delete an event, click on that event\'s edit icon below.  To create a new event, click on "Create New" above. Click on the copy icon to create a copy of an existing event.',
-    13 => 'Author',
-    14 => 'Start Date',
-    15 => 'End Date',
-    16 => '',
-    17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/event.php\">go back to the event administration screen</a>.",
-    18 => '',
-    19 => '',
-    20 => 'save',
-    21 => 'cancel',
-    22 => 'delete',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
-);
-
-###############################################################################
 # admin/story.php
 
 $LANG24 = array(
@@ -780,7 +729,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/story.php?mode=edit&sid=%s&editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',
@@ -899,57 +848,10 @@ $LANG29 = array(
     34 => 'Command and Control',
     35 => 'Story Submissions',
     36 => '',
-    37 => 'Event Submissions',
+    37 => '',
     38 => 'Submit',
     39 => 'There are no submissions to moderate at this time',
     40 => 'User Submissions'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Sunday',
-    2 => 'Monday',
-    3 => 'Tuesday',
-    4 => 'Wednesday',
-    5 => 'Thursday',
-    6 => 'Friday',
-    7 => 'Saturday',
-    8 => 'Add Event',
-    9 => '%s Event',
-    10 => 'Events for',
-    11 => 'Master Calendar',
-    12 => 'My Calendar',
-    13 => 'January',
-    14 => 'February',
-    15 => 'March',
-    16 => 'April',
-    17 => 'May',
-    18 => 'June',
-    19 => 'July',
-    20 => 'August',
-    21 => 'September',
-    22 => 'October',
-    23 => 'November',
-    24 => 'December',
-    25 => 'Back to ',
-    26 => 'All Day',
-    27 => 'Week',
-    28 => 'Personal Calendar for',
-    29 => 'Public Calendar',
-    30 => 'delete event',
-    31 => 'Add',
-    32 => 'Event',
-    33 => 'Date',
-    34 => 'Time',
-    35 => 'Quick Add',
-    36 => 'Submit',
-    37 => 'Sorry, the personal calendar feature is not enabled on this site',
-    38 => 'Personal Event Editor',
-    39 => 'Day',
-    40 => 'Week',
-    41 => 'Month'
 );
 
 ###############################################################################
@@ -1068,7 +970,7 @@ $LANG33 = array(
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
     41 => 'Submit',
-    42 => 'Events',
+    42 => 'Error: existing Filename',
     43 => 'All',
     44 => 'None',
     45 => 'Header-link in topic',
@@ -1076,7 +978,8 @@ $LANG33 = array(
     47 => 'Search',
     48 => 'Edit',
     49 => 'Feed Logo',
-    50 => "Relative to site url ({$_CONF['site_url']})"
+    50 => "Relative to site url ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.'
 );
 
 ###############################################################################
@@ -1086,7 +989,7 @@ $MESSAGE = array(
     1 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using {$_CONF['site_name']}",
     2 => "Thank-you for submitting your story to {$_CONF['site_name']}.  It has been submitted to our staff for approval. If approved, your story will be available for others to read on our site.",
     3 => "",
-    4 => "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen in our <a href=\"{$_CONF['site_url']}/calendar.php\">calendar</a> section.",
+    4 => "",
     5 => 'Your account information has been successfully saved.',
     6 => 'Your preferences have been successfully saved.',
     7 => 'Your comment preferences have been successfully saved.',
@@ -1099,26 +1002,26 @@ $MESSAGE = array(
     14 => 'The topic and all its stories and blocks have been successfully deleted.',
     15 => '',
     16 => '',
-    17 => 'Your event has been successfully saved.',
-    18 => 'The event has been successfully deleted.',
-    19 => 'Your poll has been successfully saved.',
-    20 => 'The poll has been successfully deleted.',
+    17 => '',
+    18 => '',
+    19 => '',
+    20 => '',
     21 => 'The user has been successfully saved.',
     22 => 'The user has been successfully deleted.',
-    23 => 'Error trying to add an event to your calendar. There was no event id passed.',
-    24 => 'The event has been saved to your calendar',
-    25 => 'Cannot open your personal calendar until you login',
-    26 => 'Event was successfully removed from your personal calendar',
+    23 => '',
+    24 => '',
+    25 => '',
+    26 => '',
     27 => 'Message successfully sent.',
     28 => 'The plugin has been successfully saved',
-    29 => 'Sorry, personal calendars are not enabled on this site',
+    29 => '',
     30 => 'Access Denied',
     31 => 'Sorry, you do not have access to the story administration page.  Please note that all attempts to access unauthorized features are logged',
     32 => 'Sorry, you do not have access to the topic administration page.  Please note that all attempts to access unauthorized features are logged',
     33 => 'Sorry, you do not have access to the block administration page.  Please note that all attempts to access unauthorized features are logged',
-    34 => 'Sorry, you do not have access to the link administration page.  Please note that all attempts to access unauthorized features are logged',
-    35 => 'Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged',
-    36 => 'Sorry, you do not have access to the poll administration page.  Please note that all attempts to access unauthorized features are logged',
+    34 => '',
+    35 => '',
+    36 => '',
     37 => 'Sorry, you do not have access to the user administration page.  Please note that all attempts to access unauthorized features are logged',
     38 => 'Sorry, you do not have access to the plugin administration page.  Please note that all attempts to access unauthorized features are logged',
     39 => 'Sorry, you do not have access to the mail administration page.  Please note that all attempts to access unauthorized features are logged',
@@ -1159,7 +1062,8 @@ $MESSAGE = array(
     74 => 'The pingback has been successfully sent.',
     75 => 'Trackbacks must be sent using a POST request.',
     76 => 'Do you really want to delete this item?',
-    77 => 'WARNING:<BR>You have set your default encoding to UTF-8. However, your server does not support mulitbyte encodings. Please install mbstring functions for PHP or choose a different charachterset/language.'
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.'
 );
 
 ###############################################################################
@@ -1201,7 +1105,6 @@ $LANG_ACCESS = array(
     'none' => 'None',
     'accessdenied' => 'Access Denied',
     'storydenialmsg' => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\">become a member</a> of {$_CONF['site_name']} to receive full membership access!",
-    'eventdenialmsg' => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\">become a member</a> of {$_CONF['site_name']} to receive full membership access!",
     'nogroupsforcoregroup' => 'This group doesn\'t belong to any of the other groups',
     'grouphasnorights' => 'This group doesn\'t have access to any of the administrative features of this site',
     'newgroup' => 'New Group',
@@ -1255,9 +1158,9 @@ $LANG_BUTTONS = array(
     1 => 'Home',
     2 => 'Contact',
     3 => 'Get Published',
-    4 => 'Links',
-    5 => 'Polls',
-    6 => 'Calendar',
+    4 => '',
+    5 => '',
+    6 => '',
     7 => 'Site Stats',
     8 => 'Personalize',
     9 => 'Search',
@@ -1423,6 +1326,31 @@ $LANG_WHATSNEW = array (
     'month'       => 'month'
 );
 
+$LANG_MONTH = array(
+    1 => 'January',
+    2 => 'February',
+    3 => 'March',
+    4 => 'April',
+    5 => 'May',
+    6 => 'June',
+    7 => 'July',
+    8 => 'August',
+    9 => 'September',
+    10 => 'October',
+    11 => 'November',
+    12 => 'December'
+);
+
+$LANG_WEEK = array(
+    1 => 'Sunday',
+    2 => 'Monday',
+    3 => 'Tuesday',
+    4 => 'Wednesday',
+    5 => 'Thurdsay',
+    6 => 'Friday',
+    7 => 'Saturday'
+);
+
 ################################################################################
 # Admin - Strings
 #
@@ -1434,8 +1362,10 @@ $LANG_ADMIN = array (
     'limit_results' => 'Limit Results',
     'submit'        => 'Submit',
     'edit'          => 'Edit',
+    'edit_adv'      => 'Adv. Edit', 
     'admin_home'    => 'Admin Home',
     'create_new'    => 'Create New',
+    'create_new_adv'=> 'Create New (Adv.)',
     'enabled'       => 'Enabled',
     'title'         => 'Title',
     'type'          => 'Type',
