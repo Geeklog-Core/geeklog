@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.215 2006/05/21 15:02:50 dhaun Exp $
+// $Id: story.php,v 1.216 2006/05/22 05:20:52 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -220,6 +220,7 @@ function liststories()
 * @param    string      $mode           'preview', 'edit', 'editsubmission'
 * @param    string      $errormsg       a message to display on top of the page
 * @param    string      $currenttopic   topic selection for drop-down menu
+* @param    string      $editor         pick the type of editor (std/adv)
 * @return   string      HTML for story editor
 *
 */
