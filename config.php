@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.222 2006/05/20 21:09:51 dhaun Exp $
+// $Id: config.php,v 1.223 2006/05/22 02:28:01 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -590,7 +590,7 @@ $_CONF['show_right_blocks'] = false;
 // functions.php instead.
 
 // When set to 1, only root users will be able to feature a story
-$_CONF['onlyrootfeatures'] = 1;
+$_CONF['onlyrootfeatures'] = 0;
 
 // When set to 1, this will render the first story on any page using the
 // templates for featured stories - even if that story is not featured.
