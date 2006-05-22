@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.32 2006/05/22 05:08:49 ospiess Exp $
+// $Id: functions.inc,v 1.33 2006/05/22 05:13:55 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1029,7 +1029,7 @@ function plugin_showstats_calendar ($showsitestats)
             $A = DB_fetchArray($result);
             $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
             $A['sid'] = "<a href=\"" . $_CONF['site_url']
-                      . "/calendar/event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
+                      . "/calendar/event.php?eid={$A['eid']}\">{$A['title']}</a>";
             $A['hits'] = COM_NumberFormat ($A['hits']);
             $data_arr[$i] = $A;
         }
