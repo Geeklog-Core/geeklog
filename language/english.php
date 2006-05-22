@@ -508,7 +508,7 @@ $LANG12 = array(
     1 => 'To submit a %s you are required to be logged in as a user.',
     2 => 'Login',
     3 => 'New User',
-    4 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    4 => '',
     5 => '',
     6 => 'Submit a Story',
     7 => 'Login is Required',
@@ -557,7 +557,8 @@ $LANG12 = array(
     50 => '',
     51 => 'Location',
     52 => 'Delete',
-    53 => 'Create Account'
+    53 => 'Create Account',
+    54 => 'The page you have been trying to open refers to a function that no longer exists on this site.'
 );
 
 ###############################################################################
