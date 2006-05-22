@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2006/05/20 20:02:04 dhaun Exp $
+// $Id: index.php,v 1.13 2006/05/22 04:36:51 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -129,7 +129,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $retval .= COM_startBlock($LANG_CAL_ADMIN[1], '',
                               COM_getBlockTemplate ('_admin_block', 'header'));
 
-    if (!empty($A['eid']) && SEC_hasRights('calendar.edit')) {
+    if (!empty($A['eid'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
                    . '" name="mode"%s>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
@@ -137,9 +137,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
                                    sprintf ($delbutton, $jsconfirm));
         $event_templates->set_var ('delete_option_no_confirmation',
                                    sprintf ($delbutton, ''));
-    }
-
-    if (empty ($A['eid'])) { // new event
+    } else { // new event
         $A['eid'] = COM_makesid ();
         $A['title'] = '';
         $A['description'] = '';
