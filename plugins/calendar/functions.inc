@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.31 2006/05/22 03:23:34 ospiess Exp $
+// $Id: functions.inc,v 1.32 2006/05/22 05:08:49 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -543,7 +543,6 @@ function plugin_savesubmission_calendar($A)
 function plugin_submit_calendar($mode = 'master')
 {
     global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
-
     if (isset ($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
     }
@@ -827,7 +826,7 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
         return 'calendar';
     } else if ($op == 'parse') {
         $eid = COM_applyFilter ($autotag['parm1']);
-        $url = COM_buildUrl ($_CONF['site_url'] . '/calendar/event.php?eid=' . $eid);
+        $url = $_CONF['site_url'] . '/calendar/event.php?eid=' . $eid;
         if (empty ($autotag['parm2'])) {
             $linktext = stripslashes (DB_getItem ($_TABLES['events'],
                                       'title', "eid = '$eid'"));
@@ -1029,7 +1028,7 @@ function plugin_showstats_calendar ($showsitestats)
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
+            $A['sid'] = "<a href=\"" . $_CONF['site_url']
                       . "/calendar/event.php?eid={$A['eid']}"). "\">{$A['title']}</a>";
             $A['hits'] = COM_NumberFormat ($A['hits']);
             $data_arr[$i] = $A;
