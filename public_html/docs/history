@@ -2,6 +2,11 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Added new setting $_CONF['onlyrootfeatures']. This is for sites where two or 
+  more story admins can feature stories that the other admins cannot see. The
+  setting prevents that one admin does not see that there is another recent 
+  story featured and sets one by himself, "stealing" the feature from the other.
+- Changed "Reply"-button to "Post a comment" [Oliver]
 - Implemented an error handler to supress all PHP level errors and display a
   much more userfriendly error text to the end user. Prevents all path exposure,
   prevents "white error page" mystery debugging fun. [Mike]
