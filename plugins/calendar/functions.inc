@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.29 2006/05/21 13:42:37 dhaun Exp $
+// $Id: functions.inc,v 1.30 2006/05/22 03:14:32 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -383,7 +383,7 @@ function plugin_moderationdelete_calendar($id)
 */
 function plugin_savesubmission_calendar($A)
 {
-    global $_CONF, $_CA_CONF, $_TABLES, $_USER, $LANG12;
+    global $_CONF, $_CA_CONF, $_TABLES, $_USER, $LANG12, $LANG_CAL_1;
     $A['title'] = strip_tags (COM_checkWords ($A['title']));
     $A['start_year'] = COM_applyFilter ($A['start_year'], true);
     $A['start_month'] = COM_applyFilter ($A['start_month'], true);
@@ -391,7 +391,7 @@ function plugin_savesubmission_calendar($A)
 
     # check for missing textfields
     if (empty ($A['title']) || empty ($A['start_month']) || empty ($A['start_day']) || empty ($A['start_year'])) {
-        $retval .= COM_siteHeader ('menu', $LANG12[4])
+        $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[27])
             . COM_startBlock ($LANG12[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23]
