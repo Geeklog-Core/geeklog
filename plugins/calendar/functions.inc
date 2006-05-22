@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.30 2006/05/22 03:14:32 ospiess Exp $
+// $Id: functions.inc,v 1.31 2006/05/22 03:23:34 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -391,7 +391,7 @@ function plugin_savesubmission_calendar($A)
 
     # check for missing textfields
     if (empty ($A['title']) || empty ($A['start_month']) || empty ($A['start_day']) || empty ($A['start_year'])) {
-        $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[27])
+        $retval .= COM_siteHeader ('menu', $LANG_CAL_1[27])
             . COM_startBlock ($LANG12[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23]
