@@ -110,6 +110,7 @@ Calendar plugin (1.0)
 
 Links plugin (1.0.1)
 ------------
+- Changed the english language file from "Web Resources" to "Links"
 - Fixed hard-coded link to the "admin" directory when editing a link (reported
   by Ronnie Rigl) [Dirk]
 - Optimized SQL requests for the plugin's What's New section [Dirk]
