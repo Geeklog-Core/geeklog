@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.32 2006/05/20 08:14:52 dhaun Exp $
+// $Id: lib-comment.php,v 1.33 2006/05/22 02:26:17 ospiess Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -71,7 +71,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
 
     $commentbar->set_var( 'lang_comments', $LANG01[3] );
     $commentbar->set_var( 'lang_refresh', $LANG01[39] );
-    $commentbar->set_var( 'lang_reply', $LANG01[25] );
+    $commentbar->set_var( 'lang_reply', $LANG01[60] );
     $commentbar->set_var( 'lang_disclaimer', $LANG01[26] );
 
     $commentbar->set_var( 'story_title', stripslashes( $title ));
