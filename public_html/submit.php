@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.104 2006/05/22 03:09:21 ospiess Exp $
+// $Id: submit.php,v 1.105 2006/05/22 03:34:05 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -55,7 +55,7 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 * @return   string          HTML for submission form
 *
 */
-function submissionform($type='story', $mode = '', $hour='', $topic = '')
+function submissionform($type='story', $mode = '', $topic = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG12, $LANG_LOGIN;
 
