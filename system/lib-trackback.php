@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.33 2006/05/20 12:46:45 dhaun Exp $
+// $Id: lib-trackback.php,v 1.34 2006/05/23 17:37:33 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -39,6 +39,10 @@ if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
 define ('TRB_SAVE_OK',      0);
 define ('TRB_SAVE_SPAM',   -1);
 define ('TRB_SAVE_REJECT', -2);
+
+// set to true to log rejected Trackbacks
+$_TRB_LOG_REJECTS = false;
+
 
 /**
 * Send a trackback response message
@@ -70,6 +74,30 @@ function TRB_sendTrackbackResponse ($error, $errormsg = '', $http_status = 200, 
     }
     header ('Content-Type: text/xml');
     echo $display;
+}
+
+/**
+* Helper function for the curious: Log rejected trackbacks
+*
+* @param    string  $logmsg     Message to log
+* @return   void
+*
+*/
+function TRB_logRejected ($reason, $url = '')
+{
+    global $_TRB_LOG_REJECTS;
+
+    if ($_TRB_LOG_REJECTS) {
+
+        $logmsg = 'Trackback from IP ' . $_SERVER['REMOTE_ADDR']
+                . ' rejected for ' . $reason . ', URL: ' . $url;
+
+        if (function_exists ('SPAMX_log')) {
+            SPAMX_log ($logmsg);
+        } else {
+            COM_errorLog ($logmsg);
+        }
+    }
 }
 
 /**
@@ -512,15 +540,20 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
     if ($last > 0) {
         TRB_sendTrackbackResponse (1, sprintf ($TRB_ERROR['speedlimit'],
                                    $last, $speedlimit), 403, 'Forbidden');
+        TRB_logRejected ('Speedlimit', $_POST['url']);
 
         return false;
     }
+
+    // update speed limit now in any case
+    COM_updateSpeedlimit ('trackback');
 
     if (isset ($_POST['url'])) { // a URL is mandatory ...
 
         if (substr ($_POST['url'], 0, 4) != 'http') {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['no_url'],
                                        403, 'Forbidden');
+            TRB_logRejected ('No valid URL', $_POST['url']);
 
             return false;
         }
@@ -529,11 +562,9 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
         $result = TRB_checkForSpam ($_POST['url'], $_POST['title'],
                                     $_POST['blog_name'], $_POST['excerpt']);
 
-        // update speed limit in any case
-        COM_updateSpeedlimit ('trackback');
-
         if ($result == TRB_SAVE_SPAM) {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['spam'], 403, 'Forbidden');
+            TRB_logRejected ('Spam detected', $_POST['url']);
 
             return false;
         }
@@ -543,6 +574,7 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             if (!TRB_linksToUs ($sid, $type, $_POST['url'])) {
                 TRB_sendTrackbackResponse (1, $TRB_ERROR['no_link'],
                                            403, 'Forbidden');
+                TRB_logRejected ('No link to us', $_POST['url']);
 
                 return false;
             }
@@ -554,6 +586,7 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
         if ($saved == TRB_SAVE_REJECT) {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['rejected'],
                                        403, 'Forbidden');
+            TRB_logRejected ('Multiple Trackbacks', $_POST['url']);
 
             return false;
         }
@@ -568,6 +601,7 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
         return true;
     } else {
         TRB_sendTrackbackResponse (1, $TRB_ERROR['no_url']);
+        TRB_logRejected ('No URL', $_POST['url']);
     }
 
     return false;
