@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.69 2006/05/15 02:07:06 ospiess Exp $
+// $Id: functions.inc,v 1.70 2006/05/25 08:34:16 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -235,7 +235,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     // Build search SQL - exclude static PHP pages from search.
     $select = "SELECT u.username,u.fullname,sp.sp_id,sp.sp_title,sp.sp_hits,sp.sp_uid,UNIX_TIMESTAMP(sp.sp_date) AS day";
-    $sql = " FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u WHERE (sp.sp_uid = u.uid) AND (sp_php != 1)" . COM_getPermSQL ('AND');
+    $sql = " FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u WHERE (sp.sp_uid = u.uid) AND (sp_php <> 1)" . COM_getPermSQL ('AND');
 
     if (!empty ($query)) {
         if ($keyType == 'phrase') {
@@ -289,7 +289,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     if (!empty ($author)) {
         $sql .= "AND (sp_uid = '$author')";
     }
-    $sql    .= " ORDER BY sp_date DESC ";
+    $sql    .= " GROUP BY sp_date, u.username, u.fullname, sp.sp_id, sp.sp_title, sp.sp_hits, sp.sp_uid ORDER BY sp_date DESC ";
     $l = ($perpage * $page) - $perpage;
     $sql .= 'LIMIT ' . $l . ',' . $perpage;
 

@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.63 2006/05/25 08:06:18 dhaun Exp $
+// $Id: functions.inc,v 1.64 2006/05/25 08:34:15 dhaun Exp $
 
 
 /**
@@ -409,7 +409,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
         $sql .= "AND (owner_id = '$author')";
     }
     $sql .= COM_getPermSQL ('AND');
-    $sql .= ' ORDER BY date DESC';
+    $sql .= ' GROUP BY date, lid, category, url, description, title, hits, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ORDER BY date DESC';
     $l = ($perpage * $page) - $perpage;
     $sql .= ' LIMIT ' . $l . ',' . $perpage;
 

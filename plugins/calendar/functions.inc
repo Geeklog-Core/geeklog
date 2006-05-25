@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.35 2006/05/25 08:03:56 dhaun Exp $
+// $Id: functions.inc,v 1.36 2006/05/25 08:34:15 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1360,7 +1360,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         }
     }
     $sql .= COM_getPermSQL ('AND');
-    $sql .= ' ORDER BY datestart DESC ';
+    $sql .= ' GROUP BY datestart, eid, title, description, location, dateend, timestart, timeend, allday ORDER BY datestart DESC ';
     $l = ($perpage * $page) - $perpage;
     $sql .= 'LIMIT ' . $l . ',' . $perpage;
 

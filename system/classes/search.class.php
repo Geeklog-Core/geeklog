@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.51 2006/05/14 16:55:18 ospiess Exp $
+// $Id: search.class.php,v 1.52 2006/05/25 08:34:16 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -276,7 +276,7 @@ class Search {
             }
             $permsql = COM_getPermSQL ('AND') . COM_getTopicSQL ('AND');
             $sql .= $permsql;
-            $sql .= ' ORDER BY date DESC ';
+            $sql .= ' GROUP BY date, username, fullname, u.uid, s.uid, sid, title, hits , s.introtext, s.bodytext ORDER BY date DESC ';
             $l = ($this->_per_page * $this->_page) - $this->_per_page;
             $sql .= 'LIMIT ' . $l . ',' . $this->_per_page;
 
@@ -429,7 +429,7 @@ class Search {
                 $sql .= "AND ({$_TABLES['comments']}.uid = '$this->_author') ";
             }
             $sql .= 'AND (' .  $stwhere . ') ';
-            $sql .= "ORDER BY {$_TABLES['comments']}.date DESC ";
+            $sql .= " GROUP BY {$_TABLES['comments']}.date, {$_TABLES['comments']}.title, {$_TABLES['comments']}.comment, {$_TABLES['comments']}.pid, {$_TABLES['comments']}.cid, {$_TABLES['comments']}.uid, {$_TABLES['comments']}.sid, {$_TABLES['comments']}.type, {$_TABLES['stories']}.sid, {$_TABLES['users']}.fullname, {$_TABLES['users']}.username ORDER BY {$_TABLES['comments']}.date DESC ";
             $l = ($this->_per_page * $this->_page) - $this->_per_page;
             $sql .= 'LIMIT ' . $l . ',' . $this->_per_page;
 
