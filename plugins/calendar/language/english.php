@@ -127,7 +127,7 @@ $LANG_CAL_2 = array(
 );
 
 ###############################################################################
-# admin/event.php (LANG22)
+# admin/plugins/calendar/index.php, formerly admin/event.php ($LANG22)
 
 $LANG_CAL_ADMIN = array(
     1 => 'Event Editor',
@@ -146,7 +146,7 @@ $LANG_CAL_ADMIN = array(
     14 => 'Start Date',
     15 => 'End Date',
     16 => '',
-    17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/event.php\">go back to the event administration screen</a>.",
+    17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">go back to the event administration screen</a>.",
     18 => '',
     19 => '',
     20 => 'save',
