@@ -8,16 +8,16 @@
                                                     <td colspan="2" width="100%">{lang_instructions}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right" width="50%"><b>{lang_username}:</b></td>
-                                                    <td width="50%"><input type="text" size="20" maxlength="16" name="username"></td>
+                                                    <td align="right"><b>{lang_username}:</b></td>
+                                                    <td><input type="text" size="16" maxlength="16" name="username" value="{username}"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right" width="50%"><b>{lang_email}:</b></td>
-                                                    <td width="50%"><input type="text" size="20" maxlength="96" name="email"></td>
+                                                    <td align="right"><b>{lang_email}:</b></td>
+                                                    <td><input type="text" size="32" maxlength="96" name="email" value="{email}"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right" width="50%"><b>{lang_email_conf}:</b></td>
-                                                    <td width="50%"><input type="text" size="20" maxlength="96" name="email_conf"></td>
+                                                    <td align="right"><b>{lang_email_conf}:</b></td>
+                                                    <td><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="center" class="warning" colspan="2" width="100%">{lang_warning}</td>

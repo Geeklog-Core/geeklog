@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.137 2006/05/10 07:02:38 ospiess Exp $
+// $Id: users.php,v 1.138 2006/05/25 16:10:06 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -585,9 +585,9 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
 * @param    string  $referrer   page to send user to after registration
 * @return   string  HTML for user registration page
 */
-function newuserform($msg = '')
+function newuserform ($msg = '')
 {
-    global $LANG04, $_CONF;
+    global $_CONF, $LANG04;
 
     $retval = '';
 
@@ -608,6 +608,26 @@ function newuserform($msg = '')
     $user_templates->set_var('lang_warning', $LANG04[24]);
     $user_templates->set_var('lang_register', $LANG04[27]);
     $user_templates->set_var('end_block', COM_endBlock());
+
+    $username = '';
+    if (!empty ($_POST['username'])) {
+        $username = COM_applyFilter ($_POST['username']);
+    }
+    $user_templates->set_var ('username', $username);
+
+    $email = '';
+    if (!empty ($_POST['email'])) {
+        $email = COM_applyFilter ($_POST['email']);
+    }
+    $user_templates->set_var ('email', $email);
+
+    $email_conf = '';
+    if (!empty ($_POST['email_conf'])) {
+        $email_conf = COM_applyFilter ($_POST['email_conf']);
+    }
+    $user_templates->set_var ('email_conf', $email_conf);
+
+
     $user_templates->parse('output', 'regform');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
