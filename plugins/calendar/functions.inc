@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.36 2006/05/25 08:34:15 dhaun Exp $
+// $Id: functions.inc,v 1.37 2006/05/25 11:00:36 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1291,7 +1291,7 @@ function plugin_searchtypes_calendar()
 function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author, 
                                         $keyType, $page, $perpage)
 {
-    global $_CONF, $_TABLES, $_LANG_CAL_SEARCH;
+    global $_CONF, $_TABLES, $LANG09, $_LANG_CAL_SEARCH;
     
     if (empty ($type)) {
         $type = 'all';
