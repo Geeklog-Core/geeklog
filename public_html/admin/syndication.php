@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.44 2006/05/20 20:31:23 dhaun Exp $
+// $Id: syndication.php,v 1.45 2006/05/25 16:26:15 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -427,7 +427,7 @@ function savefeed ($A)
     $C = DB_fetchArray($result);
     if ($C['count'] > 0) {
         $retval = COM_siteHeader ('menu')
-                . COM_startBlock ($LANG33[42], '',
+                . COM_startBlock ($LANG33[52], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG33[51]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
