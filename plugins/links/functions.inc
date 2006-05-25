@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.62 2006/05/15 05:58:54 ospiess Exp $
+// $Id: functions.inc,v 1.63 2006/05/25 08:06:18 dhaun Exp $
 
 
 /**
@@ -975,6 +975,8 @@ function plugin_moderationdelete_links($id)
 function plugin_savesubmission_links($A)
 {
     global $LANG12;
+
+    $retval = '';
 
     if (!empty ($A['title']) && !empty ($A['description']) &&
                 !empty ($A['url'])) {
