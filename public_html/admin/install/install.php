@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.84 2006/04/06 08:35:19 dhaun Exp $
+// $Id: install.php,v 1.85 2006/05/25 10:48:33 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -852,6 +852,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             }
 
             upgrade_addSyndicationFeature ();
+            upgrade_ensureLastScheduledRunFlag ();
 
             $current_gl_version = '1.4.1';
             $_SQL = '';

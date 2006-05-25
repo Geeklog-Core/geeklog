@@ -46,4 +46,17 @@ function upgrade_addSyndicationFeature ()
     }
 }
 
+// The 'last_scheduled_run' entry was introduced in Geeklog 1.4.0 but was
+// missing from the upgrade, i.e. it exists only on fresh 1.4.0 installs.
+function upgrade_ensureLastScheduledRunFlag ()
+{
+    global $_TABLES;
+
+    $val = DB_getItem ($_TABLES['vars'], 'value',
+                       "name = 'last_scheduled_run'");
+    if (empty ($val)) {
+        DB_save ($_TABLES['vars'], 'name,value', "'last_scheduled_run',''");
+    }
+}
+
 ?>
