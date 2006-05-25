@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.21 2006/03/12 09:02:06 dhaun Exp $
+ * $Id: functions.inc,v 1.22 2006/05/25 09:14:11 dhaun Exp $
  */
 
 /**
@@ -257,13 +257,12 @@ function plugin_checkforSpam_spamx($comment, $action)
  * @logentry string      $string         Message to write to log
  */
 
-$_SPAMX_log_flg = true; // Set to false to turn of logging
-
 function SPAMX_log ($logentry)
 {
-    global $_CONF, $LANG01, $_SPAMX_log_flg;
+    global $_CONF, $LANG01, $_SPX_CONF;
 
-    if ($_SPAMX_log_flg && !empty ($logentry)) {
+    if ((!isset ($_SPX_CONF['logging']) || ($_SPX_CONF['logging'] === true)) &&
+            !empty ($logentry)) {
         $logentry = str_replace( array( '<?', '?>' ), array( '(@', '@)' ),
                                  $logentry );
 

@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: config.php,v 1.14 2006/05/14 11:14:05 dhaun Exp $
+ * $Id: config.php,v 1.15 2006/05/25 09:14:11 dhaun Exp $
  */
 
 $_SPX_CONF['version'] = '1.0.4';
@@ -38,6 +38,9 @@ $_SPX_CONF['notification_email'] = $_CONF['site_mail'];
 
 // if set to = true, skip spam check for members of the "spamx Admin" group
 $_SPX_CONF['admin_override'] = false;
+
+// enable / disable logging to spamx.log
+$_SPX_CONF['logging'] = true;
 
 // This sets Spam-X Plugin Table Prefix the same as Geeklog
 $_SPX_table_prefix = $_DB_table_prefix;
