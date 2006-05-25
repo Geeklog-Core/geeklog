@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.34 2006/05/25 07:53:18 dhaun Exp $
+// $Id: functions.inc,v 1.35 2006/05/25 08:03:56 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -384,6 +384,7 @@ function plugin_moderationdelete_calendar($id)
 function plugin_savesubmission_calendar($A)
 {
     global $_CONF, $_CA_CONF, $_TABLES, $_USER, $LANG12, $LANG_CAL_1;
+
     $A['title'] = strip_tags (COM_checkWords ($A['title']));
     $A['start_year'] = COM_applyFilter ($A['start_year'], true);
     $A['start_month'] = COM_applyFilter ($A['start_month'], true);
@@ -1105,7 +1106,7 @@ function plugin_getuseroption_calendar()
 
 
 /**
-* A user is about to be deleted. Update ownership of any polls owned
+* A user is about to be deleted. Update ownership of any events owned
 * by that user or delete them.
 *
 * @param   uid   int   User id of deleted user
@@ -1474,6 +1475,13 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
+/**
+* Creates a dropdown list of all the states
+*
+* @param    string  $currstate  current state (to preselect in the list)
+* @return   string              <option> list of states
+*
+*/
 function CALENDAR_stateList ($currstate = '')
 {
     global $_STATES;
@@ -1481,7 +1489,7 @@ function CALENDAR_stateList ($currstate = '')
     $retval = '';
 
     foreach ($_STATES as $statekey => $state) {
-        $retval .= '<option value="' . $statekey . '"'
+        $retval .= '<option value="' . $statekey . '"';
         if ($statekey == $currstate) {
             $retval .= ' selected="selected"';
         }
