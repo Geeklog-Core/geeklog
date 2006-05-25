@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.135 2006/05/15 06:26:06 ospiess Exp $
+// $Id: usersettings.php,v 1.136 2006/05/25 19:49:34 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -64,6 +64,28 @@ function edituser()
                                    'deleteaccount' => 'deleteaccount.thtml'));
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
+
+    $preferences->set_var ('cssid1', 1);
+    $preferences->set_var ('cssid2', 2);
+
+    // some trickery to ensure alternating colors with the available options ...
+    if ($_CONF['allow_username_change'] == 1) {
+        $first  = 1;
+        $second = 2;
+    } else {
+        $first  = 2;
+        $second = 1;
+    }
+    $preferences->set_var ('cssid1u', $first);
+    $preferences->set_var ('cssid2u', $second);
+
+    if ($_CONF['allow_user_photo'] == 1) {
+        $tmp = $first;
+        $first = $second;
+        $second = $tmp;
+    }
+    $preferences->set_var ('cssid1p', $first);
+    $preferences->set_var ('cssid2p', $second);
 
     $preferences->set_var ('lang_fullname', $LANG04[3]);
     $preferences->set_var ('lang_fullname_text', $LANG04[34]);

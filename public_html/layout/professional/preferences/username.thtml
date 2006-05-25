@@ -1,6 +1,5 @@
-  <tr valign="top">
-    <td align="right"><b>{lang_username}</b><br>
-      <small>{lang_username_text}</small></td>
-    <td><input type="text" name="new_username" size="16" maxlength="16"
-      value="{new_username_value}"></td>
+  <tr class="pluginRow{cssid1u}">
+    <td align="right" valign="top"><b>{lang_username}</b></td>
+    <td><input type="text" name="new_username" size="16" maxlength="16" value="{new_username_value}"><br>
+        <small>{lang_username_text}</small></td>
   </tr>

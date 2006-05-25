@@ -1,76 +1,82 @@
 {start_block_profile}
 <form action="{site_url}/usersettings.php" method="POST" {enctype}>
-<table border="0" cellspacing="0" cellpadding="3">
+<table border="0" cellspacing="0" cellpadding="3" width="100%">
   {username_option}
-  <tr valign="top">
-    <td align="right"><b>{lang_fullname}</b><br>
-      <small>{lang_fullname_text}</small></td>
-    <td><input type="text" name="fullname" size="60" maxlength="80"
-      value="{fullname_value}"></td>
+
+  <tr class="pluginRow{cssid2u}">
+    <td align="right" valign="top"><b>{lang_fullname}</b></td>
+    <td><input type="text" name="fullname" size="60" maxlength="80" value="{fullname_value}"><br>
+        <small>{lang_fullname_text}</small></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_old_password}</b><br>
-      <small>{lang_old_password_text}</small></td>
-    <td><input type="password" name="old_passwd" size="32" maxlength="32"
-      value=""></td>
+
+  <tr class="pluginRow{cssid1u}">
+    <td align="right" valign="top"><b>{lang_old_password}</b></td>
+    <td><input type="password" name="old_passwd" size="32" maxlength="32" value=""><br>
+        <small>{lang_old_password_text}</small></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_password}</b><br>
-      <small>{lang_password_text}</small></td>
-    <td><input type="password" name="passwd" size="32" maxlength="32"
-      value="{password_value}"></td>
+
+  <tr class="pluginRow{cssid2u}">
+    <td align="right" valign="top"><b>{lang_password}</b></td>
+    <td><input type="password" name="passwd" size="32" maxlength="32" value="{password_value}"><br>
+        <small>{lang_password_text}</small></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_password_conf}</b><br>
-      <small>{lang_password_text_conf}</small></td>
-    <td><input type="password" name="passwd_conf" size="32" maxlength="32"
-      value="{password_value}"></td>
+
+  <tr class="pluginRow{cssid1u}">
+    <td align="right" valign="top"><b>{lang_password_conf}</b></td>
+    <td><input type="password" name="passwd_conf" size="32" maxlength="32" value="{password_value}"><br>
+        <small>{lang_password_text_conf}</small></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_cooktime}</b><br>
-      <small>{lang_cooktime_text}</small></td>
-    <td>{cooktime_selector}</td>
+
+  <tr class="pluginRow{cssid2u}">
+    <td align="right" valign="top"><b>{lang_cooktime}</b></td>
+    <td>{cooktime_selector}<br>
+        <small>{lang_cooktime_text}</small></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_email}</b><br>
+
+  <tr class="pluginRow{cssid1u}">
+    <td align="right" valign="top"><b>{lang_email}</b></td>
+    <td><input type="text" name="email" size="60" maxlength="96" value="{email_value}"><br>
       <small>{lang_email_text}</small></td>
-    <td><input type="text" name="email" size="60" maxlength="96"
-      value="{email_value}"></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_email_conf}</b><br>
+
+  <tr class="pluginRow{cssid2u}">
+    <td align="right" valign="top"><b>{lang_email_conf}</b></td>
+    <td><input type="text" name="email_conf" size="60" maxlength="96" value="{email_value}"><br>
       <small>{lang_email_conf_text}</small></td>
-    <td><input type="text" name="email_conf" size="60" maxlength="96"
-      value="{email_value}"></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_homepage}</b><br>
+
+  <tr class="pluginRow{cssid1u}">
+    <td align="right" valign="top"><b>{lang_homepage}</b></td>
+    <td><input type="text" name="homepage" size="60" maxlength="96" value="{homepage_value}"><br>
       <small>{lang_homepage_text}</small></td>
-    <td><input type="text" name="homepage" size="60" maxlength="96"
-      value="{homepage_value}"></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_location}</b><br>
+
+  <tr class="pluginRow{cssid2u}">
+    <td align="right" valign="top"><b>{lang_location}</b></td>
+    <td><input type="text" name="location" size="60" maxlength="96" value="{location_value}"><br>
       <small>{lang_location_text}</small></td>
-    <td><input type="text" name="location" size="60" maxlength="96"
-      value="{location_value}"></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_signature}</b><br>
-      <small>{lang_signature_text}</small></td>
-    <td><textarea name="sig" cols="60" rows="4">{signature_value}</textarea></td>
+
+  <tr class="pluginRow{cssid1u}">
+    <td align="right" valign="top"><b>{lang_signature}</b></td>
+    <td><textarea name="sig" style="width:100%" rows="4">{signature_value}</textarea><br>
+        <small>{lang_signature_text}</small></td>
   </tr>
+
   {userphoto_option}
-  <tr valign="top">
-    <td align="right"><b>{lang_about}</b><br>
-      <small>{lang_about_text}</small></td>
-    <td><textarea name="about" cols="60" rows="6">{about_value}</textarea></td>
+
+  <tr class="pluginRow{cssid2p}">
+    <td align="right" valign="top"><b>{lang_about}</b></td>
+    <td><textarea name="about" style="width:100%" rows="6">{about_value}</textarea><br>
+        <small>{lang_about_text}</small></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_pgpkey}</b><br>
-      <small>{lang_pgpkey_text}</small></td>
-    <td><textarea name="pgpkey" cols="60" rows="6">{pgpkey_value}</textarea></td>
+
+  <tr class="pluginRow{cssid1p}">
+    <td align="right" valign="top"><b>{lang_pgpkey}</b></td>
+    <td><textarea name="pgpkey" style="width:100%" rows="6">{pgpkey_value}</textarea><br>
+        <small>{lang_pgpkey_text}</small></td>
   </tr>
+
   <tr valign="top">
     <td align="center" colspan="2">
       <input type="hidden" name="uid" value="{uid_value}">
