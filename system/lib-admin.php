@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.62 2006/05/20 16:17:37 dhaun Exp $
+// $Id: lib-admin.php,v 1.63 2006/05/25 12:01:09 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -633,6 +633,13 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = $fieldvalue;
             break;
     }
+
+    if (isset($A['status']) && ($A['status'] == USER_ACCOUNT_DISABLED)) {
+        if (($fieldname != 'edit') && ($fieldname != 'username')) {
+            $retval = sprintf ('<s title="%s">%s</s>', $LANG28[42], $retval);
+        }
+    }
+
     return $retval;
 }
 

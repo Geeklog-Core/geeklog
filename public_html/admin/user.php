@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.150 2006/04/13 07:38:29 dhaun Exp $
+// $Id: user.php,v 1.151 2006/05/25 12:01:09 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -318,7 +318,7 @@ function listusers()
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
         $select_userinfo=",lastlogin ";
     }
-    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1";
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1";
 
     $query_arr = array('table' => 'users',
                        'sql' => $sql,
@@ -716,12 +716,16 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
         $display = COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     }
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) { // save
+    $delphoto = '';
+    if (isset ($_POST['delete_photo'])) {
+        $delphoto = $_POST['delete_photo'];
+    }
     $display = saveusers (COM_applyFilter ($_POST['uid'], true),
             $_POST['username'], $_POST['fullname'],
             $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
             $_POST['regdate'], $_POST['homepage'],
             $_POST[$_TABLES['groups']],
-            $_POST['delete_photo'], $_POST['userstatus'], $_POST['oldstatus']);
+            $delphoto, $_POST['userstatus'], $_POST['oldstatus']);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;
