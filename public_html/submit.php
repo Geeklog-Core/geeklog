@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.105 2006/05/22 03:34:05 ospiess Exp $
+// $Id: submit.php,v 1.106 2006/05/25 08:09:18 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -418,7 +418,7 @@ function savesubmission($type, $A)
         return $retval;
     }
 
-    if ((strlen($type) > 0) && ($type <> 'story')) {
+    if (!empty ($type) && ($type != 'story')) {
         // Update the submitspeedlimit for user - assuming Plugin approves
         // submission record
         COM_updateSpeedlimit ('submit');
@@ -427,9 +427,9 @@ function savesubmission($type, $A)
         // and should include its own redirect
         $retval = PLG_saveSubmission ($type, $A);
 
-        if (!$retval) {
-            COM_errorLog("Could not save your submission. Bad type: $type");
-        } elseif (empty($retval)) {
+        if ($retval === false) {
+            COM_errorLog ("Could not save your submission. Bad type: $type");
+        } elseif (empty ($retval)) {
             // plugin should include its own redirect - but in case handle
             // it here and redirect to the main page
             return COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -448,6 +448,7 @@ function savesubmission($type, $A)
             . submissionform($type)
             . COM_siteFooter ();
     }
+
     return $retval;
 }
 
