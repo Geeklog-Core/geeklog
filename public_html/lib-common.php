@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.548 2006/05/21 20:57:02 mjervis Exp $
+// $Id: lib-common.php,v 1.549 2006/05/25 20:57:04 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -828,7 +828,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
     if( function_exists( $function ))
     {
-        return $function( $what, $pagetitle );
+        return $function( $what, $pagetitle, $headercode );
     }
 
     // send out the charset header
@@ -1146,7 +1146,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 
     if( function_exists( $function ))
     {
-        return $function( $rightblock );
+        return $function( $rightblock, $custom );
     }
 
     // Set template directory
@@ -5697,16 +5697,19 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     /*
      * If we have a root user, then output detailed error message:
      */
-    if( is_array($_USER) && function_exists('SEC_inGroup') )
+    if( ( is_array($_USER) && function_exists('SEC_inGroup') ) || $_CONF['rootdebug'] )
     {
-        if(SEC_inGroup('Root'))
+        if($_CONF['rootdebug'] || SEC_inGroup('Root'))
         {
             echo("
                 An error has occurred:<br/>
                 $errno - $errstr @ $errfile line $errline<br/>
             <pre>");
+            ob_start();
             var_dump($errcontext);
-            echo("</pre>
+            $errcontext = htmlspecialchars(ob_get_contents());
+            ob_end_clean();
+            echo("$errcontext</pre>
             (This text is only displayed to users in the group 'Root')
             ");
             exit;
@@ -5729,20 +5732,27 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
         }
     }
     
-    /* Otherwise, display simple error message */
-    echo("
-    <html>
-        <head>
-            <title>{$_CONF['site_name']} - An Error Occurred</title>
-        </head>
-        <body>
-        <div style=\"width: 100%; text-align: center;\">
-        Unfortunately, an error has occurred rendering this page. Please try
-        again later.
-        </div>
-        </body>
-    </html>
-    ");
+    /* Does the theme implement an error message html file? */
+    if(file_exists($_CONF['path_layout'].'errormessage.html'))
+    {
+        // NOTE: NOT A TEMPLATE! JUST HTML!
+        include($_CONF['path_layout'].'errormessage.html');
+    } else {
+        /* Otherwise, display simple error message */
+        echo("
+        <html>
+            <head>
+                <title>{$_CONF['site_name']} - An Error Occurred</title>
+            </head>
+            <body>
+            <div style=\"width: 100%; text-align: center;\">
+            Unfortunately, an error has occurred rendering this page. Please try
+            again later.
+            </div>
+            </body>
+        </html>
+        ");
+    }
     
     exit;
 }

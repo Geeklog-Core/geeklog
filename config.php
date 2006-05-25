@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.224 2006/05/25 07:53:18 dhaun Exp $
+// $Id: config.php,v 1.225 2006/05/25 20:57:04 mjervis Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -348,6 +348,11 @@ $_CONF['site_enabled'] = true;  // true or false
 // Message shown when site is down
 // When this starts with 'http:' visitors are redirected to that URL
 $_CONF['site_disabled_msg'] = 'Geeklog Site is down. Please come back soon.';
+
+// When set to true, this will display /detailed/ debug information in the event
+// of a PHP error. ONLY set this to true with your non-production development
+// environments!
+$_CONF['rootdebug'] = false;
 
 // +---------------------------------------------------------------------------+
 // | SESSION SETTINGS                                                          |
