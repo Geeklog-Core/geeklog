@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.45 2006/05/25 16:26:15 dhaun Exp $
+// $Id: syndication.php,v 1.46 2006/05/25 21:16:47 mjervis Exp $
 
 
 require_once ('../lib-common.php');
@@ -312,6 +312,16 @@ function editfeed ($fid = 0, $type = '')
     if ($A['type'] == 'geeklog') {
         $options = get_geeklogFeeds ();
     } else {
+        $result = DB_query("SELECT pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name='{$A['type']}'");
+        if($result)
+        {
+            $P = DB_fetchArray($result);
+            if($P['pi_enabled'] == 0)
+            {
+                echo COM_refresh($_CONF['site_admin_url'].'/syndication.php?msg=80');
+                exit;
+            }
+        }
         $options = PLG_getFeedNames ($A['type']);
     }
     $selection = '<select name="topic">' . LB;
