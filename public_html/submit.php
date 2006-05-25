@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.106 2006/05/25 08:09:18 dhaun Exp $
+// $Id: submit.php,v 1.107 2006/05/25 13:44:35 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -96,8 +96,8 @@ function submissionform($type='story', $mode = '', $topic = '')
             if ((strlen($type) > 0) && ($type <> 'story')) {
                 $formresult = PLG_showSubmitForm($type);
                 if ($formresult == false) {
-                    $retval = $LANG12[54];
                     COM_errorLog("Someone tried to submit an item to the $type-plugin, which cannot be found.", 1);
+                    COM_displayMessageAndAbort (79, '', 410, 'Gone');
                 } else {
                     $retval .= $formresult;
                 }

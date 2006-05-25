@@ -511,7 +511,7 @@ $LANG12 = array(
     1 => 'To submit a %s you are required to be logged in as a user.',
     2 => 'Anmelden',
     3 => 'Neuer User',
-    4 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    4 => '',
     5 => 'Einen Link einreichen',
     6 => 'Einen Artikel einreichen',
     7 => 'Anmeldung erforderlich',
@@ -1065,7 +1065,8 @@ $MESSAGE = array(
     75 => 'Trackbacks müssen als POST-Request verschickt werden.',
     76 => 'Willst Du diesen Eintrag wirklich löschen?',
     77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.'
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.'
 );
 
 ###############################################################################

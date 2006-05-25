@@ -557,8 +557,7 @@ $LANG12 = array(
     50 => '',
     51 => 'Location',
     52 => 'Delete',
-    53 => 'Create Account',
-    54 => 'The page you have been trying to open refers to a function that no longer exists on this site.'
+    53 => 'Create Account'
 );
 
 ###############################################################################
@@ -1064,7 +1063,8 @@ $MESSAGE = array(
     75 => 'Trackbacks must be sent using a POST request.',
     76 => 'Do you really want to delete this item?',
     77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.'
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.'
 );
 
 ###############################################################################
