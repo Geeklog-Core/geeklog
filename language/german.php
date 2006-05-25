@@ -329,9 +329,9 @@ $LANG04 = array(
     121 => 'Dienst',
     122 => 'Sorry, derzeit können sich keine neuen User anmelden.',
     123 => "Bist Du ein <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User</a>?",
-    124 => 'Confirm Email',
-    125 => 'You have to enter the same email address in both fields!',
-    126 => 'Please repeat for confirmation'
+    124 => 'E-Mail bestätigen',
+    125 => 'Die E-Mail-Adressen stimmen nicht überein. Bitte in beiden Feldern die gleiche E-Mail-Adresse eintragen!',
+    126 => 'Bitte die gleiche Adresse noch einmal eingeben'
 );
 
 ###############################################################################
@@ -972,7 +972,7 @@ $LANG33 = array(
     39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
     40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
     41 => 'Links',
-    42 => 'Error: existing Filename',
+    42 => '',
     43 => 'Alle',
     44 => 'Keine',
     45 => 'Feed-Link für Kategorie',
@@ -981,7 +981,8 @@ $LANG33 = array(
     48 => 'Ändern',
     49 => 'Feed-Logo',
     50 => "Relativ zur URL dieser Site ({$_CONF['site_url']})",
-    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.'
+    51 => 'Der gewählte Dateiname wird bereits von einem anderen Feed verwendet. Bitte wähle einen anderen.',
+    52 => 'Fehler: Dateiname existiert schon'
 );
 
 ###############################################################################
@@ -1064,9 +1065,9 @@ $MESSAGE = array(
     74 => 'Der Pingback wurde erfolgreich verschickt.',
     75 => 'Trackbacks müssen als POST-Request verschickt werden.',
     76 => 'Willst Du diesen Eintrag wirklich löschen?',
-    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.',
-    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.'
+    77 => 'HINWEIS:<br>Du hast UTF-8 als Default-Zeichensatz angegeben. Dein Webserver unterstützt jedoch kein "multibyte encoding". Installiere bitte die mbstring-Erweiterungen für PHP oder benutze einen anderen Zeichensatz bzw. eine andere Sprache.',
+    78 => 'Bitte sicherstellen, dass die angegebene E-Mail-Adresse in beiden Fällen die gleiche ist.',
+    79 => 'Diese Funktion ist nicht mehr unter dieser URL verfügbar.'
 );
 
 ###############################################################################
@@ -1369,10 +1370,10 @@ $LANG_ADMIN = array (
     'limit_results' => 'Anzahl Ergebnisse',
     'submit'        => 'Abschicken',
     'edit'          => 'Ändern',
-    'edit_adv'      => 'Adv. Edit',
+    'edit_adv'      => 'Erw. Editor',
     'admin_home'    => 'Admin Home',
     'create_new'    => 'Neu anlegen',
-    'create_new_adv'=> 'Create New (Adv.)',
+    'create_new_adv'=> 'Neu anlegen (Erw.)',
     'enabled'       => 'Aktiv',
     'title'         => 'Titel',
     'type'          => 'Typ',

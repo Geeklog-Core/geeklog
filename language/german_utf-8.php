@@ -170,27 +170,6 @@ $LANG01 = array(
 );
 
 ###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => 'Terminkalender',
-    2 => 'Es gibt keine Termine anzuzeigen.',
-    3 => 'Wann',
-    4 => 'Wo',
-    5 => 'Beschreibung',
-    6 => 'Termin hinzufügen',
-    7 => 'Anstehende Termine',
-    8 => 'Wenn Du diesen Termin zu Deinem Kalender hinzufügst, kannst Du Dir schneller einen Überblick über die Termine verschaffen, die Dich interessieren, indem Du einfach auf "Mein Kalender" klickst.',
-    9 => 'Zu Meinem Kalender hinzufügen',
-    10 => 'Aus Meinem Kalender entfernen',
-    11 => "Termin wird zum Kalender von {$_USER['username']} hinzugefügt",
-    12 => 'Termin',
-    13 => 'Beginnt',
-    14 => 'Endet',
-    15 => 'Zurück zum Kalender'
-);
-
-###############################################################################
 # comment.php
 
 $LANG03 = array(
@@ -349,7 +328,10 @@ $LANG04 = array(
     120 => 'Account aktiviert',
     121 => 'Dienst',
     122 => 'Sorry, derzeit können sich keine neuen User anmelden.',
-    123 => "Bist Du ein <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User</a>?"
+    123 => "Bist Du ein <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User</a>?",
+    124 => 'E-Mail bestätigen',
+    125 => 'Die E-Mail-Adressen stimmen nicht überein. Bitte in beiden Feldern die gleiche E-Mail-Adresse eintragen!',
+    126 => 'Bitte die gleiche Adresse noch einmal eingeben'
 );
 
 ###############################################################################
@@ -529,7 +511,7 @@ $LANG12 = array(
     1 => 'To submit a %s you are required to be logged in as a user.',
     2 => 'Anmelden',
     3 => 'Neuer User',
-    4 => 'Einen Termin einreichen',
+    4 => '',
     5 => 'Einen Link einreichen',
     6 => 'Einen Artikel einreichen',
     7 => 'Anmeldung erforderlich',
@@ -643,7 +625,7 @@ $LANG21 = array(
     39 => 'Seite',
     40 => 'links',
     41 => 'rechts',
-    42 => 'Für Geeklog-Default-Blöcke muss ein Block-Title und die Block-Reihenfolge angegeben werden.',
+    42 => 'Für Geeklog-Default-Blöcke muss ein Block-Titel und die Block-Reihenfolge angegeben werden.',
     43 => 'Nur auf der Startseite',
     44 => 'Zugriff verweigert',
     45 => "Du hast keine Zugriffsrechte für diesen Block. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/block.php\">Zurück zum Administrator-Menü</a>.",
@@ -667,37 +649,6 @@ $LANG21 = array(
     63 => 'Block-Titel nicht erlaubt',
     64 => 'Der Titel kann nicht leer sein und darf kein HTML enthalten!',
     65 => 'Reihenfolge'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => 'Termin-Editor',
-    2 => 'Error',
-    3 => 'Titel',
-    4 => 'URL',
-    5 => 'Startdatum',
-    6 => 'Enddatum',
-    7 => 'Ort',
-    8 => 'Beschreibung',
-    9 => '(mit http://)',
-    10 => 'Es müssen mindestens Datum und Uhrzeit, Titel und Beschreibung angegeben werden!',
-    11 => 'Termin-Manager',
-    12 => 'Auf das Ändern-Icon klicken, um einen Termin zu ändern oder zu löschen. Mit Neu anlegen (s.o.) wird ein neuer Termin angelegt. Das Kopie-Icon erzeugt eine Kopie eines vorhandenen Termins.',
-    13 => 'Autor',
-    14 => 'Startdatum',
-    15 => 'Enddatum',
-    16 => 'Zugriff verweigert',
-    17 => "Du hast keine Zugriffsrechte für diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/event.php\">Zurück zum Administrator-Menü</a>.",
-    18 => 'Neuer Termin',
-    19 => 'Admin Home',
-    20 => 'Speichern',
-    21 => 'Abbruch',
-    22 => 'Löschen',
-    23 => 'Ungültiges Startdatum.',
-    24 => 'Ungültiges Enddatum.',
-    25 => 'Enddatum ist vor dem Startdatum.'
 );
 
 ###############################################################################
@@ -906,53 +857,6 @@ $LANG29 = array(
 );
 
 ###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Sonntag',
-    2 => 'Montag',
-    3 => 'Dienstag',
-    4 => 'Mittwoch',
-    5 => 'Donnerstag',
-    6 => 'Freitag',
-    7 => 'Samstag',
-    8 => 'Neuer Termin',
-    9 => 'Termin',
-    10 => 'Termine am',
-    11 => 'Kalender',
-    12 => 'Mein Kalender',
-    13 => 'Januar',
-    14 => 'Februar',
-    15 => 'März',
-    16 => 'April',
-    17 => 'Mai',
-    18 => 'Juni',
-    19 => 'Juli',
-    20 => 'August',
-    21 => 'September',
-    22 => 'Oktober',
-    23 => 'November',
-    24 => 'Dezember',
-    25 => 'Zurück zum ',
-    26 => 'ganztägig',
-    27 => 'Woche',
-    28 => 'Persönlicher Kalender für',
-    29 => 'Öffentlicher Kalender',
-    30 => 'Termin löschen',
-    31 => 'Hinzufügen',
-    32 => 'Termin',
-    33 => 'Datum',
-    34 => 'Uhrzeit',
-    35 => 'Neuer Termin',
-    36 => 'Submit',
-    37 => 'Sorry, der persönliche Kalender ist auf dieser Site nicht verfügbar.',
-    38 => 'Persönlicher Termin-Editor',
-    39 => 'Tag',
-    40 => 'Woche',
-    41 => 'Monat'
-);
-
-###############################################################################
 # admin/mail.php
 
 $LANG31 = array(
@@ -1068,7 +972,7 @@ $LANG33 = array(
     39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
     40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
     41 => 'Links',
-    42 => 'Termine',
+    42 => '',
     43 => 'Alle',
     44 => 'Keine',
     45 => 'Feed-Link für Kategorie',
@@ -1076,7 +980,9 @@ $LANG33 = array(
     47 => 'Suchen',
     48 => 'Ändern',
     49 => 'Feed-Logo',
-    50 => "Relativ zur URL dieser Site ({$_CONF['site_url']})"
+    50 => "Relativ zur URL dieser Site ({$_CONF['site_url']})",
+    51 => 'Der gewählte Dateiname wird bereits von einem anderen Feed verwendet. Bitte wähle einen anderen.',
+    52 => 'Fehler: Dateiname existiert schon'
 );
 
 ###############################################################################
@@ -1159,9 +1065,9 @@ $MESSAGE = array(
     74 => 'Der Pingback wurde erfolgreich verschickt.',
     75 => 'Trackbacks müssen als POST-Request verschickt werden.',
     76 => 'Willst Du diesen Eintrag wirklich löschen?',
-    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.',
-    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.'
+    77 => 'HINWEIS:<br>Du hast UTF-8 als Default-Zeichensatz angegeben. Dein Webserver unterstützt jedoch kein "multibyte encoding". Installiere bitte die mbstring-Erweiterungen für PHP oder benutze einen anderen Zeichensatz bzw. eine andere Sprache.',
+    78 => 'Bitte sicherstellen, dass die angegebene E-Mail-Adresse in beiden Fällen die gleiche ist.',
+    79 => 'Diese Funktion ist nicht mehr unter dieser URL verfügbar.'
 );
 
 ###############################################################################
@@ -1428,6 +1334,31 @@ $LANG_WHATSNEW = array (
     'month'       => 'Monat'
 );
 
+$LANG_MONTH = array(
+    1 => 'Januar',
+    2 => 'Februar',
+    3 => 'März',
+    4 => 'April',
+    5 => 'Mai',
+    6 => 'Juni',
+    7 => 'Juli',
+    8 => 'August',
+    9 => 'September',
+    10 => 'Oktober',
+    11 => 'November',
+    12 => 'Dezember'
+);
+
+$LANG_WEEK = array(
+    1 => 'Sonntag',
+    2 => 'Montag',
+    3 => 'Dienstag',
+    4 => 'Mittwoch',
+    5 => 'Donnerstag',
+    6 => 'Freitag',
+    7 => 'Samstag'
+);
+
 ################################################################################
 # Admin - Strings
 #
@@ -1439,8 +1370,10 @@ $LANG_ADMIN = array (
     'limit_results' => 'Anzahl Ergebnisse',
     'submit'        => 'Abschicken',
     'edit'          => 'Ändern',
+    'edit_adv'      => 'Erw. Editor',
     'admin_home'    => 'Admin Home',
     'create_new'    => 'Neu anlegen',
+    'create_new_adv'=> 'Neu anlegen (Erw.)',
     'enabled'       => 'Aktiv',
     'title'         => 'Titel',
     'type'          => 'Typ',
