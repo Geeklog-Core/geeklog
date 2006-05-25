@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.82 2006/05/20 21:09:51 dhaun Exp $
+// $Id: index.php,v 1.83 2006/05/25 15:42:28 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -68,7 +68,11 @@ if (!$newstories && !$displayall) {
 
 $display .= COM_siteHeader();
 if (isset ($_GET['msg'])) {
-    $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true),COM_applyFilter ($_GET['plugin']));
+    $plugin = '';
+    if (isset ($_GET['plugin'])) {
+        $plugin = COM_applyFilter ($_GET['plugin']);
+    }
+    $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true), $plugin);
 }
 
 
