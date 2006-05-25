@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.223 2006/05/22 02:28:01 ospiess Exp $
+// $Id: config.php,v 1.224 2006/05/25 07:53:18 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -847,5 +847,60 @@ if (!defined ('LB')) {
 if (!defined ('VERSION')) {
     define('VERSION', '1.4.1cvs');
 }
+
+$_STATES = array(
+        '--'=>'',
+        'AL'=>'Alabama',
+        'AK'=>'Alaska',
+        'AZ'=>'Arizona',
+        'AR'=>'Arkansas',
+        'CA'=>'California',
+        'CO'=>'Colorado',
+        'CT'=>'Connecticut',
+        'DE'=>'Delaware',
+        'DC'=>'District of Columbia',
+        'FL'=>'Florida',
+        'GA'=>'Georgia',
+        'HI'=>'Hawaii',
+        'ID'=>'Idaho',
+        'IL'=>'Illinois',
+        'IN'=>'Indiana',
+        'IA'=>'Iowa',
+        'KS'=>'Kansas',
+        'KY'=>'Kentucky',
+        'LA'=>'Louisiana',
+        'ME'=>'Maine',
+        'MD'=>'Maryland',
+        'MA'=>'Massachusetts',
+        'MI'=>'Michigan',
+        'MN'=>'Minnesota',
+        'MS'=>'Mississippi',
+        'MO'=>'Missouri',
+        'MT'=>'Montana',
+        'NE'=>'Nebraska',
+        'NV'=>'Nevada',
+        'NH'=>'New Hampshire',
+        'NJ'=>'New Jersey',
+        'NM'=>'New Mexico',
+        'NY'=>'New York',
+        'NC'=>'North Carolina',
+        'ND'=>'North Dakota',
+        'OH'=>'Ohio',
+        'OK'=>'Oklahoma',
+        'OR'=>'Oregon',
+        'PA'=>'Pennsylvania',
+        'RI'=>'Rhode Island',
+        'SC'=>'South Carolina',
+        'SD'=>'South Dakota',
+        'TN'=>'Tennessee',
+        'TX'=>'Texas',
+        'UT'=>'Utah',
+        'VT'=>'Vermont',
+        'VA'=>'Virginia',
+        'WA'=>'Washington',
+        'WV'=>'West Virginia',
+        'WI'=>'Wisconsin',
+        'WY'=>'Wyoming'
+    );
 
 ?>

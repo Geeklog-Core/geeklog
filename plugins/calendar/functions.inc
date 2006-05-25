@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.33 2006/05/22 05:13:55 ospiess Exp $
+// $Id: functions.inc,v 1.34 2006/05/25 07:53:18 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -543,6 +543,7 @@ function plugin_savesubmission_calendar($A)
 function plugin_submit_calendar($mode = 'master')
 {
     global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
+
     if (isset ($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
     }
@@ -656,12 +657,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_addressline2',$LANG_CAL_1[33]);
     $eventform->set_var('lang_city',$LANG_CAL_1[34]);
     $eventform->set_var('lang_state',$LANG_CAL_1[35]);
-    $state_options = '';
-    foreach ($_CA_CONF['states'] as $statekey => $state) {
-        $state_options .= '<option value="' . $statekey . '">'
-                       . $state . '</option>';
-    }
-    $eventform->set_var('state_options',$state_options);
+    $eventform->set_var('state_options', CALENDAR_stateList ());
     $eventform->set_var('lang_zipcode',$LANG_CAL_1[36]);
     $eventform->set_var('lang_location', $LANG_CAL_1[39]);
     $eventform->set_var('lang_description', $LANG_CAL_1[5]);
@@ -1475,6 +1471,23 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = $fieldvalue;
             break;
     }
+    return $retval;
+}
+
+function CALENDAR_stateList ($currstate = '')
+{
+    global $_STATES;
+
+    $retval = '';
+
+    foreach ($_STATES as $statekey => $state) {
+        $retval .= '<option value="' . $statekey . '"'
+        if ($statekey == $currstate) {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>' . $state . '</option>';
+    }
+
     return $retval;
 }
 

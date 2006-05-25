@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2006/05/22 04:36:51 ospiess Exp $
+// $Id: index.php,v 1.14 2006/05/25 07:53:18 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -315,17 +315,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('lang_city',$LANG12[46]);
     $event_templates->set_var('event_city', stripslashes ($A['city']));
     $event_templates->set_var('lang_state',$LANG12[47]);
-
-    $state_options = '';
-    foreach ($_CA_CONF['states'] as $abbr => $state) {
-        $state_options .= '<option value="' . $abbr . '" ';
-        if ($abbr == $A['state']) {
-            $state_options .= 'selected="selected"';
-        }
-        $state_options .= '>' . $state . '</option>';
-    }
-
-    $event_templates->set_var('state_options',$state_options);
+    $event_templates->set_var('state_options', CALENDAR_stateList($A['state']));
     $event_templates->set_var('lang_zipcode',$LANG12[48]);
     $event_templates->set_var('event_zipcode', $A['zipcode']);
     $event_templates->set_var('lang_eventlocation', $LANG_CAL_ADMIN[7]);

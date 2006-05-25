@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.2 2006/05/14 08:39:43 dhaun Exp $
+// $Id: config.php,v 1.3 2006/05/25 07:53:18 dhaun Exp $
 
 $_CA_CONF['version']            = '1.0'; // Plugin Version
 
@@ -73,60 +73,5 @@ $_CA_CONF['default_permissions'] = array (3, 2, 2, 2);
 $_TABLES['events']              = $_DB_table_prefix . 'events';
 $_TABLES['eventsubmission']     = $_DB_table_prefix . 'eventsubmission';
 $_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
-
-$_CA_CONF['states'] = array(
-        '--'=>'',
-        'AL'=>'Alabama',
-        'AK'=>'Alaska',
-        'AZ'=>'Arizona',
-        'AR'=>'Arkansas',
-        'CA'=>'California',
-        'CO'=>'Colorado',
-        'CT'=>'Connecticut',
-        'DE'=>'Delaware',
-        'DC'=>'District of Columbia',
-        'FL'=>'Florida',
-        'GA'=>'Georgia',
-        'HI'=>'Hawaii',
-        'ID'=>'Idaho',
-        'IL'=>'Illinois',
-        'IN'=>'Indiana',
-        'IA'=>'Iowa',
-        'KS'=>'Kansas',
-        'KY'=>'Kentucky',
-        'LA'=>'Louisiana',
-        'ME'=>'Maine',
-        'MD'=>'Maryland',
-        'MA'=>'Massachusetts',
-        'MI'=>'Michigan',
-        'MN'=>'Minnesota',
-        'MS'=>'Mississippi',
-        'MO'=>'Missouri',
-        'MT'=>'Montana',
-        'NE'=>'Nebraska',
-        'NV'=>'Nevada',
-        'NH'=>'New Hampshire',
-        'NJ'=>'New Jersey',
-        'NM'=>'New Mexico',
-        'NY'=>'New York',
-        'NC'=>'North Carolina',
-        'ND'=>'North Dakota',
-        'OH'=>'Ohio',
-        'OK'=>'Oklahoma',
-        'OR'=>'Oregon',
-        'PA'=>'Pennsylvania',
-        'RI'=>'Rhode Island',
-        'SC'=>'South Carolina',
-        'SD'=>'South Dakota',
-        'TN'=>'Tennessee',
-        'TX'=>'Texas',
-        'UT'=>'Utah',
-        'VT'=>'Vermont',
-        'VA'=>'Virginia',
-        'WA'=>'Washington',
-        'WV'=>'West Virginia',
-        'WI'=>'Wisconsin',
-        'WY'=>'Wyoming'
-    );
 
 ?>

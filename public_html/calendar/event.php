@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.11 2006/05/20 08:50:14 dhaun Exp $
+// $Id: event.php,v 1.12 2006/05/25 07:53:19 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -323,16 +323,8 @@ function editpersonalevent ($A)
     $cal_templates->set_var('lang_city', $LANG_CAL_1[34]);
     $cal_templates->set_var('event_city', stripslashes ($A['city']));
 
-    $state_options = '';
-    foreach ($_CA_CONF['states'] as $abbr => $state) {
-        $state_options .= '<option value="' . $abbr . '"';
-        if ($abbr == $A['state']) {
-            $state_options .= ' selected="selected"';
-        }
-        $state_options .= '>' . $state . '</option>';
-    }
     $cal_templates->set_var('lang_state', $LANG_CAL_1[35]);
-    $cal_templates->set_var('state_options', $state_options);
+    $cal_templates->set_var('state_options', CALENDAR_stateList ($A['state']));
 
     $cal_templates->set_var('lang_zipcode', $LANG_CAL_1[36]);
     $cal_templates->set_var('event_zipcode', $A['zipcode']);
@@ -652,9 +644,9 @@ default:
                 } else {
                     $cal_templates->set_var ('event_state', ', ' . $A['state']);
                     $cal_templates->set_var ('event_state_name',
-                            ', ' . $_CA_CONF['states'][$A['state']]);
+                            ', ' . $_STATES[$A['state']]);
                     $cal_templates->set_var ('event_state_name_only',
-                            $_CA_CONF['states'][$A['state']]);
+                            $_STATES[$A['state']]);
                 }
 
                 // now figure out which of the {brX} variables to set ...
