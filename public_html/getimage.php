@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | getimage.php                                                              |
 // |                                                                           |
 // | Shows images outside of the webtree                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2005 by the following authors:                         |
+// | Copyright (C) 2004-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: getimage.php,v 1.6 2005/06/12 08:59:40 dhaun Exp $
+// $Id: getimage.php,v 1.7 2006/05/26 13:35:39 dhaun Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
@@ -63,7 +63,7 @@ if (isset($_GET['mode'])) {
 }
 $image = '';
 if (isset($_GET['image'])) {
-    $image = $_GET['image'];
+    $image = COM_applyFilter ($_GET['image']);
 }
 if (strstr($image, '..')) {
     // Can you believe this, some jackass tried to relative pathing to access
@@ -97,7 +97,7 @@ if (is_file($downloader->getPath() . $image)) {
         $downloader->downloadFile($image);
     }
 } else {
-    $display = COM_errorLog('File, ' . $downloader->getPath() . $image . ', was not found in getimage.php');
+    $display = COM_errorLog('File, ' . $image . ', was not found in getimage.php');
 
     if ($mode == 'show') {
         echo COM_siteHeader ('menu') . $display . COM_siteFooter ();
