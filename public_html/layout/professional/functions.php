@@ -1,7 +1,7 @@
 <?php
 
 // this file can't be used on its own
-if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
+if (eregi ('functions.php', $_SERVER['PHP_SELF']))
 {
     die ('This file can not be used on its own.');
 }
