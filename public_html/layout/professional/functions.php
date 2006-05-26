@@ -1,5 +1,11 @@
 <?php
 
+// this file can't be used on its own
+if (eregi ('auth.inc.php', $_SERVER['PHP_SELF']))
+{
+    die ('This file can not be used on its own.');
+}
+
 $_IMAGE_TYPE = 'png';
 
 $result = DB_query ("SELECT onleft,name FROM {$_TABLES['blocks']} WHERE is_enabled = 1");
