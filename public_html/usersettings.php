@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.137 2006/05/27 15:50:47 dhaun Exp $
+// $Id: usersettings.php,v 1.138 2006/05/27 17:13:37 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -725,16 +725,7 @@ function handlePhotoUpload ($delete_photo = '')
 
     // delete old photo first
     if ($delete_photo) {
-        $filetodelete = $_CONF['path_images'] . 'userphotos/' . $curphoto;
-        if (file_exists ($filetodelete)) {
-            if (!@unlink ($filetodelete)) {
-                $display = COM_siteHeader ('menu');
-                $display .= COM_errorLog("Unable to remove file $curphoto");
-                $display .= COM_siteFooter ();
-                echo $display;
-                exit;
-            }
-        }
+        USER_deletePhoto ($curphoto);
     }
 
     // now do the upload

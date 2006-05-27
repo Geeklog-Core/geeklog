@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.26 2006/05/14 16:43:28 ospiess Exp $
+// $Id: lib-user.php,v 1.27 2006/05/27 17:13:37 dhaun Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -111,13 +111,7 @@ function USER_deleteAccount ($uid)
     // delete user photo, if enabled & exists
     if ($_CONF['allow_user_photo'] == 1) {
         $photo = DB_getItem ($_TABLES['users'], 'photo', "uid = $uid");
-        if (!empty ($photo)) {
-            $filetodelete = $_CONF['path_images'] . 'userphotos/' . $photo;
-            if (!@unlink ($filetodelete)) {
-                // just log the problem, but don't abort
-                COM_errorLog ("Unable to remove file $filetodelete.", 1);
-            }
-        }
+        USER_deletePhoto ($photo, false);
     }
 
     // in case the user owned any objects that require Admin access, assign
@@ -442,6 +436,39 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
     }
 
     return $photo;
+}
+
+/**
+* Delete a user's photo (i.e. the actual file)
+*
+* @param    string  $photo          name of the photo (without the path)
+* @param    bool    $abortonerror   true: abort script on error, false: don't
+* @return   void
+*
+* @note     Will silently ignore non-existing files.
+*
+*/
+function USER_deletePhoto ($photo, $abortonerror = true)
+{
+    global $_CONF, $LANG04;
+
+    if (!empty ($photo)) {
+        $filetodelete = $_CONF['path_images'] . 'userphotos/' . $photo;
+        if (file_exists ($filetodelete)) {
+            if (!@unlink ($filetodelete)) {
+                if ($abortonerror) {
+                    $display = COM_siteHeader ('menu', $LANG04[21])
+                             . COM_errorLog ("Unable to remove file $photo")
+                             . COM_siteFooter ();
+                    echo $display;
+                    exit;
+                } else {
+                    // just log the problem, but don't abort
+                    COM_errorLog ("Unable to remove file $photo");
+                }
+            }
+        }
+    }
 }
 
 /**
