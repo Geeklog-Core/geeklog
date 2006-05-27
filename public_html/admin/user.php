@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.152 2006/05/27 15:57:18 dhaun Exp $
+// $Id: user.php,v 1.153 2006/05/27 17:16:23 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -424,17 +424,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             $homepage = addslashes ($homepage);
             $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = $uid");
             if (!empty ($curphoto) && ($delete_photo == 'on')) {
-                $filetodelete = $_CONF['path_images'] . 'userphotos/'
-                                                      . $curphoto;
-                if (file_exists ($filetodelete)) {
-                    if (!@unlink ($filetodelete)) {
-                        $display = COM_siteHeader ('menu');
-                        $display .= COM_errorLog ("Unable to remove file $curphoto");
-                        $display .= COM_siteFooter ();
-                        echo $display;
-                        exit;
-                    }
-                }
+                USER_deletePhoto ($curphoto);
                 $curphoto = '';
             }
 
