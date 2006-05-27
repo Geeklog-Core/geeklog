@@ -1,4 +1,0 @@
-<li>
-  <strong><a href="{link_url}" title="{link_actual_url}">{link_name}</a></strong> ({link_hits}) {link_edit}<br>
-  {link_description}
-</li>
