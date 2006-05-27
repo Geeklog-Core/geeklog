@@ -34,64 +34,64 @@
 # index.php
 $LANG_CAL_1 = array(
     1 => 'Terminkalender',
-    2 => 'I\'m sorry, there are no events to display.',
-    3 => 'When',
-    4 => 'Where',
-    5 => 'Description',
-    6 => 'Add An Event',
-    7 => 'Upcoming Events',
-    8 => 'By adding this event to your calendar you can quickly view only the events you are interested in by clicking "My Calendar" from the User Functions area.',
-    9 => 'Add to My Calendar',
-    10 => 'Remove from My Calendar',
-    11 => "Adding Event to %s's Calendar",
-    12 => 'Event',
-    13 => 'Starts',
-    14 => 'Ends',
-    15 => 'Back to Calendar',
+    2 => 'Es gibt keine Termine anzuzeigen.',
+    3 => 'Wann',
+    4 => 'Wo',
+    5 => 'Beschreibung',
+    6 => 'Termin hinzufügen',
+    7 => 'Anstehende Termine',
+    8 => 'Wenn Du diesen Termin zu Deinem Kalender hinzufügst, kannst Du Dir schneller einen Überblick über die Termine verschaffen, die Dich interessieren, indem Du einfach auf "Mein Kalender" klickst.',
+    9 => 'Zu Meinem Kalender hinzufügen',
+    10 => 'Aus Meinem Kalender entfernen',
+    11 => 'Termin wird zum Kalender von %s hinzugefügt',
+    12 => 'Termin',
+    13 => 'Beginnt',
+    14 => 'Endet',
+    15 => 'Zurück zum Kalender',
     16 => 'Kalender',
-    17 => 'Start Date',
-    18 => 'End Date',
-    19 => 'Calendar Submissions',
-    20 => 'Title',
-    21 => 'Start Date',
+    17 => 'Startdatum',
+    18 => 'Enddatum',
+    19 => 'Beiträge: Kalender',
+    20 => 'Titel',
+    21 => 'Startdatum',
     22 => 'URL',
-    23 => 'Your Events',
-    24 => 'Site Events',
-    25 => 'There are no upcoming events',
-    26 => 'Submit an Event',
-    27 => "Submitting an event to {$_CONF['site_name']} will put your event on the master calendar where users can optionally add your event to their personal calendar. This feature is <b>NOT</b> meant to store your personal events such as birthdays and anniversaries.<br><br>Once you submit your event it will be sent to our administrators and if approved, your event will appear on the master calendar.",
-    28 => 'Title',
-    29 => 'End Time',
-    30 => 'Start Time',
-    31 => 'All Day Event',
-    32 => 'Address Line 1',
-    33 => 'Address Line 2',
-    34 => 'City/Town',
-    35 => 'State',
-    36 => 'Zip Code',
-    37 => 'Event Type',
-    38 => 'Edit Event Types',
-    39 => 'Location',
-    40 => 'Add Event to',
-    41 => 'Master Calendar',
-    42 => 'Personal Calendar',
+    23 => 'Meine Termine',
+    24 => 'Allgemeine Termine',
+    25 => 'Es stehen keine Termine an',
+    26 => 'Einen Termin einreichen',
+    27 => "Wenn Du einen Termin bei {$_CONF['site_name']} einreichst, wird er in den Kalender aufgenommen, von wo aus ihn andere User in ihren persönlichen Kalender übernehmen können. Dies ist <b>NICHT</b> dazu gedacht, private Termine und Ereignisse wie etwa Geburtstage zu verwalten.<br><br>Wenn Du einen Termin einreichst, wird er an die Administratoren weitergeleitet und sobald er von diesen akzeptiert wird, wird er im Kalender erscheinen.",
+    28 => 'Titel',
+    29 => 'Endzeit',
+    30 => 'Startzeit',
+    31 => 'Ganztägiger Termin',
+    32 => 'Addresse, Zeile 1',
+    33 => 'Addresse, Zeile 2',
+    34 => 'Stadt',
+    35 => 'Bundesland',
+    36 => 'Postleitzahl',
+    37 => 'Art des Termins',
+    38 => 'Termin-Arten ändern',
+    39 => 'Ort',
+    40 => 'Termin hinzufügen zu',
+    41 => 'Kalender',
+    42 => 'Persönlicher Kalender',
     43 => 'Link',
-    44 => 'HTML tags are not allowed',
-    45 => 'Submit',
-    46 => 'Events in the system',
-    47 => 'Top Ten Events',
-    48 => 'Hits',
-    49 => 'It appears that there are no events on this site or no one has ever clicked on one.',
-    50 => 'Events',
-    51 => 'Delete'
+    44 => 'HTML ist nicht erlaubt',
+    45 => 'Abschicken',
+    46 => 'Anzahl Termine',
+    47 => 'Top Ten der Termine',
+    48 => 'Angezeigt',
+    49 => 'Es gibt keine Termine oder sie wurden von niemandem gelesen.',
+    50 => 'Termine',
+    51 => 'Löschen'
 );
 
 $_LANG_CAL_SEARCH = array(
-    'results' => 'Calendar Results',
-    'title' => 'Title',
-    'date_time' => 'Date & Time',
-    'location' => 'Location',
-    'description' => 'Description'
+    'results' => 'Gefundene Termine',
+    'title' => 'Titel',
+    'date_time' => 'Datum und Uhrzeit',
+    'location' => 'Ort',
+    'description' => 'Beschreibung'
 
 );
 
@@ -99,7 +99,7 @@ $_LANG_CAL_SEARCH = array(
 # calendar.php ($LANG30)
 
 $LANG_CAL_2 = array(
-    8 => 'Add Personal Event',
+    8 => 'Neuer Termin',
     9 => 'Termin',
     10 => 'Termine am',
     11 => 'Kalender',
@@ -115,14 +115,14 @@ $LANG_CAL_2 = array(
     33 => 'Datum',
     34 => 'Uhrzeit',
     35 => 'Neuer Termin',
-    36 => 'Submit',
+    36 => 'Abschicken',
     37 => 'Sorry, der persönliche Kalender ist auf dieser Site nicht verfügbar.',
     38 => 'Persönlicher Termin-Editor',
     39 => 'Tag',
     40 => 'Woche',
     41 => 'Monat',
-    42 => 'Add Master Event',
-    43 => 'Event Submissions',
+    42 => 'Neuer Termin',
+    43 => 'Beiträge: Termine'
 );
 
 ###############################################################################
@@ -130,7 +130,7 @@ $LANG_CAL_2 = array(
 
 $LANG_CAL_ADMIN = array(
     1 => 'Termin-Editor',
-    2 => 'Error',
+    2 => 'Fehler',
     3 => 'Titel',
     4 => 'URL',
     5 => 'Startdatum',
@@ -157,19 +157,19 @@ $LANG_CAL_ADMIN = array(
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Your event has been successfully saved.',
-    'delete'    => 'The event has been successfully deleted.',
-    'private'   => 'The event has been saved to your calendar',
-    'login'     => 'Cannot open your personal calendar until you login',
-    'removed'   => 'Event was successfully removed from your personal calendar',
-    'noprivate' => 'Sorry, personal calendars are not enabled on this site',
-    'unauth'    => 'Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged',
+    'save'      => 'Dein Termin wurde gespeichert.',
+    'delete'    => 'Der Termin wurde gelöscht.',
+    'private'   => 'Der Termin wurde in Deinen Kalender eingetragen.',
+    'login'     => 'Du musst angemeldet sein, um auf Deinen persönlichen Kalender zugreifen zu können.',
+    'removed'   => 'Der Termin wurde aus Deinem persönlichen Kalender entfernt',
+    'noprivate' => 'Sorry, persönliche Kalender sind auf dieser Site nicht verfügbar.',
+    'unauth'    => 'Du hast keinen Zugriff auf die Termin-Administrationsseite. Alle Versuche, auf Bereiche ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.'
 );
 
-$PLG_calendar_MESSAGE26 = 'The event has been saved to your calendar';
-$PLG_calendar_MESSAGE4  = "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen here, in our <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendar</a> section.";
-$PLG_calendar_MESSAGE17 = 'Your event has been successfully saved.';
-$PLG_calendar_MESSAGE18 = 'The event has been successfully deleted.';
-$PLG_calendar_MESSAGE24 = 'The event has been saved to your calendar';
+$PLG_calendar_MESSAGE26 = 'Der Termin wurde in Deinen Kalender eingetragen.';
+$PLG_calendar_MESSAGE4  = "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/calendar/index.php\">Links</a> aufgelistet werden.";
+$PLG_calendar_MESSAGE17 = 'Dein Termin wurde gespeichert.';
+$PLG_calendar_MESSAGE18 = 'Der Termin wurde gelöscht.';
+$PLG_calendar_MESSAGE24 = 'Der Termin wurde in Deinen Kalender eingetragen.';
 
 ?>
