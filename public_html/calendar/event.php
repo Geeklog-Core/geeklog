@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.12 2006/05/25 07:53:19 dhaun Exp $
+// $Id: event.php,v 1.13 2006/05/27 20:19:29 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -430,7 +430,6 @@ case $LANG_CAL_1[51]:
             $display .= COM_refresh ($_CONF['site_url']
                      . '/calendar/index.php?mode=personal&amp;msg=26');
         } else {
-            echo $eid, $_USER['uid'];
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         }
     } else {
