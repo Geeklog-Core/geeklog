@@ -1068,7 +1068,8 @@ $MESSAGE = array(
     76 => 'Wollen Sie diesen Eintrag wirklich löschen?',
     77 => 'HINWEIS:<br>Sie haben UTF-8 als Default-Zeichensatz angegeben. Ihr Webserver unterstützt jedoch kein "multibyte encoding". Installieren Sie bitte die mbstring-Erweiterung für PHP oder benutzen Sie einen anderen Zeichensatz bzw. eine andere Sprache.',
     78 => 'Bitte sicherstellen, dass die angegebene E-Mail-Adresse in beiden Fällen die gleiche ist.',
-    79 => 'Diese Funktion ist nicht mehr unter dieser URL verfügbar.'
+    79 => 'Diese Funktion ist nicht mehr unter dieser URL verfügbar.',
+    80 => 'Das Plugin, das diesen Feed angelegt hat, ist derzeit nicht aktiviert. Dieser Feed kann nicht bearbeitet werden, solange das Plugin deaktiviert ist.'
 );
 
 ###############################################################################
