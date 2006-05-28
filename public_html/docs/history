@@ -2,6 +2,12 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Introduced generic function to delete a user's photo to avoid code
+  duplication and slightly different error handling in various places [Dirk]
+- Made the new user registration form remember the user's input so that they
+  don't have to retype everything in case of an error [Dirk]
+- In the Admin's user list, banned users are indicated by striked-through
+  entries (based on a hack by Andy Maloney) [Dirk]
 - Added new setting $_CONF['onlyrootfeatures']. This is for sites where two or 
   more story admins can feature stories that the other admins cannot see. The
   setting prevents that one admin does not see that there is another recent 
