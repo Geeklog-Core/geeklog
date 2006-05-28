@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.37 2006/05/25 11:00:36 dhaun Exp $
+// $Id: functions.inc,v 1.38 2006/05/28 01:01:09 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1015,8 +1015,8 @@ function plugin_showstats_calendar ($showsitestats)
     $nrows  = DB_numRows($result);
     if ($nrows > 0) {
         $header_arr = array(
-            array('text' => $LANG_CAL_1[12], 'field' => 'sid'),
-            array('text' => $LANG_CAL_1[48], 'field' => 'hits'),
+            array('text' => $LANG_CAL_1[12], 'field' => 'sid', 'header_class' => 'stats-header-title'),
+            array('text' => $LANG_CAL_1[48], 'field' => 'hits', 'field_class'  => 'stats-list-count'),
         );
         $data_arr = array();
         $text_arr = array('has_menu'     => false,
