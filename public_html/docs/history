@@ -160,6 +160,21 @@ Static Pages plugin (1.4.3)
 - Fixed paging for the list of static pages (bug #528) [Dirk]
 
 
+May 28, 2006 (1.4.0sr3)
+------------
+
+The Security Science Researchers Institute Of Iran reported the following
+security issues:
+
+- Possible SQL injection and authentication bypass in auth.inc.php
+- Possible XSS in getimage.php
+- Path disclosure in getimage.php and the functions.php of some themes,
+  e.g. the Professional theme
+
+An internal code review also revealed a possible SQL injection in story
+submissions.
+
+
 Mar 5, 2006 (1.4.0sr2)
 -----------
 
@@ -610,6 +625,21 @@ Spam-X plugin 1.0.3
 - Added a Mass Delete module for Trackback comments [Dirk]
 - Added an "admin override" option, so that postings by members of the 'spamx
   Admin' group will not be checked for spam [Dirk]
+
+
+May 28, 2006 (1.3.11sr6)
+------------
+
+The Security Science Researchers Institute Of Iran reported the following
+security issues:
+
+- Possible SQL injection and authentication bypass in auth.inc.php
+- Possible XSS in getimage.php
+- Path disclosure in getimage.php and the functions.php of some themes,
+  e.g. the Professional theme
+
+An internal code review also revealed a possible SQL injection in story
+submissions.
 
 
 Mar 5, 2006 (1.3.11sr5)
