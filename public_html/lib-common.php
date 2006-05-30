@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.549 2006/05/25 20:57:04 mjervis Exp $
+// $Id: lib-common.php,v 1.550 2006/05/30 11:12:57 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5690,6 +5690,12 @@ function COM_truncate( $text, $maxlen, $filler = '' )
 function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='')
 {
     global $_CONF, $_USER;
+    
+    // Handle @ operator
+    if( error_reporting() == 0 )
+    {
+        return;
+    }
     
     /* If in PHP4, then respect error_reporting */
     if( (PHP_VERSION < 5) && (($level & error_reporting()) == 0) ) return;
