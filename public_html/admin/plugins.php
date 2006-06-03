@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.60 2006/05/13 17:05:12 dhaun Exp $
+// $Id: plugins.php,v 1.61 2006/06/03 15:51:04 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -266,6 +266,7 @@ function show_newplugins ()
     }
 
     if (sizeof ($newplugins) > 0) {
+        sort ($newplugins);
         $templdir = $_CONF['path_layout'] . 'admin/plugins';
         if (file_exists ($templdir . '/newpluginlist.thtml') &&
                 file_exists ($templdir . '/newlistitem.thtml')) {
