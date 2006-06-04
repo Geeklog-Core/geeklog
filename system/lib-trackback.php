@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.34 2006/05/23 17:37:33 dhaun Exp $
+// $Id: lib-trackback.php,v 1.35 2006/06/04 08:12:42 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -460,7 +460,7 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
     }
 
     $req = new HTTP_Request ($urlToGet);
-    $req->addHeader ('User-Agent', 'GeekLog ' . VERSION);
+    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
     if (PEAR::isError ($req->sendRequest ())) {
         COM_errorLog ("Trackback verification: " . $response->getMessage()
                       . " when requesting $urlToGet");
