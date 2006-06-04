@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.85 2006/05/25 10:48:33 dhaun Exp $
+// $Id: install.php,v 1.86 2006/06/04 09:15:08 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -126,7 +126,7 @@ function INST_welcomePage()
     $phpv = php_v ();
     if (($phpv[0] < 4) || (($phpv[0] == 4) && ($phpv[1] < 1))) {
         $retval .= '<h1>PHP 4.1.0 required</h1>' . LB;
-        $retval .= '<p>Sorry, but Geeklog now requires at least PHP 4.1.0 to run. Please upgrade your PHP install or ask your hosting service to do it for you.</p>' . LB;
+        $retval .= '<p>Sorry, but Geeklog requires at least PHP 4.1.0 to run. Please upgrade your PHP install or ask your hosting service to do it for you.</p>' . LB;
         $retval .= '</body>' . LB . '</html>' . LB;
 
         return $retval;
@@ -137,7 +137,7 @@ function INST_welcomePage()
         if (($myv[0] < 3) || (($myv[0] == 3) && ($myv[1] < 23)) ||
                 (($myv[0] == 3) && ($myv[1] == 23) && ($myv[2] < 2))) {
             $retval .= '<h1>MySQL 3.23.2 required</h1>' . LB;
-            $retval .= '<p>Sorry, but Geeklog now requires at least MySQL 3.23.2 to run. Please upgrade your MySQL install or ask your hosting service to do it for you.</p>' . LB;
+            $retval .= '<p>Sorry, but Geeklog requires at least MySQL 3.23.2 to run. Please upgrade your MySQL install or ask your hosting service to do it for you.</p>' . LB;
             $retval .= '</body>' . LB . '</html>' . LB;
 
             return $retval;
@@ -170,7 +170,7 @@ function INST_welcomePage()
     $retval .= "<p>If you haven't already done so, you should <strong>edit config.php prior to running this script</strong>. This script will then apply the database structures for both fresh installations and upgrades.</p>" . LB;
 
     $retval .= '<h2>Upgrading</h2>' . LB;
-    $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  <strong>This installation script will alter your Geeklog database.</strong> Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>!</p>' . LB;
+    $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  <strong>This installation script will alter your Geeklog database.</strong> So if something goes wrong and you have to do the upgrade again, you will need a backup of your original database. <strong>YOU HAVE BEEN WARNED</strong>!</p>' . LB;
     $retval .= '<p>Please make sure to select the correct Geeklog version you are coming from on the next screen. This script will do incremental upgrades after this version (i.e. you can upgrade directly from any old version to ' . VERSION . ').</p>' . LB;
     $retval .= '<p>Please note this script will <strong>not upgrade</strong> any beta or release candidate versions of Geeklog.</p>' . LB;
 
@@ -204,16 +204,16 @@ function INST_welcomePage()
     }
 
     if ($globals_off || $long_arrays_off || $public_html) {
-        $retval .= '<h1>Important Note</h1>' . LB;
+        $retval .= '<h2>Important Note</h2>' . LB;
 
         if ($public_html) {
             $retval .= '<p><strong>Note:</strong> "public_html" should never be part of your site\'s URL. Please read the part about public_html in the <a href="../../docs/install.html#public_html">installation instructions</a> again and change your setup accordingly before you proceed.</p>';
         }
 
         if ($globals_off || $long_arrays_off) {
-            $retval .= '<p><font color="red"><strong>Note:</strong> You have '
+            $retval .= '<p><strong>Note:</strong> You have '
                     . $warn_message .' in your <tt>php.ini</tt>. While Geeklog itself will work just fine with that setting, some of the available plugins and add-ons may not. You may want to set '
-                    . $help_message . ' (and restart your webserver) if you plan to install any of those add-ons.</font></p>' . LB;
+                    . $help_message . ' (and restart your webserver) if you plan to install any of those add-ons.</p>' . LB;
             $retval .= '<p>If you don\'t know where your <tt>php.ini</tt> file is located, please <a href="info.php">click here</a>.</p>' . LB;
         }
     }
