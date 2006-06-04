@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.86 2006/06/04 09:15:08 dhaun Exp $
+// $Id: install.php,v 1.87 2006/06/04 10:03:45 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -221,7 +221,7 @@ function INST_welcomePage()
     $retval .= '<h2>Installation Options</h2>' . LB;
     $install_options = '<option value="new_db">New Database</option>'.LB;
     $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
-    $retval .= '<form action="install.php" method="post">' . LB;
+    $retval .= '<form action="install.php" method="POST">' . LB;
     $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB;
     $retval .= '<tr><td align="right">Installation Type:&nbsp;</td><td><select name="install_type">'. LB;
     $retval .= $install_options;
@@ -306,6 +306,38 @@ function INST_identifyGeeklogVersion ()
     return $version;
 }
 
+function INST_checkTableExists ($table)
+{
+    global $_TABLES, $_DB_dbms;
+
+    $exists = false;
+
+    if ($_DB_dbms == 'mysql') {
+        $result = DB_query ("SHOW TABLES LIKE '{$_TABLES[$table]}'");
+        if (DB_numRows ($result) > 0) {
+            $exists = true;
+
+            $display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
+            $display .= '<html>' . LB;
+            $display .= '<head><title>Geeklog Installation - Error</title></head>' . LB;
+            $display .= '<body bgcolor="#ffffff">' . LB;
+            $display .= '<h2>Geeklog Installation - Error</h2>' . LB;
+            $display .= '<p>The Geeklog tables already exist in your database. This can be because of one of the following reasons:</p>' . LB;
+            $display .= '<ol>' . LB;
+            $display .= '<li>You already ran the install script before.<br>Please note that you don\'t have to run the install script again if you ran into a problem with your paths or URLs on a previous attempt. If, however, you want to run the install script again now, then please delete the tables from your database first (or drop the database and create it again).</li>' . LB;
+            $display .= '<li>You really want to upgrade your database (for a new Geeklog version) but forgot to select "Upgrade Database" from the drop-down menu on the initial screen.</li>' . LB;
+            $display .= '</ol>' . LB;
+            $display .= '<form action="install.php" method="POST">' . LB;
+        $display .= '<p align="center"><input type="submit" name="action" value="<< Back"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"></p>' . LB . '</form>';
+            $display .= '</body>' . LB . '</html>';
+
+            echo $display;
+        }
+    }
+
+    return $exists;
+}
+
 function INST_getDatabaseSettings($install_type, $geeklog_path)
 {
     global $_CONF, $_TABLES;
@@ -379,6 +411,10 @@ function INST_createDatabaseStructures ($use_innodb = false)
     require_once ($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
 
     $progress = '';
+
+    if (INST_checkTableExists ('access')) {
+        return false;
+    }
 
     if ($_DB_dbms == 'mysql') {
 
@@ -872,7 +908,7 @@ if (isset ($_POST['page'])) {
     $page = 0;
 }
 
-if (isset ($_POST['action']) && ($_POST['action'] == '<< Previous')) {
+if (isset ($_POST['action']) && ($_POST['action'] == '<< Back')) {
     $page = 0;
 }
 
@@ -922,8 +958,8 @@ if ($page > 0) {
             $display .= '<p>Geeklog could not find config.php in the path you just entered: <b>' . $_POST['geeklog_path'] . '</b><br>' . LB;
             $display .= 'Please check this path and try again. Remember that you should be using absolute paths, starting at the root of your file system.</p>' . LB;
         }
-        $display .= '<form action="install.php" method="post">' . LB;
-        $display .= '<p align="center"><input type="submit" name="action" value="<< Previous"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"></p>' . LB . '</form>';
+        $display .= '<form action="install.php" method="POST">' . LB;
+        $display .= '<p align="center"><input type="submit" name="action" value="<< Back"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"></p>' . LB . '</form>';
         $display .= '</body>' . LB . '</html>';
         echo $display;
         exit;
