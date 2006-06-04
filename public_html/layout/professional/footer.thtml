@@ -2,9 +2,8 @@
                 </td>
                 {right_blocks} </tr>
           </table>
-	  {centerblockfooter-span}
-<table cellspacing="0" cellpadding="0" align="center" width="100%" class="block-divider-right"><tr><td><img src="{site_url}/images/speck.gif" width="1" height="1" alt=""></td></tr></table>
-          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+	      {centerblockfooter-span}
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" class="footer-divider-top">
             <tr>
               <td width="70%" class="footerblock" valign="middle" align="left">{copyright_notice}</td>
               <td width="30%" class="footerblock" valign="middle" align="right">{powered_by} <a href="{geeklog_url}">Geeklog</a>&nbsp;<br>

@@ -414,6 +414,12 @@ th {
   font:100% Tahoma,verdana,helvetica,arial,sans-serif;
   text-decoration:none;
 }
+.footer-divider-top {
+  background:#FFFFFF;
+  border-top:1px solid #CCCCCC;
+  padding-top:1px;
+  color:#000000;
+}
 .header-envelope {
   border-bottom:1px solid #E7E7E7;
   border-left:1px solid #E7E7E7;
