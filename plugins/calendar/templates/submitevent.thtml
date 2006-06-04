@@ -15,7 +15,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_startdate}:</b></td>
+                                        <td align="right" valign="top"><b>{lang_startdate}:</b></td>
                                         <td>
                                             <select name="start_month">
                                                 {month_options}
@@ -46,7 +46,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_enddate}:</b></td>
+                                        <td align="right" valign="top"><b>{lang_enddate}:</b></td>
                                         <td>
                                             <select name="end_month">
                                                 {month_options}
@@ -81,7 +81,7 @@
                                         <td><input type="checkbox" name="allday"></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_location}:</b></td>
+                                        <td align="right" valign="top"><b>{lang_location}:</b></td>
                                         <td>
                                             <textarea name="location" cols="45" rows="2"></textarea>
                                         </td>
@@ -115,7 +115,7 @@
                                         <td><input type="text" size="48" maxlength="{max_url_length}" name="url" value="http://"></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_description}:</b></td>
+                                        <td align="right" valign="top"><b>{lang_description}:</b></td>
                                         <td><textarea name="description" style="width:100%" rows="8"></textarea></td>
                                     </tr>
                                     <tr>
