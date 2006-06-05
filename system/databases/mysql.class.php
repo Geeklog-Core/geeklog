@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | mysql.class.php                                                           |
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.20 2005/05/09 19:01:15 dhaun Exp $
+// $Id: mysql.class.php,v 1.21 2006/06/05 08:44:16 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -109,7 +109,7 @@ class database {
         }
 
         // Connect to MySQL server
-        $this->_db = mysql_connect($this->_host,$this->_user,$this->_pass) or die('Cannnot connect to DB server');
+        $this->_db = mysql_connect($this->_host,$this->_user,$this->_pass) or die('Cannot connect to DB server');
 
         // Set the database
         @mysql_select_db($this->_name) or die('error selecting database');
