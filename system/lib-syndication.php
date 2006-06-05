@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.35 2006/05/18 20:32:06 mjervis Exp $
+// $Id: lib-syndication.php,v 1.36 2006/06/05 19:33:16 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -272,7 +272,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             if( $_CONF['trackback_enabled'] && ($feedType == 'RSS') && ($row['trackbackcode'] >= 0))
             {
                 $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
-                $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
+                $extensionTags['trackbacktag'] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
             }
             $article = array( 'title'      => $storytitle,
                                 'summary'    => $storytext,
@@ -379,7 +379,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
         if( $_CONF['trackback_enabled'] && ($feedType == 'RSS') && ($row['trackbackcode'] >= 0))
         {
             $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
-            $extensionTags[] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
+            $extensionTags['trackbacktag'] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
         }
         $article = array( 'title'      => $storytitle,
                             'summary'    => $storytext,
@@ -447,7 +447,7 @@ function SYND_updateFeed( $fid )
                     $content = SYND_getFeedContentAll( $A['limits'], $link,
                                                        $data, $A['content_length'],
                                                        $format[0], $format[1], $fid );
-                } 
+                }
                 else // feed for a single topic only
                 {
                     $content = SYND_getFeedContentPerTopic( $A['topic'],
@@ -493,9 +493,29 @@ function SYND_updateFeed( $fid )
 
             /* Gather any other stuff */
             $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $format[0], $format[1], $A['topic'], $fid);
+            /* If the feed is RSS, and trackback is enabled */
             if( $_CONF['trackback_enabled'] && ($format[0] == 'RSS') )
             {
-                $feed->namespaces[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
+                /* Check to see if an article has trackbacks enabled, and if
+                 * at least one does, then include the trackback namespace:
+                 */
+                $trackbackenabled = false;
+                foreach($content as $item)
+                {
+                    if( array_key_exists('extensions', $item) &&
+                        array_key_exists('trackbacktag', $item['extensions'])
+                        )
+                    {
+                        // Found at least one article, with a trackbacktag
+                        // in it's extensions tag.
+                        $trackbackenabled = true;
+                        break;
+                    }
+                }
+                if( $trackbackenabled )
+                {
+                    $feed->namespaces[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
+                }
             }
             $feed->extensions = PLG_getFeedExtensionTags($A['type'], $format[0], $format[1], $A['topic'], $fid);
             $feed->articles = $content;
