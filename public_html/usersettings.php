@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.138 2006/05/27 17:13:37 dhaun Exp $
+// $Id: usersettings.php,v 1.139 2006/06/05 09:01:39 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -527,22 +527,30 @@ function editpreferences()
     if (($_CONF['contributedbyline'] == 1) &&
         ($_CONF['hide_author_exclusion'] == 0)) {
         $preferences->set_var ('lang_authors', $LANG04[56]);
-        $query = DB_query ("SELECT DISTINCT story.uid, users.username FROM {$_TABLES['stories']} story, {$_TABLES['users']} users WHERE story.uid = users.uid ORDER BY users.username");
-        $nrows = DB_numRows($query );
-        $authors = explode(" ",$A['aids']);
+        $sql = "SELECT DISTINCT story.uid, users.username,users.fullname FROM {$_TABLES['stories']} story, {$_TABLES['users']} users WHERE story.uid = users.uid";
+        if ($_CONF['show_fullname'] == 1) {
+            $sql .= ' ORDER BY users.fullname';
+        } else {
+            $sql .= ' ORDER BY users.username';
+        }
+        $query = DB_query ($sql);
+        $nrows = DB_numRows ($query );
+        $authors = explode (' ', $A['aids']);
 
         $selauthors = '';
         for( $i = 0; $i < $nrows; $i++ ) {
-            $B = DB_fetchArray($query);
+            $B = DB_fetchArray ($query);
             $selauthors .= '<option value="' . $B['uid'] . '"';
-            if(in_array(sprintf("%d", $B['uid']), $authors)) {
+            if (in_array (sprintf ('%d', $B['uid']), $authors)) {
                $selauthors .= ' selected';
             }
-            $selauthors .= '>' . $B['username'] . '</option>' . LB;
+            $selauthors .= '>' . COM_getDisplayName ($B['uid'], $B['username'],
+                                                     $B['fullname'])
+                        . '</option>' . LB;
         }
 
         if (DB_count($_TABLES['topics']) > 10) {
-            $Selboxsize = intval(DB_count($_TABLES['topics']) * 1.5);
+            $Selboxsize = intval (DB_count ($_TABLES['topics']) * 1.5);
         } else {
             $Selboxsize = 15;
         }
