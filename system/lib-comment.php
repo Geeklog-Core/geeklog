@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.33 2006/05/22 02:26:17 ospiess Exp $
+// $Id: lib-comment.php,v 1.34 2006/06/05 09:53:30 dhaun Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -98,8 +98,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
 
     if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) {
         $username = $_USER['username'];
-        $fullname = DB_getItem( $_TABLES['users'], 'fullname',
-                                "uid = '{$_USER['uid']}'" ); 
+        $fullname = $_USER['fullname'];
     } else {
         $result = DB_query( "SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = 1" );
         $N = DB_fetchArray( $result );
@@ -244,7 +243,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // comment variables
         $template->set_var( 'indent', $indent );
-        $template->set_var( 'author', $A['username'] );
+        $template->set_var( 'author_name', $A['username'] );
         $template->set_var( 'author_id', $A['uid'] );
         $template->set_var( 'cid', $A['cid'] );
         $template->set_var( 'cssid', $row % 2 );
@@ -252,9 +251,11 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         if( $A['uid'] > 1 ) {
             if( empty( $A['fullname'] )) {
                 $template->set_var( 'author_fullname', $A['username'] );
+                $template->set_var( 'author', $A['username'] );
                 $alttext = $A['username'];
             } else {
                 $template->set_var( 'author_fullname', $A['fullname'] );
+                $template->set_var( 'author', $A['fullname'] );
                 $alttext = $A['fullname'];
             }
 
@@ -280,6 +281,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                     . $A['uid'] . '">' );
             $template->set_var( 'end_author_anchortag', '</a>' );
         } else {
+            $template->set_var( 'author', $A['username'] );
             $template->set_var( 'author_fullname', $A['username'] );
             $template->set_var( 'author_photo', '' );
             $template->set_var( 'camera_icon', '' );
@@ -924,7 +926,7 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
         $comment = strip_tags ($comment);
     }
 
-    $author = DB_getItem ($_TABLES['users'], 'username', "uid = '$uid'");
+    $author = COM_getDisplayName ($uid);
     if (($uid <= 1) && !empty ($ipaddress)) {
         // add IP address for anonymous posters
         $author .= ' (' . $ipaddress . ')';
@@ -1134,7 +1136,7 @@ function CMT_sendReport ($cid, $type)
         $comment = strip_tags ($comment);
     }
 
-    $author = DB_getItem ($_TABLES['users'], 'username', "uid = {$A['uid']}");
+    $author = COM_getDisplayName ($A['uid']);
     if (($A['uid'] <= 1) && !empty ($A['ipaddress'])) {
         // add IP address for anonymous posters
         $author .= ' (' . $A['ipaddress'] . ')';

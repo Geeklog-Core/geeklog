@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.63 2006/05/20 11:31:38 dhaun Exp $
+// $Id: lib-story.php,v 1.64 2006/06/05 09:53:30 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -148,8 +148,9 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
             $article->set_var( 'contributedby_fullname', $fullname );
         }
         
-        $article->set_var( 'contributedby_author',
-                COM_getDisplayName( $A['uid'], $username, $fullname ));
+        $authorname = COM_getDisplayName( $A['uid'], $username, $fullname );
+        $article->set_var( 'contributedby_author', $authorname );
+        $article->set_var( 'author', $authorname );
 
         if( $A['uid'] > 1 )
         {
@@ -322,13 +323,15 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
 
             if( $A['comments'] > 0 )
             {
-                $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '{$A['sid']}' ORDER BY date desc LIMIT 1" );
+                $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '{$A['sid']}' ORDER BY date desc LIMIT 1" );
                 $C = DB_fetchArray( $result );
 
                 $recent_post_anchortag = '<span class="storybyline">'
                         . $LANG01[27] . ': '
                         . strftime( $_CONF['daytime'], $C['day'] ) . ' '
-                        . $LANG01[104] . ' ' . $C['username'] . '</span>';
+                        . $LANG01[104] . ' ' . COM_getDisplayName ($C['cuid'],
+                                                $C['username'], $C['fullname'])
+                        . '</span>';
                 $article->set_var( 'start_comments_anchortag', '<a href="'
                         . $commentsUrl . '">' );
                 $article->set_var( 'end_comments_anchortag', '</a>' );

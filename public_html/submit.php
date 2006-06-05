@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.107 2006/05/25 13:44:35 dhaun Exp $
+// $Id: submit.php,v 1.108 2006/06/05 09:53:30 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -216,7 +216,9 @@ function submitstory($topic = '')
 
     if (!empty($_USER['username'])) {
         $storyform->set_var('story_username', $_USER['username']);
-        $storyform->set_var('status_url', $_CONF['site_url'] . '/users.php?mode=logout');
+        $storyform->set_var('author', COM_getDisplayName ());
+        $storyform->set_var('status_url', $_CONF['site_url']
+                                          . '/users.php?mode=logout');
         $storyform->set_var('lang_loginout', $LANG12[34]);
     } else {
         $storyform->set_var('status_url', $_CONF['site_url'] . '/users.php');
@@ -273,15 +275,14 @@ function sendNotification ($table, $A)
         $A['introtext'] = strip_tags ($A['introtext']);
     }
     $introtext = COM_undoSpecialChars (stripslashes ($A['introtext']));
-    $storyauthor = DB_getItem ($_TABLES['users'], 'username',
-                                "uid = {$A['uid']}");
+    $storyauthor = COM_getDisplayName ($A['uid']);
     $topic = stripslashes (DB_getItem ($_TABLES['topics'], 'topic',
-                                        "tid = '{$A['tid']}'"));
+                                       "tid = '{$A['tid']}'"));
 
     $mailbody = "$LANG08[31]: {$title}\n"
-                . "$LANG24[7]: {$storyauthor}\n"
-                . "$LANG08[32]: " . strftime ($_CONF['date']) . "\n"
-                . "{$LANG_ADMIN['topic']}: {$topic}\n\n";
+              . "$LANG24[7]: {$storyauthor}\n"
+              . "$LANG08[32]: " . strftime ($_CONF['date']) . "\n"
+              . "{$LANG_ADMIN['topic']}: {$topic}\n\n";
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {

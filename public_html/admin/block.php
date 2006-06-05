@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.98 2006/05/14 20:25:42 mjervis Exp $
+// $Id: block.php,v 1.99 2006/06/05 09:53:30 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -184,10 +184,13 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('block_order', $A['blockorder']);
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $ownername = COM_getDisplayName ($A['owner_id']);
     $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
                                     'username', "uid = '{$A['owner_id']}'"));
-    $block_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
+    $block_templates->set_var('owner_name', $ownername);
+    $block_templates->set_var('owner', $ownername);
     $block_templates->set_var('owner_id', $A['owner_id']);
+
     $block_templates->set_var('lang_group', $LANG_ACCESS['group']);
     $block_templates->set_var('group_dropdown',
                               groupDropdown ($A['group_id'], $access));
@@ -327,10 +330,13 @@ function editblock ($bid = '')
     }
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $ownername = COM_getDisplayName ($A['owner_id']);
     $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
                                     'username', "uid = '{$A['owner_id']}'"));
-    $block_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
+    $block_templates->set_var('owner_name', $ownername);
+    $block_templates->set_var('owner', $ownername);
     $block_templates->set_var('owner_id', $A['owner_id']);
+
     $block_templates->set_var('lang_group', $LANG_ACCESS['group']);
     $block_templates->set_var('group_dropdown',
                               groupDropdown ($A['group_id'], $access));

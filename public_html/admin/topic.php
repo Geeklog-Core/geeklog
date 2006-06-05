@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.65 2006/04/13 11:14:02 dhaun Exp $
+// $Id: topic.php,v 1.66 2006/06/05 09:53:31 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -117,9 +117,11 @@ function edittopic ($tid = '')
     $topic_templates->set_var('lang_donotusespaces', $LANG27[5]);
     $topic_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $topic_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $ownername = COM_getDisplayName ($A['owner_id']);
     $topic_templates->set_var('owner_username', DB_getItem ($_TABLES['users'],
                               'username', "uid = {$A['owner_id']}")); 
-    $topic_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
+    $topic_templates->set_var('owner_name', $ownername);
+    $topic_templates->set_var('owner', $ownername);
     $topic_templates->set_var('owner_id', $A['owner_id']);
     $topic_templates->set_var('lang_group', $LANG_ACCESS['group']);
     $topic_templates->set_var('lang_save', $LANG27[19]);

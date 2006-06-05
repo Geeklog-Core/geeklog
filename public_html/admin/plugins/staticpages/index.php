@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.65 2006/04/14 18:02:50 dhaun Exp $
+// $Id: index.php,v 1.66 2006/06/05 09:53:31 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -107,10 +107,13 @@ function form ($A, $error = false)
         
         $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
         $sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
+        $ownername = COM_getDisplayName ($A['owner_id']);
         $sp_template->set_var('owner_username', DB_getItem($_TABLES['users'],
                               'username',"uid = {$A['owner_id']}"));
-        $sp_template->set_var('owner_name', COM_getDisplayName($A['owner_id']));
+        $sp_template->set_var('owner_name', $ownername);
+        $sp_template->set_var('owner', $ownername);
         $sp_template->set_var('owner_id', $A['owner_id']);
+
         $sp_template->set_var('lang_group', $LANG_ACCESS['group']);
         $usergroups = SEC_getUserGroups();
         $groupdd = '';
@@ -158,7 +161,9 @@ function form ($A, $error = false)
         $sp_template->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
         $sp_template->set_var('username', DB_getItem($_TABLES['users'],
                               'username', "uid = {$A['sp_uid']}"));
-        $sp_template->set_var('name', COM_getDisplayName ($A['sp_uid']));
+        $authorname = COM_getDisplayName ($A['sp_uid']);
+        $sp_template->set_var ('name', $authorname);
+        $sp_template->set_var ('author', $authorname);
         $sp_template->set_var ('lang_url', $LANG_STATIC['url']);
         $sp_template->set_var ('lang_id', $LANG_STATIC['id']);
         $sp_template->set_var('sp_uid', $A['sp_uid']);

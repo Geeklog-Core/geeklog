@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.216 2006/05/22 05:20:52 ospiess Exp $
+// $Id: story.php,v 1.217 2006/06/05 09:53:31 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -535,15 +535,19 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
                 '<input type="hidden" name="type" value="submission">');
     }
     $story_templates->set_var ('lang_author', $LANG24[7]);
-    $story_templates->set_var ('story_author', COM_getDisplayName ($A['uid']));
+    $storyauthor = COM_getDisplayName ($A['uid']);
+    $story_templates->set_var ('story_author', $storyauthor);
+    $story_templates->set_var ('author', $storyauthor);
     $story_templates->set_var ('story_uid', $A['uid']);
 
     // user access info
     $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $story_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $ownername = COM_getDisplayName ($A['owner_id']);
     $story_templates->set_var('owner_username', DB_getItem ($_TABLES['users'],
                               'username', "uid = {$A['owner_id']}"));
-    $story_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
+    $story_templates->set_var('owner_name', $ownername);
+    $story_templates->set_var('owner', $ownername);
     $story_templates->set_var('owner_id', $A['owner_id']);
     $story_templates->set_var('lang_group', $LANG_ACCESS['group']);
 

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | article.php                                                               |
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.78 2006/04/13 09:05:02 dhaun Exp $
+// $Id: article.php,v 1.79 2006/06/05 09:53:30 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -140,8 +140,9 @@ if ($A['count'] > 0) {
 
         if ($_CONF['contributedbyline'] == 1) {
             $story_template->set_var ('lang_contributedby', $LANG01[1]);
-            $story_template->set_var ('story_author',
-                                      COM_getDisplayName ($A['uid']));
+            $authorname = COM_getDisplayName ($A['uid']);
+            $story_template->set_var ('author', $authorname);
+            $story_template->set_var ('story_author', $authorname);
             $story_template->set_var ('story_author_username', $A['username']);
         }
 

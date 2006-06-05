@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.32 2006/04/13 11:14:02 dhaun Exp $
+// $Id: index.php,v 1.33 2006/06/05 09:53:31 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -172,9 +172,11 @@ function editlink ($mode, $lid = '')
     // user access info
     $link_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $link_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $ownername = COM_getDisplayName ($A['owner_id']);
     $link_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
                              'username', "uid = {$A['owner_id']}")); 
-    $link_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
+    $link_templates->set_var('owner_name', $ownername);
+    $link_templates->set_var('owner', $ownername);
     $link_templates->set_var('link_ownerid', $A['owner_id']);
     $link_templates->set_var('lang_group', $LANG_ACCESS['group']);
 

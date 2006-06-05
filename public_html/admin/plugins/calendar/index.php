@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2006/05/25 07:53:18 dhaun Exp $
+// $Id: index.php,v 1.15 2006/06/05 09:53:31 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -330,9 +330,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     // user access info
     $event_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $event_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $ownername = COM_getDisplayName ($A['owner_id']);
     $event_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
                               'username', "uid = {$A['owner_id']}"));
-    $event_templates->set_var('owner_name', COM_getDisplayName($A['owner_id']));
+    $event_templates->set_var('owner_name', $ownername);
+    $event_templates->set_var('owner', $ownername);
     $event_templates->set_var('owner_id', $A['owner_id']);
     $event_templates->set_var('lang_group', $LANG_ACCESS['group']);
 
