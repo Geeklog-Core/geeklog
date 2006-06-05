@@ -10,10 +10,10 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.27 2006/05/27 17:13:37 dhaun Exp $
+// $Id: lib-user.php,v 1.28 2006/06/05 09:51:00 dhaun Exp $
 
 if (eregi ('lib-user.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -163,6 +163,7 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
         $template->set_var ('lang_password', $LANG04[4]);
         $template->set_var ('username', $username);
         $template->set_var ('password', $passwd);
+        $template->set_var ('name', COM_getDisplayName ($uid));
         $template->parse ('output', 'mail');
         $mailtext = $template->get_var ('output');
     } else {
