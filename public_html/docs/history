@@ -147,6 +147,8 @@ Polls plugin (1.1)
 
 Spam-X plugin (1.0.4)
 -------------
+- Fixed potential problems with the checkforSpam function's return code in case
+  of unusual configurations (e.g. $_CONF['spamx'] = 0) [Dirk, Tom Willet]
 - Made the plugin's internal log flag a proper config option. So you can now
   disable logging to spamx.log from the plugin's config.php [Dirk]
 - Mass delete by IP now uses stored IP address [Mike]

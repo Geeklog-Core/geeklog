@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.22 2006/05/25 09:14:11 dhaun Exp $
+ * $Id: functions.inc,v 1.23 2006/06/05 19:45:42 dhaun Exp $
  */
 
 /**
@@ -188,7 +188,7 @@ function plugin_upgrade_spamx ()
  * param int    $action   which action modules to call if spam found (sum of module numbers)
  */
 
-function plugin_checkforSpam_spamx($comment, $action)
+function plugin_checkforSpam_spamx ($comment, $action)
 {
     global $_CONF, $_TABLES, $_SPX_CONF; 
 
@@ -199,51 +199,55 @@ function plugin_checkforSpam_spamx($comment, $action)
         }
     }
 
+    $spamx_path = $_CONF['path'] . 'plugins/spamx/';
+
     // Set up Spamx_Action and Spamx_Examine arrays
-    $Spamx_Action = array();
-    $Spamx_Examine = array();
-    if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {
-        while (($file = readdir($dir)) !== false) {
-            if (is_file($_CONF['path'] . 'plugins/spamx/' . $file)) {
-                if (substr($file, -17) == '.Action.class.php') {
-                    $sfile = str_replace('.Action.class.php', '', $file);
-                    require_once ($_CONF['path'] . 'plugins/spamx/' . $file);
+    $Spamx_Action = array ();
+    $Spamx_Examine = array ();
+    if ($dir = @opendir ($spamx_path)) {
+        while (($file = readdir ($dir)) !== false) {
+            if (is_file ($spamx_path . $file)) {
+                if (substr ($file, -17) == '.Action.class.php') {
+                    $sfile = str_replace ('.Action.class.php', '', $file);
+                    require_once ($spamx_path . $file);
                     $CM = new $sfile;
-                    $Spamx_Action[$CM->number()] = $sfile;
-                }
-                if (substr($file, -18) == '.Examine.class.php') {
-                    $sfile = str_replace('.Examine.class.php', '', $file);
+                    $Spamx_Action[$CM->number ()] = $sfile;
+                } else if (substr ($file, -18) == '.Examine.class.php') {
+                    $sfile = str_replace ('.Examine.class.php', '', $file);
                     $Spamx_Examine[] = $sfile;
                 }
             }
         }
-        closedir($dir);
+        closedir ($dir);
     }
+
     $res = 0;
     foreach ($Spamx_Examine as $Examine) {
         $filename = $Examine . '.Examine.class.php';
-        require_once $_CONF['path'] . 'plugins/spamx/' . $filename;
+        require_once ($spamx_path . $filename);
         $EX = new $Examine;
-        $res = $EX->execute($comment);
+        $res = $EX->execute ($comment);
         if ($res == 1) {
             break;
         }
     }
 
     if ($res == 1) { // Examine Class found a match - spam detected
+        $res = 0;
+
         if ($action == -1 or $action == '') {
             $action = $_SPX_CONF['action'];
         }
-        foreach($Spamx_Action as $Num => $Act) {
+        foreach ($Spamx_Action as $Num => $Act) {
             if (($action & $Num) == $Num) {
                 $filename = $Act . '.Action.class.php';
-                require_once($_CONF['path'] . 'plugins/spamx/' . $filename);
+                require_once ($spamx_path . $filename);
                 $AC = new $Act;
-                $AC->execute($comment);
+                $AC->execute ($comment);
+
+                $res = max ($res, $AC->result ());
             }
         }
-
-        return $AC->result();
     }
 
     return $res;
