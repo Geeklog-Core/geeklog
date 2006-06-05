@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.550 2006/05/30 11:12:57 mjervis Exp $
+// $Id: lib-common.php,v 1.551 2006/06/05 08:42:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -968,7 +968,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
     if( !empty( $_USER['username'] ))
     {
-        $msg .= ', ' . $_USER['username'];
+        $msg .= ', ' . COM_getDisplayName( $_USER['uid'], $_USER['username'],
+                                           $_USER['fullname'] );
     }
 
     $curtime =  COM_getUserDateTimeFormat();
@@ -3158,7 +3159,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     }
     $blocks = $sortedBlocks;
 
-    // Loop though resulting sorted array aand pass associative arays to COM_formatBlock
+    // Loop though resulting sorted array and pass associative arays to COM_formatBlock
     foreach( $blocks as $A )
     {
         if( $A['type'] == 'dynamic' or SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
@@ -3643,7 +3644,7 @@ function COM_emailUserTopics()
             {
                 if( empty( $authors[$S['uid']] ))
                 {
-                    $storyauthor = DB_getItem( $_TABLES['users'], 'username', "uid = '{$S['uid']}'" );
+                    $storyauthor = COM_getDisplayName ($S['uid']);
                     $authors[$S['uid']] = $storyauthor;
                 }
                 else
