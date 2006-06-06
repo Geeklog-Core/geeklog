@@ -512,11 +512,22 @@ th {
   font:100% Tahoma,verdana,helvetica,arial,sans-serif;
   text-align:right;
 }
-.searchform {
+.searchform-box {
   background:#E7E7E7;
+  text-align:right;
   border-bottom:1px solid #CCCCCC;
-  height:53px;
-  padding:6px 4px 6px 1px;
+  height:52px;
+  padding:0px 4px 0px 0px;
+  margin:0px;
+  font:73% Tahoma,verdana,helvetica,arial,sans-serif;
+}
+.searchform-elements{
+  display:inline;
+  position:relative;
+  top:6px;
+}
+.searchform-elements input{
+  font:83% Tahoma,verdana,helvetica,arial,sans-serif;
 }
 .searchhits {
   background:transparent;
