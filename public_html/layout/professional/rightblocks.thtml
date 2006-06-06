@@ -1,9 +1,13 @@
-<td class="block-outerborder-right"><img src="{site_url}/images/speck.gif" width="1" height="1" alt=""></td>
+<td class="block-outerborder-right">
+    <div style="background:transparent; width:1px; height:1px;"></div>
+</td>
 <td class="block-featured-right" valign="top">
-<table width="100%" class="blocksbg-right"><tr><td valign="top">
-  {geeklog_blocks}
-<img src="{site_url}/images/speck.gif" width="180" height="1" alt="">
-</td></tr></table>
+    <table width="100%" class="blocksbg-right">
+        <tr><td valign="top">
+            {geeklog_blocks}
+            <div style="background:transparent; width:180px; height:1px;"></div>
+        </td></tr>
+    </table>
 </td>
 <!--</td></tr></table>-->
 <!--If you want the splash, uncomment the last line. If you want no splash, make sure it is commented out.-->
