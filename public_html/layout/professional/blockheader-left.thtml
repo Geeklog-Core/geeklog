@@ -1,6 +1,10 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="10" class="blocktable-left">
-  <tr>
-    <td>
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr><td height="22" align="left" valign="middle" class="block-title-left">{block_title}</td><td align="right">{block_help}</td>
-	</tr><tr><td colspan="2" width="100%" class="block-info-left">
+    <tr><td>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr><td height="22" align="left" valign="middle" class="block-title-left">
+                {block_title}
+            </td>
+            <td align="right">
+                {block_help}
+            </td></tr>
+            <tr><td colspan="2" width="100%" class="block-info-left">
