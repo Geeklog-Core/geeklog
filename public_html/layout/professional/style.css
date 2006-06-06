@@ -583,12 +583,14 @@ th {
   color:#000000;
   font:bold 110% Tahoma,verdana,helvetica,arial,sans-serif;
   padding-left:1px;
+  padding-top:15px;
 }
 .story-title-featured {
   background:transparent;
   color:#000000;
   font:bold 110% Tahoma,verdana,helvetica,arial,sans-serif;
   padding-left:1px;
+  padding-top:15px;
 }
 .warning {
   background:transparent;
