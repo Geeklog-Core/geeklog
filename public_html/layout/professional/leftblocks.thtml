@@ -1,21 +1,21 @@
-        <td class="block-featured-left" valign="top">
-            <div class="searchform-box">
-                <form class="searchform-elements" action="{site_url}/search.php" method="GET">
-                    <input type="text" name="query" size="30" maxlength="255" class="xpinputfield"><br>
-                    <input type="hidden" name="type" value="all">
-                    <a href="{site_url}/search.php" class="advancedsearch">{button_advsearch}</a>&nbsp;
-                    <input type="hidden" name="mode" value="search">
-                    <input type="submit" value="{button_search}">
-                </form>
-            </div>
-
-            <table width="100%" class="block-hightopborder-left"><tr><td valign="top">
-                {geeklog_blocks}
-                <div style="background:transparent; width:180px; height:1px;"></div>
-                </td></tr>
-            </table>
-        </td>
-        <td class="block-outerborder-left">
-            <div style="background:transparent; width:10px; height:1px;"></div>
-        </td>
+<td class="block-featured-left" valign="top">
+                    <div class="searchform-box">
+                        <form class="searchform-elements" action="{site_url}/search.php" method="GET">
+                            <input type="text" name="query" size="30" maxlength="255" class="xpinputfield"><br>
+                            <input type="hidden" name="type" value="all">
+                            <a href="{site_url}/search.php" class="advancedsearch">{button_advsearch}</a>&nbsp;
+                            <input type="hidden" name="mode" value="search">
+                            <input type="submit" value="{button_search}">
+                        </form>
+                    </div>
+                    <table width="100%" class="block-hightopborder-left">
+                        <tr><td valign="top">
+                            {geeklog_blocks}
+                            <div style="background:transparent; width:180px; height:1px;"></div>
+                        </td></tr>
+                    </table>
+                </td>
+                <td class="block-outerborder-left">
+                    <div style="background:transparent; width:10px; height:1px;"></div>
+                </td>
 
