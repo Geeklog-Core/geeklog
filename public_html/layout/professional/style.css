@@ -582,6 +582,7 @@ th {
   background:transparent;
   color:#000000;
   font:bold 110% Tahoma,verdana,helvetica,arial,sans-serif;
+  padding-left:1px;
 }
 .story-title-featured {
   background:transparent;
