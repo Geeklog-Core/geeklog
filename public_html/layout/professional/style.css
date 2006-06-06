@@ -476,10 +476,16 @@ th {
   color:#FF0000;
   font:92% Tahoma,verdana,helvetica,arial,sans-serif;
 }
-.header-welcomeanddate {
+.header-welcomeanddate-box {
   border-bottom:1px solid #CCCCCC;
-  height:53px;
+  height:52px;
 }
+.header-welcomeanddate-text {
+  position:relative;
+  top:12px;
+  left:4px;
+}
+
 .highlight {
   color: #000000;
   background-color: yellow;
