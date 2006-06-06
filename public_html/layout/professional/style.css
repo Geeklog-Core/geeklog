@@ -107,14 +107,18 @@ th {
   padding-top:2px;
 }
 .block-divider-left {
-  background:#FFFFFF;
-  border-top:1px solid #E7E7E7;
-  color:#000000;
+  border-top: 1px solid #E7E7E7;
+  border-bottom: 1px solid #FFFFFF;
+  width: 90%;
+  margin: 0 auto;
+  line-height:0;
 }
 .block-divider-right {
-  background:#FFFFFF;
-  border-top:1px solid #CCCCCC;
-  color:#000000;
+  border-top: 1px solid #CCCCCC;
+  border-bottom: 1px solid #FFFFFF;
+  width: 90%;
+  margin: 0 auto;
+  line-height:0;
 }
 .block-featured-left {
   background:#F7F7F7;
