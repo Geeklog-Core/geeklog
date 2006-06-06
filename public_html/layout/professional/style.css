@@ -440,40 +440,41 @@ th {
   background:#FFFFFF;
   padding-bottom:1px;
 }
-.header-navigation {
+.header-navigation-container {
+  border-bottom:1px solid #FFFFFF;
+}
+.header-navigation-line {
   background:#E7E7E7;
   border-bottom:1px solid #CCCCCC;
   color:#FFFFFF;
-  font:82% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:100% Tahoma,verdana,helvetica,arial,sans-serif;
   padding-bottom:3px;
   padding-top:4px;
+  text-align:right;
 }
-.header-navigation a:link {
+.header-navigation-line a:link {
   background:transparent;
   border-bottom:0px solid #CCCCCC;
   color:#0000FF;
-  font:82% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:92% Tahoma,verdana,helvetica,arial,sans-serif;
 }
-.header-navigation a:visited {
+.header-navigation-line a:visited {
   background:transparent;
   border-bottom:0px solid #CCCCCC;
   color:#800080;
-  font:82% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:92% Tahoma,verdana,helvetica,arial,sans-serif;
 }
-.header-navigation a:hover {
+.header-navigation-line a:hover {
   background:transparent;
   border-bottom:0px solid #CCCCCC;
   color:#008000;
-  font:82% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:92% Tahoma,verdana,helvetica,arial,sans-serif;
 }
-.header-navigation a:active {
+.header-navigation-line a:active {
   background:transparent;
   border-bottom:0px solid #CCCCCC;
   color:#FF0000;
-  font:82% Tahoma,verdana,helvetica,arial,sans-serif;
-}
-.header-navigation-container {
-  border-bottom:1px solid #FFFFFF;
+  font:92% Tahoma,verdana,helvetica,arial,sans-serif;
 }
 .header-welcomeanddate {
   border-bottom:1px solid #CCCCCC;
