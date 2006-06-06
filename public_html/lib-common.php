@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.551 2006/06/05 08:42:41 dhaun Exp $
+// $Id: lib-common.php,v 1.552 2006/06/06 08:34:39 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2522,7 +2522,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
         foreach( $link_array as $link )
         {
-            $retval .= $link . LB;
+            $retval .= $link;
         }
 
         $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
