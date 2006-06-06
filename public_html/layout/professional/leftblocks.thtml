@@ -11,11 +11,11 @@
 
             <table width="100%" class="block-hightopborder-left"><tr><td valign="top">
                 {geeklog_blocks}
-                <img src="{site_url}/images/speck.gif" width="180" height="1" alt="">
+                <div style="background:transparent; width:180px; height:1px;"></div>
                 </td></tr>
             </table>
         </td>
         <td class="block-outerborder-left">
-            <img src="{site_url}/images/speck.gif" width="10" height="1" alt="">
+            <div style="background:transparent; width:10px; height:1px;"></div>
         </td>
 
