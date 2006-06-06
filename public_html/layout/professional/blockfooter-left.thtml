@@ -3,7 +3,5 @@
     </td></tr>
 </table>
 <table cellspacing="0" cellpadding="0" align="center" width="90%" class="block-divider-left">
-    <tr><td>
-        <img src="{site_url}/images/speck.gif" width="1" height="1" alt="">
-    </td></tr>
+    <tr><td><img src="{site_url}/images/speck.gif" width="1" height="1" alt=""></td></tr>
 </table>
