@@ -100,10 +100,11 @@ th {
   padding-right:5px;
 }
 .block-divider {
-  background:#FFFFFF;
-  border-bottom:1px solid #F7F7F7;
-  border-top:1px solid #E7E7E7;
-  color:#000000;
+  background:#FFFFFF;  
+  border-bottom:1px solid #F7F7F7; 
+  border-top:1px solid #E7E7E7; 
+  color:#000000; 
+  padding-top:2px;
 }
 .block-divider-left {
   background:#FFFFFF;
