@@ -339,31 +339,30 @@ th {
   background:transparent;
   color:#000000;
 }
-.commentbar1 {
+.commentbar-line1 {
   background:transparent;
   color:#000000;
-  font:75% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:Tahoma,verdana,helvetica,arial,sans-serif;
   padding:3px 3px;
+  text-align:center;
 }
-.commentbar2 {
+.commentbar-line2 {
   background:#E7E7E7;
   border-bottom:1px solid #FFFFFF;
   border-top:1px solid #FFFFFF;
-  font:75% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:Tahoma,verdana,helvetica,arial,sans-serif;
+  text-align:center;
 }
-.commentbar3 {
+.commentbar-line3 {
   background:#FFFFFF;
   border-bottom:1px solid #FFFFFF;
   border-top:1px solid #E7E7E7;
   color:#000000;
-  font:75% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:Tahoma,verdana,helvetica,arial,sans-serif;
   padding:3px 3px;
+  text-align:center;
 }
-.commentbar4 {
-  background:#E7E7E7;
-  color:#000000;
-  font:75% Tahoma,verdana,helvetica,arial,sans-serif;
-}
+
 .commenttitle {
   background:#F7F7F7;
   border-bottom:1px solid #E7E7E7;
