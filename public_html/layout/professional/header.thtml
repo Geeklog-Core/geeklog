@@ -40,8 +40,10 @@
                 <tr>
                     {left_blocks}
                     <td class="story-container" width="100%" valign="top">
-                    <div class="header-welcomeanddate-box">
-                        <div class="header-welcomeanddate-text"><a href="{site_url}">{welcome_msg}</a><br>{datetime}</div>
-                    </div>               
+                        <div class="header-welcomeanddate-box">
+                            <div class="header-welcomeanddate-text">
+                                <a href="{site_url}">{welcome_msg}</a><br>{datetime}
+                            </div>
+                        </div>               
 
             <!-- START OF CONTENT AREA -->
