@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2006/06/05 09:53:31 dhaun Exp $
+// $Id: index.php,v 1.16 2006/06/07 03:14:14 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -639,7 +639,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11]);
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
-                                                      true));
+                                                      true), 'calendar');
     }
     $display .= CALENDAR_listevents();
     $display .= COM_siteFooter ();
