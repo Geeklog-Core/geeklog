@@ -1,3 +1,4 @@
+<!-- Start of Left blocks -->
 <td class="block-featured-left" valign="top">
                     <div class="searchform-box">
                         <form class="searchform-elements" action="{site_url}/search.php" method="GET">
