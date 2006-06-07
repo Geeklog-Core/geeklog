@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.24 2006/05/21 19:43:03 mjervis Exp $
+// $Id: lib-custom.php,v 1.25 2006/06/07 01:43:39 ospiess Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -121,7 +121,7 @@ function phpblock_getBent()
     }
 
     if (is_dir ($installdir)) {
-        $insecure_msg .= '<p>You should really remove the install directory <b>' . $installdir .'</b> once you have your site up and running without any errors.';
+        $insecure_msg .= 'You should really remove the install directory <b>' . $installdir .'</b> once you have your site up and running without any errors.';
         $insecure_msg .= ' Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.';
 
         $secure = false;
@@ -133,7 +133,7 @@ function phpblock_getBent()
     if ( $A['count'] > 0 ) {
         $secure = false;
         $insecure_msg .= '<p>You still have not changed the default password from "password" on ' . $A['count'] . ' account(s). ';
-        $insecure_msg .= 'This will allow people to do serious harm to your site!';
+        $insecure_msg .= 'This will allow people to do serious harm to your site!</p>';
     }
 
     if ($secure) {
