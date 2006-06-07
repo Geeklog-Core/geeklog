@@ -24,25 +24,47 @@
         f.elements["expire_ampm"].disabled=!disable;
     }
 
-    function showhideEditorDiv(option) {
+    function showhideEditorDiv(option,selindex) {
         var obj = document.getElementById('adveditor');
-        var divarray1 = new Array('text_editor','html_editor');
-        var divarray = new Array('publish','images','archive','perms');
+        var divarray = new Array('publish','images','archive','perms','options','bottom');
 
-        if (option != 'preview') {
-            for (i=0; i < divarray.length; i++) {
-                div = 'se_' + divarray[i];
-                if (option != 'all' && option != divarray[i]) {
-                    document.getElementById(div).style.display = 'none';
-                } else {
-                    document.getElementById(div).style.display = '';
-                }
+        // Reset the current selected navbar tab
+        var navbar = document.getElementById('current');
+        if (navbar) navbar.id = '';
+        // Cycle thru the navlist child elements - buiding an array of just the link items 
+        var navbar = document.getElementById('navlist');
+        var menuitems = new Array(8);
+        var item = 0;
+        for (var i=0 ;i < navbar.childNodes.length ; i++ ) {
+            if (navbar.childNodes[i].nodeName.toLowerCase() == 'li') {
+                menuitems[item] = navbar.childNodes[i];
+                item++;
             }
         }
+        // Now that I have just the link items I can set the selected tab using the passed selected Item number
+        // Set the <a tag to have an id called 'current'
+        var menuitem = menuitems[selindex];
+        for (var j=0 ;j < menuitem.childNodes.length ; j++ ) {
+            if (menuitem.childNodes[j].nodeName.toLowerCase() == 'a')  menuitem.childNodes[j].id = 'current';
+        }
+
+        // Reset or show all the main divs - editor tab sections
+        for (i=0; i < divarray.length; i++) {
+            div = 'se_' + divarray[i];
+            if (option != 'all' && option != divarray[i]) {
+                document.getElementById(div).style.display = 'none';
+            } else {
+                document.getElementById(div).style.display = '';
+            }
+        }
+        document.getElementById('text_editor').style.display = 'none';
+        document.getElementById('html_editor').style.display = 'none';
+        document.getElementById('preview').style.display = 'none';
 
         if (option == 'editor' || option == 'all') {
             document.getElementById('editor_mode').style.display = '';
-            if (document.getElementById('sel_editmode').value == 'html') {
+            document.getElementById('se_bottom').style.display = '';
+            if (document.getElementById('sel_editmode').value == 'adveditor') {
                 document.getElementById('text_editor').style.display = 'none';
                 document.getElementById('html_editor').style.display = '';
             } else {
@@ -51,24 +73,32 @@
             }
             if (option == 'all') {
                 document.getElementById('se_options').style.display = '';
-            } else {
-                document.getElementById('se_options').style.display = 'none';
+                document.getElementById('preview').style.display = '';
             }
 
         } else if (option == 'preview') {
-            if (document.getElementById('preview').style.display == 'none') {
-                document.getElementById('preview').style.display = '';
-            } else {
-                document.getElementById('preview').style.display = 'none';
-            }
-
+            document.getElementById('preview').style.display = '';
+            document.getElementById('editor_mode').style.display = 'none';
         } else {
             document.getElementById('se_options').style.display = '';
+            document.getElementById('se_bottom').style.display = '';
             document.getElementById('text_editor').style.display = 'none';
             document.getElementById('html_editor').style.display = 'none';
             document.getElementById('editor_mode').style.display = 'none';
+            document.getElementById('preview').style.display = 'none';
         }
-        document.getElementById('navcontainer').scrollIntoView(true);
 
     }
- 
+
+    function FCKeditor_OnComplete( editorInstance )  {
+        editorInstance.Events.AttachEvent( 'OnBlur'    , FCKeditor_OnBlur ) ;
+        editorInstance.Events.AttachEvent( 'OnFocus', FCKeditor_OnFocus ) ;
+    }
+
+    function FCKeditor_OnBlur( editorInstance ) {
+        editorInstance.ToolbarSet.Collapse() ;
+    }
+
+    function FCKeditor_OnFocus( editorInstance ) {
+        editorInstance.ToolbarSet.Expand() ;
+    }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.217 2006/06/05 09:53:31 dhaun Exp $
+// $Id: story.php,v 1.218 2006/06/07 04:04:19 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -157,10 +157,8 @@ function liststories()
     $filter = $LANG_ADMIN['topic'] . ': <select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>';
 
     $header_arr = array(
-    	array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false));
-    if ($_CONF['advanced_editor']) {
-		$header_arr[] = array('text' => $LANG_ADMIN['edit_adv'], 'field' => 'edit_adv', 'sort' => false);
-	}
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false));
+
     $header_arr[] = array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true);
     $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false);
     $header_arr[] = array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true);
@@ -177,13 +175,10 @@ function liststories()
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array (
-    	array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=std',
+        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=std',
               'text' => $LANG_ADMIN['create_new'])
-	);
-    if ($_CONF['advanced_editor']) {
-		$menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=adv',
-                            'text' => $LANG_ADMIN['create_new_adv']);
-	}
+    );
+
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']);
 
@@ -220,11 +215,10 @@ function liststories()
 * @param    string      $mode           'preview', 'edit', 'editsubmission'
 * @param    string      $errormsg       a message to display on top of the page
 * @param    string      $currenttopic   topic selection for drop-down menu
-* @param    string      $editor         pick the type of editor (std/adv)
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', $editor ='')
+function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS,
            $LANG_ADMIN, $MESSAGE;
@@ -345,13 +339,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
         $A['trackbacks'] = 0;
         $A['numemails'] = 0;
 
-        /* @TODO -o"Blaine" Add a user-preference option to set if user wants to`use advanced-editor */
         if (isset ($_CONF['advanced_editor']) && 
-		    ($_CONF['advanced_editor'] == 1) &&
-			($editor == 'adv')
-			) 
-		
-		{
+            ($_CONF['advanced_editor'] == 1)) {
             $A['postmode'] = 'html';
         } else {
             $A['postmode'] = $_CONF['postmode'];
@@ -392,7 +381,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
 
         // Convert array values to numeric permission values
         list($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) = SEC_getPermissionValues($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($A['postmode'] == 'html') {
+        if ($A['postmode'] == 'html' OR $A['postmode'] == 'adveditor') {
             $A['introtext'] = COM_checkHTML(COM_checkWords($A['introtext']));
             $A['bodytext'] = COM_checkHTML(COM_checkWords($A['bodytext']));
             $A['title'] = COM_checkHTML(htmlspecialchars(COM_checkWords($A['title'])));
@@ -407,27 +396,14 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if ( $A['postmode'] == 'html' 
-	    AND isset ($_CONF['advanced_editor'])
-        && ($_CONF['advanced_editor'] == 1 ) 
-		&& file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')
-		&& $editor == 'adv') {
+    if ( isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1 ) 
+        && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
 
         include ($_CONF['path_system'] . 'classes/navbar.class.php');
 
-        $navbar = new navbar;
-        $navbar->add_menuitem($LANG24[79],'showhideEditorDiv("preview");return false;',true);
-        $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor");return false;',true);
-        $navbar->add_menuitem($LANG24[81],'showhideEditorDiv("publish");return false;',true);
-        $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images");return false;',true);
-        $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive");return false;',true);
-        $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms");return false;',true);
-        $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all");return false',true);
-
-        $story_templates->set_var ('navbar', $navbar->generate() );
         $story_templates->set_var ('show_preview', 'none');
         $story_templates->set_var ('lang_expandhelp', $LANG24[67]);
         $story_templates->set_var ('lang_reducehelp', $LANG24[68]);
@@ -439,7 +415,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
         $story_templates->set_var ('toolbar4', $LANG24[74]);
         $story_templates->set_var ('toolbar5', $LANG24[75]);
  
-        if ($A['postmode'] == 'html') {
+        if ($A['advanced_editor_mode'] == 1 OR $A['postmode'] == 'adveditor') {
             $story_templates->set_var ('show_texteditor', 'none');
             $story_templates->set_var ('show_htmleditor', '');
         } else {
@@ -482,6 +458,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
             $has_images = false;
         }
 
+        $previewContent == '';
         if ($A['postmode'] == 'plaintext') {
             $B = $A;
 
@@ -508,7 +485,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
             $previewContent = STORY_renderArticle ($A, 'p');
         }
 
-        if ($advanced_editormode) {
+        if ($advanced_editormode AND $previewContent != '' ) {
             $story_templates->set_var('preview_content', $previewContent);
         } else {
             $display = COM_startBlock ($LANG24[26], '',
@@ -516,6 +493,24 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
             $display .= $previewContent;
             $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
         }
+    }
+
+    if ($advanced_editormode) {
+        $navbar = new navbar;
+        $navbar->add_menuitem($LANG24[86],$_CONF['site_admin_url'] . '/story.php');
+        $navbar->set_onclick($LANG24[86],'return confirm("'.$LANG24[87].'");');
+        if ($previewContent != '') {
+            $navbar->add_menuitem($LANG24[79],'showhideEditorDiv("preview",1);return false;',true);
+        }
+        $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor",2);return false;',true);
+        $navbar->add_menuitem($LANG24[81],'showhideEditorDiv("publish",3);return false;',true);
+        $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images",4);return false;',true);
+        $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive",5);return false;',true);
+        $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms",6);return false;',true);
+        $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",7);return false',true);
+
+        $navbar->set_selected($LANG24[80]);
+        $story_templates->set_var ('navbar', $navbar->generate() );
     }
 
     $display .= COM_startBlock ($LANG24[5], '',
@@ -761,8 +756,17 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '', 
     $story_templates->set_var('lang_publishoptions',$LANG24[76]);
     $story_templates->set_var('lang_nojavascript',$LANG24[77]);
     $story_templates->set_var('no_javascript_return_link',sprintf($LANG24[78],$_CONF['site_admin_url'], $sid));
-
-    $story_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
+    $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']);
+    
+    // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
+    if ($_CONF['advanced_editor'] == 1) {
+        if ($A['advanced_editor_mode'] == 1 OR $A['postmode'] == 'adveditor') {
+            $post_options .= '<option value="adveditor" SELECTED>'.$LANG24[88].'</option>';
+        } else {
+            $post_options .= '<option value="adveditor">'.$LANG24[88].'</option>';
+        }
+    }
+    $story_templates->set_var('post_options',$post_options );
     $story_templates->set_var('lang_allowed_html', COM_allowedHTML());
     $fileinputs = '';
     $saved_images = '';
@@ -852,10 +856,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-	// fix for bug in advanced editor
-	if ($_CONF['advanced_editor'] && ($bodytext == '<br>')) {
-		$bodytext = '';
-	}
+    // fix for bug in advanced editor
+    if ($_CONF['advanced_editor'] && ($bodytext == '<br>')) {
+        $bodytext = '';
+    }
     $sid = COM_sanitizeID ($sid);
 
     $duplicate_sid = false;
@@ -931,7 +935,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
 
         // Clean up the text
-        if ($postmode == 'html') {
+        if ($postmode == 'html' OR $postmode == 'adveditor') {
             // Advanced Editor: Are you editing this story and switching mode from text to html
             if ( (DB_count($_TABLES['stories'],'sid',$sid) == 1) AND 
                  (DB_getItem($_TABLES['stories'], 'postmode',"sid='$sid'") == 'plaintext') AND
@@ -1086,8 +1090,16 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 
         $introtext = addslashes ($introtext);
         $bodytext = addslashes ($bodytext);
+        
+        // Set Advanced Editor Mode option but save it still has html mode        
+        if ($postmode == 'adveditor') {
+            $postmode = 'html';
+            $advanced_editor_mode = 1;
+        } else {
+            $advanced_editor_mode = 0;
+        }            
 
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,trackbackcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$trackbackcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1");
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,trackbackcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit,advanced_editor_mode', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$trackbackcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1,$advanced_editor_mode");
 
         // If this is done as part of the moderation then delete the submission
         if (empty ($old_sid)) {

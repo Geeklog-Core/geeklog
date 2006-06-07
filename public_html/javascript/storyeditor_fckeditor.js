@@ -10,13 +10,15 @@
     window.onload = function() {
         var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
         oFCKeditor1.BasePath = geeklogEditorBasePath;
-        oFCKeditor1.ToolbarSet = 'editor-toolbar1' ;
+        oFCKeditor1.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
+        oFCKeditor1.ToolbarSet = 'editor-toolbar2' ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
 
         var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
         oFCKeditor2.BasePath = geeklogEditorBasePath ;
-        oFCKeditor2.ToolbarSet = 'editor-toolbar1' ;
+        oFCKeditor2.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
+        oFCKeditor2.ToolbarSet = 'editor-toolbar2' ;
         oFCKeditor2.Height = 200 ;
         oFCKeditor2.ReplaceTextarea() ;
 
@@ -24,15 +26,20 @@
 
     function change_editmode(obj) {
         if (obj.value == 'html') {
-            document.getElementById('text_editor').style.display='none';
-            document.getElementById('html_editor').style.display='';
-            swapEditorContent('html','intro');
-            swapEditorContent('html','body');
-        } else {
-            document.getElementById('text_editor').style.display='';
             document.getElementById('html_editor').style.display='none';
-            swapEditorContent('text','intro');
-            swapEditorContent('text','body');
+            document.getElementById('text_editor').style.display='';              
+            swapEditorContent('html','introhtml');
+            swapEditorContent('html','bodyhtml');
+        } else if (obj.value == 'adveditor') {
+            document.getElementById('text_editor').style.display='none';        
+            document.getElementById('html_editor').style.display='';
+            swapEditorContent('adveditor','introhtml');
+            swapEditorContent('adveditor','bodyhtml');           
+        } else {
+            document.getElementById('html_editor').style.display='none';
+            document.getElementById('text_editor').style.display='';
+            swapEditorContent('text','introhtml');
+            swapEditorContent('text','bodyhtml');
         }
     }
 
@@ -59,55 +66,47 @@
 
 
     function getEditorContent(instanceName) {
-        editor_frame = document.getElementById(instanceName+'___Frame');
-        editor_source = editor_frame.contentWindow.document.getElementById('eEditorArea');
-        if (editor_source!=null) {
-            return editor_source.contentWindow.document.body.innerHTML;
-        } else {
-            return '';
-        }
+        // Get the editor instance that we want to interact with.
+        var oEditor = FCKeditorAPI.GetInstance(instanceName) ;
+        // return the editor contents in XHTML.
+        return oEditor.GetXHTML( true );
     }
 
-    function swapEditorContent(curmode,instance) {
+    function swapEditorContent(curmode,instanceName) {
         var content = '';
-        if (instance == 'intro' )  {
-            editor_frame = document.getElementById('introhtml___Frame');
-        } else {
-            editor_frame = document.getElementById('bodyhtml___Frame');
-        }
-        editor_source = editor_frame.contentWindow.document.getElementById('eEditorArea');
-
-        if (curmode == 'html') {
-            if (instance == 'intro' )  {
+        var oEditor = FCKeditorAPI.GetInstance(instanceName) ;
+        //alert(curmode + ':' + instanceName);
+        if (curmode == 'adveditor') { // Switching from Text to HTML mode
+            // Get the content from the textarea 'text' content and copy it to the editor
+            if (instanceName == 'introhtml' )  {
                 content = document.getElementById('introtext').value;
+                //alert('Intro :' + instanceName + '\n' + content);
             } else {
                 content = document.getElementById('bodytext').value;
+                //alert('HTML :' + instanceName + '\n' + content);
             }
-            editor_source.contentWindow.document.body.innerHTML = content;
+            oEditor.SetHTML(content);
         } else {
-            content = editor_source.contentWindow.document.body.innerHTML;
-            if (instance == 'intro' )  {
-                document.getElementById('introtext').value = content;
-            } else {
-                document.getElementById('bodytext').value = content;
-            }
-        }
+               content = getEditorContent(instanceName);
+              if (instanceName == 'introhtml' )  {
+                  document.getElementById('introtext').value = content;
+              } else {
+                  document.getElementById('bodytext').value = content;
+              }
+          }
     }
 
-    function set_postcontent() {
-        if (document.getElementById('sel_editmode').value == 'html') {
+    function set_postcontent() { 
+        if (document.getElementById('sel_editmode').value == 'adveditor') {
             document.getElementById('introtext').value = getEditorContent('introhtml');
             document.getElementById('bodytext').value = getEditorContent('bodyhtml');
         }
     }
 
    function changeToolbar(toolbar) {
-        var basePath= geeklogEditorBasePath ;
-        var instanceName='introhtml';
-        editor_frame = document.getElementById(instanceName+'___Frame');
-        //alert(editor_frame.src);
-        if (editor_frame!=null) {
-            editor_frame.src=basePath+'editor/fckeditor.html?InstanceName='+instanceName+'&Toolbar='+toolbar;
-            //editor_frame.src='http://localhost/geekcvs/fckeditor/editor/fckeditor.html?InstanceName=introhtml&Toolbar=editor-toolbar1';
-        }
+        var oEditor1 = FCKeditorAPI.GetInstance('introhtml');
+		oEditor1.ToolbarSet.Load( toolbar ) ;
+        var oEditor2 = FCKeditorAPI.GetInstance('bodyhtml');
+		oEditor2.ToolbarSet.Load( toolbar ) ;
+
    }

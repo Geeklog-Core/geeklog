@@ -405,6 +405,7 @@ CREATE TABLE {$_TABLES['stories']} (
   statuscode tinyint(4) NOT NULL default '0',
   expire DATETIME NOT NULL default '0000-00-00 00:00:00',
   postmode varchar(10) NOT NULL default 'html',
+  advanced_editor_mode tinyint(1) unsigned default '0',
   frontpage tinyint(3) unsigned default '1',
   in_transit tinyint(1) unsigned default '0',
   owner_id mediumint(8) NOT NULL default '1',

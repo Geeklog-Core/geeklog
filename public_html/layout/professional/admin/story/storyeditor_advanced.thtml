@@ -6,7 +6,7 @@
 </noscript>
 <script type="text/javascript">
     // Setup editor path for FCKeditor JS Functions
-    geeklogEditorBasePath = "{site_url}/fckeditor/" ;
+    geeklogEditorBasePath = "{site_url}/fckeditor/";
 </script>
 <script type="text/JavaScript" src="{site_url}/javascript/advanced_editor.js"></script>
 <script type="text/JavaScript" src="{site_url}/javascript/storyeditor_fckeditor.js"></script>
@@ -17,6 +17,7 @@
     document.getElementById('advanced_editor').style.display=''
 </script>
 {navbar}
+    <div>
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
                                 <table id='adveditor' border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
                                     <tr>
@@ -55,11 +56,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_show_topic_icon}:</td>
-                                        <td>
-                                            <input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}>
-                                            <span style="padding-left:30px;padding-right:5px;">{lang_draft}:</span><input type="checkbox" name="draft_flag" {is_checked}>
-                                        </td>
+                                        <td align="right">{lang_show_topic_icon}:<input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}> </td>
+                                        <td style="padding-left:25px;">{lang_draft}:<input type="checkbox" name="draft_flag" {is_checked}><span style="padding-left:30px;">{lang_postmode}:</span>&nbsp;<select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
                                     </tr>
                                 </table>
                                 <!-- Basic textarea field - no editor -->
@@ -94,18 +92,15 @@
                                             <span style="padding-left:10px;">
                                                 <img src="{layout_url}/images/expand.gif" border="0" TITLE="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');">
                                                 <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');"></span>
-                                                <!-- BL: Not supported yet. Works in Firefox but not in IE
                                                 <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
                                                   <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
                                                        <option value="editor-toolbar1">{toolbar1}</option>
-                                                       <option value="editor-toolbar2">{toolbar2}</option>
+                                                       <option value="editor-toolbar2" selected>{toolbar2}</option>
                                                        <option value="editor-toolbar3">{toolbar3}</option>
                                                        <option value="editor-toolbar4">{toolbar4}</option>
                                                        <option value="Default">{toolbar5}</option>
-                                                       
                                                   </select>
                                                 </span>
-                                                -->
                                             </span>
                                         </td>
                                     <tr>
@@ -123,14 +118,6 @@
                                     </tr>
                                 </table>
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%" id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
-                                    <tr valign="top">
-                                        <td width="10%" style=padding-left:20px;" nowrap><b>{lang_postmode}:</b></td>
-                                        <td style="padding-left:20px;" nowrap>
-                                            <select id="sel_editmode" name="postmode" {change_editormode}>
-                                                {post_options}
-                                            </select>
-                                        </td>
-                                     </tr>
                                      <tr>
                                         <td colspan="2" style=padding:5px;">{lang_allowed_html}</td>
                                     </tr>
@@ -289,7 +276,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table id="bottom" border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:20px;">
+                                <table id="se_bottom" border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:20px;">
                                     <tr>
                                         <td colspan="2" style="padding-left:20px;">
                                             <input type="submit" value="{lang_save}" name="mode">
@@ -302,6 +289,7 @@
                                     </tr>
                                 </table>
                             </form>
+</div>
 <table border="0" width="99%" id="preview" style="border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">
     <tr>
         <td>
@@ -323,6 +311,8 @@ if (jstest) {
     document.frmstory.expire_ampm.disabled=true;
     document.frmstory.storycode10.disabled=true;
     document.frmstory.storycode11.disabled=true;
+
 }
+
 </script>
 </div>

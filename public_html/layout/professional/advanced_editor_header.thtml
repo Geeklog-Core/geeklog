@@ -1,5 +1,7 @@
 
 <!-- Load Advanced Editor -->
-<link rel="stylesheet" type="text/css" href="{site_url}/fckeditor/editor/css/fck_editorarea.css">
 <script type="text/javascript" src="{site_url}/fckeditor/fckeditor.js"></script>
+<script type="text/javascript">
+    var geeklogEditorBaseUrl = '{site_url}';
+</script>
 <!-- End of Editor Load -->

@@ -23,6 +23,9 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'calendar.submit', ft_gl_
 $_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_name = 'Calendar Admin', grp_gl_core = '0' WHERE grp_name = 'Event Admin'";
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'phpblock', phpblockfn ='phpblock_calendar' WHERE name = 'events_block'";
 
+// add new field to the stories table to indicate story was created or last updated using the advanced editor
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD advanced_editor_mode tinyint(1) unsigned default '0' AFTER postmode";
+
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
 {
