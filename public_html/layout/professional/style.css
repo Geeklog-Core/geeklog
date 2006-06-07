@@ -132,6 +132,12 @@ th {
   color:#000000;
   font:100% Tahoma,verdana,helvetica,arial,sans-serif;
 }
+.block-box-left {
+  margin:10px;
+}
+.block-box-right {
+  margin:10px;
+}
 .block-hightopborder-left {
   border-top:1px solid #FFFFFF;
 }
@@ -140,34 +146,38 @@ th {
   color:#000000;
   font:75% Tahoma,verdana,helvetica,arial,sans-serif;
 }
-.block-info-left {
+.block-content-left {
   background:transparent;
   color:#000000;
-  font:75% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:110% Tahoma,verdana,helvetica,arial,sans-serif;
   padding-bottom:2px;
   padding-top:2px;
+  clear:both;
 }
-.block-info-left ul {
+.block-content-left ul {
   margin-top: 0;
   margin-bottom: 0;
   margin-left: 16px;
   padding-left: 0;
   border: none;
 }
-.block-info-right {
+.block-content-right {
   background:transparent;
   color:#000000;
-  font:75% Tahoma,verdana,helvetica,arial,sans-serif;
+  font:110% Tahoma,verdana,helvetica,arial,sans-serif;
   padding-bottom:2px;
   padding-top:2px;
+  clear:both;
 }
-.block-info-right ul {
+.block-content-right ul {
   margin-top: 0;
   margin-bottom: 0;
   margin-left: 16px;
   padding-left: 0;
   border: none;
+  clear:both;
 }
+
 .block-outerborder-left {
   border-left:1px solid #E7E7E7;
 }
@@ -183,12 +193,28 @@ th {
 .block-title-left {
   background:transparent;
   color:#1A3955;
-  font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif;
+  font:110% Tahoma,verdana,helvetica,arial,sans-serif;
+  font-weight:bold;
+  height:22px;
+  text-align:left;
+  float:left;
 }
 .block-title-right {
   background:transparent;
   color:#1A3955;
-  font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif;
+  font:110% Tahoma,verdana,helvetica,arial,sans-serif;
+  font-weight:bold;
+  height:22px;
+  text-align:left;
+  float:left;
+}
+.block-helpicon-left {
+  padding-top:3px;
+  text-align:right;
+}
+.block-helpicon-right {
+  padding-top:3px;
+  text-align:right;
 }
 .block-vote {
   background:transparent;
