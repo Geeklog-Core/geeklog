@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.13 2006/05/20 08:17:16 dhaun Exp $
+// $Id: lib-mbyte.php,v 1.14 2006/06/07 03:05:22 ospiess Exp $
 
 
 // This function is supposed to display only language files in selection drop-
@@ -75,7 +75,7 @@ function MBYTE_languageList() {
 function MBYTE_checkEnabled() {
     static $mb_enabled;
     if (function_exists( 'mb_substr' )) {
-        $mb_enabled = true;
+        $mb_enabled = mb_internal_encoding("UTF-8");
     } else {
         $mb_enabled = false;
     }
@@ -89,7 +89,7 @@ function MBYTE_strlen($str) {
         $mb_enabled = MBYTE_checkEnabled();
     }
 	if ($mb_enabled) {
-		$result = mb_strlen($str, 'utf-8');
+		$result = mb_strlen($str);
 	} else {
 		$result = strlen($str);
 	}
@@ -102,7 +102,7 @@ function MBYTE_substr($str, $start, $length = NULL) {
         $mb_enabled = MBYTE_checkEnabled();
     }
 	if ($mb_enabled) {
-		$result = mb_substr($str, $start, $length, 'utf-8');
+		$result = mb_substr($str, $start, $length);
 	} else {
 		$result = substr($str, $start, $length);
 	}
@@ -115,7 +115,7 @@ function MBYTE_strpos($hay, $needle, $offset = NULL) {
         $mb_enabled = MBYTE_checkEnabled();
     }  
 	if ($mb_enabled) {
-		$result = mb_strpos($hay, $needle, $offset, 'utf-8');
+		$result = mb_strpos($hay, $needle, $offset);
 	} else {
 		$result = strpos($hay, $needle, $offset);
 	}
@@ -128,7 +128,7 @@ function MBYTE_strtolower($str) {
         $mb_enabled = MBYTE_checkEnabled();
     }  
 	if ($mb_enabled) {
-		$result = mb_strtolower($str, 'utf-8');
+		$result = mb_strtolower($str);
 	} else {
 		$result = strtolower($str);
 	}
