@@ -6,7 +6,7 @@
       <td height="22" colspan="3" align="left" valign="middle" class="block-title-left">Members Login</td>
     </tr>
     <tr>
-      <td class="block-info-left">
+      <td class="block-content-left">
 <form style="margin-bottom:0;" action="{site_url}/users.php" method="POST">
         <b>Username:</b><br>
         <input name="loginname" type="text" class="xpinputfield" id="loginname" size="30"> 
@@ -25,7 +25,7 @@ alt="One Step Login" align="bottom" name="Submit now2"></td>
     <tr>
       <td height="22" colspan="3" align="left" valign="middle" class="block-title-left">New Users Register</td>
     </tr>
-    <tr><td width="100%" class="block-info-left">
+    <tr><td width="100%" class="block-content-left">
 <form style="margin-bottom:0;" action={site_url}/users.php method=post>
         <b>Username:</b><br>
         <input name="username" type="text" class="xpinputfield" id="username" size="30">
