@@ -31,8 +31,8 @@
 //
 
 /**
-* This class will allow you to setup and generate a CSS Tab Menu
-* Version 1.0 June 4, 2005
+* This class will allow you to setup and generate a CSS Tab Menu and breadcrumb link trail
+* Version 1.1 June 4, 2006
 *
 * @author       Blaine Lang <blaine@portalparts.com>
 *
@@ -55,7 +55,7 @@
         $navbar->add_menuitem('Admin Home',$_CONF['site_admin_url'] . '/moderation.php');
     }
 
-    // Add a Menuiem which activates a Javascript function when the onClick event is triggered
+    // Add a Menuitem which activates a Javascript function when the onClick event is triggered
     $navbar->add_menuitem('On click test','alert("This works");',true);
 
     // Add a new Menuitem which may or may not have a URL to redirect to but also triggers an onClick JS function
@@ -66,6 +66,12 @@
     // Set the current selected tab
     $navbar->set_selected('My Calendar');
     echo $navbar->generate();
+
+    // Generate a breadcrumb trail
+    $navbar->openBreadcrumbs();
+    $navbar->add_breadcrumbs("{$_CONF['site_url']}/index.php",'home']);
+    $navbar->add_lastBreadcrumb("{$_CONF['site_url']}/admin/plugins/myplugin/index.php",'myplugin');
+    echo $navbar->closeBreadcrumbs();
 
 */
 
@@ -89,7 +95,10 @@ class navbar  {
     * @access private
     */
     var $_onclick;      // Array
-
+    
+    var $_bctemplate = NULL;     // Template to use for Breadcrumbs
+    
+    var $_numbreadcrumbs = 0;   // Number of Breadcrumb links added
 
     /**
     * Constructor
@@ -135,8 +144,7 @@ class navbar  {
         $navtemplate = new Template($_CONF['path_layout'] . 'navbar');
         $navtemplate->set_file (array (
             'navbar'       => 'navbar.thtml',
-            'menuitem'     => 'menuitem.thtml',
-            ));
+            'menuitem'     => 'menuitem.thtml'));
 
         if ($this->_parms != '') {
             $navtemplate->set_var( 'parms',  $this->_parms);
@@ -168,6 +176,44 @@ class navbar  {
         $retval = $navtemplate->finish($navtemplate->get_var('output'));
         return $retval;
     }
+    
+    function openBreadcrumbs() {
+        global $_CONF;
+        $this->_bctemplate = new Template($_CONF['path_layout'] . 'navbar');
+        $this->_bctemplate->set_file (array (
+            'breadcrumbs'   => 'breadcrumbs.thtml',
+            'link'          => 'breadcrumb_link.thtml'));
+    }
+    
+    function add_breadcrumbs($url,$label,$title='') {
+        if ($this->_numbreadcrumbs == '') {
+            $this->_numbreadcrumbs = 0;
+        }
+        $this->_bctemplate->set_var('link_url',$url);
+        $this->_bctemplate->set_var('link_label',$label);
+        $this->_bctemplate->set_var('link_title',$title);
+        if ($this->_numbreadcrumbs > 0) {
+            $this->_bctemplate->set_var('link_separator','/&nbsp;');
+     
+        }  else {
+            $this->_bctemplate->set_var('link_separator','');
+        }            
+        $this->_bctemplate->parse('breadcrumb_links','link',true);
+        $this->_numbreadcrumbs = $this->_numbreadcrumbs + 1;
+    }
+    
+    function add_lastBreadcrumb($label) {
+        if (trim($label) != '') {
+            $label = "/&nbsp;$label";
+            $this->_bctemplate->set_var('last_label',$label);
+        }           
+    }      
+
+    function closeBreadcrumbs() {
+        $this->_bctemplate->parse('output', 'breadcrumbs');
+        return $this->_bctemplate->finish ($this->_bctemplate->get_var('output'));         
+    }    
+    
 
 }
 
