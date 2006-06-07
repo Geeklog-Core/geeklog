@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.25 2006/06/07 01:43:39 ospiess Exp $
+// $Id: lib-custom.php,v 1.26 2006/06/07 05:14:17 ospiess Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -88,7 +88,7 @@ function phpblock_showrights()
 **/
 function phpblock_getBent()
 {
-    global $_CONF, $_TABLES, $MESSAGE, $mb_enabled;
+    global $_CONF, $_TABLES, $MESSAGE;
 
     $retval = '';
     $secure_msg = '';
@@ -96,9 +96,9 @@ function phpblock_getBent()
 
     $secure = true;
 
-    if (!$mb_enabled && $_CONF['default_charset'] == 'utf-8') {
+    if (!MBYTE_checkEnabled() && $_CONF['default_charset'] == 'utf-8') {
         $secure = false;
-        $insecure_msg = $MESSAGE[77];
+        $insecure_msg = "<ul>". $MESSAGE[77] . "</ul>";
     }
 
     $secure_msg .= 'Could not find any gross insecurities in your site.  Do not take this ';
@@ -121,8 +121,8 @@ function phpblock_getBent()
     }
 
     if (is_dir ($installdir)) {
-        $insecure_msg .= 'You should really remove the install directory <b>' . $installdir .'</b> once you have your site up and running without any errors.';
-        $insecure_msg .= ' Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.';
+        $insecure_msg .= '<li>You should really remove the install directory <b>' . $installdir .'</b> once you have your site up and running without any errors.';
+        $insecure_msg .= ' Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.</li>';
 
         $secure = false;
     }
@@ -132,14 +132,14 @@ function phpblock_getBent()
     $A = DB_fetchArray($count);
     if ( $A['count'] > 0 ) {
         $secure = false;
-        $insecure_msg .= '<p>You still have not changed the default password from "password" on ' . $A['count'] . ' account(s). ';
-        $insecure_msg .= 'This will allow people to do serious harm to your site!</p>';
+        $insecure_msg .= '<li>You still have not changed the default password from "password" on ' . $A['count'] . ' account(s). ';
+        $insecure_msg .= 'This will allow people to do serious harm to your site!</li>';
     }
 
     if ($secure) {
         $retval = $secure_msg;
     } else {
-        $retval = $insecure_msg;
+        $retval = "<ul>" . $insecure_msg . "</ul>";
     }
     $retval = wordwrap($retval,20,' ',1);
 
