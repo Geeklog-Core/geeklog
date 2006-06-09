@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Support backslashes in comment and submissions in HTML mode [Mike]
 - Added breadcrumb functionality to the navbar class (v1.1) [Blaine]
 - Enhancements to navbar templates and CSS for a more 3D TAB'ed look [Blaine]
 - Changed several <table>s to <div>s + CSS [Oliver] 

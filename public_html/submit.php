@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.108 2006/06/05 09:53:30 dhaun Exp $
+// $Id: submit.php,v 1.109 2006/06/09 20:38:45 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -149,7 +149,7 @@ function submitstory($topic = '')
     $introtext = '';
 
     if (!empty($A['title'])) {
-        $introtext = stripslashes ($A['introtext']);
+        $introtext = COM_stripslashes( $A['introtext'] );
         $introtext = htmlspecialchars ($introtext);
         $introtext = str_replace('$','&#36;',$introtext);
         $title = stripslashes ($A['title']);

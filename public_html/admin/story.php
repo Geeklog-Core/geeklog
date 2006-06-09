@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.218 2006/06/07 04:04:19 blaine Exp $
+// $Id: story.php,v 1.219 2006/06/09 20:38:44 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -458,7 +458,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             $has_images = false;
         }
 
-        $previewContent == '';
+        $previewContent = '';
         if ($A['postmode'] == 'plaintext') {
             $B = $A;
 

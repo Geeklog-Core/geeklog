@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.34 2006/06/05 09:53:30 dhaun Exp $
+// $Id: lib-comment.php,v 1.35 2006/06/09 20:38:45 mjervis Exp $
 
 if( $_CONF['allow_user_photo'] )
 {
@@ -823,7 +823,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
 
     // Clean 'em up a bit!
     if ($postmode == 'html') {
-        $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
+        $comment = COM_checkWords (COM_checkHTML (COM_stripslashes ($comment)));
     } else {
         $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
         $newcomment = COM_makeClickableLinks ($comment);

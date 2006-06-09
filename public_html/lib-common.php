@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.552 2006/06/06 08:34:39 ospiess Exp $
+// $Id: lib-common.php,v 1.553 2006/06/09 20:38:45 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2661,14 +2661,14 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
 {
     global $_CONF;
 
-    $str = stripslashes( $str );
+    // replace any \ with &#092; (HTML equiv)
+    $str = str_replace('\\', '&#092;', COM_stripslashes($str) );
 
     // Get rid of any newline characters
     $str = preg_replace( "/\n/", '', $str );
 
     // Replace any $ with &#36; (HTML equiv)
     $str = str_replace( '$', '&#36;', $str );
-
     // handle [code] ... [/code]
     do
     {
