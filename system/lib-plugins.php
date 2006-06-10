@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.104 2006/05/15 08:15:24 ospiess Exp $
+// $Id: lib-plugins.php,v 1.105 2006/06/10 14:37:31 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -274,6 +274,30 @@ function PLG_uninstall ($type)
     }
 
     return false;
+}
+
+/**
+* Inform plugin that it is either being enabled or disabled.
+*
+* @param    string      $type       Plugin name
+* @param    boolean     $enable     true if enabling, false if disabling
+* @return   boolean     Returns true on success otherwise false
+*
+*/
+function PLG_enableStateChange ($type, $enable)
+{
+   global $_CONF;
+
+    $args[1] = $enable;
+
+    // IF we are enabling the plugin
+    // THEN we must include its functions.inc so we have access to the function
+    if ($enable) {
+        require_once ($_CONF['path'] . 'plugins/' . $type . '/functions.inc');
+    }
+
+    return PLG_callFunctionForOnePlugin ('plugin_enablestatechange_' . $type,
+                                         $args);
 }
 
 /**

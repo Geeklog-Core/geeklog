@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.61 2006/06/03 15:51:04 dhaun Exp $
+// $Id: plugins.php,v 1.62 2006/06/10 14:37:31 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -166,6 +166,9 @@ function changePluginStatus ($pi_name)
         if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$pi_name'")) {
             $pi_enabled = 0;
         }
+
+        PLG_enableStateChange ($pi_name, ($pi_enabled == 1) ? true : false);
+
         DB_query ("UPDATE {$_TABLES['plugins']} SET pi_enabled = '$pi_enabled' WHERE pi_name = '$pi_name'");
     }
 }
@@ -198,6 +201,12 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
         $pi_version = addslashes ($pi_version);
         $pi_gl_version = addslashes ($pi_gl_version);
         $pi_homepage = addslashes ($pi_homepage);
+
+        $currentState = DB_getItem ($_TABLES['plugins'], 'pi_enabled',
+                                    "pi_name= '{$pi_name}' LIMIT 1");
+        if ($currentState != $enabled) {
+            PLG_enableStateChange ($pi_name, ($enabled == 1) ? true : false);
+        }
 
         DB_save ($_TABLES['plugins'], 'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage', "'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'");
 
