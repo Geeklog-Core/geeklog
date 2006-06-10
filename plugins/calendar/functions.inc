@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.38 2006/05/28 01:01:09 ospiess Exp $
+// $Id: functions.inc,v 1.39 2006/06/10 14:41:28 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -71,7 +71,7 @@ function plugin_getmenuitems_calendar ()
 }
 
 /**
-* Returns the upcoming event block
+* Returns the upcoming events block
 *
 * Returns the HTML for any upcoming events in the calendar
 *
@@ -96,7 +96,8 @@ function phpblock_calendar( $help='', $title='' )
         }
 
         if( empty( $title )) {
-            $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'events_block'" );
+            $title = DB_getItem( $_TABLES['blocks'], 'title',
+                                 "name = 'events_block'" );
         }
 
         $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
@@ -1057,7 +1058,7 @@ function plugin_statssummary_calendar ()
 
 
 /**
-* This will put an option for polls in the command and control block on
+* This will put an option for the calendar in the command and control block on
 * moderation.php
 *
 */
@@ -1143,6 +1144,24 @@ function plugin_chkVersion_calendar()
     return $_CA_CONF['version'];
 }
 
+/**
+* Geeklog informs us that we're about to be enabled or disabled
+*
+* @param    boolean     $enabled    true = we're being enabled, false = disabled
+* @return   void
+*/
+function plugin_enablestatechange_calendar ($enable)
+{
+    global $_TABLES;
+
+    $is_enabled = $enable ? 1 : 0;
+
+    // toggle calendar feeds
+    DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = $is_enabled WHERE type = 'calendar'");
+
+    // toggle upcoming events block
+    DB_query ("UPDATE {$_TABLES['blocks']} SET is_enabled = $is_enabled WHERE (type = 'phpblock') AND (phpblockfn = 'phpblock_calendar')");
+}
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database
@@ -1168,6 +1187,10 @@ function plugin_uninstall_calendar ($steps = '')
     COM_errorLog('Dropping personal events table', 1);
     DB_query("DROP TABLE {$_TABLES['personal_events']}");
     COM_errorLog('...success', 1);
+
+    // Remove Upcoming Events block
+    DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
+                                   array ('phpblock', 'phpblock_calendar'));
 
     // Remove security for this plugin
 
