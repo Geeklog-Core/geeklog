@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.4 2006/06/10 16:24:13 dhaun Exp $
+// $Id: install.php,v 1.5 2006/06/10 18:25:54 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/calendar/config.php');
@@ -82,11 +82,46 @@ $DEFVALUES = array();
 */
 function plugin_compatible_with_this_geeklog_version ()
 {
-    // TODO: Check that we're on Geeklog 1.4.1 or later, e.g. by checking that
-    // COM_printUpcomingEvents does _not_ exist
+    if (function_exists ('COM_printUpcomingEvents')) {
+        // if this function exists, then someone's trying to install the
+        // plugin on Geeklog 1.4.0 or older - sorry, but that won't work
+        return false;
+    }
 
     return true;
 }
+
+/**
+* 
+*/
+function plugin_postinstall ()
+{
+    global $_CONF, $_TABLES, $LANG_CAL_1;
+
+    // fix Upcoming Events group ownership
+    $blockAdminGroup = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Block Admin'");
+    if ($blockAdminGroup > 0) {
+        // set the block's permissions
+        $A = array ();
+        SEC_setDefaultPermissions ($A, $_CONF['default_permissions_block']);
+
+        // set the block's title in the current language, while we're at it
+        $title = addslashes ($LANG_CAL_1[7]);
+
+        // ... and make it the last block on the left side
+        $result = DB_query ("SELECT MAX(blockorder) FROM {$_TABLES['blocks']} WHERE onleft = 1");
+        list($order) = DB_fetchArray ($result);
+        $order += 10;
+
+        DB_query ("UPDATE {$_TABLES['blocks']} SET group_id = $blockAdminGroup, title = '$title', blockorder = $order, perm_owner = {$A['perm_owner']}, perm_group = {$A['perm_group']}, perm_members = {$A['perm_members']}, perm_anon = {$A['perm_anon']} WHERE (type = 'phpblock') AND (phpblockfn = 'phpblock_calendar')");
+
+        return true;
+    }
+
+    return false;
+}
+
 //
 // ----------------------------------------------------------------------------
 //
@@ -238,6 +273,15 @@ function plugin_install_now()
         $uninstall_plugin ();
 
         return false;
+    }
+
+    // give the plugin a chance to perform any post-install operations
+    if (function_exists ('plugin_postinstall')) {
+        if (!plugin_postinstall ()) {
+            $uninstall_plugin ();
+
+            return false;
+        }
     }
 
     COM_errorLog ("Successfully installed the $pi_display_name plugin!", 1);

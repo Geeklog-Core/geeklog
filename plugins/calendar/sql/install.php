@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.4 2006/05/19 20:17:41 dhaun Exp $
+// $Id: install.php,v 1.5 2006/06/10 18:25:53 dhaun Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['events']} (
@@ -119,5 +119,7 @@ CREATE TABLE {$_TABLES['personal_events']} (
 ";
 
 $_SQL[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2006051410130162','Installed the Calendar plugin','Today, you successfully installed the Calendar plugin.','Your webserver',CURDATE(),CURDATE(),'http://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL)";
+
+$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'events_block','phpblock','Events','all',4,'',1,'phpblock_calendar',{$_USER['uid']},#group#,3,3)";
 
 ?>
