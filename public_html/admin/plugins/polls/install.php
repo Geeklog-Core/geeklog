@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.10 2006/05/14 08:40:42 dhaun Exp $
+// $Id: install.php,v 1.11 2006/06/10 19:31:55 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -82,6 +82,39 @@ function plugin_compatible_with_this_geeklog_version ()
 {
     return true;
 }
+
+/**
+* When the install went through, give the plugin a chance for any 
+* plugin-specific post-install fixes
+*
+* @return   boolean     true = proceed with install, false = an error occured
+*
+*/
+function plugin_postinstall ()
+{ 
+    global $_CONF, $_TABLES;
+
+    // fix Polls block group ownership
+    $blockAdminGroup = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Block Admin'");
+    if ($blockAdminGroup > 0) {
+        // set the block's permissions
+        $A = array ();
+        SEC_setDefaultPermissions ($A, $_CONF['default_permissions_block']);
+
+        // ... and make it the last block on the right side
+        $result = DB_query ("SELECT MAX(blockorder) FROM {$_TABLES['blocks']} WHERE onleft = 0");
+        list($order) = DB_fetchArray ($result);
+        $order += 10;
+
+        DB_query ("UPDATE {$_TABLES['blocks']} SET group_id = $blockAdminGroup, blockorder = $order, perm_owner = {$A['perm_owner']}, perm_group = {$A['perm_group']}, perm_members = {$A['perm_members']}, perm_anon = {$A['perm_anon']} WHERE (type = 'phpblock') AND (phpblockfn = 'phpblock_polls')");
+
+        return true;
+    }
+
+    return false;
+}
+
 //
 // ----------------------------------------------------------------------------
 //
@@ -235,6 +268,15 @@ function plugin_install_now()
         $uninstall_plugin ();
 
         return false;
+    }
+
+    // give the plugin a chance to perform any post-install operations
+    if (function_exists ('plugin_postinstall')) {
+        if (!plugin_postinstall ()) {
+            $uninstall_plugin ();
+
+            return false;
+        }
     }
 
     COM_errorLog ("Successfully installed the $pi_display_name plugin!", 1);
