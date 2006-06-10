@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.5 2006/06/10 18:25:54 dhaun Exp $
+// $Id: install.php,v 1.6 2006/06/10 19:23:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/calendar/config.php');
@@ -92,13 +92,17 @@ function plugin_compatible_with_this_geeklog_version ()
 }
 
 /**
-* 
+* When the install went through, give the plugin a chance for any
+* plugin-specific post-install fixes
+*
+* @return   boolean     true = proceed with install, false = an error occured
+*
 */
 function plugin_postinstall ()
 {
     global $_CONF, $_TABLES, $LANG_CAL_1;
 
-    // fix Upcoming Events group ownership
+    // fix Upcoming Events block group ownership
     $blockAdminGroup = DB_getItem ($_TABLES['groups'], 'grp_id',
                                    "grp_name = 'Block Admin'");
     if ($blockAdminGroup > 0) {
