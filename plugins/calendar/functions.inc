@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.39 2006/06/10 14:41:28 dhaun Exp $
+// $Id: functions.inc,v 1.40 2006/06/10 16:24:13 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1196,7 +1196,7 @@ function plugin_uninstall_calendar ($steps = '')
 
     // Remove the event admin group
     $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                          "grp_name = 'Event Admin'");
+                          "grp_name = 'Calendar Admin'");
 
     // Remove Event Admin group from all other groups
     if (!empty ($grp_id)) {

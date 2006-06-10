@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.3 2006/05/14 08:55:08 dhaun Exp $
+// $Id: install.php,v 1.4 2006/06/10 16:24:13 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/calendar/config.php');
@@ -52,7 +52,7 @@ $gl_version      = '1.4.1';
 $pi_url          = 'http://www.geeklog.net/';
 
 // name of the Admin group
-$pi_admin        = 'Event Admin';
+$pi_admin        = 'Calendar Admin';
 
 // the plugin's groups - assumes first group to be the Admin group
 $GROUPS = array();
