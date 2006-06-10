@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.15 2006/05/14 08:40:42 dhaun Exp $
+// $Id: install.php,v 1.16 2006/06/10 20:37:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/spamx/config.php');
@@ -234,6 +234,15 @@ function plugin_install_now()
         $uninstall_plugin ();
 
         return false;
+    }
+
+    // give the plugin a chance to perform any post-install operations
+    if (function_exists ('plugin_postinstall')) {
+        if (!plugin_postinstall ()) {
+            $uninstall_plugin ();
+
+            return false;
+        }
     }
 
     COM_errorLog ("Successfully installed the $pi_display_name plugin!", 1);
