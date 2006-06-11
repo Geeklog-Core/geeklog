@@ -10,7 +10,7 @@
   <tr valign="top">
     <td align="right"><b>{lang_noboxes}:</b><br>
       <small>{lang_noboxes_text}</small></td>
-    <td><input type="checkbox" name="noboxes" {noboxes_checked}</td>
+    <td><input type="checkbox" name="noboxes" {noboxes_checked}></td>
   </tr>
   <tr valign="top">
     <td align="right"><b>{lang_maxstories}</b><br>
