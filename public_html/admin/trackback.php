@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.39 2006/05/20 16:22:39 dhaun Exp $
+// $Id: trackback.php,v 1.40 2006/06/11 16:15:52 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -497,13 +497,13 @@ function listServices ()
                       'form_url' => $_CONF['site_admin_url'] . "/trackback.php",
                       'help_url' => $_CONF['site_url'] . '/docs/trackback.html#ping');
 
-    $query_arr = array('table' => 'trackback',
+    $query_arr = array('table' => 'pingservice',
                        'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1",
                        'query_fields' => array('name', 'ping_url'),
                        'default_filter' => "",
                        'no_data' => $LANG_TRB['no_services']);
 
-    $retval .= ADMIN_list ("groups", "ADMIN_getListField_trackback", $header_arr, $text_arr,
+    $retval .= ADMIN_list ("pingservice", "ADMIN_getListField_trackback", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
 
 
