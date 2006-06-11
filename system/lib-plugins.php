@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.105 2006/06/10 14:37:31 dhaun Exp $
+// $Id: lib-plugins.php,v 1.106 2006/06/11 10:13:35 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1601,35 +1601,78 @@ function PLG_getWhatsNew ()
 
 /**
 * Allows plugins and Core GL Components to filter out spam.
+*
 * The Spam-X Plugin is now part of the Geeklog Distribution
 * This plugin API will call the main function in the Spam-X plugin
 * but can also be used to call other plugins or custom functions
 * if available for filtering spam or content.
 *
-* @param string $content   Text to be filtered or checked for spam
-* @param integer $action   what to do if comment found
-* @return an error or formatted action HTML to return to calling program
+* @param    string  $content    Text to be filtered or checked for spam
+* @param    integer $action     what to do if spam found
+* @return   integer             > 0: spam detected, == 0: no spam detected
 *
-* Note: Examples for formatted action HTML are a redirect formatted by COM_refresh
-* The spamx DeleteComment.Action does this.
+* The caller should check for return values > 0 in which case spam has been
+* detected and the poster should be told, either via
+*
+*   echo COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
+*                     . '&amp;plugin=spamx');
+*
+* or by
+*
+*   COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden'); 
+*
+* Where the former will only display a "spam detected" message while the latter
+* will also send an HTTP status code 403 with the message.
 *
 */
-function PLG_checkforSpam($content, $action = -1)
+function PLG_checkforSpam ($content, $action = -1)
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_checkforSpam_' . $pi_name;
-        if (function_exists($function)) {
-            $someError = $function($content, $action);
-            if ($someError) {
-                // Plugin found a match for spam or else an error
-                return $someError;
+        if (function_exists ($function)) {
+            $result = $function ($content, $action);
+            if ($result > 0) { // Plugin found a match for spam
+
+                $result = PLG_spamAction ($content, $action);
+
+                return $result;
             }
         }
     }
 
-    return false;
+    return 0;
+}
+
+/**
+* Act on spam
+*
+* This is normally called from PLG_checkforSpam (see above) automatically when
+* spam has been detected. There may however be situations where spam has been
+* detected by some other means, in which case you may want to trigger the
+* spam action explicitly.
+*
+* @param    string  $content    Text to be filtered or checked for spam
+* @param    integer $action     what to do if spam found
+* @return   integer             > 0: spam detected, == 0: no spam detected
+*
+*/
+function PLG_spamAction ($content, $action = -1)
+{
+    global $_PLUGINS;
+
+    $result = 0;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_spamaction_' . $pi_name;
+        if (function_exists ($function)) {
+            $res = $function ($content, $action);
+            $result = max ($result, $res);
+        }
+    }
+
+    return $result;
 }
 
 /**
