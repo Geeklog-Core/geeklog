@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.35 2006/06/04 08:12:42 dhaun Exp $
+// $Id: lib-trackback.php,v 1.36 2006/06/11 15:24:18 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -574,6 +574,9 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             if (!TRB_linksToUs ($sid, $type, $_POST['url'])) {
                 TRB_sendTrackbackResponse (1, $TRB_ERROR['no_link'],
                                            403, 'Forbidden');
+                $comment = TRB_formatComment ($_POST['url'], $_POST['title'],
+                                $_POST['blog_name'], $_POST['excerpt']);
+                PLG_spamAction ($comment, $_CONF['spamx']);
                 TRB_logRejected ('No link to us', $_POST['url']);
 
                 return false;
