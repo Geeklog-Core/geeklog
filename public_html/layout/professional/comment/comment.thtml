@@ -2,7 +2,7 @@
   <div class="commenttitle">{title}</div>
   <div>{lang_authoredby} {start_author_anchortag}{author}{end_author_anchortag} {lang_on}
 {date}</div>
-  <div style="verticle-align: top">{comments}</div>
+  <div style="vertical-align: top">{comments}</div>
   <div>
    <span {hide_if_preview}>
     [ <a href="{reply_link}">{lang_replytothis}</a> {parent_link} {delete_option} | <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="self bookmark" title="{lang_permlink}">#</a> ]
