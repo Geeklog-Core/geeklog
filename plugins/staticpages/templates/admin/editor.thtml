@@ -34,7 +34,7 @@
           <tr>
               <td valign="top" align="right">{lang_content}:</td>
               <td>
-                  <textarea name="sp_content" cols="75" rows="24" wrap="virtual">{sp_content}</textarea>
+                  <textarea name="sp_content" style="width:100%" rows="24">{sp_content}</textarea>
                   <br><span class="warningsmall">{lang_allowedhtml}</span><br><br>
               </td>
           </tr>
@@ -76,7 +76,7 @@
               <td colspan="2"><hr></td>
           </tr>
           <tr>
-              <td colspan="2"><b>{lang_accessrights}<b></td>
+              <td colspan="2"><b>{lang_accessrights}</b></td>
           </tr>
           <tr>
               <td align="right">{lang_owner}:</td>
