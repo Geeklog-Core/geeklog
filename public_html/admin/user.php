@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.153 2006/05/27 17:16:23 dhaun Exp $
+// $Id: user.php,v 1.154 2006/06/11 15:53:58 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -216,8 +216,8 @@ function edituser($uid = '', $msg = '')
         }
         $statusselect .= '>' . $value . '</option>' . LB;
     }
-    $statusselect .= '</select><input type="hidden" name="oldstatus" value="'.
-                        $A['status'].'"/>';
+    $statusselect .= '</select><input type="hidden" name="oldstatus" value="'
+                  . $A['status'] . '">';
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
 
