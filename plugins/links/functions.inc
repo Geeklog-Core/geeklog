@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.64 2006/05/25 08:34:15 dhaun Exp $
+// $Id: functions.inc,v 1.65 2006/06/11 08:15:04 dhaun Exp $
 
 
 /**
@@ -713,6 +713,23 @@ function plugin_upgrade_links ()
     DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'links'");
 
     return true;
+}
+
+/**
+* Geeklog informs us that we're about to be enabled or disabled
+* 
+* @param    boolean     $enable     true = we're being enabled, false = disabled
+* @return   void
+*
+*/
+function plugin_enablestatechange_links ($enable)
+{
+    global $_TABLES;
+
+    $is_enabled = $enable ? 1 : 0;
+
+    // toggle links feeds
+    DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = $is_enabled WHERE type = 'links'");
 }
 
 /**

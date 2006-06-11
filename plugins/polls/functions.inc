@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.45 2006/05/14 18:05:09 ospiess Exp $
+// $Id: functions.inc,v 1.46 2006/06/11 08:15:04 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -354,6 +354,22 @@ function plugin_chkVersion_polls()
     return $_PO_CONF['version'];
 }
 
+/**
+* Geeklog informs us that we're about to be enabled or disabled
+*
+* @param    boolean     $enable     true = we're being enabled, false = disabled
+* @return   void
+*
+*/
+function plugin_enablestatechange_polls ($enable)
+{
+    global $_TABLES;
+
+    $is_enabled = $enable ? 1 : 0;
+
+    // toggle Poll block
+    DB_query ("UPDATE {$_TABLES['blocks']} SET is_enabled = $is_enabled WHERE (type = 'phpblock') AND (phpblockfn = 'phpblock_polls')");
+}
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database
