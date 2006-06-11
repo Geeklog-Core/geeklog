@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.46 2006/06/11 08:15:04 dhaun Exp $
+// $Id: functions.inc,v 1.47 2006/06/11 15:38:31 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -886,7 +886,7 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = strftime ($_CONF['daytime'], $A['unixdate']);
                 break;
             case 'question':
-                $retval = "<a href=\"{$_CONF['site_url']}/polls/index.php?qid={$A['qid']}&aid=-1\">$fieldvalue</a>";
+                $retval = "<a href=\"{$_CONF['site_url']}/polls/index.php?qid={$A['qid']}&amp;aid=-1\">$fieldvalue</a>";
                 break;
             case 'access':
                 if ($access == 3) {
