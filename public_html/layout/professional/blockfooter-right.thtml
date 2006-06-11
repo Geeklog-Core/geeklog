@@ -1,3 +1,5 @@
     </div>
 </div>
-<center><div class="block-divider-right"></div></center>
+<div style="width:100%; text-align:center;">
+    <div class="block-divider-right"></div>
+</div>
