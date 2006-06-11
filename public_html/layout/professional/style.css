@@ -748,7 +748,7 @@ A.pluginButton:hover {
 
     #navcontainer a#current span {
       background:url("navbar/images/tabrightI.gif") no-repeat left top;
-      background-position:100% -42px;color: FFF;
+      background-position:100% -42px;color: #FFF;
       }
     #navcontainer a:link#current, #navcontainer a:visited#current, #navcontainer a:hover#current{
       background:url("navbar/images/tableftI.gif") no-repeat left top;
