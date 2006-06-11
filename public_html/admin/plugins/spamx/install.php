@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X plugin 1.0.4                                                       |
+// | Spam-X plugin 1.1.0                                                       |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.16 2006/06/10 20:37:42 dhaun Exp $
+// $Id: install.php,v 1.17 2006/06/11 10:16:43 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/spamx/config.php');
@@ -48,7 +48,7 @@ require_once ($_CONF['path'] . 'plugins/spamx/config.php');
 $pi_display_name = 'Spam-X';
 $pi_name         = 'spamx';
 $pi_version      = $_SPX_CONF['version'];
-$gl_version      = '1.4.0';
+$gl_version      = '1.4.1';
 $pi_url          = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';
 
 // name of the Admin group
@@ -79,7 +79,11 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')";
 */
 function plugin_compatible_with_this_geeklog_version ()
 {
-    return true;
+    if (function_exists ('PLG_spamAction')) {
+        return true;
+    }
+
+    return false;
 }
 //
 // ----------------------------------------------------------------------------

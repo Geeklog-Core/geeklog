@@ -12,7 +12,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AF
 // update plugin version numbers
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1' WHERE pi_name = 'polls'";
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.4' WHERE pi_name = 'spamx'";
+$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'spamx'";
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.3' WHERE pi_name = 'staticpages'";
 
 // Calendar plugin

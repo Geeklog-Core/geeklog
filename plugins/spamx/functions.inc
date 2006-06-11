@@ -2,7 +2,7 @@
 
 /**
  * File: functions.inc
- * This is the functions.inc for the Geeklog Spam-X Plug-in!
+ * This is the functions.inc for the Geeklog Spam-X plugin
  * 
  * Copyright (C) 2004-2006 by the following authors:
  * Authors      Tom Willett     tomw AT pigstye DOT net
@@ -10,13 +10,14 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.23 2006/06/05 19:45:42 dhaun Exp $
+ * $Id: functions.inc,v 1.24 2006/06/11 10:16:43 dhaun Exp $
  */
 
 /**
- * Language file Include
+ * Language file include
  */
-$langfile = $_CONF['path'] . 'plugins/spamx/language/' . $_CONF['language'] . '.php';
+$langfile = $_CONF['path'] . 'plugins/spamx/language/'
+          . $_CONF['language'] . '.php';
 
 if (file_exists ($langfile)) {
     include_once ($langfile);
@@ -38,14 +39,13 @@ require_once ($_CONF['path'] . 'plugins/spamx/config.php');
  * $showsitestats is 1 then we are to only print the overall stats in the 'site
  * statistics' box otherwise we show the detailed stats for the plugin
  * 
- * Universal Plugin:  Modify/uncomment use it
- * 
- * @param int $ showsitestate   Flag to let us know which stats to get
- * @return string returns formatted HTML to insert in stats page
+ * @param   int     $showsitestats  Flag to let us know which stats to get
+ * @return  string  returns formatted HTML to insert in stats page
  */
 function plugin_showstats_spamx($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_SX00;
+
     $retval = '';
 
     if (SEC_hasRights('spamx.admin')) {
@@ -118,8 +118,6 @@ function plugin_cclabel_spamx()
  * 
  * Adds the plugin to the Admin menu
  * 
- * Universal Plugin:  Modify/Uncomment use it
- * 
  * @return array Array containing (plugin name, plugin admin url, # of items in plugin or '')
  */
 function plugin_getadminoption_spamx()
@@ -154,6 +152,10 @@ function plugin_upgrade_spamx ()
 {
     global $_TABLES, $_SPX_CONF;
 
+    if (!function_exists ('PLG_spamAction')) {
+        return 3002; // plugin not compatible with this Geeklog version
+    }
+
     $v = DB_getItem ($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
 
     if ($v != $_SPX_CONF['version']) {
@@ -164,8 +166,8 @@ function plugin_upgrade_spamx ()
                 break;
         }
 
-        // update version number
-        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SPX_CONF['version']}' WHERE pi_name = 'spamx'");
+        // update version numbers
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SPX_CONF['version']}', pi_gl_version = '1.4.1' WHERE pi_name = 'spamx'");
 
         // check if version number was updated successfully
         $v = DB_getItem ($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
@@ -183,14 +185,16 @@ function plugin_upgrade_spamx ()
  */
 
 /**
- * Called by the Plugin API PLG_checkforSpam
- * param string $comment  comment text
- * param int    $action   which action modules to call if spam found (sum of module numbers)
+ * Check a post for spam
+ *
+ * @param   string  $comment    comment text
+ * @param   int     $action     (former spam action - not used any more)
+ * @return  int                 > 0: spam detected, == 0: no spam
+ *
  */
-
-function plugin_checkforSpam_spamx ($comment, $action)
+function plugin_checkforSpam_spamx ($comment, $action = -1)
 {
-    global $_CONF, $_TABLES, $_SPX_CONF; 
+    global $_CONF, $_SPX_CONF; 
 
     // skip spam check for members of the 'spamx Admin' group, if enabled
     if (isset ($_SPX_CONF['admin_override']) && $_SPX_CONF['admin_override']) {
@@ -201,18 +205,12 @@ function plugin_checkforSpam_spamx ($comment, $action)
 
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';
 
-    // Set up Spamx_Action and Spamx_Examine arrays
-    $Spamx_Action = array ();
+    // Set up Spamx_Examine array
     $Spamx_Examine = array ();
     if ($dir = @opendir ($spamx_path)) {
         while (($file = readdir ($dir)) !== false) {
             if (is_file ($spamx_path . $file)) {
-                if (substr ($file, -17) == '.Action.class.php') {
-                    $sfile = str_replace ('.Action.class.php', '', $file);
-                    require_once ($spamx_path . $file);
-                    $CM = new $sfile;
-                    $Spamx_Action[$CM->number ()] = $sfile;
-                } else if (substr ($file, -18) == '.Examine.class.php') {
+                if (substr ($file, -18) == '.Examine.class.php') {
                     $sfile = str_replace ('.Examine.class.php', '', $file);
                     $Spamx_Examine[] = $sfile;
                 }
@@ -232,21 +230,51 @@ function plugin_checkforSpam_spamx ($comment, $action)
         }
     }
 
-    if ($res == 1) { // Examine Class found a match - spam detected
-        $res = 0;
+    return $res;
+}
 
-        if ($action == -1 or $action == '') {
-            $action = $_SPX_CONF['action'];
-        }
-        foreach ($Spamx_Action as $Num => $Act) {
-            if (($action & $Num) == $Num) {
-                $filename = $Act . '.Action.class.php';
-                require_once ($spamx_path . $filename);
-                $AC = new $Act;
-                $AC->execute ($comment);
+/**
+ * Perform action after spam has been detected
+ *
+ * @param   string  $comment    comment text
+ * @param   int     $action     which action modules to call (sum of module numbers)
+ * @return  int                 number of message to display to the spammer
+ *
+ */
+function plugin_spamaction_spamx ($comment, $action)
+{
+    global $_CONF, $_SPX_CONF;
 
-                $res = max ($res, $AC->result ());
-            }
+    $res = 0;
+
+    $spamx_path = $_CONF['path'] . 'plugins/spamx/';
+
+    if (($action == -1) || ($action == '')) {
+        $action = $_SPX_CONF['action'];
+    }
+
+    // Set up Spamx_Action array
+    $Spamx_Action = array ();
+    if ($dir = @opendir ($spamx_path)) {
+        while (($file = readdir ($dir)) !== false) {
+            if (is_file ($spamx_path . $file)) {
+                if (substr ($file, -17) == '.Action.class.php') {
+                    $sfile = str_replace ('.Action.class.php', '', $file);
+                    require_once ($spamx_path . $file);
+                    $CM = new $sfile;
+                    $Spamx_Action[$CM->number ()] = $sfile;
+                }   
+            }   
+        }   
+        closedir ($dir);
+    }
+
+    foreach ($Spamx_Action as $Num => $Act) {
+        if (($action & $Num) == $Num) {
+            $AC = new $Act;
+            $AC->execute ($comment);
+            
+            $res = max ($res, $AC->result ());
         }
     }
 
@@ -258,9 +286,8 @@ function plugin_checkforSpam_spamx ($comment, $action)
  * 
  * This will print a message to the spamx log
  * 
- * @logentry string      $string         Message to write to log
+ * @param   string  $logentry   Message to write to log
  */
-
 function SPAMX_log ($logentry)
 {
     global $_CONF, $LANG01, $_SPX_CONF;
@@ -300,11 +327,9 @@ function plugin_geticon_spamx ()
  * The Plugin Installer will also call this routine upon and install error to remove anything it has created.
  * The Plugin installer will pass the optional parameter which will then double check that plugin has first been disabled. 
  * 
- * For this plugin, this routine will also remove the Block definition.
- * 
  * Returns True if all Plugin related data is removed without error
  * 
- * @param string $installCheck Defult is blank but if set, check if plugin is disabled first
+ * @param string $installCheck Default is blank but if set, check if plugin is disabled first
  * @return boolean True if successful false otherwise
  */
 function plugin_uninstall_spamx($installCheck = '')
