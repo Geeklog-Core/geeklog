@@ -3,6 +3,10 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Implemented new plugin API function, PLG_spamAction, to perform the spam
+  actions in case spam has been detected through some other means [Dirk]
+- Implemented new plugin API function, plugin_enablestatechange_, to inform
+  plugins when they are about to be enabled / disabled (Patch #405) [Dirk]
 - Support backslashes in comment and submissions in HTML mode [Mike]
 - Added breadcrumb functionality to the navbar class (v1.1) [Blaine]
 - Enhancements to navbar templates and CSS for a more 3D TAB'ed look [Blaine]
@@ -117,10 +121,14 @@ GeekLog History/Changes:
 
 Calendar plugin (1.0)
 ---------------
+- Implemented plugin_enablestatechange API function to enable/disable plugin
+  feeds and blocks when the plugin is enabled/disabled [Dirk]
 - Added calendar plugin initial version [Oliver]
 
 Links plugin (1.0.1)
 ------------
+- Implemented plugin_enablestatechange API function to enable/disable plugin
+  feeds when the plugin is enabled/disabled [Dirk]
 - Changed the english language file from "Web Resources" to "Links"
 - Fixed hard-coded link to the "admin" directory when editing a link (reported
   by Ronnie Rigl) [Dirk]
@@ -141,6 +149,8 @@ Links plugin (1.0.1)
 
 Polls plugin (1.1)
 ------------
+- Implemented plugin_enablestatechange API function to enable/disable the poll
+  block when the plugin is enabled/disabled [Dirk]
 - Fixed search [Dirk]
 - Added a remark field for polls answers [Oliver]
 - Re-introduced {button_polls} header variable [Dirk]
@@ -150,8 +160,9 @@ Polls plugin (1.1)
 - Remove the polls block when uninstalling the Polls plugin (another part of
   bug #520) [Dirk]
 
-Spam-X plugin (1.0.4)
+Spam-X plugin (1.1.0)
 -------------
+- Moved spam actions to plugin_spamaction_spamx API function [Dirk]
 - Fixed potential problems with the checkforSpam function's return code in case
   of unusual configurations (e.g. $_CONF['spamx'] = 0) [Dirk, Tom Willet]
 - Made the plugin's internal log flag a proper config option. So you can now
