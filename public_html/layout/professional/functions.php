@@ -21,7 +21,6 @@ for ($i = 0; $i < $nrows; $i++) {
 
 $_BLOCK_TEMPLATE['_msg_block'] = 'blockheader-message.thtml,blockfooter-message.thtml';
 
-$_BLOCK_TEMPLATE['customlogin'] = 'customlogin-header.thtml,customlogin-footer.thtml';
 $_BLOCK_TEMPLATE['whats_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
 $_BLOCK_TEMPLATE['story_options_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
 
