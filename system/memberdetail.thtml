@@ -2,28 +2,29 @@
 <!-- To be located under theme/custom directory - Example XSilver/custom/memberdetail.thtml -->
 {startblock}
 {message}
-<form action="{post_url}" method="post">
+<form action="{post_url}" method="POST">
     <table border="0" cellspacing="0" cellpadding="2" width="100%">
         <tr>
-            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><font color='#000000'><b>{USERNAME}</b></font><br><font color=#676767 size=1>{USERNAME_HELP}</font></td>
-            <td align=left valign=middle><input type="text" name="username" size="25" maxlength="16" value="{username}"></td> 
-            <td><img src='/images/speck.gif' width=30 height=1></td>
+            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{USERNAME}</b><br><small style="color:#676767">{USERNAME_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="username" size="16" maxlength="16" value="{username}"></td>
         </tr>
-        {passwd_input} 
-        <tr> 
-            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><font color='#000000'><b>{EMAIL}</b></font><br><font color=#676767 size=1>{EMAIL_HELP}</font></td> 
-            <td align=left valign=middle><input type="text" name="email" size="25" maxlength="100" value="{email}"></td> 
-                <td><img src='/images/speck.gif' width=30 height=1></td>
-        </tr> 
+        {passwd_input}
         <tr>
-            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><font color='#000000'><b>{FULLNAME}</b></font><br><font color=#676767 size=1>{FULLNAME_HELP}</font></td>
-            <td align=left valign=middle><input type="text" name="fullname" size="25" maxlength="40" value="{fullname}"></td> 
-            <td><img src='/images/speck.gif' width=30 height=1></td>
-           </tr> 
-        <tr> 
-            <td align="center" colspan="3"><input type="hidden" name="uid" value="{user_id}"><HR><BR>
-            <input type="hidden" name="mode" value="{postmode}">{submitbutton}</td> 
-        </tr> 
+            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{FULLNAME}</b><br><small style="color:#676767">{FULLNAME_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="fullname" size="32" maxlength="80" value="{fullname}"></td>
+        </tr>
+        <tr>
+            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{EMAIL}</b><br><small style="color:#676767">{EMAIL_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="email" size="32" maxlength="96" value="{email}"></td>
+        </tr>
+        <tr>
+            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{EMAIL_CONF}</b><br><small style="color:#676767">{EMAIL_CONF_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="email_conf" size="32" maxlength="96" value="{email_conf}"></td>
+        </tr>
+        <tr>
+            <td align="center" colspan="3"><input type="hidden" name="uid" value="{user_id}"><hr><br>
+            <input type="hidden" name="mode" value="{postmode}">{submitbutton}</td>
+        </tr>
     </table>
 </form>
 {endblock}

@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.26 2006/06/07 05:14:17 ospiess Exp $
+// $Id: lib-custom.php,v 1.27 2006/06/15 09:14:57 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -264,7 +264,7 @@ function CUSTOM_userSave($uid)
 {
     global $_CONF, $_TABLES;
 
-    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout='{$_POST["cooktime"]}'");
+    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout='{$_POST['cooktime']}'");
 }
 
 
@@ -286,26 +286,51 @@ function CUSTOM_userForm ($msg = '')
         $retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
     }
 
-    $post_url = $_CONF['site_url']."/users.php";
-    $postmode = "create";
+    $post_url = $_CONF['site_url'] . '/users.php';
+    $postmode = 'create';
     $submitbutton = '<input type="submit" value="Register Now!">';
-    $message = "<blockquote style=\"padding-top:10px;\"><font color=black><b>Please complete the application below. Once you have completed the application, click the Submit button and the application will be processed immediately.</b></font></blockquote>";
+    $message = "<blockquote style=\"padding-top:10px;\"><b>Please complete the application below. Once you have completed the application, click the Register Now! button and the application will be processed immediately.</b></blockquote>";
 
     $user_templates = new Template ($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');
+    $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('post_url', $post_url);
     $user_templates->set_var('startblock', COM_startBlock("Custom Registration Example"));
     $user_templates->set_var('message', $message);
-    $user_templates->set_var('USERNAME', "Username");
+
+    $user_templates->set_var('USERNAME', $LANG04[2]);
     $user_templates->set_var('USERNAME_HELP', "Name to be used when accessing this site");
-    $user_templates->set_var('username', '');
-    $user_templates->set_var('EMAIL', "Email Address");
-    $user_templates->set_var('EMAIL_HELP', "");
-    $user_templates->set_var('email', '');
-    $user_templates->set_var('FULLNAME', "Full Name");
-    $user_templates->set_var('FULLNAME_HELP', "");
-    $user_templates->set_var('fullname', '');
+    $username = '';
+    if (isset ($_POST['username'])) {
+        $username = COM_applyFilter ($_POST['username']);
+    }
+    $user_templates->set_var('username', $username);
+
+    $user_templates->set_var('EMAIL', $LANG04[5]);
+    $user_templates->set_var('EMAIL_HELP', $LANG04[33]);
+    $email = '';
+    if (isset ($_POST['email'])) {
+        $email = COM_applyFilter ($_POST['email']);
+    }
+    $user_templates->set_var('email', $email);
+
+    $user_templates->set_var('EMAIL_CONF', $LANG04[124]);
+    $user_templates->set_var('EMAIL_CONF_HELP', $LANG04[126]);
+    $email_conf = '';
+    if (isset ($_POST['email_conf'])) {
+        $email_conf = COM_applyFilter ($_POST['email_conf']);
+    }
+    $user_templates->set_var('email_conf', $email_conf);
+
+    $user_templates->set_var('FULLNAME', $LANG04[3]);
+    $user_templates->set_var('FULLNAME_HELP', $LANG04[34]);
+    $fullname = '';
+    if (isset ($_POST['fullname'])) {
+        $fullname = COM_applyFilter ($_POST['fullname']);
+    }
+    $user_templates->set_var('fullname', $fullname);
+
     $user_templates->set_var('user_id', $user);
     $user_templates->set_var('postmode', $postmode);
     $user_templates->set_var('submitbutton', $submitbutton);
