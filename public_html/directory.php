@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.5 2006/05/19 06:10:51 ospiess Exp $
+// $Id: directory.php,v 1.6 2006/06/15 14:42:39 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -355,7 +355,7 @@ function DIR_displayYear ($topic, $year, $main = false)
             $fillm = 12;
         }
 
-        if ($lastm < $fillm) {
+        if ($lastm <= $fillm) {
             for (; $lastm <= $fillm; $lastm++) {
                 $retval .= '<li>' . DIR_monthLink ($topic, $year, $lastm, 0)
                         . '</li>';
