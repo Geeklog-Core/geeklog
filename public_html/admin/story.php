@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.220 2006/06/14 18:47:50 mjervis Exp $
+// $Id: story.php,v 1.221 2006/06/15 13:58:25 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1061,10 +1061,6 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $bodytext = COM_makeClickableLinks ($bodytext);
         }
 
-        // Get the related URLs
-        $related = addslashes (implode ("\n",
-                        STORY_extractLinks ("$introtext $bodytext")));
-
         if ($_CONF['maximagesperarticle'] > 0) {
             if ($delete_old_story) {
                 // story id has changed - update article_images table first
@@ -1087,6 +1083,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 exit;
             }
         }
+
+        // Get the related URLs
+        $related = addslashes (implode ("\n",
+                        STORY_extractLinks ("$introtext $bodytext")));
 
         $introtext = addslashes ($introtext);
         $bodytext = addslashes ($bodytext);
