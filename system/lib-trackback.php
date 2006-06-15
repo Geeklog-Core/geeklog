@@ -29,10 +29,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.36 2006/06/11 15:24:18 dhaun Exp $
+// $Id: lib-trackback.php,v 1.37 2006/06/15 18:26:45 dhaun Exp $
 
-if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
-    die ('This file can not be used on its own.');
+if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
+    die ('This file can not be used on its own!');
 }
 
 // result codes for TRB_saveTrackbackComment

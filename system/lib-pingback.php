@@ -29,10 +29,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.6 2006/01/25 09:01:07 dhaun Exp $
+// $Id: lib-pingback.php,v 1.7 2006/06/15 18:26:45 dhaun Exp $
 
-if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
-    die ('This file can not be used on its own.');
+if (strpos ($_SERVER['PHP_SELF'], 'lib-pingback.php') !== false) {
+    die ('This file can not be used on its own!');
 }
 
 // PEAR class to handle XML-RPC

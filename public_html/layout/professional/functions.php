@@ -1,9 +1,8 @@
 <?php
 
 // this file can't be used on its own
-if (eregi ('functions.php', $_SERVER['PHP_SELF']))
-{
-    die ('This file can not be used on its own.');
+if (strpos ($_SERVER['PHP_SELF'], 'functions.php') !== false) {
+    die ('This file can not be used on its own!');
 }
 
 $_IMAGE_TYPE = 'png';

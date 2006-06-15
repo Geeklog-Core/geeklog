@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.553 2006/06/09 20:38:45 mjervis Exp $
+// $Id: lib-common.php,v 1.554 2006/06/15 18:26:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -118,7 +118,7 @@ if( isset( $_CONF['site_enabled'] ) && !$_CONF['site_enabled'] )
 }
 
 // this file can't be used on its own - redirect to index.php
-if( eregi( 'lib-common.php', $_SERVER['PHP_SELF'] ))
+if( strpos( $_SERVER['PHP_SELF'], 'lib-common.php' ) !== false )
 {
     echo COM_refresh( $_CONF['site_url'] . '/index.php' );
     exit;

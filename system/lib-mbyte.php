@@ -29,8 +29,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.15 2006/06/09 20:38:45 mjervis Exp $
+// $Id: lib-mbyte.php,v 1.16 2006/06/15 18:26:45 dhaun Exp $
 
+if (strpos ($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 // This function is supposed to display only language files in selection drop-
 // downs that are utf-8

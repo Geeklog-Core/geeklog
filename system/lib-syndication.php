@@ -30,14 +30,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.36 2006/06/05 19:33:16 mjervis Exp $
+// $Id: lib-syndication.php,v 1.37 2006/06/15 18:26:45 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
 
-if (eregi ('lib-syndication.php', $_SERVER['PHP_SELF'])) {
-    die ('This file can not be used on its own.');
+if (strpos ($_SERVER['PHP_SELF'], 'lib-syndication.php') !== false) {
+    die ('This file can not be used on its own!');
 }
+
 if ($_CONF['trackback_enabled']) {
     require_once ($_CONF['path_system'] . 'lib-trackback.php');
 }

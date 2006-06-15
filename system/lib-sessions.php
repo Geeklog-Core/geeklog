@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.41 2006/04/27 18:51:11 mjervis Exp $
+// $Id: lib-sessions.php,v 1.42 2006/06/15 18:26:45 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -41,8 +41,8 @@
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
 
-if (eregi ('lib-sessions.php', $_SERVER['PHP_SELF'])) {
-    die ('This file can not be used on its own.');
+if (strpos ($_SERVER['PHP_SELF'], 'lib-sessions.php') !== false) {
+    die ('This file can not be used on its own!');
 }
 
 if (empty ($_CONF['cookiedomain'])) {

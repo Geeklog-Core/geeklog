@@ -43,7 +43,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.28 2006/06/15 12:17:13 dhaun Exp $
+// $Id: lib-custom.php,v 1.29 2006/06/15 18:26:45 dhaun Exp $
+
+if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in

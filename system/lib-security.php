@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.52 2006/05/14 20:16:08 dhaun Exp $
+// $Id: lib-security.php,v 1.53 2006/06/15 18:26:45 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -63,8 +63,8 @@
 // Turn this on go get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
 
-if (eregi ('lib-security.php', $_SERVER['PHP_SELF'])) {
-    die ('This file can not be used on its own.');
+if (strpos ($_SERVER['PHP_SELF'], 'lib-security.php') !== false) {
+    die ('This file can not be used on its own!');
 }
 
 /* Constants for acount stats */
@@ -731,12 +731,14 @@ function SEC_authenticate($username, $password, &$uid)
 */
 function SEC_checkUserStatus($userid)
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES;
+
     // Check user status
     $status = DB_getItem($_TABLES['users'], 'status', "uid=$userid");
+
     // only do redirects if we aren't on users.php in a valid mode (logout or
     // default)
-    if (!(eregi('users.php', $_SERVER['PHP_SELF'])))
+    if (strpos ($_SERVER['PHP_SELF'], 'users.php') === false)
     {
         $redirect = true;
     } else {
