@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.27 2006/06/15 09:14:57 dhaun Exp $
+// $Id: lib-custom.php,v 1.28 2006/06/15 12:17:13 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -157,15 +157,15 @@ function CUSTOM_runScheduledTask() {
 
 
 /**
-* Include any code in this function that will be called by Plugin API to set template variables
-* Initially this API is only called in the COM_siteHeader function to set header.thtml variables
+* Include any code in this function to add custom template variables.
+* Initially, this function is only called in the COM_siteHeader function to set
+* header.thtml variables
 */
-function CUSTOM_templateSetVars($templatename, &$template) {
-
+function CUSTOM_templateSetVars ($templatename, &$template)
+{
     if ($templatename == 'header') {
-        if (isset($mycontent)) {
-            $template->set_var( 'myvar', $mycontent );
-        }
+        // define a {hello_world} variable which displays "Hello, world!"
+        $template->set_var ('hello_world', 'Hello, world!');
     }
 }
 
@@ -175,27 +175,50 @@ function CUSTOM_templateSetVars($templatename, &$template) {
     Note1: Enable CustomRegistration Feature in config.php
     $_CONF['custom_registration'] = true;  // Set to true if you have custom code
 
-    Note2: This example requries a template file called memberdetail.thtml to be
+    Note2: This example requires a template file called memberdetail.thtml to be
     located under the theme_dir/custom directory.
     Sample is provided under /system with the distribution.
 
     Functions have been provided that are called from the Core Geeklog user and admin functions
     - This works with User Moderation as well
-    - Admin will see the new registration info when checking a members profile only
+    - Admin will see the new registration info when checking a member's profile only
     - All other users will see the standard User profile with the optional extended custom information
-    - Customization requires changes to a few of the core template files to add {customfields} variable
+    - Customization requires changes to a few of the core template files to add {customfields} variables
     - See notes below in the custom function about the template changes
 */
 
 /* Create any new records in additional tables you may have added  */
 /* Update any fields in the core GL tables for this user as needed */
 /* Called when user is first created */
-function CUSTOM_userCreate($uid)
+function CUSTOM_userCreate ($uid)
 {
     global $_CONF, $_TABLES;
 
-    // Ensure all data is prepared correctly before inserts, quotes may need to be escaped with addslashes()
-    DB_query("UPDATE {$_TABLES['users']} SET email='{$_POST['email']}',homepage='{$_POST['homepage']}', fullname='{$_POST['fullname']}' WHERE uid=$uid");
+    // Ensure all data is prepared correctly before inserts, quotes may need to
+    // be escaped with addslashes()
+    $email = '';
+    if (isset ($_POST['email'])) {
+        $email = COM_applyFilter ($_POST['email']);
+        $email = addslashes ($email);
+    }
+
+    $homepage = '';
+    if (isset ($_POST['homepage'])) {
+        $homepage = COM_applyFilter ($_POST['homepage']);
+        $homepage = addslashes ($homepage);
+    }
+
+    $fullname = '';
+    if (isset ($_POST['fullname'])) {
+        // COM_applyFilter would strip special characters, e.g. quotes, so
+        // we only strip HTML
+        $fullname = strip_tags ($_POST['fullname']);
+        $fullname = addslashes ($fullname);
+    }
+
+    // Note: In this case, we can trust the $uid variable to contain the new
+    // account's uid.
+    DB_query("UPDATE {$_TABLES['users']} SET email = '$email', homepage = '$homepage', fullname = '$fullname' WHERE uid = $uid");
 
     return true;
 }
@@ -206,11 +229,12 @@ function CUSTOM_userDelete($uid)
     return true;
 }
 
-/* Called from users.php - when user is displaying a member profile  */
-/* This function can now return any extra fields that need to be shown */
-/* Output is then replaced in {customfields) -- This variable needs to be added to your templates */
-/* Template: path_layout/users/profile/profile.thtml */
-
+/* Called from users.php - when user is displaying a member profile.
+ * This function can now return any extra fields that need to be shown.
+ * Output is then replaced in {customfields} -- This variable needs to be added
+ * to your templates
+ * Template: path_layout/users/profile/profile.thtml
+ */
 function CUSTOM_userDisplay($uid)
 {
     global $_CONF, $_TABLES;
@@ -241,7 +265,7 @@ function CUSTOM_userEdit($uid)
     global $_CONF, $_TABLES;
 
     $var = "Value from custom table";
-    $cookietimeout = DB_getitem($_TABLES['users'], 'cookietimeout' ,$uid);
+    $cookietimeout = DB_getitem($_TABLES['users'], 'cookietimeout', $uid);
     $selection = '<select name="cooktime">' . LB;
     $selection .= COM_optionList ($_TABLES['cookiecodes'], 'cc_value,cc_descr', $cookietimeout, 0);
     $selection .= '</select>';
@@ -264,7 +288,15 @@ function CUSTOM_userSave($uid)
 {
     global $_CONF, $_TABLES;
 
-    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout='{$_POST['cooktime']}'");
+    $cooktime = 0;
+    if (isset ($_POST['cooktime'])) {
+        $cooktime = COM_applyFilter ($_POST['cooktime'], true);
+        if ($cooktime < 0) {
+            $cooktime = 0;
+        }
+    }
+
+    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout = $cooktime WHERE uid = $uid");
 }
 
 
@@ -327,7 +359,7 @@ function CUSTOM_userForm ($msg = '')
     $user_templates->set_var('FULLNAME_HELP', $LANG04[34]);
     $fullname = '';
     if (isset ($_POST['fullname'])) {
-        $fullname = COM_applyFilter ($_POST['fullname']);
+        $fullname = strip_tags ($_POST['fullname']);
     }
     $user_templates->set_var('fullname', $fullname);
 
