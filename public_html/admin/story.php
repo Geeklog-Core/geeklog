@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.221 2006/06/15 13:58:25 dhaun Exp $
+// $Id: story.php,v 1.222 2006/06/15 15:41:12 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -188,7 +188,7 @@ function liststories()
                       'icon' => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/story.php");
 
-    $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, "
+    $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
           ."UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} "
           ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid "
           ."WHERE 1 ";

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.63 2006/05/25 12:01:09 dhaun Exp $
+// $Id: lib-admin.php,v 1.64 2006/06/15 15:41:12 dhaun Exp $
 
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $menu_arr = '')
@@ -723,6 +723,9 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
                                                  "tid = '{$A['tid']}'");
             }
             $retval = $topics[$A['tid']];
+            break;
+        case 'username':
+            $retval = COM_getDisplayName ($A['uid'], $A['username'], $A['fullname']);
             break;
         default:
             $retval = $fieldvalue;
