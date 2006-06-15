@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.70 2006/05/25 08:34:16 dhaun Exp $
+// $Id: functions.inc,v 1.71 2006/06/15 15:02:50 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -806,9 +806,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
                     . $LANG_STATIC['title_display'] . '">' . $sp_title . '</a>';
             break;
         case "sp_uid":
-            $nresult = DB_query ("SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = {$A['sp_uid']}");
-            $N = DB_fetchArray ($nresult);
-            $retval = $N['username'];
+            $retval = COM_getDisplayName ($A['sp_uid']);
             break;
         case "sp_centerblock":
             if ($A['sp_centerblock']) {
