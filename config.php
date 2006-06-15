@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.225 2006/05/25 20:57:04 mjervis Exp $
+// $Id: config.php,v 1.226 2006/06/15 15:46:30 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -231,10 +231,10 @@ $_CONF['allow_account_delete']  = 0;
 // hides the list of authors from the preferences
 $_CONF['hide_author_exclusion'] = 0;
 
-// Used by COM_displayName to return Members's Full Name else username  (1 = yes, 0 = no)
-$_CONF['show_fullname'] = 0;
+// Used by COM_getDisplayName to return Members's Full Name else username
+$_CONF['show_fullname'] = 0; // 1 = show user's full name
 
-// Used by COM_displayName to return users remote login service, if they have one.
+// Used by COM_getDisplayName to return users remote login service, if they have one.
 $_CONF['show_servicename'] = true; // Set to false to not show it.
 
 // +---------------------------------------------------------------------------+
