@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.40 2006/06/10 16:24:13 dhaun Exp $
+// $Id: functions.inc,v 1.41 2006/06/15 15:17:25 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -735,7 +735,7 @@ function CALENDAR_listevents()
                       'icon' => $_CONF['site_url'] . '/calendar/images/calendar.' . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php");
 
-    $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username "
+    $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
           ."FROM {$_TABLES['events']} "
           ."LEFT JOIN {$_TABLES['users']} "
           ."ON {$_TABLES['events']}.owner_id={$_TABLES['users']}.uid "
@@ -1490,6 +1490,9 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = stripslashes ($A['title']);
             $retval = "<a href=\"{$_CONF['site_url']}/calendar/event.php?eid="
                     . "{$A['eid']}\">$retval</a>";
+            break;
+        case 'username':
+            $retval = COM_getDisplayName ($A['uid'], $A['username'], $A['fullname']);
             break;
         default:
             $retval = $fieldvalue;
