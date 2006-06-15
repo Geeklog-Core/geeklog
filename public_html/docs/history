@@ -3,6 +3,14 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- $_CONF['show_fullname'] now works as expected, i.e. when setting it to = 1,
+  a user's full name will be displayed everywhere in Geeklog instead of the
+  username (assuming the users entered their full name) [Dirk]
+- Fixed a bug in the article directory where December was not listed when no
+  stories had been posted in that month (reported by Kino and Ivy of geeklog.jp)
+- Replace Geeklog's [imageX] tags before extracting the What's Related links
+  from a story [Dirk]
+- Update story ids in the gl_trackback table when a story's id is changed [Mike]
 - Implemented new plugin API function, PLG_spamAction, to perform the spam
   actions in case spam has been detected through some other means [Dirk]
 - Implemented new plugin API function, plugin_enablestatechange_, to inform
