@@ -16,7 +16,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right" valign="top"><b>{lang_comment}:</b></td>
-                                                        <td><textarea name="comment" wrap="physical" rows="10" cols="60">{comment}</textarea></td>
+                                                        <td><textarea name="comment" rows="10" style="width:100%">{comment}</textarea></td>
                                                     </tr>
                                                     <tr valign="top">
                                                         <td align="right"><b>{lang_postmode}:</b></td>
