@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.30 2006/06/16 04:00:50 blaine Exp $
+// $Id: lib-custom.php,v 1.31 2006/06/16 18:12:44 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -166,7 +166,7 @@ function CUSTOM_runScheduledTask() {
 * This example redirects to the front page with a extra passed variable plus the message
 * Note: Message could be a string but in this case maps to $MESSAGE[79] as a default - edit in language file
 */
-function CUSTOM_loginErrHandler($msg='') {
+function CUSTOM_loginErrorHandler($msg='') {
     global $_CONF,$MESSAGE;
 
     if ($msg > 0) {

@@ -3,7 +3,6 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
-- Added support for a CUSTOM login error handler [Blaine]
 - $_CONF['show_fullname'] now works as expected, i.e. when setting it to = 1,
   a user's full name will be displayed everywhere in Geeklog instead of the
   username (assuming the users entered their full name) [Dirk]
@@ -79,7 +78,7 @@ GeekLog History/Changes:
   Authorization" instead of "Awaiting Activation") [Mike]
 - Fixed admin lists google paging for use in static pages etc. [Oliver]
 - Added support for a custom login error handler function,
-  CUSTOM_loginErrHandler [Blaine]
+  CUSTOM_loginErrorHandler [Blaine]
 - Format the user agent string according to the RFCs 1945 / 2068 / 2616, i.e.
   "Geeklog/1.4.1" when trying to detect a Trackback URL [Dirk]
 - Made the search option on the Admin pages behave like the site search, i.e.

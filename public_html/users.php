@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.139 2006/06/16 04:00:50 blaine Exp $
+// $Id: users.php,v 1.140 2006/06/16 18:12:44 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -890,10 +890,10 @@ default:
     // prevent dictionary attacks on passwords
     COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
     if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
-        if (function_exists('CUSTOM_loginErrHandler')) {
+        if (function_exists('CUSTOM_loginErrorHandler')) {
             // Typically this will be used if you have a custom main site page and need to control the login process
             $msg=82;
-            $display .= CUSTOM_loginErrHandler($msg);
+            $display .= CUSTOM_loginErrorHandler($msg);
         } else {
             $retval .= COM_siteHeader()
                 . COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
@@ -1021,10 +1021,10 @@ default:
         default:
             // check to see if this was the last allowed attempt
             if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
-                if (function_exists('CUSTOM_loginErrHandler')) {
+                if (function_exists('CUSTOM_loginErrorHandler')) {
                     // Typically this will be used if you have a custom main site page and need to control the login process
                     $msg = 82;
-                    $display .= CUSTOM_loginErrHandler($msg);
+                    $display .= CUSTOM_loginErrorHandler($msg);
                 } else {
                     $retval .= COM_siteHeader()
                              . COM_startBlock ($LANG04[113], '',
@@ -1037,9 +1037,9 @@ default:
                 }
             } else { // Show login form
                 if( ($msg != 69) && ($msg != 70) ) {
-                    if (function_exists('CUSTOM_loginErrHandler')) {
+                    if (function_exists('CUSTOM_loginErrorHandler')) {
                         // Typically this will be used if you have a custom main site page and need to control the login process
-                        $display .= CUSTOM_loginErrHandler($msg);
+                        $display .= CUSTOM_loginErrorHandler($msg);
                     } else {
                         $display .= loginform(false, $status);
                     }
