@@ -2,17 +2,17 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | sanitize.class.php                                                        |
 // |                                                                           |
 // | Geeklog data filtering or sanitizing class library.                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2004 by the following authors:                         |
+// | Copyright (C) 2002-2006 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Dirk Haun        - dirk@haun-online.de                           |
-// |          Blaine Lang      - blaine@portalparts.com                        |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
+// |          Blaine Lang      - blaine AT portalparts DOT com                 |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,6 +35,10 @@
 /* Class derived from original procedural code in Geeklog 1.3.x lib-common.php
 *  Jan 2005: Blaine Lang
 */
+
+if (strpos ($_SERVER['PHP_SELF'], 'sanitize.class.php') !== false) {
+    die ('This file can not be used on its own.');
+}
 
 /**
  * Include the base kses class if not already loaded
@@ -316,8 +320,6 @@ class sanitize extends kses {
         $this->logging = $state;
     }
 
-
 }
-
 
 ?>
