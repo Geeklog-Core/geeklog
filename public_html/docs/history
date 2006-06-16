@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Added support for a CUSTOM login error handler [Blaine]
 - $_CONF['show_fullname'] now works as expected, i.e. when setting it to = 1,
   a user's full name will be displayed everywhere in Geeklog instead of the
   username (assuming the users entered their full name) [Dirk]

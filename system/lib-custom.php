@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.29 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-custom.php,v 1.30 2006/06/16 04:00:50 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -157,6 +157,26 @@ function phpblock_getBent()
 */
 function CUSTOM_runScheduledTask() {
 
+}
+
+
+/**
+* Example of custom function that can be used to handle a login error.
+* Used if you have a custom front page and need to trap and reformat any error messages
+* This example redirects to the front page with a extra passed variable plus the message
+* Note: Message could be a string but in this case maps to $MESSAGE[79] as a default - edit in language file
+*/
+function CUSTOM_loginErrHandler($msg='') {
+    global $_CONF,$MESSAGE;
+
+    if ($msg > 0) {
+        $msg = $msg;
+    } elseif ($msg == '') {
+        $msg = 81;
+    }
+    $retval = COM_refresh($_CONF['site_url'] .'/index.php?mode=loginfail&msg='.$msg);
+    echo $retval;
+    exit;
 }
 
 

@@ -1069,7 +1069,9 @@ $MESSAGE = array(
     77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
     78 => 'Please make sure that the email address and the confirmation email address are the same.',
     79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
-    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.'
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.'
 );
 
 ###############################################################################

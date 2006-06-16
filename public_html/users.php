@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.138 2006/05/25 16:10:06 dhaun Exp $
+// $Id: users.php,v 1.139 2006/06/16 04:00:50 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -886,16 +886,23 @@ case 'new':
     break;
 
 default:
+
     // prevent dictionary attacks on passwords
     COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
     if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
-        $retval .= COM_siteHeader()
-            . COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
-            . $LANG04[112]
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . COM_siteFooter ();
-        echo $retval;
-        exit();
+        if (function_exists('CUSTOM_loginErrHandler')) {
+            // Typically this will be used if you have a custom main site page and need to control the login process
+            $msg=82;
+            $display .= CUSTOM_loginErrHandler($msg);
+        } else {
+            $retval .= COM_siteHeader()
+                . COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG04[112]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                . COM_siteFooter ();
+            echo $retval;
+            exit();
+        }
     }
 
     $loginname = COM_applyFilter ($_POST['loginname']);
@@ -976,7 +983,12 @@ default:
             if (substr ($_SERVER['HTTP_REFERER'], 0, strlen ($indexMsg)) == $indexMsg) {
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             } else {
-                $display .= COM_refresh ($_SERVER['HTTP_REFERER']);
+                // If user is trying to login - force redirect to index.php
+                if (strstr ($_SERVER['HTTP_REFERER'], 'mode=login') === false) {
+                    $display .= COM_refresh ($_SERVER['HTTP_REFERER']);
+                } else {
+                    $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+                }
             }
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -1009,20 +1021,25 @@ default:
         default:
             // check to see if this was the last allowed attempt
             if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
-                $retval .= COM_siteHeader()
-                         . COM_startBlock ($LANG04[113], '',
-                                           COM_getBlockTemplate ('_msg_block', 'header'))
-                         . $LANG04[112]
-                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                         . COM_siteFooter ();
-                echo $retval;
-                exit();
+                if (function_exists('CUSTOM_loginErrHandler')) {
+                    // Typically this will be used if you have a custom main site page and need to control the login process
+                    $msg = 82;
+                    $display .= CUSTOM_loginErrHandler($msg);
+                } else {
+                    $retval .= COM_siteHeader()
+                             . COM_startBlock ($LANG04[113], '',
+                                               COM_getBlockTemplate ('_msg_block', 'header'))
+                             . $LANG04[112]
+                             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                             . COM_siteFooter ();
+                    echo $retval;
+                    exit();
+                }
             } else { // Show login form
-                if( ($msg != 69) && ($msg != 70) )
-                {
-                    if (function_exists ('CUSTOM_loginErrHandler')) {
+                if( ($msg != 69) && ($msg != 70) ) {
+                    if (function_exists('CUSTOM_loginErrHandler')) {
                         // Typically this will be used if you have a custom main site page and need to control the login process
-                        $display .= CUSTOM_loginErrHandler();
+                        $display .= CUSTOM_loginErrHandler($msg);
                     } else {
                         $display .= loginform(false, $status);
                     }
