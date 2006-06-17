@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -22,7 +22,7 @@ var FCKLang =
 // Language direction : "ltr" (left to right) or "rtl" (right to left).
 Dir					: "ltr",
 
-ToolbarCollapse		: "Nasconti la barra degli strumenti",
+ToolbarCollapse		: "Nascondi la barra degli strumenti",
 ToolbarExpand		: "Mostra la barra degli strumenti",
 
 // Toolbar Items and Context Menu
@@ -84,7 +84,9 @@ Source				: "Codice Sorgente",
 Find				: "Trova",
 Replace				: "Sostituisci",
 SpellCheck			: "Correttore ortografico",
-UniversalKeyboard	: "Tastiera univerale",
+UniversalKeyboard	: "Tastiera universale",
+PageBreakLbl		: "Interruzione di pagina",
+PageBreak			: "Inserisci interruzione di pagina",
 
 Form			: "Modulo",
 Checkbox		: "Checkbox",
@@ -96,8 +98,13 @@ Button			: "Bottone",
 SelectionField	: "Menu di selezione",
 ImageButton		: "Bottone immagine",
 
+FitWindow		: "Massimizza l'area dell'editor",
+
 // Context Menu
 EditLink			: "Modifica collegamento",
+CellCM				: "Cella",
+RowCM				: "Riga",
+ColumnCM			: "Colonna",
 InsertRow			: "Inserisci riga",
 DeleteRows			: "Elimina righe",
 InsertColumn		: "Inserisci colonna",
@@ -106,6 +113,7 @@ InsertCell			: "Inserisci cella",
 DeleteCells			: "Elimina celle",
 MergeCells			: "Unisce celle",
 SplitCell			: "Dividi celle",
+TableDelete			: "Cancella Tabella",
 CellProperties		: "Proprietà cella",
 TableProperties		: "Proprietà tabella",
 ImageProperties		: "Proprietà immagine",
@@ -131,9 +139,11 @@ PasteWordConfirm	: "Il testo da incollare sembra provenire da Word. Desideri pul
 NotCompatiblePaste	: "Questa funzione è disponibile solo per Internet Explorer 5.5 o superiore. Desideri incollare il testo senza pulirlo?",
 UnknownToolbarItem	: "Elemento della barra strumenti sconosciuto \"%1\"",
 UnknownCommand		: "Comando sconosciuto \"%1\"",
-NotImplemented		: "Commando non implementato",
+NotImplemented		: "Comando non implementato",
 UnknownToolbarSet	: "La barra di strumenti \"%1\" non esiste",
-NoActiveX			: "You browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
+NoActiveX			: "Le impostazioni di sicurezza del tuo browser potrebbero limitare alcune funzionalità dell'editor. Devi abilitare l'opzione \"Esegui controlli e plug-in ActiveX\". Potresti avere errori e notare funzionalità mancanti.",
+BrowseServerBlocked : "Non è possibile aprire la finestra di espolorazione risorse. Verifica che tutti i blocca popup siano bloccati.",
+DialogBlocked		: "Non è possibile aprire la finestra di dialogo. Verifica che tutti i blocca popup siano bloccati.",
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -141,18 +151,18 @@ DlgBtnCancel		: "Annulla",
 DlgBtnClose			: "Chiudi",
 DlgBtnBrowseServer	: "Cerca sul server",
 DlgAdvancedTag		: "Avanzate",
-DlgOpOther			: "&lt;Altro&gt;",
+DlgOpOther			: "<Altro>",
 DlgInfoTab			: "Info",
 DlgAlertUrl			: "Devi inserire l'URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;non impostato&gt;",
+DlgGenNotSet		: "<non impostato>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Direzione scrittura",
 DlgGenLangDirLtr	: "Da Sinistra a Destra (LTR)",
 DlgGenLangDirRtl	: "Da Destra a Sinistra (RTL)",
 DlgGenLangCode		: "Codice Lingua",
-DlgGenAccessKey		: "Scorciatoria<br>da tastiera",
+DlgGenAccessKey		: "Scorciatoia<br />da tastiera",
 DlgGenName			: "Nome",
 DlgGenTabIndex		: "Ordine di tabulazione",
 DlgGenLongDescr		: "URL descrizione estesa",
@@ -210,12 +220,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Ancora nella pagina",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protocollo",
-DlgLnkProtoOther	: "&lt;altro&gt;",
+DlgLnkProtoOther	: "<altro>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Scegli Ancora",
 DlgLnkAnchorByName	: "Per Nome",
 DlgLnkAnchorById	: "Per id elemento",
-DlgLnkNoAnchors		: "&lt;Nessuna ancora disponibile nel documento&gt;",
+DlgLnkNoAnchors		: "<Nessuna ancora disponibile nel documento>",
 DlgLnkEMail			: "Indirizzo E-Mail",
 DlgLnkEMailSubject	: "Oggetto del messaggio",
 DlgLnkEMailBody		: "Corpo del messaggio",
@@ -223,8 +233,8 @@ DlgLnkUpload		: "Carica",
 DlgLnkBtnUpload		: "Invia al Server",
 
 DlgLnkTarget		: "Destinazione",
-DlgLnkTargetFrame	: "&lt;riquadro&gt;",
-DlgLnkTargetPopup	: "&lt;finestra popup&gt;",
+DlgLnkTargetFrame	: "<riquadro>",
+DlgLnkTargetPopup	: "<finestra popup>",
 DlgLnkTargetBlank	: "Nuova finestra (_blank)",
 DlgLnkTargetParent	: "Finestra padre (_parent)",
 DlgLnkTargetSelf	: "Stessa finestra (_self)",
@@ -267,7 +277,7 @@ DlgTableRows		: "Righe",
 DlgTableColumns		: "Colonne",
 DlgTableBorder		: "Dimensione bordo",
 DlgTableAlign		: "Allineamento",
-DlgTableAlignNotSet	: "&lt;non impostato&gt;",
+DlgTableAlignNotSet	: "<non impostato>",
 DlgTableAlignLeft	: "Sinistra",
 DlgTableAlignCenter	: "Centrato",
 DlgTableAlignRight	: "Destra",
@@ -278,24 +288,25 @@ DlgTableHeight		: "Altezza",
 DlgTableCellSpace	: "Spaziatura celle",
 DlgTableCellPad		: "Padding celle",
 DlgTableCaption		: "Intestazione",
+DlgTableSummary		: "Indice",
 
 // Table Cell Dialog
-DlgCellTitle		: "Propriet cella",
+DlgCellTitle		: "Proprietà cella",
 DlgCellWidth		: "Larghezza",
 DlgCellWidthPx		: "pixel",
 DlgCellWidthPc		: "percento",
 DlgCellHeight		: "Altezza",
 DlgCellWordWrap		: "A capo automatico",
-DlgCellWordWrapNotSet	: "&lt;non impostato&gt;",
+DlgCellWordWrapNotSet	: "<non impostato>",
 DlgCellWordWrapYes	: "Si",
 DlgCellWordWrapNo	: "No",
 DlgCellHorAlign		: "Allineamento orizzontale",
-DlgCellHorAlignNotSet	: "&lt;non impostato&gt;",
+DlgCellHorAlignNotSet	: "<non impostato>",
 DlgCellHorAlignLeft	: "Sinistra",
 DlgCellHorAlignCenter	: "Centrato",
 DlgCellHorAlignRight: "Destra",
 DlgCellVerAlign		: "Allineamento verticale",
-DlgCellVerAlignNotSet	: "&lt;non impostato&gt;",
+DlgCellVerAlignNotSet	: "<non impostato>",
 DlgCellVerAlignTop	: "In Alto",
 DlgCellVerAlignMiddle	: "Centrato",
 DlgCellVerAlignBottom	: "In Basso",
@@ -309,7 +320,7 @@ DlgCellBtnSelect	: "Scegli...",
 // Find Dialog
 DlgFindTitle		: "Trova",
 DlgFindFindBtn		: "Trova",
-DlgFindNotFoundMsg	: "L'elemento cercato non  stato trovato.",
+DlgFindNotFoundMsg	: "L'elemento cercato non è stato trovato.",
 
 // Replace Dialog
 DlgReplaceTitle			: "Sostituisci",
@@ -332,7 +343,6 @@ DlgPasteMsg2	: "Incolla il testo all'interno dell'area sottostante usando la sco
 DlgPasteIgnoreFont		: "Ignora le definizioni di Font",
 DlgPasteRemoveStyles	: "Rimuovi le definizioni di Stile",
 DlgPasteCleanBox		: "Svuota area di testo",
-
 
 // Color Picker
 ColorAutomatic	: "Automatico",
@@ -416,7 +426,7 @@ BulletedListProp	: "Proprietà lista puntata",
 NumberedListProp	: "Proprietà lista numerata",
 DlgLstType			: "Tipo",
 DlgLstTypeCircle	: "Tondo",
-DlgLstTypeDisc		: "Disc",	//MISSING
+DlgLstTypeDisc		: "Disco",
 DlgLstTypeSquare	: "Quadrato",
 DlgLstTypeNumbers	: "Numeri (1, 2, 3)",
 DlgLstTypeLCase		: "Caratteri minuscoli (a, b, c)",
@@ -462,13 +472,14 @@ DlgDocPreview		: "Anteprima",
 // Templates Dialog
 Templates			: "Modelli",
 DlgTemplatesTitle	: "Contenuto dei modelli",
-DlgTemplatesSelMsg	: "Seleziona il modello da aprire nell'editor<br>(il contenuto attuale verrà eliminato):",
+DlgTemplatesSelMsg	: "Seleziona il modello da aprire nell'editor<br />(il contenuto attuale verrà eliminato):",
 DlgTemplatesLoading	: "Caricamento modelli in corso. Attendere prego...",
 DlgTemplatesNoTpl	: "(Nessun modello definito)",
 
 // About Dialog
 DlgAboutAboutTab	: "Informazioni",
 DlgAboutBrowserInfoTab	: "Informazioni Browser",
+DlgAboutLicenseTab	: "Licenza",
 DlgAboutVersion		: "versione",
 DlgAboutLicense		: "Rilasciato sotto la licensa GNU Lesser General Public License",
 DlgAboutInfo		: "Localizzazione in Italiano realizzata da Simone Chiaretta<br /><a target=\"_blank\" href=\"http://www.piyosailing.com/S/\">www.piyosailing.com</a><br /><br />Per maggiori informazioni visitare"

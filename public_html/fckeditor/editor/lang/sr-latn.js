@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -80,11 +80,13 @@ Font				: "Font",
 FontSize			: "Veličina fonta",
 TextColor			: "Boja teksta",
 BGColor				: "Boja pozadine",
-Source				: "K&ocirc;d",
+Source				: "Kôd",
 Find				: "Pretraga",
 Replace				: "Zamena",
 SpellCheck			: "Proveri spelovanje",
 UniversalKeyboard	: "Univerzalna tastatura",
+PageBreakLbl		: "Page Break",	//MISSING
+PageBreak			: "Insert Page Break",	//MISSING
 
 Form			: "Forma",
 Checkbox		: "Polje za potvrdu",
@@ -96,8 +98,13 @@ Button			: "Dugme",
 SelectionField	: "Izborno polje",
 ImageButton		: "Dugme sa slikom",
 
+FitWindow		: "Maximize the editor size",	//MISSING
+
 // Context Menu
 EditLink			: "Izmeni link",
+CellCM				: "Cell",	//MISSING
+RowCM				: "Row",	//MISSING
+ColumnCM			: "Column",	//MISSING
 InsertRow			: "Unesi red",
 DeleteRows			: "Obriši redove",
 InsertColumn		: "Unesi kolonu",
@@ -106,6 +113,7 @@ InsertCell			: "Unesi ćelije",
 DeleteCells			: "Obriši ćelije",
 MergeCells			: "Spoj celije",
 SplitCell			: "Razdvoji celije",
+TableDelete			: "Delete Table",	//MISSING
 CellProperties		: "Osobine celije",
 TableProperties		: "Osobine tabele",
 ImageProperties		: "Osobine slike",
@@ -133,7 +141,9 @@ UnknownToolbarItem	: "Nepoznata stavka toolbara \"%1\"",
 UnknownCommand		: "Nepoznata naredba \"%1\"",
 NotImplemented		: "Naredba nije implementirana",
 UnknownToolbarSet	: "Toolbar \"%1\" ne postoji",
-NoActiveX			: "You browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
+NoActiveX			: "Your browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
+BrowseServerBlocked : "The resources browser could not be opened. Make sure that all popup blockers are disabled.",	//MISSING
+DialogBlocked		: "It was not possible to open the dialog window. Make sure all popup blockers are disabled.",	//MISSING
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -141,17 +151,17 @@ DlgBtnCancel		: "Otkaži",
 DlgBtnClose			: "Zatvori",
 DlgBtnBrowseServer	: "Pretraži server",
 DlgAdvancedTag		: "Napredni tagovi",
-DlgOpOther			: "&lt;Ostali&gt;",
+DlgOpOther			: "<Ostali>",
 DlgInfoTab			: "Info",
 DlgAlertUrl			: "Molimo Vas, unesite URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;nije postavljeno&gt;",
+DlgGenNotSet		: "<nije postavljeno>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Smer jezika",
 DlgGenLangDirLtr	: "S leva na desno (LTR)",
 DlgGenLangDirRtl	: "S desna na levo (RTL)",
-DlgGenLangCode		: "K&ocirc;d jezika",
+DlgGenLangCode		: "Kôd jezika",
 DlgGenAccessKey		: "Pristupni taster",
 DlgGenName			: "Naziv",
 DlgGenTabIndex		: "Tab indeks",
@@ -210,12 +220,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Sidro na ovoj stranici",
 DlgLnkTypeEMail		: "E-Mail",
 DlgLnkProto			: "Protokol",
-DlgLnkProtoOther	: "&lt;drugo&gt;",
+DlgLnkProtoOther	: "<drugo>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Odaberi sidro",
 DlgLnkAnchorByName	: "Po nazivu sidra",
 DlgLnkAnchorById	: "Po Id-ju elementa",
-DlgLnkNoAnchors		: "&lt;Nema dostupnih sidra&gt;",
+DlgLnkNoAnchors		: "<Nema dostupnih sidra>",
 DlgLnkEMail			: "E-Mail adresa",
 DlgLnkEMailSubject	: "Naslov",
 DlgLnkEMailBody		: "Sadržaj poruke",
@@ -223,8 +233,8 @@ DlgLnkUpload		: "Pošalji",
 DlgLnkBtnUpload		: "Pošalji na server",
 
 DlgLnkTarget		: "Meta",
-DlgLnkTargetFrame	: "&lt;okvir&gt;",
-DlgLnkTargetPopup	: "&lt;popup prozor&gt;",
+DlgLnkTargetFrame	: "<okvir>",
+DlgLnkTargetPopup	: "<popup prozor>",
 DlgLnkTargetBlank	: "Novi prozor (_blank)",
 DlgLnkTargetParent	: "Roditeljski prozor (_parent)",
 DlgLnkTargetSelf	: "Isti prozor (_self)",
@@ -267,7 +277,7 @@ DlgTableRows		: "Redova",
 DlgTableColumns		: "Kolona",
 DlgTableBorder		: "Veličina okvira",
 DlgTableAlign		: "Ravnanje",
-DlgTableAlignNotSet	: "&lt;nije postavljeno&gt;",
+DlgTableAlignNotSet	: "<nije postavljeno>",
 DlgTableAlignLeft	: "Levo",
 DlgTableAlignCenter	: "Sredina",
 DlgTableAlignRight	: "Desno",
@@ -278,6 +288,7 @@ DlgTableHeight		: "Visina",
 DlgTableCellSpace	: "Ćelijski prostor",
 DlgTableCellPad		: "Razmak ćelija",
 DlgTableCaption		: "Naslov tabele",
+DlgTableSummary		: "Summary",	//MISSING
 
 // Table Cell Dialog
 DlgCellTitle		: "Osobine ćelije",
@@ -286,16 +297,16 @@ DlgCellWidthPx		: "piksela",
 DlgCellWidthPc		: "procenata",
 DlgCellHeight		: "Visina",
 DlgCellWordWrap		: "Deljenje reči",
-DlgCellWordWrapNotSet	: "&lt;nije postavljeno&gt;",
+DlgCellWordWrapNotSet	: "<nije postavljeno>",
 DlgCellWordWrapYes	: "Da",
 DlgCellWordWrapNo	: "Ne",
 DlgCellHorAlign		: "Vodoravno ravnanje",
-DlgCellHorAlignNotSet	: "&lt;nije postavljeno&gt;",
+DlgCellHorAlignNotSet	: "<nije postavljeno>",
 DlgCellHorAlignLeft	: "Levo",
 DlgCellHorAlignCenter	: "Sredina",
 DlgCellHorAlignRight: "Desno",
 DlgCellVerAlign		: "Vertikalno ravnanje",
-DlgCellVerAlignNotSet	: "&lt;nije postavljeno&gt;",
+DlgCellVerAlignNotSet	: "<nije postavljeno>",
 DlgCellVerAlignTop	: "Gornje",
 DlgCellVerAlignMiddle	: "Sredina",
 DlgCellVerAlignBottom	: "Donje",
@@ -332,7 +343,6 @@ DlgPasteMsg2	: "Molimo Vas da zalepite unutar donje povrine koristeći tastaturn
 DlgPasteIgnoreFont		: "Ignoriši definicije fontova",
 DlgPasteRemoveStyles	: "Ukloni definicije stilova",
 DlgPasteCleanBox		: "Obriši sve",
-
 
 // Color Picker
 ColorAutomatic	: "Automatski",
@@ -469,6 +479,7 @@ DlgTemplatesNoTpl	: "(Nema definisanih obrazaca)",
 // About Dialog
 DlgAboutAboutTab	: "O editoru",
 DlgAboutBrowserInfoTab	: "Informacije o pretraživacu",
+DlgAboutLicenseTab	: "License",	//MISSING
 DlgAboutVersion		: "verzija",
 DlgAboutLicense		: "Licencirano pod uslovima GNU Lesser General Public License",
 DlgAboutInfo		: "Za više informacija posetite"

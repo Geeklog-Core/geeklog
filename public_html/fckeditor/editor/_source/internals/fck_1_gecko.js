@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -23,25 +23,11 @@ FCK.Description = "FCKeditor for Gecko Browsers" ;
 
 FCK.InitializeBehaviors = function()
 {
-	// Enable table borders visibility.
-	if ( FCKConfig.ShowBorders ) 
-	{
-		var oStyle = FCKTools.AppendStyleSheet( this.EditorDocument, FCKConfig.FullBasePath + 'css/fck_showtableborders_gecko.css' ) ;
-		oStyle.setAttribute( '_fcktemp', 'true' ) ;
-	}
-
-	// Disable Right-Click
-	var oOnContextMenu = function( e )
-	{
-		e.preventDefault() ;
-		FCK.ShowContextMenu( e.clientX, e.clientY ) ;
-	}
-	this.EditorDocument.addEventListener( 'contextmenu', oOnContextMenu, true ) ;
+	FCKFocusManager.AddWindow( this.EditorWindow ) ;
 
 	// Handle pasting operations.
 	var oOnKeyDown = function( e )
 	{
-		// FCKDebug.Output( 'Which Key: ' +  e.which ) ;
 
 		// START iCM Modifications
 		/*
@@ -53,7 +39,7 @@ FCK.InitializeBehaviors = function()
 		}
 		// Amend backspace handling so correctly removes empty block elements i.e. those block elements containing nothing or
 		// just the bogus BR node
-		if ( e.which == 8 && !e.shiftKey && !e.ctrlKey && !e.altKey && !FCKConfig.UserBROnCarriageReturn && !FCK.Events.FireEvent( "OnBackSpace" ) )
+		if ( e.which == 8 && !e.shiftKey && !e.ctrlKey && !e.altKey && !FCKConfig.UseBROnCarriageReturn && !FCK.Events.FireEvent( "OnBackSpace" ) )
 		{
 			e.preventDefault() ;
 			e.stopPropagation() ;
@@ -61,10 +47,10 @@ FCK.InitializeBehaviors = function()
 		*/
 		// END iCM Modifications
 
+		var bPrevent ;
+
 		if ( e.ctrlKey && !e.shiftKey && !e.altKey )
 		{
-			var bPrevent = false ;
-			
 			switch ( e.which ) 
 			{
 				case 66 :	// B
@@ -84,12 +70,14 @@ FCK.InitializeBehaviors = function()
 					bPrevent = ( FCK.Status != FCK_STATUS_COMPLETE || !FCK.Events.FireEvent( "OnPaste" ) ) ;
 					break ;
 			}
-	
-			if ( bPrevent ) 
-			{
-				e.preventDefault() ;
-				e.stopPropagation() ;
-			}
+		}
+		else if ( e.shiftKey && !e.ctrlKey && !e.altKey && e.keyCode == 45 )	// SHIFT + <INS>
+			bPrevent = ( FCK.Status != FCK_STATUS_COMPLETE || !FCK.Events.FireEvent( "OnPaste" ) ) ;
+		
+		if ( bPrevent ) 
+		{
+			e.preventDefault() ;
+			e.stopPropagation() ;
 		}
 	}
 	this.EditorDocument.addEventListener( 'keypress', oOnKeyDown, true ) ;
@@ -120,154 +108,20 @@ FCK.InitializeBehaviors = function()
 	}
 	this.EditorDocument.addEventListener( 'dblclick', this._DblClickListener, true ) ;
 
-	this._OnLoad = function()
-	{
-		if ( this._FCK_HTML )
-		{
-			this.document.body.innerHTML = this._FCK_HTML ;
-			this._FCK_HTML = null ;
-		}
-	}
-	this.EditorWindow.addEventListener( 'load', this._OnLoad, true ) ;
-
-//	var oEditorWindow_OnUnload = function()
-//	{
-//		FCK.EditorWindow.location = 'fckblank.html' ;
-//	}
-//	this.EditorWindow.addEventListener( 'unload', oEditorWindow_OnUnload, true ) ;
-
-//	var oEditorWindow_OnFocus = function()
-//	{
-//		FCK.MakeEditable() ;
-//	}
-//	this.EditorWindow.addEventListener( 'focus', oEditorWindow_OnFocus, true ) ;
+	// Reset the context menu.
+	FCK.ContextMenu._InnerContextMenu.SetMouseClickWindow( FCK.EditorWindow ) ;
+	FCK.ContextMenu._InnerContextMenu.AttachToElement( FCK.EditorDocument ) ;
 }
 
 FCK.MakeEditable = function()
 {
-	try 
-	{
-		FCK.EditorDocument.designMode = 'on' ;
-
-		// Tell Gecko to use or not the <SPAN> tag for the bold, italic and underline.
-		FCK.EditorDocument.execCommand( 'useCSS', false, !FCKConfig.GeckoUseSPAN ) ;
-	}
-	catch (e) {}
+	this.EditingArea.MakeEditable() ;
 }
 
-FCK.Focus = function()
+// Disable the context menu in the editor (outside the editing area).
+function Document_OnContextMenu( e )
 {
-	try
-	{
-//		window.focus() ;
-		FCK.EditorWindow.focus() ;
-	}
-	catch(e) {}
+	if ( !e.target._FCKShowContextMenu )
+		e.preventDefault() ;
 }
-
-FCK.SetHTML = function( html, forceWYSIWYG )
-{
-	// Firefox can't handle correctly the editing of the STRONG and EM tags. 
-	// We must replace them with B and I.
-	html = html.replace( FCKRegexLib.StrongOpener, '<b$1' ) ;
-	html = html.replace( FCKRegexLib.StrongCloser, '<\/b>' ) ;
-	html = html.replace( FCKRegexLib.EmOpener, '<i$1' ) ;
-	html = html.replace( FCKRegexLib.EmCloser, '<\/i>' ) ;
-
-	if ( forceWYSIWYG || FCK.EditMode == FCK_EDITMODE_WYSIWYG )
-	{
-		html = FCKConfig.ProtectedSource.Protect( html ) ;
-
-		// Gecko has a lot of bugs mainly when handling editing features.
-		// To avoid an Aplication Exception (that closes the browser!) we
-		// must first write the <HTML> contents with an empty body, and
-		// then insert the body contents.
-		// (Oh yes... it took me a lot of time to find out this workaround)
-
-		if ( FCKConfig.FullPage && FCKRegexLib.BodyContents.test( html ) )
-		{
-			// Add the <BASE> tag to the input HTML.
-			if ( FCK.TempBaseTag.length > 0 && !FCKRegexLib.HasBaseTag.test( html ) )
-				html = html.replace( FCKRegexLib.HeadOpener, '$&' + FCK.TempBaseTag ) ;
-
-			html = html.replace( FCKRegexLib.HeadCloser, '<link href="' + FCKConfig.BasePath + 'css/fck_internal.css' + '" rel="stylesheet" type="text/css" _fcktemp="true" /></head>' ) ;
-
-			// Extract the BODY contents from the html.
-			var oMatch		= html.match( FCKRegexLib.BodyContents ) ;
-			var sOpener		= oMatch[1] ;	// This is the HTML until the <body...> tag, inclusive.
-			var sContents	= oMatch[2] ;	// This is the BODY tag contents.
-			var sCloser		= oMatch[3] ;	// This is the HTML from the </body> tag, inclusive.
-
-			var sHtml = sOpener + '&nbsp;' + sCloser ;
-
-			if ( !this._Initialized )
-			{
-				FCK.EditorDocument.designMode = "on" ;
-
-				// Tell Gecko to use or not the <SPAN> tag for the bold, italic and underline.
-				FCK.EditorDocument.execCommand( "useCSS", false, !FCKConfig.GeckoUseSPAN ) ;
-
-				this._Initialized = true ;
-			}
-
-			this.EditorDocument.open() ;
-			this.EditorDocument.write( sHtml ) ;
-			this.EditorDocument.close() ;
-
-			if ( this.EditorDocument.body )
-				this.EditorDocument.body.innerHTML = sContents ;
-			else
-				this.EditorWindow._FCK_HTML = sContents ;
-
-			this.InitializeBehaviors() ;
-		}
-		else
-		{
-			/* TODO: Wait stable and remove it.
-			sHtml =
-				'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' +
-				'<html dir="' + FCKConfig.ContentLangDirection + '">' +
-				'<head><title></title>' +
-				'<link href="' + FCKConfig.EditorAreaCSS + '" rel="stylesheet" type="text/css" />' +
-				'<link href="' + FCKConfig.BasePath + 'css/fck_internal.css' + '" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
-
-			sHtml += FCK.TempBaseTag ;
-
-			sHtml += '</head><body>&nbsp;</body></html>' ;
-			*/
-
-			if ( !this._Initialized )
-			{
-				this.EditorDocument.dir = FCKConfig.ContentLangDirection ;
-
-				var sHtml =
-					'<title></title>' +
-					'<link href="' + FCKConfig.EditorAreaCSS + '" rel="stylesheet" type="text/css" />' +
-					'<link href="' + FCKConfig.BasePath + 'css/fck_internal.css' + '" rel="stylesheet" type="text/css" _fcktemp="true" />' +
-					FCK.TempBaseTag ;
-
-				this.EditorDocument.getElementsByTagName("HEAD")[0].innerHTML = sHtml ;
-
-				this.InitializeBehaviors() ;
-
-				this._Initialized = true ;
-			}
-
-			// On Gecko we must disable editing before setting the BODY innerHTML.
-//			FCK.EditorDocument.designMode = 'off' ;
-
-			if ( html.length == 0 )
-				FCK.EditorDocument.body.innerHTML = GECKO_BOGUS ;
-			else if ( FCKRegexLib.EmptyParagraph.test( html ) )
-				FCK.EditorDocument.body.innerHTML = html.replace( FCKRegexLib.TagBody, '>' + GECKO_BOGUS + '<' ) ;
-			else
-				FCK.EditorDocument.body.innerHTML = html ;
-			
-			FCK.MakeEditable() ;
-		}
-
-		FCK.OnAfterSetHTML() ;
-	}
-	else
-		document.getElementById('eSourceField').value = html ;
-}
+document.oncontextmenu = Document_OnContextMenu ;

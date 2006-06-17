@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -10,7 +10,7 @@
  * 
  * "Support Open Source software. What about a donation today?"
  * 
- * File Name: fck_constants.js
+ * File Name: fckconstants.js
  * 	Defines some constants used by the editor. These constants are also 
  * 	globally available in the page where the editor is placed.
  * 
@@ -29,7 +29,7 @@ var FCK_TRISTATE_ON			= window.parent.FCK_TRISTATE_ON			= 1 ;
 var FCK_TRISTATE_DISABLED	= window.parent.FCK_TRISTATE_DISABLED	= -1 ;
 
 // For unknown values.
-var FCK_UNKNOWN				= window.parent.FCK_UNKNOWN				= -1000 ;
+var FCK_UNKNOWN				= window.parent.FCK_UNKNOWN				= -9 ;
 
 // Toolbar Items Style.
 var FCK_TOOLBARITEM_ONLYICON	= window.parent.FCK_TOOLBARITEM_ONLYICON	= 0 ;
@@ -39,3 +39,6 @@ var FCK_TOOLBARITEM_ICONTEXT	= window.parent.FCK_TOOLBARITEM_ICONTEXT	= 2 ;
 // Edit Mode
 var FCK_EDITMODE_WYSIWYG	= window.parent.FCK_EDITMODE_WYSIWYG	= 0 ;
 var FCK_EDITMODE_SOURCE		= window.parent.FCK_EDITMODE_SOURCE		= 1 ;
+
+var FCK_IMAGES_PATH = 'images/' ;		// Check usage.
+var FCK_SPACER_PATH = 'images/spacer.gif' ;

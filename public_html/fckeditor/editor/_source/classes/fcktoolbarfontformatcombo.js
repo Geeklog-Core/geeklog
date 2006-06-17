@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -19,16 +19,19 @@
 
 var FCKToolbarFontFormatCombo = function( tooltip, style )
 {
-	this.Command	= FCKCommands.GetCommand( 'FontFormat' ) ;
+	this.CommandName = 'FontFormat' ;
 	this.Label		= this.GetLabel() ;
 	this.Tooltip	= tooltip ? tooltip : this.Label ;
 	this.Style		= style ? style : FCK_TOOLBARITEM_ICONTEXT ;
+	
+	this.NormalLabel = 'Normal' ;
 	
 	this.PanelWidth = 190 ;
 }
 
 // Inherit from FCKToolbarSpecialCombo.
 FCKToolbarFontFormatCombo.prototype = new FCKToolbarSpecialCombo ;
+
 
 FCKToolbarFontFormatCombo.prototype.GetLabel = function()
 {
@@ -57,8 +60,40 @@ FCKToolbarFontFormatCombo.prototype.CreateItems = function( targetSpecialCombo )
 	
 	for ( var i = 0 ; i < aTags.length ; i++ )
 	{
-		if ( aTags[i] == 'div' && FCKBrowserInfo.IsGecko )
-			continue ;
-		this._Combo.AddItem( aTags[i], '<' + aTags[i] + '>' + oNames[aTags[i]] + '</' + aTags[i] + '>', oNames[aTags[i]] ) ;
+		// Support for DIV in Firefox has been reintroduced on version 2.2.
+//		if ( aTags[i] == 'div' && FCKBrowserInfo.IsGecko )
+//			continue ;
+		
+		var sTag	= aTags[i] ;
+		var sLabel	= oNames[sTag] ;
+		
+		if ( sTag == 'p' )
+			this.NormalLabel = sLabel ;
+		
+		this._Combo.AddItem( sTag, '<div class="BaseFont"><' + sTag + '>' + sLabel + '</' + sTag + '></div>', sLabel ) ;
+	}
+}
+
+if ( FCKBrowserInfo.IsIE )
+{
+	FCKToolbarFontFormatCombo.prototype.RefreshActiveItems = function( combo, value )
+	{
+//		FCKDebug.Output( 'FCKToolbarFontFormatCombo Value: ' + value ) ;
+
+		// IE returns normal for DIV and P, so to avoid confusion, we will not show it if normal.
+		if ( value == this.NormalLabel )
+		{
+			if ( combo.Label != '&nbsp;' )
+				combo.DeselectAll(true) ;
+		}
+		else
+		{
+			if ( this._LastValue == value )
+				return ;
+
+			combo.SelectItemByLabel( value, true ) ;
+		}
+
+		this._LastValue = value ;
 	}
 }

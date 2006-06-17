@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -19,7 +19,7 @@
 
 FCKStyleDef.prototype.ApplyToSelection = function()
 {
-	var oSelection = FCK.EditorDocument.selection ;
+	var oSelection = FCK.ToolbarSet.CurrentInstance.EditorDocument.selection ;
 	
 	if ( oSelection.type == 'Text' )
 	{
@@ -40,7 +40,7 @@ FCKStyleDef.prototype.ApplyToSelection = function()
 	}
 	else if ( oSelection.type == 'Control' )
 	{
-		var oControl = FCKSelection.GetSelectedElement() ;
+		var oControl = FCK.ToolbarSet.CurrentInstance.Selection.GetSelectedElement() ;
 		if ( oControl.tagName == this.Element )
 			this._AddAttributes( oControl ) ;
 	}
@@ -50,10 +50,22 @@ FCKStyleDef.prototype._AddAttributes = function( targetElement )
 {
 	for ( var a in this.Attributes )
 	{
-		if ( a.toLowerCase() == 'style' )
-			targetElement.style.cssText = this.Attributes[a] ;
-		else
-			targetElement.setAttribute( a, this.Attributes[a], 0 ) ;
+		switch ( a.toLowerCase() )
+		{
+			case 'style' :
+				targetElement.style.cssText = this.Attributes[a] ;
+				break ;
+
+			case 'class' :
+				targetElement.setAttribute( 'className', this.Attributes[a], 0 ) ;
+				break ;
+
+			case 'src' :
+				targetElement.setAttribute( '_fcksavedurl', this.Attributes[a], 0 ) ;
+
+			default :
+				targetElement.setAttribute( a, this.Attributes[a], 0 ) ;
+		}
 	}
 }
 
@@ -65,10 +77,7 @@ FCKStyleDef.prototype._RemoveDuplicates = function( parent )
 		this._RemoveDuplicates( oChild ) ;
 		
 		if ( this.IsEqual( oChild ) )
-		{
-			oChild.insertAdjacentHTML( 'beforeBegin', oChild.innerHTML ) ;
-			oChild.parentElement.removeChild( oChild ) ;
-		}
+			FCKTools.RemoveOuterTags( oChild ) ;
 	}
 }
 

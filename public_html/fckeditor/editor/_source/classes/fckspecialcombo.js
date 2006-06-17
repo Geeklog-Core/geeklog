@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -17,12 +17,12 @@
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
-var FCKSpecialCombo = function( caption )
+var FCKSpecialCombo = function( caption, fieldWidth, panelWidth, panelMaxHeight, parentWindow )
 {
 	// Default properties values.
-	this.FieldWidth		= 80 ;
-	this.PanelWidth		= 130 ;
-	this.PanelMaxHeight	= 150 ;
+	this.FieldWidth		= fieldWidth || 100 ;
+	this.PanelWidth		= panelWidth || 150 ;
+	this.PanelMaxHeight	= panelMaxHeight || 150 ;
 	this.Label			= '&nbsp;' ;
 	this.Caption		= caption ;
 	this.Tooltip		= caption ;
@@ -32,13 +32,24 @@ var FCKSpecialCombo = function( caption )
 	
 	this.Items = new Object() ;
 	
-	this._Panel = new FCKPanel() ;
-	this._Panel.StyleSheet = FCKConfig.SkinPath + 'fck_contextmenu.css' ;
-	this._Panel.Create() ;
-	this._Panel.PanelDiv.className += ' SC_Panel' ;
-	this._Panel.PanelDiv.innerHTML = '<table cellpadding="0" cellspacing="0" width="100%" style="TABLE-LAYOUT: fixed"><tr><td nowrap></td></tr></table>' ;
+	this._Panel = new FCKPanel( parentWindow || window, true ) ;
+	this._Panel.AppendStyleSheet( FCKConfig.SkinPath + 'fck_editor.css' ) ;
+	this._PanelBox = this._Panel.MainNode.appendChild( this._Panel.Document.createElement( 'DIV' ) ) ;
+	this._PanelBox.className = 'SC_Panel' ;
+	this._PanelBox.style.width = this.PanelWidth + 'px' ;
+
+	this._PanelBox.innerHTML = '<table cellpadding="0" cellspacing="0" width="100%" style="TABLE-LAYOUT: fixed"><tr><td nowrap></td></tr></table>' ;
 	
-	this._ItemsHolderEl = this._Panel.PanelDiv.getElementsByTagName('TD')[0] ;
+	this._ItemsHolderEl = this._PanelBox.getElementsByTagName('TD')[0] ;
+
+	if ( FCK.IECleanup )
+		FCK.IECleanup.AddItem( this, FCKSpecialCombo_Cleanup ) ;
+
+//	this._Panel.StyleSheet = FCKConfig.SkinPath + 'fck_contextmenu.css' ;
+//	this._Panel.Create() ;
+//	this._Panel.PanelDiv.className += ' SC_Panel' ;
+//	this._Panel.PanelDiv.innerHTML = '<table cellpadding="0" cellspacing="0" width="100%" style="TABLE-LAYOUT: fixed"><tr><td nowrap></td></tr></table>' ;
+//	this._ItemsHolderEl = this._Panel.PanelDiv.getElementsByTagName('TD')[0] ;
 }
 
 function FCKSpecialCombo_ItemOnMouseOver()
@@ -53,6 +64,8 @@ function FCKSpecialCombo_ItemOnMouseOut()
 
 function FCKSpecialCombo_ItemOnClick()
 {
+	this.className = this.originalClass ;
+
 	this.FCKSpecialCombo._Panel.Hide() ;
 
 	this.FCKSpecialCombo.SetLabel( this.FCKItemLabel ) ;
@@ -61,16 +74,23 @@ function FCKSpecialCombo_ItemOnClick()
 		this.FCKSpecialCombo.OnSelect( this.FCKItemID, this ) ;
 }
 
-FCKSpecialCombo.prototype.AddItem = function( id, html, label )
+FCKSpecialCombo.prototype.AddItem = function( id, html, label, bgColor )
 {
 	// <div class="SC_Item" onmouseover="this.className='SC_Item SC_ItemOver';" onmouseout="this.className='SC_Item';"><b>Bold 1</b></div>
 	var oDiv = this._ItemsHolderEl.appendChild( this._Panel.Document.createElement( 'DIV' ) ) ;
 	oDiv.className = oDiv.originalClass = 'SC_Item' ;
 	oDiv.innerHTML = html ;
 	oDiv.FCKItemID = id ;
-	oDiv.FCKItemLabel = label ? label : id ;
+	oDiv.FCKItemLabel = label || id ;
 	oDiv.FCKSpecialCombo = this ;
 	oDiv.Selected = false ;
+
+	// In IE, the width must be set so the borders are shown correctly when the content overflows.
+	if ( FCKBrowserInfo.IsIE )
+		oDiv.style.width = '100%' ;
+	
+	if ( bgColor )
+		oDiv.style.backgroundColor = bgColor ;
 
 	oDiv.onmouseover	= FCKSpecialCombo_ItemOnMouseOver ;
 	oDiv.onmouseout		= FCKSpecialCombo_ItemOnMouseOut ;
@@ -93,13 +113,33 @@ FCKSpecialCombo.prototype.SelectItem = function( itemId )
 	}
 }
 
-FCKSpecialCombo.prototype.DeselectAll = function()
+FCKSpecialCombo.prototype.SelectItemByLabel = function( itemLabel, setLabel )
+{
+	for ( var id in this.Items )
+	{
+		var oDiv = this.Items[id] ;
+
+		if ( oDiv.FCKItemLabel == itemLabel )
+		{
+			oDiv.className = oDiv.originalClass = 'SC_ItemSelected' ;
+			oDiv.Selected = true ;
+			
+			if ( setLabel )
+				this.SetLabel( itemLabel ) ;
+		}
+	}
+}
+
+FCKSpecialCombo.prototype.DeselectAll = function( clearLabel )
 {
 	for ( var i in this.Items )
 	{
 		this.Items[i].className = this.Items[i].originalClass = 'SC_Item' ;
 		this.Items[i].Selected = false ;
 	}
+	
+	if ( clearLabel )
+		this.SetLabel( '' ) ;
 }
 
 FCKSpecialCombo.prototype.SetLabelById = function( id )
@@ -127,11 +167,11 @@ FCKSpecialCombo.prototype.SetEnabled = function( isEnabled )
 
 FCKSpecialCombo.prototype.Create = function( targetElement )
 {
-	this._OuterTable = targetElement.appendChild( document.createElement( 'TABLE' ) ) ;
-	this._OuterTable.cellPadding = 0 ;
-	this._OuterTable.cellSpacing = 0 ;
+	var eOuterTable = this._OuterTable = targetElement.appendChild( targetElement.ownerDocument.createElement( 'TABLE' ) ) ;
+	eOuterTable.cellPadding = 0 ;
+	eOuterTable.cellSpacing = 0 ;
 	
-	this._OuterTable.insertRow(-1) ;
+	eOuterTable.insertRow(-1) ;
 	
 	var sClass ;
 	var bShowLabel ;
@@ -153,35 +193,37 @@ FCKSpecialCombo.prototype.Create = function( targetElement )
 
 	if ( this.Caption && this.Caption.length > 0 && bShowLabel )
 	{
-		var oCaptionCell = this._OuterTable.rows[0].insertCell(-1) ;
-		oCaptionCell.unselectable = 'on' ;
+		var oCaptionCell = eOuterTable.rows[0].insertCell(-1) ;
 		oCaptionCell.innerHTML = this.Caption ;
 		oCaptionCell.className = 'SC_FieldCaption' ;
 	}
 	
 	// Create the main DIV element.
-	var oField = this._OuterTable.rows[0].insertCell(-1).appendChild( document.createElement( 'DIV' ) ) ;
+	var oField = eOuterTable.rows[0].insertCell(-1).appendChild( targetElement.ownerDocument.createElement( 'DIV' ) ) ;
 	if ( bShowLabel )
 	{
 		oField.className = 'SC_Field' ;
 		oField.style.width = this.FieldWidth + 'px' ;
-		oField.innerHTML = '<table width="100%" cellpadding="0" cellspacing="0" style="TABLE-LAYOUT: fixed;" unselectable="on"><tbody><tr><td class="SC_FieldLabel" unselectable="on"><label unselectable="on">&nbsp;</label></td><td class="SC_FieldButton" unselectable="on">&nbsp;</td></tr></tbody></table>' ;
+		oField.innerHTML = '<table width="100%" cellpadding="0" cellspacing="0" style="TABLE-LAYOUT: fixed;"><tbody><tr><td class="SC_FieldLabel"><label>&nbsp;</label></td><td class="SC_FieldButton">&nbsp;</td></tr></tbody></table>' ;
 
-		this._LabelEl = oField.getElementsByTagName('label')[0] ;
+		this._LabelEl = oField.getElementsByTagName('label')[0] ;		// Memory Leak
 		this._LabelEl.innerHTML = this.Label ;
 	}
 	else
 	{
 		oField.className = 'TB_Button_Off' ;
-		//oField.innerHTML = '<span className="SC_FieldCaption">' + this.Caption + '<table cellpadding="0" cellspacing="0" style="TABLE-LAYOUT: fixed;" unselectable="on"><tbody><tr><td class="SC_FieldButton" style="border-left: none;" unselectable="on">&nbsp;</td></tr></tbody></table>' ;
-		oField.innerHTML = '<table cellpadding="0" cellspacing="0" style="TABLE-LAYOUT: fixed;" unselectable="on"><tbody><tr><td class="SC_FieldButton" style="border-left: none;" unselectable="on">&nbsp;</td></tr></tbody></table>' ;
+		//oField.innerHTML = '<span className="SC_FieldCaption">' + this.Caption + '<table cellpadding="0" cellspacing="0" style="TABLE-LAYOUT: fixed;"><tbody><tr><td class="SC_FieldButton" style="border-left: none;">&nbsp;</td></tr></tbody></table>' ;
+		//oField.innerHTML = '<table cellpadding="0" cellspacing="0" style="TABLE-LAYOUT: fixed;"><tbody><tr><td class="SC_FieldButton" style="border-left: none;">&nbsp;</td></tr></tbody></table>' ;
 		
 		// Gets the correct CSS class to use for the specified style (param).
-		oField.innerHTML ='<table title="' + this.Tooltip + '" class="' + sClass + '" cellspacing="0" cellpadding="0" border="0" unselectable="on">' +
+		oField.innerHTML = '<table title="' + this.Tooltip + '" class="' + sClass + '" cellspacing="0" cellpadding="0" border="0">' +
 				'<tr>' +
-					//'<td class="TB_Icon" unselectable="on"><img src="' + FCKConfig.SkinPath + 'toolbar/' + this.Command.Name.toLowerCase() + '.gif" width="21" height="21" unselectable="on"></td>' +
-					'<td class="TB_Text" unselectable="on">' + this.Caption + '</td>' +
-					'<td class="TB_ButtonArrow" unselectable="on"><img src="' + FCKConfig.SkinPath + 'images/toolbar.buttonarrow.gif" width="5" height="3"></td>' +
+					//'<td class="TB_Icon"><img src="' + FCKConfig.SkinPath + 'toolbar/' + this.Command.Name.toLowerCase() + '.gif" width="21" height="21"></td>' +
+					'<td><img class="TB_Button_Padding" src="' + FCK_SPACER_PATH + '" /></td>' +
+					'<td class="TB_Text">' + this.Caption + '</td>' +
+					'<td><img class="TB_Button_Padding" src="' + FCK_SPACER_PATH + '" /></td>' +
+					'<td class="TB_ButtonArrow"><img src="' + FCKConfig.SkinPath + 'images/toolbar.buttonarrow.gif" width="5" height="3"></td>' +
+					'<td><img class="TB_Button_Padding" src="' + FCK_SPACER_PATH + '" /></td>' +
 				'</tr>' +
 			'</table>' ;
 	}
@@ -194,7 +236,23 @@ FCKSpecialCombo.prototype.Create = function( targetElement )
 	oField.onmouseover	= FCKSpecialCombo_OnMouseOver ;
 	oField.onmouseout	= FCKSpecialCombo_OnMouseOut ;
 	oField.onclick		= FCKSpecialCombo_OnClick ;
+	
+	FCKTools.DisableSelection( this._Panel.Document.body ) ;
 }
+
+function FCKSpecialCombo_Cleanup()
+{
+	this._LabelEl = null ;
+	this._OuterTable = null ;
+	this._ItemsHolderEl = null ;
+	this._PanelBox = null ;
+	
+	if ( this.Items )
+	{
+		for ( var key in this.Items )
+			this.Items[key] = null ;
+	}
+}	
 
 function FCKSpecialCombo_OnMouseOver()
 {
@@ -203,10 +261,10 @@ function FCKSpecialCombo_OnMouseOver()
 		switch ( this.SpecialCombo.Style )
 		{
 		case FCK_TOOLBARITEM_ONLYICON :
-			this.className = 'TB_Button_On';
+			this.className = 'TB_Button_On_Over';
 			break ;
 		case FCK_TOOLBARITEM_ONLYTEXT :
-			this.className = 'TB_Button_On';
+			this.className = 'TB_Button_On_Over';
 			break ;
 		case FCK_TOOLBARITEM_ICONTEXT :
 			this.className = 'SC_Field SC_FieldOver' ;
@@ -235,33 +293,45 @@ function FCKSpecialCombo_OnClick( e )
 {
 	// For Mozilla we must stop the event propagation to avoid it hiding 
 	// the panel because of a click outside of it.
-	if ( e )
-	{
-		e.stopPropagation() ;
-		FCKPanelEventHandlers.OnDocumentClick( e ) ;
-	}
+//	if ( e )
+//	{
+//		e.stopPropagation() ;
+//		FCKPanelEventHandlers.OnDocumentClick( e ) ;
+//	}
+	
+	var oSpecialCombo = this.SpecialCombo ;
 
-	if ( this.SpecialCombo.Enabled )
+	if ( oSpecialCombo.Enabled )
 	{
-		var oPanel = this.SpecialCombo._Panel ;
+		var oPanel			= oSpecialCombo._Panel ;
+		var oPanelBox		= oSpecialCombo._PanelBox ;
+		var oItemsHolder	= oSpecialCombo._ItemsHolderEl ;
+		var iMaxHeight		= oSpecialCombo.PanelMaxHeight ;
 		
-		if ( typeof( this.SpecialCombo.OnBeforeClick ) == 'function' )
-			this.SpecialCombo.OnBeforeClick( this.SpecialCombo ) ;
+		if ( oSpecialCombo.OnBeforeClick )
+			oSpecialCombo.OnBeforeClick( oSpecialCombo ) ;
 
-		if ( this.SpecialCombo._ItemsHolderEl.offsetHeight > this.SpecialCombo.PanelMaxHeight )
-			oPanel.PanelDiv.style.height = this.SpecialCombo.PanelMaxHeight + 'px' ;
+		// This is a tricky thing. We must call the "Load" function, otherwise
+		// it will not be possible to retrieve "oItemsHolder.offsetHeight" (IE only).
+		if ( FCKBrowserInfo.IsIE )
+			oPanel.Preload( 0, this.offsetHeight, this ) ;
+
+		if ( oItemsHolder.offsetHeight > iMaxHeight )
+//		{
+			oPanelBox.style.height = iMaxHeight + 'px' ;
+
+//			if ( FCKBrowserInfo.IsGecko )
+//				oPanelBox.style.overflow = '-moz-scrollbars-vertical' ;
+//		}
 		else
-			oPanel.PanelDiv.style.height = this.SpecialCombo._ItemsHolderEl.offsetHeight + 'px' ;
+			oPanelBox.style.height = '' ;
 			
-		oPanel.PanelDiv.style.width = this.SpecialCombo.PanelWidth + 'px' ;
-		
-		if ( FCKBrowserInfo.IsGecko )
-			oPanel.PanelDiv.style.overflow = '-moz-scrollbars-vertical' ;
+//		oPanel.PanelDiv.style.width = oSpecialCombo.PanelWidth + 'px' ;
 
-		oPanel.Show( 0, this.offsetHeight, this, null, this.SpecialCombo.PanelMaxHeight, true ) ;
+		oPanel.Show( 0, this.offsetHeight, this ) ;
 	}
 
-	return false ;
+//	return false ;
 }
 
 /* 

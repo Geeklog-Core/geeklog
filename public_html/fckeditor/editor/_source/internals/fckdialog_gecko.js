@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -32,7 +32,17 @@ FCKDialog.Show = function( dialogInfo, dialogName, pageUrl, dialogWidth, dialogH
 	if ( !parentWindow )
 		parentWindow = window ;
 	
+	FCKFocusManager.Lock() ;
+	
 	var oWindow = parentWindow.open( '', 'FCKeditorDialog_' + dialogName, sOption, true ) ;
+	
+	if ( !oWindow )
+	{
+		alert( FCKLang.DialogBlocked ) ;
+		FCKFocusManager.Unlock() ;
+		return ;
+	}
+		
 	oWindow.moveTo( iLeft, iTop ) ;
 	oWindow.resizeTo( dialogWidth, dialogHeight ) ;
 	oWindow.focus() ;

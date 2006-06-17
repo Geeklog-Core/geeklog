@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -14,7 +14,7 @@
  * 	Norwegian language file.
  * 
  * File Authors:
- * 		Martin Kronstad (www.siteman.no) (martin.kronstad@broadpark.no)
+ * 		Martin Kronstad (www.siteman.no) (martin.kronstad@gmail.com)
  */
 
 var FCKLang =
@@ -85,6 +85,8 @@ Find				: "Finn",
 Replace				: "Erstatt",
 SpellCheck			: "Stavekontroll",
 UniversalKeyboard	: "Universelt tastatur",
+PageBreakLbl		: "Sideskift",
+PageBreak			: "Sett inn sideskift",
 
 Form			: "Skjema",
 Checkbox		: "Sjekkboks",
@@ -96,8 +98,13 @@ Button			: "Knapp",
 SelectionField	: "Dropdown meny",
 ImageButton		: "Bildeknapp",
 
+FitWindow		: "Maksimer størrelsen på redigeringsverktøyet",
+
 // Context Menu
 EditLink			: "Rediger lenke",
+CellCM				: "Celle",
+RowCM				: "Rader",
+ColumnCM			: "Kolonne",
 InsertRow			: "Sett inn rad",
 DeleteRows			: "Slett rader",
 InsertColumn		: "Sett inn kolonne",
@@ -106,6 +113,7 @@ InsertCell			: "Sett inn celle",
 DeleteCells			: "Slett celler",
 MergeCells			: "Slå sammen celler",
 SplitCell			: "Splitt celler",
+TableDelete			: "Slett tabell",
 CellProperties		: "Celleegenskaper",
 TableProperties		: "Tabellegenskaper",
 ImageProperties		: "Bildeegenskaper",
@@ -133,7 +141,9 @@ UnknownToolbarItem	: "Ukjent menyvalg \"%1\"",
 UnknownCommand		: "Ukjent kommando \"%1\"",
 NotImplemented		: "Kommando ikke ennå implimentert",
 UnknownToolbarSet	: "Verktøylinjesett \"%1\" finnes ikke",
-NoActiveX			: "You browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
+NoActiveX			: "Din nettleser's sikkerhetsinstillinger kan begrense noen av funksjonene i redigeringsverktøyet. Du må aktivere \"Kjør ActiveXkontroller og plugins\". Du kan oppleve feil og advarsler om manglende funksjoner",
+BrowseServerBlocked : "Kunne ikke åpne dialogboksen for filarkiv. Pass på at du har slått av popupstoppere.",
+DialogBlocked		: "Kunne ikke åpne dialogboksen. Pass på at du har slått av popupstoppere.",
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -141,12 +151,12 @@ DlgBtnCancel		: "Avbryt",
 DlgBtnClose			: "Lukk",
 DlgBtnBrowseServer	: "Bla igjennom server",
 DlgAdvancedTag		: "Avansert",
-DlgOpOther			: "&lt;Annet&gt;",
+DlgOpOther			: "<Annet>",
 DlgInfoTab			: "Info",
 DlgAlertUrl			: "Vennligst skriv inn URL'en",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;ikke satt&gt;",
+DlgGenNotSet		: "<ikke satt>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Språkretning",
 DlgGenLangDirLtr	: "Venstre til høyre (VTH)",
@@ -210,12 +220,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Bokmerk denne siden",
 DlgLnkTypeEMail		: "E-Post",
 DlgLnkProto			: "Protokoll",
-DlgLnkProtoOther	: "&lt;annet&gt;",
+DlgLnkProtoOther	: "<annet>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Velg ett anker",
 DlgLnkAnchorByName	: "Anker etter navn",
 DlgLnkAnchorById	: "Element etter ID",
-DlgLnkNoAnchors		: "&lt;Ingen anker i dokumentet&gt;",
+DlgLnkNoAnchors		: "<Ingen anker i dokumentet>",
 DlgLnkEMail			: "E-Post Addresse",
 DlgLnkEMailSubject	: "Meldingsemne",
 DlgLnkEMailBody		: "Melding",
@@ -223,8 +233,8 @@ DlgLnkUpload		: "Last opp",
 DlgLnkBtnUpload		: "Send til server",
 
 DlgLnkTarget		: "Mål",
-DlgLnkTargetFrame	: "&lt;ramme&gt;",
-DlgLnkTargetPopup	: "&lt;popup vindu&gt;",
+DlgLnkTargetFrame	: "<ramme>",
+DlgLnkTargetPopup	: "<popup vindu>",
 DlgLnkTargetBlank	: "Nytt vindu (_blank)",
 DlgLnkTargetParent	: "Foreldre vindu (_parent)",
 DlgLnkTargetSelf	: "Samme vindu (_self)",
@@ -278,6 +288,7 @@ DlgTableHeight		: "Høyde",
 DlgTableCellSpace	: "Celle marg",
 DlgTableCellPad		: "Celle polstring",
 DlgTableCaption		: "Tittel",
+DlgTableSummary		: "Sammendrag",
 
 // Table Cell Dialog
 DlgCellTitle		: "Celle egenskaper",
@@ -332,7 +343,6 @@ DlgPasteMsg2	: "Vennligst lim inn i den følgende boksen med tastaturet (<STRONG
 DlgPasteIgnoreFont		: "Ignorer fonter",
 DlgPasteRemoveStyles	: "Fjern stildefinisjoner",
 DlgPasteCleanBox		: "Tøm boksen",
-
 
 // Color Picker
 ColorAutomatic	: "Automatisk",
@@ -416,7 +426,7 @@ BulletedListProp	: "Uordnet listeegenskaper",
 NumberedListProp	: "Ordnet listeegenskaper",
 DlgLstType			: "Type",
 DlgLstTypeCircle	: "Sirkel",
-DlgLstTypeDisc		: "Disc",	//MISSING
+DlgLstTypeDisc		: "Hel sirkel",
 DlgLstTypeSquare	: "Firkant",
 DlgLstTypeNumbers	: "Numre(1, 2, 3)",
 DlgLstTypeLCase		: "Små bokstaver (a, b, c)",
@@ -469,7 +479,8 @@ DlgTemplatesNoTpl	: "(Ingen maler definert)",
 // About Dialog
 DlgAboutAboutTab	: "Om",
 DlgAboutBrowserInfoTab	: "Nettleserinfo",
+DlgAboutLicenseTab	: "Lisens",
 DlgAboutVersion		: "versjon",
 DlgAboutLicense		: "Lisensiert under GNU Lesser General Public License",
-DlgAboutInfo		: "Oversatt av Siteman DA<br /><a target=\"_blank\" href=\"http://www.siteman.no\">www.siteman.no</a><br /><br />For mer informasjon gå til"
+DlgAboutInfo		: "Oversatt av Siteman AS<br /><a target=\"_blank\" href=\"http://www.siteman.no\">www.siteman.no</a><br /><br />For mer informasjon gå til"
 }

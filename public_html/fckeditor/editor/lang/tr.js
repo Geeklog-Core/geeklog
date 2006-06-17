@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -85,6 +85,8 @@ Find				: "Bul",
 Replace				: "Degistir",
 SpellCheck			: "Yazim Denetimi",
 UniversalKeyboard	: "Evrensel Klavye",
+PageBreakLbl		: "Page Break",	//MISSING
+PageBreak			: "Insert Page Break",	//MISSING
 
 Form			: "Form",
 Checkbox		: "Onay Kutusu",
@@ -96,8 +98,13 @@ Button			: "Dügme",
 SelectionField	: "Seçim Mönüsü",
 ImageButton		: "Resimli Dügme",
 
+FitWindow		: "Maximize the editor size",	//MISSING
+
 // Context Menu
 EditLink			: "Köprü Düzenle",
+CellCM				: "Cell",	//MISSING
+RowCM				: "Row",	//MISSING
+ColumnCM			: "Column",	//MISSING
 InsertRow			: "Satir Ekle",
 DeleteRows			: "Satir Sil",
 InsertColumn		: "Sütun Ekle",
@@ -106,6 +113,7 @@ InsertCell			: "Hücre Ekle",
 DeleteCells			: "Hücre Sil",
 MergeCells			: "Hücreleri Birlestir",
 SplitCell			: "Hücre Böl",
+TableDelete			: "Delete Table",	//MISSING
 CellProperties		: "Hücre Özellikleri",
 TableProperties		: "Tablo Özellikleri",
 ImageProperties		: "Resim Özellikleri",
@@ -133,7 +141,9 @@ UnknownToolbarItem	: "Bilinmeyen araç çubugu ögesi \"%1\"",
 UnknownCommand		: "Bilinmeyen komut \"%1\"",
 NotImplemented		: "Komut uyarlanamadi",
 UnknownToolbarSet	: "\"%1\" araç çubugu ögesi mevcut degil",
-NoActiveX			: "You browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
+NoActiveX			: "Your browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
+BrowseServerBlocked : "The resources browser could not be opened. Make sure that all popup blockers are disabled.",	//MISSING
+DialogBlocked		: "It was not possible to open the dialog window. Make sure all popup blockers are disabled.",	//MISSING
 
 // Dialogs
 DlgBtnOK			: "Tamam",
@@ -141,12 +151,12 @@ DlgBtnCancel		: "Iptal",
 DlgBtnClose			: "Kapat",
 DlgBtnBrowseServer	: "Sunucuyu Gez",
 DlgAdvancedTag		: "Gelismis",
-DlgOpOther			: "&lt;Diger&gt;",
+DlgOpOther			: "<Diger>",
 DlgInfoTab			: "Bilgi",
 DlgAlertUrl			: "Lütfen URL girin",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;tanimlanmamis&gt;",
+DlgGenNotSet		: "<tanimlanmamis>",
 DlgGenId			: "Kimlik",
 DlgGenLangDir		: "Lisan Yönü",
 DlgGenLangDirLtr	: "Soldan Saga (LTR)",
@@ -210,12 +220,12 @@ DlgLnkTypeURL		: "URL",
 DlgLnkTypeAnchor	: "Bu sayfada çapa",
 DlgLnkTypeEMail		: "E-Posta",
 DlgLnkProto			: "Protokol",
-DlgLnkProtoOther	: "&lt;diger&gt;",
+DlgLnkProtoOther	: "<diger>",
 DlgLnkURL			: "URL",
 DlgLnkAnchorSel		: "Çapa Seç",
 DlgLnkAnchorByName	: "Çapa Ismi ile",
 DlgLnkAnchorById	: "Eleman Id ile",
-DlgLnkNoAnchors		: "&lt;Bu dokümanda hiç çapa yok&gt;",
+DlgLnkNoAnchors		: "<Bu dokümanda hiç çapa yok>",
 DlgLnkEMail			: "E-Posta Adresi",
 DlgLnkEMailSubject	: "Mesaj Konusu",
 DlgLnkEMailBody		: "Mesaj Vücudu",
@@ -223,8 +233,8 @@ DlgLnkUpload		: "Karsiya Yükle",
 DlgLnkBtnUpload		: "Sunucuya Gönder",
 
 DlgLnkTarget		: "Hedef",
-DlgLnkTargetFrame	: "&lt;çerçeve&gt;",
-DlgLnkTargetPopup	: "&lt;yeni açilan pencere&gt;",
+DlgLnkTargetFrame	: "<çerçeve>",
+DlgLnkTargetPopup	: "<yeni açilan pencere>",
 DlgLnkTargetBlank	: "Yeni Pencere(_blank)",
 DlgLnkTargetParent	: "Anne Pencere (_parent)",
 DlgLnkTargetSelf	: "Kendi Penceresi (_self)",
@@ -278,6 +288,7 @@ DlgTableHeight		: "Yükseklik",
 DlgTableCellSpace	: "Izgara kalinligi",
 DlgTableCellPad		: "Izgara yazi arasi",
 DlgTableCaption		: "Baslik",
+DlgTableSummary		: "Summary",	//MISSING
 
 // Table Cell Dialog
 DlgCellTitle		: "Hücre Özellikleri",
@@ -286,16 +297,16 @@ DlgCellWidthPx		: "piksel",
 DlgCellWidthPc		: "yüzde",
 DlgCellHeight		: "Yükseklik",
 DlgCellWordWrap		: "Sözcük Kaydir",
-DlgCellWordWrapNotSet	: "&lt;Tanimlanmamis&gt;",
+DlgCellWordWrapNotSet	: "<Tanimlanmamis>",
 DlgCellWordWrapYes	: "Evet",
 DlgCellWordWrapNo	: "Hayir",
 DlgCellHorAlign		: "Yatay Hizalama",
-DlgCellHorAlignNotSet	: "&lt;Tanimlanmamis&gt;",
+DlgCellHorAlignNotSet	: "<Tanimlanmamis>",
 DlgCellHorAlignLeft	: "Sol",
 DlgCellHorAlignCenter	: "Merkez",
 DlgCellHorAlignRight: "Sag",
 DlgCellVerAlign		: "Dikey Hizalama",
-DlgCellVerAlignNotSet	: "&lt;Tanimlanmamis&gt;",
+DlgCellVerAlignNotSet	: "<Tanimlanmamis>",
 DlgCellVerAlignTop	: "Tepe",
 DlgCellVerAlignMiddle	: "Orta",
 DlgCellVerAlignBottom	: "Alt",
@@ -332,7 +343,6 @@ DlgPasteMsg2	: "Please paste inside the following box using the keyboard (<STRON
 DlgPasteIgnoreFont		: "Yazı Tipi tanımlarını yoksay",
 DlgPasteRemoveStyles	: "Sitil Tanımlarını çıkar",
 DlgPasteCleanBox		: "Temizlik Kutusu",
-
 
 // Color Picker
 ColorAutomatic	: "Otomatik",
@@ -469,6 +479,7 @@ DlgTemplatesNoTpl	: "(Belirli bir düzen seçilmedi)",
 // About Dialog
 DlgAboutAboutTab	: "Hakkinda",
 DlgAboutBrowserInfoTab	: "Gezgin Bilgisi",
+DlgAboutLicenseTab	: "License",	//MISSING
 DlgAboutVersion		: "versiyon",
 DlgAboutLicense		: "GNU Kisitli Kamu Lisansi (LGPL) kosullari altinda lisanslanmistir",
 DlgAboutInfo		: "Daha fazla bilgi için:"

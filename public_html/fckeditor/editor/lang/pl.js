@@ -1,6 +1,6 @@
 ﻿/*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -44,8 +44,8 @@ RemoveLink			: "Usuń hiperłącze",
 Anchor				: "Wstaw/edytuj kotwicę",
 InsertImageLbl		: "Obrazek",
 InsertImage			: "Wstaw/edytuj obrazek",
-InsertFlashLbl		: "Flash",	//MISSING
-InsertFlash			: "Insert/Edit Flash",	//MISSING
+InsertFlashLbl		: "Flash",
+InsertFlash			: "Dodaj/Edytuj element Flash",
 InsertTableLbl		: "Tabela",
 InsertTable			: "Wstaw/edytuj tabelę",
 InsertLineLbl		: "Linia pozioma",
@@ -86,6 +86,8 @@ Find				: "Znajdź",
 Replace				: "Zamień",
 SpellCheck			: "Sprawdź pisownię",
 UniversalKeyboard	: "Klawiatura Uniwersalna",
+PageBreakLbl		: "Odstęp",
+PageBreak			: "Wstaw odstęp",
 
 Form			: "Formularz",
 Checkbox		: "Checkbox",
@@ -97,8 +99,13 @@ Button			: "Przycisk",
 SelectionField	: "Lista wyboru",
 ImageButton		: "Przycisk obrazek",
 
+FitWindow		: "Maksymalizuj rozmiar edytora",
+
 // Context Menu
 EditLink			: "Edytuj hiperłącze",
+CellCM				: "Komórka",
+RowCM				: "Wiersz",
+ColumnCM			: "Kolumna",
 InsertRow			: "Wstaw wiersz",
 DeleteRows			: "Usuń wiersze",
 InsertColumn		: "Wstaw kolumnę",
@@ -107,10 +114,11 @@ InsertCell			: "Wstaw komórkę",
 DeleteCells			: "Usuń komórki",
 MergeCells			: "Połącz komórki",
 SplitCell			: "Podziel komórkę",
+TableDelete			: "Usuń tabelę",
 CellProperties		: "Właściwości komórki",
 TableProperties		: "Właściwości tabeli",
 ImageProperties		: "Właściwości obrazka",
-FlashProperties		: "Flash Properties",	//MISSING
+FlashProperties		: "Właściwości elementu Flash",
 
 AnchorProp			: "Właściwości kotwicy",
 ButtonProp			: "Właściwości przycisku",
@@ -134,7 +142,9 @@ UnknownToolbarItem	: "Nieznany element paska narzędzi \"%1\"",
 UnknownCommand		: "Nieznana komenda \"%1\"",
 NotImplemented		: "Komenda niezaimplementowana",
 UnknownToolbarSet	: "Pasek narzędzi \"%1\" nie istnieje",
-NoActiveX			: "You browser's security settings could limit some features of the editor. You must enable the option \"Run ActiveX controls and plug-ins\". You may experience errors and notice missing features.",	//MISSING
+NoActiveX			: "Ustawienia zabezpieczeń twojej przeglądarki mogą ograniczyć niektóre funkcje edytora. Musisz włączyć opcję \"Uruchamianie formantów Activex i dodatków plugin\". W przeciwnym wypadku mogą pojawiać się błędy.",
+BrowseServerBlocked : "Okno menadżera plików nie może zostać otwarte. Upewnij się, że wszystkie blokady popup są wyłączone.",
+DialogBlocked		: "Nie można otworzyć okna dialogowego. Upewnij się, że wszystkie blokady popup są wyłączone.",
 
 // Dialogs
 DlgBtnOK			: "OK",
@@ -142,12 +152,12 @@ DlgBtnCancel		: "Anuluj",
 DlgBtnClose			: "Zamknij",
 DlgBtnBrowseServer	: "Przeglądaj",
 DlgAdvancedTag		: "Zaawansowane",
-DlgOpOther			: "&lt;Inny&gt;",
-DlgInfoTab			: "Info",	//MISSING
-DlgAlertUrl			: "Please insert the URL",	//MISSING
+DlgOpOther			: "<Inny>",
+DlgInfoTab			: "Informacje",
+DlgAlertUrl			: "Proszę podać URL",
 
 // General Dialogs Labels
-DlgGenNotSet		: "&lt;nieustawione&gt;",
+DlgGenNotSet		: "<nieustawione>",
 DlgGenId			: "Id",
 DlgGenLangDir		: "Kierunek tekstu",
 DlgGenLangDirLtr	: "Od lewej do prawej (LTR)",
@@ -189,17 +199,17 @@ DlgImgAlignTextTop	: "Do góry tekstu",
 DlgImgAlignTop		: "Do góry",
 DlgImgPreview		: "Podgląd",
 DlgImgAlertUrl		: "Podaj adres obrazka.",
-DlgImgLinkTab		: "Link",	//MISSING
+DlgImgLinkTab		: "Link",
 
 // Flash Dialog
-DlgFlashTitle		: "Flash Properties",	//MISSING
-DlgFlashChkPlay		: "Auto Play",	//MISSING
-DlgFlashChkLoop		: "Loop",	//MISSING
-DlgFlashChkMenu		: "Enable Flash Menu",	//MISSING
-DlgFlashScale		: "Scale",	//MISSING
-DlgFlashScaleAll	: "Show all",	//MISSING
-DlgFlashScaleNoBorder	: "No Border",	//MISSING
-DlgFlashScaleFit	: "Exact Fit",	//MISSING
+DlgFlashTitle		: "Właściwości elementu Flash",
+DlgFlashChkPlay		: "Auto Odtwarzanie",
+DlgFlashChkLoop		: "Pętla",
+DlgFlashChkMenu		: "Włącz menu",
+DlgFlashScale		: "Skaluj",
+DlgFlashScaleAll	: "Pokaż wszystko",
+DlgFlashScaleNoBorder	: "Bez Ramki",
+DlgFlashScaleFit	: "Dokładne dopasowanie",
 
 // Link Dialog
 DlgLnkWindowTitle	: "Hiperłącze",
@@ -211,12 +221,12 @@ DlgLnkTypeURL		: "Adres URL",
 DlgLnkTypeAnchor	: "Odnośnik wewnątrz strony",
 DlgLnkTypeEMail		: "Adres e-mail",
 DlgLnkProto			: "Protokół",
-DlgLnkProtoOther	: "&lt;inny&gt;",
+DlgLnkProtoOther	: "<inny>",
 DlgLnkURL			: "Adres URL",
 DlgLnkAnchorSel		: "Wybierz etykietę",
 DlgLnkAnchorByName	: "Wg etykiety",
 DlgLnkAnchorById	: "Wg identyfikatora elementu",
-DlgLnkNoAnchors		: "&lt;W dokumencie nie zdefiniowano żadnych etykiet&gt;",
+DlgLnkNoAnchors		: "<W dokumencie nie zdefiniowano żadnych etykiet>",
 DlgLnkEMail			: "Adres e-mail",
 DlgLnkEMailSubject	: "Temat",
 DlgLnkEMailBody		: "Treść",
@@ -224,8 +234,8 @@ DlgLnkUpload		: "Upload",
 DlgLnkBtnUpload		: "Wyślij",
 
 DlgLnkTarget		: "Cel",
-DlgLnkTargetFrame	: "&lt;ramka&gt;",
-DlgLnkTargetPopup	: "&lt;wyskakujące okno&gt;",
+DlgLnkTargetFrame	: "<ramka>",
+DlgLnkTargetPopup	: "<wyskakujące okno>",
 DlgLnkTargetBlank	: "Nowe okno (_blank)",
 DlgLnkTargetParent	: "Okno nadrzędne (_parent)",
 DlgLnkTargetSelf	: "To samo okno (_self)",
@@ -279,6 +289,7 @@ DlgTableHeight		: "Wysokość",
 DlgTableCellSpace	: "Odstęp pomiędzy komórkami",
 DlgTableCellPad		: "Margines wewnętrzny komórek",
 DlgTableCaption		: "Tytuł",
+DlgTableSummary		: "Podsumowanie",
 
 // Table Cell Dialog
 DlgCellTitle		: "Właściwości komórki",
@@ -329,11 +340,10 @@ PasteErrorCopy	: "Ustawienia bezpieczeństwa Twojej przeglądarki nie pozwalają
 PasteAsText		: "Wklej jako czysty tekst",
 PasteFromWord	: "Wklej z Worda",
 
-DlgPasteMsg2	: "Please paste inside the following box using the keyboard (<STRONG>Ctrl+V</STRONG>) and hit <STRONG>OK</STRONG>.",	//MISSING
-DlgPasteIgnoreFont		: "Ignore Font Face definitions",	//MISSING
-DlgPasteRemoveStyles	: "Remove Styles definitions",	//MISSING
-DlgPasteCleanBox		: "Clean Up Box",	//MISSING
-
+DlgPasteMsg2	: "Proszę wkleić w poniższym polu używając klawiaturowego skrótu (<STRONG>Ctrl+V</STRONG>) i kliknąć <STRONG>OK</STRONG>.",
+DlgPasteIgnoreFont		: "Ignoruj definicje 'Font Face'",
+DlgPasteRemoveStyles	: "Usuń definicje Stylów",
+DlgPasteCleanBox		: "Wyczyść",
 
 // Color Picker
 ColorAutomatic	: "Automatycznie",
@@ -417,7 +427,7 @@ BulletedListProp	: "Właściwości listy punktowanej",
 NumberedListProp	: "Właściwości listy numerowanej",
 DlgLstType			: "Typ",
 DlgLstTypeCircle	: "Koło",
-DlgLstTypeDisc		: "Disc",	//MISSING
+DlgLstTypeDisc		: "Dysk",
 DlgLstTypeSquare	: "Kwadrat",
 DlgLstTypeNumbers	: "Cyfry (1, 2, 3)",
 DlgLstTypeLCase		: "Małe litery (a, b, c)",
@@ -461,15 +471,16 @@ DlgDocMeCopy		: "Copyright",
 DlgDocPreview		: "Podgląd",
 
 // Templates Dialog
-Templates			: "Templates",	//MISSING
-DlgTemplatesTitle	: "Content Templates",	//MISSING
-DlgTemplatesSelMsg	: "Please select the template to open in the editor<br>(the actual contents will be lost):",	//MISSING
-DlgTemplatesLoading	: "Loading templates list. Please wait...",	//MISSING
-DlgTemplatesNoTpl	: "(No templates defined)",	//MISSING
+Templates			: "Sablony",
+DlgTemplatesTitle	: "Szablony zawartości",
+DlgTemplatesSelMsg	: "Wybierz szablon do otwarcia w edytorze<br>(obecna zawartość okna edytora zostanie utracona):",
+DlgTemplatesLoading	: "Ładowanie listy szablonów. Proszę czekać...",
+DlgTemplatesNoTpl	: "(Brak zdefiniowanych szablonów)",
 
 // About Dialog
 DlgAboutAboutTab	: "O ...",
 DlgAboutBrowserInfoTab	: "O przeglądarce",
+DlgAboutLicenseTab	: "Licencja",
 DlgAboutVersion		: "wersja",
 DlgAboutLicense		: "na licencji GNU Lesser General Public License",
 DlgAboutInfo		: "Więcej informacji uzyskasz pod adresem"

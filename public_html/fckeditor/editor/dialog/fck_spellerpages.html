@@ -1,13 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <!--
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
  * 		http://www.fckeditor.net/
+ * 
+ * "Support Open Source software. What about a donation today?"
  * 
  * File Name: fck_spellerpages.html
  * 	Spell Check dialog window.
@@ -28,7 +30,7 @@ var FCKLang = oEditor.FCKLang ;
 
 window.onload = function()
 {
-	document.getElementById('txtHtml').value = oEditor.FCK.GetHTML() ;
+	document.getElementById('txtHtml').value = oEditor.FCK.EditorDocument.body.innerHTML ;
 
 	var oSpeller = new spellChecker( document.getElementById('txtHtml') ) ;
 	oSpeller.OnFinished = oSpeller_OnFinished ;
@@ -52,6 +54,6 @@ function oSpeller_OnFinished( numberOCorrections )
 	</head>
 	<body style="OVERFLOW: hidden" scroll="no" style="padding:0px;">
 		<input type="hidden" id="txtHtml" value="">
-		<iframe id="frmSpell" src="../fckblank.html" name="spellchecker" width="100%" height="100%" frameborder="no"></iframe>
+		<iframe id="frmSpell" src="../fckblank.html" name="spellchecker" width="100%" height="100%" frameborder="0"></iframe>
 	</body>
 </html>
