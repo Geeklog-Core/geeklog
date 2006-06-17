@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.31 2006/06/16 18:12:44 blaine Exp $
+// $Id: lib-custom.php,v 1.32 2006/06/17 21:16:01 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -318,9 +318,9 @@ function CUSTOM_userSave($uid)
         if ($cooktime < 0) {
             $cooktime = 0;
         }
-    }
 
-    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout = $cooktime WHERE uid = $uid");
+        DB_query("UPDATE {$_TABLES['users']} SET cookietimeout = $cooktime WHERE uid = $uid");
+    }
 }
 
 
