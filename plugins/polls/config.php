@@ -33,9 +33,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.8 2006/05/12 09:36:45 ospiess Exp $
+// $Id: config.php,v 1.9 2006/06/17 12:22:44 dhaun Exp $
 
-$_PO_CONF['version']            = '1.1'; // Plugin Version
+$_PO_CONF['version']            = '1.1.0'; // Plugin Version
 
 // Poll Settings
 

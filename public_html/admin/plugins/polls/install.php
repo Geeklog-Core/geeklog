@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.11 2006/06/10 19:31:55 dhaun Exp $
+// $Id: install.php,v 1.12 2006/06/17 12:22:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -80,6 +80,12 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, 
 */
 function plugin_compatible_with_this_geeklog_version ()
 {
+    if (function_exists ('COM_showPoll') || function_exists ('COM_pollVote')) {
+        // if these functions exist, then someone's trying to install the
+        // plugin on Geeklog 1.3.11 or older - sorry, but that won't work
+        return false;
+    }
+
     return true;
 }
 

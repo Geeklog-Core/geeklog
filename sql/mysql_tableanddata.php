@@ -850,8 +850,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('staticpages', '1.4.3','1.4.0',1,'http://www.geeklog.net/') ";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.1.0','1.4.1',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0.1', '1.4.1', 1, 'http://www.geeklog.net/')";
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('polls', '1.1', '1.4.0', '1', 'http://www.geeklog.net/')";
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0', '1.4.1', '1', 'http://www.geeklog.net/')";
+$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('polls', '1.1.0', '1.4.0', '1', 'http://www.geeklog.net/')";
+$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.0', '1.4.1', '1', 'http://www.geeklog.net/')";
 
 $_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'Trackbacks',0)";
 $_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'Links and Polls plugins',0)";

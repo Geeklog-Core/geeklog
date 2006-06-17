@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.41 2006/06/15 15:17:25 dhaun Exp $
+// $Id: functions.inc,v 1.42 2006/06/17 12:22:44 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -1142,6 +1142,27 @@ function plugin_chkVersion_calendar()
     global $_CA_CONF;
 
     return $_CA_CONF['version'];
+}
+
+/**
+* Update the Calendar plugin
+*
+* @return   int     Number of message to display (true = generic success msg)
+*
+*/
+function plugin_upgrade_calendar()
+{
+    global $_TABLES, $_CA_CONF;
+
+    // the plugin needs this function so complain when it doesn't exist
+    if (!function_exists ('MBYTE_strpos')) {
+        return 3002;
+    }
+
+    // no db changes - just update the version numbers
+    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_CA_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'calendar'");
+
+    return true;
 }
 
 /**

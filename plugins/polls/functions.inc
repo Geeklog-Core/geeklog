@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.47 2006/06/11 15:38:31 dhaun Exp $
+// $Id: functions.inc,v 1.48 2006/06/17 12:22:44 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -940,16 +940,25 @@ function plugin_templatesetvars_polls ($templatename, &$template)
     }
 }
 
-function plugin_upgrade_polls() 
+/**
+* Update the Polls plugin
+*
+* @return   int     Number of message to display (true = generic success msg)
+*
+*/
+function plugin_upgrade_polls () 
 {
-    global $_PO_CONF, $_TABLES;
-    $current_version = DB_getItem($_TABLES['plugins'], 'version','name="polls"');
-    if ($current_version == "1.0") 
-    {
-        $sql = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar( 255 ) NULL AFTER `votes`;";  
+    global $_TABLES, $_PO_CONF;
+
+    $current_version = DB_getItem ($_TABLES['plugins'], 'pi_version',
+                                   "pi_name = 'polls'");
+    if ($current_version == '1.0') {
+        $sql = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark VARCHAR(255) NULL AFTER votes;";  
+        $result = DB_query ($sql);
     }
-    
-    $result = DB_query($sql);
+
+    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_PO_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'polls'");
+
     return true;
 }
 

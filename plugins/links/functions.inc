@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.65 2006/06/11 08:15:04 dhaun Exp $
+// $Id: functions.inc,v 1.66 2006/06/17 12:22:44 dhaun Exp $
 
 
 /**
@@ -704,8 +704,9 @@ function plugin_upgrade_links ()
 {
     global $_TABLES, $_LI_CONF;
 
-    // the plugin needs this function so complain when it doesn't exist
-    if (!function_exists ('COM_truncate')) {
+    // the plugin needs these functions so complain when they doesn't exist
+    if (!function_exists ('COM_truncate') ||
+        !function_exists ('MBYTE_strpos')) {
         return 3002;
     }
 

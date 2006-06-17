@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.6 2006/06/10 19:23:42 dhaun Exp $
+// $Id: install.php,v 1.7 2006/06/17 12:22:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/calendar/config.php');
@@ -85,6 +85,11 @@ function plugin_compatible_with_this_geeklog_version ()
     if (function_exists ('COM_printUpcomingEvents')) {
         // if this function exists, then someone's trying to install the
         // plugin on Geeklog 1.4.0 or older - sorry, but that won't work
+        return false;
+    }
+
+    if (!function_exists ('MBYTE_strpos')) {
+        // the plugin requires the multi-byte functions
         return false;
     }
 

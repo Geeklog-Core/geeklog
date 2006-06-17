@@ -55,7 +55,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  * 
  */
-// $Id: install.php,v 1.14 2006/06/10 20:37:42 dhaun Exp $
+// $Id: install.php,v 1.15 2006/06/17 12:22:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/links/config.php');
@@ -138,7 +138,7 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description
  */
 function plugin_compatible_with_this_geeklog_version ()
 {
-    if (!function_exists ('COM_truncate')) {
+    if (!function_exists ('COM_truncate') || !function_exists ('MBYTE_strpos')) {
         return false;
     }
 
