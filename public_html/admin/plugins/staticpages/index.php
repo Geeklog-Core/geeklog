@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.66 2006/06/05 09:53:31 dhaun Exp $
+// $Id: index.php,v 1.67 2006/06/17 20:31:24 blaine Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -100,6 +100,7 @@ function form ($A, $error = false)
             $sp_template->set_var ('toolbar3', $LANG24[73]);
             $sp_template->set_var ('toolbar4', $LANG24[74]);
             $sp_template->set_var ('toolbar5', $LANG24[75]);
+            $sp_template->set_var('lang_nojavascript',$LANG24[77]);
         } else {
             $sp_template->set_file ('form', 'editor.thtml');
         }

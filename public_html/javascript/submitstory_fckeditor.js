@@ -11,6 +11,7 @@
     window.onload = function() {
         var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
         oFCKeditor1.BasePath = geeklogEditorBasePath;
+        oFCKeditor1.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
         oFCKeditor1.ToolbarSet = 'editor-toolbar1' ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
@@ -28,65 +29,28 @@
         }
     }
 
-    function changeHTMLTextAreaSize(element, option) {
-        var size = 0;
-        var size = document.getElementById(element + '___Frame').height;
-        if (option == 'larger') {
-            document.getElementById(element + '___Frame').height = +(size) + 50;
-
-        } else if (option == 'smaller') {
-            document.getElementById(element + '___Frame').height = +(size) - 50;
-        }
-    }
-
-    function changeTextAreaSize(element, option) {
-        var size = 0;
-        var size = document.getElementById(element).rows;
-        if (option == 'larger') {
-            document.getElementById(element).rows = +(size) + 3;
-        } else if (option == 'smaller') {
-            document.getElementById(element).rows = +(size) - 3;
-        }
-    }
-
-
-    function getEditorContent(instanceName) {
-        editor_frame = document.getElementById(instanceName+'___Frame');
-        editor_source = editor_frame.contentWindow.document.getElementById('eEditorArea');
-        if (editor_source!=null) {
-            return editor_source.contentWindow.document.body.innerHTML;
-        } else {
-            return '';
-        }
+    function getEditorContent() {
+        // Get the editor instance that we want to interact with.
+        var oEditor = FCKeditorAPI.GetInstance('introhtml') ;
+        // return the editor contents in XHTML.
+        return oEditor.GetXHTML( true );
     }
 
     function swapEditorContent(curmode) {
         var content = '';
-        editor_frame = document.getElementById('introhtml___Frame');
-        editor_source = editor_frame.contentWindow.document.getElementById('eEditorArea');
-
-        if (curmode == 'html') {
+        var oEditor = FCKeditorAPI.GetInstance('introhtml') ;
+        if (curmode == 'html') { // Switching from Text to HTML mode
+            // Get the content from the textarea 'text' content and copy it to the editor
             content = document.getElementById('introtext').value;
-            editor_source.contentWindow.document.body.innerHTML = content;
+            oEditor.SetHTML(content);
         } else {
-            content = editor_source.contentWindow.document.body.innerHTML;
-            document.getElementById('introtext').value = content;
-        }
+              content = getEditorContent();
+              document.getElementById('introtext').value = content;
+          }
     }
 
     function set_postcontent() {
         if (document.getElementById('sel_editmode').value == 'html') {
-            document.getElementById('introtext').value = getEditorContent('introhtml');
+            document.getElementById('introtext').value = getEditorContent();
         }
     }
-
-   function changeToolbar(toolbar) {
-        var basePath= "{site_url}/fckeditor/" ;
-        var instanceName='introhtml';
-        editor_frame = document.getElementById(instanceName+'___Frame');
-        //alert(editor_frame.src);
-        if (editor_frame!=null) {
-            //editor_frame.src=basePath+'editor/fckeditor.html?InstanceName='+instanceName+'&Toolbar='+toolbar;
-            editor_frame.src='http://localhost/geekcvs/fckeditor/editor/fckeditor.html?InstanceName=introhtml&Toolbar=editor-toolbar1';
-        }
-   }

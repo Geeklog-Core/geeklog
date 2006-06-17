@@ -1,3 +1,7 @@
+<!-- Hide the Advanced Editor as Javascript is required. If JS is not enabled then the message below in the <nonscript> tags will be displayed -->
+<noscript>
+    <div class="pluginAlert" style="border:1px dashed #ccc;text-align:center;margin-top:10px;padding:15px;">{lang_nojavascript} </div>
+</noscript>
 <script type="text/javascript">
     // Setup editor path for FCKeditor JS Functions
     geeklogEditorBasePath = "{site_url}/fckeditor/" ;
@@ -38,27 +42,26 @@
             <td style="padding-bottom:15px;">{example_url}</td>
           </tr>
            <tr>
-                  <td style="text-align:right;vertical-align:top;padding-top:10px;border-top:1px solid #CCC;">{lang_content}</td>
+               <td style="text-align:right;vertical-align:top;padding-top:10px;border-top:1px solid #CCC;">{lang_content}</td>
                <td style="padding-top:10px;border-top:1px solid #CCC;">
                <div style="padding-left:10px;">
                     <img src="{layout_url}/images/expand.gif" border="0" TITLE="{lang_expandhelp}" onclick="changeHTMLAreaSize('larger');">
                     <span style="padding-left:15px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="{lang_reducehelp}" onclick="changeHTMLAreaSize('smaller');"></span>
-                     <!-- BL: Not supported yet. Works in Firefox but not in IE
                     <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
                       <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
                            <option value="editor-toolbar1">{toolbar1}</option>
-                           <option value="editor-toolbar2">{toolbar2}</option>
+                           <option value="editor-toolbar2" selected>{toolbar2}</option>
                            <option value="editor-toolbar3">{toolbar3}</option>
-                           <option value="editor-toolbar4">{toolbar4}</option>
                            <option value="Default">{toolbar5}</option>
                       </select>
                     </span>
-                    -->
-                  <div style="margin-top:10px;border:1px solid #CCC;">
-                      <textarea id="sp_content" name="sp_content" cols="75" rows="24" wrap="virtual">{sp_content}</textarea>
-                  </div>
-                  <br><span class="warningsmall">{lang_allowedhtml}</span><br><br>
-               </div>
+                 </div>
+                 </td>
+             </tr>
+             <tr>
+                <td colspan="2" style="margin-top:10px;border:1px solid #CCC;">
+                  <textarea id="sp_content" name="sp_content" cols="75" rows="24" wrap="virtual">{sp_content}</textarea>
+                  <div class="warningsmall" style="padding:10px;">{lang_allowedhtml}</div>
               </td>
            </tr>
           <tr>

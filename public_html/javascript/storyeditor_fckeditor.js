@@ -1,9 +1,9 @@
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003,2004 by the following authors:                         |
-// | Version 1.0    Date: Jun 4, 2005                                          |
+// | Copyright (C) 2003,2004,2005,2006 by the following authors:               |
+// | Version 1.1    Date: Jun 4, 2006                                          |
 // | Authors:   Blaine Lang - blaine@portalparts.com                           |
 // |                                                                           |
-// | Javascript functions for FCKEditor Integration into Geeklog                |
+// | Javascript functions for FCKEditor Integration into Geeklog               |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
@@ -21,20 +21,19 @@
         oFCKeditor2.ToolbarSet = 'editor-toolbar2' ;
         oFCKeditor2.Height = 200 ;
         oFCKeditor2.ReplaceTextarea() ;
-
     }
 
     function change_editmode(obj) {
         if (obj.value == 'html') {
             document.getElementById('html_editor').style.display='none';
-            document.getElementById('text_editor').style.display='';              
+            document.getElementById('text_editor').style.display='';
             swapEditorContent('html','introhtml');
             swapEditorContent('html','bodyhtml');
         } else if (obj.value == 'adveditor') {
-            document.getElementById('text_editor').style.display='none';        
+            document.getElementById('text_editor').style.display='none';
             document.getElementById('html_editor').style.display='';
             swapEditorContent('adveditor','introhtml');
-            swapEditorContent('adveditor','bodyhtml');           
+            swapEditorContent('adveditor','bodyhtml');
         } else {
             document.getElementById('html_editor').style.display='none';
             document.getElementById('text_editor').style.display='';
@@ -105,8 +104,7 @@
 
    function changeToolbar(toolbar) {
         var oEditor1 = FCKeditorAPI.GetInstance('introhtml');
-		oEditor1.ToolbarSet.Load( toolbar ) ;
+        oEditor1.ToolbarSet.Load( toolbar ) ;
         var oEditor2 = FCKeditorAPI.GetInstance('bodyhtml');
-		oEditor2.ToolbarSet.Load( toolbar ) ;
-
+        oEditor2.ToolbarSet.Load( toolbar ) ;
    }

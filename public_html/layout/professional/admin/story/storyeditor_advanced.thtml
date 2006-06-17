@@ -97,7 +97,6 @@
                                                        <option value="editor-toolbar1">{toolbar1}</option>
                                                        <option value="editor-toolbar2" selected>{toolbar2}</option>
                                                        <option value="editor-toolbar3">{toolbar3}</option>
-                                                       <option value="editor-toolbar4">{toolbar4}</option>
                                                        <option value="Default">{toolbar5}</option>
                                                   </select>
                                                 </span>

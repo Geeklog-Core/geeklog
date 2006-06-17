@@ -1,6 +1,6 @@
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003,2004,2005 by the following authors:                    |
-// | Version 1.0    Date: Jun 4, 2005                                          |
+// | Copyright (C) 2003,2004,2005,2006 by the following authors:               |
+// | Version 1.1    Date: Jun 4, 2006                                          |
 // | Authors:   Blaine Lang - blaine@portalparts.com                           |
 // |                                                                           |
 // | Javascript functions for Geeklog Advanced Editor                          |
@@ -90,6 +90,8 @@
 
     }
 
+    /* Enable if you want to have toolbar only auto-collapse when not editing in field */
+    /*
     function FCKeditor_OnComplete( editorInstance )  {
         editorInstance.Events.AttachEvent( 'OnBlur'    , FCKeditor_OnBlur ) ;
         editorInstance.Events.AttachEvent( 'OnFocus', FCKeditor_OnFocus ) ;
@@ -102,3 +104,4 @@
     function FCKeditor_OnFocus( editorInstance ) {
         editorInstance.ToolbarSet.Expand() ;
     }
+    */
