@@ -740,9 +740,7 @@ $LANG24 = array(
     83 => 'Archive Options',
     84 => 'Permissions',
     85 => 'Show All',
-    86 => 'Story Index',
-    87 => 'Are you sure you want to cancel this edit session?',
-    88 => 'Advanced Editor'
+    86 => 'Advanced Editor'
 );
 
 ###############################################################################
