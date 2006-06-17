@@ -996,7 +996,7 @@ $MESSAGE = array(
     2 => "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Artikel wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald auf dieser Website für alle Besucher zu lesen sein.",
     3 => "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links.php\">Links</a> aufgelistet werden.",
     4 => "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald in unserem <a href=\"{$_CONF['site_url']}/calendar.php\">Kalender</a> erscheinen.",
-    5 => 'Dein User-Profil wurde gespeichert.',
+    5 => 'Dein Userprofil wurde gespeichert.',
     6 => 'Deine Einstellungen wurden gespeichert.',
     7 => 'Deine Kommentar-Einstellungen wurden gespeichert.',
     8 => 'Abmeldung erfolgt. Du bist jetzt nicht mehr angemeldet.',
@@ -1071,7 +1071,10 @@ $MESSAGE = array(
     77 => 'HINWEIS:<br>Du hast UTF-8 als Default-Zeichensatz angegeben. Dein Webserver unterstützt jedoch kein "multibyte encoding". Installiere bitte die mbstring-Erweiterungen für PHP oder benutze einen anderen Zeichensatz bzw. eine andere Sprache.',
     78 => 'Bitte sicherstellen, dass die angegebene E-Mail-Adresse in beiden Fällen die gleiche ist.',
     79 => 'Diese Funktion ist nicht mehr unter dieser URL verfügbar.',
-    80 => 'Das Plugin, das diesen Feed angelegt hat, ist derzeit nicht aktiviert. Dieser Feed kann nicht bearbeitet werden, solange das Plugin deaktiviert ist.'
+    80 => 'Das Plugin, das diesen Feed angelegt hat, ist derzeit nicht aktiviert. Dieser Feed kann nicht bearbeitet werden, solange das Plugin deaktiviert ist.',
+    81 => "Hast Du Dich vertippt? Bitte versuch noch einmal, Dich hier anzumelden.",
+    82 => 'Du hast die erlaubte Anzahl von Anmeldeversuchen überschritten. Bitte versuche es später noch einmal.',
+    83 => 'Um Dein Passwort, Deine E-Mail-Adresse oder die "Angemeldet für"-Zeit zu ändern musst Du Dein aktuelles Passwort eingeben'
 );
 
 ###############################################################################

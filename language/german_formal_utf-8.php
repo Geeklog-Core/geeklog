@@ -997,7 +997,7 @@ $MESSAGE = array(
     2 => "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Artikel wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald auf dieser Website für alle Besucher zu lesen sein.",
     3 => "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/links.php\">Links</a> aufgelistet werden.",
     4 => "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald in unserem <a href=\"{$_CONF['site_url']}/calendar.php\">Kalender</a> erscheinen.",
-    5 => 'Ihr User-Profil wurde gespeichert.',
+    5 => 'Ihr Userprofil wurde gespeichert.',
     6 => 'Ihre Einstellungen wurden gespeichert.',
     7 => 'Ihre Kommentar-Einstellungen wurden gespeichert.',
     8 => 'Abmeldung erfolgt. Sie sind jetzt nicht mehr angemeldet.',
@@ -1072,7 +1072,10 @@ $MESSAGE = array(
     77 => 'HINWEIS:<br>Sie haben UTF-8 als Default-Zeichensatz angegeben. Ihr Webserver unterstützt jedoch kein "multibyte encoding". Installieren Sie bitte die mbstring-Erweiterung für PHP oder benutzen Sie einen anderen Zeichensatz bzw. eine andere Sprache.',
     78 => 'Bitte sicherstellen, dass die angegebene E-Mail-Adresse in beiden Fällen die gleiche ist.',
     79 => 'Diese Funktion ist nicht mehr unter dieser URL verfügbar.',
-    80 => 'Das Plugin, das diesen Feed angelegt hat, ist derzeit nicht aktiviert. Dieser Feed kann nicht bearbeitet werden, solange das Plugin deaktiviert ist.'
+    80 => 'Das Plugin, das diesen Feed angelegt hat, ist derzeit nicht aktiviert. Dieser Feed kann nicht bearbeitet werden, solange das Plugin deaktiviert ist.',
+    81 => 'Haben Sie sich vertippt? Bitte versuchen Sie noch einmal, sich hier anzumelden.',
+    82 => 'Sie haben die erlaubte Anzahl von Anmeldeversuchen überschritten. Bitte versuchen Sie es später noch einmal.',
+    83 => 'Um Ihr Passwort, Ihre E-Mail-Adresse oder die "Angemeldet für"-Zeit zu ändern müssen Sie Ihr aktuelles Passwort eingeben.'
 );
 
 ###############################################################################

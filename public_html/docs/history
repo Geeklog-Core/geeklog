@@ -3,22 +3,27 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Require that users enter their current password when changing their password,
+  email address or "Remember me for" setting [Dirk]
+- Prevent accidental banning of users when the Admin edits a user's information
+  using a theme that wasn't updated for Geeklog 1.4.0+ [Dirk]
 - $_CONF['show_fullname'] now works as expected, i.e. when setting it to = 1,
   a user's full name will be displayed everywhere in Geeklog instead of the
   username (assuming the users entered their full name) [Dirk]
 - Fixed a bug in the article directory where December was not listed when no
   stories had been posted in that month (reported by Kino and Ivy of geeklog.jp)
 - Replace Geeklog's [imageX] tags before extracting the What's Related links
-  from a story [Dirk]
+  from a story to prevent the (verbatim) tag to show up in the block [Dirk]
 - Update story ids in the gl_trackback table when a story's id is changed [Mike]
 - Implemented new plugin API function, PLG_spamAction, to perform the spam
-  actions in case spam has been detected through some other means [Dirk]
+  actions in case spam has been detected through some other means (e.g.
+  trackbacks from sites that don't link back to us) [Dirk]
 - Implemented new plugin API function, plugin_enablestatechange_, to inform
   plugins when they are about to be enabled / disabled (Patch #405) [Dirk]
 - Support backslashes in comment and submissions in HTML mode [Mike]
 - Added breadcrumb functionality to the navbar class (v1.1) [Blaine]
 - Enhancements to navbar templates and CSS for a more 3D TAB'ed look [Blaine]
-- Changed several <table>s to <div>s + CSS [Oliver] 
+- Changed several <table>s to <div>s + CSS in the Professional theme [Oliver] 
 - Introduced generic function to delete a user's photo to avoid code
   duplication and slightly different error handling in various places [Dirk]
 - Made the new user registration form remember the user's input so that they
@@ -90,7 +95,6 @@ GeekLog History/Changes:
   a new function COM_truncate (based on a patch by Yusuke Sakata) that properly
   handles truncation of multi-byte text strings if the mb_ functions are
   available [Dirk]
-- Fixed handling of HTML entities in stories (bug #99) [Dirk]
 - Added a JavaScript confirmation box to most delete buttons/links. If you'd
   rather not have such a confirmation, use {delete_option_no_confirmation}
   instead of {delete_option} in the admin templates [Dirk]
@@ -119,7 +123,6 @@ GeekLog History/Changes:
   [Dirk]
 - When emailing a story, don't include the text "Comment on this story at ..."
   when comments have been switched off for that story [Dirk]
-- Added support for COM_getDisplayName in users.php, usersettings.php [Dirk]
 - Fixed wrong wording of some of the "access denied" messages when trying to
   access Admin panels without proper privileges [Dirk]
 - Fixed display of Admin block for users that only had certain Admin privileges
@@ -127,7 +130,7 @@ GeekLog History/Changes:
 
 - New Afrikaans language file, provided by Renier Maritz
 
-Calendar plugin (1.0)
+Calendar plugin (1.0.0)
 ---------------
 - Implemented plugin_enablestatechange API function to enable/disable plugin
   feeds and blocks when the plugin is enabled/disabled [Dirk]
@@ -155,7 +158,7 @@ Links plugin (1.0.1)
 - The Admin's search option now also searches the link description [Dirk]
 - Removed extra <small> tags from the What's New section (bug #526) [Dirk]
 
-Polls plugin (1.1)
+Polls plugin (1.1.0)
 ------------
 - Implemented plugin_enablestatechange API function to enable/disable the poll
   block when the plugin is enabled/disabled [Dirk]

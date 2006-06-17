@@ -1071,7 +1071,8 @@ $MESSAGE = array(
     79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
     80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
     81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
-    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.'
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.'
 );
 
 ###############################################################################

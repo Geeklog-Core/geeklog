@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.139 2006/06/05 09:01:39 dhaun Exp $
+// $Id: usersettings.php,v 1.140 2006/06/17 20:49:25 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -793,9 +793,28 @@ function saveuser($A)
         DB_change ($_TABLES['users'], 'pwrequestid', "NULL",
                    'uid', $_USER['uid']);
         COM_accessLog ("An attempt was made to illegally change the account information of user {$_USER['uid']}.");
+
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
+    $A['cooktime'] = COM_applyFilter ($A['cooktime'], true);
+    if ($A['cooktime'] < 0) {
+        $A['cooktime'] = 0;
+    }
+
+    // to change the password, email address, or cookie timeout,
+    // we need the user's current password
+    if (!empty ($A['passwd']) || ($A['email'] != $_USER['email']) ||
+            ($A['cooktime'] != $_USER['cookietimeout'])) {
+        if (empty ($A['old_passwd']) ||
+                (md5 ($A['old_passwd']) != $_USER['passwd'])) {
+
+            return COM_refresh ($_CONF['site_url']
+                                . '/usersettings.php?mode=edit&msg=83');
+        }
+    }
+
+    // no need to filter the password as it's md5 encoded anyway
     if ($_CONF['allow_username_change'] == 1) {
         $A['new_username'] = COM_applyFilter ($A['new_username']);
         if (!empty ($A['new_username']) &&
@@ -831,12 +850,6 @@ function saveuser($A)
         }
     }
 
-    $A['cooktime'] = COM_applyFilter ($A['cooktime'], true);
-    if ($A['cooktime'] < 0) {
-        $A['cooktime'] = 0;
-    }
-
-    // no need to filter the password as it's md5 encoded anyway
     if (!empty ($A['passwd'])) {
         if (($A['passwd'] == $A['passwd_conf']) 
                 AND (md5 ($A['old_passwd']) == $_USER['passwd'])) {
