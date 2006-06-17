@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.154 2006/06/11 15:53:58 dhaun Exp $
+// $Id: user.php,v 1.155 2006/06/17 13:26:59 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -209,7 +209,7 @@ function edituser($uid = '', $msg = '')
     }
     asort($statusarray);
     $statusselect = '<select name="userstatus">';
-    while (list($key, $value) = each($statusarray)) {
+    foreach ($statusarray as $key => $value) {
         $statusselect .= '<option value="' . $key . '"';
         if ($key == $A['status']) {
             $statusselect .= ' selected="selected"';
@@ -716,6 +716,12 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $delphoto = '';
     if (isset ($_POST['delete_photo'])) {
         $delphoto = $_POST['delete_photo'];
+    }
+    if (!isset ($_POST['oldstatus'])) {
+        $_POST['oldstatus'] = USER_ACCOUNT_ACTIVE;
+    }
+    if (!isset ($_POST['userstatus'])) {
+        $_POST['userstatus'] = USER_ACCOUNT_ACTIVE;
     }
     $display = saveusers (COM_applyFilter ($_POST['uid'], true),
             $_POST['username'], $_POST['fullname'],
