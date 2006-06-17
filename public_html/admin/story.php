@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.222 2006/06/15 15:41:12 dhaun Exp $
+// $Id: story.php,v 1.223 2006/06/17 21:33:40 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -497,8 +497,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     if ($advanced_editormode) {
         $navbar = new navbar;
-        $navbar->add_menuitem($LANG24[86],$_CONF['site_admin_url'] . '/story.php');
-        $navbar->set_onclick($LANG24[86],'return confirm("'.$LANG24[87].'");');
         if ($previewContent != '') {
             $navbar->add_menuitem($LANG24[79],'showhideEditorDiv("preview",1);return false;',true);
         }
@@ -761,9 +759,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
     if ($_CONF['advanced_editor'] == 1) {
         if ($A['advanced_editor_mode'] == 1 OR $A['postmode'] == 'adveditor') {
-            $post_options .= '<option value="adveditor" SELECTED>'.$LANG24[88].'</option>';
+            $post_options .= '<option value="adveditor" SELECTED>'.$LANG24[86].'</option>';
         } else {
-            $post_options .= '<option value="adveditor">'.$LANG24[88].'</option>';
+            $post_options .= '<option value="adveditor">'.$LANG24[86].'</option>';
         }
     }
     $story_templates->set_var('post_options',$post_options );
