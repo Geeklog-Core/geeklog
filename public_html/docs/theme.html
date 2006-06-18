@@ -205,6 +205,25 @@ to output any HTML you like.</p>
     for color coding each line and the <code>{answer_text}</code>. The 
     <tt>polleditor.thtml</tt> has an aditional field to enter the remarks, 
     same as the <tt>pollansweroption.thtml</tt>.
+<li>A user's Account Information page has been redesigned. While there were no
+    technical changes (i.e. template files from earlier versions will still
+    work), some optionas have been rearranged a note has been added to tell the
+    user that the current password is required to change those. Affected files
+    in the <tt>preferences</tt> directory: <tt>profile.thtml</tt>,
+    <tt>username.thtml</tt>, and <tt>userphoto.thtml</tt>.</li>
+</ul>
+
+<h3>Professional theme</h3>
+<p>The following changes are specific to the Professional theme. There is
+probably no need to port them over to other themes.</p>
+
+<ul>
+<li>The theme now uses CSS everywhere for spacing and dividers instead of
+    relying on a 1x1 pixel transparent GIF image (<tt>speck.gif</tt>).</li>
+<li>The amount of nested tables has been reduced, e.g. in the block
+    headers.</li>
+<li>Two unused template files, <tt>customlogin-header.thtml</tt> and
+    <tt>customlogin-footer.thtml</tt>, have been removed.</li>
 </ul>
 
 

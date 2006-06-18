@@ -4,7 +4,8 @@ GeekLog History/Changes:
 ------------
 
 - Require that users enter their current password when changing their password,
-  email address or "Remember me for" setting [Dirk]
+  email address or "Remember me for" setting. Redesigned the Account Information
+  page and added a note about this requirement. [Dirk]
 - Prevent accidental banning of users when the Admin edits a user's information
   using a theme that wasn't updated for Geeklog 1.4.0+ [Dirk]
 - $_CONF['show_fullname'] now works as expected, i.e. when setting it to = 1,
@@ -160,6 +161,8 @@ Links plugin (1.0.1)
 
 Polls plugin (1.1.0)
 ------------
+- Fixed call to undefined function polllist when calling up a non-existing
+  poll [Dirk]
 - Implemented plugin_enablestatechange API function to enable/disable the poll
   block when the plugin is enabled/disabled [Dirk]
 - Fixed search [Dirk]
@@ -173,6 +176,8 @@ Polls plugin (1.1.0)
 
 Spam-X plugin (1.1.0)
 -------------
+- Allow special characters (e.g. backslashes) in the Personal Blacklist module 
+  (probably needed in other modules, too - work in progress) [Dirk]
 - Moved spam actions to plugin_spamaction_spamx API function [Dirk]
 - Fixed potential problems with the checkforSpam function's return code in case
   of unusual configurations (e.g. $_CONF['spamx'] = 0) [Dirk, Tom Willet]
