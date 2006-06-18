@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.17 2006/05/20 16:20:43 dhaun Exp $
+// $Id: index.php,v 1.18 2006/06/18 14:05:59 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -82,6 +82,65 @@ function pollsave($qid = '', $aid = 0)
     return $retval;
 }
 
+/**     
+* Shows all polls in system
+*       
+* List all the polls on the system if no $qid is provided
+*       
+* @return   string          HTML for poll listing
+*       
+*/
+function polllist ()
+{
+    global $_CONF, $_TABLES, $_USER, $_PO_CONF,
+           $LANG25, $LANG_LOGIN, $LANG_POLLS;
+
+    $retval = '';
+
+    if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
+            ($_PO_CONF['pollsloginrequired'] == 1))) {
+        $retval = COM_startBlock ($LANG_LOGIN[1], '',
+                          COM_getBlockTemplate ('_msg_block', 'header'));
+        $login = new Template ($_CONF['path_layout'] . 'submit');
+        $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('lang_login', $LANG_LOGIN[3]);
+        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $login->parse ('output', 'login');
+        $retval .= $login->finish ($login->get_var('output'));
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    } else {
+        require_once( $_CONF['path_system'] . 'lib-admin.php' );
+        $header_arr = array(    // display 'text' and use table field 'field'
+                        array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
+                        array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
+                        array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
+                        array('text' => $LANG_POLLS['open_poll'], 'field' => 'display', 'sort' => true)
+        );
+
+        $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
+
+        $menu_arr = array ();
+
+        $text_arr = array('has_menu' =>  false,
+                          'title' => $LANG_POLLS['pollstitle'], 'instructions' => "",
+                          'icon' => '', 'form_url' => '');
+
+        $query_arr = array('table' => 'pollquestions',
+                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1",
+                           'query_fields' => array('question'),
+                           'default_filter' => COM_getPermSQL (),
+                           'query' => '',
+                           'query_limit' => 0);
+
+        $retval .= ADMIN_list ('polls', 'plugin_getListField_polls',
+                   $header_arr, $text_arr, $query_arr, $menu_arr, $defsort_arr);
+    }
+
+    return $retval;
+}
+
 // MAIN
 //
 // no qid will load a list of polls
@@ -127,48 +186,8 @@ if (isset ($_REQUEST['mode'])) {
 }
 
 if (empty($qid)) {
-    $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle']);
-    if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
-            ($_PO_CONF['pollsloginrequired'] == 1))) {
-        $retval = COM_startBlock ($LANG_LOGIN[1], '',
-                          COM_getBlockTemplate ('_msg_block', 'header'));
-        $login = new Template ($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
-        $login->set_var ('site_url', $_CONF['site_url']);
-        $login->set_var ('lang_login', $LANG_LOGIN[3]);
-        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $login->parse ('output', 'login');
-        $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    } else {
-        require_once( $_CONF['path_system'] . 'lib-admin.php' );
-        $header_arr = array(    // display 'text' and use table field 'field'
-                        array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
-                        array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
-                        array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
-                        array('text' => $LANG_POLLS['open_poll'], 'field' => 'display', 'sort' => true)
-        );
-
-        $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
-
-        $menu_arr = array ();
-
-        $text_arr = array('has_menu' =>  false,
-                          'title' => $LANG_POLLS['pollstitle'], 'instructions' => "",
-                          'icon' => '', 'form_url' => '');
-
-        $query_arr = array('table' => 'pollquestions',
-                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) as unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1",
-                           'query_fields' => array('question'),
-                           'default_filter' => COM_getPermSQL (),
-                           'query' => '',
-                           'query_limit' => 0);
-
-        $display .= ADMIN_list ('polls', 'plugin_getListField_polls',
-                $header_arr, $text_arr, $query_arr, $menu_arr, $defsort_arr);
-    }
-    
+    $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle'])
+             . polllist (); 
 } else if ($aid == 0) {
     $display .= COM_siteHeader();
     if (empty($_COOKIE[$qid])) {
@@ -186,7 +205,8 @@ if (empty($qid)) {
     $question = DB_query ("SELECT question FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" . COM_getPermSql ('AND'));
     $Q = DB_fetchArray ($question);
     if (empty ($Q['question'])) {
-        $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle']) . polllist ($page);
+        $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle'])
+                 . polllist ();
     } else {
         $display .= COM_siteHeader ('menu', $Q['question'])
                  . POLLS_pollResults ($qid, 400, $order, $mode);
