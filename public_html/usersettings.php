@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.140 2006/06/17 20:49:25 dhaun Exp $
+// $Id: usersettings.php,v 1.141 2006/06/18 07:45:09 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -58,9 +58,9 @@ function edituser()
     $A = DB_fetchArray ($result);
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
-    $preferences->set_file (array ('profile' => 'profile.thtml',
-                                   'photo' => 'userphoto.thtml',
-                                   'username' => 'username.thtml',
+    $preferences->set_file (array ('profile'       => 'profile.thtml',
+                                   'photo'         => 'userphoto.thtml',
+                                   'username'      => 'username.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
@@ -116,6 +116,10 @@ function edituser()
     $preferences->set_var ('lang_pgpkey', $LANG04[8]);
     $preferences->set_var ('lang_pgpkey_text', $LANG04[39]);
     $preferences->set_var ('lang_submit', $LANG04[9]);
+    $preferences->set_var ('lang_enter_current_password', $LANG04[127]);
+    $preferences->set_var ('lang_name_legend', $LANG04[128]);
+    $preferences->set_var ('lang_password_email_legend', $LANG04[129]);
+    $preferences->set_var ('lang_personal_info_legend', $LANG04[130]);
 
     $display_name = COM_getDisplayName ($_USER['uid']);
 

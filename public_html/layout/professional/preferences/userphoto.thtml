@@ -1,6 +1,6 @@
-  <tr class="pluginRow{cssid1p}">
-    <td align="right" valign="top"><b>{lang_userphoto}</b></td>
-    <td><input type="file" size="45" name="photo"><br>
+    <p>
+        <b>{lang_userphoto}</b><br>
+        <input type="file" size="45" name="photo"><br>
         <small>{lang_userphoto_text}</small><br>
-        {display_photo}</td>
-  </tr>
+        {display_photo}
+    </p>

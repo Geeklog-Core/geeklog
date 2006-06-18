@@ -328,7 +328,11 @@ $LANG04 = array(
     123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
     124 => 'Confirm Email',
     125 => 'You have to enter the same email address in both fields!',
-    126 => 'Please repeat for confirmation'
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You'
 );
 
 ###############################################################################

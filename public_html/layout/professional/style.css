@@ -50,6 +50,9 @@ a:active {
     scrollbar-track-color:#EFEFEF;
   */
 }
+fieldset {
+  margin-bottom: 1ex;
+}
 h1 {
   font-size: 125%;
 }
