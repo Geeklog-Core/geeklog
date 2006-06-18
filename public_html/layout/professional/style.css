@@ -622,6 +622,9 @@ th {
   padding-left:1px;
   padding-top:15px;
 }
+.topicoption, topicoption-off {
+
+}
 .warning {
   background:transparent;
   color:#FF0000;
