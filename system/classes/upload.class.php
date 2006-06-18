@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.44 2006/05/21 14:24:32 dhaun Exp $
+// $Id: upload.class.php,v 1.45 2006/06/18 20:00:05 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -290,7 +290,7 @@ class upload
     */    
     function _isImage()
     {
-        if (ereg("image",$this->_currentFile['type'])) {
+        if (strpos ($this->_currentFile['type'], 'image/') === 0) {
             $isImage = true;
         } else {
             $isImage = false;
