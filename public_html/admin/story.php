@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.223 2006/06/17 21:33:40 blaine Exp $
+// $Id: story.php,v 1.224 2006/06/18 02:48:49 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -505,7 +505,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images",4);return false;',true);
         $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive",5);return false;',true);
         $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms",6);return false;',true);
-        $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",7);return false',true);
+        $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",7);return false;',true);
 
         $navbar->set_selected($LANG24[80]);
         $story_templates->set_var ('navbar', $navbar->generate() );
