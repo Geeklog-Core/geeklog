@@ -332,7 +332,11 @@ $LANG04 = array(
     123 => "Sind Sie ein <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User</a>?",
     124 => 'E-Mail bestätigen',
     125 => 'Die E-Mail-Adressen stimmen nicht überein. Bitte in beiden Feldern die gleiche E-Mail-Adresse eintragen!',
-    126 => 'Bitte die gleiche Adresse noch einmal eingeben'
+    126 => 'Bitte die gleiche Adresse noch einmal eingeben',
+    127 => 'Um diese Angaben zu ändern müssen Sie Ihr aktuelles Passwort eingeben.',
+    128 => 'Ihr Name',
+    129 => 'Passwort &amp; E-Mail',
+    130 => 'Informationen über Sie'
 );
 
 ###############################################################################
