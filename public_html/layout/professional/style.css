@@ -53,6 +53,11 @@ a:active {
 fieldset {
   margin-bottom: 1ex;
 }
+fieldset p {
+  padding:5px;
+  margin:0px;
+}
+
 h1 {
   font-size: 125%;
 }
