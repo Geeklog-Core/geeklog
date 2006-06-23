@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.53 2006/06/15 18:26:45 dhaun Exp $
+// $Id: search.class.php,v 1.54 2006/06/23 12:55:42 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -704,9 +704,10 @@ class Search {
             $next = $LANG09[58];
         }
         $searchUrl .= $queryUrl;
-        $searchmain->set_var ('search_pager',
-                COM_printPageNavigation ($searchUrl, $this->_page, $numpages,
-                                         'page=', false, '', $next));
+        $paging = COM_printPageNavigation ($searchUrl, $this->_page, $numpages,
+                                           'page=', false, '', $next);
+        $searchmain->set_var ('search_pager', $paging);
+        $searchmain->set_var ('google_paging', $paging);
         $tmpTxt = sprintf ($LANG09[24], $totalfound);
         $searchmain->set_var ('lang_found', $tmpTxt);
         if (($totalfound == 0) && ($this->_page == 1)) {
