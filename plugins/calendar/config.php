@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.4 2006/06/17 12:22:44 dhaun Exp $
+// $Id: config.php,v 1.5 2006/06/23 13:06:29 dhaun Exp $
 
 $_CA_CONF['version']            = '1.0.0'; // Plugin Version
 
@@ -45,6 +45,13 @@ $_CA_CONF['calendarloginrequired']   = 0;
 
 // enable (set to 1) or disable (set to 0) submission queues:
 $_CA_CONF['eventsubmission'] = 1;
+
+/**
+ * Set to 1 to hide the "Calendar" entry from the top menu:
+ * 
+ * @global array $_CA_CONF['hidecalendarmenu']
+ */
+$_CA_CONF['hidecalendarmenu']    = 0;
 
 // Calendar Settings
 $_CA_CONF['personalcalendars']     = 1;

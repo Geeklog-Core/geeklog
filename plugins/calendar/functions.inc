@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.42 2006/06/17 12:22:44 dhaun Exp $
+// $Id: functions.inc,v 1.43 2006/06/23 13:06:29 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/calendar/language/'
           . $_CONF['language'] . '.php';
@@ -57,15 +57,15 @@ require_once ($_CONF['path'] . 'plugins/calendar/config.php');
 */
 function plugin_getmenuitems_calendar ()
 {
-    global $_CONF, $_CA_CONF, $LANG_CAL_1;
+    global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
 
     $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
-    if($anon && ($_CONF['loginrequired'] || $_CA_CONF['calendarloginrequired'])) {
+    if (($_CA_CONF['hidecalendarmenu'] == 1) || ($anon &&
+            ($_CONF['loginrequired'] || $_CA_CONF['calendarloginrequired']))) {
         return false;
-    } else {
-        $menuitems[$LANG_CAL_1['16']] = $_CONF['site_url']
-                                         . '/calendar/index.php';
     }
+
+    $menuitems[$LANG_CAL_1[16]] = $_CONF['site_url'] . '/calendar/index.php';
 
     return $menuitems;
 }
