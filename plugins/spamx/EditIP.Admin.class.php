@@ -2,21 +2,26 @@
 
 /**
 * File: EditIP.Admin.class.php
-* This is the Edit IPBlacklist Module for the Geeklog Spam-X Plug-in!
+* This is the Edit IPBlacklist Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2005 by the following authors:
-* Author        Tom Willett        tomw AT pigstye DOT net
+* Copyright (C) 2004-2006 by the following authors:
+* Author   Tom Willett     tomw AT pigstye DOT net
+*          Dirk Haun       dirk AT haun-online DOT de
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIP.Admin.class.php,v 1.2 2005/04/10 10:02:44 dhaun Exp $
+* $Id: EditIP.Admin.class.php,v 1.3 2006/06/23 14:39:55 dhaun Exp $
 */
+
+if (strpos ($_SERVER['PHP_SELF'], 'EditIP.Admin.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 /**
-* Personal Black List Editor
+* IP Black List Editor
 */
 
-require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
+require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
 
 class EditIP extends BaseAdmin {
     /**
@@ -24,53 +29,54 @@ class EditIP extends BaseAdmin {
      */
     function display()
     {
-        global $_CONF, $_GET, $_POST, $_TABLES, $LANG_SX00;
+        global $_CONF, $_TABLES, $LANG_SX00;
 
-        require_once $_CONF['path'] . 'plugins/spamx/rss.inc.php';
+        require_once ($_CONF['path'] . 'plugins/spamx/rss.inc.php');
 
-        $action = COM_applyFilter($_GET['action']);
-        if (empty($action)) {
-            $action = COM_applyFilter($_POST['paction']);
+        $action = COM_applyFilter ($_GET['action']);
+        if (empty ($action)) {
+            $action = COM_applyFilter ($_POST['paction']);
         }
 
-        $entry = COM_applyFilter($_GET['entry']);
-        if (empty($entry)) {
-            $entry = COM_applyFilter($_POST['pentry']);
+        $entry = '';
+        if (isset ($_GET['entry'])) {
+            $entry = COM_stripslashes ($_GET['entry']);
+        } else if (isset ($_POST['pentry'])) {
+            $entry = COM_stripslashes ($_POST['pentry']);
         }
 
         if ($action == 'delete') {
-            $result = DB_query('DELETE FROM ' . $_TABLES['spamx'] . ' where name="IP" AND value="' . $entry . '"');
+            $entry = addslashes ($entry);
+            $result = DB_query ("DELETE FROM {$_TABLES['spamx']} WHERE name = 'IP' AND value = '$entry'");
         } elseif ($action == $LANG_SX00['addentry']) {
-            if ($entry != "") {
-                $result = DB_query('INSERT INTO ' . $_TABLES['spamx'] . ' VALUES ("IP","' . $entry . '")');
-            }
-        } elseif ($action == $LANG_SX00['addcen']) {
-            foreach($_CONF['censorlist'] as $entry) {
-                $result = DB_query('INSERT INTO ' . $_TABLES['spamx'] . ' VALUES ("IP","' . $entry . '")');
+            if (!empty ($entry)) {
+                $entry = addslashes ($entry);
+                $result = DB_query ("INSERT INTO {$_TABLES['spamx']} VALUES ('IP', '$entry')");
             }
         }
 
-        $display = '<hr><p><b>';
+        $display = '<hr>' . LB . '<p><b>';
         $display .= $LANG_SX00['ipblack'];
-        $display .= '</b></p><ul>';
-        $result = DB_query ('SELECT value FROM ' . $_TABLES['spamx'] . ' WHERE name="IP"');
-        $nrows = DB_numRows($result);
+        $display .= '</b></p>' . LB . '<ul>' . LB;
+        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'IP'");
+        $nrows = DB_numRows ($result);
         for ($i = 0; $i < $nrows; $i++) {
             list($e) = DB_fetchArray ($result);
-            $display .= '<li><a href="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIP&action=delete&entry=' . urlencode($e) . '">' . $e . '</a></li>';
+            $display .= '<li><a href="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIP&amp;action=delete&amp;entry=' . urlencode ($e) . '">' . htmlspecialchars ($e) . '</a></li>' . LB;
         }
-        $display .= '</ul><p>' . $LANG_SX00['e1'] . '</p>';
-        $display .= '<p>' . $LANG_SX00['e2'] . '</p>';
-        $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIP">';
+        $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
+        $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
+        $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIP">' . LB;
         $display .= '<input type="text" size ="30" name="pentry">&nbsp;&nbsp;&nbsp;';
-        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">';
-        $display .= '</form>';
+        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">' . LB;
+        $display .= '</form>' . LB;
+
         return $display;
     }
 
     function link()
     {
-        return "Edit IP Blacklist";
+        return 'Edit IP Blacklist';
     }
 }
 
