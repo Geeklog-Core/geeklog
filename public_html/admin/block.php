@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.99 2006/06/05 09:53:30 dhaun Exp $
+// $Id: block.php,v 1.100 2006/06/25 11:42:04 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -457,7 +457,7 @@ function listblocks()
 */
 function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE, $_POST;
+    global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE;
 
     $retval = '';
 
@@ -637,7 +637,7 @@ function reorderblocks()
 */
 function moveBlock()
 {
-    global $_CONF, $_TABLES, $LANG21, $_GET;
+    global $_CONF, $_TABLES, $LANG21;
 
     $retval = '';
 

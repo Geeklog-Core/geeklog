@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.225 2006/06/18 02:51:11 ospiess Exp $
+// $Id: story.php,v 1.226 2006/06/25 11:42:04 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -806,10 +806,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('story_id', $A['sid']);
     $story_templates->set_var('old_story_id', $A['old_sid']);
     $story_templates->set_var('lang_sid', $LANG24[12]);
-    $story_templates->set_var('lang_save', $LANG24[8]);
+    $story_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $story_templates->set_var('lang_preview', $LANG24[9]);
-    $story_templates->set_var('lang_cancel', $LANG24[10]);
-    $story_templates->set_var('lang_delete', $LANG24[11]);
+    $story_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
+    $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
     $story_templates->parse('output','editor');
     $display .= $story_templates->finish($story_templates->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -1216,7 +1216,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= storyeditor (COM_applyFilter ($_GET['id']), $mode);
     $display .= COM_siteFooter();
     echo $display;
-} else if (($mode == $LANG24[8]) && !empty ($LANG24[8])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $publish_ampm = COM_applyFilter ($_POST['publish_ampm']);
     $publish_hour = COM_applyFilter ($_POST['publish_hour'], true);
     $publish_minute = COM_applyFilter ($_POST['publish_minute'], true);

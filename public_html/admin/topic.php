@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.66 2006/06/05 09:53:31 dhaun Exp $
+// $Id: topic.php,v 1.67 2006/06/25 11:42:04 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -124,8 +124,8 @@ function edittopic ($tid = '')
     $topic_templates->set_var('owner', $ownername);
     $topic_templates->set_var('owner_id', $A['owner_id']);
     $topic_templates->set_var('lang_group', $LANG_ACCESS['group']);
-    $topic_templates->set_var('lang_save', $LANG27[19]);
-    $topic_templates->set_var('lang_cancel', $LANG27[20]);
+    $topic_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $topic_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     $usergroups = SEC_getUserGroups();
 
@@ -532,7 +532,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     } else {
         $display .= deleteTopic ($tid);
     }
-} else if (($mode == $LANG27[19]) && !empty ($LANG27[19])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     if (empty ($_FILES['newicon']['name'])){
         $imageurl = COM_applyFilter ($_POST['imageurl']);
     } else {

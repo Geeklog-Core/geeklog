@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.46 2006/05/25 21:16:47 mjervis Exp $
+// $Id: syndication.php,v 1.47 2006/06/25 11:42:04 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -247,8 +247,8 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
     $feed_template->set_var('header_topic_options',
                         COM_topicList('tid,topic', $A['header_tid'], 1, true));
-    $feed_template->set_var('lang_save', $LANG33[2]);
-    $feed_template->set_var('lang_cancel', $LANG33[4]);
+    $feed_template->set_var('lang_save', $LANG_ADMIN['save']);
+    $feed_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     if ($A['fid'] > 0) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
                    . '" name="mode"%s>';
@@ -539,7 +539,7 @@ else if (($mode == $LANG33[1]) && !empty ($LANG33[1]))
              . editfeed (0, COM_applyFilter($_REQUEST['type']))
              . COM_siteFooter ();
 }
-else if (($mode == $LANG33[2]) && !empty ($LANG33[2]))
+else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']))
 {
     $display .= savefeed ($_POST);
 }

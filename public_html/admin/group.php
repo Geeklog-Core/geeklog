@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.73 2006/05/14 20:25:42 mjervis Exp $
+// $Id: group.php,v 1.74 2006/06/25 11:42:04 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -109,8 +109,8 @@ function editgroup($grp_id = '')
     $group_templates->set_var('site_url', $_CONF['site_url']);
     $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $group_templates->set_var('layout_url', $_CONF['layout_url']);
-    $group_templates->set_var('lang_save', $LANG_ACCESS['save']);
-    $group_templates->set_var('lang_cancel', $LANG_ACCESS['cancel']);
+    $group_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $group_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     if (!empty($grp_id)) {
         $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
@@ -765,8 +765,8 @@ function editusers ($group)
     $groupmembers->set_var ('group_list', grp_selectUsers($group) );
     $groupmembers->set_var ('LANG_add',$LANG_ACCESS['add']);
     $groupmembers->set_var ('LANG_remove',$LANG_ACCESS['remove']);
-    $groupmembers->set_var('lang_save', $LANG_ACCESS['save']);
-    $groupmembers->set_var('lang_cancel', $LANG_ACCESS['cancel']);
+    $groupmembers->set_var('lang_save', $LANG_ADMIN['save']);
+    $groupmembers->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $groupmembers->set_var ('lang_grouplist', $LANG28[38]);
     $groupmembers->set_var ('group_id',$group);
     $groupmembers->parse ('output', 'groupmembers');

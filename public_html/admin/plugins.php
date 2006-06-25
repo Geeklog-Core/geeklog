@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.62 2006/06/10 14:37:31 dhaun Exp $
+// $Id: plugins.php,v 1.63 2006/06/25 11:42:04 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -71,7 +71,7 @@ if (!SEC_hasrights ('plugin.edit')) {
 */ 
 function plugineditor ($pi_name, $confirmed = 0) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG32, $_POST;
+    global $_CONF, $_TABLES, $_USER, $LANG32, $LANG_ADMIN;
 
     $retval = '';
 
@@ -106,13 +106,13 @@ function plugineditor ($pi_name, $confirmed = 0)
     $plg_templates->set_var('layout_url', $_CONF['layout_url']);
     $plg_templates->set_var('start_block_editor', COM_startBlock ($LANG32[13],
             '', COM_getBlockTemplate ('_admin_block', 'header')));
-    $plg_templates->set_var('lang_save', $LANG32[23]);
-    $plg_templates->set_var('lang_cancel', $LANG32[24]);
-    $plg_templates->set_var('lang_delete', $LANG32[25]);
+    $plg_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $plg_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
+    $plg_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
     $plg_templates->set_var ('pi_icon', PLG_getIcon ($pi_name));
     if (!empty($pi_name)) {
         $plg_templates->set_var ('delete_option', '<input type="submit" value="'
-                                 . $LANG32[25] . '" name="mode">');
+                                 . $LANG_ADMIN['delete'] . '" name="mode">');
     }
     $plugin_code_version = PLG_chkVersion($pi_name);
     if ($plugin_code_version == '') {
@@ -470,7 +470,7 @@ $mode = '';
 if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
-if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $pi_name = COM_applyFilter ($_POST['pi_name']);
     if ($_POST['confirmed'] == 1) {
         $display .= COM_siteHeader ('menu', $LANG32[30]);
@@ -499,7 +499,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     $display .= plugineditor (COM_applyFilter ($_GET['pi_name']));
     $display .= COM_siteFooter ();
 
-} else if (($mode == $LANG32[23]) && !empty ($LANG32[23])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $display .= saveplugin (COM_applyFilter ($_POST['pi_name']),
                             COM_applyFilter ($_POST['pi_version']),
                             COM_applyFilter ($_POST['pi_gl_version']),
