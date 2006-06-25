@@ -2,6 +2,9 @@
 
 require_once ('../../lib-common.php');
 
+// enable detailed error reporting
+$_CONF['rootdebug'] = true;
+
 $display = COM_siteHeader ('menu', 'Installation complete');
 $display .= COM_startBlock ('Installation complete');
 $display .= '<h2>Installation of Geeklog ' . VERSION . ' complete!</h2>';
