@@ -5,12 +5,16 @@
  * This is the Mail Admin Action for the Geeklog Spam-X plugin
  * 
  * Copyright (C) 2004-2006 by the following authors:
- * Author		Tom Willett		tomw AT pigstye DOT net
+ * Author   Tom Willett     tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: MailAdmin.Action.class.php,v 1.11 2006/06/13 09:29:57 dhaun Exp $
+ * $Id: MailAdmin.Action.class.php,v 1.12 2006/06/25 08:40:54 dhaun Exp $
  */
+
+if (strpos ($_SERVER['PHP_SELF'], 'MailAdmin.Action.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 /**
  * Include Abstract Action Class

@@ -3,18 +3,22 @@
 /**
  * File: MTBlackList.Examine.class.php
  * This module examines comments for entries on the MT-Blacklist
- * for the Geeklog Spam-X Plug-in!
+ * for the Geeklog Spam-X plugin
  * 
- * Copyright (C) 2004-2005 by the following authors:
- * Author		Tom Willett		tomw AT pigstye DOT net
+ * Copyright (C) 2004-2006 by the following authors:
+ * Author   Tom Willett     tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  * 
- * The MT-Blacklist is maintained by Jay Allen
+ * The MT-Blacklist was maintained by Jay Allen
  * http://www.jayallen.org/comment_spam/
  *
- * $Id: MTBlackList.Examine.class.php,v 1.10 2005/04/10 10:02:46 dhaun Exp $
+ * $Id: MTBlackList.Examine.class.php,v 1.11 2006/06/25 08:40:54 dhaun Exp $
  */
+
+if (strpos ($_SERVER['PHP_SELF'], 'MTBlackList.Examine.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 /**
  * Include Abstract Examine Class

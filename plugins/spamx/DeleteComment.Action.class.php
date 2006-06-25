@@ -2,15 +2,19 @@
 
 /**
  * File: DeleteComment.Action.class.php
- * This is the Delete Comment Action  for the Geeklog Spam-X Plug-in!
+ * This is the Delete Comment Action  for the Geeklog Spam-X plugin
  * 
  * Copyright (C) 2004-2005 by the following authors:
- * Author		Tom Willett		tomw AT pigstye DOT net
+ * Author   Tom Willett     tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: DeleteComment.Action.class.php,v 1.4 2005/04/10 10:02:43 dhaun Exp $
+ * $Id: DeleteComment.Action.class.php,v 1.5 2006/06/25 08:40:54 dhaun Exp $
  */
+
+if (strpos ($_SERVER['PHP_SELF'], 'DeleteComment.Action.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 /**
  * Include Abstract Action Class

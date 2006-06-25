@@ -2,17 +2,21 @@
 
 /**
 * File: Header.Examine.class.php
-* This is the HTTP Header Examine class for the Geeklog Spam-X Plug-in!
+* This is the HTTP Header Examine class for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2005 by the following authors:
+* Copyright (C) 2005-2006 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
 *
 * based on the works of Tom Willett <tomw AT pigstye DOT net>
 *
 * Licensed under the GNU General Public License
 *
-* $Id: Header.Examine.class.php,v 1.3 2005/04/10 10:02:45 dhaun Exp $
+* $Id: Header.Examine.class.php,v 1.4 2006/06/25 08:40:54 dhaun Exp $
 */
+
+if (strpos ($_SERVER['PHP_SELF'], 'Header.Examine.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 /**
 * Include Abstract Examine Class

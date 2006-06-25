@@ -2,17 +2,21 @@
 
 /**
 * File: EditHeader.Admin.class.php
-* This is the Edit HTTP Header Module for the Geeklog Spam-X Plug-in!
+* This is the Edit HTTP Header Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2005 by the following authors:
+* Copyright (C) 2005-2006 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
 *
 * based on the works of Tom Willett <tomw AT pigstye DOT net>
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.3 2005/12/01 08:55:29 dhaun Exp $
+* $Id: EditHeader.Admin.class.php,v 1.4 2006/06/25 08:40:54 dhaun Exp $
 */
+
+if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 /**
 * HTTP Header Editor

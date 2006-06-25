@@ -6,7 +6,7 @@
  * 
  * Updates Sites MT Blacklist via Master MT Blacklist rss feed
  * 
- * Copyright (C) 2004-2005 by the following authors:
+ * Copyright (C) 2004-2006 by the following authors:
  * Author      Tom Willett     tomw AT pigstye DOT net
  * Author      Dirk Haun       dirk AT haun-online DOT de
  * 
@@ -15,8 +15,12 @@
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
- * $Id: Import.Admin.class.php,v 1.9 2005/10/08 14:55:43 dhaun Exp $
+ * $Id: Import.Admin.class.php,v 1.10 2006/06/25 08:40:54 dhaun Exp $
  */
+
+if (strpos ($_SERVER['PHP_SELF'], 'Import.Admin.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
 

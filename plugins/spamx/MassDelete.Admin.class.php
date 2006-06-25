@@ -10,8 +10,12 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.13 2006/05/21 18:05:53 mjervis Exp $
+* $Id: MassDelete.Admin.class.php,v 1.14 2006/06/25 08:40:54 dhaun Exp $
 */
+
+if (strpos ($_SERVER['PHP_SELF'], 'MassDelete.Admin.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
 require_once($_CONF['path_system'] . 'lib-comment.php');

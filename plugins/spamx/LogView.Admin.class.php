@@ -2,15 +2,19 @@
 
 /**
  * File: Logview.Admin.class.php
- * This is the LogViewer for the Geeklog Spam-X Plug-in!
+ * This is the LogViewer for the Geeklog Spam-X plugin
  * 
- * Copyright (C) 2004-2005 by the following authors:
+ * Copyright (C) 2004-2006 by the following authors:
  * Author       Tom Willett     tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: LogView.Admin.class.php,v 1.5 2005/11/18 19:31:46 dhaun Exp $
+ * $Id: LogView.Admin.class.php,v 1.6 2006/06/25 08:40:54 dhaun Exp $
  */
+
+if (strpos ($_SERVER['PHP_SELF'], 'LogView.Admin.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
 

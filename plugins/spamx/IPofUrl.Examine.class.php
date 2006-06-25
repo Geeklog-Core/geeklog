@@ -1,16 +1,20 @@
 <?php
 
 /**
-* File: BlackList.Examine.class.php
-* This is the Personal BlackList Examine class for the Geeklog Spam-X Plug-in!
+* File: IPofUrl.Examine.class.php
+* This is the Personal BlackList Examine class for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2005 by the following authors:
+* Copyright (C) 2004-2006 by the following authors:
 * Author        Tom Willett        tomw AT pigstye DOT net
 *
 * Licensed under GNU General Public License
 *
-* $Id: IPofUrl.Examine.class.php,v 1.4 2005/04/10 10:02:45 dhaun Exp $
+* $Id: IPofUrl.Examine.class.php,v 1.5 2006/06/25 08:40:54 dhaun Exp $
 */
+
+if (strpos ($_SERVER['PHP_SELF'], 'IPofUrl.Examine.class.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 /**
 * Include Abstract Examine Class
