@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.36 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-comment.php,v 1.37 2006/06/27 19:18:34 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -116,7 +116,9 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'user_fullname', $fullname );    
 
     if( !empty( $_USER['username'] )) {
-        $commentbar->set_var( 'user_nullname', $username );
+        $author = COM_getDisplayName( $_USER['uid'], $username, $fullname );
+        $commentbar->set_var( 'user_nullname', $author );
+        $commentbar->set_var( 'author', $author );
         $commentbar->set_var( 'login_logout_url',
                               $_CONF['site_url'] . '/users.php?mode=logout' );
         $commentbar->set_var( 'lang_login_logout', $LANG01[35] );
