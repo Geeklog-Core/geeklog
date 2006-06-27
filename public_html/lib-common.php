@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.554 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-common.php,v 1.555 2006/06/27 00:14:02 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1441,7 +1441,7 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where=''
 }
 
 /**
-* Create and return a list of available topics
+* Create and return a dropdown-list of available topics
 *
 * This is a variation of COM_optionList() from lib-common.php. It will add
 * only those topics to the option list which are accessible by the current
@@ -1824,8 +1824,8 @@ function COM_accessLog( $logentry )
 * Show the topics in the system the user has access to and prints them in HTML.
 * This function is used to show the topics in the sections block.
 *
-* @param        string      $topic      TopicID of currently selected
-* @return   string    HTML formatted topic list
+* @param    string    $topic      TopicID of currently selected
+* @return   string                HTML formatted topic list
 *
 */
 
