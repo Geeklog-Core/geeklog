@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.65 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-admin.php,v 1.66 2006/06/28 13:22:24 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -832,33 +832,48 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
     return $retval;
 }
 
-function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_ADMIN, $type;
+function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN;
+
     $retval = '';
-    
-    switch($fieldname) {
-        case "edit":
+
+    $type = $A['_moderation_type'];
+    switch ($fieldname) {
+        case 'edit':
             $retval = "<a href=\"{$A['edit']}\">{$icon_arr['edit']}</a>";
             break;
-        case "delete":
+        case 'delete':
             $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\">";
             break;
-        case "approve":
+        case 'approve':
             $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\">"
                      ."<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\">";
             break;
-        case "day":
+        case 'day':
             $retval = strftime ($_CONF['daytime'], $A['day']);
             break;
+        case 'tid':
+            $retval = DB_getItem ($_TABLES['topics'], 'topic',
+                                  "tid = '{$A['tid']}'");
+            break;
         default:
-            $retval = COM_makeClickableLinks (stripslashes ( $fieldvalue));
+            if (($fieldname == 3) && ($type == 'story')) {
+                $retval = DB_getItem ($_TABLES['topics'], 'topic',
+                                      "tid = '{$A[3]}'");
+            } else {
+                $retval = COM_makeClickableLinks (stripslashes ($fieldvalue));
+            }
             break;
     }
+
     return $retval;
 }
 
-function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr) {
-    global $_CONF, $LANG_TRB, $type;
+function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $LANG_TRB;
+
     $retval = '';
     
     switch($fieldname) {
@@ -893,6 +908,7 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr) {
             $retval = $fieldvalue;
             break;
     }
+
     return $retval;
 }
 

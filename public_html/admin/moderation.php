@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.90 2006/05/14 20:25:42 mjervis Exp $
+// $Id: moderation.php,v 1.91 2006/06/28 13:22:24 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -276,6 +276,7 @@ function itemlist($type)
                      . '.php?mode=editsubmission&amp;id=' . $A[0];
         }
         $A['row'] = $i;
+        $A['_moderation_type'] = $type;
         $data_arr[$i] = $A;
     }
 
