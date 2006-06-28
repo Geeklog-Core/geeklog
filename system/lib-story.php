@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.65 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-story.php,v 1.66 2006/06/28 11:52:33 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -63,6 +63,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
            $_IMAGE_TYPE, $mode;
+
+    static $storycounter = 0;
 
     if( empty( $storytpl ))
     {
@@ -284,6 +286,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         }
         $article->set_var( 'story_display',
                            ( $index == 'p' ) ? 'preview' : 'article' );
+        $article->set_var( 'story_counter', 0 );
     }
     else
     {
@@ -426,6 +429,9 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
             $article->set_var( 'pdf_icon', '' );
         }
         $article->set_var( 'story_display', 'index' );
+
+        $storycounter++;
+        $article->set_var( 'story_counter', $storycounter );
     }
     $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
