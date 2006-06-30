@@ -10,8 +10,12 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.24 2006/06/11 10:16:43 dhaun Exp $
+ * $Id: functions.inc,v 1.25 2006/06/30 12:18:29 dhaun Exp $
  */
+
+if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+    die ('This file can not be used on its own.');
+}
 
 /**
  * Language file include
