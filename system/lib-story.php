@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.66 2006/06/28 11:52:33 dhaun Exp $
+// $Id: lib-story.php,v 1.67 2006/07/02 10:43:58 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -300,12 +300,13 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
             $numwords = COM_NumberFormat (sizeof( explode( ' ', strip_tags( $bodytext ))));
             $article->set_var( 'readmore_words', $numwords );
 
-            $article->set_var( 'readmore_link', '<a href="' . $articleUrl . '">'
-                    . $LANG01[2] . '</a> (' . $numwords . ' ' . $LANG01[62]
-                    . ') ' );
+            $article->set_var( 'readmore_link', '<a href="' . $articleUrl
+                    . '" class="story-read-more-link">' . $LANG01[2] . '</a> ('
+                    . $numwords . ' ' . $LANG01[62] . ') ' );
             $article->set_var( 'start_readmore_anchortag', '<a href="'
-                    . $articleUrl . '">' );
+                    . $articleUrl . '" class="story-read-more-link">' );
             $article->set_var( 'end_readmore_anchortag', '</a>' );
+            $article->set_var( 'read_more_class', 'class="story-read-more"' );
         }
         $article->set_var( 'start_storylink_anchortag', '<a href="'
                 . $articleUrl . '" class="non-ul">' );
