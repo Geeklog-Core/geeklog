@@ -22,6 +22,47 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
+<h2><a name="changes140sr4">Geeklog 1.4.0sr4</a></h2>
+
+<p>Two exploits have been released by "rgod" for insecure Geeklog installations and for a bug in the "mcpuk" file manager that we've been shipping as part of FCKeditor in all previous 1.4.0 releases.</p>
+
+<ul>
+<li>Some of the files outside of the public_html directory were not protected
+    against direct execution. If Geeklog was installed such that those files
+    were accessible from a URL (which has always been strongly discouraged in
+    the installation instructions) then those files could be used to load and
+    execute malicious code from a remote server.
+    <br><br>
+    More information: <a
+    href="http://www.geeklog.net/article.php/so-called-exploit">So-called
+    Geeklog "exploit" posted</a>
+    <br><br>
+    In this release, we've added the missing execution prevention for all files
+    outside of public_html. We would still, however, suggest that you fix your
+    Geeklog install if the files outside of public_html are accessible from a
+    URL (see our <a
+    href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=56">FAQ</a> for
+    details).
+</li>
+<li>The "mcpuk" file manager that we've integrated into FCKeditor allowed the
+    upload of arbitrary PHP code (even if FCKeditor was disabled in Geeklog's
+    config.php). Depending on your webserver's configuration, it was then
+    possible to execute that uploaded code.
+    <br><br>
+    More information: <a href="http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager">Exploit for FCKeditor's mcpuk file manager</a>
+    <br><br>
+    The file manager has been removed from this release. You will therefore no
+    longer be able to upload files, e.g. images, through FCKeditor. Future
+    versions of Geeklog will ship with an updated version of FCKeditor and its
+    included file manager.
+</li>
+</ul>
+
+<p>Note: This release also includes the <a
+href="http://www.geeklog.net/article.php/fighting-trackback-spam">updated
+lib-trackback.php</a> for better protection against Trackback spam.</p>
+
+
 <h2><a name="changes140sr3">Geeklog 1.4.0sr3</a></h2>
 
 <p>This release addresses the following security issues:</p>

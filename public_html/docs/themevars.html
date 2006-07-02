@@ -180,6 +180,14 @@ file (which is used to display a story on its own page).</p>
     <td>Today's Featured Article</td>
     <td>The words "Today's Featured Article" in the user's preferred language.
         <strong>Only available when the story is the featured story.</strong></td></tr>
+<tr><td><code>story_counter</code></td>
+    <td>1</td>
+    <td>On the site's index page (<tt>index.php</tt>), this variable contains
+        1 for the first story, 2 for the second, etc. This is independent
+        whether the first story is a featured story or not. The counter restarts
+        with every new page (<tt>index.php?page=2</tt>, etc.).<br>
+        The variable contains 0 on the article page (<tt>article.php</tt>) and
+        in story previews.</td></tr>
 </table>
 
 <p>The following variables are only available when the story is displayed on
@@ -208,9 +216,13 @@ the index page <em>and</em> the body text of the story is <em>not</em> empty:</p
 <tr><td><code>end_readmore_anchortag</code></td>
     <td><code>&lt;/a&gt;</code></td>
     <td>Closing tag for a link to the story.</td></tr>
+<tr><td><code>read_more_class</code></td>
 <tr><td><code>email_icon</code></td>
-    <td>(icon)</td>
-    <td>The email icon, linking to the form to send the story by email.</td></tr>
+    <td>class="story-read-more"</td>
+    <td>This variable is empty when the body text is empty and contains the
+        class attribute when the body text is not empty. Use the
+        <code>story-read-more</code> class to change the layout of the "read
+        more" link.</td></tr>
 <tr><td><code>print_icon</code></td>
     <td>(icon)</td>
     <td>The printer icon, linking to a "printer friendly" version of the story.</td></tr>

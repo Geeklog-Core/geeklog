@@ -3,6 +3,10 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Introduced a {story_counter} variable in the story templates. It's 0 on the
+  article page and in previews, but 1 for the first story, 2 for the second,
+  etc. on the index page (per page, i.e. starts with 1 again on the second page)
+  [Dirk]
 - Require that users enter their current password when changing their password,
   email address or "Remember me for" setting. Redesigned the Account Information
   page and added a note about this requirement. [Dirk]
@@ -192,6 +196,39 @@ Static Pages plugin (1.4.3)
   pick a group with staticpages.edit permission that the user is a member of
   [Dirk]
 - Fixed paging for the list of static pages (bug #528) [Dirk]
+
+
+June 30, 2006 (1.4.0sr4)
+-------------
+
+Two exploits have been released by "rgod" for insecure Geeklog installations
+and for a bug in the "mcpuk" file manager that we've been shipping as part of
+FCKeditor in all 1.4.0 releases.
+
+- Some of the files outside of the public_html directory were not protected
+  against direct execution. If Geeklog was installed such that those files were
+  accessible from a URL (which has always been strongly discouraged in the
+  installation instructions) then those files could be used to load and
+  execute malicious code from a remote server.
+
+  More information: http://www.geeklog.net/article.php/so-called-exploit
+
+  In this release, we've added the missing execution prevention for all files
+  outside of public_html. We would still, however, suggest that you fix your
+  Geeklog install if the files outside of public_html are accessible from a URL.
+
+- The "mcpuk" file manager that we've integrated into FCKeditor allowed the
+  upload of arbitrary PHP code (even if FCKeditor was disabled in Geeklog's
+  config.php). Depending on your webserver's configuration, it was then possible
+  to execute that uploaded code.
+
+  More information:
+  http://www.geeklog.net/article.php/exploit-for-fckeditor-filemanager
+
+  The file manager has been removed from this release. You will therefore no
+  longer be able to upload files, e.g. images, through FCKeditor. Future
+  versions of Geeklog will ship with an updated version of FCKeditor and its
+  included file manager.
 
 
 May 28, 2006 (1.4.0sr3)
