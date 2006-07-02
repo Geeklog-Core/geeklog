@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.74 2006/06/25 11:42:04 dhaun Exp $
+// $Id: group.php,v 1.75 2006/07/02 19:34:43 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -726,7 +726,7 @@ function grp_selectUsers ($group_id = '0', $allusers = false)
 
 function editusers ($group)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG28;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_ADMIN, $LANG28;
 
     $thisUsersGroups = SEC_getUserGroups ();
 	$groupName = DB_getItem($_TABLES['groups'],'grp_name',"grp_id='$group'");
