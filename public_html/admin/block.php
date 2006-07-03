@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.100 2006/06/25 11:42:04 dhaun Exp $
+// $Id: block.php,v 1.101 2006/07/03 11:46:09 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -43,7 +43,7 @@ require_once ('auth.inc.php');
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 
-if (!SEC_hasrights ('block.edit')) {
+if (!SEC_hasRights ('block.edit')) {
     $display .= COM_siteHeader ('menu', $MESSAGE[30])
         . COM_startBlock ($MESSAGE[30], '',
                           COM_getBlockTemplate ('_msg_block', 'header'))
@@ -220,7 +220,7 @@ function editdefaultblock ($A, $access)
 */
 function editblock ($bid = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG21, $LANG_ACCESS,
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG01, $LANG21, $LANG_ACCESS,
            $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
@@ -285,6 +285,7 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $block_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $block_templates->set_var('lang_blocktype', $LANG_ADMIN['type']);
+    $block_templates->set_var('lang_allowed_html', $LANG01[123]);
 
     $block_templates->set_var('block_title', stripslashes ($A['title']));
     $block_templates->set_var('lang_enabled', $LANG21[53]);
@@ -373,13 +374,15 @@ function editblock ($bid = '')
 
 function listblocks()
 {
-    global $LANG_ADMIN, $LANG21, $_CONF, $_TABLES, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $retval = '';
     
     reorderblocks();
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
                     array('text' => $LANG21[46], 'field' => 'move', 'sort' => false),
@@ -424,10 +427,11 @@ function listblocks()
                       'title' => "$LANG21[19] ($LANG21[41])", 'instructions' => $LANG21[25],
                       'icon' => $_CONF['layout_url'] . '/images/icons/block.'
                                 . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/block.php");
+                      'form_url' => $_CONF['site_admin_url'] . '/block.php');
 
-    $retval .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
+    $retval .= ADMIN_list ('blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
+
     return $retval;
 }
 
@@ -464,7 +468,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
     $title = addslashes (COM_stripslashes (strip_tags ($title)));
     $phpblockfn = addslashes (COM_stripslashes ($phpblockfn));
     if (empty($title)) {
-        $retval .= COM_siteHeader()
+        $retval .= COM_siteHeader ('menu', $LANG21[63])
                 . COM_startBlock ($LANG21[63], '',
                           COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG21[64]
@@ -474,6 +478,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
                 . COM_siteFooter ();
         return $retval;
     }
+
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
@@ -525,7 +530,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             // must start with phpblock_ as the prefix.  This will prevent
             // the arbitrary execution of code
             if (!(stristr($phpblockfn,'phpblock_'))) {
-                $retval .= COM_siteHeader()
+                $retval .= COM_siteHeader ('menu', $LANG21[37])
                         . COM_startBlock ($LANG21[37], '',
                                   COM_getBlockTemplate ('_msg_block', 'header'))
                         . $LANG21[38]
@@ -572,7 +577,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
-        $retval .= COM_siteHeader()
+        $retval .= COM_siteHeader ('menu', $LANG21[32])
                 . COM_startBlock ($LANG21[32], '',
                           COM_getBlockTemplate ('_msg_block', 'header'));
         if ($type == 'portal') {
