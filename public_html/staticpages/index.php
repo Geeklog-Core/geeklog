@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.26 2005/12/28 10:11:53 dhaun Exp $
+// $Id: index.php,v 1.27 2006/07/07 09:18:36 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -85,7 +85,7 @@ function render_content ($sp_content, $sp_php)
 */
 function display_page ($page, $A, $noboxes)
 {
-    global $_CONF, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE;
+    global $_CONF, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
 
     $retval = '';
 
@@ -105,8 +105,17 @@ function display_page ($page, $A, $noboxes)
 
     if ($A['sp_format'] <> 'blankpage') {
         $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
-        $retval .= '<p align="center"><br>' . $LANG_STATIC['lastupdated']
-                . ' ' . $curtime[0]; 
+        $retval .= '<p align="center"><br>';
+        if ($_SP_CONF['show_date'] == 1) {
+            $retval .= $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
+        }
+        
+        if ($_SP_CONF['show_hits'] == 1) {
+            if ($_SP_CONF['show_date'] == 1) {
+                $retval .= "; ";
+            }
+            $retval .= ' ' . $A['sp_hits'] . ' ' . $LANG_STATIC['hits'];
+        }
 
         if ($_CONF['hideprintericon'] == 0) {
             $retval .= ' <a href="' . COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $page . '&amp;mode=print') . '"><img src="' . $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="' . $LANG_STATIC['printable_format'] . '" border="0"></a>';
