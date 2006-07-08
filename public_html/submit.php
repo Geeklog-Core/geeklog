@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.109 2006/06/09 20:38:45 mjervis Exp $
+// $Id: submit.php,v 1.110 2006/07/08 17:03:07 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -169,12 +169,6 @@ function submitstory($topic = '')
         $introtext = str_replace('}','&#125;',$introtext);
         $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
         $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
-
-        if (isset ($_CONF['show_topic_icon'])) {
-            $A['show_topic_icon'] = $_CONF['show_topic_icon'];
-        } else {
-            $A['show_topic_icon'] = 1;
-        }
         $A['hits'] = 0;
         $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
         $A += DB_fetchArray($res);
@@ -373,7 +367,18 @@ function savestory ($A)
         $related = addslashes (implode ("\n", STORY_extractLinks ($introtext)));
 
         $introtext = addslashes ($introtext);
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,trackbackcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','$introtext','{$related}',NOW(),'{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',{$A['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+        if (!isset ($_CONF['show_topic_icon'])) {
+            $_CONF['show_topic_icon'] = 1;
+        }
+        if (DB_getItem ($_TABLES['topics'], 'archive_flag',
+                "tid = '{$A['tid']}'") == 1) {
+            $A['frontpage'] = 0;
+        } else if (isset ($_CONF['frontpage'])) {
+            $A['frontpage'] = $_CONF['frontpage'];
+        } else {
+            $A['frontpage'] = 1;
+        }
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,trackbackcode,postmode,show_topic_icon,frontpage,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','$introtext','{$related}',NOW(),'{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',{$_CONF['show_topic_icon']},{$A['frontpage']},{$A['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
 
         COM_rdfUpToDateCheck ();
         COM_olderStuff ();

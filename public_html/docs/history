@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Introduced config options to set the default for the story's draft flag
+  and frontpage option (feature request #163) [Dirk]
 - Introduced $_CONF['hide_main_page_navigation'] to hide the "Google paging"
   from index.php (may be useful for some layouts) [Dirk]
 - Allow (optional) usage of autotags in "normal" blocks (can be enabled /

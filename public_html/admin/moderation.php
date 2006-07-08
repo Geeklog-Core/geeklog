@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.91 2006/06/28 13:22:24 dhaun Exp $
+// $Id: moderation.php,v 1.92 2006/07/08 17:03:07 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -494,6 +494,8 @@ function moderation ($mid, $action, $type, $count)
                 $T = DB_fetchArray ($result);
                 if ($T['archive_flag'] == 1) {
                     $frontpage = 0;
+                } else if (isset ($_CONF['frontpage'])) {
+                    $frontpage = $_CONF['frontpage'];
                 } else {
                     $frontpage = 1;
                 }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.226 2006/06/25 11:42:04 dhaun Exp $
+// $Id: story.php,v 1.227 2006/07/08 17:03:07 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -279,6 +279,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         if (DB_numRows ($result) > 0) {
             $A = DB_fetchArray($result);
+            if (isset ($_CONF['draft_flag'])) {
+                $A['draft_flag'] = $_CONF['draft_flag'];
+            } else {
+                $A['draft_flag'] = 0;
+            }
             if (isset ($_CONF['show_topic_icon'])) {
                 $A['show_topic_icon'] = $_CONF['show_topic_icon'];
             } else {
@@ -292,6 +297,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             if (DB_getItem ($_TABLES['topics'], 'archive_flag',
                     "tid = '{$A['tid']}'") == 1) {
                 $A['frontpage'] = 0;
+            } else if (isset ($_CONF['frontpage'])) {
+                $A['frontpage'] = $_CONF['frontpage'];
             } else {
                 $A['frontpage'] = 1;
             }
@@ -320,6 +327,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     } elseif ($mode == 'edit') {
         $A['sid'] = COM_makesid();
         $A['old_sid'] = '';
+        if (isset ($_CONF['draft_flag'])) {
+            $A['draft_flag'] = $_CONF['draft_flag'];
+        } else {
+            $A['draft_flag'] = 0;
+        }
         if (isset ($_CONF['show_topic_icon'])) {
             $A['show_topic_icon'] = $_CONF['show_topic_icon'];
         } else {
@@ -333,7 +345,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $A['title'] = '';
         $A['introtext'] = '';
         $A['bodytext'] = '';
-        $A['frontpage'] = 1;
+        if (isset ($_CONF['frontpage'])) {
+            $A['frontpage'] = $_CONF['frontpage'];
+        } else {
+            $A['frontpage'] = 1;
+        }
         $A['hits'] = 0;
         $A['comments'] = 0;
         $A['trackbacks'] = 0;
