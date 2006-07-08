@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.68 2006/07/08 19:58:43 dhaun Exp $
+// $Id: index.php,v 1.69 2006/07/08 22:02:17 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -175,14 +175,17 @@ function form ($A, $error = false)
 
         $sp_template->set_var ('lang_centerblock', $LANG_STATIC['centerblock']);
         $sp_template->set_var ('lang_centerblock_msg', $LANG_STATIC['centerblock_msg']);
-        if ($A['sp_centerblock'] == 1) {
+        if (isset ($A['sp_centerblock']) && ($A['sp_centerblock'] == 1)) {
             $sp_template->set_var('centerblock_checked', 'checked="checked"');
         } else {
             $sp_template->set_var('centerblock_checked', '');
         }
         $sp_template->set_var ('lang_topic', $LANG_STATIC['topic']);
         $sp_template->set_var ('lang_position', $LANG_STATIC['position']);
-        $current_topic = $A['sp_tid'];
+        $current_topic = '';
+        if (isset ($A['sp_tid'])) {
+            $current_topic = $A['sp_tid'];
+        }
         if (empty ($current_topic)) {
             $current_topic = 'none';
         }
@@ -224,6 +227,9 @@ function form ($A, $error = false)
         $sp_template->set_var ('pos_selection', $position);
 
         if (($_SP_CONF['allow_php'] == 1) && SEC_hasRights ('staticpages.PHP')) {
+            if (!isset ($A['sp_php'])) {
+                $A['sp_php'] = 0;
+            }
             $selection = '<select name="sp_php">' . LB;
             $selection .= '<option value="0"';
             if (($A['sp_php'] <= 0) || ($A['sp_php'] > 2)) {
@@ -253,7 +259,7 @@ function form ($A, $error = false)
         $sp_template->set_var ('php_checked', '');
         $sp_template->set_var ('php_type', 'hidden');
 
-        if ($A['sp_nf'] == 1) {
+        if (isset ($A['sp_nf']) && ($A['sp_nf'] == 1)) {
             $sp_template->set_var('exit_checked','checked="checked"');
         } else {
             $sp_template->set_var('exit_checked','');
@@ -275,21 +281,31 @@ function form ($A, $error = false)
         $sp_template->set_var('sp_formateddate', $curtime[0]);
         $sp_template->set_var('sp_date', $curtime[1]);
         $sp_template->set_var('lang_title', $LANG_STATIC['title']);
-        $sp_template->set_var('sp_title',
-                htmlspecialchars (stripslashes ($A['sp_title'])));
+        $title = '';
+        if (isset ($A['sp_title'])) {
+            $title = htmlspecialchars (stripslashes ($A['sp_title']));
+        }
+        $sp_template->set_var('sp_title', $title);
         $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
-        if ($A['sp_onmenu'] == 1) {
+        if (isset ($A['sp_onmenu']) && ($A['sp_onmenu'] == 1)) {
             $sp_template->set_var('onmenu_checked', 'checked="checked"');
         } else {
             $sp_template->set_var('onmenu_checked', '');
         }
         $sp_template->set_var('lang_label', $LANG_STATIC['label']);
-        $sp_template->set_var('sp_label', $A['sp_label']);
+        if (isset ($A['sp_label'])) {
+            $sp_template->set_var('sp_label', $A['sp_label']);
+        } else {
+            $sp_template->set_var('sp_label', '');
+        }
         $sp_template->set_var('lang_pageformat', $LANG_STATIC['pageformat']);
         $sp_template->set_var('lang_blankpage', $LANG_STATIC['blankpage']);
         $sp_template->set_var('lang_noblocks', $LANG_STATIC['noblocks']);
         $sp_template->set_var('lang_leftblocks', $LANG_STATIC['leftblocks']);
         $sp_template->set_var('lang_leftrightblocks', $LANG_STATIC['leftrightblocks']);
+        if (!isset ($A['sp_format'])) {
+            $A['sp_format'] = '';
+        }
         if ($A['sp_format'] == 'noblocks') {
             $sp_template->set_var('noblock_selected', 'selected="selected"');
         } else {
@@ -305,14 +321,18 @@ function form ($A, $error = false)
         } else {
             $sp_template->set_var('blankpage_selected', '');
         }
-        if (($A['sp_format'] == 'allblocks') OR empty($A['sp_format'])) {
+        if (($A['sp_format'] == 'allblocks') OR empty ($A['sp_format'])) {
             $sp_template->set_var('allblocks_selected', 'selected="selected"');
         } else {
             $sp_template->set_var('allblocks_selected', '');
         }
 
         $sp_template->set_var('lang_content', $LANG_STATIC['content']);
-        $sp_template->set_var('sp_content', htmlspecialchars (stripslashes($A['sp_content'])));
+        $content = '';
+        if (isset ($A['sp_content'])) {
+            $content = htmlspecialchars (stripslashes ($A['sp_content']));
+        }
+        $sp_template->set_var('sp_content', $content);
         if ($_SP_CONF['filter_html'] == 1) {
             $sp_template->set_var('lang_allowedhtml', COM_allowedHTML()); 
         } else {
@@ -411,8 +431,11 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
         $A = $_POST;
         $A['sp_content'] = COM_checkHTML (COM_checkWords ($A['sp_content']));
     }
-    $A['sp_title'] = strip_tags ($A['sp_title']);
+    if (isset ($A['sp_title'])) {
+        $A['sp_title'] = strip_tags ($A['sp_title']);
+    }
     $A['editor'] = $editor;
+
     return form ($A);
 }
 
@@ -445,6 +468,8 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock)
 {
     global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
+
+    $retval = '';
 
     $sp_id = COM_sanitizeID ($sp_id);
 
@@ -557,10 +582,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
+    $editor = '';
     if (isset ($_GET['editor'])) {
         $editor = COM_applyFilter ($_GET['editor']);
     }
-    $display .= staticpageeditor ($sp_id, $mode,$editor);
+    $display .= staticpageeditor ($sp_id, $mode, $editor);
     $display .= COM_siteFooter ();
 } else if ($mode == 'clone') {
     if (!empty ($sp_id)) {
