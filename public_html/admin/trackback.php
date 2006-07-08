@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin functions handle Trackback, Pingback, and Ping                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005 by the following authors:                              |
+// | Copyright (C) 2005-2006 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.41 2006/07/08 19:58:42 dhaun Exp $
+// $Id: trackback.php,v 1.42 2006/07/08 21:35:03 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -1096,11 +1096,26 @@ if ($mode == 'delete') {
         }
     }
 
-    $target = COM_applyFilter ($_REQUEST['target']);
-    $url = COM_applyFilter ($_REQUEST['url']);
-    $title = COM_stripslashes ($_REQUEST['title']);
-    $excerpt = COM_stripslashes ($_REQUEST['excerpt']);
-    $blog = COM_stripslashes ($_REQUEST['blog_name']);
+    $target = '';
+    if (isset ($_REQUEST['target'])) {
+        $target = COM_applyFilter ($_REQUEST['target']);
+    }
+    $url = '';
+    if (isset ($_REQUEST['url'])) {
+        $url = COM_applyFilter ($_REQUEST['url']);
+    }
+    $title = '';
+    if (isset ($_REQUEST['title'])) {
+        $title = COM_stripslashes ($_REQUEST['title']);
+    }
+    $excerpt = '';
+    if (isset ($_REQUEST['excerpt'])) {
+        $excerpt = COM_stripslashes ($_REQUEST['excerpt']);
+    }
+    $blog = '';
+    if (isset ($_REQUEST['blog_name'])) {
+        $blog = COM_stripslashes ($_REQUEST['blog_name']);
+    }
 
     if (isset ($_REQUEST['id']) && isset ($_REQUEST['type'])) {
         $id = COM_applyFilter ($_REQUEST['id']);
