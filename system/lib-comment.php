@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.37 2006/06/27 19:18:34 dhaun Exp $
+// $Id: lib-comment.php,v 1.38 2006/07/08 20:09:59 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1107,7 +1107,7 @@ function CMT_sendReport ($cid, $type)
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG_LOGIN;
 
     if (empty ($_USER['username'])) {
-        $retval = COM_siteHeader ('menu');
+        $retval = COM_siteHeader ('menu', $LANG_LOGIN[1]);
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));     
         $loginreq = new Template ($_CONF['path_layout'] . 'submit');            
