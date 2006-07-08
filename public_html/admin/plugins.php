@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.63 2006/06/25 11:42:04 dhaun Exp $
+// $Id: plugins.php,v 1.64 2006/07/08 19:58:42 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -212,7 +212,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 
         $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=28');
     } else {
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $LANG32[13]);
         $retval .= COM_startBlock ($LANG32[13], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= COM_errorLog ('error saving plugin, no pi_name provided', 1);
@@ -490,7 +490,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 
 } else if (($mode == $LANG32[34]) && !empty ($LANG32[34])) { // update
         $pi_name = COM_applyFilter ($_POST['pi_name']);
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG32[13]);
         $display .= do_update ($pi_name);
         $display .= COM_siteFooter ();
 

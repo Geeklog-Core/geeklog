@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.47 2006/05/14 16:24:37 ospiess Exp $
+// $Id: stats.php,v 1.48 2006/07/08 19:58:42 dhaun Exp $
 
 require_once('lib-common.php');
 require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -41,7 +41,7 @@ $display = '';
 
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['statsloginrequired'] == 1))) {
-    $display = COM_siteHeader('');
+    $display = COM_siteHeader ('menu', $LANG_LOGIN[1]);
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template($_CONF['path_layout'] . 'submit');

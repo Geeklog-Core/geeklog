@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.47 2006/06/25 11:42:04 dhaun Exp $
+// $Id: syndication.php,v 1.48 2006/07/08 19:58:42 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -364,7 +364,7 @@ function newfeed ()
     if (sizeof ($plugins) == 0) {
         // none of the installed plugins are supporting feeds
         // - go directly to the feed editor
-        $retval = COM_siteHeader ('menu')
+        $retval = COM_siteHeader ('menu', $LANG33[11])
                 . editfeed (0, 'geeklog')
                 . COM_siteFooter ();
     } else {
@@ -423,7 +423,7 @@ function savefeed ($A)
     }
     if (empty ($A['title']) || empty ($A['description']) ||
             empty ($A['filename'])) {
-        $retval = COM_siteHeader ('menu')
+        $retval = COM_siteHeader ('menu', $LANG33[38])
                 . COM_startBlock ($LANG33[38], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG33[39]
@@ -436,7 +436,7 @@ function savefeed ($A)
     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['syndication']} WHERE filename = '{$A['filename']}' AND (fid <> '{$A['fid']}')");
     $C = DB_fetchArray($result);
     if ($C['count'] > 0) {
-        $retval = COM_siteHeader ('menu')
+        $retval = COM_siteHeader ('menu', $LANG33[52])
                 . COM_startBlock ($LANG33[52], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG33[51]
@@ -447,7 +447,7 @@ function savefeed ($A)
     }
 
     if ($A['limits'] <= 0) {
-        $retval = COM_siteHeader ('menu')
+        $retval = COM_siteHeader ('menu', $LANG33[38])
                 . COM_startBlock ($LANG33[38], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG33[40]

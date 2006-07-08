@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.33 2006/06/05 09:53:31 dhaun Exp $
+// $Id: index.php,v 1.34 2006/07/08 19:58:42 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -46,7 +46,7 @@ define ('POLLS_PER_PAGE', 50);
 $display = '';
 
 if (!SEC_hasRights ('polls.edit')) {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[36];
@@ -158,7 +158,7 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
                                      $perm_group, $perm_members, $perm_anon);
         }
         if (($access < 3) || !SEC_inGroup ($group_id)) {
-            $display .= COM_siteHeader ('menu');
+            $display .= COM_siteHeader ('menu', $MESSAGE[30]);
             $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $MESSAGE[31];
@@ -219,7 +219,7 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
         return COM_refresh($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=19');
 
     } else {
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $LANG25[5]);
         $retval .= COM_startBlock ($LANG21[32], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG25[2];

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.79 2006/06/05 09:53:30 dhaun Exp $
+// $Id: article.php,v 1.80 2006/07/08 19:58:42 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -114,7 +114,7 @@ if ($A['count'] > 0) {
             $A['perm_anon']);
     if (($access == 0) OR !SEC_hasTopicAccess ($A['tid']) OR
         (($A['draft_flag'] == 1) AND !SEC_hasRights ('story.edit'))) {
-        $display .= COM_siteHeader ('menu')
+        $display .= COM_siteHeader ('menu', $LANG_ACCESS['accessdenied'])
                  . COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG_ACCESS['storydenialmsg']

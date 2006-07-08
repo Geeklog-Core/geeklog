@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Geeklog Plugin 1.4.2                                         |
+// | Static Pages Geeklog Plugin 1.4.3                                         |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -32,13 +32,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.67 2006/06/17 20:31:24 blaine Exp $
+// $Id: index.php,v 1.68 2006/07/08 19:58:43 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
 
 if (!SEC_hasRights ('staticpages.edit')) {
-    $display = COM_siteHeader ('menu');
+    $display = COM_siteHeader ('menu', $LANG_STATIC['access_denied']);
     $display .= COM_startBlock ($LANG_STATIC['access_denied'], '',
                         COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $LANG_STATIC['access_denied_msg'];
@@ -462,7 +462,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
     }
 
     if ($duplicate_id) {
-        $retval .= COM_siteHeader ();
+        $retval .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
         $retval .= COM_errorLog ($LANG_STATIC['duplicate_id'], 2);
         $retval .= staticpageeditor ($sp_id);
         $retval .= COM_siteFooter ();
@@ -528,7 +528,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         echo COM_refresh ($_CONF['site_admin_url']
                           . '/plugins/staticpages/index.php');
     } else {
-        $retval .= COM_siteHeader ();
+        $retval .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
         $retval .= COM_errorLog ($LANG_STATIC['no_title_or_content'], 2);
         $retval .= staticpageeditor ($sp_id);
         $retval .= COM_siteFooter ();

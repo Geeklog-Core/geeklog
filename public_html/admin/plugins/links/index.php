@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.33 2006/06/05 09:53:31 dhaun Exp $
+// $Id: index.php,v 1.34 2006/07/08 19:58:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -64,7 +64,7 @@ require_once ('../../auth.inc.php');
 $display = '';
 
 if (!SEC_hasRights ('links.edit')) {
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[34];
@@ -287,7 +287,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $MESSAGE[30]);
         $display .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $MESSAGE[31];
@@ -312,7 +312,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
 
         return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=2');
     } else { // missing fields
-        $retval .= COM_siteHeader('menu');
+        $retval .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[1]);
         $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
         if (DB_count ($_TABLES['links'], 'lid', $old_lid) > 0) {
             $retval .= editlink ('edit', $old_lid);

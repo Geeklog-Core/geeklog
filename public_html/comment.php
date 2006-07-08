@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.103 2006/05/20 08:09:48 dhaun Exp $
+// $Id: comment.php,v 1.104 2006/07/08 19:58:42 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -85,10 +85,12 @@ function handleSubmit() {
                 'article', COM_applyFilter ($_POST['postmode']));
 
             if ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
-                $display .= COM_siteHeader()
-                    . CMT_commentform ($_USER['uid'], $_POST['title'], $_POST['comment'], $sid, 
-                                       COM_applyFilter($_POST['pid']), $type, $LANG03[14], COM_applyFilter($_POST['postmode']))
-                    . COM_siteFooter();
+                $display .= COM_siteHeader ('menu', $LANG03[1])
+                         . CMT_commentform ($_USER['uid'], $_POST['title'],
+                            $_POST['comment'], $sid, 
+                            COM_applyFilter($_POST['pid']), $type, $LANG03[14],
+                            COM_applyFilter($_POST['postmode']))
+                         . COM_siteFooter();
             } else { // success
                 $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
                 DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
@@ -243,7 +245,7 @@ if (!empty ($_REQUEST['mode'])) {
 }
 switch ($mode) {
 case $LANG03[14]: // Preview
-    $display .= COM_siteHeader()
+    $display .= COM_siteHeader('menu', $LANG03[14])
              . CMT_commentForm (strip_tags ($_POST['title']), $_POST['comment'],
                     COM_applyFilter ($_POST['sid']),
                     COM_applyFilter ($_POST['pid'], true),
@@ -269,7 +271,7 @@ case 'display':
     break;
 
 case 'report':
-    $display .= COM_siteHeader ('menu')
+    $display .= COM_siteHeader ('menu', $LANG03[27])
               . CMT_reportAbusiveComment (COM_applyFilter ($_GET['cid'], true),
                                           COM_applyFilter ($_GET['type']))
               . COM_siteFooter ();

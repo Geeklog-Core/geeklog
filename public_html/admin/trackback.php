@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.40 2006/06/11 16:15:52 dhaun Exp $
+// $Id: trackback.php,v 1.41 2006/07/08 19:58:42 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -856,12 +856,12 @@ if ($mode == 'delete') {
     $blog = COM_stripslashes ($_POST['blog_name']);
 
     if (empty ($target)) {
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG_TRB['trackback']);
         $display .= showTrackbackMessage ($LANG_TRB['target_missing'],
                                           $LANG_TRB['target_required']);
         $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
     } else if (empty ($url)) {
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG_TRB['trackback']);
         $display .= showTrackbackMessage ($LANG_TRB['url_missing'],
                                           $LANG_TRB['url_required']);
         $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
@@ -874,7 +874,7 @@ if ($mode == 'delete') {
         $result = TRB_sendTrackbackPing ($target, $url, $send_title,
                                          $send_excerpt, $send_blog);
 
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG_TRB['trackback']);
         if ($result === true) {
             $display .= COM_showMessage (64);
             $display .= trackback_editor ();
@@ -901,7 +901,7 @@ if ($mode == 'delete') {
         $excerpt = trim (strip_tags ($excerpt));
         $blog = TRB_filterBlogname ($_CONF['site_name']);
 
-        $display .= COM_siteHeader ('menu')
+        $display .= COM_siteHeader ('menu', $LANG_TRB['trackback'])
                  . trackback_editor ($target, $url, $title, $excerpt, $blog)
                  . COM_siteFooter ();
     } else {

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.141 2006/06/18 07:45:09 dhaun Exp $
+// $Id: usersettings.php,v 1.142 2006/07/08 19:58:42 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -697,7 +697,7 @@ function handlePhotoUpload ($delete_photo = '')
                                          'image/png'   => '.png'
                                  )      );
     if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
-        $display = COM_siteHeader ('menu');
+        $display = COM_siteHeader ('menu', $LANG24[30]);
         $display .= COM_startBlock ($LANG24[30], '',
                 COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $upload->printErrors (false);
@@ -760,7 +760,7 @@ function handlePhotoUpload ($delete_photo = '')
         $upload->uploadFiles ();
 
         if ($upload->areErrors ()) {
-            $display = COM_siteHeader ('menu');
+            $display = COM_siteHeader ('menu', $LANG24[30]);
             $display .= COM_startBlock ($LANG24[30], '',
                     COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $upload->printErrors (false);
@@ -834,7 +834,7 @@ function saveuser($A)
                         $imgpath = $_CONF['path_images'] . 'userphotos/';
                         if (rename ($imgpath . $photo,
                                     $imgpath . $newphoto) === false) {
-                            $display = COM_siteHeader ('menu');
+                            $display = COM_siteHeader ('menu', $LANG04[21]);
                             $display .= COM_errorLog ('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
                             $display .= COM_siteFooter ();
 

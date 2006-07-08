@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.227 2006/07/08 17:03:07 dhaun Exp $
+// $Id: story.php,v 1.228 2006/07/08 19:58:42 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -906,7 +906,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         echo $display;
         exit;
     } elseif ($duplicate_sid) {
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG24[5]);
         $display .= COM_errorLog ($LANG24[24], 2);
         $display .= storyeditor ($sid);
         $display .= COM_siteFooter ();
@@ -1018,7 +1018,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                     'image/png'   => '.png'
                     ));
             if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
-                $display = COM_siteHeader ('menu');
+                $display = COM_siteHeader ('menu', $LANG24[30]);
                 $display .= COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
                 $display .= $upload->printErrors (false);
                 $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
@@ -1053,7 +1053,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $upload->uploadFiles();
 
             if ($upload->areErrors()) {
-                $retval = COM_siteHeader('menu');
+                $retval = COM_siteHeader('menu', $LANG24[30]);
                 $retval .= COM_startBlock ($LANG24[30], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
                 $retval .= $upload->printErrors(false);
@@ -1082,7 +1082,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             }
             list($errors, $introtext, $bodytext) = STORY_insert_images($sid, $introtext, $bodytext);
             if (count($errors) > 0) {
-                $display = COM_siteHeader ('menu');
+                $display = COM_siteHeader ('menu', $LANG24[54]);
                 $display .= COM_startBlock ($LANG24[54], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
                 $display .= $LANG24[55] . '<p>';
@@ -1138,7 +1138,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 
         // in case of an error go back to the story editor
         if ($plugin_error !== false) {
-            $display .= COM_siteHeader ('menu');
+            $display .= COM_siteHeader ('menu', $LANG24[5]);
             $display .= storyeditor ($sid, 'retry', $plugin_error);
             $display .= COM_siteFooter ();
             echo $display;
@@ -1156,8 +1156,8 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
         exit;
     } else {
-        $display .= COM_siteHeader('menu');
-        $display .= COM_errorLog($LANG24[31],2);
+        $display .= COM_siteHeader('menu', $LANG24[5]);
+        $display .= COM_errorLog($LANG24[31], 2);
         $display .= storyeditor($sid);
         $display .= COM_siteFooter();
         echo $display;

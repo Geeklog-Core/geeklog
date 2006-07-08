@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.155 2006/06/17 13:26:59 dhaun Exp $
+// $Id: user.php,v 1.156 2006/07/08 19:58:42 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -438,7 +438,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                     $imgpath = $_CONF['path_images'] . 'userphotos/';
                     if (rename ($imgpath . $curphoto,
                                 $imgpath . $newphoto) === false) {
-                        $display = COM_siteHeader ('menu');
+                        $display = COM_siteHeader ('menu', $LANG28[22]);
                         $display .= COM_errorLog ('Could not rename userphoto "'
                                         . $curphoto . '" to "' . $newphoto . '".');
                         $display .= COM_siteFooter ();
@@ -499,7 +499,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         if (empty($errors)) {
             echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
         } else {
-            $retval .= COM_siteHeader ('menu');
+            $retval .= COM_siteHeader ('menu', $LANG28[22]);
             $retval .= COM_errorLog ('Error in saveusers in '
                                      . $_CONF['site_admin_url'] . '/user.php');
             $retval .= COM_siteFooter ();
@@ -507,7 +507,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             exit;
         }
     } else {
-        $retval = COM_siteHeader('menu');
+        $retval = COM_siteHeader('menu', $LANG28[1]);
         $retval .= COM_errorLog($LANG28[10]);
         if (DB_count($_TABLES['users'],'uid',$uid) > 0) {
             $retval .= edituser($uid);
@@ -730,7 +730,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
             $_POST[$_TABLES['groups']],
             $delphoto, $_POST['userstatus'], $_POST['oldstatus']);
     if (!empty($display)) {
-        $tmp = COM_siteHeader('menu');
+        $tmp = COM_siteHeader('menu', $LANG28[22]);
         $tmp .= $display;
         $tmp .= COM_siteFooter();
         $display = $tmp;

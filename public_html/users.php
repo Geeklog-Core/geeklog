@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.140 2006/06/16 18:12:44 blaine Exp $
+// $Id: users.php,v 1.141 2006/07/08 19:58:42 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -75,7 +75,7 @@ function userprofile ($user, $msg = 0)
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $LANG_LOGIN[1]);
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
@@ -374,7 +374,7 @@ function requestpassword ($username, $msg = 0)
         }
         COM_updateSpeedlimit ('password');
     } else {
-        $retval .= COM_siteHeader ('menu')
+        $retval .= COM_siteHeader ('menu', $LANG04[17])
                 . defaultform ($LANG04[17]) . COM_siteFooter ();
     }
 
@@ -470,7 +470,7 @@ function createuser ($username, $email, $email_conf)
 
             return $retval;
         } else {
-            $retval .= COM_siteHeader ('menu');
+            $retval .= COM_siteHeader ('menu', $LANG04[22]);
             if ($_CONF['custom_registration'] &&
                     function_exists ('CUSTOM_userForm')) {
                 $retval .= CUSTOM_userForm ($LANG04[19]);
@@ -481,7 +481,7 @@ function createuser ($username, $email, $email_conf)
         }
     } else if ($email !== $email_conf) {
         $msg = $LANG04[125];
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $LANG04[22]);
         if ($_CONF['custom_registration'] && function_exists('CUSTOM_userForm')) {
             $retval .= CUSTOM_userForm ($msg);
         } else {
@@ -495,7 +495,7 @@ function createuser ($username, $email, $email_conf)
         } else {
             $msg = $LANG04[18]; // invalid email address
         }
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader ('menu', $LANG04[22]);
         if ($_CONF['custom_registration'] && function_exists('CUSTOM_userForm')) {
             $retval .= CUSTOM_userForm ($msg);
         } else {
@@ -749,7 +749,7 @@ case 'user':
 
 case 'create':
     if ($_CONF['disable_new_user_registration']) {
-        $display .= COM_siteHeader ('menu');
+        $display .= COM_siteHeader ('menu', $LANG04[22]);
         $display .= COM_startBlock ($LANG04[22], '',
                             COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG04[122]
@@ -763,7 +763,7 @@ case 'create':
     break;
 
 case 'getpassword':
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG04[25]);
     if ($_CONF['passwordspeedlimit'] == 0) {
         $_CONF['passwordspeedlimit'] = 300; // 5 minutes
     }
@@ -788,11 +788,11 @@ case 'newpwd':
         $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
                            array ($uid, $reqid));
         if ($valid == 1) {
-            $display .= COM_siteHeader ('menu');
+            $display .= COM_siteHeader ('menu', $LANG04[92]);
             $display .= newpasswordform ($uid, $reqid);
             $display .= COM_siteFooter ();
         } else { // request invalid or expired
-            $display .= COM_siteHeader ('menu');
+            $display .= COM_siteHeader ('menu', $LANG04[25]);
             $display .= COM_showMessage (54);
             $display .= getpasswordform ();
             $display .= COM_siteFooter ();
@@ -825,7 +825,7 @@ case 'setnewpwd':
                            'uid', $uid);
                 $display = COM_refresh ($_CONF['site_url'] . '/users.php?msg=53');
             } else { // request invalid or expired
-                $display .= COM_siteHeader ('menu');
+                $display .= COM_siteHeader ('menu', $LANG04[25]);
                 $display .= COM_showMessage (54);
                 $display .= getpasswordform ();
                 $display .= COM_siteFooter ();
@@ -844,7 +844,7 @@ case 'emailpasswd':
     COM_clearSpeedlimit ($_CONF['passwordspeedlimit'], 'password');
     $last = COM_checkSpeedlimit ('password');
     if ($last > 0) {
-        $display .= COM_siteHeader ('menu')
+        $display .= COM_siteHeader ('menu', $LANG12[26])
                  . COM_startBlock ($LANG12[26], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
                  . sprintf ($LANG04[93], $last, $_CONF['passwordspeedlimit'])
@@ -895,7 +895,7 @@ default:
             $msg=82;
             $display .= CUSTOM_loginErrorHandler($msg);
         } else {
-            $retval .= COM_siteHeader()
+            $retval .= COM_siteHeader('menu', $LANG12[26])
                 . COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG04[112]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
@@ -1026,7 +1026,7 @@ default:
                     $msg = 82;
                     $display .= CUSTOM_loginErrorHandler($msg);
                 } else {
-                    $retval .= COM_siteHeader()
+                    $retval .= COM_siteHeader('menu', $LANG04[113])
                              . COM_startBlock ($LANG04[113], '',
                                                COM_getBlockTemplate ('_msg_block', 'header'))
                              . $LANG04[112]

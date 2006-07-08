@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.67 2006/06/25 11:42:04 dhaun Exp $
+// $Id: topic.php,v 1.68 2006/07/08 19:58:42 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -286,8 +286,8 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 
         $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
     } else {
-        $retval .= COM_siteHeader('menu');
-        $retval .= COM_errorLog($LANG27[7],2);
+        $retval .= COM_siteHeader('menu', $LANG27[1]);
+        $retval .= COM_errorLog($LANG27[7], 2);
         $retval .= edittopic($tid);
         $retval .= COM_siteFooter();
     }
@@ -458,7 +458,7 @@ function handleIconUpload($tid)
                                          'image/png'   => '.png'
                                  )      );
     if (!$upload->setPath ($_CONF['path_images'] . 'topics')) {
-        $display = COM_siteHeader ('menu');
+        $display = COM_siteHeader ('menu', $LANG27[29]);
         $display .= COM_startBlock ($LANG27[29], '',
                 COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $upload->printErrors (false);
@@ -499,7 +499,7 @@ function handleIconUpload($tid)
         $upload->uploadFiles ();
 
         if ($upload->areErrors ()) {
-            $display = COM_siteHeader ('menu');
+            $display = COM_siteHeader ('menu', $LANG27[29]);
             $display .= COM_startBlock ($LANG27[29], '',
                     COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $upload->printErrors (false);
