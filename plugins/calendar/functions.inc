@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.44 2006/06/30 12:18:29 dhaun Exp $
+// $Id: functions.inc,v 1.45 2006/07/08 22:10:18 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1517,7 +1517,7 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
                     . "{$A['eid']}\">$retval</a>";
             break;
         case 'username':
-            $retval = COM_getDisplayName ($A['uid'], $A['username'], $A['fullname']);
+            $retval = COM_getDisplayName ($A['owner_id'], $A['username'], $A['fullname']);
             break;
         default:
             $retval = $fieldvalue;
