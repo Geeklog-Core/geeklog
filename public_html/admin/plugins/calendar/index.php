@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2006/06/07 03:14:14 ospiess Exp $
+// $Id: index.php,v 1.17 2006/07/08 19:00:20 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -46,7 +46,7 @@ $display = '';
 
 // Ensure user even has the rights to access this page
 if (!SEC_hasRights('calendar.edit')) {
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[35];
@@ -74,13 +74,13 @@ if (!SEC_hasRights('calendar.edit')) {
 function CALENDAR_editEvent ($mode, $A, $msg = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $_CA_CONF, $LANG_CAL_1,
-           $LANG_CAL_ADMIN, $LANG10, $LANG12, $LANG22, $LANG_ACCESS,
-           $LANG_ADMIN, $MESSAGE;
+           $LANG_CAL_ADMIN, $LANG10, $LANG12, $LANG_ACCESS, $LANG_ADMIN,
+           $MESSAGE;
 
     $retval = '';
 
     if (!empty ($msg)) {
-        $retval .= COM_startBlock ($LANG22[2], '',
+        $retval .= COM_startBlock ($LANG_CAL_ADMIN[2], '',
                         COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $msg;
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
@@ -396,7 +396,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                              $group_id, $perm_owner, $perm_group, $perm_members,
                              $perm_anon, $mode)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG22, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG_CAL_ADMIN, $MESSAGE;
 
     $retval = '';
 
@@ -423,7 +423,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $retval .= COM_siteHeader('menu');
+        $retval .= COM_siteHeader('menu', $MESSAGE[30]);
         $retval .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $MESSAGE[31];
@@ -444,10 +444,10 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
         $datestart = $start_year . '-' . $start_month . '-' . $start_day;
         $timestart = $start_hour . ':' . $start_minute . ':00';
     } else {
-        $retval .= COM_siteHeader ('menu');
-        $retval .= COM_startBlock ($LANG22[2], '',
+        $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[2]);
+        $retval .= COM_startBlock ($LANG_CAL_ADMIN[2], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG22[23];
+        $retval .= $LANG_CAL_ADMIN[23];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter ();
 
@@ -457,10 +457,10 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
         $dateend = $end_year . '-' . $end_month . '-' . $end_day;
         $timeend = $end_hour . ':' . $end_minute . ':00';
     } else {
-        $retval .= COM_siteHeader ('menu');
-        $retval .= COM_startBlock ($LANG22[2], '',
+        $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[2]);
+        $retval .= COM_startBlock ($LANG_CAL_ADMIN[2], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG22[24];
+        $retval .= $LANG_CAL_ADMIN[24];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter ();
 
@@ -468,10 +468,10 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
     }
     if ($allday == 0) {
         if ($dateend < $datestart) {
-            $retval .= COM_siteHeader ('menu');
-            $retval .= COM_startBlock ($LANG22[2], '',
+            $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[2]);
+            $retval .= COM_startBlock ($LANG_CAL_ADMIN[2], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG22[25];
+            $retval .= $LANG_CAL_ADMIN[25];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             $retval .= COM_siteFooter ();
 
@@ -553,10 +553,10 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
         return COM_refresh ($_CONF['site_admin_url']
                            .'/plugins/calendar/index.php?msg=17');
     } else {
-        $retval .= COM_siteHeader ('menu');
-        $retval .= COM_startBlock ($LANG22[2], '',
+        $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[2]);
+        $retval .= COM_startBlock ($LANG_CAL_ADMIN[2], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG22[10];
+        $retval .= $LANG_CAL_ADMIN[10];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter ();
 
@@ -601,7 +601,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $id = COM_applyFilter ($_REQUEST['id']);
     $result = DB_query ("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
     $A = DB_fetchArray ($result);
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[1]);
     $display .= CALENDAR_editEvent ($mode, $A);
     $display .= COM_siteFooter ();
 } else if ($mode == 'clone') {
@@ -610,7 +610,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $A = DB_fetchArray ($result);
     $A['eid'] = COM_makesid ();
     $A['owner_id'] = $_USER['uid'];
-    $display .= COM_siteHeader ('menu');
+    $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[1]);
     $display .= CALENDAR_editEvent ($mode, $A);
     $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
