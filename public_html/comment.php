@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.104 2006/07/08 19:58:42 dhaun Exp $
+// $Id: comment.php,v 1.105 2006/07/08 21:15:43 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -285,7 +285,10 @@ case 'sendreport':
 default:  // New Comment
     $sid = COM_applyFilter ($_REQUEST['sid']);
     $type = COM_applyFilter ($_REQUEST['type']);
-    $title = strip_tags ($_REQUEST['title']);
+    $title = '';
+    if (isset ($_REQUEST['title'])) {
+        $title = strip_tags ($_REQUEST['title']);
+    }
     $postmode = $_CONF['postmode'];
     if (isset ($_REQUEST['postmode'])) {
         $postmode = COM_applyFilter ($_REQUEST['postmode']);
