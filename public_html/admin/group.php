@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.76 2006/07/02 19:46:52 dhaun Exp $
+// $Id: group.php,v 1.77 2006/07/08 16:25:29 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -841,10 +841,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= deleteGroup ($grp_id);
     }
 } else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
-    $display .= savegroup (COM_applyFilter($_POST['grp_id'],true),
-                            COM_applyFilter($_POST['grp_name']),
-                           COM_applyFilter($_POST['grp_descr']), COM_applyFilter($_POST['grp_gl_core']),
-                           COM_applyFilter($_POST['features']), COM_applyFilter($_POST[$_TABLES['groups']]));
+    $display .= savegroup (COM_applyFilter ($_POST['grp_id'],true),
+                           COM_applyFilter ($_POST['grp_name']),
+                           $_POST['grp_descr'],
+                           COM_applyFilter ($_POST['grp_gl_core']),
+                           $_POST['features'], $_POST[$_TABLES['groups']]);
 } else if ($mode == 'savegroupusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
