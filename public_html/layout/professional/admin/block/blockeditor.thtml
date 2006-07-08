@@ -89,6 +89,10 @@
                                                 <span class="warningsmall">{lang_allowed_html}</span></td>
                                         </tr>
 		                                <tr>
+                                            <td align="right">{lang_autotags}:</td>
+                                            <td><input type="checkbox" name="allow_autotags" {allow_autotags}> ({lang_use_autotags})</td>
+                                        </tr>
+		                                <tr>
                                             <td colspan="2"><hr></td>
                                         </tr>
                                         <tr>

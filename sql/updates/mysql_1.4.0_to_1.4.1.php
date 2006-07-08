@@ -26,6 +26,9 @@ $_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'phpblock', phpblockfn ='phpbl
 // add new field to the stories table to indicate story was created or last updated using the advanced editor
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD advanced_editor_mode tinyint(1) unsigned default '0' AFTER postmode";
 
+// add new field to enable/disable use of autotags in "normal" blocks
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD allow_autotags tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER content";
+
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
 {

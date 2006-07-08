@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.555 2006/06/27 00:14:02 ospiess Exp $
+// $Id: lib-common.php,v 1.556 2006/07/08 13:51:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3072,7 +3072,7 @@ function COM_showBlock( $name, $help='', $title='' )
 
 function COM_showBlocks( $side, $topic='', $name='all' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page;
 
     $retval = '';
 
@@ -3092,15 +3092,16 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         }
     }
 
+    $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date "
+         . "FROM {$_TABLES['blocks']} WHERE is_enabled = 1";
+
     if( $side == 'left' )
     {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date "
-              ."FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1";
+        $sql .= " AND onleft = 1";
     }
     else
     {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date "
-              ."FROM {$_TABLES['blocks']} WHERE onleft = 0 AND is_enabled = 1";
+        $sql .= " AND onleft = 0";
     }
 
     if( !empty( $topic ))
@@ -3133,7 +3134,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     // convert result set to an array of associated arrays
     $blocks = array();
-    for( $i = 1; $i <= $nrows; $i++ )
+    for( $i = 0; $i < $nrows; $i++ )
     {
         $blocks[] = DB_fetchArray( $result );
     }
@@ -3145,11 +3146,11 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     // sort the resulting array by block order
     $column = 'blockorder';
     $sortedBlocks = $blocks;
-    for( $i = 0; $i < sizeof( $sortedBlocks )-1; $i++ )
+    for( $i = 0; $i < sizeof( $sortedBlocks ) - 1; $i++ )
     {
-        for ($j=0; $j<sizeof($sortedBlocks)-1-$i; $j++)
+        for( $j = 0; $j < sizeof( $sortedBlocks ) - 1 - $i; $j++ )
         {
-            if ($sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column])
+            if( $sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column] )
             {
                 $tmp = $sortedBlocks[$j];
                 $sortedBlocks[$j] = $sortedBlocks[$j + 1];
@@ -3159,10 +3160,11 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     }
     $blocks = $sortedBlocks;
 
-    // Loop though resulting sorted array and pass associative arays to COM_formatBlock
+    // Loop though resulting sorted array and pass associative arrays
+    // to COM_formatBlock
     foreach( $blocks as $A )
     {
-        if( $A['type'] == 'dynamic' or SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
+        if( $A['type'] == 'dynamic' or SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) > 0 )
         {
            $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
         }
@@ -3184,7 +3186,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 */
 function COM_formatBlock( $A, $noboxes = false )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG21;
 
     $retval = '';
     if( $A['type'] == 'portal' )
@@ -3234,7 +3236,6 @@ function COM_formatBlock( $A, $noboxes = false )
     if( !empty( $A['content'] ) && ( trim( $A['content'] ) != '' ) && !$_USER['noboxes'] )
     {
         $blockcontent = stripslashes( $A['content'] );
-        $blockcontent = str_replace( array( '<?', '?>' ), '', $blockcontent );
 
         // Hack: If the block content starts with a '<' assume it
         // contains HTML and do not call nl2br() which would only add
@@ -3244,6 +3245,11 @@ function COM_formatBlock( $A, $noboxes = false )
         {
             $blockcontent = nl2br( $blockcontent );
         }
+
+        if ($A['allow_autotags'] == 1) {
+            $blockcontent = PLG_replaceTags( $blockcontent );
+        }
+        $blockcontent = str_replace( array( '<?', '?>' ), '', $blockcontent );
 
         $retval .= COM_startBlock( $A['title'], $A['help'],
                        COM_getBlockTemplate( $A['name'], 'header' ))

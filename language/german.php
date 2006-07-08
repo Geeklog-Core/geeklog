@@ -652,7 +652,9 @@ $LANG21 = array(
     62 => 'Artikellimit',
     63 => 'Block-Titel nicht erlaubt',
     64 => 'Der Titel kann nicht leer sein und darf kein HTML enthalten!',
-    65 => 'Reihenfolge'
+    65 => 'Reihenfolge',
+    66 => 'Autotags',
+    67 => 'Ankreuzen, um Autotags zu interpretieren'
 );
 
 ###############################################################################

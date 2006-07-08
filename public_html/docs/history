@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Allow (optional) usage of autotags in "normal" blocks (can be enabled /
+  disabled per block) [Dirk]
 - Introduced a {story_counter} variable in the story templates. It's 0 on the
   article page and in previews, but 1 for the first story, 2 for the second,
   etc. on the index page (per page, i.e. starts with 1 again on the second page)
@@ -191,6 +193,7 @@ Spam-X plugin (1.1.0)
 
 Static Pages plugin (1.4.3)
 -------------------
+- Allow to show/hide update date/time and hits [Oliver]
 - When creating a new page, don't set the default group ownership to the Static
   Page Admin group if the current user is not a member of that group. Instead,
   pick a group with staticpages.edit permission that the user is a member of

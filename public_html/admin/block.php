@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.101 2006/07/03 11:46:09 dhaun Exp $
+// $Id: block.php,v 1.102 2006/07/08 13:51:56 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -361,9 +361,17 @@ function editblock ($bid = '')
     } else {
         $block_templates->set_var ('block_rdfupdated', $A['rdfupdated']);
     }
-    $block_templates->set_var('lang_normalblockoptions', $LANG21[16]);
-    $block_templates->set_var('lang_blockcontent', $LANG21[17]);
-    $block_templates->set_var('block_content', htmlspecialchars (stripslashes ($A['content'])));
+    $block_templates->set_var ('lang_normalblockoptions', $LANG21[16]);
+    $block_templates->set_var ('lang_blockcontent', $LANG21[17]);
+    $block_templates->set_var ('lang_autotags', $LANG21[66]);
+    $block_templates->set_var ('lang_use_autotags', $LANG21[67]);
+    $block_templates->set_var ('block_content',
+                               htmlspecialchars (stripslashes ($A['content'])));
+    if ($A['allow_autotags'] == 1) {
+        $block_templates->set_var ('allow_autotags', 'checked="checked"');
+    } else {
+        $block_templates->set_var ('allow_autotags', '');
+    }
     $block_templates->set_var ('end_block',
             COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
     $block_templates->parse('output', 'editor');
@@ -459,7 +467,7 @@ function listblocks()
 * @return   string                  HTML redirect or error message
 *
 */
-function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled)
+function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE;
 
@@ -508,6 +516,11 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             $is_enabled = 1;
         } else {
             $is_enabled = 0;
+        }
+        if ($allow_autotags == 'on') {
+            $allow_autotags = 1;
+        } else {
+            $allow_autotags = 0;
         }
 
         if ($type == 'portal') {
@@ -562,11 +575,11 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 
         if ($bid > 0)
         {
-            DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled");
+            DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags");
         } else {
             $sql = "INSERT INTO {$_TABLES['blocks']} "
-             .'(name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled) '
-             ."VALUES ('$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled)";
+             .'(name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags) '
+             ."VALUES ('$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags)";
              DB_query($sql);
              $bid = DB_insertId();
         }
@@ -754,7 +767,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                 $_POST['phpblockfn'], $_POST['onleft'],
                 $_POST['owner_id'], $_POST['group_id'], $_POST['perm_owner'],
                 $_POST['perm_group'], $_POST['perm_members'],
-                $_POST['perm_anon'], $_POST['is_enabled']);
+                $_POST['perm_anon'], $_POST['is_enabled'],
+                $_POST['allow_autotags']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG21[3])
              . editblock ($bid)
