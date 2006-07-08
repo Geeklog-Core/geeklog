@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.83 2006/05/25 15:42:28 dhaun Exp $
+// $Id: index.php,v 1.84 2006/07/08 15:46:13 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -212,8 +212,8 @@ if ( $A = DB_fetchArray( $result ) ) {
         $display .= PLG_showCenterblock (2, $page, $topic);
     }
 
-    // get reamaining stories
-    while ( $A = DB_fetchArray($result) ) {
+    // get remaining stories
+    while ($A = DB_fetchArray ($result)) {
         $display .= STORY_renderArticle ($A, 'y');
     }
 
@@ -221,15 +221,18 @@ if ( $A = DB_fetchArray( $result ) ) {
     $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 
     // Print Google-like paging navigation
-    if (empty($topic)) {
-        $base_url = $_CONF['site_url'] . '/index.php';
-        if ($newstories) {
-            $base_url .= '?display=new';
+    if (!isset ($_CONF['hide_main_page_navigation']) ||
+            ($_CONF['hide_main_page_navigation'] == 0)) {
+        if (empty ($topic)) {
+            $base_url = $_CONF['site_url'] . '/index.php';
+            if ($newstories) {
+                $base_url .= '?display=new';
+            }
+        } else {
+            $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
         }
-    } else {
-        $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
+        $display .= COM_printPageNavigation ($base_url, $page, $num_pages);
     }
-    $display .= COM_printPageNavigation($base_url,$page, $num_pages);
 } else { // no stories to display
     if (!isset ($_CONF['hide_no_news_msg']) ||
             ($_CONF['hide_no_news_msg'] == 0)) {

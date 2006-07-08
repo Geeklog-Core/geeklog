@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.226 2006/06/15 15:46:30 dhaun Exp $
+// $Id: config.php,v 1.227 2006/07/08 15:46:13 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -577,6 +577,7 @@ $_CONF['page_break_comments']   = 'last';  // When an article has a page break,
 $_CONF['article_image_align']   = 'right'; // Topic icon on left or right.
 $_CONF['show_topic_icon']       = 1;       // default for new stories
 $_CONF['hide_no_news_msg']      = 0;       // If 1, hide No News To Display msg
+$_CONF['hide_main_page_navigation'] = 0;   // hide "google paging" on index.php
 
 
 // Advanced theme settings
