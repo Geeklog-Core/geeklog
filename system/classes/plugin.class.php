@@ -2,15 +2,15 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | plugin.class.php                                                          |
+// |                                                                           |
 // | Geeklog plugin class.                                                     |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
+// | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,13 +29,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugin.class.php,v 1.9 2003/05/02 04:04:18 tony Exp $
+// $Id: plugin.class.php,v 1.10 2006/07/09 13:45:54 dhaun Exp $
 
 /**
-* This is a poorly thought out class that is used pretty much as a structure when
-* we need to pass plugin data back and forth
+* This is a poorly thought out class that is used pretty much as a structure
+* when we need to pass plugin data back and forth
 *
-* @author   Tony Bibbs <tony@tonybibbs.com>
+* @author   Tony Bibbs <tony AT tonybibbs DOT com>
 *
 */
 class Plugin {
@@ -103,6 +103,7 @@ class Plugin {
         $this->submissionhelpfile = '';
         $this->getsubmissionssql = '';
         $this->submissionheading = array();
+        $this->supports_paging = false;
     }
    
     /**
