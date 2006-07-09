@@ -1395,7 +1395,8 @@ $LANG_ADMIN = array (
     'delete'        => 'Löschen',
     'copy'          => 'Kopieren',
     'no_results'    => '- Keine Einträge gefunden -',
-    'data_error'    => 'There was an error processing the subscription data. Please check the data source.'
+    'data_error'    => 'There was an error processing the subscription data. Please check the data source.',
+    'preview'       => 'Vorschau'
 );
 
 ###############################################################################

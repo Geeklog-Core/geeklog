@@ -1389,8 +1389,8 @@ $LANG_ADMIN = array (
     'delete'        => 'Delete',
     'copy'          => 'Copy',
     'no_results'    => '- No entries found -',
-    'data_error'    => 'There was an error processing the subscription data. Please check the data source.'
-
+    'data_error'    => 'There was an error processing the subscription data. Please check the data source.',
+    'preview'       => 'Preview'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

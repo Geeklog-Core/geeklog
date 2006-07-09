@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.71 2006/07/09 09:50:33 dhaun Exp $
+// $Id: index.php,v 1.72 2006/07/09 17:20:41 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -146,7 +146,7 @@ function form ($A, $error = false)
                         COM_getBlockTemplate ('_admin_block', 'header'));
         $sp_template->set_var('lang_save', $LANG_ADMIN['save']);
         $sp_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
-        $sp_template->set_var('lang_preview', $LANG_STATIC['preview']);
+        $sp_template->set_var('lang_preview', $LANG_ADMIN['preview']);
         if (SEC_hasRights ('staticpages.delete') && ($mode != 'clone') &&
                 !empty ($A['sp_old_id'])) {
             $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
