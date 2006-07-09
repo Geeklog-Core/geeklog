@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.66 2006/06/28 13:22:24 dhaun Exp $
+// $Id: lib-admin.php,v 1.67 2006/07/09 13:49:22 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -838,7 +838,10 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
 
     $retval = '';
 
-    $type = $A['_moderation_type'];
+    $type = '';
+    if (isset ($A['_moderation_type'])) {
+        $type = $A['_moderation_type'];
+    }
     switch ($fieldname) {
         case 'edit':
             $retval = "<a href=\"{$A['edit']}\">{$icon_arr['edit']}</a>";
