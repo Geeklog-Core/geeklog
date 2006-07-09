@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.69 2006/07/08 22:02:17 dhaun Exp $
+// $Id: index.php,v 1.70 2006/07/09 09:30:20 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -370,7 +370,7 @@ function liststaticpages()
                     array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
                     array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
     );
-    $defsort_arr = array('field' => 'sp_title', 'direction' => 'desc');
+    $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
