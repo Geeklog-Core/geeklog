@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.70 2006/07/09 09:30:20 dhaun Exp $
+// $Id: index.php,v 1.71 2006/07/09 09:50:33 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -144,8 +144,8 @@ function form ($A, $error = false)
         $sp_template->set_var('start_block_editor',
                 COM_startBlock($LANG_STATIC['staticpageeditor']), '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
-        $sp_template->set_var('lang_save', $LANG_STATIC['save']);
-        $sp_template->set_var('lang_cancel', $LANG_STATIC['cancel']);
+        $sp_template->set_var('lang_save', $LANG_ADMIN['save']);
+        $sp_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
         $sp_template->set_var('lang_preview', $LANG_STATIC['preview']);
         if (SEC_hasRights ('staticpages.delete') && ($mode != 'clone') &&
                 !empty ($A['sp_old_id'])) {
@@ -275,11 +275,11 @@ function form ($A, $error = false)
         $sp_template->set_var ('inblock_msg', $LANG_STATIC['inblock_msg']);
         $sp_template->set_var ('inblock_info', $LANG_STATIC['inblock_info']);
 
-        $curtime = COM_getUserDateTimeFormat();
+        $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
+        $sp_template->set_var ('lang_lastupdated', $LANG_STATIC['date']);
+        $sp_template->set_var ('sp_formateddate', $curtime[0]);
+        $sp_template->set_var ('sp_date', $curtime[1]);
 
-        $sp_template->set_var('lang_lastupdated', $LANG_STATIC['date']);
-        $sp_template->set_var('sp_formateddate', $curtime[0]);
-        $sp_template->set_var('sp_date', $curtime[1]);
         $sp_template->set_var('lang_title', $LANG_STATIC['title']);
         $title = '';
         if (isset ($A['sp_title'])) {
@@ -429,6 +429,9 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
         $A['sp_old_id'] = '';
     } else {
         $A = $_POST;
+        if (empty ($A['unixdate'])) {
+            $A['unixdate'] = time ();
+        }
         $A['sp_content'] = COM_checkHTML (COM_checkWords ($A['sp_content']));
     }
     if (isset ($A['sp_title'])) {
@@ -446,7 +449,6 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 * @param sp_uid          string  ID of user that created page
 * @param sp_title        string  title of page
 * @param sp_content      string  page content
-* @param unixdate        string  date page was last updated
 * @param sp_hits         int     Number of page views
 * @param sp_format       string  HTML or plain text
 * @param sp_onmenu       string  Flag to place entry on menu
@@ -465,9 +467,9 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 * @param sp_inblock      string  Flag: wrap page in a block (or not)
 *
 */
-function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock)
+function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock)
 {
-    global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $LANG12, $LANG_STATIC, $_SP_CONF;
 
     $retval = '';
 
@@ -493,8 +495,6 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         $retval .= COM_siteFooter ();
         echo $retval;
     } elseif (!empty ($sp_title) && !empty ($sp_content)) {
-        $date = date ('Y-m-d H:i:s', $unixdate);
-
         if (empty ($sp_hits)) {
             $sp_hits = 0;
         }
@@ -545,8 +545,13 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
             DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE sp_centerblock = 1 AND sp_where = 0 AND sp_tid = '$sp_tid'");
         }
 
+        $formats = array ('allblocks', 'blankpage', 'leftblocks', 'noblocks');
+        if (!in_array ($sp_format, $formats)) {
+            $sp_format = 'allblocks';
+        }
+
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where,sp_inblock', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where,'$sp_inblock'");
+        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where,sp_inblock', "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where,'$sp_inblock'");
         if ($delete_old_page && !empty ($sp_old_id)) {
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
@@ -596,16 +601,34 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     if (!empty ($sp_id)) {
-        submitstaticpage ($sp_id, $_POST['sp_uid'], $_POST['sp_title'],
-            $_POST['sp_content'], $_POST['unixdate'], $_POST['sp_hits'],
-            $_POST['sp_format'], $_POST['sp_onmenu'], $_POST['sp_label'],
-            $_POST['owner_id'], $_POST['group_id'], $_POST['perm_owner'],
+        if (!isset ($_POST['sp_onmenu'])) {
+            $_POST['sp_onmenu'] = '';
+        }
+        if (!isset ($_POST['sp_nf'])) {
+            $_POST['sp_nf'] = '';
+        }
+        if (!isset ($_POST['sp_centerblock'])) {
+            $_POST['sp_centerblock'] = '';
+        }
+        if (!isset ($_POST['sp_inblock'])) {
+            $_POST['sp_inblock'] = '';
+        }
+        $sp_uid = COM_applyFilter ($_POST['sp_uid'], true);
+        if ($sp_uid == 0) {
+            $sp_uid = $_USER['uid'];
+        }
+        submitstaticpage ($sp_id, $sp_uid, $_POST['sp_title'],
+            $_POST['sp_content'], COM_applyFilter ($_POST['sp_hits'], true),
+            COM_applyFilter ($_POST['sp_format']), $_POST['sp_onmenu'],
+            $_POST['sp_label'], COM_applyFilter ($_POST['owner_id'], true),
+            COM_applyFilter ($_POST['group_id'], true), $_POST['perm_owner'],
             $_POST['perm_group'], $_POST['perm_members'], $_POST['perm_anon'],
-            $_POST['sp_php'], $_POST['sp_nf'], $_POST['sp_old_id'],
-            $_POST['sp_centerblock'], $_POST['sp_tid'], $_POST['sp_where'],
-            $_POST['sp_inblock']);
+            $_POST['sp_php'], $_POST['sp_nf'],
+            COM_applyFilter ($_POST['sp_old_id']), $_POST['sp_centerblock'],
+            COM_applyFilter ($_POST['sp_tid']),
+            COM_applyFilter ($_POST['sp_where'], true), $_POST['sp_inblock']);
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
