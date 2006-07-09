@@ -650,7 +650,7 @@ $LANG21 = array(
     63 => 'Bad Block Title',
     64 => 'Your Title must not be empty and cannot contain HTML!',
     65 => 'Order',
-    66 => 'Autotags'
+    66 => 'Autotags',
     67 => 'Check to allow autotags'
 );
 
