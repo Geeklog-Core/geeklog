@@ -70,7 +70,7 @@
           </tr>
           <tr>
               <td align="right">{lang_lastupdated}:</td>
-              <td>{sp_formateddate}<input type="hidden" name="unixdate" value="{sp_date}"></td>
+              <td>{sp_formateddate}</td>
           </tr>
           <tr>
               <td colspan="2"><hr></td>
