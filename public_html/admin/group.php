@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.77 2006/07/08 16:25:29 dhaun Exp $
+// $Id: group.php,v 1.78 2006/07/09 16:49:29 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -647,9 +647,7 @@ function listusers ($grp_id)
     $query_arr = array ('table' => 'users',
                         'sql' => $sql,
                         'query_fields' => array('username', 'email', 'fullname'),
-                        'default_filter' => "AND {$_TABLES['users']}.uid > 1",
-                        'query' => COM_applyFilter($_REQUEST['q']),
-                        'query_limit' => COM_applyFilter ($_REQUEST['query_limit'], true)
+                        'default_filter' => "AND {$_TABLES['users']}.uid > 1"
     );
 
     $retval .= ADMIN_list ('user', 'ADMIN_getListField_users', $header_arr, $text_arr, $query_arr, array(), $defsort_arr);
@@ -727,6 +725,8 @@ function grp_selectUsers ($group_id = '0', $allusers = false)
 function editusers ($group)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_ADMIN, $LANG28;
+
+    $retval = '';
 
     $thisUsersGroups = SEC_getUserGroups ();
     $groupName = DB_getItem($_TABLES['groups'],'grp_name',"grp_id='$group'");
@@ -864,9 +864,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteFooter ();
 } else if ($mode == 'editusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
-    $page = COM_applyFilter ($_REQUEST['page'], true);
     $display .= COM_siteHeader ('menu', $LANG_ACCESS['usergroupadmin']);
-    $display .= editusers ($grp_id, $page);
+    $display .= editusers ($grp_id);
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG28[38]);
