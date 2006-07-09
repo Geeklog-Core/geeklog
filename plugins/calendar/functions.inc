@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.45 2006/07/08 22:10:18 dhaun Exp $
+// $Id: functions.inc,v 1.46 2006/07/09 18:07:44 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -610,15 +610,10 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var ('site_url', $_CONF['site_url']);
     $eventform->set_var ('layout_url', $_CONF['layout_url']);
     $eventform->set_var ('lang_title', $LANG_CAL_1[28]);
-    $types = explode (',', $_CA_CONF['event_types']);
-    $catdd = '';
-    foreach ($types as $event_type) {
-        $catdd .= '<option value="' . $event_type . '">' . $event_type
-               . '</option>';
-    }
+
     $eventform->set_var('lang_eventtype', $LANG_CAL_1[37]);
     $eventform->set_var('lang_editeventtypes', $LANG_CAL_1[38]);
-    $eventform->set_var('type_options', $catdd);
+    $eventform->set_var('type_options', CALENDAR_eventTypeList ());
 
     $eventform->set_var('lang_link', $LANG_CAL_1[43]);
     $eventform->set_var('max_url_length', 255);
@@ -1545,6 +1540,33 @@ function CALENDAR_stateList ($currstate = '')
             $retval .= ' selected="selected"';
         }
         $retval .= '>' . $state . '</option>';
+    }
+
+    return $retval;
+}
+
+/**
+* Creates a dropdown list of all the event types
+*
+* @param    string  $currtype   current event type (to preselect in the list)
+* @return   string              <option> list of event types
+*
+*/
+function CALENDAR_eventTypeList ($currtype = '')
+{
+    global $_CA_CONF;
+
+    $retval = '';
+
+    $event_types = explode (',', $_CA_CONF['event_types']);
+    asort ($event_types);
+
+    foreach ($event_types as $type) {
+        $retval .= '<option value="' . $type . '"';
+        if ($currtype == $type) {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>' . $type . '</option>';
     }
 
     return $retval;

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.17 2006/07/08 19:00:20 dhaun Exp $
+// $Id: index.php,v 1.18 2006/07/09 18:07:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -168,20 +168,12 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $A['title'] = str_replace('}','&#125;',$A['title']);
     $A['title'] = str_replace('"','&quot;',$A['title']);
     $event_templates->set_var('event_title', stripslashes ($A['title']));
-    $types = explode(',', $_CA_CONF['event_types']);
-    asort ($types);
-    $catdd = '';
-    for ($i = 1; $i <= count($types); $i++) {
-        $catdd .= '<option value="' . current($types) . '"';
-        if ($A['event_type'] == current($types)) {
-            $catdd .= ' selected="selected"';
-        }
-        $catdd .= '>' . current($types) . '</option>';
-        next($types);
-    }
+
     $event_templates->set_var('lang_eventtype', $LANG_CAL_1[37]);
     $event_templates->set_var('lang_editeventtypes', $LANG12[50]);
-    $event_templates->set_var('type_options', $catdd);
+    $event_templates->set_var('type_options',
+                              CALENDAR_eventTypeList ($A['event_type']));
+
     $event_templates->set_var('lang_eventurl', $LANG_CAL_ADMIN[4]);
     $event_templates->set_var('max_url_length', 255);
     $event_templates->set_var('event_url', $A['url']);
@@ -324,8 +316,8 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('event_description', stripslashes ($A['description']));
     $event_templates->set_var('lang_hits', $LANG10[30]);
     $event_templates->set_var('hits', COM_numberFormat ($A['hits']));
-    $event_templates->set_var('lang_save', $LANG_CAL_ADMIN[20]);
-    $event_templates->set_var('lang_cancel', $LANG_CAL_ADMIN[21]);
+    $event_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $event_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     // user access info
     $event_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
@@ -580,10 +572,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     } else {
         $display .= CALENDAR_deleteEvent ($eid);
     }
-} else if (($mode == $LANG_CAL_ADMIN[20]) && !empty ($LANG_CAL_ADMIN[20])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+    if (!isset ($_POST['allday'])) {
+        $_POST['allday'] = '';
+    }
     $display .= CALENDAR_saveEvent (COM_applyFilter ($_POST['eid']),
             $_POST['title'], $_POST['event_type'],
-            $_POST['url'], $_POST['allday'],
+            $_POST['url'], COM_applyFilter ($_POST['allday']),
             $_POST['start_month'], $_POST['start_day'],
             $_POST['start_year'], $_POST['start_hour'],
             $_POST['start_minute'], $_POST['start_ampm'],
