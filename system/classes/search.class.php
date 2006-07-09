@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.54 2006/06/23 12:55:42 dhaun Exp $
+// $Id: search.class.php,v 1.55 2006/07/09 13:46:45 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -334,7 +334,7 @@ class Search {
             }
         } else {
             $story_results = new Plugin();
-            $story_results->searchlabel = $LANG09[37];
+            $story_results->searchlabel = $LANG09[53];
             $story_results->num_itemssearched = 0;
         }
 
