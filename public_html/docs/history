@@ -3,6 +3,9 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Tried to make "3 new stories in the last 1 day" sound less awkward by going
+  back one unit, i.e. "3 new stories in the last 24 hours", in the What's New
+  block (likewise for 1 week, 1 month, etc.) [Dirk]
 - Introduced config options to set the default for the story's draft flag
   and frontpage option (feature request #163) [Dirk]
 - Introduced $_CONF['hide_main_page_navigation'] to hide the "Google paging"
@@ -197,6 +200,7 @@ Spam-X plugin (1.1.0)
 
 Static Pages plugin (1.4.3)
 -------------------
+- Fixed default sorting order for the list of static pages [Dirk]
 - Allow to show/hide update date/time and hits [Oliver]
 - When creating a new page, don't set the default group ownership to the Static
   Page Admin group if the current user is not a member of that group. Instead,
