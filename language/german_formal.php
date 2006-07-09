@@ -1333,7 +1333,7 @@ $LANG_DIR = array(
 # %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
-    'new_string' => '%n neue %i in den letzten %t %s',
+    'new_string' => '%n neue %i für die letzten %t %s',
     'new_last' => 'letzte %t %s',
     'minutes' => 'Minuten',
     'hours' => 'Stunden',

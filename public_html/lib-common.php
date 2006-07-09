@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.556 2006/07/08 13:51:56 dhaun Exp $
+// $Id: lib-common.php,v 1.557 2006/07/09 08:16:17 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3945,22 +3945,30 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 
     // This is the amount you have to divide the previous by to get the
     // different time intervals: hour, day, week, months
-    $time_divider = array ( 60, 60, 24, 7, 30 );
+    $time_divider = array( 60, 60, 24, 7, 30 );
 
     // These are the respective strings to the numbers above. They have to match
     // the strings in $LANG_WHATSNEW (i.e. these are the keys for the array -
     // the actual text strings are taken from the language file).
-    $times_description = array ( 'minutes', 'hours', 'days', 'weeks', 'months' );
-    $time_description = array ( 'minute', 'hour', 'day', 'week', 'month' );
+    $time_description  = array( 'minute',  'hour',  'day',  'week',  'month'  );
+    $times_description = array( 'minutes', 'hours', 'days', 'weeks', 'months' );
 
-    for ( $s = 0; $s < count( $time_divider ); $s++ )
+    for( $s = 0; $s < count( $time_divider ); $s++ )
     {
         $time = $time / $time_divider[$s];
-        if ( $time < $time_divider[$s + 1] )
+        if( $time < $time_divider[$s + 1] )
         {
-            if ( $time == 1 )
+            if( $time == 1 )
             {
-                $time_str = $time_description[$s];
+                if( $s == 0 )
+                {
+                    $time_str = $time_description[$s];
+                }
+                else // go back to the previous unit, e.g. 1 day -> 24 hours
+                {
+                    $time_str = $times_description[$s - 1];
+                    $time *= $time_divider[$s];
+                }
             }
             else
             {
