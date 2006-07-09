@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.557 2006/07/09 08:16:17 dhaun Exp $
+// $Id: lib-common.php,v 1.558 2006/07/09 10:44:53 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5713,7 +5713,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     }
     
     /* If in PHP4, then respect error_reporting */
-    if( (PHP_VERSION < 5) && (($level & error_reporting()) == 0) ) return;
+    if( (PHP_VERSION < 5) && (($errno & error_reporting()) == 0) ) return;
     
     /*
      * If we have a root user, then output detailed error message:
