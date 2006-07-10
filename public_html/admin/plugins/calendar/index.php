@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2006/07/09 18:07:44 dhaun Exp $
+// $Id: index.php,v 1.19 2006/07/10 09:26:45 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -386,7 +386,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                              $location, $address1, $address2, $city, $state,
                              $zipcode, $description, $postmode, $owner_id,
                              $group_id, $perm_owner, $perm_group, $perm_members,
-                             $perm_anon, $mode)
+                             $perm_anon)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_CAL_ADMIN, $MESSAGE;
 
@@ -480,6 +480,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
     if ($postmode == 'html') {
         $description = COM_checkHTML (COM_checkWords ($description));
     } else {
+        $postmode = 'plaintext';
         $description = htmlspecialchars (COM_checkWords ($description));
     }
     $description = addslashes ($description);
@@ -489,6 +490,9 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
     $address2 = addslashes (COM_checkHTML (COM_checkWords ($address2)));
     $city = addslashes (COM_checkHTML (COM_checkWords ($city)));
     $zipcode =  addslashes (COM_checkHTML (COM_checkWords ($zipcode)));
+    $event_type = addslashes (strip_tags (COM_checkWords ($event_type)));
+    $url = addslashes (strip_tags ($url));
+
     if ($allday == 0) {
         // Add 12 to make time on 24 hour clock if needed
         if ($start_ampm == 'pm' AND $start_hour <> 12) {
@@ -518,7 +522,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                .'timeend,location,address1,address2,city,state,zipcode,description,'
                .'postmode,owner_id,group_id,perm_owner,perm_group,perm_members,'
                .'perm_anon',
-               "$eid,'$title','$event_type','$url',$allday,'$datestart',"
+               "'$eid','$title','$event_type','$url',$allday,'$datestart',"
                ."'$dateend','$timestart','$timeend','$location','$address1',"
                ."'$address2','$city','$state','$zipcode','$description','$postmode',"
                ."$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
@@ -533,7 +537,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                        .'city,state,zipcode,allday,url,description,postmode,'
                        .'group_id,owner_id,perm_owner,perm_group,perm_members,'
                        .'perm_anon,uid,location,timestart,timeend',
-                        "$eid,'$title','$event_type','$datestart','$dateend',"
+                        "'$eid','$title','$event_type','$datestart','$dateend',"
                        ."'$address1','$address2','$city','$state','$zipcode',"
                        ."$allday,'$url','$description','$postmode',$group_id,"
                        ."$owner_id,$perm_owner,$perm_group,$perm_members,"
@@ -579,19 +583,23 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= CALENDAR_saveEvent (COM_applyFilter ($_POST['eid']),
             $_POST['title'], $_POST['event_type'],
             $_POST['url'], COM_applyFilter ($_POST['allday']),
-            $_POST['start_month'], $_POST['start_day'],
-            $_POST['start_year'], $_POST['start_hour'],
-            $_POST['start_minute'], $_POST['start_ampm'],
-            $_POST['end_month'], $_POST['end_day'],
-            $_POST['end_year'], $_POST['end_hour'],
-            $_POST['end_minute'], $_POST['end_ampm'],
-            $_POST['location'], $_POST['address1'],
-            $_POST['address2'], $_POST['city'],
-            $_POST['state'], $_POST['zipcode'],
+            COM_applyFilter ($_POST['start_month'], true),
+            COM_applyFilter ($_POST['start_day'], true),
+            COM_applyFilter ($_POST['start_year'], true),
+            COM_applyFilter ($_POST['start_hour'], true),
+            COM_applyFilter ($_POST['start_minute'], true), $_POST['start_ampm'],
+            COM_applyFilter ($_POST['end_month'], true),
+            COM_applyFilter ($_POST['end_day'], true),
+            COM_applyFilter ($_POST['end_year'], true),
+            COM_applyFilter ($_POST['end_hour'], true),
+            COM_applyFilter ($_POST['end_minute'], true), $_POST['end_ampm'],
+            $_POST['location'], $_POST['address1'], $_POST['address2'],
+            $_POST['city'], $_POST['state'], $_POST['zipcode'],
             $_POST['description'], $_POST['postmode'] ,
-            $_POST['owner_id'], $_POST['group_id'],
+            COM_applyFilter ($_POST['owner_id'], true),
+            COM_applyFilter ($_POST['group_id'], true),
             $_POST['perm_owner'], $_POST['perm_group'],
-            $_POST['perm_members'], $_POST['perm_anon'], $mode);
+            $_POST['perm_members'], $_POST['perm_anon']);
 } else if ($mode == 'editsubmission') {
     $id = COM_applyFilter ($_REQUEST['id']);
     $result = DB_query ("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
