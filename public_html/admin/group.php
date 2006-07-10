@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.78 2006/07/09 16:49:29 dhaun Exp $
+// $Id: group.php,v 1.79 2006/07/10 03:29:56 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -840,7 +840,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     } else {
         $display .= deleteGroup ($grp_id);
     }
-} else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $display .= savegroup (COM_applyFilter ($_POST['grp_id'],true),
                            COM_applyFilter ($_POST['grp_name']),
                            $_POST['grp_descr'],
