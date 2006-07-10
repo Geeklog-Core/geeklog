@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.110 2006/07/08 17:03:07 dhaun Exp $
+// $Id: submit.php,v 1.111 2006/07/10 03:34:59 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -192,8 +192,13 @@ function submitstory($topic = '')
         $storyform->set_var ('change_editormode', 'onChange="change_editmode(this);"');
         $storyform->set_var ('lang_expandhelp', $LANG24[67]);
         $storyform->set_var ('lang_reducehelp', $LANG24[68]);
-        $storyform->set_var ('show_texteditor', 'none');
-        $storyform->set_var ('show_htmleditor', '');
+        if ($A['postmode'] == 'html') {
+            $storyform->set_var ('show_texteditor', 'none');
+            $storyform->set_var ('show_htmleditor', '');
+        } else {
+            $storyform->set_var ('show_texteditor', '');
+            $storyform->set_var ('show_htmleditor', 'none');
+        }
     } else {
         $storyform->set_file('storyform','submitstory.thtml');
         if ($A['postmode'] == 'html') {
