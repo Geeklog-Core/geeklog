@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.38 2006/07/08 20:09:59 dhaun Exp $
+// $Id: lib-comment.php,v 1.39 2006/07/15 13:30:37 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -230,6 +230,13 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         }
         if( !isset( $A['cid'] )) {
             $A['cid'] = 0;
+        }
+        if( !isset( $A['photo'] )) {
+            if( isset( $_USER['photo'] )) {
+                $A['photo'] = $_USER['photo'];
+            } else {
+                $A['photo'] = '';
+            }
         }
         $mode = 'flat';
     } else {
