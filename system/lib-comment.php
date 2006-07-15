@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.39 2006/07/15 13:30:37 dhaun Exp $
+// $Id: lib-comment.php,v 1.40 2006/07/15 15:40:57 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -62,7 +62,7 @@ if( $_CONF['allow_user_photo'] )
 */
 function CMT_commentBar( $sid, $title, $type, $order, $mode )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $_REQUEST;
+    global $_CONF, $_TABLES, $_USER, $LANG01;
 
     $parts = explode( '/', $_SERVER['PHP_SELF'] );
     $page = array_pop( $parts );
@@ -682,19 +682,23 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $start->set_var( 'site_url', $_CONF['site_url'] );
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
                 $start->set_var( 'hide_if_preview', 'style="display:none"' );
-                
+
                 // Clean up all the vars
-                while(list($key, $value) = each($_POST))
-                {
-                    $_POST[$key] = COM_applyFilter($_POST[$key]);
+                $A = array();
+                foreach ($_POST as $key => $value) {
+                    if (($key == 'pid') || ($key == 'cid')) {
+                        $A[$key] = COM_applyFilter ($_POST[$key], true);
+                    } else {
+                        $A[$key] = COM_applyFilter ($_POST[$key]);
+                    }
                 }
 
-                if (empty ($_POST['username'])) {
-                    $_POST['username'] = DB_getItem ($_TABLES['users'],
-                            'username', "uid = $uid");
+                if (empty ($A['username'])) {
+                    $A['username'] = DB_getItem ($_TABLES['users'], 'username',
+                                                 "uid = $uid");
                 }
-                $thecomments = CMT_getComment ($_POST, 'flat', $type,
-                                               'ASC', false, true );
+                $thecomments = CMT_getComment ($A, 'flat', $type, 'ASC', false,
+                                               true);
 
                 $start->set_var( 'comments', $thecomments );
                 $retval .= COM_startBlock ($LANG03[14])
@@ -782,8 +786,9 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
  * @return   int         0 for success, > 0 indicates error
  *
  */
-function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
-    global $_CONF, $_TABLES, $_USER, $_SERVER, $LANG03;
+function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
+{
+    global $_CONF, $_TABLES, $_USER, $LANG03;
 
     $ret = 0;
 
@@ -985,8 +990,9 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
  * @param   int         $cid    Comment ID
  * @return  string      0 indicates success, >0 identifies problem
  */
-function CMT_deleteComment ($cid, $sid, $type) {
-    global $_TABLES, $_CONF, $_USER;
+function CMT_deleteComment ($cid, $sid, $type)
+{
+    global $_CONF, $_TABLES, $_USER;
 
     $ret = 0;  // Assume good status unless reported otherwise
 
