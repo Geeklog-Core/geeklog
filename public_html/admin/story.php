@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.229 2006/07/09 17:20:41 dhaun Exp $
+// $Id: story.php,v 1.230 2006/07/16 17:34:03 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -175,7 +175,7 @@ function liststories()
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=std',
+        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
               'text' => $LANG_ADMIN['create_new'])
     );
 
@@ -356,8 +356,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $A['numemails'] = 0;
 
         if (isset ($_CONF['advanced_editor']) && 
-            ($_CONF['advanced_editor'] == 1)) {
-            $A['postmode'] = 'html';
+            $_CONF['advanced_editor'] == 1 && 
+            $_CONF['postmode'] != 'plaintext') {
+            $A['postmode'] = 'adveditor';
         } else {
             $A['postmode'] = $_CONF['postmode'];
         }
