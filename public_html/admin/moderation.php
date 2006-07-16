@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.92 2006/07/08 17:03:07 dhaun Exp $
+// $Id: moderation.php,v 1.93 2006/07/16 17:43:55 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -76,7 +76,7 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 */
 function commandcontrol()
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE, $_DB_dbms;
 
     $retval = '';
 
@@ -142,7 +142,7 @@ function commandcontrol()
 
     // and finally, add the remaining admin items
     $cc_arr = array(
-                  array('condition' => ($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root'),
+                  array('condition' => ($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms == 'mysql') && SEC_inGroup ('Root'),
                         'url' => $_CONF['site_admin_url'] . '/database.php',
                         'lang' => $LANG01[103], 'image' => '/images/icons/database.'),
                   array('condition' => ($_CONF['link_documentation'] == 1),

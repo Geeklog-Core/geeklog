@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.558 2006/07/09 10:44:53 mjervis Exp $
+// $Id: lib-common.php,v 1.559 2006/07/16 17:43:55 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2192,7 +2192,8 @@ function COM_userMenu( $help='', $title='' )
 
 function COM_adminMenu( $help = '', $title = '' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF,
+           $_DB_dbms;
 
     $retval = '';
 
@@ -2469,7 +2470,8 @@ function COM_adminMenu( $help = '', $title = '' )
             next( $plugin_options );
         }
 
-        if( $_CONF['allow_mysqldump'] == 1 AND SEC_inGroup( 'Root' ))
+        if(( $_CONF['allow_mysqldump'] == 1 ) AND ( $_DB_dbms == 'mysql' ) AND
+                SEC_inGroup( 'Root' ))
         {
             $url = $_CONF['site_admin_url'] . '/database.php';
             $adminmenu->set_var( 'option_url', $url );
