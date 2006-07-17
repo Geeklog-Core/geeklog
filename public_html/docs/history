@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Added ability in staticpage editor to enable/disable Advanced Editor mode 
+  so you can use FCKEditor and then if need basic html edit mode [Blaine]
 - Tried to make "3 new stories in the last 1 day" sound less awkward by going
   back one unit, i.e. "3 new stories in the last 24 hours", in the What's New
   block (likewise for 1 week, 1 month, etc.) [Dirk]

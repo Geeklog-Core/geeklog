@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.72 2006/07/09 17:20:41 dhaun Exp $
+// $Id: index.php,v 1.73 2006/07/17 04:11:21 blaine Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -60,7 +60,7 @@ if (!SEC_hasRights ('staticpages.edit')) {
 function form ($A, $error = false) 
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
-           $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24, $MESSAGE;
+           $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24, $LANG_postmodes, $MESSAGE;
 
     if (!empty($sp_id) && $mode=='edit') {
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -74,6 +74,12 @@ function form ($A, $error = false)
         SEC_setDefaultPermissions ($A, $_SP_CONF['default_permissions']);
         $A['sp_inblock'] = $_SP_CONF['in_block'];
         $access = 3;
+        if (isset ($_CONF['advanced_editor']) && 
+          ($_CONF['advanced_editor'] == 1) && 
+          file_exists ($template_path . '/editor_advanced.thtml'))
+        {
+             $A['advanced_editor_mode'] = 1;
+        }
     }
     $retval = '';
 
@@ -89,8 +95,10 @@ function form ($A, $error = false)
     } else {
         $template_path = staticpages_templatePath ('admin');
         $sp_template = new Template ($template_path);
-        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)
-&& file_exists ($template_path . '/editor_advanced.thtml')) {
+        if (isset ($_CONF['advanced_editor']) && 
+            ($_CONF['advanced_editor'] == 1) && 
+            file_exists ($template_path . '/editor_advanced.thtml'))
+        {
             $sp_template->set_file ('form', 'editor_advanced.thtml');
             $sp_template->set_var ('lang_expandhelp', $LANG24[67]);
             $sp_template->set_var ('lang_reducehelp', $LANG24[68]);
@@ -101,6 +109,22 @@ function form ($A, $error = false)
             $sp_template->set_var ('toolbar4', $LANG24[74]);
             $sp_template->set_var ('toolbar5', $LANG24[75]);
             $sp_template->set_var('lang_nojavascript',$LANG24[77]);
+            $sp_template->set_var('lang_postmode', $LANG24[4]);
+            if ($A['postmode'] == 'adveditor') {
+                $sp_template->set_var('show_adveditor','');
+                $sp_template->set_var('show_htmleditor','none');
+            } else {
+                $sp_template->set_var('show_adveditor','none');
+                $sp_template->set_var('show_htmleditor','');
+            }
+            $post_options .= '<option value="html" SELECTED>'.$LANG_postmodes['html'].'</option>';
+            if ($A['postmode'] == 'adveditor') {
+                $post_options .= '<option value="adveditor" SELECTED>'.$LANG24[86].'</option>';
+            } else {
+                $post_options .= '<option value="adveditor">'.$LANG24[86].'</option>';
+            }
+            $sp_template->set_var('post_options',$post_options );
+            $sp_template->set_var ('change_editormode', 'onChange="change_editmode(this);"');               
         } else {
             $sp_template->set_file ('form', 'editor.thtml');
         }
@@ -467,7 +491,7 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 * @param sp_inblock      string  Flag: wrap page in a block (or not)
 *
 */
-function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock)
+function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock,$postmode)
 {
     global $_CONF, $_TABLES, $LANG12, $LANG_STATIC, $_SP_CONF;
 
@@ -551,7 +575,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits, $s
         }
 
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where,sp_inblock', "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where,'$sp_inblock'");
+        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where,sp_inblock,postmode', "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where,'$sp_inblock','$postmode'");
         if ($delete_old_page && !empty ($sp_old_id)) {
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
@@ -628,7 +652,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
             $_POST['sp_php'], $_POST['sp_nf'],
             COM_applyFilter ($_POST['sp_old_id']), $_POST['sp_centerblock'],
             COM_applyFilter ($_POST['sp_tid']),
-            COM_applyFilter ($_POST['sp_where'], true), $_POST['sp_inblock']);
+            COM_applyFilter ($_POST['sp_where'], true), $_POST['sp_inblock'],
+            COM_applyFilter ($_POST['postmode']));
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }

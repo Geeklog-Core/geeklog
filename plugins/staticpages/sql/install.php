@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.1 2005/11/13 13:46:06 dhaun Exp $
+// $Id: install.php,v 1.2 2006/07/17 04:11:21 blaine Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
@@ -54,6 +54,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_php tinyint(1) unsigned NOT NULL default '0',
   sp_nf tinyint(1) unsigned default '0',
   sp_inblock tinyint(1) unsigned default '1',
+  postmode varchar(16) NOT NULL default 'html',  
   PRIMARY KEY  (sp_id),
   KEY staticpage_sp_uid (sp_uid),
   KEY staticpage_sp_date (sp_date),

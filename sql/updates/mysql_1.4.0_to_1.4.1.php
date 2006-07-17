@@ -9,6 +9,9 @@ $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) V
 // add remarks-field to polls
 $_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AFTER votes";
 
+// add field to support advanced editor in staticpages
+$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD postmode varchar(16) DEFAULT 'html' NOT NULL";
+
 // update plugin version numbers
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0' WHERE pi_name = 'polls'";
