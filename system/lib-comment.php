@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.40 2006/07/15 15:40:57 dhaun Exp $
+// $Id: lib-comment.php,v 1.41 2006/07/17 20:02:24 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -688,6 +688,9 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 foreach ($_POST as $key => $value) {
                     if (($key == 'pid') || ($key == 'cid')) {
                         $A[$key] = COM_applyFilter ($_POST[$key], true);
+                    } else if (($key == 'title') || ($key == 'comment')) {
+                        // these have already been filtered above
+                        $A[$key] = $_POST[$key];
                     } else {
                         $A[$key] = COM_applyFilter ($_POST[$key]);
                     }
