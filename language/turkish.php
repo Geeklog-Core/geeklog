@@ -2,12 +2,10 @@
 
 ###############################################################################
 # turkish.php
-# This is the turkish language page for GeekLog!
-# Special thanks to Mischa Polivanov for his work on this project
-#
-# Copyright (C) 2003 ScriptEvi.com
-# webmaster@scriptevi.com
-# http://www.scriptevi.com
+# This is the turkish language page for GeekLog 1.4.0
+# Translated by Kemal CELLAT
+# kemal@moderntalking.biz
+# http://www.moderntalking.biz
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -82,7 +80,7 @@ $LANG01 = array(
     37 => 'Kullanýcýlardan hiç bir yazý gelmemiþ',
     38 => 'Content Syndication',
     39 => 'Yenile',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => 'php.ini parametlerinizden <tt>register_globals = Off</tt> konumundadýr. ancak, Geeklog  için <tt>register_globals</tt>parametresinin <strong>on</strong> konumunda olmasý gerekmektedir. Before you continue, please set it to <strong>on</strong> and restart your web server.Lütfen servis saðlayýcýnýz ile kontakt kurunuz',
     41 => 'Misafirler',
     42 => 'Yazar:',
     43 => 'Cevap Ver',
@@ -109,8 +107,8 @@ $LANG01 = array(
     64 => 'Bu Yazýyý bir Arkadaþýna Gönder',
     65 => 'Basýlabilir Hali',
     66 => 'Takvimim',
-    67 => ' ne Hoþ Geldiniz',
-    68 => 'ana Sayfa',
+    67 => 'Hoþ Geldiniz',
+    68 => 'Ana Sayfa',
     69 => 'iletiþim',
     70 => 'ara',
     71 => 'yazý ekle',
@@ -151,21 +149,21 @@ $LANG01 = array(
     106 => 'Okunma',
     107 => 'GL Sürüm Testi',
     108 => 'Önbelleði Temizle',
-    109 => 'Report abuse',
-    110 => 'Report this post to the site admin',
-    111 => 'View PDF Version',
-    112 => 'Registered Users',
-    113 => 'Documentation',
+    109 => 'Uygunsuz içerik',
+    110 => 'Bu iletiyi site adminine bildirin',
+    111 => 'PDF Versiyonu göster',
+    112 => 'Kayýtlý Üyeler',
+    113 => 'Dökümantasyon',
     114 => 'TRACKBACKS',
-    115 => 'No new trackback comments',
+    115 => 'Yeni trackback iletisi yok',
     116 => 'Trackback',
-    117 => 'Directory',
-    118 => 'Please continue reading on the next page:',
-    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    117 => 'Dizin',
+    118 => 'Lütfen sýradaki sayfayý okuyunuz:',
+    119 => "Þifrenizi mi <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">unuttunuz</a>?",
     120 => 'Permanent link to this comment',
-    121 => 'Comments (%d)',
+    121 => 'Yorumlar (%d)',
     122 => 'Trackbacks (%d)',
-    123 => 'All HTML is allowed'
+    123 => 'Tüm HTML kodlarý izinli'
 );
 
 ###############################################################################
@@ -202,12 +200,12 @@ $LANG03 = array(
     7 => 'Son yorumunuz ',
     8 => " saniye önceydi.  Bu sitede iki yorum arasýnda minimum {$_CONF['commentspeedlimit']} saniye olmalýdýr.",
     9 => 'Yorum',
-    10 => 'Send Report',
+    10 => 'Rapor Et',
     11 => 'Yorumu Ekle',
     12 => 'Lütfen Baþlýk ve Yorum bloklarýný doldurunuz.',
     13 => 'Bilgileriniz',
     14 => 'Ön Ýzleme',
-    15 => 'Report this post',
+    15 => 'Bu iletiyi Rapor Et',
     16 => 'Baþlýk',
     17 => 'Hata',
     18 => 'Önemli Bilgiler',
@@ -217,9 +215,9 @@ $LANG03 = array(
     22 => 'Yorumunuzun konusunu içeriðini iyi anlatan bir þekilde seçiniz.',
     23 => 'Email adresiniz diðer kullanýcýlara GÖSTERÝLMEYECEKTÝR.',
     24 => 'Herhangi Kullanýcý',
-    25 => 'Are you sure you want to report this post to the site admin?',
-    26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report'
+    25 => 'Bu iletiyi site adminine bildirmek istediðinize emin misiniz?',
+    26 => '%s Bu ileti site adminine bildirilmiþtir:',
+    27 => 'Þikayet Et'
 );
 
 ###############################################################################
@@ -316,7 +314,7 @@ $LANG04 = array(
     88 => "Birisi (belki siz) {$_CONF['site_name']}, sitesindeki \"%s\" hesabýnýz için yeni bir þifre istedi <{$_CONF['site_url']}>.\n\nÞayet siz gerçekten bu þifreyi almak istiyorsanýz, lütfen bu linki týklayýn:\n\n",
     89 => "Þayet bu þifreyi almak istemiyorsanýz, bu mesajý dikkate almayýn ve bu isteði önemsemeyin (þifreniz deðiþmeyecek ve olduðu gibi kalacaktýr).\n\n",
     90 => 'Aþaðýdaki hesabýnýz için yeni bir þifre girmelisiniz. Not: bu formu gönderinceye kadar eski þifreniz geçerlidir.',
-    91 => 'Yeni Þifre Tespit Et',
+    91 => 'Yeni Þifre Belirle',
     92 => 'Yeni Þifre Gir',
     93 => 'Yeni bir þifre isteðiniz %d saniye önceydi. Bu site þifre istekleri arasýnda en az %d saniye olmasýný aramaktadýr.',
     94 => '"%s" isimli üyenin Hesabýný Sil',
@@ -331,24 +329,24 @@ $LANG04 = array(
     103 => 'Diðer üyelerden email izni',
     104 => 'Aktifliðinizin Görüntülenmesi',
     105 => 'Aktif Kullanýcýlar Bloðunda görüntülenme',
-    106 => 'Location',
-    107 => 'Shown in your public profile',
-    108 => 'Confirm new password',
-    109 => 'Enter the New password again here',
-    110 => 'Current Password',
-    111 => 'Please enter your Current password',
-    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    106 => 'Þehir',
+    107 => 'Kiþisel profilinizde görüntülenir',
+    108 => 'Yeni þifre tekrar',
+    109 => 'Yeni þifrenizi tekrar yazýn',
+    110 => 'Þuan ki Þifreniz',
+    111 => 'Lütfen þuan kullanmakta olduðunuz þifreyi girin',
+    112 => 'Ýzin verilen giriþ sayýsýný aþmýþ bulunuyorsunuz.  Lütfen daha sonra tekrar deneyiniz.',
     113 => 'Login Attempt Failed',
-    114 => 'Account Disabled',
-    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
-    116 => 'Account Awaiting Activation',
-    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
-    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
-    119 => 'If you have forgotten your password, you may request a new one at this url:',
-    120 => 'Account Activated',
-    121 => 'Service',
-    122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
+    114 => 'Kapalý Hesap',
+    115 => 'Hesabýnýz kapatýlmýþtýr, uzun süredir diriþ yapmamýþ olabilirsiniz. Lütfen site admini ile iletiþime geçiniz.',
+    116 => 'Hesabýnýz Aktivasyon bekliyor',
+    117 => 'Hesabýnýz site yönetimi tarafýndan onay beklemektedir. Hesabýnýz onaylanýncaya kadar giriþ yapmazsýnýz.',
+    118 => "{$_CONF['site_name']}hesabýnýz site yönetimi tarafýndan aktifleþtirildi. Aþaðadaki linkten kullanýcý adýnýz: (<username>) ve size daha önce gönderilen þifrenizle giriþ yapabilirsiniz.",
+    119 => 'Eðer þifrenizi unuttuysanýz, bu linkten yeni bir þifre belirleyebilirsiniz:',
+    120 => 'Aktif Hesap',
+    121 => 'Servis',
+    122 => 'Üzgünüm, Yeni Kullanýcý kaydý kapatýlmýþtýr',
+    123 => "<a href=\"{$_CONF['site_url']}/users.php?mode=new\">Yeni Üye misiniz?</a>?"
 );
 
 ###############################################################################
@@ -361,8 +359,8 @@ $LANG05 = array(
     4 => 'Günün Yazýsý',
     5 => 'Sonraki',
     6 => 'Önceki',
-    7 => 'First',
-    8 => 'Last'
+    7 => 'Ýlk',
+    8 => 'Son'
 );
 
 ###############################################################################
@@ -433,13 +431,13 @@ $LANG09 = array(
     21 => '-',
     22 => '(Tarih yapýsý YYYY-AA-GG)',
     23 => 'Okunma Sayýsý',
-    24 => 'Found %d items',
+    24 => '%d adet kayýt bulundu',
     25 => 'kayýt bulundu. Toplam',
     26 => 'kayýt var. Arama süresi',
     27 => 'saniye.',
     28 => 'Aramanýz sonucunda herhangi bir yazý veya yorum bulunamadý',
     29 => 'Yazý ve Yorum Arama Sonuçlarý',
-    30 => 'No links matched your search Aramanýz sonucunda herhangi bir Internet Adresi bulunamadý.',
+    30 => 'Aramanýz sonucunda herhangi bir link bulunamadý.',
     31 => 'Bu eklenti herhangi bir sonuç döndürmedi',
     32 => 'Etkinlik',
     33 => 'URL',
@@ -467,9 +465,9 @@ $LANG09 = array(
     55 => 'ibare',
     56 => 'VE',
     57 => 'YADA',
-    58 => 'More results &gt;&gt;',
-    59 => 'Results',
-    60 => 'per page',
+    58 => 'Daha fazla sonuç &gt;&gt;',
+    59 => 'Sonuçlar',
+    60 => 'sayfa',
     61 => 'Refine search'
 );
 
@@ -501,12 +499,12 @@ $LANG10 = array(
     22 => 'En çok e-mail ile gönderilen 10 Yazý',
     23 => 'Email&nbsp;Sayýsý',
     24 => 'Hiç kimse sitenizdeki bir yazýyý bir arkadaþýna göndermemiþ.',
-    25 => 'Top Ten Trackback Commented Stories',
-    26 => 'No trackback comments found.',
-    27 => 'Number of active users',
-    28 => 'Top Ten Events',
-    29 => 'Event',
-    30 => 'Hits',
+    25 => 'Top 10 Trackback Commented Stories',
+    26 => 'Traback iletisi yok.',
+    27 => 'Aktif Kullanýcý Sayýsý',
+    28 => 'Top 10 Etkinlikler',
+    29 => 'Etkinlik',
+    30 => 'Hitler',
     31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
 );
 
@@ -657,14 +655,14 @@ $LANG21 = array(
     54 => 'Kaydet',
     55 => 'Vazgeç',
     56 => 'Sil',
-    57 => 'Move Block Down',
-    58 => 'Move Block Up',
-    59 => 'Move block to the right side',
-    60 => 'Move block to the left side',
-    61 => 'No Title',
+    57 => 'Bloðu Aþaðý Taþý',
+    58 => 'Bloðu Yukarý Taþý',
+    59 => 'Bloðu Saða Taþý',
+    60 => 'Bloðu Sola Taþý',
+    61 => 'Baþlýk Yok',
     62 => 'Article Limit',
-    63 => 'Bad Block Title',
-    64 => 'Your Title must not be empty and cannot contain HTML!',
+    63 => 'Geçersiz Blok Baþlýðý',
+    64 => 'Baþlýðýnýz boþ olamaz ve HTML kodu içeremez!',
     65 => 'Order'
 );
 
@@ -694,9 +692,9 @@ $LANG22 = array(
     20 => 'Kaydet',
     21 => 'Vazgeç',
     22 => 'Sil',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => 'Geçersiz Baþlangýç.',
+    24 => 'Geçersiz Bitiþ tarihi.',
+    25 => 'Bitiþ tarihi baþlangýçtan önce.'
 );
 
 ###############################################################################
@@ -723,16 +721,16 @@ $LANG24 = array(
     18 => 'Toplam okunma sayýsý',
     19 => 'Yorumlar',
     20 => 'Ping',
-    21 => 'Send Ping',
+    21 => 'Ping Gönder',
     22 => 'Yazý Listesi',
     23 => 'Bir yazýyý deðiþtirmek veya silmek istiyorsanýz, yazýnýn numarasýna basýnýz. Bir yazýyý görüntülemek istiyorsanýz, yazýnýn baþlýðýna basýnýz. Yeni bir yazý yaratmak istiyorsanýz, yukarýdaki Yeni Yazý düðmesine basýnýz.',
-    24 => 'The ID you chose for this story is already in use. Please use another ID.',
-    25 => 'Error when saving story',
-    26 => 'Yazý Ön Ýzlemi',
+    24 => 'Seçtiðiniz ID kullanýlýyor. Lütfen baþka bir ID seçiniz.',
+    25 => 'Yazýyý kaydederken hata oluþtu!',
+    26 => 'Yazý Ön Ýzleme',
     27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
-    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    28 => '<p><b>ÖNÝZLEME</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
     29 => 'Trackbacks',
-    30 => 'File Upload Errors',
+    30 => 'Dosya Upload Hatalarý',
     31 => 'Lütfen, Yazar, Baþlýk ve Konu alanlarýný doldurunuz.',
     32 => 'Öncelikli',
     33 => 'Sadece bir tane Öncelikli yazý olabilir.',
@@ -760,34 +758,34 @@ $LANG24 = array(
     55 => 'Aþaðýdaki hatalar yazýnýzý kaydetmeye çalýþýrken oluþtu.  Lütfen listelenen hatalarý kontrol edip düzeltiniz',
     56 => 'Sembolü Göster',
     57 => 'Ölçeksiz resim göster',
-    58 => 'Story Management',
+    58 => 'Yazý Yönetimi',
     59 => 'Option',
-    60 => 'Enabled',
+    60 => 'Ýzinli',
     61 => 'Auto Archive',
-    62 => 'Auto Delete',
+    62 => 'Otomatik Silme',
     63 => '',
     64 => '',
     65 => '',
     66 => '',
     67 => 'Expand the Content Edit Area size',
     68 => 'Reduce the Content Edit Area size',
-    69 => 'Publish Story Date',
-    70 => 'Toolbar Selection',
-    71 => 'Basic Toolbar',
+    69 => 'Yazý Yayým Tarihi',
+    70 => 'Toolbar Seçimi',
+    71 => 'Basit Toolbar',
     72 => 'Common Toolbar',
-    73 => 'Advanced Toolbar',
-    74 => 'Advanced II Toolbar',
+    73 => 'Geliþmiþ Toolbar',
+    74 => 'Geliþmiþ II Toolbar',
     75 => 'Full Featured',
-    76 => 'Publish Options',
-    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
+    76 => 'Yayým Özellikleri',
+    77 => 'Advanced Editorü çalýþtýrabilmek için Javascript gereksinimi vardýr.  config.php den gerekli ayarlarý yapabilirsiniz',
     78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
-    79 => 'Preview',
-    80 => 'Editor',
-    81 => 'Publish Options',
-    82 => 'Images',
-    83 => 'Archive Options',
-    84 => 'Permissions',
-    85 => 'Show All'
+    79 => 'Ön Ýzleme',
+    80 => 'Editör',
+    81 => 'Yayým Ayarlarý',
+    82 => 'Resimler',
+    83 => 'Arþivleme Ayarlarý',
+    84 => 'Eriþim Haklarý',
+    85 => 'Tümünü Göster'
 );
 
 ###############################################################################
@@ -821,8 +819,8 @@ $LANG27 = array(
     25 => 'Archive Topic',
     26 => 'make this the default topic for archived stories. Only one topic allowed.',
     27 => 'Or Upload Topic Icon',
-    28 => 'Maximum',
-    29 => 'File Upload Errors'
+    28 => 'EN Fazla',
+    29 => 'Dosya Upload Hatalarý'
 );
 
 ###############################################################################
@@ -866,16 +864,16 @@ $LANG28 = array(
     35 => 'Son Giriþ',
     36 => '(asla)',
     37 => 'UID',
-    38 => 'Group Listing',
-    39 => 'Password (again)',
-    40 => 'Registration Date',
-    41 => 'Last login Date',
-    42 => 'Banned',
-    43 => 'Awaiting Activation',
-    44 => 'Awaiting Authorization',
-    45 => 'Active',
-    46 => 'User Status',
-    47 => 'Edit'
+    38 => 'Grup Listeleniyor',
+    39 => 'Þifre (tekrar)',
+    40 => 'Kayýt Tarihi',
+    41 => 'Son Login Tarihi',
+    42 => 'Yasaklandý',
+    43 => 'Aktivasyon Bekliyor',
+    44 => 'Yetkilendirilme ',
+    45 => 'Aktif',
+    46 => 'Üye Durumu',
+    47 => 'Düzenle'
 );
 
 ###############################################################################
@@ -916,7 +914,7 @@ $LANG30 = array(
     6 => 'Cuma',
     7 => 'Cumartesi',
     8 => 'Etkinlik Ekle',
-    9 => 'ScriptEvi Etkinliði',
+    9 => 'Site Etkinliði',
     10 => 'Etkinlikler:',
     11 => 'Genel Takvim',
     12 => 'Takvimim',
@@ -1019,24 +1017,24 @@ $LANG32 = array(
     30 => 'Eklentiyi Sil?',
     31 => 'Bu eklentiyi silmek istediðinizden eminmisiniz? Bunu yaparsanýz eklentinin kullandýðý tüm veriler ve veri yapýlarý da silinecektir. Eminseniz Sil düðmesine bir daha basýnýz.',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
-    33 => 'Code Version',
-    34 => 'Update',
-    35 => 'Edit',
+    33 => 'Yazýlým versionu',
+    34 => 'Güncelle',
+    35 => 'Düzenle',
     36 => 'Code',
     37 => 'Data',
-    38 => 'Update!'
+    38 => 'Güncelle!'
 );
 
 ###############################################################################
 # admin/syndication.php
 
 $LANG33 = array(
-    1 => 'create feed',
-    2 => 'save',
-    3 => 'delete',
-    4 => 'cancel',
+    1 => 'Oluþtur feed',
+    2 => 'Kaydet',
+    3 => 'Sil',
+    4 => 'Vazgeç',
     10 => 'Content Syndication',
-    11 => 'New Feed',
+    11 => 'Yeni Feed',
     12 => 'Admin Home',
     13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
     14 => 'Title',
@@ -1060,12 +1058,12 @@ $LANG33 = array(
     32 => 'Language',
     33 => 'Contents',
     34 => 'Entries',
-    35 => 'Hours',
+    35 => 'Saats',
     36 => 'Select type of feed',
     37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
     38 => 'Error: Missing Fields',
     39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.',
+    40 => 'Please enter a  number of entries or number of Saats.',
     41 => 'Links',
     42 => 'Events',
     43 => 'All',
@@ -1135,28 +1133,28 @@ $MESSAGE = array(
     51 => 'Bu kullanýcý adý zaten kullanýlýyor. Lütfen baþka bir tane seçin.',
     52 => 'Saðlanan email adresi geçerli bir email adresi olarak gözükmüyor.',
     53 => 'Yeni þifreniz kabul edildi. Lütfen aþaðýdan yeni þifrenizi kullanarak þimdi giriþ yapýn.',
-    54 => 'Yeni bir þifre isteme süresiniz doldu. Lütfen aþaðýdan tekrar deneyin.',
+    54 => 'Yeni bir þifre isteme süreniz doldu. Lütfen aþaðýdan tekrar deneyin.',
     55 => 'Size bir email gönderildi ve az önce yerine ulaþtý. Hesabýnýza yeni bir þifre tayin etmek için mesajdaki talimatlarý lütfen takip ediniz.',
     56 => 'Saðlanan email adresi zaten baþka bir hesap tarafýndan kullanýlýyor.',
     57 => 'Hesabýnýz baþarýyla silindi.',
-    58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.',
-    60 => 'The plugin was successfully updated',
+    58 => 'Your feed baþarýyla kaydedildi.',
+    59 => 'The feed baþarýyla silindi.',
+    60 => 'Eklenti baþarýyla güncellendi',
     61 => 'Plugin %s: Unknown message placeholder',
-    62 => 'The trackback comment has been deleted.',
-    63 => 'An error occurred when deleting the trackback comment.',
-    64 => 'Your trackback comment has been successfully sent.',
-    65 => 'Weblog directory service successfully saved.',
-    66 => 'The weblog directory service has been deleted.',
-    67 => 'The new password does not match the confirmation password!',
+    62 => 'Trackback iletisi silindi.',
+    63 => 'Trackback iletisi silinirken hata oluþtu.',
+    64 => 'Trackback iletiniz baþarýyla gönderildi.',
+    65 => 'Weblog dizin servisi baþarýyla saved.',
+    66 => 'Weblog dizin servisi  silindi.',
+    67 => 'Yeni þifreniz does not match the confirmation password!',
     68 => 'You have to enter the correct current password.',
-    69 => 'Your account has been blocked!',
-    70 => 'Your account is awaiting administrator approval.',
-    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
-    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
-    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
-    74 => 'The pingback has been successfully sent.',
-    75 => 'Trackbacks must be sent using a POST request.'
+    69 => 'Üyeliðiniz Bloke edildi!',
+    70 => 'Üyeliðiniz yönetici onayý bekliyor.',
+    71 => 'Üyeliðiniz teyid edildi ve yönetici onayý bekliyor.',
+    72 => 'Eklenti kurulumunda hata oluþtu. Ayrýntýlar için  error.log dosyasýna bakýnýz.',
+    73 => 'Eklenti kaldýrýlýrken bir hata oluþtu. Ayrýntýlar için  error.log dosyasýna bakýnýz',
+    74 => 'pingback baþarýyla gönderildi.',
+    75 => 'Trackbacklar POST sorgulamasý gerektirmektedir.'
 );
 
 ###############################################################################
@@ -1210,22 +1208,22 @@ $LANG_ACCESS = array(
     'listusers' => 'Üye Listesi',
     'listthem' => 'liste',
     'usersingroup' => 'Üye grubu %s',
-    'usergroupadmin' => 'User Group Administration',
-    'add' => 'Add',
-    'remove' => 'Remove',
-    'availmembers' => 'Available Members',
-    'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'usergroupadmin' => 'User Group Yönetimi',
+    'add' => 'Ekle',
+    'remove' => 'Kaldýr',
+    'availmembers' => 'Available Kullanýcýlar',
+    'groupmembers' => 'Grup Üyeleri',
+    'canteditgroup' => 'Bu gurubu düzenleyebilmek için, bu grubum bir üyesi olmalýsýnýz. Please contact the system administrator if you feel this is an error.',
     'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
     'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
     'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
-    'search' => 'Search',
+    'search' => 'Ara',
     'submit' => 'Submit',
     'limitresults' => 'Limit Results',
-    'group_id' => 'Group ID',
-    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
-    'groupexists' => 'Group name already exists',
-    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
+    'group_id' => 'Grup ID',
+    'plugin_access_denied_msg' => 'Yönetim sayfasýna yetkisiz olarak girmeye çalýþtýnýz.  Please note that all attempts to illegally access this page are logged.',
+    'groupexists' => 'Grup adý Kullanýlýyor',
+    'groupexistsmsg' => 'Seçtiðiniz grup adý kullanýlýmda, Baþak bir grup adý seçiniz.'
 );
 
 ###############################################################################
@@ -1259,7 +1257,7 @@ $LANG_BUTTONS = array(
     8 => 'Özelleþtir',
     9 => 'Ara',
     10 => 'Geliþmiþ Arama',
-    11 => 'Directory'
+    11 => 'Dizin'
 );
 
 ###############################################################################
@@ -1285,18 +1283,18 @@ $LANG_LOGIN = array(
 # pdfgenerator.php
 
 $LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    1 => 'PDF özelliði kapatýldý',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been silindi. If you\'re sure that your document should render fine, please re-submit it.',
     3 => 'Unknown error during PDF generation',
     4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
+    5 => 'Yükleniyor .',
     6 => 'Please wait while your document is loaded.',
     7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
     8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
     9 => 'PDF Generator',
     10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
     11 => 'URL',
-    12 => 'Generate PDF!',
+    12 => 'PDF Oluþtur!',
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
     14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
@@ -1306,57 +1304,57 @@ $LANG_PDF = array(
 
 $LANG_TRB = array(
     'trackback' => 'Trackback',
-    'from' => 'from',
+    'from' => 'Kimden',
     'tracked_on' => 'Tracked on',
-    'read_more' => '[read more]',
+    'read_more' => '[devamýný oku]',
     'intro_text' => 'Here\'s what others have to say about \'%s\':',
-    'no_comments' => 'No trackback comments for this entry.',
-    'this_trackback_url' => 'Trackback URL for this entry:',
-    'num_comments' => '%d trackback comments',
-    'send_trackback' => 'Send Pings',
-    'preview' => 'Preview',
-    'editor_title' => 'Send trackback comment',
+    'no_comments' => 'Trackback iletisi yok.',
+    'this_trackback_url' => 'Bu yazý için Trackback URL si:',
+    'num_comments' => '%d trackback iletileri',
+    'send_trackback' => 'Ping Gönder',
+    'preview' => 'Ön Ýzleme',
+    'editor_title' => 'trackback comment',
     'trackback_url' => 'Trackback URL',
     'entry_url' => 'Entry URL',
     'entry_title' => 'Entry Title',
     'blog_name' => 'Site Name',
     'excerpt' => 'Excerpt',
     'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
-    'button_send' => 'Send',
-    'button_preview' => 'Preview',
+    'button_send' => 'Gönder',
+    'button_preview' => 'Öz Ýzleme',
     'send_error' => 'Error',
     'send_error_details' => 'Error when sending trackback comment:',
     'url_missing' => 'No Entry URL',
     'url_required' => 'Please enter at least a URL for the entry.',
-    'target_missing' => 'No Trackback URL',
-    'target_required' => 'Please enter a trackback URL',
+    'target_missing' => 'Trackback URL si YOK',
+    'target_required' => 'Lütfen bir trackback URL si giriniz',
     'error_socket' => 'Could not open socket.',
     'error_response' => 'Response not understood.',
     'error_unspecified' => 'Unspecified error.',
-    'select_url' => 'Select Trackback URL',
+    'select_url' => 'Trackback URLsi Seçiniz',
     'not_found' => 'Trackback URL not found',
-    'autodetect_failed' => 'Geeklog could not detect the Trackback URL for the post you want to send your comment to. Please enter it manually below.',
-    'trackback_explain' => 'From the links below, please select the URL you want to send your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
-    'no_links_trackback' => 'No links found. You can not send a Trackback comment for this entry.',
+    'autodetect_failed' => 'Geeklog could not detect the Trackback URL for the post you want to Gönder your comment to. Please enter it manually below.',
+    'trackback_explain' => 'From the links below, please select the URL you want to Gönder your Trackback comment to. Geeklog will then try to determine the correct Trackback URL for that post. Or you can <a href="%s">enter it manually</a> if you know it already.',
+    'no_links_trackback' => 'No links found. You can not Gönder a Trackback comment for this entry.',
     'pingback' => 'Pingback',
     'pingback_results' => 'Pingback results',
-    'send_pings' => 'Send Pings',
-    'send_pings_for' => 'Send Pings for "%s"',
+    'send_pings' => 'Gönder Pings',
+    'send_pings_for' => 'Gönder Pings for "%s"',
     'no_links_pingback' => 'No links found. No Pingbacks were sent for this entry.',
     'pingback_success' => 'Pingback sent.',
     'no_pingback_url' => 'No pingback URL found.',
-    'resend' => 'Resend',
-    'ping_all_explain' => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
-    'pingback_button' => 'Send Pingback',
-    'pingback_short' => 'Send Pingbacks to all sites linked from this entry.',
+    'resend' => 'ReGönder',
+    'ping_all_explain' => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or Gönder a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'pingback_button' => 'Gönder Pingback',
+    'pingback_short' => 'Gönder Pingbacks to all sites linked from this entry.',
     'pingback_disabled' => '(Pingback disabled)',
-    'ping_button' => 'Send Ping',
+    'ping_button' => 'Gönder Ping',
     'ping_short' => 'Ping weblog directory services.',
     'ping_disabled' => '(Ping disabled)',
-    'trackback_button' => 'Send Trackback',
-    'trackback_short' => 'Send a Trackback comment.',
+    'trackback_button' => 'Gönder Trackback',
+    'trackback_short' => 'Gönder a Trackback comment.',
     'trackback_disabled' => '(Trackback disabled)',
-    'may_take_a_while' => 'Please note that sending Pingbacks and Pings may take a while.',
+    'may_take_a_while' => 'Please note that Göndering Pingbacks and Pings may take a while.',
     'ping_results' => 'Ping results',
     'unknown_method' => 'Unknown ping method',
     'ping_success' => 'Ping sent.',
@@ -1377,25 +1375,25 @@ $LANG_TRB = array(
     'trackbacks' => 'Trackbacks',
     'editor_intro' => 'Prepare your trackback comment for <a href="%s">%s</a>.',
     'editor_intro_none' => 'Prepare your trackback comment.',
-    'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
-    'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
+    'trackback_note' => 'To Gönder a trackback comment for a story, go to the list of stories and click on "Gönder Ping" for the story. To Gönder a trackback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_explain' => 'Enter a URL to Gönder the Pingback to. The pingback will point to your site\'s homepage.',
     'pingback_url' => 'Pingback URL',
     'site_url' => 'This site\'s URL',
-    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
+    'pingback_note' => 'To Gönder a pingback for a story, go to the list of stories and click on "Gönder Ping" for the story. To Gönder a pingback that is not related to a story, <a href="%s">click here</a>.',
     'pbtarget_missing' => 'No Pingback URL',
     'pbtarget_required' => 'Please enter a pingback URL',
-    'pb_error_details' => 'Error when sending the pingback:'
+    'pb_error_details' => 'Error when Göndering the pingback:'
 );
 
 ###############################################################################
 # directory.php
 
 $LANG_DIR = array(
-    'title' => 'Article Directory',
-    'title_year' => 'Article Directory for %d',
-    'title_month_year' => 'Article Directory for %s %d',
-    'nav_top' => 'Back to Article Directory',
-    'no_articles' => 'No articles.'
+    'title' => 'Article Dizini',
+    'title_year' => ' %d için Article Dizini',
+    'title_month_year' => ' %s %d için Article Dizini',
+    'nav_top' => 'Article Dizinine Geri Dön',
+    'no_articles' => 'Articles Yok.'
 );
 
 ###############################################################################
@@ -1409,18 +1407,18 @@ $LANG_DIR = array(
 # %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
-    'new_string' => '%n new %i in the last %t %s',
-    'new_last' => 'last %t %s',
-    'minutes' => 'minutes',
-    'hours' => 'hours',
-    'days' => 'days',
-    'weeks' => 'weeks',
-    'months' => 'months',
-    'minute' => 'minute',
-    'hour' => 'hour',
-    'day' => 'day',
-    'week' => 'week',
-    'month' => 'month'
+    'new_string' => '%n yeni %i in the last %t %s',
+    'new_last' => 'son %t %s',
+    'minutes' => 'dakikalar',
+    'hours' => 'saatler',
+    'days' => 'günler',
+    'weeks' => 'haftalar',
+    'months' => 'aylar',
+    'minute' => 'dakika',
+    'hour' => 'saat',
+    'day' => 'gün',
+    'week' => 'hafta',
+    'month' => 'ay'
 );
 
 ###############################################################################
@@ -1430,7 +1428,7 @@ $LANG_WHATSNEW = array(
 # display administration lists and edit pages
 
 $LANG_ADMIN = array(
-    'search' => 'Search',
+    'search' => 'Arama',
     'limit_results' => 'Limit Results',
     'submit' => 'Submit',
     'edit' => 'Edit',
@@ -1455,27 +1453,27 @@ $LANG_ADMIN = array(
 # database.
 
 $LANG_commentcodes = array(
-    0 => 'Comments Enabled',
-    -1 => 'Comments Disabled'
+    0 => 'Yorum Ekleme Ýzinsiz',
+    -1 => 'Yorum Ekleme Ýzinli'
 );
 
 
 $LANG_commentmodes = array(
-    'flat' => 'Flat',
+    'flat' => 'Alt Alta',
     'nested' => 'Nested',
     'threaded' => 'Threaded',
-    'nocomment' => 'No Comments'
+    'nocomment' => 'Yorum Gösterme'
 );
 
 $LANG_cookiecodes = array(
     0 => '(don\'t)',
-    3600 => '1 Hour',
-    7200 => '2 Hours',
-    10800 => '3 Hours',
-    28800 => '8 Hours',
-    86400 => '1 Day',
-    604800 => '1 Week',
-    2678400 => '1 Month'
+    3600 => '1 Saat',
+    7200 => '2 Saat',
+    10800 => '3 Saat',
+    28800 => '8 Saat',
+    86400 => '1 Gün',
+    604800 => '1 Hafta',
+    2678400 => '1 Ay'
 );
 
 $LANG_dateformats = array(
@@ -1483,28 +1481,28 @@ $LANG_dateformats = array(
 );
 
 $LANG_featurecodes = array(
-    0 => 'Not Featured',
-    1 => 'Featured'
+    0 => 'Önceliksiz',
+    1 => 'Öncelikli'
 );
 
 $LANG_frontpagecodes = array(
-    0 => 'Show Only in Topic',
-    1 => 'Show on Front Page'
+    0 => 'Sadece Konularda Göster',
+    1 => 'Anasayfada Göster'
 );
 
 $LANG_postmodes = array(
-    'plaintext' => 'Plain Old Text',
-    'html' => 'HTML Formatted'
+    'plaintext' => 'Text Formatlý',
+    'html' => 'HTML Formatlý'
 );
 
 $LANG_sortcodes = array(
-    'ASC' => 'Oldest First',
-    'DESC' => 'Newest First'
+    'ASC' => 'Önce Eskiler',
+    'DESC' => 'Önce Yeniler'
 );
 
 $LANG_trackbackcodes = array(
-    0 => 'Trackback Enabled',
-    -1 => 'Trackback Disabled'
+    0 => 'Trackback Ýzinli',
+    -1 => 'Trackback Ýzinsiz'
 );
 
 ?>
