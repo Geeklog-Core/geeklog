@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.14 2006/06/25 08:40:54 dhaun Exp $
+* $Id: MassDelete.Admin.class.php,v 1.15 2006/07/23 16:52:55 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'MassDelete.Admin.class.php') !== false) {
@@ -32,7 +32,7 @@ class MassDelete extends BaseAdmin {
 
         $display = $LANG_SX00['masshead'];
 
-        $act = COM_applyFiler($_POST['action']);
+        $act = COM_applyFilter($_POST['action']);
         $lmt = COM_applyFilter($_POST['limit'], true);
 
         if (($act == $LANG_SX00['deletespam']) && ($lmt>0)) {
