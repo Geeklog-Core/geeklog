@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.41 2006/07/17 20:02:24 dhaun Exp $
+// $Id: lib-comment.php,v 1.42 2006/07/23 19:40:06 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -647,7 +647,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             $fakepostmode = $postmode;
             if ($postmode == 'html') {
-                $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
+                $comment = COM_checkWords (COM_checkHTML  (COM_stripslashes ($comment)));
             } else {
                 $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
                 $newcomment = COM_makeClickableLinks ($comment);
