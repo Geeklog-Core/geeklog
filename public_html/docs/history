@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Userphotos are now stored under email@address.ext instead of username.ext 
+  so other applications can use the files easdier [Oliver]
 - Added ability in staticpage editor to enable/disable Advanced Editor mode 
   so you can use FCKEditor and then if need basic html edit mode [Blaine]
 - Tried to make "3 new stories in the last 1 day" sound less awkward by going
