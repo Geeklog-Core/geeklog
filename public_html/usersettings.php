@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.143 2006/07/27 09:57:20 ospiess Exp $
+// $Id: usersettings.php,v 1.144 2006/07/27 13:49:33 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -726,7 +726,7 @@ function handlePhotoUpload ($delete_photo = '')
     if (!empty ($newphoto['name'])) {
         $pos = strrpos ($newphoto['name'], '.') + 1;
         $fextension = substr ($newphoto['name'], $pos);
-        $filename = $_USER['email'] . '.' . $fextension;
+        $filename = $_USER['username'] . '.' . $fextension;
 
         if (!empty ($curphoto) && ($filename != $curphoto)) {
             $delete_photo = true;
@@ -825,6 +825,26 @@ function saveuser($A)
                 ($A['new_username'] != $_USER['username'])) {
             $A['new_username'] = addslashes ($A['new_username']);
             if (DB_count ($_TABLES['users'], 'username', $A['new_username']) == 0) {
+                if ($_CONF['allow_user_photo'] == 1) {
+                    $photo = DB_getItem ($_TABLES['users'], 'photo',
+                                         "uid = {$_USER['uid']}");
+                    if (!empty ($photo)) {
+                        $newphoto = preg_replace ('/' . $_USER['username'] . '/',
+                                    $A['new_username'], $photo, 1);
+                        $imgpath = $_CONF['path_images'] . 'userphotos/';
+                        if (rename ($imgpath . $photo,
+                                    $imgpath . $newphoto) === false) {
+                            $display = COM_siteHeader ('menu', $LANG04[21]);
+                            $display .= COM_errorLog ('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
+                            $display .= COM_siteFooter ();
+
+                            return $display;
+                        }
+                        DB_change ($_TABLES['users'], 'photo',
+                               addslashes ($newphoto), "uid", $_USER['uid']);
+                    }
+                }
+
                 DB_change ($_TABLES['users'], 'username', $A['new_username'],
                            "uid", $_USER['uid']);
             } else {
@@ -905,6 +925,14 @@ function saveuser($A)
                        $_CONF['cookiedomain'], $_CONF['cookiesecure']);
         }
 
+        if ($_CONF['allow_user_photo'] == 1) {
+            $delete_photo = '';
+            if (isset ($A['delete_photo'])) {
+                $delete_photo = $A['delete_photo'];
+            }
+            $filename = handlePhotoUpload ($delete_photo);
+        }
+
         if (!empty ($A['homepage'])) {
             $pos = MBYTE_strpos ($A['homepage'], ':');
             if ($pos === false) {
@@ -921,39 +949,6 @@ function saveuser($A)
 
         $A['fullname'] = addslashes ($A['fullname']);
         $A['email'] = addslashes ($A['email']);
-
-        // rename the old photo in case the email was changed
-        if ($_CONF['allow_user_photo'] == 1 && $A['email'] !== $_USER['email']) {
-            $photo = DB_getItem ($_TABLES['users'], 'photo', "uid = {$_USER['uid']}");
-            if (!empty ($photo)) {
-                $pos = strrpos ($photo, '.') + 1;
-                $fextension = substr ($photo, $pos);
-                $newphoto = $A['email'] . $fextension;
-                $imgpath = $_CONF['path_images'] . 'userphotos/';
-                if (rename ($imgpath . $photo,
-                            $imgpath . $newphoto) === false) {
-                    $display = COM_siteHeader ('menu', $LANG04[21]);
-                    $display .= COM_errorLog ('Could not rename userphoto "' 
-                                              . $photo . '" to "' . $newphoto . '".');
-                    $display .= COM_siteFooter ();
-
-                    return $display;
-                }
-                DB_change ($_TABLES['users'], 'photo',
-                        addslashes ($newphoto), "uid", $_USER['uid']);
-            }
-        }
-        
-        // upload a new photo or delete the old one depending on user input
-        if ($_CONF['allow_user_photo'] == 1) {
-            $delete_photo = '';
-            if (isset ($A['delete_photo'])) {
-                $delete_photo = $A['delete_photo'];
-            }
-            $filename = handlePhotoUpload ($delete_photo);
-        }
-        
-
         $A['location'] = addslashes ($A['location']);
         $A['sig'] = addslashes ($A['sig']);
         $A['about'] = addslashes ($A['about']);
