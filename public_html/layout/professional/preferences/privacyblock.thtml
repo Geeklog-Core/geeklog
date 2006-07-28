@@ -1,19 +1,20 @@
-{start_block_privacy}
-<table border="0" cellspacing="0" cellpadding="3">
-  <tr valign="top">
-    <td align="right"><b>{lang_emailfromuser}:</b><br>
-      <small>{lang_emailfromuser_text}</small></td>
-    <td><input type="checkbox" name="emailfromuser" {emailfromuser_checked}></td>
+<fieldset style="margin-top:10px;"><legend>Privacy Settings</legend>
+      <div class="notes">
+        <h4>Privacy Settings</h4>
+        The default setting is to allow users to email fellow site members and show your status as online. Un-check these options to protect your privacy.
+       </div>
+<table class="inputTable">
+  <tr>
+    <td width="100px"><label for="emailfromuser">{lang_emailfromuser}:</label></td>
+    <td><input type="checkbox" id="emailfromuser" name="emailfromuser" {emailfromuser_checked}></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_emailfromadmin}:</b><br>
-      <small>{lang_emailfromadmin_text}</small></td>
-    <td><input type="checkbox" name="emailfromadmin" {emailfromadmin_checked}></td>
+  <tr>
+    <td width="100px"><label for="emailfromadmin">{lang_emailfromadmin}:</label></td>
+    <td><input type="checkbox" id="emailfromadmin" name="emailfromadmin" {emailfromadmin_checked}></td>
   </tr>
-  <tr valign="top">
-    <td align="right"><b>{lang_showonline}:</b><br>
-      <small>{lang_showonline_text}</small></td>
-    <td><input type="checkbox" name="showonline" {showonline_checked}></td>
+  <tr>
+    <td width="100px"><label for="showonline">{lang_showonline}:</label></td>
+    <td><input type="checkbox" id="showonline" name="showonline" {showonline_checked}></td>
   </tr>
 </table>
-{end_block}
+</fieldset>

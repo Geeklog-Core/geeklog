@@ -1,8 +1,9 @@
-{start_block_digest}
-<table border="0" cellspacing="0" cellpadding="3">
-  <tr align="top">
-    <td>{lang_emailedtopics}<br>
-      {email_topic_checklist}</td>
-  </tr>
-</table>
-{end_block}
+<fieldset style="margin-top:10px;">
+    <legend>Daily Digest Options</legend>
+      <div class="notes">
+        <h4>Daily Digest Feature</h4>
+        {lang_emailedtopics}
+       </div>
+    <div>{email_topic_checklist}</div>
+</fieldset>
+

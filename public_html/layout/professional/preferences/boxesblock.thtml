@@ -1,10 +1,10 @@
-{start_block_boxes}
-<table border="0" cellspacing="0" cellpadding="3">
-  <tr>
-    <td>{lang_boxes}</td>
-  </tr>
-  <tr>
-    <td>{boxes_checklist}</td>
-  </tr>
-</table>
-{end_block}
+<fieldset style="margin-top:10px;">
+    <legend>{lang_authors_exclude}</legend>
+      <div class="notes">
+        <h4>Filter Block Content</h4>
+        {lang_boxes}
+       </div>
+    <div>
+        {boxes_checklist}
+    </div>
+</fieldset>

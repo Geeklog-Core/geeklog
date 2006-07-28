@@ -1,100 +1,94 @@
-{start_block_profile}
+<script type="text/JavaScript" src="{site_url}/javascript/profile_editor.js"></script>
+{navbar}
 <form action="{site_url}/usersettings.php" method="POST" {enctype}>
-
-<fieldset>
-  <legend>{lang_name_legend}</legend>
-    {username_option}
-
-    <p>
-      <b>{lang_fullname}:</b><br>
-      <input type="text" name="fullname" size="60" maxlength="80" value="{fullname_value}"><br>
-      <small>{lang_fullname_text}</small>
-    </p>
+<div id="pe_preview" style="display:none;">
+    <fieldset style="margin-top:10px;">
+        <legend>Your Public Profile</legend>
+        {preview}
+    </div>
+<div id="pe_namepass" style="display:;">
+    <fieldset style="margin-top:10px;"><legend>{lang_name_legend}</legend>
+       <table class="inputTable">
+               {username_option}
+           <tr>
+                <td width="150px"><label for="fullname">{lang_fullname}:</label></td>
+                <td><input type="text" id="fullname" name="fullname" size="60" maxlength="80" value="{fullname_value}"></td>
+           </tr>
+        </table>
+    </fieldset>
+    <fieldset style="margin-top:10px;"><legend>{lang_password_email_legend}</legend>
+      <div class="notes">
+        <h4>Password and email</h4>
+        <p class="last">Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.</p><span class="warningsmall">{lang_enter_current_password}</span>
+       </div>
+       <table class="inputTable">
+           <tr>
+                <td width="150px"><label for="passwd">{lang_password}:</label></td>
+                <td><input type="password" id="passwd" name="passwd" size="32" maxlength="32" value="{password_value}"></td>
+           </tr>
+           <tr>
+               <td><label for="passwd_conf">{lang_password_conf}:</label></td>
+               <td><input type="password" id="passwd_conf" name="passwd_conf" size="32" maxlength="32" value="{password_value}"></td>
+            </tr>
+           <tr>
+               <td><label>{lang_cooktime}:</label></td>
+               <td>{cooktime_selector}</td>
+           </tr>
+           <tr>
+               <td><label for="email">{lang_email}:</label></td>
+               <td><input type="text" id="email" name="email" size="50" maxlength="96" value="{email_value}"></td>
+            </tr>
+            <tr>
+               <td><label for="email_conf">{lang_email_conf}:</label></td>
+               <td><input type="text" id="email_conf" name="email_conf" size="50" maxlength="96" value="{email_value}"></td>
+            </tr>
+            <tr>
+               <td><label for="old_passwd" style="color:red;">{lang_old_password}:</label></td>
+               <td><input type="text" id="old_passwd" name="old_passwd" size="32" maxlength="32" value=""></td>
+            </tr>
+        </table>
 </fieldset>
-
-<fieldset>
-  <legend>{lang_password_email_legend}</legend>
-    <p>
-      <b>{lang_password}:</b><br>
-      <input type="password" name="passwd" size="32" maxlength="32" value="{password_value}"><br>
-      <small>{lang_password_text}</small>
-    </p>
-
-    <p>
-      <b>{lang_password_conf}:</b><br>
-      <input type="password" name="passwd_conf" size="32" maxlength="32" value="{password_value}"><br>
-      <small>{lang_password_text_conf}</small>
-    </p>
-
-    <p>
-      <b>{lang_cooktime}:</b>
-      {cooktime_selector}<br>
-      <small>{lang_cooktime_text}</small>
-    </p>
-
-    <p>
-      <b>{lang_email}:</b><br>
-      <input type="text" name="email" size="60" maxlength="96" value="{email_value}"><br>
-      <small>{lang_email_text}</small>
-    </p>
-
-    <p> 
-      <b>{lang_email_conf}:</b><br>
-      <input type="text" name="email_conf" size="60" maxlength="96" value="{email_value}"><br>
-      <small>{lang_email_conf_text}</small>
-    </p>
-
-    <p class="warningsmall">{lang_enter_current_password}</p>
-
-    <p>
-      <b>{lang_old_password}:</b><br>
-      <input type="password" name="old_passwd" size="32" maxlength="32" value=""><br>
-      <small>{lang_old_password_text}</small>
-    </p>
+</div>
+<div id="pe_userinfo" style="display:none;">
+    <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>{lang_personal_info_legend}</legend>
+      <div class="notes">
+        <h4>User Information</h4>
+        <p class="last">Modify your user information that will be shown to other users.
+        <li>The signature will be added to any comments or forum posts you made
+        <li>The BIO is a brief summary of yourself to share
+        <li>Share your PGP Key</p>
+       </div>
+       <table class="inputTable">
+           <tr>
+                <td width="100px"><label for="homepage">{lang_homepage}:</label></td>
+                <td><input type="text" id="homepage" name="homepage" size="55" maxlength="32" value="{homepage_value}"></td>
+           </tr>
+           <tr>
+                <td width="100px"><label for="location">{lang_location}:</label></td>
+                <td><input type="text" id="location" name="location" size="55" maxlength="32" value="{location_value}"></td>
+           </tr>
+           {userphoto_option}
+           <tr>
+                <td width="100px"><label for="sig">{lang_signature}:</label></td>
+                <td><textarea id="sig" name="sig" style="width:100%" rows="4">{signature_value}</textarea></td>
+           </tr>
+           <tr>
+                <td width="100px"><label for="about">{lang_about}:</label></td>
+                <td><textarea id="about" name="about" style="width:100%" rows="4">{about_value}</textarea></td>
+           </tr>
+           <tr>
+                <td width="100px"><label for="pgpkey">{lang_pgpkey}:</label></td>
+                <td><textarea id="pgpkey" name="pgpkey" style="width:100%" rows="4">{pgpkey_value}</textarea></td>
+           </tr>
+        </table>
 </fieldset>
-
-<fieldset>
-  <legend>{lang_personal_info_legend}</legend>
-
-    <p>
-      <b>{lang_homepage}:</b><br>
-      <input type="text" name="homepage" size="60" maxlength="96" value="{homepage_value}"><br>
-      <small>{lang_homepage_text}</small>
-    </p>
-
-    <p>
-      <b>{lang_location}:</b><br>
-      <input type="text" name="location" size="60" maxlength="96" value="{location_value}"><br>
-      <small>{lang_location_text}</small>
-    </p>
-
-    <p>
-      <b>{lang_signature}:</b><br>
-      <textarea name="sig" style="width:100%" rows="4">{signature_value}</textarea><br>
-      <small>{lang_signature_text}</small>
-    </p>
-
-    {userphoto_option}
-
-    <p>
-      <b>{lang_about}</b><br>
-      <textarea name="about" style="width:100%" rows="6">{about_value}</textarea><br>
-      <small>{lang_about_text}</small>
-    </p>
-
-    <p>
-      <b>{lang_pgpkey}</b><br>
-      <textarea name="pgpkey" style="width:100%" rows="6">{pgpkey_value}</textarea><br>
-      <small>{lang_pgpkey_text}</small>
-    </p>
-</fieldset>
-
-<p align="center">
+</div>
+{prefs}
+<p align="center" id="save_button">
   <input type="hidden" name="uid" value="{uid_value}">
   <input type="hidden" name="mode" value="saveuser">
   <input type="hidden" name="username" value="{username_value}">
   <input type="submit" value="{lang_submit}">
 </p>
 </form>
-{end_block}
 {delete_account_option}

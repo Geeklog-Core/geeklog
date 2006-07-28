@@ -1,6 +1,4 @@
-    <p>
-        <b>{lang_userphoto}</b><br>
-        <input type="file" size="45" name="photo"><br>
-        <small>{lang_userphoto_text}</small><br>
-        {display_photo}
-    </p>
+           <tr>
+                <td width="100px"><label for="photo">{lang_userphoto}:</label></td>
+                <td><input type="file" id="photo" name="photo" size="30"><br>{display_photo}</td>
+           </tr>

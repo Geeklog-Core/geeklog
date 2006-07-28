@@ -647,6 +647,50 @@ th {
   border:1px solid #7B9EBD;
 }
 
+fieldset p { margin-top:5px; margin-bottom:0px; }
+
+form fieldset div.notes {
+  float: right;
+  width: 170px;
+  height: auto;
+  margin: 0px 0px 10px 10px;
+  padding: 5px;
+  border: 1px solid #666666;
+  background-color: #ffffe1;
+  color: #666666;
+  font-size: 88%;
+}
+
+form fieldset div.notes h4 {
+  background-image: url(images/icon_info.gif);
+  background-repeat: no-repeat;
+  background-position: top left;
+  padding: 3px 0px 2px 27px;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  border-color: #666666;
+  color: #666666;
+  font-size: 110%;
+  margin-bottom:5px;
+  margin-top:0px;
+}
+
+form fieldset div.notes p {
+  margin: 0em 0em 1.2em 0em;
+  color: #666666;
+}
+
+form fieldset div.notes p.last {
+  margin: 0em;
+  padding-bottom:5px;
+}
+form div.notes p, form div small {
+  line-height: 125%;
+}
+
+.inputTable td {padding:4px; vertical-align:top}
+.inputTable  label {font-weight:bold; float:right; white-space:nowrap}
+
 
 /* Default Plugin CSS Declarations */
 /* Recommended CSS to be used by Plugin Authors - allows easier site themeing */
