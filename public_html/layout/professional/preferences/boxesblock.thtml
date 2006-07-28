@@ -1,7 +1,7 @@
 <fieldset style="margin-top:10px;">
-    <legend>{lang_authors_exclude}</legend>
+    <legend>{lang_boxes_title}</legend>
       <div class="notes">
-        <h4>Filter Block Content</h4>
+        <h4>{lang_boxes_help_title}</h4>
         {lang_boxes}
        </div>
     <div>

@@ -1,10 +1,7 @@
-    <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>Misc Settings</legend>
+    <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>{lang_misc_title}</legend>
       <div class="notes">
-        <h4>Layout and Language</h4>
-        <li>No Topic Icons if checked will not display the story topic icons
-        <li>No boxes if checked will only show the Admin Menu, User Menu and Topics blocks
-        <li>Set the maximum number of stories to show per page
-        <li>Set your theme and perferred date format
+        <h4>{lang_misc_help_title}</h4>
+            {lang_misc_help}
        </div>
        <table class="inputTable">
             {language_selection}

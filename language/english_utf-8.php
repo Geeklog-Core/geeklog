@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# english_utf-8.php
+# english.php
 # This is the english language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
@@ -332,7 +332,22 @@ $LANG04 = array(
     127 => 'To change any of these settings, you will have to enter your current password.',
     128 => 'Your Name',
     129 => 'Password &amp; Email',
-    130 => 'About You'
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Top<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes'
+    
 );
 
 ###############################################################################

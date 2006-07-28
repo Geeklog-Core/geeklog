@@ -1,7 +1,7 @@
-<fieldset style="margin-top:10px;"><legend>Privacy Settings</legend>
+<fieldset style="margin-top:10px;"><legend>{lang_privacy_title}</legend>
       <div class="notes">
-        <h4>Privacy Settings</h4>
-        The default setting is to allow users to email fellow site members and show your status as online. Un-check these options to protect your privacy.
+        <h4>{lang_privacy_help_title}</h4>
+        {lang_privacy_help}
        </div>
 <table class="inputTable">
   <tr>

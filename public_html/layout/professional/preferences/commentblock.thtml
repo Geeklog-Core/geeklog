@@ -1,9 +1,7 @@
-<fieldset style="margin-top:10px;"><legend>Comment Display</legend>
+<fieldset style="margin-top:10px;"><legend>{lang_comment_title}</legend>
       <div class="notes">
-        <h4>Comment Options</h4>
-        <li>Default mode for how comments will be displayed
-        <li>Default order to display comments
-        <li>Set maximum number of comments to show - default is 100
+        <h4>{lang_comment_help_title}</h4>
+        {lang_comment_help}
        </div>
 <table class="inputTable">
   <tr>

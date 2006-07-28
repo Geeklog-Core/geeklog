@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.145 2006/07/28 04:09:12 blaine Exp $
+// $Id: usersettings.php,v 1.146 2006/07/28 05:01:29 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -370,6 +370,9 @@ function editpreferences()
     $preferences->set_var ('lang_language', $LANG04[73]);
     $preferences->set_var ('lang_theme', $LANG04[72]);
     $preferences->set_var ('lang_theme_text', $LANG04[74]);
+    $preferences->set_var ('lang_misc_title', $LANG04[138]);
+    $preferences->set_var ('lang_misc_help_title', $LANG04[139]);
+    $preferences->set_var ('lang_misc_help', $LANG04[140]);
     $preferences->set_var ('lang_noicons', $LANG04[40]);
     $preferences->set_var ('lang_noicons_text', $LANG04[49]);
     $preferences->set_var ('lang_noboxes', $LANG04[44]);
@@ -382,16 +385,28 @@ function editpreferences()
     }
     $preferences->set_var ('lang_maxstories_text', $maxtext);
     $preferences->set_var ('lang_dateformat', $LANG04[42]);
-    $preferences->set_var ('lang_excludeditems', $LANG04[54]);
+    $preferences->set_var ('lang_excluded_items_title', $LANG04[137]);
+    $preferences->set_var ('lang_excluded_items', $LANG04[54]);
+    $preferences->set_var ('lang_exclude_title', $LANG04[136]);
     $preferences->set_var ('lang_topics', $LANG04[48]);
     $preferences->set_var ('lang_emailedtopics', $LANG04[76]);
+    $preferences->set_var ('lang_digest_top_header', $LANG04[131]);
+    $preferences->set_var ('lang_digest_help_header', $LANG04[132]);
+    $preferences->set_var ('lang_boxes_title', $LANG04[144]);
+    $preferences->set_var ('lang_boxes_help_title', $LANG04[143]);
     $preferences->set_var ('lang_boxes', $LANG04[55]);
     $preferences->set_var ('lang_displaymode', $LANG04[57]);
     $preferences->set_var ('lang_displaymode_text', $LANG04[60]);
     $preferences->set_var ('lang_sortorder', $LANG04[58]);
     $preferences->set_var ('lang_sortorder_text', $LANG04[61]);
+    $preferences->set_var ('lang_comment_title', $LANG04[133]);
+    $preferences->set_var ('lang_comment_help_title', $LANG04[134]);
+    $preferences->set_var ('lang_comment_help', $LANG04[135]);
     $preferences->set_var ('lang_commentlimit', $LANG04[59]);
     $preferences->set_var ('lang_commentlimit_text', $LANG04[62]);
+    $preferences->set_var ('lang_privacy_title', $LANG04[141]);
+    $preferences->set_var ('lang_privacy_help_title', $LANG04[141]);
+    $preferences->set_var ('lang_privacy_help', $LANG04[142]);
     $preferences->set_var ('lang_emailfromadmin', $LANG04[100]);
     $preferences->set_var ('lang_emailfromadmin_text', $LANG04[101]);
     $preferences->set_var ('lang_emailfromuser', $LANG04[102]);

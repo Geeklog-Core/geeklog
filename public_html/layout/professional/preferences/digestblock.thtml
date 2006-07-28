@@ -1,7 +1,7 @@
 <fieldset style="margin-top:10px;">
-    <legend>Daily Digest Options</legend>
+    <legend>{lang_digest_top_header}</legend>
       <div class="notes">
-        <h4>Daily Digest Feature</h4>
+        <h4>{lang_digest_help_header}</h4>
         {lang_emailedtopics}
        </div>
     <div>{email_topic_checklist}</div>

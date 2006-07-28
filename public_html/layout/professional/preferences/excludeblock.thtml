@@ -1,8 +1,8 @@
 <fieldset style="margin-top:10px;">
-    <legend>Exclude Topics and Authors</legend>
+    <legend>{lang_exclude_title}</legend>
       <div class="notes">
-        <h4>Filter Story Content</h4>
-        {lang_excludeditems}
+        <h4>{lang_excluded_items_title}</h4>
+        {lang_excluded_items}
        </div>
     <table>
         <tr valign="top">
