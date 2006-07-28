@@ -346,7 +346,12 @@ $LANG04 = array(
     141 => 'Privacy Settings',
     142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
     143 => 'Filter Block Content',
-    144 => 'Show & hide boxes'
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>'
     
 );
 

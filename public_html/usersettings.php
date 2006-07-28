@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.146 2006/07/28 05:01:29 ospiess Exp $
+// $Id: usersettings.php,v 1.147 2006/07/28 05:45:52 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -106,6 +106,8 @@ function edituser()
     $preferences->set_var ('lang_fullname_text', $LANG04[34]);
     $preferences->set_var ('lang_username', $LANG04[2]);
     $preferences->set_var ('lang_username_text', $LANG04[87]);
+    $preferences->set_var ('lang_password_help_title', $LANG04[146]);
+    $preferences->set_var ('lang_password_help', $LANG04[147]);
     $preferences->set_var ('lang_password', $LANG04[4]);
     $preferences->set_var ('lang_password_text', $LANG04[35]);
     $preferences->set_var ('lang_password_conf', $LANG04[108]);
@@ -118,6 +120,8 @@ function edituser()
     $preferences->set_var ('lang_email_text', $LANG04[33]);
     $preferences->set_var ('lang_email_conf', $LANG04[124]);
     $preferences->set_var ('lang_email_conf_text', $LANG04[126]);
+    $preferences->set_var ('lang_userinfo_help_title', $LANG04[148]);
+    $preferences->set_var ('lang_userinfo_help', $LANG04[149]);
     $preferences->set_var ('lang_homepage', $LANG04[6]);
     $preferences->set_var ('lang_homepage_text', $LANG04[36]);
     $preferences->set_var ('lang_location', $LANG04[106]);
@@ -131,6 +135,7 @@ function edituser()
     $preferences->set_var ('lang_pgpkey', $LANG04[8]);
     $preferences->set_var ('lang_pgpkey_text', $LANG04[39]);
     $preferences->set_var ('lang_submit', $LANG04[9]);
+    $preferences->set_var ('lang_preview_title', $LANG04[145]);
     $preferences->set_var ('lang_enter_current_password', $LANG04[127]);
     $preferences->set_var ('lang_name_legend', $LANG04[128]);
     $preferences->set_var ('lang_password_email_legend', $LANG04[129]);

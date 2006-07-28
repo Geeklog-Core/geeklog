@@ -3,7 +3,7 @@
 <form action="{site_url}/usersettings.php" method="POST" {enctype}>
 <div id="pe_preview" style="display:none;">
     <fieldset style="margin-top:10px;">
-        <legend>Your Public Profile</legend>
+        <legend>{lang_preview_title}</legend>
         {preview}
     </div>
 <div id="pe_namepass" style="display:;">
@@ -18,8 +18,9 @@
     </fieldset>
     <fieldset style="margin-top:10px;"><legend>{lang_password_email_legend}</legend>
       <div class="notes">
-        <h4>Password and email</h4>
-        <p class="last">Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.</p><span class="warningsmall">{lang_enter_current_password}</span>
+        <h4>{lang_password_help_title}</h4>
+        <p class="last">{lang_password_help}</p>
+        <span class="warningsmall">{lang_enter_current_password}</span>
        </div>
        <table class="inputTable">
            <tr>
@@ -52,11 +53,8 @@
 <div id="pe_userinfo" style="display:none;">
     <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>{lang_personal_info_legend}</legend>
       <div class="notes">
-        <h4>User Information</h4>
-        <p class="last">Modify your user information that will be shown to other users.
-        <li>The signature will be added to any comments or forum posts you made
-        <li>The BIO is a brief summary of yourself to share
-        <li>Share your PGP Key</p>
+        <h4>{lang_userinfo_help_title}</h4>
+        <p class="last">{lang_userinfo_help}</p>
        </div>
        <table class="inputTable">
            <tr>
