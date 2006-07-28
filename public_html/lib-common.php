@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.559 2006/07/16 17:43:55 dhaun Exp $
+// $Id: lib-common.php,v 1.560 2006/07/28 04:26:37 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2084,19 +2084,6 @@ function COM_userMenu( $help='', $title='' )
         }
 
         $url = $_CONF['site_url'] . '/usersettings.php?mode=edit';
-        $usermenu->set_var( 'option_label', $LANG01[48] );
-        $usermenu->set_var( 'option_count', '' );
-        $usermenu->set_var( 'option_url', $url );
-        if( $thisUrl == $url )
-        {
-            $retval .= $usermenu->parse( 'item', 'current' );
-        }
-        else
-        {
-            $retval .= $usermenu->parse( 'item', 'option' );
-        }
-
-        $url = $_CONF['site_url'] . '/usersettings.php?mode=preferences';
         $usermenu->set_var( 'option_label', $LANG01[49] );
         $usermenu->set_var( 'option_count', '' );
         $usermenu->set_var( 'option_url', $url );
