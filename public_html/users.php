@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.141 2006/07/08 19:58:42 dhaun Exp $
+// $Id: users.php,v 1.142 2006/07/29 11:21:39 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -460,13 +460,17 @@ function createuser ($username, $email, $email_conf)
 
             $uid = USER_createAccount ($username, $email);
 
-            if (!$_CONF['usersubmission'] == 1)
-            {
-                $retval = emailpassword ($username, 1, $msg);
+            if ($_CONF['usersubmission'] == 1) {
+                if (DB_getItem ($_TABLES['users'], 'status', "uid = $uid")
+                        == USER_ACCOUNT_AWAITING_APPROVAL) {
+                    $retval = COM_refresh ($_CONF['site_url']
+                                           . '/index.php?msg=48');
+                } else {
+                    $retval = emailpassword ($username, 1);
+                }
             } else {
-                $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
+                $retval = emailpassword ($username, 1);
             }
-
 
             return $retval;
         } else {
@@ -905,7 +909,11 @@ default:
         }
     }
 
-    $loginname = COM_applyFilter ($_POST['loginname']);
+    $loginname = '';
+    if (isset ($_POST['loginname'])) {
+        $loginname = COM_applyFilter ($_POST['loginname']);
+    }
+    $passwd = '';
     if (isset ($_POST['passwd'])) {
         $passwd = $_POST['passwd'];
     }

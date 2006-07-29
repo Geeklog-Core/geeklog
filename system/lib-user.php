@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.29 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-user.php,v 1.30 2006/07/29 11:21:39 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -233,6 +233,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
 {
     global $_CONF, $_TABLES;
 
+    $queueUser = false;
     $username = addslashes ($username);
     $email = addslashes ($email);
 
@@ -255,10 +256,20 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
         $fields .= ',homepage';
         $values .= ",'$homepage'";
     }
-    if ($_CONF['usersubmission'] == 1)
-    {
-        $fields .= ',status';
-        $values .= ','.USER_ACCOUNT_AWAITING_APPROVAL;
+    if (($_CONF['usersubmission'] == 1) && !SEC_hasRights ('user.edit')) {
+        $queueUser = true;
+        if (!empty ($_CONF['allow_domains'])) {
+            $allowed = explode (',', $_CONF['allow_domains']);
+            // Note: We already made sure $email is a valid address
+            $domain = substr ($email, strpos ($email, '@') + 1);
+            if (in_array ($domain, $allowed)) {
+                $queueUser = false;
+            }
+        }
+        if ($queueUser) {
+            $fields .= ',status';
+            $values .= ',' . USER_ACCOUNT_AWAITING_APPROVAL;
+        }
     } else {
         if (!empty($remoteusername)) {
             $fields .= ',remoteusername';
@@ -306,8 +317,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
     // Notify the admin?
     if (isset ($_CONF['notification']) &&
         in_array ('user', $_CONF['notification'])) {
-        if ($_CONF['usersubmission'] == 1)
-        {
+        if ($queueUser) {
             $mode = 'inactive';
         } else {
             $mode = 'active';

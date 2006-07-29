@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Re-implemented $_CONF['allow_domains'] whitelist (when the user submission
+  queue is enabled) that was inexplicably missing from 1.4.0 [Dirk]
 - Merged User Preferences and Account information into one page, like the 
   Story editor with tabs etc. [Blaine, Oliver]
 - Added ability in staticpage editor to enable/disable Advanced Editor mode 
