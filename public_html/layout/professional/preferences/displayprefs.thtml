@@ -1,12 +1,12 @@
-<div id="pe_layout" style="display:none;">
+<div id="pe_layout" class="jsenabled_hide" style="display:;">
         {display_block}
         {comment_block}
 </div>
-<div id="pe_content" style="display:none;">
+<div id="pe_content" class="jsenabled_hide" style="display:;">
         {exclude_block}
         {digest_block}
         {boxes_block}
 </div>
-<div id="pe_privacy" style="display:none;">
+<div id="pe_privacy" class="jsenabled_hide" style="display:;">
         {privacy_block}
 </div>

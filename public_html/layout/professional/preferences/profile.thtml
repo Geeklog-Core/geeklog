@@ -1,5 +1,7 @@
+<noscript><div class="pluginAlert" style="padding:10px;">{no_javascript_warning}</div></noscript>
 <script type="text/JavaScript" src="{site_url}/javascript/profile_editor.js"></script>
-{navbar}
+
+<div id="pe_navbar" class="jsenabled_show" style="display:none">{navbar}</div>
 <form action="{site_url}/usersettings.php" method="POST" {enctype}>
 <div id="pe_preview" style="display:none;">
     <fieldset style="margin-top:10px;">
@@ -50,7 +52,7 @@
         </table>
 </fieldset>
 </div>
-<div id="pe_userinfo" style="display:none;">
+<div id="pe_userinfo" class="jsenabled_hide" style="display:;">
     <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>{lang_personal_info_legend}</legend>
       <div class="notes">
         <h4>{lang_userinfo_help_title}</h4>
@@ -90,3 +92,16 @@
 </p>
 </form>
 {delete_account_option}
+<!-- JS Functions which will execute only if JS enabled will un-hide the special features that enhance the profile editor -->
+<script type="text/JavaScript">
+var el;
+el=document.getElementsByTagName('div');
+for(i=0;i<el.length;i++){
+    if(el[i].className == 'jsenabled_show'){
+        el[i].style.display = '';
+    } else if(el[i].className == 'jsenabled_hide'){
+        el[i].style.display = 'none';
+    }
+}
+
+</script>

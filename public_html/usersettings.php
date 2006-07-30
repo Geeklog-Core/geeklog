@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.147 2006/07/28 05:45:52 ospiess Exp $
+// $Id: usersettings.php,v 1.148 2006/07/30 16:05:05 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -76,6 +76,7 @@ function edituser()
                                    
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
+    $preferences->set_var ('no_javascript_warning',$LANG04[150]);
 
     $preferences->set_var ('cssid1', 1);
     $preferences->set_var ('cssid2', 2);
