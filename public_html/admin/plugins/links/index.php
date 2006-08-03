@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.34 2006/07/08 19:58:42 dhaun Exp $
+// $Id: index.php,v 1.35 2006/08/03 13:41:26 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -418,7 +418,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
             $_POST['category'], $_POST['categorydd'],
             $_POST['url'], $_POST['description'], $_POST['title'],
             COM_applyFilter ($_POST['hits'], true),
-            $_POST['owner_id'], $_POST['group_id'],
+            COM_applyFilter ($_POST['owner_id'], true),
+            COM_applyFilter ($_POST['group_id'], true),
             $_POST['perm_owner'], $_POST['perm_group'],
             $_POST['perm_members'], $_POST['perm_anon']);
 } else if ($mode == 'editsubmission') {
