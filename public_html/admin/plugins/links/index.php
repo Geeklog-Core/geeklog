@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.36 2006/08/03 14:39:13 dhaun Exp $
+// $Id: index.php,v 1.37 2006/08/03 15:29:28 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -166,8 +166,8 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('link_hits', $A['hits']);
     $link_templates->set_var('lang_linkdescription', $LANG_LINKS_ADMIN[9]);
     $link_templates->set_var('link_description', stripslashes($A['description']));
-    $link_templates->set_var('lang_save', $LANG_LINKS_ADMIN[21]);
-    $link_templates->set_var('lang_cancel', $LANG_LINKS_ADMIN[22]);
+    $link_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $link_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
     // user access info
     $link_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
@@ -395,7 +395,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     } else {
         $display .= deleteLink ($lid);
     }
-} else if (($mode == $LANG_LINKS_ADMIN[21]) && !empty ($LANG_LINKS_ADMIN[21])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $display .= savelink (COM_applyFilter ($_POST['lid']),
             COM_applyFilter ($_POST['old_lid']),
             $_POST['category'], $_POST['categorydd'],
