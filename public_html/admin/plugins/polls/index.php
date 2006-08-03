@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.34 2006/07/08 19:58:42 dhaun Exp $
+// $Id: index.php,v 1.35 2006/08/03 13:55:45 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -340,7 +340,7 @@ function editpoll ($qid = '')
             $groupdd .=  '>' . key($usergroups) . '</option>';
             next($usergroups);
         }
-        $groupdd .=  '</SELECT>';
+        $groupdd .=  '</select>';
     } else {
         // they can't set the group then
         $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$Q['group_id']}");
@@ -352,8 +352,8 @@ function editpoll ($qid = '')
     $poll_templates->set_var('permissions_editor', SEC_getPermissionsHTML($Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']));
     $poll_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $poll_templates->set_var('lang_answersvotes', $LANG25[10]);   
-    $poll_templates->set_var('lang_save', $LANG25[14]);   
-    $poll_templates->set_var('lang_cancel', $LANG25[15]);   
+    $poll_templates->set_var('lang_save', $LANG_ADMIN['save']);
+    $poll_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
  
     if (isset ($answers)) {
         for ($i = 1; $i <= $_PO_CONF['maxanswers']; $i++) {
@@ -430,7 +430,7 @@ if ($mode == 'edit') {
     }
     $display .= editpoll ($qid);
     $display .= COM_siteFooter ();
-} else if (($mode == $LANG25[14]) && !empty ($LANG25[14])) { // save
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $qid = COM_applyFilter ($_POST['qid']);
     if (!empty ($qid)) {
         $voters = 0;
@@ -441,8 +441,12 @@ if ($mode == 'edit') {
         if (isset ($_POST['statuscode'])) {
             $statuscode = COM_applyFilter ($_POST['statuscode'], true);
         }
-        $display .= savepoll ($qid, $_POST['mainpage'], $_POST['question'],
-                        $voters, $statuscode,
+        $mainpage = '';
+        if (isset ($_POST['mainpage'])) {
+            $mainpage = COM_applyFilter ($_POST['mainpage']);
+        }
+        $display .= savepoll ($qid, $mainpage, $_POST['question'], $voters,
+                        $statuscode,
                         COM_applyFilter ($_POST['commentcode'], true),
                         $_POST['answer'], $_POST['votes'], $_POST['remark'],
                         COM_applyFilter ($_POST['owner_id'], true),
