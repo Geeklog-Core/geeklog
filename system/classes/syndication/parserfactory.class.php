@@ -179,10 +179,11 @@
       {
         $req->addHeader('User-Agent', $this->userAgent);
       }
-      if (!PEAR::isError($req->sendRequest())) {
+      $response = $req->sendRequest();
+      if (!PEAR::isError($response)) {
         return $req->getResponseBody();
       } else {
-      	$this->errorStatus = array('HTTP Fetch Failed', $req->getCode(), $req->getMessage());
+      	$this->errorStatus = array('HTTP Fetch Failed', $response->getCode(), $response->getMessage());
         return false;
       }
     }
