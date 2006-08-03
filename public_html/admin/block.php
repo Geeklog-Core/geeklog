@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.102 2006/07/08 13:51:56 dhaun Exp $
+// $Id: block.php,v 1.103 2006/08/03 14:39:12 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -75,44 +75,6 @@ function hasBlockTopicAccess ($tid)
     }
 
     return $access;
-}
-
-/**
-* Create a group dropdown
-*
-* @param    int     $group_id   current group id (to be selected)
-* @param    int     $access     access permission
-* @return   string              HTML for the dropdown
-*
-*/
-function groupDropdown ($group_id, $access)
-{
-    global $_TABLES;
-
-    $groupdd = '';
-
-    if ($access == 3) {
-        $usergroups = SEC_getUserGroups ();
-
-        $groupdd .= '<select name="group_id">' . LB;
-        for ($i = 0; $i < count ($usergroups); $i++) {
-            $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
-            if ($group_id == $usergroups[key($usergroups)]) {
-                $groupdd .= ' selected="selected"';
-            }
-            $groupdd .= '>' . key($usergroups) . '</option>' . LB;
-            next ($usergroups);
-        }
-        $groupdd .= '</select>' . LB;
-    } else {
-        // They can't set the group then
-        $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
-                                "grp_id = '$group_id'")
-                 . '<input type="hidden" name="group_id" value="' . $group_id
-                 . '">';
-    }
-
-    return $groupdd;
 }
 
 /**
@@ -193,7 +155,7 @@ function editdefaultblock ($A, $access)
 
     $block_templates->set_var('lang_group', $LANG_ACCESS['group']);
     $block_templates->set_var('group_dropdown',
-                              groupDropdown ($A['group_id'], $access));
+                              SEC_getGroupDropdown ($A['group_id'], $access));
     $block_templates->set_var('group_name', DB_getItem ($_TABLES['groups'],
                                     'grp_name', "grp_id = '{$A['group_id']}'"));
     $block_templates->set_var('group_id', $A['group_id']);
@@ -340,7 +302,7 @@ function editblock ($bid = '')
 
     $block_templates->set_var('lang_group', $LANG_ACCESS['group']);
     $block_templates->set_var('group_dropdown',
-                              groupDropdown ($A['group_id'], $access));
+                              SEC_getGroupDropdown ($A['group_id'], $access));
     $block_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));

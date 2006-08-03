@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.230 2006/07/16 17:34:03 blaine Exp $
+// $Id: story.php,v 1.231 2006/08/03 14:39:12 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -560,28 +560,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('owner', $ownername);
     $story_templates->set_var('owner_id', $A['owner_id']);
     $story_templates->set_var('lang_group', $LANG_ACCESS['group']);
-
-    $usergroups = SEC_getUserGroups();
-    $groupdd = '';
-    if ($access == 3) {
-        $groupdd .= '<select name="group_id">';
-        for ($i = 0; $i < count($usergroups); $i++) {
-            $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
-            if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                $groupdd .= ' selected="selected"';
-            }
-            $groupdd .= '>' . key($usergroups) . '</option>';
-            next($usergroups);
-        }
-        $groupdd .= '</select>';
-    } else {
-        // they can't set the group then
-        $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
-                                "grp_id = {$A['group_id']}");
-        $groupdd .= '<input type="hidden" name="group_id" value="'
-                 . $A['group_id'] . '">';
-    }
-    $story_templates->set_var('group_dropdown', $groupdd);
+    $story_templates->set_var('group_dropdown',
+                              SEC_getGroupDropdown ($A['group_id'], $access));
     $story_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $story_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $story_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));

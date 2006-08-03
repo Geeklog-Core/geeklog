@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.53 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-security.php,v 1.54 2006/08/03 14:39:13 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -979,6 +979,45 @@ function SEC_removeFeatureFromDB ($feature_name, $logging = false)
             COM_errorLog ("SEC_removeFeatureFromDB: Feature '$feature_name' not found.");
         }
     }
+}
+
+/**
+* Create a group dropdown
+*
+* Creates the group dropdown menu that's used on pretty much every admin page
+*
+* @param    int     $group_id   current group id (to be selected)
+* @param    int     $access     access permission
+* @return   string              HTML for the dropdown
+*
+*/
+function SEC_getGroupDropdown ($group_id, $access)
+{
+    global $_TABLES;
+
+    $groupdd = '';
+        
+    if ($access == 3) {
+        $usergroups = SEC_getUserGroups ();
+
+        $groupdd .= '<select name="group_id">' . LB;
+        foreach ($usergroups as $ug_name => $ug_id) {
+            $groupdd .= '<option value="' . $ug_id . '"';
+            if ($group_id == $ug_id) {
+                $groupdd .= ' selected="selected"';
+            }
+            $groupdd .= '>' . $ug_name . '</option>' . LB;
+        }
+        $groupdd .= '</select>' . LB;
+    } else {
+        // They can't set the group then
+        $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
+                                "grp_id = '$group_id'")
+                 . '<input type="hidden" name="group_id" value="' . $group_id
+                 . '">';
+    }
+
+    return $groupdd;
 }
 
 ?>

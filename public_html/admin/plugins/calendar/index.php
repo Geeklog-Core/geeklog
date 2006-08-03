@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.19 2006/07/10 09:26:45 dhaun Exp $
+// $Id: index.php,v 1.20 2006/08/03 14:39:13 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -329,26 +329,8 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('owner', $ownername);
     $event_templates->set_var('owner_id', $A['owner_id']);
     $event_templates->set_var('lang_group', $LANG_ACCESS['group']);
-
-    $groupdd = '';
-    $usergroups = SEC_getUserGroups();
-    if ($access == 3) {
-        $groupdd .= '<select name="group_id">';
-        for ($i = 0; $i < count($usergroups); $i++) {
-            $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
-            if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                $groupdd .= ' selected="selected"';
-            }
-            $groupdd .= '>' . key($usergroups) . '</option>';
-            next($usergroups);
-        }
-        $groupdd.= '</select>';
-    } else {
-        // they can't set the group then
-        $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
-        $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
-    }
-    $event_templates->set_var('group_dropdown', $groupdd);
+    $event_templates->set_var('group_dropdown',
+                              SEC_getGroupDropdown ($A['group_id'], $access));
     $event_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $event_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
     $event_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));

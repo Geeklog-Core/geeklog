@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.35 2006/08/03 13:55:45 dhaun Exp $
+// $Id: index.php,v 1.36 2006/08/03 14:39:13 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -327,26 +327,8 @@ function editpoll ($qid = '')
     $poll_templates->set_var('owner', $ownername);
     $poll_templates->set_var('owner_id', $Q['owner_id']);
     $poll_templates->set_var('lang_group', $LANG_ACCESS['group']);
-   
-    $groupdd = ''; 
-    $usergroups = SEC_getUserGroups();
-    if ($access == 3) {
-        $groupdd .= '<select name="group_id">';
-        for ($i = 0; $i < count($usergroups); $i++) {
-            $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
-            if ($Q['group_id'] == $usergroups[key($usergroups)]) {
-                $groupdd .= ' selected';
-            }
-            $groupdd .=  '>' . key($usergroups) . '</option>';
-            next($usergroups);
-        }
-        $groupdd .=  '</select>';
-    } else {
-        // they can't set the group then
-        $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$Q['group_id']}");
-        $groupdd .= '<input type="hidden" name="group_id" value="' . $Q['group_id'] . '">';
-    }
-    $poll_templates->set_var('group_dropdown', $groupdd);
+    $poll_templates->set_var('group_dropdown',
+                             SEC_getGroupDropdown ($Q['group_id'], $access));
     $poll_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $poll_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
     $poll_templates->set_var('permissions_editor', SEC_getPermissionsHTML($Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']));

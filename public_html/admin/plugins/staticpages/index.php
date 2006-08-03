@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.73 2006/07/17 04:11:21 blaine Exp $
+// $Id: index.php,v 1.74 2006/08/03 14:39:13 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -138,27 +138,9 @@ function form ($A, $error = false)
         $sp_template->set_var('owner_name', $ownername);
         $sp_template->set_var('owner', $ownername);
         $sp_template->set_var('owner_id', $A['owner_id']);
-
         $sp_template->set_var('lang_group', $LANG_ACCESS['group']);
-        $usergroups = SEC_getUserGroups();
-        $groupdd = '';
-        if ($access == 3) {
-            $groupdd .= '<select name="group_id">';
-            for ($i = 0; $i < count($usergroups); $i++) {
-                $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
-                if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                    $groupdd .= ' selected="selected"';
-                }
-                $groupdd .= '>' . key($usergroups) . '</option>';
-                next($usergroups);
-            }
-            $groupdd .= '</select>';
-        } else {
-            // they can't set the group then
-            $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
-            $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
-        }
-        $sp_template->set_var('group_dropdown', $groupdd);
+        $sp_template->set_var('group_dropdown',
+                              SEC_getGroupDropdown ($A['group_id'], $access));
         $sp_template->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
         $sp_template->set_var('lang_permissions', $LANG_ACCESS['permissions']);
         $sp_template->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
