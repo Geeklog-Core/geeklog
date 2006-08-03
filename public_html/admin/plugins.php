@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.64 2006/07/08 19:58:42 dhaun Exp $
+// $Id: plugins.php,v 1.65 2006/08/03 15:46:45 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -115,15 +115,19 @@ function plugineditor ($pi_name, $confirmed = 0)
                                  . $LANG_ADMIN['delete'] . '" name="mode">');
     }
     $plugin_code_version = PLG_chkVersion($pi_name);
-    if ($plugin_code_version == '') {
-        $plugin_code_version = 'N/A';
+    if (empty ($plugin_code_version)) {
+        $code_version = 'N/A';
+    } else {
+        $code_version = $plugin_code_version;
     }
-    if ($plugin_code_version != 'N/A' AND $plugin_code_version > $A['pi_version']) {
+    $pi_installed_version = $A['pi_version'];
+    if (empty ($plugin_code_version) ||
+            ($pi_installed_version == $code_version)) {
+        $plg_templates->set_var ('update_option', '');
+    } else {
         $plg_templates->set_var ('update_option', '<input type="submit" value="'
                                  . $LANG32[34] . '" name="mode">');
-    } else {
-        $plg_templates->set_var ('update_option', '');
-    }    
+    }
     $plg_templates->set_var('confirmed', $confirmed);
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
     $plg_templates->set_var('pi_name', $pi_name);
