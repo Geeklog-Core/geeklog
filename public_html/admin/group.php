@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.79 2006/07/10 03:29:56 blaine Exp $
+// $Id: group.php,v 1.80 2006/08/04 08:57:46 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -695,27 +695,26 @@ function listgroups()
     return $retval;
 }
 
-function grp_selectUsers ($group_id = '0', $allusers = false)
+function grp_selectUsers ($group_id, $allusers = false)
 {
     global $_TABLES, $_USER;
 
     $retval = '';
-    if($allusers) {    // Show all site members - else users in selected group
-        $result = DB_query( "SELECT uid,username from {$_TABLES['users']} ORDER BY username" );
-        while(list($uid,$username) = DB_fetchArray($result)) {
-            if( DB_count($_TABLES['group_assignments'], array('ug_uid','ug_main_grp_id'), array($uid,$group_id)) == 0 ) {
-                $retval .= '<option value="' . $uid . '">'. $username . '</option>';
-            }
-        }
-    } else {
-        $groups = getGroupList ($group_id);
-        $groupList = implode (',', $groups);
-        $sql = "FROM {$_TABLES['users']},{$_TABLES['group_assignments']}
-            WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
-        $result = DB_query ("SELECT DISTINCT uid,username " . $sql . " ORDER BY username");
-        while(list($uid,$username) = DB_fetchArray($result)) {
-            $retval .= '<option value="' . $uid . '">'. $username . '</option>';
-        }
+
+    $groups = getGroupList ($group_id);
+    $grouplist = '(' . implode (',', $groups) . ')';
+COM_errorLog($grouplist);
+    $sql = "SELECT DISTINCT uid,username FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['group_assignments']} ON {$_TABLES['group_assignments']}.ug_uid = uid WHERE uid > 1 AND {$_TABLES['group_assignments']}.ug_main_grp_id ";
+    if ($allusers) {
+        $sql .= 'NOT ';
+    }
+    $sql .= "IN {$grouplist} ORDER BY username";
+
+    $result = DB_query ($sql);
+    $numUsers = DB_numRows ($result);
+    for ($i = 0; $i < $numUsers; $i++) {
+        list($uid, $username) = DB_fetchArray ($result);
+        $retval .= '<option value="' . $uid . '">' . $username . '</option>';
     }
 
     return $retval;
