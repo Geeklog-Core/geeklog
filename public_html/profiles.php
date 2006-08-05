@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.49 2006/05/15 04:10:38 vinny Exp $
+// $Id: profiles.php,v 1.50 2006/08/05 13:03:57 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -50,6 +50,8 @@ require_once ('lib-common.php');
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG04, $LANG08;
+
+    $retval = '';
 
     // check for correct $_CONF permission
     if (empty ($_USER['username']) &&
@@ -84,7 +86,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
             // Append the user's signature to the message
             $sig = '';
-            if ($_USER['uid'] > 1) {
+            if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
                 $sig = DB_getItem ($_TABLES['users'], 'sig', "uid={$_USER['uid']}");
                 if (!empty ($sig)) {
                     $sig = strip_tags (COM_stripslashes ($sig));
@@ -92,15 +94,27 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
                 }
             }
 
-            $subject = strip_tags (COM_stripslashes ($subject));
+            $subject = COM_stripslashes ($subject);
+            $message = COM_stripslashes ($message);
+
+            // do a spam check with the unfiltered message text and subject
+            $mailtext = $subject . "\n" . $message . $sig;
+            $result = PLG_checkforSpam ($mailtext, $_CONF['spamx']);
+            if ($result > 0) {
+                COM_updateSpeedlimit ('mail');
+                COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+            }
+
+            $subject = strip_tags ($subject);
             $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-            $message = strip_tags (COM_stripslashes ($message)) . $sig;
+            $message = strip_tags ($message) . $sig;
             if (!empty ($A['fullname'])) {
                 $to = COM_formatEmailAddress ($A['fullname'], $A['email']);
             } else {
                 $to = COM_formatEmailAddress ($A['username'], $A['email']);
             }
             $from = COM_formatEmailAddress ($author, $authoremail);
+
             COM_mail ($to, $subject, $message, $from);
             COM_updateSpeedlimit ('mail');
 
