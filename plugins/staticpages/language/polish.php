@@ -105,4 +105,7 @@ $LANG_STATIC= array(
     'printable_format' => 'Printable Format'
 );
 
+// Messages for the plugin upgrade
+$PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
 ?>

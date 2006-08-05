@@ -104,6 +104,10 @@ $LANG_STATIC= array(
     'php_not_activated' => 'استفاده از |PhP| در آمار صفحات فعال نيست . لطفا به مستندات يك نگاه بياندازيد !!',
     'printable_format' => 'فرمت قابل پرينت'
 );
+
+// Messages for the plugin upgrade
+$PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
 #YA hagh
 #Doostan  Agar  Moshkeli  BOOd  BA  MAN  TAmas  BEgirid------By:Hesam.H
 #e-mail: info1@4shir.com OR ir.security@gmail.com

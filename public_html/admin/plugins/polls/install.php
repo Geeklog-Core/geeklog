@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.12 2006/06/17 12:22:44 dhaun Exp $
+// $Id: install.php,v 1.13 2006/08/05 15:07:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -48,7 +48,7 @@ require_once ($_CONF['path'] . 'plugins/polls/config.php');
 $pi_display_name = 'Polls';
 $pi_name         = 'polls';
 $pi_version      = $_PO_CONF['version'];
-$gl_version      = '1.4.0';
+$gl_version      = '1.4.1';
 $pi_url          = 'http://www.geeklog.net/';
 
 // name of the Admin group
@@ -83,6 +83,10 @@ function plugin_compatible_with_this_geeklog_version ()
     if (function_exists ('COM_showPoll') || function_exists ('COM_pollVote')) {
         // if these functions exist, then someone's trying to install the
         // plugin on Geeklog 1.3.11 or older - sorry, but that won't work
+        return false;
+    }
+
+    if (!function_exists ('SEC_getGroupDropdown')) {
         return false;
     }
 

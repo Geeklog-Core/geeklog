@@ -89,4 +89,7 @@ $LANG25 = array(
 $PLG_polls_MESSAGE19 = 'Ваш опрос успешно сохранён.';
 $PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
+// Messages for the plugin upgrade
+$PLG_polls_MESSAGE3002 = $LANG32[9];
+
 ?>

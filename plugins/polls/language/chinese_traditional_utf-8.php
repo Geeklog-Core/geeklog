@@ -92,4 +92,7 @@ $LANG25 = array(
 $PLG_polls_MESSAGE19 = '你的民意調查已順利的存續了.';
 $PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
+// Messages for the plugin upgrade
+$PLG_polls_MESSAGE3002 = $LANG32[9];
+
 ?>

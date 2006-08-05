@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.72 2006/06/30 12:18:29 dhaun Exp $
+// $Id: functions.inc,v 1.73 2006/08/05 15:07:44 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -659,6 +659,11 @@ function plugin_geticon_staticpages ()
 function plugin_upgrade_staticpages ()
 {
     global $_TABLES, $_SP_CONF;
+
+    // the plugin needs this function so complain when it doesn't exist
+    if (!function_exists ('SEC_getGroupDropdown')) {
+        return 3002;
+    }
 
     // no db changes - just update the version number
     DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SP_CONF['version']}' WHERE pi_name = 'staticpages'");

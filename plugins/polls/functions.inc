@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.50 2006/07/08 20:09:59 dhaun Exp $
+// $Id: functions.inc,v 1.51 2006/08/05 15:07:43 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -953,6 +953,11 @@ function plugin_templatesetvars_polls ($templatename, &$template)
 function plugin_upgrade_polls () 
 {
     global $_TABLES, $_PO_CONF;
+
+    // the plugin needs this function so complain when it doesn't exist
+    if (!function_exists ('SEC_getGroupDropdown')) {
+        return 3002;
+    }
 
     $current_version = DB_getItem ($_TABLES['plugins'], 'pi_version',
                                    "pi_name = 'polls'");

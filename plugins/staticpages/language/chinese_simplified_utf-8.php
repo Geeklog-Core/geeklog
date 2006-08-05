@@ -113,4 +113,7 @@ $LANG_STATIC= array(
     'submit' => '提交'
 );
 
+// Messages for the plugin upgrade
+$PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
 ?>

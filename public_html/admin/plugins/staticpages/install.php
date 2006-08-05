@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.23 2006/06/10 20:37:42 dhaun Exp $
+// $Id: install.php,v 1.24 2006/08/05 15:07:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/staticpages/config.php');
@@ -48,7 +48,7 @@ require_once ($_CONF['path'] . 'plugins/staticpages/config.php');
 $pi_display_name = 'Static Page';
 $pi_name         = 'staticpages';
 $pi_version      = $_SP_CONF['version'];
-$gl_version      = '1.4.0';
+$gl_version      = '1.4.1';
 $pi_url          = 'http://www.geeklog.net/';
 
 // name of the Admin group
@@ -83,6 +83,10 @@ $DEFVALUES = array();
 */
 function plugin_compatible_with_this_geeklog_version ()
 {
+    if (!function_exists ('SEC_getGroupDropdown')) {
+        return false;
+    }
+
     return true;
 }
 //
