@@ -32,6 +32,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD advanced_editor_mode tinyint(1)
 // add new field to enable/disable use of autotags in "normal" blocks
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD allow_autotags tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER content";
 
+// allow up to 255 characters for the help URL
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE help help varchar(255) default ''";
+
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
 {

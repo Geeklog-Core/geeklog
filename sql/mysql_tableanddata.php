@@ -24,7 +24,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   rdflimit smallint(5) unsigned NOT NULL default '0',
   onleft tinyint(3) unsigned NOT NULL default '1',
   phpblockfn varchar(64) default '',
-  help varchar(128) default '',
+  help varchar(255) default '',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
