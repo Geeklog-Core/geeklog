@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.560 2006/07/28 04:26:37 ospiess Exp $
+// $Id: lib-common.php,v 1.561 2006/08/05 18:24:55 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4967,6 +4967,71 @@ function COM_applyFilter( $parameter, $isnumeric = false )
     }
 
     return $p;
+}
+
+/**
+* Sanitize a URL
+*
+* @param    string  $url                URL to sanitized
+* @param    array   $allowed_protocols  array of allowed protocols
+* @param    string  $default_protocol   replacement protocol (default: http)
+* @return   string                      sanitized URL
+*
+*/
+function COM_sanitizeUrl( $url, $allowed_protocols = '', $default_protocol = '' )
+{
+    global $_CONF;
+
+    if( empty( $allowed_protocols ))
+    {
+        $allowed_protocols = $_CONF['allowed_protocols'];
+    }
+    else if( !is_array( $allowed_protocols ))
+    {
+        $allowed_protocols = array( $allowed_protocols );
+    }
+
+    if( empty( $default_protocol ))
+    {
+        $default_protocol = 'http:';
+    }
+    else if( substr( $default_protocol, -1 ) != ':' )
+    {
+        $default_protocol .= ':';
+    }
+
+    $url = strip_tags( $url );
+    if( !empty( $url ))
+    {
+        $pos = MBYTE_strpos( $url, ':' );
+        if( $pos === false )
+        {
+            $url = $default_protocol . '//' . $url;
+        }
+        else
+        {
+            $protocol = MBYTE_substr( $url, 0, $pos + 1 );
+            $found_it = false;
+            foreach( $allowed_protocols as $allowed )
+            {
+                if( substr( $allowed, -1 ) != ':' )
+                {
+                    $allowed .= ':';
+                }
+                if( $protocol == $allowed )
+                {
+                    $found_it = true;
+                    break;
+                }
+            }
+            if( !$found_it )
+            {
+                $url = $default_protocol . MBYTE_substr( $url, $pos + 1 );
+            }
+        }
+    }
+
+    return $url;
 }
 
 /**
