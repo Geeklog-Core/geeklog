@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.47 2006/08/06 09:17:39 dhaun Exp $
+// $Id: functions.inc,v 1.48 2006/08/06 15:39:12 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -407,7 +407,7 @@ function plugin_savesubmission_calendar($A)
 
         return $retval;
     }
-    # check ok, proceed to safing
+    # check ok, proceed to saving
     $A['end_year'] = COM_applyFilter ($A['end_year'], true);
     $A['end_month'] = COM_applyFilter ($A['end_month'], true);
     $A['end_day'] = COM_applyFilter ($A['end_day'], true);
@@ -443,19 +443,7 @@ function plugin_savesubmission_calendar($A)
     $A['event_type'] = addslashes (strip_tags (COM_checkWords ($A['event_type'])));
     $A['title'] = addslashes ($A['title']);
 
-    $A['url'] = strip_tags ($A['url']);
-    if (!empty ($A['url'])) {
-        $pos = MBYTE_strpos ($A['url'], ':');
-        if ($pos === false) {
-            $A['url'] = 'http://' . $A['url'];
-        } else {
-            $prot = MBYTE_substr ($A['url'], 0, $pos + 1);
-            if (($prot != 'http:') && ($prot != 'https:')) {
-                $A['url'] = 'http:' . MBYTE_substr ($A['url'], $pos + 1);
-            }
-        }
-        $A['url'] = addslashes ($A['url']);
-    }
+    $A['url'] = addslashes (COM_sanitizeUrl ($A['url']));
     if ($A['url'] == 'http://') {
         $A['url'] = '';
     }
