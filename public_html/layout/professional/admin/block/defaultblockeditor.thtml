@@ -10,7 +10,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top">{lang_blockhelpurl}:</td>
-                                        <td><input type="text" name="help" value="{block_help}" size="48"> {lang_includehttp}<br>{lang_explanation}</td>
+                                        <td><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"> {lang_includehttp}<br>{lang_explanation}</td>
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_blockname}:</td>
