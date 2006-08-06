@@ -336,7 +336,27 @@ $LANG04 = array(
     127 => 'Um diese Angaben zu ändern müssen Sie Ihr aktuelles Passwort eingeben.',
     128 => 'Ihr Name',
     129 => 'Passwort &amp; E-Mail',
-    130 => 'Informationen über Sie'
+    130 => 'Informationen über Sie',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Top<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality'
 );
 
 ###############################################################################
