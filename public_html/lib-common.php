@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.561 2006/08/05 18:24:55 dhaun Exp $
+// $Id: lib-common.php,v 1.562 2006/08/06 11:36:00 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4340,11 +4340,11 @@ function COM_getMonthFormOptions( $selected = '' )
     for( $i = 1; $i <= 12; $i++ )
     {
         $mval = $i;
-        $month_options .= '<option value="' . $mval . '" ';
+        $month_options .= '<option value="' . $mval . '"';
 
         if( $i == $selected )
         {
-            $month_options .= 'selected="selected"';
+            $month_options .= ' selected="selected"';
         }
 
         $month_options .= '>' . $LANG_MONTH[$mval] . '</option>';
@@ -4379,11 +4379,11 @@ function COM_getDayFormOptions( $selected = '' )
             $dval = $i;
         }
 
-        $day_options .= '<option value="' . $dval . '" ';
+        $day_options .= '<option value="' . $dval . '"';
 
         if( $i == $selected )
         {
-            $day_options .= 'selected="selected"';
+            $day_options .= ' selected="selected"';
         }
 
         $day_options .= '>' . $dval . '</option>';
@@ -4422,11 +4422,11 @@ function COM_getYearFormOptions( $selected = '' )
 
     for( $i = $start_year - 1; $i <= $cur_year + 5; $i++ )
     {
-        $year_options .= '<option value="' . $i . '" ';
+        $year_options .= '<option value="' . $i . '"';
 
         if( $i == $selected )
         {
-            $year_options .= 'selected="selected"';
+            $year_options .= ' selected="selected"';
         }
 
         $year_options .= '>' . $i . '</option>';
@@ -4438,49 +4438,76 @@ function COM_getYearFormOptions( $selected = '' )
 /**
 * Gets the <option> values for clock hours
 *
-* @param        string      $selected       Selected hour
+* @param    string  $selected   Selected hour
+* @param    int     $mode       12 or 24 hour mode
+* @return   string              HTML string of options
 * @see function COM_getMonthFormOptions
 * @see function COM_getDayFormOptions
 * @see function COM_getYearFormOptions
 * @see function COM_getMinuteFormOptions
-* @return string    HTML string of options
 */
 
-function COM_getHourFormOptions( $selected = '' )
+function COM_getHourFormOptions( $selected = '', $mode = 12 )
 {
     $hour_options = '';
 
-    for( $i = 1; $i <= 11; $i++ )
+    if( $mode == 12 )
     {
-        if( $i < 10 )
+        for( $i = 1; $i <= 11; $i++ )
         {
-            $hval = '0' . $i;
-        }
-        else
-        {
-            $hval = $i;
-        }
-
-        if( $i == 1 )
-        {
-            $hour_options .= '<option value="12" ';
-
-            if( $selected == 12 )
+            if( $i < 10 )
             {
-                $hour_options .= 'selected="selected"';
+                $hval = '0' . $i;
+            }
+            else
+            {
+                $hval = $i;
             }
 
-            $hour_options .= '>12</option>';
+            if( $i == 1 )
+            {
+                $hour_options .= '<option value="12"';
+
+                if( $selected == 12 )
+                {
+                    $hour_options .= ' selected="selected"';
+                }
+
+                $hour_options .= '>12</option>';
+            }
+
+            $hour_options .= '<option value="' . $hval . '"';
+
+            if( $selected == $i )
+            {
+                $hour_options .= ' selected="selected"';
+            }
+
+            $hour_options .= '>' . $i . '</option>';
         }
-
-        $hour_options .= '<option value="' . $hval . '" ';
-
-        if( $selected == $i )
+    }
+    else // if( $mode == 24 )
+    {
+        for( $i = 0; $i < 24; $i++ )
         {
-            $hour_options .= 'selected="selected"';
-        }
+            if( $i < 10 )
+            {
+                $hval = '0' . $i;
+            }
+            else
+            {
+                $hval = $i;
+            }
 
-        $hour_options .= '>' . $i . '</option>';
+            $hour_options .= '<option value="' . $hval . '"';
+
+            if( $selected == $i )
+            {
+                $hour_options .= ' selected="selected"';
+            }
+
+            $hour_options .= '>' . $i . '</option>';
+        }
     }
 
     return $hour_options;
@@ -4512,11 +4539,11 @@ function COM_getMinuteOptions( $selected = '' )
             $mval = $i;
         }
 
-        $minute_options .= '<option value="' . $mval . '" ';
+        $minute_options .= '<option value="' . $mval . '"';
 
         if( $selected == $i )
         {
-            $minute_options .= 'selected="selected"';
+            $minute_options .= ' selected="selected"';
         }
 
         $minute_options .= '>' . $mval . '</option>';
