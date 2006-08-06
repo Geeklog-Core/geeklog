@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.103 2006/08/03 14:39:12 dhaun Exp $
+// $Id: block.php,v 1.104 2006/08/06 08:48:12 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -206,7 +206,20 @@ function editblock ($bid = '')
         }
     } else {
         $A['bid'] = 0;
+        $A['is_enabled'] = 1;
+        $A['name'] = '';
+        $A['type'] = 'normal';
+        $A['title'] = '';
+        $A['tid'] = 'All';
         $A['blockorder'] = 0;
+        $A['content'] = '';
+        $A['allow_autotags'] = 0;
+        $A['rdfurl'] = '';
+        $A['rdfupdated'] = '';
+        $A['rdflimit'] = 0;
+        $A['onleft'] = 0;
+        $A['phpblockfn'] = '';
+        $A['help'] = '';
         $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Block Admin'])) {
             $A['group_id'] = $_GROUPS['Block Admin'];
@@ -214,7 +227,6 @@ function editblock ($bid = '')
             $A['group_id'] = SEC_getFeatureGroup ('block.edit');
         }
         SEC_setDefaultPermissions ($A, $_CONF['default_permissions_block']);
-        $A['is_enabled'] = 1;
         $access = 3;
     }
 
@@ -226,16 +238,14 @@ function editblock ($bid = '')
     $block_templates->set_var('start_block_editor', COM_startBlock ($LANG21[3],
             '', COM_getBlockTemplate ('_admin_block', 'header')));
 
-    if ($A['type'] != 'layout') {
-        if (!empty($bid) && SEC_hasrights('block.delete')) {
-            $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                       . '" name="mode"%s>';
-            $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-            $block_templates->set_var ('delete_option',
-                                       sprintf ($delbutton, $jsconfirm));
-            $block_templates->set_var ('delete_option_no_confirmation',
-                                       sprintf ($delbutton, ''));
-        }
+    if (!empty($bid) && SEC_hasrights('block.delete')) {
+        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                   . '" name="mode"%s>';
+        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
+        $block_templates->set_var ('delete_option',
+                                   sprintf ($delbutton, $jsconfirm));
+        $block_templates->set_var ('delete_option_no_confirmation',
+                                   sprintf ($delbutton, ''));
     }
 
     $block_templates->set_var('block_bid', $A['bid']);
@@ -473,7 +483,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
         return $retval;
-    } elseif (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'layout' && !empty($content)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
+    } elseif (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
         if ($is_enabled == 'on') {
             $is_enabled = 1;
         } else {
@@ -489,6 +499,17 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             $content = '';
             $rdfupdated = '';
             $phpblockfn = '';
+
+            // get rid of possible extra prefixes (e.g. "feed://http://...")
+            if (substr ($rdfurl, 0, 4) == 'rss:') {
+                $rdfurl = substr ($rdfurl, 4);
+            } else if (substr ($rdfurl, 0, 5) == 'feed:') {
+                $rdfurl = substr ($rdfurl, 5);
+            }
+            if (substr ($rdfurl, 0, 2) == '//') {
+                $rdfurl = substr ($rdfurl, 2);
+            }
+            $rdfurl = COM_sanitizeUrl ($rdfurl, array ('http', 'https'));
         }
         if ($type == 'gldefault') {
             if ($name != 'older_stories') {
@@ -530,7 +551,9 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
         if ($rdflimit < 0) {
             $rdflimit = 0;
         }
-
+        if (!empty ($rdfurl)) {
+            $rdfurl = addslashes ($rdfurl);
+        }
         if (empty ($rdfupdated)) {
             $rdfupdated = '0000-00-00 00:00:00';
         }
@@ -721,16 +744,47 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= deleteBlock ($bid);
     }
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+    $help = '';
+    if (isset ($_POST['help'])) {
+        $help = COM_sanitizeUrl ($_POST['help'], array ('http', 'https'));
+    }
+    $content = '';
+    if (isset ($_POST['content'])) {
+        $content = $_POST['content'];
+    }
+    $rdfurl = '';
+    if (isset ($_POST['rdfurl'])) {
+        $rdfurl = $_POST['rdfurl']; // to be sanitized later
+    }
+    $rdfupdated = '';
+    if (isset ($_POST['rdfupdated'])) {
+        $rdfupdated = $_POST['rdfupdated'];
+    }
+    $rdflimit = 0;
+    if (isset ($_POST['rdflimit'])) {
+        $rdflimit = COM_applyFilter ($_POST['rdflimit'], true);
+    }
+    $phpblockfn = '';
+    if (isset ($_POST['phpblockfn'])) {
+        $phpblockfn = $_POST['phpblockfn'];
+    }
+    $is_enabled = '';
+    if (isset ($_POST['is_enabled'])) {
+        $is_enabled = $_POST['is_enabled'];
+    }
+    $allow_autotags = '';
+    if (isset ($_POST['allow_autotags'])) {
+        $allow_autotags = $_POST['allow_autotags'];
+    }
     $display .= saveblock ($bid, $_POST['name'], $_POST['title'],
-                $_POST['help'], $_POST['type'], $_POST['blockorder'],
-                $_POST['content'], $_POST['tid'], $_POST['rdfurl'],
-                $_POST['rdfupdated'],
-                COM_applyFilter ($_POST['rdflimit'], true),
-                $_POST['phpblockfn'], $_POST['onleft'],
-                $_POST['owner_id'], $_POST['group_id'], $_POST['perm_owner'],
-                $_POST['perm_group'], $_POST['perm_members'],
-                $_POST['perm_anon'], $_POST['is_enabled'],
-                $_POST['allow_autotags']);
+                    $help, $_POST['type'], $_POST['blockorder'], $content,
+                    COM_applyFilzer ($_POST['tid']), $rdfurl, $rdfupdated,
+                    $rdflimit, $phpblockfn, $_POST['onleft'],
+                    COM_applyFilter ($_POST['owner_id'], true),
+                    COM_applyFilter ($_POST['group_id'], true),
+                    $_POST['perm_owner'], $_POST['perm_group'],
+                    $_POST['perm_members'], $_POST['perm_anon'],
+                    $is_enabled, $allow_autotags);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG21[3])
              . editblock ($bid)
