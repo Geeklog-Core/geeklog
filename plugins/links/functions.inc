@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.67 2006/06/30 12:18:29 dhaun Exp $
+// $Id: functions.inc,v 1.68 2006/08/06 08:50:16 dhaun Exp $
 
 
 /**
@@ -1092,20 +1092,7 @@ function plugin_save_submit_links ($A)
     $A['category'] = addslashes ($A['category']);
     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
     $A['title'] = addslashes (strip_tags (COM_checkWords ($A['title'])));
-
-    $A['url'] = strip_tags ($A['url']);
-    if (!empty ($A['url'])) {
-        $pos = MBYTE_strpos ($A['url'], ':');
-        if ($pos === false) {
-            $A['url'] = 'http://' . $A['url'];
-        } else {
-            $prot = MBYTE_substr ($A['url'], 0, $pos + 1);
-            if (($prot != 'http:') && ($prot != 'https:')) {
-                $A['url'] = 'http:' . MBYTE_substr ($A['url'], $pos + 1);
-            }
-        }
-        $A['url'] = addslashes ($A['url']);
-    }
+    $A['url'] = addslashes (COM_sanitizeUrl ($A['url']));
     $A['lid'] = addslashes (COM_makeSid ());
     COM_updateSpeedlimit ('submit');
 
