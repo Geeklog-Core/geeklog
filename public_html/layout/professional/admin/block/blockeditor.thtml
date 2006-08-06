@@ -58,7 +58,7 @@
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_blockfunction}:</td>
-                                            <td><input type="text" size="50" maxlength="50" name="phpblockfn" value="{block_phpblockfn}"></td>
+                                            <td><input type="text" size="50" maxlength="64" name="phpblockfn" value="{block_phpblockfn}"></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">{lang_phpblockwarning}</td>
