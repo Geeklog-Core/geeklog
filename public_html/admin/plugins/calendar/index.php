@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2006/08/06 15:10:05 dhaun Exp $
+// $Id: index.php,v 1.23 2006/08/06 16:56:16 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -635,6 +635,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $id = COM_applyFilter ($_REQUEST['id']);
     $result = DB_query ("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
     $A = DB_fetchArray ($result);
+    $A['hits'] = 0;
     $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[1]);
     $display .= CALENDAR_editEvent ($mode, $A);
     $display .= COM_siteFooter ();
