@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.46 2006/07/09 18:07:44 dhaun Exp $
+// $Id: functions.inc,v 1.47 2006/08/06 09:17:39 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1214,23 +1214,23 @@ function plugin_uninstall_calendar ($steps = '')
 
     // Remove security for this plugin
 
-    // Remove the event admin group
+    // Remove the calendar admin group
     $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
                           "grp_name = 'Calendar Admin'");
 
-    // Remove Event Admin group from all other groups
+    // Remove Calendar Admin group from all other groups
     if (!empty ($grp_id)) {
-        COM_errorLog ('Attempting to remove Event Admin group from all groups' , 1);
+        COM_errorLog ('Attempting to remove Calendar Admin group from all groups' , 1);
         DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
         COM_errorLog ('...success', 1);
 
-        COM_errorLog('Attempting to remove the Event Admin Group', 1);
+        COM_errorLog('Attempting to remove the Calendar Admin Group', 1);
         DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
         COM_errorLog('...success', 1);
     }
 
     // Remove related features
-    $features = array ('event.edit', 'event.moderate', 'event.submit');
+    $features = array ('calendar.edit', 'calendar.moderate', 'calendar.submit');
 
     foreach ($features as $f) {
         $feat_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$f'");

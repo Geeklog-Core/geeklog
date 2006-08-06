@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Calendar Plugin 1.0                                                       |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
-// | Geeklog event administration page.                                        |
+// | Geeklog Calendar Plugin administration page.                              |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.20 2006/08/03 14:39:13 dhaun Exp $
+// $Id: index.php,v 1.21 2006/08/06 09:17:39 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -108,7 +108,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         }
     } else {
         $A['owner_id'] = $_USER['uid'];
-        if (isset ($_GROUPS['Event Admin'])) {
+        if (isset ($_GROUPS['Calendar Admin'])) {
             $A['group_id'] = $_GROUPS['Calendar Admin'];
         } else {
             $A['group_id'] = SEC_getFeatureGroup ('calendar.edit');

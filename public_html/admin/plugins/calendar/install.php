@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.7 2006/06/17 12:22:44 dhaun Exp $
+// $Id: install.php,v 1.8 2006/08/06 09:17:39 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/calendar/config.php');
@@ -59,14 +59,14 @@ $GROUPS = array();
 $GROUPS[$pi_admin] = 'Has full access to ' . $pi_name . ' features';
 
 $FEATURES = array();
-$FEATURES['event.moderate']     = 'Ability to moderate pending events';
-$FEATURES['event.edit']         = 'Access to event editor';
-$FEATURES['event.submit']       = 'May skip the event submission queue';
+$FEATURES['calendar.moderate']     = 'Ability to moderate pending events';
+$FEATURES['calendar.edit']         = 'Access to event editor';
+$FEATURES['calendar.submit']       = 'May skip the event submission queue';
 
 $MAPPINGS = array();
-$MAPPINGS['event.moderate']     = array ($pi_admin);
-$MAPPINGS['event.edit']         = array ($pi_admin);
-$MAPPINGS['event.submit']       = array ($pi_admin);
+$MAPPINGS['calendar.moderate']     = array ($pi_admin);
+$MAPPINGS['calendar.edit']         = array ($pi_admin);
+$MAPPINGS['calendar.submit']       = array ($pi_admin);
 
 // (optional) data to pre-populate tables with
 // Insert table name and sql to insert default data for your plugin.
