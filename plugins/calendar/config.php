@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.5 2006/06/23 13:06:29 dhaun Exp $
+// $Id: config.php,v 1.6 2006/08/06 15:10:05 dhaun Exp $
 
 $_CA_CONF['version']            = '1.0.0'; // Plugin Version
 
@@ -61,6 +61,9 @@ $_CA_CONF['event_types']           = "Anniversary,Appointment,Birthday,Business,
                                     ."Education,Holiday,Meeting,Miscellaneous,"
                                     ."Personal,Phone Call,Special Occasion,"
                                     ."Travel,Vacation";
+
+// Whether to use 12 hour (am/pm) or 24 hour mode
+$_CA_CONF['hour_mode'] = 12; // 12 hours am/pm or 24 hour format
 
 // When a user is deleted, ownership of events created by that user can
 // be transfered to a user in the Root group (= 0) or the events can be
