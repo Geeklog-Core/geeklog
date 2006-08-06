@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.48 2006/08/06 15:39:12 dhaun Exp $
+// $Id: functions.inc,v 1.49 2006/08/06 17:21:36 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -395,7 +395,7 @@ function plugin_savesubmission_calendar($A)
     $A['start_month'] = COM_applyFilter ($A['start_month'], true);
     $A['start_day'] = COM_applyFilter ($A['start_day'], true);
 
-    # check for missing textfields
+    // check for missing textfields
     if (empty ($A['title']) || empty ($A['start_month']) || empty ($A['start_day']) || empty ($A['start_year'])) {
         $retval .= COM_siteHeader ('menu', $LANG_CAL_1[27])
             . COM_startBlock ($LANG12[22], '',
@@ -452,10 +452,35 @@ function plugin_savesubmission_calendar($A)
 
     COM_updateSpeedlimit ('submit');
 
-    if ($A['allday'] == 'on') {
+    if (isset ($A['allday']) && ($A['allday'] == 'on')) {
         $A['allday'] = 1;
     } else {
         $A['allday'] = 0;
+    }
+
+    if (isset ($A['hour_mode']) && ($A['hour_mode'] == 24)) {
+        $start_hour = COM_applyFilter ($A['start_hour_24'], true);
+        if ($start_hour >= 12) {
+            $A['start_ampm'] = 'pm';
+            $A['start_hour'] = $start_hour - 12;
+        } else {
+            $A['start_ampm'] = 'am';
+            $A['start_hour'] = $start_hour;
+        }
+        if ($A['start_hour'] == 0) {
+            $A['start_hour'] = 12;
+        }
+        $end_hour = COM_applyFilter ($A['end_hour_24'], true);
+        if ($end_hour >= 12) {
+            $A['end_ampm'] = 'pm';
+            $A['end_hour'] = $end_hour - 12;
+        } else {
+            $A['end_ampm'] = 'am';
+            $A['end_hour'] = $end_hour;
+        }
+        if ($A['end_hour'] == 0) {
+            $A['end_hour'] = 12;
+        }
     }
 
     $A['start_hour'] = COM_applyFilter ($A['start_hour'], true);
@@ -527,6 +552,7 @@ function plugin_savesubmission_calendar($A)
     } else { // personal calendars are disabled
         $retval = COM_refresh ($_CONF['site_url'] . '/calendar/index.php');
     }
+
     return $retval;
 }
 
@@ -543,11 +569,11 @@ function plugin_submit_calendar($mode = 'master')
     }
 
     if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) { 
-    // quick add form, just save it.
-       $display = plugin_savesubmission_calendar ($_POST);
-       return $display;
+        // quick add form, just save it.
+        $display = plugin_savesubmission_calendar ($_POST);
+        return $display;
     } else if (SEC_hasRights('calendar.edit') && ($mode != 'personal')) {
-    // admin posts non-personal, go to editor
+        // admin posts non-personal, go to editor
         if (isset ($_REQUEST['year'])) {
             $year = COM_applyFilter ($_REQUEST['year'], true);
         } else {
@@ -587,15 +613,20 @@ function plugin_submit_calendar($mode = 'master')
 
     $retval .= COM_startBlock ($LANG_CAL_1[26], 'submitevent.html');
     $eventform = new Template ($_CONF['path'] . 'plugins/calendar/templates/');
-    $eventform->set_file ('eventform', 'submitevent.thtml');
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $eventform->set_file ('eventform', 'submitevent24.thtml');
+    } else {
+        $eventform->set_file ('eventform', 'submitevent.thtml');
+    }
     if ($mode != 'personal') {
         $eventform->set_var ('explanation', $LANG_CAL_1[27]);
         $eventform->set_var ('submit_url', '/submit.php');
     } else {
-        $eventform->set_var ('explanation', "");
+        $eventform->set_var ('explanation', '');
         $eventform->set_var ('submit_url', '/calendar/index.php?view=savepersonal');
     }
     $eventform->set_var ('site_url', $_CONF['site_url']);
+    $eventform->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $eventform->set_var ('layout_url', $_CONF['layout_url']);
     $eventform->set_var ('lang_title', $LANG_CAL_1[28]);
 
@@ -625,6 +656,7 @@ function plugin_submit_calendar($mode = 'master')
     } else {
         $cur_hour = $hour;
     }
+    $cur_hour_24 = $cur_hour % 24;
     if ($cur_hour >= 12) {
         $eventform->set_var ('am_selected', '');
         $eventform->set_var ('pm_selected', 'selected="selected"');
@@ -638,6 +670,8 @@ function plugin_submit_calendar($mode = 'master')
         $cur_hour = 12;
     }
     $eventform->set_var ('hour_options', COM_getHourFormOptions ($cur_hour));
+    $eventform->set_var ('hour_options_24',
+                         COM_getHourFormOptions ($cur_hour_24, 24));
 
     $eventform->set_var('lang_enddate', $LANG_CAL_1[18]);
     $eventform->set_var('lang_endtime', $LANG_CAL_1[29]);
@@ -749,7 +783,7 @@ function CALENDAR_listevents()
 */
 function CALENDAR_sendNotification ($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG_CAL_1, $LANG_CAL_2;
+    global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG09, $LANG_CAL_1, $LANG_CAL_2;
 
     $title = stripslashes ($A['title']);
     $description = stripslashes ($A['description']);
