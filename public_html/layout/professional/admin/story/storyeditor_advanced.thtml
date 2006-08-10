@@ -41,7 +41,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right" nowrap>Story Stats:</td>
+                                        <td align="right" nowrap>{lang_story_stats}:</td>
                                         <td>
                                           <table border="0" cellspacing="0" cellpadding="3" width="50%">
                                             <tr>
