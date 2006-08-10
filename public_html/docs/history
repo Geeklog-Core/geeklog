@@ -2,7 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
-
+- fixed bug: [#540] Blocking the last Root user or yourself should not be 
+  possible [Oliver]
+- fixed bug: [#546] The phrase "Story Stats" is hardcoded [Oliver]
 - Re-implemented $_CONF['allow_domains'] whitelist (when the user submission
   queue is enabled) that was inexplicably missing from 1.4.0 [Dirk]
 - Merged User Preferences and Account information into one page, like the 
