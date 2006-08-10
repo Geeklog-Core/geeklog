@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.156 2006/07/08 19:58:42 dhaun Exp $
+// $Id: user.php,v 1.157 2006/08/10 08:50:34 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -200,10 +200,28 @@ function edituser($uid = '', $msg = '')
     }
     $user_templates->set_var('do_not_use_spaces', '');
 
-    $statusarray = array (USER_ACCOUNT_DISABLED            => $LANG28[42],
-                          USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
+    $statusarray = array (USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
                           USER_ACCOUNT_ACTIVE              => $LANG28[45]
                    );
+                   
+    $allow_ban = true;
+    
+    if ($A['uid'] == $_USER['uid']) {
+        $allow_ban = false; // do not allow to ban yourself
+    } else if (SEC_inGroup('Root',$A['uid'])) { // is this user a root user?
+        $count_root_sql = "SELECT COUNT(ug_uid) AS root_count FROM {$_TABLES['group_assignments']} "
+                    . "WHERE ug_main_grp_id = 1 GROUP BY ug_uid;";
+        $count_root_result = DB_query($count_root_sql);
+        $C = DB_fetchArray($count_root_result); // how many are left?
+        if ($C['root_count'] < 2) {
+            $allow_ban = false; // prevent banning the last root user
+        }
+    }
+
+    if ($allow_ban) {
+        $statusarray[USER_ACCOUNT_DISABLED] = $LANG28[42];
+    }              
+                   
     if ($_CONF['usersubmission'] == 1) {
         $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
     }
