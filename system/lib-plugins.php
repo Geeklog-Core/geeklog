@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.107 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-plugins.php,v 1.108 2006/08/10 07:50:13 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -663,6 +663,11 @@ function PLG_getSubmissionCount()
 * This supports a plugin having either a single menuitem or multiple menuitems.
 * The plugin has to provide an array for the menuitem of the format:
 * array (menuitem_title, item_url, submission_count)
+* or an array of arrays in case there are several entries:
+* array (
+*   array (menuitem1_title, item1_url, submission1_count),
+*   array (menuitem2_title, item2_url, submission2_count),
+*   array (menuitem3_title, item3_url, submission3_count))
 * Plugin function can return a single record array or multiple records
 *
 *
@@ -730,12 +735,15 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 * command and control center.
 *
 * This supports that a plugin can have several lines in the CC menu.
-* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* The plugin has to provide simply a set arrays with 3 variables in order to
 * get n lines in the menu such as
-* array(    "first line", "url1", "1",
-*            "second line", "url2", "44",
+* array( 
+*   array("first line", "url1", "1"),
+*   array("second line", "url2", "44"),
 *            etc, etc)
-*
+* If there is only one item, a single array is enough:
+* array("first line", "url1", "1")
+* 
 * @return   array   Returns Command and Control options for moderation.php
 *
 */
@@ -756,12 +764,15 @@ function PLG_getCCOptions()
 *
 * NOTE: the plugin is responsible for its own security.
 * This supports that a plugin can have several lines in the Admin menu.
-* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* The plugin has to provide simply a set arrays with 3 variables in order to
 * get n lines in the menu such as
-* array(    "first line", "url1", "1",
-*            "second line", "url2", "44",
+* array( 
+*   array("first line", "url1", "1"),
+*   array("second line", "url2", "44"),,
 *            etc, etc)
-*
+* If there is only one item, a single array is enough:
+* array("first line", "url1", "1")
+* 
 * @return   array   Returns options to put in admin menu
 *
 */
@@ -780,11 +791,15 @@ function PLG_getAdminOptions()
 * user block on every page
 *
 * This supports that a plugin can have several lines in the User menu.
-* The plugin has to provide simply a set of 3 x n sets of variables in order to
+* The plugin has to provide simply a set of arrays with 3 variables in order to
 * get n lines in the menu such as
-* array(    "first line", "url1", "1",
-*            "second line", "url2", "44",
+* array( 
+*   array("first line", "url1", "1"),
+*   array("second line", "url2", "44"),
 *            etc, etc)
+* If there is only one item, a single array is enough:
+* array("first line", "url1", "1")
+* 
 * NOTE: the plugin is responsible for its own security.
 *
 * @return   array   Returns options to add to user menu
