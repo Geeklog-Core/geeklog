@@ -1,13 +1,14 @@
 <?php
+
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | configinfo.php                                                            |
 // |                                                                           |
 // | Display contents of config.php                                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2005 by the following authors:                         |
+// | Copyright (C) 2002-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Jeffrey Schoolcraft  - dream AT dr3amscap3 DOT com               |
 // |          Dirk Haun            - dirk AT haun-online DOT de                |
@@ -29,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configinfo.php,v 1.3 2005/09/09 19:13:21 dhaun Exp $
+// $Id: configinfo.php,v 1.4 2006/08/12 14:13:11 dhaun Exp $
 
 /**
 * This script will display file and permission information based on settings in
@@ -56,6 +57,10 @@ if (isset ($_CONF['site_url']) &&
     $docs = $_CONF['site_url'] . '/docs/config.html#desc_';
 } else {
     $docs = '../../docs/config.html#desc_';
+}
+
+if (isset ($_CONF['mail_settings']['password'])) {
+    unset ($_CONF['mail_settings']['password']);
 }
 
 $display = "<html>\n<head><title>config.php</title></head>\n<body>\n";
