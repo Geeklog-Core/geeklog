@@ -766,7 +766,8 @@ $LANG24 = array(
     83 => 'Archive Options',
     84 => 'Permissions',
     85 => 'Show All',
-    86 => 'Advanced Editor'
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
 
 ###############################################################################
