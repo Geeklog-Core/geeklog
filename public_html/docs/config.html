@@ -259,7 +259,7 @@ defined below:</p>
   <td valign="top"><code>false</code></td>
   <td valign="top">When set to <code>true</code>, Geeklog will let you use
       your own signup form for new user registrations. Please see the file
-      </tt>lib-custom.php</tt> that ships with Geeklog for an example.</td></tr>
+      <tt>lib-custom.php</tt> that ships with Geeklog for an example.</td></tr>
 <tr>
   <td valign="top"><a name="desc_spamx">spamx</a></td>
   <td valign="top">128</td>
@@ -921,9 +921,10 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_path_to_mogrify">path_to_mogrify</a></td>
   <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">If you chose 'imagemagick' for $_CONF['image_lib'] above,
-    then this should hold the <strong>complete path</strong> to the mogrify
-    executable (from the ImageMagick package), e.g. '/usr/bin/mogrify'.<br>
+  <td valign="top">If you chose 'imagemagick' for
+    <code>$_CONF['image_lib']</code> above, then this should hold the
+    <strong>complete path</strong> to the mogrify executable (from the
+    ImageMagick package), e.g. '/usr/bin/mogrify'.<br>
     You will need a fairly recent version of <a
     href="http://www.imagemagick.org/">ImageMagick</a> for this to work
     (version 5.4.9 or newer is recommended).</td>
@@ -931,10 +932,10 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
   <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">If you chose 'netpbm' for $_CONF['image_lib'] above, then
-    this should hold the complete path to the <em>directory</em> where the
-    binaries from the netpbm package are kept, e.g. '/usr/bin/netpbm/'. Note
-    that the path must end in a slash.<br>
+  <td valign="top">If you chose 'netpbm' for <code>$_CONF['image_lib']</code>
+    above, then this should hold the complete path to the <em>directory</em>
+    where the binaries from the netpbm package are kept, e.g.
+    <code>'/usr/bin/netpbm/'</code>. Note that the path must end in a slash.<br>
     Precompiled binaries of the netpbm package for various platforms can be
     downloaded from the <a
     href="http://sourceforge.net/projects/gallery/">Homepage of the Gallery
@@ -957,47 +958,47 @@ options:</p>
   <td valign="top"><a name="desc_max_image_width">max_image_width</a></td>
   <td valign="top">160</td>
   <td valign="top">Max. width of an image in pixels. If it exceeds this, it is
-    either rejected or resized (depending on the setting of $_CONF['image_lib']
-    above).
+    either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_image_height">max_image_height</a></td>
   <td valign="top">120</td>
   <td valign="top">Max. height of an image in pixels. If it exceeds this, it is
-    either rejected or resized (depending on the setting of $_CONF['image_lib']
-    above).
+    either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_image_size">max_image_size</a></td>
   <td valign="top">1048576 <i>(equals 1 MB)</i></td>
   <td valign="top">Max. size of an image in bytes. If it exceeds this, it is
-    is rejected (even if you're using a graphics package to resize images).
+    is rejected (even if you're using a graphics package to resize images).</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_width">max_topicicon_width</a></td>
   <td valign="top">48</td>
   <td valign="top">Max. width of a topic icon in pixels. If it exceeds this,
     it is either rejected or resized (depending on the setting of
-    $_CONF['image_lib'] above).
+    <code>$_CONF['image_lib']</code> above).</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_height">max_topicicon_height</a></td>
   <td valign="top">48</td>
   <td valign="top">Max. height of a topic icon in pixels. If it exceeds this,
     it is either rejected or resized (depending on the setting of
-    $_CONF['image_lib'] above).
+    <code>$_CONF['image_lib']</code> above).</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_topicicon_size">max_topicicon_size</a></td>
   <td valign="top">65536 <i>(equals 64 KB)</i></td>
   <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
-    is rejected (even if you're using a graphics package to resize images).
+    is rejected (even if you're using a graphics package to resize images).</td>
 <tr>
   <td valign="top"><a name="desc_debug_image_upload">debug_image_upload</a></td>
   <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">When not commented out(!) and set to <code>true</true>, this
+  <td valign="top">When not commented out(!) and set to <code>true</code>, this
     option enables debugging output to be written into Geeklog's <tt>error.log</tt> file during the upload of an image. This is useful to track down problems
-    with the image upload.</td></tr>
+    with the image upload.</td>
 </tr>
 </table>
 
@@ -1014,14 +1015,14 @@ options:</p>
   <td valign="top">128</td>
   <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it
     is either rejected or resized (depending on the setting of
-    $_CONF['image_lib'] above).
+    <code>$_CONF['image_lib']</code> above).
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_height">max_photo_height</a></td>
   <td valign="top">128</td>
   <td valign="top">Max. height of a user photo in pixels. If it exceeds this,
     it is either rejected or resized (depending on the setting of
-    $_CONF['image_lib'] above).</td>
+    <code>$_CONF['image_lib']</code> above).</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_size">max_photo_size</a></td>
