@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2006/05/20 08:50:14 dhaun Exp $
+// $Id: index.php,v 1.12 2006/08/12 17:57:59 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -568,7 +568,7 @@ case 'day':
         $numevents = $hourcols[$i];
         if ($numevents > 0) {
             // $colsleft = $maxcols;
-            $cal_templates->set_var ('layout_url', $_CONF['path' . '/pugins/calendar/templates/']);
+            $cal_templates->set_var ('layout_url', $_CONF['path'] . 'pugins/calendar/templates/');
             for ($j = 1; $j <= $numevents; $j++) {
                 $A = current ($thedata);
                 $cal_templates->set_var ('event_time',
