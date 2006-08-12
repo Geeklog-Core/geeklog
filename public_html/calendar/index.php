@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2006/08/12 18:03:22 dhaun Exp $
+// $Id: index.php,v 1.14 2006/08/12 18:15:15 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -237,7 +237,7 @@ function getDeleteImageLink ($mode, $A)
             $retval = '<a href="' . $_CONF['site_admin_url']
                     . '/plugins/calendar/index.php?mode=' . $LANG_CAL_ADMIN[22]
                     . '&amp;eid=' . $A['eid'] . '"><img src="'
-                    . $_CONF['layout_url']
+                    . $_CONF['site_url']
                     . '/calendar/images/delete_event.' . $_IMAGE_TYPE
                     . '" border="0" alt="' . $LANG_CAL_2[30] . '" title="'
                     . $LANG_CAL_2[30] . '"></a>';
