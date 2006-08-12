@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.21 2006/06/05 08:44:16 dhaun Exp $
+// $Id: mysql.class.php,v 1.22 2006/08/12 13:15:50 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -194,8 +194,8 @@ class database {
     function isVerbose()
     {
         if ($this->_verbose && (empty($this->_errorlog_fn) || !function_exists($this->_errorlog_fn))) {
-            print "\n<BR><B>Can't run mysql.class.php verbosely because the errorlog "
-                . "function wasn't set or doesn't exist<BR>\n";
+            print "\n<br><b>Can't run mysql.class.php verbosely because the errorlog "
+                . "function wasn't set or doesn't exist</b><br>\n";
             return false;
         }
 
@@ -240,8 +240,8 @@ class database {
         // If OK, return otherwise echo error
         if (mysql_errno() == 0 && !empty($result)) {
             if ($this->isVerbose()) {
-                $this->_errorlog("\n***sql ran just fine***<BR>");
-                $this->_errorlog("\n*** Leaving database->dbQuery ***<BR>");
+                $this->_errorlog("\n***sql ran just fine***<br>");
+                $this->_errorlog("\n*** Leaving database->dbQuery ***<br>");
             }
             return $result;
 
@@ -251,7 +251,7 @@ class database {
 
             if ($this->isVerbose()) {
                 $this->_errorlog("\n***sql caused an error***<br>");
-                $this->_errorlog("\n*** Leaving database->dbQuery ***<BR>");
+                $this->_errorlog("\n*** Leaving database->dbQuery ***<br>");
             }
         }
     }
@@ -270,7 +270,7 @@ class database {
     function dbSave($table,$fields,$values)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbSave ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbSave ***<br>");
         }
 
         $sql = "REPLACE INTO $table ($fields) VALUES ($values)";
@@ -278,7 +278,7 @@ class database {
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbSave ***<BR>");
+            $this->_errorlog("\n*** Leaving database->dbSave ***<br>");
         }
     }
 
@@ -298,7 +298,7 @@ class database {
     function dbDelete($table,$id,$value)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** inside database->dbDelete ***<BR>");
+            $this->_errorlog("\n*** inside database->dbDelete ***<br>");
         }
 
         $sql = "DELETE FROM $table";
@@ -331,7 +331,7 @@ class database {
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** inside database->dbDelete ***<BR>");
+            $this->_errorlog("\n*** inside database->dbDelete ***<br>");
         }
 
         return true;
@@ -390,7 +390,7 @@ class database {
         }
 
         if ($this->isVerbose()) {
-            $this->_errorlog("dbChange sql = $sql<BR>");
+            $this->_errorlog("dbChange sql = $sql<br>");
         }
 
         $this->dbQuery($sql);
@@ -452,7 +452,7 @@ class database {
         $result = $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCount ***<BR>");
+            $this->_errorlog("\n*** Leaving database->dbCount ***<br>");
         }
 
         return ($this->dbResult($result,0));
@@ -477,7 +477,7 @@ class database {
     function dbCopy($table,$fields,$values,$tablefrom,$id,$value)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbCopy ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbCopy ***<br>");
         }
 
         $sql = "REPLACE INTO $table ($fields) SELECT $values FROM $tablefrom";
@@ -510,7 +510,7 @@ class database {
         $this->dbDelete($tablefrom,$id,$value);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCopy ***<BR>");
+            $this->_errorlog("\n*** Leaving database->dbCopy ***<br>");
         }
 
     }
@@ -527,20 +527,20 @@ class database {
     function dbNumRows($recordset)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbNumRows ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbNumRows ***<br>");
         }
 
         // return only if recordset exists, otherwise 0
         if ($recordset) {
             if ($this->isVerbose()) {
                 $this->_errorlog('got ' . @mysql_numrows($recordset) . ' rows');
-                $this->_errorlog("\n*** Inside database->dbNumRows ***<BR>");
+                $this->_errorlog("\n*** Inside database->dbNumRows ***<br>");
             }
             return @mysql_numrows($recordset);
         } else {
             if ($this->isVerbose()) {
-                $this->_errorlog("got no rows<BR>");
-                $this->_errorlog("\n*** Inside database->dbNumRows ***<BR>");
+                $this->_errorlog("got no rows<br>");
+                $this->_errorlog("\n*** Inside database->dbNumRows ***<br>");
             }
             return 0;
         }
@@ -558,7 +558,7 @@ class database {
     function dbResult($recordset,$row,$field=0)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbResult ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbResult ***<br>");
             if (empty($recordset)) {
                 $this->_errorlog("\n*** Passed recordset isn't valid ***<br>");
             } else {
