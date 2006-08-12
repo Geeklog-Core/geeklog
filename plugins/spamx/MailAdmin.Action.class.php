@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: MailAdmin.Action.class.php,v 1.12 2006/06/25 08:40:54 dhaun Exp $
+ * $Id: MailAdmin.Action.class.php,v 1.13 2006/08/12 14:22:48 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'MailAdmin.Action.class.php') !== false) {
@@ -57,12 +57,16 @@ class MailAdmin extends BaseCommand {
         if (function_exists ('getallheaders')) {
             $headers = getallheaders ();
             foreach ($headers as $key => $content) {
-                $msg .= $key . ': ' . $content . "\n";
+                if (strcasecmp ($key, 'Cookie') != 0) {
+                    $msg .= $key . ': ' . $content . "\n";
+                }
             }
         } else {
             foreach ($_SERVER as $key => $content) {
                 if (substr ($key, 0, 4) == 'HTTP') {
-                    $msg .= $key . ': ' . $content . "\n";
+                    if ($key != 'HTTP_COOKIE') {
+                        $msg .= $key . ': ' . $content . "\n";
+                    }
                 }
             }
         }
