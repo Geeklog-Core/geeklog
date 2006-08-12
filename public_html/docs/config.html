@@ -32,11 +32,11 @@ defined below:</p>
 <li><a href="#locale">Locale Settings</a></li>
 <li><a href="#session">Session Settings</a></li>
 <li><a href="#cookie">Cookie Names</a></li>
-<li><a href="#email">E-Mail Settings</a></li>
+<li><a href="#desc_mail_settings">E-Mail Settings</a></li>
 <li><a href="#login">Login Settings</a></li>
 <li><a href="#submission">Submission Settings</a></li>
 <li><a href="#trackback">Trackback, Pingback, and Ping Settings</a></li>
-<li><a href="#misc">Topic, What's New, and E-mail Settings</a></li>
+<li><a href="#misc">Topic, What's New, and Daily Digest Settings</a></li>
 <li><a href="#story">Story Settings</a></li>
 <li><a href="#comment">Comment Settings</a></li>
 <li><a href="#image">Image Settings</a>
@@ -118,6 +118,19 @@ defined below:</p>
 <tr><td valign="top"><a name="desc_path_data">path_data</a></td>
     <td valign="top">/path/to/geeklog/data/</td>
     <td valign="top">File system path for the data directory, used e.g. for the user batch add feature</td></tr>
+<tr><td valign="top"><a name="desc_have_pear">have_pear</a></td>
+    <td valign="top"><code>false</code></td>
+    <td valign="top">Whether you have <a href="http://pear.php.net/">PEAR</a>
+        installed on your server (<code>= true</code>) or not
+        (<code>= false</code>). When set to <code>false</code>, Geeklog will
+        use the PEAR packages installed in <code>$_CONF['path_pear']</code>
+        (see below)</td></tr>
+<tr><td valign="top"><a name="desc_path_pear">path_pear</a></td>
+    <td valign="top"><tt>/path/to/geeklog/system/pear/</tt></td>
+    <td valign="top">When <code>$_CONF['have_pear']</code> (see above) is set
+        to <code>false</code>, this is the path where Geeklog expects to find
+        the <a href="http://pear.php.net/">PEAR</a> packages it requires (e.g.
+        PEAR::Mail for sending emails).</td></tr>
 </table>
 
 
@@ -143,6 +156,14 @@ defined below:</p>
   <td valign="top"><a name="desc_site_url">site_url</a></td>
   <td valign="top">http://www.example.com</td>
   <td valign="top">Base URL for your site (no trailing slash)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_site_admin_url">site_admin_url</a></td>
+  <td valign="top">http://www.example.com/admin</td>
+  <td valign="top">Base URL of the admin area of your site (no trailing slash).
+    You won't have to change this normally, but some hosting services use a
+    predefined "admin" directory for other purposes. In this case, you can
+    rename Geeklog's <tt>admin</tt> directory and adjust the URL accordingly to
+    avoid conflicts.</td></tr>
 <tr>
   <td valign="top"><a name="desc_theme">theme</a></td>
   <td valign="top">professional</td>
@@ -175,6 +196,11 @@ defined below:</p>
   <td valign="top"><a name="desc_hide_author_exclusion">hide_author_exclusion</a></td>
   <td valign="top">Can be 1 or 0</td>
   <td valign="top">If set to 1, the option to to exclude certain authors from being seen is hidden from the user's preferences.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_show_fullname">show_fullname</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Whether to display a user's full name (= 1) or only their
+        username (= 0).</td></tr>
 <tr>
   <td valign="top"><a name="desc_remoteauthentication">remoteauthentication</a></td>
   <td valign="top">false</td>
@@ -228,6 +254,42 @@ defined below:</p>
     provided by plugins, and <tt>'custom'</tt> displays the entries returned by
     a custom function <code>CUSTOM_menuEntries</code> (see
     <tt>lib-custom.php</tt> for details).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_custom_registration">custom_registration</a></td>
+  <td valign="top"><code>false</code></td>
+  <td valign="top">When set to <code>true</code>, Geeklog will let you use
+      your own signup form for new user registrations. Please see the file
+      </tt>lib-custom.php</tt> that ships with Geeklog for an example.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_spamx">spamx</a></td>
+  <td valign="top">128</td>
+  <td valign="top">Tells Geeklog's <a href="spamx.html" rel="nofollow">Spam-X</a> plugin what to do when a spam post has been detected. The value is the sum
+    of all values that uniquely identify the Spam-X modules that should be
+    executed. E.g. the "delete" action module uses 128, the "email admin"
+    module uses 8, so if both modules should be executed, this option should
+    be set to 128 + 8 = 136.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_rootdebug">rootdebug</a></td>
+  <td valign="top"><code>false</code></td>
+  <td valign="top">When a PHP error occurs, Geeklog's error handler will only
+    display the actual error message to members of the Root group (to prevent
+    leakage of possibly sensitive information). When set to <code>true</code>,
+    this information will be displayed to <em>all</em> users. <strong>Use only
+    for debugging purposes!</strong></td></tr>
+<tr>
+  <td valign="top"><a name="desc_lastlogin">lastlogin</a></td>
+  <td valign="top"><code>true</code></td>
+  <td valign="top">Whether to keep track of when a user last logged in
+    (<code>= true</code>) or not (<code>= false</code>).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cron_schedule_interval">cron_schedule_interval</a></td>
+  <td valign="top">86400</td>
+  <td valign="top">Geeklog can emulate a <a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>, i.e. trigger a certain action at a given time. The code
+    to be executed can be provided by a plugin or through the <code>CUSTOM_runScheduledTask</code> in your <tt>lib-custom.php</tt>. The value given is in
+    seconds and specifies the interval in which the code should be executed.
+    <br>Please note that to trigger this action, you will need to have someone
+    visit your site at around the specified time. On a site with few visitors,
+    the code may only be executed with considerable delay.</td></tr>
 </table>
 
 
@@ -246,8 +308,11 @@ defined below:</p>
     href="#Localization">Localization</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_locale">locale</a></td>
-  <td valign="top">en-gb</td>
-  <td valign="top">Locale for the system</td></tr>
+  <td valign="top">en_GB</td>
+  <td valign="top"><a href="http://en.wikipedia.org/wiki/Locale">Locale</a> for
+        the system. This defines both the language and the country that PHP
+        will use when deciding how to display localized information such as
+        dates (e.g. for the names of months).</td></tr>
 <tr>
   <td valign="top"><a name="desc_date">date</a></td>
   <td valign="top">%A, %B %d %Y @ %I:%M %p %Z</td>
@@ -284,6 +349,26 @@ defined below:</p>
   <td valign="top">Character encoding used by Geeklog when serving HTML pages or 
     sending email. Only used if the language file did not already set 
     another character encoding.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_thousand_separator">thousand_separator</a></td>
+  <td valign="top"><code>,</code></td>
+  <td valign="top">Character to use between every group of thousands.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_decimal_separator">decimal_separator</a></td>
+  <td valign="top"><code>.</code></td>
+  <td valign="top">Character to use before decimals.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_decimal_count">decimal_count</a></td>
+  <td valign="top">2</td>
+  <td valign="top">How many decimal places to display.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_timezone">timezone</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">If your server is located in a different timezone, use this
+    option to set your local (i.e. your own) timezone, so that the time and
+    date on the site match your own.<br>
+    This option is known as the "<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=21232">timezone hack</a>" and may not work on some
+    servers.</td></tr>
 </table>
 
 
@@ -349,7 +434,7 @@ defined below:</p>
   <td valign="top">Name of the language cookie.</td></tr>
 </table>
 
-<h3><a name="email">E-Mail Settings</a></h3>
+<h3><a name="desc_mail_settings">E-Mail Settings</a><a name="email"></a></h3>
 
 <p>Starting with Geeklog 1.3.9, Geeklog uses the PEAR::Mail class to send all
 emails. You can then select whether emails should be sent through SMTP,
@@ -659,6 +744,18 @@ options:</p>
   <td valign="top">300</td>
   <td valign="top">Minimum delay between two requests for a new password, in seconds.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_login_attempts">login_attempts</a></td>
+  <td valign="top">3</td>
+  <td valign="top">Max. number of login attempts before the speedlimit (see
+    below) kicks in and further logins are blocked for the given amount of
+    time.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_login_speedlimit">login_speedlimit</a></td>
+  <td valign="top">300</td>
+  <td valign="top">How many seconds have to pass before another login attempt
+    can be made after <code>$_CONF['login_attempts']</code> (see above) login
+    attempts have failed.</td></tr>
+<tr>
   <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
   <td valign="top"><i>not set</i></td>
   <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br>
@@ -693,6 +790,11 @@ options:</p>
   <td valign="top">1</td>
   <td valign="top">Show author username to public, and enable search by username (0=no, 1=yes)</td></tr>
 <tr>
+  <td valign="top"><a name="desc_hideviewscount">hideviewscount</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Whether to show (= 0) or to hide (= 1) the number of views
+    a story has had.</td></tr>
+<tr>
   <td valign="top"><a name="desc_article_image_align">article_image_align</a></td>
   <td valign="top">right</td>
   <td valign="top">Which side of article the topic image should be shown (right or left)</td></tr>
@@ -708,6 +810,12 @@ options:</p>
   <td valign="top"><a name="desc_frontpage">frontpage</a></td>
   <td valign="top">0</td>
   <td valign="top">Default setting for new stories and story submissions: Whether the story should appear on the site's frontpage (1) or only in its topic's page (0). Please note that for stories submitted to the archive topic, this setting will be ignored and the story will <em>not</em> appear on the frontpage.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_onlyrootfeatures">onlyrootfeatures</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this will only allow members of the Root
+    group to make a story "featured", i.e. the sticky top story on the
+    site.</td></tr>
 <tr>
   <td valign="top"><a name="desc_hideemailicon">hideemailicon</a></td>
   <td valign="top">0</td>
@@ -884,6 +992,12 @@ options:</p>
   <td valign="top">65536 <i>(equals 64 KB)</i></td>
   <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
     is rejected (even if you're using a graphics package to resize images).
+<tr>
+  <td valign="top"><a name="desc_debug_image_upload">debug_image_upload</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">When not commented out(!) and set to <code>true</true>, this
+    option enables debugging output to be written into Geeklog's <tt>error.log</tt> file during the upload of an image. This is useful to track down problems
+    with the image upload.</td></tr>
 </tr>
 </table>
 
@@ -1013,6 +1127,11 @@ the admin panel.</p>
   <td valign="top">Defines which protocols are allowed in links (i.e. HTML
     <code>&lt;a&gt;</code> tags).</td></tr>
 <tr>
+  <td valign="top"><a name="desc_skip_html_filter_for_root">skip_html_filter_for_root</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this will allow members of the Root group
+    to use <em>all</em> HTML in their posts. <strong>Use at your own risk!</strong></td></tr>
+<tr>
   <td valign="top"><a name="desc_disable_autolinks">disable_autolinks</a></td>
   <td valign="top">0</td>
   <td valign="top">If set to 1, disables the autolinks. I.e. links using the
@@ -1027,7 +1146,7 @@ the admin panel.</p>
   <td valign="top">Text to replace a censored word with</td></tr>
 <tr>
   <td valign="top"><a name="desc_censorlist">censorlist</a></td>
-  <td valign="top">array("fuck", "cunt", "fucker", "fucking", "pussy", "cock", "c0ck", "cum", "twat", "clit", "bitch", "fuk", "fuking", "motherfucker")</td>
+  <td valign="top">array(<i>a list of "bad" words goes here ...</i>)</td>
   <td valign="top">An array of censored words</td></tr>
 </table>
 
@@ -1056,7 +1175,30 @@ with your site.</p>
 <tr>
   <td valign="top"><a name="desc_url_rewrite">url_rewrite</a></td>
   <td valign="top">false</td>
-  <td valign="top">Enable (true) or disable (false) URL rewriting.</td>
+  <td valign="top">Enable (true) or disable (false) URL rewriting.</td></tr>
+</table>
+
+
+<h3><a name="unused">Unused Settings</a></h3>
+
+<p>This is a list of <tt>config.php</tt> options that are currently unused, e.g.
+because the feature they were intended for has not been implemented yet.</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_ostype">ostype</a></td>
+  <td valign="top"><code>PHP_OS</code></td>
+  <td valign="top">Identifies the operating system running on your
+    webserver.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_pdf_enabled">pdf_enabled</a></td>
+  <td valign="top">0</td>
+  <td valign="top">PDF conversion of stories has not been fully implemented
+    yet. Leave this option as is to prevent unfinished options from showing up
+    on your site.</td></tr>
 </table>
 
 
