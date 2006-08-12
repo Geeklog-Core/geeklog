@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.23 2006/08/12 13:20:31 dhaun Exp $
+// $Id: mysql.class.php,v 1.24 2006/08/12 13:38:51 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -680,6 +680,7 @@ class database {
     *
     * @param    string      $table      Table to lock
     * @return   void
+    * @see dbUnlockTable
     *
     */
     function dbLockTable($table)
@@ -694,6 +695,31 @@ class database {
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbLockTable ***");
+        }
+    }
+
+    /**
+    * Unlock a table
+    *
+    * Unlocks a table after a dbLockTable (actually, unlocks all tables)
+    *
+    * @param    string      $table      Table to unlock (ignored)
+    * @return   void
+    * @see dbLockTable
+    *
+    */
+    function dbUnlockTable($table)
+    {
+        if ($this->isVerbose()) {
+            $this->_errorlog("\n*** Inside database->dbUnlockTable ***");
+        }
+
+        $sql = 'UNLOCK TABLES';
+
+        $this->dbQuery($sql);
+
+        if ($this->isVerbose()) {
+            $this->_errorlog("\n*** Leaving database->dbUnlockTable ***");
         }
     }
 }

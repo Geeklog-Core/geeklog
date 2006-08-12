@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-database.php                                                          |
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.40 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-database.php,v 1.41 2006/08/12 13:38:51 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -473,6 +473,40 @@ function DB_doDatabaseUpgrade($current_gl_version)
     global $_DB;
 
     return $_DB->dbDoDatabaseUpgrade($current_gl_version);
+}
+
+/**
+* Lock a table
+*
+* Locks a table for write operations
+*
+* @param    string      $table      Table to lock
+* @return   void
+* @see DB_unlockTable
+*
+*/
+function DB_lockTable($table)
+{
+    global $_DB;
+
+    $_DB->dbLockTable($table);
+}
+
+/**
+* Unlock a table
+*
+* Unlocks a table after DB_lockTable
+*
+* @param    string      $table      Table to unlock
+* @return   void
+* @see DB_lockTable
+*
+*/
+function DB_unlockTable($table)
+{
+    global $_DB;
+
+    $_DB->dbUnlockTable($table);
 }
 
 ?>

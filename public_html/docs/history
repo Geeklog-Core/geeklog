@@ -2,9 +2,16 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
-- fixed bug: [#540] Blocking the last Root user or yourself should not be 
+
+- Introduced DB_lockTable / DB_unlockTable to encapsulate the LOCK / UNLOCK
+  requests when updating the comments table [Dirk]
+- Fixed bug: [#540] Blocking the last Root user or yourself should not be 
   possible [Oliver]
-- fixed bug: [#546] The phrase "Story Stats" is hardcoded [Oliver]
+- Fixed bug: [#546] The phrase "Story Stats" is hardcoded [Oliver]
+_ Added a spam check to the email user form [Dirk]
+- Use the same piece of code to compare plugin version numbers in lib-admin.php
+  and admin/plugins.php to avoid the "update" button not appearing for some
+  version numbers (bug #542) [Dirk]
 - Re-implemented $_CONF['allow_domains'] whitelist (when the user submission
   queue is enabled) that was inexplicably missing from 1.4.0 [Dirk]
 - Merged User Preferences and Account information into one page, like the 

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.42 2006/07/23 19:40:06 mjervis Exp $
+// $Id: lib-comment.php,v 1.43 2006/08/12 13:38:51 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -880,7 +880,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         $comment = addslashes ($comment);
 
         // Insert the comment into the comment table
-        DB_query("LOCK TABLES {$_TABLES['comments']} WRITE");
+        DB_lockTable ($_TABLES['comments']);
         if ($pid > 0) {
             $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid "
                              . "AND sid = '$sid'");
@@ -906,7 +906,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
         }
         $cid = DB_insertId();
-        DB_query('UNLOCK TABLES');
+        DB_unlockTable ($_TABLES['comments']);
 
         // Send notification of comment if no errors and notications enabled for comments
         if (($ret == 0) && isset ($_CONF['notification']) &&
@@ -1012,7 +1012,7 @@ function CMT_deleteComment ($cid, $sid, $type)
     // A lock is needed here to prevent other additions and/or deletions
     // from happening at the same time. A transaction would work better, 
     // but aren't supported with MyISAM tables.
-    DB_query("LOCK TABLES {$_TABLES['comments']} WRITE");
+    DB_lockTable ($_TABLES['comments']);
     $result = DB_query("SELECT pid, lft, rht FROM {$_TABLES['comments']} "
                      . "WHERE cid = $cid AND sid = '$sid' AND type = '$type'");
     if ( DB_numRows($result) == 1 ) {
@@ -1031,7 +1031,7 @@ function CMT_deleteComment ($cid, $sid, $type)
         return $ret = 2;
     }
 
-    DB_query('UNLOCK TABLES');
+    DB_unlockTable ($_TABLES['comments']);
     
     return $ret;
 }
