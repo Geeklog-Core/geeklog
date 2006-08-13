@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Links Plugin</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table>
+<tr>
+  <td><a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" border="0"></a></td>
+</tr>
+<tr>
+  <td class="menu"><a href="index.html">Geeklog Documentation</a> - Links Plugin</td>
+</tr>
+</table>
+
+<h1>Links Plugin</h1>
+
+<p>The links section used to be an integral part of the Geeklog core code, but have been moved to a plugin as of Geeklog 1.4.0.</p>
+
+<h2><a name="config.php">Configuration File</a></h2>
+
+<p>The links plugin has its own configuration file, located at <tt>/path/to/geeklog/plugins/links/config.php</tt>. There you will find the following options:</p>
+
+<table>
+<tr><th width="25%">Variable</th>
+    <th width="25%">Default Value</th>
+    <th width="50%">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_delete_links">delete_links</a></td>
+  <td>0</td>
+  <td>Defines what to do when a user is deleted that is the owner of a link.
+    When set to 0, all links owned by the deleted user will be assigned to a
+    user of the "Root" group (e.g. the site admin). When set to 1, the links
+    are deleted.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_hidelinksmenu">hidelinksmenu</a></td>
+  <td>0</td>
+  <td>Whether to hide the "Links" entry from Geeklog's menu bar (when set to 1)
+    or to show it (when set to 0).</td>
+</tr>
+<tr>
+  <td><a name="desc_hidenewlinks">hidenewlinks</a></td>
+  <td>0</td>
+  <td>Whether new links should be hidden from the "What's New" block (when set
+    = 1) or whether to list them there (when set to = 0).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_linkcols">linkcols</a></td>
+  <td>3</td>
+  <td>The number of link categories to display per column.</td>
+</tr>
+<tr>
+  <td><a name="desc_linksloginrequired">linksloginrequired</a></td>
+  <td>0</td>
+  <td>When set to 1, only registered users can access the links section.<br>
+    Please note that <code>$_CONF['<a
+    href="config.html#desc_loginrequired">loginrequired</a>']</code> in
+    <tt>config.php</tt> takes precedence over this setting. So when
+    <code>'loginrequired'</code> is set to 1, anonymous users can not access
+    the links section even when <code>'linksloginrequired'</code> is set
+    to 0.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_linksperpage">linksperpage</a></td>
+  <td>10</td>
+  <td>The number of links to show per page.</td>
+</tr>
+<tr>
+  <td><a name="desc_linksubmission">linksubmission</a></td>
+  <td>1</td>
+  <td>Whether links submitted by users will have to be approved by an admin
+    first (when set = 1) or show up immediately (when set = 0).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_newlinksinterval">newlinksinterval</a></td>
+  <td>1209600</td>
+  <td>For how long a link should be considered "new" and show up in the "What's
+    New" block on the site. The interval is given in seconds, so the default
+    value equals 14 days.</td>
+</tr>
+<tr>
+  <td><a name="desc_notification">notification</a></td>
+  <td>0</td>
+  <td>Whether to send an email notification when a new link was submitted (when
+    set to = 1) or not (when set to = 0).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_show_top10">show_top10</a></td>
+  <td><code>true</code></td>
+  <td>When both <code>$_LI_CONF['linkcols']</code> and
+    <code>$_LI_CONF['linksperpage']</code> are <em>not</em> 0, the plugin will
+    show a list of the 10 most clicked-on links on the Links plugin's index
+    page automatically. If you do not want that "top 10" list there, set this
+    option to <code>false</code>.</td>
+</tr>
+</table>
+
+
+<h2><a name="layout">Layout of the Links plugin's index page</a></h2>
+
+<p>The general layout of the index page of the Links plugin is defined by the
+options <code>$_LI_CONF['linkcols']</code> and <code>$_LI_CONF['linksperpage']</code>, as explained above.</p>
+
+<p>If you'd rather have a straight list of all your links, you can set both
+of these options to 0. This probably makes the most sense when you only have
+a few links. Setting only <code>$_LI_CONF['linksperpage']</code> to 0 zero will
+list all the links of the current category on one page. Setting only
+<code>$_LI_CONF['linkcols']</code> to 0 will hide the categories and will
+display all your links spread over several pages.</p>
+
+
+<h3><a name="templates">Template files</a></h3>
+
+<p>To further change the layout of your Links section, you can change the
+template files. Please note that they are now located in the plugin's directory,
+i.e. in</p>
+<p align="center"><tt>/path/to/geeklog/plugins/links/templates/</tt></p>
+<p>If you're using a theme that was made for an older version of Geeklog (prior
+to Geeklog 1.4.0), you may still have a "links" directory in your theme's
+directory - but that is not used any more and can be safely removed.</p>
+
+
+<table class="footer">
+<tr>
+  <td colspan="2"><a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>
