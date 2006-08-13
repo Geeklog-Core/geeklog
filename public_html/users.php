@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.142 2006/07/29 11:21:39 dhaun Exp $
+// $Id: users.php,v 1.143 2006/08/13 18:31:39 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -431,11 +431,18 @@ function createuser ($username, $email, $email_conf)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG04;
 
+    $retval = '';
+
     $username = trim ($username);
     $email = trim ($email);
     $email_conf = trim ($email_conf);
 
-    if (COM_isEmail ($email) && !empty ($username) && ($email === $email_conf)) {
+    if (!isset ($_CONF['disallow_domains'])) {
+        $_CONF['disallow_domains'] = '';
+    }
+
+    if (COM_isEmail ($email) && !empty ($username) && ($email === $email_conf)
+            && !USER_emailMatches ($email, $_CONF['disallow_domains'])) {
 
         $ucount = DB_count ($_TABLES['users'], 'username',
                             addslashes ($username));

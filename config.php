@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.228 2006/07/08 17:03:07 dhaun Exp $
+// $Id: config.php,v 1.229 2006/08/13 18:31:38 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -516,6 +516,11 @@ $_CONF['emailstoriesperdefault'] = 0;
 // When user submission is activated, allow users from these domains to
 // register without having to go through the submission queue.
 $_CONF['allow_domains'] = ''; // e.g. 'mycompany.com,myothercompany.com'
+
+// Comma-separated list of domain names that are not allowed for new user
+// signups (for all new registrations - not only for the user submission queue)
+$_CONF['disallow_domains'] = ''; // e.g. 'somebaddomain.com,anotherbadone.com'
+
 
 // Following times are in seconds
 $_CONF['newstoriesinterval']   =   86400; // = 24 hours

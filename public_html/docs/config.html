@@ -551,10 +551,21 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_allow_domains">allow_domains</a></td>
   <td valign="top">''</td>
-  <td valign="top">When user submission is enabled this can contain a comma-separated list
-    of domain names from which user submissions will not be queued (but
-    approved automatically).
-    <br><strong>Example:</strong> 'mycompany.com,myothercompany.com'</td></tr>
+  <td valign="top">When the user submission queue is enabled this can contain a
+    comma-separated list of domain names from which user submissions will not
+    be queued (but approved automatically). Regular expressions are also allowed
+    and interpreted.<br><strong>Example:</strong>
+    <tt>'mycompany.com,myothercompany.com'</tt></td></tr>
+<tr>
+  <td valign="top"><a name="desc_disallow_domains">disallow_domains</a></td>
+  <td valign="top">''</td>
+  <td valign="top">This is the opposite of <code>$_CONF['allow_domains']</code>
+    (see above): A list of domain names that are <em>not</em> allowed in email
+    addresses of new users. Note that this list is <em>always</em> used, even
+    when the user submission queue has been switched off. Again, regular
+    expression can be used.<br><strong>Example</strong> disallow email addresses
+    with a certain domain name and from any ".edu" domain:
+    <tt>'somebaddomain.com,\.edu$'</tt></td></tr>
 <tr>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>

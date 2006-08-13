@@ -3,12 +3,15 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Introduced $_CONF['disallow_domains'] as a blacklist of domain names that are
+  not allowed for new users during signup. Both 'disallow_domains' and
+  'allow_domains' can also contain regular expressions [Dirk]
 - Introduced DB_lockTable / DB_unlockTable to encapsulate the LOCK / UNLOCK
   requests when updating the comments table [Dirk]
 - Fixed bug: [#540] Blocking the last Root user or yourself should not be 
   possible [Oliver]
 - Fixed bug: [#546] The phrase "Story Stats" is hardcoded [Oliver]
-_ Added a spam check to the email user form [Dirk]
+- Added a spam check to the email user form [Dirk]
 - Use the same piece of code to compare plugin version numbers in lib-admin.php
   and admin/plugins.php to avoid the "update" button not appearing for some
   version numbers (bug #542) [Dirk]

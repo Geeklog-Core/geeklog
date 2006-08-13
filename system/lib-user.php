@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.30 2006/07/29 11:21:39 dhaun Exp $
+// $Id: lib-user.php,v 1.31 2006/08/13 18:31:38 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -259,10 +259,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
     if (($_CONF['usersubmission'] == 1) && !SEC_hasRights ('user.edit')) {
         $queueUser = true;
         if (!empty ($_CONF['allow_domains'])) {
-            $allowed = explode (',', $_CONF['allow_domains']);
-            // Note: We already made sure $email is a valid address
-            $domain = substr ($email, strpos ($email, '@') + 1);
-            if (in_array ($domain, $allowed)) {
+            if (USER_emailMatches ($email, $_CONF['allow_domains'])) {
                 $queueUser = false;
             }
         }
@@ -551,4 +548,37 @@ function  USER_delGroup ($groupid, $uid = '')
         return false;
     }
 }
+
+/**
+* Check email address against a list of domains
+*
+* Checks if the given email's domain part matches one of the entries in a
+* comma-separated list of domain names (regular expressions are allowed).
+*
+* @param    string  $email          email address to check
+* @param    string  $domain_list    list of domain names
+* @return   boolean                 true if match found, otherwise false
+*
+*/
+function USER_emailMatches ($email, $domain_list)
+{
+    $match_found = false;
+
+    if (!empty ($domain_list)) {
+        $domains = explode (',', $domain_list);
+
+        // Note: We should already have made sure that $email is a valid address
+        $email_domain = substr ($email, strpos ($email, '@') + 1);
+
+        foreach ($domains as $domain) {
+            if (preg_match ("#$domain#i", $email_domain)) {
+                $match_found = true;
+                break;
+            }
+        }
+    }
+
+    return $match_found;
+}
+
 ?>
