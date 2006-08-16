@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.104 2006/08/06 08:48:12 dhaun Exp $
+// $Id: block.php,v 1.105 2006/08/16 17:06:23 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -778,7 +778,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
     $display .= saveblock ($bid, $_POST['name'], $_POST['title'],
                     $help, $_POST['type'], $_POST['blockorder'], $content,
-                    COM_applyFilzer ($_POST['tid']), $rdfurl, $rdfupdated,
+                    COM_applyFilter ($_POST['tid']), $rdfurl, $rdfupdated,
                     $rdflimit, $phpblockfn, $_POST['onleft'],
                     COM_applyFilter ($_POST['owner_id'], true),
                     COM_applyFilter ($_POST['group_id'], true),
