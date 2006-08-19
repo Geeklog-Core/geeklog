@@ -55,9 +55,9 @@ defined below:</p>
     <th width="63%">Description</th></tr>
 <tr><td valign="top">_DB_dbms</td>
     <td valign="top">mysql</td>
-    <td valign="top"><strong>Do not change!</strong> This tells Geeklog that it
-      is using a MySQL database - and currently, that is the only type of 
-      database that is supported.</td></tr>
+    <td valign="top">This option tells Geeklog which type of database it's
+        running on. Can be either <code>'mysql'</code> (for MySQL) or
+        <code>'mssql'</code> (for Microsoft SQL Server).</td></tr>
 <tr><td valign="top">_DB_host</td>
     <td valign="top">localhost</td>
     <td valign="top">Database Server (to be entered in the form: <i>hostname:port:unixsocket</i>). In most cases you won't need to change the default value.</td></tr>
@@ -76,14 +76,21 @@ defined below:</p>
         avoid name collisions with tables used by other applications)</td></tr>
 <tr><td valign="top">_DB_mysqldump_path</td>
     <td valign="top">/usr/bin/mysqldump</td>
-    <td valign="top">Complete path to the <a href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility (part of MySQL) for making 
-      backups of your Geeklog database</td></tr>
+    <td valign="top">Complete path to the <a
+        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility
+        (part of MySQL) for making backups of your Geeklog database.<br>
+        <i>(only used when running on a MySQL database)</i></td></tr>
 <tr><td valign="top"><a name="desc_allow_mysqldump">allow_mysqldump</a></td>
     <td valign="top">1</td>
-    <td valign="top">Enable or disable the backup functionality (1 = on, 0 = off)</td></tr>
+    <td valign="top">Enable or disable the backup functionality (1 = on,
+        0 = off).<br>
+        <i>(only used when running on a MySQL database)</i></td></tr>
 <tr><td valign="top"><a name="desc_mysqldump_options">mysqldump_options</a></td>
     <td valign="top">-Q</td>
-    <td valign="top">Here you can include additional options for the <a href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> call that Geeklog uses to create a backup from your database.</td></tr>
+    <td valign="top">Here you can include additional options for the <a
+        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> call
+        that Geeklog uses to create a backup from your database.<br>
+        <i>(only used when running on a MySQL database)</i></td></tr>
 </table>
 
 
