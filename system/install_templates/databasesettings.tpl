@@ -11,6 +11,7 @@
     </table>
     <input type="hidden" name="page" value="2">
     <input type="hidden" name="geeklog_path" value="{geeklog_path}">
+    <input type="hidden" name="install_type" value="{install_type}">
     <p align="center"><input type="submit" name="action" value="&lt;&lt; Back">&nbsp;{NEXT_BUTTON}</p>
     </form>
 </body>

@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Added support for Microsoft SQL Server, provided by Randy Kolenko
 - Introduced $_CONF['disallow_domains'] as a blacklist of domain names that are
   not allowed for new users during signup. Both 'disallow_domains' and
   'allow_domains' can also contain regular expressions [Dirk]

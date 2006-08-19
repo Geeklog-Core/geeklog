@@ -14,6 +14,7 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Randy Kolenko     - randy AT nextide DOT ca
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,7 +36,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.87 2006/06/04 10:03:45 dhaun Exp $
+// $Id: install.php,v 1.88 2006/08/19 17:28:40 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -100,6 +101,17 @@ function mysql_v ()
     mysql_close ();
 
     return array ($mysqlmajorv, $mysqlminorv, $mysqlrev);
+}
+
+function installOption ($option_value, $option_name, $current_option)
+{
+    $retval = '<option value="' . $option_value . '"';
+    if ($option_value == $current_option) {
+        $retval .= ' selected="selected"';
+    }
+    $retval .= '>' . $option_name . '</option>' . LB;
+
+    return $retval;
 }
 
 /**
@@ -219,8 +231,15 @@ function INST_welcomePage()
     }
 
     $retval .= '<h2>Installation Options</h2>' . LB;
-    $install_options = '<option value="new_db">New Database</option>'.LB;
-    $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
+    $install_type = '';
+    if (isset ($_POST['install_type'])) {
+        $install_type = $_POST['install_type'];
+    }
+    $install_options = '';
+    $install_options .= installOption ('new_db', 'New MySQL Database', $install_type);
+    $install_options .= installOption ('new_mssql_db', 'New Microsoft SQL Server Database', $install_type);
+    $install_options .= installOption ('upgrade_db', 'Upgrade Database', $install_type);
+
     $retval .= '<form action="install.php" method="POST">' . LB;
     $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB;
     $retval .= '<tr><td align="right">Installation Type:&nbsp;</td><td><select name="install_type">'. LB;
@@ -328,7 +347,7 @@ function INST_checkTableExists ($table)
             $display .= '<li>You really want to upgrade your database (for a new Geeklog version) but forgot to select "Upgrade Database" from the drop-down menu on the initial screen.</li>' . LB;
             $display .= '</ol>' . LB;
             $display .= '<form action="install.php" method="POST">' . LB;
-        $display .= '<p align="center"><input type="submit" name="action" value="<< Back"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"></p>' . LB . '</form>';
+            $display .= '<p align="center"><input type="submit" name="action" value="<< Back"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"><input type="hidden" name="install_type" value="' . $_POST['install_type'] . '"></p>' . LB . '</form>';
             $display .= '</body>' . LB . '</html>';
 
             echo $display;
@@ -345,6 +364,11 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     $db_templates = new Template ($_CONF['path_system'] . 'install_templates');
     $db_templates->set_file (array ('db' => 'databasesettings.tpl'));
     $db_templates->set_var ('geeklog_path', $geeklog_path);
+    if (isset ($_POST['install_type'])) {
+        $db_templates->set_var ('install_type', $_POST['install_type']);
+    } else {
+        $db_templates->set_var ('install_type', '');
+    }
 
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var ('upgrade', 1);
@@ -377,21 +401,31 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
 
     } else {
 
-        // This is a fresh installation
-        $db_templates->set_var ('upgrade', 0);
-
-        if (innodb_supported ()) {
-            $innodb_option = '<tr><td align="left">';
-            $innodb_option .= '<p>Using InnoDB tables may improve performance on (very) large sites, but makes database backups more complicated. Leave the option unchecked unless you know what you\'re doing.</p>';
-            $innodb_option .= '<input type="checkbox" name="innodb"> Use InnoDB tables';
-            $innodb_option .= '</td></tr>';
-            $db_templates->set_var ('UPGRADE_OPTIONS', $innodb_option);
-        } else {
+        // pick off which database we're installing for!
+        if ($install_type == 'new_mssql_db') {
+            // This is a fresh SQL Server installation!
+            $db_templates->set_var ('upgrade', 0);
             $db_templates->set_var ('UPGRADE_OPTIONS',
-                                    '<tr><td>&nbsp;</td></tr>');
+                                        '<tr><td>&nbsp;</td></tr>');
+            $nextbutton = '<input type="hidden" name="install_type" value="new_mssql_db"><input type="submit" name="action" value="Next &gt;&gt;">';
+            $db_templates->set_var ('NEXT_BUTTON', $nextbutton);
+        } else {
+            // This is a fresh MySQL installation
+            $db_templates->set_var ('upgrade', 0);
+    
+            if (innodb_supported ()) {
+                $innodb_option = '<tr><td align="left">';
+                $innodb_option .= '<p>Using InnoDB tables may improve performance on (very) large sites, but makes database backups more complicated. Leave the option unchecked unless you know what you\'re doing.</p>';
+                $innodb_option .= '<input type="checkbox" name="innodb"> Use InnoDB tables';
+                $innodb_option .= '</td></tr>';
+                $db_templates->set_var ('UPGRADE_OPTIONS', $innodb_option);
+            } else {
+                $db_templates->set_var ('UPGRADE_OPTIONS',
+                                        '<tr><td>&nbsp;</td></tr>');
+            }
+            $nextbutton = '<input type="submit" name="action" value="Next &gt;&gt;">';
+            $db_templates->set_var ('NEXT_BUTTON', $nextbutton);
         }
-        $nextbutton = '<input type="submit" name="action" value="Next &gt;&gt;">';
-        $db_templates->set_var ('NEXT_BUTTON', $nextbutton);
     }
 
     return $db_templates->parse('output','db');
@@ -416,23 +450,21 @@ function INST_createDatabaseStructures ($use_innodb = false)
         return false;
     }
 
-    if ($_DB_dbms == 'mysql') {
-
-        foreach ($_SQL as $sql) {
-
-            if ($use_innodb) {
-                $sql = str_replace ('MyISAM', 'InnoDB', $sql);
+    switch($_DB_dbms){
+        case 'mysql':
+            foreach ($_SQL as $sql) {
+                if ($use_innodb) {
+                    $sql = str_replace ('MyISAM', 'InnoDB', $sql);
+                }
+            
+                DB_query ($sql);
             }
-
-            DB_query ($sql);
-        }
-
-    } else { // in the highly unlikely event that we're not on MySQL ...
-
-        foreach ($_SQL as $sql) {
-            DB_query ($sql);
-        }
-
+            break;
+        case 'mssql';
+            foreach ($_SQL as $sql) {
+                DB_query ($sql);
+            }
+            break;   
     }
 
     // Now insert mandatory data and a small subset of initial data
@@ -441,7 +473,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
         DB_query ($data);
     }
 
-    if ($_DB_dbms == 'mysql') {
+    if ($_DB_dbms == 'mysql' || $_DB_dbms == 'mssql' ) {
 
         // let's try and personalize the Admin account a bit ...
 
@@ -959,7 +991,7 @@ if ($page > 0) {
             $display .= 'Please check this path and try again. Remember that you should be using absolute paths, starting at the root of your file system.</p>' . LB;
         }
         $display .= '<form action="install.php" method="POST">' . LB;
-        $display .= '<p align="center"><input type="submit" name="action" value="<< Back"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"></p>' . LB . '</form>';
+        $display .= '<p align="center"><input type="submit" name="action" value="<< Back"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"><input type="hidden" name="install_type" value="' . $_POST['install_type'] . '"></p>' . LB . '</form>';
         $display .= '</body>' . LB . '</html>';
         echo $display;
         exit;
@@ -991,6 +1023,10 @@ case 2:
         if (isset ($_POST['innodb']) && ($_POST['innodb'] == 'on')) {
             $use_innodb = true;
         }
+        if ($_POST['install_type'] == 'new_mssql_db') {
+            $use_innodb = false;
+        }
+
         if (INST_createDatabaseStructures ($use_innodb)) {
             // Done with installation...redirect to success page
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
@@ -1001,7 +1037,9 @@ case 2:
 
 default:
     // Ok, let's display a welcome page
+
     $display .= INST_welcomePage();
+
     break;
 }
 
