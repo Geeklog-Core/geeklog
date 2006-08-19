@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.81 2006/08/19 13:59:28 dhaun Exp $
+// $Id: group.php,v 1.82 2006/08/19 15:47:41 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -703,7 +703,6 @@ function grp_selectUsers ($group_id, $allusers = false)
 
     $groups = getGroupList ($group_id);
     $grouplist = '(' . implode (',', $groups) . ')';
-COM_errorLog($grouplist);
     $sql = "SELECT DISTINCT uid,username FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['group_assignments']} ON {$_TABLES['group_assignments']}.ug_uid = uid WHERE uid > 1 AND {$_TABLES['group_assignments']}.ug_main_grp_id ";
     if ($allusers) {
         $sql .= 'NOT ';
