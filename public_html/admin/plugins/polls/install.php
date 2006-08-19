@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.13 2006/08/05 15:07:44 dhaun Exp $
+// $Id: install.php,v 1.14 2006/08/19 18:51:48 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -164,8 +164,8 @@ if (!SEC_inGroup ('Root')) {
 */
 function plugin_install_now()
 {
-    global $_CONF, $_TABLES, $_USER, $GROUPS, $FEATURES, $MAPPINGS, $DEFVALUES,
-           $base_path,
+    global $_CONF, $_TABLES, $_USER, $_DB_dbms,
+           $GROUPS, $FEATURES, $MAPPINGS, $DEFVALUES, $base_path,
            $pi_name, $pi_display_name, $pi_version, $gl_version, $pi_url;
 
     COM_errorLog ("Attempting to install the $pi_display_name plugin", 1);
@@ -197,8 +197,8 @@ function plugin_install_now()
 
     // Create the plugin's table(s)
     $_SQL = array ();
-    if (file_exists ($base_path . 'sql/install.php')) {
-        require_once ($base_path . 'sql/install.php');
+    if (file_exists ($base_path . 'sql/' . $_DB_dbms . '_install.php')) {
+        require_once ($base_path . 'sql/' . $_DB_dbms . '_install.php');
     }
 
     foreach ($_SQL as $sql) {

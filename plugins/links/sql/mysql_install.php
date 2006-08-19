@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 1.0                                                          |
+// | Links Plugin 1.0                                                          |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -30,62 +30,61 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.3 2006/06/10 19:31:55 dhaun Exp $
+
+/** 
+ * Links plugin Installation SQL  
+ * 
+ * @package Links
+ * @filesource
+ * @version 1.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Tony Bibbs <tony@tonybibbs.com>
+ * @author Tom Willett <twillett@users.sourceforge.net>
+ * @author Blaine Lang <langmail@sympatico.ca>
+ * @author Dirk Haun <dirk@haun-online.de>
+ * 
+ */
+
+
+
+// $Id: mysql_install.php,v 1.1 2006/08/19 18:51:48 dhaun Exp $
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['pollanswers']} (
-  qid varchar(20) NOT NULL default '',
-  aid tinyint(3) unsigned NOT NULL default '0',
-  answer varchar(255) default NULL,
-  votes mediumint(8) unsigned default NULL,
-  remark varchar(255) NULL,
-  PRIMARY KEY  (qid,aid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['pollquestions']} (
-  qid varchar(20) NOT NULL default '',
-  question varchar(255) default NULL,
-  voters mediumint(8) unsigned default NULL,
+CREATE TABLE {$_TABLES['links']} (
+  lid varchar(20) NOT NULL default '',
+  category varchar(32) default NULL,
+  url varchar(255) default NULL,
+  description text,
+  title varchar(96) default NULL,
+  hits int(11) NOT NULL default '0',
   date datetime default NULL,
-  display tinyint(4) NOT NULL default '0',
-  commentcode tinyint(4) NOT NULL default '0',
-  statuscode tinyint(4) NOT NULL default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
   perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX pollquestions_qid(qid),
-  INDEX pollquestions_date(date),
-  INDEX pollquestions_display(display),
-  INDEX pollquestions_commentcode(commentcode),
-  INDEX pollquestions_statuscode(statuscode),
-  PRIMARY KEY  (qid)
+  INDEX links_lid(lid),
+  INDEX links_category(category),
+  INDEX links_date(date),
+  PRIMARY KEY  (lid)
 ) TYPE=MyISAM
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['pollvoters']} (
-  id int(10) unsigned NOT NULL auto_increment,
-  qid varchar(20) NOT NULL default '',
-  ipaddress varchar(15) NOT NULL default '',
-  date int(10) unsigned default NULL,
-  PRIMARY KEY  (id)
+CREATE TABLE {$_TABLES['linksubmission']} (
+  lid varchar(20) NOT NULL default '',
+  category varchar(32) default NULL,
+  url varchar(255) default NULL,
+  description text,
+  title varchar(96) default NULL,
+  hits int(11) default NULL,
+  date datetime default NULL,
+  PRIMARY KEY  (lid)
 ) TYPE=MyISAM
 ";
-
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'Trackbacks',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'Links and Polls plugins',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',3,'Revamped admin areas',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',4,'FCKeditor included',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',5,'Remote user authentication',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',6,'Other',0) ";
-
-// Note: The 'pollquestion' entry for the above answers is in the install script
-
-$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'polls_block','phpblock','Poll','all',30,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
 
 ?>

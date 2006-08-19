@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.2 2006/07/17 04:11:21 blaine Exp $
+// $Id: mysql_install.php,v 1.1 2006/08/19 18:51:48 dhaun Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
