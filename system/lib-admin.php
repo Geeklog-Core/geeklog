@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.67 2006/07/09 13:49:22 dhaun Exp $
+// $Id: lib-admin.php,v 1.68 2006/08/19 14:24:42 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -605,7 +605,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
 
 function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -632,6 +632,9 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
                  $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
              }
 
+            break;
+        case $_TABLES['users'] . '.uid':
+            $retval = $A['uid'];
             break;
         default:
             $retval = $fieldvalue;
