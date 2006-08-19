@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.105 2006/08/16 17:06:23 blaine Exp $
+// $Id: block.php,v 1.106 2006/08/19 13:59:28 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -390,7 +390,7 @@ function listblocks()
                       'form_url' => $_CONF['site_admin_url'] . "/block.php");
 
     $query_arr = array('table' => 'blocks',
-                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE 1",
+                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE 1=1",
                        'query_fields' => array('title', 'content'),
                        'default_filter' => 'AND onleft=1');
 
@@ -398,7 +398,7 @@ function listblocks()
                             $query_arr, $menu_arr, $defsort_arr);
 
     $query_arr = array('table' => 'blocks',
-                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE 1",
+                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE 1=1",
                        'query_fields' => array('title', 'content'),
                        'default_filter' => 'AND onleft=0');
 

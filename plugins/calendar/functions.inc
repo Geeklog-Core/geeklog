@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.49 2006/08/06 17:21:36 dhaun Exp $
+// $Id: functions.inc,v 1.50 2006/08/19 13:59:29 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -760,7 +760,7 @@ function CALENDAR_listevents()
           ."FROM {$_TABLES['events']} "
           ."LEFT JOIN {$_TABLES['users']} "
           ."ON {$_TABLES['events']}.owner_id={$_TABLES['users']}.uid "
-          ."WHERE 1 ";
+          ."WHERE 1=1 ";
 
     $query_arr = array('table' => 'events',
                        'sql' => $sql,

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.232 2006/08/10 08:13:31 ospiess Exp $
+// $Id: story.php,v 1.233 2006/08/19 13:59:28 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -191,7 +191,7 @@ function liststories()
     $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
           ."UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} "
           ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['stories']}.uid={$_TABLES['users']}.uid "
-          ."WHERE 1 ";
+          ."WHERE 1=1 ";
 
     if (!empty ($excludetopics)) {
         $excludetopics = 'AND ' . $excludetopics;

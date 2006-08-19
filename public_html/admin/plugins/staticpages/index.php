@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.74 2006/08/03 14:39:13 dhaun Exp $
+// $Id: index.php,v 1.75 2006/08/19 13:59:29 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -394,7 +394,7 @@ function liststaticpages()
 
     $query_arr = array('table' => 'staticpage',
                        'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate "
-                               ."FROM {$_TABLES['staticpage']} WHERE 1 ",
+                               ."FROM {$_TABLES['staticpage']} WHERE 1=1 ",
                        'query_fields' => array('sp_title', 'sp_id'),
                        'default_filter' => COM_getPermSQL ('AND', 0, 3));
 

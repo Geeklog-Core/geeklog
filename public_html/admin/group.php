@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.80 2006/08/04 08:57:46 dhaun Exp $
+// $Id: group.php,v 1.81 2006/08/19 13:59:28 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -686,7 +686,7 @@ function listgroups()
                       'form_url' => $_CONF['site_admin_url'] . "/group.php");
 
     $query_arr = array('table' => 'groups',
-                       'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1",
+                       'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
                        'query_fields' => array('grp_name', 'grp_descr'),
                        'default_filter' => "");
 

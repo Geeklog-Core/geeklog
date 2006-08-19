@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.157 2006/08/10 08:50:34 ospiess Exp $
+// $Id: user.php,v 1.158 2006/08/19 13:59:28 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -336,7 +336,7 @@ function listusers()
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
         $select_userinfo=",lastlogin ";
     }
-    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1";
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
 
     $query_arr = array('table' => 'users',
                        'sql' => $sql,

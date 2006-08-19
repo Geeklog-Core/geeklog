@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.42 2006/07/08 21:35:03 dhaun Exp $
+// $Id: trackback.php,v 1.43 2006/08/19 13:59:28 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -498,7 +498,7 @@ function listServices ()
                       'help_url' => $_CONF['site_url'] . '/docs/trackback.html#ping');
 
     $query_arr = array('table' => 'pingservice',
-                       'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1",
+                       'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1=1",
                        'query_fields' => array('name', 'ping_url'),
                        'default_filter' => "",
                        'no_data' => $LANG_TRB['no_services']);

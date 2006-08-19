@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.65 2006/08/03 15:46:45 dhaun Exp $
+// $Id: plugins.php,v 1.66 2006/08/19 13:59:28 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -450,7 +450,7 @@ function listplugins ()
 
     $query_arr = array('table' => 'plugins',
                        'sql' => "SELECT pi_name, pi_version, pi_gl_version, "
-                               ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1",
+                               ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1=1",
                        'query_fields' => array('pi_name'),
                        'default_filter' => '');
 

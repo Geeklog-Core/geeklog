@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.48 2006/07/08 19:58:42 dhaun Exp $
+// $Id: syndication.php,v 1.49 2006/08/19 13:59:28 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -156,7 +156,7 @@ function listfeeds()
                       'form_url' => $_CONF['site_admin_url'] . "/syndication.php");
 
     $query_arr = array('table' => 'syndication',
-                       'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1",
+                       'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
                        'query_fields' => array('title', 'filename'),
                        'default_filter' => '');
 

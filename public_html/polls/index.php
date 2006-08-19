@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2006/06/18 14:05:59 dhaun Exp $
+// $Id: index.php,v 1.19 2006/08/19 13:59:29 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -128,7 +128,7 @@ function polllist ()
                           'icon' => '', 'form_url' => '');
 
         $query_arr = array('table' => 'pollquestions',
-                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1",
+                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1=1",
                            'query_fields' => array('question'),
                            'default_filter' => COM_getPermSQL (),
                            'query' => '',
