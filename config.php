@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.229 2006/08/13 18:31:38 dhaun Exp $
+// $Id: config.php,v 1.230 2006/08/19 17:40:29 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -174,18 +174,22 @@ $_CONF['mail_settings'] = array (
 // | Database type and database backup settings.                               |
 // +---------------------------------------------------------------------------+
 
-$_DB_dbms = 'mysql';   // Do not change (currently, only MySQL is supported)
+$_DB_dbms = 'mysql'; // can be either 'mysql' or 'mssql' (Microsoft SQL Server)
+
+
+// the following options are for MySQL only
 
 // optional settings for making database backups from within Geeklog
 $_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
 
-// full path to mysqldump executable (Windows users: add ".exe"!)
+// full path of the mysqldump executable (Windows users: add ".exe"!)
 $_DB_mysqldump_path = '/usr/bin/mysqldump';
 
 // additional options for mysqldump
-// If you're using InnoDB tables, include the '--single-transaction' or you
+// If you're using InnoDB tables, include '--single-transaction' or you
 // may end up with inconsistent backups!
 $_CONF['mysqldump_options'] = '-Q';
+
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
