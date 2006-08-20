@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.82 2006/08/19 15:47:41 blaine Exp $
+// $Id: group.php,v 1.83 2006/08/20 05:08:42 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -700,15 +700,32 @@ function grp_selectUsers ($group_id, $allusers = false)
     global $_TABLES, $_USER;
 
     $retval = '';
+    
+    // Get a list of users in the Root Group and the selected group
+    $sql  = "SELECT DISTINCT uid FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['group_assignments']} ";
+    $sql .= "ON {$_TABLES['group_assignments']}.ug_uid = uid WHERE uid > 1 AND ";
+    $sql .= "({$_TABLES['group_assignments']}.ug_main_grp_id = 1 OR {$_TABLES['group_assignments']}.ug_main_grp_id = $group_id)";
+    $result = DB_query ($sql);
+    $filteredusers = array();
+    while ($A = DB_fetchArray($result)) {
+        $filteredusers[] = $A['uid'];
+    }    
 
     $groups = getGroupList ($group_id);
     $grouplist = '(' . implode (',', $groups) . ')';
-    $sql = "SELECT DISTINCT uid,username FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['group_assignments']} ON {$_TABLES['group_assignments']}.ug_uid = uid WHERE uid > 1 AND {$_TABLES['group_assignments']}.ug_main_grp_id ";
+    $sql = "SELECT DISTINCT uid,username FROM {$_TABLES['users']} LEFT JOIN {$_TABLES['group_assignments']} ";
+    $sql .= "ON {$_TABLES['group_assignments']}.ug_uid = uid WHERE uid > 1 AND ";
+    $sql .= "{$_TABLES['group_assignments']}.ug_main_grp_id ";
     if ($allusers) {
         $sql .= 'NOT ';
     }
-    $sql .= "IN {$grouplist} ORDER BY username";
-
+    $sql .= "IN {$grouplist} ";
+    // Filter out the users that will be in the selected group
+    if ($allusers) {
+        $filteredusers = implode(',',$filteredusers);
+        $sql .= " AND uid NOT IN ($filteredusers) ";
+    }
+    $sql .= "ORDER BY username";   
     $result = DB_query ($sql);
     $numUsers = DB_numRows ($result);
     for ($i = 0; $i < $numUsers; $i++) {
@@ -777,9 +794,9 @@ function editusers ($group)
 function savegroupusers ($groupid, $groupmembers)
 {
     global $_CONF, $_TABLES;
-
     // Delete all the current buddy records for this user and add all the selected ones
-    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid != NULL");
+    $sql = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid IS NOT NULL";
+    DB_query($sql);
     $adduser = explode("|",$groupmembers);
     for( $i = 0; $i < count($adduser); $i++ )    {
         $adduser[$i] = COM_applyFilter($adduser[$i], true);
