@@ -7,8 +7,9 @@
     <fieldset style="margin-top:10px;">
         <legend>{lang_preview_title}</legend>
         {preview}
-    </div>
-<div id="pe_namepass" style="display:;">
+    </fieldset>
+</div>
+<div id="pe_namepass">
     <fieldset style="margin-top:10px;"><legend>{lang_name_legend}</legend>
        <table class="inputTable">
                {username_option}
@@ -52,7 +53,7 @@
         </table>
 </fieldset>
 </div>
-<div id="pe_userinfo" class="jsenabled_hide" style="display:;">
+<div id="pe_userinfo" class="jsenabled_hide">
     <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>{lang_personal_info_legend}</legend>
       <div class="notes">
         <h4>{lang_userinfo_help_title}</h4>
