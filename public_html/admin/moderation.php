@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.93 2006/07/16 17:43:55 dhaun Exp $
+// $Id: moderation.php,v 1.94 2006/08/20 04:09:48 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -228,7 +228,6 @@ function commandcontrol()
 function itemlist($type)
 {
     global $_TABLES, $LANG29, $_CONF, $LANG_ADMIN;
-
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
     $retval = '';
@@ -292,9 +291,10 @@ function itemlist($type)
                       'title'       => $section_title,
                       'help_url'    => $section_help,
                       'no_data'     => $LANG29[39]);
-
+    
+    $listoptions = array('chkdelete' => true,'chkfield' => 'id');  
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array());
+                              $text_arr, $data_arr, array(),$listoptions);
     if ($nrows > 0) {
         $retval .= LB . '<form action="' . $_CONF['site_admin_url']
                 . '/moderation.php" method="POST">' . LB
@@ -326,7 +326,6 @@ function userlist ()
     require_once ($_CONF['path_system'] . 'lib-admin.php');
 
     $retval = '';
-
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
     $result = DB_query ($sql);
     $nrows = DB_numRows($result);
@@ -353,8 +352,11 @@ function userlist ()
                       'help_url'  => '',
                       'no_data'   => $LANG29[39]
     );
+     
+    $listoptions = array('chkdelete' => true,'chkfield' => 'id');
+    
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array());
+                              $text_arr, $data_arr, array(),$listoptions);
     if ($nrows > 0) {
         $retval .= LB . '<form action="' . $_CONF['site_admin_url']
                 . '/moderation.php" method="POST">' . LB
@@ -364,6 +366,7 @@ function userlist ()
                 . LB . $table . LB
                 . '<p align="center"><input type="submit" value="'
                 . $LANG_ADMIN['submit'] . '"></p></form>' . LB;
+
     } else {
         $retval .= $table;
     }
@@ -464,7 +467,9 @@ function moderation ($mid, $action, $type, $count)
         list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
     }
 
+    $formaction = false;        // Set true if an valid action other then delete_all is selected
     for ($i = 0; $i < $count; $i++) {
+        if (isset($action[$i]) AND $action[$i] != '') $formaction = true;
         switch ($action[$i]) {
         case 'delete':
             if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
@@ -519,6 +524,23 @@ function moderation ($mid, $action, $type, $count)
             break;
         }
     }
+    
+    // Check if there was no direct action used on the form and if the delete_all submit action was used
+    if (!$formaction AND isset($_POST['delitem'])) {
+        foreach($_POST['delitem'] as $delitem) {
+            $delitem = COM_applyFilter($delitem);        
+            if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
+                // There may be some plugin specific processing that needs to
+                // happen first.
+                $retval .= PLG_deleteSubmission($type, $delitem);
+            }
+            if ($type == 'draft') {
+                STORY_deleteStory($delitem);
+            } else {
+                DB_delete($submissiontable,"$id",$delitem);
+            }        
+        }
+    }
 
     $retval .= commandcontrol();
 
@@ -542,8 +564,9 @@ function moderateusers ($uid, $action, $count)
     global $_CONF, $_TABLES, $LANG04;
 
     $retval = '';
-
+    $formaction = false;        // Set true if an valid action other then delete_all is selected  
     for ($i = 0; $i < $count; $i++) {
+        if (isset($action[$i]) AND $action[$i] != '') $formaction = true;   
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
                 if ($uid[$i] > 1) {
@@ -563,6 +586,16 @@ function moderateusers ($uid, $action, $count)
                 break;
         }
     }
+    
+    // Check if there was no direct action used on the form and if the delete_all submit action was used
+    if (!$formaction AND isset($_POST['delitem'])) {       
+        foreach($_POST['delitem'] as $del_uid) {
+            $del_uid = COM_applyFilter($del_uid,true);
+            if ($del_uid > 1) {
+                USER_deleteAccount ($uid[$i]);
+            }
+        }
+    }    
 
     $retval .= commandcontrol();
 
@@ -582,7 +615,8 @@ if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
         $display .= moderateusers ($_POST['id'], $_POST['action'],
                                   COM_applyFilter ($_POST['count'], true));
     } else {
-        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type'],                                 COM_applyFilter ($_POST['count'], true));
+        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type'],
+                                  COM_applyFilter ($_POST['count'], true));
     }
 } else {
     $display .= commandcontrol();

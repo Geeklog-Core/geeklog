@@ -33,16 +33,28 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.68 2006/08/19 14:24:42 dhaun Exp $
+// $Id: lib-admin.php,v 1.69 2006/08/20 04:09:49 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
 }
 
+/**
+* Common function used in Admin scripts to display a list of items
+*
+* @param    string  $fieldfunction  Name of a function used to display the list item row details
+* @param    array   $header_arr     array of header fields with sortables and table fields
+* @param    array   $text_arr       array with different text strings
+* @param    array   $data_arr       array with sql query data - array of list records
+* @param    array   $menu_arr       menu-entries
+* @param    array   $options        array of options - intially just used for the Check-All feature
+* @return   string                  HTML output of function
+*
+*/
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
-                           $data_arr, $menu_arr = '')
+                           $data_arr, $menu_arr= '', $options='')
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
+    global $_CONF, $_TABLES, $LANG01, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
     $retval = '';
 
@@ -74,10 +86,13 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                                        'menufields' => 'menufields.thtml'
                                       ));
     $admin_templates->set_var('site_url', $_CONF['site_url']);
+    $admin_templates->set_var('layout_url',$_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('icon', $icon);
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
+    $admin_templates->set_var('LANG_deleteall',$LANG01['124']);
+    $admin_templates->set_var('LANG_delconfirm',$LANG01['125']);
 
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
@@ -108,7 +123,19 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     $retval .= COM_startBlock ($title, $help_url,
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
-    # HEADER FIELDS array(text, field, sort)
+    // Check if the delete checkbox and support for the delete all feature should be displayed
+    if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
+        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" TITLE="'.$LANG01[126].'" onclick="caItems(this.form);">');   
+        $admin_templates->set_var('class', "admin-list-headerfield");
+        $admin_templates->set_var('on_click', ' width="25px"');
+        $admin_templates->set_var('show_deleteimage','');
+        $admin_templates->parse('header_row', 'header', true);
+        $admin_templates->clear_var('on_click');
+    } else {
+        $admin_templates->set_var('show_deleteimage','none');
+    }
+    
+    # HEADER FIELDS array(text, field, sort)        
     for ($i=0; $i < count( $header_arr ); $i++) {
         $admin_templates->set_var('header_text', $header_arr[$i]['text']);
         if (!empty($header_arr[$i]['header_class'])) {
@@ -129,13 +156,18 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     } else if ($data_arr == false) {
         $admin_templates->set_var('message', $LANG_ADMIN['data_error']);
     } else {
+        $admin_templates->set_var('show_message','none');
         for ($i = 0; $i < count($data_arr); $i++) {
-            for ($j = 0; $j < count($header_arr); $j++) {
+            if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
+                $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
+                $admin_templates->parse('item_field', 'field', true);
+            }           
+            for ($j = 0; $j < count($header_arr); $j++) {              
                 $fieldname = $header_arr[$j]['field'];
                 $fieldvalue = '';
                 if (!empty($data_arr[$i][$fieldname])) {
                     $fieldvalue = $data_arr[$i][$fieldname];
-                }
+                }                
                 if (!empty($fieldfunction)) {
                     $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $data_arr[$i], $icon_arr);
                 } else {
