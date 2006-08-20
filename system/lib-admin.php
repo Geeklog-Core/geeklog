@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.69 2006/08/20 04:09:49 blaine Exp $
+// $Id: lib-admin.php,v 1.70 2006/08/20 15:22:09 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -86,13 +86,13 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                                        'menufields' => 'menufields.thtml'
                                       ));
     $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('layout_url',$_CONF['layout_url']);
+    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('icon', $icon);
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $admin_templates->set_var('LANG_deleteall',$LANG01['124']);
-    $admin_templates->set_var('LANG_delconfirm',$LANG01['125']);
+    $admin_templates->set_var('lang_deleteall', $LANG01['124']);
+    $admin_templates->set_var('lang_delconfirm', $LANG01['125']);
 
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
@@ -280,6 +280,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                                       ));
     # insert some values into the template
     $admin_templates->set_var('site_url', $_CONF['site_url']);
+    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     if ($text_arr['icon'] !== false) {
         $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"icon\">");
@@ -535,7 +536,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
 
 
-function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr) {
+function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
+{
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
     $retval = false;
 

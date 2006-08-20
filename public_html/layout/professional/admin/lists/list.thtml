@@ -6,7 +6,7 @@
                                 {item_row}
                             </table>
                             <div style="padding:5px 0px 0px 9px;display:{show_deleteimage};">
-                                <input type="image" src="{layout_url}/images/deleteitem.gif" TITLE="{LANG_deleteall}" onclick="return confirm('{LANG_delconfirm}');">
+                                <input type="image" src="{layout_url}/images/deleteitem.gif" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');">
                             </div>
                             <p align="center" style="display:{show_message};"><b>{message}</b></p>
                             {google_paging}
