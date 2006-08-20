@@ -11,7 +11,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.4 2006/06/25 08:40:54 dhaun Exp $
+* $Id: EditHeader.Admin.class.php,v 1.5 2006/08/20 16:42:32 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
@@ -30,12 +30,14 @@ class EditHeader extends BaseAdmin {
      */
     function display()
     {
-        global $_CONF, $_GET, $_POST, $_TABLES, $LANG_SX00;
+        global $_CONF, $_TABLES, $LANG_SX00;
 
-        $action = COM_applyFilter ($_GET['action']);
-        if (empty ($action)) {
+        $action = '';
+        if (isset ($_GET['action'])) {
+            $action = COM_applyFilter ($_GET['action']);
+        } else if (isset ($_POST['paction'])) {
             $action = COM_applyFilter ($_POST['paction']);
-        }
+        } 
 
         if ($action == 'delete') {
             $entry = $_GET['entry'];

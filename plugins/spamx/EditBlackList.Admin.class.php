@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: EditBlackList.Admin.class.php,v 1.5 2006/06/18 18:32:01 dhaun Exp $
+ * $Id: EditBlackList.Admin.class.php,v 1.6 2006/08/20 16:42:32 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditBlackList.Admin.class.php') !== false) {
@@ -33,8 +33,10 @@ class EditBlackList extends BaseAdmin {
 
         require_once $_CONF['path'] . 'plugins/spamx/rss.inc.php';
 
-        $action = COM_applyFilter ($_GET['action']);
-        if (empty ($action)) {
+        $action = '';
+        if (isset ($_GET['action'])) {
+            $action = COM_applyFilter ($_GET['action']);
+        } else if (isset ($_POST['paction'])) {
             $action = COM_applyFilter ($_POST['paction']);
         } 
 

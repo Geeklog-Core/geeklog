@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIP.Admin.class.php,v 1.3 2006/06/23 14:39:55 dhaun Exp $
+* $Id: EditIP.Admin.class.php,v 1.4 2006/08/20 16:42:32 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditIP.Admin.class.php') !== false) {
@@ -33,10 +33,12 @@ class EditIP extends BaseAdmin {
 
         require_once ($_CONF['path'] . 'plugins/spamx/rss.inc.php');
 
-        $action = COM_applyFilter ($_GET['action']);
-        if (empty ($action)) {
+        $action = '';
+        if (isset ($_GET['action'])) {
+            $action = COM_applyFilter ($_GET['action']);
+        } else if (isset ($_POST['paction'])) {
             $action = COM_applyFilter ($_POST['paction']);
-        }
+        } 
 
         $entry = '';
         if (isset ($_GET['entry'])) {

@@ -12,7 +12,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelTrackback.Admin.class.php,v 1.5 2006/06/25 08:40:54 dhaun Exp $
+* $Id: MassDelTrackback.Admin.class.php,v 1.6 2006/08/20 16:42:32 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'MassDelTrackback.Admin.class.php') !== false) {
@@ -30,8 +30,14 @@ class MassDelTrackback extends BaseAdmin {
 
         $display = $LANG_SX00['masstb'];
 
-        $act = $_POST['action'];
-        $lmt = COM_applyFilter ($_POST['limit'], true);
+        $act = '';
+        if (isset ($_POST['action'])) {
+            $act = COM_applyFilter ($_POST['action']);
+        }
+        $lmt = 0;
+        if (isset ($_POST['limit'])) {
+            $lmt = COM_applyFilter ($_POST['limit'], true);
+        }
 
         if (($act == $LANG_SX00['deletespam']) && ($lmt > 0)) {
             $numc = 0;

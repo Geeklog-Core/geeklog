@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: LogView.Admin.class.php,v 1.6 2006/06/25 08:40:54 dhaun Exp $
+ * $Id: LogView.Admin.class.php,v 1.7 2006/08/20 16:42:32 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'LogView.Admin.class.php') !== false) {
@@ -24,11 +24,17 @@ class LogView extends BaseAdmin {
      */
     function display()
     {
-        global $_CONF, $_POST, $LANG_SX00;
+        global $_CONF, $LANG_SX00;
+
+        $display = '';
 
         $max_Log_Size = 100000; 
-        $action = COM_applyFilter($_POST['action']);
-        $path = $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=LogView';
+        $action = '';
+        if (isset ($_POST['action'])) {
+            $action = COM_applyFilter ($_POST['action']);
+        }
+        $path = $_CONF['site_admin_url']
+              . '/plugins/spamx/index.php?command=LogView';
         $log = 'spamx.log';
         $display .= "<form method=\"post\" action=\"{$path}\">";
         $display .= "<input type=\"submit\" name=\"action\" value=\"{$LANG_SX00['clearlog']}\">";
