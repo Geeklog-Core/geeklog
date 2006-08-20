@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.71 2006/08/20 15:58:08 dhaun Exp $
+// $Id: lib-admin.php,v 1.72 2006/08/20 16:15:37 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -146,17 +146,17 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $admin_templates->parse('header_row', 'header', true);
     }
 
-    if (count($data_arr)==0) {
+    if (count($data_arr) == 0) {
         if (isset($text_arr['no_data'])) {
             $message = $text_arr['no_data'];
         } else {
             $message = $LANG_ADMIN['no_results'];
         }
         $admin_templates->set_var('message', $message);
-    } else if ($data_arr == false) {
+    } else if ($data_arr === false) {
         $admin_templates->set_var('message', $LANG_ADMIN['data_error']);
     } else {
-        $admin_templates->set_var('show_message','none');
+        $admin_templates->set_var('show_message', 'display:none;');
         for ($i = 0; $i < count($data_arr); $i++) {
             if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
                 $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
