@@ -167,7 +167,10 @@ $LANG01 = array(
     120 => 'Permalink',
     121 => 'Kommentare (%d)',
     122 => 'Trackbacks (%d)',
-    123 => 'Alle HTML-Tags sind erlaubt'
+    123 => 'Alle HTML-Tags sind erlaubt',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
