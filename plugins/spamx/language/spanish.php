@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish.php,v 1.4 2005/09/25 16:39:12 dhaun Exp $
+ * $Id: spanish.php,v 1.5 2006/08/20 16:52:50 dhaun Exp $
  */
 
 // +---------------------------------------------------------------------------+
@@ -99,7 +99,7 @@ $LANG_SX00 = array (
 	'note1'		=> '<p>Nota: Borrado masivo está para ayudarte cuando te avasalla ',
 	'note2'		=> ' comentarios de spam y Spam-X no lo pilla.  <ul><li>Primero, encuentra el/los enlace/s u otros ',
 	'note3'		=> 'identificadores de este comentario de Spam y lo añades a tu lista negra personal.</li><li>Después ',
-	'note4'		=> 'vuelve aquí y haz que Spam-X compruebe los últimos comentarios de spam.</li></ul>Los comentarios ',
+	'note4'		=> 'vuelve aquí y haz que Spam-X compruebe los últimos comentarios de spam.</li></ul><p>Los comentarios ',
 	'note5'		=> 'se comprueban desde los más nuevos hasta los más antiguos -- La comprobación de más comentarios ',
 	'note6'		=> 'requiere más tiempo para llevarse a cabo</p>',
 	'masshead'	=> '<hr><center><h1>Borrado Masivo de Comentarios Spam</h1></center>',

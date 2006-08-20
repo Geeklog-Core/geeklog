@@ -92,7 +92,7 @@ $LANG_SX00 = array (
 	'note1'		=> '<p>Note: La suppression en lot a pour but de faciliter la tâche lorsque vous êtes victime d\'un',
 	'note2'		=> ' commentaire indésirable et que Spam-X ne le reconnaît pas.  <ul><li>Trouvez d\'abord le(s) lien(s) ou autre ',
 	'note3'		=> 'identificateurs de ce commentaire indésirable et ajoutez-le à votre liste noire personnelle.</li><li>Ensuite ',
-	'note4'		=> 'revenez ici et exécutez Spam-X pour vérifier les derniers commentaires.</li></ul>Les commentaires ',
+	'note4'		=> 'revenez ici et exécutez Spam-X pour vérifier les derniers commentaires.</li></ul><p>Les commentaires ',
 	'note5'		=> 'sont vérifiés à partir des plus récents -- vérifier plus de commentaires ',
 	'note6'		=> 'nécessite plus de temps pour la vérification</p>',
 	'masshead'	=> '<hr><h1 align="center">Suppression de commentaires en lot</h1>',

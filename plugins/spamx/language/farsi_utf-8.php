@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: farsi_utf-8.php,v 1.2 2005/09/25 16:39:12 dhaun Exp $
+ * $Id: farsi_utf-8.php,v 1.3 2006/08/20 16:52:50 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -94,7 +94,7 @@ $LANG_SX00 = array (
 	'note1'		=> '<p>Note: Mass Delete is intended to help you when you are hit by',
 	'note2'		=> ' comment spam and Spam-X does not catch it.  <ul><li>First find the link(s) or other ',
 	'note3'		=> 'identifiers of this spam comment and add it to your personal blacklist.</li><li>Then ',
-	'note4'		=> 'come back here and have Spam-X check the latest comments for spam.</li></ul>Comments ',
+	'note4'		=> 'come back here and have Spam-X check the latest comments for spam.</li></ul><p>Comments ',
 	'note5'		=> 'are checked from newest comment to oldest -- checking more comments ',
 	'note6'		=> 'requires more time for the check.</p>',
 	'masshead'	=> '<hr><h1 align="center">Mass Delete Spam Comments</h1>',

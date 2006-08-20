@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: italian.php,v 1.5 2005/09/25 16:39:12 dhaun Exp $
+ * $Id: italian.php,v 1.6 2006/08/20 16:52:50 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -94,7 +94,7 @@ $LANG_SX00 = array (
 	'note1'		=> '<p>Nota: L\'Eliminazione in Blocco serve ad aiutarti quando sei colpito da',
 	'note2'		=> ' commenti spam e Spam-X non riesce a bloccarli. <ul><li>Prima cerca il o i link o altri ',
 	'note3'		=> 'identificatori di questo commento Spam ed aggiungilo alla tua blacklist personale.</li><li>Poi ',
-	'note4'		=> 'torna qui a fai controllare a Spam-X se gli ultimi commenti sono spam.</li></ul>I commenti ',
+	'note4'		=> 'torna qui a fai controllare a Spam-X se gli ultimi commenti sono spam.</li></ul><p>I commenti ',
 	'note5'		=> 'vengono controllati dal pi&ugrave; recente al meno recente -- controllare pi&ugrave; commenti ',
 	'note6'		=> 'richiede pi&ugrave; tempo per il controllo</p>',
 	'masshead'	=> '<hr><h1 align="center">Eliminazione in Blocco Commenti Spam</h1>',
