@@ -10,6 +10,9 @@
 {feed_url}
 {plg_headercode}
 {advanced_editor}
+<!-- Load Common Javascript Libraries -->
+<script type="text/javascript" src="{site_url}/javascript/common.js"></script>
+
 </head>
 
 <body class="sitebody" dir="{direction}">
