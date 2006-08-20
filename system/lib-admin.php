@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.70 2006/08/20 15:22:09 dhaun Exp $
+// $Id: lib-admin.php,v 1.71 2006/08/20 15:58:08 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -125,14 +125,14 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 
     // Check if the delete checkbox and support for the delete all feature should be displayed
     if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
-        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" TITLE="'.$LANG01[126].'" onclick="caItems(this.form);">');   
+        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');   
         $admin_templates->set_var('class', "admin-list-headerfield");
         $admin_templates->set_var('on_click', ' width="25px"');
-        $admin_templates->set_var('show_deleteimage','');
+        $admin_templates->set_var('show_deleteimage', '');
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('on_click');
     } else {
-        $admin_templates->set_var('show_deleteimage','none');
+        $admin_templates->set_var('show_deleteimage','display:none;');
     }
     
     # HEADER FIELDS array(text, field, sort)        
@@ -195,6 +195,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     return $retval;
 
 }
+
 /**
 * Creates a list of data with a menu, search, filter, clickable headers etc.
 *
@@ -286,6 +287,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"icon\">");
     }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
+    $admin_templates->set_var('show_deleteimage', 'display:none;');
     
     # define icon paths. Those will be transmitted to $fieldfunction.
     $icon_arr = array(
