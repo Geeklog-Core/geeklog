@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.74 2006/08/21 09:26:09 dhaun Exp $
+// $Id: functions.inc,v 1.75 2006/08/21 14:26:40 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -80,14 +80,12 @@ function plugin_getmenuitems_staticpages()
         }
     }
 
-    $result = DB_query ('SELECT sp_id, sp_label, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon FROM ' . $_TABLES['staticpage'] . ' WHERE sp_onmenu = 1' . $order);
+    $result = DB_query ('SELECT sp_id, sp_label FROM ' . $_TABLES['staticpage'] . ' WHERE sp_onmenu = 1' . COM_getPermSql ('AND') . $order);
     $nrows = DB_numRows ($result);
     $menuitems = array ();
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray ($result);
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'])) {
-            $menuitems[$A['sp_label']] = COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']);
-    	}
+        $menuitems[$A['sp_label']] = COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']);
     }
 
     return $menuitems;
