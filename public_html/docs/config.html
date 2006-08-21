@@ -292,11 +292,14 @@ defined below:</p>
   <td valign="top"><a name="desc_cron_schedule_interval">cron_schedule_interval</a></td>
   <td valign="top">86400</td>
   <td valign="top">Geeklog can emulate a <a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>, i.e. trigger a certain action at a given time. The code
-    to be executed can be provided by a plugin or through the <code>CUSTOM_runScheduledTask</code> in your <tt>lib-custom.php</tt>. The value given is in
-    seconds and specifies the interval in which the code should be executed.
-    <br>Please note that to trigger this action, you will need to have someone
+    to be executed can be provided by a plugin or through the
+    <code>CUSTOM_runScheduledTask</code> function in your
+    <tt>lib-custom.php</tt>. The value given is in seconds and specifies the
+    interval in which the code should be executed.<br>
+    Please note that to trigger this action, you will need to have someone
     visit your site at around the specified time. On a site with few visitors,
-    the code may only be executed with considerable delay.</td></tr>
+    the code may only be executed with considerable delay.<br>
+    Set to 0 to disable.</td></tr>
 </table>
 
 

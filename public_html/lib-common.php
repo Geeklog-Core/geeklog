@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.563 2006/08/21 09:35:47 dhaun Exp $
+// $Id: lib-common.php,v 1.564 2006/08/21 12:07:22 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5867,11 +5867,14 @@ foreach( $_PLUGINS as $pi_name )
 
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
-if(( DB_getItem( $_TABLES['vars'], 'value', "name='last_scheduled_run'" )
-        + $_CONF['cron_schedule_interval'] ) <= time())
+if( $_CONF['cron_schedule_interval'] > 0 )
 {
-    PLG_runScheduledTask();
-    DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
+    if(( DB_getItem( $_TABLES['vars'], 'value', "name='last_scheduled_run'" )
+            + $_CONF['cron_schedule_interval'] ) <= time())
+    {
+        PLG_runScheduledTask();
+        DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
+    }
 }
 
 ?>
