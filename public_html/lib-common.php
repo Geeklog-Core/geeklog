@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.562 2006/08/06 11:36:00 dhaun Exp $
+// $Id: lib-common.php,v 1.563 2006/08/21 09:35:47 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3095,17 +3095,17 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     if( !empty( $topic ))
     {
-        $sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
+        $sql .= " AND (tid = '$topic' OR tid = 'all')";
     }
     else
     {
         if( COM_isFrontpage() )
         {
-            $sql .= " AND (tid = 'all' AND type <> 'layout')";
+            $sql .= " AND (tid = 'all')";
         }
         else
         {
-            $sql .= " AND (tid = 'homeonly' OR (tid = 'all' AND type <> 'layout'))";
+            $sql .= " AND (tid = 'homeonly' OR tid = 'all')";
         }
     }
 
