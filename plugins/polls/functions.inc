@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.51 2006/08/05 15:07:43 dhaun Exp $
+// $Id: functions.inc,v 1.52 2006/08/21 09:55:33 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -501,15 +501,15 @@ function POLLS_pollVote( $qid )
 
     $retval = '';
 
-    $question = DB_query( "SELECT question,voters,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
-    $Q = DB_fetchArray( $question );
+    $question = DB_query( "SELECT question,voters,commentcode FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" . COM_getPermSql( 'AND' ));
+    $nquestion = DB_numRows( $question );
 
-    if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon'] ) == 0 )
+    if( $nquestion == 0 )
     {
         return $retval;
     }
 
-    $nquestion = DB_numRows( $question );
+    $Q = DB_fetchArray( $question );
     $fields = array( 'ipaddress', 'qid' );
     $values = array( $_SERVER['REMOTE_ADDR'], $qid );
     $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
