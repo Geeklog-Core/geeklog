@@ -30,11 +30,11 @@ $_SP_CONF['delete_pages'] = 0;
 // the default for that option (1 = wrap in a block, 0 = don't).
 $_SP_CONF['in_block'] = 1;
 
-// Do you want to show the hits on statatic pages?
+// Do you want to show the hits on static pages?
 // the default for that option (1 = show hits, 0 = don't).
 $_SP_CONF['show_hits'] = 1;
 
-// Do you want to show the last update date/time on statatic pages?
+// Do you want to show the last update date/time on static pages?
 // the default for that option (1 = show date, 0 = don't).
 $_SP_CONF['show_date'] = 1;
 
