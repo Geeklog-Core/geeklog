@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.67 2006/07/02 10:43:58 dhaun Exp $
+// $Id: lib-story.php,v 1.68 2006/08/21 08:57:50 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -165,9 +165,20 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         }
 
         $photo = '';
-        if( $_CONF['allow_user_photo'] )
+        if( $_CONF['allow_user_photo'] == 1 )
         {
-            $photo = USER_getPhoto( $A['uid'], $A['photo'] );
+            if( isset( $A['photo'] ) && empty( $A['photo'] ))
+            {
+                $A['photo'] = '(none)'; // user does not have a photo
+            }
+            if( isset( $A['email'] ))
+            {
+                $photo = USER_getPhoto( $A['uid'], $A['photo'], $A['email'] );
+            }
+            else
+            {
+                $photo = USER_getPhoto( $A['uid'], $A['photo'] );
+            }
         }
         if( !empty( $photo ))
         {

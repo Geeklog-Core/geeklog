@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.84 2006/07/08 15:46:13 dhaun Exp $
+// $Id: index.php,v 1.85 2006/08/21 08:57:49 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -187,8 +187,15 @@ if ($newstories) {
 }
 
 $offset = ($page - 1) * $limit;
+$userfields = 'u.username, u.fullname';
+if ($_CONF['allow_user_photo'] == 1) {
+    $userfields .= ', u.photo';
+    if ($_CONF['use_gravatar']) {
+        $userfields .= ', u.email';
+    }
+}
 $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
-         . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
+         . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
          . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit");

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.31 2006/08/13 18:31:38 dhaun Exp $
+// $Id: lib-user.php,v 1.32 2006/08/21 08:57:50 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -373,7 +373,6 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    $photo = '';
     if ($_CONF['allow_user_photo'] == 1) {
 
         if (($width == 0) && !empty ($_CONF['force_photo_width'])) {
@@ -386,11 +385,12 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
             if (empty ($email)) {
                 $email = $_USER['email'];
             }
-            if (empty ($photo)) {
+            if (!empty ($_USER['photo']) &&
+                    (empty ($photo) || ($photo == '(none)'))) {
                 $photo = $_USER['photo'];
             }
         }
-        if (empty ($photo) || empty ($email)) {
+        if (empty ($photo) || (empty ($email) && $_CONF['use_gravatar'])) {
             $result = DB_query ("SELECT email,photo FROM {$_TABLES['users']} WHERE uid = '$uid'");
             list($newemail, $newphoto) = DB_fetchArray ($result);
             if (empty ($photo)) {
@@ -402,7 +402,7 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
         }
 
         $img = '';
-        if (empty ($photo)) {
+        if (empty ($photo) || ($photo == 'none')) {
             // no photo - try gravatar.com, if allowed
             if ($_CONF['use_gravatar']) {
                 $img = 'http://www.gravatar.com/avatar.php?gravatar_id='
