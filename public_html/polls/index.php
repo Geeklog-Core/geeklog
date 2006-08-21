@@ -2,9 +2,9 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Polls Plugin 1.1                                                          |
 // +---------------------------------------------------------------------------+
-// | index.php                                                                |
+// | index.php                                                                 |
 // |                                                                           |
 // | Display poll results and past polls.                                      |
 // +---------------------------------------------------------------------------+
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.19 2006/08/19 13:59:29 dhaun Exp $
+// $Id: index.php,v 1.20 2006/08/21 11:38:31 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -56,9 +56,7 @@ function pollsave($qid = '', $aid = 0)
 
     $retval = '';
 
-    $pcount = DB_count ($_TABLES['pollvoters'], array ('ipaddress', 'qid' ),
-                        array ($_SERVER['REMOTE_ADDR'], $qid));
-    if ($pcount > 0) {
+    if (POLLS_ipAlreadyVoted ($qid)) {
         exit;
     }
 
@@ -190,13 +188,13 @@ if (empty($qid)) {
              . polllist (); 
 } else if ($aid == 0) {
     $display .= COM_siteHeader();
-    if (empty($_COOKIE[$qid])) {
-        $display .= POLLS_pollVote($qid);
+    if (!isset ($_COOKIE[$qid]) && !POLLS_ipAlreadyVoted ($qid)) {
+        $display .= POLLS_pollVote ($qid);
     } else {
-        $display .= POLLS_pollResults($qid,400,$order,$mode);
+        $display .= POLLS_pollResults ($qid, 400, $order, $mode);
     }
 } else if (($aid > 0) && ($aid <= $_PO_CONF['maxanswers']) &&
-        empty($_COOKIE[$qid])) {
+        !isset ($_COOKIE[$qid])) {
     setcookie ($qid, $aid, time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);

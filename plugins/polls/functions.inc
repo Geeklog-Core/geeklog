@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 1.0                                                          |
+// | Polls Plugin 1.1                                                          |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.52 2006/08/21 09:55:33 dhaun Exp $
+// $Id: functions.inc,v 1.53 2006/08/21 11:38:30 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -509,13 +509,9 @@ function POLLS_pollVote( $qid )
         return $retval;
     }
 
-    $Q = DB_fetchArray( $question );
-    $fields = array( 'ipaddress', 'qid' );
-    $values = array( $_SERVER['REMOTE_ADDR'], $qid );
-    $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
-
-    if( empty( $_COOKIE[$qid] ) && $id == 0 )
+    if( !isset( $_COOKIE[$qid] ) && !POLLS_ipAlreadyVoted( $qid ))
     {
+        $Q = DB_fetchArray( $question );
         if( $nquestion == 1 )
         {
             $answers = DB_query( "SELECT answer,aid FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
@@ -602,10 +598,7 @@ function POLLS_showPoll( $size, $qid='' )
 
     if( !empty( $qid ))
     {
-        $pcount = DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
-                            array( $_SERVER['REMOTE_ADDR'], $qid ));
-
-        if( empty( $_COOKIE[$qid]) && $pcount == 0 )
+        if( !isset( $_COOKIE[$qid] ) && !POLLS_ipAlreadyVoted( $qid ))
         {
             $retval .= POLLS_pollVote( $qid );
         }
@@ -627,26 +620,21 @@ function POLLS_showPoll( $size, $qid='' )
             {
                 $Q = DB_fetchArray( $result );
                 $qid = $Q['qid'];
-                $id = array( 'ipaddress', 'qid' );
-                $value = array( $_SERVER['REMOTE_ADDR'], $qid );
-                $pcount = DB_count( $_TABLES['pollvoters'], $id, $value );
 
                 if( $size < 120 ) // assume we're in the poll block
                 {
-                    if ( $i > 1 )
+                    if( $i > 1 )
                     {
                         $retval .= COM_startBlock( $title, '',
                              COM_getBlockTemplate( 'poll_block', 'header' ));
                     }
-
-                             # $_CONF['path'] . 'plugins/polls/templates/
                 }
                 else // assume we're in polls/index.php
                 {
                     $retval .= COM_startBlock( $title );
                 }
 
-                if( !isset( $_COOKIE[$qid]) && $pcount == 0)
+                if( !isset( $_COOKIE[$qid] ) && !POLLS_ipAlreadyVoted( $qid ))
                 {
                     $retval .= POLLS_pollVote( $qid );
                 }
@@ -810,6 +798,33 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
     return $retval;
 }
 
+/**
+* Check if we already have a vote from this IP address
+*
+* @param    string  $qid    Poll ID
+* @param    string  $ip     (optional) IP address
+* @return   boolena         true: IP already voted; false: didn't
+*
+*/
+function POLLS_ipAlreadyVoted( $qid, $ip = '' )
+{
+    global $_TABLES;
+
+    $retval = false;
+
+    if( empty( $ip ))
+    {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+
+    if( DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
+                                          array( $ip,         $qid )) > 0 )
+    {
+        $retval = true;
+    }
+
+    return $retval;
+}
 
 function phpblock_polls()
 {
