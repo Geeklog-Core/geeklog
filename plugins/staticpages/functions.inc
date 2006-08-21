@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.73 2006/08/05 15:07:44 dhaun Exp $
+// $Id: functions.inc,v 1.74 2006/08/21 09:26:09 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -487,8 +487,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT * FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " 
-           . $moresql . $perms . " ORDER BY " . $sort;
+    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
     $result = DB_query ($spsql);
 
     $pages = DB_numRows ($result);
