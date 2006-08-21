@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.233 2006/08/19 13:59:28 dhaun Exp $
+// $Id: story.php,v 1.234 2006/08/21 07:40:17 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -757,7 +757,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
     if ($_CONF['advanced_editor'] == 1) {
         if ($A['advanced_editor_mode'] == 1 OR $A['postmode'] == 'adveditor') {
-            $post_options .= '<option value="adveditor" SELECTED>'.$LANG24[86].'</option>';
+            $post_options .= '<option value="adveditor" selected="selected">'.$LANG24[86].'</option>';
         } else {
             $post_options .= '<option value="adveditor">'.$LANG24[86].'</option>';
         }
