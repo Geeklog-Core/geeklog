@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.143 2006/08/13 18:31:39 dhaun Exp $
+// $Id: users.php,v 1.144 2006/08/22 17:55:00 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -126,16 +126,24 @@ function userprofile ($user, $msg = 0)
         $user_templates->set_var ('username', $A['username']);
         $user_templates->set_var ('user_fullname', $A['fullname']);
     }
-    
-    if (SEC_hasRights('user.edit')) {
+
+    if (SEC_hasRights ('user.edit')) {
         global $_IMAGE_TYPE, $LANG_ADMIN;
+
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
-             . '" title="' . $LANG_ADMIN['edit'] . '">';
-        $edit_link_url = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">$edit_icon</a>";
+                   . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
+                   . '" title="' . $LANG_ADMIN['edit'] . '">';
+        $edit_link_url = '<a href="' . $_CONF['site_admin_url']
+                       . '/user.php?mode=edit&amp;uid=' . $A['uid'] .'">'
+                       . $edit_icon . '</a>';
+        $user_templates->set_var ('edit_icon', $edit_icon);
         $user_templates->set_var ('edit_link', $edit_link_url);
+        $user_templates->set_var ('user_edit', $edit_link_url);
     }
 
+    if (isset ($A['photo']) && empty ($A['photo'])) {
+        $A['photo'] = '(none)'; // user does not have a photo
+    }
     $photo = USER_getPhoto ($user, $A['photo'], $A['email'], -1);
     $user_templates->set_var ('user_photo', $photo);
 
