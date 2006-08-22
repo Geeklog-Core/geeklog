@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2006/08/12 18:15:15 dhaun Exp $
+// $Id: index.php,v 1.15 2006/08/22 08:01:20 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -137,9 +137,6 @@ function setCalendarLanguage (&$aCalendar)
 /**                     
 * Returns an abbreviated day's name 
 *                       
-* Note: This is a workaround, to be replaced with something more sensible
-*       in future versions ...
-*
 * @param    int     $day    1 = Sunday, 2 = Monday, ...
 * @return   string          abbreviated day's name (3 characters)
 *
@@ -147,11 +144,9 @@ function setCalendarLanguage (&$aCalendar)
 */
 function shortDaysName ($day)
 {
-    global $LANG_CHARSET, $LANG_WEEK;
+    global $LANG_WEEK;
 
-    $shortday = '';
-    $shortday = MBYTE_substr ($LANG_WEEK[$day], 0, 2);
-    return $shortday;
+    return MBYTE_substr ($LANG_WEEK[$day], 0, 2);
 }
 
 function makeDaysHeadline ()
@@ -522,19 +517,19 @@ case 'day':
     $thedate = COM_getUserDateTimeFormat(mktime(0,0,0,$month,$day,$year));
     $cal_templates->set_var('week_num',strftime('%V',$thedate[1]));
     if ($mode == 'personal') {
-        $calsql = "SELECT * FROM {$_TABLES['personal_events']} "
+        $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} "
                 . "WHERE (uid = {$_USER['uid']}) "
                 . "AND ((allday=1 AND datestart = \"$year-$month-$day\") "
                 . "OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") "
                 . "OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") "
-                . "OR (\"$year-$month-$day\" between datestart and dateend)) "
+                . "OR (\"$year-$month-$day\" BETWEEN datestart AND dateend)) "
                 . "ORDER BY datestart,timestart";
     } else {
-        $calsql = "SELECT * FROM {$_TABLES['events']} WHERE ((allday=1 "
+        $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE ((allday=1 "
                 . "AND datestart = \"$year-$month-$day\") "
                 . "OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") "
                 . "OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") "
-                . "OR (\"$year-$month-$day\" between datestart and dateend))" . COM_getPermSql ('AND')
+                . "OR (\"$year-$month-$day\" BETWEEN datestart AND dateend))" . COM_getPermSql ('AND')
                 . " ORDER BY datestart,timestart";
     }
     $result = DB_query($calsql);
@@ -714,9 +709,9 @@ case 'week':
             . addMode ($mode) . 'day=' . $daynum . '&amp;month=' . $monthnum
             . '&amp;year=' . $yearnum . '">' . $add_str . '</a>');
         if ($mode == 'personal') {
-            $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
+            $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" BETWEEN datestart AND dateend)) ORDER BY datestart,timestart";
         } else {
-            $calsql = "SELECT * FROM {$_TABLES['events']} WHERE ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend))" . COM_getPermSql ('AND') . " ORDER BY datestart,timestart";
+            $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" BETWEEN datestart AND dateend))" . COM_getPermSql ('AND') . " ORDER BY datestart,timestart";
         }
         $result = DB_query($calsql);
         $nrows = DB_numRows($result);
@@ -925,12 +920,12 @@ for ($i = 1; $i <= 6; $i++) {
                 $calsql_filt = COM_getPermSql ('AND');
             }
             
-            $calsql = "SELECT * FROM $calsql_tbl WHERE "
+            $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM $calsql_tbl WHERE "
                     . "((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" "
                     . "AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") "
                     . "OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" "
                     . "AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") "
-                    . "OR (\"$year-$month-$curday->daynumber\" between datestart and dateend))"
+                    . "OR (\"$year-$month-$curday->daynumber\" BETWEEN datestart AND dateend))"
                     . $calsql_filt . " ORDER BY datestart,timestart";
 
             $query2 = DB_query($calsql);
