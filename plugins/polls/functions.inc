@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.53 2006/08/21 11:38:30 dhaun Exp $
+// $Id: functions.inc,v 1.54 2006/08/22 17:55:38 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -803,7 +803,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 *
 * @param    string  $qid    Poll ID
 * @param    string  $ip     (optional) IP address
-* @return   boolena         true: IP already voted; false: didn't
+* @return   boolean         true: IP already voted; false: didn't
 *
 */
 function POLLS_ipAlreadyVoted( $qid, $ip = '' )
