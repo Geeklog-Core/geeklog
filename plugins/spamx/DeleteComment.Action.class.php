@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: DeleteComment.Action.class.php,v 1.5 2006/06/25 08:40:54 dhaun Exp $
+ * $Id: DeleteComment.Action.class.php,v 1.6 2006/08/22 17:57:54 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'DeleteComment.Action.class.php') !== false) {
@@ -44,11 +44,7 @@ class DeleteComment extends BaseCommand {
         $result = 128;
 
         // update count of deleted spam posts
-        // Yes, there is the possibility of a race condition here. But it's
-        // only for statistical purposes anyway, nothing important ...
-        $counter = DB_getItem ($_TABLES['vars'], 'value', "name = 'spamx.counter'");
-        $counter++;
-        DB_query ("UPDATE {$_TABLES['vars']} SET value = $counter WHERE name = 'spamx.counter'");
+        DB_change ($_TABLES['vars'], 'value', 'value + 1', 'name', 'spamx.counter', '', true);
 
         SPAMX_log($LANG_SX00['spamdeleted']);
 
