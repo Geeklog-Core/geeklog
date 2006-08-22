@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.564 2006/08/21 12:07:22 dhaun Exp $
+// $Id: lib-common.php,v 1.565 2006/08/22 17:56:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1822,17 +1822,16 @@ function COM_accessLog( $logentry )
 * Shows all available topics
 *
 * Show the topics in the system the user has access to and prints them in HTML.
-* This function is used to show the topics in the sections block.
+* This function is used to show the topics in the topics block.
 *
-* @param    string    $topic      TopicID of currently selected
+* @param    string    $topic      ID of currently selected topic
 * @return   string                HTML formatted topic list
 *
 */
 
 function COM_showTopics( $topic='' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $_BLOCK_TEMPLATE,
-           $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $_BLOCK_TEMPLATE, $page;
 
     $langsql = COM_getLangSQL( 'tid' );
     if( empty( $langsql ))
@@ -1916,7 +1915,7 @@ function COM_showTopics( $topic='' )
 
     if( $_CONF['showstorycount'] )
     {
-        $sql = "SELECT tid, count(*) AS count FROM {$_TABLES['stories']} "
+        $sql = "SELECT tid, COUNT(*) AS count FROM {$_TABLES['stories']} "
              . 'WHERE (draft_flag = 0) AND (date <= NOW()) '
              . COM_getPermSQL( 'AND' )
              . ' GROUP BY tid';
@@ -1929,7 +1928,7 @@ function COM_showTopics( $topic='' )
 
     if( $_CONF['showsubmissioncount'] )
     {
-        $sql = "SELECT tid, count(*) AS count FROM {$_TABLES['storysubmission']} "
+        $sql = "SELECT tid, COUNT(*) AS count FROM {$_TABLES['storysubmission']} "
              . ' GROUP BY tid';
         $rcount = DB_query( $sql );
         while( $C = DB_fetchArray( $rcount ))
