@@ -107,8 +107,7 @@ $LANG_STATIC= array(
     'copy' => 'Copy',
     'limit_results' => 'Limit Results',
     'search' => 'Search',
-    'submit' => 'Submit',
-
+    'submit' => 'Submit'
 );
 
 // Messages for the plugin upgrade
