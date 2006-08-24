@@ -231,6 +231,19 @@ Static Pages plugin (1.4.3)
 - Fixed paging for the list of static pages (bug #528) [Dirk]
 
 
+July 23, 2006 (1.4.0sr5-1)
+-------------
+
+This release fixes display problems in the comment preview that were only
+introduced in Geeklog 1.4.0sr5 (as a result of the fix for the XSS).
+
+The complete 1.4.0sr5-1 tarball also includes the following language files:
+
+- New Afrikaans language file, provided by Renier Maritz
+- Updated Hebrew language file, provided by LWC
+- Updated Turkish language file, provided by Kemal Cellat
+
+
 July 16, 2006 (1.4.0sr5)
 -------------
 
