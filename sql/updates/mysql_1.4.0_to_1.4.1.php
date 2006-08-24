@@ -10,7 +10,8 @@ $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) V
 $_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AFTER votes";
 
 // add field to support advanced editor in staticpages
-$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD postmode varchar(16) DEFAULT 'html' NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD postmode varchar(16) DEFAULT 'html' NOT NULL AFTER sp_inblock";
+$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD sp_help varchar(255) default '' AFTER sp_centerblock";
 
 // update plugin version numbers
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
