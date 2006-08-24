@@ -100,13 +100,13 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <h3><a name="sort">Sorting</a></h3>
 
-<p><strong>Centerblocks:</strong> When you have more than one static page that would appear in the same section of the center area (e.g. two static pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the plugin's <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id.</p>
+<p><strong>Centerblocks:</strong> When you have more than one static page that would appear in the same section of the center area (e.g. two static pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the plugin's <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id. Please note that this order will only apply to centerblocks from static pages. All other plugins creating centerblocks will not be in that order. Also note that the centerblock is not necessarily looking like a standard Geeklog block. To achieve that, please check the field "Wrapping Static Pages in a block" below.</p>
 
 <p><strong>Menu entries:</strong> It's also possible to sort the static pages that are displayed in the site's menu (if you're using a theme that uses the <code>{plg_menu_elements}</code> variables in its <tt>header.thtml</tt>). Set the <code>$_SP_CONF['sort_menu_by']</code> variable (again, in the plugin's <tt>config.php</tt> file) to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), <tt>label</tt> (sort by the menu label), or <tt>title</tt> (sort by page title).</p>
 
 <h2><a name="block">Wrapping Static Pages in a block</a></h2>
 
-<p>You can chose to have a static page wrapped in a Geeklog block by checking the "wrap static page in a block" option in the static pages editor. If selected, the page's title will be used as the block title.</p>
+<p>You can chose to have a static page wrapped in a Geeklog block-layout by checking the "wrap static page in a block" option in the static pages editor. If selected, the page's title will be used as the block title. Further, you can, as with normal blocks, enter a help URL. If this URL is entered, the block will display a help icon linking to that URL.</p>
 
 <p>The plugin's <tt>config.php</tt> file also has a flag, <code>$_SP_CONF['in_block']</code>, which is used as the default for this option.</p>
 
