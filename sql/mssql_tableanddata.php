@@ -11,26 +11,26 @@ CREATE TABLE [dbo].[dateCommandCrossReference] (
     [mysqlCommand] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [sqlServerCommand] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [isDateName] [bit] NOT NULL ,
-    [isDatePart] [bit] NOT NULL 
+    [isDatePart] [bit] NOT NULL
 ) ON [PRIMARY]
 ";
 
 
 
-$_SQL[] = "ALTER TABLE [dbo].[dateCommandCrossReference] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[dateCommandCrossReference] ADD
     CONSTRAINT [DF_commandCrossReference_isDateName] DEFAULT (0) FOR [isDateName],
     CONSTRAINT [DF_commandCrossReference_isDatePart] DEFAULT (1) FOR [isDatePart],
-    CONSTRAINT [PK_commandCrossReference] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_commandCrossReference] PRIMARY KEY  CLUSTERED
     (
         [id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['access']}] (
     [acc_ft_id] [int] NOT NULL ,
-    [acc_grp_id] [int] NOT NULL 
+    [acc_grp_id] [int] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -38,7 +38,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['article_images']}] (
     [ai_sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ai_img_num] [tinyint] NOT NULL ,
-    [ai_filename] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+    [ai_filename] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -73,14 +73,14 @@ CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['commentcodes']}] (
     [code] [smallint] NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['commentmodes']}] (
     [mode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -100,14 +100,14 @@ CREATE TABLE [dbo].[{$_TABLES['comments']}] (
     [rht] [numeric](10, 0) NULL ,
     [indent] [numeric](10, 0) NULL ,
     [uid] [int] NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['cookiecodes']}] (
     [cc_value] [numeric](8, 0) NOT NULL ,
-    [cc_descr] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+    [cc_descr] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -115,7 +115,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['dateformats']}] (
     [dfid] [smallint] NOT NULL ,
     [format] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [description] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -144,7 +144,7 @@ CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -165,14 +165,14 @@ CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
     [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [timestart] [smalldatetime] NULL ,
-    [timeend] [smalldatetime] NULL 
+    [timeend] [smalldatetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['featurecodes']}] (
     [code] [smallint] NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -181,14 +181,14 @@ CREATE TABLE [dbo].[{$_TABLES['features']}] (
     [ft_id] [int] IDENTITY (1, 1) NOT NULL ,
     [ft_name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ft_descr] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ft_gl_core] [smallint] NOT NULL 
+    [ft_gl_core] [smallint] NOT NULL
 ) ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['frontpagecodes']}] (
     [code] [smallint] NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -197,7 +197,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['group_assignments']}] (
     [ug_main_grp_id] [int] NOT NULL ,
     [ug_uid] [numeric](8, 0) NULL ,
-    [ug_grp_id] [numeric](8, 0) NULL 
+    [ug_grp_id] [numeric](8, 0) NULL
 ) ON [PRIMARY]
 ";
 
@@ -207,7 +207,7 @@ CREATE TABLE [dbo].[{$_TABLES['groups']}] (
     [grp_id] [int] IDENTITY (1, 1) NOT NULL ,
     [grp_name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [grp_descr] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [grp_gl_core] [tinyint] NOT NULL 
+    [grp_gl_core] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -228,7 +228,7 @@ CREATE TABLE [dbo].[{$_TABLES['links']}] (
     [perm_owner] [tinyint] NOT NULL ,
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL 
+    [perm_anon] [tinyint] NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -241,7 +241,7 @@ CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
     [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [hits] [int] NULL ,
-    [date] [datetime] NULL 
+    [date] [datetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -249,7 +249,7 @@ CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['maillist']}] (
     [code] [int] NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -279,7 +279,7 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
     [uid] [int] NOT NULL ,
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [smalldatetime] NULL ,
-    [timeend] [smalldatetime] NULL 
+    [timeend] [smalldatetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -291,7 +291,7 @@ CREATE TABLE [dbo].[{$_TABLES['pingservice']}] (
     [ping_url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [site_url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [method] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [is_enabled] [tinyint] NOT NULL 
+    [is_enabled] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -302,7 +302,7 @@ CREATE TABLE [dbo].[{$_TABLES['plugins']}] (
     [pi_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [pi_gl_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [pi_enabled] [tinyint] NOT NULL ,
-    [pi_homepage] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+    [pi_homepage] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -332,7 +332,7 @@ CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
     [perm_owner] [tinyint] NOT NULL ,
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint]  NULL ,
-    [perm_anon] [tinyint]  NULL 
+    [perm_anon] [tinyint]  NULL
 ) ON [PRIMARY]
 ";
 
@@ -342,7 +342,7 @@ CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
     [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
     [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [date] [numeric](10, 0) NULL 
+    [date] [numeric](10, 0) NULL
 ) ON [PRIMARY]
 ";
 
@@ -350,7 +350,7 @@ CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['postmodes']}] (
     [code] [char] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -361,7 +361,7 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [start_time] [numeric](10, 0) NOT NULL ,
     [remote_ip] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
-    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -369,7 +369,7 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['sortcodes']}] (
     [code] [char] (4) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -377,7 +377,7 @@ CREATE TABLE [dbo].[{$_TABLES['sortcodes']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['spamx']}] (
     [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [value] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+    [value] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -387,7 +387,7 @@ CREATE TABLE [dbo].[{$_TABLES['speedlimit']}] (
     [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
     [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [numeric](10, 0) NULL ,
-    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -410,6 +410,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL ,
     [sp_centerblock] [tinyint] NOT NULL ,
+    [sp_help] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [sp_tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [sp_where] [tinyint] NOT NULL ,
     [sp_php] [tinyint] NOT NULL ,
@@ -423,7 +424,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['statuscodes']}] (
     [code] [int] NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -458,7 +459,7 @@ CREATE TABLE [dbo].[{$_TABLES['stories']}] (
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL ,
-    [advanced_editor_mode] [tinyint] NOT NULL , 
+    [advanced_editor_mode] [tinyint] NOT NULL ,
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -470,7 +471,7 @@ CREATE TABLE [dbo].[{$_TABLES['storysubmission']}] (
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [introtext] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [date] [datetime] NULL ,
-    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -492,7 +493,7 @@ CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
     [language] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [is_enabled] [tinyint] NOT NULL ,
     [updated] [datetime] NOT NULL ,
-    [update_info] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [update_info] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -511,7 +512,7 @@ CREATE TABLE [dbo].[{$_TABLES['topics']}] (
     [perm_owner] [tinyint] NOT NULL ,
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL 
+    [perm_anon] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -526,7 +527,7 @@ CREATE TABLE [dbo].[{$_TABLES['trackback']}] (
     [excerpt] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [date] [datetime] NULL ,
     [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
+    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -534,7 +535,7 @@ CREATE TABLE [dbo].[{$_TABLES['trackback']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['trackbackcodes']}] (
     [code] [smallint] NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -543,7 +544,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['tzcodes']}] (
     [tz] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [offset] [int] NULL ,
-    [description] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [description] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -553,7 +554,7 @@ CREATE TABLE [dbo].[{$_TABLES['usercomment']}] (
     [uid] [int] NOT NULL ,
     [commentmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [commentorder] [varchar] (4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [commentlimit] [numeric](8, 0) NULL 
+    [commentlimit] [numeric](8, 0) NULL
 ) ON [PRIMARY]
 ";
 
@@ -566,7 +567,7 @@ CREATE TABLE [dbo].[{$_TABLES['userindex']}] (
     [aids] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [boxes] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [noboxes] [smallint] NOT NULL ,
-    [maxstories] [smallint] NULL 
+    [maxstories] [smallint] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -581,7 +582,7 @@ CREATE TABLE [dbo].[{$_TABLES['userinfo']}] (
     [tokens] [tinyint] NULL ,
     [totalcomments] [int] NULL ,
     [lastgranted] [numeric](10, 0) NULL ,
-    [lastlogin] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [lastlogin] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
@@ -596,7 +597,7 @@ CREATE TABLE [dbo].[{$_TABLES['userprefs']}] (
     [emailstories] [smallint] NULL ,
     [emailfromadmin] [smallint] NULL ,
     [emailfromuser] [smallint] NULL ,
-    [showonline] [smallint] NULL 
+    [showonline] [smallint] NULL
 ) ON [PRIMARY]
 ";
 
@@ -618,7 +619,7 @@ CREATE TABLE [dbo].[{$_TABLES['users']}] (
     [theme] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [language] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [pwrequestid] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [status] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [status] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -627,33 +628,33 @@ CREATE TABLE [dbo].[{$_TABLES['users']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['vars']}] (
     [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [value] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [value] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['access']}] ADD 
-    CONSTRAINT [PK_gl_access] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['access']}] ADD
+    CONSTRAINT [PK_gl_access] PRIMARY KEY  CLUSTERED
     (
         [acc_ft_id],
         [acc_grp_id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['article_images']}] ADD 
-    CONSTRAINT [PK_gl_article_images] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['article_images']}] ADD
+    CONSTRAINT [PK_gl_article_images] PRIMARY KEY  CLUSTERED
     (
         [ai_sid],
         [ai_img_num]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['blocks']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['blocks']}] ADD
     CONSTRAINT [DF_gl_blocks_type] DEFAULT ('normal') FOR [type],
     CONSTRAINT [DF_gl_blocks_tid] DEFAULT ('All') FOR [tid],
     CONSTRAINT [DF_gl_blocks_blockorder] DEFAULT (1) FOR [blockorder],
@@ -668,197 +669,197 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['blocks']}] ADD
     CONSTRAINT [DF_gl_blocks_perm_members] DEFAULT (2) FOR [perm_members],
     CONSTRAINT [DF_gl_blocks_perm_anon] DEFAULT (2) FOR [perm_anon],
     CONSTRAINT [DF_gl_blocks_allow_autotags] DEFAULT (0) FOR [allow_autotags],
-    CONSTRAINT [PK_gl_blocks] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_blocks] PRIMARY KEY  CLUSTERED
     (
         [bid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['commentcodes']}] ADD 
-    CONSTRAINT [PK_gl_commentcodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['commentcodes']}] ADD
+    CONSTRAINT [PK_gl_commentcodes] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['commentmodes']}] ADD 
-    CONSTRAINT [PK_gl_commentmodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['commentmodes']}] ADD
+    CONSTRAINT [PK_gl_commentmodes] PRIMARY KEY  CLUSTERED
     (
         [mode]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['comments']}] ADD 
-    CONSTRAINT [PK_gl_comments] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['comments']}] ADD
+    CONSTRAINT [PK_gl_comments] PRIMARY KEY  CLUSTERED
     (
         [cid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['cookiecodes']}] ADD 
-    CONSTRAINT [PK_gl_cookiecodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['cookiecodes']}] ADD
+    CONSTRAINT [PK_gl_cookiecodes] PRIMARY KEY  CLUSTERED
     (
         [cc_value]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['dateformats']}] ADD 
-    CONSTRAINT [PK_gl_dateformats] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['dateformats']}] ADD
+    CONSTRAINT [PK_gl_dateformats] PRIMARY KEY  CLUSTERED
     (
         [dfid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['events']}] ADD 
-    CONSTRAINT [PK_gl_events] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['events']}] ADD
+    CONSTRAINT [PK_gl_events] PRIMARY KEY  CLUSTERED
     (
         [eid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['eventsubmission']}] ADD 
-    CONSTRAINT [PK_gl_eventsubmission] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['eventsubmission']}] ADD
+    CONSTRAINT [PK_gl_eventsubmission] PRIMARY KEY  CLUSTERED
     (
         [eid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['featurecodes']}] ADD 
-    CONSTRAINT [PK_gl_featurecodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['featurecodes']}] ADD
+    CONSTRAINT [PK_gl_featurecodes] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['features']}] ADD 
-    CONSTRAINT [PK_gl_features] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['features']}] ADD
+    CONSTRAINT [PK_gl_features] PRIMARY KEY  CLUSTERED
     (
         [ft_id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['frontpagecodes']}] ADD 
-    CONSTRAINT [PK_gl_frontpagecodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['frontpagecodes']}] ADD
+    CONSTRAINT [PK_gl_frontpagecodes] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['groups']}] ADD 
-    CONSTRAINT [PK_gl_groups] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['groups']}] ADD
+    CONSTRAINT [PK_gl_groups] PRIMARY KEY  CLUSTERED
     (
         [grp_id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD
     CONSTRAINT [DF_gl_links_perm_group] DEFAULT (3) FOR [perm_group],
     CONSTRAINT [DF_gl_links_perm_anon] DEFAULT (2) FOR [perm_anon],
     CONSTRAINT [DF_gl_links_perm_members] DEFAULT (2) FOR [perm_members],
     CONSTRAINT [DF_gl_links_perm_owner] DEFAULT (3) FOR [perm_owner],
     CONSTRAINT [DF_gl_links_hits] DEFAULT (0) FOR [hits],
-    CONSTRAINT [PK_gl_links] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_links] PRIMARY KEY  CLUSTERED
     (
         [lid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linksubmission']}] ADD 
-    CONSTRAINT [PK_gl_linksubmission] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linksubmission']}] ADD
+    CONSTRAINT [PK_gl_linksubmission] PRIMARY KEY  CLUSTERED
     (
         [lid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['maillist']}] ADD 
-    CONSTRAINT [PK_gl_maillist] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['maillist']}] ADD
+    CONSTRAINT [PK_gl_maillist] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD 
-    CONSTRAINT [PK_gl_personal_events] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD
+    CONSTRAINT [PK_gl_personal_events] PRIMARY KEY  CLUSTERED
     (
         [eid],
         [uid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pingservice']}] ADD 
-    CONSTRAINT [PK_gl_pingservice] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pingservice']}] ADD
+    CONSTRAINT [PK_gl_pingservice] PRIMARY KEY  CLUSTERED
     (
         [pid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['plugins']}] ADD 
-    CONSTRAINT [PK_gl_plugins] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['plugins']}] ADD
+    CONSTRAINT [PK_gl_plugins] PRIMARY KEY  CLUSTERED
     (
         [pi_name]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD 
-    CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
+    CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY  CLUSTERED
     (
         [qid],
         [aid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD 
-    CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
+    CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
     (
         [qid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD 
-    CONSTRAINT [PK_gl_pollvoters] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD
+    CONSTRAINT [PK_gl_pollvoters] PRIMARY KEY  CLUSTERED
     (
         [id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['postmodes']}] ADD 
-    CONSTRAINT [PK_gl_postmodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['postmodes']}] ADD
+    CONSTRAINT [PK_gl_postmodes] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['sessions']}] ADD 
-    CONSTRAINT [PK_gl_sessions] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['sessions']}] ADD
+    CONSTRAINT [PK_gl_sessions] PRIMARY KEY  CLUSTERED
     (
         [sess_id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['speedlimit']}] ADD 
-    CONSTRAINT [PK_gl_speedlimit] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['speedlimit']}] ADD
+    CONSTRAINT [PK_gl_speedlimit] PRIMARY KEY  CLUSTERED
     (
         [id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
     CONSTRAINT [DF_gl_staticpage] DEFAULT ('html') FOR [postmode],
-    CONSTRAINT [PK_gl_staticpage] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_staticpage] PRIMARY KEY  CLUSTERED
     (
         [sp_id]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['statuscodes']}] ADD 
-    CONSTRAINT [PK_gl_statuscodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['statuscodes']}] ADD
+    CONSTRAINT [PK_gl_statuscodes] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['stories']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['stories']}] ADD
     CONSTRAINT [DF_gl_stories_uid] DEFAULT (1) FOR [uid],
     CONSTRAINT [DF_gl_stories_draft_flag] DEFAULT (0) FOR [draft_flag],
     CONSTRAINT [DF_gl_stories_tid] DEFAULT ('General') FOR [tid],
@@ -879,82 +880,82 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['stories']}] ADD
     CONSTRAINT [DF_gl_stories_perm_members] DEFAULT (2) FOR [perm_members],
     CONSTRAINT [DF_gl_stories_perm_anon] DEFAULT (2) FOR [perm_anon],
     CONSTRAINT [DF_gl_stories_advanced_editor_mode] DEFAULT (0) FOR [advanced_editor_mode],
-    CONSTRAINT [PK_gl_stories] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_stories] PRIMARY KEY  CLUSTERED
     (
         [sid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['storysubmission']}] ADD 
-    CONSTRAINT [PK_gl_storysubmission] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['storysubmission']}] ADD
+    CONSTRAINT [PK_gl_storysubmission] PRIMARY KEY  CLUSTERED
     (
         [sid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['syndication']}] ADD 
-    CONSTRAINT [PK_gl_syndication] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['syndication']}] ADD
+    CONSTRAINT [PK_gl_syndication] PRIMARY KEY  CLUSTERED
     (
         [fid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['topics']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['topics']}] ADD
     CONSTRAINT [DF_gl_topics_is_default] DEFAULT (0) FOR [is_default],
-    CONSTRAINT [PK_gl_topics] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_topics] PRIMARY KEY  CLUSTERED
     (
         [tid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackback']}] ADD 
-    CONSTRAINT [PK_gl_trackback] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackback']}] ADD
+    CONSTRAINT [PK_gl_trackback] PRIMARY KEY  CLUSTERED
     (
         [cid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackbackcodes']}] ADD 
-    CONSTRAINT [PK_gl_trackbackcodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackbackcodes']}] ADD
+    CONSTRAINT [PK_gl_trackbackcodes] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tzcodes']}] ADD 
-    CONSTRAINT [PK_gl_tzcodes] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tzcodes']}] ADD
+    CONSTRAINT [PK_gl_tzcodes] PRIMARY KEY  CLUSTERED
     (
         [tz]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['usercomment']}] ADD 
-    CONSTRAINT [PK_gl_usercomment] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['usercomment']}] ADD
+    CONSTRAINT [PK_gl_usercomment] PRIMARY KEY  CLUSTERED
     (
         [uid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userindex']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userindex']}] ADD
     CONSTRAINT [DF_gl_userindex_boxes] DEFAULT (0) FOR [boxes],
     CONSTRAINT [DF_gl_userindex_noboxes] DEFAULT (0) FOR [noboxes],
     CONSTRAINT [DF_gl_userindex_tids] DEFAULT ('0') FOR [tids],
     CONSTRAINT [DF_gl_userindex_etids] DEFAULT ('0') FOR [etids],
     CONSTRAINT [DF_gl_userindex_aids] DEFAULT ('0') FOR [aids],
-    CONSTRAINT [PK_gl_userindex] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_userindex] PRIMARY KEY  CLUSTERED
     (
         [uid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userinfo']}] ADD 
-    CONSTRAINT [PK_gl_userinfo] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userinfo']}] ADD
+    CONSTRAINT [PK_gl_userinfo] PRIMARY KEY  CLUSTERED
     (
         [uid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userprefs']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userprefs']}] ADD
     CONSTRAINT [DF_gl_userprefs_noicons] DEFAULT (0) FOR [noicons],
     CONSTRAINT [DF_gl_userprefs_willing] DEFAULT (0) FOR [willing],
     CONSTRAINT [DF_gl_userprefs_dfid] DEFAULT (0) FOR [dfid],
@@ -962,27 +963,27 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userprefs']}] ADD
     CONSTRAINT [DF_gl_userprefs_emailfromadmin] DEFAULT (0) FOR [emailfromadmin],
     CONSTRAINT [DF_gl_userprefs_emailfromuser] DEFAULT (0) FOR [emailfromuser],
     CONSTRAINT [DF_gl_userprefs_showonline] DEFAULT (0) FOR [showonline],
-    CONSTRAINT [PK_gl_userprefs] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_userprefs] PRIMARY KEY  CLUSTERED
     (
         [uid]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['users']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['users']}] ADD
     CONSTRAINT [DF_gl_users_status] DEFAULT ('1') FOR [status],
-    CONSTRAINT [PK_gl_users] PRIMARY KEY  CLUSTERED 
+    CONSTRAINT [PK_gl_users] PRIMARY KEY  CLUSTERED
     (
         [username]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['vars']}] ADD 
-    CONSTRAINT [PK_gl_vars] PRIMARY KEY  CLUSTERED 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['vars']}] ADD
+    CONSTRAINT [PK_gl_vars] PRIMARY KEY  CLUSTERED
     (
         [name]
-    )  ON [PRIMARY] 
+    )  ON [PRIMARY]
 ";
 
 
@@ -996,24 +997,24 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['vars']}] ADD
 $_SQL[] = "CREATE VIEW dbo.getPrimaryKey
 AS
 
-SELECT  SC.name as colName,  SO.name as tableName, 
+SELECT  SC.name as colName,  SO.name as tableName,
     case when sc.status=128 then '1' else '0' end as isIdentity
-FROM    sysobjects SO, 
-        sysobjects SPK, 
-        sysindexes SI, 
-        sysindexkeys SIK, 
-        syscolumns SC 
-WHERE    
-    
-SO.xtype = 'U' 
+FROM    sysobjects SO,
+        sysobjects SPK,
+        sysindexes SI,
+        sysindexkeys SIK,
+        syscolumns SC
+WHERE
+
+SO.xtype = 'U'
 AND     SO.id = SPK.parent_obj
-AND     SPK.xtype = 'PK' 
-AND     SO.id = SI.id 
-AND     SPK.name = SI.name 
-AND     SO.id = SIK.id 
-AND     SI.indid = SIK.indid 
-AND     SO.id = SC.id 
-AND     SIK.colid = SC.colid 
+AND     SPK.xtype = 'PK'
+AND     SO.id = SI.id
+AND     SPK.name = SI.name
+AND     SO.id = SIK.id
+AND     SI.indid = SIK.indid
+AND     SO.id = SC.id
+AND     SIK.colid = SC.colid
 
 
 
@@ -1040,7 +1041,7 @@ SELECT     GETDATE() AS getdate
 $_SQL[] = "CREATE function DATE_FORMAT(@d as varchar(100)='', @f as varchar(100))
 returns varchar(1000)
 
-BEGIN 
+BEGIN
 declare
 @tempVar as         varchar(100),
 @workingString as   varchar(100),
@@ -1050,10 +1051,10 @@ declare
 @isDatePart     bit,
 @retval         varchar(100),
 @sql            varchar(1000),
-@currentChar        char(1), 
-@nextChar       char(1), 
+@currentChar        char(1),
+@nextChar       char(1),
 @procOutput     varchar(100),
-@counter        int, 
+@counter        int,
 @mode           int,
 @count          int
 
@@ -1067,7 +1068,7 @@ set @workingString=@f
 
 --workingString now holds the desired date format
 --we have to loop thru that string, detecting % followed by a command
---anything that is not a % sign or %% will be represented as a literal and 
+--anything that is not a % sign or %% will be represented as a literal and
 --returned to the output string
 
 --if it is a command, due to limitations in UDFs we're going to pass the sql command
@@ -1126,7 +1127,7 @@ begin
 
                 when '%%' then  '%'
 
-    
+
             end)
             set @counter=@counter+1
          end
@@ -1136,10 +1137,10 @@ begin
             select @retval = @retval + @currentChar
          end
 
-        
-        
+
+
      end
-    else --no command here.. 
+    else --no command here..
      begin
 
         select @retval=@retval + @currentChar
@@ -1162,9 +1163,9 @@ END
 
 
 $_SQL[] = "CREATE function DESCRIBE(@d as varchar(100)='')
-RETURNS table AS  
+RETURNS table AS
 
-RETURN 
+RETURN
 (select top 1000 a.name as Field, c.name +'(' + cast(a.prec as varchar) + ')' as Type,
 case when a.status=(0x08) then 'NULL' else '' end as [Null],
 ' ' as [Key],
@@ -1188,9 +1189,9 @@ order by colorder asc)
 
 
 $_SQL[] = "CREATE function FROM_UNIXTIME(@d as varchar(100)='')
-RETURNS varchar(100) AS  
-BEGIN 
-declare 
+RETURNS varchar(100) AS
+BEGIN
+declare
 @retval varchar(100),
 @testDate   varchar(100)
 
@@ -1198,13 +1199,13 @@ declare
 
 if @d is Null or @d=''
     begin
-        SELECT @retval='' 
-        
+        SELECT @retval=''
+
     end
 else
     begin
-        
-        
+
+
         SELECT @retval=cast(year(dateadd(SECOND, cast( @d as bigint) ,'19700101') ) as varchar(10)) + '-'
 
 
@@ -1223,7 +1224,7 @@ else
         end
     select @retval = @retval + @testDate + ' '
 
- 
+
 
     select @testDate=cast( DATEPART(hour, dateadd(SECOND, cast( @d as bigint) ,'19700101'))   as varchar(10))
     if len(@testDate)<2
@@ -1246,7 +1247,7 @@ else
         begin
         select @testDate='0' + @testDate
         end
-    select @retval = @retval + @testDate 
+    select @retval = @retval + @testDate
 
     end
 
@@ -1260,9 +1261,9 @@ END
 
 
 $_SQL[] = "CREATE function TO_DAYS(@d as varchar(100)='')
-RETURNS int AS  
-BEGIN 
-declare 
+RETURNS int AS
+BEGIN
+declare
 @retval varchar(100),
 @testDate   varchar(100)
 
@@ -1270,11 +1271,11 @@ declare
 if @d is Null or @d=''
     begin
         SELECT @retval=NULL
-        
+
     end
 else
     begin
-        SELECT @retval=DATEDIFF(day, '19700101', @d) 
+        SELECT @retval=DATEDIFF(day, '19700101', @d)
     end
 
 
@@ -1285,9 +1286,9 @@ END
 
 
 $_SQL[] = "CREATE function UNIX_TIMESTAMP(@d as varchar(100)='')
-RETURNS varchar(100) AS  
-BEGIN 
-declare 
+RETURNS varchar(100) AS
+BEGIN
+declare
 @retval varchar(100),
 @testDate   varchar(100)
 
@@ -1295,12 +1296,12 @@ declare
 if @d is Null or @d=''
     begin
         select @testDate=[getdate] from getdateView
-        SELECT @retval=DATEDIFF(s, '19700101', @testDate) 
-        
+        SELECT @retval=DATEDIFF(s, '19700101', @testDate)
+
     end
 else
     begin
-        SELECT @retval=DATEDIFF(SECOND, '19700101', @d) 
+        SELECT @retval=DATEDIFF(SECOND, '19700101', @d)
     end
 
 
@@ -1313,7 +1314,7 @@ END
 
 
 
-$_SQL[] = "CREATE    PROCEDURE dbo.doIndexInsert 
+$_SQL[] = "CREATE    PROCEDURE dbo.doIndexInsert
 
 @table      varchar(256),
 @cols       varchar(1000),
@@ -1335,7 +1336,7 @@ set  @isIdentityListed=@@ROWCOUNT
 
 
 
-select @isIdentity=isIdentity 
+select @isIdentity=isIdentity
 from getPrimaryKey
 where tableName=@table
 select @vals=replace(@vals,'\\\"', '''''')
@@ -1374,8 +1375,8 @@ end
 ";
 
 
-$_SQL[] = "CREATE TRIGGER FixBoxes ON [dbo].[{$_TABLES['userindex']}] 
-FOR INSERT, UPDATE 
+$_SQL[] = "CREATE TRIGGER FixBoxes ON [dbo].[{$_TABLES['userindex']}]
+FOR INSERT, UPDATE
 AS
 update gl_userindex
 set boxes='0' where boxes=''
@@ -1394,18 +1395,18 @@ set tids='0' where tids=''
 
 
 
-$_SQL[] = "CREATE TRIGGER fixContext ON [dbo].[{$_TABLES['blocks']}] 
+$_SQL[] = "CREATE TRIGGER fixContext ON [dbo].[{$_TABLES['blocks']}]
 FOR INSERT, UPDATE
 AS
 
 update {$_TABLES['blocks']}
-set content=NULL 
+set content=NULL
 where content like''
 ";
 
 
 
-$_SQL[] = "CREATE TRIGGER fixPhoto ON dbo.gl_users 
+$_SQL[] = "CREATE TRIGGER fixPhoto ON dbo.gl_users
 FOR INSERT, UPDATE
 AS
 

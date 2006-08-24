@@ -24,7 +24,7 @@
 ###############################################################################
 
 ###############################################################################
-# Array Format: 
+# Array Format:
 # $LANGXX[YY]:	$LANG - variable name
 #		  	XX - file id number
 #			YY - phrase id number
@@ -107,7 +107,8 @@ $LANG_STATIC= array(
     'copy' => 'Copy',
     'limit_results' => 'Limit Results',
     'search' => 'Search',
-    'submit' => 'Submit'
+    'submit' => 'Submit',
+
 );
 
 // Messages for the plugin upgrade

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.75 2006/08/21 14:26:40 dhaun Exp $
+// $Id: functions.inc,v 1.76 2006/08/24 07:31:49 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -485,7 +485,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
+    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
     $result = DB_query ($spsql);
 
     $pages = DB_numRows ($result);
@@ -508,7 +508,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 
             if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
                 && (($where != 0) || ($spresult['sp_format'] != 'blankpage'))) {
-                $retval .= COM_startBlock ($spresult['sp_title'], '',
+                $retval .= COM_startBlock ($spresult['sp_title'], $spresult['sp_help'],
                     COM_getBlockTemplate ('_staticpages_centerblock', 'header'));
             }
 
@@ -532,7 +532,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                     $retval .= stripslashes ($spresult['sp_content']);
                 }
             }
-            
+
             if ((SEC_hasAccess ($spresult['owner_id'], $spresult['group_id'], $spresult['perm_owner'],
                 $spresult['perm_group'], $spresult['perm_members'], $spresult['perm_anon']) == 3) &&
                 SEC_hasRights ('staticpages.edit')) {
@@ -652,7 +652,7 @@ function plugin_geticon_staticpages ()
 *
 * @return   int     Number of message to display (true = generic success msg)
 *
-*/ 
+*/
 function plugin_upgrade_staticpages ()
 {
     global $_TABLES, $_SP_CONF;

@@ -29,14 +29,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.1 2006/08/19 18:51:48 dhaun Exp $
+// $Id: mysql_install.php,v 1.2 2006/08/24 07:31:49 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(40) NOT NULL default '',
   sp_uid mediumint(8) NOT NULL default '1',
   sp_title varchar(128) NOT NULL default '',
-  sp_content text NOT NULL, 
+  sp_content text NOT NULL,
   sp_hits mediumint(8) unsigned NOT NULL default '0',
   sp_date datetime NOT NULL default '0000-00-00 00:00:00',
   sp_format varchar(20) NOT NULL default '',
@@ -49,12 +49,13 @@ CREATE TABLE {$_TABLES['staticpage']} (
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   sp_centerblock tinyint(1) unsigned NOT NULL default '0',
+  sp_help varchar(255) default '',
   sp_tid varchar(20) NOT NULL default 'none',
   sp_where tinyint(1) unsigned NOT NULL default '1',
   sp_php tinyint(1) unsigned NOT NULL default '0',
   sp_nf tinyint(1) unsigned default '0',
   sp_inblock tinyint(1) unsigned default '1',
-  postmode varchar(16) NOT NULL default 'html',  
+  postmode varchar(16) NOT NULL default 'html',
   PRIMARY KEY  (sp_id),
   KEY staticpage_sp_uid (sp_uid),
   KEY staticpage_sp_date (sp_date),

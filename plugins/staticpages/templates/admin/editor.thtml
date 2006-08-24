@@ -65,6 +65,11 @@
               <td valign="top"><input type="checkbox" name="sp_inblock" {inblock_checked}>&nbsp;&nbsp;{inblock_info}</td>
           </tr>
           <tr>
+              <td align="right" valign="top">{lang_centerblock_help}</td>
+              <td valign="top"><input type="text" name="sp_help" value="{centerblock_help}" size="50">&nbsp;{lang_centerblock_include}<br>
+              {lang_centerblock_desc}</td>
+          </tr>
+          <tr>
               <td align="right" valign="top">{php_msg}</td>
               <td valign="top">{php_selector}&nbsp;&nbsp;{php_warn}</td>
           </tr>
@@ -115,8 +120,8 @@
           <tr><td>&nbsp;</td></tr>
           <tr>
               <td colspan="2">
-                  <input type="submit" value="{lang_save}" name="mode"> 
-                  <input type="submit" value="{lang_cancel}" name="mode"> 
+                  <input type="submit" value="{lang_save}" name="mode">
+                  <input type="submit" value="{lang_cancel}" name="mode">
                   {delete_option}
                   <input type="hidden" name="sp_old_id" value="{sp_old_id}">
               </td>

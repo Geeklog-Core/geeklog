@@ -36,7 +36,7 @@
          <tr>
             <td align="right">{lang_postmode}:</td>
             <td><select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
-        </tr>          
+        </tr>
           <tr>
             <td align="right">{lang_id}:</td>
             <td><input type="text" name="sp_id" size="40" maxlength="40" value="{sp_id}"></td>
@@ -68,7 +68,7 @@
                   <textarea id="html_content" name="sp_content" rows="24" style="width:100%" wrap="virtual">{sp_content}</textarea>
                   <div class="warningsmall" style="padding:10px;">{lang_allowedhtml}</div>
                 </td>
-             </tr>             
+             </tr>
           <tr>
               <td align="right">{lang_writtenby}:</td>
               <td>{name}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
@@ -94,6 +94,11 @@
           <tr>
               <td align="right" valign="top">{inblock_msg}</td>
               <td valign="top"><input type="checkbox" name="sp_inblock" {inblock_checked}>&nbsp;&nbsp;{inblock_info}</td>
+          </tr>
+          <tr>
+              <td align="right" valign="top">{lang_centerblock_help}</td>
+              <td valign="top"><input type="text" name="sp_help" value="{centerblock_help}" size="50">&nbsp;{lang_centerblock_include}<br>
+              {lang_centerblock_desc}</td>
           </tr>
           <tr>
               <td align="right" valign="top">{php_msg}</td>
@@ -146,8 +151,8 @@
           <tr><td>&nbsp;</td></tr>
           <tr>
               <td colspan="2">
-                  <input type="submit" value="{lang_save}" name="mode"> 
-                  <input type="submit" value="{lang_cancel}" name="mode"> 
+                  <input type="submit" value="{lang_save}" name="mode">
+                  <input type="submit" value="{lang_cancel}" name="mode">
                   {delete_option}
                   <input type="hidden" name="sp_old_id" value="{sp_old_id}">
               </td>

@@ -30,43 +30,44 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.1 2006/08/22 18:37:57 dhaun Exp $
+// $Id: mssql_install.php,v 1.2 2006/08/24 07:31:49 ospiess Exp $
 
 
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
-	[sp_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[sp_uid] [int] NOT NULL ,
-	[sp_title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[sp_content] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[sp_hits] [numeric](8, 0) NOT NULL ,
-	[sp_date] [datetime] NOT NULL ,
-	[sp_format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[sp_onmenu] [tinyint] NOT NULL ,
-	[sp_label] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[owner_id] [numeric](8, 0) NOT NULL ,
-	[group_id] [numeric](8, 0) NOT NULL ,
-	[perm_owner] [tinyint] NOT NULL ,
-	[perm_group] [tinyint] NOT NULL ,
-	[perm_members] [tinyint] NOT NULL ,
-	[perm_anon] [tinyint] NOT NULL ,
-	[sp_centerblock] [tinyint] NOT NULL ,
-	[sp_tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[sp_where] [tinyint] NOT NULL ,
-	[sp_php] [tinyint] NOT NULL ,
-	[sp_nf] [tinyint] NULL ,
-	[sp_inblock] [tinyint] NULL  ,
-	[postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sp_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sp_uid] [int] NOT NULL ,
+    [sp_title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sp_content] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sp_hits] [numeric](8, 0) NOT NULL ,
+    [sp_date] [datetime] NOT NULL ,
+    [sp_format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sp_onmenu] [tinyint] NOT NULL ,
+    [sp_label] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL ,
+    [sp_centerblock] [tinyint] NOT NULL ,
+    [sp_help] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [sp_tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sp_where] [tinyint] NOT NULL ,
+    [sp_php] [tinyint] NOT NULL ,
+    [sp_nf] [tinyint] NULL ,
+    [sp_inblock] [tinyint] NULL  ,
+    [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
     CONSTRAINT [DF_gl_staticpage] DEFAULT ('html') FOR [postmode],
-	CONSTRAINT [PK_gl_staticpage] PRIMARY KEY  CLUSTERED 
+	CONSTRAINT [PK_gl_staticpage] PRIMARY KEY  CLUSTERED
 	(
 		[sp_id]
-	)  ON [PRIMARY] 
+	)  ON [PRIMARY]
 ";
 
 ?>

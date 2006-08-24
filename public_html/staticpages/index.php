@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.27 2006/07/07 09:18:36 ospiess Exp $
+// $Id: index.php,v 1.28 2006/08/24 07:31:50 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -97,7 +97,7 @@ function display_page ($page, $A, $noboxes)
         }
     }
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_startBlock (stripslashes ($A['sp_title']), '',
+        $retval .= COM_startBlock (stripslashes ($A['sp_title']), $A['sp_help'],
                         COM_getBlockTemplate ('_staticpages_block', 'header'));
     }
 
@@ -109,7 +109,7 @@ function display_page ($page, $A, $noboxes)
         if ($_SP_CONF['show_date'] == 1) {
             $retval .= $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
         }
-        
+
         if ($_SP_CONF['show_hits'] == 1) {
             if ($_SP_CONF['show_date'] == 1) {
                 $retval .= "; ";
@@ -224,7 +224,7 @@ if (!($error)) {
     }
 
     // increment hit counter for page
-    DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'"); 
+    DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'");
 
 } else { // an error occured (page not found, access denied, ...)
 
