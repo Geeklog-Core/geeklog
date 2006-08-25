@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Static Page Plugin                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.28 2006/08/24 07:31:50 ospiess Exp $
+// $Id: index.php,v 1.29 2006/08/25 18:41:17 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -205,7 +205,7 @@ if (empty ($page)) {
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $result = DB_query ("SELECT * FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms);
+    $result = DB_query ("SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms);
     $count = DB_numRows ($result);
 
     if ($count == 0 || $count > 1) {
