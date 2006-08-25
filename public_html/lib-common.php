@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.565 2006/08/22 17:56:56 dhaun Exp $
+// $Id: lib-common.php,v 1.566 2006/08/25 18:48:11 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3002,7 +3002,7 @@ function COM_showBlock( $name, $help='', $title='' )
 
     $retval = '';
 
-    if( isset( $_USER['noboxes'] ))
+    if( !isset( $_USER['noboxes'] ))
     {
         if( !empty( $_USER['uid'] ))
         {
