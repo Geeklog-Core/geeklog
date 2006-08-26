@@ -2,14 +2,14 @@
 
 /**
  * File: english_utf-8.php
- * This is the English language page for the Geeklog Spam-X Plug-in!
+ * This is the English language file for the Geeklog Spam-X plugin
  * 
  * Copyright (C) 2004-2006 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english_utf-8.php,v 1.2 2006/08/20 16:52:50 dhaun Exp $
+ * $Id: english_utf-8.php,v 1.3 2006/08/26 08:16:00 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -54,7 +54,7 @@ $LANG_SX00 = array (
     'actmod' => 'Active Modules',
     'avmod' => 'Available Modules',
     'coninst' => '<hr>Click on an Active module to remove it, click on an Available module to add it.<br>Modules are executed in order presented.',
-    'fsc' => 'Found Spam Comment matching ',
+    'fsc' => 'Found Spam Post matching ',
     'fsc1' => ' posted by user ',
     'fsc2' => ' from IP ',
     'uMTlist' => 'Update MT-Blacklist',
@@ -83,8 +83,8 @@ $LANG_SX00 = array (
     'enabled' => 'Disable plugin before uninstalling.',
     'readme' => 'STOP! Before you press install please read the ',
     'installdoc' => 'Install Document.',
-    'spamdeleted' => 'Deleted Spam Comment',
-    'foundspam' => 'Found Spam Comment matching ',
+    'spamdeleted' => 'Deleted Spam Post',
+    'foundspam' => 'Found Spam Post matching ',
     'foundspam2' => ' posted by user ',
     'foundspam3' => ' from IP ',
 	'deletespam' => 'Delete Spam',
@@ -126,7 +126,7 @@ $LANG_SX00 = array (
 
 
 /* Define Messages that are shown when Spam-X module action is taken */
-$PLG_spamx_MESSAGE128 = 'Spam detected and Comment or Message was deleted.';
+$PLG_spamx_MESSAGE128 = 'Spam detected. Post was deleted.';
 $PLG_spamx_MESSAGE8   = 'Spam detected. Email sent to admin.';
 
 // Messages for the plugin upgrade
