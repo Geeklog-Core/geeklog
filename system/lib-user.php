@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.32 2006/08/21 08:57:50 dhaun Exp $
+// $Id: lib-user.php,v 1.33 2006/08/26 15:18:51 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -297,7 +297,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
 
     DB_query ("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
     if ($_CONF['emailstoriesperdefault'] == 1) {
-        DB_query ("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+        DB_query ("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid,'')");
     } else {
         DB_query ("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
     }

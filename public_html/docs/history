@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Fixed 'emailstoriesperdefault' config option (bug #553) [Dirk]
 - Added support for Microsoft SQL Server, provided by Randy Kolenko
 - Introduced $_CONF['disallow_domains'] as a blacklist of domain names that are
   not allowed for new users during signup. Both 'disallow_domains' and
