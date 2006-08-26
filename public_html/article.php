@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.80 2006/07/08 19:58:42 dhaun Exp $
+// $Id: article.php,v 1.81 2006/08/26 14:13:41 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -104,8 +104,8 @@ $A = DB_fetchArray($result);
 
 if ($A['count'] > 0) {
     $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
-     . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
-     . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
+     . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
+     . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
      . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$story')");
     $A = DB_fetchArray ($result);
 

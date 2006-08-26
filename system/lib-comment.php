@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.43 2006/08/12 13:38:51 dhaun Exp $
+// $Id: lib-comment.php,v 1.44 2006/08/26 14:13:41 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -274,7 +274,10 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
             $photo = '';
             if( $_CONF['allow_user_photo'] ) {
-                $photo = USER_getPhoto( $A['uid'], $A['photo'] );
+                if (isset ($A['photo']) && empty ($A['photo'])) {
+                    $A['photo'] = '(none)';
+                }
+                $photo = USER_getPhoto( $A['uid'], $A['photo'], $A['email'] );
             }
             if( !empty( $photo )) {
                 $template->set_var( 'author_photo', $photo );
@@ -318,13 +321,13 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // for threaded mode, add a link to comment parent
         if( $mode == 'threaded' && $A['pid'] != 0 && $indent == 0 ) {
-            $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
+            $result = DB_query( "SELECT title,pid FROM {$_TABLES['comments']} WHERE cid = '{$A['pid']}'" );
             $P = DB_fetchArray( $result );
             if ($P['pid'] != 0) {
                 $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
                        . $A['sid'] . '&amp;title=' . urlencode( htmlspecialchars( $P['title'] ))
                        . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
-                       . $P['pid'] . '&amp;format=threaded';;
+                       . $P['pid'] . '&amp;format=threaded';
             } else {
                 $plink = $_CONF['site_url'] . '/comment.php?mode=view&amp;sid='
                        . $A['sid'] . '&amp;title=' . urlencode( htmlspecialchars( $P['title'] ))
@@ -481,17 +484,17 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                 if( $cid ) {
                     $count = 1;
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
-                         . "unix_timestamp(c.date) AS nice_date "
-                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, " 
+                       . "UNIX_TIMESTAMP(c.date) AS nice_date "
+                       . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                        . "WHERE c.uid = u.uid AND c.cid = $pid AND type='{$type}'";
                 } else {
                     $count = DB_count( $_TABLES['comments'], 'sid', $sid );
             
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
-                         . "unix_timestamp(c.date) AS nice_date "
-                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                       . "WHERE c.uid = u.uid AND c.sid = '$sid' AND type='{$type}'"
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, " 
+                       . "UNIX_TIMESTAMP(c.date) AS nice_date "
+                       . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
+                       . "WHERE c.uid = u.uid AND c.sid = '$sid' AND type='{$type}' "
                        . "ORDER BY date $order LIMIT $start, $limit";
                 }
                 break;
@@ -510,44 +513,44 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                 if( $cid ) {  // pid refers to commentid rather than parentid
                     // count the total number of applicable comments
                     $q2 = "SELECT COUNT(*) "
-                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
+                        . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2 "
                         . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
                         . "AND c2.cid = $pid AND c.type='{$type}'";
                     $result = DB_query( $q2 );
                     list( $count ) = DB_fetchArray( $result );
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, c2.indent as pindent, " 
-                         . "unix_timestamp(c.date) AS nice_date "
-                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
-                         . "{$_TABLES['users']} as u "
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent AS pindent, " 
+                       . "UNIX_TIMESTAMP(c.date) AS nice_date "
+                       . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
+                       . "{$_TABLES['users']} AS u "
                        . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
-                         . "AND c2.cid = $pid AND c.uid = u.uid AND c.type='{$type}'"
+                       . "AND c2.cid = $pid AND c.uid = u.uid AND c.type='{$type}' "
                        . "ORDER BY $cOrder LIMIT $start, $limit";
                 } else {    // pid refers to parentid rather than commentid
                     if( $pid == 0 ) {  // the simple, fast case
                         // count the total number of applicable comments
                         $count = DB_count( $_TABLES['comments'], 'sid', $sid );
 
-                        $q = "SELECT c.*, u.username, u.fullname, u.photo, 0 as pindent, " 
-                             . "unix_timestamp(c.date) AS nice_date "
-                           . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                           . "WHERE c.sid = '$sid' AND c.uid = u.uid  AND type='{$type}'"
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, 0 AS pindent, " 
+                           . "UNIX_TIMESTAMP(c.date) AS nice_date "
+                           . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
+                           . "WHERE c.sid = '$sid' AND c.uid = u.uid  AND type='{$type}' "
                            . "ORDER BY $cOrder LIMIT $start, $limit";
                     } else {
                         // count the total number of applicable comments
                         $q2 = "SELECT COUNT(*) "
-                            . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
+                            . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2 "
                             . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
                             . "AND c2.cid = $pid AND c.type='{$type}'";
                         $result = DB_query($q2);
                         list($count) = DB_fetchArray($result);
 
-                        $q = "SELECT c.*, u.username, u.fullname, u.photo, c2.indent + 1 as pindent, " 
-                             . "unix_timestamp(c.date) AS nice_date "
-                           . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
-                             . "{$_TABLES['users']} as u "
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent + 1 AS pindent, " 
+                           . "UNIX_TIMESTAMP(c.date) AS nice_date "
+                           . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
+                           . "{$_TABLES['users']} AS u "
                            . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
-                             . "AND c2.cid = $pid AND c.uid = u.uid AND c.type='{$type}'"
+                           . "AND c2.cid = $pid AND c.uid = u.uid AND c.type='{$type}' "
                            . "ORDER BY $cOrder LIMIT $start, $limit";
                     }
                 }
