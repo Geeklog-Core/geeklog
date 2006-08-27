@@ -213,6 +213,46 @@ trackback spam: The site that supposedly sent the trackback <a
 href="config.html#desc_check_trackback_link">can be checked</a> to see if it
 actually contains a link to your site. If it doesn't, it is usually spam.</p>
 
+<h2><a name="config.php">Configuration File</a></h2>
+
+<p>The Spam-X plugin has its own configuration file, located at <tt>/path/to/geeklog/plugins/spamx/config.php</tt>. There you will find the following options:</p>
+
+<table>
+<tr><th width="25%">Variable</th>
+    <th width="25%">Default Value</th>
+    <th width="50%">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_action">action</a></td>
+  <td>128</td>
+  <td>This only exists as a fallback in case <a
+    href="config.html#desc_spamx">$_CONF['spamx']</a> in Geeklog's main
+    <tt>config.php</tt> is not set. I.e. <code>$_CONF['spamx']</code> takes
+    precedence.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_admin_override">admin_override</a></td>
+  <td>false</td>
+  <td>The Spam-X plugin will filter posts by any user - even site admins. This
+    can be a problem sometimes, e.g. when you want to post a note about spam
+    that itself contains "spammy" URLs or keywords. When this option is set to
+    <code>true</code> then posts made by users in the 'spamx Admin' group are
+    not checked for spam.</td>
+</tr>
+<tr>
+  <td><a name="desc_logging">logging</a></td>
+  <td><code>true</code></td>
+  <td>Whether to log recognized spam posts in the <tt>spamx.log</tt> logfile
+    (is set to <code>true</code>) or not (<code>false</code>).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_notification_email">notification_email</a></td>
+  <td><code>$_CONF['site_mail']</code></td>
+  <td>Email address to which spam notifications are sent when the Mail Admin
+    <a href="#action">action module</a> is enabled.</td>
+</tr>
+
+</table>
 
 <h2><a name="more">More Information</a></h2>
 
