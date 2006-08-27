@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.77 2006/08/24 07:31:49 ospiess Exp $
+// $Id: index.php,v 1.78 2006/08/27 16:03:48 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -59,8 +59,9 @@ if (!SEC_hasRights ('staticpages.edit')) {
 */
 function form ($A, $error = false)
 {
-    global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id, $LANG21,
-           $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24, $LANG_postmodes, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
+           $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24,
+           $LANG_postmodes, $MESSAGE;
 
     if (!empty($sp_id) && $mode=='edit') {
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -427,6 +428,7 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
         $A['sp_id'] = COM_makesid ();
         $A['sp_uid'] = $_USER['uid'];
         $A['unixdate'] = time ();
+        $A['sp_help'] = '';
         $A['sp_old_id'] = '';
         $A['sp_where'] = 1; // default new pages to "top of page"
     } elseif (!empty ($sp_id) && $mode == 'clone') {
@@ -483,7 +485,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
                            $group_id, $perm_owner, $perm_group, $perm_members,
                            $perm_anon, $sp_php, $sp_nf, $sp_old_id,
                            $sp_centerblock, $sp_help, $sp_tid, $sp_where,
-                           $sp_inblock,$postmode)
+                           $sp_inblock, $postmode)
 {
     global $_CONF, $_TABLES, $LANG12, $LANG_STATIC, $_SP_CONF;
 
@@ -642,6 +644,9 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $sp_uid = COM_applyFilter ($_POST['sp_uid'], true);
         if ($sp_uid == 0) {
             $sp_uid = $_USER['uid'];
+        }
+        if (!isset ($_POST['postmode'])) {
+            $_POST['postmode'] = '';
         }
         submitstaticpage ($sp_id, $sp_uid, $_POST['sp_title'],
             $_POST['sp_content'], COM_applyFilter ($_POST['sp_hits'], true),
