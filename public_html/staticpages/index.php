@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Page Geeklog Plugin 1.4.2                                          |
+// | Static Page Geeklog Plugin 1.4.3                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -31,48 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.29 2006/08/25 18:41:17 dhaun Exp $
+// $Id: index.php,v 1.30 2006/08/27 16:14:34 dhaun Exp $
 
 require_once ('../lib-common.php');
 
-
-/**
-* Render the actual content of a static page.
-*
-* @param    string  $sp_content the content (HTML or PHP source)
-* @param    int     $sp_php     flag: 1 = content is PHP source, 0 = is HTML
-* @return   string              rendered content (HTML)
-*
-*/
-function render_content ($sp_content, $sp_php)
-{
-    global $_SP_CONF, $LANG_STATIC;
-
-    $retval = '';
-
-    if ($_SP_CONF['allow_php'] == 1) {
-        // Check for type (ie html or php)
-        if ($sp_php == 1) {
-            $retval .= eval ($sp_content);
-        } else if ($sp_php == 2) {
-            ob_start ();
-            eval ($sp_content);
-            $retval .= ob_get_contents ();
-            ob_end_clean ();
-        } else {
-            $retval .= PLG_replacetags ($sp_content);
-        }
-    } else {
-        if ($sp_php != 0) {
-            COM_errorLog ("PHP in static pages is disabled. Can not display page '$page'.", 1);
-            $retval .= $LANG_STATIC['deny_msg'];
-        } else {
-            $retval .= $sp_content;
-        }
-    }
-
-    return $retval;
-}
 
 /**
 * Prepare static page for display.
@@ -101,7 +63,7 @@ function display_page ($page, $A, $noboxes)
                         COM_getBlockTemplate ('_staticpages_block', 'header'));
     }
 
-    $retval .= render_content (stripslashes ($A['sp_content']), $A['sp_php']);
+    $retval .= SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
 
     if ($A['sp_format'] <> 'blankpage') {
         $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
@@ -172,7 +134,7 @@ function print_page ($page, $A)
                                . '/staticpages/index.php?page=' . $page));
     $print->set_var ('sp_title', stripslashes ($A['sp_title']));
     $print->set_var ('sp_content',
-            render_content (stripslashes ($A['sp_content']), $A['sp_php']));
+            SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']));
     $print->set_var ('sp_hits', COM_numberFormat ($A['sp_hits']));
     $print->parse ('output', 'print');
 

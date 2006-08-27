@@ -225,7 +225,9 @@ Spam-X plugin (1.1.0)
 
 Static Pages plugin (1.4.3)
 -------------------
-- Added a help-URL for the block display of static pages [Oliver]
+- Make sure autotags are replaced even when execution of PHP code is disabled
+  (reported by LWC) [Dirk]
+- Added a help URL for the block display of static pages [Oliver]
 - Fixed default sorting order for the list of static pages [Dirk]
 - Allow to show/hide update date/time and hits [Oliver]
 - When creating a new page, don't set the default group ownership to the Static

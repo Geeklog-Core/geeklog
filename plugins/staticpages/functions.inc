@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.76 2006/08/24 07:31:49 ospiess Exp $
+// $Id: functions.inc,v 1.77 2006/08/27 16:14:33 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -512,26 +512,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                     COM_getBlockTemplate ('_staticpages_centerblock', 'header'));
             }
 
-            if ($_SP_CONF['allow_php'] == 1) {
-                // Check for type (ie html or php)
-                if ($spresult['sp_php'] == 1) {
-                    $retval .= eval (stripslashes ($spresult['sp_content']));
-                } else if ($spresult['sp_php'] == 2) {
-                    ob_start ();
-                    eval (stripslashes ($spresult['sp_content']));
-                    $retval .= ob_get_contents ();
-                    ob_end_clean ();
-                } else {
-                    $retval .= PLG_replacetags (stripslashes ($spresult['sp_content']));
-                }
-            } else {
-                if ($spresult['sp_php'] != 0) {
-                    COM_errorLog ("PHP in static pages is disabled. Can not display page '$sp_id'.", 1);
-                    $retval .= $LANG_STATIC['deny_msg'];
-                } else {
-                    $retval .= stripslashes ($spresult['sp_content']);
-                }
-            }
+            $retval .= SP_render_content (stripslashes ($spresult['sp_content']), $spresult['sp_php']);
 
             if ((SEC_hasAccess ($spresult['owner_id'], $spresult['group_id'], $spresult['perm_owner'],
                 $spresult['perm_group'], $spresult['perm_members'], $spresult['perm_anon']) == 3) &&
@@ -834,6 +815,44 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = $fieldvalue;
             break;
     }
+    return $retval;
+}
+
+/**
+* Render the actual content of a static page (without any surrounding blocks)
+*
+* @param    string  $sp_content the content (HTML or PHP source)
+* @param    int     $sp_php     flag: 1 = content is PHP source, 0 = is HTML
+* @return   string              rendered content (HTML)
+*
+*/
+function SP_render_content ($sp_content, $sp_php)
+{
+    global $_SP_CONF, $LANG_STATIC;
+
+    $retval = '';
+
+    if ($_SP_CONF['allow_php'] == 1) {
+        // Check for type (ie html or php)
+        if ($sp_php == 1) {
+            $retval .= eval ($sp_content);
+        } else if ($sp_php == 2) {
+            ob_start ();
+            eval ($sp_content);
+            $retval .= ob_get_contents ();
+            ob_end_clean ();
+        } else {
+            $retval .= PLG_replacetags ($sp_content);
+        }
+    } else {
+        if ($sp_php != 0) {
+            COM_errorLog ("PHP in static pages is disabled. Can not display page '$page'.", 1);
+            $retval .= $LANG_STATIC['deny_msg'];
+        } else {
+            $retval .= PLG_replacetags ($sp_content);
+        }
+    }
+
     return $retval;
 }
 
