@@ -36,6 +36,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD allow_autotags tinyint(1) unsign
 // allow up to 255 characters for the help URL
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE help help varchar(255) default ''";
 
+// delete MT-Blacklist entries
+$_SQL[] = "DELETE FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'";
+
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
 {
