@@ -22,6 +22,45 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
+<h2><a name="changes141">Geeklog 1.4.1</a></h2>
+
+<h3>New Features</h3>
+
+<ul>
+<li>Support for Microsoft SQL Server. Starting with this release, Geeklog can
+    now also be installed on Microsoft SQL Server, so it's no longer restricted
+    to just MySQL. The MS SQL support was developed by Randy Kolenko.
+    Thanks, Randy!<br>
+    Please note that any third-party plugins will have to offer support for
+    MS SQL before they can be installed on Microsoft SQL Server. The bundled
+    plugins (Calendar, Links, Polls, Spam-X, Static Pages) have already been
+    updated accordingly.</li>
+<li><a href="calendar.html">Calendar plugin</a>. The formerly built-in calendar
+    and events have now been moved into a separate plugin. This complements the
+    move of the <a href="polls.html">polls</a> and <a href="links.html">links</a> sections into plugins in Geeklog 1.4.0 and makes Geeklog more modular as you
+    can now easily disable or replace functionality that you don't need for
+    your site.</li>
+<li><a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">Multi-language support</a>. It is now possible to build truly multi-linugal sites
+    with Geeklog where not only the navigation but also the content of the site
+    changes with the language.</li>
+<li>Ships with <a href="http://fckeditor.net/">FCKeditor</a> 2.3, which once
+    again includes a file manager for uploading images.</li>
+</ul>
+
+<h3>Security</h3>
+
+<p>In the light of the security issues discovered in Geeklog 1.4.0 and earlier
+versions, the Geeklog source code has undergone a code review. We have
+identified and addressed several minor issues and introduced new measures to
+enhance security in this release. As a welcome side effect, the code reviews
+have also uncovered a few bugs and inconsistencies that we also fixed in this
+release.</p>
+
+<h3>Spam Protection</h3>
+
+<p>With this release we are finally removing support for the <a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a> MT-Blacklist. In its place, we are now using a system called Spam Link Verification (SLV) run by Russ Jones at <a href="http://www.linksleeve.org/">www.linksleeve.org</a>. SLV could be described as a community-driven, automatically updated blacklist. See the documentation of the <a href="spamx.html" rel="nofollow">Spam-X plugin</a> for details.</p>
+
+
 <h2><a name="changes140sr5-1">Geeklog 1.4.0sr5-1</a></h2>
 
 <p>This release fixes display problems in the comment preview that were only

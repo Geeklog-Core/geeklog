@@ -21,8 +21,6 @@ GeekLog History/Changes:
   queue is enabled) that was inexplicably missing from 1.4.0 [Dirk]
 - Merged User Preferences and Account information into one page, like the 
   Story editor with tabs etc. [Blaine, Oliver]
-- Added ability in staticpage editor to enable/disable Advanced Editor mode 
-  so you can use FCKEditor and then if need basic html edit mode [Blaine]
 - Tried to make "3 new stories in the last 1 day" sound less awkward by going
   back one unit, i.e. "3 new stories in the last 24 hours", in the What's New
   block (likewise for 1 week, 1 month, etc.) [Dirk]
@@ -228,6 +226,8 @@ Static Pages plugin (1.4.3)
 - Make sure autotags are replaced even when execution of PHP code is disabled
   (reported by LWC) [Dirk]
 - Added a help URL for the block display of static pages [Oliver]
+- Added ability in staticpage editor to enable/disable Advanced Editor mode 
+  so you can use FCKEditor and then if need basic html edit mode [Blaine]
 - Fixed default sorting order for the list of static pages [Dirk]
 - Allow to show/hide update date/time and hits [Oliver]
 - When creating a new page, don't set the default group ownership to the Static
