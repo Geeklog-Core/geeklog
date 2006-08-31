@@ -1,4 +1,4 @@
-                            <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="post">
+                            <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="POST">
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td align="right"><b>{lang_eventtitle}:</b></td>
@@ -40,10 +40,7 @@
                                                 <option value="30" {startminuteoption3_selected}>30</option>
                                                 <option value="45" {startminuteoption4_selected}>45</option>
                                             </select>
-                                            <select name="start_ampm">
-                                                <option value="am" {startam_selected}>am</option>
-                                                <option value="pm" {startpm_selected}>pm</option>
-                                            </select>
+                                            {startampm_selection}
                                         </td>
                                     </tr>
                                     <tr>
@@ -71,10 +68,7 @@
                                                 <option value="30" {endminuteoption3_selected}>30</option>
                                                 <option value="45" {endminuteoption4_selected}>45</option>
                                             </select>
-                                            <select name="end_ampm">
-                                                <option value="am" {endam_selected}>am</option>
-                                                <option value="pm" {endpm_selected}>pm</option>
-                                            </select>
+                                            {endampm_selection}
                                         </td>
                                     </tr>
                                     <tr>
@@ -169,6 +163,7 @@
                                             <input type="submit" value="{lang_save}" name="mode"> 
                                             <input type="submit" value="{lang_cancel}" name="mode"> 
                                             <input type="hidden" name="eid" value="{event_id}">
+                                            <input type="hidden" name="hour_mode" value="{hour_mode}">
                                             {delete_option}
                                         </td>
                                     </tr>

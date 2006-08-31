@@ -39,10 +39,7 @@
                                                 <option value="30">30</option>
                                                 <option value="45">45</option>
                                             </select>
-                                            <select name="start_ampm">
-                                                <option value="am" {am_selected}>am</option>
-                                                <option value="pm" {pm_selected}>pm</option>
-                                            </select>
+                                            {startampm_selection}
                                         </td>
                                     </tr>
                                     <tr>
@@ -70,10 +67,7 @@
                                                 <option value="30">30</option>
                                                 <option value="45">45</option>
                                             </select>
-                                            <select name="end_ampm">
-                                                <option value="am" {am_selected}>am</option>
-                                                <option value="pm" {pm_selected}>pm</option>
-                                            </select>
+                                            {endampm_selection}
                                         </td>
                                     </tr>
                                     <tr>
@@ -126,6 +120,7 @@
                                             <input type="hidden" name="mode" value="{lang_submit}">
                                             <input type="hidden" name="type" value="calendar">
                                             <input type="hidden" name="calendar_type" value="{mode}">
+                                            <input type="hidden" name="hour_mode" value="{hour_mode}">
                                             <input type="submit" value="{lang_submit}">
                                         </td>
                                     </tr>

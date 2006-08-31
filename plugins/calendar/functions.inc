@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.50 2006/08/19 13:59:29 dhaun Exp $
+// $Id: functions.inc,v 1.51 2006/08/31 10:55:01 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -407,7 +407,7 @@ function plugin_savesubmission_calendar($A)
 
         return $retval;
     }
-    # check ok, proceed to saving
+    // check ok, proceed to saving
     $A['end_year'] = COM_applyFilter ($A['end_year'], true);
     $A['end_month'] = COM_applyFilter ($A['end_month'], true);
     $A['end_day'] = COM_applyFilter ($A['end_day'], true);
@@ -448,7 +448,12 @@ function plugin_savesubmission_calendar($A)
         $A['url'] = '';
     }
 
-    $A['eid'] = addslashes (COM_makeSid ());
+    if (!empty ($A['eid'])) {
+        $A['eid'] = addslashes (COM_applyFilter ($A['eid']));
+    }
+    if (empty ($A['eid'])) {
+        $A['eid'] = addslashes (COM_makeSid ());
+    }
 
     COM_updateSpeedlimit ('submit');
 
@@ -459,7 +464,7 @@ function plugin_savesubmission_calendar($A)
     }
 
     if (isset ($A['hour_mode']) && ($A['hour_mode'] == 24)) {
-        $start_hour = COM_applyFilter ($A['start_hour_24'], true);
+        $start_hour = COM_applyFilter ($A['start_hour'], true);
         if ($start_hour >= 12) {
             $A['start_ampm'] = 'pm';
             $A['start_hour'] = $start_hour - 12;
@@ -470,7 +475,7 @@ function plugin_savesubmission_calendar($A)
         if ($A['start_hour'] == 0) {
             $A['start_hour'] = 12;
         }
-        $end_hour = COM_applyFilter ($A['end_hour_24'], true);
+        $end_hour = COM_applyFilter ($A['end_hour'], true);
         if ($end_hour >= 12) {
             $A['end_ampm'] = 'pm';
             $A['end_hour'] = $end_hour - 12;
@@ -613,17 +618,18 @@ function plugin_submit_calendar($mode = 'master')
 
     $retval .= COM_startBlock ($LANG_CAL_1[26], 'submitevent.html');
     $eventform = new Template ($_CONF['path'] . 'plugins/calendar/templates/');
-    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
-        $eventform->set_file ('eventform', 'submitevent24.thtml');
-    } else {
-        $eventform->set_file ('eventform', 'submitevent.thtml');
-    }
+    $eventform->set_file ('eventform', 'submitevent.thtml');
     if ($mode != 'personal') {
         $eventform->set_var ('explanation', $LANG_CAL_1[27]);
         $eventform->set_var ('submit_url', '/submit.php');
     } else {
         $eventform->set_var ('explanation', '');
         $eventform->set_var ('submit_url', '/calendar/index.php?view=savepersonal');
+    }
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $eventform->set_var ('hour_mode', 24);
+    } else {
+        $eventform->set_var ('hour_mode', 12);
     }
     $eventform->set_var ('site_url', $_CONF['site_url']);
     $eventform->set_var ('site_admin_url', $_CONF['site_admin_url']);
@@ -664,14 +670,25 @@ function plugin_submit_calendar($mode = 'master')
         $eventform->set_var ('am_selected', 'selected="selected"');
         $eventform->set_var ('pm_selected', '');
     }
+
+    $eventform->set_var ('startampm_selection', 
+                         CALENDAR_ampm_selector ('start_ampm', $ampm));
+    $eventform->set_var ('endampm_selection', 
+                         CALENDAR_ampm_selector ('end_ampm', $ampm));
+
     if ($cur_hour > 12) {
         $cur_hour = $cur_hour - 12;
     } else if ($cur_hour == 0) {
         $cur_hour = 12;
     }
-    $eventform->set_var ('hour_options', COM_getHourFormOptions ($cur_hour));
-    $eventform->set_var ('hour_options_24',
-                         COM_getHourFormOptions ($cur_hour_24, 24));
+
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $eventform->set_var ('hour_options',
+                             COM_getHourFormOptions ($cur_hour_24, 24));
+    } else {
+        $eventform->set_var ('hour_options',
+                             COM_getHourFormOptions ($cur_hour));
+    }
 
     $eventform->set_var('lang_enddate', $LANG_CAL_1[18]);
     $eventform->set_var('lang_endtime', $LANG_CAL_1[29]);
@@ -1589,6 +1606,42 @@ function CALENDAR_eventTypeList ($currtype = '')
             $retval .= ' selected="selected"';
         }
         $retval .= '>' . $type . '</option>';
+    }
+
+    return $retval;
+}
+
+/**
+* Create an am/pm selector dropdown menu
+*
+* @param    string  $name   name of the <select>
+* @param    string  $ampm   preselection: 'am' or 'pm'
+* @return   string          HTML for the dropdown; empty string in 24 hour mode
+*
+*/
+function CALENDAR_ampm_selector ($name, $ampm = '')
+{
+    global $_CA_CONF;
+
+    $retval = '';
+
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $retval = '';
+    } else {
+        if (empty ($ampm)) {
+            $ampm = date ('a');
+        }
+
+        $retval = '<select name="' . $name . '">' . LB;
+        $retval .= '<option value="am"';
+        if ($ampm == 'am') {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>am</option>' . LB . '<option value="pm"';
+        if ($ampm == 'pm') {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>pm</option>' . LB . '</select>' . LB;
     }
 
     return $retval;

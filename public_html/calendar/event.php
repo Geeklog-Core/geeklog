@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.14 2006/08/30 09:05:48 dhaun Exp $
+// $Id: event.php,v 1.15 2006/08/31 10:55:01 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -203,13 +203,15 @@ function editpersonalevent ($A)
     $year_options = COM_getYearFormOptions ($start_year);
     $cal_templates->set_var('startyear_options', $year_options);
 
-    $start_hour = date ('g', strtotime ($A['startdate']));
-    $hour_options = COM_getHourFormOptions ($start_hour);
-    $cal_templates->set_var ('starthour_options', $hour_options);
-
-    $start_hour_24 = date ('H', strtotime ($A['startdate']));
-    $hour_options_24 = COM_getHourFormOptions ($start_hour, 24);
-    $cal_templates->set_var ('starthour_options_24', $hour_options_24);
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $start_hour = date ('H', strtotime ($A['startdate']));
+        $hour_options = COM_getHourFormOptions ($start_hour, 24);
+        $cal_templates->set_var ('starthour_options', $hour_options);
+    } else {
+        $start_hour = date ('g', strtotime ($A['startdate']));
+        $hour_options = COM_getHourFormOptions ($start_hour);
+        $cal_templates->set_var ('starthour_options', $hour_options);
+    }
 
     $startmin = date ('i', strtotime ($A['startdate']));
     $cal_templates->set_var ('start00_selected', '');
@@ -219,13 +221,17 @@ function editpersonalevent ($A)
     $cal_templates->set_var ('start' . $startmin . '_selected',
                              'selected="selected"');
 
-    if (date ('a', strtotime ($A['startdate'])) == 'am') {
+    $ampm = date ('a', strtotime ($A['startdate']));
+    if ($ampm == 'am') {
         $cal_templates->set_var ('startam_selected', 'selected="selected"');
         $cal_templates->set_var ('startpm_selected', '');
     } else {
         $cal_templates->set_var ('startam_selected', '');
         $cal_templates->set_var ('startpm_selected', 'selected="selected"');
     }
+
+    $cal_templates->set_var ('startampm_selection',
+                         CALENDAR_ampm_selector ('startampm_selection', $ampm));
 
     // Handle end date/time
     $cal_templates->set_var('lang_enddate', $LANG_CAL_1[18]);
@@ -244,13 +250,15 @@ function editpersonalevent ($A)
     $year_options = COM_getYearFormOptions ($end_year);
     $cal_templates->set_var ('endyear_options', $year_options);
 
-    $end_hour = date ('g', strtotime ($A['enddate']));
-    $hour_options = COM_getHourFormOptions ($end_hour);
-    $cal_templates->set_var ('endhour_options', $hour_options);
-
-    $end_hour_24 = date ('H', strtotime ($A['enddate']));
-    $hour_options_24 = COM_getHourFormOptions ($end_hour, 24);
-    $cal_templates->set_var ('endhour_options_24', $hour_options_24);
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $end_hour = date ('H', strtotime ($A['enddate']));
+        $hour_options = COM_getHourFormOptions ($end_hour, 24);
+        $cal_templates->set_var ('endhour_options', $hour_options);
+    } else {
+        $end_hour = date ('g', strtotime ($A['enddate']));
+        $hour_options = COM_getHourFormOptions ($end_hour);
+        $cal_templates->set_var ('endhour_options', $hour_options);
+    }
 
     $endmin = date ('i', strtotime ($A['enddate']));
     $cal_templates->set_var ('end00_selected', '');
@@ -260,13 +268,17 @@ function editpersonalevent ($A)
     $cal_templates->set_var ('end' . $endmin . '_selected',
                              'selected="selected"');
 
-    if (date ('a', strtotime ($A['enddate'])) == 'am') {
+    $ampm = date ('a', strtotime ($A['enddate']));
+    if ($ampm == 'am') {
         $cal_templates->set_var ('endam_selected', 'selected="selected"');
         $cal_templates->set_var ('endpm_selected', '');
     } else {
         $cal_templates->set_var ('endam_selected', '');
         $cal_templates->set_var ('endpm_selected', 'selected="selected"');
     }
+
+    $cal_templates->set_var ('endampm_selection',
+                         CALENDAR_ampm_selector ('endampm_selection', $ampm));
 
     $cal_templates->set_var ('lang_alldayevent', $LANG_CAL_1[31]);
     if ($A['allday'] == 1) {
@@ -384,6 +396,17 @@ case 'saveuserevent':
             $display .= COM_showMessage (23);
             $display .= COM_siteFooter ();
         }
+    } else {
+        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+    break;
+
+case $LANG_CAL_1[45]: // save edited personal event
+    if (!empty ($LANG_CAL_1[45]) && ($_CA_CONF['personalcalendars'] == 1) &&
+            (!empty ($_USER['uid']) && ($_USER['uid'] > 1)) &&
+            (isset ($_POST['calendar_type']) &&
+             ($_POST['calendar_type'] == 'personal'))) {
+        $display = plugin_savesubmission_calendar ($_POST);
     } else {
         $display = COM_refresh ($_CONF['site_url'] . '/index.php');
     }

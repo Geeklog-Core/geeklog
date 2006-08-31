@@ -1,5 +1,6 @@
-                            <form action="{site_url}/calendar/event.php" method="post">
+                            <form action="{site_url}/calendar/event.php" method="POST">
                                 <input type="hidden" name="calendar_type" value="personal">
+                                <input type="hidden" name="hour_mode" value="{hour_mode}">
                                 <input type="hidden" name="eid" value="{eid}">
                                 <input type="hidden" name="uid" value="{uid}">
                                 <table border="0" cellspacing="0" cellpadding="3">
@@ -41,10 +42,7 @@
                                                 <option value="30" {start30_selected}>30</option>
                                                 <option value="45" {start45_selected}>45</option>
                                             </select>
-                                            <select name="start_ampm">
-                                                <option value="am" {startam_selected}>am</option>
-                                                <option value="pm" {startpm_selected}>pm</option>
-                                            </select>
+                                            {startampm_selection}
                                         </td>
                                     </tr>
                                     <tr>
@@ -72,10 +70,7 @@
                                                 <option value="30" {end30_selected}>30</option>
                                                 <option value="45" {end45_selected}>45</option>
                                             </select>
-                                            <select name="end_ampm">
-                                                <option value="am" {endam_selected}>am</option>
-                                                <option value="pm" {endpm_selected}>pm</option>
-                                            </select>
+                                            {endampm_selection}
                                         </td>
                                     </tr>
                                     <tr>
@@ -83,7 +78,7 @@
                                         <td><input type="checkbox" name="allday" {allday_checked}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_location}:</b></td>
+                                        <td align="right" valign="top"><b>{lang_location}:</b></td>
                                         <td>
                                             <textarea name="location" cols="45" rows="2">{event_location}</textarea>
                                         </td>
@@ -117,7 +112,7 @@
                                         <td><input type="text" size="36" maxlength="128" name="url" value="{event_url}"></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_description}:</b></td>
+                                        <td align="right" valign="top"><b>{lang_description}:</b></td>
                                         <td><textarea name="description" cols="50" rows="20">{event_description}</textarea></td>
                                     </tr>
                                     <tr>

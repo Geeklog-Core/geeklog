@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2006/08/06 16:56:16 dhaun Exp $
+// $Id: index.php,v 1.24 2006/08/31 10:55:02 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -87,11 +87,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     }
 
     $event_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/admin');
-    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
-        $event_templates->set_file('editor','eventeditor24.thtml');
-    } else {
-        $event_templates->set_file('editor','eventeditor.thtml');
-    }
+    $event_templates->set_file('editor','eventeditor.thtml');
     $event_templates->set_var('site_url', $_CONF['site_url']);
     $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
@@ -211,9 +207,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     if ($start_hour >= 12) {
         $event_templates->set_var ('startam_selected', '');
         $event_templates->set_var ('startpm_selected', 'selected="selected"');
+        $startampm = 'pm';
     } else {
         $event_templates->set_var ('startam_selected', 'selected="selected"');
         $event_templates->set_var ('startpm_selected', '');
+        $startampm = 'am';
     }
     $start_hour_24 = $start_hour % 24;
     if ($start_hour > 12) {
@@ -227,9 +225,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     if ($end_hour >= 12) {
         $event_templates->set_var ('endam_selected', '');
         $event_templates->set_var ('endpm_selected', 'selected="selected"');
+        $endampm = 'pm';
     } else {
         $event_templates->set_var ('endam_selected', 'selected="selected"');
         $event_templates->set_var ('endpm_selected', '');
+        $endampm = 'am';
     }
     $end_hour_24 = $end_hour % 24;
     if ($end_hour > 12) {
@@ -256,17 +256,23 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $year_options = COM_getYearFormOptions ($end_year);
     $event_templates->set_var ('endyear_options', $year_options);
 
-    $hour_options = COM_getHourFormOptions ($start_hour);
-    $event_templates->set_var ('starthour_options', $hour_options);
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $hour_options = COM_getHourFormOptions ($start_hour_24, 24);
+        $event_templates->set_var ('starthour_options', $hour_options);
 
-    $hour_options = COM_getHourFormOptions ($start_hour_24, 24);
-    $event_templates->set_var ('starthour_options_24', $hour_options);
+        $hour_options = COM_getHourFormOptions ($end_hour_24, 24);
+        $event_templates->set_var ('endhour_options', $hour_options);
 
-    $hour_options = COM_getHourFormOptions ($end_hour);
-    $event_templates->set_var ('endhour_options', $hour_options);
+        $event_templates->set_var ('hour_mode', 24);
+    } else {
+        $hour_options = COM_getHourFormOptions ($start_hour);
+        $event_templates->set_var ('starthour_options', $hour_options);
 
-    $hour_options = COM_getHourFormOptions ($end_hour_24, 24);
-    $event_templates->set_var ('endhour_options_24', $hour_options);
+        $hour_options = COM_getHourFormOptions ($end_hour);
+        $event_templates->set_var ('endhour_options', $hour_options);
+
+        $event_templates->set_var ('hour_mode', 12);
+    }
 
     // Set minute for start time
     switch ($start_minute) {
@@ -299,6 +305,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $event_templates->set_var('endminuteoption4_selected', 'selected="selected"');
         break;
     }
+
+    $event_templates->set_var ('startampm_selection', 
+                            CALENDAR_ampm_selector ('start_ampm', $startampm));
+    $event_templates->set_var ('endampm_selection', 
+                            CALENDAR_ampm_selector ('end_ampm', $endampm));
 
     $event_templates->set_var('lang_enddate', $LANG12[13]);
     $event_templates->set_var('lang_eventenddate', $LANG_CAL_ADMIN[6]);
@@ -379,7 +390,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                              $location, $address1, $address2, $city, $state,
                              $zipcode, $description, $postmode, $owner_id,
                              $group_id, $perm_owner, $perm_group, $perm_members,
-                             $perm_anon, $hour_mode, $start_hour_24, $end_hour_24)
+                             $perm_anon, $hour_mode)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_CAL_ADMIN, $MESSAGE;
 
@@ -421,22 +432,22 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
     if ($hour_mode == 24) {
         // to avoid having to mess with the tried and tested code below, map
         // the 24-hour values onto their 12-hour counterparts and use those
-        if ($start_hour_24 >= 12) {
+        if ($start_hour >= 12) {
             $start_ampm = 'pm';
-            $start_hour = $start_hour_24 - 12;
+            $start_hour = $start_hour - 12;
         } else {
             $start_ampm = 'am';
-            $start_hour = $start_hour_24;
+            $start_hour = $start_hour;
         }
         if ($start_hour == 0) {
             $start_hour = 12;
         }
-        if ($end_hour_24 >= 12) {
+        if ($end_hour >= 12) {
             $end_ampm = 'pm';
-            $end_hour = $end_hour_24 - 12;
+            $end_hour = $end_hour - 12;
         } else {
             $end_ampm = 'am';
-            $end_hour = $end_hour_24;
+            $end_hour = $end_hour;
         }
         if ($end_hour == 0) {
             $end_hour = 12;
@@ -599,16 +610,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $_POST['allday'] = '';
     }
     $hour_mode = 12;
-    $start_hour_24 = 0;
-    $end_hour_24 = 0;
     if (isset ($_POST['hour_mode']) && ($_POST['hour_mode'] == 24)) {
         $hour_mode = 24;
-        if (isset ($_POST['start_hour_24'])) {
-            $start_hour_24 = COM_applyFilter ($_POST['start_hour_24'], true);
-        }
-        if (isset ($_POST['end_hour_24'])) {
-            $end_hour_24 = COM_applyFilter ($_POST['end_hour_24'], true);
-        }
     }
     $display .= CALENDAR_saveEvent (COM_applyFilter ($_POST['eid']),
             $_POST['title'], $_POST['event_type'],
@@ -629,8 +632,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
             COM_applyFilter ($_POST['owner_id'], true),
             COM_applyFilter ($_POST['group_id'], true),
             $_POST['perm_owner'], $_POST['perm_group'],
-            $_POST['perm_members'], $_POST['perm_anon'],
-            $hour_mode, $start_hour_24, $end_hour_24);
+            $_POST['perm_members'], $_POST['perm_anon'], $hour_mode);
 } else if ($mode == 'editsubmission') {
     $id = COM_applyFilter ($_REQUEST['id']);
     $result = DB_query ("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
