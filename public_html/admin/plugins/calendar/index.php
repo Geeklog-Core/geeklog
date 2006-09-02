@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.24 2006/08/31 10:55:02 dhaun Exp $
+// $Id: index.php,v 1.25 2006/09/02 13:24:27 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -205,12 +205,8 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $start_hour = date ('H', $start_stamp);
     $start_minute = intval (date ('i', $start_stamp) / 15) * 15;
     if ($start_hour >= 12) {
-        $event_templates->set_var ('startam_selected', '');
-        $event_templates->set_var ('startpm_selected', 'selected="selected"');
         $startampm = 'pm';
     } else {
-        $event_templates->set_var ('startam_selected', 'selected="selected"');
-        $event_templates->set_var ('startpm_selected', '');
         $startampm = 'am';
     }
     $start_hour_24 = $start_hour % 24;
@@ -223,12 +219,8 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $end_hour = date('H', $end_stamp);
     $end_minute = intval (date('i', $end_stamp) / 15) * 15;
     if ($end_hour >= 12) {
-        $event_templates->set_var ('endam_selected', '');
-        $event_templates->set_var ('endpm_selected', 'selected="selected"');
         $endampm = 'pm';
     } else {
-        $event_templates->set_var ('endam_selected', 'selected="selected"');
-        $event_templates->set_var ('endpm_selected', '');
         $endampm = 'am';
     }
     $end_hour_24 = $end_hour % 24;
@@ -274,42 +266,15 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $event_templates->set_var ('hour_mode', 12);
     }
 
-    // Set minute for start time
-    switch ($start_minute) {
-    case '00':
-        $event_templates->set_var('startminuteoption1_selected', 'selected="selected"');
-        break;
-    case '15':
-        $event_templates->set_var('startminuteoption2_selected', 'selected="selected"');
-        break;
-    case '30':
-        $event_templates->set_var('startminuteoption3_selected', 'selected="selected"');
-        break;
-    case '45':
-        $event_templates->set_var('startminuteoption4_selected', 'selected="selected"');
-        break;
-    }
-
-    // Set minute for end time
-    switch ($end_minute) {
-    case '00':
-        $event_templates->set_var('endminuteoption1_selected', 'selected="selected"');
-        break;
-    case '15':
-        $event_templates->set_var('endminuteoption2_selected', 'selected="selected"');
-        break;
-    case '30':
-        $event_templates->set_var('endminuteoption3_selected', 'selected="selected"');
-        break;
-    case '45':
-        $event_templates->set_var('endminuteoption4_selected', 'selected="selected"');
-        break;
-    }
-
     $event_templates->set_var ('startampm_selection', 
                             CALENDAR_ampm_selector ('start_ampm', $startampm));
     $event_templates->set_var ('endampm_selection', 
                             CALENDAR_ampm_selector ('end_ampm', $endampm));
+
+    $event_templates->set_var ('startminute_options',
+                               COM_getMinuteFormOptions ($start_minute, 15));
+    $event_templates->set_var ('endminute_options',
+                               COM_getMinuteFormOptions ($end_minute, 15));
 
     $event_templates->set_var('lang_enddate', $LANG12[13]);
     $event_templates->set_var('lang_eventenddate', $LANG_CAL_ADMIN[6]);

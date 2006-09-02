@@ -166,6 +166,8 @@ GeekLog History/Changes:
 
 Calendar plugin (1.0.0)
 ---------------
+- Added an option to switch between 24 hour and 12 hour am/pm mode for entering
+  and editing events [Dirk]
 - Implemented plugin_enablestatechange API function to enable/disable plugin
   feeds and blocks when the plugin is enabled/disabled [Dirk]
 - Added calendar plugin initial version [Oliver]

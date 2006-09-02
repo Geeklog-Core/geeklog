@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.15 2006/08/31 10:55:01 dhaun Exp $
+// $Id: event.php,v 1.16 2006/09/02 13:24:27 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -213,23 +213,11 @@ function editpersonalevent ($A)
         $cal_templates->set_var ('starthour_options', $hour_options);
     }
 
-    $startmin = date ('i', strtotime ($A['startdate']));
-    $cal_templates->set_var ('start00_selected', '');
-    $cal_templates->set_var ('start15_selected', '');
-    $cal_templates->set_var ('start30_selected', '');
-    $cal_templates->set_var ('start45_selected', '');
-    $cal_templates->set_var ('start' . $startmin . '_selected',
-                             'selected="selected"');
+    $startmin = intval (date ('i', strtotime ($A['startdate'])) / 15) * 15;
+    $cal_templates->set_var ('startminute_options',
+                             COM_getMinuteFormOptions ($startmin, 15));
 
     $ampm = date ('a', strtotime ($A['startdate']));
-    if ($ampm == 'am') {
-        $cal_templates->set_var ('startam_selected', 'selected="selected"');
-        $cal_templates->set_var ('startpm_selected', '');
-    } else {
-        $cal_templates->set_var ('startam_selected', '');
-        $cal_templates->set_var ('startpm_selected', 'selected="selected"');
-    }
-
     $cal_templates->set_var ('startampm_selection',
                          CALENDAR_ampm_selector ('startampm_selection', $ampm));
 
@@ -260,23 +248,11 @@ function editpersonalevent ($A)
         $cal_templates->set_var ('endhour_options', $hour_options);
     }
 
-    $endmin = date ('i', strtotime ($A['enddate']));
-    $cal_templates->set_var ('end00_selected', '');
-    $cal_templates->set_var ('end15_selected', '');
-    $cal_templates->set_var ('end30_selected', '');
-    $cal_templates->set_var ('end45_selected', '');
-    $cal_templates->set_var ('end' . $endmin . '_selected',
-                             'selected="selected"');
+    $endmin = intval (date ('i', strtotime ($A['enddate'])) / 15) * 15;
+    $cal_templates->set_var ('endminute_options',
+                             COM_getMinuteFormOptions ($endmin, 15));
 
     $ampm = date ('a', strtotime ($A['enddate']));
-    if ($ampm == 'am') {
-        $cal_templates->set_var ('endam_selected', 'selected="selected"');
-        $cal_templates->set_var ('endpm_selected', '');
-    } else {
-        $cal_templates->set_var ('endam_selected', '');
-        $cal_templates->set_var ('endpm_selected', 'selected="selected"');
-    }
-
     $cal_templates->set_var ('endampm_selection',
                          CALENDAR_ampm_selector ('endampm_selection', $ampm));
 

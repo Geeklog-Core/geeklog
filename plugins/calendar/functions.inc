@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.51 2006/08/31 10:55:01 dhaun Exp $
+// $Id: functions.inc,v 1.52 2006/09/02 13:24:26 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -422,6 +422,14 @@ function plugin_savesubmission_calendar($A)
                             $A['end_year'], $A['end_month'], $A['end_day']);
     }
 
+    // for the quickadd form, which doesn't have end date/time fields
+    if (!isset ($A['end_hour'])) {
+        $A['end_hour'] = $A['start_hour'];
+    }
+    if (!isset ($A['end_minute'])) {
+        $A['end_minute'] = $A['start_minute'];
+    }
+
     // pseudo-formatted event description for the spam check
     $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a><br>'
                . $A['location'] . '<br>' . $A['address1'] . '<br>'
@@ -486,6 +494,9 @@ function plugin_savesubmission_calendar($A)
         if ($A['end_hour'] == 0) {
             $A['end_hour'] = 12;
         }
+    }
+    if (!isset ($A['end_ampm'])) {
+        $A['end_ampm'] = $A['start_ampm'];
     }
 
     $A['start_hour'] = COM_applyFilter ($A['start_hour'], true);
@@ -664,11 +675,9 @@ function plugin_submit_calendar($mode = 'master')
     }
     $cur_hour_24 = $cur_hour % 24;
     if ($cur_hour >= 12) {
-        $eventform->set_var ('am_selected', '');
-        $eventform->set_var ('pm_selected', 'selected="selected"');
+        $ampm = 'pm';
     } else {
-        $eventform->set_var ('am_selected', 'selected="selected"');
-        $eventform->set_var ('pm_selected', '');
+        $ampm = 'am';
     }
 
     $eventform->set_var ('startampm_selection', 
@@ -689,6 +698,9 @@ function plugin_submit_calendar($mode = 'master')
         $eventform->set_var ('hour_options',
                              COM_getHourFormOptions ($cur_hour));
     }
+    $cur_min = intval (date ('i') / 15) * 15;
+    $eventform->set_var ('minute_options',
+                         COM_getMinuteFormOptions ($cur_min, 15));
 
     $eventform->set_var('lang_enddate', $LANG_CAL_1[18]);
     $eventform->set_var('lang_endtime', $LANG_CAL_1[29]);

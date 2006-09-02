@@ -37,10 +37,7 @@
                                             </select>
                                             :
                                             <select name="start_minute">
-                                                <option value="00" {start00_selected}>00</option>
-                                                <option value="15" {start15_selected}>15</option>
-                                                <option value="30" {start30_selected}>30</option>
-                                                <option value="45" {start45_selected}>45</option>
+                                                {startminute_options}
                                             </select>
                                             {startampm_selection}
                                         </td>
@@ -65,10 +62,7 @@
                                             </select>
                                             :
                                             <select name="end_minute">
-                                                <option value="00" {end00_selected}>00</option>
-                                                <option value="15" {end15_selected}>15</option>
-                                                <option value="30" {end30_selected}>30</option>
-                                                <option value="45" {end45_selected}>45</option>
+                                                {endminute_options}
                                             </select>
                                             {endampm_selection}
                                         </td>

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2006/08/22 08:01:20 dhaun Exp $
+// $Id: index.php,v 1.16 2006/09/02 13:24:27 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -313,7 +313,7 @@ function getSmallCalendar ($m, $y, $mode = '')
 */
 function getQuickAdd($tpl, $month, $day, $year)
 {
-    global $LANG_CAL_2;
+    global $_CA_CONF, $LANG_CAL_2;
 
     $tpl->set_var ('month_options', COM_getMonthFormOptions ($month));
     $tpl->set_var ('day_options', COM_getDayFormOptions ($day));
@@ -321,18 +321,28 @@ function getQuickAdd($tpl, $month, $day, $year)
 
     $cur_hour = date ('H', time ());
     if ($cur_hour >= 12) {
-        $tpl->set_var ('am_selected', '');
-        $tpl->set_var ('pm_selected', 'selected="selected"');
+        $ampm = 'pm';
     } else {
-        $tpl->set_var ('am_selected', 'selected="selected"');
-        $tpl->set_var ('pm_selected', '');
+        $ampm = 'am';
     }
+    $cur_hour_24 = $cur_hour % 24;
     if ($cur_hour > 12) {
         $cur_hour = $cur_hour - 12;
     } else if ($cur_hour == 0) {
         $cur_hour = 12;
     }
-    $tpl->set_var('hour_options', COM_getHourFormOptions ($cur_hour));
+    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $tpl->set_var ('hour_mode', 24);
+        $tpl->set_var ('hour_options',
+                       COM_getHourFormOptions ($cur_hour_24, 24));
+    } else {
+        $tpl->set_var ('hour_mode', 12);
+        $tpl->set_var ('hour_options', COM_getHourFormOptions ($cur_hour));
+    }
+    $tpl->set_var ('startampm_selection',
+                   CALENDAR_ampm_selector ('start_ampm', $ampm));
+    $cur_min = intval (date ('i') / 15) * 15;
+    $tpl->set_var ('minute_options', COM_getMinuteFormOptions ($cur_min, 15));
 
     $tpl->set_var ('lang_event', $LANG_CAL_2[32]);
     $tpl->set_var ('lang_date', $LANG_CAL_2[33]);
