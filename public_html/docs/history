@@ -214,8 +214,8 @@ Spam-X plugin (1.1.0)
 - Added SLV (Spam Link Verification) modules [Dirk]
 - The MT-Blacklist modules are not being shipped with Geeklog any longer. The
   MT-Blacklist entries are removed from the database during the upgrade [Dirk]
-- Allow special characters (e.g. backslashes) in the Personal Blacklist module 
-  (probably needed in other modules, too - work in progress) [Dirk]
+- Allow special characters (e.g. backslashes) in the Admin modules (e.g. the
+  Personal Blacklist module) [Dirk]
 - Moved spam actions to plugin_spamaction_spamx API function [Dirk]
 - Fixed potential problems with the checkforSpam function's return code in case
   of unusual configurations (e.g. $_CONF['spamx'] = 0) [Dirk, Tom Willet]

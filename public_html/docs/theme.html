@@ -180,6 +180,16 @@ to output any HTML you like.</p>
 
 <h2><a name="changes">Theme changes in Geeklog 1.4.1</a></h2>
 
+<p>As usual, any missing new theme files can simply be copied over from the
+default theme (Professional) that ships with Geeklog.</p>
+
+<h3>Admin templates</h3>
+
+<p>Many of the admin template files have had minor changes to tweak appearance
+or functionality. If you didn't modify the admin templates in your theme, the
+easiest way to upgrade your theme's admin templates is to simply replace the
+entire 'admin' directory with the one from Geeklog's Professional theme.</p>
+
 <ul>
 <li>All the "delete" buttons in the admin's editors (story editor, etc.) now
     pop up a JavaScript confirmation box as a simple measure against
@@ -192,12 +202,38 @@ to output any HTML you like.</p>
 <li>Changed the top links in <tt>lists/topmenu_nosearch.thtml</tt> and
     <tt>topic/topiclist.thtml</tt> to be consistent with the other admin areas
     (i.e. the links are no longer enclosed in square brackets).</li>
-<li>The Article Author's tag in <tt>/storytext.thtml</tt> and
-    <tt>/featuredstorytext.thtml</tt> is now called
-    <code>{contributedby_author}.</code></li>
 <li>To enable changing the group ownership of "gldefault" blocks, the
     <tt>defaultblockeditor.thtml</tt> has to be changed to include a
     <code>{group_dropdown}</code> variable.
+</ul>
+
+<h3>Other theme changes</h3>
+
+<ul>
+<li>The template files used by the Calendar plugin are now located in the
+    plugin's directory, (<tt>/path/to/geeklog/plugins/calendar/templates</tt>),
+    so the entire 'calendar' directory can be removed from the theme
+    directory.<br>
+    The <tt>submitevent.thtml</tt>, <tt>editpersonalevent.thtml</tt>,
+    <tt>admin/eventeditor.thtml</tt>, and <tt>dayview/quickaddform.thtml</tt>
+    have also been changed to (optionally) support entering the time in <a
+    href="calendar.html#desc_hour_mode">24 hour mode</a>: A hidden input field
+    "hour_mode" is now required, the am/pm dropdowns are available as variables
+    <code>{startampm_selection}</code>, <code>{endampm_selection}</code>,
+    <code>{ampm_selection}</code>, depending on the template file), and the
+    dropdowns for the minutes are available as variables
+    (<code>{startminute_options}</code>, <code>{endminute_options}</code>,
+    <code>{minute_options}</code>, depending on the template file).</li>
+    </li>
+<li>The variables <code>{author}</code> and <code>{owner}</code> are now
+    available in every template where an object's author (e.g. story or
+    comment author) or owner (e.g. owner of a block) name can be displayed.
+    They will also respect the <a
+    href="config.html#desc_show_fullname">$_CONF['show_fullname']</a> setting,
+    i.e. display either the user's full name or username.</li>
+<li>The Article Author's tag in <tt>storytext.thtml</tt> and
+    <tt>featuredstorytext.thtml</tt> is now called
+    <code>{contributedby_author}.</code></li>
 <li>To enable a remarks field in the answer to polls, the
     <tt>pollvotes_bar.thtml</tt>, <tt>pollansweroption.thtml</tt> and
     <tt>polleditor.thtml</tt> were changed. The 
@@ -207,13 +243,14 @@ to output any HTML you like.</p>
     same as the <tt>pollansweroption.thtml</tt>.
 <li>A user's Account Information page has been redesigned. While there were no
     technical changes (i.e. template files from earlier versions will still
-    work), some optionas have been rearranged a note has been added to tell the
-    user that the current password is required to change those. Affected files
-    in the <tt>preferences</tt> directory: <tt>profile.thtml</tt>,
+    work), some options have been rearranged and a note has been added to tell
+    the user that the current password is required to change those. Affected
+    files in the <tt>preferences</tt> directory: <tt>profile.thtml</tt>,
     <tt>username.thtml</tt>, and <tt>userphoto.thtml</tt>.</li>
 </ul>
 
 <h3>Professional theme</h3>
+
 <p>The following changes are specific to the Professional theme. There is
 probably no need to port them over to other themes.</p>
 
