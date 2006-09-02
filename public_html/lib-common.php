@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.568 2006/09/02 12:30:36 dhaun Exp $
+// $Id: lib-common.php,v 1.569 2006/09/02 21:39:57 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2242,21 +2242,21 @@ function COM_adminMenu( $help = '', $title = '' )
             }
         }
 
-        $num = 0;
-        if( SEC_hasRights( 'story.edit,story.moderate', 'OR' )  || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
+        $modnum = 0;
+        if( SEC_hasRights( 'story.edit,story.moderate', 'OR' ) || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
         {
 
             if( SEC_hasRights( 'story.moderate' ))
             {
                 if( empty( $topicsql ))
                 {
-                    $num += DB_count( $_TABLES['storysubmission'] );
+                    $modnum += DB_count( $_TABLES['storysubmission'] );
                 }
                 else
                 {
                     $sresult = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['storysubmission']} WHERE" . $topicsql );
                     $S = DB_fetchArray( $sresult );
-                    $num += $S['count'];
+                    $modnum += $S['count'];
                 }
             }
 
@@ -2269,28 +2269,20 @@ function COM_adminMenu( $help = '', $title = '' )
                 }
                 $result = DB_query( $sql . COM_getPermSQL( 'AND', 0, 3 ));
                 $A = DB_fetchArray( $result );
-                $num += $A['count'];
+                $modnum += $A['count'];
             }
 
             if( $_CONF['usersubmission'] == 1 )
             {
                 if( SEC_hasRights( 'user.edit' ) && SEC_hasRights( 'user.delete' ))
                 {
-                    $num += DB_count( $_TABLES['users'], 'status', '2' );
+                    $modnum += DB_count( $_TABLES['users'], 'status', '2' );
                 }
             }
 
             // now handle submissions for plugins
-            $num = $num + PLG_getSubmissionCount();
+            $modnum += PLG_getSubmissionCount();
         }
-
-        $url = $_CONF['site_admin_url'] . '/moderation.php';
-        $adminmenu->set_var( 'option_url', $url );
-        $adminmenu->set_var( 'option_label', $LANG01[10] );
-        $adminmenu->set_var( 'option_count', COM_numberFormat( $num ));
-        $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-        $link_array[$LANG01[10]] = $menu_item;
 
         if( SEC_hasRights( 'story.edit' ))
         {
@@ -2507,6 +2499,14 @@ function COM_adminMenu( $help = '', $title = '' )
         {
             ksort( $link_array );
         }
+
+        $url = $_CONF['site_admin_url'] . '/moderation.php';
+        $adminmenu->set_var( 'option_url', $url );
+        $adminmenu->set_var( 'option_label', $LANG01[10] );
+        $adminmenu->set_var( 'option_count', COM_numberFormat( $modnum ));
+        $menu_item = $adminmenu->parse( 'item',
+                    ( $thisUrl == $url ) ? 'current' : 'option' );
+        $link_array = array( $menu_item ) + $link_array;
 
         foreach( $link_array as $link )
         {

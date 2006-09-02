@@ -3,6 +3,9 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Always make "Submissions" the first entry in the Admins Only block to keep
+  the correspondence between the other entries and the icons on the moderation
+  page undisturbed (and because it's an important entry) [Dirk]
 - Fixed 'emailstoriesperdefault' config option (bug #553) [Dirk]
 - Added support for Microsoft SQL Server, provided by Randy Kolenko
 - Introduced $_CONF['disallow_domains'] as a blacklist of domain names that are
