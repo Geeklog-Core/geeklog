@@ -13,14 +13,14 @@
 </table>
 <div style="border: 1px solid grey">
 <form name="groupusers" action="{phpself}?group={groupid}" method="post" style="margin:0px;"> 
-<table width="100%" cellspacing="0" cellpadding="0" border="0" class="pluginBG" style="padding:15px;">
+<table width="99%" cellspacing="0" cellpadding="0" border="0" class="pluginBG" style="padding:15px;">
     <tr align="middle">
-        <td class="blocktitle" style="padding:5px; text-align:middle;">{LANG_sitemembers}</th>
+        <td class="blocktitle" style="padding:5px 40px 5px 5px; text-align:right;">{LANG_sitemembers}</th>
         <td>&nbsp;</th>
-        <td class="blocktitle" style="padding:5px; text-align:middle;">{LANG_grpmembers}</th>
+        <td class="blocktitle" style="padding:5px 5px 5px 20px; text-align:left;">{LANG_grpmembers}</th>
     </tr>
     <tr align="middle">
-        <td>
+        <td width="40%" style="text-align:right;padding-right:5px;">
             <select multiple size="10" name="fieldFrom" style="width: 15em; height: 20em; padding: 2px;" onDblClick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">{sitemembers}</select>
         </td> 
     <td valign="middle" align="center">
@@ -29,7 +29,7 @@
         <input type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">
         <br><br>
     </td>
-        <td>
+        <td width="40%" style="text-align:left;padding-left:5px;">
             <select multiple size="10" name="fieldTo" style="width: 15em; height: 20em; padding: 2px;" onDblClick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">{group_list}</select>
         </td> 
     </tr>
