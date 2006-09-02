@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: ukrainian.php,v 1.2 2006/08/20 16:52:50 dhaun Exp $
+ * $Id: ukrainian.php,v 1.3 2006/09/02 15:35:46 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -121,7 +121,8 @@ $LANG_SX00 = array (
     'stats_header' => 'HTTP-заголовки',
     'stats_deleted' => 'Пости видалені як спам',
 
-    'plugin_name' => 'Spam-X'
+    'plugin_name' => 'Spam-X',
+    'slvwhitelist' => 'SLV Whitelist'
 );
 
 

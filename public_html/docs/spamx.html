@@ -64,6 +64,7 @@ dropped in and it will be added to the plugin.</p>
 <li><a href="#personal">Personal Blacklist</a></li>
 <li><a href="#ip">IP Filter</a></li>
 <li><a href="#ipofurl">IP of URL Filter</a></li>
+<li><a href="#header">HTTP Header Filter</a></li>
 </ul>
 
 <h3><a name="slv">Spam Link Verification (SLV)</a></h3>
@@ -89,10 +90,10 @@ laws.</p>
 
 <p>Sending information to an external site may also be undesirable on some
 setups, e.g. on a company intranet. You can disable SLV support by removing the
-three files <tt>SLV.Examine.class.php</tt>, <tt>SLVbase.class.php</tt>, and
-<tt>SLVreport.Action.class.php</tt> from your Spam-X directory
-(<tt>/path/to/geeklog/plugins/spamx</tt>). Or you can simply disable the Spam-X
-plugin entirely (or uninstall it).</p>
+four files <tt>SLV.Examine.class.php</tt>, <tt>SLVbase.class.php</tt>,
+<tt>SLVreport.Action.class.php</tt>, and <tt>SLVwhitelist.Admin.class.php</tt>
+ from your Spam-X directory (<tt>/path/to/geeklog/plugins/spamx</tt>). Or you
+can simply disable the Spam-X plugin entirely (or uninstall it).</p>
 
 <p>The SLV Examine and Action modules will extract all URLs from a post and
 only send those to SLV (i.e. the rest of the post's content is not being sent).
@@ -139,6 +140,25 @@ adding lots of domains to your blacklist, you only add the IP addresses of
 those webservers. The Spam-X module will then check all the URLs in a post to
 see if any of these is hosted on one of those blacklisted webservers.</p>
 
+<h3><a name="header">HTTP Header Filter</a></h3>
+
+<p>This module lets you filter for certain HTTP headers. Every HTTP request
+sent to your site is accompanied by a series of headers identifying, for
+example, the browser that your visitors uses, their preferred language, and
+other information.</p>
+
+<p>With the Header filter module, you can block HTTP requests with certain
+headers. For example, some spammers are using Perl scripts to send their spam
+posts. The user agent (browser identification) sent by Perl scripts is usually
+something like "libwww-perl/5.805" (the version number may vary). So to block
+posts made by this user agent, you would enter:</p>
+<table border="0" style="width:15em">
+<tr><td><b>Header:</b></td><td align="left"><kbd>User-Agent</kbd></td></tr>
+<tr><td><b>Content:</b></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
+</table>
+<p>This would block all posts from user agents beginning with "libwww-perl".</p>
+
+
 <h2><a name="action">Action Modules</a></h2>
 
 <p>Once one of the <a href="#examine">examine modules</a> detects a spam post,
@@ -174,14 +194,21 @@ Action module, you'll also enable the SLV Action module.</p>
 <h2><a name="admin">Admin Modules</a></h2>
 
 <p>The Admin modules for the <a href="#personal">Personal Blacklist</a>, <a
-href="#ip">IP Filter</a>, and <a href="#ipofurl">IP of URL Filter</a> modules
-provide you with a form to enter new entries. To delete an existing entry,
-simply click on it.</p>
+href="#ip">IP Filter</a>, <a href="#ipofurl">IP of URL Filter</a>, and <a
+href="#header">HTTP Header Filter</a> modules provide you with a form to add
+new entries. To delete an existing entry, simply click on it.</p>
 
-<p>The Log View module lets you inspect and clear the Spam-X logfile. The
-logfile contains additional information about the spam posts, e.g. which IP
-address they came from, the user id (if posted by a logged-in user), and which
-of the examine modules caught the spam post.</p>
+<p>With the <strong>SLV Whitelist</strong> admin module you can add URLs that
+you don't want to be reported to SLV. This is useful when posts on your site
+happen to contain certain URLs quite often but you don't want those to be
+considered spam by SLV.<br>Note that your site's URL (i.e. <a
+href="config.html#desc_site_url">$_CONF['site_url']</a>) is automatically
+whitelisted, so you don't need to add it here.</p>
+
+<p>The <strong>Log View</strong> module lets you inspect and clear the Spam-X
+logfile. The logfile contains additional information about the spam posts, e.g.
+which IP address they came from, the user id (if posted by a logged-in user),
+and which of the examine modules caught the spam post.</p>
 
 <p>In case a large number of spam posts made it through without being caught,
 the Mass Delete Comments and Mass Delete Trackbacks modules will help you get

@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: french_canada.php,v 1.7 2006/08/20 16:52:50 dhaun Exp $
+ * $Id: french_canada.php,v 1.8 2006/09/02 15:35:46 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -123,7 +123,8 @@ $LANG_SX00 = array (
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
 
-    'plugin_name' => 'Spam-X'
+    'plugin_name' => 'Spam-X',
+    'slvwhitelist' => 'SLV Whitelist'
 );
 
 

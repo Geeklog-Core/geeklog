@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english_utf-8.php,v 1.3 2006/08/26 08:16:00 dhaun Exp $
+ * $Id: english_utf-8.php,v 1.4 2006/09/02 15:35:46 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -121,7 +121,8 @@ $LANG_SX00 = array (
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
 
-    'plugin_name' => 'Spam-X'
+    'plugin_name' => 'Spam-X',
+    'slvwhitelist' => 'SLV Whitelist'
 );
 
 

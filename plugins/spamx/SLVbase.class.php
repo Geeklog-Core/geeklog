@@ -9,7 +9,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: SLVbase.class.php,v 1.1 2006/08/27 09:30:19 dhaun Exp $
+* $Id: SLVbase.class.php,v 1.2 2006/09/02 15:35:46 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'SLVbase.class.php') !== false) {
@@ -100,19 +100,50 @@ class SLVbase {
     }
 
     /**
+    * Check whitelist
+    *
+    * Check against our whitelist of sites not to report to SLV. Note that
+    * URLs starting with $_CONF['site_url'] have already been removed earlier.
+    *
+    * @param    array   &$links     array of URLs from a post
+    * @return   void ($links is passed by reference and modified in place)
+    *
+    */
+    function checkWhitelist (&$links)
+    {
+        global $_TABLES;
+
+        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='SLVwhitelist'", 1);
+        $nrows = DB_numRows ($result);
+
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);
+            $val = $A['value'];
+
+            foreach ($links as $key => $link) {
+                if (!empty ($link)) {
+                    if (preg_match ("#$val#i", $link)) {
+                        $links[$key] = '';
+                    }
+                }
+            }
+        }
+    }
+
+    /**
     * Extract links
     *
     * Extracts all the links from a post; expects HTML links, i.e. <a> tags
     *
     * @param    string  $comment    The post to check
-    * @return   string              All the URLs in the post, sep. by linefeeds
+    * @return   array               All the URLs in the post
     *
     */
     function getLinks ($comment)
     {
         global $_CONF;
 
-        $links = '';
+        $links = array();
 
         preg_match_all( "/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
                         $comment, $matches );
@@ -122,7 +153,7 @@ class SLVbase {
                 // skip links to our own site
                 continue;
             } else {
-                $links .= $url . "\n";
+                $links[] = $url;
             }
         }
 
@@ -144,6 +175,9 @@ class SLVbase {
     */
     function prepareLinks ($comment)
     {
+        $links = array();
+        $linklist = '';
+
         // some spam posts have extra backslashes
         $comment = stripslashes ($comment);
 
@@ -159,9 +193,14 @@ class SLVbase {
 
         // strip all HTML, then get all the plain text links
         $comment = COM_makeClickableLinks (strip_tags ($comment));
-        $links .= $this->getLinks ($comment);
+        $links += $this->getLinks ($comment);
 
-        return $links;
+        if (count ($links) > 0) {
+            $this->checkWhitelist ($links);
+            $linklist = implode ("\n", $links);
+        }
+
+        return $linklist;
     }
 }
 

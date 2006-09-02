@@ -121,7 +121,8 @@ $LANG_SX00 = array (
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
 
-    'plugin_name' => 'Spam-X'
+    'plugin_name' => 'Spam-X',
+    'slvwhitelist' => 'SLV Whitelist'
 );
 
 

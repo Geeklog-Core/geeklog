@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish.php,v 1.5 2006/08/20 16:52:50 dhaun Exp $
+ * $Id: spanish.php,v 1.6 2006/09/02 15:35:46 dhaun Exp $
  */
 
 // +---------------------------------------------------------------------------+
@@ -128,7 +128,8 @@ $LANG_SX00 = array (
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
 
-    'plugin_name' => 'Spam-X'
+    'plugin_name' => 'Spam-X',
+    'slvwhitelist' => 'SLV Whitelist'
 );
 
 
