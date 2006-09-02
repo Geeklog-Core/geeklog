@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.83 2006/08/20 05:08:42 blaine Exp $
+// $Id: group.php,v 1.84 2006/09/02 20:59:57 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -618,15 +618,22 @@ function listusers ($grp_id)
     $groupname = DB_getItem ($_TABLES['groups'], 'grp_name',
                              "grp_id = '$grp_id'");
     $headline = sprintf ($LANG_ACCESS['usersingroup'], $groupname);
+    
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/group.php',
+                          'text' => $LANG28[38]),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']));    
 
-    $text_arr = array ('has_menu'     => false,
-                       'has_extras'   => false,
+    $text_arr = array ('has_menu'     => true,
+                       'has_extras'   => true,
                        'title'        => $headline,
                        'instructions' => '',
-                       'icon'         => '',
-                       'form_url'     => $_CONF['site_admin_url'] . '/group.php?mode=listusers&grp_id=23',
+                       'icon'         => $_CONF['layout_url'] . '/images/icons/group.'
+                                         . $_IMAGE_TYPE,
+                       'form_url'     => $_CONF['site_admin_url'] . '/group.php?mode=listusers&grp_id='.$grp_id,
                        'help_url'     => ''
-    );
+    );  
 
     $join_userinfo = '';
     $select_userinfo = '';
@@ -650,7 +657,7 @@ function listusers ($grp_id)
                         'default_filter' => "AND {$_TABLES['users']}.uid > 1"
     );
 
-    $retval .= ADMIN_list ('user', 'ADMIN_getListField_users', $header_arr, $text_arr, $query_arr, array(), $defsort_arr);
+    $retval .= ADMIN_list ('user', 'ADMIN_getListField_users', $header_arr, $text_arr, $query_arr, $menu_arr, $defsort_arr);
 
     return $retval;
 }
