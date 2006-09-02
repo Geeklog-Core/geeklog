@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.567 2006/09/02 12:26:13 dhaun Exp $
+// $Id: lib-common.php,v 1.568 2006/09/02 12:30:36 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4564,7 +4564,7 @@ function COM_getMinuteFormOptions( $selected = '', $step = 1 )
 */
 function COM_getMinuteOptions( $selected = '', $step = 1 )
 {
-    return COM_getMinuteFormOptions( $selected, $step )
+    return COM_getMinuteFormOptions( $selected, $step );
 }
 
 /**
