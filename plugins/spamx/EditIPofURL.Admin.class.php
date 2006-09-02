@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIPofURL.Admin.class.php,v 1.4 2006/08/20 16:42:32 dhaun Exp $
+* $Id: EditIPofURL.Admin.class.php,v 1.5 2006/09/02 14:22:26 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditIPofURL.Admin.class.php') !== false) {
@@ -30,8 +30,6 @@ class EditIPofUrl extends BaseAdmin {
     function display()
     {
         global $_CONF, $_TABLES, $LANG_SX00;
-
-        require_once ($_CONF['path'] . 'plugins/spamx/rss.inc.php');
 
         $action = '';
         if (isset ($_GET['action'])) {
