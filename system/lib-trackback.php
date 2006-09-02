@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.39 2006/08/03 20:35:53 dhaun Exp $
+// $Id: lib-trackback.php,v 1.40 2006/09/02 19:26:47 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -436,8 +436,11 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
 {
     global $_CONF;
 
-    if (!isset ($_CONF['check_trackback_link']) ||
-            ($_CONF['check_trackback_link'] == 0)) {
+    if (!isset ($_CONF['check_trackback_link'])) {
+        $_CONF['check_trackback_link'] = 2;
+    }
+
+    if ($_CONF['check_trackback_link'] == 0) {
         // we shouldn't be here - don't do anything
         return true;
     }
@@ -570,8 +573,11 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             return false;
         }
 
-        if (isset ($_CONF['check_trackback_link']) &&
-                ($_CONF['check_trackback_link'] > 0)) {
+        if (!isset ($_CONF['check_trackback_link'])) {
+            $_CONF['check_trackback_link'] = 2;
+        }
+
+        if ($_CONF['check_trackback_link'] > 0) {
             if (!TRB_linksToUs ($sid, $type, $_POST['url'])) {
                 TRB_sendTrackbackResponse (1, $TRB_ERROR['no_link'],
                                            403, 'Forbidden');
