@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.566 2006/08/25 18:48:11 dhaun Exp $
+// $Id: lib-common.php,v 1.567 2006/09/02 12:26:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4515,7 +4515,8 @@ function COM_getHourFormOptions( $selected = '', $mode = 12 )
 /**
 * Gets the <option> values for clock minutes
 *
-* @param        string      $selected       Selected minutes
+* @param    string      $selected   Selected minutes
+* @param    integer     $step       number of minutes between options, e.g. 15
 * @see function COM_getMonthFormOptions
 * @see function COM_getDayFormOptions
 * @see function COM_getHourFormOptions
@@ -4523,11 +4524,16 @@ function COM_getHourFormOptions( $selected = '', $mode = 12 )
 * @return string  HTML of option minutes
 */
 
-function COM_getMinuteOptions( $selected = '' )
+function COM_getMinuteFormOptions( $selected = '', $step = 1 )
 {
     $minute_options = '';
 
-    for( $i = 0; $i <= 59; $i++ )
+    if(( $step < 1 ) || ( $step > 30 ))
+    {
+        $step = 1;
+    }
+
+    for( $i = 0; $i <= 59; $i += $step )
     {
         if( $i < 10 )
         {
@@ -4549,6 +4555,16 @@ function COM_getMinuteOptions( $selected = '' )
     }
 
     return $minute_options;
+}
+
+/**
+* for backward compatibility only
+* - this function should always have been called COM_getMinuteFormOptions
+*
+*/
+function COM_getMinuteOptions( $selected = '', $step = 1 )
+{
+    return COM_getMinuteFormOptions( $selected, $step )
 }
 
 /**
