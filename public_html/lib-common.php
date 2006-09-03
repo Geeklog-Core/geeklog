@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.570 2006/09/03 08:15:57 dhaun Exp $
+// $Id: lib-common.php,v 1.571 2006/09/03 09:43:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4565,6 +4565,48 @@ function COM_getMinuteFormOptions( $selected = '', $step = 1 )
 function COM_getMinuteOptions( $selected = '', $step = 1 )
 {
     return COM_getMinuteFormOptions( $selected, $step );
+}
+
+/**
+* Create an am/pm selector dropdown menu
+*
+* @param    string  $name       name of the <select>
+* @param    string  $selected   preselection: 'am' or 'pm'
+* @return   string  HTML for the dropdown; empty string in 24 hour mode
+*
+*/
+function COM_getAmPmFormSelection( $name, $selected = '' )
+{
+    global $_CONF;
+
+    $retval = '';
+
+    if( isset( $_CONF['hour_mode'] ) && ( $_CONF['hour_mode'] == 24 ))
+    {
+        $retval = '';
+    }
+    else
+    {
+        if( empty( $selected ))
+        {
+            $selected = date( 'a' );
+        }
+
+        $retval .= '<select name="' . $name . '">' . LB;
+        $retval .= '<option value="am"';
+        if( $selected == 'am' )
+        {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>am</option>' . LB . '<option value="pm"';
+        if( $selected == 'pm' )
+        {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>pm</option>' . LB . '</select>' . LB;
+    }
+
+    return $retval;
 }
 
 /**

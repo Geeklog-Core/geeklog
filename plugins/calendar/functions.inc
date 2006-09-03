@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.52 2006/09/02 13:24:26 dhaun Exp $
+// $Id: functions.inc,v 1.53 2006/09/03 09:43:36 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -681,9 +681,9 @@ function plugin_submit_calendar($mode = 'master')
     }
 
     $eventform->set_var ('startampm_selection', 
-                         CALENDAR_ampm_selector ('start_ampm', $ampm));
+                         COM_getAmPmFormSelection ('start_ampm', $ampm));
     $eventform->set_var ('endampm_selection', 
-                         CALENDAR_ampm_selector ('end_ampm', $ampm));
+                         COM_getAmPmFormSelection ('end_ampm', $ampm));
 
     if ($cur_hour > 12) {
         $cur_hour = $cur_hour - 12;
@@ -1618,42 +1618,6 @@ function CALENDAR_eventTypeList ($currtype = '')
             $retval .= ' selected="selected"';
         }
         $retval .= '>' . $type . '</option>';
-    }
-
-    return $retval;
-}
-
-/**
-* Create an am/pm selector dropdown menu
-*
-* @param    string  $name   name of the <select>
-* @param    string  $ampm   preselection: 'am' or 'pm'
-* @return   string          HTML for the dropdown; empty string in 24 hour mode
-*
-*/
-function CALENDAR_ampm_selector ($name, $ampm = '')
-{
-    global $_CA_CONF;
-
-    $retval = '';
-
-    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
-        $retval = '';
-    } else {
-        if (empty ($ampm)) {
-            $ampm = date ('a');
-        }
-
-        $retval = '<select name="' . $name . '">' . LB;
-        $retval .= '<option value="am"';
-        if ($ampm == 'am') {
-            $retval .= ' selected="selected"';
-        }
-        $retval .= '>am</option>' . LB . '<option value="pm"';
-        if ($ampm == 'pm') {
-            $retval .= ' selected="selected"';
-        }
-        $retval .= '>pm</option>' . LB . '</select>' . LB;
     }
 
     return $retval;

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2006/09/02 13:24:27 dhaun Exp $
+// $Id: index.php,v 1.17 2006/09/03 09:43:36 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -340,7 +340,7 @@ function getQuickAdd($tpl, $month, $day, $year)
         $tpl->set_var ('hour_options', COM_getHourFormOptions ($cur_hour));
     }
     $tpl->set_var ('startampm_selection',
-                   CALENDAR_ampm_selector ('start_ampm', $ampm));
+                   COM_getAmPmFormSelection ('start_ampm', $ampm));
     $cur_min = intval (date ('i') / 15) * 15;
     $tpl->set_var ('minute_options', COM_getMinuteFormOptions ($cur_min, 15));
 

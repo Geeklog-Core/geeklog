@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2006/09/02 13:24:27 dhaun Exp $
+// $Id: index.php,v 1.26 2006/09/03 09:43:36 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -267,9 +267,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     }
 
     $event_templates->set_var ('startampm_selection', 
-                            CALENDAR_ampm_selector ('start_ampm', $startampm));
+                        COM_getAmPmFormSelection ('start_ampm', $startampm));
     $event_templates->set_var ('endampm_selection', 
-                            CALENDAR_ampm_selector ('end_ampm', $endampm));
+                        COM_getAmPmFormSelection ('end_ampm', $endampm));
 
     $event_templates->set_var ('startminute_options',
                                COM_getMinuteFormOptions ($start_minute, 15));
