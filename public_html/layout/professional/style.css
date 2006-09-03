@@ -122,14 +122,14 @@ th {
   border-bottom: 1px solid #FFFFFF;
   width: 90%;
   margin: 0 auto;
-  line-height:0;
+  line-height:0px;
 }
 .block-divider-right {
   border-top: 1px solid #CCCCCC;
   border-bottom: 1px solid #FFFFFF;
   width: 90%;
   margin: 0 auto;
-  line-height:0;
+  line-height:0px;
 }
 .block-featured-left {
   background:#F7F7F7;
@@ -383,7 +383,7 @@ th {
 .commentbar-line1 {
   background:transparent;
   color:#000000;
-  font:Tahoma,verdana,helvetica,arial,sans-serif;
+  font-family:Tahoma,verdana,helvetica,arial,sans-serif;
   padding:3px 3px;
   text-align:center;
 }
@@ -391,7 +391,7 @@ th {
   background:#E7E7E7;
   border-bottom:1px solid #FFFFFF;
   border-top:1px solid #FFFFFF;
-  font:Tahoma,verdana,helvetica,arial,sans-serif;
+  font-family:Tahoma,verdana,helvetica,arial,sans-serif;
   text-align:center;
 }
 .commentbar-line3 {
@@ -399,7 +399,7 @@ th {
   border-bottom:1px solid #FFFFFF;
   border-top:1px solid #E7E7E7;
   color:#000000;
-  font:Tahoma,verdana,helvetica,arial,sans-serif;
+  font-family:Tahoma,verdana,helvetica,arial,sans-serif;
   padding:3px 3px;
   text-align:center;
 }
@@ -473,7 +473,6 @@ th {
   padding-top:4px;
 }
 .header-logobg-container-inner {
-  background:#FFFFFF;
   background:url(images/header-bg.png) #1A3955;
   border-bottom:1px solid #CCCCCC;
 }
