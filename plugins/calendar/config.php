@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.7 2006/09/03 09:46:04 dhaun Exp $
+// $Id: config.php,v 1.8 2006/09/03 21:08:03 dhaun Exp $
 
 $_CA_CONF['version']            = '1.0.0'; // Plugin Version
 
@@ -64,6 +64,9 @@ $_CA_CONF['event_types']           = "Anniversary,Appointment,Birthday,Business,
 
 // Whether to use 12 hour (am/pm) or 24 hour mode
 $_CA_CONF['hour_mode'] = $_CONF['hour_mode']; // 12 hour am/pm or 24 hour format
+
+// notify when a new event was submitted for the site calendar (when set = 1)
+$_CA_CONF['notification'] = 0;
 
 // When a user is deleted, ownership of events created by that user can
 // be transfered to a user in the Root group (= 0) or the events can be

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.53 2006/09/03 09:43:36 dhaun Exp $
+// $Id: functions.inc,v 1.54 2006/09/03 21:08:03 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -526,8 +526,8 @@ function plugin_savesubmission_calendar($A)
 			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
 					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
 
-            if (isset ($_CONF['notification']) &&
-                    in_array ('event', $_CONF['notification'])) {
+            if (isset ($_CA_CONF['notification']) &&
+                    ($_CA_CONF['notification'] == 1)) {
                 CALENDAR_sendNotification ($_TABLES['eventsubmission'], $A);
             }
 
@@ -542,8 +542,8 @@ function plugin_savesubmission_calendar($A)
             DB_save ($_TABLES['events'], 
 			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id', 
 					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
-            if (isset ($_CONF['notification']) &&
-                    in_array ('event', $_CONF['notification'])) {
+            if (isset ($_CA_CONF['notification']) &&
+                    ($_CA_CONF['notification'] == 1)) {
                 CALENDAR_sendNotification ($_TABLES['events'], $A);
             }
             COM_rdfUpToDateCheck ();
