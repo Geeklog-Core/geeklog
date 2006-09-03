@@ -364,7 +364,8 @@ $LANG04 = array(
     152 => 'Username &amp; Passwort',
     153 => 'Darstellung &amp; Sprache',
     154 => 'Filter',
-    155 => 'Privatsphäre'
+    155 => 'Privatsphäre',
+    156 => 'Account löschen'
 );
 
 ###############################################################################
@@ -1108,7 +1109,8 @@ $MESSAGE = array(
     80 => 'Das Plugin, das diesen Feed angelegt hat, ist derzeit nicht aktiviert. Dieser Feed kann nicht bearbeitet werden, solange das Plugin deaktiviert ist.',
     81 => 'Haben Sie sich vertippt? Bitte versuchen Sie noch einmal, sich hier anzumelden.',
     82 => 'Sie haben die erlaubte Anzahl von Anmeldeversuchen überschritten. Bitte versuchen Sie es später noch einmal.',
-    83 => 'Um Ihr Passwort, Ihre E-Mail-Adresse oder die "Angemeldet für"-Zeit zu ändern müssen Sie Ihr aktuelles Passwort eingeben.'
+    83 => 'Um Ihr Passwort, Ihre E-Mail-Adresse oder die "Angemeldet für"-Zeit zu ändern müssen Sie Ihr aktuelles Passwort eingeben.',
+    84 => 'Um Ihren Account zu löschen müssen Sie Ihr aktuelles Passwort eingeben.'
 );
 
 ###############################################################################
