@@ -359,7 +359,12 @@ $LANG04 = array(
     147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
     148 => 'User Information',
     149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
-    150 => 'Warning: Javascript recommended for enhanced functionality'
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Vorschau',
+    152 => 'Username &amp; Passwort',
+    153 => 'Darstellung &amp; Sprache',
+    154 => 'Filter',
+    155 => 'Privatsphäre'
 );
 
 ###############################################################################
@@ -905,7 +910,7 @@ $LANG31 = array(
     11 => 'Wichtige Nachricht!',
     12 => 'Abschicken',
     13 => 'Reset',
-    14 => 'User Einstellungen ignorieren',
+    14 => 'User-Einstellungen ignorieren',
     15 => 'Fehler beim Senden an: ',
     16 => 'E-Mail erfolgreich gesendet an: ',
     17 => "<a href=\"{$_CONF['site_admin_url']}/mail.php\">Noch eine Nachricht schreiben</a>",
