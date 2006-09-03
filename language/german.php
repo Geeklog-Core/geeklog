@@ -864,7 +864,12 @@ $LANG28 = array(
     44 => 'Erwartet Freigabe',
     45 => 'Aktiv',
     46 => 'User-Status',
-    47 => 'Ändern'
+    47 => 'Ändern',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.'
 );
 
 ###############################################################################
