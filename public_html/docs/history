@@ -2,7 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
-
+- Updated FCKeditor to version 2.3.1 [Blaine]
 - Added ability to filter out Admin related groups on the Group Admin page
   Allows users to easily see only user groups. When editing non-core groups,
   You can select if this group is an Admin Group [Blaine]
