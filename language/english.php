@@ -858,6 +858,9 @@ $LANG28 = array(
     45 => 'Active',
     46 => 'User Status',
     47 => 'Edit',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group'
 );
 
 ###############################################################################
@@ -1393,7 +1396,7 @@ $LANG_WEEK = array(
 # Admin - Strings
 #
 # These are some standard strings used by core functions as well as plugins to
-# display adminiatration lists and edit pages
+# display administration lists and edit pages
 
 $LANG_ADMIN = array (
     'search'        => 'Search',

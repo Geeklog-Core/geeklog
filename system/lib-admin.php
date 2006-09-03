@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.72 2006/08/20 16:15:37 dhaun Exp $
+// $Id: lib-admin.php,v 1.73 2006/09/03 01:41:45 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -611,11 +611,27 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
     {
         $thisUsersGroups = SEC_getUserGroups();
     }
+
+    // Extra test required to handle that different ways this option is passed and need to be able to
+    // over-ride the option using the posted form when the URL contains the variable as well
+    $show_all_groups = false;   
+    if (isset($_POST['q'])) {   // Form has been posted - test actual option in this form
+        if ($_POST['chk_showall'] == 1) {
+            $show_all_groups = true;
+        }
+    } elseif ($_GET['showall'] == 1) {
+        $show_all_groups = true;
+    }    
+    
     if (in_array ($A['grp_id'], $thisUsersGroups ) ||
         SEC_groupIsRemoteUserAndHaveAccess( $A['grp_id'], $thisUsersGroups )) {
         switch($fieldname) {
             case 'edit':
-                $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
+                if ($show_all_groups) {              
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}&amp;chk_showall=1\">{$icon_arr['edit']}</a>";
+                } else {
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";                    
+                }
                 break;
             case 'grp_gl_core':
                 if ($A['grp_gl_core'] == 1) {
@@ -625,10 +641,17 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 break;
             case 'list':
-                $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}\">"
-                         ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
-                         ."<a href=\"{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
-                         ."{$icon_arr['edit']}</a>";
+                if ($show_all_groups) {
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1\">"
+                             ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
+                             ."<a href=\"{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1\">"
+                             ."{$icon_arr['edit']}</a>";
+                } else {
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}\">"
+                             ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
+                             ."<a href=\"{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
+                             ."{$icon_arr['edit']}</a>";
+                }                    
                 break;
             default:
                 $retval = $fieldvalue;

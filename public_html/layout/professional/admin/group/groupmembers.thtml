@@ -4,7 +4,7 @@
         <td rowspan="2">
             <img src="{layout_url}/images/icons/group.png" alt="">
         </td>
-        <td><a href="{site_admin_url}/group.php">{lang_grouplist}</a> | <a href="{site_admin_url}">{lang_adminhome}</a>
+        <td><a href="{group_listing_url}">{lang_grouplist}</a> | <a href="{site_admin_url}">{lang_adminhome}</a>
         </td>
     </tr>
     <tr>
@@ -12,7 +12,7 @@
     </tr>
 </table>
 <div style="border: 1px solid grey">
-<form name="groupusers" action="{phpself}?group={groupid}" method="post" style="margin:0px;"> 
+<form name="groupusers" action="{phpself}" method="post" style="margin:0px;"> 
 <table width="99%" cellspacing="0" cellpadding="0" border="0" class="pluginBG" style="padding:15px;">
     <tr align="middle">
         <td class="blocktitle" style="padding:5px 40px 5px 5px; text-align:right;">{LANG_sitemembers}</th>
@@ -37,6 +37,7 @@
         <input type="hidden" name="mode" value="savegroupusers">
         <input type="hidden" name="groupmembers">
         <input type="hidden" name="grp_id" value="{group_id}">
+        <input type="hidden" name="chk_showall" value="{show_all}">         
         <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)">&nbsp;&nbsp;
         <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)">
         </td></tr>

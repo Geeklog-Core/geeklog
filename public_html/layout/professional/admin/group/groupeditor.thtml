@@ -8,6 +8,12 @@
                                         <td align="right">{lang_description}:</td>
                                         <td><input type="text" size="40" maxlength="255" name="grp_descr" value="{group_description}"></td>
                                     </tr>
+                                    <tr{hide_adminoption}>
+                                        <td align="right">{lang_admingroup}:</td>
+                                        <td><input type="checkbox" name="chk_grpadmin" value="1" {chk_adminuse}>
+                                            <span class="fieldhelp" style="padding-left:10px;">{lang_admingrp_msg}</span>
+                                        </td>
+                                    </tr>                                    
                                     <tr>
                                         <td colspan="2"><hr></td>
                                     </tr>
@@ -46,6 +52,7 @@
                                             {delete_option}
                                             <input type="hidden" name="grp_gl_core" value="{group_core}">
                                             <input type="hidden" name="grp_id" value="{group_id}">
+                                            <input type="hidden" name="chk_showall" value="{show_all}">                                              
                                         </td>
                                     </tr>
                                 </table>

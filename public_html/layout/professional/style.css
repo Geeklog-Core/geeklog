@@ -67,6 +67,9 @@ h2 {
 img {
   border: 0;
 }
+
+.fieldhelp {font-size:8pt; color: #666; }
+
 input, submit {
   color:#000000;
   font:82% Tahoma,verdana,helvetica,arial,sans-serif;
