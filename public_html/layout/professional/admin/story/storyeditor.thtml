@@ -42,10 +42,7 @@ function enablearchive(obj) {
                                             <select name="publish_minute">
                                                 {publish_minute_options}
                                             </select>
-                                            <select name="publish_ampm">
-                                                <option value="am" {publisham_selected}>am</option>
-                                                <option value="pm" {publishpm_selected}>pm</option>
-                                            </select><br>
+                                            {publishampm_selection}<br>
                                             <input type="hidden" name="publish_second" value="{publish_second}">
                                             {publish_date_explanation}
                                         </td>
@@ -82,37 +79,34 @@ function enablearchive(obj) {
                                                     <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
                                                     <td style="text-align:left;">
                                                         <label for="storycode10"> 
-                                                            <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3} {archivedisabled}>{lang_optionarchive}
+                                                            <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
                                                         </label>&nbsp; 
                                                     <label for="storycode11"> 
-                                                        <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4} {archivedisabled}>{lang_optiondelete}
+                                                        <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}>{lang_optiondelete}
                                                     </label>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:right;vertical-align:top;padding-right:5px;">{lang_date}:</td>
                                                     <td colspan="2">
-                                                        <select id="expire_month" name="expire_month" {archivedisabled}>
+                                                        <select id="expire_month" name="expire_month">
                                                             {expire_month_options}
                                                         </select>
                                                         /
-                                                        <select name="expire_day" {archivedisabled}>
+                                                        <select name="expire_day">
                                                             {expire_day_options}
                                                         </select>
                                                         /
-                                                        <select name="expire_year" {archivedisabled}>
+                                                        <select name="expire_year">
                                                             {expire_year_options}
                                                         </select>&nbsp;&nbsp;
-                                                        <select name="expire_hour" {archivedisabled}>
+                                                        <select name="expire_hour">
                                                             {expire_hour_options}
                                                         </select>
                                                         :
-                                                        <select name="expire_minute" {archivedisabled}>
+                                                        <select name="expire_minute">
                                                             {expire_minute_options}
                                                         </select>
-                                                        <select name="expire_ampm" {archivedisabled}>
-                                                            <option value="am" {expiream_selected}>am</option>
-                                                            <option value="pm" {expirepm_selected}>pm</option>
-                                                        </select><br>
+                                                        {expireampm_selection}<br>
                                                         <input type="hidden" name="expire_second" value="{expire_second}">
                                                     </td>
                                                 </tr>
@@ -218,12 +212,13 @@ function enablearchive(obj) {
                                             {submission_option}
                                             <input type="hidden" name="old_sid" value="{old_story_id}">
                                             <input type="hidden" name="editopt" value="default">
+                                            <input type="hidden" name="hour_mode" value="{hour_mode}">
                                         </td>
                                     </tr>
                                 </table>
                             </form>
 <script>
-<!-- This code will only be executed by a browser that suppports Javascript -->
+<!-- This code will only be executed by a browser that supports Javascript -->
 var jstest = {showarchivedisabled};
 if (jstest) {
     document.frmstory.expire_month.disabled=true;

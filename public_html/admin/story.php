@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.235 2006/09/03 11:09:24 dhaun Exp $
+// $Id: story.php,v 1.236 2006/09/03 11:52:00 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -225,6 +225,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     $display = '';
 
+    if (!isset ($_CONF['hour_mode'])) {
+        $_CONF['hour_mode'] = 12;
+    }
+
     if (!empty ($errormsg)) {
         $display .= COM_startBlock($LANG24[25], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
@@ -355,11 +359,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $A['trackbacks'] = 0;
         $A['numemails'] = 0;
 
-        if (isset ($_CONF['advanced_editor']) && 
-            $_CONF['advanced_editor'] == 1 && 
-            $_CONF['postmode'] != 'plaintext') {
+        if (isset ($_CONF['advanced_editor']) && $_CONF['advanced_editor'] && 
+                ($_CONF['postmode'] != 'plaintext')) {
+            $A['advanced_editor_mode'] = 1;
             $A['postmode'] = 'adveditor';
         } else {
+            $A['advanced_editor_mode'] = 0;
             $A['postmode'] = $_CONF['postmode'];
         }
 
@@ -419,7 +424,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
 
-        include ($_CONF['path_system'] . 'classes/navbar.class.php');
+        require_once ($_CONF['path_system'] . 'classes/navbar.class.php');
 
         $story_templates->set_var ('show_preview', 'none');
         $story_templates->set_var ('lang_expandhelp', $LANG24[67]);
@@ -443,11 +448,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
         $advanced_editormode = false;
     }
-    $story_templates->set_var('site_url', $_CONF['site_url']);
-    $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $story_templates->set_var('layout_url', $_CONF['layout_url']);
+    $story_templates->set_var ('site_url',       $_CONF['site_url']);
+    $story_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $story_templates->set_var ('layout_url',     $_CONF['layout_url']);
+    $story_templates->set_var ('hour_mode',      $_CONF['hour_mode']);
 
-    if (empty($A['unixdate'])) {
+    if (empty ($A['unixdate'])) {
         $publish_hour = $A['publish_hour'];
         if ($publish_hour == 12) {
             if ($A['ampm'] == 'am') {
@@ -461,7 +467,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             . $publish_hour . ':' . $A['publish_minute'] . ':00');
     }
 
-    if (!empty($A['title'])) {
+    if (!empty ($A['title'])) {
 
         $A['day'] = $A['unixdate'];
         if (empty ($A['hits'])) {
@@ -514,7 +520,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     if ($advanced_editormode) {
         $navbar = new navbar;
-        if ($previewContent != '') {
+        if (!empty ($previewContent)) {
             $navbar->add_menuitem($LANG24[79],'showhideEditorDiv("preview",0);return false;',true);
         }
         $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor",1);return false;',true);
@@ -568,14 +574,17 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
     $curtime = COM_getUserDateTimeFormat($A['unixdate']);
     $story_templates->set_var('lang_date', $LANG24[15]);
-    $publish_month = date('m', $A['unixdate']);
-    $publish_day = date('d', $A['unixdate']);
-    $publish_year = date('Y', $A['unixdate']);
-    $publish_hour = date('H', $A['unixdate']);
-    $publish_minute = date('i', $A['unixdate']);
-    $publish_second = date('s', $A['unixdate']);
+
+    $publish_month  = date ('m', $A['unixdate']);
+    $publish_day    = date ('d', $A['unixdate']);
+    $publish_year   = date ('Y', $A['unixdate']);
+    $publish_hour   = date ('H', $A['unixdate']);
+    $publish_minute = date ('i', $A['unixdate']);
+    $publish_second = date ('s', $A['unixdate']);
     $story_templates->set_var('publish_second', $publish_second);
+
     $publish_ampm = '';
+    $publish_hour_24 = $publish_hour;
     if ($publish_hour >= 12) {
         if ($publish_hour > 12) {
             $publish_hour = $publish_hour - 12;
@@ -584,11 +593,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     } else {
         $ampm = 'am';
     }
-    if ($ampm == 'pm') {
-        $story_templates->set_var ('publishpm_selected', 'selected="selected"');
-    } else {
-        $story_templates->set_var ('publisham_selected', 'selected="selected"');
-    }
+    $ampm_select = COM_getAmPmFormSelection ('publish_ampm', $ampm);
+    $story_templates->set_var ('publishampm_selection', $ampm_select);
+
     $month_options = COM_getMonthFormOptions($publish_month);
     $story_templates->set_var('publish_month_options', $month_options);
 
@@ -598,27 +605,33 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $year_options = COM_getYearFormOptions($publish_year);
     $story_templates->set_var('publish_year_options', $year_options);
 
-    $hour_options = COM_getHourFormOptions($publish_hour);
+    if ($_CONF['hour_mode'] == 24) {
+        $hour_options = COM_getHourFormOptions ($publish_hour_24, 24);
+    } else {
+        $hour_options = COM_getHourFormOptions ($publish_hour);
+    }
     $story_templates->set_var('publish_hour_options', $hour_options);
 
-    $minute_options = COM_getMinuteOptions($publish_minute);
+    $minute_options = COM_getMinuteFormOptions($publish_minute);
     $story_templates->set_var('publish_minute_options', $minute_options);
 
     $story_templates->set_var('publish_date_explanation', $LANG24[46]);
-
     $story_templates->set_var('story_unixstamp', $A['unixdate']);
-    /* Auto Story Archive or Delete Feature */
+
+    // Auto Story Archive or Delete Feature
     if (empty ($A['expiredate']) or date('Y', $A['expiredate']) < 2000) {
         $A['expiredate'] = time();
     }
-    $expire_month = date('m', $A['expiredate']);
-    $expire_day = date('d', $A['expiredate']);
-    $expire_year = date('Y', $A['expiredate']);
-    $expire_hour = date('H', $A['expiredate']);
+    $expire_month  = date('m', $A['expiredate']);
+    $expire_day    = date('d', $A['expiredate']);
+    $expire_year   = date('Y', $A['expiredate']);
+    $expire_hour   = date('H', $A['expiredate']);
     $expire_minute = date('i', $A['expiredate']);
     $expire_second = date('s', $A['expiredate']);
     $story_templates->set_var('expire_second', $expire_second);
+
     $expire_ampm = '';
+    $expire_hour_24 = $expire_hour;
     if ($expire_hour >= 12) {
         if ($expire_hour > 12) {
             $expire_hour = $expire_hour - 12;
@@ -627,21 +640,32 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     } else {
         $ampm = 'am';
     }
-    if ($ampm == 'pm') {
-        $story_templates->set_var ('expirepm_selected', 'selected="selected"');
-    } else {
-        $story_templates->set_var ('expiream_selected', 'selected="selected"');
+    $ampm_select = COM_getAmPmFormSelection ('expire_ampm', $ampm);
+    if (empty ($ampm_select)) {
+        // have a hidden field to 24 hour mode to prevent JavaScript errors
+        $ampm_select = '<input type="hidden" name="expire_ampm" value="">';
     }
+    $story_templates->set_var ('expireampm_selection', $ampm_select);
+
     $month_options = COM_getMonthFormOptions($expire_month);
     $story_templates->set_var('expire_month_options', $month_options);
+
     $day_options = COM_getDayFormOptions($expire_day);
     $story_templates->set_var('expire_day_options', $day_options);
+
     $year_options = COM_getYearFormOptions($expire_year);
     $story_templates->set_var('expire_year_options', $year_options);
-    $hour_options = COM_getHourFormOptions($expire_hour);
+
+    if ($_CONF['hour_mode'] == 24) {
+        $hour_options = COM_getHourFormOptions ($expire_hour_24, 24);
+    } else {
+        $hour_options = COM_getHourFormOptions ($expire_hour);
+    }
     $story_templates->set_var('expire_hour_options', $hour_options);
-    $minute_options = COM_getMinuteOptions($expire_minute);
+
+    $minute_options = COM_getMinuteFormOptions($expire_minute);
     $story_templates->set_var('expire_minute_options', $minute_options);
+
     $story_templates->set_var('expire_date_explanation', $LANG24[46]);
     $story_templates->set_var('story_unixstamp', $A['expiredate']);
     if ($A['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) {
@@ -707,7 +731,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
                           . COM_optionList ($_TABLES['featurecodes'], 'code,name', $A['featured'])
                           . "</select>" . LB;
     } else {
-        $featured_options = "<input type=\"hidden\" name=\"featured\" value=\"0\">";  
+        $featured_options = '<input type="hidden" name="featured" value="0">';  
     }
     $story_templates->set_var ('featured_options',$featured_options);
     $story_templates->set_var ('frontpage_options',
@@ -1215,8 +1239,22 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteFooter();
     echo $display;
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
-    $publish_ampm = COM_applyFilter ($_POST['publish_ampm']);
     $publish_hour = COM_applyFilter ($_POST['publish_hour'], true);
+    if (isset ($_CONF['hour_mode']) && ($_CONF['hour_mode'] == 24)) {
+        if ($publish_hour >= 12) {
+            if ($publish_hour > 12) {
+                $publish_hour -= 12;
+            }
+            $publish_ampm = 'pm';
+        } else {
+            if ($publish_hour == 0) {
+                $publish_hour = 12;
+            }
+            $publish_ampm = 'am';
+        }
+    } else {
+        $publish_ampm = COM_applyFilter ($_POST['publish_ampm']);
+    }
     $publish_minute = COM_applyFilter ($_POST['publish_minute'], true);
     $publish_second = COM_applyFilter ($_POST['publish_second'], true);
     if ($publish_ampm == 'pm') {
@@ -1240,8 +1278,22 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $statuscode = 0;
     }
 
-    $expire_ampm = COM_applyFilter ($_POST['expire_ampm']);
     $expire_hour = COM_applyFilter ($_POST['expire_hour'], true);
+    if (isset ($_CONF['hour_mode']) && ($_CONF['hour_mode'] == 24)) {
+        if ($expire_hour >= 12) {
+            if ($expire_hour > 12) {
+                $expire_hour -= 12;
+            }
+            $expire_ampm = 'pm';
+        } else {
+            if ($expire_hour == 0) {
+                $expire_hour = 12;
+            }
+            $expire_ampm = 'am';
+        }
+    } else {
+        $expire_ampm = COM_applyFilter ($_POST['expire_ampm']);
+    }
     $expire_minute = COM_applyFilter ($_POST['expire_minute'], true);
     $expire_second = COM_applyFilter ($_POST['expire_second'], true);
     $expire_year = COM_applyFilter ($_POST['expire_year'], true);
@@ -1262,9 +1314,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $expiredate = time();
     }
     $uid = COM_applyFilter ($_POST['uid'], true);
+    $type = '';
+    if (isset ($_POST['type'])) {
+        $type = COM_applyFilter ($_POST['type']);
+    }
 
-    submitstory (COM_applyFilter ($_POST['type']),
-                 COM_applyFilter ($_POST['sid']), $uid,
+    submitstory ($type, COM_applyFilter ($_POST['sid']), $uid,
                  COM_applyFilter ($_POST['tid']),
                  COM_stripslashes ($_POST['title']),
                  COM_stripslashes ($_POST['introtext']),
