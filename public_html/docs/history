@@ -3,6 +3,11 @@ GeekLog History/Changes:
 ??? ??, 2006 (1.4.1)
 ------------
 
+- Added ability to filter out Admin related groups on the Group Admin page
+  Allows users to easily see only user groups. When editing non-core groups,
+  You can select if this group is an Admin Group [Blaine]
+- Added ability to multi-select submission queue items on the moderation page
+  and delete them all at once [Blaine]
 - Always make "Submissions" the first entry in the Admins Only block to keep
   the correspondence between the other entries and the icons on the moderation
   page undisturbed (and because it's an important entry) [Dirk]
