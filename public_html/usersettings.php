@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.149 2006/09/03 03:52:19 blaine Exp $
+// $Id: usersettings.php,v 1.150 2006/09/03 16:57:56 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -52,7 +52,7 @@ $_US_VERBOSE = false;
 */
 function edituser()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG04;
+    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG_ADMIN;
 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray ($result);
@@ -136,6 +136,7 @@ function edituser()
     $preferences->set_var ('lang_pgpkey', $LANG04[8]);
     $preferences->set_var ('lang_pgpkey_text', $LANG04[39]);
     $preferences->set_var ('lang_submit', $LANG04[9]);
+    $preferences->set_var ('lang_cancel',$LANG_ADMIN['cancel']);
     $preferences->set_var ('lang_preview_title', $LANG04[145]);
     $preferences->set_var ('lang_enter_current_password', $LANG04[127]);
     $preferences->set_var ('lang_name_legend', $LANG04[128]);
@@ -211,9 +212,7 @@ function edituser()
                            htmlspecialchars ($_USER['username']));
 
     if ($_CONF['allow_account_delete'] == 1) {
-        $preferences->set_var ('start_block_delete_account',
-                COM_startBlock (sprintf ($LANG04[94], $display_name)));
-        $preferences->set_var ('end_block_delete_account', COM_endBlock ());
+        $preferences->set_var('lang_deleteaccount',$LANG04[156]);
         $preferences->set_var ('delete_text', $LANG04[95]);
         $preferences->set_var ('lang_button_delete', $LANG04[96]);
         $preferences->set_var ('delete_mode', 'confirmdelete');
@@ -251,6 +250,14 @@ function confirmAccountDelete ($form_reqid)
         // not found - abort
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
+    
+    // to change the password, email address, or cookie timeout,
+    // we need the user's current password
+    if (empty ($A['old_passwd']) ||
+            (md5 ($A['old_passwd']) != $_USER['passwd'])) {
+         return COM_refresh ($_CONF['site_url']
+                            . '/usersettings.php?mode=edit&msg=84');
+    }    
 
     $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
     DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
@@ -1390,12 +1397,17 @@ function savepreferences($A)
 
 // MAIN
 $mode = '';
-if (isset ($_POST['mode'])) {
+if (isset($_POST['btncancel']) AND $_POST['btncancel'] == $LANG_ADMIN['cancel']) { 
+    echo COM_refresh($_CONF['site_url']);
+    exit;
+}else if (isset($_POST['btnsubmit']) AND $_POST['btnsubmit'] == $LANG04[96]) {
+    $mode = 'confirmdelete';
+} else if (isset ($_POST['mode'])) {
     $mode = COM_applyFilter ($_POST['mode']);
-}
-else if (isset ($_GET['mode'])) {
+} else if (isset ($_GET['mode'])) {
     $mode = COM_applyFilter ($_GET['mode']);
 }
+
 $display = '';
 
 if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {

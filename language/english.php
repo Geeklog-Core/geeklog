@@ -360,7 +360,8 @@ $LANG04 = array(
     152 => 'Username & Password',
     153 => 'Layout & Language',
     154 => 'Content',
-    155 => 'Privacy'
+    155 => 'Privacy',
+    156 => 'Delete Account'
     
 );
 
@@ -1109,7 +1110,8 @@ $MESSAGE = array(
     80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
     81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
     82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.'
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################

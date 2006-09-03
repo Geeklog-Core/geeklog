@@ -51,6 +51,7 @@
                <td><input type="text" id="old_passwd" name="old_passwd" size="32" maxlength="32" value=""></td>
             </tr>
         </table>
+        {delete_account_option}               
 </fieldset>
 </div>
 <div id="pe_userinfo" class="jsenabled_hide">
@@ -89,10 +90,11 @@
   <input type="hidden" name="uid" value="{uid_value}">
   <input type="hidden" name="mode" value="saveuser">
   <input type="hidden" name="username" value="{username_value}">
-  <input type="submit" value="{lang_submit}">
+  <input type="submit" name="btncancel" value="{lang_cancel}">
+  <span style="padding-left:50px;"><input type="submit" name="btnsubmit" value="{lang_submit}"></span>
 </p>
 </form>
-{delete_account_option}
+
 <!-- JS Functions which will execute only if JS enabled will un-hide the special features that enhance the profile editor -->
 <script type="text/JavaScript">
 var el;
