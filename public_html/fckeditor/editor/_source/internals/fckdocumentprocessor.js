@@ -142,7 +142,7 @@ FCKFlashProcessor.ProcessDocument = function( document )
 			oEmbed.parentNode.insertBefore( oImg, oEmbed ) ;
 			oEmbed.parentNode.removeChild( oEmbed ) ;
 
-//			oEmbed.setAttribute( '_fckdelete', 'true', 0) ;
+//			oEmbed.setAttribute( '_fcktemp', 'true', 0) ;
 //			oEmbed.style.display = 'none' ;
 //			oEmbed.hidden = true ;
 		}

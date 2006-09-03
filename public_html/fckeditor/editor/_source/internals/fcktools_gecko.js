@@ -178,6 +178,11 @@ FCKTools.RegisterDollarFunction = function( targetWindow )
 	} ;
 }
 
+FCKTools.AppendElement = function( target, elementName )
+{
+	return target.appendChild( target.ownerDocument.createElement( elementName ) ) ;
+}
+
 // START iCM Modifications
 /*
 // Starting at the specified node, find the first inline node of the sequence

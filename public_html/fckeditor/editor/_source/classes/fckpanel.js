@@ -46,7 +46,10 @@ var FCKPanel = function( parentWindow )
 		oIFrame.style.zIndex		= FCKConfig.FloatingPanelsZIndex ;
 		oIFrame.width = oIFrame.height = 0 ;
 
-		this._Window.document.body.appendChild( oIFrame ) ;
+		if ( this._Window == window.parent )
+			window.frameElement.parentNode.insertBefore( oIFrame, window.frameElement ) ;
+		else
+			this._Window.document.body.appendChild( oIFrame ) ;
 		
 		var oIFrameWindow = oIFrame.contentWindow ; 
 		

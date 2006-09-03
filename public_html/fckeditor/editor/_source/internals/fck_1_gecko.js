@@ -23,6 +23,9 @@ FCK.Description = "FCKeditor for Gecko Browsers" ;
 
 FCK.InitializeBehaviors = function()
 {
+	// When calling "SetHTML", the editing area IFRAME gets a fixed height. So we must recaulculate it.
+	Window_OnResize() ;
+
 	FCKFocusManager.AddWindow( this.EditorWindow ) ;
 
 	// Handle pasting operations.

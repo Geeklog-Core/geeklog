@@ -139,9 +139,9 @@ FCKXHtml._AppendNode = function( xmlNode, htmlNode )
 			if ( FCKBrowserInfo.IsGecko && htmlNode.hasAttribute('_moz_editor_bogus_node') )
 				return false ;
 			
-			// This is for elements that are instrumental for FCKeditor and 
-			// should be removed from the final HTML.
-			if ( htmlNode.getAttribute('_fckdelete') )
+			// This is for elements that are instrumental to FCKeditor and 
+			// must be removed from the final HTML.
+			if ( htmlNode.getAttribute('_fcktemp') )
 				return false ;
 
 			// Get the element name.
@@ -308,11 +308,6 @@ FCKXHtml.TagProcessors['script'] = function( node, htmlNode )
 
 FCKXHtml.TagProcessors['style'] = function( node, htmlNode )
 {
-	// The "_fcktemp" attribute is used to mark the <STYLE> used by the editor
-	// to set some behaviors.
-	if ( htmlNode.getAttribute( '_fcktemp' ) )
-		return null ;
-
 	// The "TYPE" attribute is required in XHTML.
 	if ( ! node.attributes.getNamedItem( 'type' ) )
 		FCKXHtml._AppendAttribute( node, 'type', 'text/css' ) ;
@@ -325,29 +320,6 @@ FCKXHtml.TagProcessors['style'] = function( node, htmlNode )
 FCKXHtml.TagProcessors['title'] = function( node, htmlNode )
 {
 	node.appendChild( FCKXHtml.XML.createTextNode( FCK.EditorDocument.title ) ) ;
-
-	return node ;
-}
-
-FCKXHtml.TagProcessors['base'] = function( node, htmlNode )
-{
-	// The "_fcktemp" attribute is used to mark the <BASE> tag when the editor
-	// automatically sets it using the FCKConfig.BaseHref configuration.
-	if ( htmlNode.getAttribute( '_fcktemp' ) )
-		return null ;
-
-	// IE duplicates the BODY inside the <BASE /> tag (don't ask me why!).
-	// This tag processor does nothing... in this way, no child nodes are added
-	// (also because the BASE tag must be empty).
-	return node ;
-}
-
-FCKXHtml.TagProcessors['link'] = function( node, htmlNode )
-{
-	// The "_fcktemp" attribute is used to mark the fck_internal.css <LINK>
-	// reference.
-	if ( htmlNode.getAttribute( '_fcktemp' ) )
-		return null ;
 
 	return node ;
 }

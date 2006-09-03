@@ -196,12 +196,12 @@ FCK.SetHTML = function( html )
 			sHtml +=
 				'><head><title></title>' +
 				this._GetEditorAreaStyleTags() +
-				'<link href="css/fck_internal.css' + '" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
+				'<link href="' + FCKConfig.FullBasePath + 'css/fck_internal.css' + '" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
 
 			if ( FCKBrowserInfo.IsIE )
 				sHtml += FCK._GetBehaviorsStyle() ;
 			else if ( FCKConfig.ShowBorders ) 
-				sHtml += '<link href="css/fck_showtableborders_gecko.css" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
+				sHtml += '<link href="' + FCKConfig.FullBasePath + 'css/fck_showtableborders_gecko.css" rel="stylesheet" type="text/css" _fcktemp="true" />' ;
 
 			sHtml += FCK.TempBaseTag ;
 			sHtml += '</head><body>' ;

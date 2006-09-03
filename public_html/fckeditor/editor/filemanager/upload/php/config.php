@@ -4,18 +4,18 @@
  * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
- * 		http://www.opensource.org/licenses/lgpl-license.php
+ *         http://www.opensource.org/licenses/lgpl-license.php
  * 
  * For further information visit:
- * 		http://www.fckeditor.net/
+ *         http://www.fckeditor.net/
  * 
  * "Support Open Source software. What about a donation today?"
  * 
  * File Name: config.php
- * 	Configuration file for the PHP File Uploader.
+ *     Configuration file for the PHP File Uploader.
  * 
  * File Authors:
- * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
+ *         Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
 include ('../../../../../lib-common.php');
@@ -37,13 +37,13 @@ $Config['UserFilesAbsolutePath'] = $_CONF['path_html'] . $_CONF_FCK['imagelibrar
 // following setting enabled.
 $Config['ForceSingleExtension'] = true ;
 
-$Config['AllowedExtensions']['File']	= array() ;
-$Config['DeniedExtensions']['File']		= array('php','php2','php3','php4','php5','phtml','pwml','inc','asp','aspx','ascx','jsp','cfm','cfc','pl','bat','exe','com','dll','vbs','js','reg','cgi') ;
+$Config['AllowedExtensions']['File']    = array() ;
+$Config['DeniedExtensions']['File']        = array('php','php2','php3','php4','php5','phtml','pwml','inc','asp','aspx','ascx','jsp','cfm','cfc','pl','bat','exe','com','dll','vbs','js','reg','cgi') ;
 
-$Config['AllowedExtensions']['Image']	= array('jpg','gif','jpeg','png') ;
-$Config['DeniedExtensions']['Image']	= array() ;
+$Config['AllowedExtensions']['Image']    = array('jpg','gif','jpeg','png') ;
+$Config['DeniedExtensions']['Image']    = array() ;
 
-$Config['AllowedExtensions']['Flash']	= array('swf','fla') ;
-$Config['DeniedExtensions']['Flash']	= array() ;
+$Config['AllowedExtensions']['Flash']    = array('swf','fla') ;
+$Config['DeniedExtensions']['Flash']    = array() ;
 
 ?>

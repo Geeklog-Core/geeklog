@@ -195,3 +195,8 @@ FCKTools.RegisterDollarFunction = function( targetWindow )
 {
 	targetWindow.$ = targetWindow.document.getElementById ;
 }
+
+FCKTools.AppendElement = function( target, elementName )
+{
+	return target.appendChild( this.GetElementDocument( target ).createElement( elementName ) ) ;
+}

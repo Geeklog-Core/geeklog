@@ -48,23 +48,25 @@ FCK.Paste = function()
 	if ( FCKConfig.ForcePasteAsPlainText )
 	{
 		FCK.PasteAsPlainText() ;	
-		return false ;
+		return ;
 	}
-	else if ( FCKConfig.AutoDetectPasteFromWord )
+
+	var sHTML = FCK.GetClipboardHTML() ;
+
+	if ( FCKConfig.AutoDetectPasteFromWord )
 	{
-		var sHTML = FCK.GetClipboardHTML() ;
 		var re = /<\w[^>]*(( class="?MsoNormal"?)|(="mso-))/gi ;
 		if ( re.test( sHTML ) )
 		{
 			if ( confirm( FCKLang["PasteWordConfirm"] ) )
 			{
 				FCK.PasteFromWord() ;
-				return false ;
+				return ;
 			}
 		}
 	}
-	else
-		return true ;
+
+	FCK.InsertHtml( sHTML ) ;	
 }
 
 FCK.PasteAsPlainText = function()

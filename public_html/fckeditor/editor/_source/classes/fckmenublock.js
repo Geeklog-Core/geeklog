@@ -62,7 +62,7 @@ FCKMenuBlock.prototype.Create = function( parentElement )
 
 		this._Window = FCKTools.GetElementWindow( parentElement ) ;
 
-		var oDoc = parentElement.ownerDocument ;
+		var oDoc = FCKTools.GetElementDocument( parentElement ) ;
 
 		var eTable = parentElement.appendChild( oDoc.createElement( 'table' ) ) ;
 		eTable.cellPadding = 0 ;
@@ -118,7 +118,7 @@ var FCKMenuSeparator = function()
 
 FCKMenuSeparator.prototype.Create = function( parentTable )
 {
-	var oDoc = parentTable.ownerDocument ;	// This is IE 6+
+	var oDoc = FCKTools.GetElementDocument( parentTable ) ;
 
 	var r = parentTable.insertRow(-1) ;
 	

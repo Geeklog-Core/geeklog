@@ -89,14 +89,14 @@ function FCKTools_SubmitReplacer()
 // Get the window object where the element is placed in.
 FCKTools.GetElementWindow = function( element )
 {
-	return FCKTools.GetDocumentWindow( element.ownerDocument ) ;
+	return this.GetDocumentWindow( this.GetElementDocument( element ) ) ;
 }
 
 FCKTools.GetDocumentWindow = function( doc )
 {
 	// With Safari, there is not way to retrieve the window from the document, so we must fix it.
 	if ( FCKBrowserInfo.IsSafari && !doc.parentWindow )
-		FCKTools.FixDocumentParentWindow( window.top ) ;
+		this.FixDocumentParentWindow( window.top ) ;
 	
 	return doc.parentWindow || doc.defaultView ;
 }
@@ -169,7 +169,7 @@ FCKTools.HTMLEncode = function( text )
  */
 FCKTools.AddSelectOption = function( selectElement, optionText, optionValue )
 {
-	var oOption = selectElement.ownerDocument.createElement( "OPTION" ) ;
+	var oOption = FCKTools.GetElementDocument( selectElement ).createElement( "OPTION" ) ;
 
 	oOption.text	= optionText ;
 	oOption.value	= optionValue ;	
@@ -251,4 +251,9 @@ FCKTools.CreateEventListener = function( func, params )
 	} 
 
 	return f ;
+}
+
+FCKTools.GetElementDocument = function ( element )
+{
+	return element.ownerDocument || element.document ;
 }
