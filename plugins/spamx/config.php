@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: config.php,v 1.17 2006/08/27 09:30:19 dhaun Exp $
+ * $Id: config.php,v 1.18 2006/09/03 15:33:47 dhaun Exp $
  */
 
 $_SPX_CONF['version'] = '1.1.0';
@@ -25,6 +25,9 @@ $_SPX_CONF['admin_override'] = false;
 
 // enable / disable logging to spamx.log
 $_SPX_CONF['logging'] = true;
+
+// timeout for contacting external services, e.g. SLV
+$_SPX_CONF['timeout'] = 5; // in seconds
 
 
 // DO NOT CHANGE THE STUFF BELOW UNLESS YOU KNOW WHAT YOU ARE DOING

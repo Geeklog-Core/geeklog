@@ -9,7 +9,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: SLVbase.class.php,v 1.2 2006/09/02 15:35:46 dhaun Exp $
+* $Id: SLVbase.class.php,v 1.3 2006/09/03 15:33:47 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'SLVbase.class.php') !== false) {
@@ -51,6 +51,8 @@ class SLVbase {
     */
     function CheckForSpam ($post)
     {
+        global $_SPX_CONF;
+
         require_once ('XML/RPC.php');
 
         $retval = false;
@@ -62,6 +64,10 @@ class SLVbase {
         $links = $this->prepareLinks ($post);
         if (empty ($links)) {
             return $retval;
+        }
+
+        if (!isset ($_SPX_CONF['timeout'])) {
+            $_SPX_CONF['timeout'] = 5; // seconds
         }
 
         if ($this->_verbose) {
@@ -76,7 +82,7 @@ class SLVbase {
             $client->setDebug (1);
         }
 
-        $resp = $cli->send ($msg);
+        $resp = $cli->send ($msg, $_SPX_CONF['timeout']);
         if (!$resp) {
             COM_errorLog ('Error communicating with SLV: ' . $cli->errstr
                           . '; Message was ' . $msg->serialize());
