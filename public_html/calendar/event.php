@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.16 2006/09/02 13:24:27 dhaun Exp $
+// $Id: event.php,v 1.17 2006/09/03 15:48:10 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -97,8 +97,12 @@ function adduserevent ($eid)
                   . ', ' . $A['state'] . ' ' . $A['zipcode'];
         $cal_template->set_var('event_location', $location);
         $cal_template->set_var('lang_description', $LANG_CAL_1[5]);
-        $cal_template->set_var('event_description',
-                               nl2br (stripslashes ($A['description'])));
+        $description = stripslashes ($A['description']);
+        if ($A['postmode'] == 'plaintext') {
+            $description = nl2br ($description);
+        }
+        $cal_template->set_var ('event_description',
+                                PLG_replaceTags ($description));
         $cal_template->set_var('event_id', $eid);
         $cal_template->set_var('lang_addtomycalendar', $LANG_CAL_1[9]);
         $cal_template->parse('output','addevent');     
@@ -219,7 +223,7 @@ function editpersonalevent ($A)
 
     $ampm = date ('a', strtotime ($A['startdate']));
     $cal_templates->set_var ('startampm_selection',
-                         CALENDAR_ampm_selector ('startampm_selection', $ampm));
+                     COM_getAmPmFormSelection ('startampm_selection', $ampm));
 
     // Handle end date/time
     $cal_templates->set_var('lang_enddate', $LANG_CAL_1[18]);
@@ -254,7 +258,7 @@ function editpersonalevent ($A)
 
     $ampm = date ('a', strtotime ($A['enddate']));
     $cal_templates->set_var ('endampm_selection',
-                         CALENDAR_ampm_selector ('endampm_selection', $ampm));
+                         COM_getAmPmFormSelection ('endampm_selection', $ampm));
 
     $cal_templates->set_var ('lang_alldayevent', $LANG_CAL_1[31]);
     if ($A['allday'] == 1) {
@@ -644,11 +648,12 @@ default:
                 }
 
                 $cal_templates->set_var ('lang_description', $LANG_CAL_1[5]);
+                $description = stripslashes ($A['description']);
                 if ($A['postmode'] == 'plaintext') {
-                    $A['description'] = nl2br ($A['description']);
+                    $description = nl2br ($description);
                 }
                 $cal_templates->set_var ('event_description',
-                                            stripslashes ($A['description']));
+                                         PLG_replaceTags ($description));
                 $cal_templates->set_var ('lang_event_type', $LANG_CAL_1[37]);
                 $cal_templates->set_var ('event_type', $A['event_type']);
                 $cal_templates->parse ('event_details', 'details', true); 
