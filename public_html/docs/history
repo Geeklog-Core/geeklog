@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Added new column to userlist to identify one-day members (that registered 
+  and logged on shortly afterwards and never again) [Oliver]
 - Updated FCKeditor to version 2.3.1 [Blaine]
 - Added ability to filter out Admin related groups on the Group Admin page
   Allows users to easily see only user groups. When editing non-core groups,

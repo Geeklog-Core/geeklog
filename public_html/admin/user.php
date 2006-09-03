@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.159 2006/08/19 14:24:42 dhaun Exp $
+// $Id: user.php,v 1.160 2006/09/03 18:37:47 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -203,9 +203,9 @@ function edituser($uid = '', $msg = '')
     $statusarray = array (USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
                           USER_ACCOUNT_ACTIVE              => $LANG28[45]
                    );
-                   
+
     $allow_ban = true;
-    
+
     if ($A['uid'] == $_USER['uid']) {
         $allow_ban = false; // do not allow to ban yourself
     } else if (SEC_inGroup('Root',$A['uid'])) { // is this user a root user?
@@ -220,8 +220,8 @@ function edituser($uid = '', $msg = '')
 
     if ($allow_ban) {
         $statusarray[USER_ACCOUNT_DISABLED] = $LANG28[42];
-    }              
-                   
+    }
+
     if ($_CONF['usersubmission'] == 1) {
         $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
     }
@@ -301,15 +301,22 @@ function listusers()
         $login_text = $LANG28[40];
         $login_field = 'regdate';
     }
-    
+
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG28[37], 'field' => $_TABLES['users'] . '.uid', 'sort' => true),
                     array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
                     array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true),
-                    array('text' => $login_text, 'field' => $login_field, 'sort' => true),
-                    array('text' => $LANG28[7], 'field' => 'email', 'sort' => true)
+                    array('text' => $login_text, 'field' => $login_field, 'sort' => true)
     );
+
+    $online_days_desc = "";
+    if ($_CONF['lastlogin']==true) {
+        $header_arr[] = array('text' => $LANG28[51], 'field' => 'online_days', 'sort' => true);
+        $online_days_desc = $LANG28[52];
+    }
+
+    $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
 
     $defsort_arr = array('field'     => $_TABLES['users'] . '.uid',
                          'direction' => 'ASC');
@@ -326,7 +333,7 @@ function listusers()
     $text_arr = array('has_menu'     => true,
                       'has_extras'   => true,
                       'title'        => $LANG28[11],
-                      'instructions' => $LANG28[12],
+                      'instructions' => $LANG28[12] . $online_days_desc,
                       'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                       'form_url'     => $_CONF['site_admin_url'] . "/user.php",
                       'help_url'     => ''
@@ -334,9 +341,10 @@ function listusers()
 
     if ($_CONF['lastlogin']) {
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
-        $select_userinfo=",lastlogin ";
+        $select_userinfo=",lastlogin, datediff(FROM_UNIXTIME(lastlogin), regdate) as online_days";
     }
-    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
+         . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
 
     $query_arr = array('table' => 'users',
                        'sql' => $sql,
@@ -558,7 +566,7 @@ function importusers ($file)
     $verbose_import = true;
 
     $retval = '';
-    
+
     // Bulk import implies admin authorisation:
     $_CONF['usersubmission'] = 0;
 

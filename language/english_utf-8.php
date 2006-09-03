@@ -865,7 +865,9 @@ $LANG28 = array(
     47 => 'Edit',
     48 => 'Show Admin Groups',
     49 => 'Admin Group',
-    50 => 'Check to allow filtering this group as an Admin Use Group'
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.'
 );
 
 ###############################################################################
@@ -1409,7 +1411,7 @@ $LANG_ADMIN = array (
     'limit_results' => 'Limit Results',
     'submit'        => 'Submit',
     'edit'          => 'Edit',
-    'edit_adv'      => 'Adv. Edit', 
+    'edit_adv'      => 'Adv. Edit',
     'admin_home'    => 'Admin Home',
     'create_new'    => 'Create New',
     'create_new_adv'=> 'Create New (Adv.)',
