@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.148 2006/07/30 16:05:05 blaine Exp $
+// $Id: usersettings.php,v 1.149 2006/09/03 03:52:19 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -65,13 +65,13 @@ function edituser()
                                    
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
     $navbar = new navbar;
-    $navbar->add_menuitem('Preview','showhideProfileEditorDiv("preview",0);return false;',true);
-    $navbar->add_menuitem('Username & Password','showhideProfileEditorDiv("namepass",1);return false;',true);
+    $navbar->add_menuitem($LANG04[151],'showhideProfileEditorDiv("preview",0);return false;',true);
+    $navbar->add_menuitem($LANG04[152],'showhideProfileEditorDiv("namepass",1);return false;',true);
     $navbar->add_menuitem($LANG04[130],'showhideProfileEditorDiv("userinfo",2);return false;',true);
-    $navbar->add_menuitem('Layout & Language','showhideProfileEditorDiv("layout",3);return false;',true);
-    $navbar->add_menuitem('Content','showhideProfileEditorDiv("content",4);return false;',true);
-    $navbar->add_menuitem('Privacy','showhideProfileEditorDiv("privacy",5);return false;',true);
-    $navbar->set_selected('Username & Password');
+    $navbar->add_menuitem($LANG04[153],'showhideProfileEditorDiv("layout",3);return false;',true);
+    $navbar->add_menuitem($LANG04[154],'showhideProfileEditorDiv("content",4);return false;',true);
+    $navbar->add_menuitem($LANG04[155],'showhideProfileEditorDiv("privacy",5);return false;',true);
+    $navbar->set_selected($LANG04[152]);
     $preferences->set_var ('navbar', $navbar->generate());
                                    
     $preferences->set_var ('site_url', $_CONF['site_url']);
