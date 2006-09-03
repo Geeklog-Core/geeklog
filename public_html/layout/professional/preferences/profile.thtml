@@ -90,8 +90,8 @@
   <input type="hidden" name="uid" value="{uid_value}">
   <input type="hidden" name="mode" value="saveuser">
   <input type="hidden" name="username" value="{username_value}">
+  <span style="padding-right:50px;"><input type="submit" name="btnsubmit" value="{lang_submit}"></span>
   <input type="submit" name="btncancel" value="{lang_cancel}">
-  <span style="padding-left:50px;"><input type="submit" name="btnsubmit" value="{lang_submit}"></span>
 </p>
 </form>
 
