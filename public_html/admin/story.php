@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.236 2006/09/03 11:52:00 dhaun Exp $
+// $Id: story.php,v 1.237 2006/09/03 14:39:28 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -522,13 +522,20 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $navbar = new navbar;
         if (!empty ($previewContent)) {
             $navbar->add_menuitem($LANG24[79],'showhideEditorDiv("preview",0);return false;',true);
+            $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor",1);return false;',true);
+            $navbar->add_menuitem($LANG24[81],'showhideEditorDiv("publish",2);return false;',true);
+            $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images",3);return false;',true);
+            $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive",4);return false;',true);
+            $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms",5);return false;',true);
+            $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",6);return false;',true);            
+        }  else {
+            $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor",0);return false;',true);
+            $navbar->add_menuitem($LANG24[81],'showhideEditorDiv("publish",1);return false;',true);
+            $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images",2);return false;',true);
+            $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive",3);return false;',true);
+            $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms",4);return false;',true);
+            $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",5);return false;',true);
         }
-        $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor",1);return false;',true);
-        $navbar->add_menuitem($LANG24[81],'showhideEditorDiv("publish",2);return false;',true);
-        $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images",3);return false;',true);
-        $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive",4);return false;',true);
-        $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms",5);return false;',true);
-        $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",6);return false;',true);
 
         $navbar->set_selected($LANG24[80]);
         $story_templates->set_var ('navbar', $navbar->generate() );
