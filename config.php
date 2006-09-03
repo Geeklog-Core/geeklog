@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.230 2006/08/19 17:40:29 dhaun Exp $
+// $Id: config.php,v 1.231 2006/09/03 09:46:04 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -290,6 +290,7 @@ $_CONF['shortdate']       = '%x';
 $_CONF['dateonly']        = '%d-%b';
 $_CONF['timeonly']        = '%I:%M%p';
 $_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
+$_CONF['hour_mode']       = 12;    // 12 hour am/pm or 24 hour format
 $_CONF['default_charset'] = 'iso-8859-1'; //  should be same as in $_CONF['language']
 
 // Number formatting
