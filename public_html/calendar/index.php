@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Calendar Plugin 1.0                                                       |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
-// | Geeklog calendar.                                                         |
+// | Geeklog calendar plugin                                                   |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.17 2006/09/03 09:43:36 dhaun Exp $
+// $Id: index.php,v 1.18 2006/09/04 07:40:33 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -48,6 +48,7 @@ if (empty ($_USER['username']) &&
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('site_url', $_CONF['site_url']);   
+    $login->set_var ('site_admin_url', $_CONF['site_admin_url']);   
     $login->set_var ('layout_url', $_CONF['layout_url']);   
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
@@ -488,7 +489,8 @@ case 'day':
                                    'event'=>'singleevent.thtml',
                                    'dayview'=>'dayview.thtml',
                                    'quickadd'=>'quickaddform.thtml'));
-    $cal_templates->set_var('site_url', $_CONF['site_url']);
+    $cal_templates->set_var ('site_url', $_CONF['site_url']);
+    $cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
     $cal_templates->set_var('mode', $mode);
     $cal_templates->set_var('lang_day', $LANG_CAL_2[39]);
@@ -617,7 +619,8 @@ case 'week':
     $cal_templates->set_file(array('week'=>'weekview/weekview.thtml',
                                    'events'=>'weekview/events.thtml',
                                    'quickadd'=>'dayview/quickaddform.thtml'));
-    $cal_templates->set_var('site_url', $_CONF['site_url']);
+    $cal_templates->set_var ('site_url', $_CONF['site_url']);
+    $cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
     $cal_templates->set_var('mode', $mode);
     $cal_templates->set_var('lang_week', $LANG_CAL_2[27]);
@@ -796,6 +799,7 @@ $cal_templates->set_file (array (
         ));
 
 $cal_templates->set_var ('site_url', $_CONF['site_url']);
+$cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
 $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
 $cal_templates->set_var ('mode', $mode);
 if ($mode == 'personal') {

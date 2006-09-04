@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.17 2006/09/03 15:48:10 dhaun Exp $
+// $Id: event.php,v 1.18 2006/09/04 07:40:33 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -63,6 +63,7 @@ function adduserevent ($eid)
         $cal_template = new Template($_CONF['path'] . 'plugins/calendar/templates/');
         $cal_template->set_file (array ('addevent' => 'addevent.thtml'));
         $cal_template->set_var('site_url', $_CONF['site_url']);
+        $cal_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $cal_template->set_var('layout_url', $_CONF['layout_url']);
         $cal_template->set_var('intro_msg', $LANG_CAL_1[8]);
         $cal_template->set_var('lang_event', $LANG_CAL_1[12]);
@@ -514,6 +515,7 @@ default:
         $cal_templates->set_var('event_year','');
         $cal_templates->set_var('event_details','');
         $cal_templates->set_var('site_url', $_CONF['site_url']);
+        $cal_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
         $cal_templates->set_var('layout_url', $_CONF['layout_url']);
         $cal_templates->parse('output','events');
         $display .= $cal_templates->finish($cal_templates->get_var('output'));
@@ -535,6 +537,7 @@ default:
                 }
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
                 $cal_templates->set_var('site_url', $_CONF['site_url']);
+                $cal_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
                 $cal_templates->set_var('layout_url', $_CONF['layout_url']);
                 if (!empty($A['url'])) {
                     $cal_templates->set_var('event_begin_anchortag', '<a href="'.$A['url'].'">');
