@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.73 2006/09/03 01:41:45 blaine Exp $
+// $Id: lib-admin.php,v 1.74 2006/09/04 03:31:18 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -62,12 +62,12 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     if (!empty($text_arr['help_url'])) {
         $help_url = $text_arr['help_url'];
     }
-    
+
     $title = "";
     if (!empty($text_arr['title'])) {
         $title = $text_arr['title'];
     }
-    
+
     $form_url = '';
     if (!empty($text_arr['form_url'])) {
         $form_url = $text_arr['form_url'];
@@ -125,7 +125,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 
     // Check if the delete checkbox and support for the delete all feature should be displayed
     if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
-        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');   
+        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
         $admin_templates->set_var('class', "admin-list-headerfield");
         $admin_templates->set_var('on_click', ' width="25px"');
         $admin_templates->set_var('show_deleteimage', '');
@@ -134,8 +134,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     } else {
         $admin_templates->set_var('show_deleteimage','display:none;');
     }
-    
-    # HEADER FIELDS array(text, field, sort)        
+
+    # HEADER FIELDS array(text, field, sort)
     for ($i=0; $i < count( $header_arr ); $i++) {
         $admin_templates->set_var('header_text', $header_arr[$i]['text']);
         if (!empty($header_arr[$i]['header_class'])) {
@@ -161,13 +161,13 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
             if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
                 $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
                 $admin_templates->parse('item_field', 'field', true);
-            }           
-            for ($j = 0; $j < count($header_arr); $j++) {              
+            }
+            for ($j = 0; $j < count($header_arr); $j++) {
                 $fieldname = $header_arr[$j]['field'];
                 $fieldvalue = '';
                 if (!empty($data_arr[$i][$fieldname])) {
                     $fieldvalue = $data_arr[$i][$fieldname];
-                }                
+                }
                 if (!empty($fieldfunction)) {
                     $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $data_arr[$i], $icon_arr);
                 } else {
@@ -249,7 +249,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if ($curpage <= 0) {
         $curpage = 1; #current page has to be larger 0
     }
-    
+
     #$unfiltered='';
     #if (!empty($query_arr['unfiltered'])) {
     #    $unfiltered = $query_arr['unfiltered'];
@@ -259,7 +259,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if (!empty ($text_arr['help_url'])) {
         $help_url = $text_arr['help_url'];
     }
-    
+
     $form_url = ''; # what is the form-url for the search button?
     if (!empty ($text_arr['form_url'])) {
         $form_url = $text_arr['form_url'];
@@ -288,7 +288,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('show_deleteimage', 'display:none;');
-    
+
     # define icon paths. Those will be transmitted to $fieldfunction.
     $icon_arr = array(
         'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
@@ -321,7 +321,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('filter', $filter);
         $admin_templates->parse('top_menu', 'topmenu', true);
     }
-    
+
     $sql_query = addslashes ($query); # replace quotes etc for security
     $sql = $query_arr['sql']; # get sql from array that builds data
 
@@ -364,7 +364,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # make actual order arrow image
     $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
             . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
-    
+
     if (!empty ($order_for_query)) { # concat order string
         $order_sql = "ORDER BY $order_for_query $direction";
     }
@@ -526,7 +526,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
     $admin_templates->parse('output', 'list');
-    
+
     # Do the actual output
     $retval .= COM_startBlock ($title, $help_url,
                                COM_getBlockTemplate ('_admin_block', 'header'))
@@ -606,7 +606,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $thisUsersGroups;
 
     $retval = false;
-    
+
     if( !is_array($thisUsersGroups) )
     {
         $thisUsersGroups = SEC_getUserGroups();
@@ -614,23 +614,23 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
 
     // Extra test required to handle that different ways this option is passed and need to be able to
     // over-ride the option using the posted form when the URL contains the variable as well
-    $show_all_groups = false;   
+    $show_all_groups = false;
     if (isset($_POST['q'])) {   // Form has been posted - test actual option in this form
         if ($_POST['chk_showall'] == 1) {
             $show_all_groups = true;
         }
     } elseif ($_GET['showall'] == 1) {
         $show_all_groups = true;
-    }    
-    
+    }
+
     if (in_array ($A['grp_id'], $thisUsersGroups ) ||
         SEC_groupIsRemoteUserAndHaveAccess( $A['grp_id'], $thisUsersGroups )) {
         switch($fieldname) {
             case 'edit':
-                if ($show_all_groups) {              
+                if ($show_all_groups) {
                     $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}&amp;chk_showall=1\">{$icon_arr['edit']}</a>";
                 } else {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";                    
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
                 }
                 break;
             case 'grp_gl_core':
@@ -651,7 +651,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
                              ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
                              ."<a href=\"{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
                              ."{$icon_arr['edit']}</a>";
-                }                    
+                }
                 break;
             default:
                 $retval = $fieldvalue;
@@ -691,6 +691,13 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
                  $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
              }
 
+            break;
+        case 'online_days':
+            if ($fieldvalue < 0){
+                $retval = "N/A";
+            } else {
+                $retval = $fieldvalue;
+            }
             break;
         case $_TABLES['users'] . '.uid':
             $retval = $A['uid'];
@@ -940,7 +947,7 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
     global $_CONF, $LANG_TRB;
 
     $retval = '';
-    
+
     switch($fieldname) {
         case "edit":
             $retval = "<a href=\"{$_CONF['site_admin_url']}/trackback.php?mode=editservice&amp;service_id={$A['pid']}\">{$icon_arr['edit']}</a>";
