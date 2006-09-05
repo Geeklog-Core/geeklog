@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.74 2006/09/04 03:31:18 ospiess Exp $
+// $Id: lib-admin.php,v 1.75 2006/09/05 05:31:25 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -139,10 +139,10 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     for ($i=0; $i < count( $header_arr ); $i++) {
         $admin_templates->set_var('header_text', $header_arr[$i]['text']);
         if (!empty($header_arr[$i]['header_class'])) {
-			$admin_templates->set_var('class', $header_arr[$i]['header_class']);
-		} else {
-			$admin_templates->set_var('class', "admin-list-headerfield");
-		}
+            $admin_templates->set_var('class', $header_arr[$i]['header_class']);
+        } else {
+            $admin_templates->set_var('class', "admin-list-headerfield");
+        }
         $admin_templates->parse('header_row', 'header', true);
     }
 
@@ -174,10 +174,10 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                     $fieldvalue = $fieldvalue;
                 }
                 if (!empty($header_arr[$j]['field_class'])) {
-					$admin_templates->set_var('class', $header_arr[$j]['field_class']);
-				} else {
-				  	$admin_templates->set_var('class', "admin-list-field");
-				}
+                    $admin_templates->set_var('class', $header_arr[$j]['field_class']);
+                } else {
+                      $admin_templates->set_var('class', "admin-list-field");
+                }
                 if ($fieldvalue !== false) {
                     $admin_templates->set_var('itemtext', $fieldvalue);
                     $admin_templates->parse('item_field', 'field', true);
@@ -234,8 +234,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $query_limit = "";
     if (isset($_REQUEST['query_limit'])) { # get query-limit (list-length)
         $query_limit = COM_applyFilter ($_REQUEST['query_limit'], true);
-        if($query_limit == 0)
-        {
+        if($query_limit == 0) {
             $query_limit = 50;
         }
     }
@@ -260,7 +259,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $help_url = $text_arr['help_url'];
     }
 
-    $form_url = ''; # what is the form-url for the search button?
+    $form_url = ''; # what is the form-url for the search button and list sorters?
     if (!empty ($text_arr['form_url'])) {
         $form_url = $text_arr['form_url'];
     }
@@ -313,10 +312,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $admin_templates->clear_var('line'); # clear separator after use
         }
         # add text strings to template
+        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
         $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
         $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
         $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
         $admin_templates->set_var('last_query', COM_applyFilter($query));
         $admin_templates->set_var('filter', $filter);
         $admin_templates->parse('top_menu', 'topmenu', true);
@@ -399,10 +398,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $admin_templates->set_var ('on_click', $onclick);
         }
         if (!empty($header_arr[$i]['header_class'])) {
-			$admin_templates->set_var('class', $header_arr[$i]['header_class']);
-		} else {
-			$admin_templates->set_var('class', "admin-list-headerfield");
-		}
+            $admin_templates->set_var('class', $header_arr[$i]['header_class']);
+        } else {
+            $admin_templates->set_var('class', "admin-list-headerfield");
+        }
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('img_arrow'); # clear all for next header
         $admin_templates->clear_var('mouse_over');
@@ -480,11 +479,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             } else {
                 $fieldvalue = ''; # set field = ''
             }
-	        if (!empty($header_arr[$j]['field_class'])) {
-				$admin_templates->set_var('class', $header_arr[$j]['field_class']);
-			} else {
-				$admin_templates->set_var('class', "admin-list-field");
-			}
+            if (!empty($header_arr[$j]['field_class'])) {
+                $admin_templates->set_var('class', $header_arr[$j]['field_class']);
+            } else {
+                $admin_templates->set_var('class', "admin-list-field");
+            }
             $admin_templates->set_var('itemtext', $fieldvalue); # write field
             $admin_templates->parse('item_field', 'field', true);
         }
@@ -529,8 +528,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     # Do the actual output
     $retval .= COM_startBlock ($title, $help_url,
-                               COM_getBlockTemplate ('_admin_block', 'header'))
-             . $admin_templates->finish($admin_templates->get_var('output'))
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+    if (!$has_extras) {
+        $retval .= $text_arr['instructions'];
+    }
+    $retval .= $admin_templates->finish($admin_templates->get_var('output'))
              . COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
@@ -664,7 +666,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
 
 function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE, $LANG04;
 
     $retval = '';
 
@@ -673,31 +675,89 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
             break;
         case 'username':
-            $photoico = '<img src="' . $_CONF['layout_url']
-                      . '/images/smallcamera.' . $_IMAGE_TYPE
-                      . '" border="0" alt="">';
+            $photoico = '';
             if (!empty ($A['photo'])) {
-                 $photoico = '&nbsp;' . $photoico;
+                $photoico = "&nbsp;<img src=\"{$_CONF['layout_url']}/images/smallcamera."
+                          . $_IMAGE_TYPE . '" border="0" alt="{$LANG04[77]}">';
             } else {
-                 $photoico = '';
+                $photoico = '';
             }
-            $retval = '<a href="'. $_CONF['site_url']. '/users.php?mode=profile&amp;uid='
-                      . $A['uid'].'">' . $fieldvalue.'</a>' . $photoico;
+            $retval = "<a href=\"{$_CONF['site_url']}/users.php?mode=profile&amp;uid="
+                      . $A['uid']."\">$fieldvalue</a>$photoico";
             break;
         case 'lastlogin':
-             if ($fieldvalue < 1) {
-                 $retval = $LANG28[36];
-             } else {
-                 $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
-             }
-
+            if ($fieldvalue < 1) {
+                // if the user never logged in, show the registration date
+                $regdate = strftime ($_CONF['shortdate'], strtotime($A['regdate']));
+                $retval = "({$LANG28[36]}, {$LANG28[53]} $regdate)";
+            } else {
+                $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
+            }
             break;
         case 'online_days':
             if ($fieldvalue < 0){
+                // users that never logged in, would have a negative online days
                 $retval = "N/A";
             } else {
                 $retval = $fieldvalue;
             }
+            break;
+        case $_TABLES['users'] . '.uid':
+            $retval = $A['uid'];
+            break;
+        default:
+            $retval = $fieldvalue;
+            break;
+    }
+
+    if (isset($A['status']) && ($A['status'] == USER_ACCOUNT_DISABLED)) {
+        if (($fieldname != 'edit') && ($fieldname != 'username')) {
+            $retval = sprintf ('<s title="%s">%s</s>', $LANG28[42], $retval);
+        }
+    }
+
+    return $retval;
+}
+
+function ADMIN_getListField_batchuserdelete($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE, $LANG04;
+
+    $retval = '';
+
+    switch ($fieldname) {
+        case 'delete':
+            $retval = "<input type=\"checkbox\" name=\"del_uid[{$A['uid']}]\" checked=\"checked\">";
+            break;
+        case 'username':
+            $photoico = '';
+            if (!empty ($A['photo'])) {
+                $photoico = "&nbsp;<img src=\"{$_CONF['layout_url']}/images/smallcamera."
+                          . $_IMAGE_TYPE . '" border="0" alt="{$LANG04[77]}">';
+            } else {
+                $photoico = '';
+            }
+            $retval = "<a href=\"{$_CONF['site_url']}/users.php?mode=profile&amp;uid="
+                      . $A['uid']."\">$fieldvalue</a>$photoico";
+            break;
+        case 'notloggedinsince':
+            if ($A['lastlogin']== 0) {
+                $retval = "N/A";
+            } else if ($fieldvalue == 0) {
+                $retval = "Today";
+            }
+            break;
+        case 'lastlogin':
+            if ($fieldvalue < 1) {
+                // if the user never logged in, show the registration date
+                $regdate = strftime ($_CONF['shortdate'], strtotime($A['regdate']));
+                $retval = "({$LANG28[36]})";
+            } else {
+                $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
+            }
+            break;
+        case 'regdate':
+            $retval = strftime ($_CONF['shortdate'], strtotime($fieldvalue));
             break;
         case $_TABLES['users'] . '.uid':
             $retval = $A['uid'];

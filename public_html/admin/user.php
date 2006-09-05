@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.160 2006/09/03 18:37:47 ospiess Exp $
+// $Id: user.php,v 1.161 2006/09/05 05:31:24 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -294,7 +294,7 @@ function listusers()
 
     $display = '';
 
-    if ($_CONF['lastlogin']==true) {
+    if ($_CONF['lastlogin']) {
         $login_text = $LANG28[41];
         $login_field = 'lastlogin';
     } else {
@@ -310,12 +310,6 @@ function listusers()
                     array('text' => $login_text, 'field' => $login_field, 'sort' => true)
     );
 
-    $online_days_desc = "";
-    if ($_CONF['lastlogin']==true) {
-        $header_arr[] = array('text' => $LANG28[51], 'field' => 'online_days', 'sort' => true);
-        $online_days_desc = $LANG28[52];
-    }
-
     $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
 
     $defsort_arr = array('field'     => $_TABLES['users'] . '.uid',
@@ -326,6 +320,8 @@ function listusers()
                           'text' => $LANG_ADMIN['create_new']),
                     array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
                           'text' => $LANG28[23]),
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=batchdelete',
+                          'text' => $LANG28[54]),
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
@@ -341,7 +337,7 @@ function listusers()
 
     if ($_CONF['lastlogin']) {
         $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
-        $select_userinfo=",lastlogin, datediff(FROM_UNIXTIME(lastlogin), regdate) as online_days";
+        $select_userinfo=",lastlogin";
     }
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
          . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
@@ -549,6 +545,196 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 
     return $retval;
 }
+
+/**
+* This function allows the batch deletion of users that are inactive
+* It shows the form that will filter user that will be deleted
+*
+* @return   string          HTML Form
+*/
+function batchdelete()
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
+
+    $display = '';
+    if (!$_CONF['lastlogin']) {
+        $retval = "<br>". $_LANG28[55];
+        return $retval;
+    }
+
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
+    $usr_type = '';
+    if (isset($_REQUEST['usr_type'])) {
+        $usr_type = COM_applyFilter($_REQUEST['usr_type']);
+    } else {
+        $usr_type = 'phantom';
+    }
+    $usr_time_arr = array();
+    $usr_time = '';
+    if (isset($_REQUEST['usr_time'])) {
+        $usr_time_arr = $_REQUEST['usr_time'];
+    } else {
+        $usr_time_arr['phantom'] = 2;
+        $usr_time_arr['short'] = 6;
+        $usr_time_arr['old'] = 24;
+    }
+    $usr_time = $usr_time_arr[$usr_type];
+
+    // $sel_ . $usr_type  = 'selected="selected"';
+    $selector = "sel_$usr_type";
+    $$selector = ' checked="checked"';
+    $desc = $LANG28[56] . LB
+          . '<p><input type="radio" name="usr_type" value="phantom"'.$sel_phantom.'><strong>'
+          . $LANG28[57] .':</strong> ' . $LANG28[60]
+          . '<input style="text-align:center" type="text" name="usr_time[phantom]" value="'.$usr_time_arr['phantom']
+          . '" size="3">' . $LANG28[61] . '<br>' . LB
+          . '<input type="radio" name="usr_type" value="short"'.$sel_short.'><strong>'
+          . $LANG28[58] .':</strong> ' . $LANG28[62]
+          . '<input style="text-align:center" type="text" name="usr_time[short]" value="'.$usr_time_arr['short']
+          . '" size="3">' . $LANG28[63] . '<br>'  . LB
+          . '<input type="radio" name="usr_type" value="old"'.$sel_old.'><strong>'
+          . $LANG28[59] .':</strong> ' . $LANG28[64]
+          . '<input style="text-align:center" type="text" name="usr_time[old]" value="'.$usr_time_arr['old']
+          . '" size="3">' . $LANG28[65] . '</p>' . LB
+          . '&nbsp;<input type="submit" name="submit" value="' . $LANG28[66] . '"></form><p>';
+
+    if ($usr_type == 'phantom') {
+        $desc .= $LANG28[60] . $usr_time . $LANG28[61];
+    } else if ($usr_type == 'short') {
+        $desc .= $LANG28[62] . $usr_time . $LANG28[63];
+    } else if ($usr_type == 'old') {
+        $desc .= $LANG28[64] . $usr_time . $LANG28[65];
+    }
+
+    $display .= '<form style="display:inline" action="' . $_CONF['site_admin_url']. '/user.php?mode=batchdelete" method="post" >' . LB
+            . '<input type="hidden" name="mode" value="batchdelete">' . LB
+            . '<input type="hidden" name="usr_type" value="'.$usr_type.'">' . LB
+            . '<input type="hidden" name="usr_time['.$usr_type.']" value="'.$usr_time.'">' . LB;
+
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+                    array('text' => "<input type=\"submit\" name=\"submit\" value=\"{$LANG_ADMIN['delete']}\" onclick=\"return confirm('{$LANG28[73]}');\">",
+                          'field' => 'delete', 'sort' => false),
+                    array('text' => $LANG28[37], 'field' => $_TABLES['users'] . '.uid', 'sort' => true),
+                    array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
+                    array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true)
+    );
+    if ($usr_type == 'phantom') {
+        $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
+        $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+        $header_arr[] = array('text' => $LANG28[67], 'field' => 'phantom_date', 'sort' => true);
+    }
+
+    if ($usr_type == 'short') {
+        $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
+        $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+        $header_arr[] = array('text' => $LANG28[68], 'field' => 'online_time', 'sort' => true);
+        $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
+    }
+
+    if ($usr_type == 'old') {
+        $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+        $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
+    }
+
+    $online_days_desc = "";
+
+    $online_days_desc = $LANG28[52];
+    $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
+                          'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'] . '/user.php',
+                          'text' => $LANG28[11]),
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
+                          'text' => $LANG28[23]),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $text_arr = array('has_menu'     => false,
+                      'has_extras'   => false,
+                      'title'        => $LANG28[54],
+                      'instructions' => "<p>$desc</p>",
+                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
+                      'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
+                      'help_url'     => ''
+    );
+
+    if ($usr_type == 'phantom') {
+        $list_sql = ", (DATEDIFF(NOW(), regdate)) / 30 AS phantom_date";
+        $filter_sql = "lastlogin = 0 AND ((DATEDIFF(NOW(), regdate)) / 30) > $usr_time AND";
+        $sort = 'DATEDIFF(NOW(), regdate)';
+    }
+
+    if ($usr_type == 'short') {
+        $list_sql = ", TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) AS online_time, DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) / 30 AS offline_months";
+        $filter_sql = "lastlogin > 0 AND TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) < 24 AND ((DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin))) / 30) > $usr_time AND";
+        $sort = 'DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) / 30';
+    }
+
+    if ($usr_type == 'old') {
+        $list_sql = ", DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) / 30 AS offline_months";
+        $filter_sql = "lastlogin > 0 AND ((DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin))) / 30) > $usr_time AND";
+        $sort = 'DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin))';
+    }
+
+    $defsort_arr = array('field'     => $sort,
+                         'direction' => 'ASC');
+
+    $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+    $select_userinfo = ", lastlogin $list_sql "
+                     . ", datediff(CURDATE(), FROM_UNIXTIME(lastlogin)) AS notloggedinsince";
+
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
+         . "FROM {$_TABLES['users']} $join_userinfo WHERE $filter_sql {$_TABLES['users']}.uid > 1 AND 1=1";
+
+    $query_arr = array('table' => 'users',
+                       'sql' => $sql,
+                       'query_fields' => array('username', 'email', 'fullname'),
+                       'default_filter' => "");
+
+    $display .= ADMIN_list ("user", "ADMIN_getListField_batchuserdelete", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr);
+    $display .= '</form>';
+
+
+    return $display;
+}
+/**
+* This function deletes the users selected in the batchdeletelist function
+*
+* @return   string          HTML with success or error message
+*
+*/
+function batchdeleteexec() {
+    global $_CONF, $LANG28;
+
+    $msg = '';
+    $user_list = array();
+    if (isset($_POST['del_uid'])) {
+        $user_list = $_POST['del_uid'];
+    }
+
+    if (count($user_list) == 0) {
+        $msg = $LANG28[72];
+    }
+
+    for ($i<0; $i<count($user_list); $i++) {
+        if (current($user_list) =='on') {
+            $uid = key($user_list);
+            if (!USER_deleteAccount (key($user_list))) {
+                $msg .= "<strong>{$LANG28[2]} $uid {$LANG28[70]}</strong><br>\n";
+            } else {
+                $msg .= "{$LANG28[2]} $uid {$LANG28[71]}<br>\n";
+            }
+        }
+        next($user_list);
+    }
+    return $msg;
+}
+
 
 /**
 * This function allows the administrator to import batches of users
@@ -782,6 +968,24 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= $LANG28[25] . '<br><br>';
     $display .= display_form();
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $display .= COM_siteFooter();
+} else if ($mode == 'batchdelete') {
+    if ($_POST{'submit'} == $LANG_ADMIN['delete']) {
+        $msg = batchdeleteexec();
+        $display .= COM_siteHeader ('menu', $LANG28[11]);
+        $timestamp = strftime( $_CONF['daytime'] );
+        $display .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
+                               COM_getBlockTemplate( '_msg_block', 'header' ))
+                . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
+                . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
+                . ' alt="" style="padding-right:5px; padding-bottom:3px">'
+                . $msg . '</p>'
+                . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
+    } else {
+        $display .= COM_siteHeader ('menu', $LANG28[54]);
+
+    }
+    $display .= batchdelete();
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG28[11]);

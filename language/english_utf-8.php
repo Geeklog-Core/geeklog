@@ -851,7 +851,7 @@ $LANG28 = array(
     33 => 'submit',
     34 => 'Error: You must specify a file to upload.',
     35 => 'Last Login',
-    36 => '(never)',
+    36 => 'never',
     37 => 'UID',
     38 => 'Group Listing',
     39 => 'Password (again)',
@@ -867,7 +867,28 @@ $LANG28 = array(
     49 => 'Admin Group',
     50 => 'Check to allow filtering this group as an Admin Use Group',
     51 => 'Online Days',
-    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.'
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => "This only works if you have <code>\$_CONF['lastlogin'] = true;</code> in your config.php",
+    56 => 'Please choose the type of user you want to delete and press "Update List".',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Time',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?'
 );
 
 ###############################################################################
