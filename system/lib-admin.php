@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.75 2006/09/05 05:31:25 ospiess Exp $
+// $Id: lib-admin.php,v 1.76 2006/09/06 01:23:47 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -739,13 +739,6 @@ function ADMIN_getListField_batchuserdelete($fieldname, $fieldvalue, $A, $icon_a
             }
             $retval = "<a href=\"{$_CONF['site_url']}/users.php?mode=profile&amp;uid="
                       . $A['uid']."\">$fieldvalue</a>$photoico";
-            break;
-        case 'notloggedinsince':
-            if ($A['lastlogin']== 0) {
-                $retval = "N/A";
-            } else if ($fieldvalue == 0) {
-                $retval = "Today";
-            }
             break;
         case 'lastlogin':
             if ($fieldvalue < 1) {
