@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.77 2006/09/06 02:13:06 ospiess Exp $
+// $Id: lib-admin.php,v 1.78 2006/09/06 02:14:26 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -456,7 +456,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # SQL
     $sql .= "$filter_str $order_sql $limit;";
     $result = DB_query($sql);
-    echo $sql;
+    // echo $sql;
     $nrows = DB_numRows($result);
     $r = 1; # r is the counter for the actual displayed rows for correct coloring
     for ($i = 0; $i < $nrows; $i++) { # now go through actual data
