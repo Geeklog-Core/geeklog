@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.76 2006/09/06 01:23:47 ospiess Exp $
+// $Id: lib-admin.php,v 1.77 2006/09/06 02:13:06 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -456,6 +456,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # SQL
     $sql .= "$filter_str $order_sql $limit;";
     $result = DB_query($sql);
+    echo $sql;
     $nrows = DB_numRows($result);
     $r = 1; # r is the counter for the actual displayed rows for correct coloring
     for ($i = 0; $i < $nrows; $i++) { # now go through actual data
@@ -748,6 +749,10 @@ function ADMIN_getListField_batchuserdelete($fieldname, $fieldvalue, $A, $icon_a
             } else {
                 $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
             }
+            break;
+        case 'phantom_date':
+        case 'offline_months':
+            $retval = round($fieldvalue / 30, 1);
             break;
         case 'regdate':
             $retval = strftime ($_CONF['shortdate'], strtotime($fieldvalue));

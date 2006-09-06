@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.163 2006/09/06 01:54:04 ospiess Exp $
+// $Id: user.php,v 1.164 2006/09/06 02:13:06 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -663,20 +663,21 @@ function batchdelete()
     );
 
     if ($usr_type == 'phantom') {
-        $list_sql = ", (DATEDIFF(NOW(), regdate)) / 30 AS phantom_date";
-        $filter_sql = "lastlogin = 0 AND ((DATEDIFF(NOW(), regdate)) / 30) > $usr_time AND";
+        $list_sql = ", DATEDIFF(NOW(), regdate) AS phantom_date";
+        $filter_sql = "lastlogin = 0 AND DATEDIFF(NOW(), regdate) > " . ($usr_time * 30) . " AND";
         $sort = 'regdate';
     }
 
     if ($usr_type == 'short') {
-        $list_sql = ", TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) AS online_time, DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) / 30 AS offline_months";
-        $filter_sql = "lastlogin > 0 AND TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) < 24 AND ((DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin))) / 30) > $usr_time AND";
+        $list_sql = ", TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) AS online_time, DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
+        $filter_sql = "lastlogin > 0 AND TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) < 24 "
+                    . "AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
         $sort = 'lastlogin';
     }
 
     if ($usr_type == 'old') {
-        $list_sql = ", DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) / 30 AS offline_months";
-        $filter_sql = "lastlogin > 0 AND ((DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin))) / 30) > $usr_time AND";
+        $list_sql = ", DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
+        $filter_sql = "lastlogin > 0 AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
         $sort = 'lastlogin';
     }
 
