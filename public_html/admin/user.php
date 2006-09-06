@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.161 2006/09/05 05:31:24 ospiess Exp $
+// $Id: user.php,v 1.162 2006/09/06 01:24:20 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -329,7 +329,7 @@ function listusers()
     $text_arr = array('has_menu'     => true,
                       'has_extras'   => true,
                       'title'        => $LANG28[11],
-                      'instructions' => $LANG28[12] . $online_days_desc,
+                      'instructions' => $LANG28[12],
                       'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                       'form_url'     => $_CONF['site_admin_url'] . "/user.php",
                       'help_url'     => ''
@@ -581,7 +581,10 @@ function batchdelete()
     }
     $usr_time = $usr_time_arr[$usr_type];
 
-    // $sel_ . $usr_type  = 'selected="selected"';
+    $sel_phantom="";
+    $sel_short="";
+    $sel_old="";
+
     $selector = "sel_$usr_type";
     $$selector = ' checked="checked"';
     $desc = $LANG28[56] . LB
@@ -637,9 +640,6 @@ function batchdelete()
         $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
     }
 
-    $online_days_desc = "";
-
-    $online_days_desc = $LANG28[52];
     $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
 
     $menu_arr = array (
