@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.164 2006/09/06 02:13:06 ospiess Exp $
+// $Id: user.php,v 1.165 2006/09/06 04:44:20 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -631,7 +631,7 @@ function batchdelete()
     if ($usr_type == 'short') {
         $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
         $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
-        $header_arr[] = array('text' => $LANG28[68], 'field' => 'online_time', 'sort' => true);
+        $header_arr[] = array('text' => $LANG28[68], 'field' => 'online_hours', 'sort' => true);
         $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
     }
 
@@ -663,21 +663,40 @@ function batchdelete()
     );
 
     if ($usr_type == 'phantom') {
-        $list_sql = ", DATEDIFF(NOW(), regdate) AS phantom_date";
-        $filter_sql = "lastlogin = 0 AND DATEDIFF(NOW(), regdate) > " . ($usr_time * 30) . " AND";
+        // MySQL 3
+        $list_sql = ", UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) as phantom_date";
+        // MySQL 4
+        // $list_sql = ", DATEDIFF(NOW(), regdate) AS phantom_date";
+        // MySQL 3
+        $filter_sql = "lastlogin = 0 AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
+        // MySQL 4
+        // $filter_sql = "lastlogin = 0 AND DATEDIFF(NOW(), regdate) > " . ($usr_time * 30) . " AND";
         $sort = 'regdate';
     }
 
     if ($usr_type == 'short') {
-        $list_sql = ", TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) AS online_time, DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
-        $filter_sql = "lastlogin > 0 AND TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) < 24 "
-                    . "AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
+        // MySQL 3
+        $list_sql = ", (lastlogin - UNIX_TIMESTAMP(regdate)) AS online_hours, (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
+        // MySQL 4
+        // $list_sql = ", TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) AS online_time, DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
+        // MySQL 3
+        $filter_sql = "lastlogin > 0 AND lastlogin - UNIX_TIMESTAMP(regdate) < 86400 "
+                     . "AND UNIX_TIMESTAMP() - lastlogin > " . ($usr_time * 2592000) . " AND";
+        // MySQL 4
+        // $filter_sql = "lastlogin > 0 AND TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) < 24 "
+        //            . "AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
         $sort = 'lastlogin';
     }
 
     if ($usr_type == 'old') {
-        $list_sql = ", DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
-        $filter_sql = "lastlogin > 0 AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
+        // MySQL 3
+        $list_sql = ", (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
+        // MySQL 4
+        // $list_sql = ", DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
+        // MySQL 3
+        $filter_sql = "lastlogin > 0 AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
+        // MySQL 4
+        // $filter_sql = "lastlogin > 0 AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
         $sort = 'lastlogin';
     }
 

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.78 2006/09/06 02:14:26 ospiess Exp $
+// $Id: lib-admin.php,v 1.79 2006/09/06 04:44:20 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -752,7 +752,14 @@ function ADMIN_getListField_batchuserdelete($fieldname, $fieldvalue, $A, $icon_a
             break;
         case 'phantom_date':
         case 'offline_months':
-            $retval = round($fieldvalue / 30, 1);
+            // MySQL 4
+            // $retval = round($fieldvalue / 30, 1);
+            // MySQL 3
+            $retval = round($fieldvalue / 2592000, 1);
+            break;
+        case 'online_time':
+            // MySQL 3
+            $retval = round($fieldvalue / 3600, 2);
             break;
         case 'regdate':
             $retval = strftime ($_CONF['shortdate'], strtotime($fieldvalue));
