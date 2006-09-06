@@ -20,10 +20,10 @@
                                         <td align="right">{lang_topicimage}:</td>
                                         <td><input type="text" size="48" maxlength="{max_url_length}" name="imageurl" value="{image_url}"></td>
                                     </tr>
-									<tr>
-										<td align="right">{lang_uploadimage}:</td>
-										<td><input type="file" name="newicon"> ({lang_maxsize} {icon_dimensions})</td>
-									</tr>
+                                    <tr>
+                                        <td align="right">{lang_uploadimage}:</td>
+                                        <td><input type="file" name="newicon"> ({lang_maxsize} {icon_dimensions})</td>
+                                    </tr>
                                     <tr>
                                         <td align="right">{lang_defaulttopic}:</td>
                                         <td><input type="checkbox" name="is_default" {default_checked}> ({lang_defaulttext})</td>
@@ -71,10 +71,10 @@
                                     <tr><td>&nbsp;</td></tr>
                                     <tr>
                                         <td colspan="2">
-                                            <input type="submit" value="{lang_save}" name="mode"> 
+                                            <input type="submit" value="{lang_save}" name="mode">
                                             <input type="submit" value="{lang_cancel}" name="mode">
                                             {delete_option}
                                         </td>
                                     </tr>
                                 </table>
-                            </form> 
+                            </form>

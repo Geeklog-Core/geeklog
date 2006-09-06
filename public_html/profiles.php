@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.50 2006/08/05 13:03:57 dhaun Exp $
+// $Id: profiles.php,v 1.51 2006/09/06 05:31:00 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -47,7 +47,7 @@ require_once ('lib-common.php');
 * @param    string  $message        Text of message to send
 * @return   string                  Meta redirect or HTML for the contact form
 */
-function contactemail($uid,$author,$authoremail,$subject,$message) 
+function contactemail($uid,$author,$authoremail,$subject,$message)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04, $LANG08;
 
@@ -119,20 +119,20 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             COM_updateSpeedlimit ('mail');
 
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
-		} else {
+        } else {
             $retval .= COM_siteHeader ('menu', $LANG04[81])
                     . COM_errorLog ($LANG08[3], 2)
                     . contactform ($uid, $subject, $message)
                     . COM_siteFooter ();
-		}
-	} else {
+        }
+    } else {
         $retval .= COM_siteHeader ('menu', $LANG04[81])
                 . COM_errorLog ($LANG08[4], 2)
                 . contactform ($uid, $subject, $message)
                 . COM_siteFooter ();
-	}
+    }
 
-	return $retval;
+    return $retval;
 }
 
 /**
@@ -144,7 +144,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 * @return   string              HTML for the contact form
 *
 */
-function contactform ($uid, $subject = '', $message = '') 
+function contactform ($uid, $subject = '', $message = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
 
@@ -178,7 +178,7 @@ function contactform ($uid, $subject = '', $message = '')
 
             $retval = COM_startBlock ($LANG08[10] . ' ' . $displayname);
             $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
-            $mail_template->set_file ('form', 'contactuserform.thtml');	
+            $mail_template->set_file ('form', 'contactuserform.thtml');
             $mail_template->set_var ('site_url', $_CONF['site_url']);
             $mail_template->set_var ('lang_description', $LANG08[26]);
             $mail_template->set_var ('lang_username', $LANG08[11]);
@@ -230,17 +230,17 @@ function contactform ($uid, $subject = '', $message = '')
 *
 * Modification History
 *
-* Date		Author		Description
-* ----		------		-----------
-* 4/17/01	Tony Bibbs	Code now allows anonymous users to send email
-*				and it allows user to input a message as well
-*				Thanks to Yngve Wassvik Bergheim for some of
-*				this code
+* Date        Author        Description
+* ----        ------        -----------
+* 4/17/01    Tony Bibbs    Code now allows anonymous users to send email
+*                and it allows user to input a message as well
+*                Thanks to Yngve Wassvik Bergheim for some of
+*                this code
 *
 */
-function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg) 
+function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 {
- 	global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
 
     $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
                                          . '/article.php?story=' . $sid));
@@ -303,15 +303,15 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $mailto = COM_formatEmailAddress ($to, $toemail);
     $mailfrom = COM_formatEmailAddress ($from, $fromemail);
- 	$subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
+    $subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
 
     COM_mail ($mailto, $subject, $mailtext, $mailfrom);
     COM_updateSpeedlimit ('mail');
 
-	// Increment numemails counter for story
+    // Increment numemails counter for story
     DB_query ("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
 
-	return $retval;
+    return $retval;
 }
 
 /**
@@ -322,7 +322,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 *
 */
 function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
-                        $fromemail = '', $shortmsg = '', $msg = 0) 
+                        $fromemail = '', $shortmsg = '', $msg = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
 
@@ -359,7 +359,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     }
 
     $mail_template = new Template($_CONF['path_layout'] . 'profiles');
-    $mail_template->set_file('form', 'contactauthorform.thtml');	
+    $mail_template->set_file('form', 'contactauthorform.thtml');
     $mail_template->set_var('site_url', $_CONF['site_url']);
     $mail_template->set_var('start_block_mailstory2friend', COM_startBlock($LANG08[17]));
     $mail_template->set_var('lang_fromname', $LANG08[20]);
@@ -378,7 +378,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('end_block', COM_endBlock());
     $mail_template->parse('output', 'form');
     $retval .= $mail_template->finish($mail_template->get_var('output'));
-		
+
     return $retval;
 }
 

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: Blogger.auth.class.php,v 1.4 2005/10/02 17:44:44 mjervis Exp $
+// $Id: Blogger.auth.class.php,v 1.5 2006/09/06 05:31:01 ospiess Exp $
 
 // PEAR class to handle XML-RPC
 require_once ('XML/RPC.php');
@@ -42,12 +42,12 @@ class Blogger
     {
         $email = '';
         $message = new XML_RPC_Message('blogger.getUserInfo',
-								array(
-    								new XML_RPC_Value('XXXXXXXXXXXX', 'string'),
-									new XML_RPC_Value($username, 'string'),
-									new XML_RPC_Value($password, 'string')
-								)
-												);
+                                array(
+                                    new XML_RPC_Value('XXXXXXXXXXXX', 'string'),
+                                    new XML_RPC_Value($username, 'string'),
+                                    new XML_RPC_Value($password, 'string')
+                                )
+                                                );
         $client = new XML_RPC_Client('/api/', 'www.blogger.com', 80);
         $result = $client->send($message, 5, 'http');
         if ($result && ($result->faultString() == '')) {

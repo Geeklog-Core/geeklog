@@ -31,109 +31,109 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.1 2006/08/22 18:37:57 dhaun Exp $
+// $Id: mssql_install.php,v 1.2 2006/09/06 05:31:00 ospiess Exp $
 
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['events']}] (
-	[eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[datestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[dateend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[hits] [numeric](8, 0) NULL ,
-	[owner_id] [numeric](8, 0) NULL ,
-	[group_id] [numeric](8, 0) NULL ,
-	[perm_owner] [tinyint] NULL ,
-	[perm_group] [tinyint] NULL ,
-	[perm_members] [tinyint] NULL ,
-	[perm_anon] [tinyint] NULL ,
-	[address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[allday] [smallint] NULL ,
-	[event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL 
+    [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [datestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [dateend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [hits] [numeric](8, 0) NULL ,
+    [owner_id] [numeric](8, 0) NULL ,
+    [group_id] [numeric](8, 0) NULL ,
+    [perm_owner] [tinyint] NULL ,
+    [perm_group] [tinyint] NULL ,
+    [perm_members] [tinyint] NULL ,
+    [perm_anon] [tinyint] NULL ,
+    [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [allday] [smallint] NULL ,
+    [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
-	[eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[datestart] [smalldatetime] NULL ,
-	[dateend] [smalldatetime] NULL ,
-	[url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[allday] [smallint] NOT NULL ,
-	[zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[timestart] [smalldatetime] NULL ,
-	[timeend] [smalldatetime] NULL 
+    [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [datestart] [smalldatetime] NULL ,
+    [dateend] [smalldatetime] NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [allday] [smallint] NOT NULL ,
+    [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [timestart] [smalldatetime] NULL ,
+    [timeend] [smalldatetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
-	[eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[datestart] [smalldatetime] NULL ,
-	[dateend] [smalldatetime] NULL ,
-	[address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[allday] [smallint] NOT NULL ,
-	[url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[owner_id] [numeric](8, 0) NOT NULL ,
-	[group_id] [numeric](8, 0) NOT NULL ,
-	[perm_owner] [tinyint] NOT NULL ,
-	[perm_group] [tinyint] NOT NULL ,
-	[perm_members] [tinyint] NOT NULL ,
-	[perm_anon] [tinyint] NOT NULL ,
-	[uid] [int] NOT NULL ,
-	[location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[timestart] [smalldatetime] NULL ,
-	[timeend] [smalldatetime] NULL 
+    [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [datestart] [smalldatetime] NULL ,
+    [dateend] [smalldatetime] NULL ,
+    [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [allday] [smallint] NOT NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL ,
+    [uid] [int] NOT NULL ,
+    [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [timestart] [smalldatetime] NULL ,
+    [timeend] [smalldatetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['events']}] ADD 
-	CONSTRAINT [PK_gl_events] PRIMARY KEY  CLUSTERED 
-	(
-		[eid]
-	)  ON [PRIMARY] 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['events']}] ADD
+    CONSTRAINT [PK_gl_events] PRIMARY KEY  CLUSTERED
+    (
+        [eid]
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['eventsubmission']}] ADD 
-	CONSTRAINT [PK_gl_eventsubmission] PRIMARY KEY  CLUSTERED 
-	(
-		[eid]
-	)  ON [PRIMARY] 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['eventsubmission']}] ADD
+    CONSTRAINT [PK_gl_eventsubmission] PRIMARY KEY  CLUSTERED
+    (
+        [eid]
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD 
-	CONSTRAINT [PK_gl_personal_events] PRIMARY KEY  CLUSTERED 
-	(
-		[eid],
-		[uid]
-	)  ON [PRIMARY] 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD
+    CONSTRAINT [PK_gl_personal_events] PRIMARY KEY  CLUSTERED
+    (
+        [eid],
+        [uid]
+    )  ON [PRIMARY]
 ";
 
 

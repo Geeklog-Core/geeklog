@@ -6,25 +6,25 @@ function commentsToPreorderTreeHelper(&$tP, $left, $indent = 0)
 
     // start with the right terminal value = left terminal value + 1
     $right = $left + 1;
-    
+
     //foreach child (if any) run the recursive function
     if ( isset( $tP['children'] ))
     {
-	    while( list( $k, $A ) = each( $tP['children'] ) )
-    	{
-        	//DEBUG: print("calling recurisive($k, $right)\n");
-        	$right = commentsToPreorderTreeHelper($A, $right, $indent + 1);
-        	$right++;   
-    	}
+        while( list( $k, $A ) = each( $tP['children'] ) )
+        {
+            //DEBUG: print("calling recurisive($k, $right)\n");
+            $right = commentsToPreorderTreeHelper($A, $right, $indent + 1);
+            $right++;
+        }
     }
-    
+
     //Update the comment, set lft = $left and rht = return value + 1
     $q = "UPDATE {$_TABLES['comments']} SET lft = $left, rht = $right, "
        . "indent = $indent WHERE cid = " . $tP['cid'];
     DB_query($q);
-    
+
     //DEBUG: print $q."<br>";
-    
+
     //return right
     return $right;
 }
@@ -32,7 +32,7 @@ function commentsToPreorderTreeHelper(&$tP, $left, $indent = 0)
 function commentsToPreorderTree()
 {
     global $_TABLES;
-    
+
     // Get all the unique sid's from the database
     $q = "SELECT sid FROM {$_TABLES['comments']} group by sid";
     $result = DB_query($q);
@@ -42,45 +42,45 @@ function commentsToPreorderTree()
     while ( $A = DB_fetchArray($result) )
     {
         // build a tree
-    	$aP = array();
-    	$tP = array();
-    	
+        $aP = array();
+        $tP = array();
+
         // grab comments associated with the current 'sid'
         $qC = "SELECT cid,pid FROM {$_TABLES['comments']} "
-           	. "WHERE sid = '{$A['sid']}' ORDER BY cid ASC";
-        $rC = DB_query( $qC ); 
-        
+            . "WHERE sid = '{$A['sid']}' ORDER BY cid ASC";
+        $rC = DB_query( $qC );
+
         // put the comments in a usefull array
         while ( $dC = DB_fetchArray( $rC ) )
         {
-        	if ( $dC['pid'] == 0 )
-        	{
-        		// Root comment
-        		$tP[$dC['cid']] = $dC;
-        		$aP[$dC['cid']] =& $tP[$dC['cid']];
-        	}
-        	else
-        	{
-        		// Child comment
-        		$aP[$dC['pid']]['children'][$dC['cid']] = $dC;
-       			$aP[$dC['cid']] =& $aP[$dC['pid']]['children'][$dC['cid']];	
-       		}
+            if ( $dC['pid'] == 0 )
+            {
+                // Root comment
+                $tP[$dC['cid']] = $dC;
+                $aP[$dC['cid']] =& $tP[$dC['cid']];
+            }
+            else
+            {
+                // Child comment
+                $aP[$dC['pid']]['children'][$dC['cid']] = $dC;
+                $aP[$dC['cid']] =& $aP[$dC['pid']]['children'][$dC['cid']];
+            }
         }
-        
+
         unset ($aP);
-        
+
         // initialize left terminal value, this starts with 1 for every
         //   set of comments associated with a 'sid'
         $left = 1;
-        
+
         // Foreach toplevel comment run the recursive funtion
         while( list( $k, $B ) = each( $tP ) )
         {
-        	//DEBUG: print("calling recurisive({$B['cid']}, $left)\n");
+            //DEBUG: print("calling recurisive({$B['cid']}, $left)\n");
             $left = commentsToPreorderTreeHelper($B, $left);
-            $left++;   
+            $left++;
         }
-        
+
         /* Print results to error log for DEBUGing
          * $left = ($left-1)/2;
          * COM_errorLog("$left comments in story {$A['sid']} converted");
@@ -139,7 +139,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD INDEX syndication_topic(top
 // make sure old links have a proper owner (user "anonymous")
 $_SQL[] = "UPDATE {$_TABLES['links']} SET owner_id = 1 WHERE owner_id = 0";
 
-// Add new fields for Story Archive feature 
+// Add new fields for Story Archive feature
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD expire DATETIME NOT NULL AFTER statuscode";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD archive_flag tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER is_default";
 
@@ -163,7 +163,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} CHANGE sp_id sp_id varchar(40) N
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} CHANGE sid sid varchar(40) NOT NULL";
 $_SQL[] = "ALTER TABLE {$_TABLES['article_images']} CHANGE ai_sid ai_sid varchar(40) NOT NULL";
 
-// Add new location fields to the userinfo table 
+// Add new location fields to the userinfo table
 $_SQL[] = "ALTER TABLE {$_TABLES['userinfo']} ADD location VARCHAR(96) NOT NULL AFTER about";
 
 /**

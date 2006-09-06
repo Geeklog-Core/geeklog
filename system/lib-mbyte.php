@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.16 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-mbyte.php,v 1.17 2006/09/06 05:31:01 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
     die ('This file can not be used on its own!');
@@ -37,12 +37,12 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
 
 // This function is supposed to display only language files in selection drop-
 // downs that are utf-8
-function MBYTE_languageList() { 
-  	global $_CONF;
+function MBYTE_languageList() {
+    global $_CONF;
 
     $language = array ();
     $fd = opendir ($_CONF['path_language']);
-    
+
     while (($file = @readdir ($fd)) !== false) {
         if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
                 && is_file ($_CONF['path_language'] . $file)
@@ -67,11 +67,11 @@ function MBYTE_languageList() {
                 }
                 $lngname .= ' (' . trim ($lngadd) . ')';
             }
-			$language[$file] = $lngname; 
+            $language[$file] = $lngname;
         }
     }
     asort ($language);
-  	return $language;
+    return $language;
 }
 
 // replacement functions for UTF-8 functions
@@ -91,12 +91,12 @@ function MBYTE_strlen($str) {
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
-	if ($mb_enabled) {
-		$result = mb_strlen($str);
-	} else {
-		$result = strlen($str);
-	}
-	return $result;	
+    if ($mb_enabled) {
+        $result = mb_strlen($str);
+    } else {
+        $result = strlen($str);
+    }
+    return $result;
 }
 
 function MBYTE_substr($str, $start, $length = NULL) {
@@ -104,74 +104,74 @@ function MBYTE_substr($str, $start, $length = NULL) {
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
-	if ($mb_enabled) {
-	    if( $length === NULL )
-	    {
-	        $result = mb_substr($str, $start);
-	    } else {
-		    $result = mb_substr($str, $start, $length);
-		}
-	} else {
-	    if( $length === NULL )
-	    {
-	        $result = substr($str, $start);
-	    } else {
-		    $result = substr($str, $start, $length);
-		}
-	}
-	return $result;	
+    if ($mb_enabled) {
+        if( $length === NULL )
+        {
+            $result = mb_substr($str, $start);
+        } else {
+            $result = mb_substr($str, $start, $length);
+        }
+    } else {
+        if( $length === NULL )
+        {
+            $result = substr($str, $start);
+        } else {
+            $result = substr($str, $start, $length);
+        }
+    }
+    return $result;
 }
 
 function MBYTE_strpos($hay, $needle, $offset = NULL) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
-    }  
-	if ($mb_enabled) {
-		$result = mb_strpos($hay, $needle, $offset);
-	} else {
-		$result = strpos($hay, $needle, $offset);
-	}
-	return $result;
+    }
+    if ($mb_enabled) {
+        $result = mb_strpos($hay, $needle, $offset);
+    } else {
+        $result = strpos($hay, $needle, $offset);
+    }
+    return $result;
 }
 
 function MBYTE_strtolower($str) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
-    }  
-	if ($mb_enabled) {
-		$result = mb_strtolower($str);
-	} else {
-		$result = strtolower($str);
-	}
-	return $result;
+    }
+    if ($mb_enabled) {
+        $result = mb_strtolower($str);
+    } else {
+        $result = strtolower($str);
+    }
+    return $result;
 }
 
 function MBYTE_eregi($pattern, $str, $regs = NULL) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
-    }  
-	if ($mb_enabled) {
-		$result = mb_eregi($pattern, $str, $regs);
-	} else {
-		$result = eregi($pattern, $str, $regs);
-	}
-	return $result;
+    }
+    if ($mb_enabled) {
+        $result = mb_eregi($pattern, $str, $regs);
+    } else {
+        $result = eregi($pattern, $str, $regs);
+    }
+    return $result;
 }
 
 function MBYTE_eregi_replace($pattern, $replace, $str) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
-    }  
-	if ($mb_enabled) {
-		$result = mb_eregi_replace($pattern, $replace, $str);
-	} else {
-		$result = eregi_replace($pattern, $replace, $str);
-	}
-	return $result;
+    }
+    if ($mb_enabled) {
+        $result = mb_eregi_replace($pattern, $replace, $str);
+    } else {
+        $result = eregi_replace($pattern, $replace, $str);
+    }
+    return $result;
 }
 
 /** those are currently not needed in GL, left here if needed later
@@ -180,56 +180,56 @@ function MBYTE_substr_count($hay, $needle) {
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
-	if ($mb_enabled) {
-		$result = mb_substr_count($hay, $needle, 'utf-8');
-	} else {
-		$result = substr_count($hay, $needle);
-	}
-	return $result;
-} 
+    if ($mb_enabled) {
+        $result = mb_substr_count($hay, $needle, 'utf-8');
+    } else {
+        $result = substr_count($hay, $needle);
+    }
+    return $result;
+}
 
 function MBYTE_strtoupper($str) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
-    }  
-	if ($mb_enabled) {
-		$result = mb_strtoupper($str, 'utf-8');
-	} else {
-		$result = strtoupper($str);
-	}
-	return $result;
+    }
+    if ($mb_enabled) {
+        $result = mb_strtoupper($str, 'utf-8');
+    } else {
+        $result = strtoupper($str);
+    }
+    return $result;
 }
 
 function MBYTE_strrpos($hay, $needle, $offset='') {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
-    }  
-	if ($mb_enabled) {
-		$result = mb_strrpos($hay, $needle, $offset, 'utf-8');
-	} else {
-		$result = strrpos($hay, $needle, $offset);
-	}
-	return $result;
+    }
+    if ($mb_enabled) {
+        $result = mb_strrpos($hay, $needle, $offset, 'utf-8');
+    } else {
+        $result = strrpos($hay, $needle, $offset);
+    }
+    return $result;
 }
- 
+
 function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
     static $mb_enabled;
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
-	if ($mb_enabled) {
-	  	if (mb_language('uni')) {
-			$result = mb_send_mail($to, $subj, $mess, $header, $param);
-		} else {
-			$result = false;
-		}
-	} else {
-		$result = mail($to, $subj, $mess, $header, $param);
-	}
-	return $result;
-} 
+    if ($mb_enabled) {
+          if (mb_language('uni')) {
+            $result = mb_send_mail($to, $subj, $mess, $header, $param);
+        } else {
+            $result = false;
+        }
+    } else {
+        $result = mail($to, $subj, $mess, $header, $param);
+    }
+    return $result;
+}
 
 */
 

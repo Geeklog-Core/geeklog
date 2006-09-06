@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.54 2006/09/03 21:08:03 dhaun Exp $
+// $Id: functions.inc,v 1.55 2006/09/06 05:31:00 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -522,9 +522,9 @@ function plugin_savesubmission_calendar($A)
 
         if (($_CA_CONF['eventsubmission'] == 1) &&
                 !SEC_hasRights ('calendar.submit')) {
-            DB_save ($_TABLES['eventsubmission'], 
-			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
-					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+            DB_save ($_TABLES['eventsubmission'],
+                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
+                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
 
             if (isset ($_CA_CONF['notification']) &&
                     ($_CA_CONF['notification'] == 1)) {
@@ -539,9 +539,9 @@ function plugin_savesubmission_calendar($A)
                 $owner_id = 1; // anonymous user
             }
 
-            DB_save ($_TABLES['events'], 
-			         'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id', 
-					 "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
+            DB_save ($_TABLES['events'],
+                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',
+                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
             if (isset ($_CA_CONF['notification']) &&
                     ($_CA_CONF['notification'] == 1)) {
                 CALENDAR_sendNotification ($_TABLES['events'], $A);
@@ -553,9 +553,9 @@ function plugin_savesubmission_calendar($A)
 
     } else if ($_CA_CONF['personalcalendars'] == 1) { // add to personal calendar
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            DB_save ($_TABLES['personal_events'], 
-			         'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description', 
-					 "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+            DB_save ($_TABLES['personal_events'],
+                     'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
+                     "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
             $retval = COM_refresh ($_CONF['site_url']
                                    . '/calendar/index.php?mode=personal&msg=17');
         } else {
@@ -584,7 +584,7 @@ function plugin_submit_calendar($mode = 'master')
         $mode = $_POST['calendar_type'];
     }
 
-    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) { 
+    if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) {
         // quick add form, just save it.
         $display = plugin_savesubmission_calendar ($_POST);
         return $display;
@@ -680,9 +680,9 @@ function plugin_submit_calendar($mode = 'master')
         $ampm = 'am';
     }
 
-    $eventform->set_var ('startampm_selection', 
+    $eventform->set_var ('startampm_selection',
                          COM_getAmPmFormSelection ('start_ampm', $ampm));
-    $eventform->set_var ('endampm_selection', 
+    $eventform->set_var ('endampm_selection',
                          COM_getAmPmFormSelection ('end_ampm', $ampm));
 
     if ($cur_hour > 12) {
@@ -816,7 +816,7 @@ function CALENDAR_sendNotification ($table, $A)
 
     $title = stripslashes ($A['title']);
     $description = stripslashes ($A['description']);
-    
+
     $mailbody = "$LANG09[16]: $title\n"
               . "$LANG09[17]: " . strftime ($_CONF['date'],
                 strtotime ($A['datestart'] . ' ' . $A['timestart']));
@@ -1382,11 +1382,11 @@ function plugin_searchtypes_calendar()
 * @return   object              search result object
 *
 */
-function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author, 
+function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author,
                                         $keyType, $page, $perpage)
 {
     global $_CONF, $_TABLES, $LANG09, $_LANG_CAL_SEARCH;
-    
+
     if (empty ($type)) {
         $type = 'all';
     }
@@ -1400,7 +1400,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
         return $event_results;
     }
-    
+
     $select = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,allday,UNIX_TIMESTAMP(datestart) AS day";
     $sql = " FROM {$_TABLES['events']} WHERE ";
 

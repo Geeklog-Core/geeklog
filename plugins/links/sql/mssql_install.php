@@ -32,74 +32,74 @@
 // +---------------------------------------------------------------------------+
 //
 
-/** 
- * Links plugin Installation SQL  
- * 
+/**
+ * Links plugin Installation SQL
+ *
  * @package Links
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
- * 
+ *
  */
 
 
 
  $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['links']}] (
-	[lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[hits] [int] NOT NULL ,
-	[date] [datetime] NULL ,
-	[owner_id] [numeric](8, 0) NOT NULL ,
-	[group_id] [numeric](8, 0) NOT NULL ,
-	[perm_owner] [tinyint] NOT NULL ,
-	[perm_group] [tinyint] NOT NULL ,
-	[perm_members] [tinyint] NOT NULL ,
-	[perm_anon] [tinyint] NOT NULL 
+    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [hits] [int] NOT NULL ,
+    [date] [datetime] NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
-	[lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[hits] [int] NULL ,
-	[date] [datetime] NULL 
+    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [hits] [int] NULL ,
+    [date] [datetime] NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 ";
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD
     CONSTRAINT [DF_gl_links_perm_group] DEFAULT (3) FOR [perm_group],
     CONSTRAINT [DF_gl_links_perm_anon] DEFAULT (2) FOR [perm_anon],
     CONSTRAINT [DF_gl_links_perm_members] DEFAULT (2) FOR [perm_members],
     CONSTRAINT [DF_gl_links_perm_owner] DEFAULT (3) FOR [perm_owner],
     CONSTRAINT [DF_gl_links_hits] DEFAULT (0) FOR [hits],
-	CONSTRAINT [PK_gl_links] PRIMARY KEY  CLUSTERED 
-	(
-		[lid]
-	)  ON [PRIMARY] 
+    CONSTRAINT [PK_gl_links] PRIMARY KEY  CLUSTERED
+    (
+        [lid]
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linksubmission']}] ADD 
-	CONSTRAINT [PK_gl_linksubmission] PRIMARY KEY  CLUSTERED 
-	(
-		[lid]
-	)  ON [PRIMARY] 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linksubmission']}] ADD
+    CONSTRAINT [PK_gl_linksubmission] PRIMARY KEY  CLUSTERED
+    (
+        [lid]
+    )  ON [PRIMARY]
 ";
- 
+
 ?>

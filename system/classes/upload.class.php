@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.45 2006/06/18 20:00:05 dhaun Exp $
+// $Id: upload.class.php,v 1.46 2006/09/06 05:31:01 ospiess Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -90,11 +90,11 @@ class upload
     * @access private
     */
     var $_maxFileSize = 1048576;          // Long, in bytes
-    /** 
+    /**
     * @access private
     */
     var $_pathToMogrify = '';             // String
-    /** 
+    /**
     * @access private
     */
     var $_pathToNetPBM= '';               // String
@@ -155,7 +155,7 @@ class upload
     */
     var $_imageIndex = 0;                 // Integer
 
-    /**    
+    /**
     * @access private
     */
     var $_wasResized = false;             // Boolean
@@ -180,31 +180,31 @@ class upload
     *
     */
     function _addWarning($warningText)
-	{
+    {
         $nwarnings = count($this->_warnings);
         $nwarnings = $nwarnings + 1;
         $this->_warnings[$nwarnings] = $warningText;
         if ($this->loggingEnabled()) {
             $this->_logItem('Warning',$warningText);
         }
-	}
+    }
 
-	/**
-	* Adds an error that was encountered
-	*
-	* @access   private
-	* @param    string      $errorText      Text of error
-	*
-	*/
-	function _addError($errorText)
-	{
+    /**
+    * Adds an error that was encountered
+    *
+    * @access   private
+    * @param    string      $errorText      Text of error
+    *
+    */
+    function _addError($errorText)
+    {
         $nerrors = count($this->_errors);
         $nerrors = $nerrors + 1;
         $this->_errors[$nerrors] = $errorText;
         if ($this->loggingEnabled()) {
             $this->_logItem('Error',$errorText);
         }
-	}
+    }
 
     /**
     * Adds a debug message
@@ -232,8 +232,8 @@ class upload
     * @return   boolean     Whether or not we successfully logged an item
     *
     */
-	function _logItem($logtype, $text)
-	{
+    function _logItem($logtype, $text)
+    {
         $timestamp = strftime("%c");
         if (!$file = fopen($this->_logFile, 'a')) {
             // couldn't open log file for writing so let's disable logging and add an error
@@ -244,7 +244,7 @@ class upload
         fputs ($file, "$timestamp - $logtype: $text \n");
         fclose($file);
         return true;
-	}
+    }
 
     /**
     * Defines superset of available Mime types.
@@ -256,26 +256,26 @@ class upload
     function _setAvailableMimeTypes($mimeTypes = array())
     {
         if (sizeof($mimeTypes) == 0) {
-            $this->_availableMimeTypes = 
+            $this->_availableMimeTypes =
             array(
-                'application/x-gzip-compressed' 	=> '.tar.gz,.tgz',
-                'application/x-zip-compressed' 		=> '.zip',
-                'application/x-tar'					=> '.tar',
-                'text/plain'						=> '.phps,.txt,.inc',
-                'text/html'							=> '.html,.htm',
-                'image/bmp' 						=> '.bmp,.ico',
-                'image/gif' 						=> '.gif',
-                'image/pjpeg'						=> '.jpg,.jpeg',
-                'image/jpeg'						=> '.jpg,.jpeg',
-                'image/png'							=> '.png',
-                'image/x-png'						=> '.png',
-                'audio/mpeg'						=> '.mp3',
-                'audio/wav'							=> '.wav',
-                'application/pdf'					=> '.pdf',
-                'application/x-shockwave-flash' 	=> '.swf',
-                'application/msword'				=> '.doc',
-                'application/vnd.ms-excel'			=> '.xls',
-                'application/octet-stream'			=> '.fla,.psd'
+                'application/x-gzip-compressed'     => '.tar.gz,.tgz',
+                'application/x-zip-compressed'         => '.zip',
+                'application/x-tar'                    => '.tar',
+                'text/plain'                        => '.phps,.txt,.inc',
+                'text/html'                            => '.html,.htm',
+                'image/bmp'                         => '.bmp,.ico',
+                'image/gif'                         => '.gif',
+                'image/pjpeg'                        => '.jpg,.jpeg',
+                'image/jpeg'                        => '.jpg,.jpeg',
+                'image/png'                            => '.png',
+                'image/x-png'                        => '.png',
+                'audio/mpeg'                        => '.mp3',
+                'audio/wav'                            => '.wav',
+                'application/pdf'                    => '.pdf',
+                'application/x-shockwave-flash'     => '.swf',
+                'application/msword'                => '.doc',
+                'application/vnd.ms-excel'            => '.xls',
+                'application/octet-stream'            => '.fla,.psd'
             );
         } else {
             $this->_availableMimeTypes = $mimeTypes;
@@ -287,7 +287,7 @@ class upload
     *
     * @access private
     * @return boolean   returns true if file is an image, otherwise false
-    */    
+    */
     function _isImage()
     {
         if (strpos ($this->_currentFile['type'], 'image/') === 0) {
@@ -320,7 +320,7 @@ class upload
         if ($this->_debug) {
             $this->_addDebugMsg('File size for ' . $this->_currentFile['name'] . ' is ' . $this->_currentFile['size'] . ' bytes');
         }
-        
+
         if ($this->_currentFile['size'] > $this->_maxFileSize) {
             return false;
         } else {
@@ -351,7 +351,7 @@ class upload
             $this->_addDebugMsg('Max allowed height = ' . $this->_maxImageHeight . ', Image height = ' . $imageInfo['height']);
         }
 
-        // If user set _autoResize then ignore these settings and try to resize on upload 
+        // If user set _autoResize then ignore these settings and try to resize on upload
         if (($doResizeCheck AND !($this->_autoResize)) OR (!($doResizeCheck))) {
             if ($imageInfo['width'] > $this->_maxImageWidth) {
                 $sizeOK = false;
@@ -376,20 +376,20 @@ class upload
         return $sizeOK;
     }
 
-	/**
-	* Gets the width and height of an image
-	*
-	* @access private
-	* @return array     Array with width and height of current image
-	*/
-	function _getImageDimensions()
-	{
-		$dimensions = GetImageSize($this->_currentFile['tmp_name']);
+    /**
+    * Gets the width and height of an image
+    *
+    * @access private
+    * @return array     Array with width and height of current image
+    */
+    function _getImageDimensions()
+    {
+        $dimensions = GetImageSize($this->_currentFile['tmp_name']);
         if ($this->_debug) {
             $this->_addDebugMsg('in _getImageDimensions I got a width of ' . $dimensions[0] . ', and a height of ' . $dimensions[1]);
         }
-		return array('width' => $dimensions[0], 'height' => $dimensions[1]);
-	}
+        return array('width' => $dimensions[0], 'height' => $dimensions[1]);
+    }
 
     /**
     * Calculate the factor to scale images with if they're not meeting
@@ -443,25 +443,25 @@ class upload
         return true;
     }
 
-	/**
-	* Gets destination file name for current file
-	*
-	* @access private
-	* @return string    returns destination file name
-	* 
-	*/
-	function _getDestinationName()
-	{
+    /**
+    * Gets destination file name for current file
+    *
+    * @access private
+    * @return string    returns destination file name
+    *
+    */
+    function _getDestinationName()
+    {
         if (is_array($this->_fileNames)) {
             $name = $this->_fileNames[$this->_imageIndex];
         }
-        
+
         if (empty($name)) {
             $name = $this->_currentFile['name'];
         }
-        
+
         return $name;
-	}
+    }
 
     /**
     * Gets permissions for a file.  This is used to do a chmod
@@ -470,8 +470,8 @@ class upload
     * @return   string  returns final permisisons for current file
     *
     */
-	function _getPermissions()
-	{
+    function _getPermissions()
+    {
         if (is_array($this->_permissions)) {
             if (count($this->_permissions) > 1) {
                 $perms = $this->_permissions[$this->_imageIndex];
@@ -479,23 +479,23 @@ class upload
                 $perms = $this->_permissions[0];
             }
         }
-        
+
         if (empty($perms)) {
             $perms = '';
         }
 
         return $perms;
-	}
+    }
 
-	/**
-	* This function actually completes the upload of a file
-	*
-	* @access   private
-	* @return   boolean     true if copy succeeds otherwise false
-	* 
-	*/
-	function _copyFile()
-	{
+    /**
+    * This function actually completes the upload of a file
+    *
+    * @access   private
+    * @return   boolean     true if copy succeeds otherwise false
+    *
+    */
+    function _copyFile()
+    {
         if (!is_writable($this->_fileUploadDirectory)) {
             // Developer didn't check return value of setPath() method which would
             // have told them the upload directory was not writable.  Error out now
@@ -503,7 +503,7 @@ class upload
             return false;
         }
         $sizeOK = true;
-        if (!($this->_imageSizeOK(false)) AND $this->_autoResize) { 
+        if (!($this->_imageSizeOK(false)) AND $this->_autoResize) {
             $imageInfo = $this->_getImageDimensions($this->_currentFile['tmp_name']);
             if ($imageInfo['width'] > $this->_maxImageWidth) {
                 $sizeOK = false;
@@ -540,7 +540,7 @@ class upload
 
                 $cmd = $this->_pathToNetPBM;
                 $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
-                $cmd_end = " '" . $filename . "' | " . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM; 
+                $cmd_end = " '" . $filename . "' | " . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM;
                 // convert to pnm, resize, convert back
                 if (eregi ('\.png', $filename)) {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.png';
@@ -712,7 +712,7 @@ class upload
 
             return false;
         }
-	}
+    }
 
     /**
     * Sets the path to where the mogrify ImageMagic function is
@@ -755,11 +755,11 @@ class upload
     }
 
     /**
-    * Sets mode to automatically resize images that are either too wide or 
+    * Sets mode to automatically resize images that are either too wide or
     * too tall
     *
     * @param    boolean    $switch  True to turn on, false to turn off
-    * 
+    *
     */
     function setAutomaticResize($switch)
     {
@@ -771,7 +771,7 @@ class upload
     *
     * @param    int     $size_in_bytes      Max. size for uploaded files
     * @return   boolean true if we set it OK, otherwise false
-    * 
+    *
     */
     function setMaxFileSize($size_in_bytes)
     {
@@ -813,7 +813,7 @@ class upload
     {
         $this->_maxFileUploadsPerForm = $maxfiles;
         return true;
-    }    
+    }
 
     /**
     * Allows you to keep the original (unscaled) image.
@@ -872,7 +872,7 @@ class upload
     *
     * @param    string  $fileName   fully qualified path to log files
     * @return   boolean returns true if we set the log file, otherwise false
-    * 
+    *
     */
     function setLogFile($logFile = '')
     {
@@ -908,7 +908,7 @@ class upload
     * Returns whether or not logging is enabled
     *
     * @return   boolean returns true if logging is enabled otherwise false
-    * 
+    *
     */
     function loggingEnabled()
     {
@@ -1012,20 +1012,20 @@ class upload
     *
     */
     function setAllowedMimeTypes($mimeTypes = array())
-	{
-		$this->_allowedMimeTypes = $mimeTypes;
-	}
+    {
+        $this->_allowedMimeTypes = $mimeTypes;
+    }
 
-	/**
-	* Gets allowed mime types for this instance
-	*
-	* @return   array   Returns array of allowed mime types
-	*
-	*/
-	function getAllowedMimeTypes()
-	{
-		return $this->_allowedMimeTypes;
-	}
+    /**
+    * Gets allowed mime types for this instance
+    *
+    * @return   array   Returns array of allowed mime types
+    *
+    */
+    function getAllowedMimeTypes()
+    {
+        return $this->_allowedMimeTypes;
+    }
 
     /**
     * Checks to see that mime type for current file is allowed for upload
@@ -1065,7 +1065,7 @@ class upload
     *
     */
     function setPath($uploadDir)
-	{
+    {
         if (!is_dir($uploadDir)) {
             $this->_addError('Specified upload directory, ' . $uploadDir . ' is not a valid directory');
             return false;
@@ -1079,18 +1079,18 @@ class upload
         $this->_fileUploadDirectory = $uploadDir;
 
         return true;
-	}
+    }
 
-	/**
-	* Returns directory to upload to
-	*
-	* @return   string  returns path to file upload directory
-	*
-	*/
-	function getPath()
-	{
+    /**
+    * Returns directory to upload to
+    *
+    * @return   string  returns path to file upload directory
+    *
+    */
+    function getPath()
+    {
         return $this->_fileUploadDirectory;
-	}
+    }
 
     /**
     * Sets file name(s) for files
@@ -1103,14 +1103,14 @@ class upload
     *
     */
     function setFileNames($fileNames = 'geeklog_uploadedfile')
-	{
+    {
         if (isset($fileNames) AND is_array($fileNames)) {
             // this is an array of file names, set them
             $this->_fileNames = $fileNames;
         } else {
             $this->_fileNames = array($fileNames);
         }
-	}
+    }
 
     /**
     * Changes permissions for uploaded files.  If only one set of perms is
@@ -1140,8 +1140,8 @@ class upload
     * @return   int returns number of files were sent to be uploaded
     *
     */
-	function numFiles()
-	{
+    function numFiles()
+    {
         if (empty($this->_filesToUpload)) {
             $this->_filesToUpload = $_FILES;
         }
@@ -1150,7 +1150,7 @@ class upload
 
         for ($i = 1; $i <= count($_FILES); $i++) {
             $curFile = current($this->_filesToUpload);
-        
+
             // Make sure file field on HTML form wasn't empty
             if (!empty($curFile['name'])) {
                 $fcount++;
@@ -1160,15 +1160,15 @@ class upload
         reset($_FILES);
 
         return $fcount;
-	}
+    }
 
-	/**
-	* Uploads any posted files.
-	*
-	* @return   boolean returns true if no errors were encountered otherwise false
-	*/
-	function uploadFiles()
-	{
+    /**
+    * Uploads any posted files.
+    *
+    * @return   boolean returns true if no errors were encountered otherwise false
+    */
+    function uploadFiles()
+    {
         global $_SERVER;
 
         // Before we do anything, let's see if we are limiting file uploads by
@@ -1182,8 +1182,8 @@ class upload
             }
         }
 
-		$this->_filesToUpload = $_FILES;
-		$numFiles = count($this->_filesToUpload);
+        $this->_filesToUpload = $_FILES;
+        $numFiles = count($this->_filesToUpload);
 
         // For security sake, check to make sure a DOS isn't happening by making
         // sure there is a limit of the number of files being uploaded
@@ -1235,13 +1235,13 @@ class upload
             next($_FILES);
         }
 
-		// This function returns false if any errors were encountered
+        // This function returns false if any errors were encountered
         if ($this->areErrors()) {
             return false;
-    	} else {
+        } else {
             return true;
-    	}
-	}
+        }
+    }
 }
 
 ?>

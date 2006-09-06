@@ -1,11 +1,11 @@
                                 {start_block_editor}
                                 <form action="{site_admin_url}/block.php" method="post">
-		                            <table border="0" cellspacing="0" cellpadding="3" width="100%">
-		                                <tr>
-		                                    <td align="right">{lang_blocktitle}:</td>
-		                                    <td><input type="text" size="48" name="title" value="{block_title}"></td>
-		                                </tr>
-		                                <tr>
+                                    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                        <tr>
+                                            <td align="right">{lang_blocktitle}:</td>
+                                            <td><input type="text" size="48" name="title" value="{block_title}"></td>
+                                        </tr>
+                                        <tr>
                                             <td align="right">{lang_enabled}:</td>
                                             <td><input type="checkbox" name="is_enabled" {is_enabled}></td>
                                         </tr>
@@ -13,43 +13,43 @@
                                             <td align="right" valign="top">{lang_blockhelpurl}:</td>
                                             <td><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"> {lang_includehttp}<br>{lang_explanation}</td>
                                         </tr>
-		                                <tr>
-		                                    <td align="right" valign="top">{lang_blockname}:</td>
-		                                    <td><input type="text" size="48" name="name" value="{block_name}"><br>{lang_nospaces}</td>
-		                                </tr>
-		                                <tr>
-		                                    <td align="right">{lang_topic}:</td>
-		                                    <td>
+                                        <tr>
+                                            <td align="right" valign="top">{lang_blockname}:</td>
+                                            <td><input type="text" size="48" name="name" value="{block_name}"><br>{lang_nospaces}</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_topic}:</td>
+                                            <td>
                                                 <select name="tid">
-		                                            <option value="all" {all_selected}>{lang_all}</option>
-		                                            <option value="homeonly" {homeonly_selected}>{lang_homeonly}</option>
+                                                    <option value="all" {all_selected}>{lang_all}</option>
+                                                    <option value="homeonly" {homeonly_selected}>{lang_homeonly}</option>
                                                     {topic_options}
-		                                        </select>
+                                                </select>
                                             </td>
-		                                </tr>
-		                                <tr>
-		                                    <td align="right">{lang_side}:</td>
-		                                    <td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_side}:</td>
+                                            <td>
                                                 <select name="onleft">
-		                                            <option value="1" {left_selected}>{lang_left}</option>
+                                                    <option value="1" {left_selected}>{lang_left}</option>
                                                     <option value="0" {right_selected}>{lang_right}</option>
-		                                        </select>
+                                                </select>
                                            </td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_blockorder}:</td>
                                             <td><input type="text" size="4" name="blockorder" value="{block_order}"> 0 - 9999</td>
-		                                </tr>
+                                        </tr>
                                         <tr>
                                             <td align="right">{lang_blocktype}:</td>
-		                                    <td>
+                                            <td>
                                                 <select name="type">
-		                                            <option value="normal" {normal_selected}>{lang_normalblock}</option>
-		                                            <option value="phpblock" {php_selected}>{lang_phpblock}</option>
+                                                    <option value="normal" {normal_selected}>{lang_normalblock}</option>
+                                                    <option value="phpblock" {php_selected}>{lang_phpblock}</option>
                                                     <option value="portal" {portal_selected}>{lang_portalblock}</option>
-		                                        </select>
+                                                </select>
                                             </td>
-		                                </tr>
+                                        </tr>
                                         <tr>
                                             <td colspan="2"><hr></td>
                                         </tr>
@@ -88,11 +88,11 @@
                                             <td><textarea name="content" rows="12" style="width:100%;">{block_content}</textarea><br>
                                                 <span class="warningsmall">{lang_allowed_html}</span></td>
                                         </tr>
-		                                <tr>
+                                        <tr>
                                             <td align="right">{lang_autotags}:</td>
                                             <td><input type="checkbox" name="allow_autotags" {allow_autotags}> ({lang_use_autotags})</td>
                                         </tr>
-		                                <tr>
+                                        <tr>
                                             <td colspan="2"><hr></td>
                                         </tr>
                                         <tr>
@@ -102,12 +102,12 @@
                                             <td align="right">{lang_owner}:</td>
                                             <td>{owner_name} <input type="hidden" name="owner_id" value="{owner_id}">
                                             </td>
-		                                </tr>
+                                        </tr>
                                         <tr>
                                             <td align="right">{lang_group}:</td>
                                             <td>
                                                 {group_dropdown}
-	                                        </td>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"><b>{lang_permissions}:</b></td>
@@ -121,15 +121,15 @@
                                         <tr>
                                             <td colspan="2">{lang_permissions_msg}<td>
                                         </tr>
-		                                <tr><td>&nbsp;</td></tr>
-		                                <tr>
-		                                    <td colspan="2">
+                                        <tr><td>&nbsp;</td></tr>
+                                        <tr>
+                                            <td colspan="2">
                                             <input type="submit" value="{lang_save}" name="mode">
-		                                        <input type="submit" value="{lang_cancel}" name="mode">
+                                                <input type="submit" value="{lang_cancel}" name="mode">
                                             {delete_option}
                                             <input type="hidden" name="bid" value="{block_bid}">
                                         </td>
-		                                </tr>
+                                        </tr>
                                     </table>
                                 </form>
                                 {end_block}

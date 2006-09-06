@@ -36,66 +36,66 @@
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
-	[qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[aid] [tinyint] NOT NULL ,
-	[answer] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[votes] [numeric](8, 0) NULL ,
-	[remark] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [aid] [tinyint] NOT NULL ,
+    [answer] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [votes] [numeric](8, 0) NULL ,
+    [remark] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
 ) ON [PRIMARY]
 ";
 
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
-	[qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-	[voters] [numeric](8, 0) NULL ,
-	[date] [datetime] NULL ,
-	[display] [smallint] NOT NULL ,
-	[commentcode] [smallint] NOT NULL ,
-	[statuscode] [smallint] NOT NULL ,
-	[owner_id] [numeric](8, 0) NOT NULL ,
-	[group_id] [numeric](8, 0) NOT NULL ,
-	[perm_owner] [tinyint] NOT NULL ,
-	[perm_group] [tinyint] NOT NULL ,
-	[perm_members] [tinyint]  NULL ,
-	[perm_anon] [tinyint]  NULL 
+    [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [voters] [numeric](8, 0) NULL ,
+    [date] [datetime] NULL ,
+    [display] [smallint] NOT NULL ,
+    [commentcode] [smallint] NOT NULL ,
+    [statuscode] [smallint] NOT NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint]  NULL ,
+    [perm_anon] [tinyint]  NULL
 ) ON [PRIMARY]
 ";
 
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
-	[id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-	[qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-	[date] [numeric](10, 0) NULL 
+    [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
+    [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [date] [numeric](10, 0) NULL
 ) ON [PRIMARY]
 ";
 
 
 
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD 
-	CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY  CLUSTERED 
-	(
-		[qid],
-		[aid]
-	)  ON [PRIMARY] 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
+    CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY  CLUSTERED
+    (
+        [qid],
+        [aid]
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD 
-	CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED 
-	(
-		[qid]
-	)  ON [PRIMARY] 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
+    CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
+    (
+        [qid]
+    )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD 
-	CONSTRAINT [PK_gl_pollvoters] PRIMARY KEY  CLUSTERED 
-	(
-		[id]
-	)  ON [PRIMARY] 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD
+    CONSTRAINT [PK_gl_pollvoters] PRIMARY KEY  CLUSTERED
+    (
+        [id]
+    )  ON [PRIMARY]
 ";
 
 

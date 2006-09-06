@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configinfo.php,v 1.4 2006/08/12 14:13:11 dhaun Exp $
+// $Id: configinfo.php,v 1.5 2006/09/06 05:31:00 ospiess Exp $
 
 /**
 * This script will display file and permission information based on settings in
@@ -49,8 +49,8 @@ if (file_exists ('../../../config.php')) {
     die ("Sorry, config.php not found ...");
 }
 
-$highlight_on 	= '#EFEFEF';
-$highlight_off	= '#D9D9D9';
+$highlight_on     = '#EFEFEF';
+$highlight_off    = '#D9D9D9';
 
 if (isset ($_CONF['site_url']) &&
         strpos ($_CONF['site_url'], 'example.com') === false) {
@@ -68,28 +68,29 @@ $n = 0;
 $display .= '<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border: thin black solid;">';
 
 foreach($_CONF as $option => $value) {
-	$display .= '<tr';
-	if ($n % 2 == 0) {
-		$display .= ' style="background-color: ' . $highlight_on . '">';
-	} else {
-		$display .= ' style="background-color: ' . $highlight_off . '">';
-	}
-	$display .= '<td style="border: thin black solid; padding: 2px;"><strong>$_CONF[\'<a href="' . $docs . $option . '">' . $option . '</a>\']</strong></td>';
-	if (is_array($value)) {
-		ob_start();
-		print_r($value);
-		$value=nl2br(ob_get_contents());
-		ob_end_clean();
+    $display .= '<tr';
+    if ($n % 2 == 0) {
+        $display .= ' style="background-color: ' . $highlight_on . '">';
+    } else {
+        $display .= ' style="background-color: ' . $highlight_off . '">';
+    }
+    $display .= '<td style="border: thin black solid; padding: 2px;"><strong>$_CONF[\'<a href="'
+              . $docs . $option . '">' . $option . '</a>\']</strong></td>';
+    if (is_array($value)) {
+        ob_start();
+        print_r($value);
+        $value=nl2br(ob_get_contents());
+        ob_end_clean();
     } elseif (is_bool ($value)) {
         $value = ($value === false) ? 'false' : 'true';
-	} elseif (eregi('[a-z]+html', $option)) {
-		$value = htmlentities($value);
-	} elseif (!isset($value)) {
-		$value = '&nbsp;';
+    } elseif (eregi('[a-z]+html', $option)) {
+        $value = htmlentities($value);
+    } elseif (!isset($value)) {
+        $value = '&nbsp;';
     }
-	$display .= '<td style="border: thin black solid; padding: 2px;"><strong>' . $value . '</strong></td>';
-	$display .= '</tr>';
-	$n++;
+    $display .= '<td style="border: thin black solid; padding: 2px;"><strong>' . $value . '</strong></td>';
+    $display .= '</tr>';
+    $n++;
 }
 $display .= "</table>\n</body>\n</html>";
 

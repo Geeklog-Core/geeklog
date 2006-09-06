@@ -9,7 +9,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: IP.Examine.class.php,v 1.8 2006/06/25 08:40:54 dhaun Exp $
+* $Id: IP.Examine.class.php,v 1.9 2006/09/06 05:31:00 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'IP.Examine.class.php') !== false) {
@@ -36,7 +36,7 @@ class IP extends BaseCommand {
      * The execute method examines the IP address a comment is coming from,
      * comparing it against a blacklist of banned IP addresses.
      *
-     * @param $comment string 				Comment text to examine
+     * @param $comment string                 Comment text to examine
      */
     function execute($comment)
     {
@@ -50,25 +50,25 @@ class IP extends BaseCommand {
      * at the time of posting. To do that, it uses the IP address logged
      * when the comment was saved.
      *
-     * @param $comment string 				Comment text to examine
-     * @param $date	   unixtimestamp  Date/time the comment was posted
-     * @param $ip			 string				  IPAddress comment posted from
-     * @param $type		 string					Type of comment (article etc)
+     * @param $comment string            Comment text to examine
+     * @param $date       unixtimestamp  Date/time the comment was posted
+     * @param $ip         string         IPAddress comment posted from
+     * @param $type       string         Type of comment (article etc)
      */
     function reexecute($comment, $date, $ip, $type)
     {
-    		return $this->_process($ip);
+            return $this->_process($ip);
     }
 
-		/**
-		 * Private internal method, this actually processes a given ip
-		 * address against a blacklist of IP regular expressions.
-		 *
-		 * @param $ip	string	IP address of comment poster
-		 */
+        /**
+         * Private internal method, this actually processes a given ip
+         * address against a blacklist of IP regular expressions.
+         *
+         * @param $ip    string    IP address of comment poster
+         */
     function _process($ip)
     {
-    		global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
+            global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             $uid = $_USER['uid'];
