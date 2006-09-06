@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.165 2006/09/06 04:44:20 ospiess Exp $
+// $Id: user.php,v 1.166 2006/09/06 07:50:05 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -990,7 +990,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();
 } else if ($mode == 'batchdelete') {
-    if ($_POST{'submit'} == $LANG_ADMIN['delete']) {
+    if (isset ($_POST['submit']) && ($_POST['submit'] == $LANG_ADMIN['delete'])) {
         $msg = batchdeleteexec();
         $display .= COM_siteHeader ('menu', $LANG28[11]);
         $timestamp = strftime( $_CONF['daytime'] );
