@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.79 2006/09/06 04:44:20 ospiess Exp $
+// $Id: lib-admin.php,v 1.80 2006/09/07 01:13:49 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -443,9 +443,9 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             }
             $filter_str .= ")";
         }
-
-        $num_pages = ceil (DB_getItem ($_TABLES[$query_arr['table']], 'count(*)',
-                            "1 " . $filter_str) / $limit);
+        $num_pages_sql = $sql . $filter_str;
+        $num_pages_result = DB_query($num_pages_sql);
+        $num_pages = ceil (DB_numRows($num_pages_result) / $limit);
         if ($num_pages < $curpage) { # make sure we dont go beyond possible results
                $curpage = 1;
         }
@@ -455,8 +455,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     # SQL
     $sql .= "$filter_str $order_sql $limit;";
-    $result = DB_query($sql);
     // echo $sql;
+    $result = DB_query($sql);
     $nrows = DB_numRows($result);
     $r = 1; # r is the counter for the actual displayed rows for correct coloring
     for ($i = 0; $i < $nrows; $i++) { # now go through actual data

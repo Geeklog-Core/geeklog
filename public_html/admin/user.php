@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.166 2006/09/06 07:50:05 dhaun Exp $
+// $Id: user.php,v 1.167 2006/09/07 01:13:49 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -643,8 +643,6 @@ function batchdelete()
     $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
                     array('url' => $_CONF['site_admin_url'] . '/user.php',
                           'text' => $LANG28[11]),
                     array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
@@ -653,8 +651,8 @@ function batchdelete()
                           'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $text_arr = array('has_menu'     => false,
-                      'has_extras'   => false,
+    $text_arr = array('has_menu'     => true,
+                      'has_extras'   => true,
                       'title'        => $LANG28[54],
                       'instructions' => "<p>$desc</p>",
                       'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
@@ -708,12 +706,12 @@ function batchdelete()
                      . ", datediff(CURDATE(), FROM_UNIXTIME(lastlogin)) AS notloggedinsince";
 
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
-         . "FROM {$_TABLES['users']} $join_userinfo WHERE $filter_sql {$_TABLES['users']}.uid > 1 AND 1=1";
+         . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
 
     $query_arr = array('table' => 'users',
                        'sql' => $sql,
                        'query_fields' => array('username', 'email', 'fullname'),
-                       'default_filter' => "");
+                       'default_filter' => "AND $filter_sql {$_TABLES['users']}.uid > 1");
 
     $display .= ADMIN_list ("user", "ADMIN_getListField_batchuserdelete", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);

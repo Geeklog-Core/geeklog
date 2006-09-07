@@ -871,7 +871,7 @@ $LANG28 = array(
     53 => 'registered',
     54 => 'Batch Delete',
     55 => "This only works if you have <code>\$_CONF['lastlogin'] = true;</code> in your config.php",
-    56 => 'Please choose the type of user you want to delete and press "Update List".',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
     57 => 'Phantom users',
     58 => 'Short-Time Users',
     59 => 'Old Users',
