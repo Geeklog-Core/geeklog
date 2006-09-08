@@ -380,6 +380,9 @@ th {
   background:transparent;
   color:#000000;
 }
+.clear-left {
+    clear:left;
+}
 .commentbar-line1 {
   background:transparent;
   color:#000000;
@@ -460,6 +463,18 @@ th {
   border-top:1px solid #CCCCCC;
   padding-top:1px;
   color:#000000;
+}
+.form-description {
+    font-weight:bold;
+    float:left;
+    width:100px;
+    text-align:right;
+    padding-right:5px;
+    display:block;
+}
+.form-field {
+    padding-bottom:5px;
+    margin-left:105px;
 }
 .header-envelope {
   border-bottom:1px solid #E7E7E7;
