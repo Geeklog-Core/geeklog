@@ -39,6 +39,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE help help varchar(255) defaul
 // delete MT-Blacklist entries
 $_SQL[] = "DELETE FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'";
 
+// set regdate to a valid date for users in a really old (pre-1.3) database
+$_SQL[] = "UPDATE {$_TABLES['users']} SET regdate = '2001-12-17 00:00:00' WHERE regdate = '0000-00-00 00:00:00'";
+
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
 {
