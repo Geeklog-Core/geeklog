@@ -70,7 +70,11 @@
     // Generate a breadcrumb trail
     $navbar->openBreadcrumbs();
     $navbar->add_breadcrumbs("{$_CONF['site_url']}/index.php",'home']);
-    $navbar->add_lastBreadcrumb("{$_CONF['site_url']}/admin/plugins/myplugin/index.php",'myplugin');
+
+   // Adds just a label, not a link as the last breadcrumb
+    $navbar->add_lastBreadcrumb('myplugin');
+
+    // Close and generate the breakcrumb trail
     echo $navbar->closeBreadcrumbs();
 
 */
