@@ -50,7 +50,7 @@
                     <span id="sel_toolbar" style="padding-left:15px;display:{show_adveditor};">{lang_toolbar}:&nbsp;
                       <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
                            <option value="editor-toolbar1">{toolbar1}</option>
-                           <option value="editor-toolbar2" selected>{toolbar2}</option>
+                           <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
                            <option value="editor-toolbar3">{toolbar3}</option>
                            <option value="Default">{toolbar5}</option>
                       </select>

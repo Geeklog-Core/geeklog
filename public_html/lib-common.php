@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.571 2006/09/03 09:43:35 dhaun Exp $
+// $Id: lib-common.php,v 1.572 2006/09/09 18:27:06 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1493,7 +1493,7 @@ function COM_topicList( $selection, $selected = '', $sortcol = 1, $ignorelang = 
 
         if( $A[0] == $selected )
         {
-            $retval .= ' selected';
+            $retval .= ' selected="selected"';
         }
 
         $retval .= '>' . stripslashes( $A[1] ) . '</option>' . LB;

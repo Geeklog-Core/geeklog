@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.37 2006/08/19 13:59:29 dhaun Exp $
+// $Id: index.php,v 1.38 2006/09/09 18:27:06 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -314,7 +314,7 @@ function editpoll ($qid = '')
     $poll_templates->set_var('lang_appearsonhomepage', $LANG25[8]);
 
     if ($Q['display'] == 1) { 
-        $poll_templates->set_var('poll_display', 'checked');
+        $poll_templates->set_var('poll_display', 'checked="checked"');
     }
 
     // user access info 

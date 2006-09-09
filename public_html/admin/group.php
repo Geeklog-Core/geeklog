@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.87 2006/09/09 08:30:15 dhaun Exp $
+// $Id: group.php,v 1.88 2006/09/09 18:27:06 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -734,7 +734,7 @@ function listgroups()
     }
     
     if ($show_all_groups) {        
-        $filter .= '<label for=chk_showall><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked=checked>';
+        $filter .= '<label for=chk_showall><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked">';
         $query_arr = array('table' => 'groups',
                            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
                            'query_fields' => array('grp_name', 'grp_descr'),
