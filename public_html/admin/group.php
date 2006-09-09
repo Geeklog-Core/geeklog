@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.86 2006/09/09 08:16:39 dhaun Exp $
+// $Id: group.php,v 1.87 2006/09/09 08:30:15 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -384,7 +384,7 @@ function printrights ($grp_id = '', $core = 0)
                     . '</span></td>';
         } else {
             // either this is an indirect right OR this is a core feature
-            if ((($core != 1) AND ($grpftarray[$A['ft_name']] == 'indirect' OR $grpftarray[$A['ft_name']] == 'direct')) OR ($core != 1)) {
+            if ((($core == 1) AND ($grpftarray[$A['ft_name']] == 'indirect' OR $grpftarray[$A['ft_name']] == 'direct')) OR ($core != 1)) {
                 $ftcount++;
                 $retval .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<i title="'
                         . $A['ft_descr'] . '">' .  $A['ft_name'] . '</i>)</td>';
