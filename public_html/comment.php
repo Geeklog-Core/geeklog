@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.105 2006/07/08 21:15:43 dhaun Exp $
+// $Id: comment.php,v 1.106 2006/09/09 12:52:06 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -61,14 +61,15 @@ require_once( $_CONF['path_system'] . 'lib-comment.php' );
 // echo COM_debug($_POST);
 
 /**
- * Hanldes a comment submission
+ * Handles a comment submission
  *
  * @copyright Vincent Furia 2005
  * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @return string HTML (possibly a refresh)
  */
-function handleSubmit() {
-    global $_POST, $_TABLES, $_CONF, $LANG03, $_USER;
+function handleSubmit()
+{
+    global $_CONF, $_TABLES, $_USER, $LANG03;
 
     $type = COM_applyFilter ($_POST['type']);
     $sid = COM_applyFilter ($_POST['sid']);
@@ -118,8 +119,9 @@ function handleSubmit() {
  * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @return string HTML (possibly a refresh)
  */
-function handleDelete() {
-    global $_REQUEST, $_TABLES, $_CONF;
+function handleDelete()
+{
+    global $_CONF, $_TABLES;
 
     $type = COM_applyFilter ($_REQUEST['type']);
     $sid = COM_applyFilter ($_REQUEST['sid']);

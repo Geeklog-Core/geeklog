@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.46 2006/09/06 05:31:01 ospiess Exp $
+// $Id: upload.class.php,v 1.47 2006/09/09 12:52:06 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -1169,8 +1169,6 @@ class upload
     */
     function uploadFiles()
     {
-        global $_SERVER;
-
         // Before we do anything, let's see if we are limiting file uploads by
         // IP address and, if so, verify the poster is originating from one of
         // those places

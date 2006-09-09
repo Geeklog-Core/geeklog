@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: url.class.php,v 1.10 2006/04/14 17:44:33 mjervis Exp $
+// $Id: url.class.php,v 1.11 2006/09/09 12:52:06 dhaun Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
@@ -76,7 +76,6 @@ class url {
     */
     function _getArguments()
     {
-        global $_SERVER;
         if (isset ($_SERVER['PATH_INFO'])) {
             if ($_SERVER['PATH_INFO'] == '')
             {
@@ -173,8 +172,6 @@ class url {
     */
     function getArgument($name)
     {
-        global $_GET;
-        
         // if in GET VARS array return it 
         if (!empty($_GET[$name])) {
             return $_GET[$name];

@@ -56,7 +56,6 @@ class sanitize extends kses {
 
     /* Filter or sanitize single parm */
     function filterparm ($parm) {
-        global $_SERVER;
 
         $p = $this->Parse( $parm );
 
