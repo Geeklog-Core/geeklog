@@ -36,7 +36,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.88 2006/08/19 17:28:40 dhaun Exp $
+// $Id: install.php,v 1.89 2006/09/09 13:10:09 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -238,7 +238,7 @@ function INST_welcomePage()
     $install_options = '';
     $install_options .= installOption ('new_db', 'New MySQL Database', $install_type);
     $install_options .= installOption ('new_mssql_db', 'New Microsoft SQL Server Database', $install_type);
-    $install_options .= installOption ('upgrade_db', 'Upgrade Database', $install_type);
+    $install_options .= installOption ('upgrade_db', 'Upgrade MySQL Database', $install_type);
 
     $retval .= '<form action="install.php" method="POST">' . LB;
     $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB;
@@ -563,7 +563,7 @@ function get_SPX_Ver()
     return $retval;
 }
 
-function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
+function INST_doDatabaseUpgrades($current_gl_version)
 {
     global $_TABLES, $_CONF, $_SP_CONF, $_DB, $_DB_dbms, $_DB_table_prefix;
 
@@ -1013,7 +1013,7 @@ case 1:
 
 case 2:
     if (!empty ($_POST['version'])) {
-        if (INST_doDatabaseUpgrades ($_POST['version'], $_POST['prefix'])) {
+        if (INST_doDatabaseUpgrades ($_POST['version'])) {
             // Great, installation is complete
             // Done with installation...redirect to success page
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
