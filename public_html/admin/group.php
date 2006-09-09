@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.85 2006/09/03 01:41:44 blaine Exp $
+// $Id: group.php,v 1.86 2006/09/09 08:16:39 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -115,18 +115,14 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_admingrp_msg', $LANG28[50]);
     $group_templates->set_var('show_all', COM_applyFilter($_GET['chk_showall'],true));
 
-    if (!empty($grp_id)) {
-        $result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
-        $A = DB_fetchArray($result);
+    if (!empty ($grp_id)) {
+        $result = DB_query ("SELECT grp_id,grp_name,grp_descr,grp_gl_core FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
+        $A = DB_fetchArray ($result);
         if ($A['grp_gl_core'] > 0) {
-            $group_templates->set_var('chk_adminuse','checked=checked');           
+            $group_templates->set_var ('chk_adminuse', 'checked="checked"');
         }
     } else {
-        $A['owner_id'] = $_USER['uid'];
-
-        // this is the one instance where we default the group
-        // most topics should belong to the normal user group
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Normal User'");
+        // new group, so it's obviously not a core group
         $A['grp_gl_core'] = 0;
     }
 
