@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.40 2006/09/02 19:26:47 dhaun Exp $
+// $Id: lib-trackback.php,v 1.41 2006/09/09 17:59:11 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -440,7 +440,7 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
         $_CONF['check_trackback_link'] = 2;
     }
 
-    if ($_CONF['check_trackback_link'] == 0) {
+    if (($_CONF['check_trackback_link'] & 3) == 0) {
         // we shouldn't be here - don't do anything
         return true;
     }
@@ -449,7 +449,7 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
 
     $retval = false;
 
-    if ($_CONF['check_trackback_link'] == 2) {
+    if ($_CONF['check_trackback_link'] & 2) {
         // build the URL of the pinged page on our site
         if ($type == 'article') {
             $urlToCheck = COM_buildUrl ($_CONF['site_url']
@@ -475,7 +475,7 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
             preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>/i",
                             $body, $matches);
             for ($i = 0; $i < count ($matches[0]); $i++) {
-                if ($_CONF['check_trackback_link'] == 1) {
+                if ($_CONF['check_trackback_link'] & 1) {
                     if (strpos ($matches[1][$i], $urlToCheck) === 0) {
                         // found it!
                         $retval = true;
@@ -577,7 +577,19 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             $_CONF['check_trackback_link'] = 2;
         }
 
-        if ($_CONF['check_trackback_link'] > 0) {
+        if ($_CONF['check_trackback_link'] & 4) {
+            $parts = parse_url ($_POST['url']);
+            $ip = gethostbyname ($parts['host']);
+            if ($ip != $_SERVER['REMOTE_ADDR']) {
+                TRB_sendTrackbackResponse (1, $TRB_ERROR['spam'],
+                                           403, 'Forbidden');
+                TRB_logRejected ('IP address mismatch', $_POST['url']);
+
+                return false;
+            }
+        }
+
+        if ($_CONF['check_trackback_link'] & 3) {
             if (!TRB_linksToUs ($sid, $type, $_POST['url'])) {
                 TRB_sendTrackbackResponse (1, $TRB_ERROR['no_link'],
                                            403, 'Forbidden');

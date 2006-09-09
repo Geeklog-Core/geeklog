@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.231 2006/09/03 09:46:04 dhaun Exp $
+// $Id: config.php,v 1.232 2006/09/09 17:59:11 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -561,8 +561,11 @@ $_CONF['multiple_trackbacks'] = 0;
 // min. time between trackbacks or pingbacks, in seconds
 $_CONF['trackbackspeedlimit'] = 300;
 
-// whether to check if trackbacks actually link to us:
-// 0 = don't check, 1 = check against $_CONF['site_url'], 2 = check full URL
+// Use this option to check the validity of Trackbacks:
+// 0 = don't check anything,
+// 1 = check against $_CONF['site_url'], 2 = check full URL
+// 4 = check IP address of sender against the site's IP in the Trackback
+// add the values to do more than one check, e.g. 2 + 4 = 6, i.e. check URL + IP
 $_CONF['check_trackback_link'] = 2;
 
 // how to handle pingbacks from one article on our site to another:

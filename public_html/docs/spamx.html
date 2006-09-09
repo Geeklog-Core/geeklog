@@ -236,10 +236,14 @@ included.</p>
 <h2><a name="trackback">Trackback Spam</a></h2>
 
 <p><a href="trackback.html">Trackbacks</a> are also run through Spam-X before
-they will be accepted by Geeklog, but there is one additional feature to stop
-trackback spam: The site that supposedly sent the trackback <a
-href="config.html#desc_check_trackback_link">can be checked</a> to see if it
-actually contains a link to your site. If it doesn't, it is usually spam.</p>
+they will be accepted by Geeklog. There are also some additional checks that
+can be performed on trackbacks: Geeklog can be configured to check if the site
+that supposedly sent the trackback actually contains a link back to your site.
+In addition, Geeklog can also check if the IP address of the site in the
+trackback URL matches the IP address that sent the trackback. Trackbacks that
+fail any of these tests are usually spam. Please refer to the <a
+href="config.html#desc_check_trackback_link">config.php documentation</a> for
+more information.</p>
 
 <h2><a name="config.php">Configuration File</a></h2>
 

@@ -656,7 +656,16 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_check_trackback_link">check_trackback_link</a></td>
   <td valign="top">2</td>
-  <td valign="top">When receiving a trackback, check if the URL in the trackback does actually contain a link back to our site (otherwise, it's probably spam). Options are: 0 = don't check, 1 = check only for our site's main URL (<code>$_CONF['site_url']</code>), 2 = check for the exact URL of the entry (e.g. an article) on our site.</td></tr>
+  <td valign="top">This option can be used to check the validity of a trackback.
+    You can check if the URL in the trackback actually contains a link back to
+    your site (otherwise, it's probably spam). You can also check if the
+    trackback was sent from the proper IP address, i.e. the IP of the site in
+    the trackback URL (again, if they don't match, it's probably spam). Note
+    that you can <strong>add up the values</strong> below to do more than one
+    check (but using option 1 <em>and</em> 2 doesn't make sense and will be
+    treated as if you requested option 2).<br>
+    Options are: 0 = don't perform any checks, 1 = check only for your site's main URL (<code>$_CONF['site_url']</code>), 2 = check for the exact URL of the entry (e.g. an article) on your site, 4 = check IP address of the sender of the trackback against the site referred to in the trackback URL.<br>
+    <b>Example:</b> <code>$_CONF['check_trackback_link'] = 6; // check for the exact URL (2) and proper IP address (4)</code></td></tr>
 <tr>
   <td valign="top"><a name="desc_pingback_self">pingback_self</a></td>
   <td valign="top">0</td>
