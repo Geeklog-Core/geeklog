@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Added a new script to check the site's security (admin/sectest.php). This
+  replaces the "get bent" PHP block, but also performs additional checks [Dirk]
 - Created a Batch Delete function for users that easily identifies inactive or
   old users and allows mass-deletion of those [Oliver]
 - Updated FCKeditor to version 2.3.1 [Blaine]

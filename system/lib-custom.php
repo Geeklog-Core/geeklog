@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.32 2006/06/17 21:16:01 dhaun Exp $
+// $Id: lib-custom.php,v 1.33 2006/09/10 19:40:48 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -78,74 +78,6 @@ function phpblock_showrights()
     if ($_CST_VERBOSE) {
         COM_errorLog('**** Leaving phpblock_showrights in lib-custom.php ****', 1);
     }
-
-    return $retval;
-}
-
-
-/***
-*
-* Get Bent()
-*
-* Php function to tell you how if your site is grossly insecure
-*
-**/
-function phpblock_getBent()
-{
-    global $_CONF, $_TABLES, $MESSAGE;
-
-    $retval = '';
-    $secure_msg = '';
-    $insecure_msg = '';
-
-    $secure = true;
-
-    if (!MBYTE_checkEnabled() && $_CONF['default_charset'] == 'utf-8') {
-        $secure = false;
-        $insecure_msg = "<ul>". $MESSAGE[77] . "</ul>";
-    }
-
-    $secure_msg .= 'Could not find any gross insecurities in your site.  Do not take this ';
-    $secure_msg .= 'as meaning your site is 100% secure, as no site ever is.  I can only ';
-    $secure_msg .= 'check things that should be blatantly obvious.';
-
-    // we don't have the path to the admin directory, so try to figure it out
-    // from $_CONF['site_admin_url']
-    $adminurl = $_CONF['site_admin_url'];
-    if (strrpos ($adminurl, '/') == strlen ($adminurl)) {
-        $adminurl = substr ($adminurl, 0, -1);
-    }
-    $pos = strrpos ($adminurl, '/');
-    if ($pos === false) {
-        // only guessing ...
-        $installdir = $_CONF['path_html'] . 'admin/install';
-    } else {
-        $installdir = $_CONF['path_html'] . substr ($adminurl, $pos + 1)
-                    . '/install';
-    }
-
-    if (is_dir ($installdir)) {
-        $insecure_msg .= '<li>You should really remove the install directory <b>' . $installdir .'</b> once you have your site up and running without any errors.';
-        $insecure_msg .= ' Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.</li>';
-
-        $secure = false;
-    }
-
-    // check to see if any account still has 'password' as its password.
-    $count = DB_query("select count(*) as count from {$_TABLES['users']} where passwd='" . md5('password') . "'");
-    $A = DB_fetchArray($count);
-    if ( $A['count'] > 0 ) {
-        $secure = false;
-        $insecure_msg .= '<li>You still have not changed the default password from "password" on ' . $A['count'] . ' account(s). ';
-        $insecure_msg .= 'This will allow people to do serious harm to your site!</li>';
-    }
-
-    if ($secure) {
-        $retval = $secure_msg;
-    } else {
-        $retval = "<ul>" . $insecure_msg . "</ul>";
-    }
-    $retval = wordwrap($retval,20,' ',1);
 
     return $retval;
 }
