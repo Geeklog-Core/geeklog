@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.94 2006/08/20 04:09:48 blaine Exp $
+// $Id: moderation.php,v 1.95 2006/09/10 17:38:48 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -602,6 +602,35 @@ function moderateusers ($uid, $action, $count)
     return $retval;
 }
 
+/**
+* Display a reminder to execute the security check script
+*
+*/
+function security_check_reminder ()
+{
+    global $_CONF, $_TABLES, $_IMAGE_TYPE, $MESSAGE;
+
+    $retval = '';
+
+    if (!SEC_inGroup ('Root')) {
+        return $retval;
+    }
+
+    $done = DB_getItem ($_TABLES['vars'], 'value', "name = 'security_check'");
+    if ($done != 1) {
+        $message = 'Please <a href="' . $_CONF['site_admin_url'] . '/sectest.php">check the security of your site</a> before using it!';
+        $retval .= COM_startBlock ($MESSAGE[40], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
+            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
+            . $message . '</p>'
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+
+    return $retval;
+}
+
 // MAIN
 
 $display = '';
@@ -619,6 +648,7 @@ if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
                                   COM_applyFilter ($_POST['count'], true));
     }
 } else {
+    $display .= security_check_reminder ();
     $display .= commandcontrol();
 }
 
