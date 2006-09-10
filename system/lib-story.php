@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.68 2006/08/21 08:57:50 dhaun Exp $
+// $Id: lib-story.php,v 1.69 2006/09/10 21:14:31 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -448,7 +448,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
-    if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 AND SEC_hasrights( 'story.edit' ) AND ( $index != 'p' ))
+    if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 AND SEC_hasrights( 'story.edit' ) AND ( $index != 'p' ) AND SEC_hasTopicAccess( $A['tid'] ) == 3 )
     {
         $article->set_var( 'edit_link', '<a href="' . $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $A['sid'] . '">'

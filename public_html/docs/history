@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Don't display an "edit" link in a story if the current user doesn't have
+  edit permissions for the story's topic (bug #558) [Dirk]
 - Added a new script to check the site's security (admin/sectest.php). This
   replaces the "get bent" PHP block, but also performs additional checks [Dirk]
 - Created a Batch Delete function for users that easily identifies inactive or
