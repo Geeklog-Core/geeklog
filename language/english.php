@@ -1447,6 +1447,7 @@ $LANG_ADMIN = array (
     'save'          => 'Save',
     'cancel'        => 'Cancel',
     'delete'        => 'Delete',
+    'delete_sel'    => 'Delete selected',
     'copy'          => 'Copy',
     'no_results'    => '- No entries found -',
     'data_error'    => 'There was an error processing the subscription data. Please check the data source.',

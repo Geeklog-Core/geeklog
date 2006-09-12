@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.169 2006/09/12 04:43:57 ospiess Exp $
+// $Id: user.php,v 1.170 2006/09/12 05:21:20 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -608,7 +608,7 @@ function batchdelete()
           . '<input style="text-align:center" type="text" name="usr_time[recent]" value="'.$usr_time_arr['recent']
           . '" size="3">' . $LANG28[76] . '</p>' . LB
           . '&nbsp;<input type="submit" name="submit" value="' . $LANG28[66] . '">&nbsp;'
-          . "<input type=\"submit\" name=\"submit\" value=\"{$LANG_ADMIN['delete']}\" onclick=\"return confirm('{$LANG28[73]}');\"></form><p>";
+          . "<input type=\"submit\" name=\"submit\" value=\"{$LANG_ADMIN['delete_sel']}\" onclick=\"return confirm('{$LANG28[73]}');\"></form><p>";
 
 
     $display .= '<form style="display:inline" action="' . $_CONF['site_admin_url']. '/user.php?mode=batchdelete" method="post" >' . LB
