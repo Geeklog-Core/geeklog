@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.81 2006/09/12 04:41:56 ospiess Exp $
+// $Id: lib-admin.php,v 1.82 2006/09/12 04:47:34 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -408,7 +408,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->clear_var('th_subtags'); // clear all for next header
         $admin_templates->clear_var('class');
         $admin_templates->clear_var('header_text');
-        $admin_templates->clear_var('arrow');
     }
 
     $has_extras = '';
