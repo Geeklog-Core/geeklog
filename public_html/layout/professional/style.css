@@ -151,19 +151,14 @@ th {
   color:#000000;
   font:100% Tahoma,verdana,helvetica,arial,sans-serif;
 }
-.block-box-left, .block-box-right {
+.block-box-left, .block-box-right, .block-box {
   margin:10px;
 }
 .block-bg-left, .block-bg-right{
   font-size:73%;
   border-top:1px solid #FFFFFF;
 }
-.block-info {
-  background:transparent;
-  color:#000000;
-  font:75% Tahoma,verdana,helvetica,arial,sans-serif;
-}
-.block-content-left {
+.block-content, .block-content-right, .block-content-left {
   background:transparent;
   color:#000000;
   font:110% Tahoma,verdana,helvetica,arial,sans-serif;
@@ -171,28 +166,12 @@ th {
   padding-top:2px;
   clear:both;
 }
-.block-content-left ul {
+.block-content-left ul, .block-content-right ul, .block-content ul {
   margin-top: 0;
   margin-bottom: 0;
   margin-left: 16px;
   padding-left: 0;
   border: none;
-}
-.block-content-right {
-  background:transparent;
-  color:#000000;
-  font:110% Tahoma,verdana,helvetica,arial,sans-serif;
-  padding-bottom:2px;
-  padding-top:2px;
-  clear:both;
-}
-.block-content-right ul {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 16px;
-  padding-left: 0;
-  border: none;
-  clear:both;
 }
 
 .block-outerborder-left {
@@ -201,13 +180,7 @@ th {
 .block-outerborder-right {
   border-right:1px solid #CCCCCC;
 }
-.block-title,blocktitle {
-  background:transparent;
-  color:#1A3955;
-  font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif;
-  padding-top:13px;
-}
-.block-title-left {
+.block-title, .blocktitle, .block-title-left, .block-title-right {
   background:transparent;
   color:#1A3955;
   font:110% Tahoma,verdana,helvetica,arial,sans-serif;
@@ -216,20 +189,7 @@ th {
   text-align:left;
   float:left;
 }
-.block-title-right {
-  background:transparent;
-  color:#1A3955;
-  font:110% Tahoma,verdana,helvetica,arial,sans-serif;
-  font-weight:bold;
-  height:22px;
-  text-align:left;
-  float:left;
-}
-.block-helpicon-left {
-  padding-top:3px;
-  text-align:right;
-}
-.block-helpicon-right {
+.block-helpicon-left,.block-helpicon-right,.block-helpicon {
   padding-top:3px;
   text-align:right;
 }
