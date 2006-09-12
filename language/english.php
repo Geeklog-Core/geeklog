@@ -888,7 +888,10 @@ $LANG28 = array(
     70 => 'could not be deleted',
     71 => 'sucessfully deleted',
     72 => 'No User selected for deletion',
-    73 => 'Are You sure you want to permanently delete ALL selected users?'
+    73 => 'Are You sure you want to permanently delete ALL selected users?'.
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -1447,7 +1450,8 @@ $LANG_ADMIN = array (
     'copy'          => 'Copy',
     'no_results'    => '- No entries found -',
     'data_error'    => 'There was an error processing the subscription data. Please check the data source.',
-    'preview'       => 'Preview'
+    'preview'       => 'Preview',
+    'records_found' => 'Records found'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
