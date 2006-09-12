@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.80 2006/09/07 01:13:49 ospiess Exp $
+// $Id: lib-admin.php,v 1.81 2006/09/12 04:41:56 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -127,7 +127,6 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
         $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
         $admin_templates->set_var('class', "admin-list-headerfield");
-        $admin_templates->set_var('on_click', ' width="25px"');
         $admin_templates->set_var('show_deleteimage', '');
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('on_click');
@@ -367,46 +366,48 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if (!empty ($order_for_query)) { # concat order string
         $order_sql = "ORDER BY $order_for_query $direction";
     }
-
+    $th_subtags = ''; // other tags in the th, such as onlick and mouseover
+    $header_text = ''; // title as displayed to the user
     # HEADER FIELDS array(text, field, sort)
     for ($i=0; $i < count( $header_arr ); $i++) { #iterate through all headers
-        $admin_templates->set_var('header_text', $header_arr[$i]['text']); # title
+        $header_text = $header_arr[$i]['text'];
         if ($header_arr[$i]['sort'] != false) { # is this sortable?
             if ($order==$header_arr[$i]['field']) { # is this currently sorted?
-                $admin_templates->set_var('img_arrow', $img_arrow);
+                $header_text .= $img_arrow;
             }
             # make the mouseover effect is sortable
-            $admin_templates->set_var('mouse_over', " OnMouseOver=\"this.style.cursor='pointer';\"");
+            $th_subtags = " OnMouseOver=\"this.style.cursor='pointer';\"";
             $order_var = $i; # assign number to field so we know what to sort
             if (strpos ($form_url, '?') > 0) {
                 $separator = '&amp;';
             } else {
                 $separator = '?';
             }
-            $onclick = " onclick=\"window.location.href='$form_url$separator" #onclick action
+            $th_subtags .= " onclick=\"window.location.href='$form_url$separator" #onclick action
                     ."order=$order_var&amp;prevorder=$order&amp;direction=$direction";
             if (!empty ($page)) {
-                $onclick = '&amp;' . $component . 'listpage=' . $page;
+                $th_subtags .= '&amp;' . $component . 'listpage=' . $page;
             }
             if (!empty ($query)) {
-                $onclick .= '&amp;q=' . $query;
+                $th_subtags .= '&amp;q=' . $query;
             }
             if (!empty ($query_limit)) {
-                $onclick .= '&amp;query_limit=' . $query_limit;
+                $th_subtags .= '&amp;query_limit=' . $query_limit;
             }
-            $onclick .= "';\"";
-            $admin_templates->set_var ('on_click', $onclick);
+            $th_subtags .= "';\"";
         }
+
         if (!empty($header_arr[$i]['header_class'])) {
             $admin_templates->set_var('class', $header_arr[$i]['header_class']);
         } else {
             $admin_templates->set_var('class', "admin-list-headerfield");
         }
+        $admin_templates->set_var('header_text', $header_text);
+        $admin_templates->set_var('th_subtags', $th_subtags);
         $admin_templates->parse('header_row', 'header', true);
-        $admin_templates->clear_var('img_arrow'); # clear all for next header
-        $admin_templates->clear_var('mouse_over');
+        $admin_templates->clear_var('th_subtags'); // clear all for next header
         $admin_templates->clear_var('class');
-        $admin_templates->clear_var('on_click');
+        $admin_templates->clear_var('header_text');
         $admin_templates->clear_var('arrow');
     }
 
@@ -445,12 +446,15 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         }
         $num_pages_sql = $sql . $filter_str;
         $num_pages_result = DB_query($num_pages_sql);
-        $num_pages = ceil (DB_numRows($num_pages_result) / $limit);
+        $num_rows = DB_numRows($num_pages_result);
+        $num_pages = ceil ($num_rows / $limit);
         if ($num_pages < $curpage) { # make sure we dont go beyond possible results
                $curpage = 1;
         }
         $offset = (($curpage - 1) * $limit);
         $limit = "LIMIT $offset,$limit"; # get only current page data
+        $admin_templates->set_var ('lang_records_found', $LANG_ADMIN['records_found']);
+        $admin_templates->set_var ('records_found', $num_rows);
     }
 
     # SQL
@@ -728,7 +732,7 @@ function ADMIN_getListField_batchuserdelete($fieldname, $fieldvalue, $A, $icon_a
 
     switch ($fieldname) {
         case 'delete':
-            $retval = "<input type=\"checkbox\" name=\"del_uid[{$A['uid']}]\" checked=\"checked\">";
+            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['uid']}]\" checked=\"checked\">";
             break;
         case 'username':
             $photoico = '';
@@ -752,14 +756,10 @@ function ADMIN_getListField_batchuserdelete($fieldname, $fieldvalue, $A, $icon_a
             break;
         case 'phantom_date':
         case 'offline_months':
-            // MySQL 4
-            // $retval = round($fieldvalue / 30, 1);
-            // MySQL 3
-            $retval = round($fieldvalue / 2592000, 1);
+            $retval = COM_numberFormat(round($fieldvalue / 2592000, 1));
             break;
-        case 'online_time':
-            // MySQL 3
-            $retval = round($fieldvalue / 3600, 2);
+        case 'online_hours':
+            $retval = COM_numberFormat(round($fieldvalue / 3600, 3));
             break;
         case 'regdate':
             $retval = strftime ($_CONF['shortdate'], strtotime($fieldvalue));

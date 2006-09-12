@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.167 2006/09/07 01:13:49 ospiess Exp $
+// $Id: user.php,v 1.168 2006/09/12 04:41:56 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -578,15 +578,18 @@ function batchdelete()
         $usr_time_arr['phantom'] = 2;
         $usr_time_arr['short'] = 6;
         $usr_time_arr['old'] = 24;
+        $usr_time_arr['recent'] = 1;
     }
     $usr_time = $usr_time_arr[$usr_type];
 
     $sel_phantom="";
     $sel_short="";
     $sel_old="";
+    $sel_recent="";
 
     $selector = "sel_$usr_type";
     $$selector = ' checked="checked"';
+    // li { padding-left: 5em; text-indent: -5em; }
     $desc = $LANG28[56] . LB
           . '<p><input type="radio" name="usr_type" value="phantom"'.$sel_phantom.'><strong>'
           . $LANG28[57] .':</strong> ' . $LANG28[60]
@@ -599,16 +602,14 @@ function batchdelete()
           . '<input type="radio" name="usr_type" value="old"'.$sel_old.'><strong>'
           . $LANG28[59] .':</strong> ' . $LANG28[64]
           . '<input style="text-align:center" type="text" name="usr_time[old]" value="'.$usr_time_arr['old']
-          . '" size="3">' . $LANG28[65] . '</p>' . LB
-          . '&nbsp;<input type="submit" name="submit" value="' . $LANG28[66] . '"></form><p>';
+          . '" size="3">' . $LANG28[65] . '<br>' . LB
+          . '<input type="radio" name="usr_type" value="recent"'.$sel_recent.'><strong>'
+          . $LANG28[74] .':</strong> ' . $LANG28[75]
+          . '<input style="text-align:center" type="text" name="usr_time[recent]" value="'.$usr_time_arr['recent']
+          . '" size="3">' . $LANG28[76] . '</p>' . LB
+          . '&nbsp;<input type="submit" name="submit" value="' . $LANG28[66] . '">&nbsp;'
+          . "<input type=\"submit\" name=\"submit\" value=\"{$LANG_ADMIN['delete']}\" onclick=\"return confirm('{$LANG28[73]}');\"></form><p>";
 
-    if ($usr_type == 'phantom') {
-        $desc .= $LANG28[60] . $usr_time . $LANG28[61];
-    } else if ($usr_type == 'short') {
-        $desc .= $LANG28[62] . $usr_time . $LANG28[63];
-    } else if ($usr_type == 'old') {
-        $desc .= $LANG28[64] . $usr_time . $LANG28[65];
-    }
 
     $display .= '<form style="display:inline" action="' . $_CONF['site_admin_url']. '/user.php?mode=batchdelete" method="post" >' . LB
             . '<input type="hidden" name="mode" value="batchdelete">' . LB
@@ -616,28 +617,51 @@ function batchdelete()
             . '<input type="hidden" name="usr_time['.$usr_type.']" value="'.$usr_time.'">' . LB;
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => "<input type=\"submit\" name=\"submit\" value=\"{$LANG_ADMIN['delete']}\" onclick=\"return confirm('{$LANG28[73]}');\">",
-                          'field' => 'delete', 'sort' => false),
+                    array('text' => "<input type=\"checkbox\" name=\"chk_selectall\" title=\"'.$LANG01[126].'\" onclick=\"caItems(this.form);\" checked=\"checked\">",
+                          'field' => 'delete',
+                          'sort' => false),
                     array('text' => $LANG28[37], 'field' => $_TABLES['users'] . '.uid', 'sort' => true),
                     array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
                     array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true)
     );
-    if ($usr_type == 'phantom') {
-        $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
-        $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
-        $header_arr[] = array('text' => $LANG28[67], 'field' => 'phantom_date', 'sort' => true);
-    }
 
-    if ($usr_type == 'short') {
-        $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
-        $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
-        $header_arr[] = array('text' => $LANG28[68], 'field' => 'online_hours', 'sort' => true);
-        $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
-    }
-
-    if ($usr_type == 'old') {
-        $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
-        $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
+    switch ($usr_type) {
+        case 'phantom':
+            $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[67], 'field' => 'phantom_date', 'sort' => true);
+            $list_sql = ", UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) as phantom_date";
+            $filter_sql = "lastlogin = 0 AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
+            $sort = 'regdate';
+            $desc .= $LANG28[60] . $usr_time . $LANG28[61];
+            break;
+        case 'short':
+            $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[68], 'field' => 'online_hours', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
+            $list_sql = ", (lastlogin - UNIX_TIMESTAMP(regdate)) AS online_hours, (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
+            $filter_sql = "lastlogin > 0 AND lastlogin - UNIX_TIMESTAMP(regdate) < 86400 "
+                         . "AND UNIX_TIMESTAMP() - lastlogin > " . ($usr_time * 2592000) . " AND";
+            $sort = 'lastlogin';
+            $desc .= $LANG28[62] . $usr_time . $LANG28[63];
+            break;
+        case 'old':
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
+            $list_sql = ", (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
+            $filter_sql = "lastlogin > 0 AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
+            $sort = 'lastlogin';
+            $desc .= $LANG28[64] . $usr_time . $LANG28[65];
+            break;
+        case 'recent':
+            $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $list_sql = "";
+            $filter_sql = "(UNIX_TIMESTAMP() - UNIX_TIMESTAMP(regdate)) < " . ($usr_time * 2592000) . " AND";
+            $sort = 'regdate';
+            $desc .= $LANG28[75] . $usr_time . $LANG28[76];
+            break;
     }
 
     $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
@@ -659,44 +683,6 @@ function batchdelete()
                       'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
                       'help_url'     => ''
     );
-
-    if ($usr_type == 'phantom') {
-        // MySQL 3
-        $list_sql = ", UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) as phantom_date";
-        // MySQL 4
-        // $list_sql = ", DATEDIFF(NOW(), regdate) AS phantom_date";
-        // MySQL 3
-        $filter_sql = "lastlogin = 0 AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
-        // MySQL 4
-        // $filter_sql = "lastlogin = 0 AND DATEDIFF(NOW(), regdate) > " . ($usr_time * 30) . " AND";
-        $sort = 'regdate';
-    }
-
-    if ($usr_type == 'short') {
-        // MySQL 3
-        $list_sql = ", (lastlogin - UNIX_TIMESTAMP(regdate)) AS online_hours, (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
-        // MySQL 4
-        // $list_sql = ", TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) AS online_time, DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
-        // MySQL 3
-        $filter_sql = "lastlogin > 0 AND lastlogin - UNIX_TIMESTAMP(regdate) < 86400 "
-                     . "AND UNIX_TIMESTAMP() - lastlogin > " . ($usr_time * 2592000) . " AND";
-        // MySQL 4
-        // $filter_sql = "lastlogin > 0 AND TIMEDIFF(FROM_UNIXTIME(lastlogin), regdate) < 24 "
-        //            . "AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
-        $sort = 'lastlogin';
-    }
-
-    if ($usr_type == 'old') {
-        // MySQL 3
-        $list_sql = ", (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
-        // MySQL 4
-        // $list_sql = ", DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) AS offline_months";
-        // MySQL 3
-        $filter_sql = "lastlogin > 0 AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
-        // MySQL 4
-        // $filter_sql = "lastlogin > 0 AND DATEDIFF(NOW(), FROM_UNIXTIME(lastlogin)) > " . ($usr_time * 30) . " AND";
-        $sort = 'lastlogin';
-    }
 
     $defsort_arr = array('field'     => $sort,
                          'direction' => 'ASC');
@@ -731,25 +717,30 @@ function batchdeleteexec() {
 
     $msg = '';
     $user_list = array();
-    if (isset($_POST['del_uid'])) {
-        $user_list = $_POST['del_uid'];
+    if (isset($_POST['delitem'])) {
+        $user_list = $_POST['delitem'];
     }
 
     if (count($user_list) == 0) {
         $msg = $LANG28[72];
     }
-
+    $c = 0;
     for ($i<0; $i<count($user_list); $i++) {
         if (current($user_list) =='on') {
             $uid = key($user_list);
             if (!USER_deleteAccount (key($user_list))) {
                 $msg .= "<strong>{$LANG28[2]} $uid {$LANG28[70]}</strong><br>\n";
             } else {
-                $msg .= "{$LANG28[2]} $uid {$LANG28[71]}<br>\n";
+                $c++; // count the deleted users
             }
         }
         next($user_list);
     }
+
+    // Since this function is used for deletion only, its necessary to say that
+    // zero where deleted instead of just leaving this message away.
+    COM_numberFormat($c); // just in case we have more than 999)..
+    $msg .= "{$LANG28[71]}: $c<br>\n";
     return $msg;
 }
 

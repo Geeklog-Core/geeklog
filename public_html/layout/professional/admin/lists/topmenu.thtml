@@ -22,7 +22,9 @@
                                                     <option value="500" {500_selected}>500</option>
                                                 </select>
                                             <input type="submit" value="{lang_submit}">
+                                            &nbsp;&nbsp;{lang_records_found}:&nbsp;{records_found}
                                         </form>
+
                                     </td>
                                 </tr>
                             </table>
