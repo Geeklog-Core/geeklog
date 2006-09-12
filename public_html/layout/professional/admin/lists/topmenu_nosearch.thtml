@@ -1,13 +1,13 @@
-                            <table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin-top:5px;">
-                                <tr>
-                                    <td rowspan="2">
-                                        <img src="{icon}" alt="">
-                                    </td>
-                                    <td>
+                            <div>
+                                <div style="float:left;">
+                                    <img src="{icon}" alt="">
+                                </div>
+                                <div>
+                                    <div>
                                         {menu_fields}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{lang_instructions}</td>
-                                </tr>
-                            </table>
+                                    </div>
+                                    <div>
+                                        {lang_instructions}
+                                    </div>
+                                </div>
+                            </div>
