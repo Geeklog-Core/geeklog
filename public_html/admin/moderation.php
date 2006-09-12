@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.95 2006/09/10 17:38:48 dhaun Exp $
+// $Id: moderation.php,v 1.96 2006/09/12 08:31:44 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -44,6 +44,7 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 
+// this defines the amount of icons displayed next to another in the CC-block
 define ('ICONS_PER_ROW', 6);
 
 /**
@@ -162,8 +163,7 @@ function commandcontrol()
         }
     }
 
-    if ($_CONF['sort_admin'])
-    {
+    if ($_CONF['sort_admin']) {
         ksort($items);
     }
      // logout is always the last entry
@@ -175,12 +175,10 @@ function commandcontrol()
     reset($items);
     $cols = 0;
     $cc_main_options = '';
-    while (list($key, $val) = each($items))
-    {
+    while (list($key, $val) = each($items)) {
         $cc_main_options .= $val . LB;
         $cols++;
-        if ($cols == ICONS_PER_ROW)
-        {
+        if ($cols == ICONS_PER_ROW) {
             $admin_templates->set_var('cc_main_options', $cc_main_options);
             $admin_templates->parse ('cc_rows', 'ccrow', true);
             $admin_templates->clear_var ('cc_main_options');
@@ -189,6 +187,7 @@ function commandcontrol()
         }
     }
     // "flush out" any unrendered entries
+    $admin_templates->set_var('cc_icon_width', floor(100/ICONS_PER_ROW));
     $admin_templates->set_var('cc_main_options', $cc_main_options);
     $admin_templates->parse ('cc_rows', 'ccrow', true);
     $admin_templates->clear_var ('cc_main_options');
@@ -291,8 +290,8 @@ function itemlist($type)
                       'title'       => $section_title,
                       'help_url'    => $section_help,
                       'no_data'     => $LANG29[39]);
-    
-    $listoptions = array('chkdelete' => true,'chkfield' => 'id');  
+
+    $listoptions = array('chkdelete' => true,'chkfield' => 'id');
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
                               $text_arr, $data_arr, array(),$listoptions);
     if ($nrows > 0) {
@@ -352,9 +351,9 @@ function userlist ()
                       'help_url'  => '',
                       'no_data'   => $LANG29[39]
     );
-     
+
     $listoptions = array('chkdelete' => true,'chkfield' => 'id');
-    
+
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
                               $text_arr, $data_arr, array(),$listoptions);
     if ($nrows > 0) {
@@ -524,11 +523,11 @@ function moderation ($mid, $action, $type, $count)
             break;
         }
     }
-    
+
     // Check if there was no direct action used on the form and if the delete_all submit action was used
     if (!$formaction AND isset($_POST['delitem'])) {
         foreach($_POST['delitem'] as $delitem) {
-            $delitem = COM_applyFilter($delitem);        
+            $delitem = COM_applyFilter($delitem);
             if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
                 // There may be some plugin specific processing that needs to
                 // happen first.
@@ -538,7 +537,7 @@ function moderation ($mid, $action, $type, $count)
                 STORY_deleteStory($delitem);
             } else {
                 DB_delete($submissiontable,"$id",$delitem);
-            }        
+            }
         }
     }
 
@@ -564,9 +563,9 @@ function moderateusers ($uid, $action, $count)
     global $_CONF, $_TABLES, $LANG04;
 
     $retval = '';
-    $formaction = false;        // Set true if an valid action other then delete_all is selected  
+    $formaction = false;        // Set true if an valid action other then delete_all is selected
     for ($i = 0; $i < $count; $i++) {
-        if (isset($action[$i]) AND $action[$i] != '') $formaction = true;   
+        if (isset($action[$i]) AND $action[$i] != '') $formaction = true;
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
                 if ($uid[$i] > 1) {
@@ -586,16 +585,16 @@ function moderateusers ($uid, $action, $count)
                 break;
         }
     }
-    
+
     // Check if there was no direct action used on the form and if the delete_all submit action was used
-    if (!$formaction AND isset($_POST['delitem'])) {       
+    if (!$formaction AND isset($_POST['delitem'])) {
         foreach($_POST['delitem'] as $del_uid) {
             $del_uid = COM_applyFilter($del_uid,true);
             if ($del_uid > 1) {
                 USER_deleteAccount ($uid[$i]);
             }
         }
-    }    
+    }
 
     $retval .= commandcontrol();
 

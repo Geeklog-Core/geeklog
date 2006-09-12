@@ -1,5 +1,5 @@
-        <td align="center" width="{cell_width}">
-            <a href="{page_url}"><img src="{page_image}" border="0" alt=""><br> 
+        <div class="moderation-cc-item" style="width:{cc_icon_width}%">
+            <a href="{page_url}"><img src="{page_image}" border="0" alt=""><br>
                 {option_label}
             </a>
-        </td>
+        </div>

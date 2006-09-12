@@ -546,11 +546,22 @@ th {
   top:12px;
   left:4px;
 }
-
 .highlight {
   color: #000000;
   background-color: yellow;
   text-decoration: none;
+}
+.moderation-cc{
+  width:100%;
+}
+.moderation-cc-row{
+  clear:both;
+  height:100px;
+  width:100%;
+}
+.moderation-cc-item{
+  float:left;
+  text-align:center;
 }
 .pagenav {
   text-align: center;
