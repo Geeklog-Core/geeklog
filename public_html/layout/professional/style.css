@@ -143,13 +143,11 @@ th {
   color:#000000;
   font:100% Tahoma,verdana,helvetica,arial,sans-serif;
 }
-.block-box-left {
+.block-box-left, .block-box-right {
   margin:10px;
 }
-.block-box-right {
-  margin:10px;
-}
-.block-hightopborder-left {
+.block-bg-left, .block-bg-right{
+  font-size:73%;
   border-top:1px solid #FFFFFF;
 }
 .block-info {

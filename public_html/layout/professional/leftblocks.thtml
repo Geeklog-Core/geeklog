@@ -9,12 +9,10 @@
                             <input type="submit" value="{button_search}">
                         </form>
                     </div>
-                    <table width="100%" class="block-hightopborder-left">
-                        <tr><td valign="top">
+                    <div class="block-bg-left">
                             {geeklog_blocks}
                             <div style="background:transparent; width:180px; height:1px;"></div>
-                        </td></tr>
-                    </table>
+                    </div>
                 </td>
                 <td class="block-outerborder-left">
                     <div style="background:transparent; width:10px; height:1px;"></div>

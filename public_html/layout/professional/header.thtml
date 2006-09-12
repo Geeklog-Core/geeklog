@@ -40,7 +40,7 @@
                     </tr>
                 </table>
             </div>
-            <table border="0" cellspacing="0" cellpadding="0" width="100%">
+            <table cellspacing="0" cellpadding="0" width="100%">
                 <tr>
                     {left_blocks}
                     <td class="story-container" width="100%" valign="top">

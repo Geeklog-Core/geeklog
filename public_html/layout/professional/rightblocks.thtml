@@ -3,12 +3,10 @@
     <div style="background:transparent; width:1px; height:1px;"></div>
 </td>
 <td class="block-featured-right" valign="top">
-    <table width="100%" class="blocksbg-right">
-        <tr><td valign="top">
+    <div class="block-bg-right">
             {geeklog_blocks}
             <div style="background:transparent; width:180px; height:1px;"></div>
-        </td></tr>
-    </table>
+    </div
 </td>
 <!--</td></tr></table>-->
 <!--If you want the splash, uncomment the last line. If you want no splash, make sure it is commented out.-->
