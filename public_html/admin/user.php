@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.168 2006/09/12 04:41:56 ospiess Exp $
+// $Id: user.php,v 1.169 2006/09/12 04:43:57 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -722,7 +722,7 @@ function batchdeleteexec() {
     }
 
     if (count($user_list) == 0) {
-        $msg = $LANG28[72];
+        $msg = $LANG28[72] . "<br>";
     }
     $c = 0;
     for ($i<0; $i<count($user_list); $i++) {
