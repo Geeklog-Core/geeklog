@@ -1,5 +1,5 @@
                             <div>
-                                <div style="float:left;">
+                                <div class="admin-list-icon">
                                     {icon}
                                 </div>
                                 <div>

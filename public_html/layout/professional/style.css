@@ -92,6 +92,10 @@ th {
   font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif;
   padding-left:3px;
 }
+.admin-list-icon{
+  float:left;
+  padding:5px;
+}
 .admin-list-table {
   width:100%;
   text-align:left;

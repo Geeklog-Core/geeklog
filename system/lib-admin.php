@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.82 2006/09/12 04:47:34 ospiess Exp $
+// $Id: lib-admin.php,v 1.83 2006/09/12 07:27:32 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -88,7 +88,9 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
-    $admin_templates->set_var('icon', $icon);
+    if ($text_arr['icon'] !== false) {
+        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"icon\">");
+    }
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('lang_deleteall', $LANG01['124']);
@@ -299,7 +301,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
-    # the user can disable the menu. if used, create it.
+    // the user can disable the menu. if used, create it.
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
             $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
@@ -368,7 +370,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
     $th_subtags = ''; // other tags in the th, such as onlick and mouseover
     $header_text = ''; // title as displayed to the user
-    # HEADER FIELDS array(text, field, sort)
+    // HEADER FIELDS array(text, field, sort, class)
+    // this part defines the contents & format of the header fields
     for ($i=0; $i < count( $header_arr ); $i++) { #iterate through all headers
         $header_text = $header_arr[$i]['text'];
         if ($header_arr[$i]['sort'] != false) { # is this sortable?
@@ -481,7 +484,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             if ($fieldvalue !== false) { # return was there, so write line
                 $this_row = true;
             } else {
-                $fieldvalue = ''; # set field = ''
+                $fieldvalue = ''; // dont give emtpy fields
             }
             if (!empty($header_arr[$j]['field_class'])) {
                 $admin_templates->set_var('class', $header_arr[$j]['field_class']);
