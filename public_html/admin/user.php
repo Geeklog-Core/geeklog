@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.170 2006/09/12 05:21:20 ospiess Exp $
+// $Id: user.php,v 1.171 2006/09/15 03:42:43 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -582,39 +582,44 @@ function batchdelete()
     }
     $usr_time = $usr_time_arr[$usr_type];
 
-    $sel_phantom="";
-    $sel_short="";
-    $sel_old="";
-    $sel_recent="";
+    // list of options for user display
+    // sel => form-id
+    // desc => title
+    // txt1 => text before input-field
+    // txt2 => text after input field
+    $opt_arr = array(
+        array('sel' => 'phantom', 'desc' => $LANG28[57], 'txt1' => $LANG28[60], 'txt2' => $LANG28[61]),
+        array('sel' => 'short', 'desc' => $LANG28[58], 'txt1' => $LANG28[62], 'txt2' => $LANG28[63]),
+        array('sel' => 'old', 'desc' => $LANG28[59], 'txt1' => $LANG28[64], 'txt2' => $LANG28[65]),
+        array('sel' => 'recent', 'desc' => $LANG28[74], 'txt1' => $LANG28[75], 'txt2' => $LANG28[76])
+    );
 
-    $selector = "sel_$usr_type";
-    $$selector = ' checked="checked"';
-    // li { padding-left: 5em; text-indent: -5em; }
-    $desc = $LANG28[56] . LB
-          . '<p><input type="radio" name="usr_type" value="phantom"'.$sel_phantom.'><strong>'
-          . $LANG28[57] .':</strong> ' . $LANG28[60]
-          . '<input style="text-align:center" type="text" name="usr_time[phantom]" value="'.$usr_time_arr['phantom']
-          . '" size="3">' . $LANG28[61] . '<br>' . LB
-          . '<input type="radio" name="usr_type" value="short"'.$sel_short.'><strong>'
-          . $LANG28[58] .':</strong> ' . $LANG28[62]
-          . '<input style="text-align:center" type="text" name="usr_time[short]" value="'.$usr_time_arr['short']
-          . '" size="3">' . $LANG28[63] . '<br>'  . LB
-          . '<input type="radio" name="usr_type" value="old"'.$sel_old.'><strong>'
-          . $LANG28[59] .':</strong> ' . $LANG28[64]
-          . '<input style="text-align:center" type="text" name="usr_time[old]" value="'.$usr_time_arr['old']
-          . '" size="3">' . $LANG28[65] . '<br>' . LB
-          . '<input type="radio" name="usr_type" value="recent"'.$sel_recent.'><strong>'
-          . $LANG28[74] .':</strong> ' . $LANG28[75]
-          . '<input style="text-align:center" type="text" name="usr_time[recent]" value="'.$usr_time_arr['recent']
-          . '" size="3">' . $LANG28[76] . '</p>' . LB
-          . '&nbsp;<input type="submit" name="submit" value="' . $LANG28[66] . '">&nbsp;'
-          . "<input type=\"submit\" name=\"submit\" value=\"{$LANG_ADMIN['delete_sel']}\" onclick=\"return confirm('{$LANG28[73]}');\"></form><p>";
+    $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
+    $user_templates->set_file (array ('form' => 'batchdelete.thtml',
+                                      'options' => 'batchdelete_options.thtml'));
+    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var ('usr_type', $usr_type);
+    $user_templates->set_var ('usr_time', $usr_time);
+    $user_templates->set_var ('lang_instruction', $LANG28[56]);
+    $user_templates->set_var ('lang_updatelist', $LANG28[66]);
+    $user_templates->set_var ('lang_delete_sel', $LANG_ADMIN['delete_sel']);
+    $user_templates->set_var ('lang_delconfirm', $LANG28[73]);
 
-
-    $display .= '<form style="display:inline" action="' . $_CONF['site_admin_url']. '/user.php?mode=batchdelete" method="post" >' . LB
-            . '<input type="hidden" name="mode" value="batchdelete">' . LB
-            . '<input type="hidden" name="usr_type" value="'.$usr_type.'">' . LB
-            . '<input type="hidden" name="usr_time['.$usr_type.']" value="'.$usr_time.'">' . LB;
+    for ($i=0; $i<count($opt_arr);$i++) {
+        $selector = "";
+        if ($usr_type == $opt_arr['sel']) {
+            $selector = ' checked="checked"';
+        }
+        $user_templates->set_var ('sel_id', $opt_arr[$i]['sel']);
+        $user_templates->set_var ('selector', $selector);
+        $user_templates->set_var ('lang_description', $opt_arr[$i]['desc']);
+        $user_templates->set_var ('lang_text_start', $opt_arr[$i]['txt1']);
+        $user_templates->set_var ('lang_text_end', $opt_arr[$i]['txt2']);
+        $user_templates->set_var ('id_value', $usr_time_arr[$opt_arr[$i]['sel']]);
+        $user_templates->parse('options_list', 'options', true);
+    }
+    $user_templates->parse('form', 'form');
+    $desc .= $user_templates->finish($user_templates->get_var('form'));
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => "<input type=\"checkbox\" name=\"chk_selectall\" title=\"'.$LANG01[126].'\" onclick=\"caItems(this.form);\" checked=\"checked\">",
@@ -678,7 +683,7 @@ function batchdelete()
     $text_arr = array('has_menu'     => true,
                       'has_extras'   => true,
                       'title'        => $LANG28[54],
-                      'instructions' => "<p>$desc</p>",
+                      'instructions' => "$desc",
                       'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                       'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
                       'help_url'     => ''
@@ -701,9 +706,6 @@ function batchdelete()
 
     $display .= ADMIN_list ("user", "ADMIN_getListField_batchuserdelete", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
-    $display .= '</form>';
-
-
     return $display;
 }
 /**
