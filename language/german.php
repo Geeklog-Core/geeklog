@@ -716,7 +716,7 @@ $LANG24 = array(
     24 => 'Diese ID wird bereits für einen anderen Artikel benutzt. Bitte wähle eine andere ID.',
     25 => 'Fehler beim Speichern des Artikels',
     26 => 'Artikelvorschau',
-    27 => 'Wenn Du [unscaledX] statt [imageX] verwendest, wird das Bild in Originalgröße eingebunden.',
+    27 => '<p>Wenn Du [unscaledX] statt [imageX] verwendest, wird das Bild in Originalgröße eingebunden.',
     28 => '<p><strong>VORSCHAU:</strong> Der Vorschau-Button sollte nur verwendet werden, wenn der Artikel keine Bilder enthält. Bei Artikeln mit Bildern empfiehlt es sich, den Artikel als Entwurf zu markieren, zu speichern und dann von der Liste der Artikel aus zu betrachten.</p>',
     29 => 'Trackbacks',
     30 => 'Fehler beim Datei-Upload',
@@ -740,7 +740,7 @@ $LANG24 = array(
     48 => 'image',
     49 => 'right',
     50 => 'left',
-    51 => 'Die oben ausgewählten Bilder können im Artikel verwendet werden, indem dafür spezielle Platzhalter in den Text eingefügt werden. Diese Platzhalter sind [imageX], [imageX_right] und [imageX_left], wobei statt des X jeweils die Nummer des Bildes eingetragen werden muss.<br>HINWEIS: Es müssen alle ausgewählten Bilder verwendet werden. Andernfalls kann der Artikel nicht gespeichert werden.<br>',
+    51 => '<p>Die oben ausgewählten Bilder können im Artikel verwendet werden, indem dafür spezielle Platzhalter in den Text eingefügt werden. Diese Platzhalter sind [imageX], [imageX_right] und [imageX_left], wobei statt des X jeweils die Nummer des Bildes eingetragen werden muss.<br>HINWEIS: Es müssen alle ausgewählten Bilder verwendet werden. Andernfalls kann der Artikel nicht gespeichert werden.<br>',
     52 => 'Löschen',
     53 => 'wurde nicht verwendet. Du musst dieses Bild im Text des Artikels verwenden oder es löschen bevor Du Deine Änderungen sichern kannst.',
     54 => 'Nicht verwendete Bilder',
@@ -869,7 +869,31 @@ $LANG28 = array(
     49 => 'Admin Group',
     50 => 'Check to allow filtering this group as an Admin Use Group',
     51 => 'Online Days',
-    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.'
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => "This only works if you have <code>\$_CONF['lastlogin'] = true;</code> in your config.php",
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -1432,7 +1456,8 @@ $LANG_ADMIN = array (
     'copy'          => 'Kopieren',
     'no_results'    => '- Keine Einträge gefunden -',
     'data_error'    => 'There was an error processing the subscription data. Please check the data source.',
-    'preview'       => 'Vorschau'
+    'preview'       => 'Vorschau',
+    'records_found' => 'Records found'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
