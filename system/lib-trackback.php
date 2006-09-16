@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.41 2006/09/09 17:59:11 dhaun Exp $
+// $Id: lib-trackback.php,v 1.42 2006/09/16 17:04:12 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -579,13 +579,21 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
 
         if ($_CONF['check_trackback_link'] & 4) {
             $parts = parse_url ($_POST['url']);
-            $ip = gethostbyname ($parts['host']);
-            if ($ip != $_SERVER['REMOTE_ADDR']) {
-                TRB_sendTrackbackResponse (1, $TRB_ERROR['spam'],
+            if (empty ($parts['host'])) {
+                TRB_sendTrackbackResponse (1, $TRB_ERROR['no_url'],
                                            403, 'Forbidden');
-                TRB_logRejected ('IP address mismatch', $_POST['url']);
+                TRB_logRejected ('No valid URL', $_POST['url']);
 
                 return false;
+            } else {
+                $ip = gethostbyname ($parts['host']);
+                if ($ip != $_SERVER['REMOTE_ADDR']) {
+                    TRB_sendTrackbackResponse (1, $TRB_ERROR['spam'],
+                                               403, 'Forbidden');
+                    TRB_logRejected ('IP address mismatch', $_POST['url']);
+
+                    return false;
+                }
             }
         }
 
