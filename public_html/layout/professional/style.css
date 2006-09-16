@@ -61,15 +61,11 @@ fieldset p {
   margin:0px;
 }
 
-h1 {
-  font-size: 125%;
-}
-h2 {
-  font-size: 100%;
-}
-img {
-  border: 0;
-}
+h1 { font-size: 125%; }
+h2 { font-size: 100%; }
+img { border: 0; }
+p { margin-top:5px;}
+form {margin-top:5px; margin-bottom:5px; }
 
 .fieldhelp {font-size:.8em; color: #666; }
 
