@@ -6,7 +6,7 @@
                                             <table border="0" cellspacing="0" cellpadding="3">
                                                 <tr>
                                                     <td><img src="{pi_icon}" alt=""></td>
-                                                    <td align="left">
+                                                    <td>
                                                         <input type="submit" value="{lang_save}" name="mode">
                                                         <input type="submit" value="{lang_cancel}" name="mode">
                                                         {delete_option}&nbsp;{update_option}
@@ -19,31 +19,31 @@
                                                     </td>
                                                 <tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_pluginname}:</b></td>
+                                                    <td class="alignright"><b>{lang_pluginname}:</b></td>
                                                     <td>{pi_name}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_pluginhomepage}:</b></td>
+                                                    <td class="alignright"><b>{lang_pluginhomepage}:</b></td>
                                                     <td><a href="{pi_homepage}">{pi_homepage}</a></td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_pluginversion}:</b></td>
+                                                    <td class="alignright"><b>{lang_pluginversion}:</b></td>
                                                     <td>{pi_version}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_plugincodeversion}:</b></td>
+                                                    <td class="alignright"><b>{lang_plugincodeversion}:</b></td>
                                                     <td>{pi_codeversion}</td>
-                                                </tr>												
+                                                </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_geeklogversion}:</b></td>
+                                                    <td class="alignright"><b>{lang_geeklogversion}:</b></td>
                                                     <td>{pi_gl_version}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_enabled}:</b></td>
+                                                    <td class="alignright"><b>{lang_enabled}:</b></td>
                                                     <td><input type="checkbox" name="enabled" {enabled_checked}>
                                                 </tr>
                                             </table>
-                                        </form>                               
+                                        </form>
                                     </td>
                                 </tr>
                             </table>

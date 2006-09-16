@@ -1,1 +1,1 @@
-<th align="left">{label}</th>
+<th class="alignleft">{label}</th>

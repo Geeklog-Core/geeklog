@@ -2,7 +2,7 @@
                             <form action="{site_url}/search.php" method="get">
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
-                                        <td align="right">{lang_keywords}:</td>
+                                        <td class="alignright">{lang_keywords}:</td>
                                         <td><input type="text" name="query" size="35" maxlength="35" value="{query}">
                                         <select name="keyType">
                                             <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
@@ -11,13 +11,13 @@
                                         </select></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_date}:</td>
+                                        <td class="alignright">{lang_date}:</td>
                                         <td>
                                             <input type="text" name="datestart" size="10" maxlength="10" value="{datestart}"> {lang_to} <input type="text" name="dateend" size="10" maxlength="10" value="{dateend}"> {date_format} 
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_topic}:</td>
+                                        <td class="alignright">{lang_topic}:</td>
                                         <td>
                                             <select name="topic">
                                                 <option selected="selected" value="0">{lang_all}</option>
@@ -26,19 +26,19 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_type}:</td>
+                                        <td class="alignright">{lang_type}:</td>
                                         <td>
                                             <select name="type">
                                                 <option value="all" {type_all_selected}>{lang_all}</option>
                                                 <option value="stories" {stories_selected}>{lang_stories}</option>
                                                 <option value="comments" {comments_selected}>{lang_comments}</option>
-						                        {plugin_types}
+                                                {plugin_types}
                                             </select>
                                         </td>
                                     </tr>
                                     {author_form_element}
                                     <tr>
-                                        <td align="right">{lang_results}:</td>
+                                        <td class="alignright">{lang_results}:</td>
                                         <td>
                                         <select name="results">
                                             <option value="10" {10_selected}>10</option>

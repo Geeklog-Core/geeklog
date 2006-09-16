@@ -2,23 +2,23 @@
                                 <form action="{site_admin_url}/block.php" method="post">
                                     <table border="0" cellspacing="0" cellpadding="3" width="100%">
                                         <tr>
-                                            <td align="right">{lang_blocktitle}:</td>
+                                            <td width="180" class="alignright">{lang_blocktitle}:</td>
                                             <td><input type="text" size="48" name="title" value="{block_title}"></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_enabled}:</td>
+                                            <td class="alignright">{lang_enabled}:</td>
                                             <td><input type="checkbox" name="is_enabled" {is_enabled}></td>
                                         </tr>
                                         <tr>
-                                            <td align="right" valign="top">{lang_blockhelpurl}:</td>
-                                            <td><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"> {lang_includehttp}<br>{lang_explanation}</td>
+                                            <td class="alignright" style="vertical-align:top">{lang_blockhelpurl}:</td>
+                                            <td><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"><div class="pluginMediumText">{lang_includehttp}&nbsp;{lang_explanation}</div></td>
                                         </tr>
                                         <tr>
-                                            <td align="right" valign="top">{lang_blockname}:</td>
+                                            <td class="alignright" style="vertical-align:top">{lang_blockname}:</td>
                                             <td><input type="text" size="48" name="name" value="{block_name}"><br>{lang_nospaces}</td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_topic}:</td>
+                                            <td class="alignright">{lang_topic}:</td>
                                             <td>
                                                 <select name="tid">
                                                     <option value="all" {all_selected}>{lang_all}</option>
@@ -28,7 +28,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_side}:</td>
+                                            <td class="alignright">{lang_side}:</td>
                                             <td>
                                                 <select name="onleft">
                                                     <option value="1" {left_selected}>{lang_left}</option>
@@ -37,11 +37,11 @@
                                            </td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_blockorder}:</td>
+                                            <td class="alignright">{lang_blockorder}:</td>
                                             <td><input type="text" size="4" name="blockorder" value="{block_order}"> 0 - 9999</td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_blocktype}:</td>
+                                            <td class="alignright">{lang_blocktype}:</td>
                                             <td>
                                                 <select name="type">
                                                     <option value="normal" {normal_selected}>{lang_normalblock}</option>
@@ -57,7 +57,7 @@
                                             <td colspan="2"><b>{lang_phpblockoptions}</b></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_blockfunction}:</td>
+                                            <td class="alignright">{lang_blockfunction}:</td>
                                             <td><input type="text" size="50" maxlength="64" name="phpblockfn" value="{block_phpblockfn}"></td>
                                         </tr>
                                         <tr>
@@ -68,15 +68,15 @@
                                             <td colspan="2"><b>{lang_portalblockoptions}</b></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_rdfurl}:</td>
+                                            <td class="alignright">{lang_rdfurl}:</td>
                                             <td><input type="text" size="50" maxlength="{max_url_length}" name="rdfurl" value="{block_rdfurl}"></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_rdflimit}:</td>
+                                            <td class="alignright">{lang_rdflimit}:</td>
                                             <td><input type="text" size="3" maxlength="3" name="rdflimit" value="{block_rdflimit}"></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_lastrdfupdate}:</td>
+                                            <td class="alignright">{lang_lastrdfupdate}:</td>
                                             <td><input type="text" size="19" name="rdfupdated" value="{block_rdfupdated}"></td>
                                         </tr>
                                         <tr><td colspan="2"><hr></td></tr>
@@ -84,12 +84,12 @@
                                             <td colspan="2"><b>{lang_normalblockoptions}</b></td>
                                         </tr>
                                         <tr>
-                                            <td align="right" valign="top">{lang_blockcontent}:</td>
+                                            <td class="alignright" style="vertical-align:top">{lang_blockcontent}:</td>
                                             <td><textarea name="content" rows="12" style="width:100%;">{block_content}</textarea><br>
                                                 <span class="warningsmall">{lang_allowed_html}</span></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_autotags}:</td>
+                                            <td class="alignright">{lang_autotags}:</td>
                                             <td><input type="checkbox" name="allow_autotags" {allow_autotags}> ({lang_use_autotags})</td>
                                         </tr>
                                         <tr>
@@ -99,12 +99,12 @@
                                             <td colspan="2"><b>{lang_accessrights}</b></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_owner}:</td>
+                                            <td class="alignright">{lang_owner}:</td>
                                             <td>{owner_name} <input type="hidden" name="owner_id" value="{owner_id}">
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_group}:</td>
+                                            <td class="alignright">{lang_group}:</td>
                                             <td>
                                                 {group_dropdown}
                                             </td>

@@ -8,22 +8,22 @@
                                                     <td colspan="2" width="100%">{lang_instructions}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_username}:</b></td>
+                                                    <td class="alignright"><b>{lang_username}:</b></td>
                                                     <td><input type="text" size="16" maxlength="16" name="username" value="{username}"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_email}:</b></td>
+                                                    <td class="alignright"><b>{lang_email}:</b></td>
                                                     <td><input type="text" size="32" maxlength="96" name="email" value="{email}"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="right"><b>{lang_email_conf}:</b></td>
+                                                    <td class="alignright"><b>{lang_email_conf}:</b></td>
                                                     <td><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="center" class="warning" colspan="2" width="100%">{lang_warning}</td>
+                                                    <td class="aligncenter warning" colspan="2" width="100%">{lang_warning}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="center" colspan="2" width="100%">
+                                                    <td class="aligncenter" colspan="2" width="100%">
                                                         <input type="hidden" name="mode" value="create">
                                                         <input type="submit" value="{lang_register}">
                                                     </td>

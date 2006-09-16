@@ -86,7 +86,7 @@
 </fieldset>
 </div>
 {prefs}
-<p align="center" id="save_button">
+<p class="aligncenter" id="save_button">
   <input type="hidden" name="uid" value="{uid_value}">
   <input type="hidden" name="mode" value="saveuser">
   <input type="hidden" name="username" value="{username_value}">

@@ -2,5 +2,5 @@
                                     <td>
                                         {item_text}
                                     </td>
-                                    <td align="right">{item_stat}</td>
+                                    <td class="alignright">{item_stat}</td>
                                 </tr>

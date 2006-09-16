@@ -1,5 +1,5 @@
                                     <tr>
-                                        <td align="right">{lang_authors}:</td>
+                                        <td class="alignright">{lang_authors}:</td>
                                         <td>
                                             <select name="author">
                                                 <option selected="selected" value="0">{lang_all}</option>

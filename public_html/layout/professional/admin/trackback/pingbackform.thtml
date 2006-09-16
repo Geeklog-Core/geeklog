@@ -2,13 +2,13 @@
     <p>{lang_explain}</p>
     <table border="0" cellspacing="0" cellpadding="2" width="100%">
         <tr>
-            <td align="right"><b>{lang_pingback_url}:</b></td>
+            <td class="alignright"><b>{lang_pingback_url}:</b></td>
             <td>
                 <input type="text" size="50" maxlength="{max_url_length}" name="target" value="{target_url}">
             </td>
         </tr>
         <tr>
-            <td align="right">{lang_site_url}:</td>
+            <td class="alignright">{lang_site_url}:</td>
             <td>
                 <b>{site_url}</b>
             </td>

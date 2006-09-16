@@ -1,4 +1,3 @@
 <div class="block-box">
-    <div class="block-title">{block_title}</div>
-    <div class="block-helpicon">{block_help}</div>
+    <div class="block-title">{block_title}<span class="block-helpicon">{block_help}</span></div>
     <div class="block-content">

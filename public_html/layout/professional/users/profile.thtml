@@ -1,32 +1,32 @@
 {start_block_userprofile}
     <table border="0" cellspacing="0" cellpadding="3">
-        <tr valign="top">
-            <td align="right"><b>{lang_username}:</b></td>
-            <td>{username} ({user_fullname}) {edit_link}<br> {user_photo}</td>
+        <tr>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_username}:</b></td>
+            <td style="vertical-align:top;">{username} ({user_fullname}) {edit_link}<br> {user_photo}</td>
         </tr>
-        <tr valign="top">
-            <td align="right"><b>{lang_membersince}:</b></td>
-            <td>{user_regdate}</td>
+        <tr>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_membersince}:</b></td>
+            <td style="vertical-align:top;">{user_regdate}</td>
         </tr>
-        <tr valign="top">
-            <td align="right"><b>{lang_email}:</b></td>
-            <td><a href="{site_url}/profiles.php?uid={user_id}">{lang_sendemail}</a></td>
+        <tr>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_email}:</b></td>
+            <td style="vertical-align:top;"><a href="{site_url}/profiles.php?uid={user_id}">{lang_sendemail}</a></td>
         </tr>
-        <tr valign="top">
-            <td align="right"><b>{lang_homepage}:</b></td>
-            <td><a href="{user_homepage}">{user_homepage}</a></td>
+        <tr>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_homepage}:</b></td>
+            <td style="vertical-align:top;"><a href="{user_homepage}">{user_homepage}</a></td>
         </tr>
-        <tr valign="top">
-            <td align="right"><b>{lang_location}:</b></td>
-            <td>{user_location}</td>
+        <tr>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_location}:</b></td>
+            <td style="vertical-align:top;">{user_location}</td>
         </tr>
-        <tr valign="top">
-            <td align="right"><b>{lang_bio}:</b></td>
-            <td>{user_bio}</td>
+        <tr>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_bio}:</b></td>
+            <td style="vertical-align:top;">{user_bio}</td>
         </tr>
-        <tr valign="top">
-            <td align="right"><b>{lang_pgpkey}:</b></td>
-            <td>{user_pgp}</td>
+        <tr>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_pgpkey}:</b></td>
+            <td style="vertical-align:top;">{user_pgp}</td>
         </tr>
     </table>
 {end_block}

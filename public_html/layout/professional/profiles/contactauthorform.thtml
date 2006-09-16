@@ -2,40 +2,40 @@
                                 <table border="0" cellpadding="3" cellspacing="0" width="100%">
                                     <tr>
                                         <td>
-                                            <table align="center">
+                                            <table class="aligncenter">
                                                 <tr>
                                                     <td>
                                                         <form action="{site_url}/profiles.php" method="post" name="contact">
                                                             <table cellspacing="0" cellpadding="3" border="0" width="100%">
                                                                 <tr>
-                                                                    <td align="right"><b>{lang_fromname}:</b></td>
+                                                                    <td class="alignright"><b>{lang_fromname}:</b></td>
                                                                     <td><input type="text" name="from" size="30" maxlength="96" value="{name}"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="right"><b>{lang_fromemailaddress}:</b></td>
+                                                                    <td class="alignright"><b>{lang_fromemailaddress}:</b></td>
                                                                     <td><input type="text" name="fromemail" size="30" maxlength="96" value="{email}"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="right"><b>{lang_toname}:</b></td>
+                                                                    <td class="alignright"><b>{lang_toname}:</b></td>
                                                                     <td><input type="text" name="to" size="30" maxlength="96" value="{toname}"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="right"><b>{lang_toemailaddress}:</b></td>
+                                                                    <td class="alignright"><b>{lang_toemailaddress}:</b></td>
                                                                     <td><input type="text" name="toemail" size="30" maxlength="96" value="{toemail}"></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="right" valign="top"><b>{lang_shortmessage}:</b></td>
+                                                                    <td class="alignright" style="vertical-align:top;"><b>{lang_shortmessage}:</b></td>
                                                                     <td><textarea name="shortmsg" rows="8" cols="60">{shortmsg}</textarea></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="2" class="warning" align="center"><br>{lang_warning}<br><br>
+                                                                    <td colspan="2" class="warning aligncenter"><br>{lang_warning}<br><br>
                                                                         <input type="hidden" name="sid" value="{story_id}">
                                                                         <input type="hidden" name="what" value="sendstory">
                                                                         <input type="submit" value="{lang_sendmessage}">
                                                                     </td>
                                                                 </tr>
                                                             </table>
-                                                        </form>                               
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             </table>

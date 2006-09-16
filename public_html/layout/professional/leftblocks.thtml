@@ -1,5 +1,5 @@
 <!-- Start of Left blocks -->
-<td class="block-featured-left" valign="top">
+<td class="block-featured-left" style="vertical-align:top;">
                     <div class="searchform-box">
                         <form class="searchform-elements" action="{site_url}/search.php" method="GET">
                             <input type="text" name="query" size="30" maxlength="255" class="xpinputfield"><br>

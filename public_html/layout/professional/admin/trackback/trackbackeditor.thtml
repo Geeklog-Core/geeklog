@@ -2,31 +2,31 @@
     <p>{lang_explain}</p>
     <table border="0" cellspacing="0" cellpadding="2" width="100%">
         <tr>
-            <td align="right"><b>{lang_trackback_url}:</b></td>
+            <td class="alignright"><b>{lang_trackback_url}:</b></td>
             <td>
                 <input type="text" size="50" maxlength="{max_url_length}" name="target" value="{target_url}">
             </td>
         </tr>
         <tr>
-            <td align="right">{lang_blog_name}:</td>
+            <td class="alignright">{lang_blog_name}:</td>
             <td>
                 <input type="text" size="50" maxlength="80" name="blog_name" value="{blog_name}">
             </td>
         </tr>
         <tr>
-            <td align="right"><b>{lang_entry_url}:</b></td>
+            <td class="alignright"><b>{lang_entry_url}:</b></td>
             <td>
                 <input type="text" size="50" maxlength="{max_url_length}" name="url" value="{url}">
             </td>
         </tr>
         <tr>
-            <td align="right">{lang_title}:</td>
+            <td class="alignright">{lang_title}:</td>
             <td>
                 <input type="text" size="50" maxlength="255" name="title" value="{title}">
             </td>
         </tr>
         <tr>
-            <td align="right" valign="top">{lang_excerpt}:</td>
+            <td class="alignright" style="vertical-align:top;">{lang_excerpt}:</td>
             <td>
                 <textarea name="excerpt" style="width:100%" rows="8">{excerpt}</textarea><br>
                 <p class="warningsmall">{lang_excerpt_truncated}</p>

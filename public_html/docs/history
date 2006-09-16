@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1)
 ------------
+- Changes to templates and CSS to remove deprecated HTML (align= and valign=)
+  Removed un-used CSS declarations, redundant font-family declarations
+  Removed use of font-size percentage and used more acceptable EM units [Blaine]
 - Don't display an "edit" link in a story if the current user doesn't have
   edit permissions for the story's topic (bug #558) [Dirk]
 - Added a new script to check the site's security (admin/sectest.php). This

@@ -8,24 +8,24 @@
                                                                     <td colspan="2">{lang_message}  {lang_newreglink}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="right"><b><label for="loginname">{lang_username}</label>:</b></td>
+                                                                    <td class="alignright"><b><label for="loginname">{lang_username}</label>:</b></td>
                                                                     <td><input type="text" size="16" name="loginname"></td>
                                                                 </tr>
                                                                 {services}
                                                                 <tr>
-                                                                    <td align="right"><b><label for="passwd">{lang_password}</label>:</b></td>
+                                                                    <td class="alignright"><b><label for="passwd">{lang_password}</label>:</b></td>
                                                                     <td><input type="password" name="passwd" size="16">
                                                                         &nbsp;<a href="{site_url}/users.php?mode=getpassword">{lang_forgetpassword}</a>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="right">&nbsp;</td>
-                                                                    <td align="left">
+                                                                    <td class="alignright">&nbsp;</td>
+                                                                    <td class="alignleft">
                                                                         <input type="submit" value="{lang_login}">
                                                                     </td>
                                                                 </tr>
                                                             </table>
-                                                        </form>                               
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             </table>

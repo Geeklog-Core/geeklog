@@ -5,8 +5,8 @@
 	      {centerblockfooter-span}
           <table border="0" cellpadding="0" cellspacing="0" width="100%" class="footer-divider-top">
             <tr>
-              <td width="70%" class="footerblock" valign="middle" align="left">{copyright_notice}</td>
-              <td width="30%" class="footerblock" valign="middle" align="right">{powered_by} <a href="{geeklog_url}">Geeklog</a>&nbsp;<br>
+              <td width="70%" class="footerblock">{copyright_notice}</td>
+              <td width="30%" class="footerblock" style="text-align:right">{powered_by} <a href="{geeklog_url}">Geeklog</a>&nbsp;<br>
       {execution_textandtime}&nbsp;</td>
             </tr>
           </table>

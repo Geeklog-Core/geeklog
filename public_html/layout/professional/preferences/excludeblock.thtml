@@ -5,10 +5,10 @@
         {lang_excluded_items}
        </div>
     <table>
-        <tr valign="top">
-            <td style="padding-right:45px"><b>{lang_topics}</b><br>
+        <tr>
+            <td style="vertical-align:top;padding-right:45px"><b>{lang_topics}</b><br>
             {exclude_topic_checklist}</td>
-            <td><b>{lang_authors}</b><br>
+            <td style="vertical-align:top;"><b>{lang_authors}</b><br>
             {exclude_author_checklist}</td>
         </tr>
     </table>

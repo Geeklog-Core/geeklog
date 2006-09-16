@@ -8,7 +8,7 @@
                                             <form action="{site_url}/comment.php" method="post" onSubmit='set_postcontent();'>
                                                 <table cellspacing="0" cellpadding="3" border="0" width="100%">
                                                     <tr>
-                                                        <td align="right"><b>{lang_username}:</b></td>
+                                                        <td class="alignright"><b>{lang_username}:</b></td>
                                                         <td>
                                                             <input type="hidden" name="sid" value="{sid}">
                                                             <input type="hidden" name="pid" value="{pid}">
@@ -18,11 +18,11 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{lang_title}:</b></td>
+                                                        <td class="alignright"><b>{lang_title}:</b></td>
                                                         <td><input type="text" name="title" size="32" value="{title}" maxlength="96"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right" valign="top"><b>{lang_comment}:</b></td>
+                                                        <td class="alignright" style="vertical-align:top;"><b>{lang_comment}:</b></td>
                                                         <td>
                                                             <div id="text_editor" style="display:{show_texteditor};">
                                                                 <textarea id="comment_text" name="comment" cols="60" rows="10">{comment}</textarea>
@@ -32,9 +32,9 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr valign="top">
-                                                        <td align="right"><b>{lang_postmode}:</b></td>
-                                                        <td>
+                                                    <tr>
+                                                        <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>
+                                                        <td style="vertical-align:top;">
                                                             <select id="sel_editmode" name="postmode" onChange="change_editmode(this);">
                                                                 {postmode_options}
                                                             </select><br>

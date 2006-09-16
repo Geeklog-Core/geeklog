@@ -1,7 +1,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr>
       <td width="100%" class="story-title"><h2>{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</h2></td>
-      <td class="story-title" width="5%" align="right" nowrap>&nbsp;{email_icon}&nbsp;{print_icon}&nbsp;{pdf_icon}</td>
+      <td class="story-title" width="5%" style"text-align:right;" nowrap>&nbsp;{email_icon}&nbsp;{print_icon}&nbsp;{pdf_icon}</td>
     </tr>
     <tr>
       <td class="story-box" colspan="2">
@@ -14,7 +14,7 @@
                 <tr><td>{story_anchortag_and_image}{story_introtext}</td></tr>
             </table>
             <table border="0" cellpadding="3" cellspacing="0" width="100%">
-              <tr><td align="center">{edit_link}&nbsp;{page_selector}<br>
+              <tr><td class="aligncenter">{edit_link}&nbsp;{page_selector}<br>
                                      {readmore_link} {post_comment_link}<br>
                                      {start_comments_anchortag}{comments_with_count}{end_comments_anchortag} {start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}
               </td></tr>

@@ -1,20 +1,20 @@
                             <form action="{site_admin_url}/user.php" method="post">
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
-                                        <td align="right">{lang_userid}:</td>
+                                        <td class="alignright">{lang_userid}:</td>
                                         <td>{user_id}<input type="hidden" name="uid" value="{user_id}"></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_regdate}:</td>
+                                        <td class="alignright">{lang_regdate}:</td>
                                         <td>
                                             <input type="hidden" name="regdate" value="{regdate_timestamp}">{user_regdate}</td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_lastlogin}:</td>
+                                        <td class="alignright">{lang_lastlogin}:</td>
                                         <td>{user_lastlogin}</td>
                                     </tr>
                                     <tr>
-                                        <td align="right" valign="top">{lang_username}:</td>
+                                        <td class="alignright" style="vertical-align:top;">{lang_username}:</td>
                                         <td>
                                             <input type="text" size="16" maxlength="16" name="username" value="{username}"><br>
                                             {user_photo}<br>
@@ -22,27 +22,27 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_fullname}:</td>
+                                        <td class="alignright">{lang_fullname}:</td>
                                         <td><input type="text" size="48" maxlength="80" name="fullname" value="{user_fullname}"></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_password}:</td>
+                                        <td class="alignright">{lang_password}:</td>
                                         <td><input type="password" size="16" name="passwd" value=""></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_password_conf}:</td>
+                                        <td class="alignright">{lang_password_conf}:</td>
                                         <td><input type="password" size="16" name="passwd_conf" value=""></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_emailaddress}:</td>
+                                        <td class="alignright">{lang_emailaddress}:</td>
                                         <td><input type="text" size="48" maxlength="255" name="email" value="{user_email}"></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_homepage}:</td>
+                                        <td class="alignright">{lang_homepage}:</td>
                                         <td><input type="text" size="48" maxlength="255" name="homepage" value="{user_homepage}"></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_user_status}:</td>
+                                        <td class="alignright">{lang_user_status}:</td>
                                         <td>{user_status}</td>
                                     </tr>
                                     <tr>

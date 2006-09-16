@@ -1,8 +1,8 @@
                                 {start_block_postacomment}
                                             <form action="{site_url}/comment.php" method="post">
-                                                <table cellspacing="0" cellpadding="3" border="0" width="100%">
+                                                <table cellspacing="0" cellpadding="3" border="0" width="95%">
                                                     <tr>
-                                                        <td align="right"><b>{lang_username}:</b></td>
+                                                        <td class="alignright"><b>{lang_username}:</b></td>
                                                         <td>
                                                             <input type="hidden" name="sid" value="{sid}">
                                                             <input type="hidden" name="pid" value="{pid}">
@@ -11,16 +11,16 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{lang_title}:</b></td>
+                                                        <td class="alignright"><b>{lang_title}:</b></td>
                                                         <td><input type="text" name="title" size="32" value="{title}" maxlength="96"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right" valign="top"><b>{lang_comment}:</b></td>
-                                                        <td><textarea name="comment" rows="10" style="width:100%">{comment}</textarea></td>
+                                                        <td class="alignright" style="vertical-align:top;"><b>{lang_comment}:</b></td>
+                                                        <td><textarea name="comment" rows="10" style="width:95%">{comment}</textarea></td>
                                                     </tr>
-                                                    <tr valign="top">
-                                                        <td align="right"><b>{lang_postmode}:</b></td>
-                                                        <td>
+                                                    <tr>
+                                                        <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>
+                                                        <td style="vertical-align:top;">
                                                             <select name="postmode">
                                                                 {postmode_options}
                                                             </select><br>
