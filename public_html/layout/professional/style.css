@@ -39,7 +39,7 @@ a:active {
 .sitebody {
   background:#FFFFFF;
   color:#000000;
-  font: .8em arial,sans-serif,verdana,tahoma,helvetica;
+  font: .825em arial,sans-serif,verdana,tahoma,helvetica;
   padding:0px;
   margin:0px;
   /*
@@ -170,7 +170,7 @@ th {
   margin:10px;
 }
 .block-box-left, .block-box-right, .block-box {
-  margin:10px;
+  margin:5px 10px 5px 10px;
 }
 .block-bg-left, .block-bg-right{
   border-top:1px solid #FFFFFF;
@@ -202,8 +202,8 @@ th {
   background:transparent;
   color:#1A3955;
   font-weight:bold;
-  padding-top:13px;
-  font-size:larger;
+  padding-top:5px;
+  padding-bottom:5px;
   text-align:left;
 }
 
