@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.18 2006/09/04 07:40:33 dhaun Exp $
+// $Id: event.php,v 1.19 2006/09/16 16:52:39 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -70,11 +70,14 @@ function adduserevent ($eid)
         $cal_template->set_var('event_title',stripslashes($A['title']));
 
         if (!empty ($A['url']) && ($A['url'] != 'http://')) {
-            $cal_template->set_var('event_begin_anchortag', '<a href="' . $A['url'] . '">');
-            $cal_template->set_var('event_end_anchortag', '</a>');
+            $cal_template->set_var ('event_url', $A['url']);
+            $cal_template->set_var ('event_begin_anchortag',
+                                    '<a href="' . $A['url'] . '">');
+            $cal_template->set_var ('event_end_anchortag', '</a>');
         } else {
-            $cal_template->set_var('event_begin_anchortag', '');
-            $cal_template->set_var('event_end_anchortag', '');
+            $cal_template->set_var ('event_url', '');
+            $cal_template->set_var ('event_begin_anchortag', '');
+            $cal_template->set_var ('event_end_anchortag', '');
         }
 
         $cal_template->set_var('lang_starts', $LANG_CAL_1[13]);
