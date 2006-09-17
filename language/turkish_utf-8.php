@@ -163,28 +163,10 @@ $LANG01 = array(
     120 => 'Permanent link to this comment',
     121 => 'Yorumlar (%d)',
     122 => 'Trackbacks (%d)',
-    123 => 'Tüm HTML kodlarý izinli'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => 'Etkinlik Takvimi',
-    2 => 'Üzgünüm, gösterilebilinecek etkinlik yok.',
-    3 => 'Ne Zaman',
-    4 => 'Nerede',
-    5 => 'Açýklama',
-    6 => 'Etkinlik Ekle',
-    7 => 'gelecek Etkinlikler',
-    8 => 'Bu etkinliði ekleyerek ileride sadece ilgilendiðiniz etkinlikleri "Takvimim" düðmesine basarak izleyebilirsiniz.',
-    9 => 'Takvimime Ekle',
-    10 => 'Takvimimden Çýkar',
-    11 => "Etkinlik {$_USER['username']} Takvimine ekleniyor",
-    12 => 'Etkinlik',
-    13 => 'Baþlangýç',
-    14 => 'Bitiþ',
-    15 => 'Takvime Geri Dön'
+    123 => 'Tüm HTML kodlarý izinli',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
@@ -346,7 +328,40 @@ $LANG04 = array(
     120 => 'Aktif Hesap',
     121 => 'Servis',
     122 => 'Üzgünüm, Yeni Kullanýcý kaydý kapatýlmýþtýr',
-    123 => "<a href=\"{$_CONF['site_url']}/users.php?mode=new\">Yeni Üye misiniz?</a>?"
+    123 => "<a href=\"{$_CONF['site_url']}/users.php?mode=new\">Yeni Üye misiniz?</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Preview',
+    152 => 'Username & Password',
+    153 => 'Layout & Language',
+    154 => 'Content',
+    155 => 'Privacy',
+    156 => 'Delete Account'
 );
 
 ###############################################################################
@@ -663,38 +678,9 @@ $LANG21 = array(
     62 => 'Article Limit',
     63 => 'Geçersiz Blok Baþlýðý',
     64 => 'Baþlýðýnýz boþ olamaz ve HTML kodu içeremez!',
-    65 => 'Order'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => 'Etkinlik Düzenleyicisi',
-    2 => 'Error',
-    3 => 'Etkinlik Baþlýðý',
-    4 => 'Etkinlik Adresi',
-    5 => 'Etkinlik Baþlangýç Tarihi',
-    6 => 'Etkinlik Bitiþ Tarihi',
-    7 => 'Etkinlik Yeri',
-    8 => 'Etkinlik Açýklamasý',
-    9 => '(http:// ile baþlayýn)',
-    10 => 'Tüm alanlarý doldurmanýz gerekmektedir',
-    11 => 'Etkinlik Yöneticisi',
-    12 => 'Bir etkinliði deðiþtirmek veya silmek istiyorsanýz, adýna basýn. Yeni etkinlik yaratmak için Yeni Etkinlik düðmesine basýn.',
-    13 => 'Etkinlik Baþlýðý',
-    14 => 'Baþlangýç Tarihi',
-    15 => 'Bitiþ Tarihi',
-    16 => 'Eriþim Engellendi',
-    17 => "Eriþim hakkýnýz olmayan bir yazýya eriþmek istiyorsunuz. Bu eyleminiz kayýtlara eklenmiþtir. Lütfen <a href=\"{$_CONF['site_admin_url']}/event.php\">kontrol ana sayfasýna geri dönün</a>.",
-    18 => 'Yeni Etkinlik',
-    19 => 'Kontrol Ana Sayfasý',
-    20 => 'Kaydet',
-    21 => 'Vazgeç',
-    22 => 'Sil',
-    23 => 'Geçersiz Baþlangýç.',
-    24 => 'Geçersiz Bitiþ tarihi.',
-    25 => 'Bitiþ tarihi baþlangýçtan önce.'
+    65 => 'Order',
+    66 => 'Autotags',
+    67 => 'Check to allow autotags'
 );
 
 ###############################################################################
@@ -785,7 +771,9 @@ $LANG24 = array(
     82 => 'Resimler',
     83 => 'Arþivleme Ayarlarý',
     84 => 'Eriþim Haklarý',
-    85 => 'Tümünü Göster'
+    85 => 'Tümünü Göster',
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
 
 ###############################################################################
@@ -873,7 +861,36 @@ $LANG28 = array(
     44 => 'Yetkilendirilme ',
     45 => 'Aktif',
     46 => 'Üye Durumu',
-    47 => 'Düzenle'
+    47 => 'Düzenle',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -900,53 +917,6 @@ $LANG29 = array(
     38 => 'Gönder',
     39 => 'Onaylamanýz gereken herhangi bir eklenti yok',
     40 => 'Kullanýcýlarýn ekledikleri'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Pazar',
-    2 => 'Pazartesi',
-    3 => 'Salý',
-    4 => 'Çarþamba',
-    5 => 'Perþembe',
-    6 => 'Cuma',
-    7 => 'Cumartesi',
-    8 => 'Etkinlik Ekle',
-    9 => 'Site Etkinliði',
-    10 => 'Etkinlikler:',
-    11 => 'Genel Takvim',
-    12 => 'Takvimim',
-    13 => 'Ocak',
-    14 => 'Þubat',
-    15 => 'Mart',
-    16 => 'Nisan',
-    17 => 'Mayýs',
-    18 => 'Haziran',
-    19 => 'Temmuz',
-    20 => 'Aðustos',
-    21 => 'Eylül',
-    22 => 'Ekim',
-    23 => 'Kasým',
-    24 => 'Aralýk',
-    25 => 'Geri: ',
-    26 => 'Tüm Gün',
-    27 => 'Hafta',
-    28 => 'Kiþisel Takvim:',
-    29 => 'Genel Takvim',
-    30 => 'etkinliði sil',
-    31 => 'Ekle',
-    32 => 'Etkinlik',
-    33 => 'Tarih',
-    34 => 'Saat',
-    35 => 'Hýzlý Ekle',
-    36 => 'Gönder',
-    37 => 'Özür dilerim, kiþisel takvim özelliði bu sitede tanýmlanmamýþ',
-    38 => 'Kiþisel Etkinlik Düzenleyicisi',
-    39 => 'Gün',
-    40 => 'Hafta',
-    41 => 'Ay'
 );
 
 ###############################################################################
@@ -1073,7 +1043,9 @@ $LANG33 = array(
     47 => 'Search',
     48 => 'Edit',
     49 => 'Feed Logo',
-    50 => "Relative to site url ({$_CONF['site_url']})"
+    50 => "Relative to site url ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
+    52 => 'Error: existing Filename'
 );
 
 ###############################################################################
@@ -1154,7 +1126,16 @@ $MESSAGE = array(
     72 => 'Eklenti kurulumunda hata oluþtu. Ayrýntýlar için  error.log dosyasýna bakýnýz.',
     73 => 'Eklenti kaldýrýlýrken bir hata oluþtu. Ayrýntýlar için  error.log dosyasýna bakýnýz',
     74 => 'pingback baþarýyla gönderildi.',
-    75 => 'Trackbacklar POST sorgulamasý gerektirmektedir.'
+    75 => 'Trackbacklar POST sorgulamasý gerektirmektedir.',
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################
@@ -1196,7 +1177,6 @@ $LANG_ACCESS = array(
     'none' => 'Hiçbiri',
     'accessdenied' => 'Eriþim Engellendi',
     'storydenialmsg' => "Bu yazýyý okuma yetkiniz yok. Bunun nedeni {$_CONF['site_name']} sitesinin bir üyesi olmamanýzdan kaynaklanýyor olabilir. Lütfen {$_CONF['site_name']} sitesinin <a href=users.php?mode=new> üyesi olun</a> ve sadece üyelere verilen haklara kavuþun!",
-    'eventdenialmsg' => "Bu etkinliði görüntüleme yetkiniz yok. Bunun nedeni {$_CONF['site_name']} sitesinin bir üyesi olmamanýzdan kaynaklanýyor olabilir. Lütfen {$_CONF['site_name']} sitesinin <a href=users.php?mode=new> üyesi olun</a> ve sadece üyelere verilen haklara kavuþun!",
     'nogroupsforcoregroup' => 'Bu grup bir baþka gruba daðil deðil.',
     'grouphasnorights' => 'Bu grup, sitenin hiç bir yönetimsel özelliklerine sahip deðil.',
     'newgroup' => 'Yeni Grup',
@@ -1382,7 +1362,8 @@ $LANG_TRB = array(
     'pingback_note' => 'To Gönder a pingback for a story, go to the list of stories and click on "Gönder Ping" for the story. To Gönder a pingback that is not related to a story, <a href="%s">click here</a>.',
     'pbtarget_missing' => 'No Pingback URL',
     'pbtarget_required' => 'Please enter a pingback URL',
-    'pb_error_details' => 'Error when Göndering the pingback:'
+    'pb_error_details' => 'Error when Göndering the pingback:',
+    'delete_trackback' => 'To delete this Trackback click: '
 );
 
 ###############################################################################
@@ -1422,6 +1403,37 @@ $LANG_WHATSNEW = array(
 );
 
 ###############################################################################
+# Month names
+
+$LANG_MONTH = array(
+    1 => 'Ocak',
+    2 => 'Þubat',
+    3 => 'Mart',
+    4 => 'Nisan',
+    5 => 'Mayýs',
+    6 => 'Haziran',
+    7 => 'Temmuz',
+    8 => 'Aðustos',
+    9 => 'Eylül',
+    10 => 'Ekim',
+    11 => 'Kasým',
+    12 => 'Aralýk'
+);
+
+###############################################################################
+# Weekdays
+
+$LANG_WEEK = array(
+    1 => 'Pazar',
+    2 => 'Pazartesi',
+    3 => 'Salý',
+    4 => 'Çarþamba',
+    5 => 'Perþembe',
+    6 => 'Cuma',
+    7 => 'Cumartesi'
+);
+
+###############################################################################
 # Admin - Strings
 # 
 # These are some standard strings used by core functions as well as plugins to
@@ -1432,8 +1444,10 @@ $LANG_ADMIN = array(
     'limit_results' => 'Limit Results',
     'submit' => 'Submit',
     'edit' => 'Edit',
+    'edit_adv' => 'Adv. Edit',
     'admin_home' => 'Admin Home',
     'create_new' => 'Create New',
+    'create_new_adv' => 'Create New (Adv.)',
     'enabled' => 'Enabled',
     'title' => 'Title',
     'type' => 'Type',
@@ -1442,9 +1456,12 @@ $LANG_ADMIN = array(
     'save' => 'Save',
     'cancel' => 'Cancel',
     'delete' => 'Delete',
+    'delete_sel' => 'Delete selected',
     'copy' => 'Copy',
     'no_results' => '- No entries found -',
-    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.',
+    'preview' => 'Preview',
+    'records_found' => 'Records found'
 );
 
 ###############################################################################

@@ -161,35 +161,15 @@ $LANG01 = array(
     115 => '沒有新跡回的評論',
     116 => '跡回',
     117 => '目錄',
-    118 => '請繼續看下頁',	
+    118 => '請繼續看下頁',
     119 => "丟失了<a ref=\"{$_CONF['site_url']}/users.php?mode=getpassword\">密碼</a>?",
-    120 => '永久聯結此評論',	
+    120 => '永久聯結此評論',
     121 => '評論 (%d)',
-    122 => '跡回 (%d)',	
-    123 => '准許用所有的HTML'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-
-
-    1 => '事件日曆',
-    2 => '抱歉，沒有事件。',
-    3 => '時',
-    4 => '地',
-    5 => '事',
-    6 => '新增事件',
-    7 => '即將發生的事',
-    8 => '在將這事加進你的日曆之後，你可點擊 "我的日曆" 來觀看',
-    9 => '加進我的日曆',
-    10 => '從我的日曆中去除',
-    11 => "把這事加進 {$_USER['username']} 的日曆",
-    12 => '事件',
-    13 => '開始',
-    14 => '結束',
-    15 => '回到日曆'
+    122 => '跡回 (%d)',
+    123 => '准許用所有的HTML',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
@@ -209,7 +189,6 @@ $LANG03 = array(
     11 => '發表評論',
     12 => '請填寫標題注評論欄',
     13 => '供你參考',
-
     14 => '預覽',
     15 => '報告這篇濫登文',
     16 => '標題',
@@ -348,11 +327,44 @@ $LANG04 = array(
     116 => '等待啟動的賬戶',
     117 => '你的賬戶現在等待管理員的啟動. 在賬戶未批准以前, 你還不能登入.',
     118 => "你的 {$_CONF['site_name']} 賬戶已被啟動. 你可通過以下的url 用先前以電信寄給你的用戶名 (<username>) 和密碼來登入.",
-    119 => "你若已忘記了你的密碼你可通過此 url 來要求一個新密碼",
+    119 => '你若已忘記了你的密碼你可通過此 url 來要求一個新密碼',
     120 => '帳戶已被啟動',
     121 => '服務',
     122 => '對不起, 目前禁止新用戶登記',
-    123 => "你是否 <a href=\"{$_CONF['site_url']}/users.php?mode=new\">新用戶</a>?"
+    123 => "你是否 <a href=\"{$_CONF['site_url']}/users.php?mode=new\">新用戶</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Preview',
+    152 => 'Username & Password',
+    153 => 'Layout & Language',
+    154 => 'Content',
+    155 => 'Privacy',
+    156 => 'Delete Account'
 );
 
 ###############################################################################
@@ -645,7 +657,6 @@ $LANG21 = array(
     38 => '為防止執行任性的編碼，PHP 組件函數名必須以 "phpblock_" 作開始 (e.g. phpblock_getweather)。',
     39 => '放在那邊',
     40 => '左',
-
     41 => '右',
     42 => '在本系統的預設組件你必須輸入組件標題和次序',
     43 => '只可是首頁',
@@ -670,38 +681,9 @@ $LANG21 = array(
     62 => '文章限制',
     63 => '錯誤組件標題',
     64 => '你的標題不能空白或有HTML!',
-    65 => '次序'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => '事件編輯器',
-    2 => 'Error',
-    3 => '事件標題',
-    4 => '事件 URL',
-    5 => '事件開始日期',
-    6 => '事件結束日期',
-    7 => '事件地點',
-    8 => '事件描述',
-    9 => '(包括 http://)',
-    10 => '你必須提供日期時間、事件主題、與事件描述！',
-    11 => '事件管理員',
-    12 => '點擊下面的事件可修改或刪除它，點擊上面的新事件可創造一個新的。',
-    13 => '事件標題',
-    14 => '開始日期',
-    15 => '結束日期',
-    16 => '存取被拒絕',
-    17 => "企圖存取不允許的事件已被記錄。請<a href=\"{$_CONF['site_admin_url']}/event.php\">反回事件管理員晝面</a>。",
-    18 => '新事件',
-    19 => '管理員首頁',
-    20 => '保存',
-    21 => '取消',
-    22 => '刪除',
-    23 => '錯誤的開始日期.',
-    24 => '錯誤的結束日期.',
-    25 => '結束日期在開始日期前.'
+    65 => '次序',
+    66 => 'Autotags',
+    67 => 'Check to allow autotags'
 );
 
 ###############################################################################
@@ -792,7 +774,9 @@ $LANG24 = array(
     82 => '圖像處理',
     83 => '有期文章管理',
     84 => '權限',
-    85 => '完全顯示'
+    85 => '完全顯示',
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
 
 ###############################################################################
@@ -832,7 +816,6 @@ $LANG27 = array(
 
 ###############################################################################
 # admin/user.php
-
 
 $LANG28 = array(
     1 => '用戶編輯器',
@@ -882,6 +865,35 @@ $LANG28 = array(
     45 => '有效的',
     46 => '用戶狀態',
     47 => '編輯',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -908,53 +920,6 @@ $LANG29 = array(
     38 => '遞交',
     39 => '此時沒有遞交的東西',
     40 => '申請的用戶'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Sunday',
-    2 => 'Monday',
-    3 => 'Tuesday',
-    4 => 'Wednesday',
-    5 => 'Thursday',
-    6 => 'Friday',
-    7 => 'Saturday',
-    8 => '新增事件',
-    9 => '志樂事件',
-    10 => '事件給',
-    11 => '主日曆',
-    12 => '我的日曆',
-    13 => '一月',
-    14 => '二月',
-    15 => '三月',
-    16 => '四月',
-    17 => '五月',
-    18 => '六月',
-    19 => '七月',
-    20 => '八月',
-    21 => '九月',
-    22 => '十月',
-    23 => '十一月',
-    24 => '十二月',
-    25 => '回到',
-    26 => '整日',
-    27 => '星期',
-    28 => '個人日曆︰',
-    29 => '公眾日曆',
-    30 => '刪除事件',
-    31 => '新增',
-    32 => '事件',
-    33 => '星期',
-    34 => '時間',
-    35 => '迅速增加',
-    36 => '遞交',
-    37 => '抱歉，本站並不提供個人日曆。',
-    38 => '個人事件編輯器',
-    39 => '日',
-    40 => '周',
-    41 => '月'
 );
 
 ###############################################################################
@@ -1081,7 +1046,9 @@ $LANG33 = array(
     47 => '搜尋',
     48 => '編輯',
     49 => '新聞 Feed 的標誌',
-    50 => "跟網址有關 ({$_CONF['site_url']})"
+    50 => "跟網址有關 ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
+    52 => 'Error: existing Filename'
 );
 
 ###############################################################################
@@ -1123,7 +1090,6 @@ $MESSAGE = array(
     33 => '抱歉，你不能進入組件管理的首頁。請注意你的企圖已被記錄。',
     34 => '抱歉，你不能進入連結管理的首頁。請注意你的企圖已被記錄。',
     35 => '抱歉，你不能進入事件管理的首頁。請注意你的企圖已被記錄。',
-
     36 => '抱歉，你不能進入投票管理的首頁。請注意你的企圖已被記錄。',
     37 => '抱歉，你不能進入用戶管理的首頁。請注意你的企圖已被記錄。',
     38 => '抱歉，你不能進入 Plug-in 管理的首頁。請注意你的企圖已被記錄。',
@@ -1163,7 +1129,16 @@ $MESSAGE = array(
     72 => '安裝插件時發生錯誤，細節請看 error.log.',
     73 => '卸載插件時發生錯誤，細節請看error.log.',
     74 => 'Ping 回已成功地送出.',
-    75 => '跡回必須用 POST 要求.'
+    75 => '跡回必須用 POST 要求.',
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################
@@ -1180,7 +1155,6 @@ $LANG_ACCESS = array(
     'securitygroups' => '安全小組',
     'editrootmsg' => "即使你是用戶管理員；但你不能編輯 root 用戶。你能編輯所有的用戶除了 root 用戶。請注意所有企圖非法地編輯 root 用戶的動作已被記錄。請回到<a href=\"{$_CONF['site_admin_url']}/user.php\">用戶管理頁</a>去。",
     'securitygroupsmsg' => '選擇這位用戶屬於的小組。',
-
     'groupeditor' => '小組編輯器',
     'description' => '描述',
     'name' => '名字',
@@ -1205,9 +1179,7 @@ $LANG_ACCESS = array(
     'edit' => '編輯',
     'none' => '沒有',
     'accessdenied' => '存取被拒絕',
-
     'storydenialmsg' => "因未被批准，你不可以觀看這個文章。這是可能是因為你並不是 {$_CONF['site_name']} 的會員。請<a href=users.php?mode=new>成為會員</a>。",
-    'eventdenialmsg' => "因未被批准，你不可以觀看這個事件。這是可能是因為你並不是 {$_CONF['site_name']} 的會員。請<a href=users.php?mode=new>成為會員</a>。",
     'nogroupsforcoregroup' => '這小組不屬於任何其它的小組',
     'grouphasnorights' => ' 這小組沒有管理權。',
     'newgroup' => '新小組',
@@ -1313,98 +1285,99 @@ $LANG_PDF = array(
 ###############################################################################
 # trackback.php
 
-$LANG_TRB = array (
-    'trackback'          => '跡回',
-    'from'               => '從',
-    'tracked_on'         => '跡回於',
-    'read_more'          => '[讀下文]',
-    'intro_text'         => "這是別人對 '%s' 的看法:",
-    'no_comments'        => '此登錄無跡回評論.',
+$LANG_TRB = array(
+    'trackback' => '跡回',
+    'from' => '從',
+    'tracked_on' => '跡回於',
+    'read_more' => '[讀下文]',
+    'intro_text' => '這是別人對 \'%s\' 的看法:',
+    'no_comments' => '此登錄無跡回評論.',
     'this_trackback_url' => '此登錄的跡回 URL:',
-    'num_comments'       => '%d 跡回評論',
-    'send_trackback'     => '送出 Ping',
-    'preview'            => '預覽',
-    'editor_title'       => '送出跡回評論',
-    'trackback_url'      => '跡回 URL',
-    'entry_url'          => '登錄 URL',
-    'entry_title'        => '登錄標題',
-    'blog_name'          => '網站名',
-    'excerpt'            => '摘錄',
-    'truncate_warning'   => '注: 目的站可能將你的摘錄縮短',
-    'button_send'        => '送出',
-    'button_preview'     => '預覽',
-    'send_error'         => '錯誤',
+    'num_comments' => '%d 跡回評論',
+    'send_trackback' => '送出 Ping',
+    'preview' => '預覽',
+    'editor_title' => '送出跡回評論',
+    'trackback_url' => '跡回 URL',
+    'entry_url' => '登錄 URL',
+    'entry_title' => '登錄標題',
+    'blog_name' => '網站名',
+    'excerpt' => '摘錄',
+    'truncate_warning' => '注: 目的站可能將你的摘錄縮短',
+    'button_send' => '送出',
+    'button_preview' => '預覽',
+    'send_error' => '錯誤',
     'send_error_details' => '送出跡回評論時發生錯誤:',
-    'url_missing'        => '無登錄 URL',
-    'url_required'       => '請輸入登錄的最少一個 URL.',
-    'target_missing'     => '無跡回 URL',
-    'target_required'    => '請輸入一個跡回 URL',
-    'error_socket'       => '無法打開 socket.',
-    'error_response'     => '不明白你的反應.',
-    'error_unspecified'  => '為指明的錯誤.',
-    'select_url'         => '選擇跡回 URL',
-    'not_found'          => '找不到跡回 URL',
-    'autodetect_failed'  => '志樂探測不到關於你要送出評論的跡回 URL. 以下請輸入.',
-    'trackback_explain'  => '從以下的聯結中，請選你要送出評論的 URL. 志樂將會決定正確的跡回 URL. 或者你若已知道的話，可 <a href="%s">在此輸入它</a>.',
+    'url_missing' => '無登錄 URL',
+    'url_required' => '請輸入登錄的最少一個 URL.',
+    'target_missing' => '無跡回 URL',
+    'target_required' => '請輸入一個跡回 URL',
+    'error_socket' => '無法打開 socket.',
+    'error_response' => '不明白你的反應.',
+    'error_unspecified' => '為指明的錯誤.',
+    'select_url' => '選擇跡回 URL',
+    'not_found' => '找不到跡回 URL',
+    'autodetect_failed' => '志樂探測不到關於你要送出評論的跡回 URL. 以下請輸入.',
+    'trackback_explain' => '從以下的聯結中，請選你要送出評論的 URL. 志樂將會決定正確的跡回 URL. 或者你若已知道的話，可 <a href="%s">在此輸入它</a>.',
     'no_links_trackback' => '找不到聯結. 你不能送出此登錄的跡回評論.',
-    'pingback'           => 'Ping 回',
-    'pingback_results'   => 'Ping 回的結果',
-    'send_pings'         => '送出 ping',
-    'send_pings_for'     => '送出ping 於 "%s"',
-    'no_links_pingback'  => '找不到聯結. 為此登錄無 Ping 回送出.',
-    'pingback_success'   => 'Ping 回已送出.',
-    'no_pingback_url'    => '無 ping 回 URL.',
-    'resend'             => '重送',
-    'ping_all_explain'   => '你現在可通知你所聯結的網站 (<a href="http://en.wikipedia.org/wiki/Pingback">Ping 回</a>), 廣告你的站已經被更新於ping 過網志目錄服務, 或送出一個 <a href="http://en.wikipedia.org/wiki/Trackback">跡回</a> 評論若你寫過有關一個在別人的網站上的登錄.',
-    'pingback_button'    => '送出Ping 回',
-    'pingback_short'     => '送出Ping 回到所有跟此登錄聯結的網站.',
-    'pingback_disabled'  => '(Ping 回已中止)',
-    'ping_button'        => '送出Ping',
-    'ping_short'         => 'Ping 網志目錄服務.',
-    'ping_disabled'      => '(Ping 已中止)',
-    'trackback_button'   => '送出跡回',
-    'trackback_short'    => '送出一個跡回評論.',
+    'pingback' => 'Ping 回',
+    'pingback_results' => 'Ping 回的結果',
+    'send_pings' => '送出 ping',
+    'send_pings_for' => '送出ping 於 "%s"',
+    'no_links_pingback' => '找不到聯結. 為此登錄無 Ping 回送出.',
+    'pingback_success' => 'Ping 回已送出.',
+    'no_pingback_url' => '無 ping 回 URL.',
+    'resend' => '重送',
+    'ping_all_explain' => '你現在可通知你所聯結的網站 (<a href="http://en.wikipedia.org/wiki/Pingback">Ping 回</a>), 廣告你的站已經被更新於ping 過網志目錄服務, 或送出一個 <a href="http://en.wikipedia.org/wiki/Trackback">跡回</a> 評論若你寫過有關一個在別人的網站上的登錄.',
+    'pingback_button' => '送出Ping 回',
+    'pingback_short' => '送出Ping 回到所有跟此登錄聯結的網站.',
+    'pingback_disabled' => '(Ping 回已中止)',
+    'ping_button' => '送出Ping',
+    'ping_short' => 'Ping 網志目錄服務.',
+    'ping_disabled' => '(Ping 已中止)',
+    'trackback_button' => '送出跡回',
+    'trackback_short' => '送出一個跡回評論.',
     'trackback_disabled' => '(跡回一中止)',
-    'may_take_a_while'   => '請注意，送出 Ping回 和 Ping 可需要一段時間.',
-    'ping_results'       => 'Ping 的結果',
-    'unknown_method'     => '無知 ping 法',
-    'ping_success'       => 'Ping 已送出.',
-    'error_site_name'    => '請輸入網站名.',
-    'error_site_url'     => '請輸入網站 URL.',
-    'error_ping_url'     => '請輸入正確的 Ping URL.',
-    'no_services'        => '未設定網志目錄服務.',
-    'services_headline'  => '網志目錄服務',
-    'service_explain'    => '若要更改或刪除網志目錄服務，請點擊一下服務的編輯標圖. 要增加一個新的網志目錄服務，請點擊以上的 "建新".',
-    'service'            => '服務',
-    'ping_method'        => 'Ping 法',
-    'service_website'    => '網站',
-    'service_ping_url'   => '要ping 的URL',
-    'ping_standard'      => '標準 Ping',
-    'ping_extended'      => '擴大的 Ping',
-    'ping_unknown'       => '(無知法)',
-    'edit_service'       => '編輯網志目錄服務',
-    'trackbacks'         => '跡回',
-    'editor_intro'       => '準備你的跡回評論於 <a href="%s">%s</a>.',
-    'editor_intro_none'  => '準備你的跡回評論.',
-    'trackback_note'     => '若要送出一個跡回評論于一個文章，去到文章目錄然後點擊那文章的"' . $LANG24[21] . '". 若要送出跟任何文章都無關的跡回, <a href="%s">請點擊此處</a>.',
-    'pingback_explain'   => '輸入一個 URL 來送出 Ping回. Ping回將會指到你的網站主頁.',
-    'pingback_url'       => 'Ping回 URL',
-    'site_url'           => '此站的 URL',
-    'pingback_note'      => '若要給一個文章送出 ping回, 去到文章目錄然後點擊那文章的 "' . $LANG24[21] . '". 要送出一個跟任何文章都無關的 ping回, <a href="%s">請點擊此處</a>.',
-    'pbtarget_missing'   => '無 Ping回 URL',
-    'pbtarget_required'  => '請輸入一個ping回 URL',
-    'pb_error_details'   => '送出 ping回時發生錯誤:'
+    'may_take_a_while' => '請注意，送出 Ping回 和 Ping 可需要一段時間.',
+    'ping_results' => 'Ping 的結果',
+    'unknown_method' => '無知 ping 法',
+    'ping_success' => 'Ping 已送出.',
+    'error_site_name' => '請輸入網站名.',
+    'error_site_url' => '請輸入網站 URL.',
+    'error_ping_url' => '請輸入正確的 Ping URL.',
+    'no_services' => '未設定網志目錄服務.',
+    'services_headline' => '網志目錄服務',
+    'service_explain' => '若要更改或刪除網志目錄服務，請點擊一下服務的編輯標圖. 要增加一個新的網志目錄服務，請點擊以上的 "建新".',
+    'service' => '服務',
+    'ping_method' => 'Ping 法',
+    'service_website' => '網站',
+    'service_ping_url' => '要ping 的URL',
+    'ping_standard' => '標準 Ping',
+    'ping_extended' => '擴大的 Ping',
+    'ping_unknown' => '(無知法)',
+    'edit_service' => '編輯網志目錄服務',
+    'trackbacks' => '跡回',
+    'editor_intro' => '準備你的跡回評論於 <a href="%s">%s</a>.',
+    'editor_intro_none' => '準備你的跡回評論.',
+    'trackback_note' => '若要送出一個跡回評論于一個文章，去到文章目錄然後點擊那文章的"傳送 Ping". 若要送出跟任何文章都無關的跡回, <a href="%s">請點擊此處</a>.',
+    'pingback_explain' => '輸入一個 URL 來送出 Ping回. Ping回將會指到你的網站主頁.',
+    'pingback_url' => 'Ping回 URL',
+    'site_url' => '此站的 URL',
+    'pingback_note' => '若要給一個文章送出 ping回, 去到文章目錄然後點擊那文章的 "傳送 Ping". 要送出一個跟任何文章都無關的 ping回, <a href="%s">請點擊此處</a>.',
+    'pbtarget_missing' => '無 Ping回 URL',
+    'pbtarget_required' => '請輸入一個ping回 URL',
+    'pb_error_details' => '送出 ping回時發生錯誤:',
+    'delete_trackback' => 'To delete this Trackback click: '
 );
 
 ###############################################################################
 # directory.php
 
 $LANG_DIR = array(
-    'title'            => '文章目錄',
-    'title_year'       => '文章目錄為 %d',
+    'title' => '文章目錄',
+    'title_year' => '文章目錄為 %d',
     'title_month_year' => '文章目錄為 %s %d',
-    'nav_top'          => '回到文章目錄',
-    'no_articles'      => '沒有文章.'
+    'nav_top' => '回到文章目錄',
+    'no_articles' => '沒有文章.'
 );
 
 ###############################################################################
@@ -1420,16 +1393,47 @@ $LANG_DIR = array(
 $LANG_WHATSNEW = array(
     'new_string' => '%n 新 %i 在最後 %t %s',
     'new_last' => '最後 %t %s',
-    'minutes'     => '分鐘',
-    'hours'       => '小時',
-    'days'        => '日',
-    'weeks'       => '周',
-    'months'      => '月',
-    'minute'      => '分鐘',
-    'hour'        => '小時',
-    'day'         => '日',
-    'week'        => '周',
-    'month'       => '月'
+    'minutes' => '分鐘',
+    'hours' => '小時',
+    'days' => '日',
+    'weeks' => '周',
+    'months' => '月',
+    'minute' => '分鐘',
+    'hour' => '小時',
+    'day' => '日',
+    'week' => '周',
+    'month' => '月'
+);
+
+###############################################################################
+# Month names
+
+$LANG_MONTH = array(
+    1 => '一月',
+    2 => '二月',
+    3 => '三月',
+    4 => '四月',
+    5 => '五月',
+    6 => '六月',
+    7 => '七月',
+    8 => '八月',
+    9 => '九月',
+    10 => '十月',
+    11 => '十一月',
+    12 => '十二月'
+);
+
+###############################################################################
+# Weekdays
+
+$LANG_WEEK = array(
+    1 => 'Sunday',
+    2 => 'Monday',
+    3 => 'Tuesday',
+    4 => 'Wednesday',
+    5 => 'Thursday',
+    6 => 'Friday',
+    7 => 'Saturday'
 );
 
 ###############################################################################
@@ -1439,23 +1443,28 @@ $LANG_WHATSNEW = array(
 # display administration lists and edit pages
 
 $LANG_ADMIN = array(
-    'search'        => '搜尋',
+    'search' => '搜尋',
     'limit_results' => '限制結果',
-    'submit'        => '提交',
-    'edit'          => '編輯',
-    'admin_home'    => '管理主頁',
-    'create_new'    => '建新',
-    'enabled'       => '啟動',
-    'title'         => '標題',
-    'type'          => '類型',
-    'topic'         => '題目',
-    'help_url'      => '幫助文 URL',
-    'save'          => '存續',
-    'cancel'        => '取消',
-    'delete'        => '刪除',
-    'copy'          => '複製',
-    'no_results'    => '- 找不到任何登錄 -',
-    'data_error' => '處理訂閱資料時發現錯誤. 請檢查資料來源.'
+    'submit' => '提交',
+    'edit' => '編輯',
+    'edit_adv' => 'Adv. Edit',
+    'admin_home' => '管理主頁',
+    'create_new' => '建新',
+    'create_new_adv' => 'Create New (Adv.)',
+    'enabled' => '啟動',
+    'title' => '標題',
+    'type' => '類型',
+    'topic' => '題目',
+    'help_url' => '幫助文 URL',
+    'save' => '存續',
+    'cancel' => '取消',
+    'delete' => '刪除',
+    'delete_sel' => 'Delete selected',
+    'copy' => '複製',
+    'no_results' => '- 找不到任何登錄 -',
+    'data_error' => '處理訂閱資料時發現錯誤. 請檢查資料來源.',
+    'preview' => 'Preview',
+    'records_found' => 'Records found'
 );
 
 ###############################################################################
@@ -1473,7 +1482,6 @@ $LANG_commentmodes = array(
     'flat' => '平面的',
     'nested' => '嵌套的',
     'threaded' => '線狀的',
-
     'nocomment' => '勿評論'
 );
 

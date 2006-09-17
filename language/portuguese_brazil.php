@@ -167,28 +167,10 @@ $LANG01 = array(
     120 => 'Permanent link to this comment',
     121 => 'Comments (%d)',
     122 => 'Trackbacks (%d)',
-    123 => 'All HTML is allowed'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => 'Calendário de Eventos',
-    2 => 'Lamentamos, mas há não eventos a exibir.',
-    3 => 'Quando',
-    4 => 'Onde',
-    5 => 'Descrição',
-    6 => 'Adicionar um Evento',
-    7 => 'Próximos Eventos',
-    8 => 'Ao adicionar este evento ao seu calendário você poderá ver somente os eventos em que estiver interessado clicando em "Meu Calendário" na área Funções do Usuário.',
-    9 => 'Adicionar ao Meu Calendário',
-    10 => 'Remover do Meu Calendário',
-    11 => "Adicionando Evento ao Calendário de {$_USER['username']}",
-    12 => 'Evento',
-    13 => 'Início',
-    14 => 'Término',
-    15 => 'Volta para Calendário'
+    123 => 'All HTML is allowed',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
@@ -350,7 +332,40 @@ $LANG04 = array(
     120 => 'Account Activated',
     121 => 'Service',
     122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Preview',
+    152 => 'Username & Password',
+    153 => 'Layout & Language',
+    154 => 'Content',
+    155 => 'Privacy',
+    156 => 'Delete Account'
 );
 
 ###############################################################################
@@ -667,38 +682,9 @@ $LANG21 = array(
     62 => 'Article Limit',
     63 => 'Bad Block Title',
     64 => 'Your Title must not be empty and cannot contain HTML!',
-    65 => 'Order'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => 'Editor de Eventos',
-    2 => 'Error',
-    3 => 'Título',
-    4 => 'URL',
-    5 => 'Início',
-    6 => 'Término',
-    7 => 'Local',
-    8 => 'Descrição',
-    9 => '(incluir http://)',
-    10 => 'Você deve preencher todos os campos deste formulário!',
-    11 => 'Gerenciador de Eventos',
-    12 => 'Para modificar ou apagar um evento, clique no respectivo evento abaixo.  Para criar um novo evento, clique em Novo Evento, acima.',
-    13 => 'Título',
-    14 => 'Início',
-    15 => 'Término',
-    16 => 'Acesso Negado',
-    17 => "Você está acessando um evento para o qual não tem autorização.  Esta tentativa foi registrada. Por favor <a href=\"{$_CONF['site_admin_url']}/event.php\">retorne para a tela de Administração de Eventos</a>.",
-    18 => 'Novo Evento',
-    19 => 'Administração',
-    20 => 'salva',
-    21 => 'cancela',
-    22 => 'apaga',
-    23 => 'Data de início incorreta.',
-    24 => 'Data final incorreta.',
-    25 => 'Data Final é menor que Data Inicial.'
+    65 => 'Order',
+    66 => 'Autotags',
+    67 => 'Check to allow autotags'
 );
 
 ###############################################################################
@@ -789,7 +775,9 @@ $LANG24 = array(
     82 => 'Images',
     83 => 'Archive Options',
     84 => 'Permissions',
-    85 => 'Show All'
+    85 => 'Show All',
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
 
 ###############################################################################
@@ -877,7 +865,36 @@ $LANG28 = array(
     44 => 'Awaiting Authorization',
     45 => 'Active',
     46 => 'User Status',
-    47 => 'Edit'
+    47 => 'Edit',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -904,53 +921,6 @@ $LANG29 = array(
     38 => 'Enviar',
     39 => 'Não há submissões a serem moderadas agora',
     40 => 'Submissões de Usuários'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Domingo',
-    2 => 'Segunda',
-    3 => 'Terça',
-    4 => 'Quarta',
-    5 => 'Quinta',
-    6 => 'Sexta',
-    7 => 'Sábado',
-    8 => 'Adicionar Evento',
-    9 => 'Evento do Site',
-    10 => 'Eventos para',
-    11 => 'Calendário Principal',
-    12 => 'Meu Calendário',
-    13 => 'Janeiro',
-    14 => 'Fevereiro',
-    15 => 'Março',
-    16 => 'Abril',
-    17 => 'Maio',
-    18 => 'Junho',
-    19 => 'Julho',
-    20 => 'Agosto',
-    21 => 'Setembro',
-    22 => 'Outubro',
-    23 => 'Novembro',
-    24 => 'Dezembro',
-    25 => 'Volta para ',
-    26 => 'Todos os Dias',
-    27 => 'Semanal',
-    28 => 'Calendário Pessoal de',
-    29 => 'Calendário Público',
-    30 => 'excluir evento',
-    31 => 'Adicionar',
-    32 => 'Evento',
-    33 => 'Data',
-    34 => 'Hora',
-    35 => 'Adição Rápida',
-    36 => 'Enviar',
-    37 => 'Lamentamos, mas o Calendário Pessoal não está habilitado neste site',
-    38 => 'Editor de Eventos Pessoais',
-    39 => 'Dia',
-    40 => 'Semana',
-    41 => 'Mês'
 );
 
 ###############################################################################
@@ -1077,7 +1047,9 @@ $LANG33 = array(
     47 => 'Search',
     48 => 'Edit',
     49 => 'Feed Logo',
-    50 => "Relative to site url ({$_CONF['site_url']})"
+    50 => "Relative to site url ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
+    52 => 'Error: existing Filename'
 );
 
 ###############################################################################
@@ -1158,7 +1130,16 @@ $MESSAGE = array(
     72 => 'An error occured while attempting to install the plugin. See error.log for details.',
     73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
     74 => 'The pingback has been successfully sent.',
-    75 => 'Trackbacks must be sent using a POST request.'
+    75 => 'Trackbacks must be sent using a POST request.',
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################
@@ -1200,7 +1181,6 @@ $LANG_ACCESS = array(
     'none' => 'Nenhum',
     'accessdenied' => 'Acesso Negado',
     'storydenialmsg' => "Você não tem acesso para ver esta publicação.  Isto pode ocorrer porque você ainda não é membro do site {$_CONF['site_name']}.  Por favor <a href=users.php?mode=new> torne-se um membro</a> do {$_CONF['site_name']} para receber direitos plenos de acesso!",
-    'eventdenialmsg' => "Você não tem acesso para ver este evento.  Isto pode ocorrer porque você ainda não é membro do site {$_CONF['site_name']}.  Por favor <a href=users.php?mode=new> torne-se um membro</a> do {$_CONF['site_name']} para receber direitos plenos de acesso!",
     'nogroupsforcoregroup' => 'Este grupo não pertence a qualquer um dos outros grupos',
     'grouphasnorights' => 'Este grupo não tem acesso a quaisquer recursos de administração deste site',
     'newgroup' => 'Novo Grupo',
@@ -1386,7 +1366,8 @@ $LANG_TRB = array(
     'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
     'pbtarget_missing' => 'No Pingback URL',
     'pbtarget_required' => 'Please enter a pingback URL',
-    'pb_error_details' => 'Error when sending the pingback:'
+    'pb_error_details' => 'Error when sending the pingback:',
+    'delete_trackback' => 'To delete this Trackback click: '
 );
 
 ###############################################################################
@@ -1426,6 +1407,37 @@ $LANG_WHATSNEW = array(
 );
 
 ###############################################################################
+# Month names
+
+$LANG_MONTH = array(
+    1 => 'Janeiro',
+    2 => 'Fevereiro',
+    3 => 'Março',
+    4 => 'Abril',
+    5 => 'Maio',
+    6 => 'Junho',
+    7 => 'Julho',
+    8 => 'Agosto',
+    9 => 'Setembro',
+    10 => 'Outubro',
+    11 => 'Novembro',
+    12 => 'Dezembro'
+);
+
+###############################################################################
+# Weekdays
+
+$LANG_WEEK = array(
+    1 => 'Domingo',
+    2 => 'Segunda',
+    3 => 'Terça',
+    4 => 'Quarta',
+    5 => 'Quinta',
+    6 => 'Sexta',
+    7 => 'Sábado'
+);
+
+###############################################################################
 # Admin - Strings
 # 
 # These are some standard strings used by core functions as well as plugins to
@@ -1436,8 +1448,10 @@ $LANG_ADMIN = array(
     'limit_results' => 'Limit Results',
     'submit' => 'Submit',
     'edit' => 'Edit',
+    'edit_adv' => 'Adv. Edit',
     'admin_home' => 'Admin Home',
     'create_new' => 'Create New',
+    'create_new_adv' => 'Create New (Adv.)',
     'enabled' => 'Enabled',
     'title' => 'Title',
     'type' => 'Type',
@@ -1446,9 +1460,12 @@ $LANG_ADMIN = array(
     'save' => 'Save',
     'cancel' => 'Cancel',
     'delete' => 'Delete',
+    'delete_sel' => 'Delete selected',
     'copy' => 'Copy',
     'no_results' => '- No entries found -',
-    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.',
+    'preview' => 'Preview',
+    'records_found' => 'Records found'
 );
 
 ###############################################################################

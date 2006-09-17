@@ -127,8 +127,8 @@ $LANG01 = array(
     77 => 'הרחבות תוכנה',
     78 => 'אירועים קרובים',
     79 => 'מה חדש',
-    80 => 'מאמרים ב:',
     80 => 'מאמר ב:',
+    81 => 'story in last',
     82 => 'השעות האחרונות',
     83 => 'תגובות',
     84 => 'קישורים',
@@ -170,28 +170,10 @@ $LANG01 = array(
     120 => 'קישור קבוע לתגובה זו',
     121 => 'תגובות (%d)',
     122 => 'הפניות (%d)',
-    123 => 'HTML מותר לגמרי לשימוש'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => 'יומן אירועים',
-    2 => 'אין אירועים חדשים להצגה',
-    3 => 'מתי',
-    4 => 'איפה',
-    5 => 'תיאור',
-    6 => 'הוספת אירוע',
-    7 => 'אירועים צפויים',
-    8 => 'על-ידי הוספת אירוע זה ליומנך יתאפשר לך לצפות בקלות רק באירועים המענינים אותך על-ידי לחיצה על "היומן שלי" מאזור "אפשרויות המשתמש" .',
-    9 => 'הוספה ליומן שלי',
-    10 => 'הסרה מהיומן שלי',
-    11 => "הוספת אירוע ליומן של {$_USER['username']}",
-    12 => 'אירוע',
-    13 => 'מתחיל ב-',
-    14 => 'מסתיים ב-',
-    15 => 'חזרה ליומן'
+    123 => 'HTML מותר לגמרי לשימוש',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
@@ -228,7 +210,7 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# usersettings.php
+# users.php
 
 $LANG04 = array(
     1 => 'פרופיל המשתמש של',
@@ -250,7 +232,7 @@ $LANG04 = array(
     17 => 'החשבון לא קיים',
     18 => 'כתובת האימייל שהוקלדה לא נראית תקינה',
     19 => 'שם המשתמש או הסיסמה שהוקלדו כבר תפוסים',
-    18 => 'כתובת האימייל שהוקלדה לא נראית תקינה',
+    20 => 'The email address provided does not appear to be a valid email address',
     21 => 'שגיאה',
     22 => "רישום ב-{$_CONF['site_name']}!",
     23 => "יצירת חשבון תיתן לך את כל התועלות שטמונות בחברות ב-{$_CONF['site_name']} ותאפשר לך לפרסם תגובות ופריטים נוספים כעצמך. ללא חשבון, תוכלו רק לפרסם הודעות אנונימיות. לידיעתך, כתובת הדואל שלך <b>לעולם לא</b> תתפרסם באופן גלוי באתר זה.",
@@ -353,7 +335,40 @@ $LANG04 = array(
     120 => 'החשבון הופעל',
     121 => 'שירות',
     122 => 'מצטערים, אפשרות הרשמת משתמשים חדשים מנוטרלת',
-    123 => "האם אתם <a href=\"{$_CONF['site_url']}/users.php?mode=new\">משתמשים חדשים</a>?"
+    123 => "האם אתם <a href=\"{$_CONF['site_url']}/users.php?mode=new\">משתמשים חדשים</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Preview',
+    152 => 'Username & Password',
+    153 => 'Layout & Language',
+    154 => 'Content',
+    155 => 'Privacy',
+    156 => 'Delete Account'
 );
 
 ###############################################################################
@@ -670,38 +685,9 @@ $LANG21 = array(
     62 => 'גבול יכולת המאמרים',
     63 => 'כותרת קוביות המידע לא טובה',
     64 => 'הכותרת שלכם אינה יכולה להיות ריקה ולא יכולה להכיל HTML!',
-    65 => 'סדר'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => 'עורך אירועים',
-    2 => 'שגיאה',
-    3 => 'מצב כתיבה',
-    4 => 'כתובת אתר האירוע',
-    5 => 'תאריך התחלת האירוע',
-    6 => 'תאריך סיום האירוע',
-    7 => 'מיקום האירוע',
-    8 => 'תיאור האירוע',
-    9 => '(כולל <span dir=ltr><b>http://</b></span>)',
-    10 => 'הנכם חייבים לציין את התאריכים/שעות, כותרת האירוע ותיאור',
-    11 => 'מנהל האירוע',
-    12 => ' כדי לשנות או למחוק אירוע, ליחצו על אייקון העריכה שלו מתחת. כדי ליצור אירוע חדש, ליחצו על "צרו חדש" לעיל. ליחצו על אייקון ההעתקה כדי ליצור עותק של אירוע קיים.',
-    13 => 'יוצר',
-    14 => 'תאריך התחלה',
-    15 => 'תאריך סיום',
-    16 => '',
-    17 => "הנכם מנסים לגשת לאירוע שאין לכם זכויות לגביו. ניסיון זה נרשם ביומן. בבקשה <a href=\"{$_CONF['site_url']}/admin/event.php\">חיזרו לחלון ניהול האירועים</a>.",
-    18 => '',
-    19 => '',
-    20 => 'שמירה',
-    21 => 'ביטול',
-    22 => 'מחיקה',
-    23 => 'תאריך התחלה שגוי.',
-    24 => 'תאריך סיום שגוי.',
-    25 => 'תאריך הסיום הוא לפני תאריך ההתחלה.'
+    65 => 'סדר',
+    66 => 'Autotags',
+    67 => 'Check to allow autotags'
 );
 
 ###############################################################################
@@ -792,7 +778,9 @@ $LANG24 = array(
     82 => 'תמונות',
     83 => 'אפשרויות ארכיון',
     84 => 'הרשאות',
-    85 => 'הראה הכל'
+    85 => 'הראה הכל',
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
 
 ###############################################################################
@@ -880,7 +868,36 @@ $LANG28 = array(
     44 => 'מחכה לאישור',
     45 => 'פעיל',
     46 => 'סטאטוס משתמש',
-    47 => 'עריכה'
+    47 => 'עריכה',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -907,53 +924,6 @@ $LANG29 = array(
     38 => 'אישור',
     39 => 'אין הגשות שדורשות פיקוח בזמן זה',
     40 => 'הגשות של משתמשים'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'ראשון',
-    2 => 'שני',
-    3 => 'שלישי',
-    4 => 'רביעי',
-    5 => 'חמישי',
-    6 => 'שישי',
-    7 => 'שבת',
-    8 => 'הוספת אירוע',
-    9 => 'אירוע %s',
-    10 => 'אירועים עבור',
-    11 => 'יומן ראשי',
-    12 => 'היומן שלי',
-    13 => 'ינואר',
-    14 => 'פברואר',
-    15 => 'מרץ',
-    16 => 'אפריל',
-    17 => 'מאי',
-    18 => 'יוני',
-    19 => 'יולי',
-    20 => 'אוגוסט',
-    21 => 'ספטמבר',
-    22 => 'אוקטובר',
-    23 => 'נובמבר',
-    24 => 'דצמבר',
-    25 => 'חזרה ל: ',
-    26 => 'יום שלם',
-    27 => 'שבוע',
-    28 => 'היומן האישי של',
-    29 => 'יומן ציבורי',
-    30 => 'מחיקת אירוע',
-    31 => 'הוספה',
-    32 => 'אירוע',
-    33 => 'תאריך',
-    34 => 'שעה',
-    35 => 'הוספה מהירה',
-    36 => 'אישור',
-    37 => 'לצערינו האפשרות ליומן אישי לא קיימת באתר זה',
-    38 => 'עורך אירועים אישיים',
-    39 => 'יום',
-    40 => 'שבוע',
-    41 => 'חודש'
 );
 
 ###############################################################################
@@ -1075,13 +1045,14 @@ $LANG33 = array(
     42 => 'אירועים',
     43 => 'כולם',
     44 => 'ללא',
-    45 => 'Header-link in topic',
     45 => 'קישור ב-header בנושא',
     46 => 'הגבלת תוצאות',
     47 => 'חיפוש',
     48 => 'עריכה',
     49 => 'הלוגו של ההזנה',
-    50 => "יחסי לכתובת האתר ({$_CONF['site_url']})"
+    50 => "יחסי לכתובת האתר ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
+    52 => 'Error: existing Filename'
 );
 
 ###############################################################################
@@ -1090,7 +1061,7 @@ $LANG33 = array(
 $MESSAGE = array(
     1 => "סיסמתך נשלחה אליכם באימייל ואמורה להגיע בכל רגע. אנא עיקבו אחר ההוראות שבהודעה ואנו מודים לכם על שימושכם ב-{$_CONF['site_name']}",
     2 => "תודה לך על הגשת המאמר שלך ל-{$_CONF['site_name']}. הוא הוגש לצוות שלנו בשביל אישור. אם יאושר, מאמרך יהיה זמין לאחרים לקריאה באתר.",
-    3 => "",
+    3 => '',
     4 => "תודה לך על הגשת אירוע ל-{$_CONF['site_name']}. הוא הוגש לצוות שלנו בשביל אישור. אם יאושר, הקישור יוצג בפינת <a href={$_CONF['site_url']}/calendar.php>היומן</a> שלנו.",
     5 => 'המידע של חשבונך נשמר בהצלחה.',
     6 => 'העדפות התצוגה שלך נשמרו בהצלחה.',
@@ -1162,7 +1133,16 @@ $MESSAGE = array(
     72 => 'התרחשה שגיאה בעת נסיון התקנת ה-plugin. קיראו את error.log בשביל פרטים.',
     73 => 'התרחשה שגיאה בעת נסיון הסרת ה-plugin. קיראו את error.log בשביל פרטים.',
     74 => 'הפינג החוזר נשלח בהצלחה.',
-    75 => 'הפניות חיבות להישלח בעזרת בקשת POST.'
+    75 => 'הפניות חיבות להישלח בעזרת בקשת POST.',
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################
@@ -1204,7 +1184,6 @@ $LANG_ACCESS = array(
     'none' => 'אין',
     'accessdenied' => 'הגישה לא אושרה',
     'storydenialmsg' => "אין לכם גישה לצפות במאמר זה. סיבה אפשרית לכך היא שאינכם חברים ב-{$_CONF['site_name']}. אנא <a href=users.php?mode=new> היפכו לחברים</a> ב-{$_CONF['site_name']} כדי לקבל גישה מלאה של חברים!",
-    'eventdenialmsg' => "אין לכם גישה לצפות באירוע זה. סיבה אפשרית לכך היא שאינכם חברים ב-{$_CONF['site_name']}. אנא <a href=users.php?mode=new> היפכו לחברים</a> ב-{$_CONF['site_name']} כדי לקבל גישה מלאה של חברים!",
     'nogroupsforcoregroup' => 'קבוצה זו לא שייכת לשום קבוצה מהקבוצות האחרות',
     'grouphasnorights' => 'לקבוצה זו אין גישה לאף אחת מיכולות ההנהלה של האתר הזה',
     'newgroup' => 'קבוצה חדשה',
@@ -1294,13 +1273,13 @@ $LANG_PDF = array(
     1 => 'יכולת ה-PDF מנוטרלת',
     2 => 'המסמך שבוקש לא הוגש. המסמך נמצא אבל לא הצליח להתקבל. אנא ודאו שהנכם מגישים רק מסמכים בפורמט HTML שנכתבו בסטנדרט xHTML. אנא שימו לב שמסמכי HTML יותר מדי מורכבים עלולים לא להיות מוגשים כמו שצריך או בכלל. המסמך שנוצר כתוצאה מנסיונכם תפס בגודלו 0 bytes, ונמחק. אם הנכם בטוחים שהמסמך שלכם צריך לעבור הגשה ללא בעיה, אנא הגישו אותו מחדש.',
     3 => 'בעיה לא ידועה בעת יצירת ה-PDF',
-    4 => "שום מידע על העמוד לא ניתן או שהנכם מעוניינים להשתמש בכלי יצירת PDF יש מאין שלהלן. אם הנכם מרגישים שאתם מקבלים עמוד זה בטעות אז אנא צרו קשר עם מנהלי המערכת. אם לא, תוכלו להשתמש בטופס שלהלן כדי ליצור PDF בצורת אד הוק.",
+    4 => 'שום מידע על העמוד לא ניתן או שהנכם מעוניינים להשתמש בכלי יצירת PDF יש מאין שלהלן. אם הנכם מרגישים שאתם מקבלים עמוד זה בטעות אז אנא צרו קשר עם מנהלי המערכת. אם לא, תוכלו להשתמש בטופס שלהלן כדי ליצור PDF בצורת אד הוק.',
     5 => 'טוען את המסמך שלך.',
     6 => 'אנא חכו עד שהמסמך שלך ייטען.',
     7 => 'הנכם יכולים לעשות right click על הכפתור שלהלן ולבחור \'save target...\' או \'save link location...\' כדי לשמור עותק של המסמך שלכם.',
-    8 => "המיקום שניתן בקובץ ההגדרות ל-HTMLDoc binary הוא לא אפשרי או שהמערכת אינה יכולה להריץ אותו. אנא צור קשר עם מנהלי האתר אם בעיה זו ממשיכה.",
+    8 => 'המיקום שניתן בקובץ ההגדרות ל-HTMLDoc binary הוא לא אפשרי או שהמערכת אינה יכולה להריץ אותו. אנא צור קשר עם מנהלי האתר אם בעיה זו ממשיכה.',
     9 => 'יוצר PDF',
-    10 => "זהו כלי יצירת PDF אד הוק. הוא ינסה להמיר כל עמוד אינטרנט שתציינו ל-PDF. אנא שימו לב שיש עמודי אינטרנט שלא מוגשים כמו שצריך לצורך יכולת זו. זוהי מגבלה של ה-HTMLDoc PDF generation tool וטעויות כאלו לא צריכות להיות מדווחות למנהלי אתר זה",
+    10 => 'זהו כלי יצירת PDF אד הוק. הוא ינסה להמיר כל עמוד אינטרנט שתציינו ל-PDF. אנא שימו לב שיש עמודי אינטרנט שלא מוגשים כמו שצריך לצורך יכולת זו. זוהי מגבלה של ה-HTMLDoc PDF generation tool וטעויות כאלו לא צריכות להיות מדווחות למנהלי אתר זה',
     11 => 'כתובת',
     12 => 'צרו PDF!',
     13 => 'הגדרות ה-PHP שבשרת הזה לא מאפשרות לעמודי אינטרנט להיות בשימוש של הפקודה fopen(). מנהל המערכת חייב לערוך את קובץ ה-php.ini ולקבוע את allow_url_fopen על On',
@@ -1383,14 +1362,15 @@ $LANG_TRB = array(
     'trackbacks' => 'הפניות',
     'editor_intro' => 'הכינו את ההפנייה עם תגובה שלכם עבור <a href="%s">%s</a>.',
     'editor_intro_none' => 'הכינו את ההפנייה עם תגובה שלכם.',
-    'trackback_note' => 'כדי לשלוח הפנייה עם תגובה למאמר, לכו לרשימת המאמרים וליחצו על "' . $LANG24[21] . '" במאמר הרצוי. כדי לשלוח הפנייה שאינה קשורה למאמר, <a href="%s">ליחצו כאן</a>.',
+    'trackback_note' => 'כדי לשלוח הפנייה עם תגובה למאמר, לכו לרשימת המאמרים וליחצו על "שילחו פינג" במאמר הרצוי. כדי לשלוח הפנייה שאינה קשורה למאמר, <a href="%s">ליחצו כאן</a>.',
     'pingback_explain' => 'כיתבו כתובת לשליחת הפינג החוזר. הפינג החוזר יכוון לאתר הבית שלכם.',
     'pingback_url' => 'כתובת לפינג חוזר',
     'site_url' => 'כתובת אתר זה',
-    'pingback_note' => 'כדי לשלוח פינג חוזר למאמר, לכו לרשימת המאמרים וליחצו על "' . $LANG24[21] . '" במאמר הרצוי. כדי לשלוח פינג חוזר שלא קשור למאמר, <a href="%s">ליחצו כאן</a>.',
+    'pingback_note' => 'כדי לשלוח פינג חוזר למאמר, לכו לרשימת המאמרים וליחצו על "שילחו פינג" במאמר הרצוי. כדי לשלוח פינג חוזר שלא קשור למאמר, <a href="%s">ליחצו כאן</a>.',
     'pbtarget_missing' => 'אין כתובת לשליחת פינג חוזר',
     'pbtarget_required' => 'אנא הכניסו כתובת לשליחת פינג חוזר',
-    'pb_error_details' => 'שגיאה בעת שליחת הפינג:'
+    'pb_error_details' => 'שגיאה בעת שליחת הפינג:',
+    'delete_trackback' => 'To delete this Trackback click: '
 );
 
 ###############################################################################
@@ -1430,6 +1410,37 @@ $LANG_WHATSNEW = array(
 );
 
 ###############################################################################
+# Month names
+
+$LANG_MONTH = array(
+    1 => 'ינואר',
+    2 => 'פברואר',
+    3 => 'מרץ',
+    4 => 'אפריל',
+    5 => 'מאי',
+    6 => 'יוני',
+    7 => 'יולי',
+    8 => 'אוגוסט',
+    9 => 'ספטמבר',
+    10 => 'אוקטובר',
+    11 => 'נובמבר',
+    12 => 'דצמבר'
+);
+
+###############################################################################
+# Weekdays
+
+$LANG_WEEK = array(
+    1 => 'ראשון',
+    2 => 'שני',
+    3 => 'שלישי',
+    4 => 'רביעי',
+    5 => 'חמישי',
+    6 => 'שישי',
+    7 => 'שבת'
+);
+
+###############################################################################
 # Admin - Strings
 # 
 # These are some standard strings used by core functions as well as plugins to
@@ -1440,8 +1451,10 @@ $LANG_ADMIN = array(
     'limit_results' => 'הגבלת תוצאות',
     'submit' => 'שליחה',
     'edit' => 'עריכה',
+    'edit_adv' => 'Adv. Edit',
     'admin_home' => 'מרכז ניהול',
     'create_new' => 'צרו חדש',
+    'create_new_adv' => 'Create New (Adv.)',
     'enabled' => 'מאופשר',
     'title' => 'כותרת',
     'type' => 'סוג',
@@ -1450,9 +1463,12 @@ $LANG_ADMIN = array(
     'save' => 'שמירה',
     'cancel' => 'ביטול',
     'delete' => 'מחיקה',
+    'delete_sel' => 'Delete selected',
     'copy' => 'העתקה',
     'no_results' => '- לא נמצאו נתונים -',
-    'data_error' => 'הייתה בעיה בעיבוד נתוני המנוי שלכם. אנא בידקו את מקור הנתונים.'
+    'data_error' => 'הייתה בעיה בעיבוד נתוני המנוי שלכם. אנא בידקו את מקור הנתונים.',
+    'preview' => 'Preview',
+    'records_found' => 'Records found'
 );
 
 ###############################################################################

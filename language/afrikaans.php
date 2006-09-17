@@ -104,7 +104,7 @@ $LANG01 = array(
     61 => 'Skep Nuwe Rekening',
     62 => 'woorde',
     63 => 'Kommentaar Voorkeure',
-    64 => "Epos Artikel aan 'n Vriend",
+    64 => 'Epos Artikel aan \'n Vriend',
     65 => 'Vertoon Drukbare Weergawe',
     66 => 'My Kalender',
     67 => 'Welkom by',
@@ -163,28 +163,10 @@ $LANG01 = array(
     120 => 'Permanente skakel na hierdie kommentaar',
     121 => 'Kommentaar (%d)',
     122 => 'Trackbacks (%d)',
-    123 => 'Alle HTML word toegelaat'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => 'Kalender van Gebeure',
-    2 => "Ek's jammer daar is geen gebeure om te vertoon nie",
-    3 => 'Wanneer',
-    4 => 'Waar',
-    5 => 'Beskrywing',
-    6 => "Sit 'n Gebeurtenis by",
-    7 => 'Opkomende Gebeure',
-    8 => 'Deur hierdie gebeurtenis by jou kalender te voeg kan jy vinnig die gebeure wat jou interesseer vertoon deur op "My Kalender" by die Gebruikersfunksies te kliek.',
-    9 => 'Sit by My Kalender',
-    10 => 'Verwyder uit My Kalender',
-    11 => "Besig om 'n Gebeurtenis by {$_USER['username']} se Kalender te sit",
-    12 => 'Gebeure',
-    13 => 'Begin',
-    14 => 'Eindig',
-    15 => 'Terug na Kalender'
+    123 => 'Alle HTML word toegelaat',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
@@ -221,7 +203,7 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# usersettings.php
+# users.php
 
 $LANG04 = array(
     1 => 'Gebruikersprofiel van',
@@ -342,11 +324,44 @@ $LANG04 = array(
     116 => 'Rekening Wag op Aktivering',
     117 => 'Jou rekening is tans gelys vir aktivering deur die administrateur. Jy sal nie kan inteken alvorens jou rekening goedgekeur is nie.',
     118 => "Jou {$_CONF['site_name']} rekening is nou geaktiveer deur \'n administrateur. Jy mag nou inteken op die werf by die url hieronder deur jou gebruikernaam en wagwoord te gebruik soos voorheen aan jou ge-epos.",
-    119 => "As jy jou wagwoord vergeet het, kan jy \'n nuwe een aanvra by die volgende url:",
+    119 => 'As jy jou wagwoord vergeet het, kan jy \\'n nuwe een aanvra by die volgende url:',
     120 => 'Rekening Geaktiveer',
     121 => 'Diens',
     122 => 'Jammer, nuwe gebruiker registrasie is gedeaktiveer',
-    123 => "Is jy 'n <a href=\"{$_CONF['site_url']}/users.php?mode=new\">nuwe gebruiker</a>?"
+    123 => "Is jy 'n <a href=\"{$_CONF['site_url']}/users.php?mode=new\">nuwe gebruiker</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Preview',
+    152 => 'Username & Password',
+    153 => 'Layout & Language',
+    154 => 'Content',
+    155 => 'Privacy',
+    156 => 'Delete Account'
 );
 
 ###############################################################################
@@ -663,38 +678,9 @@ $LANG21 = array(
     62 => 'Artikel Limiet',
     63 => 'Ongeldige Bloktitel',
     64 => 'Jou Titel mag nie leeg wees of HTML bevat nie!',
-    65 => 'Volgorde'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => 'Gebeure bestuur',
-    2 => 'Fout',
-    3 => 'Post Modus',
-    4 => 'Gebeurtenis URL',
-    5 => 'Gebeurtenis Begindatum',
-    6 => 'Gebeurtenis Einddatum',
-    7 => 'Gebeurtenis Ligging',
-    8 => 'Gebeurtenis Beskrywing',
-    9 => '(sluit http:// in)',
-    10 => 'U moet die datum/tye, gebeurtenistitel en beskrywing verskaf',
-    11 => 'Gebeurtenis Bestuur',
-    12 => 'Om \'n gebeurtenis te wysig of te verwyder, kliek om daardie gebeurtenis se wysig ikoon hierdonder.  Om \'n nuwe gebeurtenis te skep, kliek op "Skep Nuwe" hierbo.  Kliek op die kopie&euml;r ikoon om \'n kopie van \'n bestaande gebeurtenis te skep.',
-    13 => 'Bydraer',
-    14 => 'Begindatum',
-    15 => 'Einddatum',
-    16 => '',
-    17 => "U probeer om toegang te verkry tot 'n gebeurtenis waartoe u nie regte het nie.  Hierdie poging is aangeteken. Gaan asseblief terug <a href=\"{$_CONF['site_admin_url']}/event.php\">na die gebeurtenisbestuurskerm</a>.",
-    18 => '',
-    19 => '',
-    20 => 'stoor',
-    21 => 'kanselleer',
-    22 => 'verwyder',
-    23 => 'Ongeldige begindatum.',
-    24 => 'Ongeldige einddatum.',
-    25 => 'Einddatum is voor die begindatum.'
+    65 => 'Volgorde',
+    66 => 'Autotags',
+    67 => 'Check to allow autotags'
 );
 
 ###############################################################################
@@ -785,9 +771,10 @@ $LANG24 = array(
     82 => 'Beelde',
     83 => 'Argiefvoorkeure',
     84 => 'Regte',
-    85 => 'Wys Alles'
+    85 => 'Wys Alles',
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
-
 
 ###############################################################################
 # admin/topic.php
@@ -875,6 +862,35 @@ $LANG28 = array(
     45 => 'Aktief',
     46 => 'Gebruikerstatus',
     47 => 'Wysig',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -901,53 +917,6 @@ $LANG29 = array(
     38 => 'Stuur',
     39 => 'Daar is geen bydraes op hierdie tydstip wat aksie vereis nie',
     40 => 'Gebruikersbydraes'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Sondag',
-    2 => 'Maandag',
-    3 => 'Dinsdag',
-    4 => 'Woensdag',
-    5 => 'Donderdag',
-    6 => 'Vrydag',
-    7 => 'Saterdag',
-    8 => 'Sit Gebeurtenis By',
-    9 => '%s Gebeurtenis',
-    10 => 'Gebeure vir',
-    11 => 'MeesterKalender',
-    12 => 'My Kalender',
-    13 => 'Januarie',
-    14 => 'Februarie',
-    15 => 'Maart',
-    16 => 'April',
-    17 => 'Mei',
-    18 => 'Junie',
-    19 => 'Julie',
-    20 => 'Augustus',
-    21 => 'September',
-    22 => 'Oktober',
-    23 => 'November',
-    24 => 'Desember',
-    25 => 'Terug na ',
-    26 => 'Heeldag',
-    27 => 'Week',
-    28 => 'Persoonlike Kalender van',
-    29 => 'Openbare Kalender',
-    30 => 'verwyder gebeurtenis',
-    31 => 'Sit by',
-    32 => 'Gebeurtenis',
-    33 => 'Datum',
-    34 => 'Tyd',
-    35 => 'Vinnig Byvoeg',
-    36 => 'Stuur',
-    37 => 'Jammer, die persoonlike kalender funksie is nie op hierdie werf geaktiveer nie',
-    38 => 'Persoonlike Gebeurtenis Wysiging',
-    39 => 'Dag',
-    40 => 'Week',
-    41 => 'Maand'
 );
 
 ###############################################################################
@@ -1074,7 +1043,9 @@ $LANG33 = array(
     47 => 'Soek',
     48 => 'Wysig',
     49 => 'Nuusvoer Logo',
-    50 => "Relatief tot werf se url ({$_CONF['site_url']})"
+    50 => "Relatief tot werf se url ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
+    52 => 'Error: existing Filename'
 );
 
 ###############################################################################
@@ -1083,7 +1054,7 @@ $LANG33 = array(
 $MESSAGE = array(
     1 => "U wagwoord is aan u gepos en u behoort dit binnekort te ontvang. Volg asseblief die aanwysings in die boodskap.  Dankie dat u {$_CONF['site_name']} gebruik.",
     2 => "Dankie vir die artikel wat u voorgel&ecirc; het vir plasing op {$_CONF['site_name']}.  Dit sal ter goedkeuring aan ons personeel voorgel&ecirc; word. Indien dit goedgekeur word, sal u artikel beskikbaar wees sodat ander dit op ons werf kan lees.",
-    3 => "",
+    3 => '',
     4 => "Dankie vir die gebeurtenis wat u vir plasing op {$_CONF['site_name']} voorgel&ecirc; het.  Dit sal ter goedkeuring aan ons personeel voorgel&ecirc; word.  Indien dit goedgekeur word, sal u gebeurtenis in ons <a href=\"{$_CONF['site_url']}/calendar.php\">kalender</a> verskyn.",
     5 => 'U rekeninginligting is suksesvol gestoor.',
     6 => 'U voorkeure is suksesvol gestoor.',
@@ -1155,7 +1126,16 @@ $MESSAGE = array(
     72 => '\'n Fout het voorgekom tydens die poging om die prop te installeer.  Sien error.log vir besonderhede.',
     73 => '\'n Fout het voorgekom met die poging om die prop te verwyder.  Sien error.log vir besonderhede.',
     74 => 'Die skakelkennisgewing is suksesvol gestuur.',
-    75 => 'Terugsporings moet gestuur word deur die POST versoek.'
+    75 => 'Terugsporings moet gestuur word deur die POST versoek.',
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################
@@ -1197,7 +1177,6 @@ $LANG_ACCESS = array(
     'none' => 'Geen',
     'accessdenied' => 'Toegang Geweier',
     'storydenialmsg' => "U het nie toegang tot hierdie artikel nie.  Dit kan wees omdat u nie 'n lid van {$_CONF['site_name']} is nie.  Registreer asseblief <a href=\"{$_CONF['site_url']}/users.php?mode=new\">as 'n lid</a> of {$_CONF['site_name']} om volle ledetoegang  te verkry!",
-    'eventdenialmsg' => "U het nie toegang om hierdie gebeurtenis te vertoon nie.  Dit kan wees omdat u nie 'n lid van {$_CONF['site_name']} is nie.  Registreer asseblief <a href=\"{$_CONF['site_url']}/users.php?mode=new\">as 'n lid</a> of {$_CONF['site_name']} om volle ledetoegang  te verkry!",
     'nogroupsforcoregroup' => 'Hierdie groep behoort nie aan enige ander groep nie',
     'grouphasnorights' => 'Hierdie groep het nie toegang tot enige van die administratiewe funksies van hierdie werf nie',
     'newgroup' => 'Nuwe Groep',
@@ -1271,6 +1250,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Intekening word vereis',
@@ -1278,6 +1258,9 @@ $LANG_LOGIN = array(
     3 => 'Intekening',
     4 => 'Nuwe Gebruiker'
 );
+
+###############################################################################
+# pdfgenerator.php
 
 $LANG_PDF = array(
     1 => 'Die PDF funksie is gedeaktiveer',
@@ -1297,183 +1280,221 @@ $LANG_PDF = array(
 );
 
 ###############################################################################
-# trackback
+# trackback.php
 
-$LANG_TRB = array (
-    'trackback'          => 'Terugspoor',
-    'from'               => 'vanaf',
-    'tracked_on'         => 'Gespoor op',
-    'read_more'          => '[lees verder]',
-    'intro_text'         => "Hier is wat ander oor '%s' te s&ecirc; gehad het:",
-    'no_comments'        => 'Geen terugspoorkommentaar vir hierdie inskrywing nie.',
+$LANG_TRB = array(
+    'trackback' => 'Terugspoor',
+    'from' => 'vanaf',
+    'tracked_on' => 'Gespoor op',
+    'read_more' => '[lees verder]',
+    'intro_text' => 'Hier is wat ander oor \'%s\' te s&ecirc; gehad het:',
+    'no_comments' => 'Geen terugspoorkommentaar vir hierdie inskrywing nie.',
     'this_trackback_url' => 'Terugspoor URL vir hierdie inskrywing:',
-    'num_comments'       => '%d terugspoorkommentare',
-    'send_trackback'     => 'Stuur Skakelkennisgewings',
-    'preview'            => 'Voorskou',
-    'editor_title'       => 'Stuur terugspoorkommentaar',
-    'trackback_url'      => 'Terugspoor URL',
-    'entry_url'          => 'Inskrywing URL',
-    'entry_title'        => 'Inskrywing Titel',
-    'blog_name'          => 'Werfnaam',
-    'excerpt'            => 'Uittreksel',
-    'truncate_warning'   => 'Let wel: Die werf wat ontvang kan dalk u uittreksel kortknip',
-    'button_send'        => 'Stuur',
-    'button_preview'     => 'Voorskou',
-    'send_error'         => 'Fout',
+    'num_comments' => '%d terugspoorkommentare',
+    'send_trackback' => 'Stuur Skakelkennisgewings',
+    'preview' => 'Voorskou',
+    'editor_title' => 'Stuur terugspoorkommentaar',
+    'trackback_url' => 'Terugspoor URL',
+    'entry_url' => 'Inskrywing URL',
+    'entry_title' => 'Inskrywing Titel',
+    'blog_name' => 'Werfnaam',
+    'excerpt' => 'Uittreksel',
+    'truncate_warning' => 'Let wel: Die werf wat ontvang kan dalk u uittreksel kortknip',
+    'button_send' => 'Stuur',
+    'button_preview' => 'Voorskou',
+    'send_error' => 'Fout',
     'send_error_details' => 'Fout tydens stuur van terugspoorkommentaar:',
-    'url_missing'        => 'Geen Inskrywing URL',
-    'url_required'       => 'Verskaf asseblief ten minste \'n URL vir die inskrywing.',
-    'target_missing'     => 'Geen Terugspoor URL',
-    'target_required'    => 'Sleutel asseblief \'n terugspoor URL in',
-    'error_socket'       => 'Kon nie socket oopmaak nie.',
-    'error_response'     => 'Terugvoer nie verstaan.',
-    'error_unspecified'  => 'Onbekende fout.',
-    'select_url'         => 'Kies Terugspoor URL',
-    'not_found'          => 'Terugspoor URL nie gevind',
-    'autodetect_failed'  => 'Geeklog kon nie die Terugspoor URL opspoor vir die inskrywing waarna u, u kommentaar wil stuur nie.  Sleutel dit asseblief per hand hieronder in.',
-    'trackback_explain'  => 'Kies asseblief uit die skakels hieronder die URL waarheen u, u Terugspoorkommentaar wil stuur. Geeklog sal dan poog om die korrekte Terugspoor URL vir daardie inskrywing op te spoor. Of u kan <a href="%s">dit met die hand insleutel</a> as u dit reeds ken.',
+    'url_missing' => 'Geen Inskrywing URL',
+    'url_required' => 'Verskaf asseblief ten minste \'n URL vir die inskrywing.',
+    'target_missing' => 'Geen Terugspoor URL',
+    'target_required' => 'Sleutel asseblief \'n terugspoor URL in',
+    'error_socket' => 'Kon nie socket oopmaak nie.',
+    'error_response' => 'Terugvoer nie verstaan.',
+    'error_unspecified' => 'Onbekende fout.',
+    'select_url' => 'Kies Terugspoor URL',
+    'not_found' => 'Terugspoor URL nie gevind',
+    'autodetect_failed' => 'Geeklog kon nie die Terugspoor URL opspoor vir die inskrywing waarna u, u kommentaar wil stuur nie.  Sleutel dit asseblief per hand hieronder in.',
+    'trackback_explain' => 'Kies asseblief uit die skakels hieronder die URL waarheen u, u Terugspoorkommentaar wil stuur. Geeklog sal dan poog om die korrekte Terugspoor URL vir daardie inskrywing op te spoor. Of u kan <a href="%s">dit met die hand insleutel</a> as u dit reeds ken.',
     'no_links_trackback' => 'Geen skakels opgespoor nie.  U kan nie \'n Terugspoorkommentaar vir hierdie inskrywing stuur nie.',
-    'pingback'           => 'Skakelkennisgewing',
-    'pingback_results'   => 'Skakelkennisgewing resultate',
-    'send_pings'         => 'Stuur Skakelkennisgewings',
-    'send_pings_for'     => 'Stuur Skakelkennisgewing vir "%s"',
-    'no_links_pingback'  => 'Geen skakels opgespoor.  Geen Skakelkennisgewing is vir hierdie inskrywing gestuur nie.',
-    'pingback_success'   => 'Skakelkennisgewing gestuur.',
-    'no_pingback_url'    => 'Geen skakelkennisgewing URL gevind.',
-    'resend'             => 'Stuur weer',
-    'ping_all_explain'   => 'U kan nou werwe waarna u skakel daarvan in kennis stel deur (<a href="http://af.wikipedia.org/wiki/Skakelkennisgewing">Skakelkennisgewing</a>), adverteer dat u werf opgedateer is deur boernaalgids dienste te raadpleeg of \'n <a href="http://af.wikipedia.org/wiki/Terugspoorkommentaar">Terugspoorkommentaar</a> te stuur in geval u kommentaar gelewer het op \'n inskrywing op iemand anders se werf.',
-    'pingback_button'    => 'Stuur Skakelkennisgewing',
-    'pingback_short'     => 'Stuur Skakelkennisgewing na al die werwe wat waarna in hierdie inskrywing geskakel word.',
-    'pingback_disabled'  => '(Skakelkennisgewings gedeaktiveer)',
-    'ping_button'        => 'Stuur Kennisgewing',
-    'ping_short'         => 'Stel boernaalgids dienste in kennis.',
-    'ping_disabled'      => '(Kennisgewing  gedeaktiveer)',
-    'trackback_button'   => 'Stuur Terugsporing',
-    'trackback_short'    => 'Stuur \'n Terugspoorkommentaar.',
+    'pingback' => 'Skakelkennisgewing',
+    'pingback_results' => 'Skakelkennisgewing resultate',
+    'send_pings' => 'Stuur Skakelkennisgewings',
+    'send_pings_for' => 'Stuur Skakelkennisgewing vir "%s"',
+    'no_links_pingback' => 'Geen skakels opgespoor.  Geen Skakelkennisgewing is vir hierdie inskrywing gestuur nie.',
+    'pingback_success' => 'Skakelkennisgewing gestuur.',
+    'no_pingback_url' => 'Geen skakelkennisgewing URL gevind.',
+    'resend' => 'Stuur weer',
+    'ping_all_explain' => 'U kan nou werwe waarna u skakel daarvan in kennis stel deur (<a href="http://af.wikipedia.org/wiki/Skakelkennisgewing">Skakelkennisgewing</a>), adverteer dat u werf opgedateer is deur boernaalgids dienste te raadpleeg of \'n <a href="http://af.wikipedia.org/wiki/Terugspoorkommentaar">Terugspoorkommentaar</a> te stuur in geval u kommentaar gelewer het op \'n inskrywing op iemand anders se werf.',
+    'pingback_button' => 'Stuur Skakelkennisgewing',
+    'pingback_short' => 'Stuur Skakelkennisgewing na al die werwe wat waarna in hierdie inskrywing geskakel word.',
+    'pingback_disabled' => '(Skakelkennisgewings gedeaktiveer)',
+    'ping_button' => 'Stuur Kennisgewing',
+    'ping_short' => 'Stel boernaalgids dienste in kennis.',
+    'ping_disabled' => '(Kennisgewing  gedeaktiveer)',
+    'trackback_button' => 'Stuur Terugsporing',
+    'trackback_short' => 'Stuur \'n Terugspoorkommentaar.',
     'trackback_disabled' => '(Terugspoor gedeaktiveer)',
-    'may_take_a_while'   => 'Neem kennis dat Skakelkennisgewings en Kennisgewings \'n tydjie mag neem.',
-    'ping_results'       => 'Kennisgewingresultate',
-    'unknown_method'     => 'Onbekende kennisgewingmetode',
-    'ping_success'       => 'Kennisgewing gestuur.',
-    'error_site_name'    => 'Sleutel die werf se naam in.',
-    'error_site_url'     => 'Sleutel die werf se URL in.',
-    'error_ping_url'     => 'Sleutel \'n geldige Kennisgewing URL in.',
-    'no_services'        => 'Geen boernaalgidsdiens is opgestel nie.',
-    'services_headline'  => 'Boernaalgidsdienste',
-    'service_explain'    => 'Om \'n boernaalgidsdiens te wysig of te verwyder kliek op die wysig ikoon van daardie diens hieronder. Om \'n nuwe boernaal diensgids by te voeg, kliek op "Skep Nuwe" hierbo.',
-    'service'            => 'Diens',
-    'ping_method'        => 'Kennisgewingsmetode',
-    'service_website'    => 'Webwerf',
-    'service_ping_url'   => 'URL om in kennis te stel',
-    'ping_standard'      => 'Standaard Kennisgewing',
-    'ping_extended'      => 'Uitgebreide Kennisgewing',
-    'ping_unknown'       => '(onbekende metode)',
-    'edit_service'       => 'Wysig Boernaalgidsdiens',
-    'trackbacks'         => 'Terugsporings',
-    'editor_intro'       => 'Berei u terugspoorkommentaar vir <a href="%s">%s</a> voor.',
-    'editor_intro_none'  => 'Berei u terugspoorkommentaar voor.',
-    'trackback_note'     => 'Om \'n terugspoorkommentaar vir \'n artikel te stuur, gaan na die lys van artikels en kliek op "' . $LANG24[21] . '" vir die artikel. Om \'n terugspoor te stuur wat nie verband hou met \'n artikel nie, <a href="%s">kliek hier</a>.',
-    'pingback_explain'   => 'Sleutel \'n URL in waarna die Skakelkennisgewing gestuur moet word.  Die kennisgewing sal sal na u werf se tuisblad verwys.',
-    'pingback_url'       => 'Skakelkennisgewing URL',
-    'site_url'           => 'Hierdie werf se URL',
-    'pingback_note'      => 'Om \'n skakelkennisgewing vir \'n artikel te stuur gaan na die lys van artikels en kliek op stories en kliek op "' . $LANG24[21] . '" vir die artikel. Om \'n skakelkennisgewing te stuur wat nie verband hou met \'n artikel nie, <a href="%s">kliek hier</a>.',
-    'pbtarget_missing'   => 'Geen Skakelkennisgewing URL',
-    'pbtarget_required'  => 'Sleutel asseblief \'n skakelkennisgewing URL in',
-    'pb_error_details'   => 'Fout tydens stuur van skakelkennisgewing:'
+    'may_take_a_while' => 'Neem kennis dat Skakelkennisgewings en Kennisgewings \'n tydjie mag neem.',
+    'ping_results' => 'Kennisgewingresultate',
+    'unknown_method' => 'Onbekende kennisgewingmetode',
+    'ping_success' => 'Kennisgewing gestuur.',
+    'error_site_name' => 'Sleutel die werf se naam in.',
+    'error_site_url' => 'Sleutel die werf se URL in.',
+    'error_ping_url' => 'Sleutel \'n geldige Kennisgewing URL in.',
+    'no_services' => 'Geen boernaalgidsdiens is opgestel nie.',
+    'services_headline' => 'Boernaalgidsdienste',
+    'service_explain' => 'Om \'n boernaalgidsdiens te wysig of te verwyder kliek op die wysig ikoon van daardie diens hieronder. Om \'n nuwe boernaal diensgids by te voeg, kliek op "Skep Nuwe" hierbo.',
+    'service' => 'Diens',
+    'ping_method' => 'Kennisgewingsmetode',
+    'service_website' => 'Webwerf',
+    'service_ping_url' => 'URL om in kennis te stel',
+    'ping_standard' => 'Standaard Kennisgewing',
+    'ping_extended' => 'Uitgebreide Kennisgewing',
+    'ping_unknown' => '(onbekende metode)',
+    'edit_service' => 'Wysig Boernaalgidsdiens',
+    'trackbacks' => 'Terugsporings',
+    'editor_intro' => 'Berei u terugspoorkommentaar vir <a href="%s">%s</a> voor.',
+    'editor_intro_none' => 'Berei u terugspoorkommentaar voor.',
+    'trackback_note' => 'Om \'n terugspoorkommentaar vir \'n artikel te stuur, gaan na die lys van artikels en kliek op "Stuur Pieng" vir die artikel. Om \'n terugspoor te stuur wat nie verband hou met \'n artikel nie, <a href="%s">kliek hier</a>.',
+    'pingback_explain' => 'Sleutel \'n URL in waarna die Skakelkennisgewing gestuur moet word.  Die kennisgewing sal sal na u werf se tuisblad verwys.',
+    'pingback_url' => 'Skakelkennisgewing URL',
+    'site_url' => 'Hierdie werf se URL',
+    'pingback_note' => 'Om \'n skakelkennisgewing vir \'n artikel te stuur gaan na die lys van artikels en kliek op stories en kliek op "Stuur Pieng" vir die artikel. Om \'n skakelkennisgewing te stuur wat nie verband hou met \'n artikel nie, <a href="%s">kliek hier</a>.',
+    'pbtarget_missing' => 'Geen Skakelkennisgewing URL',
+    'pbtarget_required' => 'Sleutel asseblief \'n skakelkennisgewing URL in',
+    'pb_error_details' => 'Fout tydens stuur van skakelkennisgewing:',
+    'delete_trackback' => 'To delete this Trackback click: '
 );
 
 ###############################################################################
 # directory.php
 
-$LANG_DIR = array (
-    'title'            => 'Artikelgids',
-    'title_year'       => 'Artikelgids vir  %d',
+$LANG_DIR = array(
+    'title' => 'Artikelgids',
+    'title_year' => 'Artikelgids vir  %d',
     'title_month_year' => 'Artikelgids vir %s %d',
-    'nav_top'          => 'Terug na die Artikelgids',
-    'no_articles'      => 'Geen Artikels.'
+    'nav_top' => 'Terug na die Artikelgids',
+    'no_articles' => 'Geen Artikels.'
 );
 
-################################################################################
+###############################################################################
 # "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
 
-$LANG_WHATSNEW = array (
-    # This here determines the order of the sentence "No new stories in 2 hrs"
-    # order it so it makes sense in your language:
-    # %i    item, "Stories"
-    # %n    amount, "2", "20" etc
-    # %t    time, "2" (weeks)
-    # %s    scale, "hrs", "weeks"
-    'new_string'  => '%n nuwe %i in die laaste %t %s',
-    'new_last'    => 'laaste %t %s',
-    # other strings
-    'minutes'     => 'minute',
-    'hours'       => 'ure',
-    'days'        => 'dae',
-    'weeks'       => 'weke',
-    'months'      => 'maande',
-    'minute'      => 'minuut',
-    'hour'        => 'uur',
-    'day'         => 'dag',
-    'week'        => 'week',
-    'month'       => 'maand'
+$LANG_WHATSNEW = array(
+    'new_string' => '%n nuwe %i in die laaste %t %s',
+    'new_last' => 'laaste %t %s',
+    'minutes' => 'minute',
+    'hours' => 'ure',
+    'days' => 'dae',
+    'weeks' => 'weke',
+    'months' => 'maande',
+    'minute' => 'minuut',
+    'hour' => 'uur',
+    'day' => 'dag',
+    'week' => 'week',
+    'month' => 'maand'
 );
 
-################################################################################
+###############################################################################
+# Month names
+
+$LANG_MONTH = array(
+    1 => 'Januarie',
+    2 => 'Februarie',
+    3 => 'Maart',
+    4 => 'April',
+    5 => 'Mei',
+    6 => 'Junie',
+    7 => 'Julie',
+    8 => 'Augustus',
+    9 => 'September',
+    10 => 'Oktober',
+    11 => 'November',
+    12 => 'Desember'
+);
+
+###############################################################################
+# Weekdays
+
+$LANG_WEEK = array(
+    1 => 'Sondag',
+    2 => 'Maandag',
+    3 => 'Dinsdag',
+    4 => 'Woensdag',
+    5 => 'Donderdag',
+    6 => 'Vrydag',
+    7 => 'Saterdag'
+);
+
+###############################################################################
 # Admin - Strings
-#
+# 
 # These are some standard strings used by core functions as well as plugins to
-# display adminiatration lists and edit pages
+# display administration lists and edit pages
 
-$LANG_ADMIN = array (
-    'search'        => 'Soektog',
+$LANG_ADMIN = array(
+    'search' => 'Soektog',
     'limit_results' => 'Beperk Resultate',
-    'submit'        => 'Stuur',
-    'edit'          => 'Wysig',
-    'admin_home'    => 'Admin Tuisblad',
-    'create_new'    => 'Skryf iets',
-    'enabled'       => 'Aktief',
-    'title'         => 'Titel',
-    'type'          => 'Tipe',
-    'topic'         => 'Onderwerp',
-    'help_url'      => 'Hulpl&ecirc;er URL',
-    'save'          => 'Stoor',
-    'cancel'        => 'Kanselleer',
-    'delete'        => 'Verwyder',
-    'copy'          => 'Kopi&euml;er',
-    'no_results'    => '- Geen inskrywings opgespoor -',
-    'data_error'    => 'Daar was \'n fout tydens die verwerking van die intekenlysdata. Gaan asseblief databron na.'
-
+    'submit' => 'Stuur',
+    'edit' => 'Wysig',
+    'edit_adv' => 'Adv. Edit',
+    'admin_home' => 'Admin Tuisblad',
+    'create_new' => 'Skryf iets',
+    'create_new_adv' => 'Create New (Adv.)',
+    'enabled' => 'Aktief',
+    'title' => 'Titel',
+    'type' => 'Tipe',
+    'topic' => 'Onderwerp',
+    'help_url' => 'Hulpl&ecirc;er URL',
+    'save' => 'Stoor',
+    'cancel' => 'Kanselleer',
+    'delete' => 'Verwyder',
+    'delete_sel' => 'Delete selected',
+    'copy' => 'Kopi&euml;er',
+    'no_results' => '- Geen inskrywings opgespoor -',
+    'data_error' => 'Daar was \'n fout tydens die verwerking van die intekenlysdata. Gaan asseblief databron na.',
+    'preview' => 'Preview',
+    'records_found' => 'Records found'
 );
 
+###############################################################################
 # Localisation of the texts for the various drop-down menus that are actually
 # stored in the database. If these exist, they override the texts from the
 # database.
 
 $LANG_commentcodes = array(
-    0   => 'Kommentaar Aktief',
-    -1  => 'Kommentaar Onaktief'
+    0 => 'Kommentaar Aktief',
+    -1 => 'Kommentaar Onaktief'
 );
 
+
 $LANG_commentmodes = array(
-    'flat'      => 'Plat',
-    'nested'    => 'Genestel',
-    'threaded'  => 'Geryg',
+    'flat' => 'Plat',
+    'nested' => 'Genestel',
+    'threaded' => 'Geryg',
     'nocomment' => 'Geen Kommentaar'
 );
 
 $LANG_cookiecodes = array(
-    0       => '(moenie)',
-    3600    => '1 Uur',
-    7200    => '2 Ure',
-    10800   => '3 Ure',
-    28800   => '8 Ure',
-    86400   => '1 Dag',
-    604800  => '1 Week',
+    0 => '(moenie)',
+    3600 => '1 Uur',
+    7200 => '2 Ure',
+    10800 => '3 Ure',
+    28800 => '8 Ure',
+    86400 => '1 Dag',
+    604800 => '1 Week',
     2678400 => '1 Maand'
 );
 
 $LANG_dateformats = array(
-    0   => 'Stelselstandaard'
+    0 => 'Stelselstandaard'
 );
 
 $LANG_featurecodes = array(
@@ -1488,17 +1509,17 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Gewone Teks',
-    'html'      => 'HTML Formaat'
+    'html' => 'HTML Formaat'
 );
 
 $LANG_sortcodes = array(
-    'ASC'  => 'Oudste Eerste',
+    'ASC' => 'Oudste Eerste',
     'DESC' => 'Nuutste Eerste'
 );
 
 $LANG_trackbackcodes = array(
-    0   => 'Terugsporings Aktief',
-    -1  => 'Terugsporings Onaktief'
+    0 => 'Terugsporings Aktief',
+    -1 => 'Terugsporings Onaktief'
 );
 
 ?>

@@ -166,28 +166,10 @@ $LANG01 = array(
     120 => 'Permanent link to this comment',
     121 => 'Comments (%d)',
     122 => 'Trackbacks (%d)',
-    123 => 'All HTML is allowed'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => '事件日历',
-    2 => '抱歉，没有事件。',
-    3 => '时',
-    4 => '地',
-    5 => '事',
-    6 => '新增事件',
-    7 => '即将发生的事',
-    8 => '在将这事加进你的日历之後，你可点击 "我的日历" 来观看',
-    9 => '加进我的日历',
-    10 => '从我的日历中去除',
-    11 => "把这事加进 {$_USER['username']} 的日历",
-    12 => '事件',
-    13 => '开始',
-    14 => '结束',
-    15 => '回到日历'
+    123 => 'All HTML is allowed',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
@@ -349,7 +331,40 @@ $LANG04 = array(
     120 => 'Account Activated',
     121 => 'Service',
     122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?"
+    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Preview',
+    152 => 'Username & Password',
+    153 => 'Layout & Language',
+    154 => 'Content',
+    155 => 'Privacy',
+    156 => 'Delete Account'
 );
 
 ###############################################################################
@@ -666,38 +681,9 @@ $LANG21 = array(
     62 => 'Article Limit',
     63 => 'Bad Block Title',
     64 => 'Your Title must not be empty and cannot contain HTML!',
-    65 => 'Order'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => '事件编辑器',
-    2 => 'Error',
-    3 => '事件标题',
-    4 => '事件 URL',
-    5 => '事件开始日期',
-    6 => '事件结束日期',
-    7 => '事件地点',
-    8 => '事件描述',
-    9 => '(包括 http://)',
-    10 => '你必须提供日期时间、事件主题、与事件描述！',
-    11 => '事件管理员',
-    12 => '点击下面的事件可修改或删除它，点击上面的新事件可创造一个新的。',
-    13 => '事件标题',
-    14 => '开始日期',
-    15 => '结束日期',
-    16 => '存取被拒绝',
-    17 => "企图存取不允许的事件已被记录。请<a href=\"{$_CONF['site_admin_url']}/event.php\">反回事件管理员昼面</a>。",
-    18 => '新事件',
-    19 => '管理员首页',
-    20 => '保存',
-    21 => '取消',
-    22 => '删除',
-    23 => '错误的开始日期.',
-    24 => '错误的结束日期.',
-    25 => '结束日期在开始日期前.'
+    65 => 'Order',
+    66 => 'Autotags',
+    67 => 'Check to allow autotags'
 );
 
 ###############################################################################
@@ -788,7 +774,9 @@ $LANG24 = array(
     82 => 'Images',
     83 => 'Archive Options',
     84 => 'Permissions',
-    85 => 'Show All'
+    85 => 'Show All',
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
 
 ###############################################################################
@@ -876,7 +864,36 @@ $LANG28 = array(
     44 => 'Awaiting Authorization',
     45 => 'Active',
     46 => 'User Status',
-    47 => 'Edit'
+    47 => 'Edit',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -903,53 +920,6 @@ $LANG29 = array(
     38 => '递交',
     39 => '此时没有递交的东西',
     40 => '申请的用户'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Sunday',
-    2 => 'Monday',
-    3 => 'Tuesday',
-    4 => 'Wednesday',
-    5 => 'Thursday',
-    6 => 'Friday',
-    7 => 'Saturday',
-    8 => '新增事件',
-    9 => 'Geeklog 事件',
-    10 => '事件给',
-    11 => '主日历',
-    12 => '我的日历',
-    13 => '一月',
-    14 => '二月',
-    15 => '三月',
-    16 => '四月',
-    17 => '五月',
-    18 => '六月',
-    19 => '七月',
-    20 => '八月',
-    21 => '九月',
-    22 => '十月',
-    23 => '十一月',
-    24 => '十二月',
-    25 => '回到',
-    26 => '整日',
-    27 => '星期',
-    28 => '个人日历︰',
-    29 => '公众日历',
-    30 => '删除事件',
-    31 => '新增',
-    32 => '事件',
-    33 => '星期',
-    34 => '时间',
-    35 => '迅速增加',
-    36 => '递交',
-    37 => '抱歉，本站并不提供个人日历。',
-    38 => '个人事件编辑器',
-    39 => '日',
-    40 => '周',
-    41 => '月'
 );
 
 ###############################################################################
@@ -1076,7 +1046,9 @@ $LANG33 = array(
     47 => 'Search',
     48 => 'Edit',
     49 => 'Feed Logo',
-    50 => "Relative to site url ({$_CONF['site_url']})"
+    50 => "Relative to site url ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
+    52 => 'Error: existing Filename'
 );
 
 ###############################################################################
@@ -1157,7 +1129,16 @@ $MESSAGE = array(
     72 => 'An error occured while attempting to install the plugin. See error.log for details.',
     73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
     74 => 'The pingback has been successfully sent.',
-    75 => 'Trackbacks must be sent using a POST request.'
+    75 => 'Trackbacks must be sent using a POST request.',
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################
@@ -1199,7 +1180,6 @@ $LANG_ACCESS = array(
     'none' => '没有',
     'accessdenied' => '存取被拒绝',
     'storydenialmsg' => "因未被批准，你不可以观看这个文章。这是可能是因为你并不是 {$_CONF['site_name']} 的会员。请<a href=users.php?mode=new>成为会员</a>。",
-    'eventdenialmsg' => "因未被批准，你不可以观看这个事件。这是可能是因为你并不是 {$_CONF['site_name']} 的会员。请<a href=users.php?mode=new>成为会员</a>。",
     'nogroupsforcoregroup' => '这小组不属於任何其它的小组',
     'grouphasnorights' => ' 这小组没有管理权。',
     'newgroup' => '新小组',
@@ -1385,7 +1365,8 @@ $LANG_TRB = array(
     'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
     'pbtarget_missing' => 'No Pingback URL',
     'pbtarget_required' => 'Please enter a pingback URL',
-    'pb_error_details' => 'Error when sending the pingback:'
+    'pb_error_details' => 'Error when sending the pingback:',
+    'delete_trackback' => 'To delete this Trackback click: '
 );
 
 ###############################################################################
@@ -1425,6 +1406,37 @@ $LANG_WHATSNEW = array(
 );
 
 ###############################################################################
+# Month names
+
+$LANG_MONTH = array(
+    1 => '一月',
+    2 => '二月',
+    3 => '三月',
+    4 => '四月',
+    5 => '五月',
+    6 => '六月',
+    7 => '七月',
+    8 => '八月',
+    9 => '九月',
+    10 => '十月',
+    11 => '十一月',
+    12 => '十二月'
+);
+
+###############################################################################
+# Weekdays
+
+$LANG_WEEK = array(
+    1 => 'Sunday',
+    2 => 'Monday',
+    3 => 'Tuesday',
+    4 => 'Wednesday',
+    5 => 'Thursday',
+    6 => 'Friday',
+    7 => 'Saturday'
+);
+
+###############################################################################
 # Admin - Strings
 # 
 # These are some standard strings used by core functions as well as plugins to
@@ -1435,8 +1447,10 @@ $LANG_ADMIN = array(
     'limit_results' => 'Limit Results',
     'submit' => 'Submit',
     'edit' => 'Edit',
+    'edit_adv' => 'Adv. Edit',
     'admin_home' => 'Admin Home',
     'create_new' => 'Create New',
+    'create_new_adv' => 'Create New (Adv.)',
     'enabled' => 'Enabled',
     'title' => 'Title',
     'type' => 'Type',
@@ -1445,9 +1459,12 @@ $LANG_ADMIN = array(
     'save' => 'Save',
     'cancel' => 'Cancel',
     'delete' => 'Delete',
+    'delete_sel' => 'Delete selected',
     'copy' => 'Copy',
     'no_results' => '- No entries found -',
-    'data_error' => 'There was an error processing the subscription data. Please check the data source.'
+    'data_error' => 'There was an error processing the subscription data. Please check the data source.',
+    'preview' => 'Preview',
+    'records_found' => 'Records found'
 );
 
 ###############################################################################

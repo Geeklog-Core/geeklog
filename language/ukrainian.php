@@ -162,28 +162,10 @@ $LANG01 = array(
     120 => 'Постійне посилання на цей коментар',
     121 => 'Коментарі (%d)',
     122 => 'Трекбеки (%d)',
-    123 => 'Весь HTML дозволено'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG02 = array(
-    1 => 'Календар подій',
-    2 => 'Вибачте, немає подій для відображення.',
-    3 => 'Коли',
-    4 => 'Де',
-    5 => 'Опис',
-    6 => 'Додати подію',
-    7 => 'Майбутні події',
-    8 => 'Додавши цю подію у свій власний календар, ви зможете швидко продивитися лише ті події, які Вас цікавлять, обравши "Мій календар" у Функціях користувача.',
-    9 => 'Додати в Мій календар',
-    10 => 'Вилучити з Мого календаря',
-    11 => "Додати подію в Календар {$_USER['username']}",
-    12 => 'Подія',
-    13 => 'Початок',
-    14 => 'Кінець',
-    15 => 'Повернутися до календаря'
+    123 => 'Весь HTML дозволено',
+    124 => 'Click to delete all checked items',
+    125 => 'Are you sure you want to Delete all checked items?',
+    126 => 'Select or de-select all items'
 );
 
 ###############################################################################
@@ -345,7 +327,40 @@ $LANG04 = array(
     120 => 'Обліковий запис активовано',
     121 => 'Служба',
     122 => 'Вибачте, реєстрацію нових користувачів заборонено',
-    123 => "Ви <a href=\"{$_CONF['site_url']}/users.php?mode=new\">новий користувач</a>?"
+    123 => "Ви <a href=\"{$_CONF['site_url']}/users.php?mode=new\">новий користувач</a>?",
+    124 => 'Confirm Email',
+    125 => 'You have to enter the same email address in both fields!',
+    126 => 'Please repeat for confirmation',
+    127 => 'To change any of these settings, you will have to enter your current password.',
+    128 => 'Your Name',
+    129 => 'Password &amp; Email',
+    130 => 'About You',
+    131 => 'Daily Digest Options',
+    132 => 'Daily Digest Feature',
+    133 => 'Comment Display',
+    134 => 'Comment Options',
+    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
+    136 => 'Exclude Topics and Authors',
+    137 => 'Filter Story Content',
+    138 => 'Misc Settings',
+    139 => 'Layout and Language',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    141 => 'Privacy Settings',
+    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
+    143 => 'Filter Block Content',
+    144 => 'Show & hide boxes',
+    145 => 'Your Public Profile',
+    146 => 'Password and email',
+    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
+    148 => 'User Information',
+    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
+    150 => 'Warning: Javascript recommended for enhanced functionality',
+    151 => 'Preview',
+    152 => 'Username & Password',
+    153 => 'Layout & Language',
+    154 => 'Content',
+    155 => 'Privacy',
+    156 => 'Delete Account'
 );
 
 ###############################################################################
@@ -662,38 +677,9 @@ $LANG21 = array(
     62 => 'Обмеження статей',
     63 => 'неправильний заголовок',
     64 => 'Ваш заголовок повинен бути непорожнім і не містити HTML!',
-    65 => 'Порядок'
-);
-
-###############################################################################
-# admin/event.php
-
-$LANG22 = array(
-    1 => 'Редагування події',
-    2 => 'Помилка',
-    3 => 'Режим публікації',
-    4 => 'URL події',
-    5 => 'Дата початку події',
-    6 => 'Дата закінчення події',
-    7 => 'Місце події',
-    8 => 'Опис події',
-    9 => '(включаючи http://)',
-    10 => 'Ви повинні надати інформацію про дату/час, назву та опис події',
-    11 => 'Менеджер подій',
-    12 => 'Щоб змінити чи видалити подію, натисніть її іконку редагування нижче.  Щоб створити нову подію, натисніть "Створити нове" вгорі. Натисніть іконку копіювання щоб створити копію існуючої події.',
-    13 => 'Автор',
-    14 => 'Дата початку',
-    15 => 'Дата закінчення',
-    16 => '',
-    17 => "Ви намагалися отримати доступ до події, на яку у вас немає прав. Ця спроба була записана. Будь-ласка, <a href=\"{$_CONF['site_admin_url']}/event.php\">поверніться на сторінку адміністрування подій</a>.",
-    18 => '',
-    19 => '',
-    20 => 'зберегти',
-    21 => 'скасувати',
-    22 => 'вилучити',
-    23 => 'Неправильна дата початку.',
-    24 => 'Неправильна дата закінчення.',
-    25 => 'Дата закінчення передує даті початку.'
+    65 => 'Порядок',
+    66 => 'Autotags',
+    67 => 'Check to allow autotags'
 );
 
 ###############################################################################
@@ -784,7 +770,9 @@ $LANG24 = array(
     82 => 'Зображення',
     83 => 'Опції архівування',
     84 => 'Права доступу',
-    85 => 'Показати все'
+    85 => 'Показати все',
+    86 => 'Advanced Editor',
+    87 => 'Story Stats'
 );
 
 ###############################################################################
@@ -872,7 +860,36 @@ $LANG28 = array(
     44 => 'Очікує на авторизацію',
     45 => 'Активний',
     46 => 'Статус користувача',
-    47 => 'Редагувати'
+    47 => 'Редагувати',
+    48 => 'Show Admin Groups',
+    49 => 'Admin Group',
+    50 => 'Check to allow filtering this group as an Admin Use Group',
+    51 => 'Online Days',
+    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
+    53 => 'registered',
+    54 => 'Batch Delete',
+    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
+    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom users',
+    58 => 'Short-Time Users',
+    59 => 'Old Users',
+    60 => 'Users that registered more than ',
+    61 => ' months ago, but never logged in.',
+    62 => 'Users that registered more than ',
+    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
+    64 => 'Normal users, who simply did not visit your site since ',
+    65 => ' months.',
+    66 => 'Update List',
+    67 => 'Months since registration',
+    68 => 'Online Hours',
+    69 => 'Offline Months',
+    70 => 'could not be deleted',
+    71 => 'sucessfully deleted',
+    72 => 'No User selected for deletion',
+    73 => 'Are You sure you want to permanently delete ALL selected users?',
+    74 => 'Recent Users',
+    75 => 'Users that registered in the last ',
+    76 => ' months'
 );
 
 ###############################################################################
@@ -899,53 +916,6 @@ $LANG29 = array(
     38 => 'Виконати',
     39 => 'На даний момент модерувати нічого',
     40 => 'Користувачі для ухвалення'
-);
-
-###############################################################################
-# calendar.php
-
-$LANG30 = array(
-    1 => 'Неділя',
-    2 => 'Понеділок',
-    3 => 'Вівторок',
-    4 => 'Середа',
-    5 => 'Четвер',
-    6 => 'П\'ятниця',
-    7 => 'Субота',
-    8 => 'Додати подію',
-    9 => 'Подія %s',
-    10 => 'Події за',
-    11 => 'Головний календар',
-    12 => 'Мій Календар',
-    13 => 'Січень',
-    14 => 'Лютий',
-    15 => 'Березень',
-    16 => 'Квітень',
-    17 => 'Травень',
-    18 => 'Червень',
-    19 => 'Липень',
-    20 => 'Серпень',
-    21 => 'Вересень',
-    22 => 'Жовтень',
-    23 => 'Листопад',
-    24 => 'Грудень',
-    25 => 'Повернутися на ',
-    26 => 'Весь день',
-    27 => 'Тиждень',
-    28 => 'Особистий календар для',
-    29 => 'Загальний календар',
-    30 => 'вилучити подію',
-    31 => 'Додати',
-    32 => 'Подія',
-    33 => 'Дата',
-    34 => 'Час',
-    35 => 'Швидке додання',
-    36 => 'Надіслати',
-    37 => 'Вибачте, функція особистого календаря на даному сайті не працює',
-    38 => 'Редактор особистих подій',
-    39 => 'День',
-    40 => 'Тиждень',
-    41 => 'Місяць'
 );
 
 ###############################################################################
@@ -1072,7 +1042,9 @@ $LANG33 = array(
     47 => 'Пошук',
     48 => 'Редагувати',
     49 => 'Логотип стрічки',
-    50 => "Відносно до URL сайту ({$_CONF['site_url']})"
+    50 => "Відносно до URL сайту ({$_CONF['site_url']})",
+    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
+    52 => 'Error: existing Filename'
 );
 
 ###############################################################################
@@ -1153,7 +1125,16 @@ $MESSAGE = array(
     72 => 'Під час інсталяції модуля сталася помилка. За деталями зверніться до файла error.log.',
     73 => 'Під час деінсталяції модуля сталася помилка. За деталями зверніться до файла error.log.',
     74 => 'Пінгбек успішно відправлено.',
-    75 => 'Трекбеки повинні відправлятись через POST запит.'
+    75 => 'Трекбеки повинні відправлятись через POST запит.',
+    76 => 'Do you really want to delete this item?',
+    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
+    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
+    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
+    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
+    84 => 'To delete your account, please enter your current password.'
 );
 
 ###############################################################################
@@ -1195,7 +1176,6 @@ $LANG_ACCESS = array(
     'none' => 'Жодних',
     'accessdenied' => 'Відмовлено у доступі',
     'storydenialmsg' => "У вас не має прав на перегляд цієї статті. Можливо, ви просто не  зареєстровані на {$_CONF['site_name']}. Будь ласка, <a href=\"{$_CONF['site_url']}/users.php?mode=new\">зареєструйтесь</a> на {$_CONF['site_name']} для отримання користувацького доступу!",
-    'eventdenialmsg' => "У вас не має прав на перегляд цієї події. Можливо, ви просто не зареєстровані на {$_CONF['site_name']}. Будь ласка, <a href=\"{$_CONF['site_url']}/users.php?mode=new\">зареєструйтесь</a> на {$_CONF['site_name']} для отримання користувацького доступу!",
     'nogroupsforcoregroup' => 'Ця група не належить до жодної з інших груп',
     'grouphasnorights' => 'Ця група не має права доступу до жодної з адміністративної функції сайту',
     'newgroup' => 'Нова група',
@@ -1381,7 +1361,8 @@ $LANG_TRB = array(
     'pingback_note' => 'Щоб надіслати пінгбек для статті, перейдіть до списку статей і натисніть "Надіслати пінг" біля статті. Щоб відправити пінгбек, не пов\'язаний зі статтею, натисніть <a href="%s">тут</a>.',
     'pbtarget_missing' => 'Немає пінгбек-URL',
     'pbtarget_required' => 'Будь-ласка, введіть пінгбек-URL',
-    'pb_error_details' => 'Помилка під час відправлення пінгбека:'
+    'pb_error_details' => 'Помилка під час відправлення пінгбека:',
+    'delete_trackback' => 'To delete this Trackback click: '
 );
 
 ###############################################################################
@@ -1421,6 +1402,37 @@ $LANG_WHATSNEW = array(
 );
 
 ###############################################################################
+# Month names
+
+$LANG_MONTH = array(
+    1 => 'Січень',
+    2 => 'Лютий',
+    3 => 'Березень',
+    4 => 'Квітень',
+    5 => 'Травень',
+    6 => 'Червень',
+    7 => 'Липень',
+    8 => 'Серпень',
+    9 => 'Вересень',
+    10 => 'Жовтень',
+    11 => 'Листопад',
+    12 => 'Грудень'
+);
+
+###############################################################################
+# Weekdays
+
+$LANG_WEEK = array(
+    1 => 'Неділя',
+    2 => 'Понеділок',
+    3 => 'Вівторок',
+    4 => 'Середа',
+    5 => 'Четвер',
+    6 => 'П\'ятниця',
+    7 => 'Субота'
+);
+
+###############################################################################
 # Admin - Strings
 # 
 # These are some standard strings used by core functions as well as plugins to
@@ -1431,8 +1443,10 @@ $LANG_ADMIN = array(
     'limit_results' => 'Обмежити результати',
     'submit' => 'Надіслати',
     'edit' => 'Редагувати',
+    'edit_adv' => 'Adv. Edit',
     'admin_home' => 'Адміністрування',
     'create_new' => 'Створити нове',
+    'create_new_adv' => 'Create New (Adv.)',
     'enabled' => 'Дозволено',
     'title' => 'Заголовок',
     'type' => 'Тип',
@@ -1441,9 +1455,12 @@ $LANG_ADMIN = array(
     'save' => 'Зберегти',
     'cancel' => 'Скасувати',
     'delete' => 'Вилучити',
+    'delete_sel' => 'Delete selected',
     'copy' => 'Копіювати',
     'no_results' => '- Не знайдено записів -',
-    'data_error' => 'Під час обробки даних сталася помилка. Будь-ласка, перевірте ваші дані.'
+    'data_error' => 'Під час обробки даних сталася помилка. Будь-ласка, перевірте ваші дані.',
+    'preview' => 'Preview',
+    'records_found' => 'Records found'
 );
 
 ###############################################################################
