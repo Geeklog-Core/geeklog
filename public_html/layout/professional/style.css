@@ -656,7 +656,8 @@ th {
   border:1px solid #7B9EBD;
 }
 
-fieldset p { margin-top:5px; margin-bottom:0px; }
+fieldset p { margin-top:5px; margin-bottom:0px;}
+fieldset legend {font-size:.9em;}
 
 form fieldset div.notes {
   float: right;
@@ -667,7 +668,7 @@ form fieldset div.notes {
   border: 1px solid #666666;
   background-color: #ffffe1;
   color: #666666;
-  font-size: .8em;
+  font-size: .7em;
 }
 
 form fieldset div.notes h4 {
@@ -701,14 +702,14 @@ form div.notes li {
   margin-left:10px;
 }
 
-.inputTable td {padding:4px; vertical-align:top}
-.inputTable  label {font-weight:bold; float:right; white-space:nowrap}
+.inputTable td {padding:4px; vertical-align:top;font-size:.9em;}
+.inputTable  label {font-weight:bold; float:right; white-space:nowrap;font-size:.95em;}
 
 
 /* Default Plugin CSS Declarations */
 /* Recommended CSS to be used by Plugin Authors - allows easier site themeing */
 
-.plugin                { color: #000; background-color: #EFEFEF; font-weight: normal; font-size: 1.2em; border:1px solid #CCC; }
+.plugin                { color: #000; background-color: #EFEFEF; font-weight: normal; font-size: 1em; border:1px solid #CCC; }
 .plugin th             { color: #000; font-size: .9em; background-color: #B7C1DC; padding:5px; text-align:left;}
 .plugin tr             { vertical-align:top; }
 .plugin td             { padding:2px 5px 2px 5px; }
@@ -719,14 +720,14 @@ form div.notes li {
 .pluginFooter          { background-color:#EFEFEF; }
 .pluginAlert           { padding:5px 15px 5px 15px; color:#D8010E; background-color: #FEF1B4; font-weight:bold;}
 .pluginInfo            { padding:5px 15px 5px 15px; color:#707070; background-color: #FEF1B4; font-size: .8em; font-weight:normal;}
-.pluginSubTable        { color: #000; background-color: #CCC; font-weight: normal; font-size: 1.2em; border:1px solid #CCC; }
-.pluginSubTable th     { color: #000; font-size: .7em; background-color: #C9D1E4; padding:5px; text-align:left;}
+.pluginSubTable        { color: #000; background-color: #CCC; font-weight: normal; font-size: 1em; border:1px solid #CCC; }
+.pluginSubTable th     { color: #000; font-size: .8em; background-color: #C9D1E4; padding:5px; text-align:left;}
 .pluginSubTable tr     { vertical-align:top; }
 .pluginSolidOutline    { background-color: #396998; }
 .pluginSolidFill       { background-color: #1A3955; }
-.pluginCellTitle       { color: #1C1E2D; font-weight: bold; font-size: .8em; background-color: #E5E5EA; }
+.pluginCellTitle       { color: #1C1E2D; font-weight: bold; font-size: 1em; background-color: #E5E5EA; }
 .pluginCellFill        { background-color: #E5E5EA; }
-.pluginCellText        { color: #000; font-weight: normal; font-size: .75em; background-color: #F7F7F7; }
+.pluginCellText        { color: #000; font-weight: normal; font-size: 1em; background-color: #F7F7F7; }
 .pluginTinyText        { font-size: .70em; }
 .pluginSmallText       { font-size: .8em; }
 .pluginMediumText      { font-size: .85em; }
