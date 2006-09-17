@@ -1,7 +1,8 @@
 GeekLog History/Changes:
 
-??? ??, 2006 (1.4.1)
+Sep 17, 2006 (1.4.1b1)
 ------------
+
 - Changes to templates and CSS to remove deprecated HTML (align= and valign=)
   Removed un-used CSS declarations, redundant font-family declarations
   Removed use of font-size percentage and used more acceptable EM units [Blaine]
@@ -179,6 +180,8 @@ GeekLog History/Changes:
 
 - New Afrikaans language file, provided by Renier Maritz
 - Updated Hebrew language file, provided by LWC
+  The Hebrew language file was also renamed to hebrew_utf-8.php for consistency
+  with the other UTF-8 language files.
 - Updated Turkish language file, provided by Kemal Cellat
 
 Calendar plugin (1.0.0)
