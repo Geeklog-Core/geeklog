@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.96 2006/09/12 08:31:44 ospiess Exp $
+// $Id: moderation.php,v 1.97 2006/09/17 11:42:37 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -175,7 +175,7 @@ function commandcontrol()
     reset($items);
     $cols = 0;
     $cc_main_options = '';
-    while (list($key, $val) = each($items)) {
+    foreach ($items as $key => $val) {
         $cc_main_options .= $val . LB;
         $cols++;
         if ($cols == ICONS_PER_ROW) {
@@ -186,11 +186,14 @@ function commandcontrol()
             $cols = 0;
         }
     }
-    // "flush out" any unrendered entries
+
     $admin_templates->set_var('cc_icon_width', floor(100/ICONS_PER_ROW));
-    $admin_templates->set_var('cc_main_options', $cc_main_options);
-    $admin_templates->parse ('cc_rows', 'ccrow', true);
-    $admin_templates->clear_var ('cc_main_options');
+    if($cols > 0) {
+        // "flush out" any unrendered entries
+        $admin_templates->set_var('cc_main_options', $cc_main_options);
+        $admin_templates->parse ('cc_rows', 'ccrow', true);
+        $admin_templates->clear_var ('cc_main_options');
+    }
 
     $retval .= $admin_templates->parse('output','cc');
 
