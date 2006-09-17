@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.69 2006/08/03 14:39:12 dhaun Exp $
+// $Id: topic.php,v 1.70 2006/09/17 15:58:11 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -333,7 +333,7 @@ function listtopics()
             } else {
                 $imageurl = COM_getTopicImageUrl ($A['imageurl']);
                 $topic_templates->set_var ('image_tag', '<img src="' . $imageurl
-                                           . '" border="0" alt=""><br>');
+                                           . '" border="0" alt="">');
             }
             if ($counter == 5) {
                 $counter = 1;
