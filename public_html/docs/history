@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1rc1)
 ------------
+- Comments always displayed the comment author's full name, even when
+  $_CONF['show_fullname'] was set to 0 [Dirk]
 - Fixed 404 (caused by a request for a file named '(none)') in the user profile
   display when a user doesn't have a userphoto [Dirk]
 

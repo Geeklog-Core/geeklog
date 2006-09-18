@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.44 2006/08/26 14:13:41 dhaun Exp $
+// $Id: lib-comment.php,v 1.45 2006/09/18 11:15:38 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -262,15 +262,11 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'cssid', $row % 2 );
 
         if( $A['uid'] > 1 ) {
-            if( empty( $A['fullname'] )) {
-                $template->set_var( 'author_fullname', $A['username'] );
-                $template->set_var( 'author', $A['username'] );
-                $alttext = $A['username'];
-            } else {
-                $template->set_var( 'author_fullname', $A['fullname'] );
-                $template->set_var( 'author', $A['fullname'] );
-                $alttext = $A['fullname'];
-            }
+            $fullname = COM_getDisplayName( $A['uid'], $A['username'],
+                                            $A['fullname'] );
+            $template->set_var( 'author_fullname', $fullname );
+            $template->set_var( 'author', $fullname );
+            $alttext = $fullname;
 
             $photo = '';
             if( $_CONF['allow_user_photo'] ) {
