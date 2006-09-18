@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.33 2006/08/26 15:18:51 dhaun Exp $
+// $Id: lib-user.php,v 1.34 2006/09/18 10:04:42 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -373,6 +373,8 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
 {
     global $_CONF, $_TABLES, $_USER;
 
+    $userphoto = '';
+
     if ($_CONF['allow_user_photo'] == 1) {
 
         if (($width == 0) && !empty ($_CONF['force_photo_width'])) {
@@ -390,10 +392,11 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
                 $photo = $_USER['photo'];
             }
         }
-        if (empty ($photo) || (empty ($email) && $_CONF['use_gravatar'])) {
+        if ((empty ($photo) || ($photo == '(none)')) ||
+                (empty ($email) && $_CONF['use_gravatar'])) {
             $result = DB_query ("SELECT email,photo FROM {$_TABLES['users']} WHERE uid = '$uid'");
             list($newemail, $newphoto) = DB_fetchArray ($result);
-            if (empty ($photo)) {
+            if (empty ($photo) || ($photo == '(none)')) {
                 $photo = $newphoto;
             }
             if (empty ($email)) {
@@ -435,15 +438,15 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
             $img = $_CONF['default_photo'];
         }
         if (!empty ($img)) {
-            $photo = '<img src="' . $img . '"';
+            $userphoto = '<img src="' . $img . '"';
             if ($width > 0) {
-                $photo .= ' width="' . $width . '"';
+                $userphoto .= ' width="' . $width . '"';
             }
-            $photo .= ' alt="" class="userphoto">';
+            $userphoto .= ' alt="" class="userphoto">';
         }
     }
 
-    return $photo;
+    return $userphoto;
 }
 
 /**

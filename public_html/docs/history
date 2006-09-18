@@ -1,5 +1,11 @@
 GeekLog History/Changes:
 
+??? ??, 2006 (1.4.1rc1)
+------------
+- Fixed 404 (caused by a request for a file named '(none)') in the user profile
+  display when a user doesn't have a userphoto [Dirk]
+
+
 Sep 17, 2006 (1.4.1b1)
 ------------
 
