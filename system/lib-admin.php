@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.83 2006/09/12 07:27:32 ospiess Exp $
+// $Id: lib-admin.php,v 1.84 2006/09/18 15:14:19 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -89,7 +89,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     if ($text_arr['icon'] !== false) {
-        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"icon\">");
+        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
     }
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
@@ -284,7 +284,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     if ($text_arr['icon'] !== false) {
-        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"icon\">");
+        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
     }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('show_deleteimage', 'display:none;');
