@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.171 2006/09/15 03:42:43 ospiess Exp $
+// $Id: user.php,v 1.172 2006/09/22 00:39:42 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -607,7 +607,7 @@ function batchdelete()
 
     for ($i=0; $i<count($opt_arr);$i++) {
         $selector = "";
-        if ($usr_type == $opt_arr['sel']) {
+        if ($usr_type == $opt_arr[$i]['sel']) {
             $selector = ' checked="checked"';
         }
         $user_templates->set_var ('sel_id', $opt_arr[$i]['sel']);
@@ -693,8 +693,7 @@ function batchdelete()
                          'direction' => 'ASC');
 
     $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
-    $select_userinfo = ", lastlogin $list_sql "
-                     . ", datediff(CURDATE(), FROM_UNIXTIME(lastlogin)) AS notloggedinsince";
+    $select_userinfo = ", lastlogin $list_sql ";
 
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
          . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
