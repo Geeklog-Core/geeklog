@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.33 2006/09/10 19:40:48 dhaun Exp $
+// $Id: lib-custom.php,v 1.34 2006/09/23 01:01:04 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -94,9 +94,10 @@ function CUSTOM_runScheduledTask() {
 
 /**
 * Example of custom function that can be used to handle a login error.
+* Only active with custom registration mode enabled
 * Used if you have a custom front page and need to trap and reformat any error messages
 * This example redirects to the front page with a extra passed variable plus the message
-* Note: Message could be a string but in this case maps to $MESSAGE[79] as a default - edit in language file
+* Note: Message could be a string but in this case maps to $MESSAGE[81] as a default - edit in language file
 */
 function CUSTOM_loginErrorHandler($msg='') {
     global $_CONF,$MESSAGE;
