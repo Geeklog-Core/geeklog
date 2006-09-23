@@ -2,6 +2,14 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1rc1)
 ------------
+- Tweaked the Calendar search result listing: Removed the Event Description
+  (usually too long for the result listing), replaced Location (which is only a
+  part of the address and not very helpful) with Event Type, minimized Date &
+  Time display for events lasting only one day (don't list date twice) [Dirk]
+- Only call CUSTOM_loginErrorHandler when custom_registration is enabled
+  (bug #584) [Blaine]
+- Fixed SQL error with some older MySQL versions when calling up the Batch User
+  Delete option [Oliver]
 - Comments always displayed the comment author's full name, even when
   $_CONF['show_fullname'] was set to 0 [Dirk]
 - Fixed 404 (caused by a request for a file named '(none)') in the user profile
