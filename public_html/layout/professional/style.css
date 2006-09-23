@@ -2,7 +2,6 @@ a:link.non-ul {
   color:#000000;
   background: transparent;
   text-decoration: none;
-  font-size:.8em;
 }
 a:visited.non-ul {
   color:#000000;
@@ -22,7 +21,6 @@ a:active.non-ul {
 a:link {
   background:transparent;
   color:#0000FF;
-  font-size:1em;
 }
 a:visited {
   background:transparent;
@@ -39,22 +37,12 @@ a:active {
 .sitebody {
   background:#FFFFFF;
   color:#000000;
-  font: .825em arial,sans-serif,verdana,tahoma,helvetica;
+  font: .8em arial,sans-serif,verdana,tahoma,helvetica;
   padding:0px;
   margin:0px;
-  /*
-    scrollbar-3dlight-color:#D1D7DC;
-    scrollbar-arrow-color:#006699;
-    scrollbar-darkshadow-color:#98AAB1;
-    scrollbar-face-color:#DEE3E7;
-    scrollbar-highlight-color:#FFFFFF;
-    scrollbar-shadow-color:#DEE3E7;
-    scrollbar-track-color:#EFEFEF;
-  */
 }
 fieldset {
-  margin-bottom: 1ex;
-  font-size:1em;
+  margin-bottom: 1em;
 }
 fieldset p {
   padding:5px;
@@ -69,22 +57,20 @@ form {margin-top:5px; margin-bottom:5px; }
 
 .fieldhelp {font-size:.8em; color: #666; }
 
+input {
+    font-size: .9em;
+}
 input, submit {
   color:#000000;
-  font-size:1em;
 }
-
 select {
   color:#000000;
-  font-size:1em;
 }
 td {
   color:#000000;
-  font-size:1em;
 }
 textarea {
   color:#000000;
-  font-size:1em;
   font-family: arial,sans-serif,verdana,tahoma,helvetica;
 }
 th {
@@ -123,7 +109,6 @@ th {
   text-align:left;
   padding-left:5px;
   padding-right:5px;
-  font-size:1em;
 }
 .admin-list-headerfield {
   text-align:left;
@@ -174,7 +159,6 @@ th {
 .block-content, .block-content-right, .block-content-left {
   background:transparent;
   color:#000000;
-  font-size:.9em;
   padding-bottom:2px;
   padding-top:2px;
   clear:both;
@@ -222,7 +206,6 @@ th {
   border-top:#E7E7E7 1px solid;
   color:#000000;
   font-weight:bold;
-  font-size:1em;
 }
 .cal-day,cal_day {
   background:transparent;
@@ -555,7 +538,7 @@ th {
   text-align:right;
   border-bottom:1px solid #CCCCCC;
   height:52px;
-  padding:0px 4px 0px 0px;
+  padding:0px 4px 0px 1px;
   margin:0px;
 }
 .searchform-elements{
@@ -564,7 +547,7 @@ th {
   top:6px;
 }
 .searchform-elements input{
-  font-size:.8em;
+  font-size:0.9em;
 }
 .searchhits {
   background:transparent;
@@ -598,7 +581,6 @@ th {
 }
 .story-body {
   padding:3px;
-  font-size:1em;
 }
 .story-box {
   background:transparent;
@@ -607,28 +589,23 @@ th {
 .story-byline,storybyline {
   background:transparent;
   color:#000000;
-  font-size:.9em;
 }
 .story-container {
   padding-right:9px;
-  font-size:1.05em;
 }
 .story-footer {
   padding:3px;
   text-align:center;
-  font-size:.95em;
 }
 .story-information {
   padding:3px;
   background:transparent;
   color:#000000;
-  font-size:.95em;
 }
 .story-title {
   background:transparent;
   color:#000000;
   font-weight:bold;
-  font-size:1.1em;
   padding-left:1px;
   padding-top:15px;
 }
@@ -636,7 +613,6 @@ th {
   background:transparent;
   color:#000000;
   font-weight:bold;
-  font-size:1.1em;
   padding-left:1px;
   padding-top:15px;
 }
@@ -647,7 +623,7 @@ th {
   background:transparent;
   color:#FF0000;
   font-weight:bold;
-  font-size:1.0em;}
+}
 .warningsmall {
   background:transparent;
   color:#FF0000;
@@ -668,7 +644,7 @@ form fieldset div.notes {
   border: 1px solid #666666;
   background-color: #ffffe1;
   color: #666666;
-  font-size: .7em;
+  font-size: .75em;
 }
 
 form fieldset div.notes h4 {
@@ -680,9 +656,9 @@ form fieldset div.notes h4 {
   border-style: solid;
   border-color: #666666;
   color: #666666;
-  font-size: 1.1em;
   margin-bottom:5px;
   margin-top:0px;
+  font-size:1.3em;
 }
 
 form fieldset div.notes p {
@@ -702,43 +678,43 @@ form div.notes li {
   margin-left:10px;
 }
 
-.inputTable td {padding:4px; vertical-align:top;font-size:.9em;}
-.inputTable  label {font-weight:bold; float:right; white-space:nowrap;font-size:.95em;}
+.inputTable td {padding:4px; vertical-align:top;;}
+.inputTable  label {font-weight:bold; float:right; white-space:nowrap;}
 
 
 /* Default Plugin CSS Declarations */
 /* Recommended CSS to be used by Plugin Authors - allows easier site themeing */
 
-.plugin                { color: #000; background-color: #EFEFEF; font-weight: normal; font-size: 1em; border:1px solid #CCC; }
-.plugin th             { color: #000; font-size: .9em; background-color: #B7C1DC; padding:5px; text-align:left;}
+.plugin                { color: #000; background-color: #EFEFEF; font-weight: normal; border:1px solid #CCC; }
+.plugin th             { color: #000; background-color: #B7C1DC; padding:5px; text-align:left;}
 .plugin tr             { vertical-align:top; }
 .plugin td             { padding:2px 5px 2px 5px; }
 .pluginBG              { background-color: #EFEFEF; }
 .pluginAltBG           { background-color: #1C1E2D; }
-.pluginTitle           { color: #1C1E2D; background-color:#EFEFEF; font-weight: bold; font-size: .85em; }
-.pluginHeader          { color: #1A3955; font-weight: bolder; font-size: .95em; background-color: #CCC; padding:5px; }
+.pluginTitle           { color: #1C1E2D; background-color:#EFEFEF; font-weight: bold; }
+.pluginHeader          { color: #1A3955; font-weight: bolder; background-color: #CCC; padding:5px; }
 .pluginFooter          { background-color:#EFEFEF; }
 .pluginAlert           { padding:5px 15px 5px 15px; color:#D8010E; background-color: #FEF1B4; font-weight:bold;}
-.pluginInfo            { padding:5px 15px 5px 15px; color:#707070; background-color: #FEF1B4; font-size: .8em; font-weight:normal;}
-.pluginSubTable        { color: #000; background-color: #CCC; font-weight: normal; font-size: 1em; border:1px solid #CCC; }
-.pluginSubTable th     { color: #000; font-size: .8em; background-color: #C9D1E4; padding:5px; text-align:left;}
+.pluginInfo            { padding:5px 15px 5px 15px; color:#707070; background-color: #FEF1B4; font-weight:normal;}
+.pluginSubTable        { color: #000; background-color: #CCC; font-weight: normal; border:1px solid #CCC; }
+.pluginSubTable th     { color: #000; background-color: #C9D1E4; padding:5px; text-align:left;}
 .pluginSubTable tr     { vertical-align:top; }
 .pluginSolidOutline    { background-color: #396998; }
 .pluginSolidFill       { background-color: #1A3955; }
-.pluginCellTitle       { color: #1C1E2D; font-weight: bold; font-size: 1em; background-color: #E5E5EA; }
+.pluginCellTitle       { color: #1C1E2D; font-weight: bold; background-color: #E5E5EA; }
 .pluginCellFill        { background-color: #E5E5EA; }
-.pluginCellText        { color: #000; font-weight: normal; font-size: 1em; background-color: #F7F7F7; }
+.pluginCellText        { color: #000; font-weight: normal; background-color: #F7F7F7; }
 .pluginTinyText        { font-size: .70em; }
 .pluginSmallText       { font-size: .8em; }
-.pluginMediumText      { font-size: .85em; }
-.pluginLargeText       { font-size: .9em; }
+.pluginMediumText      { font-size: 1em; }
+.pluginLargeText       { font-size: 1.25em; }
 .pluginAltText         { color: #FFF; }
 
-.pluginRow1 td         { background-color: #EFEFEF; line-height: 18px; }
-.pluginRow2 td         { background-color: #D9D9D9; line-height: 18px; }
+.pluginRow1 td         { background-color: #EFEFEF; line-height: 150%; }
+.pluginRow2 td         { background-color: #D9D9D9; line-height: 150%; }
 
-.pluginRollOver         { color: #1C1E2D; background-color: #FFFF8F; line-height: 18px; }
-.pluginRollOut          { color: #1C1E2D; background-color: #F7F7F7; line-height: 18px; }
+.pluginRollOver         { color: #1C1E2D; background-color: #FFFF8F; line-height: 150%; }
+.pluginRollOut          { color: #1C1E2D; background-color: #F7F7F7; line-height: 150%; }
 
 .pluginLinks A:link     { color: #0000FF; font-style: normal; font-weight: normal; text-decoration: none; }
 .pluginLinks A:visited  { color: #1E1E8E; font-style: normal; font-weight: normal; text-decoration: none; }
@@ -770,58 +746,57 @@ A.pluginButton:hover {
 
 
 /* Navbar Class CSS */
-    #navcontainer {
-      float:left;
-      width:100%;
-      background:#F4F4F4;
-      font-size:93%;
-      line-height:normal;
-      border-bottom:1px solid #24618E;
-      }
-    #navcontainer ul {
-    margin:0;
-    padding:10px 10px 0 50px;
-    list-style:none;
-      }
-    #navcontainer li {
-      display:inline;
-      margin:0;
-      padding:0;
-      }
-    #navcontainer a {
-      float:left;
-      background:url("navbar/images/tableftJ.gif") no-repeat left top;
-      margin:0;
-      padding:0 0 0 5px;
-      text-decoration:none;
-      }
-    #navcontainer a span {
-      float:left;
-      display:block;
-      background:url("navbar/images/tabrightJ.gif") no-repeat right top;
-      padding:5px 15px 4px 6px;
-      color:#24618E;
-      }
-    /* Commented Backslash Hack hides rule from IE5-Mac \*/
-    #navcontainer a span {float:none;}
-    /* End IE5-Mac hack */
-    #navcontainer a:hover span {
-      color:#FFF;
-      }
-    #navcontainer a:hover {
-      background-position:0% -42px;
-      }
-    #navcontainer a:hover span {
-      background-position:100% -42px;
-      }
+#navcontainer {
+  float:left;
+  width:100%;
+  background:#F4F4F4;
+  font-size:93%;
+  line-height:normal;
+  border-bottom:1px solid #24618E;
+  }
+#navcontainer ul {
+margin:0;
+padding:10px 10px 0 50px;
+list-style:none;
+  }
+#navcontainer li {
+  display:inline;
+  margin:0;
+  padding:0;
+  }
+#navcontainer a {
+  float:left;
+  background:url("navbar/images/tableftJ.gif") no-repeat left top;
+  margin:0;
+  padding:0 0 0 5px;
+  text-decoration:none;
+  }
+#navcontainer a span {
+  float:left;
+  display:block;
+  background:url("navbar/images/tabrightJ.gif") no-repeat right top;
+  padding:5px 15px 4px 6px;
+  color:#24618E;
+  }
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+#navcontainer a span {float:none;}
+/* End IE5-Mac hack */
+#navcontainer a:hover span {
+  color:#FFF;
+  }
+#navcontainer a:hover {
+  background-position:0% -42px;
+  }
+#navcontainer a:hover span {
+  background-position:100% -42px;
+  }
 
-    #navcontainer a#current span {
-      background:url("navbar/images/tabrightI.gif") no-repeat left top;
-      background-position:100% -42px;color: #FFF;
-      }
-    #navcontainer a:link#current, #navcontainer a:visited#current, #navcontainer a:hover#current{
-      background:url("navbar/images/tableftI.gif") no-repeat left top;
-      background-position: 0% -42px;
-      }
-
+#navcontainer a#current span {
+  background:url("navbar/images/tabrightI.gif") no-repeat left top;
+  background-position:100% -42px;color: #FFF;
+  }
+#navcontainer a:link#current, #navcontainer a:visited#current, #navcontainer a:hover#current{
+  background:url("navbar/images/tableftI.gif") no-repeat left top;
+  background-position: 0% -42px;
+  }
 
