@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.145 2006/09/23 00:55:50 blaine Exp $
+// $Id: users.php,v 1.146 2006/09/23 19:54:24 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -68,10 +68,9 @@ $VERBOSE = false;
 */
 function userprofile ($user, $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG09, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG09, $LANG28, $LANG_LOGIN;
 
     $retval = '';
-
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
         $retval .= COM_siteHeader ('menu', $LANG_LOGIN[1]);
@@ -91,12 +90,16 @@ function userprofile ($user, $msg = 0)
         return $retval;
     }
 
-    $result = DB_query ("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
+    $result = DB_query ("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email,status FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $nrows = DB_numRows ($result);
     if ($nrows == 0) { // no such user
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
     $A = DB_fetchArray ($result);
+    
+    if ($A['status'] == USER_ACCOUNT_DISABLED && !SEC_hasRights ('user.edit')) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php?msg=30');
+    }
 
     $display_name = COM_getDisplayName ($user, $A['username'], $A['fullname']);
 
@@ -119,11 +122,19 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_var ('end_block', COM_endBlock ());
     $user_templates->set_var ('lang_username', $LANG04[2]);
     if ($_CONF['show_fullname'] == 1) {
-        $user_templates->set_var ('username', $A['fullname']);
+        if ($A['status'] == USER_ACCOUNT_DISABLED) {
+            $user_templates->set_var ('username', sprintf ('<s title="%s">%s</s>', $LANG28[42], $A['fullname']));
+        } else {
+            $user_templates->set_var ('username', $A['fullname']); 
+        }                    
         $user_templates->set_var ('user_fullname', $A['username']);
     } else {
         $user_templates->set_var ('username', $A['username']);
-        $user_templates->set_var ('user_fullname', $A['fullname']);
+        if ($A['status'] == USER_ACCOUNT_DISABLED) {
+            $user_templates->set_var ('user_fullname', sprintf ('<s title="%s">%s</s>', $LANG28[42], $A['fullname']));
+        } else {
+            $user_templates->set_var ('user_fullname', $A['fullname']); 
+        }
     }
 
     if (SEC_hasRights ('user.edit')) {
