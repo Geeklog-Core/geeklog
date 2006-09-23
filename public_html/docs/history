@@ -2,9 +2,14 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1rc1)
 ------------
+- Filter out special characters from link IDs. They were properly escaped
+  before storing them in the database but caused problems when using them.
+  (bug #565) [Dirk]
+- When upgrading the database from 1.4.0, only update those plugins that are
+  actually installed (disabled or not) [Dirk]
 - CSS Changes to support better scaling of Font size - using browser Text-Size
   adjustment. Removed many extra font-size declarations. [Blaine]
-- Dont' allow viewing of a Banned user profile unless user admin [Blaine]
+- Don't allow viewing of a Banned user profile unless user admin [Blaine]
 - Tweaked the Calendar search result listing: Removed the Event Description
   (usually too long for the result listing), replaced Location (which is only a
   part of the address and not very helpful) with Event Type, minimized Date &
