@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
  
-// $Id: index.php,v 1.38 2006/08/19 13:59:29 dhaun Exp $
+// $Id: index.php,v 1.39 2006/09/23 20:52:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -249,6 +249,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         $perm_anon = 2;
     }
 
+    $lid = COM_sanitizeID ($lid);
     if (empty ($lid)) {
         if (empty ($old_lid)) {
             $lid = COM_makeSid ();
