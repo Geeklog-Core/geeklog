@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.55 2006/09/06 05:31:00 ospiess Exp $
+// $Id: functions.inc,v 1.56 2006/09/23 17:46:45 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1382,10 +1382,9 @@ function plugin_searchtypes_calendar()
 * @return   object              search result object
 *
 */
-function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author,
-                                        $keyType, $page, $perpage)
+function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_CONF, $_TABLES, $LANG09, $_LANG_CAL_SEARCH;
+    global $_CONF, $_TABLES, $LANG09, $LANG_CAL_1, $_LANG_CAL_SEARCH;
 
     if (empty ($type)) {
         $type = 'all';
@@ -1401,7 +1400,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         return $event_results;
     }
 
-    $select = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,allday,UNIX_TIMESTAMP(datestart) AS day";
+    $select = "SELECT eid,title,location,event_type,datestart,dateend,timestart,timeend,allday,UNIX_TIMESTAMP(datestart) AS day";
     $sql = " FROM {$_TABLES['events']} WHERE ";
 
     if($keyType == 'phrase') {
@@ -1465,10 +1464,13 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
     $event_results = new Plugin();
     $event_results->searchresults = array();
     $event_results->searchlabel = $_LANG_CAL_SEARCH['results'];
-    $event_results->addSearchHeading($_LANG_CAL_SEARCH['title']);
-    $event_results->addSearchHeading($_LANG_CAL_SEARCH['date_time']);
-    $event_results->addSearchHeading($_LANG_CAL_SEARCH['location']);
-    $event_results->addSearchHeading($_LANG_CAL_SEARCH['description']);
+    $event_results->addSearchHeading ($_LANG_CAL_SEARCH['title']);
+    $event_results->addSearchHeading ($_LANG_CAL_SEARCH['date_time']);
+    if (empty ($_LANG_CAL_SEARCH['event_type'])) {
+        $event_results->addSearchHeading ($LANG_CAL_1[37]);
+    } else {
+        $event_results->addSearchHeading ($_LANG_CAL_SEARCH['event_type']);
+    }
     $event_results->num_searchresults = 0;
     $event_results->num_itemssearched = $B[0];
     $event_results->supports_paging = true;
@@ -1478,8 +1480,15 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
     // order as your headings above!
     while ($A = DB_fetchArray ($result_events)) {
         if ($A['allday'] == 0) {
-            $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - '
-                        . $A['dateend'] . ' ' . $A['timeend'];
+            if ($A['datestart'] == $A['dateend']) {
+                $fulldate = $A['datestart'] . ' ' . $A['timestart'];
+                if ($A['timestart'] != $A['timeend']) {
+                    $fulldate .= ' - ' . $A['timeend'];
+                }
+            } else {
+                $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - '
+                            . $A['dateend'] . ' ' . $A['timeend'];
+            }
         } else {
             if ($A['datestart'] <> $A['dateend']) {
                 $fulldate = $A['datestart'] . ' - ' . $A['dateend']
@@ -1494,8 +1503,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         $row = array ('<a href="' . $_CONF['site_url']
                             . '/calendar/event.php?eid=' . $A['eid'] . '">'
                             . $A['title'] . '</a>', $fulldate,
-                            stripslashes ($A['location']),
-                            stripslashes ($A['description']));
+                            stripslashes ($A['event_type']));
         $event_results->addSearchResult($row);
         $event_results->num_searchresults++;
     }
