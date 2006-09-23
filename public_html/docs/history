@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1rc1)
 ------------
+- CSS Changes to support better scaling of Font size - using browser Text-Size
+  adjustment. Removed many extra font-size declarations. [Blaine]
+- Dont' allow viewing of a Banned user profile unless user admin [Blaine]
 - Tweaked the Calendar search result listing: Removed the Event Description
   (usually too long for the result listing), replaced Location (which is only a
   part of the address and not very helpful) with Event Type, minimized Date &
