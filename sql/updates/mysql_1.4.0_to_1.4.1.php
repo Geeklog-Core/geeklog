@@ -6,13 +6,6 @@ $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VA
 // add the 'Syndication Admin' group
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Syndication Admin', 'Can create and modify web feeds for the site',1) ";
 
-// add remarks-field to polls
-$_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AFTER votes";
-
-// add field to support advanced editor in staticpages
-$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD postmode varchar(16) DEFAULT 'html' NOT NULL AFTER sp_inblock";
-$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD sp_help varchar(255) default '' AFTER sp_centerblock";
-
 // update plugin version numbers
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'polls'";
@@ -35,9 +28,6 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD allow_autotags tinyint(1) unsign
 
 // allow up to 255 characters for the help URL
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE help help varchar(255) default ''";
-
-// delete MT-Blacklist entries
-$_SQL[] = "DELETE FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'";
 
 // set regdate to a valid date for users in a really old (pre-1.3) database
 $_SQL[] = "UPDATE {$_TABLES['users']} SET regdate = '2001-12-17 00:00:00' WHERE regdate = '0000-00-00 00:00:00'";
@@ -75,6 +65,28 @@ function upgrade_ensureLastScheduledRunFlag ()
                        "name = 'last_scheduled_run'");
     if (empty ($val)) {
         DB_save ($_TABLES['vars'], 'name,value', "'last_scheduled_run',''");
+    }
+}
+
+// update plugins if they're installed (disabled or not)
+function upgrade_plugins_141 ()
+{
+    global $_TABLES;
+
+    // add remarks-field to polls
+    if (DB_count ($_TABLES['plugins'], 'pi_name', 'polls') == 1) {
+        DB_query ("ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AFTER votes");
+    }
+
+    // delete MT-Blacklist entries from Spam-X plugin
+    if (DB_count ($_TABLES['plugins'], 'pi_name', 'spamx') == 1) {
+        DB_query ("DELETE FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'");
+    }
+
+    // add field to support advanced editor and a help link in staticpages
+    if (DB_count ($_TABLES['plugins'], 'pi_name', 'staticpages') == 1) {
+        DB_query ("ALTER TABLE {$_TABLES['staticpage']} ADD postmode varchar(16) DEFAULT 'html' NOT NULL AFTER sp_inblock");
+        DB_query ("ALTER TABLE {$_TABLES['staticpage']} ADD sp_help varchar(255) default '' AFTER sp_centerblock");
     }
 }
 
