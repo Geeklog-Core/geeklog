@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.147 2006/09/24 15:06:26 dhaun Exp $
+// $Id: users.php,v 1.148 2006/09/24 15:21:30 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -121,21 +121,29 @@ function userprofile ($user, $msg = 0)
             COM_startBlock ($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var ('end_block', COM_endBlock ());
     $user_templates->set_var ('lang_username', $LANG04[2]);
+
     if ($_CONF['show_fullname'] == 1) {
-        if ($A['status'] == USER_ACCOUNT_DISABLED) {
-            $user_templates->set_var ('username', sprintf ('<s title="%s">%s</s>', $LANG28[42], $A['fullname']));
+        if (empty ($A['fullname'])) {
+            $username = $A['username'];
+            $fullname = '';
         } else {
-            $user_templates->set_var ('username', $A['fullname']); 
-        }                    
-        $user_templates->set_var ('user_fullname', $A['username']);
+            $username = $A['fullname'];
+            $fullname = $A['username'];
+        }
     } else {
-        $user_templates->set_var ('username', $A['username']);
-        if ($A['status'] == USER_ACCOUNT_DISABLED) {
-            $user_templates->set_var ('user_fullname', sprintf ('<s title="%s">%s</s>', $LANG28[42], $A['fullname']));
-        } else {
-            $user_templates->set_var ('user_fullname', $A['fullname']); 
+        $username = $A['username'];
+        $fullname = $A['fullname'];
+    }
+
+    if ($A['status'] == USER_ACCOUNT_DISABLED) {
+        $username = sprintf ('<s title="%s">%s</s>', $LANG28[42], $username);
+        if (!empty ($fullname)) {
+            $fullname = sprintf ('<s title="%s">%s</s>', $LANG28[42], $fullname);
         }
     }
+
+    $user_templates->set_var ('username', $username);
+    $user_templates->set_var ('user_fullname', $fullname); 
 
     if (SEC_hasRights ('user.edit')) {
         global $_IMAGE_TYPE, $LANG_ADMIN;
