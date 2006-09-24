@@ -503,21 +503,20 @@ th {
   top:12px;
   left:4px;
 }
-
 .highlight {
   color: #000000;
   background-color: yellow;
   text-decoration: none;
 }
-.moderation-cc{
+.moderation-cc {
   width:100%;
 }
-.moderation-cc-row{
+.moderation-cc-row {
   clear:both;
-  height:100px;
+  height:80px;
   width:100%;
 }
-.moderation-cc-item{
+.moderation-cc-item {
   float:left;
   text-align:center;
 }
