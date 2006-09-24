@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.30 2006/08/27 16:14:34 dhaun Exp $
+// $Id: index.php,v 1.31 2006/09/24 09:05:14 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -76,7 +76,8 @@ function display_page ($page, $A, $noboxes)
             if ($_SP_CONF['show_date'] == 1) {
                 $retval .= "; ";
             }
-            $retval .= ' ' . $A['sp_hits'] . ' ' . $LANG_STATIC['hits'];
+            $retval .= ' ' . COM_numberFormat ($A['sp_hits'])
+                    . ' ' . $LANG_STATIC['hits'];
         }
 
         if ($_CONF['hideprintericon'] == 0) {
