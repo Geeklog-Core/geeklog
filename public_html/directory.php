@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.7 2006/09/24 07:59:11 dhaun Exp $
+// $Id: directory.php,v 1.8 2006/09/24 08:04:19 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -392,7 +392,7 @@ function DIR_displayAll ($topic, $list_current_month = false)
 
     if ($list_current_month) {
         $currentyear = date ('Y', time ());
-        $currentmonth = date ('m', time ());
+        $currentmonth = date ('n', time ());
 
         $retval .= DIR_displayMonth ($topic, $currentyear, $currentmonth);
 
