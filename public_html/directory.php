@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Directory of all the stories on a Geeklog site.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2005 by the following authors:                         |
+// | Copyright (C) 2004-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.6 2006/06/15 14:42:39 dhaun Exp $
+// $Id: directory.php,v 1.7 2006/09/24 07:59:11 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -230,16 +230,16 @@ function DIR_navBar ($topic, $year, $month = 0)
 */
 function DIR_displayMonth ($topic, $year, $month, $main = false)
 {
-    global $_CONF, $_TABLES, $LANG30, $LANG_DIR;
+    global $_CONF, $_TABLES, $LANG_MONTH, $LANG_DIR;
 
     $retval = '';
 
     if ($main) {
-        $retval .= '<div><h1 style="display:inline">' . $LANG30[$month + 12]
+        $retval .= '<div><h1 style="display:inline">' . $LANG_MONTH[$month]
                 . ' ' . $year . '</h1> ' . DIR_topicList ($topic, $year, $month)
                 . '</div>' . LB;
     } else {
-        $retval .= '<h1>' . $LANG30[$month + 12] . ' ' . $year . '</h1>' . LB;
+        $retval .= '<h1>' . $LANG_MONTH[$month] . ' ' . $year . '</h1>' . LB;
     }
 
     $start = sprintf ('%04d-%02d-01 00:00:00', $year, $month);
@@ -307,7 +307,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
 */
 function DIR_displayYear ($topic, $year, $main = false) 
 {
-    global $_CONF, $_TABLES, $LANG30, $LANG_DIR;
+    global $_CONF, $_TABLES, $LANG_MONTH, $LANG_DIR;
 
     $retval = '';
 
@@ -445,7 +445,7 @@ if (($month < 1) || ($month > 12)) {
 
 if (($year != 0) && ($month != 0)) {
     $title = sprintf ($LANG_DIR['title_month_year'],
-                      $LANG30[$month + 12], $year);
+                      $LANG_MONTH[$month], $year);
     $display .= COM_siteHeader ('menu', $title);
     $display .= DIR_displayMonth ($topic, $year, $month, true);
     $display .= DIR_navBar ($topic, $year, $month);
