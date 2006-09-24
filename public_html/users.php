@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.146 2006/09/23 19:54:24 blaine Exp $
+// $Id: users.php,v 1.147 2006/09/24 15:06:26 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -98,7 +98,7 @@ function userprofile ($user, $msg = 0)
     $A = DB_fetchArray ($result);
     
     if ($A['status'] == USER_ACCOUNT_DISABLED && !SEC_hasRights ('user.edit')) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php?msg=30');
+        COM_displayMessageAndAbort (30, '', 403, 'Forbidden');
     }
 
     $display_name = COM_getDisplayName ($user, $A['username'], $A['fullname']);
