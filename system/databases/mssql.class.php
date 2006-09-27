@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql.class.php,v 1.1 2006/08/19 17:28:40 dhaun Exp $
+// $Id: mssql.class.php,v 1.2 2006/09/27 12:34:16 blaine Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -769,10 +769,10 @@ class database {
 
     }
 
-    /**fix this still.....
+
     * Copies a record from one table to another (can be the same table)
     *
-    * This will use a REPLACE INTO...SELECT FROM to copy a record from one table
+    * This will use a INSERT INTO...SELECT FROM to copy a record from one table
     * to another table.  They can be the same table.
     *
     * @param    string          $table      Table to insert record into
@@ -790,7 +790,7 @@ class database {
             $this->_errorlog("\n*** Inside database->dbCopy ***<BR>");
         }
 
-        $sql = "REPLACE INTO $table ($fields) SELECT $values FROM $tablefrom";
+        $sql = "INSERT INTO $table ($fields) SELECT $values FROM $tablefrom";
 
         if (is_array($id) || is_array($value)) {
             if (is_array($id) && is_array($value) && count($id) == count($value)) {
@@ -1207,7 +1207,7 @@ function array_push_associative(&$arr) {
             $this->_errorlog("\n*** Inside database->dbUnlockTable ***");
         }
 
-        $sql = 'END TRAN';
+        $sql = 'COMMIT TRAN';
 
         $this->dbQuery($sql);
 
