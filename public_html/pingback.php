@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.12 2006/01/15 18:57:16 dhaun Exp $
+// $Id: pingback.php,v 1.13 2006/09/28 06:57:53 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -71,6 +71,10 @@ function PNB_handlePingback ($id, $type, $url)
 
     require_once ('HTTP/Request.php');
 
+    if (!isset ($_CONF['check_trackback_link'])) {
+        $_CONF['check_trackback_link'] = 2;
+    }
+
     // handle pingbacks to articles on our own site
     $skip_speedlimit = false;
     if ($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR']) {
@@ -95,11 +99,27 @@ function PNB_handlePingback ($id, $type, $url)
         }
     }
 
+    if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
+        if ($_CONF['check_trackback_link'] & 4) {
+            $parts = parse_url ($url);
+            if (empty ($parts['host'])) {
+                TRB_logRejected ('Pingback: No valid URL', $url);
+                return new XML_RPC_Response (0, 33, $PNB_ERROR['uri_invalid']);
+            } else {
+                $ip = gethostbyname ($parts['host']);
+                if ($ip != $_SERVER['REMOTE_ADDR']) {
+                    TRB_logRejected ('Pingback: IP address mismatch', $url);
+                    return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
+                }
+            }
+        }
+    }
+
     // See if we can read the page linking to us and extract at least
     // the page's title out of it ...
     $title = '';
     $req =& new HTTP_Request ($url);
-    $req->addHeader ('User-Agent', 'GeekLog ' . VERSION);
+    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
     if (!PEAR::isError ($req->sendRequest ())) {
         if ($req->getResponseCode () == 200) {
             preg_match (':<title>(.*)</title>:i', $req->getResponseBody (),
