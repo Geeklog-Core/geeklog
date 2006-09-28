@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.42 2006/09/16 17:04:12 dhaun Exp $
+// $Id: lib-trackback.php,v 1.43 2006/09/28 07:23:11 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -424,6 +424,45 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
 }
 
 /**
+* Perform a backlink check on an HTML page
+*
+* @param    string  $body   complete HTML page to check
+* @return   boolean         true: found a link to us; false: no link to us
+*
+*/
+function TRB_containsBacklink ($body)
+{
+    global $_CONF;
+
+    if (($_CONF['check_trackback_link'] & 3) == 0) {
+        // we shouldn't be here - don't do anything
+        return true;
+    }
+
+    $retval = false;
+
+    preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>/i",
+                    $body, $matches);
+    for ($i = 0; $i < count ($matches[0]); $i++) {
+        if ($_CONF['check_trackback_link'] & 1) {
+            if (strpos ($matches[1][$i], $urlToCheck) === 0) {
+                // found it!
+                $retval = true;
+                break;
+            }
+        } else {
+            if ($matches[1][$i] == $urlToCheck) {
+                // found it!
+                $retval = true;
+                break;
+            }
+        }
+    }
+
+    return $retval;
+}
+
+/**
 * Check if a given web page links to us
 *
 * @param    string  $sid        ID of entry that got pinged
@@ -471,24 +510,7 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
     } else {
         if ($req->getResponseCode () == 200) {
             $body = $req->getResponseBody ();
-
-            preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>/i",
-                            $body, $matches);
-            for ($i = 0; $i < count ($matches[0]); $i++) {
-                if ($_CONF['check_trackback_link'] & 1) {
-                    if (strpos ($matches[1][$i], $urlToCheck) === 0) {
-                        // found it!
-                        $retval = true;
-                        break;
-                    }
-                } else {
-                    if ($matches[1][$i] == $urlToCheck) {
-                        // found it!
-                        $retval = true;
-                        break;
-                    }
-                }
-            }
+            $retval = TRB_containsBacklink ($body);
         } else {
             COM_errorLog ("Trackback verification: Got HTTP response code "
                           . $req->getResponseCode ()
