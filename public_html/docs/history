@@ -2,8 +2,11 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1rc1)
 ------------
+- Improved (and subsequently fixed) Pingback spam detection which now also uses
+  the $_CONF['check_trackback_link'] settings [Dirk]
+- directory.php was still using $LANG30 instead of $LANG_MONTH (bug #583) [Dirk]
 - Filter out special characters from link IDs. They were properly escaped
-  before storing them in the database but caused problems when using them.
+  before storing them in the database but caused problems when using them
   (bug #565) [Dirk]
 - When upgrading the database from 1.4.0, only update those plugins that are
   actually installed (disabled or not) [Dirk]
