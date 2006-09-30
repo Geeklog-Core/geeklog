@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.14 2006/09/28 07:31:03 dhaun Exp $
+// $Id: pingback.php,v 1.15 2006/09/30 17:29:34 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -138,7 +138,7 @@ function PNB_handlePingback ($id, $type, $url)
 
             if ($_CONF['check_trackback_link'] & 3) {
                 if (!TRB_containsBacklink ($body)) {
-                    TRB_logRejected ('No link to us', $url);
+                    TRB_logRejected ('Pingback: No link to us', $url);
                     $comment = TRB_formatComment ($url);
                     PLG_spamAction ($comment, $_CONF['spamx']);
 
