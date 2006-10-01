@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.85 2006/10/01 15:55:59 dhaun Exp $
+// $Id: lib-admin.php,v 1.86 2006/10/01 18:54:44 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -88,7 +88,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
-    if ($text_arr['icon'] !== false) {
+    if (isset ($text_arr['icon']) && ($text_arr['icon'] !== false)) {
         $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
     }
 
@@ -631,7 +631,7 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
         if ($_POST['chk_showall'] == 1) {
             $show_all_groups = true;
         }
-    } elseif ($_GET['showall'] == 1) {
+    } else if (isset ($_GET['showall']) && ($_GET['showall'] == 1)) {
         $show_all_groups = true;
     }
 

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.90 2006/10/01 16:15:08 dhaun Exp $
+// $Id: group.php,v 1.91 2006/10/01 18:54:44 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -704,7 +704,7 @@ function listgroups()
     $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
     
     $form_url = $_CONF['site_admin_url'] . '/group.php';
-    if ($_REQUEST['chk_showall'] == 1) {
+    if (isset ($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
         $form_url .= '?chk_showall=1';
     }    
 
@@ -731,7 +731,7 @@ function listgroups()
         if ($_POST['chk_showall'] == 1) {
             $show_all_groups = true;
         }
-    } elseif ($_GET['showall'] == 1) {
+    } else if (isset ($_GET['showall']) && ($_GET['showall'] == 1)) {
         $show_all_groups = true;
     }
 

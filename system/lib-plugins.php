@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.108 2006/08/10 07:50:13 ospiess Exp $
+// $Id: lib-plugins.php,v 1.109 2006/10/01 18:54:44 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -693,7 +693,7 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
         $function = $function_name . $pi_name;
         if (function_exists ($function)) {
             $plg_array = $function();
-            if ($plg_array !== false) {
+            if (($plg_array !== false) && (count ($plg_array) > 0)) {
                 // Check if plugin is returning a single record array or multiple records
                 $entries = count ($plg_array[0]);
                 if ($entries == 0) {

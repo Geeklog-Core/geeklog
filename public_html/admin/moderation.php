@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.97 2006/09/17 11:42:37 dhaun Exp $
+// $Id: moderation.php,v 1.98 2006/10/01 18:54:44 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -229,7 +229,8 @@ function commandcontrol()
 */
 function itemlist($type)
 {
-    global $_TABLES, $LANG29, $_CONF, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
     $retval = '';
@@ -241,12 +242,14 @@ function itemlist($type)
             // Great, we found the plugin, now call its itemlist method
             $plugin = new Plugin();
             $plugin = $function();
-            $helpfile = $plugin->submissionhelpfile;
-            $sql = $plugin->getsubmissionssql;
-            $H = $plugin->submissionheading;
-            $section_title = $plugin->submissionlabel;
-            $section_help = $helpfile;
-            $isplugin = true;
+            if (isset ($plugin)) {
+                $helpfile = $plugin->submissionhelpfile;
+                $sql = $plugin->getsubmissionssql;
+                $H = $plugin->submissionheading;
+                $section_title = $plugin->submissionlabel;
+                $section_help = $helpfile;
+                $isplugin = true;
+            }
         }
     } else { // story submission
         $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
