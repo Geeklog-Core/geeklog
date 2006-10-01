@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.106 2006/09/09 12:52:06 dhaun Exp $
+// $Id: comment.php,v 1.107 2006/10/01 19:30:40 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -169,6 +169,8 @@ function handleView($view = true)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS;
 
+    $display = '';
+
     if ($view) {
         $cid = COM_applyFilter ($_REQUEST['cid'], true);
     } else {
@@ -185,7 +187,10 @@ function handleView($view = true)
     $title = $A['title'];
     $type  = $A['type'];
 
-    $format = COM_applyFilter ($_REQUEST['format']);
+    $format = $_CONF['comment_mode'];
+    if( isset( $_REQUEST['format'] )) {
+        $format = COM_applyFilter( $_REQUEST['format'] );
+    }
     if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
         if ( $_USER['uid'] > 1 ) {
             $format = DB_getItem( $_TABLES['usercomment'], 'commentmode', 
@@ -210,9 +215,16 @@ function handleView($view = true)
                     ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
                         $B['perm_owner'], $B['perm_group'], $B['perm_members'],
                         $B['perm_anon'] ) == 3 ) );
-                $display .= CMT_userComments ($sid, $title, $type, 
-                        COM_applyFilter ($_REQUEST['order']), $format, $cid,
-                        COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
+                $order = '';
+                if (isset ( $_REQUEST['order'])) {
+                    $order = COM_applyFilter ($_REQUEST['order']);
+                }
+                $page = 0;
+                if (isset ($_REQUEST['page'])) {
+                    $page = COM_applyFilter ($_REQUEST['page'], true);
+                }
+                $display .= CMT_userComments ($sid, $title, $type, $order,
+                                $format, $cid, $page, $view, $delete_option);
             } else {
                 $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                     COM_getBlockTemplate ('_msg_block', 'header'))
