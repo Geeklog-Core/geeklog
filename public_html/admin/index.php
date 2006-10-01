@@ -22,12 +22,12 @@
 #
 ###############################################################################
 //
-// $Id: index.php,v 1.8 2002/08/20 13:08:59 dhaun Exp $
+// $Id: index.php,v 1.9 2006/10/01 19:13:37 dhaun Exp $
 
 require_once('../lib-common.php');
 
 // MAIN
-if ($mode == 'logout') {
+if (isset ($_GET['mode']) && ($_GET['mode'] == 'logout')) {
     print COM_refresh($_CONF['site_url'] . '/users.php?mode=logout');
 }
 
