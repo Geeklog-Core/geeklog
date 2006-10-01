@@ -691,6 +691,7 @@ form div.notes li {
 .plugin td             { padding:2px 5px 2px 5px; }
 .pluginBG              { background-color: #EFEFEF; }
 .pluginAltBG           { background-color: #1C1E2D; }
+.pluginAltBG td        { color:#FFF } 
 .pluginTitle           { color: #1C1E2D; background-color:#EFEFEF; font-weight: bold; }
 .pluginHeader          { color: #1A3955; font-weight: bolder; background-color: #CCC; padding:5px; }
 .pluginFooter          { background-color:#EFEFEF; }
