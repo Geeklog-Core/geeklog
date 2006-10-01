@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1rc1)
 ------------
+- Fixed highlighting parse error when the search term contained an apostrophe
+  (bug #590) [Dirk]
 - Improved (and subsequently fixed) Pingback spam detection which now also uses
   the $_CONF['check_trackback_link'] settings [Dirk]
 - directory.php was still using $LANG30 instead of $LANG_MONTH (bug #583) [Dirk]
