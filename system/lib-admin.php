@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.84 2006/09/18 15:14:19 dhaun Exp $
+// $Id: lib-admin.php,v 1.85 2006/10/01 15:55:59 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -447,6 +447,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $filter_str .= ")";
         }
         $num_pages_sql = $sql . $filter_str;
+COM_errorLog($num_pages_sql);
         $num_pages_result = DB_query($num_pages_sql);
         $num_rows = DB_numRows($num_pages_result);
         $num_pages = ceil ($num_rows / $limit);
@@ -455,8 +456,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         }
         $offset = (($curpage - 1) * $limit);
         $limit = "LIMIT $offset,$limit"; # get only current page data
-        $admin_templates->set_var ('lang_records_found', $LANG_ADMIN['records_found']);
-        $admin_templates->set_var ('records_found', $num_rows);
+        $admin_templates->set_var ('lang_records_found',
+                                   $LANG_ADMIN['records_found']);
+        $admin_templates->set_var ('records_found',
+                                   COM_numberFormat ($num_rows));
     }
 
     # SQL
