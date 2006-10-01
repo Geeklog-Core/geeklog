@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.573 2006/10/01 08:58:52 dhaun Exp $
+// $Id: lib-common.php,v 1.574 2006/10/01 18:33:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2279,10 +2279,10 @@ function COM_adminMenu( $help = '', $title = '' )
                     $modnum += DB_count( $_TABLES['users'], 'status', '2' );
                 }
             }
-
-            // now handle submissions for plugins
-            $modnum += PLG_getSubmissionCount();
         }
+
+        // now handle submissions for plugins
+        $modnum += PLG_getSubmissionCount();
 
         if( SEC_hasRights( 'story.edit' ))
         {
@@ -2295,7 +2295,7 @@ function COM_adminMenu( $help = '', $title = '' )
             }
             else
             {
-                $nresult = DB_query( "SELECT COUNT(*) AS count from {$_TABLES['stories']} WHERE" . $topicsql );
+                $nresult = DB_query( "SELECT COUNT(*) AS count from {$_TABLES['stories']} WHERE" . $topicsql . COM_getPermSql( 'AND' ));
                 $N = DB_fetchArray( $nresult );
                 $numstories = $N['count'];
             }
@@ -2308,11 +2308,13 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( SEC_hasRights( 'block.edit' ))
         {
+            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['blocks']}" . COM_getPermSql());
+            list( $count ) = DB_fetchArray( $result );
+
             $url = $_CONF['site_admin_url'] . '/block.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[12] );
-            $adminmenu->set_var( 'option_count',
-                    COM_numberFormat( DB_count( $_TABLES['blocks'] )));
+            $adminmenu->set_var( 'option_count', COM_numberFormat( $count ));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -2321,11 +2323,13 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( SEC_hasRights( 'topic.edit' ))
         {
+            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['topics']}" . COM_getPermSql());
+            list( $count ) = DB_fetchArray( $result );
+
             $url = $_CONF['site_admin_url'] . '/topic.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[13] );
-            $adminmenu->set_var( 'option_count',
-                    COM_numberFormat( DB_count( $_TABLES['topics'] )));
+            $adminmenu->set_var( 'option_count', COM_numberFormat( $count ));
 
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
