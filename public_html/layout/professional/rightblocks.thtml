@@ -6,7 +6,7 @@
     <div class="block-bg-right">
             {geeklog_blocks}
             <div style="background:transparent; width:180px; height:1px;"></div>
-    </div
+    </div>
 </td>
 <!--</td></tr></table>-->
 <!--If you want the splash, uncomment the last line. If you want no splash, make sure it is commented out.-->
