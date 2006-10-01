@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.88 2006/09/09 18:27:06 dhaun Exp $
+// $Id: group.php,v 1.89 2006/10/01 15:37:05 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -687,11 +687,13 @@ function listusers ($grp_id)
 
 function listgroups()
 {
-    global $LANG_ADMIN, $LANG_ACCESS, $LANG28, $_IMAGE_TYPE, $_CONF, $_TABLES;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
-    $retval = "";
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $LANG28, $_IMAGE_TYPE;
 
-    $header_arr = array(      # display 'text' and use table field 'field'
+    require_once ($_CONF['path_system'] . 'lib-admin.php');
+
+    $retval = '';
+
+    $header_arr = array(      // display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
                     array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true),
@@ -732,24 +734,32 @@ function listgroups()
     } elseif ($_GET['showall'] == 1) {
         $show_all_groups = true;
     }
-    
-    if ($show_all_groups) {        
-        $filter .= '<label for=chk_showall><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked">';
+
+    if (SEC_inGroup('Root')) {
+        $grpFilter = '';
+    } else {
+        $thisUsersGroups = SEC_getUserGroups ();
+        $grpFilter = 'AND (grp_id IN (' . implode (',', $thisUsersGroups) . '))';
+    }
+
+    if ($show_all_groups) {
+        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked">';
         $query_arr = array('table' => 'groups',
                            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
                            'query_fields' => array('grp_name', 'grp_descr'),
-                           'default_filter' => "");        
+                           'default_filter' => $grpFilter);
     } else {
-        $filter .= '<label for=chk_showall><input id="chk_showall" type="checkbox" name="chk_showall" value="1">';
+        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1">';
         $query_arr = array('table' => 'groups',
-                           'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE grp_gl_core = 0 OR grp_id in (2,13)",
+                           'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id in (2,13))",
                            'query_fields' => array('grp_name', 'grp_descr'),
-                           'default_filter' => "");           
+                           'default_filter' => $grpFilter);
     }        
     $filter .= $LANG28[48] . '</label></span>';
 
-    $retval .= ADMIN_list ("groups", "ADMIN_getListField_groups", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr,$filter);
+    $retval .= ADMIN_list ('groups', 'ADMIN_getListField_groups', $header_arr,
+                    $text_arr, $query_arr, $menu_arr, $defsort_arr, $filter);
+
     return $retval;
 }
 
