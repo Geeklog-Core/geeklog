@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.69 2006/10/01 17:23:05 dhaun Exp $
+// $Id: functions.inc,v 1.70 2006/10/01 17:34:40 dhaun Exp $
 
 
 /**
@@ -1177,13 +1177,17 @@ function plugin_geticon_links ()
 
 function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $LANG_ADMIN, $LANG_ACCESS;
+    global $_CONF, $LANG_ACCESS;
+
+    $retval = '';
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
     if ($access > 0) {
         switch($fieldname) {
             case 'edit':
-                $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
+                if ($access == 3) {
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
+                }
                 break;
             case 'access':
                 if ($access == 3) {
