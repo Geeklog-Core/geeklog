@@ -166,7 +166,7 @@ $LANG_CAL_MESSAGE = array(
     'unauth'    => 'Sie haben keinen Zugriff auf die Termin-Administrationsseite. Alle Versuche, auf Bereiche ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.'
 );
 
-$PLG_calendar_MESSAGE4  = "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Dein Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF['site_url']}/calendar/index.php\">Links</a> aufgelistet werden.";
+$PLG_calendar_MESSAGE4  = "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald im <a href=\"{$_CONF['site_url']}/calendar/index.php\">Kalender</a> aufgelistet werden.";
 $PLG_calendar_MESSAGE17 = 'Ihr Termin wurde gespeichert.';
 $PLG_calendar_MESSAGE18 = 'Der Termin wurde gelöscht.';
 $PLG_calendar_MESSAGE24 = 'Der Termin wurde in Ihren Kalender eingetragen.';
