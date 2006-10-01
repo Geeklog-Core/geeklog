@@ -74,17 +74,17 @@
                                 <div class="form-description">{lang_city}:</div>
                                 <div class="form-field"><input type="text" name="city" size="40" maxlength="60"></div>
                                 <div class="clear-left"></div>
-                                <div class="form-description">{lang_state}:</b></div>
+                                <div class="form-description">{lang_state}:</div>
                                 <div class="form-field">
                                             <select name="state">
                                                 {state_options}
                                             </select>
                                 </div>
                                 <div class="clear-left"></div>
-                                <div class="form-description">{lang_zipcode}:</b></div>
+                                <div class="form-description">{lang_zipcode}:</div>
                                 <div class="form-field"><input type="text" name="zipcode" size="5" maxlength="5"></div>
                                 <div class="clear-left"></div>
-                                <div class="form-description">{lang_link}:</b></div>
+                                <div class="form-description">{lang_link}:</div>
                                 <div class="form-field"><input type="text" size="48" maxlength="{max_url_length}" name="url" value="http://"></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_description}:</div>
@@ -99,3 +99,4 @@
                                     <input type="submit" value="{lang_submit}">
                                 </div>
                                 <div class="clear-left"></div>
+                            </form>
