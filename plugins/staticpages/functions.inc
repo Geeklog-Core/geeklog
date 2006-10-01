@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.77 2006/08/27 16:14:33 dhaun Exp $
+// $Id: functions.inc,v 1.78 2006/10/01 18:27:49 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -367,10 +367,10 @@ function plugin_cclabel_staticpages()
 */
 function plugin_getadminoption_staticpages()
 {
-    global $_CONF, $LANG_STATIC, $_TABLES;
+    global $_CONF, $_TABLES, $LANG_STATIC;
 
     if (SEC_hasRights ('staticpages.edit,staticpages.delete', 'OR')) {
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL ());
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL ('WHERE', 0, 3));
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
         return array ($LANG_STATIC['staticpages'], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);
