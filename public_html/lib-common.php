@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.574 2006/10/01 18:33:48 dhaun Exp $
+// $Id: lib-common.php,v 1.575 2006/10/01 19:16:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2191,7 +2191,7 @@ function COM_adminMenu( $help = '', $title = '' )
     $plugin_options = PLG_getAdminOptions();
     $num_plugins = count( $plugin_options );
 
-    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $num_plugins > 0 ))
+    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ))
     {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();

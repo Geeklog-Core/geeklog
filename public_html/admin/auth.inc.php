@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.33 2006/05/27 09:34:52 dhaun Exp $
+// $Id: auth.inc.php,v 1.34 2006/10/01 19:16:13 dhaun Exp $
 
 // this file can't be used on its own
 if (strpos ($_SERVER['PHP_SELF'], 'auth.inc.php') !== false)
@@ -76,14 +76,14 @@ if ($status == 3) {
                        $_CONF['cookiedomain'], $_CONF['cookiesecure']);
         }
     }
-    if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit','OR')) {
+    if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,syndication.edit','OR')) {
         $display .= COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
     echo $display;
     exit;
-} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail','OR') && (count (PLG_getAdminOptions()) == 0)) {
+} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit','OR') && (count (PLG_getAdminOptions()) == 0)) {
     $display .= COM_siteHeader();
 
     $display .= COM_startBlock($LANG20[01]);
