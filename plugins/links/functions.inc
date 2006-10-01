@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.68 2006/08/06 08:50:16 dhaun Exp $
+// $Id: functions.inc,v 1.69 2006/10/01 17:23:05 dhaun Exp $
 
 
 /**
@@ -873,9 +873,15 @@ function plugin_uninstall_links ()
 */
 function plugin_submissioncount_links()
 {
-   global $_TABLES;
+    global $_TABLES;
 
-   return DB_count ($_TABLES['linksubmission']);
+    $retval = 0;
+
+    if (plugin_ismoderator_links ()) {
+        $retval = DB_count ($_TABLES['linksubmission']);
+    }
+
+    return $retval;
 }
 
 /**
