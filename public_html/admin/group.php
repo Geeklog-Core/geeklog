@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.89 2006/10/01 15:37:05 dhaun Exp $
+// $Id: group.php,v 1.90 2006/10/01 16:15:08 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -651,7 +651,7 @@ function listusers ($grp_id)
     $text_arr = array ('has_menu'     => true,
                        'has_extras'   => true,
                        'title'        => $headline,
-                       'instructions' => '',
+                       'instructions' => '&nbsp;',
                        'icon'         => $_CONF['layout_url'] . '/images/icons/group.'
                                          . $_IMAGE_TYPE,
                        'form_url'     => $form_url,
