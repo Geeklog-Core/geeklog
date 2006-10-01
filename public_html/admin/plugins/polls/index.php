@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.38 2006/09/09 18:27:06 dhaun Exp $
+// $Id: index.php,v 1.39 2006/10/01 18:19:21 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -65,7 +65,9 @@ if (!SEC_hasRights ('polls.edit')) {
 function listpolls()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG25, $LANG_ACCESS;
+
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
     $retval = '';
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
@@ -93,10 +95,11 @@ function listpolls()
     $query_arr = array('table' => 'pollquestions',
                        'sql' => "SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['pollquestions']} WHERE 1=1",
                        'query_fields' => array('question'),
-                       'default_filter' => '');
+                       'default_filter' => COM_getPermSql ('AND'));
 
-    $retval = ADMIN_list ("polls", "plugin_getListField_polls", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+    $retval = ADMIN_list ('polls', 'plugin_getListField_polls', $header_arr,
+                          $text_arr, $query_arr, $menu_arr, $defsort_arr);
+
     return $retval;
 }
 
