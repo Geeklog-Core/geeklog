@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.54 2006/08/22 17:55:38 dhaun Exp $
+// $Id: functions.inc,v 1.55 2006/10/01 18:23:54 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -890,6 +890,8 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
 function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $LANG25, $LANG_ACCESS;
+
+    $retval = '';
 
     $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
                              $A['perm_owner'], $A['perm_group'],
