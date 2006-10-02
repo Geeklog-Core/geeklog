@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql.class.php,v 1.2 2006/09/27 12:34:16 blaine Exp $
+// $Id: mssql.class.php,v 1.3 2006/10/02 22:03:25 blaine Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -770,7 +770,7 @@ class database {
     }
 
 
-    * Copies a record from one table to another (can be the same table)
+    /* Copies a record from one table to another (can be the same table)
     *
     * This will use a INSERT INTO...SELECT FROM to copy a record from one table
     * to another table.  They can be the same table.
