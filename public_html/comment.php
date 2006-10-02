@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.107 2006/10/01 19:30:40 dhaun Exp $
+// $Id: comment.php,v 1.108 2006/10/02 19:04:24 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -71,6 +71,8 @@ function handleSubmit()
 {
     global $_CONF, $_TABLES, $_USER, $LANG03;
 
+    $display = '';
+
     $type = COM_applyFilter ($_POST['type']);
     $sid = COM_applyFilter ($_POST['sid']);
     switch ( $type ) {
@@ -87,10 +89,9 @@ function handleSubmit()
 
             if ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
                 $display .= COM_siteHeader ('menu', $LANG03[1])
-                         . CMT_commentform ($_USER['uid'], $_POST['title'],
-                            $_POST['comment'], $sid, 
-                            COM_applyFilter($_POST['pid']), $type, $LANG03[14],
-                            COM_applyFilter($_POST['postmode']))
+                         . CMT_commentForm ($_POST['title'], $_POST['comment'],
+                           $sid, COM_applyFilter($_POST['pid']), $type,
+                           $LANG03[14], COM_applyFilter($_POST['postmode']))
                          . COM_siteFooter();
             } else { // success
                 $comments = DB_count ($_TABLES['comments'], 'sid', $sid);

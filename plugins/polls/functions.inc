@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.55 2006/10/01 18:23:54 dhaun Exp $
+// $Id: functions.inc,v 1.56 2006/10/02 19:04:24 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -119,9 +119,9 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
     $ret = CMT_saveComment ($title, $comment, $id, $pid, 'polls', $postmode);
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= COM_siteHeader('menu', $LANG03[1])
-            . CMT_commentForm ($_USER['uid'], $title, $comment, $id, $pid,
-                    'polls', $LANG03[14], $postmode)
-            . COM_siteFooter();
+                . CMT_commentForm ($title, $comment, $id, $pid, 'polls',
+                                   $LANG03[14], $postmode)
+                . COM_siteFooter();
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
                                 . "/polls/index.php?qid=$id&aid=-1");
