@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.9 2006/10/03 07:22:04 dhaun Exp $
+// $Id: directory.php,v 1.10 2006/10/03 08:49:39 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -249,7 +249,8 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
     if ($topic != 'all') {
         $sql .= " AND (tid = '$topic')";
     }
-    $sql .= COM_getTopicSql ('AND') . COM_getPermSql ('AND') . " ORDER BY date ASC";
+    $sql .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+         . COM_getLangSQL ('sid', 'AND') . " ORDER BY date ASC";
 
     $result = DB_query ($sql);
     $numrows = DB_numRows ($result);
@@ -328,7 +329,8 @@ function DIR_displayYear ($topic, $year, $main = false)
     if ($topic != 'all') {
         $monthsql .= " AND (tid = '$topic')";
     }
-    $monthsql .= COM_getTopicSql ('AND') . COM_getPermSql ('AND') . " GROUP BY MONTH(date) ORDER BY date ASC";
+    $monthsql .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+              . COM_getLangSQL ('sid', 'AND') . " GROUP BY MONTH(date) ORDER BY date ASC";
 
     $mresult = DB_query ($monthsql);
     $nummonths = DB_numRows ($mresult);
@@ -402,7 +404,7 @@ function DIR_displayAll ($topic, $list_current_month = false)
     $retval .= '<div><h1 style="display:inline">' . $LANG_DIR['title']
             . '</h1> ' . DIR_topicList ($topic) . '</div>' . LB;
 
-    $yearsql = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . " GROUP BY YEAR(date) ORDER BY date DESC";
+    $yearsql = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND') . " GROUP BY YEAR(date) ORDER BY date DESC";
 
     $yresult = DB_query ($yearsql);
     $numyears = DB_numRows ($yresult);
