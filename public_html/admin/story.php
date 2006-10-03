@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.237 2006/09/03 14:39:28 blaine Exp $
+// $Id: story.php,v 1.238 2006/10/03 08:25:30 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1140,7 +1140,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         if ($delete_old_story && !empty ($old_sid)) {
             DB_delete ($_TABLES['stories'], 'sid', $old_sid);
             DB_query ("UPDATE {$_TABLES['comments']} SET sid = '$sid' WHERE type = 'article' AND sid = '$old_sid'");
-            DB_query ("UPDATE {$_TABLES['trackbacks']} SET sid = '$sid' WHERE type = 'article' AND sid = '$old_sid'");
+            DB_query ("UPDATE {$_TABLES['trackback']} SET sid = '$sid' WHERE type = 'article' AND sid = '$old_sid'");
         }
 
         // see if any plugins want to act on that story
