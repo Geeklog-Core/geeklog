@@ -12,7 +12,7 @@
                                         <td align="right"><b>{lang_category}:</b></td>
                                         <td>
                                             <select name="categorydd">
-                                                {link_category_options}<option>{lang_other}</option>
+                                                {link_category_options}
                                             </select> 
                                             <b>{lang_ifother}:</b> <input type="text" name="category" size="12" maxlength="32">
                                         </td>
