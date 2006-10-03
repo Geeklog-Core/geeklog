@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.107 2006/10/01 18:08:12 dhaun Exp $
+// $Id: block.php,v 1.108 2006/10/03 09:02:27 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -446,7 +446,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
     $retval = '';
 
     $title = addslashes (COM_stripslashes (strip_tags ($title)));
-    $phpblockfn = addslashes (COM_stripslashes ($phpblockfn));
+    $phpblockfn = addslashes (COM_stripslashes (trim ($phpblockfn)));
     if (empty($title)) {
         $retval .= COM_siteHeader ('menu', $LANG21[63])
                 . COM_startBlock ($LANG21[63], '',
