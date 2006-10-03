@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: switchlang.php,v 1.2 2006/04/11 12:08:01 dhaun Exp $
+// $Id: switchlang.php,v 1.3 2006/10/03 09:19:45 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -81,19 +81,20 @@ function switch_language ($url, $newlang, $oldlang)
 
         $retval = $url;
     } else { // URL contains '?' or '&'
-        $url = split ('&', $url);
+        $url = explode ('&', $url);
+        $urlpart = $url[0];
         if (count ($url) > 1) {
-            $extra_vars = '&' . $url[1];
+            array_shift ($url);
+            $extra_vars = '&' . implode ('&', $url);
         } else {
             $extra_vars = '';
         }
-        $url = $url[0];
 
-        if (substr ($url, -($lang_len + 1)) == '_' . $oldlang) {
-            $url = substr_replace ($url, $newlang, -$lang_len);
+        if (substr ($urlpart, -($lang_len + 1)) == '_' . $oldlang) {
+            $urlpart = substr_replace ($urlpart, $newlang, -$lang_len);
         }
 
-        $retval = $url . $extra_vars;
+        $retval = $urlpart . $extra_vars;
     }
 
     return $retval;
