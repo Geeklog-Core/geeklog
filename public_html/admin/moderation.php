@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.98 2006/10/01 18:54:44 dhaun Exp $
+// $Id: moderation.php,v 1.99 2006/10/03 10:42:56 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -297,9 +297,9 @@ function itemlist($type)
                       'help_url'    => $section_help,
                       'no_data'     => $LANG29[39]);
 
-    $listoptions = array('chkdelete' => true,'chkfield' => 'id');
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(),$listoptions);
+                              $text_arr, $data_arr, array(), $listoptions);
     if ($nrows > 0) {
         $retval .= LB . '<form action="' . $_CONF['site_admin_url']
                 . '/moderation.php" method="POST">' . LB
@@ -358,10 +358,10 @@ function userlist ()
                       'no_data'   => $LANG29[39]
     );
 
-    $listoptions = array('chkdelete' => true,'chkfield' => 'id');
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
 
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(),$listoptions);
+                              $text_arr, $data_arr, array(), $listoptions);
     if ($nrows > 0) {
         $retval .= LB . '<form action="' . $_CONF['site_admin_url']
                 . '/moderation.php" method="POST">' . LB
@@ -417,20 +417,23 @@ function draftlist ()
         array('text' => $LANG29[2], 'field' => 'delete'),
         array('text' => $LANG29[1], 'field' => 'approve'));
 
-    $text_arr = array('has_menu'    => false,
-                        'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
-                        'help_url'  => '',
-                        'no_data'   => $LANG29[39]);
+    $text_arr = array('has_menu'  => false,
+                      'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
+                      'help_url'  => '',
+                      'no_data'   => $LANG29[39]);
 
-    $table = ADMIN_simpleList("ADMIN_getListField_moderation", $header_arr, $text_arr, $data_arr, array());
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
+    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                              $text_arr, $data_arr, array(), $listoptions);
     if ($nrows > 0) {
-        $retval .= LB . LB . '<form action="' . $_CONF['site_admin_url']
-                . '/moderation.php" method="POST">'
-                . '<input type="hidden" name="type" value="draft">'
-                . '<input type="hidden" name="mode" value="moderation">'
-                . $table
+        $retval .= LB . '<form action="' . $_CONF['site_admin_url']
+                . '/moderation.php" method="POST">' . LB
+                . '<input type="hidden" name="type" value="draft">' . LB
+                . '<input type="hidden" name="mode" value="moderation">' . LB
+                . '<input type="hidden" name="count" value="' . $nrows . '">'
+                . LB . $table . LB
                 . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"></p></form>' . LB . LB;
+                . $LANG_ADMIN['submit'] . '"></p></form>' . LB;
     } else {
         $retval .= $table;
     }
