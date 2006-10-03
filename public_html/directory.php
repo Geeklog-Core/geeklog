@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.8 2006/09/24 08:04:19 dhaun Exp $
+// $Id: directory.php,v 1.9 2006/10/03 07:22:04 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -245,7 +245,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
     $start = sprintf ('%04d-%02d-01 00:00:00', $year, $month);
     $end   = sprintf ('%04d-%02d-31 23:59:59', $year, $month);
 
-    $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DAYOFMONTH(date) AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
+    $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
     if ($topic != 'all') {
         $sql .= " AND (tid = '$topic')";
     }
@@ -324,7 +324,7 @@ function DIR_displayYear ($topic, $year, $main = false)
     $start = sprintf ('%04d-01-01 00:00:00', $year);
     $end   = sprintf ('%04d-12-31 23:59:59', $year);
 
-    $monthsql = "SELECT DISTINCT MONTH(date) AS month,COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
+    $monthsql = "SELECT DISTINCT MONTH(date) AS month,COUNT(*) AS count,date FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
     if ($topic != 'all') {
         $monthsql .= " AND (tid = '$topic')";
     }
@@ -402,7 +402,7 @@ function DIR_displayAll ($topic, $list_current_month = false)
     $retval .= '<div><h1 style="display:inline">' . $LANG_DIR['title']
             . '</h1> ' . DIR_topicList ($topic) . '</div>' . LB;
 
-    $yearsql = "SELECT DISTINCT YEAR(date) AS year FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . " GROUP BY YEAR(date) ORDER BY date DESC";
+    $yearsql = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . " GROUP BY YEAR(date) ORDER BY date DESC";
 
     $yresult = DB_query ($yearsql);
     $numyears = DB_numRows ($yresult);
