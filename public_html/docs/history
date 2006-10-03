@@ -2,6 +2,22 @@ GeekLog History/Changes:
 
 ??? ??, 2006 (1.4.1rc1)
 ------------
+- In the Admin's User Editor, disabled the checkboxes for the All Users,
+  Logged-in Users, and Remote Users groups to prevent accidental change of
+  group membership [Dirk]
+- When deleting a topic, also delete all Trackbacks attached to stories in that
+  topic and update the Older Stories block and the feeds [Dirk]
+- Fixed approve / delete of draft stories from moderation.php [Dirk]
+- Strip blanks from the name of a PHP block function when saving a PHP block
+  [Dirk]
+- Fixed / added multi-language support in the article directory, What's New
+  block, and the search for stories and comments [Dirk]
+- Fixed an SQL error when changing a story's ID [Dirk]
+- Call SET NAMES 'utf8' when using UTF-8 as the site's character set (with
+  MySQL), as pointed out by several people [Dirk]
+- Removed wrong parameter when calling up the comment form again when the
+  comment's title was missing. This bug existed for both story and polls
+  comments. (bug #591) [Dirk]
 - User who were only in the Syndication Admin group didn't have access to
   Command and Control (moderation.php) [Dirk]
 - For Block, Group, Polls, Story and Topic Admins only display the number of
@@ -32,6 +48,7 @@ GeekLog History/Changes:
 
 Links plugin
 ------------
+- Removed duplicate "Other" entry from the Link submission form [Dirk]
 - In the Admin's list of links, only display an edit icon for links that the
   current user can actually edit (they did get a proper error message when
   trying to edit such a link, though) [Dirk]
