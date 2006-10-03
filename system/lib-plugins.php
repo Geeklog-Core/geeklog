@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.109 2006/10/01 18:54:44 dhaun Exp $
+// $Id: lib-plugins.php,v 1.110 2006/10/03 06:44:38 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -191,17 +191,17 @@ function PLG_uninstall ($type)
         }
 
         return true;
-    /** 
+    /**
     } else if ($PLG_$type['auto_uninstall'] == true)
-        
-        // removing tables 
+
+        // removing tables
         $i = count($PLG_$type['tables']);
         for ($i=0; $i < count; $i++) {
             COM_errorLog ('Dropping table' . $_PLG_$type['tables'][$i], 1);
             DB_query ("DROP TABLE {$_TABLES[$_PLG_$type['tables'][$i]]}");
             COM_errorLog ('...success', 1);
         }
-        
+
         // removing groups
         $i = count($PLG_$type['groups']);
         for ($i=0; $i < count; $i++) {
@@ -215,7 +215,7 @@ function PLG_uninstall ($type)
                 DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
                 COM_errorLog ('...success', 1);
             }
-        }    
+        }
 
         // removing features
         $i = count($PLG_$type['features']);
@@ -256,21 +256,21 @@ function PLG_uninstall ($type)
             DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE `type` = '$type'");
             COM_errorLog ('...success', 1);
         }
-        
+
         // uninstall php-blocks
         $i = count($PLG_$type['php_blocks']);
         for ($i=0; $i < count; $i++) {
             DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
                                            array ('phpblock', 'phpblock_{$_PLG_$type['php_blocks'][$i]}'));
         }
-        
-        // uninstall the plugin 
+
+        // uninstall the plugin
         COM_errorLog ('Attempting to unregister the $type plugin from Geeklog', 1);
         DB_query ("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = '$type'");
         COM_errorLog ('...success',1);
 
         COM_errorLog ('Finished uninstalling the $type plugin.', 1);
-    **/       
+    **/
     }
 
     return false;
@@ -562,7 +562,7 @@ function PLG_getSearchTypes()
             }
         } // no else because this is not a required API function
     }
-
+    asort($types);
     return $types;
 }
 
@@ -737,13 +737,13 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 * This supports that a plugin can have several lines in the CC menu.
 * The plugin has to provide simply a set arrays with 3 variables in order to
 * get n lines in the menu such as
-* array( 
+* array(
 *   array("first line", "url1", "1"),
 *   array("second line", "url2", "44"),
 *            etc, etc)
 * If there is only one item, a single array is enough:
 * array("first line", "url1", "1")
-* 
+*
 * @return   array   Returns Command and Control options for moderation.php
 *
 */
@@ -766,13 +766,13 @@ function PLG_getCCOptions()
 * This supports that a plugin can have several lines in the Admin menu.
 * The plugin has to provide simply a set arrays with 3 variables in order to
 * get n lines in the menu such as
-* array( 
+* array(
 *   array("first line", "url1", "1"),
 *   array("second line", "url2", "44"),,
 *            etc, etc)
 * If there is only one item, a single array is enough:
 * array("first line", "url1", "1")
-* 
+*
 * @return   array   Returns options to put in admin menu
 *
 */
@@ -793,13 +793,13 @@ function PLG_getAdminOptions()
 * This supports that a plugin can have several lines in the User menu.
 * The plugin has to provide simply a set of arrays with 3 variables in order to
 * get n lines in the menu such as
-* array( 
+* array(
 *   array("first line", "url1", "1"),
 *   array("second line", "url2", "44"),
 *            etc, etc)
 * If there is only one item, a single array is enough:
 * array("first line", "url1", "1")
-* 
+*
 * NOTE: the plugin is responsible for its own security.
 *
 * @return   array   Returns options to add to user menu
@@ -1180,7 +1180,7 @@ function PLG_profileExtrasSave ($plugin = '')
 * This function can be called to check if an plugin wants to set a template
 * variable
 * Example in COM_siteHeader, the API call is now added
-* A plugin can now check for templatename == 'header' and then set additional 
+* A plugin can now check for templatename == 'header' and then set additional
 * template variables
 *
 * @param   string   $templatename     Name of calling template - used as test in plugin function
@@ -1634,7 +1634,7 @@ function PLG_getWhatsNew ()
 *
 * or by
 *
-*   COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden'); 
+*   COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
 *
 * Where the former will only display a "spam detected" message while the latter
 * will also send an HTTP status code 403 with the message.
