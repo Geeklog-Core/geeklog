@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.55 2006/07/09 13:46:45 dhaun Exp $
+// $Id: search.class.php,v 1.56 2006/10/03 08:45:27 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -274,8 +274,8 @@ class Search {
             if (!empty($this->_author) && ($this->_author > 0)) {
                 $sql .= "AND (s.uid = '$this->_author') ";
             }
-            $permsql = COM_getPermSQL ('AND') . COM_getTopicSQL ('AND');
-            $sql .= $permsql;
+            $sql .= COM_getPermSQL ('AND') . COM_getTopicSQL ('AND');
+            $sql .= COM_getLangSQL ('sid', 'AND');
             $sql .= ' GROUP BY date, username, fullname, u.uid, s.uid, sid, title, hits , s.introtext, s.bodytext ORDER BY date DESC ';
             $l = ($this->_per_page * $this->_page) - $this->_per_page;
             $sql .= 'LIMIT ' . $l . ',' . $this->_per_page;
@@ -357,6 +357,7 @@ class Search {
 
             $stsql = COM_getPermSQL ('AND', 0, 2, $_TABLES['stories']);
             $stsql .= COM_getTopicSQL ('AND');
+            $stsql .= COM_getLangSQL ('sid', 'AND', $_TABLES['stories']);
 
             $stwhere = '';
 
