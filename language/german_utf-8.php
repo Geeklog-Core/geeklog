@@ -167,9 +167,9 @@ $LANG01 = array(
     121 => 'Kommentare (%d)',
     122 => 'Trackbacks (%d)',
     123 => 'Alle HTML-Tags sind erlaubt',
-    124 => 'Click to delete all checked items',
-    125 => 'Are you sure you want to Delete all checked items?',
-    126 => 'Select or de-select all items'
+    124 => 'Alle angekreuzten Einträge löschen',
+    125 => 'Willst Du wirklich alle angekreuzten Einträge löschen?',
+    126 => 'Alle Einträge ankreuzen oder deselektieren'
 );
 
 ###############################################################################
