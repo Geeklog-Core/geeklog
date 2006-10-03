@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.172 2006/09/22 00:39:42 ospiess Exp $
+// $Id: user.php,v 1.173 2006/10/03 20:04:05 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -54,6 +54,70 @@ if (!SEC_hasRights('user.edit')) {
     COM_accessLog("User {$_USER['username']} tried to illegally access the user administration screen.");
     echo $retval;
     exit;
+}
+
+/**
+* Display a list of checkboxes for the user's group assignments
+*
+* @param    string  $table      DB Table to pull data from
+* @param    string  $selection  Comma delimited list of fields to pull from table
+* @param    string  $where      Where clause of SQL statement
+* @param    string  $selected   Value to set to CHECKED
+* @return   string              HTML with Checkbox code
+* @see function COM_checkList
+*
+*/
+function GROUP_checkList ($table, $selection, $where='', $selected='')
+{
+    global $_TABLES, $LANG_ACCESS;
+
+    $retval = '';
+
+    $sql = "SELECT $selection FROM $table";
+    if (!empty ($where)) {
+        $sql .= " WHERE $where";
+    }
+    $result = DB_query ($sql);
+    $nrows = DB_numRows ($result);
+
+    if (empty ($selected)) {
+        $S = array ();
+    } else {
+        $S = explode (' ', $selected);
+    }
+
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray ($result, true);
+
+        $readonly = false;
+        $input = '<input type="checkbox"';
+
+        for ($x = 0; $x < count ($S); $x++) {
+            if ($A[0] == $S[$x]) {
+                $input .= ' checked="checked"';
+
+                if (($A[1] == 'All Users') || ($A[1] == 'Logged-in Users')) {
+                    $readonly = true;
+                }
+            }
+        }
+        if ($A[1] == 'Remote Users') {
+            $readonly = true;
+        }
+
+        if ($readonly) {
+            $input .= ' disabled="disabled">'
+                   . '<input type="hidden" name="' . $table . '[]" value="'
+                   . $A[0] . '" checked="checked">';
+            $retval .= '<span title="' . $LANG_ACCESS['readonly'] . '">'
+                    . $input . stripslashes ($A[1]) . '</span><br>' . LB;
+        } else {
+            $input .= ' name="' . $table . '[]" value="' . $A[0] . '"';
+            $retval .= $input . '>' . stripslashes ($A[1]) . '<br>' . LB;
+        }
+    }
+
+    return $retval;
 }
 
 /**
@@ -264,14 +328,14 @@ function edituser($uid = '', $msg = '')
         }
         $thisUsersGroups = SEC_getUserGroups ();
         $remoteGroup = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                   "grp_name='Remote users'");
+                                   "grp_name='Remote Users'");
         if (!empty ($remoteGroup)) {
             $thisUsersGroups[] = $remoteGroup;
         }
         $where = 'grp_id IN (' . implode (',', $thisUsersGroups) . ')';
         $user_templates->set_var ('group_options',
-                COM_checkList ($_TABLES['groups'], 'grp_id,grp_name',
-                               $where, $selected));
+                GROUP_checkList ($_TABLES['groups'], 'grp_id,grp_name',
+                                 $where, $selected));
         $user_templates->parse('group_edit', 'groupedit', true);
     } else {
         // user doesn't have the rights to edit a user's groups so set to -1
@@ -376,7 +440,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
     if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);
     if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);
 
-    if ($passwd!=$passwd_conf) { // passwords dont match
+    if ($passwd != $passwd_conf) { // passwords don't match
         return edituser ($uid, 67);
     }
 
@@ -408,10 +472,10 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 
         $emailaddr = addslashes ($email);
         if (empty ($uid)) {
-            $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
+            $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                                   "email = '$emailaddr'");
         } else {
-            $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
+            $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                                   "email = '$emailaddr' AND uid <> $uid");
         }
         if ($ucount > 0) {
@@ -476,8 +540,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                 CUSTOM_userSave($uid);
             }
             if( ($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL)
-                   && ($userstatus == USER_ACCOUNT_ACTIVE) )
-            {
+                   && ($userstatus == USER_ACCOUNT_ACTIVE) ) {
                 //USER_sendActivationEmail($username, $email);
                 USER_createAndSendPassword ($username, $email, $uid);
             }
@@ -495,28 +558,54 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                     exit;
                 }
             }
-            if ($_USER_VERBOSE) COM_errorLog("deleting all group_assignments for user $uid/$username",1);
+
+            // make sure the Remote Users group is in $groups
+            if (SEC_inGroup ('Remote Users', $uid)) {
+                $remUsers = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                        "grp_name = 'Remote Users'");
+                if (!in_array ($remUsers, $groups)) {
+                    $groups[] = $remUsers;
+                }
+            }
+
+            if ($_USER_VERBOSE) {
+                COM_errorLog("deleting all group_assignments for user $uid/$username",1);
+            }
+
             // remove user from all groups that the User Admin is a member of
             $UserAdminGroups = SEC_getUserGroups ();
             $whereGroup = 'ug_main_grp_id IN ('
                         . implode (',', $UserAdminGroups) . ')';
             DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_uid = $uid) AND " . $whereGroup);
-            if (!empty($groups)) {
-                for ($i = 1; $i <= sizeof($groups); $i++) {
-                    if (in_array (current ($groups), $UserAdminGroups)) {
-                        if ($_USER_VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $username",1);
-                        $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
-                        DB_query($sql);
+
+            // make sure to add user to All Users and Logged-in Users groups
+            $allUsers = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                    "grp_name = 'All Users'");
+            if (!in_array ($allUsers, $groups)) {
+                $groups[] = $allUsers;
+            }
+            $logUsers = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                    "grp_name = 'Logged-in Users'");
+            if (!in_array ($logUsers, $groups)) {
+                $groups[] = $logUsers;
+            }
+
+            foreach ($groups as $userGroup) {
+                if (in_array ($userGroup, $UserAdminGroups)) {
+                    if ($_USER_VERBOSE) {
+                        COM_errorLog ("adding group_assignment " . $userGroup
+                                      . " for $username", 1);
                     }
-                    next($groups);
+                    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($userGroup, $uid)";
+                    DB_query ($sql);
                 }
             }
         }
 
-        if ($userChanged)
-        {
+        if ($userChanged) {
             PLG_userInfoChanged ($uid);
         }
+
         $errors = DB_error();
         if (empty($errors)) {
             echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
