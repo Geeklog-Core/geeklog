@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.70 2006/09/17 15:58:11 blaine Exp $
+// $Id: topic.php,v 1.71 2006/10/03 15:09:02 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -382,19 +382,24 @@ function deleteTopic ($tid)
     // same with feeds
     DB_query ("UPDATE {$_TABLES['syndication']} SET topic = '::all', is_enabled = 0 WHERE topic = '$tid'");
 
-    // delete comments and images associated with stories in this topic
+    // delete comments, trackbacks, images associated with stories in this topic
     $result = DB_query ("SELECT sid FROM {$_TABLES['stories']} WHERE tid = '$tid'");
     $numStories = DB_numRows ($result);
     for ($i = 0; $i < $numStories; $i++) {
         $A = DB_fetchArray ($result);
         STORY_deleteImages ($A['sid']);
         DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid = '{$A['sid']}' AND type = 'article'");
+        DB_query("DELETE FROM {$_TABLES['trackback']} WHERE sid = '{$A['sid']}' AND type = 'article'");
     }
 
     // delete these
     DB_delete ($_TABLES['stories'], 'tid', $tid);
     DB_delete ($_TABLES['storysubmission'], 'tid', $tid);
     DB_delete ($_TABLES['topics'], 'tid', $tid);
+
+    // update feed(s) and Older Stories block
+    COM_rdfUpToDateCheck ('geeklog');
+    COM_olderStuff ();
 
     return COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=14');
 }
