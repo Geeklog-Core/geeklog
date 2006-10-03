@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.25 2006/10/03 08:06:37 dhaun Exp $
+// $Id: mysql.class.php,v 1.26 2006/10/03 19:44:40 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -141,7 +141,7 @@ class database {
 
         if ($this->_mysql_version >= 40100) {
             if ($this->_charset == 'utf-8') {
-                @mysql_query ("SET NAMES 'utf-8'", $this->_db);
+                @mysql_query ("SET NAMES 'utf8'", $this->_db);
             }
         }
 
