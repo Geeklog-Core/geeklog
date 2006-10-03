@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.24 2006/08/12 13:38:51 dhaun Exp $
+// $Id: mysql.class.php,v 1.25 2006/10/03 08:06:37 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -74,6 +74,14 @@ class database {
     * @access private
     */
     var $_errorlog_fn = '';
+    /**
+    * @access private
+    */
+    var $_charset = '';
+    /**
+    * @access private
+    */
+    var $_mysql_version = 0;
 
     // PRIVATE METHODS
 
@@ -111,6 +119,14 @@ class database {
         // Connect to MySQL server
         $this->_db = mysql_connect($this->_host,$this->_user,$this->_pass) or die('Cannot connect to DB server');
 
+        if ($this->_mysql_version == 0) {
+            $v = mysql_get_server_info ();
+            preg_match ('/^([0-9]+).([0-9]+).([0-9]+)/', $v, $match);
+            $v = (intval ($match[1]) * 10000) + (intval ($match[2]) * 100)
+               + intval ($match[3]);
+            $this->_mysql_version = $v;
+        }
+
         // Set the database
         @mysql_select_db($this->_name) or die('error selecting database');
 
@@ -121,6 +137,12 @@ class database {
 
             // damn, got an error.
             $this->dbError();
+        }
+
+        if ($this->_mysql_version >= 40100) {
+            if ($this->_charset == 'utf-8') {
+                @mysql_query ("SET NAMES 'utf-8'", $this->_db);
+            }
         }
 
         if ($this->isVerbose()) {
@@ -140,9 +162,10 @@ class database {
     * @param        sring       $dbuser     User to make connection as
     * @param        string      $pass       Password for dbuser
     * @param        string      $errorlogfn Name of the errorlog function
+    * @param        string      $charset    character set to use
     *
     */
-    function database($dbhost,$dbname,$dbuser,$dbpass,$errorlogfn='')
+    function database($dbhost,$dbname,$dbuser,$dbpass,$errorlogfn='',$charset='')
     {
         $this->_host = $dbhost;
         $this->_name = $dbname;
@@ -150,6 +173,8 @@ class database {
         $this->_pass = $dbpass;
         $this->_verbose = false;
         $this->_errorlog_fn = $errorlogfn;
+        $this->_charset = $charset;
+        $this->_mysql_version = 0;
 
         $this->_connect();
     }

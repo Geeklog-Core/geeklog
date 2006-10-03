@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.41 2006/08/12 13:38:51 dhaun Exp $
+// $Id: lib-database.php,v 1.42 2006/10/03 08:06:37 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -117,7 +117,8 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-database.php') !== false) {
 require_once($_CONF['path_system'] . 'databases/'. $_DB_dbms . '.class.php');
 
 // Instantiate the database object
-$_DB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'COM_errorLog');
+$_DB = new database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
+                    $_CONF['default_charset']);
 
 // +---------------------------------------------------------------------------+
 // | These are the library functions.  In all cases they turn around and make  |

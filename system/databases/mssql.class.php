@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql.class.php,v 1.3 2006/10/02 22:03:25 blaine Exp $
+// $Id: mssql.class.php,v 1.4 2006/10/03 08:06:37 dhaun Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -152,9 +152,10 @@ class database {
     * @param        sring       $dbuser     User to make connection as
     * @param        string      $pass       Password for dbuser
     * @param        string      $errorlogfn Name of the errorlog function
+    * @param        string      $charset    character set to use
     *
     */
-    function database($dbhost,$dbname,$dbuser,$dbpass,$errorlogfn='')
+    function database($dbhost,$dbname,$dbuser,$dbpass,$errorlogfn='',$charset='')
     {
         $this->_host = $dbhost;
         $this->_name = $dbname;
