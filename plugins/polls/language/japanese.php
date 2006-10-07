@@ -8,6 +8,7 @@
 # tony@tonybibbs.com
 # Copyright (C) 2005 Trinity Bays
 # trinity93@gmail.com
+# Tranlated by Geeklog Japanese group
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,16 +35,16 @@
 
 
 $LANG_POLLS = array(
-    'polls'     => 'アンケート',
-    'results'   => '結果',
-    'pollresults'   => '投票結果',
-    'votes'     => '投票',
-    'vote'      => '投票する',
-    'pastpolls' => 'アンケートの一覧',
-    'savedvotetitle'    => '投票が登録されました',
-    'savedvotemsg'  => '今の投票が登録されました',
-    'pollstitle'    => '募集中のアンケート',
-    'pollquestions' => '他のアンケートを見る'
+    'polls'          => 'アンケート',
+    'results'        => '結果',
+    'pollresults'    => '投票結果',
+    'votes'          => '投票',
+    'vote'           => '投票する',
+    'pastpolls'      => 'アンケートの一覧',
+    'savedvotetitle' => '投票が登録されました',
+    'savedvotemsg'   => '今の投票が登録されました',
+    'pollstitle'     => '募集中のアンケート',
+    'pollquestions'  => '他のアンケートを見る'
 );
 
 ###############################################################################
@@ -51,7 +52,7 @@ $LANG_POLLS = array(
 
 $LANG25 = array(
     1 => 'モード',
-    2 => '質問と最低一つの選択肢を入力してください',
+    2 => '質問と少なくとも一つの選択肢を入力してください',
     3 => '作成日時',
     4 => "アンケート（ %s ）が保存されました",
     5 => 'アンケートの編集',
@@ -84,7 +85,7 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = 'アンケートが登録されました。';
-$PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
+$PLG_polls_MESSAGE20 = 'アンケートは削除されました。';
 
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3002 = $LANG32[9];

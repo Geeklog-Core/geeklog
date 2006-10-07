@@ -8,6 +8,7 @@
 # tony@tonybibbs.com
 # Copyright (C) 2005 Trinity Bays
 # trinity93@gmail.com
+# Tranlated by Geeklog Japanese group
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: japanese_utf-8.php,v 1.4 2006/05/13 17:13:08 dhaun Exp $
+# $Id: japanese_utf-8.php,v 1.5 2006/10/07 20:19:04 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -38,7 +39,7 @@ $LANG_LINKS= array(
     14 => 'リンク',
     84 => 'リンク',
     88 => '新しいリンクはありません',
-    114 => 'リンク集',
+    114 => 'リンク',
     116 => 'リンクの追加'
 );
 
@@ -50,7 +51,7 @@ $LANG_LINKS_STATS = array(
     'stats_headline' => 'リンク(上位10件)',
     'stats_page_title' => 'リンク',
     'stats_hits' => 'ヒット',
-    'stats_no_hits' => 'このサイトにはリンクが一つもないか、クリックした人がいないかのどちらかのようです。',
+    'stats_no_hits' => 'このサイトにはリンクがないか、クリックした人がいないかのどちらかのようです。',
 ); 
  
 ###############################################################################
@@ -83,10 +84,10 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンクを登録してくれてありがとう。スタッフが内容を確認して受け入れるかどうか判断いたします。受け入れられた場合、<a href={$_CONF['site_url']}/links.php>リンク</a>セクションにリンクが表示されます。";
+$PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンク登録ありがとうございます。スタッフが内容を確認します。承認されたら<a href={$_CONF['site_url']}/links.php>リンク</a>セクションにリンクが表示されます。";
 $PLG_links_MESSAGE2 = 'リンクは無事登録されました。';
 $PLG_links_MESSAGE3 = 'リンクの削除が完了しました。';
-$PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンクを登録してくれてありがとうございます。リンクは<a href={$_CONF['site_url']}/links.php>links</a>で確認できます。";
+$PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンク登録ありがとうございます。リンクは<a href={$_CONF['site_url']}/links.php>リンク</a>で確認できます。";
 
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3002 = $LANG32[9];
