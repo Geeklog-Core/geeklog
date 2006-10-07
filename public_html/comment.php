@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.108 2006/10/02 19:04:24 dhaun Exp $
+// $Id: comment.php,v 1.109 2006/10/07 08:38:24 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -205,7 +205,7 @@ function handleView($view = true)
         case 'article':
             $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['stories']} WHERE (sid = '$sid') "
-                 . 'AND (draft_flag = 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
+                 . 'AND (draft_flag = 0) AND (commentcode = 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
                  . COM_getTopicSQL('AND') . 'GROUP BY sid';
             $result = DB_query ($sql);
             $B = DB_fetchArray ($result);

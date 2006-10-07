@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.56 2006/10/03 08:45:27 dhaun Exp $
+// $Id: search.class.php,v 1.57 2006/10/07 08:38:24 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -375,7 +375,7 @@ class Search {
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "WHERE ";
             $sql .= " {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND ";
-            $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) ";
+            $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode = 0) AND ({$_TABLES['stories']}.date <= NOW()) ";
 
             if (!empty ($this->_query)) {
                 if($this->_keyType == 'phrase') {
