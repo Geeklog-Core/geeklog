@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.579 2006/10/07 14:10:25 dhaun Exp $
+// $Id: lib-common.php,v 1.580 2006/10/07 18:29:54 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5495,15 +5495,16 @@ function COM_convertDate2Timestamp( $date, $time = '' )
 */
 function COM_getImgSizeAttributes( $file )
 {
-    $dimensions = GetImageSize( $file );
-    if( !empty( $dimensions[0] ) AND !empty( $dimensions[1] ))
+    $sizeattributes = '';
+
+    if( file_exists( $file ))
     {
-        $sizeattributes = 'width="' . $dimensions[0]
-                        . '" height="' . $dimensions[1] . '" ';
-    }
-    else
-    {
-        $sizeattributes = '';
+        $dimensions = getimagesize( $file );
+        if( !empty( $dimensions[0] ) AND !empty( $dimensions[1] ))
+        {
+            $sizeattributes = 'width="' . $dimensions[0]
+                            . '" height="' . $dimensions[1] . '" ';
+        }
     }
 
     return $sizeattributes;
