@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.69 2006/09/10 21:14:31 dhaun Exp $
+// $Id: lib-story.php,v 1.70 2006/10/07 18:00:44 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -45,6 +45,11 @@ if( $_CONF['allow_user_photo'] )
     require_once ($_CONF['path_system'] . 'lib-user.php');
 }
 
+// Story Record Options for the STATUS Field
+if (!defined ('STORY_ARCHIVE_ON_EXPIRE')) {
+    define ('STORY_ARCHIVE_ON_EXPIRE', '10');
+    define ('STORY_DELETE_ON_EXPIRE',  '11');
+}
 
 /**
 * Returns the array (created from db record) passed to it as formated HTML
@@ -478,7 +483,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         $article->parse( 'story_bodyhtml', 'featuredbodytext', true );
         $article->parse( 'finalstory', 'featuredarticle' );
     }
-    elseif( $A['statuscode'] == 10 AND $archiveDateTime <= time() )
+    else if(( $A['statuscode'] == STORY_ARCHIVE_ON_EXPIRE ) AND ( $archiveDateTime <= time()))
     {
         $article->parse( 'story_bodyhtml', 'archivestorybodytext', true );
         $article->parse( 'finalstory', 'archivearticle' );
