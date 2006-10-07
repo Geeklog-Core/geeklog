@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.578 2006/10/07 11:49:39 dhaun Exp $
+// $Id: lib-common.php,v 1.579 2006/10/07 14:10:25 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4873,20 +4873,22 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     {
         $uid = $u_id;
     }
+
+    $UserGroups = array();
     if(( empty( $_USER['uid'] ) && ( $uid == 1 )) || ( $uid == $_USER['uid'] ))
     {
         if( empty( $_GROUPS ))
         {
             $_GROUPS = SEC_getUserGroups( $uid );
         }
-        $GROUPS = $_GROUPS;
+        $UserGroups = $_GROUPS;
     }
     else
     {
-        $GROUPS = SEC_getUserGroups( $uid );
+        $UserGroups = SEC_getUserGroups( $uid );
     }
 
-    if( empty( $_GROUPS ))
+    if( empty( $UserGroups ))
     {
         // this shouldn't really happen, but if it does, handle user
         // like an anonymous user
@@ -4904,7 +4906,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     {
         $sql .= "(({$table}owner_id = '{$uid}') AND ({$table}perm_owner >= $access)) OR ";
 
-        $sql .= "(({$table}group_id IN (" . implode( ',', $_GROUPS )
+        $sql .= "(({$table}group_id IN (" . implode( ',', $UserGroups )
              . ")) AND ({$table}perm_group >= $access)) OR ";
         $sql .= "({$table}perm_members >= $access)";
     }
@@ -4944,6 +4946,7 @@ function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
         $table .= '.';
     }
 
+    $UserGroups = array();
     if(( $u_id <= 0 ) || ( $u_id == $_USER['uid'] ))
     {
         if( isset( $_USER['uid'] ))
@@ -4954,15 +4957,15 @@ function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
         {
             $uid = 1;
         }
-        $GROUPS = $_GROUPS;
+        $UserGroups = $_GROUPS;
     }
     else
     {
         $uid = $u_id;
-        $GROUPS = SEC_getUserGroups( $uid );
+        $UserGroups = SEC_getUserGroups( $uid );
     }
 
-    if( empty( $_GROUPS ))
+    if( empty( $UserGroups ))
     {
         // this shouldn't really happen, but if it does, handle user
         // like an anonymous user
