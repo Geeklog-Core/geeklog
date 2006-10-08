@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.71 2006/10/03 15:09:02 dhaun Exp $
+// $Id: topic.php,v 1.72 2006/10/08 16:10:20 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -180,7 +180,7 @@ function edittopic ($tid = '')
     } else {
         $topic_templates->set_var ('archive_checked', '');
         // Only 1 topic can be the archive topic - so check if there already is one
-        if (DB_count($_TABLES['topics'],'archive_flag', '1') > 0) {
+        if (DB_count($_TABLES['topics'], 'archive_flag', '1') > 0) {
             $topic_templates->set_var ('archive_disabled', 'disabled');
         }
     }
@@ -206,6 +206,7 @@ function edittopic ($tid = '')
 * @param    int     $perm_member    Permissions members have
 * @param    int     $perm_anon      Permissions anonymous users have
 * @param    string  $is_default     'on' if this is the default topic
+* @param    string  $is_archive     'on' if this is the archive topic
 * @return   string                  HTML redirect or error message
 */
 function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
@@ -251,11 +252,23 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
             $is_default = 0;
         }
 
-        if ($is_archive == 'on') {
-            $is_archive = 1;
-            DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+        $is_archive = ($is_archive == 'on') ? 1 : 0;
+
+        $archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
+        if ($is_archive) {
+            // $tid is the archive topic
+            // - if it wasn't already, mark all its stories "archived" now
+            if ($archivetid != $tid) {
+                DB_query ("UPDATE {$_TABLES['stories']} SET featured = 0, frontpage = 0, statuscode = " . STORY_ARCHIVE_ON_EXPIRE . " WHERE tid = '$tid'");
+                DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+            }
         } else {
-            $is_archive = 0;
+            // $tid is not the archive topic
+            // - if it was until now, reset the "archived" status of its stories
+            if ($archivetid == $tid) {
+                DB_query ("UPDATE {$_TABLES['stories']} SET statuscode = 0 WHERE tid = '$tid'");
+                DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+            }
         }
 
         DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
