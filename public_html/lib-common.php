@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.580 2006/10/07 18:29:54 dhaun Exp $
+// $Id: lib-common.php,v 1.581 2006/10/08 12:07:55 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3711,8 +3711,15 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
     if( $_CONF['hidenewstories'] == 0 )
     {
+        $archsql = '';
+        $archivetid = DB_getItem( $_TABLES['topics'], 'tid', "archive_flag=1" );
+        if( !empty( $archivetid ))
+        {
+            $archsql = " AND (tid ='" . addslashes( $archivetid ) . "')";
+        }
+
         // Find the newest stories
-        $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
+        $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $archsql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
         $result = DB_query( $sql );
         $A = DB_fetchArray( $result );
         $nrows = $A['count'];

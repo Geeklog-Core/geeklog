@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.86 2006/09/03 13:13:03 dhaun Exp $
+// $Id: index.php,v 1.87 2006/10/08 12:07:55 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -128,7 +128,7 @@ COM_rdfUpToDateCheck();
 COM_featuredCheck();
 
 // Retrieve the archive topic - currently only one supported
-$archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag='1'");
+$archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
 
 // Scan for any stories that have expired and should be archived or deleted
 $asql = "SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']} ";
