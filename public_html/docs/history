@@ -1,7 +1,20 @@
 GeekLog History/Changes:
 
-??? ??, 2006 (1.4.1rc1)
+Oct ??, 2006 (1.4.1b2)
 ------------
+- When making a topic the archive topic, update all existing stories in that
+  topic to "archived" status (and likewise revert that status if the topic
+  loses its archive topic status) [Dirk]
+- Don't count archived stories as new stories in the What's New block [Dirk]
+- Moved the defines for STORY_ARCHIVE_ON_EXPIRE and STORY_DELETE_ON_EXPIRE to
+  lib-story.php (from config.php) where they make more sense [Dirk]
+- COM_getPermSQL was using the current user's group information when called for
+  another user. In Geeklog, this only happens for the Daily Digest, though
+  (bug #594) [Dirk]
+- When comments are disabled for a story, don't show any existing comments in
+  the What's New block, in search results of via comment.php (bug #597) [Dirk]
+- When trackbacks are disabled for a story, don't list any existing trackbacks
+  in the What's New block [Dirk]
 - In the Admin's User Editor, disabled the checkboxes for the All Users,
   Logged-in Users, and Remote Users groups to prevent accidental change of
   group membership [Dirk]
@@ -18,7 +31,7 @@ GeekLog History/Changes:
 - Removed wrong parameter when calling up the comment form again when the
   comment's title was missing. This bug existed for both story and polls
   comments. (bug #591) [Dirk]
-- User who were only in the Syndication Admin group didn't have access to
+- Users who were only in the Syndication Admin group didn't have access to
   Command and Control (moderation.php) [Dirk]
 - For Block, Group, Polls, Story and Topic Admins only display the number of
   the respective entries they can actually see (instead of the number of all
@@ -45,6 +58,9 @@ GeekLog History/Changes:
   $_CONF['show_fullname'] was set to 0 [Dirk]
 - Fixed 404 (caused by a request for a file named '(none)') in the user profile
   display when a user doesn't have a userphoto [Dirk]
+
+- Updated Japanese language files (UTF-8 and EUC-JP) for Geeklog and all the
+  plugins, provided by the Geeklog Japanese group
 
 Links plugin
 ------------
