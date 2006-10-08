@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.238 2006/10/03 08:25:30 dhaun Exp $
+// $Id: story.php,v 1.239 2006/10/08 08:15:19 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -938,6 +938,12 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $draft_flag = 1;
         } else {
             $draft_flag = 0;
+        }
+
+        if (DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1") == $tid) {
+            $featured = 0;
+            $frontpage = 0;
+            $statuscode = STORY_ARCHIVE_ON_EXPIRE;
         }
 
         if ($featured == '1') {
