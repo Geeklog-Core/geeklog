@@ -1,0 +1,161 @@
+/* Calendar Plugin */
+
+.cal-body {
+  background:#FFFFFF;
+  border-bottom:#E7E7E7 1px solid;
+  border-left:#E7E7E7 1px solid;
+  border-right:#E7E7E7 1px solid;
+  border-top:#E7E7E7 1px solid;
+  color:#000000;
+  font-weight:bold;
+}
+.cal-day,
+.cal_day {
+  background:transparent;
+  border-bottom:#F7F7F7 1px dashed;
+  border-left:#F7F7F7 1px dashed;
+  border-top:#1A3955 2px solid;
+  color:#000000;
+  font-weight:bold;
+}
+.cal-dayview-times {
+  background:#F7F7F7;
+  border-bottom:#E7E7E7 1px solid;
+  border-left:#E7E7E7 1px solid;
+  border-right:#E7E7E7 1px solid;
+  border-top:#1A3955 1px dashed;
+  color:#000000;
+  font-weight:bold;
+  font-size:.8em;
+}
+.cal-dayx-body {
+  background:#E7E7E7
+}
+.cal-dayx-cur {
+  background:#FFFFFF;
+  color:#000000;
+  font-weight:bold;
+  font-size:.8em;
+}
+.cal-dayx-subcur {
+  background:#FFFFFF;
+  color:#000000;
+  font-weight:bold;
+  font-size:.8em;
+  padding-top:4px;
+}
+.cal-dayx-times {
+  border-bottom:#FFFFFF 1px solid;
+  border-left:#FFFFFF 1px solid;
+  border-right:#FFFFFF 1px solid;
+}
+.cal-dayx-times2 {
+  background:#FFFFFF
+}
+.cal-dayx-weekevent {
+  border-bottom:#FFFFFF 1px solid;
+  border-left:#FFFFFF 1px dashed;
+  border-right:#FFFFFF 1px dashed;
+  border-top:#E7E7E7 1px solid;
+}
+.cal-futureday {
+  background:#F7F7F7
+}
+.cal-header {
+  background:#FFFFFF;
+  border-bottom:#F7F7F7 1px solid;
+  border-left:#F7F7F7 1px solid;
+  border-right:#F7F7F7 1px solid;
+  border-top:#F7F7F7 1px solid;
+}
+.cal-hr {
+  background:#FFFFFF
+}
+.cal-month,
+.cal_month {
+  background:#F7F7F7;
+  color:#000000;
+  font-size:.9em;
+}
+.cal-nullday {
+  background:#FFFFFF;
+  border-bottom:#F7F7F7 1px dashed;
+  border-left:#F7F7F7 1px dashed;
+  border-top:#F7F7F7 1px dashed;
+  color:#000000;
+}
+.cal-oldday {
+  background:#E7E7E7;
+  color:#000000;
+}
+.cal-quickadd,
+.quickadd {
+  background:#F7F7F7;
+  border-bottom:#E7E7E7 1px solid;
+  border-left:#E7E7E7 1px solid;
+  border-right:#E7E7E7 1px solid;
+  border-top:#E7E7E7 1px solid;
+  padding:4px;
+}
+.cal-today {
+  background:#FFFFFF;
+  border-bottom:#1A3955 1px dashed;
+  border-left:#1A3955 1px dashed;
+  border-right:#1A3955 1px dashed;
+  border-top:#1A3955 1px dashed;
+}
+.cal-weekpointers {
+  border-bottom:#F7F7F7 1px dashed;
+  border-left:#F7F7F7 1px dashed;
+}
+.cal-weekview-addevent {
+  background:#FFFFFF;
+  border-right:#E7E7E7 1px solid;
+  border-top:#E7E7E7 1px solid;
+  color:#000000;
+  font-weight:bold;
+  font-size:.8em;
+  padding:4px;
+}
+.cal-weekview-caltitle {
+  background:#FFFFFF;
+  border-bottom:#E7E7E7 1px solid;
+  border-left:#E7E7E7 1px solid;
+  border-right:#E7E7E7 1px solid;
+  color:#000000;
+  font-weight:bold;
+  font-size:.8em;
+  padding:4px;
+}
+.cal-weekview-curday,
+.weekview_curday {
+  background:#F7F7F7;
+  color:#000000;
+}
+.cal-weekview-daterange {
+  background:#FFFFFF;
+  border-left:#E7E7E7 1px solid;
+  border-right:#E7E7E7 1px solid;
+  border-top:#E7E7E7 1px solid;
+  color:#000000;
+  font-weight:bold;
+  font-size:.8em;
+  padding:4px;
+}
+.cal-weekview-dayformat {
+  background:#FFFFFF;
+  border-left:#E7E7E7 1px solid;
+  border-top:#E7E7E7 1px solid;
+  color:#000000;
+  font-weight:bold;
+  font-size:.8em;  padding:4px;
+}
+.cal-weekview-offday,
+.weekview_offday {
+  background:transparent;
+  color:#000000;
+}
+.smallcal-week-even {
+  background:#E7E7E7;
+  color:#000000;
+}
