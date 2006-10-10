@@ -1,11 +1,38 @@
+/*
+  STYLESHEET FORMAT GUIDE
+  split the following sections:
+  - semantics (direct formatting for <td>, <a > etc
+  - classes (.whatever)
+  - common plugin CSS
+  - navbar
+  Within these sections, entries are to be strictly alphabetized.
+
+  SAMPLE:
+  .block-vote,
+  .block-vote-results {
+    background:transparent;
+    color:#000000;
+    font-size:smaller;
+  }
+
+  These are the rough rules:
+  - always put a ';' after the last entry
+  - always a linebreak before .
+  - always a linebreak after , ; { and }
+  - always a . before all classes
+  - two spaces indent
+  - no tabs
+  - no spaces after colons
+*/
+
 /* SEMANTICS */
 a:link.non-ul,
 a:visited.non-ul,
 a:hover.non-ul,
 a:active.non-ul {
   color:#000000;
-  background: transparent;
-  text-decoration: none;
+  background:transparent;
+  text-decoration:none;
 }
 a:link {
   background:transparent;
@@ -25,7 +52,7 @@ a:active {
 }
 
 fieldset {
-  margin-bottom: 1em;
+  margin-bottom:1em;
 }
 fieldset p {
   padding:5px;
@@ -43,58 +70,58 @@ form {
 }
 form div.notes p,
 form div small {
-  line-height: 125%;
+  line-height:125%;
 }
 
 form div.notes li {
   margin-left:10px;
 }
 form fieldset div.notes {
-  float: right;
-  width: 170px;
-  height: auto;
-  margin: 0px 0px 10px 10px;
-  padding: 5px;
-  border: 1px solid #666666;
-  background-color: #ffffe1;
-  color: #666666;
-  font-size: .75em;
+  float:right;
+  width:170px;
+  height:auto;
+  margin:0px 0px 10px 10px;
+  padding:5px;
+  border:1px solid #666666;
+  background-color:#ffffe1;
+  color:#666666;
+  font-size:.75em;
 }
 
 form fieldset div.notes h4 {
-  background-image: url(images/icon_info.png);
-  background-repeat: no-repeat;
-  background-position: top left;
-  padding: 3px 0px 2px 27px;
-  border-width: 0px 0px 1px 0px;
-  border-style: solid;
-  border-color: #666666;
-  color: #666666;
+  background-image:url(images/icon_info.png);
+  background-repeat:no-repeat;
+  background-position:top left;
+  padding:3px 0px 2px 27px;
+  border-width:0px 0px 1px 0px;
+  border-style:solid;
+  border-color:#666666;
+  color:#666666;
   margin-bottom:5px;
   margin-top:0px;
   font-size:1.3em;
 }
 
 form fieldset div.notes p {
-  margin: 0em 0em 1.2em 0em;
-  color: #666666;
+  margin:0em 0em 1.2em 0em;
+  color:#666666;
 }
 
 form fieldset div.notes p.last {
-  margin: 0em;
+  margin:0em;
   padding-bottom:5px;
 }
 h1 {
-  font-size: 125%;
+  font-size:125%;
 }
 h2 {
-  font-size: 100%;
+  font-size:100%;
 }
 img {
-  border: 0;
+  border:0;
 }
 input {
-  font-size: .9em;
+  font-size:.9em;
 }
 input,
 submit {
@@ -105,13 +132,13 @@ td {
 }
 textarea {
   color:#000000;
-  font-family: arial,sans-serif,verdana,tahoma,helvetica;
+  font-family:arial,sans-serif,verdana,tahoma,helvetica;
 }
 th {
   color:#000000;
-  background-color: #DAE0ED;
+  background-color:#DAE0ED;
   font-weight:bold;
-  font-size: larger;
+  font-size:larger;
   padding-left:3px;
   text-align:left;
 }
@@ -120,7 +147,7 @@ p {
 }
 select {
   color:#000000;
-  font-size: .9em;
+  font-size:.9em;
 }
 
 /*  CLASSES */
@@ -187,11 +214,11 @@ select {
 .block-content-left ul,
 .block-content-right ul,
 .block-content ul {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 16px;
-  padding-left: 0;
-  border: none;
+  margin-top:0;
+  margin-bottom:0;
+  margin-left:16px;
+  padding-left:0;
+  border:none;
 }
 .block-divider {
   background:#FFFFFF;
@@ -201,17 +228,17 @@ select {
   padding-top:2px;
 }
 .block-divider-left {
-  border-top: 1px solid #E7E7E7;
-  border-bottom: 1px solid #FFFFFF;
-  width: 90%;
-  margin: 0 auto;
+  border-top:1px solid #E7E7E7;
+  border-bottom:1px solid #FFFFFF;
+  width:90%;
+  margin:0 auto;
   line-height:0px;
 }
 .block-divider-right {
-  border-top: 1px solid #CCCCCC;
-  border-bottom: 1px solid #FFFFFF;
-  width: 90%;
-  margin: 0 auto;
+  border-top:1px solid #CCCCCC;
+  border-bottom:1px solid #FFFFFF;
+  width:90%;
+  margin:0 auto;
   line-height:0px;
 }
 .block-featured-left {
@@ -280,7 +307,7 @@ select {
   border-right:1px solid #E7E7E7;
   border-top:1px solid #E7E7E7;
   font-weight:bold;
-  font-size: smaller;
+  font-size:smaller;
   padding:3px 0px 3px 10px;
 }
 .edit-perm-down {
@@ -292,7 +319,7 @@ select {
   padding-left:10px;
 }
 .fieldhelp {
-  font-size:.8em; color: #666;
+  font-size:.8em; color:#666;
 }
 .footerblock {
   background:#1A3955;
@@ -301,8 +328,8 @@ select {
   font-size:.85em;
   padding-bottom:10px;
   padding-top:10px;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left:4px;
+  padding-right:4px;
   vertical-align:middle;
   text-align:left;
 }
@@ -409,9 +436,9 @@ select {
   left:4px;
 }
 .highlight {
-  color: #000000;
-  background-color: yellow;
-  text-decoration: none;
+  color:#000000;
+  background-color:yellow;
+  text-decoration:none;
 }
 .inputTable td {
   padding:4px;
@@ -435,7 +462,7 @@ select {
   text-align:center;
 }
 .pagenav {
-  text-align: center;
+  text-align:center;
 }
 .row_center td {
   text-align:center;
@@ -474,7 +501,7 @@ select {
 .sitebody {
   background:#FFFFFF;
   color:#000000;
-  font: .8em arial,sans-serif,verdana,tahoma,helvetica;
+  font:.8em arial,sans-serif,verdana,tahoma,helvetica;
   padding:0px;
   margin:0px;
 }
@@ -558,14 +585,14 @@ topicoption-off {
 /* Recommended CSS to be used by Plugin Authors - allows easier site themeing */
 
 .plugin {
-  color: #000;
-  background-color: #EFEFEF;
-  font-weight: normal;
+  color:#000;
+  background-color:#EFEFEF;
+  font-weight:normal;
   border:1px solid #CCC;
 }
 .plugin th {
-  color: #000;
-  background-color: #B7C1DC;
+  color:#000;
+  background-color:#B7C1DC;
   padding:5px;
   text-align:left;
 }
@@ -576,32 +603,32 @@ topicoption-off {
   padding:2px 5px 2px 5px;
 }
 .pluginBG {
-  background-color: #EFEFEF;
+  background-color:#EFEFEF;
 }
 .pluginAltBG {
-  background-color: #1C1E2D;
+  background-color:#1C1E2D;
 }
 .pluginAltBG td {
   color:#FFFFFF
 }
 .pluginCellTitle {
-  color: #1C1E2D;
-  font-weight: bold;
-  background-color: #E5E5EA;
+  color:#1C1E2D;
+  font-weight:bold;
+  background-color:#E5E5EA;
 }
 .pluginCellFill {
-  background-color: #E5E5EA;
+  background-color:#E5E5EA;
 }
 .pluginCellText {
-  color: #000000;
-  font-weight: normal;
-  background-color: #F7F7F7;
+  color:#000000;
+  font-weight:normal;
+  background-color:#F7F7F7;
 }
 
 .pluginHeader {
-  color: #1A3955;
-  font-weight: bolder;
-  background-color: #CCC;
+  color:#1A3955;
+  font-weight:bolder;
+  background-color:#CCC;
   padding:5px;
 }
 .pluginFooter {
@@ -610,24 +637,24 @@ topicoption-off {
 .pluginAlert {
   padding:5px 15px 5px 15px;
   color:#D8010E;
-  background-color: #FEF1B4;
+  background-color:#FEF1B4;
   font-weight:bold;
 }
 .pluginInfo {
   padding:5px 15px 5px 15px;
   color:#707070;
-  background-color: #FEF1B4;
+  background-color:#FEF1B4;
   font-weight:normal;
 }
 .pluginSubTable {
-  color: #000000;
-  background-color: #CCCCCC;
-  font-weight: normal;
+  color:#000000;
+  background-color:#CCCCCC;
+  font-weight:normal;
   border:1px solid #CCCCCC;
 }
 .pluginSubTable th {
-  color: #000000;
-  background-color: #C9D1E4;
+  color:#000000;
+  background-color:#C9D1E4;
   padding:5px;
   text-align:left;
 }
@@ -635,105 +662,105 @@ topicoption-off {
   vertical-align:top;
 }
 .pluginSolidOutline {
-  background-color: #396998;
+  background-color:#396998;
 }
 .pluginSolidFill {
-  background-color: #1A3955;
+  background-color:#1A3955;
 }
 .pluginTitle {
-  color: #1C1E2D;
+  color:#1C1E2D;
   background-color:#EFEFEF;
-  font-weight: bold;
+  font-weight:bold;
 }
 .pluginTinyText {
-  font-size: 0.70em;
+  font-size:0.70em;
 }
 .pluginSmallText {
-  font-size: 0.8em;
+  font-size:0.8em;
 }
 .pluginMediumText {
-  font-size: 1em;
+  font-size:1em;
 }
 .pluginLargeText {
-  font-size: 1.25em;
+  font-size:1.25em;
 }
 .pluginAltText {
-  color: #FFFFFF;
+  color:#FFFFFF;
 }
 .pluginRow1 td {
-  background-color: #EFEFEF;
-  line-height: 150%;
+  background-color:#EFEFEF;
+  line-height:150%;
 }
 .pluginRow2 td {
-  background-color: #D9D9D9;
-  line-height: 150%;
+  background-color:#D9D9D9;
+  line-height:150%;
 }
 .pluginRollOver {
-  color: #1C1E2D;
-  background-color: #FFFF8F;
-  line-height: 150%;
+  color:#1C1E2D;
+  background-color:#FFFF8F;
+  line-height:150%;
 }
 .pluginRollOut {
-  color: #1C1E2D;
-  background-color: #F7F7F7;
-  line-height: 150%;
+  color:#1C1E2D;
+  background-color:#F7F7F7;
+  line-height:150%;
 }
 .pluginLinks A:link {
-  color: #0000FF;
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: none;
+  color:#0000FF;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
 }
 .pluginLinks A:visited {
-  color: #1E1E8E;
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: none;
+  color:#1E1E8E;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
 }
 .pluginLinks A:hover {
-  color: #0000FF;
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: underline;
+  color:#0000FF;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:underline;
 }
 .pluginBreadCrumbs,
 .pluginBreadCrumbs A:link {
-  color: #EFEFEF;
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: none;
+  color:#EFEFEF;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
 }
 .pluginBreadCrumbs A:visited {
-  color: #EFEFEF;
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: none;
+  color:#EFEFEF;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
 }
 .pluginBreadCrumbs A:hover {
-  color: #FFD700;
-  font-style: normal;
-  font-weight: normal;
-  text-decoration: none;
+  color:#FFD700;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
 }
 a.pluginButton:link, a.pluginButton:visited {
-  color: #000;
-  text-align: center;
-  padding-top: 2px;
-  display: block;
-  height: 19px;
-  text-decoration: none;
-  background-color: transparent;
+  color:#000;
+  text-align:center;
+  padding-top:2px;
+  display:block;
+  height:19px;
+  text-decoration:none;
+  background-color:transparent;
 }
 a.pluginButton:hover {
-  color: blue;
-  text-align: center;
-  padding-top: 2px;
-  background: center url(navbar/images/button_over.gif);
-  background-repeat: repeat-x;
-  display: block;
-  height: 19px;
-  text-decoration: none;
-  background-color: transparent;
+  color:blue;
+  text-align:center;
+  padding-top:2px;
+  background:center url(navbar/images/button_over.gif);
+  background-repeat:repeat-x;
+  display:block;
+  height:19px;
+  text-decoration:none;
+  background-color:transparent;
 }
 
 /* Navbar Class CSS */
@@ -786,10 +813,10 @@ a.pluginButton:hover {
 
 #navcontainer a#current span {
   background:url("navbar/images/tabrightI.gif") no-repeat left top;
-  background-position:100% -42px;color: #FFF;
+  background-position:100% -42px;color:#FFF;
 }
 #navcontainer a:link#current, #navcontainer a:visited#current, #navcontainer a:hover#current {
   background:url("navbar/images/tableftI.gif") no-repeat left top;
-  background-position: 0% -42px;
+  background-position:0% -42px;
 }
 
