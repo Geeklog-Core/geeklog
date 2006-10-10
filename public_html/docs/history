@@ -2,6 +2,10 @@ GeekLog History/Changes:
 
 Oct ??, 2006 (1.4.1b2)
 ------------
+- Removed the Calendar styles and moved them to a dedicated file in the
+  plugin's directory [Oliver]
+- Sorted all stylesheet definitions alphabetically and split semantics and
+  classes [Oliver]
 - When making a topic the archive topic, update all existing stories in that
   topic to "archived" status (and likewise revert that status if the topic
   loses its archive topic status) [Dirk]
@@ -73,6 +77,12 @@ Links plugin
 - Filter out special characters from link IDs. They were properly escaped
   before storing them in the database but caused problems when using them
   (bug #565) [Dirk]
+
+
+Calendar plugin
+------------
+- Created a dedicated stylesheet file and include the file only if the URL
+  contains the word 'calendar' [Oliver]
 
 
 Sep 17, 2006 (1.4.1b1)
