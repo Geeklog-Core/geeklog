@@ -1,6 +1,6 @@
 <?php
 
-// Reminder: always indent with 4 spaces (no tabs). 
+// Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
 // | config.php   Links plugin configuration file                              |
 // +---------------------------------------------------------------------------+
@@ -27,65 +27,65 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.10 2006/05/13 17:13:08 dhaun Exp $
-/** 
+// $Id: config.php,v 1.11 2006/10/10 11:41:16 ospiess Exp $
+/**
  * Links plugin configuration file
- * 
+ *
  * @package Links
  * @filesource
  * @version 1.0.1
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
- * 
+ *
  */
 
 /**
 * the link plugin's config aray
-* 
-* @global array $_LI_CONF 
+*
+* @global array $_LI_CONF
 */
 $_LI_CONF = array();
 
 /**
 * the link plugin's version setting
-* 
+*
 * @global array $_LI_CONF['version']
 */
 $_LI_CONF['version'] = '1.0.1';          // Plugin Version
 
 /**
  * this lets you select which functions are available for registered users only
- * 
+ *
  * @global array $_LI_CONF['linksloginrequired']
- */ 
+ */
 $_LI_CONF['linksloginrequired'] = 0;
 
 /**
  * Submission Settings
  * enable (set to 1) or disable (set to 0) submission queues:
- * 
+ *
  * @global array $_LI_CONF['linksubmission']
  */
 $_LI_CONF['linksubmission']  = 1;
 
 /**
  * Following times are in seconds
- * 
+ *
  * @global array $_LI_CONF['newlinksinterval']
- */ 
+ */
 $_LI_CONF['newlinksinterval']    = 1209600; // = 14 days
 
 /**
  * Set to 1 to hide a section from the What's New block:
- * 
+ *
  * @global array $_LI_CONF['hidenewlinks']
- */ 
+ */
 $_LI_CONF['hidenewlinks']    = 0;
 
 /**
@@ -101,10 +101,10 @@ $_LI_CONF['hidelinksmenu']    = 0;
  * (pre-1.3.6) style of the links section. Setting only linkcols to 0 will hide
  * the categories but keep the paging. Setting only linksperpage to 0 will list
  * all the links of the selected category on one page.
- * 
- * @global array $_LI_CONF['linkcols'] 
- */ 
-$_LI_CONF['linkcols']     =  3; 
+ *
+ * @global array $_LI_CONF['linkcols']
+ */
+$_LI_CONF['linkcols']     =  3;
 
 /**
  * links per page
@@ -112,9 +112,9 @@ $_LI_CONF['linkcols']     =  3;
  * (pre-1.3.6) style of the links section. Setting only linkcols to 0 will hide
  * the categories but keep the paging. Setting only linksperpage to 0 will list
  * all the links of the selected category on one page.
- * 
+ *
  * @global array $_LI_CONF['linksperpage']
- */ 
+ */
 $_LI_CONF['linksperpage'] = 10;
 
 /**
@@ -127,18 +127,18 @@ $_LI_CONF['show_top10']   = true;
 
 /**
  * notify when a new link was submitted
- * 
+ *
  * @global array $_LI_CONF['notification']
- */ 
-$_LI_CONF['notification'] = 0; 
+ */
+$_LI_CONF['notification'] = 0;
 
 /**
  * should we remove links submited by users if account is removed? (1)
  * or change owner to root (0)
- * 
+ *
  * @global array $_LI_CONF['delete_links']
- */ 
-$_LI_CONF['delete_links'] = 0; 
+ */
+$_LI_CONF['delete_links'] = 0;
 
 /**
  * Define default permissions for new links created from the Admin panel.
@@ -148,9 +148,9 @@ $_LI_CONF['delete_links'] = 0;
  * - 2 = read-only
  * - 0 = neither read nor write permissions
  * (a value of 1, ie. write-only, does not make sense and is not allowed)
- * 
+ *
  * @global array $_LI_CONF['default_permissions']
- */ 
+ */
 $_LI_CONF['default_permissions'] = array (3, 2, 2, 2);
 
 // database table names - don't change
