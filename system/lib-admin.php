@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.86 2006/10/01 18:54:44 dhaun Exp $
+// $Id: lib-admin.php,v 1.87 2006/10/10 11:52:13 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -217,8 +217,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
+    // set all variables to avoid warnings
     $retval = '';
-
     $filter_str = '';
     $order_sql = '';
     $limit = '';
@@ -240,8 +240,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         }
     }
 
+    // we assume that the current page is 1 to set it.
     $curpage = 1;
     $page = '';
+    // get the current page from the interface. The variable is linked to the
+    // component, i.e. the plugin/function calling this here to avoid overlap
     if (isset ($_REQUEST[$component . 'listpage'])) {
         $page = COM_applyFilter ($_REQUEST[$component . 'listpage'], true);
         $curpage = $page;
@@ -272,18 +275,20 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     # get all template fields. Maybe menufields can be only loaded if used?
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
-    $admin_templates->set_file (array ('topmenu' => 'topmenu.thtml',
-                                       'list' => 'list.thtml',
-                                       'header' => 'header.thtml',
-                                       'row' => 'listitem.thtml',
-                                       'field' => 'field.thtml',
-                                       'menufields' => 'menufields.thtml'
-                                      ));
-    # insert some values into the template
+    $admin_templates->set_file (array (
+        'topmenu' => 'topmenu.thtml',
+        'list' => 'list.thtml',
+        'header' => 'header.thtml',
+        'row' => 'listitem.thtml',
+        'field' => 'field.thtml',
+        'menufields' => 'menufields.thtml'
+    ));
+
+    # insert std. values into the template
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
-    if ($text_arr['icon'] !== false) {
+    if ($text_arr['icon'] !== false or $text_arr['icon']='') {
         $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
     }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
@@ -328,8 +333,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $order_var = ''; # number that is displayed in URL
     $order = '';     # field that is used in SQL
     $order_var_link = ''; # Variable for google paging.
+
+    // is the order set in the link (when sorting the list)
     if (!isset ($_GET['order'])) {
-        $order = $defsort_arr['field'];
+        $order = $defsort_arr['field']; // no, get the default
     } else {
         $order_var = COM_applyFilter ($_GET['order'], true);
         $order_var_link = "&amp;order=$order_var"; # keep the variable for the google paging
