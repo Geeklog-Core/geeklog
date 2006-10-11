@@ -31,14 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.2 2006/09/06 05:31:00 ospiess Exp $
+// $Id: mssql_install.php,v 1.3 2006/10/11 01:36:11 blaine Exp $
 
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [datestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [dateend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -60,14 +60,14 @@ CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
     [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [datestart] [smalldatetime] NULL ,
     [dateend] [smalldatetime] NULL ,
@@ -81,7 +81,7 @@ CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
     [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [timestart] [smalldatetime] NULL ,
     [timeend] [smalldatetime] NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 ";
 
 $_SQL[] = "
@@ -98,7 +98,7 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
     [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [allday] [smallint] NOT NULL ,
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,
@@ -110,7 +110,7 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [smalldatetime] NULL ,
     [timeend] [smalldatetime] NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 ";
 
 

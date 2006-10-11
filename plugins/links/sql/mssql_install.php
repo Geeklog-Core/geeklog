@@ -56,7 +56,7 @@ CREATE TABLE [dbo].[{$_TABLES['links']}] (
     [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [hits] [int] NOT NULL ,
     [date] [datetime] NULL ,
@@ -66,7 +66,7 @@ CREATE TABLE [dbo].[{$_TABLES['links']}] (
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 ";
 
 
@@ -75,11 +75,11 @@ CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
     [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [hits] [int] NULL ,
     [date] [datetime] NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 ";
 
 

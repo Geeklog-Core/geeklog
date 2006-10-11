@@ -732,6 +732,7 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['featurecodes']}] ADD
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['features']}] ADD
+    CONSTRAINT [DF_gl_features_ft_gl_core] DEFAULT (0) FOR [ft_gl_core],
     CONSTRAINT [PK_gl_features] PRIMARY KEY  CLUSTERED
     (
         [ft_id]
@@ -746,6 +747,7 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['frontpagecodes']}] ADD
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['groups']}] ADD
+    CONSTRAINT [DF_gl_groups_grp_gl_core] DEFAULT (0) FOR [grp_gl_core],
     CONSTRAINT [PK_gl_groups] PRIMARY KEY  CLUSTERED
     (
         [grp_id]

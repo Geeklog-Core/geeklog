@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.2 2006/08/24 07:31:49 ospiess Exp $
+// $Id: mssql_install.php,v 1.3 2006/10/11 01:36:11 blaine Exp $
 
 
 
@@ -39,7 +39,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [sp_uid] [int] NOT NULL ,
     [sp_title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_content] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sp_content] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [sp_hits] [numeric](8, 0) NOT NULL ,
     [sp_date] [datetime] NOT NULL ,
     [sp_format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
@@ -59,7 +59,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_nf] [tinyint] NULL ,
     [sp_inblock] [tinyint] NULL  ,
     [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY] 
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
