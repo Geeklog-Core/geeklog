@@ -188,6 +188,37 @@ styles.css includes additional documentation on the use of classes now.</p>
 <p>As usual, any missing new theme files can simply be copied over from the
 default theme (Professional) that ships with Geeklog.</p>
 
+<h3>Header-Tags</h3>
+
+<p>From now on, all headlines in blocks & stories are made with header-tags. The
+biggest title in a block is always h1, the next one h2 etc, so you do not need
+to be aware where you are to know what header-order to use. However, this
+requires a dedicated class for the location.</p>
+
+<h3>Story-layout</h3>
+<p>The blocks for stories have no more tables, and the classes have been renamed
+for consistency. There is a box now around the story called class "story" or
+"story-featured". The components inside that box are story-icons,
+story-information, story-body and story-footer. The title is a h1-tag. For
+featured stories, only the outer box has a different class, the rest has to be
+cascaded for changes.</p>
+
+<h3>Blocks</h3>
+<p>The blocks changed in the same way as the stories. There are no more tables,
+only one div-tag as a frame around called block-box, block-box-left or
+block-box-right. The title is a h1-tag and the help icon for the block is a span
+ with a class called block-helpicon. The changes affect (next to styles.css) the
+ follwing files:</p>
+blockfooter-left.thtml<br>
+blockfooter-related.thtml<br>
+blockfooter-right.thtml<br>
+blockfooter.thtml<br>
+blockheader-left.thtml<br>
+blockheader-message.thtml<br>
+blockheader-related.thtml<br>
+blockheader-right.thtml<br>
+blockheader.thtml<br>
+
 <h3>Admin templates</h3>
 
 <p>Many of the admin template files have had minor changes to tweak appearance
@@ -215,6 +246,9 @@ entire 'admin' directory with the one from Geeklog's Professional theme.</p>
 <h3>Other theme changes</h3>
 
 <ul>
+<li>The template for the Polls-plugin has renamed classes block-vote-results to
+    poll-vote-results and block-vote to poll-vote to avoid confustion with
+    block-related classes.</li>
 <li>The template files used by the Calendar plugin are now located in the
     plugin's directory, (<tt>/path/to/geeklog/plugins/calendar/templates</tt>),
     so the entire 'calendar' directory can be removed from the theme
