@@ -5,4 +5,4 @@
   <input type="submit" value="{lang_vote}">
   <a href="{poll_results_url}">{lang_results}</a>
 </form>
-<span class="block-vote">{num_votes} {lang_votes}{poll_comments}</span><br>
+<span class="poll-vote">{num_votes} {lang_votes}{poll_comments}</span><br>
