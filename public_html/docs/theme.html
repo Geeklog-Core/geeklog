@@ -69,8 +69,8 @@ The middle part of a site consists of the stories which are built using the
 <tt>storytext.thtml</tt> and <tt>storybodytext.thtml</tt> (for normal stories)
 and <tt>featuredstorytext.thtml</tt> and <tt>featuredstorybodytext.thtml</tt>
 (for featured stories) template files. The <tt>footer.thtml</tt> file then
-builds the right column of blocks (variable {right_blocks}, file 
-<tt>right_blocks.thtml</tt>) and the site's footer. Blocks themselves consist 
+builds the right column of blocks (variable {right_blocks}, file
+<tt>right_blocks.thtml</tt>) and the site's footer. Blocks themselves consist
 of the <tt>blockheader.thtml</tt> and <tt>blockfooter.thtml</tt> files.
 
 <p>The above only describes how Geeklog's main page and stories are rendered.
@@ -107,16 +107,16 @@ the <em>same</em> name as the directory for your theme).
 <p>Finally, you may want to update the logo and other images in your
 theme's images directory.
 
-<p>For the template system we are using PHPLib's template class (<a 
-href="http://phplib.sourceforge.net/">http://phplib.sourceforge.net/</a>). 
-Read their documentation and, optionally, look at 
-/path/to/geeklog/system/classes/template.class.php to see how it is 
-implemented. Even with this knowledge it may not be clear which templates 
-are used in conjunction with one another (i.e. <tt>storybody.thtml</tt> and 
-<tt>storybodytext.thtml</tt> together make up the complete format of a 
+<p>For the template system we are using PHPLib's template class (<a
+href="http://phplib.sourceforge.net/">http://phplib.sourceforge.net/</a>).
+Read their documentation and, optionally, look at
+/path/to/geeklog/system/classes/template.class.php to see how it is
+implemented. Even with this knowledge it may not be clear which templates
+are used in conjunction with one another (i.e. <tt>storybody.thtml</tt> and
+<tt>storybodytext.thtml</tt> together make up the complete format of a
 <em>single</em>
-story). If you have questions join our mailing list at <a 
-href="http://lists.geeklog.net/listinfo/geeklog-users">http://lists.geeklog.net/listinfo/geeklog-users</a> 
+story). If you have questions join our mailing list at <a
+href="http://lists.geeklog.net/listinfo/geeklog-users">http://lists.geeklog.net/listinfo/geeklog-users</a>
 or check us out in IRC at irc.freenode.net in #geeklog.</p>
 
 <h3><a name="tips">Tips and tricks</a></h3>
@@ -135,7 +135,7 @@ You can use PHP in the <em>header</em> of a theme, i.e. in the
 put them in the file <tt>functions.php</tt> within your themes directory.</p>
 
 <p><strong><a name="different-look">Different look for left and right blocks:</a></strong>
-You can give the blocks on the left and right a different look. See 
+You can give the blocks on the left and right a different look. See
 <a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=21070">this story on the Geeklog homepage</a> for details.</p>
 
 <p><strong><a name="polls">Polls:</a></strong>
@@ -172,13 +172,18 @@ instead. That way, you can even leave your users a choice between, for example,
 a "normal" theme and one with the blocks on the right.</p>
 
 <p><strong><a name="error-message">Error Message:</a></strong>
-    Since Geeklog 1.4.1 it is possible to control what HTML is displayed to
-    non-root users in the event of an error occurring (a crash bug). To do
-    so, you need to change the function <code>CUSTOM_handleError</code> in
-    lib-custom.php
-to output any HTML you like.</p>
+Since Geeklog 1.4.1 it is possible to control what HTML is displayed to
+non-root users in the event of an error occurring (a crash bug). To do
+so, you need to change the function <code>CUSTOM_handleError</code> in
+lib-custom.php to output any HTML you like.</p>
 
 <h2><a name="changes">Theme changes in Geeklog 1.4.1</a></h2>
+
+<p>The css in 1.4.1 has been changed to a wider extent. More and more layout
+components are beeing moved to the stylesheet so more change in looks can be
+achieved with less change in the files. There is a reduction of tables and DIV,
+and a stronger focus on semantics and consistency. Please also notice that the
+styles.css includes additional documentation on the use of classes now.</p>
 
 <p>As usual, any missing new theme files can simply be copied over from the
 default theme (Professional) that ships with Geeklog.</p>
@@ -235,10 +240,10 @@ entire 'admin' directory with the one from Geeklog's Professional theme.</p>
     <code>{contributedby_author}.</code></li>
 <li>To enable a remarks field in the answer to polls, the
     <tt>pollvotes_bar.thtml</tt>, <tt>pollansweroption.thtml</tt> and
-    <tt>polleditor.thtml</tt> were changed. The 
+    <tt>polleditor.thtml</tt> were changed. The
     <tt>pollvotes_bar.thtml</tt> is now colored and has two lines, a class
-    for color coding each line and the <code>{answer_text}</code>. The 
-    <tt>polleditor.thtml</tt> has an aditional field to enter the remarks, 
+    for color coding each line and the <code>{answer_text}</code>. The
+    <tt>polleditor.thtml</tt> has an aditional field to enter the remarks,
     same as the <tt>pollansweroption.thtml</tt>.
 <li>A user's Account Information page has been redesigned. While there were no
     technical changes (i.e. template files from earlier versions will still
@@ -694,7 +699,7 @@ are necessary.</p>
 
 <p>There have been a lot of changes in the themes for 1.3.6 to get rid of the
 last pieces of hard-coded english texts so as to make localisation easier.
-Most of these changes have been made in the Admin editors (<tt>admin</tt> 
+Most of these changes have been made in the Admin editors (<tt>admin</tt>
 directory) and the calendar (<tt>calendar</tt> directory). If you created
 your own theme for an earlier version of Geeklog, we recommend that you copy
 over these two directories from one of the themes that come with Geeklog
