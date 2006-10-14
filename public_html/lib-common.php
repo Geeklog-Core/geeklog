@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.582 2006/10/14 18:54:27 ospiess Exp $
+// $Id: lib-common.php,v 1.583 2006/10/14 19:08:34 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2963,8 +2963,8 @@ function COM_olderStuff()
                 }
 
                 $day2 = strftime( $dateonly, $A['day'] );
-                $string .= '<h3>' . $daycheck . '</h3><small>' . $day2
-                        . '</small>' . LB;
+                $string .= '<h3>' . $daycheck . '<small>' . $day2
+                        . '</small></h3>' . LB;
                 $oldnews = array();
                 $day = $daycheck;
             }
@@ -3763,10 +3763,10 @@ function COM_whatsNewBlock( $help = '', $title = '' )
     if( $_CONF['hidenewcomments'] == 0 )
     {
         // Go get the newest comments
-        $retval .= '<h3>' . $LANG01[83] . '</h3> <small>'
+        $retval .= '<h3>' . $LANG01[83] . ' <small>'
                 . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newcommentsinterval'] )
-                . '</small><br>';
+                . '</small></h3>';
 
         $stwhere = '';
 
@@ -3840,10 +3840,10 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
     if( $_CONF['trackback_enabled'] && ( $_CONF['hidenewtrackbacks'] == 0 ))
     {
-        $retval .= '<h3>' . $LANG01[114] . '</h3> <small>'
+        $retval .= '<h3>' . $LANG01[114] . ' <small>'
                 . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newtrackbackinterval'] )
-                . '</small><br>';
+                . '</small></h3>';
 
         $sql = "SELECT DISTINCT COUNT(*) AS count,{$_TABLES['stories']}.title,t.sid,max(t.date) AS lastdate FROM {$_TABLES['trackback']} AS t,{$_TABLES['stories']} WHERE (t.type = 'article') AND (t.sid = {$_TABLES['stories']}.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.trackbackcode = 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . " GROUP BY t.sid, {$_TABLES['stories']}.title ORDER BY lastdate DESC LIMIT 15";
         $result = DB_query( $sql );
@@ -3904,8 +3904,8 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         {
             for( $i = 0; $i < $plugins; $i++ )
             {
-                $retval .= '<h3>' . $headlines[$i] . '</h3> <small>'
-                        . $smallheadlines[$i] . '</small><br>';
+                $retval .= '<h3>' . $headlines[$i] . ' <small>'
+                        . $smallheadlines[$i] . '</small></h3>';
                 if( is_array( $content[$i] ))
                 {
                     $retval .= COM_makeList( $content[$i], 'list-new-plugins' );

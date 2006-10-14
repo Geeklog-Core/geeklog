@@ -201,7 +201,7 @@ select {
 .block-box-left,
 .block-box-right,
 .block-box {
-  margin:5px 10px 5px 10px;
+  margin:5px 10px 15px 10px;
 }
 .block-box-left ul,
 .block-box-right ul {
