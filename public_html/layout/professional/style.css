@@ -8,8 +8,8 @@
   Within these sections, entries are to be strictly alphabetized.
 
   SAMPLE:
-  .block-vote,
-  .block-vote-results {
+  .poll-vote,
+  .poll-vote-results {
     background:transparent;
     color:#000000;
     font-size:smaller;
@@ -125,9 +125,7 @@ input {
   font-size:.9em;
 }
 input,
-submit {
-  color:#000000;
-}
+submit,
 td {
   color:#000000;
 }
