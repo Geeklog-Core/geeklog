@@ -208,6 +208,7 @@ select {
   /* do not indent lists in the blocks too much */
   padding-left:20px;
   margin-top:0px;
+  margin-bottom:0px;
 }
 .block-bg-left,
 .block-bg-right{
