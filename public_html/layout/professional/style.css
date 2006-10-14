@@ -203,6 +203,7 @@ select {
 .block-box-right ul {
   /* do not indent lists in the blocks too much */
   padding-left:20px;
+  margin-top:0px;
 }
 .block-bg-left,
 .block-bg-right{
