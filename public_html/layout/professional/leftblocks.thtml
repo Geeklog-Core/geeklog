@@ -10,8 +10,8 @@
                         </form>
                     </div>
                     <div class="block-bg-left">
-                            {geeklog_blocks}
-                            <div style="background:transparent; width:180px; height:1px;"></div>
+                        {geeklog_blocks}
+                        <div class="block-bg-spreader"></div>
                     </div>
                 </td>
                 <td class="block-outerborder-left">

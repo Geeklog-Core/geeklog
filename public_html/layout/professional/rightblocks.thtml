@@ -5,7 +5,7 @@
 <td class="block-featured-right" style="vertical-align:top;">
     <div class="block-bg-right">
             {geeklog_blocks}
-            <div style="background:transparent; width:180px; height:1px;"></div>
+            <div class="block-bg-spreader"></div>
     </div>
 </td>
 <!--</td></tr></table>-->

@@ -1,5 +1,5 @@
-/*
-  STYLESHEET FORMAT GUIDE
+/* STYLESHEET FORMAT GUIDE *****************************************************
+
   split the following sections:
   - semantics (direct formatting for <td>, <a > etc
   - classes (.whatever)
@@ -25,7 +25,7 @@
   - no spaces after colons
 */
 
-/* SEMANTICS */
+/* SEMANTICS ******************************************************************/
 a:link.non-ul,
 a:visited.non-ul,
 a:hover.non-ul,
@@ -59,7 +59,8 @@ fieldset p {
   margin:0px;
 }
 fieldset p {
-  margin-top:5px; margin-bottom:0px;
+  margin-top:5px;
+  margin-bottom:0px;
 }
 fieldset legend {
   font-size:.9em;
@@ -150,9 +151,10 @@ select {
   font-size:.9em;
 }
 
-/*  CLASSES */
+/* CLASSES ********************************************************************/
 
-.admin-list-icon{
+/* Admin lists ****************************************************************/
+.admin-list-icon {
   float:left;
   padding:5px;
 }
@@ -180,6 +182,7 @@ select {
   padding-right:5px;
   font-size:larger;
 }
+/* general alignment classes **************************************************/
 .alignleft {
   text-align:left;
 }
@@ -189,6 +192,7 @@ select {
 .aligncenter {
   text-align:center;
 }
+/* Blocks *********************************************************************/
 .block-box-left {
   margin:10px;
 }
@@ -197,9 +201,20 @@ select {
 .block-box {
   margin:5px 10px 5px 10px;
 }
+.block-box-left ul,
+.block-box-right ul {
+  /* do not indent lists in the blocks too much */
+  padding-left:20px;
+}
 .block-bg-left,
 .block-bg-right{
   border-top:1px solid #FFFFFF;
+}
+.block-bg-spreader {
+  /* this is making sure that the blocks have a minimum width */
+  background:transparent;
+  width:180px;
+  height:1px;
 }
 .block-content,
 .block-content-right,
@@ -210,7 +225,6 @@ select {
   padding-top:2px;
   clear:both;
 }
-
 .block-content-left ul,
 .block-content-right ul,
 .block-content ul {
@@ -251,11 +265,10 @@ select {
   border-left:1px solid #FFFFFF;
   color:#000000;
 }
-.block-helpicon-left,
-.block-helpicon-right,
 .block-helpicon {
-  padding-top:3px;
+  padding-top:0px;
   text-align:right;
+  float:right;
 }
 .block-outerborder-left {
   border-left:1px solid #E7E7E7;
@@ -274,12 +287,7 @@ select {
   padding-bottom:5px;
   text-align:left;
 }
-.block-vote,
-.block-vote-results {
-  background:transparent;
-  color:#000000;
-  font-size:smaller;
-}
+/* Comments *******************************************************************/
 .commentbar-line1 {
   background:transparent;
   color:#000000;
@@ -310,6 +318,7 @@ select {
   font-size:smaller;
   padding:3px 0px 3px 10px;
 }
+/******************************************************************************/
 .edit-perm-down {
   text-align:center;
 }
@@ -319,13 +328,15 @@ select {
   padding-left:10px;
 }
 .fieldhelp {
-  font-size:.8em; color:#666;
+  font-size:0.8em;
+  color:#666666;
 }
+/* Footer *********************************************************************/
 .footerblock {
   background:#1A3955;
   border-top:1px solid #CCCCCC;
   color:#FFFFFF;
-  font-size:.85em;
+  font-size:0.85em;
   padding-bottom:10px;
   padding-top:10px;
   padding-left:4px;
@@ -359,6 +370,7 @@ select {
   padding-top:1px;
   color:#000000;
 }
+/* Forms **********************************************************************/
 .form-description {
   font-weight:bold;
   float:left;
@@ -371,6 +383,7 @@ select {
   padding-bottom:5px;
   margin-left:105px;
 }
+/* Header *********************************************************************/
 .header-envelope {
   border-bottom:1px solid #E7E7E7;
   border-left:1px solid #E7E7E7;
@@ -412,19 +425,19 @@ select {
   background:transparent;
   border-bottom:0px solid #CCCCCC;
   color:#800080;
-  font-size:.9em;
+  font-size:0.9em;
 }
 .header-navigation-line a:hover {
   background:transparent;
   border-bottom:0px solid #CCCCCC;
   color:#008000;
-  font-size:.9em;
+  font-size:0.9em;
 }
 .header-navigation-line a:active {
   background:transparent;
   border-bottom:0px solid #CCCCCC;
   color:#FF0000;
-  font-size:.9em;
+  font-size:0.9em;
 }
 .header-welcomeanddate-box {
   border-bottom:1px solid #CCCCCC;
@@ -435,6 +448,7 @@ select {
   top:12px;
   left:4px;
 }
+/******************************************************************************/
 .highlight {
   color:#000000;
   background-color:yellow;
@@ -509,6 +523,7 @@ select {
   color:#ffffff;
   background:transparent;
 }
+/* Stats **********************************************************************/
 .stats-list-count {
   text-align:right;
   padding-left:5px;
@@ -526,47 +541,59 @@ select {
   padding-left:5px;
   padding-right:5px;
 }
+/* Story **********************************************************************/
+.story {
+  /* the frame around all elements of one story */
+  background:transparent;
+  color:#000000;
+}
+.story h1{
+  /* the title of a story */
+  background:transparent;
+  color:#000000;
+  font-weight:bold;
+  padding-left:1px;
+}
 .story-body {
+  /* this is the actual content of the story */
   padding:3px;
 }
-.story-box {
+.story-featured {
+  /* the frame around all elements of a featured story */
   background:transparent;
   color:#000000;
 }
-.story-byline,
-.storybyline {
+.story-featured h1 {
+  /* the title of a featured story */
   background:transparent;
   color:#000000;
+  font-weight:bold;
+  font-size:1.4em;
+  padding-left:1px;
+}
+.story-icons {
+  /* print & mail icons in a storybox */
+  float:right;
 }
 .story-container {
+  /* frame around all stories & centerblocks*/
   padding-right:9px;
 }
 .story-footer {
+  /* the bottom of the story with edit-links etc */
   padding:3px;
   text-align:center;
 }
 .story-information {
+  /* the author, views and date of a story */
   padding:3px;
+  font-size:0.85em;
   background:transparent;
   color:#000000;
 }
-.story-title {
-  background:transparent;
-  color:#000000;
-  font-weight:bold;
-  padding-left:1px;
-  padding-top:15px;
-}
-.story-title-featured {
-  background:transparent;
-  color:#000000;
-  font-weight:bold;
-  padding-left:1px;
-  padding-top:15px;
-}
+/******************************************************************************/
 .topicoption,
-topicoption-off {
-
+.topicoption-off {
 }
 .warning {
   background:transparent;
@@ -585,13 +612,13 @@ topicoption-off {
 /* Recommended CSS to be used by Plugin Authors - allows easier site themeing */
 
 .plugin {
-  color:#000;
+  color:#000000;
   background-color:#EFEFEF;
   font-weight:normal;
-  border:1px solid #CCC;
+  border:1px solid #CCCCCC;
 }
 .plugin th {
-  color:#000;
+  color:#000000;
   background-color:#B7C1DC;
   padding:5px;
   text-align:left;
@@ -624,7 +651,6 @@ topicoption-off {
   font-weight:normal;
   background-color:#F7F7F7;
 }
-
 .pluginHeader {
   color:#1A3955;
   font-weight:bolder;
@@ -743,7 +769,7 @@ topicoption-off {
   text-decoration:none;
 }
 a.pluginButton:link, a.pluginButton:visited {
-  color:#000;
+  color:#000000;
   text-align:center;
   padding-top:2px;
   display:block;
@@ -762,8 +788,14 @@ a.pluginButton:hover {
   text-decoration:none;
   background-color:transparent;
 }
-
-/* Navbar Class CSS */
+/* Poll Plugin ****************************************************************/
+.poll-vote,
+.poll-vote-results {
+  background:transparent;
+  color:#000000;
+  font-size:smaller;
+}
+/* Navbar Class CSS ***********************************************************/
 #navcontainer {
   float:left;
   width:100%;
@@ -773,20 +805,20 @@ a.pluginButton:hover {
   border-bottom:1px solid #24618E;
   }
 #navcontainer ul {
-  margin:0;
+  margin:0px;
   padding:10px 10px 0 50px;
   list-style:none;
 }
 #navcontainer li {
   display:inline;
-  margin:0;
-  padding:0;
+  margin:0px;
+  padding:0px;
 }
 #navcontainer a {
   float:left;
   background:url("navbar/images/tableftJ.gif") no-repeat left top;
-  margin:0;
-  padding:0 0 0 5px;
+  margin:0px;
+  padding:0px 0px 0px 5px;
   text-decoration:none;
 }
 #navcontainer a span {
@@ -802,7 +834,7 @@ a.pluginButton:hover {
 }
 /* End IE5-Mac hack */
 #navcontainer a:hover span {
-  color:#FFF;
+  color:#FFFFFF;
 }
 #navcontainer a:hover {
   background-position:0% -42px;
@@ -810,13 +842,14 @@ a.pluginButton:hover {
 #navcontainer a:hover span {
   background-position:100% -42px;
 }
-
 #navcontainer a#current span {
   background:url("navbar/images/tabrightI.gif") no-repeat left top;
-  background-position:100% -42px;color:#FFF;
+  background-position:100% -42px;
+  color:#FFFFFF;
 }
-#navcontainer a:link#current, #navcontainer a:visited#current, #navcontainer a:hover#current {
+#navcontainer a:link#current,
+#navcontainer a:visited#current,
+#navcontainer a:hover#current {
   background:url("navbar/images/tableftI.gif") no-repeat left top;
   background-position:0% -42px;
 }
-

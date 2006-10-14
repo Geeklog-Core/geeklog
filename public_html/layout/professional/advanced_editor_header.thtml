@@ -1,4 +1,3 @@
-
 <!-- Load Advanced Editor -->
 <script type="text/javascript" src="{site_url}/fckeditor/fckeditor.js"></script>
 <script type="text/javascript">

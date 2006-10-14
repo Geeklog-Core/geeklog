@@ -1,3 +1,6 @@
 <div class="block-box-left">
-    <div class="block-title-left">{block_title}<span class="block-helpicon-left">{block_help}</span></div>
-    <div class="block-content-left">
+    <span class="block-helpicon">
+        {block_help}
+    </span>
+    <h1>{block_title}</h1>
+    <p>
