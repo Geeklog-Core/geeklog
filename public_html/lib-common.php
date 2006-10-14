@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.581 2006/10/08 12:07:55 dhaun Exp $
+// $Id: lib-common.php,v 1.582 2006/10/14 18:54:27 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,7 +66,7 @@ $_COM_VERBOSE = false;
   * possible. That is, unless someone has overridden our error handler with one
   * with a path exposure issue...
   *
-  * Must make sure that the function hasn't been disabled before calling it. 
+  * Must make sure that the function hasn't been disabled before calling it.
   *
   */
 if( function_exists('set_error_handler') )
@@ -260,11 +260,11 @@ require_once( $_CONF['path_system'] . 'lib-sessions.php' );
 
 require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 
-/** 
+/**
 * Multibyte functions
 *
 */
-require_once( $_CONF['path_system'] . 'lib-mbyte.php' );  
+require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 
 // Set theme
 // Need to modify this code to check if theme was cached in user cookie.  That
@@ -2963,7 +2963,7 @@ function COM_olderStuff()
                 }
 
                 $day2 = strftime( $dateonly, $A['day'] );
-                $string .= '<b>' . $daycheck . '</b> <small>' . $day2
+                $string .= '<h3>' . $daycheck . '</h3><small>' . $day2
                         . '</small>' . LB;
                 $oldnews = array();
                 $day = $daycheck;
@@ -3035,7 +3035,7 @@ function COM_showBlock( $name, $help='', $title='' )
                 . COM_showTopics( $topic )
                 . COM_endBlock( COM_getBlockTemplate( $name, 'footer' ));
             break;
- 
+
         case 'whats_new_block':
             if( !$_USER['noboxes'] )
             {
@@ -3730,7 +3730,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         }
 
         // Any late breaking news stories?
-        $retval .= '<b>' . $LANG01[99] . '</b><br>';
+        $retval .= '<h3>' . $LANG01[99] . '</h3>';
 
         if( $nrows > 0 )
         {
@@ -3763,7 +3763,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
     if( $_CONF['hidenewcomments'] == 0 )
     {
         // Go get the newest comments
-        $retval .= '<b>' . $LANG01[83] . '</b> <small>'
+        $retval .= '<h3>' . $LANG01[83] . '</h3> <small>'
                 . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newcommentsinterval'] )
                 . '</small><br>';
@@ -3840,7 +3840,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
     if( $_CONF['trackback_enabled'] && ( $_CONF['hidenewtrackbacks'] == 0 ))
     {
-        $retval .= '<b>' . $LANG01[114] . '</b> <small>'
+        $retval .= '<h3>' . $LANG01[114] . '</h3> <small>'
                 . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
                                         $_CONF['newtrackbackinterval'] )
                 . '</small><br>';
@@ -3904,7 +3904,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         {
             for( $i = 0; $i < $plugins; $i++ )
             {
-                $retval .= '<b>' . $headlines[$i] . '</b> <small>'
+                $retval .= '<h3>' . $headlines[$i] . '</h3> <small>'
                         . $smallheadlines[$i] . '</small><br>';
                 if( is_array( $content[$i] ))
                 {
@@ -5629,7 +5629,7 @@ function COM_getLanguageFromBrowser()
                 }
             }
         }
-        
+
     }
 
     return $retval;
@@ -5859,16 +5859,16 @@ function COM_truncate( $text, $maxlen, $filler = '' )
 function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='')
 {
     global $_CONF, $_USER;
-    
+
     // Handle @ operator
     if( error_reporting() == 0 )
     {
         return;
     }
-    
+
     /* If in PHP4, then respect error_reporting */
     if( (PHP_VERSION < 5) && (($errno & error_reporting()) == 0) ) return;
-    
+
     /*
      * If we have a root user, then output detailed error message:
      */
@@ -5890,7 +5890,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             exit;
         }
     }
-    
+
     /* If there is a custom error handler, fail over to that, but only
      * if the error wasn't in lib-custom.php
      */
@@ -5906,7 +5906,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             }
         }
     }
-    
+
     /* Does the theme implement an error message html file? */
     if(file_exists($_CONF['path_layout'].'errormessage.html'))
     {
@@ -5928,7 +5928,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
         </html>
         ");
     }
-    
+
     exit;
 }
 

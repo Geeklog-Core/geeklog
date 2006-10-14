@@ -118,6 +118,10 @@ h1 {
 h2 {
   font-size:100%;
 }
+h3 {
+  font-size:100%;
+  margin:0px;
+}
 img {
   border:0;
 }

@@ -191,9 +191,7 @@ default theme (Professional) that ships with Geeklog.</p>
 <h3>Header-Tags</h3>
 
 <p>From now on, all headlines in blocks & stories are made with header-tags. The
-biggest title in a block is always h1, the next one h2 etc, so you do not need
-to be aware where you are to know what header-order to use. However, this
-requires a dedicated class for the location.</p>
+biggest title in a story is always h1, in a block always h2.</p>
 
 <h3>Story-layout</h3>
 <p>The blocks for stories have no more tables, and the classes have been renamed
@@ -206,9 +204,10 @@ cascaded for changes.</p>
 <h3>Blocks</h3>
 <p>The blocks changed in the same way as the stories. There are no more tables,
 only one div-tag as a frame around called block-box, block-box-left or
-block-box-right. The title is a h1-tag and the help icon for the block is a span
- with a class called block-helpicon. The changes affect (next to styles.css) the
- follwing files:</p>
+block-box-right. The title is a h2-tag and the help icon for the block is a span
+ with a class called block-helpicon. Sub-titles in blocks have the h3-tag (such
+ such as in the What's new or Older Stories block). The changes affect (next to
+ styles.css) the follwing files:</p>
 <ul>
 <li>blockfooter-left.thtml</li>
 <li>blockfooter-related.thtml</li>
@@ -248,6 +247,9 @@ entire 'admin' directory with the one from Geeklog's Professional theme.</p>
 <h3>Other theme changes</h3>
 
 <ul>
+<li>There was a div for spreading the with of the blocks to a minimum in the
+    files leftblocks.thtml and rightblocks.thtml. The format of those has been
+    transferred to the stylesheet with the class name block-bg-spreader</li>
 <li>The template for the Polls-plugin has renamed classes block-vote-results to
     poll-vote-results and block-vote to poll-vote to avoid confustion with
     block-related classes.</li>
