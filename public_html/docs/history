@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 Oct ??, 2006 (1.4.1b2)
 ------------
+- Properly(?) encode non-ASCII characters in email headers (subject, names),
+  loosely based on patch #489 and code from Cal Henderson's book [Dirk]
 - Removed the Calendar styles and moved them to a dedicated file in the
   plugin's directory [Oliver]
 - Sorted all stylesheet definitions alphabetically and split semantics and
@@ -63,8 +65,13 @@ Oct ??, 2006 (1.4.1b2)
 - Fixed 404 (caused by a request for a file named '(none)') in the user profile
   display when a user doesn't have a userphoto [Dirk]
 
-- Updated Japanese language files (UTF-8 and EUC-JP) for Geeklog and all the
-  plugins, provided by the Geeklog Japanese group
+- New Estonian language files for Geeklog and most of the plugins, provided
+  by Artur Räpp
+- Updated Hebrew language file, provided by LWC
+- Updated Japanese language files for Geeklog and all the plugins, provided
+  by the Geeklog Japanese group
+- Updated Slovenian language files for Geeklog and all the plugins, provided
+  by gape
 
 Links plugin
 ------------
