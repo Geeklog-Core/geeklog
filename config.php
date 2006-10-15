@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.234 2006/10/07 18:00:44 dhaun Exp $
+// $Id: config.php,v 1.235 2006/10/15 14:51:57 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -594,6 +594,9 @@ $_CONF['frontpage']             = 1;       // default for new stories
 $_CONF['hide_no_news_msg']      = 0;       // If 1, hide No News To Display msg
 $_CONF['hide_main_page_navigation'] = 0;   // hide "google paging" on index.php
 
+// When set to 1, only root users will be able to feature a story
+$_CONF['onlyrootfeatures'] = 0;
+
 
 // Advanced theme settings
 
@@ -609,9 +612,6 @@ $_CONF['show_right_blocks'] = false;
 
 // It is recommended to leave these unchanged and overwrite them in the theme's
 // functions.php instead.
-
-// When set to 1, only root users will be able to feature a story
-$_CONF['onlyrootfeatures'] = 0;
 
 // When set to 1, this will render the first story on any page using the
 // templates for featured stories - even if that story is not featured.
