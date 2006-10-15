@@ -47,7 +47,7 @@
                <td><input type="text" id="email_conf" name="email_conf" size="50" maxlength="96" value="{email_value}"></td>
             </tr>
             <tr>
-               <td><label for="old_passwd" style="color:red;">{lang_old_password}:</label></td>
+               <td><label for="old_passwd" class="warningsmall">{lang_old_password}:</label></td>
                <td><input type="password" id="old_passwd" name="old_passwd" size="32" maxlength="32" value=""></td>
             </tr>
         </table>
