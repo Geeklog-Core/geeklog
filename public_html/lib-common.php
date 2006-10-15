@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.583 2006/10/14 19:08:34 ospiess Exp $
+// $Id: lib-common.php,v 1.584 2006/10/15 17:15:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2792,6 +2792,61 @@ function COM_isEmail( $email )
     return( $rfc822->isValidInetAddress( $email ) ? true : false );
 }
 
+
+/**
+* Encode a string such that it can be used in an email header
+*
+* @param    string  $string     the text to be encoded
+* @return   string              encoded text
+*
+*/
+function COM_emailEscape( $string )
+{
+    global $_CONF, $LANG_CHARSET;
+
+    if( empty( $LANG_CHARSET ))
+    {
+        $charset = $_CONF['default_charset'];
+        if( empty( $charset ))
+        {
+            $charset = 'iso-8859-1';
+        }
+    }
+    else
+    {
+        $charset = $LANG_CHARSET;
+    }
+
+    if(( $charset == 'utf-8' ) && ( $string != utf8_decode( $string )))
+    {
+        if( function_exists( 'iconv_mime_encode' ))
+        {
+            $mime_parameters = array( 'input-charset'  => 'utf-8',
+                                      'output-charset' => 'utf-8',
+                                      // 'Q' encoding is more readable than 'B'
+                                      'scheme'         => 'Q'
+                                    );
+            $string = substr( iconv_mime_encode( '', $string,
+                                                 $mime_parameters ), 2 );
+        }
+        else
+        {
+            $string = '=?' . $charset . '?B?' . base64_encode( $string ) . '?=';
+        }
+    }
+    else if( function_exists( 'imap_8bit' ))
+    {
+        // imap_8bit() handles everything for us
+        $string = imap_8bit( $string );
+    }
+    else if( preg_match( '/[^0-9a-z\-\.,:;\?! ]/i', $string ))
+    {
+        $string = '=?' . $charset . '?B?' . base64_encode( $string ) . '?=';
+    }
+
+    return $string;
+}
+
 /**
 * Takes a name and an email address and returns a string that vaguely
 * resembles an email address specification conforming to RFC(2)822 ...
@@ -2803,9 +2858,10 @@ function COM_isEmail( $email )
 */
 function COM_formatEmailAddress( $name, $address )
 {
-    $formatted_name = $name;
+    $formatted_name = COM_emailEscape( $name );
 
-    if( MBYTE_eregi( '[^0-9a-z ]', $formatted_name ))
+    // if the name comes back unchanged, it's not UTF-8, so preg_match is fine
+    if(( $formatted_name == $name ) && preg_match( '/[^0-9a-z ]/i', $name ))
     {
         $formatted_name = str_replace( '"', '\\"', $formatted_name );
         $formatted_name = '"' . $formatted_name . '"';
@@ -2842,6 +2898,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     $to = substr( $to, 0, strcspn( $to, "\r\n" ));
     $from = substr( $from, 0, strcspn( $from, "\r\n" ));
     $subject = substr( $subject, 0, strcspn( $subject, "\r\n" ));
+    $subject = COM_emailEscape( $subject );
 
     if( function_exists( 'CUSTOM_mail' ))
     {
