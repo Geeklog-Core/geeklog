@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.150 2006/09/03 16:57:56 blaine Exp $
+// $Id: usersettings.php,v 1.151 2006/10/15 08:24:32 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -212,11 +212,16 @@ function edituser()
                            htmlspecialchars ($_USER['username']));
 
     if ($_CONF['allow_account_delete'] == 1) {
-        $preferences->set_var('lang_deleteaccount',$LANG04[156]);
+        $preferences->set_var ('lang_deleteaccount', $LANG04[156]);
         $preferences->set_var ('delete_text', $LANG04[95]);
         $preferences->set_var ('lang_button_delete', $LANG04[96]);
         $preferences->set_var ('delete_mode', 'confirmdelete');
         $preferences->set_var ('account_id', $reqid);
+        if (isset ($LANG04[157])) {
+            $preferences->set_var ('lang_deleteoption', $LANG04[157]);
+        } else {
+            $preferences->set_var ('lang_deleteoption', $LANG04[156]);
+        }
         $preferences->parse ('delete_account_option', 'deleteaccount', false);
     } else {
         $preferences->set_var ('delete_account_option', '');

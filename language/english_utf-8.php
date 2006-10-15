@@ -361,7 +361,8 @@ $LANG04 = array(
     153 => 'Layout & Language',
     154 => 'Content',
     155 => 'Privacy',
-    156 => 'Delete Account'
+    156 => 'Delete Account',
+    157 => 'Delete Option'
 );
 
 ###############################################################################
