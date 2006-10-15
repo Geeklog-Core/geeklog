@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.148 2006/09/24 15:21:30 dhaun Exp $
+// $Id: users.php,v 1.149 2006/10/15 18:56:47 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -371,6 +371,8 @@ function emailpassword ($username, $msg = 0)
 function requestpassword ($username, $msg = 0)
 {
     global $_CONF, $_TABLES, $LANG04;
+
+    $retval = '';
 
     // no remote users!
     $result = DB_query ("SELECT uid,email,passwd,status FROM {$_TABLES['users']} WHERE username = '$username' AND ((remoteservice IS NULL) OR (remoteservice=''))");
