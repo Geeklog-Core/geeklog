@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.87 2006/10/10 11:52:13 ospiess Exp $
+// $Id: lib-admin.php,v 1.88 2006/10/16 05:00:24 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -454,7 +454,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             $filter_str .= ")";
         }
         $num_pages_sql = $sql . $filter_str;
-COM_errorLog($num_pages_sql);
+        // COM_errorLog($num_pages_sql);
         $num_pages_result = DB_query($num_pages_sql);
         $num_rows = DB_numRows($num_pages_result);
         $num_pages = ceil ($num_rows / $limit);
