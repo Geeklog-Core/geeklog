@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.585 2006/10/16 04:56:01 ospiess Exp $
+// $Id: lib-common.php,v 1.586 2006/10/16 04:57:29 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2355,9 +2355,9 @@ function COM_adminMenu( $help = '', $title = '' )
                 $grpFilter = '';
             } else {
                 $thisUsersGroups = SEC_getUserGroups ();
-                $grpFilter = 'AND (grp_id IN (' . implode (',', $thisUsersGroups) . '))';
+                $grpFilter = 'WHERE (grp_id IN (' . implode (',', $thisUsersGroups) . '))';
             }
-            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['groups']} WHERE 1=1 $grpFilter" );
+            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['groups']} $grpFilter;" );
             $A = DB_fetchArray( $result );
 
             $url = $_CONF['site_admin_url'] . '/group.php';
