@@ -4,7 +4,7 @@ Oct ??, 2006 (1.4.1b2)
 ------------
 - Corrected SQL for group counting in Admin menu for root admin to fix bug #573
   [Oliver]
-- Properly(?) encode non-ASCII characters in email headers (subject, names),
+- Properly encode non-ASCII characters in email headers (subject, names),
   loosely based on patch #489 and code from Cal Henderson's book [Dirk]
 - Removed the Calendar styles and moved them to a dedicated file in the
   plugin's directory [Oliver]
