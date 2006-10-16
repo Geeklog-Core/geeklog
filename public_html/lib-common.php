@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.584 2006/10/15 17:15:51 dhaun Exp $
+// $Id: lib-common.php,v 1.585 2006/10/16 04:56:01 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2351,9 +2351,13 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( SEC_hasRights( 'group.edit' ))
         {
-            $thisUsersGroups = SEC_getUserGroups();
-            $grp_list = implode( ',', $thisUsersGroups );
-            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['groups']} WHERE grp_id IN ($grp_list)" );
+            if (SEC_inGroup('Root')) {
+                $grpFilter = '';
+            } else {
+                $thisUsersGroups = SEC_getUserGroups ();
+                $grpFilter = 'AND (grp_id IN (' . implode (',', $thisUsersGroups) . '))';
+            }
+            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['groups']} WHERE 1=1 $grpFilter" );
             $A = DB_fetchArray( $result );
 
             $url = $_CONF['site_admin_url'] . '/group.php';
