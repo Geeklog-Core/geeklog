@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.173 2006/10/03 20:04:05 dhaun Exp $
+// $Id: user.php,v 1.174 2006/10/20 05:12:41 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -711,7 +711,7 @@ function batchdelete()
     $desc .= $user_templates->finish($user_templates->get_var('form'));
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => "<input type=\"checkbox\" name=\"chk_selectall\" title=\"'.$LANG01[126].'\" onclick=\"caItems(this.form);\" checked=\"checked\">",
+                    array('text' => "<input type=\"checkbox\" name=\"chk_selectall\" title=\"{$LANG01[126]}\" onclick=\"caItems(this.form);\" checked=\"checked\">",
                           'field' => 'delete',
                           'sort' => false),
                     array('text' => $LANG28[37], 'field' => $_TABLES['users'] . '.uid', 'sort' => true),
