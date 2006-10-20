@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.239 2006/10/08 08:15:19 dhaun Exp $
+// $Id: story.php,v 1.240 2006/10/20 02:12:29 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -112,7 +112,7 @@ function liststories()
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
     $retval = '';
-    
+
     if (!empty ($_GET['tid'])) {
         $current_topic = COM_applyFilter($_GET['tid']);
     } elseif (!empty ($_POST['tid'])) {
@@ -154,7 +154,9 @@ function liststories()
         $alltopics .= ' selected="selected"';
     }
     $alltopics .= '>' .$LANG09[9]. '</option>' . LB;
-    $filter = $LANG_ADMIN['topic'] . ': <select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>';
+    $filter = $LANG_ADMIN['topic']
+        . ': <select name="tid" style="width: 125px" onchange="this.form.submit()">'
+        . $alltopics . $seltopics . '</select>';
 
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false));
@@ -359,7 +361,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $A['trackbacks'] = 0;
         $A['numemails'] = 0;
 
-        if (isset ($_CONF['advanced_editor']) && $_CONF['advanced_editor'] && 
+        if (isset ($_CONF['advanced_editor']) && $_CONF['advanced_editor'] &&
                 ($_CONF['postmode'] != 'plaintext')) {
             $A['advanced_editor_mode'] = 1;
             $A['postmode'] = 'adveditor';
@@ -418,7 +420,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if ( isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1 ) 
+    if ( isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1 )
         && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
@@ -436,7 +438,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_var ('toolbar3', $LANG24[73]);
         $story_templates->set_var ('toolbar4', $LANG24[74]);
         $story_templates->set_var ('toolbar5', $LANG24[75]);
- 
+
         if ($A['advanced_editor_mode'] == 1 OR $A['postmode'] == 'adveditor') {
             $story_templates->set_var ('show_texteditor', 'none');
             $story_templates->set_var ('show_htmleditor', '');
@@ -527,7 +529,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             $navbar->add_menuitem($LANG24[82],'showhideEditorDiv("images",3);return false;',true);
             $navbar->add_menuitem($LANG24[83],'showhideEditorDiv("archive",4);return false;',true);
             $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms",5);return false;',true);
-            $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",6);return false;',true);            
+            $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",6);return false;',true);
         }  else {
             $navbar->add_menuitem($LANG24[80],'showhideEditorDiv("editor",0);return false;',true);
             $navbar->add_menuitem($LANG24[81],'showhideEditorDiv("publish",1);return false;',true);
@@ -732,13 +734,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
                             $A['trackbackcode']));
 
-    if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root')) 
+    if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root'))
         or ($_CONF['onlyrootfeatures'] !== 1)) {
-        $featured_options = "<select name=\"featured\">" . LB 
+        $featured_options = "<select name=\"featured\">" . LB
                           . COM_optionList ($_TABLES['featurecodes'], 'code,name', $A['featured'])
                           . "</select>" . LB;
     } else {
-        $featured_options = '<input type="hidden" name="featured" value="0">';  
+        $featured_options = '<input type="hidden" name="featured" value="0">';
     }
     $story_templates->set_var ('featured_options',$featured_options);
     $story_templates->set_var ('frontpage_options',
@@ -784,7 +786,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_nojavascript',$LANG24[77]);
     $story_templates->set_var('no_javascript_return_link',sprintf($LANG24[78],$_CONF['site_admin_url'], $sid));
     $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']);
-    
+
     // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
     if ($_CONF['advanced_editor'] == 1) {
         if ($A['advanced_editor_mode'] == 1 OR $A['postmode'] == 'adveditor') {
@@ -970,7 +972,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         // Clean up the text
         if ($postmode == 'html' OR $postmode == 'adveditor') {
             // Advanced Editor: Are you editing this story and switching mode from text to html
-            if ( (DB_count($_TABLES['stories'],'sid',$sid) == 1) AND 
+            if ( (DB_count($_TABLES['stories'],'sid',$sid) == 1) AND
                  (DB_getItem($_TABLES['stories'], 'postmode',"sid='$sid'") == 'plaintext') AND
                  ($_CONF['advanced_editor'] == 1) ) {
                      $introtext = str_replace("\n",'<br>',$introtext);
@@ -1123,14 +1125,14 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 
         $introtext = addslashes ($introtext);
         $bodytext = addslashes ($bodytext);
-        
-        // Set Advanced Editor Mode option but save it still has html mode        
+
+        // Set Advanced Editor Mode option but save it still has html mode
         if ($postmode == 'adveditor') {
             $postmode = 'html';
             $advanced_editor_mode = 1;
         } else {
             $advanced_editor_mode = 0;
-        }            
+        }
 
         DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,trackbackcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit,advanced_editor_mode', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$trackbackcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1,$advanced_editor_mode");
 
