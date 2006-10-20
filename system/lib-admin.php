@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.88 2006/10/16 05:00:24 ospiess Exp $
+// $Id: lib-admin.php,v 1.89 2006/10/20 05:30:33 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -471,7 +471,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     # SQL
     $sql .= "$filter_str $order_sql $limit;";
-    // echo $sql;
+    //echo $sql;
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     $r = 1; # r is the counter for the actual displayed rows for correct coloring
@@ -688,6 +688,9 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
     $retval = '';
 
     switch ($fieldname) {
+        case 'delete':
+            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['uid']}]\" checked=\"checked\">";
+            break;
         case 'edit':
             $retval = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
             break;
@@ -708,7 +711,16 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
                 $regdate = strftime ($_CONF['shortdate'], strtotime($A['regdate']));
                 $retval = "({$LANG28[36]}, {$LANG28[53]} $regdate)";
             } else {
-                $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
+                $retval = strftime ($_CONF['shortdate'], $fieldvalue);
+            }
+            break;
+        case 'lastlogin_short':
+            if ($fieldvalue < 1) {
+                // if the user never logged in, show the registration date
+                $regdate = strftime ($_CONF['shortdate'], strtotime($A['regdate']));
+                $retval = "({$LANG28[36]})";
+            } else {
+                $retval = strftime ($_CONF['shortdate'], $fieldvalue);
             }
             break;
         case 'online_days':
@@ -717,53 +729,6 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = "N/A";
             } else {
                 $retval = $fieldvalue;
-            }
-            break;
-        case $_TABLES['users'] . '.uid':
-            $retval = $A['uid'];
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
-    }
-
-    if (isset($A['status']) && ($A['status'] == USER_ACCOUNT_DISABLED)) {
-        if (($fieldname != 'edit') && ($fieldname != 'username')) {
-            $retval = sprintf ('<s title="%s">%s</s>', $LANG28[42], $retval);
-        }
-    }
-
-    return $retval;
-}
-
-function ADMIN_getListField_batchuserdelete($fieldname, $fieldvalue, $A, $icon_arr)
-{
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE, $LANG04;
-
-    $retval = '';
-
-    switch ($fieldname) {
-        case 'delete':
-            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['uid']}]\" checked=\"checked\">";
-            break;
-        case 'username':
-            $photoico = '';
-            if (!empty ($A['photo'])) {
-                $photoico = "&nbsp;<img src=\"{$_CONF['layout_url']}/images/smallcamera."
-                          . $_IMAGE_TYPE . '" border="0" alt="{$LANG04[77]}">';
-            } else {
-                $photoico = '';
-            }
-            $retval = "<a href=\"{$_CONF['site_url']}/users.php?mode=profile&amp;uid="
-                      . $A['uid']."\">$fieldvalue</a>$photoico";
-            break;
-        case 'lastlogin':
-            if ($fieldvalue < 1) {
-                // if the user never logged in, show the registration date
-                $regdate = strftime ($_CONF['shortdate'], strtotime($A['regdate']));
-                $retval = "({$LANG28[36]})";
-            } else {
-                $retval = strftime ($_CONF['shortdate'], $A['lastlogin']);
             }
             break;
         case 'phantom_date':

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.174 2006/10/20 05:12:41 ospiess Exp $
+// $Id: user.php,v 1.175 2006/10/20 05:30:33 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -722,7 +722,7 @@ function batchdelete()
     switch ($usr_type) {
         case 'phantom':
             $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
-            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[67], 'field' => 'phantom_date', 'sort' => true);
             $list_sql = ", UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) as phantom_date";
             $filter_sql = "lastlogin = 0 AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
@@ -731,7 +731,7 @@ function batchdelete()
             break;
         case 'short':
             $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
-            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[68], 'field' => 'online_hours', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
             $list_sql = ", (lastlogin - UNIX_TIMESTAMP(regdate)) AS online_hours, (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
@@ -741,7 +741,7 @@ function batchdelete()
             $desc .= $LANG28[62] . $usr_time . $LANG28[63];
             break;
         case 'old':
-            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $header_arr[] = array('text' => $LANG28[69], 'field' => 'offline_months', 'sort' => true);
             $list_sql = ", (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
             $filter_sql = "lastlogin > 0 AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
@@ -750,7 +750,7 @@ function batchdelete()
             break;
         case 'recent':
             $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
-            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin', 'sort' => true);
+            $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
             $list_sql = "";
             $filter_sql = "(UNIX_TIMESTAMP() - UNIX_TIMESTAMP(regdate)) < " . ($usr_time * 2592000) . " AND";
             $sort = 'regdate';
@@ -782,7 +782,7 @@ function batchdelete()
                          'direction' => 'ASC');
 
     $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
-    $select_userinfo = ", lastlogin $list_sql ";
+    $select_userinfo = ", lastlogin as lastlogin_short $list_sql ";
 
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
          . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
@@ -792,7 +792,7 @@ function batchdelete()
                        'query_fields' => array('username', 'email', 'fullname'),
                        'default_filter' => "AND $filter_sql {$_TABLES['users']}.uid > 1");
 
-    $display .= ADMIN_list ("user", "ADMIN_getListField_batchuserdelete", $header_arr, $text_arr,
+    $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
     return $display;
 }
