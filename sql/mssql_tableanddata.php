@@ -1027,7 +1027,7 @@ AND     SIK.colid = SC.colid
 
 $_SQL[] = "CREATE VIEW dbo.getdateView
 AS
-SELECT     GETDATE() AS getdate
+SELECT     GETUTCDATE() AS getdate
 
 ";
 
@@ -1292,18 +1292,18 @@ RETURNS varchar(100) AS
 BEGIN
 declare
 @retval varchar(100),
-@testDate   varchar(100)
+@testDate   dateTime
 
 
 if @d is Null or @d=''
     begin
         select @testDate=[getdate] from getdateView
-        SELECT @retval=DATEDIFF(s, '19700101', @testDate)
+        SELECT @retval=DATEDIFF(s, '1970-01-01 00:00:00.000', @testDate)
 
     end
 else
     begin
-        SELECT @retval=DATEDIFF(SECOND, '19700101', @d)
+        SELECT @retval=DATEDIFF(SECOND, '1970-01-01 00:00:00.000', @d)
     end
 
 
