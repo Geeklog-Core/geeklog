@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.57 2006/10/10 11:38:15 ospiess Exp $
+// $Id: functions.inc,v 1.58 2006/10/21 20:53:50 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1465,7 +1465,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         }
     }
     $sql .= COM_getPermSQL ('AND');
-    $sql .= ' GROUP BY datestart, eid, title, description, location, dateend, timestart, timeend, allday ORDER BY datestart DESC ';
+    $sql .= ' GROUP BY datestart, eid, title, description, location, dateend, timestart, timeend, allday, event_type ORDER BY datestart DESC ';
     $l = ($perpage * $page) - $perpage;
     $sql .= 'LIMIT ' . $l . ',' . $perpage;
 
