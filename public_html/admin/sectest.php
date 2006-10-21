@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.1 2006/09/10 17:38:48 dhaun Exp $
+// $Id: sectest.php,v 1.2 2006/10/21 19:25:06 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -268,6 +268,11 @@ if (!empty ($url)) {
     $display .= '<p>Site URL: ' . $url . '</p>';
     $display .= '<ol>';
 
+    if (strpos ($_SERVER['PHP_SELF'], 'public_html') !== false) {
+        $display .= '<li>"public_html" should never be part of your site\'s URL. Please read the part about public_html in the <a href="../docs/install.html#public_html">installation instructions</a> again and change your setup accordingly before you proceed.</li>';
+        $failed_tests++;
+    }
+
     $display .= checkInstallDir ();
 
     $urls = array
@@ -318,7 +323,7 @@ if ($failed_tests > 0) {
     DB_save ($_TABLES['vars'], 'name,value', "'security_check','1'");
 }
 
-$display .= '<p>To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) <a href="http://lists.geeklog.net/mailman/listinfo/geeklog-announce">Geeklog Announcements</a> mailing list and/or use the <strong>' . $LANG01[107] . '</strong> option in your Admin menu from time to time to check for available updates.</p>';
+$display .= '<p>To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) <a href="http://lists.geeklog.net/mailman/listinfo/geeklog-announce">geeklog-announce</a> mailing list and/or use the <strong>' . $LANG01[107] . '</strong> option in your Admin menu from time to time to check for available updates.</p>';
 
 $display .= COM_endBlock ();
 $display .= COM_siteFooter ();
