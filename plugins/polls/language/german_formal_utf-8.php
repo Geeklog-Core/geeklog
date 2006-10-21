@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german_formal_utf-8.php,v 1.4 2006/08/05 15:07:43 dhaun Exp $
+# $Id: german_formal_utf-8.php,v 1.5 2006/10/21 20:17:36 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -58,12 +58,12 @@ $LANG_POLLS = array(
 $LANG25 = array(
     1 => 'Modus',
     2 => 'Bitte eine Frage und mindestens eine Antwort eingeben.',
-    3 => 'Umfrage gestartet',
+    3 => 'Gestartet',
     4 => 'Umfrage %s wurde gespeichert',
     5 => 'Umfrage editieren',
     6 => 'Umfrage-ID',
     7 => '(keine Leerzeichen!)',
-    8 => 'Erscheint auf der Startseite',
+    8 => 'Auf der Startseite',
     9 => 'Thema',
     10 => 'Antworten / Stimmen / Anmerkung',
     11 => 'Beim Abrufen der Stimmen von Umfrage %s trat ein Fehler auf.',
