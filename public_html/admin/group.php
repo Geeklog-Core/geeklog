@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.91 2006/10/01 18:54:44 dhaun Exp $
+// $Id: group.php,v 1.92 2006/10/21 20:17:05 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -634,7 +634,7 @@ function listusers ($grp_id)
     );
     
     $form_url = $_CONF['site_admin_url'] . '/group.php?mode=listusers&amp;grp_id='.$grp_id;
-    if ($_REQUEST['chk_showall'] == 1) {
+    if (isset ($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
         $form_url .= '&amp;chk_showall=1';
     }
 
@@ -642,10 +642,14 @@ function listusers ($grp_id)
                              "grp_id = '$grp_id'");
     $headline = sprintf ($LANG_ACCESS['usersingroup'], $groupname);
     
+    $url = $_CONF['site_admin_url'] . '/group.php';
+    if (isset ($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+        $url .= '?chk_showall=1';
+    }
     $menu_arr = array (
-                    array('url' => "{$_CONF['site_admin_url']}/group.php?chk_showall={$_REQUEST['chk_showall']}",
+                    array('url'  => $url,
                           'text' => $LANG28[38]),
-                    array('url' => $_CONF['site_admin_url'],
+                    array('url'  => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));    
 
     $text_arr = array ('has_menu'     => true,
