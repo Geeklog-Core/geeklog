@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.235 2006/10/15 14:51:57 dhaun Exp $
+// $Id: config.php,v 1.236 2006/10/22 15:14:35 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -223,7 +223,7 @@ $_CONF['disable_new_user_registration'] = false; // set to true to block users.
 
 // optional settings (1 = on, 0 = off)
 $_CONF['allow_user_themes']   = 1;
-$_CONF['allow_user_language'] = 1; // works only if default_charset is utf-8
+$_CONF['allow_user_language'] = 1;
 $_CONF['allow_user_photo']    = 1; // allow users to upload self-photo
 
 // Allow users to change their username (if set to 1).
@@ -281,8 +281,7 @@ $_CONF_FCK['imagelibrary'] = '/images/library';
 // |                                                                           |
 // | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
-$_CONF['language']        = 'english'; // set this to a utf-8 language if you
-                            // want users to be able to change their language
+$_CONF['language']        = 'english';
 $_CONF['locale']          = 'en_GB';
 $_CONF['date']            = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']         = '%m/%d %I:%M%p';
@@ -291,7 +290,9 @@ $_CONF['dateonly']        = '%d-%b';
 $_CONF['timeonly']        = '%I:%M%p';
 $_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['hour_mode']       = 12;    // 12 hour am/pm or 24 hour format
-$_CONF['default_charset'] = 'iso-8859-1'; //  should be same as in $_CONF['language']
+
+// Use of 'utf-8' is recommended for multi-language sites
+$_CONF['default_charset'] = 'iso-8859-1';
 
 // Number formatting
 $_CONF['thousand_separator'] = ",";  // could be ' , . etc.

@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 Oct ??, 2006 (1.4.1b2)
 ------------
+- Allow users to switch the language again, even when the default character set
+  is not UTF-8. It is, however, not possible to mix UTF-8 and other charsets.
+  Also, "UTF-8" is not displayed in the language dropdown any more [Dirk]
 - Corrected SQL for group counting in Admin menu for root admin to fix bug #573
   [Oliver]
 - Properly encode non-ASCII characters in email headers (subject, names),
@@ -20,7 +23,7 @@ Oct ??, 2006 (1.4.1b2)
   another user. In Geeklog, this only happens for the Daily Digest, though
   (bug #594) [Dirk]
 - When comments are disabled for a story, don't show any existing comments in
-  the What's New block, in search results of via comment.php (bug #597) [Dirk]
+  the What's New block, in search results or via comment.php (bug #597) [Dirk]
 - When trackbacks are disabled for a story, don't list any existing trackbacks
   in the What's New block [Dirk]
 - In the Admin's User Editor, disabled the checkboxes for the All Users,
@@ -54,10 +57,6 @@ Oct ??, 2006 (1.4.1b2)
 - CSS Changes to support better scaling of Font size - using browser Text-Size
   adjustment. Removed many extra font-size declarations. [Blaine]
 - Don't allow viewing of a Banned user profile unless user admin [Blaine]
-- Tweaked the Calendar search result listing: Removed the Event Description
-  (usually too long for the result listing), replaced Location (which is only a
-  part of the address and not very helpful) with Event Type, minimized Date &
-  Time display for events lasting only one day (don't list date twice) [Dirk]
 - Only call CUSTOM_loginErrorHandler when custom_registration is enabled
   (bug #584) [Blaine]
 - Fixed SQL error with some older MySQL versions when calling up the Batch User
@@ -75,6 +74,15 @@ Oct ??, 2006 (1.4.1b2)
 - Updated Slovenian language files for Geeklog and all the plugins, provided
   by gape
 
+Calendar plugin
+------------
+- Created a dedicated stylesheet file and include the file only if the URL
+  contains the word 'calendar' [Oliver]
+- Tweaked the Calendar search result listing: Removed the Event Description
+  (usually too long for the result listing), replaced Location (which is only a
+  part of the address and not very helpful) with Event Type, minimized Date &
+  Time display for events lasting only one day (don't list date twice) [Dirk]
+
 Links plugin
 ------------
 - Renamed classes block-vote-results to poll-vote-results and block-vote to
@@ -88,11 +96,6 @@ Links plugin
 - Filter out special characters from link IDs. They were properly escaped
   before storing them in the database but caused problems when using them
   (bug #565) [Dirk]
-
-Calendar plugin
-------------
-- Created a dedicated stylesheet file and include the file only if the URL
-  contains the word 'calendar' [Oliver]
 
 
 Sep 17, 2006 (1.4.1b1)
