@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.89 2006/10/20 05:30:33 ospiess Exp $
+// $Id: lib-admin.php,v 1.90 2006/10/22 00:40:04 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -343,12 +343,15 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $order = $header_arr[$order_var]['field'];  # current order field name
     }
     $order_for_query = $order;
-    $order = explode ('.', $order);
-    if (count ($order) > 1) {
-        $order = $order[1];
-    } else {
-        $order = $order[0];
-    }
+    // this code sorts only by the field if its in table.field style.
+    // removing this however makes match for arrow-display impossible, so removed it.
+    // maybe now for more fields the table has to be added to the sortfield?
+    //$order = explode ('.', $order);
+    //if (count ($order) > 1) {
+    //    $order = $order[1];
+    //} else {
+    //    $order = $order[0];
+    //}
 
     $direction = '';
     if (!isset ($_GET['direction'])) { # get direction to sort after
@@ -471,7 +474,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     # SQL
     $sql .= "$filter_str $order_sql $limit;";
-    //echo $sql;
+    // echo $sql;
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     $r = 1; # r is the counter for the actual displayed rows for correct coloring
