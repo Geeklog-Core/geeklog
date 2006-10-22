@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.151 2006/10/15 08:24:32 dhaun Exp $
+// $Id: usersettings.php,v 1.152 2006/10/22 08:38:48 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -462,30 +462,39 @@ function editpreferences()
                            $LANG04[99] . ' ' . $display_name);
 
     // display preferences block
-    if ($_CONF['allow_user_language'] == 1 && ($_CONF['default_charset'] == 'utf-8')) {
+    if ($_CONF['allow_user_language'] == 1) {
 
-        if (empty($_USER['language'])) {
+        if (empty ($_USER['language'])) {
             $userlang = $_CONF['language'];
         } else {
             $userlang = $_USER['language'];
         }
+
         // Get available languages
-		$language = MBYTE_languageList();
-		// this is an attempt to make sure the user gets a valid pre-selection
-		// on opening the preferences if his own language is not in the 
-		// list of the dropdown.
-		// this seems not to be the best way since CONF['language']
-        // seems to be changed by code to $_USER['language'] somewhere
-        // how to retrieve the acutal value from config.php?
-		$has_valid_language = count(array_keys($language, $userlang));
+        $language = MBYTE_languageList ($_CONF['default_charset']);
+
+        $has_valid_language = count (array_keys ($language, $userlang));
+        if ($has_valid_language == 0) {
+            // The user's preferred language is no longer available.
+            // We have a problem now, since we've overwritten $_CONF['language']
+            // with the user's preferred language ($_USER['language']) and
+            // therefore don't know what the system's default language is.
+            // So we'll try to find a similar language. If that doesn't help,
+            // the dropdown will default to the first language in the list ...
+            $tmp = explode ('_', $userlang);
+            $similarLang = $tmp[0];
+        }
+
         $selection = '<select name="language">' . LB;
         foreach ($language as $langFile => $langName) {
             $selection .= '<option value="' . $langFile . '"';
-            if (($has_valid_language == 0) && ($langFile == $_CONF['language'])) {
-                	$selection .= ' selected="selected"';
-			} else if ($userlang == $langFile) {
-                	$selection .= ' selected="selected"';
-			}
+            if (($langFile == $userlang) || (($has_valid_language == 0) &&
+                    (strpos ($langFile, $similarLang) === 0))) {
+                $selection .= ' selected="selected"';
+                $has_valid_language = 1;
+            } else if ($userlang == $langFile) {
+                $selection .= ' selected="selected"';
+            }
 
             $selection .= '>' . $langName . '</option>' . LB;
         }

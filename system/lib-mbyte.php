@@ -2,9 +2,9 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4.1                                                             |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-multibyte.php                                                         |
+// | lib-mbyte.php                                                             |
 // |                                                                           |
 // | function collection to handle mutli-byte related issues                   |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.17 2006/09/06 05:31:01 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.18 2006/10/22 08:38:48 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
     die ('This file can not be used on its own!');
@@ -37,8 +37,13 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
 
 // This function is supposed to display only language files in selection drop-
 // downs that are utf-8
-function MBYTE_languageList() {
+function MBYTE_languageList ($charset = 'utf-8')
+{
     global $_CONF;
+
+    if ($charset != 'utf-8') {
+        $charset = '';
+    }
 
     $language = array ();
     $fd = opendir ($_CONF['path_language']);
@@ -46,15 +51,18 @@ function MBYTE_languageList() {
     while (($file = @readdir ($fd)) !== false) {
         if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
                 && is_file ($_CONF['path_language'] . $file)
-                && (strstr($file, '_utf-8'))) {
+                && ((empty ($charset) && (strstr ($file, '_utf-8') === false))
+                    || (($charset == 'utf-8') && strstr ($file, '_utf-8')))) {
             clearstatcache ();
             $file = str_replace ('.php', '', $file);
-            $uscore = strpos ($file, '_');
+            $langfile = str_replace ('_utf-8', '', $file);
+            $uscore = strpos ($langfile, '_');
             if ($uscore === false) {
-                $lngname = ucfirst ($file);
+                $lngname = ucfirst ($langfile);
             } else {
-                $lngname = ucfirst (substr ($file, 0, $uscore));
-                $lngadd = substr ($file, $uscore + 1);
+                $lngname = ucfirst (substr ($langfile, 0, $uscore));
+                $lngadd = substr ($langfile, $uscore + 1);
+                $lngadd = str_replace ('utf-8', '', $lngadd);
                 $lngadd = str_replace ('_', ', ', $lngadd);
                 $word = explode (' ', $lngadd);
                 $lngadd = '';
@@ -71,6 +79,7 @@ function MBYTE_languageList() {
         }
     }
     asort ($language);
+
     return $language;
 }
 
