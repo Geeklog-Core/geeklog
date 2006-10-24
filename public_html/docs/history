@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 Oct ??, 2006 (1.4.1b2)
 ------------
+- Fixed bug #604, delete trackbacks of a story when story is deleted.
+  [Oliver]
 - Allow users to switch the language again, even when the default character set
   is not UTF-8. It is, however, not possible to mix UTF-8 and other charsets.
   Also, "UTF-8" is not displayed in the language dropdown any more [Dirk]
