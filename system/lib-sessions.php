@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.42 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-sessions.php,v 1.43 2006/10/24 08:09:50 ospiess Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -93,7 +93,7 @@ function SESS_sessionCheck()
 
     // Check for a cookie on the users's machine.  If the cookie exists, build
     // an array of the users info and setup the theme.
-    
+
     if (isset ($_COOKIE[$_CONF['cookie_session']])) {
         $sessid = COM_applyFilter ($_COOKIE[$_CONF['cookie_session']]);
         if ($_SESS_VERBOSE) {
@@ -105,7 +105,7 @@ function SESS_sessionCheck()
         if ($_SESS_VERBOSE) {
             COM_errorLog("Got $userid as User ID from the session ID",1);
         }
-        
+
         if ($userid > 1) {
             // Check user status
             SEC_checkUserStatus($userid);
@@ -219,7 +219,7 @@ function SESS_sessionCheck()
 * @return       string      Session ID
 *
 */
-function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0) 
+function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
 {
     global $_TABLES, $_CONF, $_SESS_VERBOSE;
 
@@ -238,7 +238,7 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
         $ip = str_replace('.','',$remote_ip);
         $md5_sessid = md5($ip + $sessid);
     } else {
-        $md5_sessid = '';         
+        $md5_sessid = '';
     }
 
     $currtime = (string) (time());
@@ -249,12 +249,12 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     } else {
         $deleteSQL = "DELETE FROM {$_TABLES['sessions']} WHERE (start_time < $expirytime)";
         $delresult = DB_query($deleteSQL);
-    
+
         if ($_SESS_VERBOSE) {
             COM_errorLog("Attempted to delete rows from session table with following SQL\n$deleteSQL\n",1);
             COM_errorLog("Got $delresult as a result from the query",1);
         }
-    
+
         if (!$delresult) {
             die("Delete failed in new_session()");
         }
@@ -282,14 +282,14 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
             return $sessid;
         }
     } else {
-        echo mysql_errno().": ".mysql_error()."<BR>";
+        echo DB_error().": ".DB_error()."<BR>";
         die("Insert failed in new_session()");
     }
     if ($_SESS_VERBOSE) COM_errorLog("*************leaving SESS_newSession*****************",1);
 }
 
 /**
-* Sets the session cookie 
+* Sets the session cookie
 *
 * This saves the session ID to the session cookie on client's machine for
 * later use
@@ -330,9 +330,9 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
 * @param        string      $cookietime     Used to query DB for valid sessions
 * @param        string      $remote_ip      Used to pull session we need
 * @param        int         $md5_based      Let's us now if we need to take MD5 hash into consideration
-* @return       int         User ID 
+* @return       int         User ID
 */
-function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=0) 
+function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=0)
 {
     global $_CONF, $_TABLES, $_SESS_VERBOSE;
 
@@ -369,7 +369,7 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
 }
 
 /**
-* Updates a session cookies timeout 
+* Updates a session cookies timeout
 *
 * Refresh the start_time of the given session in the database.
 * This is called whenever a page is hit by a user with a valid session.
@@ -379,12 +379,12 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
 * @return       boolean     always true for some reason
 *
 */
-function SESS_updateSessionTime($sessid, $md5_based=0) 
+function SESS_updateSessionTime($sessid, $md5_based=0)
 {
     global $_TABLES;
 
     $newtime = (string) time();
-    
+
     if ($md5_based == 1) {
         $sql = "UPDATE {$_TABLES['sessions']} SET start_time=$newtime WHERE (md5_sess_id = '$sessid')";
     } else {
@@ -405,7 +405,7 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
 * @return       boolean     Always true for some reason
 *
 */
-function SESS_endUserSession($userid) 
+function SESS_endUserSession($userid)
 {
     global $_TABLES;
 
@@ -424,7 +424,7 @@ function SESS_endUserSession($userid)
 * @return       array       returns user's data in an array
 *
 */
-function SESS_getUserData($username) 
+function SESS_getUserData($username)
 {
     global $_TABLES;
 
@@ -435,11 +435,11 @@ function SESS_getUserData($username)
     if(!$result = DB_query($sql)) {
         COM_errorLog("error in get_userdata");
     }
-    
+
     if(!$myrow = DB_fetchArray($result)) {
         COM_errorLog("error in get_userdata");
     }
-    
+
     return($myrow);
 }
 
@@ -452,7 +452,7 @@ function SESS_getUserData($username)
 * @return       array   returns user'd data in an array
 *
 */
-function SESS_getUserDataFromId($userid) 
+function SESS_getUserDataFromId($userid)
 {
     global $_TABLES;
 
@@ -464,7 +464,7 @@ function SESS_getUserDataFromId($userid)
         $userdata = array("error" => "1");
         return ($userdata);
     }
-    
+
     if(!$myrow = DB_fetchArray($result)) {
         $userdata = array("error" => "1");
         return ($userdata);

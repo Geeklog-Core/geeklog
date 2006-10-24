@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.587 2006/10/22 08:38:48 dhaun Exp $
+// $Id: lib-common.php,v 1.588 2006/10/24 08:09:49 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3527,7 +3527,7 @@ function COM_getPassword( $loginname )
     global $_TABLES, $LANG01;
 
     $result = DB_query( "SELECT passwd FROM {$_TABLES['users']} WHERE username='$loginname'" );
-    $tmp = mysql_errno();
+    $tmp = DB_error();
     $nrows = DB_numRows( $result );
 
     if(( $tmp == 0 ) && ( $nrows == 1 ))

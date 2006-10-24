@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.54 2006/08/03 14:39:13 dhaun Exp $
+// $Id: lib-security.php,v 1.55 2006/10/24 08:09:50 ospiess Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -422,7 +422,7 @@ function SEC_hasRights($features,$operator='AND')
 function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
 {
     global $LANG_ACCESS, $_CONF;
-    
+
     $retval = '';
 
     $perm_templates = new Template($_CONF['path_layout'] . 'admin/common');
@@ -690,7 +690,7 @@ function SEC_authenticate($username, $password, &$uid)
     global $_TABLES, $LANG01, $_CONF;
 
     $result = DB_query( "SELECT status, passwd, email, uid FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))" );
-    $tmp = mysql_errno();
+    $tmp = DB_error();
     $nrows = DB_numRows( $result );
 
     if(( $tmp == 0 ) && ( $nrows == 1 ))
@@ -794,7 +794,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
     /* First try a local cached login */
     $remoteusername = addslashes($loginname);
     $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername' AND remoteservice='$service'");
-    $tmp = mysql_errno();
+    $tmp = DB_error();
     $nrows = DB_numRows($result);
     if (($tmp == 0) && ($nrows == 1))
     {
@@ -996,7 +996,7 @@ function SEC_getGroupDropdown ($group_id, $access)
     global $_TABLES;
 
     $groupdd = '';
-        
+
     if ($access == 3) {
         $usergroups = SEC_getUserGroups ();
 

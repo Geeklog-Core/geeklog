@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 Oct ??, 2006 (1.4.1b2)
 ------------
+- Fixed bug #603, hardcoded mysql_error() [Oliver]
 - Fixed bug #604, delete trackbacks of a story when story is deleted.
   [Oliver]
 - Allow users to switch the language again, even when the default character set
