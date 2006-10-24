@@ -32,8 +32,8 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// 
-// $Id: lib-story.php,v 1.70 2006/10/07 18:00:44 dhaun Exp $
+//
+// $Id: lib-story.php,v 1.71 2006/10/24 07:50:17 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -154,7 +154,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         } else {
             $article->set_var( 'contributedby_fullname', $fullname );
         }
-        
+
         $authorname = COM_getDisplayName( $A['uid'], $username, $fullname );
         $article->set_var( 'contributedby_author', $authorname );
         $article->set_var( 'author', $authorname );
@@ -289,7 +289,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
         $article->set_var( 'story_introtext_only', $introtext );
         $article->set_var( 'story_bodytext_only', $bodytext );
 
-        if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) && 
+        if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) &&
                 SEC_hasRights( 'story.ping' ))
         {
             $url = $_CONF['site_admin_url']
@@ -962,6 +962,9 @@ function STORY_deleteStory($sid)
     STORY_deleteImages ($sid);
     DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid = '$sid' AND type = 'article'");
     DB_delete ($_TABLES['stories'], 'sid', $sid);
+
+    // delete Trackbacks
+    DB_query ("DELETE FROM {$_TABLES['trackback']} WHERE sid = '$sid' AND type = 'article';");
 
     // update RSS feed and Older Stories block
     COM_rdfUpToDateCheck ();

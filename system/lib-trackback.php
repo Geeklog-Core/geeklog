@@ -28,8 +28,8 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// 
-// $Id: lib-trackback.php,v 1.44 2006/09/30 19:15:27 dhaun Exp $
+//
+// $Id: lib-trackback.php,v 1.45 2006/10/24 07:50:17 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -693,7 +693,8 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
     $template->set_var ('permalink_and_title', $link_and_title);
     $template->set_var ('trackback_url', $trackback_url);
 
-    $result = DB_query ("SELECT cid,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['trackback']} WHERE sid = '$sid' AND type = '$type' ORDER BY date");
+    $result = DB_query ("SELECT cid,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS day "
+        . "FROM {$_TABLES['trackback']} WHERE sid = '$sid' AND type = '$type' ORDER BY date");
     $numrows = DB_numRows ($result);
 
     $template->set_var ('trackback_comment_count', $numrows);
