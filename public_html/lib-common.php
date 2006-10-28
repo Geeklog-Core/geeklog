@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.588 2006/10/24 08:09:49 ospiess Exp $
+// $Id: lib-common.php,v 1.589 2006/10/28 22:04:27 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2883,10 +2883,11 @@ function COM_formatEmailAddress( $name, $address )
 * @param    from       string   (optional) sender of the the email
 * @param    html       bool     true if to be sent as an HTML email
 * @param    priority   int      add X-Priority header, if > 0
+* @param    cc         string   recipiencts name and email address
 * @return   boolean             true if successful,  otherwise false
 *
 */
-function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0 )
+function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc='' )
 {
     global $_CONF, $LANG_CHARSET;
 
@@ -2898,6 +2899,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     }
 
     $to = substr( $to, 0, strcspn( $to, "\r\n" ));
+    $cc = substr( $cc, 0, strcspn( $cc, "\r\n" ));
     $from = substr( $from, 0, strcspn( $from, "\r\n" ));
     $subject = substr( $subject, 0, strcspn( $subject, "\r\n" ));
     $subject = COM_emailEscape( $subject );
@@ -2944,6 +2946,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     if( $method != 'mail' )
     {
         $headers['To'] = $to;
+        $headers['Cc'] = $cc;
     }
     $headers['Date'] = date( 'r' ); // RFC822 formatted date
     if( $method == 'smtp' )
