@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.240 2006/10/20 02:12:29 ospiess Exp $
+// $Id: story.php,v 1.241 2006/10/31 10:24:27 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -755,7 +755,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
 
     list($newintro, $newbody) = STORY_replace_images ($A['sid'],
-            stripslashes ($A['introtext']), stripslashes ($A['bodytext']));
+            $A['introtext'], $A['bodytext']);
 
     if ($A['postmode'] == 'plaintext') {
         $newintro = str_replace('$','&#36;',$newintro);
