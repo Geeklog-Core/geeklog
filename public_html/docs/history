@@ -2,12 +2,12 @@ GeekLog History/Changes:
 
 Nov ??, 2006 (1.4.1b2)
 ------------
+- Spam-X stats: Removed MT-Blacklist entry, added SLV whitelist entry [Dirk]
 - Don't add empty "No Title" links in portal blocks when the feed has less than
   the configured max. number of entries (bug #610) [Dirk]
 - Added support for COM_mail to use a parm for a CC: distribution list [Blaine]
 - Fixed bug #603, hardcoded mysql_error() [Oliver]
-- Fixed bug #604, delete trackbacks of a story when story is deleted.
-  [Oliver]
+- Fixed bug #604, delete trackbacks of a story when story is deleted [Oliver]
 - Allow users to switch the language again, even when the default character set
   is not UTF-8. It is, however, not possible to mix UTF-8 and other charsets.
   Also, "UTF-8" is not displayed in the language dropdown any more [Dirk]
@@ -77,6 +77,7 @@ Nov ??, 2006 (1.4.1b2)
 - Updated Hebrew language file, provided by LWC
 - Updated Japanese language files for Geeklog and all the plugins, provided
   by the Geeklog Japanese group
+- New Russian language files for the Spam-X plugin, provided by Pavel Kovalenko
 - Updated Slovenian language files for Geeklog and all the plugins, provided
   by gape
 
