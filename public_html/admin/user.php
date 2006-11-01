@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.175 2006/10/20 05:30:33 ospiess Exp $
+// $Id: user.php,v 1.176 2006/11/01 18:58:55 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -643,11 +643,11 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 */
 function batchdelete()
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG01, $LANG28, $_IMAGE_TYPE;
 
     $display = '';
     if (!$_CONF['lastlogin']) {
-        $retval = "<br>". $_LANG28[55];
+        $retval = '<br>'. $_LANG28[55];
         return $retval;
     }
 
@@ -694,8 +694,8 @@ function batchdelete()
     $user_templates->set_var ('lang_delete_sel', $LANG_ADMIN['delete_sel']);
     $user_templates->set_var ('lang_delconfirm', $LANG28[73]);
 
-    for ($i=0; $i<count($opt_arr);$i++) {
-        $selector = "";
+    for ($i = 0; $i < count ($opt_arr); $i++) {
+        $selector = '';
         if ($usr_type == $opt_arr[$i]['sel']) {
             $selector = ' checked="checked"';
         }
@@ -708,9 +708,9 @@ function batchdelete()
         $user_templates->parse('options_list', 'options', true);
     }
     $user_templates->parse('form', 'form');
-    $desc .= $user_templates->finish($user_templates->get_var('form'));
+    $desc = $user_templates->finish($user_templates->get_var('form'));
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => "<input type=\"checkbox\" name=\"chk_selectall\" title=\"{$LANG01[126]}\" onclick=\"caItems(this.form);\" checked=\"checked\">",
                           'field' => 'delete',
                           'sort' => false),
@@ -802,7 +802,8 @@ function batchdelete()
 * @return   string          HTML with success or error message
 *
 */
-function batchdeleteexec() {
+function batchdeleteexec()
+{
     global $_CONF, $LANG28;
 
     $msg = '';
