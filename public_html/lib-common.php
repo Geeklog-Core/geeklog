@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.590 2006/11/01 15:11:52 dhaun Exp $
+// $Id: lib-common.php,v 1.591 2006/11/01 15:43:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5530,7 +5530,10 @@ function COM_numberFormat( $number )
 */
 function COM_convertDate2Timestamp( $date, $time = '' )
 {
-    // Breakup the string using either a space, fwd slash, bkwd slash or
+    $atoks = array();
+    $btoks = array();
+
+    // Breakup the string using either a space, fwd slash, dash, bkwd slash or
     // colon as a delimiter
     $atok = strtok( $date, ' /-\\:' );
     while( $atok !== FALSE )
@@ -5538,6 +5541,15 @@ function COM_convertDate2Timestamp( $date, $time = '' )
         $atoks[] = $atok;
         $atok = strtok( ' /-\\:' );  // get the next token
     }
+
+    for( $i = 0; $i < 3; $i++ )
+    {
+        if( !isset( $atoks[$i] ) || !is_numeric( $atoks[$i] ))
+        {
+            $atoks[$i] = 0;
+        }
+    }
+
     if( $time == '' )
     {
         $timestamp = mktime( 0, 0, 0, $atoks[1], $atoks[2], $atoks[0] );
@@ -5550,6 +5562,15 @@ function COM_convertDate2Timestamp( $date, $time = '' )
             $btoks[] = $btok;
             $btok = strtok( ' /-\\:' );
         }
+
+        for( $i = 0; $i < 3; $i++ )
+        {
+            if( !isset( $btoks[$i] ) || !is_numeric( $btoks[$i] ))
+            {
+                $btoks[$i] = 0;
+            }
+        }
+
         $timestamp = mktime( $btoks[0], $btoks[1], $btoks[2],
                              $atoks[1], $atoks[2], $atoks[0] );
     }
