@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.25 2006/06/30 12:18:29 dhaun Exp $
+ * $Id: functions.inc,v 1.26 2006/11/01 20:18:07 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -64,8 +64,6 @@ function plugin_showstats_spamx($showsitestats)
                           'title'        => $LANG_SX00['stats_headline'],
         );
         $data_arr = array(
-            array('label' => $LANG_SX00['stats_mtblacklist'],
-                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'MTBlacklist'))),
             array('label' => $LANG_SX00['stats_pblacklist'],
                 'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'Personal'))),
             array('label' => $LANG_SX00['stats_ip'],
@@ -73,7 +71,9 @@ function plugin_showstats_spamx($showsitestats)
             array('label' => $LANG_SX00['stats_ipofurl'],
                 'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'IPofUrl'))),
             array('label' => $LANG_SX00['stats_header'],
-                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'HTTPHeader')))
+                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'HTTPHeader'))),
+            array('label' => $LANG_SX00['slvwhitelist'],
+                'stats' => COM_numberFormat (DB_count ($_TABLES['spamx'], 'name', 'SLVwhitelist')))
         );
         $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     }
