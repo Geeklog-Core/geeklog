@@ -1,7 +1,9 @@
 GeekLog History/Changes:
 
-Oct ??, 2006 (1.4.1b2)
+Nov ??, 2006 (1.4.1b2)
 ------------
+- Don't add empty "No Title" links in portal blocks when the feed has less than
+  the configured max. number of entries (bug #610) [Dirk]
 - Added support for COM_mail to use a parm for a CC: distribution list [Blaine]
 - Fixed bug #603, hardcoded mysql_error() [Oliver]
 - Fixed bug #604, delete trackbacks of a story when story is deleted.

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.589 2006/10/28 22:04:27 blaine Exp $
+// $Id: lib-common.php,v 1.590 2006/11/01 15:11:52 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3396,7 +3396,8 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
                                                  'bid', $bid );
 
         // format articles for display
-        for( $i = 0; $i < $maxheadlines; $i++ )
+        $readmax = min( $maxheadlines, count( $feed->articles ));
+        for( $i = 0; $i < $readmax; $i++ )
         {
             if( empty( $feed->articles[$i]['title'] ))
             {
