@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.591 2006/11/01 15:43:13 dhaun Exp $
+// $Id: lib-common.php,v 1.592 2006/11/01 16:33:10 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2877,17 +2877,20 @@ function COM_formatEmailAddress( $name, $address )
 *
 * All emails sent by Geeklog are sent through this function now.
 *
-* @param    to         string   recipients name and email address
-* @param    subject    string   subject of the email
-* @param    message    string   the text of the email
-* @param    from       string   (optional) sender of the the email
-* @param    html       bool     true if to be sent as an HTML email
-* @param    priority   int      add X-Priority header, if > 0
-* @param    cc         string   recipiencts name and email address
-* @return   boolean             true if successful,  otherwise false
+* @param    string      $to         recipients name and email address
+* @param    string      $subject    subject of the email
+* @param    string      $message    the text of the email
+* @param    string      $from       (optional) sender of the the email
+* @param    boolean     $html       (optional) true if to be sent as HTML email
+* @param    int         $priority   (optional) add X-Priority header, if > 0
+* @param    string      $cc         (optional) other recipients (name + email)
+* @return   boolean                 true if successful,  otherwise false
+*
+* @note Please note that using the $cc parameter will expose the email addresses
+*       of all recipients. Use with care.
 *
 */
-function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc='' )
+function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc = '' )
 {
     global $_CONF, $LANG_CHARSET;
 
@@ -2906,7 +2909,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     if( function_exists( 'CUSTOM_mail' ))
     {
-        return CUSTOM_mail( $to, $subject, $message, $from, $html, $priority );
+        return CUSTOM_mail( $to, $subject, $message, $from, $html, $priority, $cc );
     }
 
     include_once( 'Mail.php' );
@@ -2946,6 +2949,9 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     if( $method != 'mail' )
     {
         $headers['To'] = $to;
+    }
+    if( !empty( $cc ))
+    {
         $headers['Cc'] = $cc;
     }
     $headers['Date'] = date( 'r' ); // RFC822 formatted date
