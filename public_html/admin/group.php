@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.92 2006/10/21 20:17:05 dhaun Exp $
+// $Id: group.php,v 1.93 2006/11/01 19:38:56 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -113,7 +113,11 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $group_templates->set_var('lang_admingroup',$LANG28[49]);
     $group_templates->set_var('lang_admingrp_msg', $LANG28[50]);
-    $group_templates->set_var('show_all', COM_applyFilter($_GET['chk_showall'],true));
+    $showall = 0;
+    if (isset ($_GET['chk_showall'])) {
+        $showall =  COM_applyFilter ($_GET['chk_showall'], true);
+    }
+    $group_templates->set_var('show_all', $showall);
 
     if (!empty ($grp_id)) {
         $result = DB_query ("SELECT grp_id,grp_name,grp_descr,grp_gl_core FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
@@ -384,7 +388,7 @@ function printrights ($grp_id = '', $core = 0)
                     . '</span></td>';
         } else {
             // either this is an indirect right OR this is a core feature
-            if ((($core == 1) AND ($grpftarray[$A['ft_name']] == 'indirect' OR $grpftarray[$A['ft_name']] == 'direct')) OR ($core != 1)) {
+            if ((($core == 1) AND (isset ($grpftarray[$A['ft_name']]) AND (($grpftarray[$A['ft_name']] == 'indirect') OR ($grpftarray[$A['ft_name']] == 'direct')))) OR ($core != 1)) {
                 $ftcount++;
                 $retval .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<i title="'
                         . $A['ft_descr'] . '">' .  $A['ft_name'] . '</i>)</td>';
