@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.90 2006/10/22 00:40:04 ospiess Exp $
+// $Id: lib-admin.php,v 1.91 2006/11/01 18:57:25 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -686,13 +686,13 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
 
 function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE, $LANG04;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG04, $LANG28, $_IMAGE_TYPE;
 
     $retval = '';
 
     switch ($fieldname) {
         case 'delete':
-            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['uid']}]\" checked=\"checked\">";
+            $retval = '<input type="checkbox" name="delitem[]" checked="checked">';
             break;
         case 'edit':
             $retval = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
@@ -705,8 +705,9 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             } else {
                 $photoico = '';
             }
-            $retval = "<a href=\"{$_CONF['site_url']}/users.php?mode=profile&amp;uid="
-                      . $A['uid']."\">$fieldvalue</a>$photoico";
+            $retval = '<a href="' . $_CONF['site_url']
+                    . '/users.php?mode=profile&amp;uid=' .  $A['uid'] . '">'
+                    . $fieldvalue . '</a>' . $photoico;
             break;
         case 'lastlogin':
             if ($fieldvalue < 1) {
