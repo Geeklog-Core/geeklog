@@ -1,4 +1,5 @@
                             {top_menu}
+                            <form action="{form_url}" method="post">
                             <table class="admin-list-table">
                                 <tr style="background:#FFFFFF;">
                                  {header_row}

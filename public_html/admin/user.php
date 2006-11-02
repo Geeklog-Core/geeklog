@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.176 2006/11/01 18:58:55 dhaun Exp $
+// $Id: user.php,v 1.177 2006/11/02 03:23:29 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -691,8 +691,6 @@ function batchdelete()
     $user_templates->set_var ('usr_time', $usr_time);
     $user_templates->set_var ('lang_instruction', $LANG28[56]);
     $user_templates->set_var ('lang_updatelist', $LANG28[66]);
-    $user_templates->set_var ('lang_delete_sel', $LANG_ADMIN['delete_sel']);
-    $user_templates->set_var ('lang_delconfirm', $LANG28[73]);
 
     for ($i = 0; $i < count ($opt_arr); $i++) {
         $selector = '';
@@ -710,10 +708,7 @@ function batchdelete()
     $user_templates->parse('form', 'form');
     $desc = $user_templates->finish($user_templates->get_var('form'));
 
-    $header_arr = array(      # display 'text' and use table field 'field'
-                    array('text' => "<input type=\"checkbox\" name=\"chk_selectall\" title=\"{$LANG01[126]}\" onclick=\"caItems(this.form);\" checked=\"checked\">",
-                          'field' => 'delete',
-                          'sort' => false),
+    $header_arr = array(      # dislay 'text' and use table field 'field'
                     array('text' => $LANG28[37], 'field' => $_TABLES['users'] . '.uid', 'sort' => true),
                     array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
                     array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true)
@@ -727,7 +722,6 @@ function batchdelete()
             $list_sql = ", UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) as phantom_date";
             $filter_sql = "lastlogin = 0 AND UNIX_TIMESTAMP()- UNIX_TIMESTAMP(regdate) > " . ($usr_time * 2592000) . " AND";
             $sort = 'regdate';
-            $desc .= $LANG28[60] . $usr_time . $LANG28[61];
             break;
         case 'short':
             $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
@@ -738,7 +732,6 @@ function batchdelete()
             $filter_sql = "lastlogin > 0 AND lastlogin - UNIX_TIMESTAMP(regdate) < 86400 "
                          . "AND UNIX_TIMESTAMP() - lastlogin > " . ($usr_time * 2592000) . " AND";
             $sort = 'lastlogin';
-            $desc .= $LANG28[62] . $usr_time . $LANG28[63];
             break;
         case 'old':
             $header_arr[] = array('text' => $LANG28[41], 'field' => 'lastlogin_short', 'sort' => true);
@@ -746,7 +739,6 @@ function batchdelete()
             $list_sql = ", (UNIX_TIMESTAMP() - lastlogin) AS offline_months";
             $filter_sql = "lastlogin > 0 AND (UNIX_TIMESTAMP() - lastlogin) > " . ($usr_time * 2592000) . " AND";
             $sort = 'lastlogin';
-            $desc .= $LANG28[64] . $usr_time . $LANG28[65];
             break;
         case 'recent':
             $header_arr[] = array('text' => $LANG28[14], 'field' => 'regdate', 'sort' => true);
@@ -754,7 +746,6 @@ function batchdelete()
             $list_sql = "";
             $filter_sql = "(UNIX_TIMESTAMP() - UNIX_TIMESTAMP(regdate)) < " . ($usr_time * 2592000) . " AND";
             $sort = 'regdate';
-            $desc .= $LANG28[75] . $usr_time . $LANG28[76];
             break;
     }
 
@@ -787,14 +778,21 @@ function batchdelete()
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
          . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
 
-    $query_arr = array('table' => 'users',
-                       'sql' => $sql,
-                       'query_fields' => array('username', 'email', 'fullname'),
-                       'default_filter' => "AND $filter_sql {$_TABLES['users']}.uid > 1");
+    $query_arr = array (
+        'table' => 'users',
+        'sql' => $sql,
+        'query_fields' => array('username', 'email', 'fullname'),
+        'default_filter' => "AND $filter_sql {$_TABLES['users']}.uid > 1"
+    );
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
 
     $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+        $query_arr, $menu_arr, $defsort_arr, '', '', $listoptions);
+
+    $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"></form>" . LB;
     return $display;
+//
+
 }
 /**
 * This function deletes the users selected in the batchdeletelist function
@@ -805,7 +803,6 @@ function batchdelete()
 function batchdeleteexec()
 {
     global $_CONF, $LANG28;
-
     $msg = '';
     $user_list = array();
     if (isset($_POST['delitem'])) {
@@ -1070,21 +1067,20 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();
 } else if ($mode == 'batchdelete') {
-    if (isset ($_POST['submit']) && ($_POST['submit'] == $LANG_ADMIN['delete'])) {
-        $msg = batchdeleteexec();
-        $display .= COM_siteHeader ('menu', $LANG28[11]);
-        $timestamp = strftime( $_CONF['daytime'] );
-        $display .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
-                               COM_getBlockTemplate( '_msg_block', 'header' ))
-                . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
-                . ' alt="" style="padding-right:5px; padding-bottom:3px">'
-                . $msg . '</p>'
-                . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
-    } else {
-        $display .= COM_siteHeader ('menu', $LANG28[54]);
-
-    }
+    $display .= COM_siteHeader ('menu', $LANG28[54]);
+    $display .= batchdelete();
+    $display .= COM_siteFooter();
+} else if ($mode == 'batchdeleteexec') {
+    $msg = batchdeleteexec();
+    $display .= COM_siteHeader ('menu', $LANG28[11]);
+    $timestamp = strftime( $_CONF['daytime'] );
+    $display .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
+                           COM_getBlockTemplate( '_msg_block', 'header' ))
+            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
+            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
+            . $msg . '</p>'
+            . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     $display .= batchdelete();
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all

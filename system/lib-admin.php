@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.91 2006/11/01 18:57:25 dhaun Exp $
+// $Id: lib-admin.php,v 1.92 2006/11/02 03:23:30 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -52,7 +52,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
 *
 */
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
-                           $data_arr, $menu_arr= '', $options='')
+                           $data_arr, $menu_arr = '', $options = '')
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
@@ -213,9 +213,9 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 *
 */
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
-            $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '')
+            $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '', $options = '')
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $LANG01, $_IMAGE_TYPE, $MESSAGE;
 
     // set all variables to avoid warnings
     $retval = '';
@@ -292,7 +292,18 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
     }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $admin_templates->set_var('show_deleteimage', 'display:none;');
+    $admin_templates->set_var('lang_delconfirm', $LANG01['125']);
+
+    // Check if the delete checkbox and support for the delete all feature should be displayed
+    if (is_array($options) AND $options['chkdelete']) {
+        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
+        $admin_templates->set_var('class', "admin-list-headerfield");
+        $admin_templates->set_var('show_deleteimage', '');
+        $admin_templates->parse('header_row', 'header', true);
+        $admin_templates->clear_var('on_click');
+    } else {
+        $admin_templates->set_var('show_deleteimage','display:none;');
+    }
 
     # define icon paths. Those will be transmitted to $fieldfunction.
     $icon_arr = array(
@@ -382,6 +393,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $header_text = ''; // title as displayed to the user
     // HEADER FIELDS array(text, field, sort, class)
     // this part defines the contents & format of the header fields
+    if (is_array($options) AND $options['chkdelete']) {
+        $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
+        $admin_templates->parse('item_field', 'field', true);
+    }
     for ($i=0; $i < count( $header_arr ); $i++) { #iterate through all headers
         $header_text = $header_arr[$i]['text'];
         if ($header_arr[$i]['sort'] != false) { # is this sortable?
