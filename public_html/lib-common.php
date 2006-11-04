@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.592 2006/11/01 16:33:10 dhaun Exp $
+// $Id: lib-common.php,v 1.593 2006/11/04 14:57:20 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2835,11 +2835,6 @@ function COM_emailEscape( $string )
         {
             $string = '=?' . $charset . '?B?' . base64_encode( $string ) . '?=';
         }
-    }
-    else if( function_exists( 'imap_8bit' ))
-    {
-        // imap_8bit() handles everything for us
-        $string = imap_8bit( $string );
     }
     else if( preg_match( '/[^0-9a-z\-\.,:;\?! ]/i', $string ))
     {
