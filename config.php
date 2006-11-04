@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.236 2006/10/22 15:14:35 dhaun Exp $
+// $Id: config.php,v 1.237 2006/11/04 22:46:09 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -281,7 +281,7 @@ $_CONF_FCK['imagelibrary'] = '/images/library';
 // |                                                                           |
 // | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
-$_CONF['language']        = 'english';
+$_CONF['language']        = 'english_utf-8';
 $_CONF['locale']          = 'en_GB';
 $_CONF['date']            = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']         = '%m/%d %I:%M%p';
@@ -292,7 +292,7 @@ $_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['hour_mode']       = 12;    // 12 hour am/pm or 24 hour format
 
 // Use of 'utf-8' is recommended for multi-language sites
-$_CONF['default_charset'] = 'iso-8859-1';
+$_CONF['default_charset'] = 'utf-8';
 
 // Number formatting
 $_CONF['thousand_separator'] = ",";  // could be ' , . etc.
@@ -318,8 +318,8 @@ $_CONF['decimal_count']      = "2";  // if a number has decimals,
 // Supported languages
 // Maps a shortcut to a Geeklog language file (without the '.php' extension)
 $_CONF['language_files'] = array (
-    'en' => 'english',
-    'de' => 'german_formal'
+    'en' => 'english_utf-8',
+    'de' => 'german_formal_utf-8'
 );
 
 // Display names of supported languages
