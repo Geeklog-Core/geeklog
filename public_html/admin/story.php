@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.243 2006/11/04 19:51:24 dhaun Exp $
+// $Id: story.php,v 1.244 2006/11/04 19:59:43 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -384,6 +384,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $A = $_POST;
         $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
         $A += DB_fetchArray($res);
+        $A['tid'] = COM_applyFilter ($A['tid']);
         $res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
         $A += DB_fetchArray($res);
         if (empty ($A['ampm'])) {
