@@ -1,7 +1,11 @@
 GeekLog History/Changes:
 
-Nov ??, 2006 (1.4.1b2)
+Nov 5, 2006 (1.4.1b2)
 ------------
+
+- Fixed potential SQL injection in the story editor preview (required Story
+  Admin permissions) [Dirk]
+- Added multi-language support in static pages centerblocks and search [Dirk]
 - When cloning a static page, keep the original's "wrap in a block" setting
   [Dirk]
 - Spam-X stats: Removed MT-Blacklist entry, added SLV whitelist entry [Dirk]
