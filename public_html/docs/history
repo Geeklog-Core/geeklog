@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 Nov ??, 2006 (1.4.1b2)
 ------------
+- When cloning a static page, keep the original's "wrap in a block" setting
+  [Dirk]
 - Spam-X stats: Removed MT-Blacklist entry, added SLV whitelist entry [Dirk]
 - Don't add empty "No Title" links in portal blocks when the feed has less than
   the configured max. number of entries (bug #610) [Dirk]

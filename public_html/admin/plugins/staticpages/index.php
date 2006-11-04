@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.78 2006/08/27 16:03:48 dhaun Exp $
+// $Id: index.php,v 1.79 2006/11/04 11:57:50 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -66,6 +66,9 @@ function form ($A, $error = false)
     if (!empty($sp_id) && $mode=='edit') {
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
     } else {
+        if ($mode != 'clone') {
+            $A['sp_inblock'] = $_SP_CONF['in_block'];
+        }
         $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Static Page Admin'])) {
             $A['group_id'] = $_GROUPS['Static Page Admin'];
@@ -73,7 +76,6 @@ function form ($A, $error = false)
             $A['group_id'] = SEC_getFeatureGroup ('staticpages.edit');
         }
         SEC_setDefaultPermissions ($A, $_SP_CONF['default_permissions']);
-        $A['sp_inblock'] = $_SP_CONF['in_block'];
         $access = 3;
         if (isset ($_CONF['advanced_editor']) &&
           ($_CONF['advanced_editor'] == 1) &&
