@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.72 2006/10/31 10:58:00 dhaun Exp $
+// $Id: lib-story.php,v 1.73 2006/11/09 09:57:28 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -482,16 +482,19 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     {
         $article->set_var( 'lang_todays_featured_article', $LANG05[4] );
         $article->parse( 'story_bodyhtml', 'featuredbodytext', true );
+        PLG_templateSetVars( 'featuredstorytext', $article );
         $article->parse( 'finalstory', 'featuredarticle' );
     }
     else if(( $A['statuscode'] == STORY_ARCHIVE_ON_EXPIRE ) AND ( $archiveDateTime <= time()))
     {
         $article->parse( 'story_bodyhtml', 'archivestorybodytext', true );
+        PLG_templateSetVars( 'archivestorytext', $article );
         $article->parse( 'finalstory', 'archivearticle' );
     }
     else
     {
         $article->parse( 'story_bodyhtml', 'bodytext', true );
+        PLG_templateSetVars( 'storytext', $article );
         $article->parse( 'finalstory', 'article' );
     }
 
