@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.237 2006/11/04 22:46:09 dhaun Exp $
+// $Id: config.php,v 1.238 2006/11/10 05:42:35 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -700,7 +700,7 @@ $_CONF['allow_user_scaling']    = 1; // 1 = allow the user to choose
 
 // Story image settings
 $_CONF['max_image_width']       = 160;  // In pixels
-$_CONF['max_image_height']      = 120;  // In pixels
+$_CONF['max_image_height']      = 160;  // In pixels
 $_CONF['max_image_size']        = 1048576; // 1048576 = 1MB
 
 // Topic icon settings
