@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.593 2006/11/04 14:57:20 dhaun Exp $
+// $Id: lib-common.php,v 1.594 2006/11/11 18:21:10 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -889,7 +889,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     {
         $baseurl = SYND_getFeedUrl();
 
-        $sql = 'SELECT format, filename, title FROM '
+        $sql = 'SELECT format, filename, title, language FROM '
              . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
         if( !empty( $topic ))
         {
@@ -908,7 +908,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
                 $feed_url .= '<link rel="alternate" type="application/'
                           . $format_type . '+xml" title="' . $format_name
-                          . ' Feed: ' . $A['title'] . '" href="' . $baseurl
+                          . ' Feed: ' . $A['title'] . '" hreflang="'
+                          . $A['language'] . '" href="' . $baseurl
                           . $A['filename'] . '">' . LB;
             }
         }
