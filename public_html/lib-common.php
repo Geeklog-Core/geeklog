@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.599 2006/11/12 16:02:29 dhaun Exp $
+// $Id: lib-common.php,v 1.600 2006/11/12 18:32:49 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -387,6 +387,8 @@ DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " .
 */
 
 require_once( $_CONF['path_language'] . $_CONF['language'] . '.php' );
+
+COM_switchLocaleSettings();
 
 if( setlocale( LC_ALL, $_CONF['locale'] ) === false )
 {
@@ -5975,6 +5977,39 @@ function phpblock_switch_language()
     }
 
     return $retval;
+}
+
+/**
+* Switch locale settings
+*
+* When multi-language support is enabled, allow overwriting the default locale
+* settings with language-specific settings (date format, etc.). So in addition
+* to $_CONF['date'] you can have a $_CONF['date_en'], $_CONF['date_de'], etc.
+*
+*/
+function COM_switchLocaleSettings()
+{
+    global $_CONF;
+
+    if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+    {
+        $overridables = array
+        (
+          'locale',
+          'date', 'daytime', 'shortdate', 'dateonly', 'timeonly',
+          'week_start', 'hour_mode',
+          'thousand_separator', 'decimal_separator'
+        );
+
+        $langId = COM_getLanguageId();
+        foreach( $overridables as $option )
+        {
+            if( isset( $_CONF[$option . '_' . $langId] ))
+            {
+                $_CONF[$option] = $_CONF[$option . '_' . $langId];
+            }
+        }
+    }
 }
 
 /**
