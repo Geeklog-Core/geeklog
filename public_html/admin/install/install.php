@@ -36,7 +36,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.90 2006/09/23 19:27:29 dhaun Exp $
+// $Id: install.php,v 1.91 2006/11/12 14:53:05 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -458,6 +458,9 @@ function INST_createDatabaseStructures ($use_innodb = false)
                 }
             
                 DB_query ($sql);
+            }
+            if ($use_innodb) {
+                DB_query ("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_engine', 'InnoDB')");
             }
             break;
         case 'mssql';

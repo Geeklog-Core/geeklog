@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.25 2006/08/19 18:51:49 dhaun Exp $
+// $Id: install.php,v 1.26 2006/11/12 14:53:05 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/staticpages/config.php');
@@ -165,14 +165,25 @@ function plugin_install_now()
         require_once ($base_path . 'sql/' . $_DB_dbms . '_install.php');
     }
 
-    foreach ($_SQL as $sql) {
-        $sql = str_replace ('#group#', $admin_group_id, $sql);
-        DB_query ($sql);
-        if (DB_error ()) {
-            COM_errorLog ('Error creating table', 1);
-            $uninstall_plugin ();
+    if (count ($_SQL) > 0) {
+        $use_innodb = false;
+        if (($_DB_dbms == 'mysql') &&
+            (DB_getItem ($_TABLES['vars'], 'value', "name = 'database_engine'")
+                == 'InnoDB')) {
+            $use_innodb = true;
+        }
+        foreach ($_SQL as $sql) {
+            $sql = str_replace ('#group#', $admin_group_id, $sql);
+            if ($use_innodb) {
+                $sql = str_replace ('MyISAM', 'InnoDB', $sql);
+            }
+            DB_query ($sql);
+            if (DB_error ()) {
+                COM_errorLog ('Error creating table', 1);
+                $uninstall_plugin ();
 
-            return false;
+                return false;
+            }
         }
     }
 
