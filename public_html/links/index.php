@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  * 
  */
-// $Id: index.php,v 1.9 2006/03/12 19:55:35 dhaun Exp $
+// $Id: index.php,v 1.10 2006/11/12 22:45:38 blaine Exp $
 
 require_once ('../lib-common.php');
 
@@ -141,8 +141,6 @@ if (empty ($_USER['username']) &&
     }
     $display .= COM_siteHeader ('menu', $page_title);
 
-    $display .= COM_startBlock ($LANG_LINKS[114]);
-
     $linklist = new Template ($_CONF['path'] . 'plugins/links/templates/');
     $linklist->set_file (array ('linklist' => 'links.thtml',
                                 'catlinks' => 'categorylinks.thtml',
@@ -152,6 +150,8 @@ if (empty ($_USER['username']) &&
                                 'catcol'   => 'categorycol.thtml',
                                 'actcol'   => 'categoryactivecol.thtml',
                                 'pagenav'  => 'pagenavigation.thtml'));
+    $linklist->set_var ('blockheader',COM_startBlock($LANG_LINKS[114]));
+    $linklist->set_var ('layout_url',$_CONF['layout_url']);
 
     if ($_LI_CONF['linkcols'] > 0) {
         $result = DB_query ("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category");
@@ -279,9 +279,10 @@ if (empty ($_USER['username']) &&
             $linklist->set_var ('page_navigation', '');
         }
     }
+    $linklist->set_var ('blockfooter',COM_endBlock());
     $linklist->parse ('output', 'linklist');
     $display .= $linklist->finish ($linklist->get_var ('output'));
-    $display .= COM_endBlock ();
+
 }
 
 $display .= COM_siteFooter ();

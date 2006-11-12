@@ -1,4 +1,8 @@
+{blockheader}
+
 {category_navigation}
-<p>[ <a href="{site_url}/submit.php?type=links">{lang_addalink}</a> ]</p>
+<div class="aligncenter" style="padding-bottom:10px;">[ <a href="{site_url}/submit.php?type=links">{lang_addalink}</a> ]</div>
 {category_links}
 {page_navigation}
+
+{blockfooter}
