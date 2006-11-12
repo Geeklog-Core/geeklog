@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.595 2006/11/12 08:40:26 dhaun Exp $
+// $Id: lib-common.php,v 1.596 2006/11/12 08:42:06 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1893,7 +1893,15 @@ function COM_showTopics( $topic='' )
         // Give a link to the homepage here since a lot of people use this for
         // navigating the site
 
-        if( COM_isFrontpage() )
+        if( COM_onFrontpage() )
+        {
+            $sections->set_var( 'option_url', '' );
+            $sections->set_var( 'option_label', $LANG01[90] );
+            $sections->set_var( 'option_count', '' );
+            $sections->set_var( 'topic_image', '' );
+            $retval .= $sections->parse( 'item', 'inactive' );
+        }
+        else
         {
             $sections->set_var( 'option_url',
                                 $_CONF['site_url'] . '/index.php' );
@@ -1901,14 +1909,6 @@ function COM_showTopics( $topic='' )
             $sections->set_var( 'option_count', '' );
             $sections->set_var( 'topic_image', '' );
             $retval .= $sections->parse( 'item', 'option' );
-        }
-        else
-        {
-            $sections->set_var( 'option_url', '' );
-            $sections->set_var( 'option_label', $LANG01[90] );
-            $sections->set_var( 'option_count', '' );
-            $sections->set_var( 'topic_image', '' );
-            $retval .= $sections->parse( 'item', 'inactive' );
         }
     }
 
@@ -3166,13 +3166,13 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     }
     else
     {
-        if( COM_isFrontpage() )
+        if( COM_onFrontpage() )
         {
-            $sql .= " AND (tid = 'all')";
+            $sql .= " AND (tid = 'homeonly' OR tid = 'all')";
         }
         else
         {
-            $sql .= " AND (tid = 'homeonly' OR tid = 'all')";
+            $sql .= " AND (tid = 'all')";
         }
     }
 
@@ -5451,13 +5451,13 @@ function COM_getCurrentURL()
 * @return   bool    true = we're on the frontpage, false = we're not
 *
 */
-function COM_isFrontpage()
+function COM_onFrontpage()
 {
     global $_CONF, $topic, $page, $newstories;
 
     // Note: We can't use $PHP_SELF here since the site may not be in the
     // DocumentRoot
-    $isFrontpage = false;
+    $onFrontpage = false;
 
     // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
     if( empty( $_SERVER['PATH_INFO'] ))
@@ -5470,13 +5470,28 @@ function COM_isFrontpage()
     }
 
     preg_match( '/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly );
-    if(( $scriptName <> $pathonly[1] . '/index.php' ) OR
-            !empty( $topic ) OR ( $page > 1 ) OR $newstories )
+    if(( $scriptName == $pathonly[1] . '/index.php' ) &&
+            empty( $topic ) && ( $page == 1 ) && !$newstories )
     {
-        $isFrontpage = true;
+        $onFrontpage = true;
     }
 
-    return $isFrontpage;
+    return $onFrontpage;
+}
+
+/**
+* Check if we're on Geeklog's index page [deprecated]
+*
+* Note that this function returns FALSE when we're on the index page. Due to
+* the inverted return values, it has been deprecated and is only provided for
+* backward compatibility - use COM_onFrontpage() instead.
+*
+* @see COM_onFrontpage
+*
+*/
+function COM_isFrontpage()
+{
+    return !COM_onFrontpage();
 }
 
 /**
