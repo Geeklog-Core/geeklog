@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.42 2006/10/03 08:06:37 dhaun Exp $
+// $Id: lib-database.php,v 1.43 2006/11/12 11:58:00 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -165,16 +165,29 @@ function DB_displayError($flag)
 *
 * This executes the passed SQL and returns the recordset or errors out
 *
-* @param        string  $sql                SQL to be executed
-* @param        int     $ignore_errors      If 1 this function supresses any error messages
-* @return       object  Returns results from query
+* @param    mixed   $sql            String or array of strings of SQL to be executed
+* @param    int     $ignore_errors  If 1 this function supresses any error messages
+* @return   object  Returns results from query
 *
 */
-function DB_query($sql, $ignore_errors=0)
+function DB_query ($sql, $ignore_errors = 0)
 {
-    global $_DB;
-    
-    return $_DB->dbQuery($sql,$ignore_errors);
+    global $_DB, $_DB_dbms;
+
+    if (is_array ($sql)) {
+        if (isset ($sql[$_DB_dbms])) {
+            $sql = $sql[$_DB_dbms];
+        } else {
+            $errmsg = "No SQL request given for DB '$_DB_dbms', only got these:";
+            foreach ($sql as $db => $request) {
+                $errmsg .= LB . $db . ': ' . $request;
+            }
+            COM_errorLog ($errmsg);
+            die ('An SQL error has occurred. Please see error.log for details.');
+        }
+    }
+
+    return $_DB->dbQuery ($sql, $ignore_errors);
 }
 
 /**
