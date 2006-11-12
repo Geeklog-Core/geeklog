@@ -2,10 +2,22 @@ GeekLog History/Changes:
 
 Nov ??, 2006 (1.4.1b3)
 ------------
+- The spam check for comment posts did not include the comment title (reported
+  by Laugh) [Dirk]
+- When multi-language support is enabled, allow language-specific overrides
+  of the locale settings, e.g. $_CONF['date_en'] and $_CONF['date_de'] to
+  overwrite $_CONF['date'] depending on the current language [Dirk]
+- When installing the Geeklog database using InnoDB tables, create a
+  'database_engine' entry in gl_vars, so that plugins know to use InnoDB for
+  their tables. Updated the bundled plugins to act accordingly [Dirk]
+- DB_query will now (optionally) accept an array of SQL request strings from
+  which it will pick the one applicable for the currently used database type
+  [Vinny, Dirk]
 - Provide some more meta information in header.thtml [Dirk]
   + added optional {lang_id} variable and lang attribute
   + added a hreflang attribute to the feed links
-  + added <link rel="home"> and <link rel="search"> links (via {rel_links})
+  + added <link rel="home">, <link rel="search">, <link rel="contents"> links
+    (via the {rel_links} variable)
 - COM_isFrontpage has been deprecated, as it had its return values inverted
   (returns false when on the site's index page). Use COM_onFrontpage instead
   from now on [Dirk]
