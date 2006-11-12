@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.597 2006/11/12 09:37:52 dhaun Exp $
+// $Id: lib-common.php,v 1.598 2006/11/12 10:20:47 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -884,7 +884,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         $topic = COM_applyFilter( $_GET['topic'] );
     }
 
-    $feed_url = '';
+    $feed_url = array();
     if( $_CONF['backend'] == 1 ) // add feed-link to header if applicable
     {
         $baseurl = SYND_getFeedUrl();
@@ -906,15 +906,34 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
                 $format_type = strtolower( $format[0] );
                 $format_name = ucwords( $format[0] );
 
-                $feed_url .= '<link rel="alternate" type="application/'
-                          . $format_type . '+xml" title="' . $format_name
-                          . ' Feed: ' . $A['title'] . '" hreflang="'
-                          . $A['language'] . '" href="' . $baseurl
-                          . $A['filename'] . '">' . LB;
+                $feed_url[] = '<link rel="alternate" type="application/'
+                          . $format_type . '+xml" hreflang="' . $A['language']
+                          . '" href="' . $baseurl . $A['filename'] . '" title="'
+                          . $format_name . ' Feed: ' . $A['title'] . '">';
             }
         }
     }
-    $header->set_var( 'feed_url', $feed_url );
+    $header->set_var( 'feed_url', implode( LB, $feed_url ));
+
+    $relLinks = array();
+    if( !COM_onFrontpage() )
+    {
+        $relLinks[] = '<link rel="home" href="' . $_CONF['site_url']
+                    . '/" title="' . $LANG01[90] . '">';
+    }
+    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
+            || (( $_CONF['loginrequired'] == 0 ) &&
+                ( $_CONF['searchloginrequired'] == 0 )))
+    {
+        if(( substr( $_SERVER['PHP_SELF'], -strlen( '/search.php' ))
+                != '/search.php' ) || isset( $_GET['mode'] ))
+        {
+            $relLinks[] = '<link rel="search" href="' . $_CONF['site_url']
+                        . '/search.php" title="' . $LANG01[75] . '">';
+        }
+    }
+    // TBD: add a plugin API and a lib-custom.php function
+    $header->set_var( 'rel_links', implode( LB, $relLinks ));
 
     if( empty( $pagetitle ) && isset( $_CONF['pagetitle'] ))
     {

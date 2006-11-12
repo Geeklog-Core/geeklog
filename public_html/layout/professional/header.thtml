@@ -8,6 +8,7 @@
 -->
 <link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}">
 {feed_url}
+{rel_links}
 {plg_headercode}
 {advanced_editor}
 <!-- Load Common Javascript Libraries -->
