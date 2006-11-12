@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.598 2006/11/12 10:20:47 dhaun Exp $
+// $Id: lib-common.php,v 1.599 2006/11/12 16:02:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -918,18 +918,28 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $relLinks = array();
     if( !COM_onFrontpage() )
     {
-        $relLinks[] = '<link rel="home" href="' . $_CONF['site_url']
-                    . '/" title="' . $LANG01[90] . '">';
+        $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url']
+                          . '/" title="' . $LANG01[90] . '">';
     }
-    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
-            || (( $_CONF['loginrequired'] == 0 ) &&
+    $loggedInUser = ( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 ));
+    if( $loggedInUser || (( $_CONF['loginrequired'] == 0 ) &&
                 ( $_CONF['searchloginrequired'] == 0 )))
     {
         if(( substr( $_SERVER['PHP_SELF'], -strlen( '/search.php' ))
                 != '/search.php' ) || isset( $_GET['mode'] ))
         {
-            $relLinks[] = '<link rel="search" href="' . $_CONF['site_url']
-                        . '/search.php" title="' . $LANG01[75] . '">';
+            $relLinks['search'] = '<link rel="search" href="'
+                                . $_CONF['site_url'] . '/search.php" title="'
+                                . $LANG01[75] . '">';
+        }
+    }
+    if( $loggedInUser || (( $_CONF['loginrequired'] == 0 ) &&
+                ( $_CONF['directoryloginrequired'] == 0 )))
+    {
+        if( strpos( $_SERVER['PHP_SELF'], '/article.php' ) !== false ) {
+            $relLinks['contents'] = '<link rel="contents" href="'
+                        . $_CONF['site_url'] . '/directory.php" title="'
+                        . $LANG01[117] . '">';
         }
     }
     // TBD: add a plugin API and a lib-custom.php function
