@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.10 2006/10/03 08:49:39 dhaun Exp $
+// $Id: directory.php,v 1.11 2006/11/12 12:09:58 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -330,9 +330,11 @@ function DIR_displayYear ($topic, $year, $main = false)
         $monthsql .= " AND (tid = '$topic')";
     }
     $monthsql .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
-              . COM_getLangSQL ('sid', 'AND') . " GROUP BY MONTH(date) ORDER BY date ASC";
+              . COM_getLangSQL ('sid', 'AND');
 
-    $mresult = DB_query ($monthsql);
+    $msql['mysql'] = $monthsql . " GROUP BY MONTH(date) ORDER BY date ASC";
+    $msql['mssql'] = $monthsql . " GROUP BY MONTH(date), date ORDER BY date ASC";
+    $mresult = DB_query ($msql);
     $nummonths = DB_numRows ($mresult);
 
     if ($nummonths > 0) {
@@ -404,9 +406,11 @@ function DIR_displayAll ($topic, $list_current_month = false)
     $retval .= '<div><h1 style="display:inline">' . $LANG_DIR['title']
             . '</h1> ' . DIR_topicList ($topic) . '</div>' . LB;
 
-    $yearsql = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND') . " GROUP BY YEAR(date) ORDER BY date DESC";
+    $yearsql = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    $ysql['mysql'] = $yearsql . " GROUP BY YEAR(date) ORDER BY date DESC";
+    $ysql['mssql'] = $yearsql . " GROUP BY YEAR(date), date ORDER BY date DESC";
 
-    $yresult = DB_query ($yearsql);
+    $yresult = DB_query ($ysql);
     $numyears = DB_numRows ($yresult);
 
     for ($i = 0; $i < $numyears; $i++) {
