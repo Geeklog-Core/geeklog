@@ -2,6 +2,14 @@ GeekLog History/Changes:
 
 Nov ??, 2006 (1.4.1b3)
 ------------
+- Provide some more meta information in header.thtml [Dirk]
+  + added optional {lang_id} variable and lang attribute
+  + added a hreflang attribute to the feed links
+  + added <link rel="home"> and <link rel="search"> links (via {rel_links})
+- COM_isFrontpage has been deprecated, as it had its return values inverted
+  (returns false when on the site's index page). Use COM_onFrontpage instead
+  from now on [Dirk]
+- Fixed check for new stories from archive topic [Dirk]
 - Call PLG_templateSetVars() from STORY_renderArticle() so we can have custom
   variables in the story templates [Dirk]
 

@@ -106,16 +106,42 @@ created when you use an undefined variable.</p>
 <tr><td><code>charset</code></td>
     <td>iso-8859-1</td>
     <td>The character set for the current language file.</td></tr>
+<tr><td><code>lang_id</code></td>
+    <td><tt>en-GB</tt>
+    <td>An ID representing the language used on your site. Ideally, this should
+        be an ISO language/country code, e.g. 'en-GB' for British English. The
+        value for this variable is the language shortcut used in the
+        <code>$_CONF['languages']</code> array when multi-language support is
+        enabled. Otherwise, it's derived from <code>$_CONF['locale']</code>,
+        which involves some guesswork. In the latter case, this may also end
+        up with a value like 'German' if your site is running on a non-Unix
+        system (and which is not a valid ISO code).</td></tr>
+<tr><td><code>lang_attribute</code></td>
+    <td><tt>lang="en-GB"</tt>
+    <td>An <a href="http://www.w3.org/TR/html4/struct/dirlang.html#adef-lang">HTML lang attribute</a> (including the value) to be used in your site
+        header's HTML to indicate the language of your site or of the current
+        page, e.g. like so: <pre>&lt;html {lang_attribute}&gt;</pre>
+        Please note that this variable is <em>empty</em>, i.e. not set, when
+        the site's language ID does not appear to be a <a href="http://www.w3.org/TR/html4/struct/dirlang.html#langcodes">valid language code</a> (see
+        description of the <code>lang_id</code> variable above).</td></tr>
+<tr><td><code>feed_url</code></td>
+    <td><tt>&lt;link rel="alternate" type="application/rss+xml" hreflang="en-gb" href="http://www.example.com/backend/geeklog.rss" title="RSS Feed: Geeklog"&gt;</tt></td>
+    <td>Provides links to all the relevant feeds for the current page
+        (depending on the "header link in topic" setting in the Feed Editor).</td></tr>
 <tr><td><code>rss_url</code></td>
     <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
     <td>The URL of your site's RSS feed (identical to <code>{rdf_file}</code>.
-        This variable is also available in the site's
-        <tt>footer.thtml</tt>.</td></tr>
+        This variable is also available in the site's <tt>footer.thtml</tt>.
+        <strong>Deprecated:</strong> Use <code>{feed_url}</code> instead.</td></tr>
 <tr><td><code>rdf_file</code></td>
     <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
     <td>The URL of your site's RSS feed (identical to <code>{rss_url}</code>.
-        This variable is also available in the site's
-        <tt>footer.thtml</tt>.</td></tr>
+        This variable is also available in the site's <tt>footer.thtml</tt>.
+        <strong>Deprecated:</strong> Use <code>{feed_url}</code> instead.</td></tr>
+<tr><td><code>rel_links</code></td>
+    <td><tt>&lt;link rel="home" href="http://www.example.com/" title="Home"&gt;</tt></td>
+    <td>Provides a set of predefined <a href="http://www.w3.org/TR/html4/struct/links.html#edef-LINK">link tags</a>, offering additional navigation links and
+        relationship information.</td></tr>
 </table>
 
 
