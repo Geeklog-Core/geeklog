@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.594 2006/11/11 18:21:10 dhaun Exp $
+// $Id: lib-common.php,v 1.595 2006/11/12 08:40:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3780,7 +3780,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         $archivetid = DB_getItem( $_TABLES['topics'], 'tid', "archive_flag=1" );
         if( !empty( $archivetid ))
         {
-            $archsql = " AND (tid ='" . addslashes( $archivetid ) . "')";
+            $archsql = " AND (tid <> '" . addslashes( $archivetid ) . "')";
         }
 
         // Find the newest stories
