@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.596 2006/11/12 08:42:06 dhaun Exp $
+// $Id: lib-common.php,v 1.597 2006/11/12 09:37:52 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -950,6 +950,45 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     {
          $header->set_var( 'advanced_editor', '' );
     }
+
+    $langAttr = '';
+    if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+    {
+        $langId = COM_getLanguageId();
+    }
+    else
+    {
+        // try to derive the language id from the locale
+        $l = explode( '.', $_CONF['locale'] );
+        $langId = $l[0];
+    }
+    if( !empty( $langId ))
+    {
+        $l = explode( '-', str_replace( '_', '-', $langId ));
+        if(( count( $l ) == 1 ) && ( strlen( $langId ) == 2 ))
+        {
+            $langAttr = 'lang="' . $langId . '"';
+        }
+        else if( count( $l ) == 2 )
+        {
+            if(( $l[0] == 'i' ) || ( $l[0] == 'x' ))
+            {
+                $langId = implode( '-', $l );
+                $langAttr = 'lang="' . $langId . '"';
+            }
+            else if( strlen( $l[0] ) == 2 )
+            {
+                $langId = implode( '-', $l );
+                $langAttr = 'lang="' . $langId . '"';
+            }
+            else
+            {
+                $langId = $l[0];
+            }
+        }
+    }
+    $header->set_var( 'lang_id', $langId );
+    $header->set_var( 'lang_attribute', $langAttr );
 
     $header->set_var( 'background_image', $_CONF['layout_url']
                                           . '/images/bg.' . $_IMAGE_TYPE );
