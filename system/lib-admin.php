@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.92 2006/11/02 03:23:30 ospiess Exp $
+// $Id: lib-admin.php,v 1.93 2006/11/13 08:30:31 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -393,10 +393,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $header_text = ''; // title as displayed to the user
     // HEADER FIELDS array(text, field, sort, class)
     // this part defines the contents & format of the header fields
-    if (is_array($options) AND $options['chkdelete']) {
-        $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
-        $admin_templates->parse('item_field', 'field', true);
-    }
+
     for ($i=0; $i < count( $header_arr ); $i++) { #iterate through all headers
         $header_text = $header_arr[$i]['text'];
         if ($header_arr[$i]['sort'] != false) { # is this sortable?
@@ -496,6 +493,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     for ($i = 0; $i < $nrows; $i++) { # now go through actual data
         $A = DB_fetchArray($result);
         $this_row = false; # as long as no fields are returned, dont print row
+        if (is_array($options) AND $options['chkdelete']) {
+            $admin_templates->set_var('class', "admin-list-field");
+            $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
+            $admin_templates->parse('item_field', 'field', true);
+        }
         for ($j = 0; $j < count($header_arr); $j++) {
             $fieldname = $header_arr[$j]['field']; # get field name from headers
             $fieldvalue = '';
