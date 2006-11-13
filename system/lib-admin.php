@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.93 2006/11/13 08:30:31 ospiess Exp $
+// $Id: lib-admin.php,v 1.94 2006/11/13 09:52:02 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -495,7 +495,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $this_row = false; # as long as no fields are returned, dont print row
         if (is_array($options) AND $options['chkdelete']) {
             $admin_templates->set_var('class', "admin-list-field");
-            $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
+            $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $A[$options['chkfield']].'">');
             $admin_templates->parse('item_field', 'field', true);
         }
         for ($j = 0; $j < count($header_arr); $j++) {
