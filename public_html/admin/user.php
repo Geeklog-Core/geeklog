@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.177 2006/11/02 03:23:29 ospiess Exp $
+// $Id: user.php,v 1.178 2006/11/13 09:50:44 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -784,7 +784,7 @@ function batchdelete()
         'query_fields' => array('username', 'email', 'fullname'),
         'default_filter' => "AND $filter_sql {$_TABLES['users']}.uid > 1"
     );
-    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'uid');
 
     $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
         $query_arr, $menu_arr, $defsort_arr, '', '', $listoptions);
@@ -813,16 +813,14 @@ function batchdeleteexec()
         $msg = $LANG28[72] . "<br>";
     }
     $c = 0;
-    for ($i<0; $i<count($user_list); $i++) {
-        if (current($user_list) =='on') {
-            $uid = key($user_list);
-            if (!USER_deleteAccount (key($user_list))) {
-                $msg .= "<strong>{$LANG28[2]} $uid {$LANG28[70]}</strong><br>\n";
-            } else {
-                $c++; // count the deleted users
-            }
+
+    foreach($_POST['delitem'] as $delitem) {
+        $delitem = COM_applyFilter($delitem);
+        if (!USER_deleteAccount ($delitem)) {
+            $msg .= "<strong>{$LANG28[2]} $delitem {$LANG28[70]}</strong><br>\n";
+        } else {
+            $c++; // count the deleted users
         }
-        next($user_list);
     }
 
     // Since this function is used for deletion only, its necessary to say that
