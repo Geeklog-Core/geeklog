@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.178 2006/11/13 09:50:44 ospiess Exp $
+// $Id: user.php,v 1.179 2006/11/17 04:30:08 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -814,12 +814,14 @@ function batchdeleteexec()
     }
     $c = 0;
 
-    foreach($_POST['delitem'] as $delitem) {
-        $delitem = COM_applyFilter($delitem);
-        if (!USER_deleteAccount ($delitem)) {
-            $msg .= "<strong>{$LANG28[2]} $delitem {$LANG28[70]}</strong><br>\n";
-        } else {
-            $c++; // count the deleted users
+    if (isset($_POST['delitem']) AND is_array($_POST['delitem'])) {
+        foreach($_POST['delitem'] as $delitem) {
+            $delitem = COM_applyFilter($delitem);
+            if (!USER_deleteAccount ($delitem)) {
+                $msg .= "<strong>{$LANG28[2]} $delitem {$LANG28[70]}</strong><br>\n";
+            } else {
+                $c++; // count the deleted users
+            }
         }
     }
 
