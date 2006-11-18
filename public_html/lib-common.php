@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.600 2006/11/12 18:32:49 dhaun Exp $
+// $Id: lib-common.php,v 1.601 2006/11/18 21:16:49 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1139,6 +1139,10 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
             if( function_exists( $function ))
             {
                 $lblocks = $function( $what[1], 'left' );
+            }
+            else
+            {
+                $lblocks = COM_showBlocks( 'left', $topic );
             }
         }
         else if( $what <> 'none' )
