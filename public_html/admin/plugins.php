@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.66 2006/08/19 13:59:28 dhaun Exp $
+// $Id: plugins.php,v 1.67 2006/11/18 13:21:11 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -162,7 +162,7 @@ function plugineditor ($pi_name, $confirmed = 0)
 */
 function changePluginStatus ($pi_name)
 {
-    global $_TABLES;
+    global $_TABLES, $_DB_table_prefix;
 
     $pi_name = addslashes (COM_applyFilter ($pi_name));
     if (!empty ($pi_name)) {

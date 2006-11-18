@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.111 2006/11/16 04:36:06 blaine Exp $
+// $Id: lib-plugins.php,v 1.112 2006/11/18 13:21:11 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -286,7 +286,7 @@ function PLG_uninstall ($type)
 */
 function PLG_enableStateChange ($type, $enable)
 {
-   global $_CONF,$_TABLES;
+   global $_CONF, $_TABLES, $_DB_table_prefix;
 
     $args[1] = $enable;
 
