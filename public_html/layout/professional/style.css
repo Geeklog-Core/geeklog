@@ -194,6 +194,9 @@ select {
 .aligncenter {
   text-align:center;
 }
+.aligntop {
+  vertical-align:top;
+}
 /* Blocks *********************************************************************/
 .block-box-left {
   margin:10px;
@@ -634,36 +637,38 @@ select {
   padding:2px 5px 2px 5px;
 }
 .pluginBG {
-  background-color:#EFEFEF;
+  color:#FEFEFE;
+  background-color:#7398BA;
 }
 .pluginAltBG {
-  background-color:#1C1E2D;
+  background-color:#7398BA;
 }
 .pluginAltBG td {
   color:#FFFFFF
 }
 .pluginCellTitle {
-  color:#1C1E2D;
+  color:#FFFFFF;
   font-weight:bold;
-  background-color:#E5E5EA;
-}
-.pluginCellFill {
-  background-color:#E5E5EA;
-}
-.pluginCellText {
-  color:#000000;
-  font-weight:normal;
-  background-color:#F7F7F7;
-}
-.pluginHeader {
-  color:#1A3955;
-  font-weight:bolder;
-  background-color:#CCC;
+  background-color:#7398BA;
   padding:5px;
 }
-.pluginFooter {
-  background-color:#EFEFEF;
+.pluginCellFill {
+  background-color:#F8FAFD;
 }
+.pluginCellText {
+  color:#636363;
+  font-weight:normal;
+}
+.pluginHeader {
+  color:#204275; 
+  font-weight:bolder; 
+  padding-top:3px; 
+  padding-bottom:3px;
+}
+.pluginFooter, .pluginFooter td {
+  background-color:#507AA1;
+  color:#FFFFFF;
+  }
 .pluginAlert {
   padding:5px 15px 5px 15px;
   color:#D8010E;
@@ -692,15 +697,24 @@ select {
   vertical-align:top;
 }
 .pluginSolidOutline {
-  background-color:#396998;
+  background-color:#CCCCCC;
 }
 .pluginSolidFill {
   background-color:#1A3955;
 }
 .pluginTitle {
-  color:#1C1E2D;
-  background-color:#EFEFEF;
-  font-weight:bold;
+  background-color:#507AA1;
+  color:#F5F9FF;
+  padding:4px;
+  padding-left:6px;
+  padding-right:6px; 
+}
+.pluginCellSubTitle { 
+  background-color:#F7F7F7;
+  color:#000000;
+  padding:4px;
+  padding-left:6px;
+  padding-right:6px; 
 }
 .pluginTinyText {
   font-size:0.70em;
@@ -717,57 +731,63 @@ select {
 .pluginAltText {
   color:#FFFFFF;
 }
-.pluginRow1 td {
-  background-color:#EFEFEF;
-  line-height:150%;
+.pluginRow1, .pluginRow1 td {
+  color:#000000;
+  background-color:#F7F7F7; 
+  line-height:120%;
 }
-.pluginRow2 td {
-  background-color:#D9D9D9;
-  line-height:150%;
+.pluginRow2, .pluginRow2 td { 
+  color:#000000;
+  background-color:#E7E7E7; 
+  line-height: 120%;
 }
-.pluginRollOver {
-  color:#1C1E2D;
-  background-color:#FFFF8F;
-  line-height:150%;
+.pluginRow1 .pluginRollOver,
+.pluginRow2 .pluginRollOver,
+.pluginRollOver { 
+  color:#000000;
+  background-color:#FFFFFF;
+  line-height:120%;
 }
-.pluginRollOut {
-  color:#1C1E2D;
+.pluginRow1 .pluginRollOut,
+.pluginRow2 .pluginRollOut,
+.pluginRollOut { 
+  color:#000000;
   background-color:#F7F7F7;
-  line-height:150%;
+  line-height:120%;
 }
 .pluginLinks A:link {
-  color:#0000FF;
+  color:#000000;
   font-style:normal;
   font-weight:normal;
   text-decoration:none;
 }
 .pluginLinks A:visited {
-  color:#1E1E8E;
+  color:#000000;
   font-style:normal;
   font-weight:normal;
   text-decoration:none;
 }
 .pluginLinks A:hover {
-  color:#0000FF;
+  color:#000000;
   font-style:normal;
   font-weight:normal;
   text-decoration:underline;
 }
 .pluginBreadCrumbs,
 .pluginBreadCrumbs A:link {
-  color:#EFEFEF;
+  color:#FFFFFF;
   font-style:normal;
   font-weight:normal;
   text-decoration:none;
 }
 .pluginBreadCrumbs A:visited {
-  color:#EFEFEF;
+  color:#FFFFFF;
   font-style:normal;
   font-weight:normal;
   text-decoration:none;
 }
 .pluginBreadCrumbs A:hover {
-  color:#FFD700;
+  color:#FFFFFF;
   font-style:normal;
   font-weight:normal;
   text-decoration:none;
@@ -792,13 +812,7 @@ a.pluginButton:hover {
   text-decoration:none;
   background-color:transparent;
 }
-/* Poll Plugin ****************************************************************/
-.poll-vote,
-.poll-vote-results {
-  background:transparent;
-  color:#000000;
-  font-size:smaller;
-}
+
 /* Navbar Class CSS ***********************************************************/
 #navcontainer {
   float:left;
@@ -856,4 +870,48 @@ a.pluginButton:hover {
 #navcontainer a:hover#current {
   background:url("navbar/images/tableftI.gif") no-repeat left top;
   background-position:0% -42px;
+}
+
+/* Common CSS for on-hover tooltip feature */
+a.tooltip {
+  position: relative; /*this is the key*/
+  z-index:10;
+  color:#000;
+  text-decoration:none;   
+}
+a.tooltip:hover  {
+  z-index:100;
+  text-decoration:none
+}
+a.tooltip span { 
+  display: none
+}
+a.tooltip:hover span { 
+  /*the span will display just on :hover state*/
+  z-index:100;    
+  color:#033666;
+  font-style:normal;
+  font-size:.8em;
+  line-height: 125%;
+  display:block;
+  position:absolute;
+  border:1px solid #C8DAF7;
+  background-color:#E5EFFF;
+  padding:4px;
+  text-align: left;
+  text-decoration:none;
+  left:-20px;
+  top:10px;
+  min-width:150px;
+}
+/* End of common CSS for on-hover info feature */
+
+/* End of Common Plugin CSS */
+
+/* Poll Plugin ****************************************************************/
+.poll-vote,
+.poll-vote-results {
+  background:transparent;
+  color:#000000;
+  font-size:smaller;
 }
