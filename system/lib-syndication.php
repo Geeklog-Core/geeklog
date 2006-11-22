@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.37 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-syndication.php,v 1.38 2006/11/22 04:44:57 blaine Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -466,8 +466,8 @@ function SYND_updateFeed( $fid )
                     $count = count( $content );
                     for( $i = 0; $i < $count; $i++ )
                     {
-                        $content[i]['summary'] = SYND_truncateSummary(
-                                    $content[i]['text'], $A['content_length'] );
+                        $content[$i]['summary'] = SYND_truncateSummary(
+                                    $content[$i]['text'], $A['content_length'] );
                     }
                 }
             }
