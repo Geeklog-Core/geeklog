@@ -405,8 +405,22 @@ select {
   margin-left:105px;
 }
 /* Header *********************************************************************/
-.header-logobg {
+.header-logobg-left {
   padding-top:4px;
+  text-align:left;
+  vertical-align:middle;
+  margin-top:11px;
+  padding-left:15px;
+  width:50%;
+  height:78px;
+}
+.header-logobg-right {
+  padding-top:4px;
+  text-align:right;
+  padding-right:15px;
+  vertical-align:middle;
+  width:50%;
+  height:78px;
 }
 .header-logobg-container-inner {
   background:url(images/header-bg.png) #1A3955;
