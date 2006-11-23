@@ -16,39 +16,32 @@
 
 </head>
 
-<body class="sitebody" dir="{direction}">
-<table width="99%" border="0" cellspacing="0" cellpadding="0" class="header-envelope">
-    <tr>
-        <td>
-            <div class="header-navigation-container">
-                <div class="header-navigation-line">
-                    {menu_elements}
+<body dir="{direction}">
+    <div class="header-navigation-container">
+        <div class="header-navigation-line">
+            {menu_elements}
+        </div>
+    </div>
+    <div class="header-logobg-container-outer">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="header-logobg-container-inner">
+            <tr>
+                <td class="header-logobg" width="50%" height="78" style="text-align:left;vertical-align:middle;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<a href="{site_url}/"><img src="{site_logo}" width="151" height="56" alt="{site_name}" border="0"></a>
+                </td>
+                <td class="header-logobg" width="50%" height="78" style="text-align:right;vertical-align:middle;">
+                    <span class="site-slogan">{site_slogan}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tr>
+            {left_blocks}
+            <td class="story-container" width="100%" style="vertical-align:top;">
+                <div class="header-welcomeanddate-box">
+                    <div class="header-welcomeanddate-text">
+                        <a href="{site_url}">{welcome_msg}</a><br>{datetime}
+                    </div>
                 </div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td width="100%">
-            <div class="header-logobg-container-outer">
-                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="header-logobg-container-inner">
-                    <tr>
-                        <td class="header-logobg" width="50%" height="78" style="text-align:left;vertical-align:middle;">
-                            &nbsp;&nbsp;&nbsp;&nbsp;<a href="{site_url}/"><img src="{site_logo}" width="151" height="56" alt="{site_name}" border="0"></a>
-                        </td>
-                        <td class="header-logobg" width="50%" height="78" style="text-align:right;vertical-align:middle;">
-                            <span class="site-slogan">{site_slogan}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <table border="0" cellspacing="0" cellpadding="0" width="100%">
-                <tr>
-                    {left_blocks}
-                    <td class="story-container" width="100%" style="vertical-align:top;">
-                        <div class="header-welcomeanddate-box">
-                            <div class="header-welcomeanddate-text">
-                                <a href="{site_url}">{welcome_msg}</a><br>{datetime}
-                            </div>
-                        </div>
 
-                        <!-- START OF CONTENT AREA -->
+                <!-- START OF CONTENT AREA -->

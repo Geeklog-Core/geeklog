@@ -50,7 +50,21 @@ a:active {
   background:transparent;
   color:#FF0000
 }
-
+body {
+  width:99%;
+  background:#FFFFFF;
+  color:#000000;
+  font:.8em arial,sans-serif,verdana,tahoma,helvetica;
+  padding:0px;
+  margin:0px auto;
+  border-bottom:1px solid #E7E7E7;
+  border-left:1px solid #E7E7E7;
+  border-right:1px solid #E7E7E7;
+  border-top:1px solid #E7E7E7;
+  padding-left:1px;
+  padding-right:1px;
+  text-align:left;
+}
 fieldset {
   margin-bottom:1em;
 }
@@ -391,15 +405,6 @@ select {
   margin-left:105px;
 }
 /* Header *********************************************************************/
-.header-envelope {
-  border-bottom:1px solid #E7E7E7;
-  border-left:1px solid #E7E7E7;
-  border-right:1px solid #E7E7E7;
-  border-top:1px solid #E7E7E7;
-  padding-left:1px;
-  padding-right:1px;
-  text-align:left;
-}
 .header-logobg {
   padding-top:4px;
 }
@@ -518,13 +523,6 @@ select {
   background:transparent;
   color:#000000;
   text-align:right;
-}
-.sitebody {
-  background:#FFFFFF;
-  color:#000000;
-  font:.8em arial,sans-serif,verdana,tahoma,helvetica;
-  padding:0px;
-  margin:0px;
 }
 .site-slogan {
   color:#ffffff;
@@ -660,9 +658,9 @@ select {
   font-weight:normal;
 }
 .pluginHeader {
-  color:#204275; 
-  font-weight:bolder; 
-  padding-top:3px; 
+  color:#204275;
+  font-weight:bolder;
+  padding-top:3px;
   padding-bottom:3px;
 }
 .pluginFooter, .pluginFooter td {
@@ -707,14 +705,14 @@ select {
   color:#F5F9FF;
   padding:4px;
   padding-left:6px;
-  padding-right:6px; 
+  padding-right:6px;
 }
-.pluginCellSubTitle { 
+.pluginCellSubTitle {
   background-color:#F7F7F7;
   color:#000000;
   padding:4px;
   padding-left:6px;
-  padding-right:6px; 
+  padding-right:6px;
 }
 .pluginTinyText {
   font-size:0.70em;
@@ -733,24 +731,24 @@ select {
 }
 .pluginRow1, .pluginRow1 td {
   color:#000000;
-  background-color:#F7F7F7; 
+  background-color:#F7F7F7;
   line-height:120%;
 }
-.pluginRow2, .pluginRow2 td { 
+.pluginRow2, .pluginRow2 td {
   color:#000000;
-  background-color:#E7E7E7; 
+  background-color:#E7E7E7;
   line-height: 120%;
 }
 .pluginRow1 .pluginRollOver,
 .pluginRow2 .pluginRollOver,
-.pluginRollOver { 
+.pluginRollOver {
   color:#000000;
   background-color:#FFFFFF;
   line-height:120%;
 }
 .pluginRow1 .pluginRollOut,
 .pluginRow2 .pluginRollOut,
-.pluginRollOut { 
+.pluginRollOut {
   color:#000000;
   background-color:#F7F7F7;
   line-height:120%;
@@ -877,18 +875,18 @@ a.tooltip {
   position: relative; /*this is the key*/
   z-index:10;
   color:#000;
-  text-decoration:none;   
+  text-decoration:none;
 }
 a.tooltip:hover  {
   z-index:100;
   text-decoration:none
 }
-a.tooltip span { 
+a.tooltip span {
   display: none
 }
-a.tooltip:hover span { 
+a.tooltip:hover span {
   /*the span will display just on :hover state*/
-  z-index:100;    
+  z-index:100;
   color:#033666;
   font-style:normal;
   font-size:.8em;
