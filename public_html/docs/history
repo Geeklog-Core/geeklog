@@ -1,7 +1,10 @@
 GeekLog History/Changes:
 
-Nov ??, 2006 (1.4.1b3)
+Nov ??, 2006 (1.4.1rc1)
 ------------
+
+- Need to check if field 'etids' is NULL (for MySQL 4) for the Daily Digest
+  (bug #595) [Dirk]
 - Removed the outer table from the layout and merged several style declarations
   into the body-tag declaration [Oliver]
 - The spam check for comment posts did not include the comment title (reported

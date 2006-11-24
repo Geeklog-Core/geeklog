@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.601 2006/11/18 21:16:49 blaine Exp $
+// $Id: lib-common.php,v 1.602 2006/11/24 10:27:14 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3710,7 +3710,7 @@ function COM_emailUserTopics()
     // Get users who want stories emailed to them
     $usersql = "SELECT username,email,etids,{$_TABLES['users']}.uid AS uuid "
         . "FROM {$_TABLES['users']}, {$_TABLES['userindex']} "
-        . "WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND (etids <> '-') ORDER BY {$_TABLES['users']}.uid";
+        . "WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND (etids <> '-' OR etids IS NULL) ORDER BY {$_TABLES['users']}.uid";
 
     $users = DB_query( $usersql );
     $nrows = DB_numRows( $users );
