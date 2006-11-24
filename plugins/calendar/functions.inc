@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.58 2006/10/21 20:53:50 dhaun Exp $
+// $Id: functions.inc,v 1.59 2006/11/24 08:58:46 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -572,15 +572,18 @@ function plugin_savesubmission_calendar($A)
     return $retval;
 }
 
-function plugin_getheadercode_calendar() {
+function plugin_getheadercode_calendar()
+{
     global $_CONF;
+
     $str = null;
 
     // use the CSS only if we are on the plugin's pages
-    if (substr_count($_SERVER["PHP_SELF"], 'calendar') > 0) {
-        $str = "<link rel=\"stylesheet\" type=\"text/css\" "
-             . "href=\"{$_CONF['site_url']}/calendar/style.css\">";
+    if (substr_count ($_SERVER['PHP_SELF'], '/calendar/') > 0) {
+        $str = '<link rel="stylesheet" type="text/css" href="'
+             . $_CONF['site_url'] . '/calendar/style.css">';
     }
+
     return $str;
 }
 
