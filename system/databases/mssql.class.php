@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql.class.php,v 1.4 2006/10/03 08:06:37 dhaun Exp $
+// $Id: mssql.class.php,v 1.5 2006/11/25 13:58:37 dhaun Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -278,10 +278,10 @@ class database {
         $tempsql=$this->cleanse_date_sub($sql);
         $sql=$tempsql;
         
-        $tempsql=str_replace("NOW()","getDate()",$sql);
+        $tempsql=str_replace("NOW()","getUTCDate()",$sql);
         $sql=$tempsql;
         
-        $tempsql=str_replace("now()","getDate()",$sql);
+        $tempsql=str_replace("now()","getUTCDate()",$sql);
         $sql=$tempsql;
         
         $tempsql=str_replace("STRAIGHT_JOIN","",$sql);
@@ -388,20 +388,12 @@ class database {
                 else{
                     //left and right have something useful
                     //this means we'll have to do some kind of temp table manipulation.... 
-                   // echo $rightStr;
-                   // echo $left;
-                   $rightStr=str_replace(";","",$rightStr);
-                   
-                    //$this->_limitRows=$rightStr;
+                    $rightStr=str_replace(";","",$rightStr);
                     $mode=2;
                     }//end else
                 $sql=$testSQL;
                 }
                 
-                
-                //echo $this->_limitRows=$rightStr;
-                    
-                //exit(0);
         //end limit detection
         
 
@@ -450,7 +442,7 @@ class database {
             $isInsert=1;
             }
         
-       // echo "<xmp>" . $sql . "</xmp>";
+        //echo "<xmp>" . $sql . "</xmp>";
     
         // Run query
         if ($ignore_errors == 1) {
@@ -471,7 +463,7 @@ class database {
             $this->_NoArraylastInsertID=$insert[0];
             //$this->_lastInsertID=$insert[0];
             }
-       //here!
+
        $this->_fastForwardRows=0;
         if($result!=FALSE){     
             if($mode==2){
@@ -1064,7 +1056,9 @@ class database {
                 $secondParmArray=split(" ",$secondParm);
                 $intervalTime=$secondParmArray[1];
                 $typeForInterval=$secondParmArray[2];
- 
+                if($intervalTime>0){
+                      $intervalTime = '-' . $intervalTime;
+                    }
                 $replaceWITHString= "dateadd({$typeForInterval},{$intervalTime},{$firstParm})";
  
                 $string=str_replace($replaceString,$replaceWITHString,$string);

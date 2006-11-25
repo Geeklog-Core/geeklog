@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.31 2006/09/24 09:05:14 dhaun Exp $
+// $Id: index.php,v 1.32 2006/11/25 13:58:35 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -168,7 +168,9 @@ if (empty ($page)) {
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $result = DB_query ("SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms);
+    $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
+    $sql['mssql'] = "SELECT sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
+    $result = DB_query ($sql);
     $count = DB_numRows ($result);
 
     if ($count == 0 || $count > 1) {

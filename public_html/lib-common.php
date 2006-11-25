@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.602 2006/11/24 10:27:14 dhaun Exp $
+// $Id: lib-common.php,v 1.603 2006/11/25 13:58:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3722,9 +3722,11 @@ function COM_emailUserTopics()
     {
         $U = DB_fetchArray( $users );
 
-        $storysql = "SELECT sid,uid,date AS day,title,introtext,bodytext "
-            . "FROM {$_TABLES['stories']} "
-            . "WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
+        $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
+
+        $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext"
+
+        $commonsql = " FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
 
         $topicsql = "SELECT tid FROM {$_TABLES['topics']}"
                   . COM_getPermSQL( 'WHERE', $U['uuid'] );
@@ -3752,11 +3754,14 @@ function COM_emailUserTopics()
 
         if( sizeof( $TIDS ) > 0)
         {
-            $storysql .= " AND (tid IN ('" . implode( "','", $TIDS ) . "'))";
+            $commonsql .= " AND (tid IN ('" . implode( "','", $TIDS ) . "'))";
         }
 
-        $storysql .= COM_getPermSQL( 'AND', $U['uuid'] );
-        $storysql .= ' ORDER BY featured DESC, date DESC';
+        $commonsql .= COM_getPermSQL( 'AND', $U['uuid'] );
+        $commonsql .= ' ORDER BY featured DESC, date DESC';
+
+        $storysql['mysql'] .= $commonsql;
+        $storysql['mssql'] .= $commonsql;
 
         $stories = DB_query( $storysql );
         $nsrows = DB_numRows( $stories );

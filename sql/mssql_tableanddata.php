@@ -349,8 +349,8 @@ CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['postmodes']}] (
-    [code] [char] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+    [code] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -1319,17 +1319,17 @@ END
 $_SQL[] = "CREATE    PROCEDURE dbo.doIndexInsert
 
 @table      varchar(256),
-@cols       varchar(1000),
-@vals       varchar(2000)
+@cols       varchar(5000),
+@vals       varchar(8000)
 
 AS
 begin
 
 declare
 @isIdentity     int,
-@sql            varchar(3000),
+@sql            varchar(8000),
 @isIdentityListed   int,
-@tempCols       varchar(3000)
+@tempCols       varchar(8000)
 
 select @tempCols=replace(@cols,',', ''',''')
 set @sql='select colName from getPrimaryKey where tableName=''' + @table + ''' and colname in (''' + @tempCols + ''')'

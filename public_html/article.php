@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.81 2006/08/26 14:13:41 dhaun Exp $
+// $Id: article.php,v 1.82 2006/11/25 13:58:35 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -103,10 +103,18 @@ $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE si
 $A = DB_fetchArray($result);
 
 if ($A['count'] > 0) {
-    $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
+    $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
      . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
      . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
-     . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$story')");
+     . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$story')";
+
+     $sql['mssql'] = "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.in_transit, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
+     . " UNIX_TIMESTAMP(s.date) AS day, "
+     . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
+     . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
+     . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$story')";
+
+    $result = DB_query ($sql);
     $A = DB_fetchArray ($result);
 
     $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],

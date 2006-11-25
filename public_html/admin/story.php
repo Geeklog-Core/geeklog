@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.244 2006/11/04 19:59:43 dhaun Exp $
+// $Id: story.php,v 1.245 2006/11/25 13:58:35 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -249,11 +249,20 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
 
     if (!empty ($sid) && ($mode == 'edit')) {
-        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
+        $msql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl, UNIX_TIMESTAMP(s.expire) AS expiredate "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
-         . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
-        $A = DB_fetchArray($result);
+         . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
+
+        $msql['mssql'] = "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.in_transit, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode,"
+         ." UNIX_TIMESTAMP(s.date) AS unixdate, "
+         . "u.username, u.fullname, u.photo, t.topic, t.imageurl, UNIX_TIMESTAMP(s.expire) AS expiredate "
+         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
+         . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
+
+        $result = DB_query ($msql);
+        $A = DB_fetchArray ($result);
+
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         $access = min ($access, SEC_hasTopicAccess ($A['tid']));
         if ($access == 2) {
@@ -1346,7 +1355,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                  COM_applyFilter ($_POST['commentcode'], true),
                  COM_applyFilter ($_POST['trackbackcode'], true),
                  COM_applyFilter ($_POST['statuscode'], true),
-                 COM_applyFilter ($_POST['postmode']),
+                 trim(COM_applyFilter ($_POST['postmode'])),
                  COM_applyFilter ($_POST['frontpage'], true),
                  COM_applyFilter ($_POST['draft_flag']),
                  COM_applyFilter ($_POST['numemails'], true),
