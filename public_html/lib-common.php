@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.603 2006/11/25 13:58:35 dhaun Exp $
+// $Id: lib-common.php,v 1.604 2006/11/25 20:28:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -90,7 +90,8 @@ if( function_exists('set_error_handler') )
 * Make sure to include the name of the config file,
 * i.e. the path should end in .../config.php
 */
-require_once( '/path/to/geeklog/config.php' );
+//require_once( '/path/to/geeklog/config.php' );
+require_once( '/usr/local/apache/vhost/geeklog/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -3724,7 +3725,7 @@ function COM_emailUserTopics()
 
         $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
 
-        $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext"
+        $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext";
 
         $commonsql = " FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
 
