@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.94 2006/11/13 09:52:02 ospiess Exp $
+// $Id: lib-admin.php,v 1.95 2006/11/26 12:03:56 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -93,8 +93,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     }
 
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $admin_templates->set_var('lang_deleteall', $LANG01['124']);
-    $admin_templates->set_var('lang_delconfirm', $LANG01['125']);
+    $admin_templates->set_var('lang_deleteall', $LANG01[124]);
+    $admin_templates->set_var('lang_delconfirm', $LANG01[125]);
 
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
@@ -292,7 +292,8 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
     }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
-    $admin_templates->set_var('lang_delconfirm', $LANG01['125']);
+    $admin_templates->set_var('lang_deleteall', $LANG01[124]);
+    $admin_templates->set_var('lang_delconfirm', $LANG01[125]);
 
     // Check if the delete checkbox and support for the delete all feature should be displayed
     if (is_array($options) AND $options['chkdelete']) {
