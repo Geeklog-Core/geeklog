@@ -3,6 +3,9 @@ GeekLog History/Changes:
 Nov ??, 2006 (1.4.1rc1)
 ------------
 
+- Renamed [calendar:] autotag back to [event:] for backward compatibility. It
+  also makes more sense this way, since it does provide a link to an event, not
+  a link to a calendar (bug #619) [Dirk]
 - Need to check if field 'etids' is NULL (for MySQL 4) for the Daily Digest
   (bug #595) [Dirk]
 - Removed the outer table from the layout and merged several style declarations

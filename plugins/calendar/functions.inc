@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.59 2006/11/24 08:58:46 dhaun Exp $
+// $Id: functions.inc,v 1.60 2006/11/26 09:41:47 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -878,7 +878,7 @@ function plugin_submissioncount_calendar()
 }
 
 /**
-* Implements the [calendar:] autotag.
+* Implements the [event:] autotag.
 *
 */
 function plugin_autotags_calendar ($op, $content = '', $autotag = '')
@@ -886,7 +886,7 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
     global $_CONF, $_TABLES;
 
     if ($op == 'tagname' ) {
-        return 'calendar';
+        return 'event';
     } else if ($op == 'parse') {
         $eid = COM_applyFilter ($autotag['parm1']);
         $url = $_CONF['site_url'] . '/calendar/event.php?eid=' . $eid;
