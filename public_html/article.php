@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.82 2006/11/25 13:58:35 dhaun Exp $
+// $Id: article.php,v 1.83 2006/11/26 14:35:57 blaine Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -101,7 +101,7 @@ if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
 
 $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$story'" . COM_getPermSql ('AND'));
 $A = DB_fetchArray($result);
-
+$sql = array();
 if ($A['count'] > 0) {
     $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
      . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
