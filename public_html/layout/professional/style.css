@@ -308,6 +308,16 @@ select {
   padding-bottom:5px;
   text-align:left;
 }
+
+/* Block Lists ****************************************************************/
+.list-feed,
+.list-new-plugins,
+.list-new-comments,
+.list-new-trackbacks,
+.list-older-stories { 
+  margin:0px;padding:0px;
+}
+
 /* Comments *******************************************************************/
 .commentbar-line1 {
   background:transparent;
