@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.110 2006/11/26 08:40:39 dhaun Exp $
+// $Id: comment.php,v 1.111 2006/12/02 16:46:09 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -94,7 +94,8 @@ function handleSubmit()
                            $LANG03[14], COM_applyFilter($_POST['postmode']))
                          . COM_siteFooter();
             } else { // success
-                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+                $comments = DB_count ($_TABLES['comments'],
+                                array ('sid', 'type'), array ($sid, 'article'));
                 DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
                 COM_olderStuff (); // update comment count in Older Stories block
                 $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
@@ -136,7 +137,8 @@ function handleDelete()
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
                     $A['perm_members'], $A['perm_anon']) == 3) {
                 CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'article');
-                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+                $comments = DB_count ($_TABLES['comments'],
+                                array ('sid', 'type'), array ($sid, 'article'));
                 DB_change ($_TABLES['stories'], 'comments', $comments,
                            'sid', $sid);
                 $display .= COM_refresh (COM_buildUrl ($_CONF['site_url']
