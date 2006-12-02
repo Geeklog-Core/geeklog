@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.46 2006/11/12 19:42:39 dhaun Exp $
+// $Id: lib-comment.php,v 1.47 2006/12/02 16:55:23 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -66,7 +66,8 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
 
     $parts = explode( '/', $_SERVER['PHP_SELF'] );
     $page = array_pop( $parts );
-    $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
+    $nrows = DB_count( $_TABLES['comments'], array( 'sid', 'type' ),
+                       array( $sid, $type ));
 
     $commentbar = new Template( $_CONF['path_layout'] . 'comment' );
     $commentbar->set_file( array( 'commentbar' => 'commentbar.thtml' ));
@@ -485,8 +486,9 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                        . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                        . "WHERE c.uid = u.uid AND c.cid = $pid AND type='{$type}'";
                 } else {
-                    $count = DB_count( $_TABLES['comments'], 'sid', $sid );
-            
+                    $count = DB_count( $_TABLES['comments'],
+                                array( 'sid', 'type' ), array( $sid, $type ));
+
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, " 
                        . "UNIX_TIMESTAMP(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
@@ -525,7 +527,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                 } else {    // pid refers to parentid rather than commentid
                     if( $pid == 0 ) {  // the simple, fast case
                         // count the total number of applicable comments
-                        $count = DB_count( $_TABLES['comments'], 'sid', $sid );
+                        $count = DB_count( $_TABLES['comments'],
+                                array( 'sid', 'type' ), array( $sid, $type ));
 
                         $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, 0 AS pindent, " 
                            . "UNIX_TIMESTAMP(c.date) AS nice_date "
