@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.83 2006/11/26 14:35:57 blaine Exp $
+// $Id: article.php,v 1.84 2006/12/02 16:39:14 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -172,7 +172,7 @@ if ($A['count'] > 0) {
                                     . '/article.php?story=' . $A['sid']);
         if ($A['commentcode'] >= 0) {
             $commentsUrl = $articleUrl . '#comments';
-            $comments = DB_count ($_TABLES['comments'], 'sid', $A['sid']);
+            $comments = $A['comments'];
             $numComments = COM_numberFormat ($comments);
             $story_template->set_var ('story_comments', $numComments);
             $story_template->set_var ('comments_url', $commentsUrl);
