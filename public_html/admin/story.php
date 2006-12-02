@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.245 2006/11/25 13:58:35 dhaun Exp $
+// $Id: story.php,v 1.246 2006/12/02 10:42:29 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1017,7 +1017,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             require_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
 
-            $upload->setDebug(true);
+            if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
+                $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
+                $upload->setDebug (true);
+            }
             $upload->setMaxFileUploads ($_CONF['maximagesperarticle']);
             if (!empty($_CONF['image_lib'])) {
                 if ($_CONF['image_lib'] == 'imagemagick') {
