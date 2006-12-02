@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.56 2006/10/02 19:04:24 dhaun Exp $
+// $Id: functions.inc,v 1.57 2006/12/02 16:32:16 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -548,9 +548,10 @@ function POLLS_pollVote( $qid )
 
                 if( $Q['commentcode'] >= 0 )
                 {
+                    $num_comments = DB_count( $_TABLES['comments'],
+                            array( 'sid', 'type' ), array( $qid, 'polls' ));
                     $poll->set_var( 'num_comments',
-                            COM_numberFormat( DB_count( $_TABLES['comments'],
-                                                        'sid', $qid )));
+                            COM_numberFormat( $num_comments ));
                     $poll->set_var( 'lang_comments', $LANG01[3] );
                     $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
                         '/polls/index.php?qid=' . $qid . '&amp;aid=-1#comments');
@@ -764,9 +765,10 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 
             if( $Q['commentcode'] >= 0 )
             {
+                $num_comments = DB_count( $_TABLES['comments'],
+                        array( 'sid', 'type' ), array( $qid, 'polls' ));
                 $poll->set_var( 'num_comments',
-                        COM_numberFormat( DB_count( $_TABLES['comments'],
-                                                    'sid', $qid )));
+                        COM_numberFormat( $num_comments ));
                 $poll->set_var( 'lang_comments', $LANG01[3] );
                 $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
                         '/polls/index.php?qid=' . $qid . '&amp;aid=-1#comments');
