@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.246 2006/12/02 10:42:29 dhaun Exp $
+// $Id: story.php,v 1.247 2006/12/02 12:19:26 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -870,7 +870,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 * @param    string      $bodytext       Text of body
 * @param    int         $hits           Number of times story has been viewed
 * @param    string      $unixdate       Date story was originally saved
-* @param    int         $comments       Number of user comments made to this story
 * @param    int         $featured       Flag on whether or not this is a featured article
 * @param    string      $commentcode    Indicates if comments are allowed to be made to article
 * @param    string      $trackbackcode  Indicates if trackbacks are allowed to be made to article
@@ -888,7 +887,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 * @param    int         $delete         String array of attached images to delete from article
 *
 */
-function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$trackbackcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid)
+function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$featured,$commentcode,$trackbackcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid)
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE;
 
@@ -995,7 +994,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
 
         $title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($title))));
-        $comments = DB_count($_TABLES['comments'],'sid',$sid);
+        $comments   = DB_count ($_TABLES['comments'], array ('sid', 'type'),
+                                array ($sid, 'article'));
+        $trackbacks = DB_count ($_TABLES['trackback'], array ('sid', 'type'),
+                                array ($sid, 'article'));
 
         // Delete any images if needed
         for ($i = 1; $i <= count($delete); $i++) {
@@ -1147,7 +1149,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $advanced_editor_mode = 0;
         }
 
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,trackbackcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit,advanced_editor_mode', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$trackbackcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1,$advanced_editor_mode");
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,trackbacks,related,featured,commentcode,trackbackcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit,advanced_editor_mode', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$trackbacks','$related',$featured,'$commentcode','$trackbackcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1,$advanced_editor_mode");
 
         // If this is done as part of the moderation then delete the submission
         if (empty ($old_sid)) {
@@ -1353,7 +1355,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                  COM_stripslashes ($_POST['introtext']),
                  COM_stripslashes ($_POST['bodytext']),
                  COM_applyFilter ($_POST['hits'], true), $unixdate, $expiredate,
-                 COM_applyFilter ($_POST['comments'], true),
                  COM_applyFilter ($_POST['featured'], true),
                  COM_applyFilter ($_POST['commentcode'], true),
                  COM_applyFilter ($_POST['trackbackcode'], true),
