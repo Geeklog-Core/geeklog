@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.16 2006/08/20 16:42:32 dhaun Exp $
+* $Id: MassDelete.Admin.class.php,v 1.17 2006/12/02 16:35:23 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'MassDelete.Admin.class.php') !== false) {
@@ -133,7 +133,8 @@ class MassDelete extends BaseAdmin {
                         $A['group_id'], $A['perm_owner'], $A['perm_group'],
                         $A['perm_members'], $A['perm_anon']) == 3) {
                     CMT_deleteComment(COM_applyFilter($cid, true), $sid, 'article');
-                    $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+                    $comments = DB_count ($_TABLES['comments'],
+                            array ('sid', 'type'), array ($sid, 'article'));
                     DB_change ($_TABLES['stories'], 'comments', $comments,
                                'sid', $sid);
                 } else {
