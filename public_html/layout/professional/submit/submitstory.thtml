@@ -2,7 +2,7 @@
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td class="alignright"><b>{lang_username}:</b></td>
-                                        <td>{story_username} [ <a href="{status_url}">{lang_loginout}</a>{seperator}{create_account} ]</td>
+                                        <td>{story_username} [ <a href="{status_url}" rel="nofollow">{lang_loginout}</a>{separator}{create_account} ]</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright"><b>{lang_title}:</b></td>

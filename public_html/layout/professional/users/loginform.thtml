@@ -15,7 +15,7 @@
                                                                 <tr>
                                                                     <td class="alignright"><b><label for="passwd">{lang_password}</label>:</b></td>
                                                                     <td><input type="password" name="passwd" size="16">
-                                                                        &nbsp;<a href="{site_url}/users.php?mode=getpassword">{lang_forgetpassword}</a>
+                                                                        &nbsp;<a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>

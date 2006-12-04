@@ -7,7 +7,7 @@
                                                             <input type="hidden" name="sid" value="{sid}">
                                                             <input type="hidden" name="pid" value="{pid}">
                                                             <input type="hidden" name="type" value="{type}">
-                                                            <input type="hidden" name="uid" value="{uid}">{username} [ <a href="{action_url}">{lang_logoutorcreateaccount}</a> ]
+                                                            <input type="hidden" name="uid" value="{uid}">{username} [ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]
                                                         </td>
                                                     </tr>
                                                     <tr>
