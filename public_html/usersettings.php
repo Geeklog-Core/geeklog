@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.153 2006/11/26 08:16:12 dhaun Exp $
+// $Id: usersettings.php,v 1.154 2006/12/09 08:33:06 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -258,8 +258,8 @@ function confirmAccountDelete ($form_reqid)
     
     // to change the password, email address, or cookie timeout,
     // we need the user's current password
-    if (empty ($A['old_passwd']) ||
-            (md5 ($A['old_passwd']) != $_USER['passwd'])) {
+    if (empty ($_POST['old_passwd']) ||
+            (md5 ($_POST['old_passwd']) != $_USER['passwd'])) {
          return COM_refresh ($_CONF['site_url']
                             . '/usersettings.php?mode=edit&msg=84');
     }    
@@ -270,27 +270,19 @@ function confirmAccountDelete ($form_reqid)
 
     $retval = '';
 
-    $confirm = new Template ($_CONF['path_layout'] . 'preferences');
-    $confirm->set_file (array ('deleteaccount' => 'deleteaccount.thtml'));
-    $confirm->set_var ('site_url', $_CONF['site_url']);
-    $confirm->set_var ('layout_url', $_CONF['layout_url']);
-
-    $display_name = COM_getDisplayName ($_USER['uid']);
-
-    $confirm->set_var ('start_block_delete_account',
-            COM_startBlock (sprintf ($LANG04[94], $display_name)));
-    $confirm->set_var ('end_block_delete_account', COM_endBlock ());
-    $confirm->set_var ('delete_text', $LANG04[95]);
-    $confirm->set_var ('lang_button_delete', $LANG04[96]);
-    $confirm->set_var ('delete_mode', 'deleteconfirmed');
-    $confirm->set_var ('account_id', $reqid);
-
     $retval .= COM_siteHeader ('menu', $LANG04[97]);
     $retval .= COM_startBlock ($LANG04[97], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $retval .= $LANG04[98];
+    $retval .= '<p>' . $LANG04[98] . '</p>' . LB;
+    $retval .= '<form action="' . $_CONF['site_url']
+            . '/usersettings.php" method="POST">' . LB;
+    $retval .= '<p align="center"><input type="submit" name="btnsubmit" value="'
+            . $LANG04[96] . '"></p>' . LB;
+    $retval .= '<input type="hidden" name="mode" value="deleteconfirmed">' . LB;
+    $retval .= '<input type="hidden" name="account_id" value="' . $reqid
+            . '">' . LB;
+    $retval .= '</form>' . LB;
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $retval .= $confirm->finish ($confirm->parse ('output', 'deleteaccount'));
     $retval .= COM_siteFooter ();
 
     return $retval;
@@ -1414,7 +1406,7 @@ $mode = '';
 if (isset($_POST['btncancel']) AND $_POST['btncancel'] == $LANG_ADMIN['cancel']) { 
     echo COM_refresh($_CONF['site_url']);
     exit;
-}else if (isset($_POST['btnsubmit']) AND $_POST['btnsubmit'] == $LANG04[96]) {
+} else if (isset($_POST['btnsubmit']) AND ($_POST['btnsubmit'] == $LANG04[96]) && ($_POST['mode'] != 'deleteconfirmed')) {
     $mode = 'confirmdelete';
 } else if (isset ($_POST['mode'])) {
     $mode = COM_applyFilter ($_POST['mode']);
