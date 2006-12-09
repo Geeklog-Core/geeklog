@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.149 2006/10/15 18:56:47 dhaun Exp $
+// $Id: users.php,v 1.150 2006/12/09 19:18:08 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -493,6 +493,20 @@ function createuser ($username, $email, $email_conf)
                 }
             }
 
+            // Let plugins have a chance to decide what to do before creating the user, return errors.
+            $msg = PLG_itemPreSave ('registration', $username);
+            if (!empty ($msg)) {
+                $retval .= COM_siteHeader ('menu', $LANG04[22]);
+                if ($_CONF['custom_registration'] && function_exists ('CUSTOM_userForm')) {
+                    $retval .= CUSTOM_userForm ($msg);
+                } else {
+                    $retval .= newuserform ($msg);
+                }
+                $retval .= COM_siteFooter();
+
+                return $retval;
+            }
+
             $uid = USER_createAccount ($username, $email);
 
             if ($_CONF['usersubmission'] == 1) {
@@ -637,7 +651,7 @@ function newuserform ($msg = '')
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
     $user_templates = new Template($_CONF['path_layout'] . 'users');
-    $user_templates->set_file('regform','registrationform.thtml');
+    $user_templates->set_file('regform', 'registrationform.thtml');
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('start_block', COM_startBlock($LANG04[22]));
     $user_templates->set_var('lang_instructions', $LANG04[23]);
@@ -646,6 +660,7 @@ function newuserform ($msg = '')
     $user_templates->set_var('lang_email_conf', $LANG04[124]);
     $user_templates->set_var('lang_warning', $LANG04[24]);
     $user_templates->set_var('lang_register', $LANG04[27]);
+    PLG_templateSetVars ('registration', $user_templates);
     $user_templates->set_var('end_block', COM_endBlock());
 
     $username = '';

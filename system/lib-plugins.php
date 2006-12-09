@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.112 2006/11/18 13:21:11 dhaun Exp $
+// $Id: lib-plugins.php,v 1.113 2006/12/09 19:18:08 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -466,6 +466,37 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
     return false;
 }
 
+/**
+* Allows plugins a chance to handle an item before GL does. Modeled
+* after the PLG_commentPreSave() function.
+*
+* This is a first-come-first-serve affair so if a plugin returns an error, other
+* plugins wishing to handle comment preprocessing won't get called
+*
+* @author Mark Evans <mevans@ecsnet.com>
+* @access public
+* @param string $type Type of item, i.e.; registration, contact ...
+* @param string $content item specific content
+* @return string empty is no error, error message if error was encountered
+*
+*/
+function PLG_itemPreSave($type, $content)
+{
+    global $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_itemPreSave_' . $pi_name;
+        if (function_exists ($function)) {
+            $msgError = $function ($type, $content);
+            if (!empty ($msgError)) {
+                // Plugin doesn't want to save the item
+                return $msgError;
+            }
+        }
+    }
+
+    return '';
+}
 
 /**
 * The way this function works is very specific to how Geeklog shows its
