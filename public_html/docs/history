@@ -3,6 +3,9 @@ GeekLog History/Changes:
 Dec ??, 2006 (1.4.1rc1)
 ------------
 
+- Update the timestamp for the last run of PLG_runScheduledTask before calling
+  the function to minimize the risk of the call being triggered more than once
+  (bug #628) [Dirk]
 - In a multi-language setup, allow one static page per language to take over
   the index page (bug #625) [Dirk]
 - sectest.php didn't perform the test for the install script and default

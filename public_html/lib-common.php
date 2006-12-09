@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.605 2006/11/26 14:37:37 blaine Exp $
+// $Id: lib-common.php,v 1.606 2006/12/09 13:38:52 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -6157,8 +6157,8 @@ if( $_CONF['cron_schedule_interval'] > 0 )
     if(( DB_getItem( $_TABLES['vars'], 'value', "name='last_scheduled_run'" )
             + $_CONF['cron_schedule_interval'] ) <= time())
     {
-        PLG_runScheduledTask();
         DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
+        PLG_runScheduledTask();
     }
 }
 
