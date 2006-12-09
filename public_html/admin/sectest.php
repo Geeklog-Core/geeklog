@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.2 2006/10/21 19:25:06 dhaun Exp $
+// $Id: sectest.php,v 1.3 2006/12/09 09:01:18 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -310,7 +310,18 @@ if (!empty ($url)) {
     $display .= '</ol>';
 
 } else {
-    $display .= '<p>Everything seems to be in order.</p>';
+
+    $resultInstallDirCheck = checkInstallDir ();
+    $resultPasswordCheck = checkDefaultPassword ();
+
+    if ($failed_tests == 0) {
+        $display .= '<p>Everything seems to be in order.</p>';
+    } else {
+        $display .= '<ol>';
+        $display .= $resultInstallDirCheck . LB . $resultPasswordCheck;
+        $display .= '</ol>';
+    }
+
 }
 
 if ($failed_tests > 0) {
