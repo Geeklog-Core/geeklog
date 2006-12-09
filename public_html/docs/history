@@ -1,8 +1,21 @@
 GeekLog History/Changes:
 
-Nov ??, 2006 (1.4.1rc1)
+Dec ??, 2006 (1.4.1rc1)
 ------------
 
+- In a multi-language setup, allow one static page per language to take over
+  the index page (bug #625) [Dirk]
+- sectest.php didn't perform the test for the install script and default
+  passwords on some setups (reported by Christian Weiske) [Dirk]
+- Fixed "delete account" option (reported by Paul Lelgemann) [Dirk]
+- Fixed counting of comments in several places where comments were counted
+  without taking the type of the parent object into account (e.g. when a story
+  and a poll happened to use the same id, their comment counts would have been
+  messed up) [Dirk]
+- Editing a story did reset the trackback count (reported by T. Marquez) [Dirk]
+- In the admin's story editor, set the debug option for the image upload only
+  when $_CONF['debug_image_upload']  = true (thus avoiding the "Warning: File #x
+  on the HTML form was empty" messages in error.log) [Dirk]
 - Renamed [calendar:] autotag back to [event:] for backward compatibility. It
   also makes more sense this way, since it does provide a link to an event, not
   a link to a calendar (bug #619) [Dirk]
