@@ -21,6 +21,7 @@
             <td class="alignright" style="vertical-align:top;"><b>{lang_shortmessage}:</b></td>
             <td><textarea name="shortmsg" rows="8" style="width:100%">{shortmsg}</textarea></td>
         </tr>
+        {captcha}
         <tr>
             <td colspan="2" class="warning aligncenter"><br>{lang_warning}<br><br>
                 <input type="hidden" name="sid" value="{story_id}">

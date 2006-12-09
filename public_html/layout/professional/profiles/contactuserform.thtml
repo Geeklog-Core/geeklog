@@ -19,6 +19,7 @@
       <td style="vertical-align:top;">{lang_message}</td>
       <td><textarea name="message" wrap="physical" rows="10" cols="50">{message}</textarea></td>
     </tr>
+    {captcha}
     <tr>
       <td colspan="2" class="warning alignleft" style="padding-left:200px;padding-top:10px;">{lang_nohtml}<div style="padding:5px;">
         <input type="hidden" name="what" value="contact">

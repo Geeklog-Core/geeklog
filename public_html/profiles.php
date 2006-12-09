@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.51 2006/09/06 05:31:00 ospiess Exp $
+// $Id: profiles.php,v 1.52 2006/12/09 21:02:51 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -103,6 +103,16 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             if ($result > 0) {
                 COM_updateSpeedlimit ('mail');
                 COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+            }
+
+            $msg = PLG_itemPreSave ('contact', $message);
+            if (!empty ($msg)) {
+                $retval .= COM_siteHeader ('menu', '')
+                        . COM_errorLog ($msg, 2)
+                        . contactform ($uid, $subject, $message)
+                        . COM_siteFooter ();
+
+                return $retval;
             }
 
             $subject = strip_tags ($subject);
@@ -183,7 +193,13 @@ function contactform ($uid, $subject = '', $message = '')
             $mail_template->set_var ('lang_description', $LANG08[26]);
             $mail_template->set_var ('lang_username', $LANG08[11]);
             if (empty ($_USER['username'])) {
-                $mail_template->set_var ('username', '');
+                $sender = '';
+                if (isset ($_POST['author'])) {
+                    $sender = strip_tags ($_POST['author']);
+                    $sender = substr ($sender, 0, strcspn ($sender, "\r\n"));
+                    $sender = htmlspecialchars (trim ($sender), ENT_QUOTES);
+                }
+                $mail_template->set_var ('username', $sender);
             } else {
                 $mail_template->set_var ('username',
                         COM_getDisplayName ($_USER['uid'], $_USER['username'],
@@ -191,7 +207,13 @@ function contactform ($uid, $subject = '', $message = '')
             }
             $mail_template->set_var ('lang_useremail', $LANG08[12]);
             if (empty ($_USER['email'])) {
-                $mail_template->set_var ('useremail', '');
+                $email = '';
+                if (isset ($_POST['authoremail'])) {
+                    $email = strip_tags ($_POST['authoremail']);
+                    $email = substr ($email, 0, strcspn ($email, "\r\n"));
+                    $email = htmlspecialchars (trim ($email), ENT_QUOTES);
+                }
+                $mail_template->set_var ('useremail', $email);
             } else {
                 $mail_template->set_var ('useremail', $_USER['email']);
             }
@@ -202,6 +224,7 @@ function contactform ($uid, $subject = '', $message = '')
             $mail_template->set_var ('lang_nohtml', $LANG08[15]);
             $mail_template->set_var ('lang_submit', $LANG08[16]);
             $mail_template->set_var ('uid', $uid);
+            PLG_templateSetVars ('contact', $mail_template);
             $mail_template->parse ('output', 'form');
             $retval .= $mail_template->finish ($mail_template->get_var ('output'));
             $retval .= COM_endBlock ();
@@ -375,6 +398,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('lang_warning', $LANG08[22]);
     $mail_template->set_var('lang_sendmessage', $LANG08[16]);
     $mail_template->set_var('story_id',$sid);
+    PLG_templateSetVars ('emailstory', $mail_template);
     $mail_template->set_var('end_block', COM_endBlock());
     $mail_template->parse('output', 'form');
     $retval .= $mail_template->finish($mail_template->get_var('output'));
@@ -441,8 +465,18 @@ switch ($what) {
                                           COM_applyFilter($_POST['shortmsg']))
                          . COM_siteFooter ();
             } else {
-                $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
-                    $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
+                $msg = PLG_itemPreSave ('emailstory', $message);
+                if (!empty ($msg)) {
+                    $display .= COM_siteHeader ('menu', '')
+                             . COM_errorLog ($msg, 2)
+                             . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
+                                              COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
+                                              COM_applyFilter($_POST['shortmsg']))
+                             . COM_siteFooter ();
+                } else {
+                    $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
+                        $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
+                }
             }
         }
         break;
