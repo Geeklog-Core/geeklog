@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.47 2006/12/02 16:55:23 dhaun Exp $
+// $Id: lib-comment.php,v 1.48 2006/12/09 22:16:49 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -766,6 +766,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('lang_preview', $LANG03[14]);
 
             if (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
+                PLG_templateSetVars ('comment', $comment_template);
                 $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '">');
             }
 

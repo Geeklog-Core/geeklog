@@ -41,6 +41,7 @@
                                                             <span class="warningsmall">{allowed_html}</span>
                                                         </td>
                                                     </tr>
+                                                    {captcha}
                                                     <tr>
                                                         <td colspan="2"><hr></td>
                                                     </tr>
