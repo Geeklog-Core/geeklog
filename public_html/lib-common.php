@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.606 2006/12/09 13:38:52 dhaun Exp $
+// $Id: lib-common.php,v 1.607 2006/12/09 17:41:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2577,7 +2577,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( $_CONF['sort_admin'] )
         {
-            ksort( $link_array );
+            uksort( $link_array, 'strcasecmp' );
         }
 
         $url = $_CONF['site_admin_url'] . '/moderation.php';

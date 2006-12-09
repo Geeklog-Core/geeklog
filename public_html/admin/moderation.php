@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.100 2006/11/02 03:23:29 ospiess Exp $
+// $Id: moderation.php,v 1.101 2006/12/09 17:41:56 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -164,7 +164,7 @@ function commandcontrol()
     }
 
     if ($_CONF['sort_admin']) {
-        ksort($items);
+        uksort ($items, 'strcasecmp');
     }
      // logout is always the last entry
     $item = render_cc_item ($admin_templates,
