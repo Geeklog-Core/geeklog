@@ -193,7 +193,7 @@ default theme (Professional) that ships with Geeklog.</p>
 <p>From now on, all headlines in blocks & stories are made with header-tags. The
 biggest title in a story is always h1, in a block always h2.</p>
 
-<h3>Story-layout</h3>
+<h3>Story layout</h3>
 <p>The blocks for stories have no more tables, and the classes have been renamed
 for consistency. There is a box now around the story called class "story" or
 "story-featured". The components inside that box are story-icons,
@@ -292,6 +292,20 @@ entire 'admin' directory with the one from Geeklog's Professional theme.</p>
 <li>The <tt>navbar</tt> directory now contains four files,
     <tt>menuitem.thtml</tt>,<tt>navbar.thtml</tt>,<tt>breadcrumbs.thtml</tt>,<tt>breadcrumb_link</tt> as well as two images,
     <tt>button.gif</tt> and <tt>button_over.gif</tt>.</li>
+<li>A <a name="captcha"><code>{captcha}</code></a> variable has been added to
+    the following files:
+    <ul>
+    <li><tt>comment/commentform.thtml</tt></li>
+    <li><tt>comment/commentform_advanced.thtml</tt></li>
+    <li><tt>profiles/contactauthorform.thtml</tt></li>
+    <li><tt>profiles/contactuserform.thtml</tt></li>
+    <li><tt>submit/submitstory.thtml</tt></li>
+    <li><tt>submit/submitstory_advanced.thtml</tt></li>
+    <li><tt>users/registrationform.thtml</tt></li>
+    </ul>
+    This variable is supposed to be used by a plugin that implements <a
+    href="http://en.wikipedia.org/wiki/Captcha">CAPTCHA</a>s and will simply be
+    empty when no such plugin is installed.</li>
 </ul>
 
 <h3>Professional theme</h3>
