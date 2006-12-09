@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.34 2006/09/23 01:01:04 blaine Exp $
+// $Id: lib-custom.php,v 1.35 2006/12/09 18:42:04 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -377,7 +377,7 @@ function CUSTOM_showBlocks($showblocks)
 
     $retval = '';
     foreach($showblocks as $block) {
-        $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help FROM {$_TABLES['blocks']} WHERE name='$block'";
+        $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help,allow_autotags FROM {$_TABLES['blocks']} WHERE name='$block'";
         $result = DB_query($sql);
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
