@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.112 2006/12/04 12:49:53 dhaun Exp $
+// $Id: submit.php,v 1.113 2006/12/09 21:46:27 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -247,6 +247,7 @@ function submitstory($topic = '')
     $storyform->set_var('story_date', $A['unixdate']);
 
     if (($_CONF['skip_preview'] == 1) || ($A['mode'] == $LANG12[32])) {
+        PLG_templateSetVars ('story', $storyform);
         $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '">');
     }
 
@@ -485,6 +486,18 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
         (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
         $display = COM_refresh ($_CONF['site_url'] . '/index.php');
     } else {
+        if ($type == 'story') {
+            $msg = PLG_itemPreSave ($type, $_POST);
+            if (!empty ($msg)) {
+                $_POST['mode'] =  $LANG12[32];
+                $display .= COM_siteHeader ('menu', $pagetitle)
+                         . COM_errorLog ($msg, 2)
+                         . submitstory ($topic)
+                         . COM_siteFooter();
+                echo $display;
+                exit;
+            }
+        }
         $display .= savesubmission ($type, $_POST);
     }
 } else {
