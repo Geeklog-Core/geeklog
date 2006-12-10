@@ -36,7 +36,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.91 2006/11/12 14:53:05 dhaun Exp $
+// $Id: install.php,v 1.92 2006/12/10 09:37:44 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -934,6 +934,11 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $done = true;
         }
     }
+
+    // delete the security check flag on every update to force the user
+    // to run admin/sectest.php again
+    DB_delete ($_TABLES['vars'], 'name', 'security_check');
+
     return true;
 }
 
