@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.247 2006/12/02 12:19:26 dhaun Exp $
+// $Id: story.php,v 1.248 2006/12/10 12:08:40 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -249,6 +249,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
 
     if (!empty ($sid) && ($mode == 'edit')) {
+        $msql = array();
         $msql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl, UNIX_TIMESTAMP(s.expire) AS expiredate "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "

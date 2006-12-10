@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Dec ??, 2006 (1.4.1rc1)
 ------------
 
+- Initialize SQL request arrays to prevent PHP errors (e.g. with static pages),
+  reported by ldfoo [Dirk]
 - Escape the '#' sign in spam checks since we're using it as the separator
   character for the regexp [Dirk]
 - Mark Evans provided a set of patches that let plugins hook into the user

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.607 2006/12/09 17:41:56 dhaun Exp $
+// $Id: lib-common.php,v 1.608 2006/12/10 12:08:39 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3721,6 +3721,7 @@ function COM_emailUserTopics()
     {
         $U = DB_fetchArray( $users );
 
+        $storysql = array();
         $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
 
         $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext";
@@ -3759,6 +3760,7 @@ function COM_emailUserTopics()
         $commonsql .= COM_getPermSQL( 'AND', $U['uuid'] );
         $commonsql .= ' ORDER BY featured DESC, date DESC';
 
+        $storysql = array();
         $storysql['mysql'] .= $commonsql;
         $storysql['mssql'] .= $commonsql;
 

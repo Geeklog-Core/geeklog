@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.32 2006/11/25 13:58:35 dhaun Exp $
+// $Id: index.php,v 1.33 2006/12/10 12:08:40 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -168,6 +168,7 @@ if (empty ($page)) {
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
+    $sql = array();
     $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
     $sql['mssql'] = "SELECT sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
     $result = DB_query ($sql);

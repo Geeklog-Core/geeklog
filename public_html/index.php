@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.88 2006/11/25 13:58:35 dhaun Exp $
+// $Id: index.php,v 1.89 2006/12/10 12:08:39 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -195,6 +195,7 @@ if ($_CONF['allow_user_photo'] == 1) {
     }
 }
 
+$msql = array();
 $msql['mysql']="SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
          . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "

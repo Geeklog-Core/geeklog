@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.11 2006/11/12 12:09:58 dhaun Exp $
+// $Id: directory.php,v 1.12 2006/12/10 12:08:39 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -332,6 +332,7 @@ function DIR_displayYear ($topic, $year, $main = false)
     $monthsql .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
               . COM_getLangSQL ('sid', 'AND');
 
+    $msql = array();
     $msql['mysql'] = $monthsql . " GROUP BY MONTH(date) ORDER BY date ASC";
     $msql['mssql'] = $monthsql . " GROUP BY MONTH(date), date ORDER BY date ASC";
     $mresult = DB_query ($msql);
@@ -407,6 +408,7 @@ function DIR_displayAll ($topic, $list_current_month = false)
             . '</h1> ' . DIR_topicList ($topic) . '</div>' . LB;
 
     $yearsql = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    $ysql = array();
     $ysql['mysql'] = $yearsql . " GROUP BY YEAR(date) ORDER BY date DESC";
     $ysql['mssql'] = $yearsql . " GROUP BY YEAR(date), date ORDER BY date DESC";
 
