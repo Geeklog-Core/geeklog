@@ -11,7 +11,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: Header.Examine.class.php,v 1.4 2006/06/25 08:40:54 dhaun Exp $
+* $Id: Header.Examine.class.php,v 1.5 2006/12/10 08:57:49 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'Header.Examine.class.php') !== false) {
@@ -71,6 +71,7 @@ class Header extends BaseCommand {
             $v = explode (':', $entry);
             $name = trim ($v[0]);
             $value = trim ($v[1]);
+            $value = str_replace ('#', '\\#', $value);
 
             foreach ($headers as $key => $content) {
                 if (strcasecmp ($name, $key) == 0) {

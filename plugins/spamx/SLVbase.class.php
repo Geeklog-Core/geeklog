@@ -9,7 +9,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: SLVbase.class.php,v 1.4 2006/09/09 16:10:43 dhaun Exp $
+* $Id: SLVbase.class.php,v 1.5 2006/12/10 08:57:49 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'SLVbase.class.php') !== false) {
@@ -125,6 +125,7 @@ class SLVbase {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
             $val = $A['value'];
+            $val = str_replace ('#', '\\#', $val);
 
             foreach ($links as $key => $link) {
                 if (!empty ($link)) {

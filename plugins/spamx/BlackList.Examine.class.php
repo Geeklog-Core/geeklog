@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: BlackList.Examine.class.php,v 1.11 2006/06/25 08:40:54 dhaun Exp $
+ * $Id: BlackList.Examine.class.php,v 1.12 2006/12/10 08:57:49 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'BlackList.Examine.class.php') !== false) {
@@ -68,6 +68,7 @@ class BlackList extends BaseCommand {
         $ans = 0;
         for ($i = 1; $i <= $nrows; $i++) {
             list ($val) = DB_fetchArray ($result);
+            $val = str_replace ('#', '\\#', $val);
             if (preg_match ("#$val#i", $comment)) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log ($LANG_SX00['foundspam'] . $val .
