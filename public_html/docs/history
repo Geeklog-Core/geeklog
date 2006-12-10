@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Dec ??, 2006 (1.4.1rc1)
 ------------
 
+- Escape the '#' sign in spam checks since we're using it as the separator
+  character for the regexp [Dirk]
 - Mark Evans provided a set of patches that let plugins hook into the user
   registration, story and comment submission as well as the contact user and
   email story forms. These hooks can be used to add CAPTCHAs to those forms,
