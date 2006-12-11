@@ -24,6 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
+# Last Update 2006/12/12 by Ivy (Geeklog Japanese)
 
 ###############################################################################
 # Array Format: 
@@ -90,16 +91,16 @@ $LANG_STATIC= array(
     'position_feat' => '注目記事の下',
     'position_bottom' => 'ページの下',
     'position_entire' => 'ページ全体',
-    'position_menutab' => 'ヘッダー',
-    'position_footer' => 'フッター',
+    'position_menutab' => 'ヘッダ',
+    'position_footer' => 'フッタ',
     'head_centerblock' => 'トップページ表示',
     'centerblock_no' => 'いいえ',
     'centerblock_top' => '上部',
     'centerblock_second' => '記事の上',
     'centerblock_feat' => '注目記事',
     'centerblock_bottom' => '下部',
-    'centerblock_menutab' => 'ヘッダー',
-    'centerblock_footer' => 'フッター',
+    'centerblock_menutab' => 'ヘッダ',
+    'centerblock_footer' => 'フッタ',
     'centerblock_entire' => 'ページ全体',
     'inblock_msg' => 'タイトル表示: ',
     'inblock_info' => 'チェックすると、タイトルが表示されます。チェックをはずすと、タイトルは表示されません。',

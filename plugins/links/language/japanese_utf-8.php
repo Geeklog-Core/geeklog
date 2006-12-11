@@ -1,8 +1,8 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for the Geeklog links Plug-in!
+# japanese_utf-8.php
+# This is the Japanese language page for the Geeklog links Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -25,7 +25,8 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: japanese_utf-8.php,v 1.5 2006/10/07 20:19:04 dhaun Exp $
+# $Id: japanese_utf-8.php,v 1.6 2006/12/11 16:58:01 dhaun Exp $
+# Last Update 2006/12/12 by Ivy (Geeklog Japanese)
 
 ###############################################################################
 # Array Format: 
@@ -72,7 +73,7 @@ $LANG_LINKS_SUBMIT = array(
     2 => 'リンク',
     3 => 'カテゴリ',
     4 => 'その他',
-    5 => '特記事項',
+    5 => '新しいカテゴリ名',
     6 => 'エラー：カテゴリを選んでください',
     7 => '「その他」を選択する場合には新しいカテゴリ名を記入してください。',
     8 => 'タイトル',
@@ -84,10 +85,10 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンク登録ありがとうございます。スタッフが内容を確認します。承認されたら<a href={$_CONF['site_url']}/links.php>リンク</a>セクションにリンクが表示されます。";
+$PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンク登録ありがとうございます。スタッフが内容を確認します。承認されたら<a href={$_CONF['site_url']}/links/index.php>リンク</a>セクションに表示されます。";
 $PLG_links_MESSAGE2 = 'リンクは無事登録されました。';
 $PLG_links_MESSAGE3 = 'リンクの削除が完了しました。';
-$PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンク登録ありがとうございます。リンクは<a href={$_CONF['site_url']}/links.php>リンク</a>で確認できます。";
+$PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンク登録ありがとうございます。<a href={$_CONF['site_url']}/links/index.php>リンク</a>でご確認ください。";
 
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3002 = $LANG32[9];

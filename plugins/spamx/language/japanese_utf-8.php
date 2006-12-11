@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File: english_utf-8.php
+ * File: japanese_utf-8.php
  * This is the English language file for the Geeklog Spam-X plugin
  * 
  * Copyright (C) 2004-2006 by the following authors:
@@ -10,8 +10,9 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese_utf-8.php,v 1.1 2006/10/07 20:19:04 dhaun Exp $
+ * $Id: japanese_utf-8.php,v 1.2 2006/12/11 16:58:02 dhaun Exp $
  */
+# Last Update 2006/12/12 by Ivy (Geeklog Japanese)
 
 $LANG_SX00 = array (
     'inst1' => '<p>もしこれをおこなったら他も ',
@@ -25,13 +26,13 @@ $LANG_SX00 = array (
     'sitename' => 'サイト名: ',
     'URL' => 'URL Spam-X リスト: ',
     'RDF' => 'RDF url: ',
-    'impinst1a' => 'Spam-Xを使う前に、 Spam ブロッカー機能のパーソナルブラックリストを閲覧してインポートします。',
+    'impinst1a' => 'Spam-Xを使う前に、 Spamブロッカー機能のパーソナルブラックリストを閲覧してインポートします。',
     'impinst1b' => 'サイト、つぎのボタンを。 (最後のボタンをクリック)',
     'impinst2' => 'Gplugs/Spam-X の最初の実行はマスターリストに加えられます ',
-    'impinst2a' => 'ブラックリストが反映。 (註: 複数サイトあるのなら、 you might want to designate one as the ',
-    'impinst2b' => 'マスタだけが名前を変更できます。（ これであなたにあなたのサイトをアップデートを簡単に、そしてそのリストを小さく保ちます。) ',
+    'impinst2a' => 'ブラックリストが反映。 (註: 複数サイトあるのなら、 その中のひとつを指定したいかもしれない',
+    'impinst2b' => 'マスタだけが名前を変更できます。（ これであなたにあなたのサイトをアップデートを簡単に、そしてそのリストを小さいままにできます。) ',
     'impinst2c' => '実行ボタンをクリックしたら、 [戻る]をクリックしてこのページに戻ってください。',
-    'impinst3' => '以下の内容が送られるでしょう。: (もし彼らが間違っていたら、あなたが編集できることになるでしょう。).',
+    'impinst3' => '以下の内容が送られるでしょう。: (もしそれらが間違っていたら、編集することができます。).',
     'availb' => 'ブラックリスト表示',
     'clickv' => 'クリックしてブラックリストを表示',
     'clicki' => 'クリックしてブラックリストをインポート',
@@ -47,7 +48,7 @@ $LANG_SX00 = array (
     'addcen' => 'センサーリスト追加',
     'addentry' => 'エントリ追加',
     'e1' => 'クリックしてエントリを削除',
-    'e2' => 'エントリを追加して, enter it in the box and click Add.  Entries can use full Perl Regular Expressions.',
+    'e2' => 'エントリを追加して, エントリ追加ボタンをクリックしてください。エントリーは完全なPerl正規表現を使用することができます。 ',
     'pblack' => 'Spam-X パーソナルブラックリスト',
     'conmod' => 'Spam-Xモジュール設定',
     'acmod' => 'Spam-X アクションモジュール',
@@ -69,7 +70,7 @@ $LANG_SX00 = array (
     'clearlog' => 'ログファイル削除',
     'logcleared' => '- Spam-X ログファイルが削除されました',
     'plugin' => 'プラグイン',
-    'access_denied' => 'アクセスが拒否されましたd',
+    'access_denied' => 'アクセスが拒否されました',
     'access_denied_msg' => 'ルートユーザだけがこのページにアクセスできます。あなたのユーザ名とIPアドレスを記録しました。',
     'admin' => 'プラグイン管理',
     'install_header' => 'インストール/アンインストールプラグイン',
@@ -90,14 +91,14 @@ $LANG_SX00 = array (
     'foundspam3' => ' IPから ',
 	'deletespam' => 'スパム削除',
 	'numtocheck' => 'コメント数チェック',
-	'note1'		=> '<p>Note: マスデリートで攻撃から守ります',
-	'note2'		=> ' コメントスパムと Spam-X はそれをキャッチしません。 <ul><li>最初のリンクと他 ',
-	'note3'		=> 'このスパムコメントと あなたのパーソナルブラックリストへの追加</li><li>そうして ',
-	'note4'		=> 'ここに戻り、最近のコメントを Spam-X チェック</li></ul><p>コメント',
+	'note1'		=> '<p>Note: マスデリートで攻撃から守ります。',
+	'note2'		=> ' コメントスパムと Spam-X はキャッチしません。 <ul><li>最初のリンクとその他 ',
+	'note3'		=> 'このスパムコメントをあなたのパーソナルブラックリストへ追加</li><li>',
+	'note4'		=> 'ここに戻り、最近のコメントを Spam-X チェック</li></ul><p>',
 	'note5'		=> '最新コメントを最後のコメントに追加チェック -- コメントチェック ',
 	'note6'		=> 'チェックをより多く要求します。</p>',
-	'masshead'	=> '<hr><h1 align="center">マスデリートスパムコメント</h1>',
-	'masstb' => '<hr><h1 align="center">マスデリートトラックバックスパム</h1>',
+	'masshead'	=> '<hr><h1 align="center">マスデリート～スパムコメント</h1>',
+	'masstb' => '<hr><h1 align="center">マスデリート～トラックバックスパム</h1>',
 	'comdel'	=> 'コメントが削除されました。',
     'initial_Pimport' => '<p>パーソナルブラックリスト インポート"',
     'initial_import' => '初期 MT-ブラックリスト インポート',

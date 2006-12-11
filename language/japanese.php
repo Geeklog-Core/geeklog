@@ -26,9 +26,8 @@
 ################################################################################
 # これは、Geeklogコア 用日本語言語ファイルです。
 # language/japanese.php
-# もし万一エンコードの種類が　EUCでない場合は、EUCに変換してください。
 # http://www.geeklog.jp/
-# Last Update 2006/12/11
+# Last Update 2006/12/12
 
 $LANG_CHARSET = 'euc-jp';
 
