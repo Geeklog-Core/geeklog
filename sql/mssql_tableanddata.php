@@ -492,7 +492,7 @@ CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
     [charset] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [language] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [is_enabled] [tinyint] NOT NULL ,
-    [updated] [datetime] NOT NULL ,
+    [updated] [datetime] NULL ,
     [update_info] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY] 
 ";

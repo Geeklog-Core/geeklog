@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.111 2006/12/02 16:46:09 dhaun Exp $
+// $Id: comment.php,v 1.112 2006/12/11 11:49:17 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -94,8 +94,7 @@ function handleSubmit()
                            $LANG03[14], COM_applyFilter($_POST['postmode']))
                          . COM_siteFooter();
             } else { // success
-                $comments = DB_count ($_TABLES['comments'],
-                                array ('sid', 'type'), array ($sid, 'article'));
+                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
                 DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
                 COM_olderStuff (); // update comment count in Older Stories block
                 $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
@@ -137,8 +136,7 @@ function handleDelete()
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
                     $A['perm_members'], $A['perm_anon']) == 3) {
                 CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'article');
-                $comments = DB_count ($_TABLES['comments'],
-                                array ('sid', 'type'), array ($sid, 'article'));
+                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
                 DB_change ($_TABLES['stories'], 'comments', $comments,
                            'sid', $sid);
                 $display .= COM_refresh (COM_buildUrl ($_CONF['site_url']
@@ -208,7 +206,7 @@ function handleView($view = true)
             $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['stories']} WHERE (sid = '$sid') "
                  . 'AND (draft_flag = 0) AND (commentcode = 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
-                 . COM_getTopicSQL('AND') . ' GROUP BY sid';
+                 . COM_getTopicSQL('AND') . ' GROUP BY sid,owner_id, group_id, perm_owner, perm_group,perm_members, perm_anon ';
             $result = DB_query ($sql);
             $B = DB_fetchArray ($result);
             $allowed = $B['count'];

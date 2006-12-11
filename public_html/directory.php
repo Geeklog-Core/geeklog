@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.12 2006/12/10 12:08:39 dhaun Exp $
+// $Id: directory.php,v 1.13 2006/12/11 11:49:17 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -61,6 +61,31 @@ if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
     $display .= COM_siteFooter ();
     echo $display; 
     exit;
+}
+
+/**
+* Helper function: Calculate last day of a given month
+*
+* @param    int     $month  Month
+* @param    int     $year   Year
+* @return   int             Number of days in that month
+* @bugs     Will fail from 2038 onwards ...
+*
+* "The last day of any given month can be expressed as the "0" day
+* of the next month", http://www.php.net/manual/en/function.mktime.php
+*
+*/
+function DIR_lastDayOfMonth ($month, $year)
+{
+    $month++;
+    if ($month > 12) {
+        $month = 1;
+        $year++;
+    }
+
+    $lastday = mktime (0, 0, 0, $month, 0, $year);
+
+    return intval(strftime('%d', $lastday));
 }
 
 /**
@@ -243,7 +268,8 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
     }
 
     $start = sprintf ('%04d-%02d-01 00:00:00', $year, $month);
-    $end   = sprintf ('%04d-%02d-31 23:59:59', $year, $month);
+    $lastday = DIR_lastDayOfMonth ($month, $year);
+    $end   = sprintf ('%04d-%02d-%02d 23:59:59', $year, $month, $lastday);
 
     $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
     if ($topic != 'all') {
@@ -325,16 +351,22 @@ function DIR_displayYear ($topic, $year, $main = false)
     $start = sprintf ('%04d-01-01 00:00:00', $year);
     $end   = sprintf ('%04d-12-31 23:59:59', $year);
 
-    $monthsql = "SELECT DISTINCT MONTH(date) AS month,COUNT(*) AS count,date FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
+    $monthsql = array();
+    $monthsql['mysql'] = "SELECT DISTINCT MONTH(date) AS month,COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
+    $monthsql['mssql'] = "SELECT MONTH(date) AS month,COUNT(sid) AS count FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
     if ($topic != 'all') {
-        $monthsql .= " AND (tid = '$topic')";
+        $monthsql['mysql'] .= " AND (tid = '$topic')";
+        $monthsql['mssql'] .= " AND (tid = '$topic')";
     }
-    $monthsql .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+    $monthsql['mysql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+              . COM_getLangSQL ('sid', 'AND');
+    $monthsql['mssql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
               . COM_getLangSQL ('sid', 'AND');
 
     $msql = array();
-    $msql['mysql'] = $monthsql . " GROUP BY MONTH(date) ORDER BY date ASC";
-    $msql['mssql'] = $monthsql . " GROUP BY MONTH(date), date ORDER BY date ASC";
+    $msql['mysql'] = $monthsql['mysql'] . " GROUP BY MONTH(date) ORDER BY date ASC";
+    $msql['mssql'] = $monthsql['mssql'] . " GROUP BY MONTH(date) ORDER BY month(date) ASC";
+
     $mresult = DB_query ($msql);
     $nummonths = DB_numRows ($mresult);
 
@@ -407,10 +439,12 @@ function DIR_displayAll ($topic, $list_current_month = false)
     $retval .= '<div><h1 style="display:inline">' . $LANG_DIR['title']
             . '</h1> ' . DIR_topicList ($topic) . '</div>' . LB;
 
-    $yearsql = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    $yearsql = array();
+    $yearsql['mysql'] = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    $yearsql['mssql'] = "SELECT YEAR(date) AS year FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
     $ysql = array();
-    $ysql['mysql'] = $yearsql . " GROUP BY YEAR(date) ORDER BY date DESC";
-    $ysql['mssql'] = $yearsql . " GROUP BY YEAR(date), date ORDER BY date DESC";
+    $ysql['mysql'] = $yearsql['mysql'] . " GROUP BY YEAR(date) ORDER BY date DESC";
+    $ysql['mssql'] = $yearsql['mssql'] . " GROUP BY YEAR(date) ORDER BY YEAR(date) DESC";
 
     $yresult = DB_query ($ysql);
     $numyears = DB_numRows ($yresult);
