@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.19 2006/09/16 16:52:39 dhaun Exp $
+// $Id: event.php,v 1.20 2006/12/11 13:25:31 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -53,7 +53,7 @@ function adduserevent ($eid)
 
     $retval = '';
 
-    $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'" . COM_getPermSql ('AND');
+    $eventsql = "SELECT * FROM {$_TABLES['events']} WHERE eid='$eid'" . COM_getPermSql ('AND');
     $result = DB_query($eventsql);
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
@@ -83,8 +83,8 @@ function adduserevent ($eid)
         $cal_template->set_var('lang_starts', $LANG_CAL_1[13]);
         $cal_template->set_var('lang_ends', $LANG_CAL_1[14]);
 
-        $thestart = COM_getUserDateTimeFormat($A['start'] . ' ' . $A['timestart']);
-        $theend = COM_getUserDateTimeFormat($A['end'] . ' ' . $A['timeend']);
+        $thestart = COM_getUserDateTimeFormat($A['datestart'] . ' ' . $A['timestart']);
+        $theend = COM_getUserDateTimeFormat($A['dateend'] . ' ' . $A['timeend']);
         if ($A['allday'] == 0) {
             $cal_template->set_var('event_start', $thestart[0]);
             $cal_template->set_var('event_end', $theend[0]);
@@ -447,13 +447,11 @@ default:
     if (!empty ($eid)) {
         if (($mode == 'personal') && ($_CA_CONF['personalcalendars'] == 1) &&
                 (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
-            $datesql = "SELECT *,datestart AS start,dateend AS end "
-                     . "FROM {$_TABLES['personal_events']} "
+            $datesql = "SELECT * FROM {$_TABLES['personal_events']} "
                      . "WHERE (eid = '$eid') AND (uid = {$_USER['uid']})";
             $pagetitle = $LANG_CAL_2[28] . ' ' . COM_getDisplayName();
         } else {
-            $datesql = "SELECT *,datestart AS start,dateend AS end "
-                     . "FROM {$_TABLES['events']} WHERE eid = '$eid'";
+            $datesql = "SELECT * FROM {$_TABLES['events']} WHERE eid = '$eid'";
             if (strpos ($LANG_CAL_2[9], '%') === false) {
                 $pagetitle = $LANG_CAL_2[9];
             } else {
@@ -490,8 +488,7 @@ default:
         $display .= COM_startBlock ($pagetitle);
 
         $thedate = sprintf ('%4d-%02d-%02d', $year, $month, $day);
-        $datesql = "SELECT *,datestart AS start,dateend AS end "
-                 . "FROM {$_TABLES['events']} "
+        $datesql = "SELECT * FROM {$_TABLES['events']} "
                  . "WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') "
                  . "and DATE_FORMAT(dateend,'%Y-%m-%d') "
                  . "ORDER BY datestart ASC,timestart ASC,title";
@@ -532,11 +529,11 @@ default:
             $A = DB_fetchArray($result);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],
                               $A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                if (strftime('%B',strtotime($A['start'])) != $currentmonth) {
-                    $str_month = $cal->getMonthName(strftime('%m',strtotime($A['start'])));
+                if (strftime('%B',strtotime($A['datestart'])) != $currentmonth) {
+                    $str_month = $cal->getMonthName(strftime('%m',strtotime($A['datestart'])));
                     $cal_templates->set_var('lang_month', $str_month);
-                    $cal_templates->set_var('event_year', strftime('%Y',strtotime($A['start'])));
-                    $currentmonth = strftime('%B',strtotime($A['start']));
+                    $cal_templates->set_var('event_year', strftime('%Y',strtotime($A['datestart'])));
+                    $currentmonth = strftime('%B',strtotime($A['datestart']));
                 }
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
                 $cal_templates->set_var('site_url', $_CONF['site_url']);
@@ -574,29 +571,29 @@ default:
                 }
                 $cal_templates->set_var('lang_when', $LANG_CAL_1[3]);
                 if ($A['allday'] == 0) {
-                    $thedatetime = COM_getUserDateTimeFormat ($A['start'] . ' '
-                                                            . $A['timestart']);
+                    $thedatetime = COM_getUserDateTimeFormat ($A['datestart'] .
+                                                        ' ' . $A['timestart']);
                     $cal_templates->set_var ('event_start', $thedatetime[0]);
 
-                    if ($A['start'] == $A['end']) {
+                    if ($A['datestart'] == $A['dateend']) {
                         $thedatetime[0] = strftime ($_CONF['timeonly'],
                             strtotime ($A['dateend'] . ' ' . $A['timeend']));
                     } else {
-                        $thedatetime = COM_getUserDateTimeFormat ($A['end']
+                        $thedatetime = COM_getUserDateTimeFormat ($A['dateend']
                                                         . ' ' . $A['timeend']);
                     }
                     $cal_templates->set_var ('event_end', $thedatetime[0]);
-                } elseif ($A['allday'] == 1 AND $A['start'] <> $A['end']) {
+                } elseif ($A['allday'] == 1 AND $A['datestart'] <> $A['dateend']) {
                     $thedatetime1 = strftime ('%A, ' . $_CONF['shortdate'],
-                                             strtotime ($A['start']));
+                                             strtotime ($A['datestart']));
                     $cal_templates->set_var ('event_start', $thedatetime1);
                     $thedatetime2 = strftime ('%A, ' . $_CONF['shortdate'],
-                                                  strtotime ($A['end']));
+                                                  strtotime ($A['dateend']));
                     $cal_templates->set_var ('event_end', $thedatetime2
                                                         . ' ' . $LANG_CAL_2[26]);
                 } else {
                     $thedatetime = strftime ('%A, ' . $_CONF['shortdate'],
-                                             strtotime ($A['start']));
+                                             strtotime ($A['datestart']));
                     $cal_templates->set_var ('event_start', $thedatetime);
                     $cal_templates->set_var ('event_end', $LANG_CAL_2[26]);
                 }
