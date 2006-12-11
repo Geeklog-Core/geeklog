@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Dec ??, 2006 (1.4.1rc1)
 ------------
 
+- Fixes for the remaining MS SQL issues (bugs #620, #621, #622, #624)
+  [Randy Kolenko, Dirk]
 - Initialize SQL request arrays to prevent PHP errors (e.g. with static pages),
   reported by ldfoo [Dirk]
 - Escape the '#' sign in spam checks since we're using it as the separator
@@ -58,6 +60,11 @@ Dec ??, 2006 (1.4.1rc1)
 - Fixed check for new stories from archive topic [Dirk]
 - Call PLG_templateSetVars() from STORY_renderArticle() so we can have custom
   variables in the story templates [Dirk]
+
+- Updated Japanese language files for Geeklog and all the plugins, provided
+  by the Geeklog Japanese group
+- Updated Ukrainian language files (Windows-1251, KOI8-U, and UTF-8 encoding),
+  provided by Vitaliy Biliyenko
 
 
 Nov 5, 2006 (1.4.1b2)
