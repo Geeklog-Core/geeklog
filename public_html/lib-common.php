@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.608 2006/12/10 12:08:39 dhaun Exp $
+// $Id: lib-common.php,v 1.609 2006/12/12 08:44:53 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3760,7 +3760,6 @@ function COM_emailUserTopics()
         $commonsql .= COM_getPermSQL( 'AND', $U['uuid'] );
         $commonsql .= ' ORDER BY featured DESC, date DESC';
 
-        $storysql = array();
         $storysql['mysql'] .= $commonsql;
         $storysql['mssql'] .= $commonsql;
 
