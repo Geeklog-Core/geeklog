@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.39 2006/10/01 18:19:21 dhaun Exp $
+// $Id: index.php,v 1.40 2006/12/12 09:50:03 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -115,7 +115,7 @@ function listpolls()
 * @param    int     $statuscode     (unused)
 * @param    int     $commentcode    Indicates if users can comment on poll
 * @param    array   $A              Array of possible answers
-* @param    array   $V              Array of vote per each answer 
+* @param    array   $V              Array of vote per each answer
 * @param    int     $owner_id       ID of poll owner
 * @param    int     $group_id       ID of group poll belongs to
 * @param    int     $perm_owner     Permissions the owner has on poll
@@ -125,7 +125,7 @@ function listpolls()
 * @return   string                  HTML redirect or error message
 *
 */
-function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcode, $A, $V, $R, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon) 
+function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcode, $A, $V, $R, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
 {
     global $_CONF, $_TABLES, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE;
 
@@ -173,8 +173,8 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
             exit;
         }
 
-        if (empty ($voters)) { 
-            $voters = 0; 
+        if (empty ($voters)) {
+            $voters = 0;
         }
 
         if ($_POLL_VERBOSE) {
@@ -190,7 +190,7 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
         $question = addslashes ($question);
         $sql = "'$qid','$question',$voters,'" . date ('Y-m-d H:i:s');
 
-        if ($mainpage == 'on') { 
+        if ($mainpage == 'on') {
             $sql .= "',1";
         } else {
             $sql .= "',0";
@@ -204,8 +204,8 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
         // Save poll answers
         for ($i = 0; $i < sizeof($A); $i++) {
             if (strlen ($A[$i]) > 0) {
-                if (empty($V[$i])) { 
-                    $V[$i] = "0"; 
+                if (empty($V[$i]) or !is_numeric($V[$i])) {
+                    $V[$i] = "0";
                 }
                 $A[$i] = addslashes ($A[$i]);
                 $R[$i] = addslashes ($R[$i]);
@@ -264,9 +264,9 @@ function editpoll ($qid = '')
         $Q = DB_fetchArray($question);
 
         // Get permissions for poll
-    
+
         $access = SEC_hasAccess($Q['owner_id'],$Q['group_id'],$Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']);
-    
+
         if ($access == 0 OR $access == 2) {
             // User doesn't have access...bail
             $retval .= COM_startBlock ($LANG25[21], '',
@@ -312,15 +312,15 @@ function editpoll ($qid = '')
     $poll_templates->set_var('lang_question', $LANG25[9]);
     $poll_templates->set_var('poll_question', htmlspecialchars ($Q['question']));
     $poll_templates->set_var('lang_mode', $LANG25[1]);
-    $poll_templates->set_var ('status_options', COM_optionList ($_TABLES['statuscodes'], 'code,name', $Q['statuscode'])); 
+    $poll_templates->set_var ('status_options', COM_optionList ($_TABLES['statuscodes'], 'code,name', $Q['statuscode']));
     $poll_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$Q['commentcode']));
     $poll_templates->set_var('lang_appearsonhomepage', $LANG25[8]);
 
-    if ($Q['display'] == 1) { 
+    if ($Q['display'] == 1) {
         $poll_templates->set_var('poll_display', 'checked="checked"');
     }
 
-    // user access info 
+    // user access info
     $poll_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $poll_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $ownername = COM_getDisplayName ($Q['owner_id']);
@@ -336,10 +336,10 @@ function editpoll ($qid = '')
     $poll_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
     $poll_templates->set_var('permissions_editor', SEC_getPermissionsHTML($Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']));
     $poll_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
-    $poll_templates->set_var('lang_answersvotes', $LANG25[10]);   
+    $poll_templates->set_var('lang_answersvotes', $LANG25[10]);
     $poll_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $poll_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
- 
+
     if (isset ($answers)) {
         for ($i = 1; $i <= $_PO_CONF['maxanswers']; $i++) {
             $A = DB_fetchArray ($answers);
