@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.609 2006/12/12 08:44:53 dhaun Exp $
+// $Id: lib-common.php,v 1.610 2006/12/14 05:19:57 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3332,7 +3332,7 @@ function COM_formatBlock( $A, $noboxes = false )
         $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'] );
     }
 
-    if( $A['type'] == 'phpblock' && !$_USER['noboxes'] )
+    if( $A['type'] == 'phpblock' && !$noboxes )
     {
         if( !( $A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'" ) == 0 ))
         {
@@ -3362,7 +3362,7 @@ function COM_formatBlock( $A, $noboxes = false )
         }
     }
 
-    if( !empty( $A['content'] ) && ( trim( $A['content'] ) != '' ) && !$_USER['noboxes'] )
+    if( !empty( $A['content'] ) && ( trim( $A['content'] ) != '' ) && !$noboxes )
     {
         $blockcontent = stripslashes( $A['content'] );
 

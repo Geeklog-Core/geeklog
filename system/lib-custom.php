@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.35 2006/12/09 18:42:04 blaine Exp $
+// $Id: lib-custom.php,v 1.36 2006/12/14 05:19:58 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -373,15 +373,25 @@ function CUSTOM_userCheck ($username, $email)
 */
 function CUSTOM_showBlocks($showblocks)
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_USER, $_TABLES;
 
     $retval = '';
+    if( !isset( $_USER['noboxes'] )) {
+        if( !empty( $_USER['uid'] )) {
+            $noboxes = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
+        } else {
+            $noboxes = 0;
+        }
+    } else {
+        $noboxes = $_USER['noboxes'];
+    }
+ 
     foreach($showblocks as $block) {
         $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help,allow_autotags FROM {$_TABLES['blocks']} WHERE name='$block'";
         $result = DB_query($sql);
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
-            $retval .= COM_formatBlock($A);
+            $retval .= COM_formatBlock($A,$noboxes);
         }
     }
 
