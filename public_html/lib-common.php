@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.610 2006/12/14 05:19:57 blaine Exp $
+// $Id: lib-common.php,v 1.611 2006/12/16 18:10:37 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3433,7 +3433,7 @@ function COM_rdfCheck( $bid, $rdfurl, $date, $maxheadlines = 0 )
 */
 function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
 {
-    global $_CONF, $_TABLES, $LANG21;
+    global $_CONF, $_TABLES, $LANG21, $LANG_CHARSET;
 
     // Import the feed handling classes:
     require_once( $_CONF['path_system']
@@ -3470,6 +3470,19 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
         $result = DB_change( $_TABLES['blocks'], 'rdfupdated', $update,
                                                  'bid', $bid );
 
+        if( empty( $LANG_CHARSET ))
+        {
+            $charset = $_CONF['default_charset'];
+            if( empty( $charset ))
+            {
+                $charset = 'iso-8859-1';
+            }
+        }
+        else
+        {
+            $charset = $LANG_CHARSET;
+        }
+
         // format articles for display
         $readmax = min( $maxheadlines, count( $feed->articles ));
         for( $i = 0; $i < $readmax; $i++ )
@@ -3479,8 +3492,16 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
                 $feed->articles[$i]['title'] = $LANG21[61];
             }
 
+            if( $charset == 'utf-8' )
+            {
+                $title = $feed->articles[$i]['title'];
+            }
+            else
+            {
+                $title = utf8_decode( $feed->articles[$i]['title'] );
+            }
             $content = '<a href="' . $feed->articles[$i]['link'] . '">'
-                     . $feed->articles[$i]['title'] . '</a>';
+                     . $title . '</a>';
             $articles[] = $content;
         }
 
