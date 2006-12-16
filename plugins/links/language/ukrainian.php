@@ -4,7 +4,7 @@
 # ukrainian.php
 # This is the ukrainian language page for the Geeklog Links Plug-in!
 #
-# Copyright (C) 2005 Vitaliy Biliyenko
+# Copyright (C) 2006 Vitaliy Biliyenko
 # v.lokki@gmail.com
 #
 # This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: ukrainian.php,v 1.2 2006/05/13 17:13:08 dhaun Exp $
+# $Id: ukrainian.php,v 1.3 2006/12/16 21:11:14 dhaun Exp $
 
 ###############################################################################
 # Array Format:

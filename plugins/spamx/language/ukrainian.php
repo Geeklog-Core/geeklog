@@ -4,12 +4,12 @@
  * File: ukrainian.php
  * This is the Ukrainian language page for the Geeklog Spam-X Plug-in!
  * 
- * Copyright (C) 2005 by Vitaliy Biliyenko
+ * Copyright (C) 2006 by Vitaliy Biliyenko
  * v.lokki@gmail.com
  * 
  * Licensed under GNU General Public License
  *
- * $Id: ukrainian.php,v 1.3 2006/09/02 15:35:46 dhaun Exp $
+ * $Id: ukrainian.php,v 1.4 2006/12/16 21:11:15 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -45,7 +45,7 @@ $LANG_SX00 = array (
     'e3' => 'Щоб додати слова з цензорного списку Geeklog, натисніть кнопку:',
     'addcen' => 'Додати цензорний список',
     'addentry' => 'Додати запис',
-    'e1' => 'Щоб видалити запис, натисніть його.',
+    'e1' => 'Щоб вилучити запис, натисніть його.',
     'e2' => 'Щоб додати запис, введіть його у полі і натисніть Додати.  Записи можуть використовувати всі регулярні вирази Perl (Perl Regular Expressions).',
     'pblack' => 'Персональний чорний список Spam-X',
     'conmod' => 'Налаштувати використання модуля Spam-X',
@@ -87,17 +87,17 @@ $LANG_SX00 = array (
     'foundspam' => 'Знайдено збіг Spam-коментар ',
     'foundspam2' => ' написаний користувачем ',
     'foundspam3' => ' з IP-адреси ',
-	'deletespam' => 'Видалити Spam',
+	'deletespam' => 'Вилучити Spam',
 	'numtocheck' => 'Кількість коментарів для перевірки',
-	'note1'		=> '<p>Увага: Засіб Масове видалення може допомогти вам, якщо ви стали жертвою',
+	'note1'		=> '<p>Увага: Засіб Масове Вилучення може допомогти вам, якщо ви стали жертвою',
 	'note2'		=> ' спаму коментарів і Spam-X не перехоплює його.  <ul><li>Спочатку знайдіть посилання чи інші ',
 	'note3'		=> 'показники цього спам-коментаря і додайте їх до вашого чорного списку.</li><li>Далі ',
 	'note4'		=> 'поверніться сюди і дайте Spam-X перевірити останні коментарі на спам.</li></ul><p>Коментарі ',
 	'note5'		=> 'перевіряються від новіших до старіших -- перевірка більшої кількості коментарів ',
 	'note6'		=> 'вимагає більше часу.</p>',
-	'masshead'	=> '<hr><h1 align="center">Масове видалення Spam-коментарів</h1>',
-	'masstb' => '<hr><h1 align="center">Масове видалення трекбек-спаму</h1>',
-	'comdel'	=> ' коментарів видалено.',
+	'masshead'	=> '<hr><h1 align="center">Масове Вилучення Spam-коментарів</h1>',
+	'masstb' => '<hr><h1 align="center">Масове Вилучення трекбек-спаму</h1>',
+	'comdel'	=> ' коментарів вилучено.',
     'initial_Pimport' => '<p>Імпорт чорного списку"',
     'initial_import' => 'Початковий імпорт MT-Blacklist',
     'import_success' => '<p>Успішно імпортовано %d записів чорного списку.',
@@ -119,15 +119,15 @@ $LANG_SX00 = array (
     'stats_ip' => 'Заблоковані IP-адреси',
     'stats_ipofurl' => 'Заблоковано за IP з URL',
     'stats_header' => 'HTTP-заголовки',
-    'stats_deleted' => 'Пости видалені як спам',
+    'stats_deleted' => 'Пости, вилучені як спам',
 
     'plugin_name' => 'Spam-X',
-    'slvwhitelist' => 'SLV Whitelist'
+    'slvwhitelist' => 'Білий список SLV'
 );
 
 
 /* Define Messages that are shown when Spam-X module action is taken */
-$PLG_spamx_MESSAGE128 = 'Знайдено спам, коментар чи повідомлення видалено.';
+$PLG_spamx_MESSAGE128 = 'Знайдено спам, коментар чи повідомлення вилучено.';
 $PLG_spamx_MESSAGE8   = 'Знайдено спам. Адміністратору надіслано електронного листа.';
 
 // Messages for the plugin upgrade

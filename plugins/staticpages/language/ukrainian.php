@@ -4,7 +4,7 @@
 # ukrainian.php
 # This is the ukrainian language page for the Geeklog Static Page Plug-in!
 #
-# Copyright (C) 2005 Vitaliy Biliyenko
+# Copyright (C) 2006 Vitaliy Biliyenko
 # v.lokki@gmail.com
 #
 # This program is free software; you can redistribute it and/or

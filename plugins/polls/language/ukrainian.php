@@ -4,7 +4,7 @@
 # ukrainian.php
 # This is the ukrainian language page for the Geeklog Polls Plug-in!
 #
-# Copyright (C) 2005 Vitaliy Biliyenko
+# Copyright (C) 2006 Vitaliy Biliyenko
 # v.lokki@gmail.com
 #
 # This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = 'Ваше опитування успішно збережено.';
-$PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
+$PLG_polls_MESSAGE20 = 'Ваше опитування успішно вилучено.';
 
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3002 = $LANG32[9];
