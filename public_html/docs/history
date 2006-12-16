@@ -1,8 +1,9 @@
 GeekLog History/Changes:
 
-Dec ??, 2006 (1.4.1rc1)
+Dec 17, 2006 (1.4.1rc1)
 ------------
 
+- Improved handling of UTF-8 feeds (feature request #631) [Mike, Dirk]
 - Fixes for the remaining MS SQL issues (bugs #620, #621, #622, #624)
   [Randy Kolenko, Dirk]
 - Initialize SQL request arrays to prevent PHP errors (e.g. with static pages),
