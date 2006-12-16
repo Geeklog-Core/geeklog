@@ -3,10 +3,10 @@
 ###############################################################################
 # chinese_traditional_utf-8.php
 #
-# Last Modified: 2006-01-10
-# Version: 1.4.0
+# Last Modified: 2006-12-12
+# Version: 1.4.1
 #
-# This is the Chinese Traditional (UTF-8) language set for GeekLog 1.4.0
+# This is the Chinese Simplified (UTF-8) language set for GeekLog 1.4.1
 #
 # Copyright (C) 2003 Samuel M. Stone
 # sam@stonemicro.com
@@ -91,9 +91,9 @@ $LANG01 = array(
     45 => 'MySQL 錯誤號碼',
     46 => 'MySQL 錯誤訊息',
     47 => '用戶功能',
-    48 => '帳戶訊息',
+    48 => '我的帳戶',
     49 => '風格選擇',
-    50 => '錯誤的 SQL statement',
+    50 => '錯誤的 SQL 句子',
     51 => '幫助',
     52 => '新',
     53 => '管理者首頁',
@@ -167,9 +167,9 @@ $LANG01 = array(
     121 => '評論 (%d)',
     122 => '跡回 (%d)',
     123 => '准許用所有的HTML',
-    124 => 'Click to delete all checked items',
-    125 => 'Are you sure you want to Delete all checked items?',
-    126 => 'Select or de-select all items'
+    124 => '點擊刪除所選的項目',
+    125 => '你肯定要刪除所選的項目嗎？',
+    126 => '選 或 不選 所有的項目'
 );
 
 ###############################################################################
@@ -332,39 +332,39 @@ $LANG04 = array(
     121 => '服務',
     122 => '對不起, 目前禁止新用戶登記',
     123 => "你是否 <a href=\"{$_CONF['site_url']}/users.php?mode=new\">新用戶</a>?",
-    124 => 'Confirm Email',
-    125 => 'You have to enter the same email address in both fields!',
-    126 => 'Please repeat for confirmation',
-    127 => 'To change any of these settings, you will have to enter your current password.',
-    128 => 'Your Name',
-    129 => 'Password &amp; Email',
-    130 => 'About You',
-    131 => 'Daily Digest Options',
-    132 => 'Daily Digest Feature',
-    133 => 'Comment Display',
-    134 => 'Comment Options',
-    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
-    136 => 'Exclude Topics and Authors',
-    137 => 'Filter Story Content',
-    138 => 'Misc Settings',
-    139 => 'Layout and Language',
-    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
-    141 => 'Privacy Settings',
-    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
-    143 => 'Filter Block Content',
-    144 => 'Show & hide boxes',
-    145 => 'Your Public Profile',
-    146 => 'Password and email',
-    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
-    148 => 'User Information',
-    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
-    150 => 'Warning: Javascript recommended for enhanced functionality',
-    151 => 'Preview',
-    152 => 'Username & Password',
-    153 => 'Layout & Language',
-    154 => 'Content',
-    155 => 'Privacy',
-    156 => 'Delete Account'
+    124 => '確認電信',
+    125 => '你必需要輸入同樣的電信地址!',
+    126 => '請重複輸入來確認',
+    127 => '你必須輸入目前的密碼來做任何修改.',
+    128 => '姓名',
+    129 => '密碼 &amp; 電信',
+    130 => '關於你',
+    131 => '每日摘要選項',
+    132 => '每日摘要功能',
+    133 => '評論顯示',
+    134 => '評論選項',
+    135 => '<li>顯示評論的默認模式</li><li>顯示評論的默認次序</li><li>設定顯示評論的極大數字 – 默認數字是 100</li>',
+    136 => '排除標題和作者',
+    137 => '過濾文章內容',
+    138 => '其他設定',
+    139 => '版面和語言',
+    140 => '<li>不要標題的圖標：勾此處就不會顯示標題的圖標</li><li>不要組件：勾了此處就不會顯示組件，只會顯示管理菜單，用戶菜單，和主題菜單<li>設定每頁顯示的極大文章數字</li><li>設定你的版面主題和喜歡的日期格式</li>',
+    141 => '隱私設定',
+    142 => '默認設定的是讓用戶和管理員們彼此可用電信交通而顯示你的在線狀態。取消這設定可保護你的隱私權.',
+    143 => '過濾組件內容',
+    144 => '顯示或隱藏組件',
+    145 => '你的公開簡介',
+    146 => '密碼和電信',
+    147 => '修改你的用戶密碼，電信，和自動登入作用。你需要輸入你的密碼或電信地址兩次來避免錯誤。',
+    148 => '用戶信息',
+    149 => '修改要顯示給其他用戶的你的用戶信息.<li>你的簽名會顯示在你的評論或論壇標語的下面</li><li>個人簡歷是用來分享你自己的簡介</li><li>分享你得 PGP 鑰匙</li>',
+    150 => '注意: 建議用Javascript 來提高功能',
+    151 => '預覽',
+    152 => '用戶和密碼',
+    153 => '版面和語言',
+    154 => '內容',
+    155 => '隱私',
+    156 => '刪除用戶'
 );
 
 ###############################################################################
@@ -441,7 +441,7 @@ $LANG09 = array(
     13 => '搜尋結果：沒有相配的',
     14 => '沒有你尋找的東西︰',
     15 => '請再嘗試',
-    16 => '主題',
+    16 => '標題',
     17 => '日期',
     18 => '作者',
     19 => "搜尋整個 {$_CONF['site_name']} 的新舊文章資料庫",
@@ -650,8 +650,8 @@ $LANG21 = array(
     31 => 'PHP 組件錯誤︰函數 %s 並不存在。',
     32 => '錯誤︰缺少欄位。',
     33 => '在入口組件你必須把 URL 輸入到 .rdf 檔案',
-    34 => '在 PHP 組件你必須輸入主題和函數',
-    35 => '在正常組件你必須輸入主題和內容',
+    34 => '在 PHP 組件你必須輸入標題和函數',
+    35 => '在正常組件你必須輸入標題和內容',
     36 => '在版面組件你必須輸入內容',
     37 => '不適當的 PHP 組件函數名',
     38 => '為防止執行任性的編碼，PHP 組件函數名必須以 "phpblock_" 作開始 (e.g. phpblock_getweather)。',
@@ -682,8 +682,8 @@ $LANG21 = array(
     63 => '錯誤組件標題',
     64 => '你的標題不能空白或有HTML!',
     65 => '次序',
-    66 => 'Autotags',
-    67 => 'Check to allow autotags'
+    66 => '自動標簽',
+    67 => '打勾來准許自動標簽'
 );
 
 ###############################################################################
@@ -775,8 +775,8 @@ $LANG24 = array(
     83 => '有期文章管理',
     84 => '權限',
     85 => '完全顯示',
-    86 => 'Advanced Editor',
-    87 => 'Story Stats'
+    86 => '高等編輯器',
+    87 => '文章統計'
 );
 
 ###############################################################################
@@ -865,35 +865,35 @@ $LANG28 = array(
     45 => '有效的',
     46 => '用戶狀態',
     47 => '編輯',
-    48 => 'Show Admin Groups',
-    49 => 'Admin Group',
-    50 => 'Check to allow filtering this group as an Admin Use Group',
-    51 => 'Online Days',
-    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
-    53 => 'registered',
-    54 => 'Batch Delete',
-    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
-    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
-    57 => 'Phantom users',
-    58 => 'Short-Time Users',
-    59 => 'Old Users',
-    60 => 'Users that registered more than ',
-    61 => ' months ago, but never logged in.',
-    62 => 'Users that registered more than ',
-    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
-    64 => 'Normal users, who simply did not visit your site since ',
-    65 => ' months.',
-    66 => 'Update List',
-    67 => 'Months since registration',
-    68 => 'Online Hours',
-    69 => 'Offline Months',
-    70 => 'could not be deleted',
-    71 => 'sucessfully deleted',
-    72 => 'No User selected for deletion',
-    73 => 'Are You sure you want to permanently delete ALL selected users?',
-    74 => 'Recent Users',
-    75 => 'Users that registered in the last ',
-    76 => ' months'
+    48 => '顯示管理組',
+    49 => '管理組',
+    50 => '打勾來准許過濾此組為管理組',
+    51 => '在線日',
+    52 => '<br>注: "在線日" 是從登記的第一天到最後一次登入.',
+    53 => '登記過的',
+    54 => '批量的刪除',
+    55 => '這功能只會有效若你已在 config.php 裏設定為 <code>$_CONF[\'lastlogin\'] = true;</code>',
+    56 => '請選你想要刪除的用戶種類，然後按 "更新名單". 然後, 取消那些你不想刪除的用戶，再按刪除. 請注意，你只會刪除你現在所看見的用戶。若有多頁，後頁不會刪除。',
+    57 => '幻影用戶',
+    58 => '短期用戶',
+    59 => '老用戶',
+    60 => '用戶登記超過 ',
+    61 => ' 個月, 但未曾登入過.',
+    62 => '用戶登記超過 ',
+    63 => ' 個月, 然後在24小時內登入過, 但從此就未曾回來過.',
+    64 => '正常用戶, 但已經沒有回來 ',
+    65 => ' 個月.',
+    66 => '更新名單',
+    67 => '登記月數',
+    68 => '在線時數',
+    69 => '離線月數',
+    70 => '無法刪除',
+    71 => '刪除成功',
+    72 => '為選任何要刪除的用戶',
+    73 => '你肯定要將所選的用戶永久刪除嗎？',
+    74 => '最近用戶',
+    75 => '在最近',
+    76 => ' 月內登記的用戶。'
 );
 
 ###############################################################################
@@ -1047,8 +1047,8 @@ $LANG33 = array(
     48 => '編輯',
     49 => '新聞 Feed 的標誌',
     50 => "跟網址有關 ({$_CONF['site_url']})",
-    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
-    52 => 'Error: existing Filename'
+    51 => '你所選的文件名已經在另一個文流中用著了。請選另一個。',
+    52 => '錯誤: 文件名已存在'
 );
 
 ###############################################################################
@@ -1130,15 +1130,15 @@ $MESSAGE = array(
     73 => '卸載插件時發生錯誤，細節請看error.log.',
     74 => 'Ping 回已成功地送出.',
     75 => '跡回必須用 POST 要求.',
-    76 => 'Do you really want to delete this item?',
-    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.',
-    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
-    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
-    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
-    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
-    84 => 'To delete your account, please enter your current password.'
+    76 => '你真的要刪除這項目嗎？',
+    77 => '警告:<br>你已默認UTF-8 為語文編碼。 但是，你的服務器不支持多字節編碼。請安裝 mbstring 入 PHP 或選另一種語文編碼。',
+    78 => '請確定你的電信地址跟你的確認電信地址是完全同樣的。',
+    79 => '你想打開的網頁提交到已經在這網站不存在的功能。',
+    80 => '建立此文流的插件已被關閉。你不能修改此文流除非你從新啟動有關插件。',
+    81 => '你可能錯誤的輸入了你的用戶資料。請在下面再次登入。',
+    82 => '你已超過准許的登入次數。 等會兒再試。',
+    83 => '要改密碼，電信地址，或要記得你多久，請輸入你的目前密碼。',
+    84 => '要刪除你的用戶帳號，請輸入你的目前密碼。'
 );
 
 ###############################################################################
@@ -1366,7 +1366,7 @@ $LANG_TRB = array(
     'pbtarget_missing' => '無 Ping回 URL',
     'pbtarget_required' => '請輸入一個ping回 URL',
     'pb_error_details' => '送出 ping回時發生錯誤:',
-    'delete_trackback' => 'To delete this Trackback click: '
+    'delete_trackback' => '要刪除這跡回請按: '
 );
 
 ###############################################################################
@@ -1447,10 +1447,10 @@ $LANG_ADMIN = array(
     'limit_results' => '限制結果',
     'submit' => '提交',
     'edit' => '編輯',
-    'edit_adv' => 'Adv. Edit',
+    'edit_adv' => 'Adv. 編輯',
     'admin_home' => '管理主頁',
     'create_new' => '建新',
-    'create_new_adv' => 'Create New (Adv.)',
+    'create_new_adv' => '建新 (Adv.)',
     'enabled' => '啟動',
     'title' => '標題',
     'type' => '類型',
@@ -1459,12 +1459,12 @@ $LANG_ADMIN = array(
     'save' => '存續',
     'cancel' => '取消',
     'delete' => '刪除',
-    'delete_sel' => 'Delete selected',
+    'delete_sel' => '刪除所選的',
     'copy' => '複製',
     'no_results' => '- 找不到任何登錄 -',
     'data_error' => '處理訂閱資料時發現錯誤. 請檢查資料來源.',
-    'preview' => 'Preview',
-    'records_found' => 'Records found'
+    'preview' => '預覽',
+    'records_found' => '已找到的資料'
 );
 
 ###############################################################################
