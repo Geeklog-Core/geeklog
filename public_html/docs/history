@@ -62,10 +62,12 @@ Dec 17, 2006 (1.4.1rc1)
 - Call PLG_templateSetVars() from STORY_renderArticle() so we can have custom
   variables in the story templates [Dirk]
 
+- Updated Chinese language files (traditional and simplified), provided by
+  Samuel M. Stone
 - Updated Japanese language files for Geeklog and all the plugins, provided
   by the Geeklog Japanese group
-- Updated Ukrainian language files (Windows-1251, KOI8-U, and UTF-8 encoding),
-  provided by Vitaliy Biliyenko
+- Updated Ukrainian language files (Windows-1251, KOI8-U, and UTF-8 encoding)
+  for Geeklog and all the plugins, provided by Vitaliy Biliyenko
 
 
 Nov 5, 2006 (1.4.1b2)
