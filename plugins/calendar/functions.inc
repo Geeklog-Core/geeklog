@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.60 2006/11/26 09:41:47 dhaun Exp $
+// $Id: functions.inc,v 1.61 2006/12/18 06:45:37 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -144,10 +144,10 @@ function phpblock_calendar( $help='', $title='' )
                 $theRow = 1;           // Start with today!
                 $oldDate1 = 'no_day';  // Invalid Date!
                 $oldDate2 = 'last_d';  // Invalid Date!
-                $classname = 'list-personal-events';
+                $classname = 'list-new-plugins';
                 $headline = false;
             } else {
-                $classname = 'list-site-events';
+                $classname = 'list-new-plugins';
                 $headline = false;
             }
             if( $_CA_CONF['personalcalendars'] == 0 ) {

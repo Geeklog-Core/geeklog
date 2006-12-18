@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.70 2006/10/01 17:34:40 dhaun Exp $
+// $Id: functions.inc,v 1.71 2006/12/18 06:45:37 ospiess Exp $
 
 
 /**
@@ -148,11 +148,11 @@ function plugin_getwhatsnew_links()
             else
             {
                 $newlinks[] = '<a href="' . $lcount . '">' . $A['title']
-                            . '</a>' . LB; 
+                            . '</a>' . LB;
             }
         }
 
-        $retval .= COM_makeList( $newlinks, 'list-new-links' );
+        $retval .= COM_makeList( $newlinks, 'list-new-plugins' );
     }
     else
     {
@@ -703,7 +703,7 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 *
 * @return   int     Number of message to display (true = generic success msg)
 *
-*/ 
+*/
 function plugin_upgrade_links ()
 {
     global $_TABLES, $_LI_CONF;
@@ -722,7 +722,7 @@ function plugin_upgrade_links ()
 
 /**
 * Geeklog informs us that we're about to be enabled or disabled
-* 
+*
 * @param    boolean     $enable     true = we're being enabled, false = disabled
 * @return   void
 *
