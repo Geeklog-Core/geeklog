@@ -78,9 +78,16 @@ function upgrade_plugins_141 ()
         DB_query ("ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AFTER votes");
     }
 
-    // delete MT-Blacklist entries from Spam-X plugin
     if (DB_count ($_TABLES['plugins'], 'pi_name', 'spamx') == 1) {
+        // delete MT-Blacklist entries from Spam-X plugin
         DB_query ("DELETE FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'");
+
+        // the count of deleted spams was introduced in 1.4.0 but not added
+        // when upgrading from an older database, so add it now if it's missing
+        $val = DB_getItem ($_TABLES['vars'], 'value', "name = 'spamx.counter'");
+        if (empty ($val)) {
+            DB_save ($_TABLES['vars'], 'name,value', "'spamx.counter','0'");
+        }
     }
 
     // add field to support advanced editor and a help link in staticpages

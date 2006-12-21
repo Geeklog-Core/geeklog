@@ -1,5 +1,15 @@
 GeekLog History/Changes:
 
+Dec ??, 2006 (1.4.1)
+------------
+
+- Back in Geeklog 1.4.0, a counter was added to the Spam-X plugin to count all
+  deleted spam posts. The counter was only added in fresh installs of 1.4.0,
+  though, but not when upgrading from an earlier version. Fixed that [Dirk]
+- In lists created from the Links and Calendar plugins, use "links-new-plugin"
+  as the CSS class name [Oliver]
+
+
 Dec 17, 2006 (1.4.1rc1)
 ------------
 
