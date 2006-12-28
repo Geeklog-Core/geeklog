@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.179 2006/11/17 04:30:08 blaine Exp $
+// $Id: user.php,v 1.180 2006/12/28 09:27:54 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -877,7 +877,7 @@ function importusers ($file)
 
     $users = file ($filename);
 
-    $retval .= COM_siteHeader ('menu', $LANG28[22]);
+    $retval .= COM_siteHeader ('menu', $LANG28[24]);
     $retval .= COM_startBlock ($LANG28[31], '',
             COM_getBlockTemplate ('_admin_block', 'header'));
 
