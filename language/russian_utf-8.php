@@ -115,7 +115,7 @@ $LANG01 = array(
     56 => 'Голосовать',
     57 => 'Пароль',
     58 => 'Войти',
-    59 => "Вы ещё не зарегистрировались?  Сделайте это здесь: <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Новый пользователь</a>",
+    59 => "Не зарегистрировались?<br>-> <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Новый пользователь</a>",
     60 => 'Послать комментарий',
     61 => 'Создать учётную запись',
     62 => 'cлова',
@@ -131,8 +131,8 @@ $LANG01 = array(
     72 => 'ссылки',
     73 => 'прошлые опросы',
     74 => 'календарь',
-    75 => 'расширенный поиск',
-    76 => 'статистика',
+    75 => 'Расширенный поиск',
+    76 => 'Статистика',
     77 => 'Модули',
     78 => 'Будущие события',
     79 => 'Что нового',
@@ -150,7 +150,7 @@ $LANG01 = array(
     91 => 'Страница создана за',
     92 => 'секунд',
     93 => 'Копирайт',
-    94 => 'Все торговые марки и копирайты на этой странице являются собственностью соответствующих хозяев.',
+    94 => 'Все торговые марки и копирайты на этой странице являются собственностью их хозяев.',
     95 => 'Работает на',
     96 => 'Группы',
     97 => 'Список слов',
@@ -175,7 +175,7 @@ $LANG01 = array(
     116 => 'Trackback',
     117 => 'Directory',
     118 => 'Please continue reading on the next page:',
-    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?",
+    119 => "Или <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">забыли пароль</a>?",
     120 => 'Permanent link to this comment',
     121 => 'Comments (%d)',
     122 => 'Trackbacks (%d)',
@@ -328,30 +328,30 @@ $LANG04 = array(
     104 => 'Показывать онлайн-статус',
     105 => 'Показывать в Who\'s Online блоке',
     106 => 'Location',
-    107 => 'Shown in your public profile',
-    108 => 'Confirm new password',
-    109 => 'Enter the New password again here',
-    110 => 'Current Password',
-    111 => 'Please enter your Current password',
-    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    113 => 'Login Attempt Failed',
-    114 => 'Account Disabled',
-    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
-    116 => 'Account Awaiting Activation',
-    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
-    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
-    119 => 'If you have forgotten your password, you may request a new one at this url:',
-    120 => 'Account Activated',
+    107 => 'Будет показан в Вашем публичном профиле',
+    108 => 'Подтвердите новый пароль',
+    109 => 'Повторно введите Ваш новый пароль здесь',
+    110 => 'Текущий пароль',
+    111 => 'Пожалуйста, введите Ваш Текущий пароль',
+    112 => 'Вы превысили разрешённое количество попыток ввода пароля. Попробуйте снова позднее.',
+    113 => 'Попытка входа неудачна',
+    114 => 'Аккаунт заблокирован',
+    115 => 'Ваш аккаунт был заблокирован, возможно, Вы не сможете войти. Свяжитесь с Администрацией.',
+    116 => 'Аккаунт ожидает активацию',
+    117 => 'Ваш аккаунт ожидает активации Администратором. Будьте терпеливы.',
+    118 => "Ваш аккаунт на {$_CONF['site_name']} был активирован Администратором. Вы можете войти на сайт по ссылке ниже, с именем пользователя (<username>) и присланном нами в предыдущем письме паролем.",
+    119 => 'Если Вы забыли свой пароль, Вы можете запросить новый, посетив эту страницу:',
+    120 => 'Аккаунт активирован',
     121 => 'Service',
-    122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
-    124 => 'Confirm Email',
-    125 => 'You have to enter the same email address in both fields!',
-    126 => 'Please repeat for confirmation',
-    127 => 'To change any of these settings, you will have to enter your current password.',
-    128 => 'Your Name',
-    129 => 'Password &amp; Email',
-    130 => 'About You',
+    122 => 'Извините, регистрация новых пользователей отключена',
+    123 => "Вы <a href=\"{$_CONF['site_url']}/users.php?mode=new\">новый пользователь</a>?",
+    124 => 'Подтвержите Email',
+    125 => 'Вы должны ввести одинаковые email адреса в обоих полях!',
+    126 => 'Пожалуйста, повторите для подтверждения',
+    127 => 'Для изменения каких-либо настроек Вы должны ввести свой текущий пароль.',
+    128 => 'Ваше имя',
+    129 => 'Пароль &amp; Email',
+    130 => 'О Вас',
     131 => 'Daily Digest Options',
     132 => 'Daily Digest Feature',
     133 => 'Comment Display',
@@ -360,24 +360,24 @@ $LANG04 = array(
     136 => 'Exclude Topics and Authors',
     137 => 'Filter Story Content',
     138 => 'Misc Settings',
-    139 => 'Layout and Language',
+    139 => 'Тема и язык',
     140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
     141 => 'Privacy Settings',
     142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
     143 => 'Filter Block Content',
     144 => 'Show & hide boxes',
     145 => 'Your Public Profile',
-    146 => 'Password and email',
+    146 => 'Пароль и email',
     147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
-    148 => 'User Information',
+    148 => 'Информация о Пользователе',
     149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
     150 => 'Warning: Javascript recommended for enhanced functionality',
     151 => 'Preview',
-    152 => 'Username & Password',
-    153 => 'Layout & Language',
+    152 => 'Логин и Пароль',
+    153 => 'Тема & Язык',
     154 => 'Content',
     155 => 'Privacy',
-    156 => 'Delete Account'
+    156 => 'Удалить аккаунт'
 );
 
 ###############################################################################
@@ -1129,29 +1129,29 @@ $MESSAGE = array(
     59 => 'Синопсис успешно удалён.',
     60 => 'Модуль успешно обновлён',
     61 => 'Модуль %s: неизвестное хранилище сообщений',
-    62 => 'The trackback comment has been deleted.',
-    63 => 'An error occurred when deleting the trackback comment.',
-    64 => 'Your trackback comment has been successfully sent.',
-    65 => 'Weblog directory service successfully saved.',
-    66 => 'The weblog directory service has been deleted.',
-    67 => 'The new password does not match the confirmation password!',
-    68 => 'You have to enter the correct current password.',
-    69 => 'Your account has been blocked!',
-    70 => 'Your account is awaiting administrator approval.',
-    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
-    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
-    73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
-    74 => 'The pingback has been successfully sent.',
-    75 => 'Trackbacks must be sent using a POST request.',
-    76 => 'Do you really want to delete this item?',
-    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.',
-    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
-    80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
-    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
-    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
-    84 => 'To delete your account, please enter your current password.'
+    62 => 'Комментарий trackback успешно удалён.',
+    63 => 'Произошла ошибка при попытке удаления комментария trackback.',
+    64 => 'Ваш комментарий trackback успешно отослан.',
+    65 => 'Каталог Weblog сервиса успешно сохранён.',
+    66 => 'Каталог weblog сервиса был удалён.',
+    67 => 'Новый пароль не соответствует паролю в поле подтверждения!',
+    68 => 'Вы должны ввести правильный текущий пароль.',
+    69 => 'Ваш аккаунт заблокирован!',
+    70 => 'Ваш аккаунт ожидает проверки Администратором.',
+    71 => 'Ваш аккаунт подтверждён, но ожидает проверки Администратором.',
+    72 => 'При попытке инсталляции плагина произошла ошибка. Смотрите error.log - там все подробности.',
+    73 => 'При попытке деинсталляции плагина произошла ошибка. Смотрите error.log - там все подробности.',
+    74 => 'Pingback был успешно отправлен.',
+    75 => 'Trackbacks должен быть отправлен, используя запрос POST.',
+    76 => 'Вы действительно хотите удалить этот пункт?',
+    77 => 'ВНИМАНИЕ:<br>Вы должны установить кодировкой по умолчанию UTF-8. Тем не менее, Ваш сервер не поддерживает мультибайтовые кодировки. Пожалуйста, установите функции mbstring для PHP или выберите другую раскладку/язык.',
+    78 => 'Пожалуйста, проверьте, чтобы email адрес и адрес подтверждения email совпадали.',
+    79 => 'Страница, которую Вы пытаетесь открыть, обращается к функции, которой больше нет на сайте.',
+    80 => 'Плагин, который создал этот механизм, отключен. Вы не сможете редактировать этот механизм, пока не включите родительский плагин.',
+    81 => 'Вы неправильно набрали на клавиатуре логин. Пожалуйста, попробуйте войти позже.',
+    82 => 'Вы превысили количество разрешенных попыток входа. Пожалуйста, попробуйте позже.',
+    83 => 'Чтобы изменить свой пароль, email адрес, или срок, в течение которого система будет помнить Вас, введите свой текущий пароль.',
+    84 => 'Чтобы удалить свой аккаунт, пожалуйста, введите свой текущий пароль.'
 );
 
 ###############################################################################
@@ -1213,13 +1213,13 @@ $LANG_ACCESS = array(
     'cantlistgroup' => 'Чтобы увидеть состав группы, вы сами доложны быть в её составе. Если вы считаете это ошибкой, уведомите системного администратора.',
     'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
     'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
-    'search' => 'Search',
-    'submit' => 'Submit',
+    'search' => 'Поиск',
+    'submit' => 'Принять',
     'limitresults' => 'Limit Results',
     'group_id' => 'Group ID',
-    'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
-    'groupexists' => 'Group name already exists',
-    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
+    'plugin_access_denied_msg' => 'Вы пытаетесь нелегально получить доступ к странице администрирования. Учтите, что все подобные попытки протоколируются и Ваш провайдер также о них узнает.',
+    'groupexists' => 'Такое имя группы уже есть',
+    'groupexistsmsg' => 'Уже есть группа с таким именем. Имена групп должны быть уникальны.'
 );
 
 ###############################################################################
@@ -1252,8 +1252,8 @@ $LANG_BUTTONS = array(
     7 => 'Статистика сайта',
     8 => 'Персонализация',
     9 => 'Искать',
-    10 => 'расширенный поиск',
-    11 => 'Directory'
+    10 => 'Расширенный поиск',
+    11 => 'Каталог'
 );
 
 ###############################################################################
@@ -1261,7 +1261,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => '404 Ошибка',
-    2 => 'Хмм, я посмотрел везде, но не смог найти <b>%s</b>.',
+    2 => 'Хмм, мы посмотрели везде, но не смогли найти <b>%s</b>.',
     3 => "<p>Нам очень жаль, но файл, который Вы запросили, не существует. Пожайлуйста, не стесняйтесь посмотреть <a href=\"{$_CONF['site_url']}\">главную страницу</a> или <a href=\"{$_CONF['site_url']}/search.php\">страницу поиска</a> чтобы определить, сможете ли Вы найти то, что потеряли :)."
 );
 
@@ -1374,23 +1374,23 @@ $LANG_TRB = array(
     'trackback_note' => 'To send a trackback comment for a story, go to the list of stories and click on "Send Ping" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
     'pingback_explain' => 'Enter a URL to send the Pingback to. The pingback will point to your site\'s homepage.',
     'pingback_url' => 'Pingback URL',
-    'site_url' => 'This site\'s URL',
-    'pingback_note' => 'To send a pingback for a story, go to the list of stories and click on "Send Ping" for the story. To send a pingback that is not related to a story, <a href="%s">click here</a>.',
-    'pbtarget_missing' => 'No Pingback URL',
-    'pbtarget_required' => 'Please enter a pingback URL',
-    'pb_error_details' => 'Error when sending the pingback:',
-    'delete_trackback' => 'To delete this Trackback click: '
+    'site_url' => 'URL этого сайта',
+    'pingback_note' => 'Чтобы отправить pingback на историю, пройдите в список историй и кликните "Send Ping" для данной истории. Чтобы отправить pingback, не относящийся к истории, <a href="%s">нажмите сюда</a>.',
+    'pbtarget_missing' => 'Нет Pingback URL',
+    'pbtarget_required' => 'Пожалуйста, введите pingback URL',
+    'pb_error_details' => 'Ошибка pingback:',
+    'delete_trackback' => 'Чтобы удалить этот Trackback кликните: '
 );
 
 ###############################################################################
 # directory.php
 
 $LANG_DIR = array(
-    'title' => 'Article Directory',
-    'title_year' => 'Article Directory for %d',
-    'title_month_year' => 'Article Directory for %s %d',
-    'nav_top' => 'Back to Article Directory',
-    'no_articles' => 'No articles.'
+    'title' => 'Каталог статей',
+    'title_year' => 'Каталог статей за %d',
+    'title_month_year' => 'Каталог статей за %s %d',
+    'nav_top' => 'Вернуться в каталог статей',
+    'no_articles' => 'Нет статей.'
 );
 
 ###############################################################################
@@ -1404,18 +1404,18 @@ $LANG_DIR = array(
 # %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
-    'new_string' => '%n new %i in the last %t %s',
-    'new_last' => 'last %t %s',
-    'minutes' => 'minutes',
-    'hours' => 'hours',
-    'days' => 'days',
-    'weeks' => 'weeks',
-    'months' => 'months',
-    'minute' => 'minute',
-    'hour' => 'hour',
-    'day' => 'day',
-    'week' => 'week',
-    'month' => 'month'
+    'new_string' => '%n новых %i за последние %t %s',
+    'new_last' => 'за последние %t %s',
+    'minutes' => 'минуты',
+    'hours' => 'часов',
+    'days' => 'дней',
+    'weeks' => 'недели',
+    'months' => 'месяца',
+    'minute' => 'минута',
+    'hour' => 'час',
+    'day' => 'день',
+    'week' => 'неделя',
+    'month' => 'месяц'
 );
 
 ###############################################################################
@@ -1456,28 +1456,28 @@ $LANG_WEEK = array(
 # display administration lists and edit pages
 
 $LANG_ADMIN = array(
-    'search' => 'Search',
+    'search' => 'Поиск',
     'limit_results' => 'Limit Results',
-    'submit' => 'Submit',
-    'edit' => 'Edit',
+    'submit' => 'Принять',
+    'edit' => 'Редактировать',
     'edit_adv' => 'Adv. Edit',
-    'admin_home' => 'Admin Home',
-    'create_new' => 'Create New',
-    'create_new_adv' => 'Create New (Adv.)',
-    'enabled' => 'Enabled',
-    'title' => 'Title',
-    'type' => 'Type',
-    'topic' => 'Topic',
-    'help_url' => 'Help File URL',
-    'save' => 'Save',
-    'cancel' => 'Cancel',
-    'delete' => 'Delete',
-    'delete_sel' => 'Delete selected',
-    'copy' => 'Copy',
-    'no_results' => '- No entries found -',
-    'data_error' => 'There was an error processing the subscription data. Please check the data source.',
-    'preview' => 'Preview',
-    'records_found' => 'Records found'
+    'admin_home' => 'Главная администрирования',
+    'create_new' => 'Создать',
+    'create_new_adv' => 'Создать (Adv.)',
+    'enabled' => 'Включено',
+    'title' => 'Описание',
+    'type' => 'Тип',
+    'topic' => 'Раздел',
+    'help_url' => 'Файл подсказки (URL)',
+    'save' => 'Сохранить',
+    'cancel' => 'Отмена',
+    'delete' => 'Удалить',
+    'delete_sel' => 'Удалить выбранное',
+    'copy' => 'Копировать',
+    'no_results' => '- Не найдено записей -',
+    'data_error' => 'Произошла ошибка обработки данных подписки. Пожалуйста, проверьте исходные данные.',
+    'preview' => 'Предварит. просмотр',
+    'records_found' => 'Найдено записей'
 );
 
 ###############################################################################
@@ -1486,8 +1486,8 @@ $LANG_ADMIN = array(
 # database.
 
 $LANG_commentcodes = array(
-    0 => 'Comments Enabled',
-    -1 => 'Comments Disabled'
+    0 => 'Комментарии разрешены',
+    -1 => 'Комментарии запрещены'
 );
 
 
@@ -1495,47 +1495,47 @@ $LANG_commentmodes = array(
     'flat' => 'Flat',
     'nested' => 'Nested',
     'threaded' => 'Threaded',
-    'nocomment' => 'No Comments'
+    'nocomment' => 'Нет комментариев'
 );
 
 $LANG_cookiecodes = array(
     0 => '(don\'t)',
-    3600 => '1 Hour',
-    7200 => '2 Hours',
-    10800 => '3 Hours',
-    28800 => '8 Hours',
-    86400 => '1 Day',
-    604800 => '1 Week',
-    2678400 => '1 Month'
+    3600 => '1 час',
+    7200 => '2 часа',
+    10800 => '3 часа',
+    28800 => '8 часов',
+    86400 => '1 день',
+    604800 => '1 неделя',
+    2678400 => '1 месяц'
 );
 
 $LANG_dateformats = array(
-    0 => 'System Default'
+    0 => 'Как на сайте'
 );
 
 $LANG_featurecodes = array(
-    0 => 'Not Featured',
-    1 => 'Featured'
+    0 => 'Обычная',
+    1 => 'Особенная'
 );
 
 $LANG_frontpagecodes = array(
-    0 => 'Show Only in Topic',
-    1 => 'Show on Front Page'
+    0 => 'Показывать только в разделе',
+    1 => 'Показывать на главной странице'
 );
 
 $LANG_postmodes = array(
-    'plaintext' => 'Plain Old Text',
-    'html' => 'HTML Formatted'
+    'plaintext' => 'Обычный текст',
+    'html' => 'HTML форматирование'
 );
 
 $LANG_sortcodes = array(
-    'ASC' => 'Oldest First',
-    'DESC' => 'Newest First'
+    'ASC' => 'Сначала старые',
+    'DESC' => 'Сначала новые'
 );
 
 $LANG_trackbackcodes = array(
-    0 => 'Trackback Enabled',
-    -1 => 'Trackback Disabled'
+    0 => 'Trackback включен',
+    -1 => 'Trackback отключен'
 );
 
 ?>
