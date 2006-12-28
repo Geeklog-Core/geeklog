@@ -3,11 +3,20 @@ GeekLog History/Changes:
 Dec ??, 2006 (1.4.1)
 ------------
 
+- Fixed max. allowed length for a user's homepage (128) and location (96) in the
+  preferences/profile.thtml template file (reported by burjans) [Dirk]
+- Fixed page title after a successful batch import of users (which read "Error")
+  [Dirk]
 - Back in Geeklog 1.4.0, a counter was added to the Spam-X plugin to count all
   deleted spam posts. The counter was only added in fresh installs of 1.4.0,
   though, but not when upgrading from an earlier version. Fixed that [Dirk]
 - In lists created from the Links and Calendar plugins, use "links-new-plugin"
   as the CSS class name [Oliver]
+
+- Updated Russian language file, provided by Alexander Yurchenko
+- New Russian language file for the Calendar plugin, provided by Alexander
+  Yurchenko
+- Updated Turkish language file, provided by Kemal Cellat
 
 
 Dec 17, 2006 (1.4.1rc1)
