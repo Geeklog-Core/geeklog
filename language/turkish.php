@@ -123,7 +123,7 @@ $LANG01 = array(
     80 => 'hikaye son',
     81 => 'hikaye son',
     82 => 'saat',
-    83 => 'Yorumlar',
+    83 => 'YORUMLAR',
     84 => 'Adresler',
     85 => 'son 48 saat',
     86 => 'Hiç yeni yorum yok',
@@ -164,9 +164,9 @@ $LANG01 = array(
     121 => 'Yorumlar (%d)',
     122 => 'Trackbacks (%d)',
     123 => 'Tüm HTML kodlarý izinli',
-    124 => 'Click to delete all checked items',
-    125 => 'Are you sure you want to Delete all checked items?',
-    126 => 'Select or de-select all items'
+    124 => 'Seçili tüm öðeleri Silmek için Týklayýn',
+    125 => 'Seçili tüm öðeleri silmek istediðinize emin misiniz?',
+    126 => 'Tüm Öðeleri Ýþaretle veya iþareti kaldýr '
 );
 
 ###############################################################################
@@ -329,39 +329,39 @@ $LANG04 = array(
     121 => 'Servis',
     122 => 'Üzgünüm, Yeni Kullanýcý kaydý kapatýlmýþtýr',
     123 => "<a href=\"{$_CONF['site_url']}/users.php?mode=new\">Yeni Üye misiniz?</a>?",
-    124 => 'Confirm Email',
-    125 => 'You have to enter the same email address in both fields!',
-    126 => 'Please repeat for confirmation',
-    127 => 'To change any of these settings, you will have to enter your current password.',
-    128 => 'Your Name',
-    129 => 'Password &amp; Email',
-    130 => 'About You',
-    131 => 'Daily Digest Options',
-    132 => 'Daily Digest Feature',
-    133 => 'Comment Display',
-    134 => 'Comment Options',
-    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
-    136 => 'Exclude Topics and Authors',
-    137 => 'Filter Story Content',
-    138 => 'Misc Settings',
-    139 => 'Layout and Language',
+    124 => 'Email Tekrar ',
+    125 => 'Girdiðiniz E-mail adresleri ayný deðil!',
+    126 => 'Doðrulama için lütfen tekrar yazýn',
+    127 => 'Burada ki ayarlardan herhangi birini deðiþtirmek için þifrenizi girmeniz gerekiyor.',
+    128 => 'Adýnýz',
+    129 => 'Þifre &amp; Email',
+    130 => 'Hakkýnýzda',
+    131 => 'Günlük Özet Ayarlarý',
+    132 => 'Günlük Özet Özelliði',
+    133 => 'Yorum Ekraný',
+    134 => 'Yorum Ayarlarý',
+    135 => '<li>Yorumlarýnýn nasýl gösterileceðine ait ayarlar</li><li>Yorumlarýn sýralanma þekline ait ayar</li><li>En fazla gösterilecek yorum sayýsý - geçerli sayý 100</li>',
+    136 => 'Gösterilmeyecek Konu ve Yazarlar',
+    137 => 'Yazý Ýçeriði Filtreleme',
+    138 => 'Diðer Ayarlar',
+    139 => 'Görünüm ve Language',
     140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
-    141 => 'Privacy Settings',
-    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
-    143 => 'Filter Block Content',
-    144 => 'Show & hide boxes',
-    145 => 'Your Public Profile',
-    146 => 'Password and email',
-    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
-    148 => 'User Information',
-    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
-    150 => 'Warning: Javascript recommended for enhanced functionality',
-    151 => 'Preview',
-    152 => 'Username & Password',
-    153 => 'Layout & Language',
-    154 => 'Content',
-    155 => 'Privacy',
-    156 => 'Delete Account'
+    141 => 'Eriþilebilirlik Ayarlarý',
+    142 => 'Geçerli site ayarlarý üyelerden ve yöneticiden üye almanýza izin vermekte ve online kullanýlar bloðunda görünmenize izin vermektedir.Kutuda iþareti kaldýrarak istemediðiniz özelliði iptal edebilirsiniz.',
+    143 => 'Block Ýçeriði Filtresi',
+    144 => 'Göster & Gizle Bloklarý',
+    145 => 'Kiþisel Profilimi Göster',
+    146 => 'Þifre ve E-mail',
+    147 => 'Þifrenizi, emailinizi ve beni hatýrla özelliklerini düzenleyin. Doðrulama için þifrenizi veya e-mail adresinizi iki kez girmeniz gerekmektedir.',
+    148 => 'Kullanýcý Bilgileri',
+    149 => 'Diðer Kullanýcýlarýn da göreceði kullanýcý bilgilerinizi düzenleyin.<li>Ýmzanýz yorumlarýnýza ve forumda ki mesajlarýnýzýn altýna otomatik olarak eklenir</li><li>Kendiniz hakkýnda paylaþmak istediklerinizi BIO bölümüne yazabilirsiniz</li><li>PGP Anahtarý (Boþ Býrakabilirsiniz)</li>',
+    150 => 'DÝKKAT: Javascript recommended for enhanced functionality',
+    151 => 'ÖnÝzleme',
+    152 => 'Kullanýcý Adý & Þifre',
+    153 => 'Görünüm & Language',
+    154 => 'Ýçerik',
+    155 => 'Eriþilebilirlil',
+    156 => 'Hesabýmý Sil'
 );
 
 ###############################################################################
@@ -483,7 +483,7 @@ $LANG09 = array(
     58 => 'Daha fazla sonuç &gt;&gt;',
     59 => 'Sonuçlar',
     60 => 'sayfa',
-    61 => 'Refine search'
+    61 => 'Basit Arama'
 );
 
 ###############################################################################
@@ -520,7 +520,7 @@ $LANG10 = array(
     28 => 'Top 10 Etkinlikler',
     29 => 'Etkinlik',
     30 => 'Hitler',
-    31 => 'It appears that there are no events on this site or no one has ever clicked on one.'
+    31 => 'Öyle görünüyor ki sitede yeni etkinlik yok veya henüz kimse bir etkinliðe týklamamýþ.'
 );
 
 ###############################################################################
@@ -531,7 +531,7 @@ $LANG11 = array(
     2 => 'Arkadaþýna Gönder',
     3 => 'Basýlmaya Uygun Þekli',
     4 => 'Seçenekler',
-    5 => 'PDF Story Format'
+    5 => 'PDF Yazý Formatý'
 );
 
 ###############################################################################
@@ -675,12 +675,12 @@ $LANG21 = array(
     59 => 'Bloðu Saða Taþý',
     60 => 'Bloðu Sola Taþý',
     61 => 'Baþlýk Yok',
-    62 => 'Article Limit',
+    62 => 'Yazý Limiti',
     63 => 'Geçersiz Blok Baþlýðý',
     64 => 'Baþlýðýnýz boþ olamaz ve HTML kodu içeremez!',
-    65 => 'Order',
-    66 => 'Autotags',
-    67 => 'Check to allow autotags'
+    65 => 'Sýra',
+    66 => 'Autotaglar',
+    67 => 'Autýtag izini için iþaretleyin'
 );
 
 ###############################################################################
@@ -713,8 +713,8 @@ $LANG24 = array(
     24 => 'Seçtiðiniz ID kullanýlýyor. Lütfen baþka bir ID seçiniz.',
     25 => 'Yazýyý kaydederken hata oluþtu!',
     26 => 'Yazý Ön Ýzleme',
-    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
-    28 => '<p><b>ÖNÝZLEME</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    27 => 'eðer [imageX]yerine [unscaledX] kodunu kullanýrsanýz , eklediðiniz resim orjinal boyutunda görüntülenir.',
+    28 => '<p><b>ÖNÝZLEME</b>: Eðer yazýnýza bir resim eklediyseniz Önizleme yapmak yerine Taslak olarak kaydetmeniz gerekir. ÖnÝzleme seçeneði yalnýzca resim ataçlanmamýþ iken kullanýlabilir.',
     29 => 'Trackbacks',
     30 => 'Dosya Upload Hatalarý',
     31 => 'Lütfen, Yazar, Baþlýk ve Konu alanlarýný doldurunuz.',
@@ -731,7 +731,7 @@ $LANG24 = array(
     42 => "Eriþim hakkýnýz olmayan bir yazýya eriþmek istiyorsunuz.  Bu eyleminiz kayýtlara eklenmiþtir.  Lütfen <a href=\"{$_CONF['site_admin_url']}/story.php\">kontrol ekranýna geri dönünüz</a>.",
     43 => 'Yeni Yazý',
     44 => 'Kontrol Ana Sayfasý',
-    45 => 'Aç(access)',
+    45 => 'Aç(eriþim)',
     46 => '<b>NOT:</b> eðer ileride bir tarih verirseniz, yazýnýz o tarihe kadar yayýmlanmayacaktýr. Bu ayný zamanda bu yazýnýn RDF baþlýklarýnda ve arama ve istatistik sayfalarda görüntülenmeyecektir.',
     47 => 'Resimler',
     48 => 'resim',
@@ -745,7 +745,7 @@ $LANG24 = array(
     56 => 'Sembolü Göster',
     57 => 'Ölçeksiz resim göster',
     58 => 'Yazý Yönetimi',
-    59 => 'Option',
+    59 => 'Ayar',
     60 => 'Ýzinli',
     61 => 'Auto Archive',
     62 => 'Otomatik Silme',
@@ -753,15 +753,15 @@ $LANG24 = array(
     64 => '',
     65 => '',
     66 => '',
-    67 => 'Expand the Content Edit Area size',
-    68 => 'Reduce the Content Edit Area size',
+    67 => 'Ýçerik Düzenleme Alanýný Geniþlet',
+    68 => 'Ýçerik Düzenleme Alanýný Daralt',
     69 => 'Yazý Yayým Tarihi',
     70 => 'Toolbar Seçimi',
     71 => 'Basit Toolbar',
-    72 => 'Common Toolbar',
+    72 => 'Genel Toolbar',
     73 => 'Geliþmiþ Toolbar',
     74 => 'Geliþmiþ II Toolbar',
-    75 => 'Full Featured',
+    75 => 'Full Özellikli',
     76 => 'Yayým Özellikleri',
     77 => 'Advanced Editorü çalýþtýrabilmek için Javascript gereksinimi vardýr.  config.php den gerekli ayarlarý yapabilirsiniz',
     78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
@@ -772,8 +772,8 @@ $LANG24 = array(
     83 => 'Arþivleme Ayarlarý',
     84 => 'Eriþim Haklarý',
     85 => 'Tümünü Göster',
-    86 => 'Advanced Editor',
-    87 => 'Story Stats'
+    86 => 'Geliþmiþ Editor',
+    87 => 'Yazý Ýstatistikleri'
 );
 
 ###############################################################################
@@ -805,8 +805,8 @@ $LANG27 = array(
     23 => 'bildirilen yeni yazý için bunu varsayýlan baþlýk yap',
     24 => '(*)',
     25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.',
-    27 => 'Or Upload Topic Icon',
+    26 => 'Arþivlenmiþ yazýlar için geçerli baþlýk yap.Sadece bir konu izinli.',
+    27 => 'Veya Konu Simgesi Upload Et',
     28 => 'EN Fazla',
     29 => 'Dosya Upload Hatalarý'
 );
@@ -862,35 +862,35 @@ $LANG28 = array(
     45 => 'Aktif',
     46 => 'Üye Durumu',
     47 => 'Düzenle',
-    48 => 'Show Admin Groups',
-    49 => 'Admin Group',
+    48 => 'Admin Gruplarýný Göster',
+    49 => 'Admin Gruplarý',
     50 => 'Check to allow filtering this group as an Admin Use Group',
-    51 => 'Online Days',
-    52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
-    53 => 'registered',
-    54 => 'Batch Delete',
-    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
-    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
-    57 => 'Phantom users',
-    58 => 'Short-Time Users',
-    59 => 'Old Users',
-    60 => 'Users that registered more than ',
-    61 => ' months ago, but never logged in.',
-    62 => 'Users that registered more than ',
-    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
-    64 => 'Normal users, who simply did not visit your site since ',
-    65 => ' months.',
-    66 => 'Update List',
-    67 => 'Months since registration',
-    68 => 'Online Hours',
-    69 => 'Offline Months',
-    70 => 'could not be deleted',
-    71 => 'sucessfully deleted',
-    72 => 'No User selected for deletion',
-    73 => 'Are You sure you want to permanently delete ALL selected users?',
-    74 => 'Recent Users',
-    75 => 'Users that registered in the last ',
-    76 => ' months'
+    51 => 'Online Günler',
+    52 => '<br>Note: "Online Günler" Ýlk üye olunan tarih ve son giriþ tarihi arasýnda ki gün sayýsýdýr.',
+    53 => 'Üye Oldu',
+    54 => 'Toplu Silme',
+    55 => 'Bu iþlem yalnýzca config.php de <code>$_CONF[\'lastlogin\'] = true;</code> þeklinde ayarladýðýnýzda çalýþýr',
+    56 => 'Silmek istediðiniz kullanýcý tipini seçip "Listeyi Güncelle" butonuna basýnýz. Ardýndan, silmek istemediðiniz kullanýcýlarýn iþaretini kaldýrýp "Sil" butonuna basýnýz. Please note that you will only delete those that are currently visible in case the list spans over several pages.',
+    57 => 'Phantom Üyeler',
+    58 => 'Kýsa Süreli Üyeler',
+    59 => 'Eski Üyeler',
+    60 => 'Þu kadar zaman önce Üye olanlar ',
+    61 => ' ay önce , fakat hiç giriþ yapmayanlar.',
+    62 => 'Þu kadar zaman önce Üye olanlar  ',
+    63 => ' ay önce üye olan ve 24 saat içinde giriþ yapan ancak bu tarihten sonra tekrar giriþ yapmayan üyeler.',
+    64 => 'Normal Üyeler, þu kadar zamandýr siteye uðramayanlar ',
+    65 => ' ay.',
+    66 => 'Listeyi Güncelle',
+    67 => 'Aydýr Üye',
+    68 => 'Online Saatler',
+    69 => 'Offline Aylar',
+    70 => 'Silinemedi',
+    71 => 'Baþarýyla Silindi',
+    72 => 'Silinecek Üye Seçilmedi',
+    73 => 'Seçtiðiniz TÜM Kullanýcýlarý silmek istediðinize emin misiniz?',
+    74 => 'Son Üyeler',
+    75 => 'Son Kaydolan Üyeler ',
+    76 => ' ay'
 );
 
 ###############################################################################
@@ -986,7 +986,7 @@ $LANG32 = array(
     29 => 'Geeklog Sürümü',
     30 => 'Eklentiyi Sil?',
     31 => 'Bu eklentiyi silmek istediðinizden eminmisiniz? Bunu yaparsanýz eklentinin kullandýðý tüm veriler ve veri yapýlarý da silinecektir. Eminseniz Sil düðmesine bir daha basýnýz.',
-    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    32 => '<p><b>Hata: AutoLink tag doðru formatta deðil</b></p>',
     33 => 'Yazýlým versionu',
     34 => 'Güncelle',
     35 => 'Düzenle',
@@ -1006,53 +1006,53 @@ $LANG33 = array(
     10 => 'Content Syndication',
     11 => 'Yeni Feed',
     12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
-    14 => 'Title',
-    15 => 'Type',
-    16 => 'Filename',
+    13 => 'Bir feedi silmek veya düzenlemek için , aþaðýdaki feed\'in  baþlýðýna týklayýn. Yeni bir feed oluþturmak için , yukarýda ki Yeni Feed e týklayýn.',
+    14 => 'Baþlýk',
+    15 => 'Tip',
+    16 => 'Dosya Adý',
     17 => 'Format',
-    18 => 'last updated',
-    19 => 'Enabled',
-    20 => 'Yes',
-    21 => 'No',
-    22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
-    24 => 'Feed Editor',
-    25 => 'Feed Title',
+    18 => 'Son Güncelleme',
+    19 => 'Ýzinli',
+    20 => 'Evet',
+    21 => 'Hyýr',
+    22 => '<i>(feed yok)</i>',
+    23 => 'Tüm Yazýlar',
+    24 => 'Feed Düzenleyici',
+    25 => 'Feed Baþlýðý',
     26 => 'Limit',
-    27 => 'Length of entries',
+    27 => 'Giriþ uzunluðu',
     28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
-    29 => 'Description',
-    30 => 'Last Update',
-    31 => 'Character Set',
-    32 => 'Language',
-    33 => 'Contents',
+    29 => 'Açýklama',
+    30 => 'Son Güncelleme',
+    31 => 'Karakter Set',
+    32 => 'Dil',
+    33 => 'Ýçerik',
     34 => 'Entries',
-    35 => 'Saats',
-    36 => 'Select type of feed',
+    35 => 'Saat',
+    36 => 'feedin Tipini seçin',
     37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
-    38 => 'Error: Missing Fields',
-    39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of Saats.',
-    41 => 'Links',
-    42 => 'Events',
-    43 => 'All',
-    44 => 'None',
+    38 => 'Hata: Boþ Býrakýlan Alanlar',
+    39 => 'Lütfen Feed Baþlýðý, Açýklama ve Dosya Adý alanlarýný doldurunuz.',
+    40 => 'Lütfen bir sayý girin of entries or number of Saat.',
+    41 => 'Linkler',
+    42 => 'Etkinlikler',
+    43 => 'Hepsi',
+    44 => 'Hiçbirisi',
     45 => 'Header-link in topic',
-    46 => 'Limit Results',
-    47 => 'Search',
-    48 => 'Edit',
+    46 => 'Sonuç Limiti',
+    47 => 'Arama',
+    48 => 'Düzenle',
     49 => 'Feed Logo',
     50 => "Relative to site url ({$_CONF['site_url']})",
     51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
-    52 => 'Error: existing Filename'
+    52 => 'HATA: Bu Dosya Adý var'
 );
 
 ###############################################################################
 # confirmation and error messages
 
 $MESSAGE = array(
-    1 => "Þifreniz email adresinize gönderilmiþtir. Lütfen, email adresinize gelen mesajdaki adýmlarý uygulayýn. {$_CONF['site_name']} kullandýðýnýz için teþekkür ederiz.",
+    1 => "Þifreniz email adresinize gönderilmiþtir. Lütfen, email adresinize gelen mesajdaki adýmlarý uygulayýn. (Eðer Þifreniz elinize ulaþmadýysa lütfen Junk-Bulk Mail Klasörünüzü kontrol edin) {$_CONF['site_name']} kullandýðýnýz için teþekkür ederiz.",
     2 => 'Yazýnýzý sitemize gönderdiðiniz için teþekkür ederiz.  Yazýnýz, site yönetimi tarafýndan onaylandýktan sonra yayýmlanacaktýr.',
     3 => "Ýnternet adresini sitemize gönderdiðiniz için teþekkür ederiz. Adresiniz, site yönetimi tarafýndan onaylandýktan sonra yayýmlanacaktýr. Onaylandýktan sonra gönderdiðiniz adresi<a href={$_CONF['site_url']}/links.php>Adresler</a> bölümünde görebilirsiniz.",
     4 => "Sitemize eklediðiniz etkinlik için teþekkür ederiz.  Gönderdiðiniz etkinlik, site yönetimi tarafýndan onaylandýktan sonra yayýmlanacaktýr. Onaylandýktan sonra <a href={$_CONF['site_url']}/calendar.php>takvim</a> bölümünde görebilirsiniz.",
@@ -1127,15 +1127,15 @@ $MESSAGE = array(
     73 => 'Eklenti kaldýrýlýrken bir hata oluþtu. Ayrýntýlar için  error.log dosyasýna bakýnýz',
     74 => 'pingback baþarýyla gönderildi.',
     75 => 'Trackbacklar POST sorgulamasý gerektirmektedir.',
-    76 => 'Do you really want to delete this item?',
-    77 => 'WARNING:<br>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.',
+    76 => 'Bu Öðeyi gerçekten silmek istiyor musunuz?',
+    77 => 'DÝKKAT:<br>Geçerli dil kodlamanýz UTF-8 dir. Ancak, serverýnýz bu kodlamayý desteklememektedir. Lütefen PHP için mbstring fonsiyonunu kurunuz veya farklý bir dil kodlamasý/dil seçiniz.',
+    78 => 'Girdiðiniz iki mail adresininde ayný olduðuna emin olun.',
     79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
     80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
-    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
-    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
-    84 => 'To delete your account, please enter your current password.'
+    81 => 'You may have mistyped your login credentials.  Lütfen yeniden giriþ yapmayý deneyin.',
+    82 => 'Ýzin verilen giriþ sayýsýný aþtýnýz.  Lütfen daha sonra tekrar deneyin.',
+    83 => 'Þifrenizi, e-mail adresini deðiþtirmek veya ne sistemin þifrenizi kadar hatýrlayacaðýný belirlemek için lütfen þifrenizi girin.',
+    84 => 'Hesabýnýza silmek için þifrenizi giriniz.'
 );
 
 ###############################################################################
@@ -1201,9 +1201,9 @@ $LANG_ACCESS = array(
     'submit' => 'Submit',
     'limitresults' => 'Limit Results',
     'group_id' => 'Grup ID',
-    'plugin_access_denied_msg' => 'Yönetim sayfasýna yetkisiz olarak girmeye çalýþtýnýz.  Please note that all attempts to illegally access this page are logged.',
+    'plugin_access_denied_msg' => 'Yönetim sayfasýna yetkisiz olarak girmeye çalýþtýnýz.  Ip numaranýz ve Adýnýz Kaydedildi.',
     'groupexists' => 'Grup adý Kullanýlýyor',
-    'groupexistsmsg' => 'Seçtiðiniz grup adý kullanýlýmda, Baþak bir grup adý seçiniz.'
+    'groupexistsmsg' => 'Seçtiðiniz grup adý kullanýlýmda, baþka bir grup adý seçiniz.'
 );
 
 ###############################################################################
@@ -1441,27 +1441,27 @@ $LANG_WEEK = array(
 
 $LANG_ADMIN = array(
     'search' => 'Arama',
-    'limit_results' => 'Limit Results',
-    'submit' => 'Submit',
-    'edit' => 'Edit',
-    'edit_adv' => 'Adv. Edit',
-    'admin_home' => 'Admin Home',
-    'create_new' => 'Create New',
-    'create_new_adv' => 'Create New (Adv.)',
-    'enabled' => 'Enabled',
-    'title' => 'Title',
-    'type' => 'Type',
-    'topic' => 'Topic',
-    'help_url' => 'Help File URL',
-    'save' => 'Save',
-    'cancel' => 'Cancel',
-    'delete' => 'Delete',
-    'delete_sel' => 'Delete selected',
-    'copy' => 'Copy',
-    'no_results' => '- No entries found -',
-    'data_error' => 'There was an error processing the subscription data. Please check the data source.',
-    'preview' => 'Preview',
-    'records_found' => 'Records found'
+    'limit_results' => 'Sonuç Limiti',
+    'submit' => 'Gönder',
+    'edit' => 'Düzenle',
+    'edit_adv' => 'Glþmþ.Düzenleme',
+    'admin_home' => 'Yönetim AnaSayfa',
+    'create_new' => 'Yeni Oluþtur',
+    'create_new_adv' => 'Yeni Oluþtur(Glþmþ.)',
+    'enabled' => 'Ýzinli',
+    'title' => 'Baþlýk',
+    'type' => 'Tip',
+    'topic' => 'Konu',
+    'help_url' => 'Yardým Dosyasý URL',
+    'save' => 'Kaydet',
+    'cancel' => 'Vazgeç',
+    'delete' => 'Sil',
+    'delete_sel' => 'Seçileni Sil',
+    'copy' => 'Kopyala',
+    'no_results' => '- Giriþ Bulunumadý -',
+    'data_error' => 'Veriniz iþlenirken bir hata oluþtu. Lütfen veri kaynaðýný kontrol edin.',
+    'preview' => 'ÖnÝzleme',
+    'records_found' => 'Kayýt Bulundu'
 );
 
 ###############################################################################
@@ -1477,7 +1477,7 @@ $LANG_commentcodes = array(
 
 $LANG_commentmodes = array(
     'flat' => 'Alt Alta',
-    'nested' => 'Nested',
+    'nested' => 'Ýç Ýçe',
     'threaded' => 'Threaded',
     'nocomment' => 'Yorum Gösterme'
 );
@@ -1494,7 +1494,7 @@ $LANG_cookiecodes = array(
 );
 
 $LANG_dateformats = array(
-    0 => 'System Default'
+    0 => 'Sistem Default'
 );
 
 $LANG_featurecodes = array(
