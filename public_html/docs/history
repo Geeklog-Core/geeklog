@@ -1,8 +1,9 @@
 GeekLog History/Changes:
 
-Dec ??, 2006 (1.4.1)
+Dec 31, 2006 (1.4.1)
 ------------
 
+- Changed the default character set in config.php back to iso-8859-1 [Dirk]
 - Removed display of the site URL from admin/sectest.php. On sites not installed
   in the webroot, it did not display the site's actual URL, which only causes
   confusion (reported by Dazzy) [Dirk]
