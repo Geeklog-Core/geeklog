@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.3 2006/12/09 09:01:18 dhaun Exp $
+// $Id: sectest.php,v 1.4 2006/12/30 15:07:50 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -265,7 +265,6 @@ $display .= COM_startBlock ('Results of the Security Check');
 $url = urlToCheck ();
 if (!empty ($url)) {
 
-    $display .= '<p>Site URL: ' . $url . '</p>';
     $display .= '<ol>';
 
     if (strpos ($_SERVER['PHP_SELF'], 'public_html') !== false) {

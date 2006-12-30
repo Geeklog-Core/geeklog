@@ -3,6 +3,9 @@ GeekLog History/Changes:
 Dec ??, 2006 (1.4.1)
 ------------
 
+- Removed display of the site URL from admin/sectest.php. On sites not installed
+  in the webroot, it did not display the site's actual URL, which only causes
+  confusion (reported by Dazzy) [Dirk]
 - Fixed conflict between the Spam-X DeleteComment and SLVreport action
   modules which prevented the count of deleted spams from being incremented
   [Dirk]
