@@ -3,6 +3,9 @@ GeekLog History/Changes:
 Dec ??, 2006 (1.4.1)
 ------------
 
+- Fixed conflict between the Spam-X DeleteComment and SLVreport action
+  modules which prevented the count of deleted spams from being incremented
+  [Dirk]
 - Fixed max. allowed length for a user's homepage (128) and location (96) in the
   preferences/profile.thtml template file (reported by burjans) [Dirk]
 - Fixed page title after a successful batch import of users (which read "Error")

@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.26 2006/11/01 20:18:07 dhaun Exp $
+ * $Id: functions.inc,v 1.27 2006/12/30 13:57:08 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -266,14 +266,14 @@ function plugin_spamaction_spamx ($comment, $action)
                     $sfile = str_replace ('.Action.class.php', '', $file);
                     require_once ($spamx_path . $file);
                     $CM = new $sfile;
-                    $Spamx_Action[$CM->number ()] = $sfile;
+                    $Spamx_Action[$sfile] = $CM->number ();
                 }   
             }   
         }   
         closedir ($dir);
     }
 
-    foreach ($Spamx_Action as $Num => $Act) {
+    foreach ($Spamx_Action as $Act => $Num) {
         if (($action & $Num) == $Num) {
             $AC = new $Act;
             $AC->execute ($comment);
