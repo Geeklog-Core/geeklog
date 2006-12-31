@@ -20,6 +20,7 @@ Dec 31, 2006 (1.4.1)
 - In lists created from the Links and Calendar plugins, use "links-new-plugin"
   as the CSS class name [Oliver]
 
+- Updated Estonian language file, provided by Artur Räpp
 - Updated Russian language file, provided by Alexander Yurchenko
 - New Russian language file for the Calendar plugin, provided by Alexander
   Yurchenko
