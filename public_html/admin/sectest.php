@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Does a quick security check of the Geeklog install                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun            - dirk AT haun-online DOT de                |
 // |          Jeffrey Schoolcraft  - dream AT dr3amscap3 DOT com               |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.4 2006/12/30 15:07:50 dhaun Exp $
+// $Id: sectest.php,v 1.5 2007/01/06 12:04:55 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -260,6 +260,7 @@ function checkDefaultPassword ()
 
 // MAIN
 $display = COM_siteHeader ('menu', 'Geeklog Security Check');
+$display .= '<div dir="ltr">' . LB;
 $display .= COM_startBlock ('Results of the Security Check');
 
 $url = urlToCheck ();
@@ -333,9 +334,17 @@ if ($failed_tests > 0) {
     DB_save ($_TABLES['vars'], 'name,value', "'security_check','1'");
 }
 
-$display .= '<p>To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) <a href="http://lists.geeklog.net/mailman/listinfo/geeklog-announce">geeklog-announce</a> mailing list and/or use the <strong>' . $LANG01[107] . '</strong> option in your Admin menu from time to time to check for available updates.</p>';
+if (empty ($LANG_DIRECTION)) {
+    $versioncheck = '<strong>' . $LANG01[107] . '</strong>';
+} else {
+    $versioncheck = '<strong dir="' . $LANG_DIRECTION . '">' . $LANG01[107]
+                  . '</strong>';
+}
+
+$display .= '<p>To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) <a href="http://lists.geeklog.net/mailman/listinfo/geeklog-announce">geeklog-announce</a> mailing list and/or use the ' . $versioncheck . ' option in your Admin menu from time to time to check for available updates.</p>';
 
 $display .= COM_endBlock ();
+$display .= '</div>' . LB;
 $display .= COM_siteFooter ();
 
 echo $display;
