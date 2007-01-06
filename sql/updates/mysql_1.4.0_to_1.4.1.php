@@ -32,6 +32,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE help help varchar(255) defaul
 // set regdate to a valid date for users in a really old (pre-1.3) database
 $_SQL[] = "UPDATE {$_TABLES['users']} SET regdate = '2001-12-17 00:00:00' WHERE regdate = '0000-00-00 00:00:00'";
 
+// functionality of the getBent block has been moved to admin/sectest.php
+$_SQL[] = "DELETE FROM {$_TABLES['blocks']} WHERE phpblockfn = 'phpblock_getBent'";
+
 // add the new 'syndication.edit' feature and the 'Syndication Admin' group
 function upgrade_addSyndicationFeature ()
 {
