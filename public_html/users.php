@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.150 2006/12/09 19:18:08 dhaun Exp $
+// $Id: users.php,v 1.151 2007/01/06 11:48:03 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -569,7 +569,7 @@ function createuser ($username, $email, $email_conf)
 */
 function loginform ($hide_forgotpw_link = false, $statusmode = -1)
 {
-    global $_CONF, $LANG04;
+    global $_CONF, $LANG01, $LANG04;
 
     $retval = '';
 
@@ -593,7 +593,7 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     }
 
     $user_templates->set_var('lang_username', $LANG04[2]);
-    $user_templates->set_var('lang_password', $LANG04[4]);
+    $user_templates->set_var('lang_password', $LANG01[57]);
     if ($hide_forgotpw_link) {
         $user_templates->set_var('lang_forgetpassword', '');
     } else {
