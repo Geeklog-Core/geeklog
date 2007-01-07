@@ -1,5 +1,19 @@
 GeekLog History/Changes:
 
+??? ??, 2007 (1.4.x)
+------------
+
+- Fixed COM_getLangSQL() to escape the underscore character '_' which happens
+  to be a wildcard character when used with LIKE. In a multi-language setup,
+  this may accidentally display unwanted items (reported by Kenji Ito) [Dirk]
+- Addressed problems with the text direction (ltr/rtl) and the hard-coded
+  English text in admin/sectest.php (reported by LWC) [Dirk]
+- Due to a language file change, the login form in users.php ("Try Logging in
+  Again") now asked for a "new password" (reported by Laugh) [Dirk]
+- Remove the "Are you secure?" (getBent) block from the database as its
+  functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
+
+
 Dec 31, 2006 (1.4.1)
 ------------
 
