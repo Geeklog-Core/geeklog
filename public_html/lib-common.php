@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.611 2006/12/16 18:10:37 dhaun Exp $
+// $Id: lib-common.php,v 1.612 2007/01/07 10:27:18 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5935,7 +5935,7 @@ function COM_getLangSQL( $field, $type = 'WHERE', $table = '' )
 
         if( !empty( $lang_id ))
         {
-            $sql = ' ' . $type . " ({$table}$field LIKE '%_$lang_id')";
+            $sql = ' ' . $type . " ({$table}$field LIKE '%\\_$lang_id')";
         }
     }
 
