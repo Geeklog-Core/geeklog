@@ -24,7 +24,7 @@
 #
 ###############################################################################
 
-$LANG_CHARSET = 'iso-8859-1';
+$LANG_CHARSET = 'utf-8';
 
 ###############################################################################
 # Array Format:
@@ -324,7 +324,7 @@ $LANG04 = array(
     116 => 'Account Awaiting Activation',
     117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
     118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
-    119 => "If you have forgotten your password, you may request a new one at this url:",
+    119 => 'If you have forgotten your password, you may request a new one at this url:',
     120 => 'Account Activated',
     121 => 'Service',
     122 => 'Sorry, new user registration is disabled',
@@ -345,7 +345,7 @@ $LANG04 = array(
     137 => 'Filter Story Content',
     138 => 'Misc Settings',
     139 => 'Layout and Language',
-    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme, timezone and perferred date format</li>',
     141 => 'Privacy Settings',
     142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
     143 => 'Filter Block Content',
@@ -362,7 +362,8 @@ $LANG04 = array(
     154 => 'Content',
     155 => 'Privacy',
     156 => 'Delete Account',
-    157 => 'Delete Option'
+    157 => 'Delete Option',
+    158 => 'Time Zone'
 );
 
 ###############################################################################
@@ -1056,8 +1057,8 @@ $LANG33 = array(
 $MESSAGE = array(
     1 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using {$_CONF['site_name']}",
     2 => "Thank-you for submitting your story to {$_CONF['site_name']}.  It has been submitted to our staff for approval. If approved, your story will be available for others to read on our site.",
-    3 => "",
-    4 => "",
+    3 => '',
+    4 => '',
     5 => 'Your account information has been successfully saved.',
     6 => 'Your preferences have been successfully saved.',
     7 => 'Your comment preferences have been successfully saved.',
