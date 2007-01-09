@@ -40,15 +40,15 @@ a:link {
 }
 a:visited {
   background:transparent;
-  color:#800080
+  color:#800080;
 }
 a:hover {
   background:transparent;
-  color:#008000
+  color:#008000;
 }
 a:active {
   background:transparent;
-  color:#FF0000
+  color:#FF0000;
 }
 body {
   width:99%;
@@ -314,7 +314,7 @@ select {
 .list-new-plugins,
 .list-new-comments,
 .list-new-trackbacks,
-.list-older-stories { 
+.list-older-stories {
   margin:0px;padding:0px;
 }
 
