@@ -534,7 +534,7 @@ CREATE TABLE {$_TABLES['userprefs']} (
   noicons tinyint(3) unsigned NOT NULL default '0',
   willing tinyint(3) unsigned NOT NULL default '1',
   dfid tinyint(3) unsigned NOT NULL default '0',
-  tzid char(3) NOT NULL default 'edt',
+  tzid varchar(125) NOT NULL default 'edt',
   emailstories tinyint(4) NOT NULL default '1',
   emailfromadmin tinyint(1) NOT NULL default '1',
   emailfromuser tinyint(1) NOT NULL default '1',
