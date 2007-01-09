@@ -534,7 +534,7 @@ CREATE TABLE {$_TABLES['userprefs']} (
   noicons tinyint(3) unsigned NOT NULL default '0',
   willing tinyint(3) unsigned NOT NULL default '1',
   dfid tinyint(3) unsigned NOT NULL default '0',
-  tzid varchar(125) NOT NULL default 'edt',
+  tzid varchar(125) NOT NULL default '',
   emailstories tinyint(4) NOT NULL default '1',
   emailfromadmin tinyint(1) NOT NULL default '1',
   emailfromuser tinyint(1) NOT NULL default '1',
@@ -884,7 +884,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, t
 $_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (2,NULL,NULL,'',0,0,0) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (1,0,0,0,'',0) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,1,0,'edt',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,1,0,'',1) ";
 
 #
 # Dumping data for table 'users'

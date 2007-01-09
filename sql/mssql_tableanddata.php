@@ -584,7 +584,7 @@ CREATE TABLE [dbo].[{$_TABLES['userprefs']}] (
     [noicons] [tinyint] NULL ,
     [willing] [tinyint] NULL ,
     [dfid] [tinyint] NULL ,
-    [tzid] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [tzid] [varchar] (125) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [emailstories] [smallint] NULL ,
     [emailfromadmin] [smallint] NULL ,
     [emailfromuser] [smallint] NULL ,
@@ -1657,7 +1657,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, to
 $_SQL[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (2,NULL,NULL,'',0,0,0)";
 
 $_SQL[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (1,0,0,0,'',0)";
-$_SQL[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,1,0,'edt',1)";
+$_SQL[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,1,0,'',1)";
 
 $_SQL[] = "
 set identity_insert {$_TABLES['users']} on
