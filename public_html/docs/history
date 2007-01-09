@@ -2,7 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
-
+- Removed tzcode table and started using PEAR::Date instead since all timezone
+  information is stored in there. [Oliver]
+- Added timezone selector to preferences page [Oliver]
 - Fixed COM_getLangSQL() to escape the underscore character '_' which happens
   to be a wildcard character when used with LIKE. In a multi-language setup,
   this may accidentally display unwanted items (reported by Kenji Ito) [Dirk]
