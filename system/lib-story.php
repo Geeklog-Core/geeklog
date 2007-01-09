@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.73 2006/11/09 09:57:28 dhaun Exp $
+// $Id: lib-story.php,v 1.74 2007/01/09 09:49:44 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -454,6 +454,20 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml', $query
     $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
+    // PLG_itemDisplay additions
+    $plg_additions = PLG_itemDisplay ($A['sid'], 'article'); // call the array
+    $add_string = "";
+    for ($adds = 0; $adds<count($plg_additions); $adds++) // loop through elements
+    {
+        $add_string .= "<br>" . $plg_additions[$adds];
+    }
+    if ($adds > 0)
+    {
+        $add_string .= "<br>";
+    }
+    $article->set_var( 'plugin_itemdisplay', $add_string );
+
+    // Edit Link
     if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 AND SEC_hasrights( 'story.edit' ) AND ( $index != 'p' ) AND SEC_hasTopicAccess( $A['tid'] ) == 3 )
     {
         $article->set_var( 'edit_link', '<a href="' . $_CONF['site_admin_url']
