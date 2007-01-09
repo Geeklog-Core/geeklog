@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.156 2007/01/09 05:53:08 ospiess Exp $
+// $Id: usersettings.php,v 1.157 2007/01/09 07:49:19 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -534,16 +534,18 @@ function editpreferences()
         $preferences->set_var ('theme_selection', '');
     }
 
+    require_once ('Date/TimeZone.php');
     // Timezone
     if (empty($_USER['tzid']) && isset($_CONF['timezone'])) {
         $timezone = $_CONF['timezone'];
     } else if (!empty($_USER['tzid'])) {
         $timezone = $_USER['tzid'];
     } else {
-        $timezone = date('T');
+        $tz_obj = Date_TimeZone::getDefault();
+        $timezone = $tz_obj->id;
     }
     $selection = '<select name="tzid">' . LB;
-    require_once ('Date/TimeZone.php');
+
     $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
 
     while ($tDetails = current($T)) {
