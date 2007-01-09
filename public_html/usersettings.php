@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.155 2007/01/09 05:29:30 ospiess Exp $
+// $Id: usersettings.php,v 1.156 2007/01/09 05:53:08 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -535,10 +535,10 @@ function editpreferences()
     }
 
     // Timezone
-    if (empty($_USER['timezone']) && isset($_CONF['timezone'])) {
+    if (empty($_USER['tzid']) && isset($_CONF['timezone'])) {
         $timezone = $_CONF['timezone'];
-    } else if (!empty($_USER['timezone'])) {
-        $timezone = $_USER['timezone'];
+    } else if (!empty($_USER['tzid'])) {
+        $timezone = $_USER['tzid'];
     } else {
         $timezone = date('T');
     }
@@ -1402,7 +1402,7 @@ function savepreferences($A)
     setcookie ($_CONF['cookie_language'], $A['language'], time() + 31536000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
-    setcookie ($_CONF['cookie_timezone'], $A['tzid'], time() + 31536000,
+    setcookie ($_CONF['cookie_tzid'], $A['tzid'], time() + 31536000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
 
