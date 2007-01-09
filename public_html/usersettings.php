@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.154 2006/12/09 08:33:06 dhaun Exp $
+// $Id: usersettings.php,v 1.155 2007/01/09 05:29:30 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -62,7 +62,7 @@ function edituser()
                                    'photo'         => 'userphoto.thtml',
                                    'username'      => 'username.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
-                                   
+
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
     $navbar = new navbar;
     $navbar->add_menuitem($LANG04[151],'showhideProfileEditorDiv("preview",0);return false;',true);
@@ -73,14 +73,14 @@ function edituser()
     $navbar->add_menuitem($LANG04[155],'showhideProfileEditorDiv("privacy",5);return false;',true);
     $navbar->set_selected($LANG04[152]);
     $preferences->set_var ('navbar', $navbar->generate());
-                                   
+
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
     $preferences->set_var ('no_javascript_warning',$LANG04[150]);
 
     $preferences->set_var ('cssid1', 1);
     $preferences->set_var ('cssid2', 2);
-    
+
     $preferences->set_var ('preview', userprofile($_USER['uid']));
     $preferences->set_var ('prefs', editpreferences());
 
@@ -255,14 +255,14 @@ function confirmAccountDelete ($form_reqid)
         // not found - abort
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
-    
+
     // to change the password, email address, or cookie timeout,
     // we need the user's current password
     if (empty ($_POST['old_passwd']) ||
             (md5 ($_POST['old_passwd']) != $_USER['passwd'])) {
          return COM_refresh ($_CONF['site_url']
                             . '/usersettings.php?mode=edit&msg=84');
-    }    
+    }
 
     $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
     DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
@@ -429,7 +429,7 @@ function editpreferences()
 
     $preferences->set_var ('lang_authors_exclude', $LANG04[46]);
     $preferences->set_var ('lang_boxes_exclude', $LANG04[47]);
-    
+
     $preferences->set_var ('start_block_display',
             COM_startBlock ($LANG04[45] . ' ' . $display_name));
     $preferences->set_var ('start_block_digest',
@@ -533,6 +533,37 @@ function editpreferences()
     } else {
         $preferences->set_var ('theme_selection', '');
     }
+
+    // Timezone
+    if (empty($_USER['timezone']) && isset($_CONF['timezone'])) {
+        $timezone = $_CONF['timezone'];
+    } else if (!empty($_USER['timezone'])) {
+        $timezone = $_USER['timezone'];
+    } else {
+        $timezone = date('T');
+    }
+    $selection = '<select name="tzid">' . LB;
+    require_once ('Date/TimeZone.php');
+    $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
+
+    while ($tDetails = current($T)) {
+        $tzcode = key($T);
+        $selection .= '<option value="' . $tzcode . '"';
+        if ($timezone == $tzcode) {
+                $selection .= ' selected="selected"';
+        } else {
+                $selection .= '';
+        }
+        $hours = $tDetails['offset'] / (3600 * 1000);
+        if ($hours > 0) {
+            $hours = "+$hours";
+        }
+        $selection .= ">$hours, {$tDetails['shortname']} ($tzcode)</option>" . LB;
+        next($T);
+    }
+    $selection .= '</select>';
+    $preferences->set_var ('timezone_selector', $selection);
+    $preferences->set_var ('lang_timezone', $LANG04[158]);
 
     if ($A['noicons'] == '1') {
         $preferences->set_var ('noicons_checked', 'checked="checked"');
@@ -903,10 +934,10 @@ function saveuser($A)
     }
 
     if (!empty ($A['passwd'])) {
-        if (($A['passwd'] == $A['passwd_conf']) 
+        if (($A['passwd'] == $A['passwd_conf'])
                 AND (md5 ($A['old_passwd']) == $_USER['passwd'])) {
             $passwd = md5 ($A['passwd']);
-            DB_change($_TABLES['users'], 'passwd', 
+            DB_change($_TABLES['users'], 'passwd',
                       "$passwd", "uid", $_USER['uid']);
             if ($A['cooktime'] > 0) {
                 $cooktime = $A['cooktime'];
@@ -915,7 +946,7 @@ function saveuser($A)
             }
             setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
                        $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                       $_CONF['cookiesecure']);        
+                       $_CONF['cookiesecure']);
         }
         elseif (md5 ($A['old_passwd']) != $_USER['passwd']) {
                 return COM_refresh ($_CONF['site_url']
@@ -1091,7 +1122,7 @@ function userprofile ($user, $msg = 0)
         $user_templates->set_var ('username', $A['username']);
         $user_templates->set_var ('user_fullname', $A['fullname']);
     }
-    
+
     if (SEC_hasRights('user.edit')) {
         global $_IMAGE_TYPE, $LANG_ADMIN;
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
@@ -1344,7 +1375,9 @@ function savepreferences($A)
         $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }
 
-    if (!isset ($A['tzid'])) {
+    if (isset ($A['tzid'])) {
+        $A['tzid'] = COM_applyFilter ($A['tzid']);
+    } else {
         $A['tzid'] = '';
     }
 
@@ -1367,6 +1400,9 @@ function savepreferences($A)
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
     setcookie ($_CONF['cookie_language'], $A['language'], time() + 31536000,
+               $_CONF['cookie_path'], $_CONF['cookiedomain'],
+               $_CONF['cookiesecure']);
+    setcookie ($_CONF['cookie_timezone'], $A['tzid'], time() + 31536000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
 
@@ -1403,7 +1439,7 @@ function savepreferences($A)
 
 // MAIN
 $mode = '';
-if (isset($_POST['btncancel']) AND $_POST['btncancel'] == $LANG_ADMIN['cancel']) { 
+if (isset($_POST['btncancel']) AND $_POST['btncancel'] == $LANG_ADMIN['cancel']) {
     echo COM_refresh($_CONF['site_url']);
     exit;
 } else if (isset($_POST['btnsubmit']) AND ($_POST['btnsubmit'] == $LANG04[96]) && ($_POST['mode'] != 'deleteconfirmed')) {
@@ -1432,7 +1468,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         break;
 
     case 'saveuser':
-        savepreferences ($_POST);     
+        savepreferences ($_POST);
         $display .= saveuser($_POST);
         PLG_profileExtrasSave ();
         break;

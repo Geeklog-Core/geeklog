@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.43 2006/11/12 11:58:00 dhaun Exp $
+// $Id: lib-database.php,v 1.44 2007/01/09 05:29:30 ospiess Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -81,7 +81,6 @@ $_TABLES['syndication']         = $_DB_table_prefix . 'syndication';
 $_TABLES['topics']              = $_DB_table_prefix . 'topics';
 $_TABLES['trackback']           = $_DB_table_prefix . 'trackback';
 $_TABLES['trackbackcodes']      = $_DB_table_prefix . 'trackbackcodes';
-$_TABLES['tzcodes']             = $_DB_table_prefix . 'tzcodes';
 $_TABLES['usercomment']         = $_DB_table_prefix . 'usercomment';
 $_TABLES['userindex']           = $_DB_table_prefix . 'userindex';
 $_TABLES['userinfo']            = $_DB_table_prefix . 'userinfo';
@@ -147,7 +146,7 @@ function DB_setdebug($flag)
     $_DB->setVerbose($flag);
 }
 
-/** Setting this on will return the SQL error message. 
+/** Setting this on will return the SQL error message.
 * Default is to not display or return the SQL error but
 * to record it in the error.log file
 *
@@ -161,7 +160,7 @@ function DB_displayError($flag)
 }
 
 /**
-* Executes a query on the db server 
+* Executes a query on the db server
 *
 * This executes the passed SQL and returns the recordset or errors out
 *
@@ -203,7 +202,7 @@ function DB_query ($sql, $ignore_errors = 0)
 * @param        string      $return_page    URL to send user to when done
 *
 */
-function DB_save($table,$fields,$values,$return_page='') 
+function DB_save($table,$fields,$values,$return_page='')
 {
     global $_DB,$_TABLES,$_CONF;
 
@@ -247,7 +246,7 @@ function DB_delete($table,$id,$value,$return_page='')
 * @return       mixed       Returns value sought
 *
 */
-function DB_getItem($table,$what,$selection='') 
+function DB_getItem($table,$what,$selection='')
 {
     if (!empty($selection)) {
         $result = DB_query("SELECT $what FROM $table WHERE $selection");
@@ -265,15 +264,15 @@ function DB_getItem($table,$what,$selection='')
 * redirect user to another page if told to do so
 *
 * @param        string          $table              Table to perform change on
-* @param        string          $item_to_set        field name to set 
-* @param        string          $value_to_set       Value to set abovle field to 
-* @param        array|string    $id                 field name(s) to use in where clause 
+* @param        string          $item_to_set        field name to set
+* @param        string          $value_to_set       Value to set abovle field to
+* @param        array|string    $id                 field name(s) to use in where clause
 * @param        array|string    $value              Value(s) to use in where clause
 * @param	    string          $return_page        page to send user to when done with change
 * @param        boolean         $supress_quotes     whether or not to use single quotes in where clause
 *
 */
-function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_page='',$supress_quotes=false) 
+function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_page='',$supress_quotes=false)
 {
     global $_DB,$_TABLES,$_CONF;
 
@@ -296,7 +295,7 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 * @return       int     Returns row count from generated SQL
 *
 */
-function DB_count($table,$id='',$value='') 
+function DB_count($table,$id='',$value='')
 {
     global $_DB;
 
@@ -313,12 +312,12 @@ function DB_count($table,$id='',$value='')
 * @param        string          $fields         Comma delmited list of fields to copy over
 * @param        string          $values         Values to store in database field
 * @param        string          $tablefrom      Table to get record from
-* @param        array|string   	$id             Field name(s) to use in where clause 
+* @param        array|string   	$id             Field name(s) to use in where clause
 * @param        array|string    $value          Value(s) to use in where clause
 * @param        string          $return_page    Page to send user to when done
 *
 */
-function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='') 
+function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='')
 {
     global $_DB,$_TABLES,$_CONF;
 
@@ -468,7 +467,7 @@ function DB_error()
 * @return   boolean     returns true on success otherwise false
 *
 */
-function DB_createDatabaseStructures() 
+function DB_createDatabaseStructures()
 {
     global $_DB;
 
@@ -482,7 +481,7 @@ function DB_createDatabaseStructures()
 * @return       boolean     returns true on success otherwise false
 *
 */
-function DB_doDatabaseUpgrade($current_gl_version) 
+function DB_doDatabaseUpgrade($current_gl_version)
 {
     global $_DB;
 

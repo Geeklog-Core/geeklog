@@ -487,15 +487,6 @@ CREATE TABLE {$_TABLES['topics']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[32] = "
-CREATE TABLE {$_TABLES['tzcodes']} (
-  tz char(3) NOT NULL default '',
-  offset int(1) default NULL,
-  description varchar(64) default NULL,
-  PRIMARY KEY  (tz)
-) TYPE=MyISAM
-";
-
 $_SQL[33] = "
 CREATE TABLE {$_TABLES['usercomment']} (
   uid mediumint(8) NOT NULL default '1',
@@ -882,65 +873,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, header_tid, form
 
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.gif',1,10,6,2,3,2,2,2)";
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.gif',2,10,6,2,3,2,2,2)";
-
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ndt',-9000,'Newfoundland Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('adt',-10800,'Atlantic Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('edt',-14400,'Eastern Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cdt',-18000,'Central Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mdt',-21600,'Mountain Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('pdt',-25200,'Pacific Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ydt',-28800,'Yukon Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('hdt',-32400,'Hawaii Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('bst',3600,'British Summer') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mes',7200,'Middle European Summer') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('sst',7200,'Swedish Summer') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('fst',7200,'French Summer') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('wad',28800,'West Australian Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cad',37800,'Central Australian Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ead',39600,'Eastern Australian Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nzd',46800,'New Zealand Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('gmt',0,'Greenwich Mean') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('utc',0,'Universal (Coordinated)') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('wet',0,'Western European') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('wat',-3600,'West Africa') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('at',-7200,'Azores') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('gst',-10800,'Greenland Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nft',-12600,'Newfoundland') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nst',-12600,'Newfoundland Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ast',-14400,'Atlantic Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('est',-18000,'Eastern Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cst',-21600,'Central Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mst',-25200,'Mountain Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('pst',-28800,'Pacific Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('yst',-32400,'Yukon Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('hst',-36000,'Hawaii Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cat',-36000,'Central Alaska') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ahs',-36000,'Alaska-Hawaii Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nt',-39600,'Nome') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('idl',-43200,'International Date Line West') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cet',3600,'Central European') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('met',3600,'Middle European') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mew',3600,'Middle European Winter') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('swt',3600,'Swedish Winter') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('fwt',3600,'French Winter') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('eet',7200,'Eastern Europe, USSR Zone 1') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('bt',10800,'Baghdad, USSR Zone 2') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('it',12600,'Iran') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('zp4',14400,'USSR Zone 3') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('zp5',18000,'USSR Zone 4') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ist',19800,'Indian Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('zp6',21600,'USSR Zone 5') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('was',25200,'West Australian Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('jt',27000,'Java (3pm in Cronusland!)') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cct',28800,'China Coast, USSR Zone 7') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('jst',32400,'Japan Standard, USSR Zone 8') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cas',34200,'Central Australian Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('eas',36000,'Eastern Australian Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nzt',43200,'New Zealand') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nzs',43200,'New Zealand Standard') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('id2',43200,'International Date Line East') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('idt',10800,'Israel Daylight') ";
-$_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('iss',7200,'Israel Standard') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (1,'nested','ASC',100) ";
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (2,'threaded','ASC',100) ";

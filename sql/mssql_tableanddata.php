@@ -67,7 +67,7 @@ CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL ,
     [allow_autotags] [tinyint] NOT NULL ,
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "
@@ -101,7 +101,7 @@ CREATE TABLE [dbo].[{$_TABLES['comments']}] (
     [indent] [numeric](10, 0) NULL ,
     [uid] [int] NULL ,
     [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "
@@ -145,7 +145,7 @@ CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "
@@ -166,7 +166,7 @@ CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
     [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [timestart] [smalldatetime] NULL ,
     [timeend] [smalldatetime] NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "
@@ -229,7 +229,7 @@ CREATE TABLE [dbo].[{$_TABLES['links']}] (
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -242,7 +242,7 @@ CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
     [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [hits] [int] NULL ,
     [date] [datetime] NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -280,7 +280,7 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [smalldatetime] NULL ,
     [timeend] [smalldatetime] NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -417,7 +417,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_nf] [tinyint] NULL ,
     [sp_inblock] [tinyint] NULL  ,
     [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -460,7 +460,7 @@ CREATE TABLE [dbo].[{$_TABLES['stories']}] (
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL ,
     [advanced_editor_mode] [tinyint] NOT NULL ,
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 $_SQL[] = "
@@ -472,7 +472,7 @@ CREATE TABLE [dbo].[{$_TABLES['storysubmission']}] (
     [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [date] [datetime] NULL ,
     [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -494,7 +494,7 @@ CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
     [is_enabled] [tinyint] NOT NULL ,
     [updated] [datetime] NULL ,
     [update_info] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -528,7 +528,7 @@ CREATE TABLE [dbo].[{$_TABLES['trackback']}] (
     [date] [datetime] NULL ,
     [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -536,15 +536,6 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['trackbackcodes']}] (
     [code] [smallint] NOT NULL ,
     [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['tzcodes']}] (
-    [tz] [char] (3) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [offset] [int] NULL ,
-    [description] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -568,7 +559,7 @@ CREATE TABLE [dbo].[{$_TABLES['userindex']}] (
     [boxes] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [noboxes] [smallint] NOT NULL ,
     [maxstories] [smallint] NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -583,7 +574,7 @@ CREATE TABLE [dbo].[{$_TABLES['userinfo']}] (
     [totalcomments] [int] NULL ,
     [lastgranted] [numeric](10, 0) NULL ,
     [lastlogin] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
 
 
@@ -924,12 +915,6 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackbackcodes']}] ADD
     )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tzcodes']}] ADD
-    CONSTRAINT [PK_gl_tzcodes] PRIMARY KEY  CLUSTERED
-    (
-        [tz]
-    )  ON [PRIMARY]
-";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['usercomment']}] ADD
     CONSTRAINT [PK_gl_usercomment] PRIMARY KEY  CLUSTERED
@@ -1661,65 +1646,6 @@ $_SQL[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, header_tid, forma
 
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.gif',1,10,6,2,3,2,2,2)";
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.gif',2,10,6,2,3,2,2,2)";
-
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ndt',-9000,'Newfoundland Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('adt',-10800,'Atlantic Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('edt',-14400,'Eastern Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cdt',-18000,'Central Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mdt',-21600,'Mountain Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('pdt',-25200,'Pacific Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ydt',-28800,'Yukon Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('hdt',-32400,'Hawaii Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('bst',3600,'British Summer')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mes',7200,'Middle European Summer')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('sst',7200,'Swedish Summer')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('fst',7200,'French Summer')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('wad',28800,'West Australian Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cad',37800,'Central Australian Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ead',39600,'Eastern Australian Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nzd',46800,'New Zealand Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('gmt',0,'Greenwich Mean')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('utc',0,'Universal (Coordinated)')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('wet',0,'Western European')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('wat',-3600,'West Africa')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('at',-7200,'Azores')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('gst',-10800,'Greenland Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nft',-12600,'Newfoundland')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nst',-12600,'Newfoundland Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ast',-14400,'Atlantic Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('est',-18000,'Eastern Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cst',-21600,'Central Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mst',-25200,'Mountain Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('pst',-28800,'Pacific Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('yst',-32400,'Yukon Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('hst',-36000,'Hawaii Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cat',-36000,'Central Alaska')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ahs',-36000,'Alaska-Hawaii Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nt',-39600,'Nome')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('idl',-43200,'International Date Line West')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cet',3600,'Central European')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('met',3600,'Middle European')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('mew',3600,'Middle European Winter')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('swt',3600,'Swedish Winter')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('fwt',3600,'French Winter')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('eet',7200,'Eastern Europe, USSR Zone 1')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('bt',10800,'Baghdad, USSR Zone 2')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('it',12600,'Iran')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('zp4',14400,'USSR Zone 3')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('zp5',18000,'USSR Zone 4')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ist',19800,'Indian Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('zp6',21600,'USSR Zone 5')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('was',25200,'West Australian Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('jt',27000,'Java (3pm in Cronusland!)')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cct',28800,'China Coast, USSR Zone 7')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('jst',32400,'Japan Standard, USSR Zone 8')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('cas',34200,'Central Australian Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('eas',36000,'Eastern Australian Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nzt',43200,'New Zealand')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('nzs',43200,'New Zealand Standard')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('id2',43200,'International Date Line East')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('idt',10800,'Israel Daylight')";
-$_SQL[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('iss',7200,'Israel Standard')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (1,'nested','ASC',100)";
 $_SQL[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (2,'threaded','ASC',100)";
