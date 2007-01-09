@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.113 2006/12/09 19:18:08 dhaun Exp $
+// $Id: lib-plugins.php,v 1.114 2007/01/09 09:24:25 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1847,6 +1847,51 @@ function PLG_itemSaved ($id, $type)
 
     return $error;
 }
+
+/**
+* "Generic" plugin API: Display item
+*
+* To be called (eventually) whenever Geeklog displays an item.
+* Plugins can hook into this and add content to the displayed item, in the form
+* of an array (true, string1, string2...).
+*
+* The object that called can then display one or several items with a
+* object-defined layout.
+*
+* Plugins can signal an error by returning an array (false, 'Error Message')
+* In case of an error, the error message will be written to the error.log and
+* nothing will be displayed on the output.
+*
+* @param    string  $id     unique ID of the item
+* @param    string  $type   type of the item, e.g. 'article'
+* @returns  array           array with a status and one or several strings
+*
+*/
+
+function PLG_itemDisplay ($id, $type)
+{
+    global $_PLUGINS;
+    $result_arr = array();
+
+    $plugins = count ($_PLUGINS);
+    for ($display = 0; $display < $plugins; $display++) {
+        $function = 'plugin_itemdisplay_' . $_PLUGINS[$display];
+        if (function_exists ($function)) {
+            $result = $function ($id, $type);
+            if ($result[0] == false) {
+                // plugin reported a problem - do not add and continue
+                COM_errorLog( $result[1], 1);
+            } else {
+                array_shift($result);
+                $result_arr = array_merge($result_arr,$result);
+            }
+        }
+    }
+
+    return $result_arr;
+}
+
+
 
 /**
 * Gets Geeklog blocks from plugins
