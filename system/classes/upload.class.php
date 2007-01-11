@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.47 2006/09/09 12:52:06 dhaun Exp $
+// $Id: upload.class.php,v 1.48 2007/01/11 04:47:27 ospiess Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -401,14 +401,20 @@ class upload
     * @return   double              resize factor
     *
     */
-    function _calcSizefactor ($width, $height)
+    function _calcSizefactor ($width, $height) // 1000
     {
         if (($width > $this->_maxImageWidth) ||
                 ($height > $this->_maxImageHeight)) {
-            if (($width > $this->_maxImageWidth) && ($width > $height)) {
-                $sizefactor = (double) ($this->_maxImageWidth / $width);
+            // get both sizefactors that would resize one dimension correctly
+            $sizefactor_w = (double) ($this->_maxImageWidth / $width);
+            $sizefactor_h = (double) ($this->_maxImageHeight / $height);
+            // check if the height is ok after resizing the width
+            if ( ($height * $sizefactor_w) > ($this->_maxImageHeight) ){
+                // if no, get new sizefactor from height instead
+                $sizefactor = $sizefactor_h;
             } else {
-                $sizefactor = (double) ($this->_maxImageHeight / $height);
+                // otherwise the width factor it ok to fit max dimensions
+                $sizefactor = $sizefactor_w;
             }
         } else {
             $sizefactor = 1.0;
