@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.89 2006/12/10 12:08:39 dhaun Exp $
+// $Id: index.php,v 1.90 2007/01/11 20:40:40 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -46,6 +46,69 @@ if (isset ($_GET['display']) && empty ($topic)) {
         $displayall = true;
     }
 }
+
+// Retrieve the archive topic - currently only one supported
+$archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
+
+// Microsummary support:
+// see: http://wiki.mozilla.org/Microsummaries
+if( array_key_exists('microsummary',$_GET) )
+{   
+    $sql = " (date <= NOW()) AND (draft_flag = 0)";
+
+    if (empty ($topic)) {
+        $sql .= COM_getLangSQL ('tid', 'AND', 's');
+    }
+    
+    // if a topic was provided only select those stories.
+    if (!empty($topic)) {
+        $sql .= " AND s.tid = '$topic' ";
+    } elseif (!$newstories) {
+        $sql .= " AND frontpage = 1 ";
+    }
+    
+    if ($topic != $archivetid) {
+        $sql .= " AND s.tid != '{$archivetid}' ";
+    }
+    
+    $sql .= COM_getPermSQL ('AND', 0, 2, 's');
+    $sql .= COM_getTopicSQL ('AND', 0, 's') . ' ';
+    $msql = array();
+    $msql['mysql']="SELECT STRAIGHT_JOIN s.title "
+         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
+         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
+         . $sql . "ORDER BY featured DESC, date DESC LIMIT 0, 1";
+
+    $msql['mssql']="SELECT STRAIGHT_JOIN s.title "
+         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
+         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
+         . $sql . "ORDER BY featured DESC, date DESC LIMIT 0, 1";
+    $result = DB_query ($msql);
+
+    if ( $A = DB_fetchArray( $result ) ) {
+        $pagetitle = $_CONF['microsummary_short'].$A['title'];
+    } else {
+        if(isset( $_CONF['pagetitle'] ))
+        {
+            $pagetitle = $_CONF['pagetitle'];
+        }
+        if( empty( $pagetitle ))
+        {
+            if( empty( $topic ))
+            {
+                $pagetitle = $_CONF['site_slogan'];
+            }
+            else
+            {
+                $pagetitle = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
+                                                       "tid = '$topic'" ));
+            }
+        }
+        $pagetitle = $_CONF['site_name'] . ' - ' . $pagetitle;
+    }    
+    die($pagetitle);
+}
+
 
 $page = 1;
 if (isset ($_GET['page'])) {
@@ -66,7 +129,14 @@ if (!$newstories && !$displayall) {
     }
 }
 
-$display .= COM_siteHeader();
+if($topic)
+{
+    $header = '<link rel="microsummary" href="index.php?topic='
+                . urlencode($topic) . '&amp;microsummary" />';
+} else {
+    $header = '<link rel="microsummary" href="index.php?microsummary" />';
+}
+$display .= COM_siteHeader('menu', '', $header);
 if (isset ($_GET['msg'])) {
     $plugin = '';
     if (isset ($_GET['plugin'])) {
@@ -127,9 +197,6 @@ COM_rdfUpToDateCheck();
 // solely
 COM_featuredCheck();
 
-// Retrieve the archive topic - currently only one supported
-$archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
-
 // Scan for any stories that have expired and should be archived or deleted
 $asql = "SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']} ";
 $asql .= 'WHERE (expire <= NOW()) AND (statuscode = ' . STORY_DELETE_ON_EXPIRE;
@@ -187,7 +254,7 @@ if ($newstories) {
 }
 
 $offset = ($page - 1) * $limit;
-$userfields = 'u.username, u.fullname';
+$userfields = 'u.uid, u.username, u.fullname';
 if ($_CONF['allow_user_photo'] == 1) {
     $userfields .= ', u.photo';
     if ($_CONF['use_gravatar']) {
@@ -196,19 +263,19 @@ if ($_CONF['allow_user_photo'] == 1) {
 }
 
 $msql = array();
-$msql['mysql']="SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS day, "
+$msql['mysql']="SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
          . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 
 $msql['mssql']="SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, cast(s.introtext as text) as introtext, cast(s.bodytext as text) as bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.in_transit, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
-         . " UNIX_TIMESTAMP(s.date) AS day, "
+         . " UNIX_TIMESTAMP(s.date) AS unixdate, "
          . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
          . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
-         
+
 $result = DB_query ($msql);
 
 $nrows = DB_numRows ($result);
@@ -219,21 +286,25 @@ $num_pages = ceil ($D['count'] / $limit);
 
 if ( $A = DB_fetchArray( $result ) ) {
 
+    $story = new Story();
+    $story->loadFromArray($A);
     if ( $_CONF['showfirstasfeatured'] == 1 ) {
-        $A['featured'] = 1;
+        $story->_featured = 1;
     }
 
     // display first article
-    $display .= STORY_renderArticle ($A, 'y');
+    $display .= STORY_renderArticle ($story, 'y');
 
     // get plugin center blocks after featured article
-    if ($A['featured'] == 1) {
+    if ($story->DisplayElements('featured') == 1) {
         $display .= PLG_showCenterblock (2, $page, $topic);
     }
 
     // get remaining stories
     while ($A = DB_fetchArray ($result)) {
-        $display .= STORY_renderArticle ($A, 'y');
+        $story = new Story();
+        $story->loadFromArray($A);
+        $display .= STORY_renderArticle ($story, 'y');
     }
 
     // get plugin center blocks that follow articles
@@ -270,7 +341,7 @@ if ( $A = DB_fetchArray( $result ) ) {
 
 $display .= COM_siteFooter (true); // The true value enables right hand blocks.
 
-// Output page 
+// Output page
 echo $display;
 
 ?>

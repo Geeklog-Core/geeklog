@@ -592,7 +592,9 @@ $LANG12 = array(
     50 => '',
     51 => 'Location',
     52 => 'Delete',
-    53 => 'Create Account'
+    53 => 'Create Account',
+    54 => 'Story Introduction',
+    55 => 'Story Body'
 );
 
 ###############################################################################

@@ -17,8 +17,12 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="alignright" style="vertical-align:top;"><b>{lang_story}:</b></td>
-                                        <td style="vertical-align:top;"><textarea name="introtext" cols="45" rows="15">{story_introtext}</textarea></td>
+                                        <td class="alignright" style="vertical-align:top;"><b>{lang_introtext}:</b></td>
+                                        <td style="vertical-align:top;"><textarea name="introtext" cols="45" rows="5">{story_introtext}</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright" style="vertical-align:top;"><b>{lang_bodytext}:</b></td>
+                                        <td style="vertical-align:top;"><textarea name="bodytext" cols="45" rows="10">{story_bodytext}</textarea></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>

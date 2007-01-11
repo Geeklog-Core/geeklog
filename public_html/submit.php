@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.113 2006/12/09 21:46:27 dhaun Exp $
+// $Id: submit.php,v 1.114 2007/01/11 20:40:40 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -119,70 +119,20 @@ function submitstory($topic = '')
     global $_CONF, $_TABLES, $_USER, $LANG12, $LANG24;
 
     $retval = '';
+    
+    $story = new Story();
 
-    if (isset ($_POST['mode']) && ($_POST['mode'] == $LANG12[32])) { // preview
-        $A = $_POST;
-    } else {
-        $A['sid'] = COM_makeSid();
-        $A['unixdate'] = time();
-    }
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-        $A['uid'] = $_USER['uid'];
-    } else {
-        $A['uid'] = 1;
-    }
-
-    if (empty ($A['postmode'])) {
-        $A['postmode'] = $_CONF['postmode'];
-    }
-
-    if (!empty ($topic)) {
-        $allowed = DB_getItem ($_TABLES['topics'], 'tid',
-            "tid = '" . addslashes ($topic) . "'" . COM_getTopicSql ('AND'));
-
-        if ($allowed != $topic) {
-            $topic = '';
-        }
-    }
-
-    $title = '';
-    $introtext = '';
-
-    if (!empty($A['title'])) {
-        $introtext = COM_stripslashes( $A['introtext'] );
-        $introtext = htmlspecialchars ($introtext);
-        $introtext = str_replace('$','&#36;',$introtext);
-        $title = stripslashes ($A['title']);
-        $title = str_replace('$','&#36;',$title);
-
-        if ($A['postmode'] == 'html') {
-            $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
-            $A['title'] = addslashes(COM_checkHTML(COM_checkWords($A['title'])));
-        } else {
-            $A['introtext'] = htmlspecialchars(COM_checkWords($A['introtext']));
-            $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
-
-            $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
-            $A['title'] = str_replace('$','&#36;',$A['title']);
-        }
-        $introtext = str_replace('{','&#123;',$introtext);
-        $introtext = str_replace('}','&#125;',$introtext);
-        $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
-        $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
-        $A['hits'] = 0;
-        $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
-        $A += DB_fetchArray($res);
-        $A['tid'] = COM_applyFilter($A['tid']);
-        $res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
-        $A += DB_fetchArray($res);
-        if ($A['postmode'] == 'plaintext') {
-            $A['introtext'] = COM_makeClickableLinks ($A['introtext']);
-        }
-        $retval .= COM_startBlock($LANG12[32])
-                . STORY_renderArticle ($A, 'p')
+    if( isset( $_POST['mode'] ) && ( $_POST['mode'] == $LANG12[32] ) )
+    {
+        // preview
+        $story->loadSubmission();
+            $retval .= COM_startBlock($LANG12[32])
+                . STORY_renderArticle ($story, 'p')
                 . COM_endBlock();
+    } else {
+        $story->initSubmission($topic);
     }
-
+    
     $retval .= COM_startBlock($LANG12[6],'submitstory.html');
 
     $storyform = new Template($_CONF['path_layout'] . 'submit');
@@ -192,7 +142,7 @@ function submitstory($topic = '')
         $storyform->set_var ('change_editormode', 'onChange="change_editmode(this);"');
         $storyform->set_var ('lang_expandhelp', $LANG24[67]);
         $storyform->set_var ('lang_reducehelp', $LANG24[68]);
-        if ($A['postmode'] == 'html') {
+        if ($story->EditElements('postmode') == 'html') {
             $storyform->set_var ('show_texteditor', 'none');
             $storyform->set_var ('show_htmleditor', '');
         } else {
@@ -201,7 +151,7 @@ function submitstory($topic = '')
         }
     } else {
         $storyform->set_file('storyform','submitstory.thtml');
-        if ($A['postmode'] == 'html') {
+        if ($story->EditElements('postmode') == 'html') {
             $storyform->set_var ('show_texteditor', 'none');
             $storyform->set_var ('show_htmleditor', '');
         } else {
@@ -228,25 +178,23 @@ function submitstory($topic = '')
     }
     
     $storyform->set_var('lang_title', $LANG12[10]);
-    $storyform->set_var('story_title', htmlspecialchars ($title));
+    $storyform->set_var('story_title', $story->EditElements('title'));
     $storyform->set_var('lang_topic', $LANG12[28]);
-    if (empty ($A['tid']) && !empty ($topic)) {
-        $A['tid'] = $topic;
-    }
-    if (empty ($A['tid'])) {
-        $A['tid'] = DB_getItem ($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL ('AND'));
-    }
-    $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$A['tid']));
-    $storyform->set_var('lang_story', $LANG12[29]);
-    $storyform->set_var('story_introtext', $introtext);
-    $storyform->set_var('lang_postmode', $LANG12[36]);
-    $storyform->set_var('story_postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
-    $storyform->set_var('allowed_html', COM_allowedHTML());
-    $storyform->set_var('story_uid', $A['uid']);
-    $storyform->set_var('story_sid', $A['sid']);
-    $storyform->set_var('story_date', $A['unixdate']);
 
-    if (($_CONF['skip_preview'] == 1) || ($A['mode'] == $LANG12[32])) {
+    $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$story->EditElements('tid')));
+    $storyform->set_var('lang_story', $LANG12[29]);
+    $storyform->set_var('lang_introtext', $LANG12[54]);
+    $storyform->set_var('lang_bodytext', $LANG12[55]);
+    $storyform->set_var('story_introtext', $story->EditElements('introtext'));
+    $storyform->set_var('story_bodytext', $story->EditElements('bodytext'));
+    $storyform->set_var('lang_postmode', $LANG12[36]);
+    $storyform->set_var('story_postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$story->EditElements('postmode')));
+    $storyform->set_var('allowed_html', COM_allowedHTML());
+    $storyform->set_var('story_uid', $story->EditElements('uid'));
+    $storyform->set_var('story_sid', $story->EditElements('sid'));
+    $storyform->set_var('story_date', $story->EditElements('unixdate'));
+
+    if (($_CONF['skip_preview'] == 1) || ($_POST['mode'] == $LANG12[32])) {
         PLG_templateSetVars ('story', $storyform);
         $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '">');
     }
@@ -263,21 +211,21 @@ function submitstory($topic = '')
 * Send an email notification for a new submission.
 *
 * @param    string  $table  Table where the new submission can be found
-* @param    string  $id     Id of the new submission
+* @param    string  $story  Story object that was submitted.
 *
 */
-function sendNotification ($table, $A)
+function sendNotification ($table, $story)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG24, $LANG29, $LANG_ADMIN;
            
-    $title = COM_undoSpecialChars (stripslashes ($A['title']));
+    $title = COM_undoSpecialChars( $story->displayElements('title') );
     if ($A['postmode'] == 'html') {
         $A['introtext'] = strip_tags ($A['introtext']);
     }
-    $introtext = COM_undoSpecialChars (stripslashes ($A['introtext']));
-    $storyauthor = COM_getDisplayName ($A['uid']);
-    $topic = stripslashes (DB_getItem ($_TABLES['topics'], 'topic',
-                                       "tid = '{$A['tid']}'"));
+    $introtext = COM_undoSpecialChars( $story->displayElements('introtext') . '\n' . $story->displayElements('bodytext') );
+    $storyauthor = COM_getDisplayName( $story->displayelements('uid') );
+    $topic = stripslashes(DB_getItem ($_TABLES['topics'], 'topic',
+                                       "tid = '{$story->displayElements('tid')}'"));
 
     $mailbody = "$LANG08[31]: {$title}\n"
               . "$LANG24[7]: {$storyauthor}\n"
@@ -295,7 +243,7 @@ function sendNotification ($table, $A)
         $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
         $articleUrl = COM_buildUrl ($_CONF['site_url']
-                                . '/article.php?story=' . $A['sid']);
+                                . '/article.php?story=' . $story->getSid() );
         $mailbody .= $LANG08[33] . ' <' . $articleUrl . ">\n\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
@@ -318,84 +266,39 @@ function savestory ($A)
     global $_CONF, $_TABLES, $_USER;
 
     $retval = '';
-
-    $A['title'] = COM_stripslashes ($A['title']);
-    $A['introtext'] = COM_stripslashes ($A['introtext']);
+    
+    $story = new Story();
+    $story->loadSubmission();
 
     // pseudo-formatted story text for the spam check
-    $spamcheck = '<h1>' . $A['title'] . '</h1><p>' . $A['introtext'] . '</p>';
-    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
-    if ($result > 0) {
+    $result = PLG_checkforSpam ($story->GetSpamCheckFormat(), $_CONF['spamx']);
+    if ($result > 0)
+    {
         COM_updateSpeedlimit ('submit');
         COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
-
-    $A['title'] = strip_tags (COM_checkWords ($A['title']));
-    $A['title'] = addslashes (str_replace ('$', '&#36;', $A['title']));
-
-    if ($A['postmode'] == 'html') {
-        $introtext = COM_checkHTML (COM_checkWords ($A['introtext']));
-    } else {
-        $introtext = COM_makeClickableLinks (htmlspecialchars (COM_checkWords ($A['introtext'])));
-        $A['postmode'] = 'plaintext';
-    }
-
-    $A['sid'] = addslashes (COM_makeSid ());
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-        $A['uid'] = $_USER['uid'];
-    } else {
-        $A['uid'] = 1;
-    }
+    
     COM_updateSpeedlimit ('submit');
-
-    $A['tid'] = addslashes (COM_sanitizeID ($A['tid']));
-
-    $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'" . COM_getTopicSQL ('AND'));
-    if (DB_numRows ($result) == 0) {
+    
+    $result = $story->SaveSubmission();
+    if( $result == STORY_NO_ACCESS_TOPIC )
+    {
         // user doesn't have access to this topic - bail
-        return COM_refresh ($_CONF['site_url'] . '/index.php');
-    }
-    $T = DB_fetchArray ($result);
-
-    if (($_CONF['storysubmission'] == 1) && !SEC_hasRights ('story.submit')) {
-        $introtext = addslashes ($introtext);
-        DB_save ($_TABLES['storysubmission'],
-            'sid,tid,uid,title,introtext,date,postmode',
-            "{$A['sid']},'{$A['tid']}',{$A['uid']},'{$A['title']}','$introtext',NOW(),'{$A['postmode']}'");
-
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
+    } elseif( ( $result == STORY_SAVED ) || ( $result == STORY_SAVED_SUBMISSION ) ) {
         if (isset ($_CONF['notification']) &&
-                in_array ('story', $_CONF['notification'])) {
-            sendNotification ($_TABLES['storysubmission'], $A);
+                in_array ('story', $_CONF['notification']))
+        {
+            sendNotification ($_TABLES['storysubmission'], $story);
         }
-
-        $retval .= COM_refresh ($_CONF['site_url'] . '/index.php?msg=2');
-    } else { // post this story directly
-        $related = addslashes (implode ("\n", STORY_extractLinks ($introtext)));
-
-        $introtext = addslashes ($introtext);
-        if (!isset ($_CONF['show_topic_icon'])) {
-            $_CONF['show_topic_icon'] = 1;
-        }
-        if (DB_getItem ($_TABLES['topics'], 'archive_flag',
-                "tid = '{$A['tid']}'") == 1) {
-            $A['frontpage'] = 0;
-        } else if (isset ($_CONF['frontpage'])) {
-            $A['frontpage'] = $_CONF['frontpage'];
+        
+        if( $result == STORY_SAVED ) 
+        {
+            $retval = COM_refresh( COM_buildUrl( $_CONF['site_url']
+                               . '/article.php?story=' . $story->_getSid() ) );
         } else {
-            $A['frontpage'] = 1;
-        }
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,trackbackcode,postmode,show_topic_icon,frontpage,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','$introtext','{$related}',NOW(),'{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',{$_CONF['show_topic_icon']},{$A['frontpage']},{$A['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
-
-        COM_rdfUpToDateCheck ();
-        COM_olderStuff ();
-
-        if (isset ($_CONF['notification']) &&
-                in_array ('story', $_CONF['notification'])) {
-            sendNotification ($_TABLES['stories'], $A);
-        }
-
-        $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
-                               . '/article.php?story=' . $A['sid']));
+            $retval = COM_refresh( $_CONF['site_url'] . '/index.php?msg=2' );
+        }    
     }
 
     return $retval;

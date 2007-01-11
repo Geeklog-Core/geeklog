@@ -2,6 +2,13 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Added support for "Microsummaries" to index.php.
+  See (http://wiki.mozilla.org/Microsummaries) [Mike]
+- Story "Rewrite" - significant re-structure of story code to fix all issues
+  with posting HTML special characters etc. [Mike]
+- Added ability to have Body Text in user submitted stories. To deactivate,
+  edit layout\theme\submit\submitstory.thtml and submitstory_advanced.thtml
+    [Mike]
 - fixing the dimension-resizing of uploaded images. If an image would be within
   the max width after resizing, the max height might still be off. This is 
   solved with the new code. [Oliver]

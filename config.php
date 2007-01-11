@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.240 2006/12/30 17:43:18 dhaun Exp $
+// $Id: config.php,v 1.241 2007/01/11 20:40:39 mjervis Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -95,6 +95,8 @@ $_CONF['site_mail']         = 'admin@example.com';
 // Name and slogan of your site
 $_CONF['site_name']         = 'Geeklog Site';
 $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
+// Prepended to story title for Microsummary
+$_CONF['microsummary_short'] = 'GL: ';
 
 
 // ****************************************************************************

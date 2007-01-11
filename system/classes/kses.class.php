@@ -123,7 +123,7 @@
 			{
 				if (get_magic_quotes_gpc())
 				{
-					$string = stripslashes($string);
+					//$string = stripslashes($string);
 				}
 				$string = $this->_no_null($string);
 				$string = $this->_js_entities($string);
@@ -654,7 +654,7 @@
 				if (!preg_match('%^<\s*(/\s*)?([a-zA-Z0-9]+)([^>]*)>?$%', $string, $matches))
 				{
 					# It's seriously malformed
-					return '';
+					return htmlspecialchars($string);
 				}
 
 				$slash    = trim($matches[1]);
