@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- fixing the dimension-resizing of uploaded images. If an image would be within
+  the max width after resizing, the max height might still be off. This is 
+  solved with the new code. [Oliver]
 - Removed tzcode table and started using PEAR::Date instead since all timezone
   information is stored in there. [Oliver]
 - Added timezone selector to preferences page [Oliver]
