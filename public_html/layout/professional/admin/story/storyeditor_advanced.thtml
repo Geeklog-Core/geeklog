@@ -19,7 +19,7 @@
 {navbar}
     <div>
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
-                                <table id='adveditor' border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
+                                <table id='adveditor' cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
                                     <tr>
                                         <td width="20%" class="alignright">{lang_author}:</td>
                                         <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
@@ -43,7 +43,7 @@
                                     <tr>
                                         <td class="alignright" nowrap>{lang_story_stats}:</td>
                                         <td>
-                                          <table border="0" cellspacing="0" cellpadding="3" width="50%">
+                                          <table cellspacing="0" cellpadding="3" width="50%">
                                             <tr>
                                                 <td class="alignright">{lang_hits}:</td>
                                                 <td><input type="hidden" name="hits" value="{story_hits}">{story_hits}</td>
@@ -61,7 +61,7 @@
                                     </tr>
                                 </table>
                                 <!-- Basic textarea field - no editor -->
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="text_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_texteditor};">
+                                <table cellspacing="0" cellpadding="3" width="100%" id="text_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_texteditor};">
                                     <tr>
                                         <td>{lang_introtext}:
                                             <span style="padding-left:10px;">
@@ -86,7 +86,7 @@
                                     </tr>
                                 </table>
                                 <!-- Rich Text Editor --->
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
+                                <table cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
                                      <tr>
                                         <td style="padding-left:15px;">{lang_introtext}:
                                             <span style="padding-left:10px;">
@@ -116,17 +116,17 @@
                                         <td style="padding:5px 10px 5px 10px;"><textarea id="bodyhtml" name="bodyhtml" cols="90" rows="20">{story_bodytext}</textarea></td>
                                     </tr>
                                 </table>
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
+                                <table cellspacing="0" cellpadding="3" width="100%" id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
                                      <tr>
                                         <td colspan="2" style=padding:5px;">{lang_allowed_html}</td>
                                     </tr>
                                 </table>
-                                <table id="se_options" border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;display:none;">
+                                <table id="se_options" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;display:none;">
                                     <tr>
                                         <td colspan="2" style="padding:10px;">
                                             <div  id="se_publish" style="display:none;">
                                                 <fieldset><legend>{lang_publishdate}</legend>
-                                                    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                                    <table cellspacing="0" cellpadding="3" width="100%">
                                                         <tr>
                                                             <td class="alignright" style="vertical-align:top;">{lang_date}:</td>
                                                             <td>
@@ -156,7 +156,7 @@
                                                     </table>
                                                 </fieldset>
                                                 <fieldset style="margin-top:10px;"><legend>{lang_publishoptions}</legend>
-                                                    <table border="0" cellspacing="3" cellpadding="3" width="100%">
+                                                    <table cellspacing="3" cellpadding="3" width="100%">
                                                         <tr>
                                                             <td>
                                                                 {featured_options}
@@ -184,7 +184,7 @@
                                             </div>
                                             <div  id="se_images" style="display:none;">
                                                 <fieldset style="margin-top:10px;"><legend>{lang_images}</legend>
-                                                    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                                    <table cellspacing="0" cellpadding="3" width="100%">
                                                         <tr>
                                                             <td style="padding:10px;">
                                                                 {saved_images}
@@ -196,7 +196,7 @@
                                             </div>
                                             <div  id="se_archive" style="display:none;">
                                                 <fieldset style="margin-top:10px;"><legend>{lang_archivetitle}</legend>
-                                                    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                                    <table cellspacing="0" cellpadding="3" width="100%">
                                                         <tr>
                                                             <td width="20%" style="text-align:right;padding-right:5px;">{lang_option}:</td>
                                                             <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
@@ -235,7 +235,7 @@
                                             </div>
                                             <div  id="se_perms" style="display:none;">
                                                 <fieldset style="margin-top:10px;"><legend>{lang_permissions}</legend>
-                                                    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                                    <table cellspacing="0" cellpadding="3" width="100%">
                                                         <tr>
                                                             <td style="padding-left:20px;" width="10%">{lang_owner}:</td>
                                                             <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></td>
@@ -269,7 +269,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table id="se_bottom" border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:20px;">
+                                <table id="se_bottom" cellspacing="0" cellpadding="3" width="100%" style="margin-top:20px;">
                                     <tr>
                                         <td colspan="2" style="padding-left:20px;">
                                             <input type="submit" value="{lang_save}" name="mode">
@@ -284,7 +284,7 @@
                                 </table>
                             </form>
 </div>
-<table border="0" width="99%" id="preview" style="border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">
+<table width="99%" id="preview" style="border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">
     <tr>
         <td>
             {preview_content}

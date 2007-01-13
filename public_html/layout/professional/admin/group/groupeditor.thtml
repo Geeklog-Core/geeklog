@@ -1,5 +1,5 @@
                             <form action="{site_admin_url}/group.php" method="post">
-                                <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                <table cellspacing="0" cellpadding="2" width="100%">
                                     <tr>
                                         <td class="alignright">{lang_groupname}:</td>
                                         <td>{groupname_static}<input type="{groupname_inputtype}" size="20" maxlength="50" name="grp_name" value="{group_name}"></td>
@@ -39,7 +39,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" width="100%">
-                                            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                                            <tabl width="100%" cellpadding="0" cellspacing="0">
                                                 {rights_options}
                                             </table>
                                         </td>
@@ -47,8 +47,8 @@
                                     <tr><td>&nbsp;</td></tr>
                                     <tr>
                                         <td colspan="2">
-                                            <input type="submit" value="{lang_save}" name="mode"> 
-                                            <input type="submit" value="{lang_cancel}" name="mode"> 
+                                            <input type="submit" value="{lang_save}" name="mode">
+                                            <input type="submit" value="{lang_cancel}" name="mode">
                                             {delete_option}
                                             <input type="hidden" name="grp_gl_core" value="{group_core}">
                                             <input type="hidden" name="grp_id" value="{group_id}">

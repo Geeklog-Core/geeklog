@@ -1,6 +1,6 @@
 {start_feed_editor}
 <form action="{site_admin_url}/syndication.php" method="post">
-<table border="0" cellspacing="0" cellpadding="3" width="100%">
+<table cellspacing="0" cellpadding="3" width="100%">
 <tr>
   <td class="alignright">{lang_feedtitle}:</td>
   <td><input type="text" size="48" name="title" value="{feed_title}"></td>

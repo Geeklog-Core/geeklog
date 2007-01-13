@@ -1,5 +1,5 @@
                             <form>
-                                <table border="0" cellspacing="0" cellpadding=2 width="100%">
+                                <table cellspacing="0" cellpadding=2 width="100%">
                                     <tr>
                                         <td rowspan="2">
                                             <img src="{layout_url}/images/icons/topic.png" alt="">
@@ -10,7 +10,7 @@
                                         <td>{lang_instructions}</td>
                                     </tr>
                                 </table>
-                                <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                <table cellspacing="0" cellpadding="2" width="100%">
                                     {list_row}
                                 </table>
                             </form>

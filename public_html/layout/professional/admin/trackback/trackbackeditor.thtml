@@ -1,6 +1,6 @@
 <form action="{site_admin_url}/trackback.php" method="POST">
     <p>{lang_explain}</p>
-    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+    <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
             <td class="alignright"><b>{lang_trackback_url}:</b></td>
             <td>

@@ -1,5 +1,5 @@
                             <form action="{site_admin_url}/user.php" method="post">
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                <table cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
                                         <td class="alignright">{lang_userid}:</td>
                                         <td>{user_id}<input type="hidden" name="uid" value="{user_id}"></td>
@@ -52,8 +52,8 @@
                                     <tr><td>&nbsp;</td></tr>
                                     <tr>
                                         <td colspan="2">
-                                            <input type="submit" value="{lang_save}" name="mode"> 
-                                            <input type="submit" value="{lang_cancel}" name="mode"> 
+                                            <input type="submit" value="{lang_save}" name="mode">
+                                            <input type="submit" value="{lang_cancel}" name="mode">
                                             {delete_option}
                                         </td>
                                     </tr>

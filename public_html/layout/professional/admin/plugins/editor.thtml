@@ -1,9 +1,9 @@
                             {start_block_editor}
-                            <table border="0" cellpadding="3" cellspacing="0" width="100%">
+                            <table cellpadding="3" cellspacing="0" width="100%">
                                 <tr>
                                     <td>
                                         <form action="{site_admin_url}/plugins.php" method="post">
-                                            <table border="0" cellspacing="0" cellpadding="3">
+                                            <table cellspacing="0" cellpadding="3">
                                                 <tr>
                                                     <td><img src="{pi_icon}" alt=""></td>
                                                     <td>

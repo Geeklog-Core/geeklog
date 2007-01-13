@@ -1,5 +1,5 @@
 <form action="{site_admin_url}/trackback.php" method="POST">
-    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+    <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
             <td class="alignright">{lang_name}:</td>
             <td>

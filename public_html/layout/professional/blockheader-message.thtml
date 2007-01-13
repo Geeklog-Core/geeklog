@@ -1,4 +1,4 @@
-<table border="0" cellpadding="0" cellspacing="0" width="95%" style="margin:10px;border:1px solid black;">
+<table cellpadding="0" cellspacing="0" width="95%" style="margin:10px;border:1px solid black;">
     <tr>
         <td class="blocktitle" width="10" style="border:0px;background:url({layout_url}/images/header-bg.png) #1A3955;">{showhide}</td>
         <td class="blocktitle" width="90%" style="text-align:left;border:0px;color:white;background:url({layout_url}/images/header-bg.png) #1A3955;padding:6px 3px 3px 3px;font-weight: bold;">{block_title}</td>

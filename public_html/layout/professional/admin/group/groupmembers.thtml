@@ -1,5 +1,5 @@
 <script type="text/JavaScript" src="{site_url}/javascript/moveusers.js"></script>
-<table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
+<table cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
     <tr>
         <td rowspan="2">
             <img src="{layout_url}/images/icons/group.png" alt="">
@@ -12,8 +12,8 @@
     </tr>
 </table>
 <div style="border: 1px solid grey">
-<form name="groupusers" action="{phpself}" method="post" style="margin:0px;"> 
-<table width="99%" cellspacing="0" cellpadding="0" border="0" class="pluginBG" style="padding:15px;">
+<form name="groupusers" action="{phpself}" method="post" style="margin:0px;">
+<table width="99%" cellspacing="0" cellpadding="0" class="pluginBG" style="padding:15px;">
     <tr>
         <td class="blocktitle" style="padding:5px 40px 5px 5px; text-align:right;">{LANG_sitemembers}</th>
         <td>&nbsp;</th>
@@ -22,7 +22,7 @@
     <tr>
         <td width="40%" style="text-align:right;padding-right:5px;">
             <select multiple size="10" name="fieldFrom" style="width: 15em; height: 20em; padding: 2px;" onDblClick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">{sitemembers}</select>
-        </td> 
+        </td>
     <td class="aligncenter">
         <input type="button" name="right" value="{LANG_add}" onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">
         <br><br>
@@ -31,14 +31,14 @@
     </td>
         <td width="40%" style="text-align:left;padding-left:5px;">
             <select multiple size="10" name="fieldTo" style="width: 15em; height: 20em; padding: 2px;" onDblClick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">{group_list}</select>
-        </td> 
+        </td>
     </tr>
     <tr>
         <td class="aligncenter" colspan="3"><br>
         <input type="hidden" name="mode" value="savegroupusers">
         <input type="hidden" name="groupmembers">
         <input type="hidden" name="grp_id" value="{group_id}">
-        <input type="hidden" name="chk_showall" value="{show_all}">         
+        <input type="hidden" name="chk_showall" value="{show_all}">
         <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)">&nbsp;&nbsp;
         <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)">
         </td>

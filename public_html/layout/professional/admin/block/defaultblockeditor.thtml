@@ -1,5 +1,5 @@
                             <form action="{site_admin_url}/block.php" method="post">
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                <table cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
                                         <td class="alignright">{lang_blocktitle}:</td>
                                         <td><input type="text" name="title" value="{block_title}" size="48"></td>
@@ -78,7 +78,7 @@
                                     <tr>
                                             <td colspan="2">
                                             <input type="submit" value="{lang_save}" name="mode">
-                                            <input type="submit" value="{lang_cancel}" name="mode"> 
+                                            <input type="submit" value="{lang_cancel}" name="mode">
                                             <input type="hidden" name="bid" value="{block_id}">
                                         </td>
                                     </tr>

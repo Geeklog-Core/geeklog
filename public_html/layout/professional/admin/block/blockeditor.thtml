@@ -1,6 +1,6 @@
                                 {start_block_editor}
                                 <form action="{site_admin_url}/block.php" method="post">
-                                    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                    <table cellspacing="0" cellpadding="3" width="100%">
                                         <tr>
                                             <td width="180" class="alignright">{lang_blocktitle}:</td>
                                             <td><input type="text" size="48" name="title" value="{block_title}"></td>

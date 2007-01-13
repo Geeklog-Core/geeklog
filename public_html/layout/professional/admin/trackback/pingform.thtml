@@ -1,7 +1,7 @@
 {lang_ping_explain}
 {ping_results}
 <form action="{php_self}" method="POST">
-    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+    <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
             <td class="aligncenter">{pingback_button}</td>
             <td>{lang_pingback_short} </td>

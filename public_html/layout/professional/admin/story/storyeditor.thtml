@@ -16,7 +16,7 @@ function enablearchive(obj) {
 }
 </script>
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data">
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                <table cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
                                         <td width="100px" class="alignright">{lang_author}:</td>
                                         <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
@@ -71,17 +71,17 @@ function enablearchive(obj) {
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                            <table cellspacing="0" cellpadding="3" width="100%">
                                                 <tr>
                                                     <td colspan="3" style="padding-left:20px;">{lang_archivetitle}</td>
                                                 <tr>
                                                     <td width="20%" style="text-align:right;padding-right:5px;">{lang_option}:</td>
                                                     <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
                                                     <td style="text-align:left;">
-                                                        <label for="storycode10"> 
+                                                        <label for="storycode10">
                                                             <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
-                                                        </label>&nbsp; 
-                                                    <label for="storycode11"> 
+                                                        </label>&nbsp;
+                                                    <label for="storycode11">
                                                         <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}>{lang_optiondelete}
                                                     </label>
                                                 </tr>
@@ -161,7 +161,7 @@ function enablearchive(obj) {
                                     <tr>
                                         <td class="alignright">{lang_hits}:</td>
                                         <td>
-                                            <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                            <table cellspacing="0" cellpadding="0" width="100%">
                                                 <tr>
                                                     <td class="alignleft">
                                                         <input type="hidden" name="hits" value="{story_hits}">{story_hits}
