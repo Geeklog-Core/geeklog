@@ -65,8 +65,8 @@
                                     <tr>
                                         <td>{lang_introtext}:
                                             <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.png" border="0" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" border="0" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');"></span>
                                             </span>
                                         </td>
                                     </tr>
@@ -76,8 +76,8 @@
                                     <tr>
                                         <td>{lang_bodytext}:
                                             <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.png" border="0" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" border="0" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');"></span>
                                             </span>
                                         </td>
                                     </tr>
@@ -90,8 +90,8 @@
                                      <tr>
                                         <td style="padding-left:15px;">{lang_introtext}:
                                             <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.png" border="0" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" border="0" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');"></span>
                                                 <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
                                                   <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
                                                        <option value="editor-toolbar1">{toolbar1}</option>
@@ -108,8 +108,8 @@
                                     <tr>
                                         <td style="padding-left:15px;">{lang_bodytext}:
                                             <span style="padding-left:10px;">
-                                                <img src="{layout_url}/images/expand.png" border="0" title="lang_expandhelp" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
-                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" border="0" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"></span>
+                                                <img src="{layout_url}/images/expand.png" title="lang_expandhelp" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"></span>
                                             </span>
                                         </td>
                                     <tr>
@@ -201,10 +201,10 @@
                                                             <td width="20%" style="text-align:right;padding-right:5px;">{lang_option}:</td>
                                                             <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
                                                             <td style="text-align:left;">
-                                                                <label for="storycode10"> 
+                                                                <label for="storycode10">
                                                                     <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
-                                                                </label>&nbsp; 
-                                                            <label for="storycode11"> 
+                                                                </label>&nbsp;
+                                                            <label for="storycode11">
                                                                 <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}>{lang_optiondelete}
                                                             </label>
                                                         </tr>
