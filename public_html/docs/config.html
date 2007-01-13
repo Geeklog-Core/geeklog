@@ -8,7 +8,7 @@
 <body>
 <table cellpadding="2" cellspacing="2" border="0" width="100%">
 <tr>
-  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" border="0"></td>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></td>
 </tr>
 <tr>
   <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Configuration</td>
@@ -21,7 +21,7 @@
 
 <p>Most of Geeklog's "static" settings (i.e. those that you aren't going to
 change often) are set in a text file called <tt>config.php</tt>. It is
-necessary to edit this file to get your system running as well as 
+necessary to edit this file to get your system running as well as
 configuring it to your preferences. This file contains a set of variables as
 defined below:</p>
 
@@ -313,9 +313,9 @@ defined below:</p>
 <tr>
   <td valign="top"><a name="desc_language">language</a></td>
   <td valign="top">english</td>
-  <td valign="top">Name of your language file. Additional language files may be 
-    available for download at <a href="http://www.geeklog.net/">http://www.geeklog.net</a>. 
-    If you translate a language file, please send it to us. Also see <a 
+  <td valign="top">Name of your language file. Additional language files may be
+    available for download at <a href="http://www.geeklog.net/">http://www.geeklog.net</a>.
+    If you translate a language file, please send it to us. Also see <a
     href="#Localization">Localization</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_locale">locale</a></td>
@@ -327,17 +327,17 @@ defined below:</p>
 <tr>
   <td valign="top"><a name="desc_date">date</a></td>
   <td valign="top">%A, %B %d %Y @ %I:%M %p %Z</td>
-  <td valign="top">Date format used for most of the site, including story displays. See <a 
+  <td valign="top">Date format used for most of the site, including story displays. See <a
     href="#date_formats">date formats</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_daytime">daytime</a></td>
   <td valign="top">%m/%d %I:%M%p</td>
-  <td valign="top">Date format used when a shorter date is needed. See <a 
+  <td valign="top">Date format used when a shorter date is needed. See <a
     href="#date_formats">date formats</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_shortdate">shortdate</a></td>
   <td valign="top">%x</td>
-  <td valign="top">Date format this is the shortest date. See <a href="#date_formats">date 
+  <td valign="top">Date format this is the shortest date. See <a href="#date_formats">date
     formats</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_dateonly">dateonly</a></td>
@@ -364,7 +364,7 @@ defined below:</p>
   <td valign="top"><a name="desc_default_charset">default_charset</a></td>
   <td valign="top">iso-8859-1</td>
   <td valign="top">Character encoding used by Geeklog when serving HTML pages or
-    sending email. Only used if the language file did not already set 
+    sending email. Only used if the language file did not already set
     another character encoding.<br>
     For <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">multi-language</a> setups, using <code>'utf-8'</code> as the default character
     set is recommended.</td></tr>
@@ -510,9 +510,9 @@ options:</p>
     <th width="63%">Description</th></tr>
 <tr><td valign="top"><a name="desc_loginrequired">loginrequired</a></td>
     <td valign="top">0</td>
-    <td valign="top">Login is required to access <em>any</em> part of the site. When 
-      set to 1, this overrides the following settings. When you only want to 
-      block access to certain parts of the site, set this to 0 and select 
+    <td valign="top">Login is required to access <em>any</em> part of the site. When
+      set to 1, this overrides the following settings. When you only want to
+      block access to certain parts of the site, set this to 0 and select
       from the following settings.</td></tr>
 <tr><td valign="top"><a name="desc_submitloginrequired">submitloginrequired</a></td>
     <td valign="top">0</td>
@@ -536,7 +536,7 @@ options:</p>
     <td valign="top">When set to 1, only registered users can view another user's profile</td></tr>
 <tr><td valign="top"><a name="desc_emailuserloginrequired">emailuserloginrequired</a></td>
     <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can use the email submission 
+    <td valign="top">When set to 1, only registered users can use the email submission
       form to send an email to another user</td></tr>
 <tr><td valign="top"><a name="desc_emailstoryloginrequired">emailstoryloginrequired</a></td>
     <td valign="top">0</td>
@@ -721,8 +721,8 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_emailstorieslength">emailstorieslength</a></td>
   <td valign="top">1</td>
-  <td valign="top">When emailstories (above) is enabled, send only the title and the 
-    link to the new stories (0), or send the entire introtext (1) or send 
+  <td valign="top">When emailstories (above) is enabled, send only the title and the
+    link to the new stories (0), or send the entire introtext (1) or send
     the first <i>n</i> characters from the introtext (where <i>n</i> = any other number)</td></tr>
 <tr>
   <td valign="top"><a name="desc_emailstoriesperdefault">emailstoriesperdefault</a></td>
@@ -903,8 +903,8 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_showfirstasfeatured">onlyrootfeatures</a></td>
   <td valign="top">0</td>
-  <td valign="top">This restricts the featuring of stories to root user(s). If you have several story admins 
-  that can create content that is not visible to other story admins, 
+  <td valign="top">This restricts the featuring of stories to root user(s). If you have several story admins
+  that can create content that is not visible to other story admins,
   and such a content is featured, another admin might think its ok to feature his own content. To prevent
   that two admins unknowingly take features from each other away, only a user who can see all content (= root)
   should be able to feature a story.</td></tr>
@@ -1244,28 +1244,28 @@ because the feature they were intended for has not been implemented yet.</p>
 
 <h2><a name="Localization">Localization</a></h2>
 
-<p>Localizing GeekLog is fairly easy. All strings are contained in a 
-language file. The default file that ships with the tarball is english.php. 
-People interested in translating Geeklog to other languages are encouraged 
-to join the <a 
-href="http://lists.geeklog.net/listinfo/geeklog-translations">geeklog-translations</a> 
-mailing list. All important information concerning translating Geeklog will 
+<p>Localizing GeekLog is fairly easy. All strings are contained in a
+language file. The default file that ships with the tarball is english.php.
+People interested in translating Geeklog to other languages are encouraged
+to join the <a
+href="http://lists.geeklog.net/listinfo/geeklog-translations">geeklog-translations</a>
+mailing list. All important information concerning translating Geeklog will
 be posted there.
 
 <h3><a name="date_formats">Locale and Date Formats</a></h3>
 
-<p>You can set the locale and date format in the config.php file. To set the 
-locale, set the variable to the proper string or if you leave it blank it 
-will pull the default locale from the operating system. The date formats 
-are handled by your locale. Isn't that smart? Locale names are OS 
-dependent. On most UNIX hosts, you can find locale codes in the 
-<i>/usr/share/locale/locale.alias</i> file and on some systems the command 
-<i>locale -a</i> will display all available locales on a system. If a 
+<p>You can set the locale and date format in the config.php file. To set the
+locale, set the variable to the proper string or if you leave it blank it
+will pull the default locale from the operating system. The date formats
+are handled by your locale. Isn't that smart? Locale names are OS
+dependent. On most UNIX hosts, you can find locale codes in the
+<i>/usr/share/locale/locale.alias</i> file and on some systems the command
+<i>locale -a</i> will display all available locales on a system. If a
 locale doesn't exist you can create it using the <i>localedef</i> command.
 
-<p>More info on locale: <a 
+<p>More info on locale: <a
 href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a><br>
-More info on localdef: <a 
+More info on localdef: <a
 href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a>
 
 <h3>Date Format Syntax</h3>
