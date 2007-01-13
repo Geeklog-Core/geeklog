@@ -18,9 +18,9 @@
                                         <td>&nbsp;</td>
                                       </tr>
                                     </table></td>
-                                
+
                                 <tr>
-                                    <td width="1%" nowrap class="cal-dayx-weekevent"><div align="right">{lang_week} {week_num}</div></td>
+                                    <td width="1%" class="cal-dayx-weekevent nowrap"><div align="right">{lang_week} {week_num}</div></td>
                                     <td>{allday_events}</td>
                                 </tr>
                                 <tr>
