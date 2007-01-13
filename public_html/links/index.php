@@ -34,25 +34,25 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-/** 
- * This is the links page   
- * 
+/**
+ * This is the links page
+ *
  * @package Links
  * @subpackage public_html
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
  * @author Jason Whittenburg <jwhitten AT securitygeeks DOT com>
  * @author Tom Willett <tomw AT pigstye DOT net>
  * @author Trinity Bays <trinity AT steubentech DOT com>
  * @author Dirk Haun <dirk AT haun-online DOT de>
- * 
+ *
  */
-// $Id: index.php,v 1.10 2006/11/12 22:45:38 blaine Exp $
+// $Id: index.php,v 1.11 2007/01/13 17:47:53 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -86,7 +86,7 @@ function prepare_link_item ($A, &$template)
         $template->set_var ('edit_icon', '<a href="' . $editurl . '"><img src="'
                  . $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE
                  . '" alt="' . $LANG_ADMIN['edit'] . '" title="'
-                 . $LANG_ADMIN['edit'] . '" border="0"></a>');
+                 . $LANG_ADMIN['edit'] . '"></a>');
     } else {
         $template->set_var ('link_edit', '');
         $template->set_var ('edit_icon', '');

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.33 2006/12/10 12:08:40 dhaun Exp $
+// $Id: index.php,v 1.34 2007/01/13 17:47:53 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -81,7 +81,7 @@ function display_page ($page, $A, $noboxes)
         }
 
         if ($_CONF['hideprintericon'] == 0) {
-            $retval .= ' <a href="' . COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $page . '&amp;mode=print') . '"><img src="' . $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="' . $LANG_STATIC['printable_format'] . '" border="0"></a>';
+            $retval .= ' <a href="' . COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $page . '&amp;mode=print') . '"><img src="' . $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="' . $LANG_STATIC['printable_format'] . '"></a>';
         }
 
         if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
