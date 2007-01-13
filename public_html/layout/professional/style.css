@@ -517,6 +517,9 @@ select {
   float:left;
   text-align:center;
 }
+.nowrap {
+  white-space:nowrap;
+}
 .pagenav {
   text-align:center;
 }
