@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.80 2006/12/09 12:57:03 dhaun Exp $
+// $Id: index.php,v 1.81 2007/01/13 22:15:55 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -63,6 +63,7 @@ function form ($A, $error = false)
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24,
            $LANG_postmodes, $MESSAGE;
 
+    $template_path = staticpages_templatePath ('admin');
     if (!empty($sp_id) && $mode=='edit') {
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
     } else {
@@ -96,7 +97,6 @@ function form ($A, $error = false)
     if ($error) {
         $retval .= $error . '<br><br>';
     } else {
-        $template_path = staticpages_templatePath ('admin');
         $sp_template = new Template ($template_path);
         if (isset ($_CONF['advanced_editor']) &&
             ($_CONF['advanced_editor'] == 1) &&
