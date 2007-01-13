@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -36,7 +36,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.92 2006/12/10 09:37:44 dhaun Exp $
+// $Id: install.php,v 1.93 2007/01/13 20:07:59 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -49,7 +49,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.4.1');
+    define('VERSION', '1.4.2');
 }
 
 
@@ -239,6 +239,7 @@ function INST_welcomePage()
     $install_options .= installOption ('new_db', 'New MySQL Database', $install_type);
     $install_options .= installOption ('new_mssql_db', 'New Microsoft SQL Server Database', $install_type);
     $install_options .= installOption ('upgrade_db', 'Upgrade MySQL Database', $install_type);
+    $install_options .= installOption ('upgrade_mssql_db', 'Upgrade Microsoft SQL Server Database', $install_type);
 
     $retval .= '<form action="install.php" method="POST">' . LB;
     $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB;
@@ -277,6 +278,7 @@ function INST_identifyGeeklogVersion ()
     // warn the user if they try to run the update again.
 
     $test = array(
+        '1.4.2'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
         '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
         '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
         '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
@@ -370,10 +372,10 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
         $db_templates->set_var ('install_type', '');
     }
 
-    if ($install_type == 'upgrade_db') {
+    if (($install_type == 'upgrade_db') || ($install_type == 'upgrade_mssql_db')) {
         $db_templates->set_var ('upgrade', 1);
 
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1');
 
         $curv = INST_identifyGeeklogVersion ();
         if (empty ($curv)) {
@@ -384,7 +386,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
                        . '<p>It looks like your database is already up to date. You probably ran the upgrade before. If you need to run the upgrade again, please re-install your database backup first!</td></tr>';
             $nextbutton = '';
         } else {
-            $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
+            $versiondd = '<tr><td align="right"><b>Upgrading from Geeklog Version:</b></td><td><select name="version">';
             foreach ($old_versions as $version) {
                 $versiondd .= '<option';
                 if ($version == $curv) {
@@ -927,6 +929,17 @@ function INST_doDatabaseUpgrades($current_gl_version)
             upgrade_plugins_141 ();
 
             $current_gl_version = '1.4.1';
+            $_SQL = '';
+            break;
+
+    case '1.4.1':
+            require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.1_to_1.4.2.php');
+            for ($i = 0; $i < count ($_SQL); $i++) {
+                DB_query (current ($_SQL));
+                next ($_SQL);
+            }
+
+            $current_gl_version = '1.4.2';
             $_SQL = '';
             break;
 
