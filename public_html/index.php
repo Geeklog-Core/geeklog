@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.90 2007/01/11 20:40:40 mjervis Exp $
+// $Id: index.php,v 1.91 2007/01/13 09:21:34 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -132,9 +132,9 @@ if (!$newstories && !$displayall) {
 if($topic)
 {
     $header = '<link rel="microsummary" href="index.php?topic='
-                . urlencode($topic) . '&amp;microsummary" />';
+                . urlencode($topic) . '&amp;microsummary">';
 } else {
-    $header = '<link rel="microsummary" href="index.php?microsummary" />';
+    $header = '<link rel="microsummary" href="index.php?microsummary">';
 }
 $display .= COM_siteHeader('menu', '', $header);
 if (isset ($_GET['msg'])) {
