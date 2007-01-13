@@ -126,6 +126,9 @@ form fieldset div.notes p.last {
   margin:0em;
   padding-bottom:5px;
 }
+form label {
+    font-weight:bold;
+}
 h1 {
   font-size:125%;
 }
@@ -146,6 +149,9 @@ input,
 submit,
 td {
   color:#000000;
+}
+table {
+  border:0px;
 }
 textarea {
   color:#000000;
