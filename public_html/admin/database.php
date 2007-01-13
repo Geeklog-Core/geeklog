@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.33 2006/05/15 04:10:38 vinny Exp $
+// $Id: database.php,v 1.34 2007/01/13 11:11:02 ospiess Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -46,7 +46,7 @@ geeklog_db_backup_YYYY_MM_DD.sql  That's it.
 
 /**
 * Sort backup files with newest first, oldest last.
-* For use with usort() function. 
+* For use with usort() function.
 * This is needed because the sort order of the backup files, coming from the
 * 'readdir' function, might not be that way.
 **/
@@ -171,7 +171,7 @@ if (isset ($_GET['mode']) &&
                               '', COM_getBlockTemplate ('_msg_block', 'header'))
                          . '<img src="' . $_CONF['layout_url'] . '/images/'
                          . 'sysmessage.' . $_IMAGE_TYPE
-                         . '" border="0" align="top" alt="">'
+                         . '" align="top" alt="">'
                          . $LANG_DB_BACKUP['backup_successful'] . '<br><br>'
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             } else {
@@ -180,7 +180,7 @@ if (isset ($_GET['mode']) &&
                 $display .= $LANG_DB_BACKUP['zero_size'];
                 $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                                 'footer'));
-                COM_errorLog ("Backup Filesize was 0 bytes", 1);    
+                COM_errorLog ("Backup Filesize was 0 bytes", 1);
                 COM_errorLog ("Command used for mysqldump: $command", 1);
             }
         } else {
@@ -207,6 +207,6 @@ $display .= listbackups();
 
 $display .= COM_siteFooter ();
 
-echo $display; 
+echo $display;
 
 ?>

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.102 2007/01/11 20:40:39 mjervis Exp $
+// $Id: moderation.php,v 1.103 2007/01/13 11:11:02 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -630,7 +630,7 @@ function security_check_reminder ()
         $retval .= COM_startBlock ($MESSAGE[40], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '" align="left"'
             . ' alt="" style="padding-right:5px; padding-bottom:3px">'
             . $message . '</p>'
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));

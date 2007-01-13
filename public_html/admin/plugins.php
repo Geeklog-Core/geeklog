@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.67 2006/11/18 13:21:11 dhaun Exp $
+// $Id: plugins.php,v 1.68 2007/01/13 11:11:02 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -68,8 +68,8 @@ if (!SEC_hasrights ('plugin.edit')) {
 * @param    int     $confirmed  Flag indicated the user has confirmed an action
 * @return   string              HTML for plugin editor form or error message
 *
-*/ 
-function plugineditor ($pi_name, $confirmed = 0) 
+*/
+function plugineditor ($pi_name, $confirmed = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG32, $LANG_ADMIN;
 
@@ -188,8 +188,8 @@ function changePluginStatus ($pi_name)
 * @param    string  $pi_homepage    URL to homepage for plugin
 * @return   string                  HTML redirect or error message
 *
-*/ 
-function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage) 
+*/
+function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage)
 {
     global $_CONF, $_TABLES, $LANG32;
 
@@ -365,7 +365,7 @@ function do_update ($pi_name)
                            COM_getBlockTemplate ('_msg_block', 'header'))
                 . '<img src="' . $_CONF['layout_url']
                 . '/images/sysmessage.' . $_IMAGE_TYPE
-                . '" border="0" align="top" alt="">' . $LANG08[6] . '<br><br>'
+                . '" align="top" alt="">' . $LANG08[6] . '<br><br>'
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
@@ -408,7 +408,7 @@ function do_uninstall ($pi_name)
                            COM_getBlockTemplate ('_msg_block', 'header'))
                 . '<img src="' . $_CONF['layout_url']
                 . '/images/sysmessage.' . $_IMAGE_TYPE
-                . '" border="0" align="top" alt="">' . $LANG08[6] . '<br><br>'
+                . '" align="top" alt="">' . $LANG08[6] . '<br><br>'
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
@@ -425,7 +425,7 @@ function listplugins ()
 {
     global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
-    
+
     $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
@@ -456,7 +456,7 @@ function listplugins ()
 
     return ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
                        $text_arr, $query_arr, $menu_arr, $defsort_arr);
-                            
+
 }
 
 // MAIN

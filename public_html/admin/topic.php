@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.72 2006/10/08 16:10:20 dhaun Exp $
+// $Id: topic.php,v 1.73 2007/01/13 11:11:02 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -60,8 +60,8 @@ if (!SEC_hasRights('topic.edit')) {
 *
 * @param    string  tid     ID of topic to edit
 * @return   string          HTML for the topic editor
-* 
-*/ 
+*
+*/
 function edittopic ($tid = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG27, $LANG_ACCESS,
@@ -76,10 +76,10 @@ function edittopic ($tid = '')
         if ($access == 0 OR $access == 2) {
             $retval .= COM_startBlock ($LANG27[12], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG27[13]; 
+            $retval .= $LANG27[13];
             $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
             COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
-            return $retval; 
+            return $retval;
         }
     }
 
@@ -89,7 +89,7 @@ function edittopic ($tid = '')
         $A['owner_id'] = $_USER['uid'];
 
         // this is the one instance where we default the group
-        // most topics should belong to the Topic Admin group 
+        // most topics should belong to the Topic Admin group
         if (isset ($_GROUPS['Topic Admin'])) {
             $A['group_id'] = $_GROUPS['Topic Admin'];
         } else {
@@ -119,7 +119,7 @@ function edittopic ($tid = '')
     $topic_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $ownername = COM_getDisplayName ($A['owner_id']);
     $topic_templates->set_var('owner_username', DB_getItem ($_TABLES['users'],
-                              'username', "uid = {$A['owner_id']}")); 
+                              'username', "uid = {$A['owner_id']}"));
     $topic_templates->set_var('owner_name', $ownername);
     $topic_templates->set_var('owner', $ownername);
     $topic_templates->set_var('owner_id', $A['owner_id']);
@@ -153,15 +153,15 @@ function edittopic ($tid = '')
     $topic_templates->set_var('lang_defaultis', $LANG27[16]);
     $topic_templates->set_var('lang_topicname', $LANG27[3]);
     $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
-    if (empty($A['tid'])) { 
-        $A['imageurl'] = '/images/topics/'; 
+    if (empty($A['tid'])) {
+        $A['imageurl'] = '/images/topics/';
     }
     $topic_templates->set_var('lang_topicimage', $LANG27[4]);
     $topic_templates->set_var('lang_uploadimage', $LANG27[27]);
     $topic_templates->set_var('icon_dimensions', $_CONF['max_topicicon_width'].' x '.$_CONF['max_topicicon_height']);
     $topic_templates->set_var('lang_maxsize', $LANG27[28]);
     $topic_templates->set_var('max_url_length', 255);
-    $topic_templates->set_var('image_url', $A['imageurl']); 
+    $topic_templates->set_var('image_url', $A['imageurl']);
     $topic_templates->set_var('warning_msg', $LANG27[6]);
 
     $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
@@ -240,9 +240,9 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
         $retval .= COM_siteFooter ();
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
     } elseif (!empty($tid) && !empty($topic)) {
-        if ($imageurl == '/images/topics/') { 
-            $imageurl = ''; 
-        }    
+        if ($imageurl == '/images/topics/') {
+            $imageurl = '';
+        }
         $topic = addslashes ($topic);
 
         if ($is_default == 'on') {
@@ -314,7 +314,7 @@ function listtopics()
     $topic_templates->set_var('layout_url', $_CONF['layout_url']);
     $topic_templates->set_var('lang_newtopic', $LANG_ADMIN['create_new']);
     $topic_templates->set_var('lang_adminhome', $LANG27[18]);
-    $topic_templates->set_var('lang_instructions', $LANG27[9]); 
+    $topic_templates->set_var('lang_instructions', $LANG27[9]);
     $topic_templates->set_var('begin_row', '<tr align="center" valign="bottom">');
 
     $result = DB_query("SELECT * FROM {$_TABLES['topics']}");
@@ -346,7 +346,7 @@ function listtopics()
             } else {
                 $imageurl = COM_getTopicImageUrl ($A['imageurl']);
                 $topic_templates->set_var ('image_tag', '<img src="' . $imageurl
-                                           . '" border="0" alt="">');
+                                           . '" alt="">');
             }
             if ($counter == 5) {
                 $counter = 1;

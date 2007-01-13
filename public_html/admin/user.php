@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.180 2006/12/28 09:27:54 dhaun Exp $
+// $Id: user.php,v 1.181 2007/01/13 11:11:02 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -1077,7 +1077,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate( '_msg_block', 'header' ))
             . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '" align="left"'
             . ' alt="" style="padding-right:5px; padding-bottom:3px">'
             . $msg . '</p>'
             . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
