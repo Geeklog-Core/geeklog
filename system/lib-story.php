@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.75 2007/01/11 20:40:41 mjervis Exp $
+// $Id: lib-story.php,v 1.76 2007/01/13 17:49:37 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/Story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -141,7 +141,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     . '/users.php?mode=profile&amp;uid=' . $story->DisplayElements('uid')
                     . '"><img src="' . $_CONF['layout_url']
                     . '/images/smallcamera.' . $_IMAGE_TYPE
-                    . '" border="0" alt=""></a>' );
+                    . '" alt=""></a>' );
         }
         else
         {
@@ -163,7 +163,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $imageurl = COM_getTopicImageUrl( $imageurl );
             $topicimage = '<img align="' . $_CONF['article_image_align']
                         . '" src="' . $imageurl . '" alt="' . $topicname
-                        . '" title="' . $topicname . '" border="0">';
+                        . '" title="' . $topicname . '">';
             $article->set_var( 'story_anchortag_and_image', '<a href="'
                         . $topicurl . '" rel="category tag">' . $topicimage
                         . '</a>' );
@@ -357,7 +357,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'email_icon', '<a href="' . $emailUrl . '">'
                 . '<img src="' . $_CONF['layout_url'] . '/images/mail.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[64] . '" title="'
-                . $LANG11[2] . '" border="0"></a>' );
+                . $LANG11[2] . '"></a>' );
             $article->set_var( 'email_story_url', $emailUrl );
             $article->set_var( 'lang_email_story', $LANG11[2] );
             $article->set_var( 'lang_email_story_alt', $LANG01[64] );
@@ -371,7 +371,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         else
         {
             $article->set_var( 'print_icon', '<a href="' . $printUrl . '">'
-                . '<img border="0" src="' . $_CONF['layout_url']
+                . '<img src="' . $_CONF['layout_url']
                 . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65]
                 . '" title="' . $LANG11[3] . '"></a>' );
             $article->set_var( 'print_story_url', $printUrl );
@@ -383,7 +383,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $pdfUrl = $_CONF['site_url'] . '/pdfgenerator.php?pageType=2&amp;'
                     . 'pageData=' . urlencode( $printUrl );
             $article->set_var( 'pdf_icon',
-                sprintf( '<a href="%s"><img border="0" src="%s/images/pdf.'
+                sprintf( '<a href="%s"><img src="%s/images/pdf.'
                          . $_IMAGE_TYPE . '" alt="%s" title="%s"></a>',
                          $pdfUrl, $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
             $article->set_var( 'pdf_story_url', $pdfUrl );
@@ -414,9 +414,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $article->set_var( 'edit_icon', '<a href="' . $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $story->getSid() . '"><img src="'
                 . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4]
-                . '" border="0"></a>' );
+                . '"></a>' );
         $article->set_var( 'edit_image',  '<img src="' . $editicon . '" alt="'
-                . $LANG01[4] . '" title="' . $LANG01[4] . '" border="0">' );
+                . $LANG01[4] . '" title="' . $LANG01[4] . '">' );
     }
 
     if( $story->DisplayElements('featured') == 1 )

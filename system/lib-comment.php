@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.48 2006/12/09 22:16:49 dhaun Exp $
+// $Id: lib-comment.php,v 1.49 2007/01/13 17:49:37 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -113,8 +113,8 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     if( empty( $fullname )) {
         $fullname = $username;
     }
-    $commentbar->set_var( 'user_name', $username );   
-    $commentbar->set_var( 'user_fullname', $fullname );    
+    $commentbar->set_var( 'user_name', $username );
+    $commentbar->set_var( 'user_fullname', $fullname );
 
     if( !empty( $_USER['username'] )) {
         $author = COM_getDisplayName( $_USER['uid'], $username, $fullname );
@@ -131,7 +131,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     }
 
     if( $page == 'comment.php' ) {
-        $commentbar->set_var( 'parent_url', 
+        $commentbar->set_var( 'parent_url',
                               $_CONF['site_url'] . '/comment.php' );
         $hidden = '';
         if( $_REQUEST['mode'] == 'view' ) {
@@ -141,12 +141,12 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
         else if( $_REQUEST['mode'] == 'display' ) {
             $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '">';
         }
-        $commentbar->set_var( 'hidden_field', $hidden . 
+        $commentbar->set_var( 'hidden_field', $hidden .
                 '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '">' );
     } else if( $type == 'poll' ) {
-        $commentbar->set_var( 'parent_url', 
+        $commentbar->set_var( 'parent_url',
                               $_CONF['site_url'] . '/pollbooth.php' );
-        $commentbar->set_var( 'hidden_field',         
+        $commentbar->set_var( 'hidden_field',
                 '<input type="hidden" name="scale" value="400">' .
                 '<input type="hidden" name="qid" value="' . $sid . '">' .
                 '<input type="hidden" name="aid" value="-1">' );
@@ -181,21 +181,21 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'mode_selector', $selector);
 
     return $commentbar->finish( $commentbar->parse( 'output', 'commentbar' ));
-}    
+}
 
 
 /**
 * This function prints &$comments (db results set of comments) in comment format
 * -For previews, &$comments is assumed to be an associative array containing
 *  data for a single comment.
-* 
+*
 * @param     array      &$comments Database result set of comments to be printed
 * @param     string     $mode      'flat', 'threaded', etc
 * @param     string     $type      Type of item (article, poll, etc.)
 * @param     string     $order     How to order the comments 'ASC' or 'DESC'
 * @param     boolean    $delete_option   if current user can delete comments
 * @param     boolean    $preview   Preview display (for edit) or not
-* @return    string     HTML       Formated Comment 
+* @return    string     HTML       Formated Comment
 *
 */
 function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
@@ -217,7 +217,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     $template->set_var( 'lang_authoredby', $LANG01[42] );
     $template->set_var( 'lang_on', $LANG01[36] );
     $template->set_var( 'lang_permlink', $LANG01[120] );
-    $template->set_var( 'order', $order );    
+    $template->set_var( 'order', $order );
 
     // Make sure we have a default value for comment indentation
     if( !isset( $_CONF['comment_indent'] )) {
@@ -225,7 +225,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     }
 
     if( $preview ) {
-        $A = $comments;   
+        $A = $comments;
         if( empty( $A['nice_date'] )) {
             $A['nice_date'] = time();
         }
@@ -283,7 +283,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                         . '/users.php?mode=profile&amp;uid=' . $A['uid']
                         . '"><img src="' . $_CONF['layout_url']
                         . '/images/smallcamera.' . $_IMAGE_TYPE
-                        . '" border="0" alt=""></a>' );
+                        . '" alt=""></a>' );
             } else {
                 $template->set_var( 'author_photo', '' );
                 $template->set_var( 'camera_icon', '' );
@@ -304,7 +304,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // hide reply link from anonymous users if they can't post replies
         $hidefromanon = false;
-        if( empty( $_USER['username'] ) && (( $_CONF['loginrequired'] == 1 ) 
+        if( empty( $_USER['username'] ) && (( $_CONF['loginrequired'] == 1 )
                 || ( $_CONF['commentsloginrequired'] == 1 ))) {
             $hidefromanon = true;
         }
@@ -390,7 +390,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $reply_link = "{$_CONF['site_url']}/comment.php?sid={$A['sid']}&amp;pid={$A['cid']}"
                     . "&amp;title=" . urlencode($A['title']) . "&amp;type={$A['type']}";
         $template->set_var( 'reply_link', $reply_link);
-        
+
         // format title for display, must happen after reply_link is created
         $A['title'] = htmlspecialchars( $A['title'] );
         $A['title'] = str_replace( '$', '&#36;', $A['title'] );
@@ -401,10 +401,10 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         // parse the templates
         if( ($mode == 'threaded') && $indent > 0 ) {
             $template->set_var( 'pid', $A['pid'] );
-            $retval .= $template->parse( 'output', 'thread' );   
+            $retval .= $template->parse( 'output', 'thread' );
         } else {
             $template->set_var( 'pid', $A['cid'] );
-            $retval .= $template->parse( 'output', 'comment' );   
+            $retval .= $template->parse( 'output', 'comment' );
         }
         $row++;
     } while( $A = DB_fetchArray( $comments ));
@@ -458,7 +458,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
     if( empty( $limit )) {
         $limit = $_CONF['comment_limit'];
     }
-    
+
     if( !is_numeric($page) || $page < 1 ) {
         $page = 1;
     }
@@ -473,7 +473,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                         CMT_commentBar( $sid, $title, $type, $order, $mode));
     $template->set_var( 'sid', $sid );
     $template->set_var( 'comment_type', $type );
-    
+
     if( $mode == 'nested' || $mode == 'threaded' || $mode == 'flat' ) {
         // build query
         switch( $mode ) {
@@ -481,7 +481,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                 if( $cid ) {
                     $count = 1;
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, " 
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, "
                        . "UNIX_TIMESTAMP(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                        . "WHERE c.uid = u.uid AND c.cid = $pid AND type='{$type}'";
@@ -489,7 +489,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                     $count = DB_count( $_TABLES['comments'],
                                 array( 'sid', 'type' ), array( $sid, $type ));
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, " 
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, "
                        . "UNIX_TIMESTAMP(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                        . "WHERE c.uid = u.uid AND c.sid = '$sid' AND type='{$type}' "
@@ -503,8 +503,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                 if( $order == 'DESC' ) {
                     $cOrder = 'c.rht DESC';
                 } else {
-                    $cOrder = 'c.lft ASC'; 
-                }                            
+                    $cOrder = 'c.lft ASC';
+                }
 
                 // We can simplify the query, and hence increase performance
                 // when pid = 0 (when fetching all the comments for a given sid)
@@ -517,7 +517,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                     $result = DB_query( $q2 );
                     list( $count ) = DB_fetchArray( $result );
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent AS pindent, " 
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent AS pindent, "
                        . "UNIX_TIMESTAMP(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
                        . "{$_TABLES['users']} AS u "
@@ -530,7 +530,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                         $count = DB_count( $_TABLES['comments'],
                                 array( 'sid', 'type' ), array( $sid, $type ));
 
-                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, 0 AS pindent, " 
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, 0 AS pindent, "
                            . "UNIX_TIMESTAMP(c.date) AS nice_date "
                            . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
                            . "WHERE c.sid = '$sid' AND c.uid = u.uid  AND type='{$type}' "
@@ -544,7 +544,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                         $result = DB_query($q2);
                         list($count) = DB_fetchArray($result);
 
-                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent + 1 AS pindent, " 
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, u.email, c2.indent + 1 AS pindent, "
                            . "UNIX_TIMESTAMP(c.date) AS nice_date "
                            . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
                            . "{$_TABLES['users']} AS u "
@@ -560,13 +560,13 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $result = DB_query( $q );
         $thecomments .= CMT_getComment( $result, $mode, $type, $order,
                                         $delete_option );
-        
+
         // Pagination
         $tot_pages =  ceil( $count / $limit );
         $pLink = $_CONF['site_url'] . "/article.php?story=$sid&amp;type=$type&amp;order=$order&amp;mode=$mode";
         $template->set_var( 'pagenav',
                          COM_printPageNavigation($pLink, $page, $tot_pages));
-        
+
         $template->set_var( 'comments', $thecomments );
         $retval = $template->parse( 'output', 'commentarea' );
     }
@@ -587,7 +587,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 * @return   string  HTML for comment form
 *
 */
-function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
+function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN;
 
@@ -738,7 +738,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             } else {
                 $comment_template->set_var('uid', 1);
                 $comment_template->set_var('username', $LANG03[24]);
-                $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=new'); 
+                $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=new');
                 $comment_template->set_var('lang_logoutorcreateaccount', $LANG03[04]);
             }
 
@@ -758,11 +758,11 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$postmode));
             $comment_template->set_var('allowed_html', COM_allowedHTML());
             $comment_template->set_var('lang_importantstuff', $LANG03[18]);
-            $comment_template->set_var('lang_instr_line1', $LANG03[19]);        
-            $comment_template->set_var('lang_instr_line2', $LANG03[20]);        
-            $comment_template->set_var('lang_instr_line3', $LANG03[21]);        
-            $comment_template->set_var('lang_instr_line4', $LANG03[22]);        
-            $comment_template->set_var('lang_instr_line5', $LANG03[23]);        
+            $comment_template->set_var('lang_instr_line1', $LANG03[19]);
+            $comment_template->set_var('lang_instr_line2', $LANG03[20]);
+            $comment_template->set_var('lang_instr_line3', $LANG03[21]);
+            $comment_template->set_var('lang_instr_line4', $LANG03[22]);
+            $comment_template->set_var('lang_instr_line5', $LANG03[23]);
             $comment_template->set_var('lang_preview', $LANG03[14]);
 
             if (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
@@ -770,7 +770,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '">');
             }
 
-            $comment_template->set_var('end_block', COM_endBlock());        
+            $comment_template->set_var('end_block', COM_endBlock());
             $comment_template->parse('output', 'form');
             $retval .= $comment_template->finish($comment_template->get_var('output'));
         }
@@ -813,7 +813,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
     }
 
     // Check that anonymous comments are allowed
-    if (($uid == 1) && (($_CONF['loginrequired'] == 1) 
+    if (($uid == 1) && (($_CONF['loginrequired'] == 1)
             || ($_CONF['commentsloginrequired'] == 1))) {
         COM_errorLog("CMT_saveComment: IP address {$_SERVER['REMOTE_ADDR']} "
                    . 'attempted to save a comment with anonymous comments disabled for site.');
@@ -987,12 +987,12 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 /**
  * Deletes a given comment
  *
- * The function expects the calling function to check to make sure the 
+ * The function expects the calling function to check to make sure the
  * requesting user has the correct permissions and that the comment exits
  * for the specified $type and $sid.
  *
  * @author  Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
- * @param   string      $type   article, poll, or plugin identifier 
+ * @param   string      $type   article, poll, or plugin identifier
  * @param   string      $sid    id of object comment belongs to
  * @param   int         $cid    Comment ID
  * @return  string      0 indicates success, >0 identifies problem
@@ -1003,7 +1003,7 @@ function CMT_deleteComment ($cid, $sid, $type)
 
     $ret = 0;  // Assume good status unless reported otherwise
 
-    // Sanity check, note we return immediately here and no DB operations 
+    // Sanity check, note we return immediately here and no DB operations
     // are performed
     if (!is_numeric ($cid) || ($cid < 0) || empty ($sid) || empty ($type)) {
         COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
@@ -1011,16 +1011,16 @@ function CMT_deleteComment ($cid, $sid, $type)
         return $ret = 1;
     }
 
-    // Delete the comment from the DB and update the other comments to 
+    // Delete the comment from the DB and update the other comments to
     // maintain the tree structure
     // A lock is needed here to prevent other additions and/or deletions
-    // from happening at the same time. A transaction would work better, 
+    // from happening at the same time. A transaction would work better,
     // but aren't supported with MyISAM tables.
     DB_lockTable ($_TABLES['comments']);
     $result = DB_query("SELECT pid, lft, rht FROM {$_TABLES['comments']} "
                      . "WHERE cid = $cid AND sid = '$sid' AND type = '$type'");
     if ( DB_numRows($result) == 1 ) {
-        list($pid,$lft,$rht) = DB_fetchArray($result); 
+        list($pid,$lft,$rht) = DB_fetchArray($result);
         DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
         DB_delete ($_TABLES['comments'], 'cid', $cid);
         DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
@@ -1036,7 +1036,7 @@ function CMT_deleteComment ($cid, $sid, $type)
     }
 
     DB_unlockTable ($_TABLES['comments']);
-    
+
     return $ret;
 }
 
@@ -1056,11 +1056,11 @@ function CMT_reportAbusiveComment ($cid, $type)
 
     if (empty ($_USER['username'])) {
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));     
-        $loginreq = new Template ($_CONF['path_layout'] . 'submit');            
-        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');          
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+        $loginreq = new Template ($_CONF['path_layout'] . 'submit');
+        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
         $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
-        $loginreq->set_var ('site_url', $_CONF['site_url']);                    
+        $loginreq->set_var ('site_url', $_CONF['site_url']);
         $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
         $loginreq->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $loginreq->parse ('errormsg', 'loginreq');
@@ -1129,11 +1129,11 @@ function CMT_sendReport ($cid, $type)
     if (empty ($_USER['username'])) {
         $retval = COM_siteHeader ('menu', $LANG_LOGIN[1]);
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));     
-        $loginreq = new Template ($_CONF['path_layout'] . 'submit');            
-        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');          
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+        $loginreq = new Template ($_CONF['path_layout'] . 'submit');
+        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
         $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
-        $loginreq->set_var ('site_url', $_CONF['site_url']);                    
+        $loginreq->set_var ('site_url', $_CONF['site_url']);
         $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
         $loginreq->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $loginreq->parse ('errormsg', 'loginreq');
@@ -1172,7 +1172,7 @@ function CMT_sendReport ($cid, $type)
     $mailbody .= "\n\n"
               . "$LANG03[16]: $title\n"
               . "$LANG03[5]: $author\n";
-    
+
     if (($type != 'article') && ($type != 'poll')) {
         $mailbody .= "$LANG09[5]: $type\n";
     }

@@ -3,7 +3,7 @@
 {startblock}
 {message}
 <form action="{post_url}" method="POST">
-    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+    <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
             <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{USERNAME}</b><br><small style="color:#676767">{USERNAME_HELP}</small></td>
             <td align="left" valign="middle"><input type="text" name="username" size="16" maxlength="16" value="{username}"></td>

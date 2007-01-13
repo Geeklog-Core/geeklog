@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.95 2006/11/26 12:03:56 dhaun Exp $
+// $Id: lib-admin.php,v 1.96 2007/01/13 17:49:37 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -112,13 +112,13 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 
     $icon_arr = array(
         'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit'] . '" title="'
+             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit'] . '" title="'
              . $LANG_ADMIN['edit'] . '">',
         'copy' => '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy'] . '" title="'
+             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['copy'] . '" title="'
              . $LANG_ADMIN['copy'] . '">',
         'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
-            . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
+            . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
 
@@ -309,13 +309,13 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # define icon paths. Those will be transmitted to $fieldfunction.
     $icon_arr = array(
         'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
+             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
              . '" title="' . $LANG_ADMIN['edit'] . '">',
         'copy' => '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['copy']
+             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['copy']
              . '" title="' . $LANG_ADMIN['copy'] . '">',
         'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
-            . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ACCESS['listthem']
+            . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
     // the user can disable the menu. if used, create it.
@@ -385,7 +385,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
     # make actual order arrow image
     $img_arrow = '&nbsp;<img src="' . $_CONF['layout_url'] . '/images/' . $arrow
-            . '.' . $_IMAGE_TYPE . '" border="0" alt="">';
+            . '.' . $_IMAGE_TYPE . '" alt="">';
 
     if (!empty ($order_for_query)) { # concat order string
         $order_sql = "ORDER BY $order_for_query $direction";
@@ -719,7 +719,7 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             $photoico = '';
             if (!empty ($A['photo'])) {
                 $photoico = "&nbsp;<img src=\"{$_CONF['layout_url']}/images/smallcamera."
-                          . $_IMAGE_TYPE . '" border="0" alt="{$LANG04[77]}">';
+                          . $_IMAGE_TYPE . '" alt="{$LANG04[77]}">';
             } else {
                 $photoico = '';
             }
@@ -844,7 +844,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             break;
         case "ping":
             $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
-                     . $_IMAGE_TYPE . '" border="0" alt="' . $LANG24[21] . '" title="'
+                     . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
                      . $LANG24[21] . '">';
             if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
                 $url = $_CONF['site_admin_url']
