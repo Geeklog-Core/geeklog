@@ -1,5 +1,5 @@
 <form action="{site_url}/profiles.php" method="POST" name="contact">
-  <table cellspacing="0" cellpadding="0" border="0" width="100%" class="plugin">
+  <table cellspacing="0" cellpadding="0" width="100%" class="plugin">
     <tr>
       <td colspan="2" class="pluginInfo">{lang_description}</td>
     </tr>

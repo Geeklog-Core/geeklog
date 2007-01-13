@@ -1,6 +1,6 @@
 {start_block_mailstory2friend}
 <form action="{site_url}/profiles.php" method="post" name="contact">
-    <table cellspacing="0" cellpadding="3" border="0" width="100%">
+    <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
             <td class="alignright"><b>{lang_fromname}:</b></td>
             <td><input type="text" name="from" size="40" maxlength="96" value="{name}"></td>

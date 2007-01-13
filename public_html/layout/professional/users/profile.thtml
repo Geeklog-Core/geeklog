@@ -1,5 +1,5 @@
 {start_block_userprofile}
-    <table border="0" cellspacing="0" cellpadding="3">
+    <table cellspacing="0" cellpadding="3">
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_username}:</b></td>
             <td style="vertical-align:top;">{username} ({user_fullname}) {edit_link}<br> {user_photo}</td>
@@ -31,10 +31,10 @@
     </table>
 {end_block}
 {start_block_last10stories}
-    <table border="0" cellpadding="3" cellspacing="0" width="100%">
+    <table cellpadding="3" cellspacing="0" width="100%">
         <tr>
             <td>
-                <table border="0" cellspacing="0" cellpadding="3">
+                <table cellspacing="0" cellpadding="3">
                     {story_row}
                 </table>
             </td>
@@ -42,10 +42,10 @@
     </table>
 {end_block}
 {start_block_last10comments}
-    <table border="0" cellpadding="3" cellspacing="0" width="100%">
+    <table cellpadding="3" cellspacing="0" width="100%">
         <tr>
             <td>
-                <table border="0" cellspacing="0" cellpadding="3">
+                <table cellspacing="0" cellpadding="3">
                     {comment_row}
                 </table>
             </td>
@@ -53,10 +53,10 @@
     </table>
 {end_block}
 {start_block_postingstats}
-    <table border="0" cellpadding="3" cellspacing="0" width="100%">
+    <table cellpadding="3" cellspacing="0" width="100%">
         <tr>
             <td>
-                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                <table cellspacing="0" cellpadding="3" width="100%">
                     <tr>
                         <td>{lang_number_stories}</td>
                         <td>{number_stories}</td>
@@ -72,4 +72,4 @@
             </td>
         </tr>
     </table>
-{end_block} 
+{end_block}

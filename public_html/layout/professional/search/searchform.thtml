@@ -1,6 +1,6 @@
                             {search_intro}
                             <form action="{site_url}/search.php" method="get">
-                                <table border="0" cellspacing="0" cellpadding="3">
+                                <table cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td class="alignright">{lang_keywords}:</td>
                                         <td><input type="text" name="query" size="35" maxlength="35" value="{query}">
@@ -13,7 +13,7 @@
                                     <tr>
                                         <td class="alignright">{lang_date}:</td>
                                         <td>
-                                            <input type="text" name="datestart" size="10" maxlength="10" value="{datestart}"> {lang_to} <input type="text" name="dateend" size="10" maxlength="10" value="{dateend}"> {date_format} 
+                                            <input type="text" name="datestart" size="10" maxlength="10" value="{datestart}"> {lang_to} <input type="text" name="dateend" size="10" maxlength="10" value="{dateend}"> {date_format}
                                         </td>
                                     </tr>
                                     <tr>

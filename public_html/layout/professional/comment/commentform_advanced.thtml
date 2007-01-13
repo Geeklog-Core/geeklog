@@ -6,7 +6,7 @@
 
                                 {start_block_postacomment}
                                             <form action="{site_url}/comment.php" method="post" onSubmit='set_postcontent();'>
-                                                <table cellspacing="0" cellpadding="3" border="0" width="100%">
+                                                <table cellspacing="0" cellpadding="3" width="100%">
                                                     <tr>
                                                         <td class="alignright"><b>{lang_username}:</b></td>
                                                         <td>

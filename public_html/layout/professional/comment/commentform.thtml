@@ -1,6 +1,6 @@
                                 {start_block_postacomment}
                                             <form action="{site_url}/comment.php" method="post">
-                                                <table cellspacing="0" cellpadding="3" border="0" width="95%">
+                                                <table cellspacing="0" cellpadding="3" width="95%">
                                                     <tr>
                                                         <td class="alignright"><b>{lang_username}:</b></td>
                                                         <td>
