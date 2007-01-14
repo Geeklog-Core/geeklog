@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog comment library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.49 2007/01/13 17:49:37 ospiess Exp $
+// $Id: lib-comment.php,v 1.50 2007/01/14 16:44:49 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -143,13 +143,6 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
         }
         $commentbar->set_var( 'hidden_field', $hidden .
                 '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '">' );
-    } else if( $type == 'poll' ) {
-        $commentbar->set_var( 'parent_url',
-                              $_CONF['site_url'] . '/pollbooth.php' );
-        $commentbar->set_var( 'hidden_field',
-                '<input type="hidden" name="scale" value="400">' .
-                '<input type="hidden" name="qid" value="' . $sid . '">' .
-                '<input type="hidden" name="aid" value="-1">' );
     } else if( $type == 'article' ) {
         $commentbar->set_var( 'parent_url',
                               $_CONF['site_url'] . '/article.php' );
