@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIPofURL.Admin.class.php,v 1.5 2006/09/02 14:22:26 dhaun Exp $
+* $Id: EditIPofURL.Admin.class.php,v 1.6 2007/01/14 03:28:13 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditIPofURL.Admin.class.php') !== false) {
@@ -36,7 +36,7 @@ class EditIPofUrl extends BaseAdmin {
             $action = COM_applyFilter ($_GET['action']);
         } else if (isset ($_POST['paction'])) {
             $action = COM_applyFilter ($_POST['paction']);
-        } 
+        }
 
         $entry = '';
         if (isset ($_GET['entry'])) {
@@ -67,9 +67,9 @@ class EditIPofUrl extends BaseAdmin {
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
         $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIPofUrl">';
-        $display .= '<input type="text" size ="30" name="pentry">&nbsp;&nbsp;&nbsp;';
+        $display .= '<fieldset><input type="text" size ="30" name="pentry">&nbsp;&nbsp;&nbsp;';
         $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">' . LB;
-        $display .= '</form>' . LB;
+        $display .= '</fieldset></form>' . LB;
 
         return $display;
     }

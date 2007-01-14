@@ -4,6 +4,8 @@
 <p>{installmsg2}</p>
 <p>{readme}<a href="install.html">{installdoc}</a>
 <form method="POST" action="{cgiurl}">
-<input type="submit" value="{btnmsg}" name="B1">
-<input type="hidden" value="{action}" name="action">
+    <fieldset>
+        <input type="submit" value="{btnmsg}" name="B1">
+        <input type="hidden" value="{action}" name="action">
+    </fieldset>
 </form>

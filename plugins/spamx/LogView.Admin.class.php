@@ -3,13 +3,13 @@
 /**
  * File: Logview.Admin.class.php
  * This is the LogViewer for the Geeklog Spam-X plugin
- * 
+ *
  * Copyright (C) 2004-2006 by the following authors:
  * Author       Tom Willett     tomw AT pigstye DOT net
- * 
+ *
  * Licensed under GNU General Public License
  *
- * $Id: LogView.Admin.class.php,v 1.7 2006/08/20 16:42:32 dhaun Exp $
+ * $Id: LogView.Admin.class.php,v 1.8 2007/01/14 03:28:13 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'LogView.Admin.class.php') !== false) {
@@ -28,7 +28,7 @@ class LogView extends BaseAdmin {
 
         $display = '';
 
-        $max_Log_Size = 100000; 
+        $max_Log_Size = 100000;
         $action = '';
         if (isset ($_POST['action'])) {
             $action = COM_applyFilter ($_POST['action']);
@@ -36,9 +36,9 @@ class LogView extends BaseAdmin {
         $path = $_CONF['site_admin_url']
               . '/plugins/spamx/index.php?command=LogView';
         $log = 'spamx.log';
-        $display .= "<form method=\"post\" action=\"{$path}\">";
+        $display .= "<form method=\"post\" action=\"{$path}\"><fieldset>";
         $display .= "<input type=\"submit\" name=\"action\" value=\"{$LANG_SX00['clearlog']}\">";
-        $display .= "</form>";
+        $display .= "</fieldset></form>";
         if ($action == $LANG_SX00['clearlog']) {
             $timestamp = strftime("%c");
             $fd = fopen($_CONF['path_log'] . $log, "w");
@@ -61,14 +61,14 @@ class LogView extends BaseAdmin {
         $display .= implode('', file($_CONF['path_log'] . $log));
         $display .= "</pre>";
         return $display;
-    } 
+    }
 
     function link()
     {
         global $LANG_SX00;
 
         return $LANG_SX00['viewlog'];
-    } 
-}     
-      
+    }
+}
+
 ?>

@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: EditBlackList.Admin.class.php,v 1.7 2006/09/02 14:23:33 dhaun Exp $
+ * $Id: EditBlackList.Admin.class.php,v 1.8 2007/01/14 03:28:13 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditBlackList.Admin.class.php') !== false) {
@@ -36,7 +36,7 @@ class EditBlackList extends BaseAdmin {
             $action = COM_applyFilter ($_GET['action']);
         } else if (isset ($_POST['paction'])) {
             $action = COM_applyFilter ($_POST['paction']);
-        } 
+        }
 
         $entry = '';
         if (isset ($_GET['entry'])) {
@@ -69,15 +69,15 @@ class EditBlackList extends BaseAdmin {
             $A = DB_fetchArray ($result);
             $e = $A['value'];
             $display .= '<li><a href="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditBlackList&amp;action=delete&amp;entry=' . urlencode ($e) . '">' . htmlspecialchars ($e) . '</a></li>' . LB;
-        } 
+        }
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
         $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditBlackList">' . LB;
-        $display .= '<input type="text" size="30" name="pentry">&nbsp;&nbsp;&nbsp;';
+        $display .= '<fieldset><input type="text" size="30" name="pentry">&nbsp;&nbsp;&nbsp;';
         $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">' . LB;
         $display .= '<p>' . $LANG_SX00['e3'] . '&nbsp&nbsp&nbsp';
         $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addcen'] . '">' . LB;
-        $display .= '</form>' . LB;
+        $display .= '</fieldset></form>' . LB;
 
         return $display;
     }

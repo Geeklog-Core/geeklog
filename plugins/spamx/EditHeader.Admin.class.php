@@ -11,7 +11,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.5 2006/08/20 16:42:32 dhaun Exp $
+* $Id: EditHeader.Admin.class.php,v 1.6 2007/01/14 03:28:13 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
@@ -37,7 +37,7 @@ class EditHeader extends BaseAdmin {
             $action = COM_applyFilter ($_GET['action']);
         } else if (isset ($_POST['paction'])) {
             $action = COM_applyFilter ($_POST['paction']);
-        } 
+        }
 
         if ($action == 'delete') {
             $entry = $_GET['entry'];
@@ -82,7 +82,7 @@ class EditHeader extends BaseAdmin {
         $display .= '<tr><td align="right"><b>Content:</b></td>' . LB;
         $display .= '<td><input type="text" size="40" name="header-value"> e.g. <tt>Mozilla</tt></td></tr>' . LB;
         $display .= '</table>' . LB;
-        $display .= '<p><input type="Submit" name="paction" value="' . $LANG_SX00['addentry'] . '">';
+        $display .= '<p><input type="Submit" name="paction" value="' . $LANG_SX00['addentry'] . '"></p>';
         $display .= '</form>';
         return $display;
     }
