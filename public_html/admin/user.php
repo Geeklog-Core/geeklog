@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.181 2007/01/13 11:11:02 ospiess Exp $
+// $Id: user.php,v 1.182 2007/01/14 03:34:00 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -962,11 +962,11 @@ function display_form ()
     global $_CONF, $LANG28;
 
     $retval = '<form action="' . $_CONF['site_admin_url']
-            . '/user.php" method="post" enctype="multipart/form-data">'
+            . '/user.php" method="post" enctype="multipart/form-data"><fieldset>'
             . $LANG28[29] . ': <input type="file" name="importfile" size="40">'
             . '<input type="hidden" name="mode" value="import">'
             . '<input type="submit" name="submit" value="' . $LANG28[30]
-            . '"></form>';
+            . '"></fieldset></form>';
 
     return $retval;
 }
