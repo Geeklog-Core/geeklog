@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.114 2007/01/11 20:40:40 mjervis Exp $
+// $Id: submit.php,v 1.115 2007/01/14 13:13:57 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -225,8 +225,7 @@ function sendNotification ($table, $story)
     $introtext = COM_undoSpecialChars( $story->displayElements('introtext') . '\n' . $story->displayElements('bodytext') );
     $storyauthor = COM_getDisplayName( $story->displayelements('uid') );
     $topic = stripslashes(DB_getItem ($_TABLES['topics'], 'topic',
-                                       "tid = '{$story->displayElements('tid')}'"));
-
+                                       'tid = \''.$story->displayElements('tid').'\''));
     $mailbody = "$LANG08[31]: {$title}\n"
               . "$LANG24[7]: {$storyauthor}\n"
               . "$LANG08[32]: " . strftime ($_CONF['date']) . "\n"
