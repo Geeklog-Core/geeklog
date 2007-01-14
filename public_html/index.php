@@ -32,18 +32,21 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.91 2007/01/13 09:21:34 dhaun Exp $
+// $Id: index.php,v 1.92 2007/01/14 13:13:13 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
 
 $newstories = false;
 $displayall = false;
+$microsummary = false;
 if (isset ($_GET['display']) && empty ($topic)) {
     if ($_GET['display'] == 'new') {
         $newstories = true;
     } else if ($_GET['display'] == 'all') {
         $displayall = true;
+    } else if ($_GET['display'] == 'microsummary') {
+        $microsummary = true;
     }
 }
 
@@ -52,7 +55,7 @@ $archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
 
 // Microsummary support:
 // see: http://wiki.mozilla.org/Microsummaries
-if( array_key_exists('microsummary',$_GET) )
+if( $microsummary )
 {   
     $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
@@ -132,9 +135,9 @@ if (!$newstories && !$displayall) {
 if($topic)
 {
     $header = '<link rel="microsummary" href="index.php?topic='
-                . urlencode($topic) . '&amp;microsummary">';
+                . urlencode($topic) . '&amp;display=microsummary" title="Microsummary" />';
 } else {
-    $header = '<link rel="microsummary" href="index.php?microsummary">';
+    $header = '<link rel="microsummary" href="index.php?display=microsummary" title="Microsummary" />';
 }
 $display .= COM_siteHeader('menu', '', $header);
 if (isset ($_GET['msg'])) {
