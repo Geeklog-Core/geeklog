@@ -33,8 +33,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.76 2007/01/13 17:49:37 ospiess Exp $
-require_once ($_CONF['path_system'] . '/classes/Story.class.php');
+// $Id: lib-story.php,v 1.77 2007/01/14 13:11:32 mjervis Exp $
+require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
