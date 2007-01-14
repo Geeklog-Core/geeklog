@@ -76,7 +76,7 @@
                                         <tr><td>&nbsp;</td></tr>
                                         <tr>
                                             <td colspan="2">
-                                                <input type="submit" value="{lang_save}" name="mode"> 
+                                                <input type="submit" value="{lang_save}" name="mode">
                                                 <input type="submit" value="{lang_cancel}" name="mode">
                                                 <input type="hidden" value="{link_id}" name="old_lid">
                                                 {delete_option}
@@ -84,6 +84,4 @@
                                         </tr>
                                     </table>
                                 </form>
-<script language="JavaScript1.2" defer>
-editor_generate('description');
-</script>
+                                <script language="JavaScript1.2" defer>editor_generate('description');</script>
