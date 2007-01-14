@@ -1,30 +1,34 @@
 <form action="{site_url}/profiles.php" method="POST" name="contact">
-  <table cellspacing="0" cellpadding="0" width="100%" class="plugin">
-    <tr>
-      <td colspan="2" class="pluginInfo">{lang_description}</td>
-    </tr>
-    <tr>
-      <td>{lang_username}</td>
-      <td><input type="text" name="author" size="32" value="{username}" maxlength="32"></td>
-    </tr>
-    <tr>
-      <td>{lang_useremail}</td>
-      <td><input type="text" name="authoremail" size="32" value="{useremail}" maxlength="96"></td>
-    </tr>
-    <tr>
-      <td>{lang_subject}</td>
-      <td><input type="text" name="subject" size="32" maxlength="96" value="{subject}"></td>
-    </tr>
-    <tr>
-      <td style="vertical-align:top;">{lang_message}</td>
-      <td><textarea name="message" wrap="physical" rows="10" cols="50">{message}</textarea></td>
-    </tr>
-    {captcha}
-    <tr>
-      <td colspan="2" class="warning alignleft" style="padding-left:200px;padding-top:10px;">{lang_nohtml}<div style="padding:5px;">
-        <input type="hidden" name="what" value="contact">
-        <input type="hidden" name="uid" value="{uid}">
-        <input type="submit" value="{lang_submit}"></div></td>
-    </tr>
-  </table>
+    <table cellspacing="0" cellpadding="0" width="100%" class="plugin">
+        <tr>
+            <td colspan="2" class="pluginInfo">{lang_description}</td>
+        </tr>
+        <tr>
+            <td>{lang_username}</td>
+            <td><input type="text" name="author" size="32" value="{username}" maxlength="32"></td>
+        </tr>
+        <tr>
+            <td>{lang_useremail}</td>
+            <td><input type="text" name="authoremail" size="32" value="{useremail}" maxlength="96"></td>
+        </tr>
+        <tr>
+            <td>{lang_subject}</td>
+            <td><input type="text" name="subject" size="32" maxlength="96" value="{subject}"></td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;">{lang_message}</td>
+            <td><textarea name="message" wrap="physical" rows="10" cols="50">{message}</textarea></td>
+        </tr>
+        {captcha}
+        <tr>
+            <td colspan="2" class="warning alignleft" style="padding-left:200px;padding-top:10px;">
+                {lang_nohtml}
+                <div style="padding:5px;">
+                    <input type="hidden" name="what" value="contact">
+                    <input type="hidden" name="uid" value="{uid}">
+                    <input type="submit" value="{lang_submit}">
+                </div>
+            </td>
+        </tr>
+    </table>
 </form>

@@ -1,9 +1,8 @@
-<script type="text/javascript">
-    // Setup editor path for FCKeditor JS Functions
-    geeklogEditorBasePath = "{site_url}/fckeditor/" ;
-</script>
-<script type="text/JavaScript" src="{site_url}/javascript/submitstory_fckeditor.js"></script>
-
+                            <script type="text/javascript">
+                                // Setup editor path for FCKeditor JS Functions
+                                geeklogEditorBasePath = "{site_url}/fckeditor/" ;
+                            </script>
+                            <script type="text/JavaScript" src="{site_url}/javascript/submitstory_fckeditor.js"></script>
                             <form action="{site_url}/submit.php" method="post" onSubmit='set_postcontent();'>
                                 <table cellspacing="0" cellpadding="3">
                                     <tr>

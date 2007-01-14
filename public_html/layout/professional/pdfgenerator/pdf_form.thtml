@@ -6,7 +6,9 @@
 {lang_instructions}
 </p>
 <form method="GET" action="{site_url}/pdfgenerator.php">
-    <input type="hidden" name="pageType" value="2" />
-	{lang_URL}:&nbsp;&nbsp;<input type="text" size="50" name="pageData" />
-	&nbsp;&nbsp;<input type="submit" value="{lang_generate_pdf}" />
+    <fieldset>
+        <input type="hidden" name="pageType" value="2">
+        {lang_URL}:&nbsp;&nbsp;<input type="text" size="50" name="pageData">
+        &nbsp;&nbsp;<input type="submit" value="{lang_generate_pdf}">
+    <fieldset>
 </form>

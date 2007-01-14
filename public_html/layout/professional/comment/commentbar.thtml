@@ -5,17 +5,21 @@
 </div>
 <div class="commentbar-line2">
     <form style="display: inline" action="{parent_url}" method="POST">
-        {hidden_field}
-        {order_selector}
-        {mode_selector}
-        <input type="submit" value="{lang_refresh}">
-        <input type="hidden" name="type" value="{comment_type}">
+        <fieldset>
+            {hidden_field}
+            {order_selector}
+            {mode_selector}
+            <input type="submit" value="{lang_refresh}">
+            <input type="hidden" name="type" value="{comment_type}">
+        </fieldset>
     </form>
     <form style="display: inline" action="{site_url}/comment.php" method="POST">
-        <input type="hidden" name="sid" value="{sid}">
-        <input type="hidden" name="pid" value="0">
-        <input type="hidden" name="type" value="{comment_type}">
-        <input type="submit" name="reply" value="{lang_reply}">
+        <fieldset>
+            <input type="hidden" name="sid" value="{sid}">
+            <input type="hidden" name="pid" value="0">
+            <input type="hidden" name="type" value="{comment_type}">
+            <input type="submit" name="reply" value="{lang_reply}">
+        </fieldset>
     </form>
 </div>
 <div class="commentbar-line3">
