@@ -3,9 +3,7 @@
 <head>
 <title>{page_title}</title>
 <!-- link rel="SHORTCUT ICON" href="{site_url}/favicon.ico" -->
-<!--
-<meta http-equiv="Pragma" content="no-cache">
--->
+<!-- <meta http-equiv="Pragma" content="no-cache"> -->
 <link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}">
 {feed_url}
 {rel_links}
@@ -13,9 +11,7 @@
 {advanced_editor}
 <!-- Load Common Javascript Libraries -->
 <script type="text/javascript" src="{site_url}/javascript/common.js"></script>
-
 </head>
-
 <body dir="{direction}">
     <div class="header-navigation-container">
         <div class="header-navigation-line">

@@ -1,10 +1,12 @@
 <form action="{site_url}/users.php" method="POST" style="margin-top:5px;margin-bottom:5px;">
-  <label for="loginname">{lang_username}:</label><br>
-  <input type="text" size="10" name="loginname" value="" id="loginname"><br>
-  {services}
-  <label for="passwd">{lang_password}:</label><br>
-  <input type="password" size="10" name="passwd" id="passwd"><br>
-  <input type="submit" value="{lang_login}">
+    <fieldset>
+        <label for="loginname">{lang_username}:</label><br>
+        <input type="text" size="10" name="loginname" value="" id="loginname"><br>
+        {services}
+        <label for="passwd">{lang_password}:</label><br>
+        <input type="password" size="10" name="passwd" id="passwd"><br>
+        <input type="submit" value="{lang_login}">
+    </fieldset>
 </form>
 {lang_signup}<br>
 {lang_forgetpassword}

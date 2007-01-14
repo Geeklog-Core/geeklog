@@ -3,8 +3,8 @@
 </div>
 {menu_fields_pre}{menu_fields}{menu_fields_aft}<br>
 {lang_instructions}
-<div class="admin-list-search">
-    <form action="{form_url}" method="post">
+<form action="{form_url}" method="post">
+    <div class="admin-list-search">
         {filter}
         {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
         &nbsp;&nbsp;{lang_limit_results}:
@@ -19,5 +19,5 @@
             </select>
         <input type="submit" value="{lang_submit}">
         &nbsp;&nbsp;{lang_records_found}:&nbsp;{records_found}
-    </form>
-</div>
+    </div>
+</form>

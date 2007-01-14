@@ -1,6 +1,6 @@
 <form action="{php_self}" method="POST">
-<input type="hidden" name="mail" value="mail">
-{startblock_email}
+    <input type="hidden" name="mail" value="mail">
+    {startblock_email}
     <table cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
         <tr>
             <td><img src="{layout_url}/images/icons/mail.png" alt=""></td>
