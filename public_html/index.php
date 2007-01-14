@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog homepage.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.92 2007/01/14 13:13:13 mjervis Exp $
+// $Id: index.php,v 1.93 2007/01/14 17:23:19 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -134,10 +134,12 @@ if (!$newstories && !$displayall) {
 
 if($topic)
 {
-    $header = '<link rel="microsummary" href="index.php?topic='
-                . urlencode($topic) . '&amp;display=microsummary" title="Microsummary" />';
+    $header = '<link rel="microsummary" href="' . $_CONF['site_url']
+            . '/index.php?display=microsummary&amp;topic=' . urlencode($topic)
+            . '" title="Microsummary">';
 } else {
-    $header = '<link rel="microsummary" href="index.php?display=microsummary" title="Microsummary" />';
+    $header = '<link rel="microsummary" href="' . $_CONF['site_url']
+            . '/index.php?display=microsummary" title="Microsummary">';
 }
 $display .= COM_siteHeader('menu', '', $header);
 if (isset ($_GET['msg'])) {
