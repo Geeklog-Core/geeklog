@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.12 2007/01/15 03:49:39 ospiess Exp $
+// $Id: index.php,v 1.13 2007/01/15 04:14:43 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -109,9 +109,15 @@ if (isset ($_REQUEST['mode'])) {
 }
 
 if ($mode == 'report') {
-    $title = COM_applyFilter ($_GET['title']);
-    $lid = COM_applyFilter ($_GET['lid']);
-    $url = COM_applyFilter ($_GET['url']);
+    if (isset ($_GET['title'])) {
+        $title = COM_applyFilter ($_GET['title']);
+    }
+    if (isset ($_GET['lid'])) {
+        $lid = COM_applyFilter ($_GET['lid']);
+    }
+    if (isset ($_GET['url'])) {
+        $url = COM_applyFilter ($_GET['url']);
+    }
     $editurl = $_CONF['site_admin_url']
         . '/plugins/links/index.php?mode=edit&amp;lid=' . $lid;
     $msg = $LANG_LINKS[119] . " $title ( $url )". LB
