@@ -24,22 +24,22 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.13 2006/08/10 09:00:39 ospiess Exp $
+# $Id: english.php,v 1.14 2007/01/15 02:43:12 ospiess Exp $
 
-/** 
- * This is the english language page for the Geeklog links Plug-in! 
- * 
+/**
+ * This is the english language page for the Geeklog links Plug-in!
+ *
  * @package Links
  * @subpackage Language
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93 AT steubentech DOT com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
- * 
+ *
  */
 
 
@@ -51,13 +51,13 @@
 ###############################################################################
 /**
 * the link plugin's lang array
-* 
-* @global array $LANG_LINKS 
+*
+* @global array $LANG_LINKS
 */
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
-    84 => 'LINKS',
+    84 => 'Links',
     88 => 'No recent new links',
     114 => 'Links',
     116 => 'Add A Link'
@@ -67,7 +67,7 @@ $LANG_LINKS= array(
 # for stats
 /**
 * the link plugin's lang stats array
-* 
+*
 * @global array $LANG_LINKS_STATS
 */
 $LANG_LINKS_STATS = array(
@@ -82,8 +82,8 @@ $LANG_LINKS_STATS = array(
 # for the search
 /**
 * the link plugin's lang search array
-* 
-* @global array $LANG_LINKS_SEARCH 
+*
+* @global array $LANG_LINKS_SEARCH
 */
 $LANG_LINKS_SEARCH = array(
  'results' => 'Link Results',
@@ -97,8 +97,8 @@ $LANG_LINKS_SEARCH = array(
 # for the submission form
 /**
 * the link plugin's lang submit form array
-* 
-* @global array $LANG_LINKS_SUBMIT 
+*
+* @global array $LANG_LINKS_SUBMIT
 */
 $LANG_LINKS_SUBMIT = array(
     1 => 'Submit a Link',
@@ -129,8 +129,8 @@ $PLG_links_MESSAGE3002 = $LANG32[9];
 # admin/link.php
 /**
 * the link plugin's lang admin array
-* 
-* @global array $LANG_LINKS_ADMIN 
+*
+* @global array $LANG_LINKS_ADMIN
 */
 $LANG_LINKS_ADMIN = array(
     1 => 'Link Editor',
