@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.14 2007/01/15 02:43:12 ospiess Exp $
+# $Id: english.php,v 1.15 2007/01/15 03:50:04 ospiess Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -60,7 +60,14 @@ $LANG_LINKS= array(
     84 => 'Links',
     88 => 'No recent new links',
     114 => 'Links',
-    116 => 'Add A Link'
+    116 => 'Add A Link',
+    117 => 'Report Broken Link',
+    118 => 'Broken Link Report',
+    119 => 'The following link has been reported to be broken: ',
+    120 => 'To edit the link, click here: ',
+    121 => 'The broken Link was reported by: ',
+    122 => 'Thank you for reporting this broken link. The administrator will correct the problem as soon as possible',
+    123 => 'Thank you'
 );
 
 ###############################################################################
