@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.11 2007/01/13 17:47:53 ospiess Exp $
+// $Id: index.php,v 1.12 2007/01/15 03:49:39 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -65,7 +65,7 @@ require_once ('../lib-common.php');
 */
 function prepare_link_item ($A, &$template)
 {
-    global $_CONF, $LANG_ADMIN, $_IMAGE_TYPE;
+    global $_CONF, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE;
 
     $url = COM_buildUrl ($_CONF['site_url']
                  . '/links/portal.php?what=link&amp;item=' . $A['lid']);
@@ -75,6 +75,11 @@ function prepare_link_item ($A, &$template)
     $template->set_var ('link_hits', COM_numberFormat ($A['hits']));
     $template->set_var ('link_description',
                         nl2br (stripslashes ($A['description'])));
+    $reporturl = $_CONF['admin_url']
+             . '/links/index.php?mode=report&amp;lid=' . $A['lid']
+             . '&amp;url='. $A['url'] . '&amp;title=' . stripslashes ($A['title']);
+    $template->set_var ('link_broken', '<a class="pluginSmallText" href="'
+        . $reporturl . '">' . $LANG_LINKS[117] . '</a>');
 
     if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
             $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
@@ -91,12 +96,30 @@ function prepare_link_item ($A, &$template)
         $template->set_var ('link_edit', '');
         $template->set_var ('edit_icon', '');
     }
+
 }
 
 
 // MAIN
 
 $display = '';
+$mode = '';
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
+}
+
+if ($mode == 'report') {
+    $title = COM_applyFilter ($_GET['title']);
+    $lid = COM_applyFilter ($_GET['lid']);
+    $url = COM_applyFilter ($_GET['url']);
+    $editurl = $_CONF['site_admin_url']
+        . '/plugins/links/index.php?mode=edit&amp;lid=' . $lid;
+    $msg = $LANG_LINKS[119] . " $title ( $url )". LB
+        .  $LANG_LINKS[120] . $editurl . LB
+        .  $LANG_LINKS[121] . $_USER['username'] . ", IP: " . $_SERVER["REMOTE_ADDR"];
+    COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg, $_CONF['site_mail']);
+    $message = array ($LANG_LINK[123], $LANG_LINK[122]);
+}
 
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
@@ -140,6 +163,13 @@ if (empty ($_USER['username']) &&
         }
     }
     $display .= COM_siteHeader ('menu', $page_title);
+
+    if (!empty($message[0])) {
+        $display .= COM_startBlock ($message[0], '',
+            COM_getBlockTemplate ('_msg_block', 'header'));
+        $display .= $message[1];
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
 
     $linklist = new Template ($_CONF['path'] . 'plugins/links/templates/');
     $linklist->set_file (array ('linklist' => 'links.thtml',
