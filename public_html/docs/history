@@ -28,6 +28,10 @@ GeekLog History/Changes:
 - Remove the "Are you secure?" (getBent) block from the database as its
   functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
 
+Links plugin
+------------
+- Added "Report Broken Link" function [Oliver]
+
 
 Dec 31, 2006 (1.4.1)
 ------------
