@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.18 2006/10/22 08:38:48 dhaun Exp $
+// $Id: lib-mbyte.php,v 1.19 2007/01/15 07:13:43 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
     die ('This file can not be used on its own!');
@@ -86,7 +86,7 @@ function MBYTE_languageList ($charset = 'utf-8')
 // replacement functions for UTF-8 functions
 function MBYTE_checkEnabled() {
     static $mb_enabled;
-    if (function_exists( 'mb_substr' )) {
+    if (function_exists( 'mb_eregi_replace' )) {
         $mb_enabled = mb_internal_encoding("UTF-8");
     } else {
         $mb_enabled = false;
