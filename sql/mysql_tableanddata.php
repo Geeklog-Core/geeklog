@@ -292,7 +292,7 @@ CREATE TABLE {$_TABLES['plugins']} (
 $_SQL[20] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
   pid varchar(20) NOT NULL default '',
-  qid mediumint(9) NOT NULL default '',
+  qid mediumint(9) NOT NULL default '0',
   aid tinyint(3) unsigned NOT NULL default '0',
   answer varchar(255) default NULL,
   votes mediumint(8) unsigned default NULL,
@@ -303,7 +303,7 @@ CREATE TABLE {$_TABLES['pollanswers']} (
 
 $_SQL[21] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
-  qid mediumint(9) NOT NULL,
+  qid mediumint(9) NOT NULL default '0',
   pid varchar(20) NOT NULL,
   question varchar(255) NOT NULL,
   PRIMARY KEY (qid)
@@ -312,7 +312,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
 
 $_SQL[22] = "
 CREATE TABLE {$_TABLES['polltopics']} (
-  pid varchar(20) NOT NULL default '',
+  pid varchar(20) NOT NULL,
   topic varchar(255) default NULL,
   voters mediumint(8) unsigned default NULL,
   questions int(11) NOT NULL,
@@ -328,12 +328,12 @@ CREATE TABLE {$_TABLES['polltopics']} (
   perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX pollquestions_qid(qid),
+  INDEX pollquestions_pid(pid),
   INDEX pollquestions_date(date),
   INDEX pollquestions_display(display),
   INDEX pollquestions_commentcode(commentcode),
   INDEX pollquestions_statuscode(statuscode),
-  PRIMARY KEY  (qid)
+  PRIMARY KEY  (pid)
 ) TYPE=MyISAM
 ";
 
@@ -343,7 +343,7 @@ CREATE TABLE {$_TABLES['pollvoters']} (
   pid varchar(20) NOT NULL default '',
   ipaddress varchar(15) NOT NULL default '',
   date int(10) unsigned default NULL,
-  PRIMARY KEY  (id)
+  PRIMARY KEY (id)
 ) TYPE=MyISAM
 ";
 
@@ -859,14 +859,21 @@ $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_versio
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('polls', '1.1.0', '1.4.1', '1', 'http://www.geeklog.net/')";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.0', '1.4.1', '1', 'http://www.geeklog.net/')";
 
-$_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'MS SQL support',0)";
-$_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'Multi-language support',0)";
-$_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',3,'Calendar as a plugin',0)";
-$_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',4,'SLV spam protection',0)";
-$_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',5,'Mass-delete users',0)";
-$_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',6,'Other',0)";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 1, 'MS SQL support', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 2, 'Multi-language support', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 3, 'Calendar as a plugin', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 4, 'SLV spam protection', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 5, 'Mass-delete users', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 6, 'Other', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 1, 'Story-Images', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 2, 'User-Rights handling', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 3, 'The Support', 0, '');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 4, 'Plugin Availability', 0, '');";
 
-$_DATA[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date, display, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,NOW(),1,0,0,2,8,3,3) ";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`qid`, `pid`, `question`) VALUES (0, 'geeklogfeaturepoll', 'What is the best new feature of Geeklog?');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`qid`, `pid`, `question`) VALUES (1, 'geeklogfeaturepoll', 'What is the all-time best feature of Geeklog?');";
+
+$_DATA[] = "INSERT INTO `{$_TABLES['polltopics']}` (`pid`, `topic`, `voters`, `questions`, `date`, `display`, `open`, `hideresults`, `commentcode`, `statuscode`, `owner_id`, `group_id`, `perm_owner`, `perm_group`, `perm_members`, `perm_anon`) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog?', 0, 2, '2007-01-16 12:24:22', 1, 1, 1, 0, 0, 2, 8, 3, 2, 2, 2);";
 
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('plaintext','Plain Old Text') ";
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('html','HTML Formatted') ";
