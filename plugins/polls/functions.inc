@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.62 2007/01/16 05:58:45 ospiess Exp $
+// $Id: functions.inc,v 1.63 2007/01/16 06:10:38 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -881,7 +881,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                         COM_numberFormat($num_comments));
                 $poll->set_var('lang_comments', $LANG01[3]);
                 $poll->set_var('poll_comments_url', $_CONF['site_url'] .
-                        '/polls/index.php?pid=' . $pid . '&amp;aid=-1#comments');
+                        '/polls/index.php?pid=' . $pid . '#comments');
                 $poll->parse('poll_comments', 'comments', true);
             } else {
                 $poll->set_var('poll_comments_url', '');
