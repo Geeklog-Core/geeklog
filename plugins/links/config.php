@@ -27,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.11 2006/10/10 11:41:16 ospiess Exp $
+// $Id: config.php,v 1.12 2007/01/16 04:58:27 ospiess Exp $
 /**
  * Links plugin configuration file
  *
@@ -57,7 +57,7 @@ $_LI_CONF = array();
 *
 * @global array $_LI_CONF['version']
 */
-$_LI_CONF['version'] = '1.0.1';          // Plugin Version
+$_LI_CONF['version'] = '1.0.2';          // Plugin Version
 
 /**
  * this lets you select which functions are available for registered users only
