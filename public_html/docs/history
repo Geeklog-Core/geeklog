@@ -3,8 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2007 (1.4.x)
 ------------
 
-- The static pages editor was looking for the advanced editor template in the
-  wrong place, due to an uninitialized variable (reported by k74) [Dirk]
+- Addded optional noreply-email address option to config.php to prevent 
+  spammers retrieving the admin's email address from registering online [Oliver]
 - Added support for "Microsummaries" to index.php.
   See (http://wiki.mozilla.org/Microsummaries) [Mike]
 - Story "Rewrite" - significant re-structure of story code to fix all issues
@@ -27,6 +27,11 @@ GeekLog History/Changes:
   Again") now asked for a "new password" (reported by Laugh) [Dirk]
 - Remove the "Are you secure?" (getBent) block from the database as its
   functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
+
+Static Pages Plugin
+------------
+- The static pages editor was looking for the advanced editor template in the
+  wrong place, due to an uninitialized variable (reported by k74) [Dirk]
 
 Links plugin (1.0.2)
 ------------

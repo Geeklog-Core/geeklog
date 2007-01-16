@@ -160,6 +160,14 @@ defined below:</p>
   <td valign="top">admin@example.com</td>
   <td valign="top">E-mail address for all admin mail</td></tr>
 <tr>
+  <td valign="top"><a name="desc_noreply_mail">noreply_mail</a></td>
+  <td valign="top">noreply@example.com</td>
+  <td valign="top">This is the sender's address of emails sent by the system when users register etc.
+    This should be either the same as $_CONF['site_mail'] or a bouncing address
+    to prevent spammers from getting your email address by registering on the site.
+    If this is NOT the same as above, there will be a message in sent messages
+    that replying to those emails is recommended.</td></tr>
+<tr>
   <td valign="top"><a name="desc_site_url">site_url</a></td>
   <td valign="top">http://www.example.com</td>
   <td valign="top">Base URL for your site (no trailing slash)</td></tr>
