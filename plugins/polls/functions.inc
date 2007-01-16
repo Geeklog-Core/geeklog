@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.60 2007/01/16 05:40:24 ospiess Exp $
+// $Id: functions.inc,v 1.61 2007/01/16 05:47:30 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1118,10 +1118,10 @@ function plugin_upgrade_polls ()
         $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(4) NOT NULL AFTER display";
         $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL AFTER open";
         $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT 0 AFTER `pid`;";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
         $_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
-              qid mediumint(9) NOT NULL DEFAULT 0,
+              qid mediumint(9) NOT NULL DEFAULT '0',
               pid varchar(20) NOT NULL,
               question varchar(255) NOT NULL,
               PRIMARY KEY (qid)
