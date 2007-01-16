@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.15 2006/11/12 14:53:05 dhaun Exp $
+// $Id: install.php,v 1.16 2007/01/16 04:02:25 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -68,7 +68,7 @@ $MAPPINGS['polls.edit']         = array ($pi_admin);
 // Insert table name and sql to insert default data for your plugin.
 // Note: '#group#' will be replaced with the id of the plugin's admin group.
 $DEFVALUES = array();
-$DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date, display, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,NOW(),1,0,0,{$_USER['uid']},#group#,3,3)";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, date, display, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,NOW(),1,0,0,{$_USER['uid']},#group#,3,3)";
 // more default data is in the install SQL file in the plugin's directory
 
 /**
@@ -94,14 +94,14 @@ function plugin_compatible_with_this_geeklog_version ()
 }
 
 /**
-* When the install went through, give the plugin a chance for any 
+* When the install went through, give the plugin a chance for any
 * plugin-specific post-install fixes
 *
 * @return   boolean     true = proceed with install, false = an error occured
 *
 */
 function plugin_postinstall ()
-{ 
+{
     global $_CONF, $_TABLES;
 
     // fix Polls block group ownership
@@ -156,7 +156,7 @@ if (!SEC_inGroup ('Root')) {
     echo $display;
     exit;
 }
- 
+
 
 /**
 * Puts the datastructures for this plugin into the Geeklog database
@@ -337,6 +337,29 @@ if ($_REQUEST['action'] == 'uninstall') {
                  . COM_endBlock ()
                  . COM_siteFooter ();
     }
+} else if ($_REQUEST['action'] == 'upgrade') {
+    $result = PLG_upgrade ($pi_name);
+    if ($result > 0 ) {
+        if ($result === TRUE) { // Catch returns that are just true/false
+            $display .= COM_refresh ($_CONF['site_admin_url']
+                    . '/plugins.php?msg=60');
+        } else {  // Plugin returned a message number
+            $display = COM_refresh ($_CONF['site_admin_url']
+                    . '/plugins.php?msg=' . $result . '&amp;plugin='
+                    . $pi_name);
+        }
+    } else {  // Plugin function returned a false
+        $timestamp = strftime ($_CONF['daytime']);
+        $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+                . '<img src="' . $_CONF['layout_url']
+                . '/images/sysmessage.' . $_IMAGE_TYPE
+                . '" align="top" alt="">' . $LANG08[6] . '<br><br>'
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+} else if (DB_getItem($_TABLES['plugins'],'pi_version','pi_name="polls"') !== $_PO_CONF['version']) {
+    $display .= $LANG_POLLS['upgrade1'] . ' <a href="' . $_CONF['site_admin_url']
+        . '/plugins/polls/install.php?action=upgrade">' .$LANG_POLLS['upgrade2']. '</a>.';
 } else {
     // plugin already installed
     $display .= COM_siteHeader ('menu', $LANG01[77])
