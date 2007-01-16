@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.21 2007/01/16 04:02:45 ospiess Exp $
+// $Id: index.php,v 1.22 2007/01/16 06:10:19 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -121,7 +121,9 @@ $pid = 0;
 $aid = 0;
 if (isset ($_REQUEST['pid'])) {
     $pid = COM_applyFilter ($_REQUEST['pid']);
-    if (isset ($_POST['aid'])) {
+    if (isset ($_GET['aid'])) {
+        $aid = -1; // only for showing results instead of questions
+    } else if (isset ($_POST['aid'])) {
         $aid = $_POST['aid'];
     }
 }
@@ -158,7 +160,10 @@ if (empty($pid)) {
             . DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'") . '"'
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
-    if (!isset ($_COOKIE['poll-'.$pid]) && !POLLS_ipAlreadyVoted ($pid)) {
+    if (!isset ($_COOKIE['poll-'.$pid])
+        && !POLLS_ipAlreadyVoted ($pid)
+        && $aid != -1
+        ) {
         $display .= POLLS_pollVote ($pid);
     } else {
         $display .= POLLS_pollResults ($pid, 400, $order, $mode);
