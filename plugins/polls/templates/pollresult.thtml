@@ -1,4 +1,7 @@
-<h1>{poll_topic}</h1>
-{poll_questions}<div style="clear:both"></div>
-<div class="pluginTinyText"><a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_votes} {poll_comments}</div>
+<div class="poll_topic">{poll_topic}</div>
+{poll_questions}
+<div style="clear:both"></div>
+<div class="pluginTinyText">
+    {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_votes} {poll_comments}
+</div>
 {poll_edit}

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.59 2007/01/16 05:16:18 ospiess Exp $
+// $Id: functions.inc,v 1.60 2007/01/16 05:40:24 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -820,7 +820,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
             for ($j=0; $j<$nquestions; $j++) {
                 $Q = DB_fetchArray($questions);
 
-                $poll->set_var('poll_question', ($j + 1) . ": " . $Q['question']);
+                $poll->set_var('poll_question', ($j + 1) . "/$nquestions: " . $Q['question']);
 
                 $answer_sql = "SELECT votes,answer,remark "
                     . "FROM {$_TABLES['pollanswers']} "
@@ -865,6 +865,8 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 $poll->parse('poll_questions', 'question', true);
                 $poll->clear_var('poll_votes');
                 if (($scale < 100) && ($j < 1)) {
+                    $url = $_CONF['site_url'] . "/polls/index.php?pid=$pid";
+                    $poll->set_var('notification', "<a href=\"$url\">{$LANG25[40]}</a><br>");
                     break;
                 }
             }
