@@ -32,61 +32,21 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.20 2006/08/21 11:38:31 dhaun Exp $
+// $Id: index.php,v 1.21 2007/01/16 04:02:45 ospiess Exp $
 
 require_once ('../lib-common.php');
 
 // number of polls to list per page
 define ('POLLS_PER_PAGE', 50);
 
+
 /**
-* Saves a user's vote
-*
-* Saves the users vote, if allowed for the poll $qid.
-* NOTE: all data comes from form post
-*
-* @param    string   $qid   poll id
-* @param    int      $aid   selected answer
-* @return   string   HTML for poll results
-*
-*/
-function pollsave($qid = '', $aid = 0) 
-{
-    global $_TABLES, $LANG_POLLS;
-
-    $retval = '';
-
-    if (POLLS_ipAlreadyVoted ($qid)) {
-        exit;
-    }
-
-    DB_change($_TABLES['pollquestions'],'voters',"voters + 1",'qid',$qid,'',true);
-    $id[1] = 'qid';
-    $value[1] = $qid;
-    $id[2] = 'aid';
-    $value[2] = $aid;
-    // This call to DB-change will properly supress the insertion of quoes around $value in the sql
-    DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
-    // This always does an insert so no need to provide key_field and key_value args
-    DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$qid'");
-    $retval .= COM_startBlock ($LANG_POLLS['savedvotetitle'], '',
-                       COM_getBlockTemplate ('_msg_block', 'header'))
-        . $LANG_POLLS['savedvotemsg'] . ' "'
-        . DB_getItem ($_TABLES['pollquestions'], 'question', "qid = '{$qid}'")
-        . '"'
-        . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-        . POLLS_pollResults($qid);
-
-    return $retval;
-}
-
-/**     
 * Shows all polls in system
-*       
-* List all the polls on the system if no $qid is provided
-*       
+*
+* List all the polls on the system if no $pid is provided
+*
 * @return   string          HTML for poll listing
-*       
+*
 */
 function polllist ()
 {
@@ -111,10 +71,10 @@ function polllist ()
     } else {
         require_once( $_CONF['path_system'] . 'lib-admin.php' );
         $header_arr = array(    // display 'text' and use table field 'field'
-                        array('text' => $LANG25[9], 'field' => 'question', 'sort' => true),
+                        array('text' => $LANG25[9], 'field' => 'topic', 'sort' => true),
                         array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
                         array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
-                        array('text' => $LANG_POLLS['open_poll'], 'field' => 'display', 'sort' => true)
+                        array('text' => $LANG_POLLS['open_poll'], 'field' => 'open', 'sort' => true)
         );
 
         $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
@@ -125,9 +85,10 @@ function polllist ()
                           'title' => $LANG_POLLS['pollstitle'], 'instructions' => "",
                           'icon' => '', 'form_url' => '');
 
-        $query_arr = array('table' => 'pollquestions',
-                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate, display FROM {$_TABLES['pollquestions']} WHERE 1=1",
-                           'query_fields' => array('question'),
+        $query_arr = array('table' => 'polltopics',
+                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate, display "
+                                . "FROM {$_TABLES['polltopics']} WHERE 1=1",
+                           'query_fields' => array('topic'),
                            'default_filter' => COM_getPermSQL (),
                            'query' => '',
                            'query_limit' => 0);
@@ -141,7 +102,7 @@ function polllist ()
 
 // MAIN
 //
-// no qid will load a list of polls
+// no pid will load a list of polls
 // no aid will let you vote on the select poll
 // an aid greater than 0 will save a vote for that answer on the selected poll
 // an aid of -1 will display the select poll
@@ -150,28 +111,18 @@ $display = '';
 
 if (isset ($_POST['reply']) && ($_POST['reply'] == $LANG01[25])) {
     $display .= COM_refresh ($_CONF['site_url'] . '/comment.php?sid='
-             . $_POST['qid'] . '&pid=' . $_POST['pid']
+             . $_POST['pid'] . '&pid=' . $_POST['pid']
              . '&type=' . $_POST['type']);
     echo $display;
-    exit;			
+    exit;
 }
 
-$qid = 0;
-$aid = -1;
-if (isset ($_POST['qid'])) {
-    $qid = COM_applyFilter ($_POST['qid']);
+$pid = 0;
+$aid = 0;
+if (isset ($_REQUEST['pid'])) {
+    $pid = COM_applyFilter ($_REQUEST['pid']);
     if (isset ($_POST['aid'])) {
-        $aid = COM_applyFilter ($_POST['aid'], true);
-    }
-} else {
-    if (isset ($_GET['qid'])) {
-        $qid = COM_applyFilter ($_GET['qid']);
-    }
-    if (isset ($_GET['aid'])) {
-        $aid = COM_applyFilter ($_GET['aid'], true);
-        if ($aid > 0) { // you can't vote with a GET request
-            $aid = -1;
-        }
+        $aid = $_POST['aid'];
     }
 }
 $order = '';
@@ -183,31 +134,44 @@ if (isset ($_REQUEST['mode'])) {
     $mode = COM_applyFilter ($_REQUEST['mode']);
 }
 
-if (empty($qid)) {
+if (isset($pid)) {
+    $questions_sql = "SELECT question,qid FROM {$_TABLES['pollquestions']} "
+    . "WHERE pid='$pid' ORDER BY qid";
+    $questions = DB_query($questions_sql);
+    $nquestions = DB_numRows($questions);
+}
+if (empty($pid)) {
     $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle'])
-             . polllist (); 
-} else if ($aid == 0) {
-    $display .= COM_siteHeader();
-    if (!isset ($_COOKIE[$qid]) && !POLLS_ipAlreadyVoted ($qid)) {
-        $display .= POLLS_pollVote ($qid);
-    } else {
-        $display .= POLLS_pollResults ($qid, 400, $order, $mode);
-    }
-} else if (($aid > 0) && ($aid <= $_PO_CONF['maxanswers']) &&
-        !isset ($_COOKIE[$qid])) {
-    setcookie ($qid, $aid, time() + $_PO_CONF['pollcookietime'],
+             . polllist ();
+} else if ((count($_POST['aid']) == $nquestions) && !isset ($_COOKIE['poll-'.$pid])) {
+    setcookie ('poll-'.$pid, implode('-',$aid), time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
-    $display .= COM_siteHeader() . pollsave($qid, $aid);
+    $display .= COM_siteHeader() . POLLS_pollsave($pid, $qid, $aid);
+} else if (isset($pid)) {
+    $display .= COM_siteHeader();
+    if (isset($_POST['aid'])) {
+        $display .= COM_startBlock (
+                $LANG_POLLS['not_saved'], '',
+                COM_getBlockTemplate ('_msg_block', 'header'))
+            . $LANG_POLLS['answer_all'] . ' "'
+            . DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'") . '"'
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+    if (!isset ($_COOKIE['poll-'.$pid]) && !POLLS_ipAlreadyVoted ($pid)) {
+        $display .= POLLS_pollVote ($pid);
+    } else {
+        $display .= POLLS_pollResults ($pid, 400, $order, $mode);
+    }
 } else {
-    $question = DB_query ("SELECT question FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" . COM_getPermSql ('AND'));
-    $Q = DB_fetchArray ($question);
-    if (empty ($Q['question'])) {
+    $poll_topic = DB_query ("SELECT topic FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql ('AND'));
+    $Q = DB_fetchArray ($poll_topic);
+    if (empty ($Q['topic'])) {
         $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle'])
                  . polllist ();
     } else {
-        $display .= COM_siteHeader ('menu', $Q['question'])
-                 . POLLS_pollResults ($qid, 400, $order, $mode);
+        $display .= COM_siteHeader ('menu', $Q['topic'])
+                 . POLLS_pollResults ($pid, 400, $order, $mode);
     }
 }
 $display .= COM_siteFooter();
