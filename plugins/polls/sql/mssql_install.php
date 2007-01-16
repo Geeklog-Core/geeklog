@@ -46,8 +46,8 @@ CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
 
 
 $_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
-    [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
+    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [voters] [numeric](8, 0) NULL ,
     [date] [datetime] NULL ,
@@ -84,7 +84,7 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
     )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['polltopics']}] ADD
     CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
     (
         [qid]

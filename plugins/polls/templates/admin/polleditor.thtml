@@ -1,12 +1,14 @@
+                                <noscript><div class="pluginAlert" style="padding:10px;">{no_javascript_warning}</div></noscript>
+                                <script type="text/JavaScript" src="{site_url}/polls/polls_editor.js"></script>
                                 <form action="{site_admin_url}/plugins/polls/index.php" method="post">
-                                    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                    <table cellspacing="0" cellpadding="2" width="100%">
                                         <tr>
                                             <td align="right">{lang_pollid}:</td>
-                                            <td><input type="text" name="qid" value="{poll_id}" size="20"> {lang_donotusespaces}</td>
+                                            <td><input type="text" name="pid" value="{poll_id}" size="20"> {lang_donotusespaces}</td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_question}:</td>
-                                            <td><input type="text" name="question" value="{poll_question}" size="50" maxlength="255"></td>
+                                            <td align="right">{lang_topic}:</td>
+                                            <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"> {poll_topic_info}</td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_mode}:</td>
@@ -21,55 +23,22 @@
                                             <td><input type="checkbox" name="mainpage" {poll_display}></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2"><hr><td>
+                                            <td align="right">{lang_openforvoting}:</td>
+                                            <td><input type="checkbox" name="open" {poll_open}></td>
                                         </tr>
                                         <tr>
-                                            <td align="right" valign="top">{lang_answersvotes}:</td>
-                                            <td>
-                                                {answer_option}
-                                                <input type="text" name="answer[]" value="{answer_text}" size="30" maxlength="255"> / <input type="text" name="votes[]" value="{answer_votes}" size="5"> / <input type="text" name="remark[]" value="{remark_text}" size="50" maxlength="255">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><hr><td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><b>{lang_accessrights}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right">{lang_owner}:</td>
-                                            <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right">{lang_group}:</td>
-                                            <td>
-                                                {group_dropdown}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><b>{lang_permissions}</b>:</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"></td>
-                                        <tr>
-                                        <tr>
-                                            <td colspan="2">{lang_permissionskey}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                {permissions_editor}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">{lang_permissions_msg}</td>
-                                        </tr>
-                                        <tr><td>&nbsp;</td></tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <input type="submit" name="mode" value="{lang_save}">
-                                                <input type="submit" name="mode" value="{lang_cancel}"> 
-                                                {delete_option}
-                                            </td>
+                                            <td align="right">{lang_hideresults}:</td>
+                                            <td><input type="checkbox" name="hideresults" {poll_hideresults}> {poll_hideresults_explain}</td>
                                         </tr>
                                     </table>
+                                    <div id="po_navbar" class="jsenabled_show">{navbar}</div>
+                                    {question_list}
+                                    <h2>{lang_accessrights}</h2>
+                                    {lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"><br>
+                                    {lang_group}: {group_dropdown}<br>
+                                    <h2>{lang_permissions}</h2>
+                                    {lang_permissionskey}
+                                    <p>{permissions_editor}</p>
+                                    <p>{lang_permissions_msg}</p>
+                                    <input type="submit" name="mode" value="{lang_save}"><input type="submit" name="mode" value="{lang_cancel}">{delete_option}
                                 </form>

@@ -30,11 +30,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.1 2006/08/19 18:51:48 dhaun Exp $
+// $Id: mysql_install.php,v 1.2 2007/01/16 04:01:07 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
-  qid varchar(20) NOT NULL default '',
+  pid varchar(20) NOT NULL default '',
+  qid mediumint(9) NOT NULL default 0,
   aid tinyint(3) unsigned NOT NULL default '0',
   answer varchar(255) default NULL,
   votes mediumint(8) unsigned default NULL,
@@ -45,11 +46,23 @@ CREATE TABLE {$_TABLES['pollanswers']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
-  qid varchar(20) NOT NULL default '',
-  question varchar(255) default NULL,
+  qid mediumint(9) NOT NULL DEFAULT 0,
+  pid varchar(20) NOT NULL,
+  question varchar(255) NOT NULL,
+  PRIMARY KEY (qid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['polltopics']} (
+  pid varchar(20) NOT NULL default '',
+  topic varchar(255) default NULL,
   voters mediumint(8) unsigned default NULL,
+  questions int(11) NOT NULL,
   date datetime default NULL,
   display tinyint(4) NOT NULL default '0',
+  open tinyint(4) NOT NULL,
+  hideresults tinyint(1) NOT NULL,
   commentcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',
@@ -76,13 +89,6 @@ CREATE TABLE {$_TABLES['pollvoters']} (
   PRIMARY KEY  (id)
 ) TYPE=MyISAM
 ";
-
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'Trackbacks',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'Links and Polls plugins',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',3,'Revamped admin areas',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',4,'FCKeditor included',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',5,'Remote user authentication',0) ";
-$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',6,'Other',0) ";
 
 // Note: The 'pollquestion' entry for the above answers is in the install script
 

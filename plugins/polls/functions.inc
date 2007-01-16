@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.57 2006/12/02 16:32:16 dhaun Exp $
+// $Id: functions.inc,v 1.58 2007/01/16 04:01:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -50,7 +50,6 @@ if (file_exists ($langfile)) {
 }
 
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
-
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -110,8 +109,8 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
-    $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
-                               "qid = '$id'");
+    $commentcode = DB_getItem ($_TABLES['polltopics'], 'commentcode',
+                               "pid = '$id'");
     if ($commentcode < 0) {
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
@@ -124,7 +123,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
                 . COM_siteFooter();
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
-                                . "/polls/index.php?qid=$id&aid=-1");
+                                . "/polls/index.php?pid=$id&aid=-1");
     }
 
     return $retval;
@@ -144,7 +143,7 @@ function plugin_deletecomment_polls($cid, $id)
     $retval = '';
 
     $has_editPermissions = SEC_hasRights ('polls.edit');
-    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$id}'");
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} WHERE pid = '{$id}'");
     $A = DB_fetchArray ($result);
 
     if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
@@ -152,7 +151,7 @@ function plugin_deletecomment_polls($cid, $id)
             $A['perm_members'], $A['perm_anon']) == 3) {
         CMT_deleteComment($cid, $id, 'polls');
         $retval .= COM_refresh ($_CONF['site_url']
-                                 . "/polls/index.php?qid=$id&aid=-1");
+                                 . "/polls/index.php?pid=$id&aid=-1");
     } else {
         COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
                     . "tried to illegally delete comment $cid from poll $id");
@@ -176,22 +175,22 @@ function POLLS_countPollsAndVotes ()
     $total_polls = 0;
     $total_answers = 0;
 
-    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['polltopics']}" . COM_getPermSQL ());
     $A = DB_fetchArray($result);
     $total_polls = $A['count'];
 
-    $result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+    $result = DB_query ("SELECT pid FROM {$_TABLES['polltopics']}" . COM_getPermSQL ());
     $nrows = DB_numRows ($result);
     if ($nrows > 0) {
-        $questions = '';
+        $topics = '';
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             if ($i > 1) {
-                $questions .= ',';
+                $topics .= ',';
             }
-            $questions .= "'" . $A['qid'] . "'";
+            $topics .= "'" . $A['pid'] . "'";
         }
-        $result = DB_query ("SELECT SUM(votes) FROM {$_TABLES['pollanswers']} WHERE qid IN ({$questions})");
+        $result = DB_query ("SELECT SUM(votes) FROM {$_TABLES['pollanswers']} WHERE pid IN ({$topics})");
         $A = DB_fetchArray($result, true);
         $total_answers = $A[0];
     }
@@ -214,13 +213,13 @@ function plugin_showstats_polls ($showsitestats)
 
     $retval = '';
 
-    $result = DB_query ("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
+    $result = DB_query ("SELECT pid,topic,voters from {$_TABLES['polltopics']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
     $nrows  = DB_numRows ($result);
 
     if ($nrows > 0) {
         $header_arr = array(
-            array('text'         => $LANG_POLLS['stats_questions'],
-                  'field'        => 'qid',
+            array('text'         => $LANG_POLLS['stats_topics'],
+                  'field'        => 'pid',
                   'header_class' => 'stats-header-title'
             ),
             array('text'         => $LANG_POLLS['stats_votes'],
@@ -235,11 +234,11 @@ function plugin_showstats_polls ($showsitestats)
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
-            $url = $_CONF['site_url'] . '/polls/index.php?qid=' . $A['qid']
+            $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']
                  . '&amp;aid=-1';
-            $qid = '<a href="' . $url . '">' . $A['question'] . '</a>';
+            $pid = '<a href="' . $url . '">' . $A['topic'] . '</a>';
             $voters = COM_NumberFormat ($A['voters']);
-            $data_arr[] = array ('qid' => $qid, 'voters' => $voters);
+            $data_arr[] = array ('pid' => $pid, 'voters' => $voters);
         }
         $retval .= ADMIN_simpleList ('', $header_arr, $text_arr, $data_arr);
     } else {
@@ -298,7 +297,7 @@ function plugin_getadminoption_polls()
     global $_CONF, $_TABLES, $LANG_POLLS;
 
     if (SEC_hasRights ('polls.edit')) {
-        $result = DB_query ("SELECT COUNT(*) AS cnt FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+        $result = DB_query ("SELECT COUNT(*) AS cnt FROM {$_TABLES['polltopics']}" . COM_getPermSQL ());
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
 
@@ -320,22 +319,22 @@ function plugin_user_delete_polls ($uid)
 {
     global $_TABLES, $_PO_CONF;
 
-    if (DB_count ($_TABLES['pollquestions'], 'owner_id', $uid) == 0) {
+    if (DB_count ($_TABLES['polltopics'], 'owner_id', $uid) == 0) {
         // there are no polls owned by this user
         return;
     }
 
     if ($_PO_CONF['delete_polls'] == 1) {
         // delete the polls
-        $result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']} WHERE owner_id = $uid");
+        $result = DB_query ("SELECT pid FROM {$_TABLES['polltopics']} WHERE owner_id = $uid");
         $numPolls = DB_numRows ($result);
         for ($i = 0; $i < $numPolls; $i++) {
-            list($qid) = DB_fetchArray ($result);
-            DB_delete ($_TABLES['pollanswers'], 'qid', $qid);
-            DB_delete ($_TABLES['pollvoters'], 'qid', $qid);
-            DB_query ("DELETE FROM {$_TABLES['comments']} WHERE sid = '$qid' AND type = 'polls'");
+            list($pid) = DB_fetchArray ($result);
+            DB_delete ($_TABLES['pollanswers'], 'pid', $pid);
+            DB_delete ($_TABLES['pollvoters'], 'pid', $pid);
+            DB_query ("DELETE FROM {$_TABLES['comments']} WHERE sid = '$pid' AND type = 'polls'");
         }
-        DB_delete ($_TABLES['pollquestions'], 'owner_id', $uid);
+        DB_delete ($_TABLES['polltopics'], 'owner_id', $uid);
     } else {
         // assign ownership to a user from the Root group
         $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',
@@ -343,7 +342,7 @@ function plugin_user_delete_polls ($uid)
         $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
         list($rootuser) = DB_fetchArray ($result);
 
-        DB_query ("UPDATE {$_TABLES['pollquestions']} SET owner_id = $rootuser WHERE owner_id = $uid");
+        DB_query ("UPDATE {$_TABLES['polltopics']} SET owner_id = $rootuser WHERE owner_id = $uid");
     }
 }
 
@@ -391,12 +390,12 @@ function plugin_uninstall_polls($steps = '')
     // Uninstalls the polls plugin
 
     if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the pollquestions and pollanswers tables
+        // Remove the polltopics and pollanswers tables
         COM_errorLog('Dropping polls answers table',1);
         DB_query("DROP TABLE {$_TABLES['pollanswers']}");
         COM_errorLog('...success',1);
-        COM_errorLog('Dropping polls questions table',1);
-        DB_query("DROP TABLE {$_TABLES['pollquestions']}");
+        COM_errorLog('Dropping polls topics table',1);
+        DB_query("DROP TABLE {$_TABLES['polltopics']}");
         COM_errorLog('...success',1);
         COM_errorLog('Dropping pollvoters table',1);
         DB_query("DROP TABLE {$_TABLES['pollvoters']}");
@@ -486,90 +485,131 @@ function polls_templatePath ($path = '')
 /**
 * Shows a poll form
 *
-* Shows an HTML formatted poll for the given question ID
+* Shows an HTML formatted poll for the given topic ID
 *
-* @param      string      $qid      ID for poll question
+* @param      string      $pid      ID for poll topic
+* @param      boolean     $showall  Show only the first question in the poll or all?
 * @see function COM_pollResults
 * @see function COM_showPoll
 * @return       string  HTML Formatted Poll
 *
 */
 
-function POLLS_pollVote( $qid )
+function POLLS_pollVote($pid, $showall=true)
 {
-    global $_CONF, $_TABLES, $LANG_POLLS, $LANG01;
-
+    global $_CONF, $_TABLES, $LANG_POLLS, $LANG01, $_USER, $LANG25;
     $retval = '';
 
-    $question = DB_query( "SELECT question,voters,commentcode FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" . COM_getPermSql( 'AND' ));
-    $nquestion = DB_numRows( $question );
+    $topic = DB_query("SELECT topic,voters,commentcode,open,hideresults,owner_id "
+        . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
+    $ntopics = DB_numRows($topic);
 
-    if( $nquestion == 0 )
-    {
+    if($ntopics == 0 ) {
         return $retval;
     }
+    $P = DB_fetchArray($topic);
+    if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) or ($P['open'] == 1)) {
+        if ($ntopics == 1) {
+            $questions_sql = "SELECT question,qid "
+                . "FROM {$_TABLES['pollquestions']} "
+                . "WHERE pid='$pid' ORDER BY qid";
 
-    if( !isset( $_COOKIE[$qid] ) && !POLLS_ipAlreadyVoted( $qid ))
-    {
-        $Q = DB_fetchArray( $question );
-        if( $nquestion == 1 )
-        {
-            $answers = DB_query( "SELECT answer,aid FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
-            $nanswers = DB_numRows( $answers );
+            $questions = DB_query($questions_sql);
+            $nquestions = DB_numRows($questions );
 
-            if( $nanswers > 0 )
-            {
-                $poll = new Template( $_CONF['path'] . 'plugins/polls/templates/' );
-                $poll->set_file( array( 'panswer' => 'pollanswer.thtml',
+            if($nquestions > 0 ) {
+                $poll = new Template($_CONF['path'] . 'plugins/polls/templates/');
+                $poll->set_file(array('panswer' => 'pollanswer.thtml',
                                         'block' => 'pollblock.thtml',
-                                        'comments' => 'pollcomments.thtml' ));
-                $poll->set_var( 'site_url', $_CONF['site_url'] );
-                $poll->set_var( 'layout_url', $_CONF['layout_url'] );
-
-                $poll->set_var( 'poll_question', $Q['question'] );
-                $poll->set_var( 'poll_id', $qid );
-                $poll->set_var( 'num_votes', COM_numberFormat( $Q['voters'] ));
-                $poll->set_var( 'poll_vote_url', $_CONF['site_url']
+                                        'pquestions' => 'pollquestions.thtml',
+                                        'comments' => 'pollcomments.thtml'));
+                $poll->set_var('site_url', $_CONF['site_url']);
+                $poll->set_var('layout_url', $_CONF['layout_url']);
+                $poll->set_var('poll_id', $pid );
+                $poll->set_var('num_votes', COM_numberFormat($P['voters']));
+                $poll->set_var('poll_vote_url', $_CONF['site_url']
                         . '/polls/index.php');
-                $poll->set_var( 'poll_results_url', $_CONF['site_url']
-                        . '/polls/index.php?qid=' . $qid . '&amp;aid=-1');
+                $poll->set_var('lang_vote', $LANG_POLLS['vote']);
+                $poll->set_var('lang_votes', $LANG_POLLS['votes']);
+                $results = "";
 
-                $poll->set_var( 'lang_vote', $LANG_POLLS['vote'] );
-                $poll->set_var( 'lang_votes', $LANG_POLLS['votes'] );
-                $poll->set_var( 'lang_results', $LANG_POLLS['results'] );
-
-                for( $i = 1; $i <= $nanswers; $i++ )
-                {
-                    $A = DB_fetchArray( $answers );
-                    $poll->set_var( 'answer_id', $A['aid'] );
-                    $poll->set_var( 'answer_text', $A['answer'] );
-                    $poll->parse( 'poll_answers', 'panswer', true );
+                if (($P['open'] == 0) || (
+                        ($P['hideresults'] == 1) && ($_USER['uid'] == $P['owner_id'])
+                    ) || (
+                        ($P['hideresults'] == 1) && (SEC_inGroup('Root'))
+                    )
+                ) {
+                    $results = "<a href=\"{$_CONF['site_url']}/polls/index.php?pid="
+                    . "$pid&amp;aid=-1\">{$LANG_POLLS['results']}</a>";
                 }
-
-                if( $Q['commentcode'] >= 0 )
-                {
-                    $num_comments = DB_count( $_TABLES['comments'],
-                            array( 'sid', 'type' ), array( $qid, 'polls' ));
-                    $poll->set_var( 'num_comments',
-                            COM_numberFormat( $num_comments ));
-                    $poll->set_var( 'lang_comments', $LANG01[3] );
-                    $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
-                        '/polls/index.php?qid=' . $qid . '&amp;aid=-1#comments');
-                    $poll->parse( 'poll_comments', 'comments', true );
+                $poll->set_var('poll_results', $results);
+                $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],
+                    $T['perm_group'],$T['perm_members'],$T['perm_anon']);
+                if ($access == 3) {
+                    $editlink .= ' <a href="' . $_CONF['site_admin_url']
+                        . '/plugins/polls/index.php?mode=edit&amp;pid='
+                        . $pid . '">'. $LANG25[27] . '</a>';
+                    $poll->set_var('poll_edit', $editlink);
                 }
-                else
-                {
-                    $poll->set_var( 'poll_comments', '' );
-                    $poll->set_var( 'poll_comments_url', '' );
-                }
+                for($j=0; $j<$nquestions; $j++) {
+                    $Q = DB_fetchArray($questions);
+                    $poll->set_var('poll_question', " ".$Q['question']);
+                    $poll->set_var('question_id', $j);
 
-                $retval =  $poll->finish( $poll->parse( 'output', 'block' )) . LB;
+                    $notification = "";
+                    $filter = "";
+                    if ($showall == false) {
+                        $nquestions--;
+                        $notification = $LANG25[35] . " $nquestions " . $LANG25[36];
+                        $filter = "AND qid='0'";
+                        $nquestions = 1;
+                    } else {
+                        $filter = "AND qid = '{$Q['qid']}'";
+                        $poll->set_var('lang_question_number', " ". ($j+1).":");
+                    }
+                    $answer_sql = "SELECT answer,aid "
+                        . "FROM {$_TABLES['pollanswers']} "
+                        . "WHERE pid='$pid'$filter ORDER BY qid, aid";
+                    $answers = DB_query($answer_sql);
+                    $nanswers = DB_numRows($answers );
+                    for($i=0; $i<$nanswers; $i++) {
+                        $A = DB_fetchArray($answers );
+                        $aid = $_POST['aid'];
+                        if ($aid[$j] == $A['aid']) {
+                            $poll->set_var('selected', ' checked');
+                        }
+                        $poll->set_var('answer_id', $A['aid']);
+                        $poll->set_var('answer_text', $A['answer']);
+                        $poll->parse('poll_answers', 'panswer', true);
+                        $poll->clear_var('selected');
+                    }
+                    $poll->parse('poll_questions', 'pquestions', true);
+                    $poll->clear_var('poll_answers');
+                }
+                if ($nquestions > 1) {
+                    $poll->set_var('poll_topic', $LANG25['34'] . " " . $P['topic']);
+                    $poll->set_var('lang_question', $LANG25[31]);
+                }
+                $poll->set_var('lang_polltopics', $LANG_POLLS['polltopics']);
+                $poll->set_var('poll_notification', $notification);
+                if($P['commentcode'] >= 0 ) {
+                    $num_comments = DB_count($_TABLES['comments'],
+                            array('sid', 'type'), array($pid, 'polls'));
+                    $poll->set_var('num_comments',
+                            COM_numberFormat($num_comments));
+                    $poll->set_var('lang_comments', $LANG01[3]);
+                    $poll->set_var('poll_comments_url', $_CONF['site_url'] .
+                        '/polls/index.php?pid=' . $pid . '&amp;aid=-1#comments');
+                    $poll->parse('poll_comments', 'comments', true);
+                } else {
+                    $poll->set_var('poll_comments', '');
+                    $poll->set_var('poll_comments_url', '');
+                }
+                $retval =  $poll->finish($poll->parse('output', 'block')) . LB;
             }
         }
-    }
-    else
-    {
-        $retval .= POLLS_pollResults( $qid );
+    } else {
+        $retval .= POLLS_pollResults($pid );
     }
 
     return $retval;
@@ -582,84 +622,113 @@ function POLLS_pollVote( $qid )
 * result.
 *
 * @param        int        $sise       Size in pixels of poll results
-* @param        string     $qid        Question ID to show (optional)
+* @param        string     $pid        topic ID to show (optional)
 * @see function COM_pollVote
 * @see function COM_pollResults
 * @return    String  HTML Formated string of Poll
 *
 */
 
-function POLLS_showPoll( $size, $qid='' )
+function POLLS_showPoll($size, $pid='', $showall=false )
 {
     global $_CONF, $_PO_CONF, $_TABLES;
 
     $retval = '';
 
-    DB_query( "DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_PO_CONF['polladdresstime']}" );
+    DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_PO_CONF['polladdresstime']}");
 
-    if( !empty( $qid ))
-    {
-        if( !isset( $_COOKIE[$qid] ) && !POLLS_ipAlreadyVoted( $qid ))
-        {
-            $retval .= POLLS_pollVote( $qid );
+    if(!empty($pid)) {
+        if(!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['open'] == 1)) {
+            $retval .= POLLS_pollVote($pid);
+        } else {
+            $retval .= POLLS_pollResults($pid, $size);
         }
-        else
-        {
-            $retval .= POLLS_pollResults( $qid, $size );
-        }
-    }
-    else
-    {
-        $result = DB_query( "SELECT qid from {$_TABLES['pollquestions']} WHERE display = 1 ORDER BY date DESC" );
-        $nrows = DB_numRows( $result );
-        
-        $title = DB_getItem( $_TABLES['blocks'], 'title', "name='poll_block'" );
+    } else {
+        $result = DB_query("SELECT pid,topic,open from {$_TABLES['polltopics']} WHERE display = 1 ORDER BY date DESC");
+        $nrows = DB_numRows($result );
 
-        if( $nrows > 0 )
-        {
-            for( $i = 1; $i <= $nrows; $i++ )
-            {
-                $Q = DB_fetchArray( $result );
-                $qid = $Q['qid'];
+        $title = DB_getItem($_TABLES['blocks'], 'title', "name='poll_block'");
 
-                if( $size < 120 ) // assume we're in the poll block
-                {
-                    if( $i > 1 )
-                    {
-                        $retval .= COM_startBlock( $title, '',
-                             COM_getBlockTemplate( 'poll_block', 'header' ));
+        if ($nrows > 0) {
+            for ($i = 1; $i <= $nrows; $i++) {
+                $Q = DB_fetchArray($result);
+                $pid = $Q['pid'];
+                if ($size < 120) {// assume we're in the poll block
+                    if($i > 1) {
+                        $retval .= COM_startBlock($title, '',
+                             COM_getBlockTemplate('poll_block', 'header'));
                     }
-                }
-                else // assume we're in polls/index.php
-                {
-                    $retval .= COM_startBlock( $title );
+                    $showall = false;
+                } else { // assume we're in polls/index.php
+                    $retval .= COM_startBlock($title);
+                    $showall = true;
                 }
 
-                if( !isset( $_COOKIE[$qid] ) && !POLLS_ipAlreadyVoted( $qid ))
-                {
-                    $retval .= POLLS_pollVote( $qid );
+                if (!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['open'] == 1)) {
+                    $retval .= POLLS_pollVote($pid, $showall);
+                } else {
+                    $retval .= POLLS_pollResults($pid, $size);
                 }
-                else
-                {
-                    $retval .= POLLS_pollResults( $qid, $size );
-                }
-                
-                if( $size < 120 )
-                {
-                    if ( $i < $nrows )
-                    {
-                        $retval .= COM_endBlock( COM_getBlockTemplate( 
-                             'poll_block', 'footer' ));
+
+                if ($size < 120) {
+                    if ($i < $nrows) {
+                        $retval .= COM_endBlock(COM_getBlockTemplate(
+                             'poll_block', 'footer'));
                     }
-                }
-                else
-                {
+                } else {
                     $retval .= COM_endBlock();
                 }
-                
             }
         }
     }
+    return $retval;
+}
+
+/**
+* Saves a user's vote
+*
+* Saves the users vote, if allowed for the poll $pid.
+* NOTE: all data comes from form post
+*
+* @param    string   $pid   poll id
+* @param    array    $pid   question ids
+* @param    array    $aid   selected answers
+* @return   string   HTML for poll results
+*
+*/
+function POLLS_pollsave($pid, $qid, $aid)
+{
+    global $_TABLES, $LANG_POLLS;
+
+    $retval = '';
+
+    if (POLLS_ipAlreadyVoted ($pid)) {
+        exit;
+    }
+
+    DB_change($_TABLES['polltopics'],'voters',"voters + 1",'pid',$pid,'',true);
+    // This call to DB-change will properly supress the insertion of quoes around $value in the sql
+    for ($i=0; $i<count($aid); $i++) {
+        DB_change(
+            $_TABLES['pollanswers'],
+            'votes',
+            "votes + 1",
+            array('pid','qid','aid'),
+            array($pid,$i,COM_applyFilter($aid[$i], true)),
+            '',
+            true
+        );
+    }
+
+    // This always does an insert so no need to provide key_field and key_value args
+    DB_save($_TABLES['pollvoters'],'ipaddress,date,pid',"'{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$pid'");
+    $retval .= COM_startBlock ($LANG_POLLS['savedvotetitle'], '',
+                       COM_getBlockTemplate ('_msg_block', 'header'))
+        . $LANG_POLLS['savedvotemsg'] . ' "'
+        . DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'")
+        . '"'
+        . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+        . POLLS_pollResults($pid);
 
     return $retval;
 }
@@ -667,161 +736,188 @@ function POLLS_showPoll( $size, $qid='' )
 /**
 * Shows the results of a poll
 *
-* Shows the poll results for a given poll question
+* Shows the poll results for a given poll topic
 *
-* @param        string      $qid        ID for poll question to show
+* @param        string      $pid        ID for poll topic to show
 * @param        int         $scale      Size in pixels to scale formatted results to
 * @param        string      $order      'ASC' or 'DESC' for Comment ordering (SQL statment ordering)
 * @param        string      $mode       Comment Mode possible values 'nocomment', 'flat', 'nested', 'threaded'
-* @see COM_pollVote
-* @see COM_showPoll
+* @see POLLS_pollVote
+* @see POLLS_showPoll
 * @return     string   HTML Formated Poll Results
 *
 */
-function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
+function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
 {
-    global $_CONF, $_TABLES, $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE;
+    global $_CONF, $_TABLES, $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE,
+        $_USER, $LANG25, $_USER;
 
     $retval = '';
+    $topic_sql = "SELECT topic,voters,open,hideresults,commentcode,owner_id,group_id,"
+        . "perm_owner,perm_group,perm_members,perm_anon "
+        . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'";
+    $topic = DB_query($topic_sql);
+    $Q = DB_fetchArray($topic);
 
-    $question = DB_query( "SELECT question,voters,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
-    $Q = DB_fetchArray( $question );
-
-    if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']) == 0 )
-    {
+    if(SEC_hasAccess($Q['owner_id'], $Q['group_id'], $Q['perm_owner'],
+        $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']) == 0 ) {
         return $retval;
     }
 
-    $nquestion = DB_numRows( $question );
-    if( $nquestion == 1 )
-    {
-        if( $_PO_CONF['answerorder'] == 'voteorder' )
-        {
-            $order = "votes DESC";
+    if (($Q['open'] == 0) || (
+            ($Q['hideresults'] == 1) && ($_USER['uid'] == $Q['owner_id'])
+        ) || (
+            ($Q['hideresults'] == 1) && (SEC_inGroup('Root'))
+        )
+    ) {
+        $retval = '';
+    } else {
+        return $retval;
+    }
+
+    $ntopic = DB_numRows($topic );
+    if ($ntopic == 1) {
+
+        $questions_sql = "SELECT qid,pid,question "
+            . "FROM {$_TABLES['pollquestions']} "
+            . "WHERE pid='$pid' "
+            . "ORDER BY qid";
+        $questions = DB_query ($questions_sql);
+        $nquestions = DB_numRows($questions);
+
+        if ($_COM_VERBOSE) {
+            COM_errorLog("got $questions questions in COM_pollResults", 1 );
         }
-        else
-        {
-            $order = "aid";
-        }
 
-        $answers = DB_query( "SELECT votes,answer,remark FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY $order" );
-
-        $nanswers = DB_numRows( $answers );
-
-        if( $_COM_VERBOSE )
-        {
-            COM_errorLog( "got $answers answers in COM_pollResults", 1 );
-        }
-
-        if( $nanswers > 0 )
-        {
-
-            $poll = new Template( $_CONF['path'] . 'plugins/polls/templates/' );
-            $poll->set_file( array( 'result' => 'pollresult.thtml',
+        if ($nquestions > 0){
+            $poll = new Template($_CONF['path'] . 'plugins/polls/templates/' );
+            $poll->set_file(array('result' => 'pollresult.thtml',
+                                    'question' => 'pollquestion.thtml',
                                     'comments' => 'pollcomments.thtml',
                                     'votes_bar' => 'pollvotes_bar.thtml',
                                     'votes_num' => 'pollvotes_num.thtml' ));
-            $poll->set_var( 'site_url', $_CONF['site_url'] );
-            $poll->set_var( 'layout_url', $_CONF['layout_url'] );
-
-            $poll->set_var( 'poll_question', $Q['question'] );
-            $poll->set_var( 'poll_id', $qid );
-            $poll->set_var( 'num_votes', COM_numberFormat( $Q['voters'] ));
-
-            $poll->set_var( 'lang_votes', $LANG_POLLS['votes'] );
-
-            for( $i = 1; $i <= $nanswers; $i++ )
-            {
-                $A = DB_fetchArray( $answers );
-
-                if( $Q['voters'] == 0 )
-                {
-                    $percent = 0;
-                }
-                else
-                {
-                    $percent = $A['votes'] / $Q['voters'];
-                }
-                $poll->set_var( 'cssida', 1);
-                $poll->set_var( 'cssidb', 2);
-                $poll->set_var( 'answer_text', $A['answer'] );
-                $poll->set_var( 'remark_text', $A['remark'] );
-                $poll->set_var( 'answer_counter', $i );
-                $poll->set_var( 'answer_odd', (( $i - 1 ) % 2 ));
-                $poll->set_var( 'answer_num', COM_numberFormat( $A['votes'] ));
-                $poll->set_var( 'answer_percent',
-                                sprintf( '%.2f', $percent * 100 ));
-                if( $scale < 120 )
-                {
-                    $poll->parse( 'poll_votes', 'votes_num', true );
-                }
-                else
-                {
-                    $width = $percent * $scale;
-                    $poll->set_var( 'bar_width', $width );
-                    $poll->parse( 'poll_votes', 'votes_bar', true );
-                }
+            $poll->set_var('site_url', $_CONF['site_url']);
+            $poll->set_var('layout_url', $_CONF['layout_url']);
+            $poll->set_var('poll_topic', $Q['topic']);
+            $poll->set_var('poll_id', $pid);
+            $poll->set_var('num_votes', COM_numberFormat($Q['voters']));
+            $poll->set_var('lang_votes', $LANG_POLLS['votes']);
+            $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],
+                $T['perm_group'],$T['perm_members'],$T['perm_anon']);
+            if ($access == 3) {
+                $editlink .= ' <a href="' . $_CONF['site_admin_url']
+                    . '/plugins/polls/index.php?mode=edit&amp;pid='
+                    . $pid . '">'. $LANG25[27] . '</a>';
+                $poll->set_var('poll_edit', $editlink);
+            }
+            if ($_PO_CONF['answerorder'] == 'voteorder'){
+                $order = "votes DESC";
+            } else {
+                $order = "aid";
             }
 
-            if( $Q['commentcode'] >= 0 )
-            {
-                $num_comments = DB_count( $_TABLES['comments'],
-                        array( 'sid', 'type' ), array( $qid, 'polls' ));
-                $poll->set_var( 'num_comments',
-                        COM_numberFormat( $num_comments ));
-                $poll->set_var( 'lang_comments', $LANG01[3] );
-                $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
-                        '/polls/index.php?qid=' . $qid . '&amp;aid=-1#comments');
-                $poll->parse( 'poll_comments', 'comments', true );
+            for ($j=0; $j<$nquestions; $j++) {
+                $Q = DB_fetchArray($questions);
+
+                $poll->set_var('poll_question', ($j + 1) . ": " . $Q['question']);
+
+                $answer_sql = "SELECT votes,answer,remark "
+                    . "FROM {$_TABLES['pollanswers']} "
+                    . "WHERE pid='$pid' and qid='{$Q['qid']}' "
+                    . "ORDER BY $order";
+                $answers = DB_query ($answer_sql);
+                $nanswers = DB_numRows($answers);
+
+                $a_summ_sql = "SELECT SUM(votes) as votesumm FROM {$_TABLES['pollanswers']} "
+                    . "WHERE pid='$pid' and qid='{$Q['qid']}' "
+                    . "GROUP BY qid";
+                $a_summ = DB_query ($a_summ_sql);
+                $S = DB_fetchArray($a_summ);
+
+                if ($_COM_VERBOSE) {
+                    COM_errorLog("got $answers answers in COM_pollResults", 1 );
+                }
+                for ($i=1; $i<=$nanswers; $i++) {
+                    $A = DB_fetchArray($answers);
+                    if ($S['votesumm'] == 0) {
+                        $percent = 0;
+                    } else {
+                        $percent = $A['votes'] / $S['votesumm'];
+                    }
+                    $poll->set_var('cssida', 1);
+                    $poll->set_var('cssidb', 2);
+                    $poll->set_var('answer_text', $A['answer']);
+                    $poll->set_var('remark_text', $A['remark']);
+                    $poll->set_var('answer_counter', $i);
+                    $poll->set_var('answer_odd', (($i - 1) % 2));
+                    $poll->set_var('answer_num', COM_numberFormat($A['votes']));
+                    $poll->set_var('answer_percent',
+                                    sprintf('%.2f', $percent * 100));
+                    if ($scale < 120) {
+                        $poll->parse('poll_votes', 'votes_num', true );
+                    } else {
+                        $width = $percent * $scale;
+                        $poll->set_var('bar_width', $width);
+                        $poll->parse('poll_votes', 'votes_bar', true);
+                    }
+                }
+                $poll->parse('poll_questions', 'question', true);
+                $poll->clear_var('poll_votes');
             }
-            else
-            {
-                $poll->set_var( 'poll_comments_url', '' );
-                $poll->set_var( 'poll_comments', '' );
+
+            if($Q['commentcode'] >= 0 ) {
+                $num_comments = DB_count($_TABLES['comments'],
+                        array('sid', 'type' ), array($pid, 'polls' ));
+                $poll->set_var('num_comments',
+                        COM_numberFormat($num_comments));
+                $poll->set_var('lang_comments', $LANG01[3]);
+                $poll->set_var('poll_comments_url', $_CONF['site_url'] .
+                        '/polls/index.php?pid=' . $pid . '&amp;aid=-1#comments');
+                $poll->parse('poll_comments', 'comments', true);
+            } else {
+                $poll->set_var('poll_comments_url', '');
+                $poll->set_var('poll_comments', '');
             }
 
-            $poll->set_var( 'lang_pollquestions', $LANG_POLLS['pollquestions'] );
+            $poll->set_var('lang_polltopics', $LANG_POLLS['polltopics'] );
 
-            $retval .= $poll->finish( $poll->parse( 'output', 'result' ));
+            $retval .= $poll->finish($poll->parse('output', 'result' ));
 
-            if( $scale > 399 && $Q['commentcode'] >= 0 )
-            {
-                $delete_option = ( SEC_hasRights( 'polls.edit' ) &&
-                    SEC_hasAccess( $Q['owner_id'], $Q['group_id'],
+            if($scale > 399 && $Q['commentcode'] >= 0 ) {
+                $delete_option = (SEC_hasRights('polls.edit') &&
+                    SEC_hasAccess($Q['owner_id'], $Q['group_id'],
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
-                    $Q['perm_anon'] ) == 3 ? true : false );
+                    $Q['perm_anon']) == 3 ? true : false);
                 require_once $_CONF['path_system'] . 'lib-comment.php';
-                $retval .= CMT_userComments( $qid, $Q['question'], 'polls',
-                                             $order, $mode, 0, 1, false, $delete_option );
+                $retval .= CMT_userComments($pid, $Q['topic'], 'polls',
+                                             $order, $mode, 0, 1, false, $delete_option);
             }
         }
     }
-
     return $retval;
 }
 
 /**
 * Check if we already have a vote from this IP address
 *
-* @param    string  $qid    Poll ID
+* @param    string  $pid    Poll ID
 * @param    string  $ip     (optional) IP address
 * @return   boolean         true: IP already voted; false: didn't
 *
 */
-function POLLS_ipAlreadyVoted( $qid, $ip = '' )
+function POLLS_ipAlreadyVoted($pid, $ip = '' )
 {
     global $_TABLES;
 
     $retval = false;
 
-    if( empty( $ip ))
-    {
+    if(empty($ip )) {
         $ip = $_SERVER['REMOTE_ADDR'];
     }
 
-    if( DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
-                                          array( $ip,         $qid )) > 0 )
-    {
+    if(DB_count($_TABLES['pollvoters'],
+                 array('ipaddress', 'pid'),
+                 array($ip, $pid)) > 0) {
         $retval = true;
     }
 
@@ -830,8 +926,7 @@ function POLLS_ipAlreadyVoted( $qid, $ip = '' )
 
 function phpblock_polls()
 {
-    $retval = POLLS_showPoll( 60 );
-
+    $retval = POLLS_showPoll(60);
     return $retval;
 }
 
@@ -845,7 +940,6 @@ function phpblock_polls()
 function plugin_geticon_polls ()
 {
     global $_CONF;
-
     return $_CONF['site_url'] . '/polls/images/polls.png';
 }
 
@@ -855,11 +949,11 @@ function plugin_geticon_polls ()
 * @param   string  $id     Unique idenifier for item comment belongs to
 * @param   int     $cid    Comment id to display (possibly including sub-comments)
 * @param   string  $title  Page/comment title
-* @param   string  $order  'ASC' or 'DSC' or blank                            
-* @param   string  $format 'threaded', 'nested', or 'flat'                    
-* @param   int     $page   Page number of comments to display                 
+* @param   string  $order  'ASC' or 'DSC' or blank
+* @param   string  $format 'threaded', 'nested', or 'flat'
+* @param   int     $page   Page number of comments to display
 * @param   boolean $view   True to view comment (by cid), false to display (by $pid)
-* @return  mixed   results of calling the plugin_displaycomment_ function     
+* @return  mixed   results of calling the plugin_displaycomment_ function
 */
 function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page, $view)
 {
@@ -867,7 +961,7 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
 
     $retval = '';
 
-    $sql = "SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$id')" . COM_getPermSQL('AND') . ' GROUP BY qid';
+    $sql = "SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['polltopics']} WHERE (pid = '$id')" . COM_getPermSQL('AND') . ' GROUP BY pid';
     $result = DB_query ($sql);
     $A = DB_fetchArray ($result);
     $allowed = $A['count'];
@@ -891,7 +985,7 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
 
 function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $LANG25, $LANG_ACCESS;
+    global $_CONF, $LANG25, $LANG_ACCESS, $_USER;
 
     $retval = '';
 
@@ -902,14 +996,23 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
         switch($fieldname) {
             case 'edit':
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php?mode=edit&amp;qid={$A['qid']}\">{$icon_arr['edit']}</a>";
+                    $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php?mode=edit&amp;pid={$A['pid']}\">{$icon_arr['edit']}</a>";
                 }
                 break;
             case 'unixdate':
                 $retval = strftime ($_CONF['daytime'], $A['unixdate']);
                 break;
-            case 'question':
-                $retval = "<a href=\"{$_CONF['site_url']}/polls/index.php?qid={$A['qid']}&amp;aid=-1\">$fieldvalue</a>";
+            case 'topic':
+                if (($Q['open'] == 0) || (
+                        ($Q['hideresults'] == 1) && ($_USER['uid'] == $Q['owner_id'])
+                    ) || (
+                        ($Q['hideresults'] == 1) && (SEC_inGroup('Root'))
+                    )
+                ) {
+                    $retval = "<a href=\"{$_CONF['site_url']}/polls/index.php?pid={$A['pid']}\">$fieldvalue</a>";
+                } else {
+                    $retval = $fieldvalue;
+                }
                 break;
             case 'access':
                 if ($access == 3) {
@@ -918,6 +1021,13 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
                     $access = $LANG_ACCESS['readonly'];
                 }
                 $retval = $access;
+                break;
+            case 'open':
+                if ($A['open'] == 1) {
+                    $retval = $LANG25[25];
+                } else {
+                    $retval = $LANG25[26];
+                }
                 break;
             case 'display':
                 if ($A['display'] == 1) {
@@ -963,13 +1073,28 @@ function plugin_templatesetvars_polls ($templatename, &$template)
     }
 }
 
+function plugin_getheadercode_polls()
+{
+    global $_CONF;
+
+    $str = null;
+
+    // use the CSS only if we are on the plugin's pages
+    if (substr_count ($_SERVER['PHP_SELF'], '/polls/') > 0) {
+        $str = '<link rel="stylesheet" type="text/css" href="'
+             . $_CONF['site_url'] . '/polls/style.css">';
+    }
+
+    return $str;
+}
+
 /**
 * Update the Polls plugin
 *
 * @return   int     Number of message to display (true = generic success msg)
 *
 */
-function plugin_upgrade_polls () 
+function plugin_upgrade_polls ()
 {
     global $_TABLES, $_PO_CONF;
 
@@ -981,8 +1106,32 @@ function plugin_upgrade_polls ()
     $current_version = DB_getItem ($_TABLES['plugins'], 'pi_version',
                                    "pi_name = 'polls'");
     if ($current_version == '1.0') {
-        $sql = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark VARCHAR(255) NULL AFTER votes;";  
+        $sql = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark VARCHAR(255) NULL AFTER votes;";
         $result = DB_query ($sql);
+    } else if ($current_version == '1.1.0') {
+        $_SQL[] = "RENAME TABLE `{$_TABLES['pollquestions']}` TO `{$_TABLES['polltopics']}`;";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `question` `topic` VARCHAR( 255 )  NULL DEFAULT NULL";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD questions int(11) NOT NULL AFTER voters";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(4) NOT NULL AFTER display";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL AFTER open";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT 0 AFTER `pid`;";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
+        $_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
+              qid mediumint(9) NOT NULL DEFAULT 0,
+              pid varchar(20) NOT NULL,
+              question varchar(255) NOT NULL,
+              PRIMARY KEY (qid)
+            ) TYPE=MyISAM
+            ";
+
+        $_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) SELECT pid, topic FROM {$_TABLES['polltopics']}";
+
+        for ($i=0; $i<count($_SQL); $i++) {
+            $result = DB_query ($_SQL[$i]);
+        }
+
     }
 
     DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_PO_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'polls'");

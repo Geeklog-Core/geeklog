@@ -1,0 +1,4 @@
+<table class="poll-question-table">
+<tr><th colspan="2">{poll_question}</th></tr>
+{poll_votes}
+</table>

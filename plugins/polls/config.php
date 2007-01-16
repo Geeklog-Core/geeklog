@@ -15,6 +15,7 @@
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Trinity Bays      - trinity93 AT steubentech DOT com             |
+// |          Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,9 +34,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.9 2006/06/17 12:22:44 dhaun Exp $
+// $Id: config.php,v 1.10 2007/01/16 04:01:07 ospiess Exp $
 
-$_PO_CONF['version']            = '1.1.0'; // Plugin Version
+$_PO_CONF['version']            = '2.0'; // Plugin Version
 
 // Poll Settings
 
@@ -43,14 +44,15 @@ $_PO_CONF['version']            = '1.1.0'; // Plugin Version
 // (also see $_CONF['loginrequired'] in Geeklog's config.php)
 $_PO_CONF['pollsloginrequired'] = 0;
 
-/**
- * Set to 1 to hide the "Polls" entry from the top menu:
- * 
- * @global array $_PO_CONF['hidepollsmenu']                                     
- */
+
+// Set to 1 to hide the "Polls" entry from the top menu:
 $_PO_CONF['hidepollsmenu']      = 0;
 
-$_PO_CONF['maxanswers']         = 10; // max. number of options in a poll
+$_PO_CONF['maxquestions']       = 10; // max. number of questions in a poll
+$_PO_CONF['splitpages']         = false;
+// show all questions for one poll on
+// the same page or one question per page?
+$_PO_CONF['maxanswers']         = 10; // max. number of options in a question
 
 // 'submitorder' is the order in which answers are saved in admin/poll.php
 // 'voteorder' will list answers ordered by number of votes (highest->lowest);
@@ -77,6 +79,7 @@ $_PO_CONF['default_permissions'] = array (3, 2, 2, 2);
 // database table names - don't change
 $_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
 $_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';
+$_TABLES['polltopics']          = $_DB_table_prefix . 'polltopics';
 $_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
 
 ?>
