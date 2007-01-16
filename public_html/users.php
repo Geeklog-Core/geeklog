@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.151 2007/01/06 11:48:03 dhaun Exp $
+// $Id: users.php,v 1.152 2007/01/16 07:18:13 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -96,7 +96,7 @@ function userprofile ($user, $msg = 0)
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
     $A = DB_fetchArray ($result);
-    
+
     if ($A['status'] == USER_ACCOUNT_DISABLED && !SEC_hasRights ('user.edit')) {
         COM_displayMessageAndAbort (30, '', 403, 'Forbidden');
     }
@@ -143,7 +143,7 @@ function userprofile ($user, $msg = 0)
     }
 
     $user_templates->set_var ('username', $username);
-    $user_templates->set_var ('user_fullname', $fullname); 
+    $user_templates->set_var ('user_fullname', $fullname);
 
     if (SEC_hasRights ('user.edit')) {
         global $_IMAGE_TYPE, $LANG_ADMIN;
@@ -393,7 +393,14 @@ function requestpassword ($username, $msg = 0)
         $mailtext .= "{$_CONF['site_url']}\n";
 
         $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-        COM_mail ($A['email'], $subject, $mailtext);
+        if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+            $mailfrom = $_CONF['noreply_mail'];
+            global $LANG_LOGIN;
+            $mailtext .= LB . LB . $LANG04[159];
+        } else {
+            $mailfrom = $_CONF['site_mail'];
+        }
+        COM_mail ($A['email'], $subject, $mailtext, $mailfrom);
 
         if ($msg) {
             $retval .= COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");

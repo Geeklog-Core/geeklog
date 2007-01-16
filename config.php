@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.242 2007/01/13 09:23:59 dhaun Exp $
+// $Id: config.php,v 1.243 2007/01/16 07:18:12 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -91,6 +91,13 @@ $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 // This is the return address for all email sent by Geeklog and contact info
 // displayed in syndication feeds:
 $_CONF['site_mail']         = 'admin@example.com';
+
+// This is the sender's address of emails sent by the system when users register etc
+// This should be either the same as $_CONF['site_mail'] or a bouncing address
+// to prevent spammers from getting your email address by registering on the site
+// If this is NOT the same as above, there will be a message in sent messages
+// that replying to those emails is recommended.
+$_CONF['noreply_mail']         = 'noreply@example.com';
 
 // Name and slogan of your site
 $_CONF['site_name']         = 'Geeklog Site';

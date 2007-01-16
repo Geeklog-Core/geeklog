@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.34 2006/09/18 10:04:42 dhaun Exp $
+// $Id: lib-user.php,v 1.35 2007/01/16 07:18:13 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -104,7 +104,7 @@ function USER_deleteAccount ($uid)
     DB_query ("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
     DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
     DB_query ("UPDATE {$_TABLES['stories']} SET owner_id = 1 WHERE owner_id = $uid");
- 
+
     // delete story submissions
     DB_delete ($_TABLES['storysubmission'], 'uid', $uid);
 
@@ -175,8 +175,15 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
         $mailtext .= $_CONF['site_url'] . "\n";
     }
     $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+    if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+        $mailfrom = $_CONF['noreply_mail'];
+        global $LANG_LOGIN;
+        $mailtext .= LB . LB . $LANG04[159];
+    } else {
+        $mailfrom = $_CONF['site_mail'];
+    }
 
-    return COM_mail ($useremail, $subject, $mailtext);
+    return COM_mail ($useremail, $subject, $mailtext, $mailfrom);
 }
 
 /**
@@ -210,8 +217,14 @@ function USER_sendActivationEmail ($username, $useremail)
         $mailtext .= $_CONF['site_url'] . "\n";
     }
     $subject = $_CONF['site_name'] . ': ' . $LANG04[120];
-
-    return COM_mail ($useremail, $subject, $mailtext);
+    if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+        $mailfrom = $_CONF['noreply_mail'];
+        global $LANG_LOGIN;
+        $mailtext .= LB . LB . $LANG04[159];
+    } else {
+        $mailfrom = $_CONF['site_mail'];
+    }
+    return COM_mail ($useremail, $subject, $mailtext, $mailfrom);
 }
 
 /**

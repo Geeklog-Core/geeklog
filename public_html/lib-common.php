@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.612 2007/01/07 10:27:18 dhaun Exp $
+// $Id: lib-common.php,v 1.613 2007/01/16 07:18:13 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3842,7 +3842,14 @@ function COM_emailUserTopics()
 
         $mailto = $U['username'] . ' <' . $U['email'] . '>';
 
-        COM_mail( $mailto, $subject, $mailtext );
+        if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+            $mailfrom = $_CONF['noreply_mail'];
+            global $LANG_LOGIN;
+            $mailtext .= LB . LB . $LANG04[159];
+        } else {
+            $mailfrom = $_CONF['site_mail'];
+        }
+        COM_mail( $mailto, $subject, $mailtext , $mailfrom);
     }
 
     DB_query( "UPDATE {$_TABLES['vars']} SET value = NOW() WHERE name = 'lastemailedstories'" );

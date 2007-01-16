@@ -363,7 +363,8 @@ $LANG04 = array(
     155 => 'Privacy',
     156 => 'Delete Account',
     157 => 'Delete Option',
-    158 => 'Time Zone'
+    158 => 'Time Zone',
+    159 => 'This email was generated automatically. Please do not reply to this email.'
 );
 
 ###############################################################################
