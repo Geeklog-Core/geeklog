@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.249 2007/01/11 20:40:39 mjervis Exp $
+// $Id: story.php,v 1.250 2007/01/16 06:45:43 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -454,8 +454,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $story_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $ownername = COM_getDisplayName ($story->EditElements('owner_id'));
-    $story_templates->set_var('owner_username', DB_getItem ($_TABLES['users'],
-                              'username', "uid = {$story->EditElements('owner_id')}"));
+    $story_templates->set_var( 'owner_username', DB_getItem ($_TABLES['users'],
+                              'username', 'uid = ' .
+                              $story->EditElements( 'owner_id' ) ) );
     $story_templates->set_var('owner_name', $ownername);
     $story_templates->set_var('owner', $ownername);
     $story_templates->set_var('owner_id', $story->EditElements('owner_id'));
@@ -673,7 +674,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_var('lang_images', $LANG24[47]);
         $icount = DB_count($_TABLES['article_images'],'ai_sid', $story->getSid());
         if ($icount > 0) {
-            $result_articles = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '{$story->getSid()}'");
+            $result_articles = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '".$story->getSid()."'");
             for ($z = 1; $z <= $icount; $z++) {
                 $I = DB_fetchArray($result_articles);
                 $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '">' . $I['ai_filename'] . '</a>';
