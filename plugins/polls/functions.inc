@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.58 2007/01/16 04:01:07 ospiess Exp $
+// $Id: functions.inc,v 1.59 2007/01/16 05:16:18 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -599,7 +599,7 @@ function POLLS_pollVote($pid, $showall=true)
                             COM_numberFormat($num_comments));
                     $poll->set_var('lang_comments', $LANG01[3]);
                     $poll->set_var('poll_comments_url', $_CONF['site_url'] .
-                        '/polls/index.php?pid=' . $pid . '&amp;aid=-1#comments');
+                        '/polls/index.php?pid=' . $pid . '#comments');
                     $poll->parse('poll_comments', 'comments', true);
                 } else {
                     $poll->set_var('poll_comments', '');
@@ -764,10 +764,12 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
         return $retval;
     }
 
-    if (($Q['open'] == 0) || (
-            ($Q['hideresults'] == 1) && ($_USER['uid'] == $Q['owner_id'])
+    if ((
+            $Q['hideresults'] == 1
         ) || (
-            ($Q['hideresults'] == 1) && (SEC_inGroup('Root'))
+            ($Q['hideresults'] == 0) && ($_USER['uid'] == $Q['owner_id'])
+        ) || (
+            ($Q['hideresults'] == 0) && (SEC_inGroup('Root'))
         )
     ) {
         $retval = '';
@@ -777,7 +779,6 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
 
     $ntopic = DB_numRows($topic );
     if ($ntopic == 1) {
-
         $questions_sql = "SELECT qid,pid,question "
             . "FROM {$_TABLES['pollquestions']} "
             . "WHERE pid='$pid' "
@@ -792,10 +793,10 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
         if ($nquestions > 0){
             $poll = new Template($_CONF['path'] . 'plugins/polls/templates/' );
             $poll->set_file(array('result' => 'pollresult.thtml',
-                                    'question' => 'pollquestion.thtml',
-                                    'comments' => 'pollcomments.thtml',
-                                    'votes_bar' => 'pollvotes_bar.thtml',
-                                    'votes_num' => 'pollvotes_num.thtml' ));
+                'question' => 'pollquestion.thtml',
+                'comments' => 'pollcomments.thtml',
+                'votes_bar' => 'pollvotes_bar.thtml',
+                'votes_num' => 'pollvotes_num.thtml' ));
             $poll->set_var('site_url', $_CONF['site_url']);
             $poll->set_var('layout_url', $_CONF['layout_url']);
             $poll->set_var('poll_topic', $Q['topic']);
@@ -863,6 +864,9 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 }
                 $poll->parse('poll_questions', 'question', true);
                 $poll->clear_var('poll_votes');
+                if (($scale < 100) && ($j < 1)) {
+                    break;
+                }
             }
 
             if($Q['commentcode'] >= 0 ) {
@@ -1078,12 +1082,8 @@ function plugin_getheadercode_polls()
     global $_CONF;
 
     $str = null;
-
-    // use the CSS only if we are on the plugin's pages
-    if (substr_count ($_SERVER['PHP_SELF'], '/polls/') > 0) {
-        $str = '<link rel="stylesheet" type="text/css" href="'
-             . $_CONF['site_url'] . '/polls/style.css">';
-    }
+    $str = '<link rel="stylesheet" type="text/css" href="'
+        . $_CONF['site_url'] . '/polls/style.css">';
 
     return $str;
 }
