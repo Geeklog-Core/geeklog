@@ -28,9 +28,15 @@ GeekLog History/Changes:
 - Remove the "Are you secure?" (getBent) block from the database as its
   functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
 
-Links plugin
+Links plugin (1.0.2)
 ------------
 - Added "Report Broken Link" function [Oliver]
+
+Polls Plugin (2.0)
+------------
+- Added Support for multiple questions grouped into a survey [Oliver]
+- Added Support for closing polls [Oliver]
+- Added Support for hiding poll results of open polls [Oliver]
 
 
 Dec 31, 2006 (1.4.1)
