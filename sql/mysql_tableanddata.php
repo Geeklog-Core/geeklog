@@ -291,50 +291,63 @@ CREATE TABLE {$_TABLES['plugins']} (
 
 $_SQL[20] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
-  qid varchar(20) NOT NULL default '',
+  pid varchar(20) NOT NULL default '',
+  qid mediumint(9) NOT NULL default '',
   aid tinyint(3) unsigned NOT NULL default '0',
   answer varchar(255) default NULL,
   votes mediumint(8) unsigned default NULL,
-  remark varchar( 255 ) NULL,
+  remark varchar(255) NULL,
   PRIMARY KEY  (qid,aid)
 ) TYPE=MyISAM
 ";
 
 $_SQL[21] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
-  qid varchar(20) NOT NULL default '',
-  question varchar(255) default NULL,
+  qid mediumint(9) NOT NULL,
+  pid varchar(20) NOT NULL,
+  question varchar(255) NOT NULL,
+  PRIMARY KEY (qid)
+) TYPE=MyISAM
+";
+
+$_SQL[22] = "
+CREATE TABLE {$_TABLES['polltopics']} (
+  pid varchar(20) NOT NULL default '',
+  topic varchar(255) default NULL,
   voters mediumint(8) unsigned default NULL,
+  questions int(11) NOT NULL,
   date datetime default NULL,
   display tinyint(4) NOT NULL default '0',
+  open tinyint(4) NOT NULL,
+  hideresults tinyint(1) NOT NULL,
   commentcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   INDEX pollquestions_qid(qid),
+  INDEX pollquestions_date(date),
   INDEX pollquestions_display(display),
   INDEX pollquestions_commentcode(commentcode),
   INDEX pollquestions_statuscode(statuscode),
-  INDEX pollquestions_date(date),
   PRIMARY KEY  (qid)
 ) TYPE=MyISAM
 ";
 
-$_SQL[22] = "
+$_SQL[23] = "
 CREATE TABLE {$_TABLES['pollvoters']} (
   id int(10) unsigned NOT NULL auto_increment,
-  qid varchar(20) NOT NULL default '',
+  pid varchar(20) NOT NULL default '',
   ipaddress varchar(15) NOT NULL default '',
   date int(10) unsigned default NULL,
   PRIMARY KEY  (id)
 ) TYPE=MyISAM
 ";
 
-$_SQL[23] = "
+$_SQL[24] = "
 CREATE TABLE {$_TABLES['postmodes']} (
   code char(10) NOT NULL default '',
   name char(32) default NULL,
@@ -342,7 +355,7 @@ CREATE TABLE {$_TABLES['postmodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[24] = "
+$_SQL[25] = "
 CREATE TABLE {$_TABLES['sessions']} (
   sess_id int(10) unsigned NOT NULL default '0',
   start_time int(10) unsigned NOT NULL default '0',
@@ -356,7 +369,7 @@ CREATE TABLE {$_TABLES['sessions']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[25] = "
+$_SQL[26] = "
 CREATE TABLE {$_TABLES['sortcodes']} (
   code char(4) NOT NULL default '0',
   name char(32) default NULL,
@@ -364,7 +377,7 @@ CREATE TABLE {$_TABLES['sortcodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[26] = "
+$_SQL[27] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id int(10) unsigned NOT NULL auto_increment,
   ipaddress varchar(15) NOT NULL default '',
@@ -376,7 +389,7 @@ CREATE TABLE {$_TABLES['speedlimit']} (
 ) TYPE = MyISAM
 ";
 
-$_SQL[27] = "
+$_SQL[28] = "
 CREATE TABLE {$_TABLES['statuscodes']} (
   code int(1) NOT NULL default '0',
   name char(32) default NULL,
@@ -384,7 +397,7 @@ CREATE TABLE {$_TABLES['statuscodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[28] = "
+$_SQL[29] = "
 CREATE TABLE {$_TABLES['stories']} (
   sid varchar(40) NOT NULL default '',
   uid mediumint(8) NOT NULL default '1',
@@ -429,7 +442,7 @@ CREATE TABLE {$_TABLES['stories']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[29] = "
+$_SQL[30] = "
 CREATE TABLE {$_TABLES['storysubmission']} (
   sid varchar(20) NOT NULL default '',
   uid mediumint(8) NOT NULL default '1',
@@ -442,7 +455,7 @@ CREATE TABLE {$_TABLES['storysubmission']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[30] = "
+$_SQL[31] = "
 CREATE TABLE {$_TABLES['syndication']} (
   fid int(10) unsigned NOT NULL auto_increment,
   type varchar(30) NOT NULL default 'geeklog',
@@ -468,7 +481,7 @@ CREATE TABLE {$_TABLES['syndication']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[31] = "
+$_SQL[32] = "
 CREATE TABLE {$_TABLES['topics']} (
   tid varchar(20) NOT NULL default '',
   topic varchar(48) default NULL,
