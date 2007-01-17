@@ -4,6 +4,7 @@
 <title>{page_title}</title>
 <!-- link rel="SHORTCUT ICON" href="{site_url}/favicon.ico" -->
 <!-- <meta http-equiv="Pragma" content="no-cache"> -->
+<meta http-equiv="Content-Type" content="text/html;charset={charset}">
 <link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}">
 {feed_url}
 {rel_links}
