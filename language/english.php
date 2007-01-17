@@ -778,7 +778,8 @@ $LANG24 = array(
     84 => 'Permissions',
     85 => 'Show All',
     86 => 'Advanced Editor',
-    87 => 'Story Stats'
+    87 => 'Story Stats',
+    88 => 'Wiki-style format'
 );
 
 

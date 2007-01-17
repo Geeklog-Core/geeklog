@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.2 2007/01/14 19:03:30 mjervis Exp $
+// $Id: story.class.php,v 1.3 2007/01/17 09:22:59 ospiess Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -145,7 +145,7 @@ class Story
      * The original SID of the article, cached incase it's changed:
      */
     var $_originalSid;
-    
+
     /**
      * The access level.
      */
@@ -254,25 +254,25 @@ class Story
         if( !empty( $sid ) && ( ( $mode == 'edit' ) || ( $mode == 'view' ) ) )
         {
             $sql = array();
-                 
+
             $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
               . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
               . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
               . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
-            
+
             $sql['mssql'] = "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.in_transit, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
               . " UNIX_TIMESTAMP(s.date) AS unixdate, "
               . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
               . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
               . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
-        } elseif( !empty( $sid ) && ( $mode == 'editsubmission' ) ) {
+        } else if( !empty( $sid ) && ( $mode == 'editsubmission' ) ) {
             $sql = 'SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                  .'u.username, u.fullname, u.photo, t.topic, t.imageurl, t.group_id, '
                  .'t.perm_owner, t.perm_group, t.perm_members, t.perm_anon '
                  .'FROM '.$_TABLES['storysubmission'].' AS s, '.$_TABLES['users']
                  .' AS u, '.$_TABLES['topics'].' AS t WHERE (s.uid = u.uid) AND'
                  .' (s.tid = t.tid) AND (sid = \''.$sid.'\')';
-        } elseif( $mode == 'edit' ) {
+        } else if( $mode == 'edit' ) {
             $this->_sid = COM_makesid();
             $this->_old_sid = $this->_sid;
             if (isset ($_CONF['draft_flag'])) {
@@ -347,7 +347,7 @@ class Story
                 if( $this->_access == 0 )
                 {
                     return STORY_PERMISSION_DENIED;
-                } elseif( $this->_access == 2 && $mode != 'view' ) {
+                } else if( $this->_access == 2 && $mode != 'view' ) {
                     return STORY_EDIT_DENIED;
                 }
             } else {
@@ -575,7 +575,9 @@ class Story
         //$body = COM_stripSlashes( $array['bodytext'] );
 
         /* Then load the title, intro and body */
-        if( ( $array['postmode'] == 'html' ) || ( $array['postmode'] == 'adveditor' ) )
+        if( ( $array['postmode'] == 'html' ) ||
+            ( $array['postmode'] == 'adveditor' ) ||
+            ( $array['postmode'] == 'wikitext' ))
         {
             $this->_htmlLoadStory( $array['title'], $array['introtext'], $array['bodytext'] );
             if( $this->_postmode == 'adveditor' )
@@ -599,7 +601,7 @@ class Story
 
         return STORY_LOADED_OK;
     }
-    
+
     /**
      * Sets up basic data for a new user submission story
      *
@@ -614,34 +616,34 @@ class Story
         } else {
             $this->_uid = 1;
         }
-    
+
         $this->_postmode = $_CONF['postmode'];
         // If a topic has been specified, use it, if permitted
         // otherwise, fall back to the default permitted topic.
         // if we still don't have one...
-        
+
         // Have we specified a permitted topic?
         if (!empty ($topic)) {
             $allowed = DB_getItem ($_TABLES['topics'], 'tid',
                 "tid = '" . addslashes ($topic) . "'" . COM_getTopicSql ('AND'));
-    
+
             if ($allowed != $topic)
             {
                 $topic = '';
             }
         }
-        
+
         // Do we now not have a topic?
         if( empty( $topic ) )
         {
           // Get default permitted:
           $topic = DB_getItem( $_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND') );
-        }  
-        
+        }
+
         // Use what we have:
         $this->_tid = $topic;
     }
-    
+
     /**
      * Loads a submitted story from postdata
      */
@@ -653,12 +655,12 @@ class Story
         {
             $array[$key] = COM_stripslashes($value);
         }
-        
+
         $this->_postmode = COM_applyFilter( $array['postmode'] );
         $this->_sid = COM_applyFilter( $array['sid'] );
         $this->_uid = COM_applyFilter( $array['uid'], true );
         $this->_unixdate = COM_applyFilter( $array['date'], true );
-        
+
         /* Then load the title, intro and body */
         if( ( $array['postmode'] == 'html' ) || ( $array['postmode'] == 'adveditor' ) )
         {
@@ -674,7 +676,7 @@ class Story
             $this->_advanced_editor_mode = 0;
             $this->_plainTextLoadStory( $array['title'], $array['introtext'], $array['bodytext'] );
         }
-        
+
         $this->_tid = COM_applyFilter( $array['tid'] );
 
         if( empty( $this->_title ) || empty( $this->_introtext ) )
@@ -683,8 +685,8 @@ class Story
         }
 
         return STORY_LOADED_OK;
-    } 
-    
+    }
+
     /**
      * Returns a story formatted for spam check:
      *
@@ -693,8 +695,8 @@ class Story
     function GetSpamCheckFormat()
     {
         return "<h1>{$this->_title}</h1><p>{$this->_introtext}</p><p>{$this->_bodytext}</p>";
-    }           
-    
+    }
+
     /**
      * Saves a story submission.
      *
@@ -704,7 +706,7 @@ class Story
     {
         global $_USER, $_CONF, $_TABLES;
         $this->_sid = COM_makeSid();
-        
+
         if( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 ) )
         {
             $this->_uid = $_USER['uid'];
@@ -736,7 +738,7 @@ class Story
         } else {
             // post this story directly. First establish the necessary missing data.
             $this->_sanitizeData();
-            
+
             if (!isset ($_CONF['show_topic_icon'])) {
                 $_CONF['show_topic_icon'] = 1;
             }
@@ -748,7 +750,7 @@ class Story
             } else {
                 $this->_frontpage = 1;
             }
-            
+
             $this->_oldsid = $this->_sid;
             $this->_date = mktime();
             $this->_commentcode = $_CONF['comment_code'];
@@ -759,15 +761,15 @@ class Story
             $this->_perm_group = $T['perm_group'];
             $this->_perm_members = $T['perm_members'];
             $this->_perm_anon = $T['perm_anon'];
-            
+
             $this->saveToDatabase();
-            
+
             COM_rdfUpToDateCheck ();
             COM_olderStuff ();
-    
+
             return STORY_SAVED;
         }
-    }    
+    }
 
     /**
      * Inserts image HTML into the place of Image Placeholders for stories
@@ -891,14 +893,14 @@ class Story
             return $this->_sid;
         }
     }
-    
+
     /**
      * Get the access level
      */
     function getAccess()
     {
         return $this->_access;
-    }    
+    }
 
     /**
      * Provide access to story elements. For the editor.
@@ -1020,6 +1022,14 @@ class Story
                 if( $this->_postmode == 'plaintext' )
                 {
                     $return = nl2br( $this->_introtext );
+                } else if ( $this -> _postmode == 'wikitext' ) {
+                    require_once 'Text/Wiki.php';
+                    $wiki =& new Text_Wiki();
+                    $wiki->disableRule('wikilink');
+                    $wiki->disableRule('freelink');
+                    $wiki->disableRule('interwiki');
+                    $return = $this->_editUnescape($this->_introtext);
+                    $return = $wiki->transform($return, 'Xhtml');
                 } else {
                     $return = $this->_introtext;
                 }
@@ -1028,10 +1038,19 @@ class Story
             case 'bodytext':
                 if( ( $this->_postmode == 'plaintext' ) && !( empty( $this->_bodytext ) ) )
                 {
-                    $return = PLG_replaceTags( nl2br( $this->_bodytext ) );
-                } elseif ( !empty( $this->_bodytext )) {
-                    $return = PLG_replaceTags( $this->_displayEscape( $this->_bodytext ) );
+                    $return = nl2br( $this->_bodytext );
+                } else if ( ( $this->_postmode == 'wikitext' ) && !( empty( $this->_bodytext ) ) ) {
+                    require_once 'Text/Wiki.php';
+                    $wiki =& new Text_Wiki();
+                    $wiki->disableRule('wikilink');
+                    $wiki->disableRule('freelink');
+                    $wiki->disableRule('interwiki');
+                    $return = $this->_editUnescape($this->_bodytext);
+                    $return = $wiki->transform($return, 'Xhtml');
+                } else if ( !empty( $this->_bodytext )) {
+                    $return = $this->_displayEscape( $this->_bodytext );
                 }
+                $return = PLG_replaceTags($return);
                 break;
             case 'title':
                 $return = $this->_displayEscape( $this->_title );
@@ -1119,7 +1138,7 @@ class Story
         $return = str_replace( '}', '&#125;', $return );
         return $return;
     }
-    
+
     /**
      * Unescapes certain HTML for editing again.
      *
@@ -1129,7 +1148,7 @@ class Story
      */
     function _editUnescape($in)
     {
-        if( $this->_postmode == 'html')
+        if( ($this->_postmode == 'html') || ($this->_postmode == 'wikitext'))
         {
             // Standard named items, plus the three we do in _displayEscape and
             // others I know off-hand.
@@ -1141,8 +1160,8 @@ class Story
         } else {
             // advanced editor or plaintext can handle themselves...
             return $in;
-        }    
-    }    
+        }
+    }
 
     /**
      * Returns text ready for the edit fields.
@@ -1158,6 +1177,8 @@ class Story
         {
             $out = COM_undoClickableLinks($in);
             $out = $this->_displayEscape($out);
+        } else if ($this->_postmode == 'wikitext') {
+            $out = $this->_editUnescape($in);
         } else {
             // html
             $out = str_replace('<pre><code>','[code]', $in);
@@ -1165,7 +1186,7 @@ class Story
             $out = $this->_editUnescape($out);
             $out = $this->_displayEscape(htmlspecialchars($out));
         }
-        
+
         return $out;
     }
 
@@ -1353,7 +1374,7 @@ class Story
         if( $this->_draft == 'on' )
         {
             $this->_draft = 1;
-        } elseif( empty( $this->_draft ) )
+        } else if( empty( $this->_draft ) )
         {
             $this->_draft = 0;
         }

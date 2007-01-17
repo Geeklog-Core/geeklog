@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.250 2007/01/16 06:45:43 mjervis Exp $
+// $Id: story.php,v 1.251 2007/01/17 09:22:59 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -664,6 +664,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             $post_options .= '<option value="adveditor" selected="selected">'.$LANG24[86].'</option>';
         } else {
             $post_options .= '<option value="adveditor">'.$LANG24[86].'</option>';
+        }
+    }
+    if ($_CONF['wikitext_editor']) {
+        if ($story->EditElements('postmode') == 'wikitext') {
+            $post_options .= '<option value="wikitext" selected="selected">'.$LANG24[88].'</option>';
+        } else {
+            $post_options .= '<option value="wikitext">'.$LANG24[88].'</option>';
         }
     }
     $story_templates->set_var('post_options',$post_options );
