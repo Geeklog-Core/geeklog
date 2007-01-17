@@ -26,41 +26,38 @@
 */
 
 /* SEMANTICS ******************************************************************/
+
+a {
+  background:transparent;
+}
+
 a:link.non-ul,
 a:visited.non-ul,
 a:hover.non-ul,
 a:active.non-ul {
   color:#000000;
-  background:transparent;
   text-decoration:none;
 }
 a:link {
-  background:transparent;
   color:#0000FF;
 }
 a:visited {
-  background:transparent;
   color:#800080;
 }
 a:hover {
-  background:transparent;
   color:#008000;
 }
 a:active {
-  background:transparent;
   color:#FF0000;
 }
 body {
   width:99%;
   background:#FFFFFF;
   color:#000000;
-  font:.8em arial,sans-serif,verdana,tahoma,helvetica;
+  font:0.8em arial,sans-serif,verdana,tahoma,helvetica;
   padding:0px;
   margin:0px auto;
-  border-bottom:1px solid #E7E7E7;
-  border-left:1px solid #E7E7E7;
-  border-right:1px solid #E7E7E7;
-  border-top:1px solid #E7E7E7;
+  border:1px solid #E7E7E7;
   padding-left:1px;
   padding-right:1px;
   text-align:left;
@@ -78,7 +75,7 @@ fieldset p {
   margin-bottom:0px;
 }
 fieldset legend {
-  font-size:.9em;
+  font-size:0.9em;
 }
 form {
   margin-top:5px;
