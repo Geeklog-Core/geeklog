@@ -69,15 +69,16 @@ dt {
 }
 
 .menu {
-  font-size: 90%;
   background: #dddddd;
   color: black;
+  padding:5px;
 }
 
 .footer {
   font-size: 90%;
   background: #dddddd;
   color: black;
+  padding:5px;
 }
 
 
