@@ -1,51 +1,45 @@
                             {start_block_editor}
-                            <table cellpadding="3" cellspacing="0" width="100%">
-                                <tr>
-                                    <td>
-                                        <form action="{site_admin_url}/plugins.php" method="post">
-                                            <table cellspacing="0" cellpadding="3">
-                                                <tr>
-                                                    <td><img src="{pi_icon}" alt=""></td>
-                                                    <td>
-                                                        <input type="submit" value="{lang_save}" name="mode">
-                                                        <input type="submit" value="{lang_cancel}" name="mode">
-                                                        {delete_option}&nbsp;{update_option}
-                                                        <input type="hidden" name="pi_name" value="{pi_name}">
-                                                        <input type="hidden" name="confirmed" value="{confirmed}">
-                                                        <input type="hidden" name="pi_homepage" value="{pi_homepage}">
-                                                        <input type="hidden" name="pi_version" value="{pi_version}">
-                                                        <input type="hidden" name="pi_codeversion" value="{pi_codeversion}">
-                                                        <input type="hidden" name="pi_gl_version" value="{pi_gl_version}">
-                                                    </td>
-                                                <tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_pluginname}:</b></td>
-                                                    <td>{pi_name}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_pluginhomepage}:</b></td>
-                                                    <td><a href="{pi_homepage}">{pi_homepage}</a></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_pluginversion}:</b></td>
-                                                    <td>{pi_version}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_plugincodeversion}:</b></td>
-                                                    <td>{pi_codeversion}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_geeklogversion}:</b></td>
-                                                    <td>{pi_gl_version}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_enabled}:</b></td>
-                                                    <td><input type="checkbox" name="enabled" {enabled_checked}>
-                                                </tr>
-                                            </table>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
+                            <form action="{site_admin_url}/plugins.php" method="post">
+                                <table cellspacing="0" cellpadding="3">
+                                    <tr>
+                                        <td><img src="{pi_icon}" alt=""></td>
+                                        <td>
+                                            <input type="submit" value="{lang_save}" name="mode">
+                                            <input type="submit" value="{lang_cancel}" name="mode">
+                                            {delete_option}&nbsp;{update_option}
+                                            <input type="hidden" name="pi_name" value="{pi_name}">
+                                            <input type="hidden" name="confirmed" value="{confirmed}">
+                                            <input type="hidden" name="pi_homepage" value="{pi_homepage}">
+                                            <input type="hidden" name="pi_version" value="{pi_version}">
+                                            <input type="hidden" name="pi_codeversion" value="{pi_codeversion}">
+                                            <input type="hidden" name="pi_gl_version" value="{pi_gl_version}">
+                                        </td>
+                                    <tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_pluginname}:</b></td>
+                                        <td>{pi_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_pluginhomepage}:</b></td>
+                                        <td><a href="{pi_homepage}">{pi_homepage}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_pluginversion}:</b></td>
+                                        <td>{pi_version}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_plugincodeversion}:</b></td>
+                                        <td>{pi_codeversion}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_geeklogversion}:</b></td>
+                                        <td>{pi_gl_version}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_enabled}:</b></td>
+                                        <td><input type="checkbox" name="enabled" {enabled_checked}>
+                                    </tr>
+                                </table>
+                            </form>
                             {end_block}
 
