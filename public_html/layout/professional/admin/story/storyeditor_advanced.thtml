@@ -12,247 +12,237 @@
 <script type="text/javascript" src="{site_url}/javascript/storyeditor_fckeditor.js"></script>
 <br>
 <div id="advanced_editor" style="display:none;">
-<!-- Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it -->
-<script type="text/javascript">
-    document.getElementById('advanced_editor').style.display=''
-</script>
-{navbar}
-<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
-    <table id='adveditor' cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
-        <tr>
-            <td width="20%" class="alignright">{lang_author}:</td>
-            <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
-        </tr>
-        <tr>
-            <td class="alignright">{lang_title}:</td>
-            <td><input type="text" size="48" maxlength="255" name="title" value="{story_title}"></td>
-        </tr>
-        <tr>
-            <td class="alignright" style="vertical-align:top;">{lang_sid}:</td>
-            <td><input type="text" size="48" maxlength="40" name="sid" value="{story_id}"></td>
-        </tr>
-        <tr>
-            <td class="alignright">{lang_topic}:</td>
-            <td>
-                <select name="tid">
-                    {topic_options}
+    <!-- Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it -->
+    <script type="text/javascript">
+        document.getElementById('advanced_editor').style.display=''
+    </script>
+    {navbar}
+    <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
+        <table id='adveditor' cellspacing="0" cellpadding="3" style="width:100%; margin-top:10px; border:1px solid #ECE9D8;">
+            <tr>
+                <td style="width:20%;" class="alignright">{lang_author}:</td>
+                <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
+            </tr>
+            <tr>
+                <td class="alignright">{lang_title}:</td>
+                <td><input type="text" size="48" maxlength="255" name="title" value="{story_title}"></td>
+            </tr>
+            <tr>
+                <td class="alignright" style="vertical-align:top;">{lang_sid}:</td>
+                <td><input type="text" size="48" maxlength="40" name="sid" value="{story_id}"></td>
+            </tr>
+            <tr>
+                <td class="alignright">{lang_topic}:</td>
+                <td>
+                    <select name="tid">
+                        {topic_options}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="alignright nowrap">{lang_story_stats}:</td>
+                <td>
+                  <table cellspacing="0" cellpadding="3" style="width:50%;">
+                    <tr>
+                        <td class="alignright">{lang_hits}:</td>
+                        <td><input type="hidden" name="hits" value="{story_hits}">{story_hits}</td>
+                        <td class="alignright">{lang_comments}:</td>
+                        <td><input type="hidden" name="comments" value="{story_comments}">{story_comments}</td>
+                        <td class="alignright">{lang_emails}:</td>
+                        <td><input type="hidden" name="numemails" value="{story_emails}">{story_emails}</td>
+                    </tr>
+                 </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="alignright">{lang_show_topic_icon}:<input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}> </td>
+                <td style="padding-left:25px;">{lang_draft}:<input type="checkbox" name="draft_flag" {is_checked}><span style="padding-left:30px;">{lang_postmode}:</span>&nbsp;<select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
+            </tr>
+        </table>
+        <!-- Basic textarea field - no editor -->
+        <div id="text_editor" style="width:100%; margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_texteditor};">
+            {lang_introtext}:
+            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('introtext','larger');">
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('introtext','smaller');">
+            <textarea id="introtext"  style="width:100%; padding:5px 10px 5px 10px;" name="introtext" rows="14">
+                {story_introtext}
+            </textarea>
+            {lang_bodytext}:
+            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('bodytext','larger');">
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('bodytext','smaller');">
+            <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:100%;" name="bodytext" rows="14">
+                {story_bodytext}
+            </textarea>
+        </div>
+        <!-- HTML Editor -->
+        <div id="html_editor" style="margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_htmleditor};">
+            {lang_introtext}:
+            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','larger');">
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','smaller');">
+            <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
+                <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
+                     <option value="editor-toolbar1">{toolbar1}</option>
+                     <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
+                     <option value="editor-toolbar3">{toolbar3}</option>
+                     <option value="Default">{toolbar5}</option>
                 </select>
-            </td>
-        </tr>
-        <tr>
-            <td class="alignright nowrap">{lang_story_stats}:</td>
-            <td>
-              <table cellspacing="0" cellpadding="3" width="50%">
-                <tr>
-                    <td class="alignright">{lang_hits}:</td>
-                    <td><input type="hidden" name="hits" value="{story_hits}">{story_hits}</td>
-                    <td class="alignright">{lang_comments}:</td>
-                    <td><input type="hidden" name="comments" value="{story_comments}">{story_comments}</td>
-                    <td class="alignright">{lang_emails}:</td>
-                    <td><input type="hidden" name="numemails" value="{story_emails}">{story_emails}</td>
-                </tr>
-             </table>
-            </td>
-        </tr>
-        <tr>
-            <td class="alignright">{lang_show_topic_icon}:<input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}> </td>
-            <td style="padding-left:25px;">{lang_draft}:<input type="checkbox" name="draft_flag" {is_checked}><span style="padding-left:30px;">{lang_postmode}:</span>&nbsp;<select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
-        </tr>
-    </table>
-    <!-- Basic textarea field - no editor -->
-    <div width="100%" id="text_editor" style="margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_texteditor};">
-        {lang_introtext}:
-        <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');">
-        <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');">
-        <textarea id="introtext"  style="width:100%; padding:5px 10px 5px 10px;" name="introtext" rows="14">
-            {story_introtext}
-        </textarea>
-        {lang_bodytext}:
-        <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');">
-        <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');">
-        <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:100%;" name="bodytext" rows="14">
-            {story_bodytext}
-        </textarea>
-    </div>
-    <!-- HTML Editor --->
-    <div id="html_editor" style="margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_htmleditor};">
-        {lang_introtext}:
-        <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');">
-        <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');">
-        <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
-            <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
-                 <option value="editor-toolbar1">{toolbar1}</option>
-                 <option value="editor-toolbar2" selected="selected">{toolbar2}</option>
-                 <option value="editor-toolbar3">{toolbar3}</option>
-                 <option value="Default">{toolbar5}</option>
-            </select>
-        </span>
-        <textarea id="introhtml" style="padding:5px 10px 5px 10px;" name="introhtml" cols="90" rows="12">
-            {story_introtext}
-        </textarea>
-        {lang_bodytext}:
-        <img src="{layout_url}/images/expand.png" title="lang_expandhelp" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
-        <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');">
-        <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="90" rows="20">
-            {story_bodytext}
-        </textarea>
-    <div id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
-        {lang_allowed_html}
-    </div>
-    <table id="se_options" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;display:none;">
-        <tr>
-            <td colspan="2" style="padding:10px;">
-                <div  id="se_publish" style="display:none;">
-                    <fieldset><legend>{lang_publishdate}</legend>
-                        <table cellspacing="0" cellpadding="3" width="100%">
-                            <tr>
-                                <td class="alignright" style="vertical-align:top;">{lang_date}:</td>
-                                <td>
-                                    <select name="publish_month">
-                                        {publish_month_options}
-                                    </select>
-                                    /
-                                    <select name="publish_day">
-                                        {publish_day_options}
-                                    </select>
-                                    /
-                                    <select name="publish_year">
-                                        {publish_year_options}
-                                    </select>&nbsp;&nbsp;
-                                    <select name="publish_hour">
-                                        {publish_hour_options}
-                                    </select>
-                                    :
-                                    <select name="publish_minute">
-                                        {publish_minute_options}
-                                    </select>
-                                    {publishampm_selection}<br>
-                                    <input type="hidden" name="publish_second" value="{publish_second}">
-                                    <br>{publish_date_explanation}
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                    <fieldset style="margin-top:10px;"><legend>{lang_publishoptions}</legend>
-                        <table cellspacing="3" cellpadding="3" width="100%">
-                            <tr>
-                                <td>
-                                    {featured_options}
-                                </td>
-                                <td width="75%">
-                                    <select name="frontpage">
-                                        {frontpage_options}
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <select name="commentcode">
-                                        {comment_options}
-                                    </select>
-                                </td>
-                                <td>
-                                    <select name="trackbackcode">
-                                        {trackback_options}
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                </div>
-                <div id="se_images" style="display:none;">
-                    <fieldset style="margin-top:10px;"><legend>{lang_images}</legend>
-                        <table cellspacing="0" cellpadding="3" width="100%">
-                            <tr>
-                                <td style="padding:10px;">
-                                    {saved_images}
-                                    {image_form_elements}
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                </div>
-                <div id="se_archive" style="display:none;">
-                    <fieldset style="margin-top:10px;">
-                        <legend>{lang_archivetitle}</legend>
-                        <table cellspacing="0" cellpadding="3" width="100%">
-                            <tr>
-                                <td width="20%" style="text-align:right;padding-right:5px;">{lang_option}:</td>
-                                <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
-                                <td style="text-align:left;">
-                                    <label for="storycode10">
-                                        <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
-                                    </label>&nbsp;
-                                <label for="storycode11">
-                                    <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}>{lang_optiondelete}
-                                </label>
-                            </tr>
-                            <tr>
-                                <td style="text-align:right;vertical-align:top;padding-right:5px;">{lang_date}:</td>
-                                <td colspan="2">
-                                    <select id="expire_month" name="expire_month"}>
-                                        {expire_month_options}
-                                    </select>
-                                    <select name="expire_day">
-                                        {expire_day_options}
-                                    </select>
-                                    <select name="expire_year">
-                                        {expire_year_options}
-                                    </select>
-                                    <select name="expire_hour">
-                                        {expire_hour_options}
-                                    </select>&nbsp;:
-                                    <select name="expire_minute">
-                                        {expire_minute_options}
-                                    </select>
-                                    {expireampm_selection}<br>
-                                    <input type="hidden" name="expire_second" value="{expire_second}">
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                </div>
-                <fieldset id="se_perms" style="margin-top:10px; display:none;">
-                    <legend>{lang_permissions}</legend>
-                    <p><b>{lang_owner}:</b> {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></p>
-                    <p><b>{lang_group}:</b> {group_dropdown}</p>
-                    <p><b>{lang_permissions}:</b></p>
-                    <p>{lang_perm_key}</p>
-                    {permissions_editor}
-                    <p>{permissions_msg}</p>
+            </span>
+            <textarea id="introhtml" style="padding:5px 10px 5px 10px;" name="introhtml" cols="90" rows="12">
+                {story_introtext}
+            </textarea>
+            {lang_bodytext}:
+            <img src="{layout_url}/images/expand.png" title="lang_expandhelp" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');">
+            <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="90" rows="20">
+                {story_bodytext}
+            </textarea>
+        </div>
+        <div id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
+            {lang_allowed_html}
+        </div>
+        <div  id="se_options" style="width:100%; margin-top:10px; border:1px solid #ECE9D8; display:none;">
+            <div id="se_publish" style="display:none;">
+                <fieldset><legend>{lang_publishdate}</legend>
+                    <table cellspacing="0" cellpadding="3" style="width:100%;">
+                        <tr>
+                            <td class="alignright" style="vertical-align:top;">{lang_date}:</td>
+                            <td>
+                                <select name="publish_month">
+                                    {publish_month_options}
+                                </select>
+                                /
+                                <select name="publish_day">
+                                    {publish_day_options}
+                                </select>
+                                /
+                                <select name="publish_year">
+                                    {publish_year_options}
+                                </select>&nbsp;&nbsp;
+                                <select name="publish_hour">
+                                    {publish_hour_options}
+                                </select>
+                                :
+                                <select name="publish_minute">
+                                    {publish_minute_options}
+                                </select>
+                                {publishampm_selection}<br>
+                                <input type="hidden" name="publish_second" value="{publish_second}">
+                                <br>{publish_date_explanation}
+                            </td>
+                        </tr>
+                    </table>
                 </fieldset>
-            </td>
-        </tr>
-    </table>
-    <div id="se_bottom" width="100%" style="paddin:3px; margin-top:20px;">
-        <input type="submit" value="{lang_save}" name="mode">
-        <span style="padding-right:10px;padding-left:10px;"><input type="submit" value="{lang_preview}" name="mode"></span>
-        <span style="padding-right:50px;"><input type="submit" value="{lang_cancel}" name="mode"></span>
-        {delete_option}
-        {submission_option}
-        <input type="hidden" name="old_sid" value="{old_story_id}">
-        <input type="hidden" name="hour_mode" value="{hour_mode}">
-    </div
-</form>
-<div width="99%" id="preview" style="border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">
-    {preview_content}
-</div>
+                <fieldset style="margin-top:10px;"><legend>{lang_publishoptions}</legend>
+                    <table cellspacing="3" cellpadding="3" style="width:100%;">
+                        <tr>
+                            <td>
+                                {featured_options}
+                            </td>
+                            <td style="width:75%;">
+                                <select name="frontpage">
+                                    {frontpage_options}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select name="commentcode">
+                                    {comment_options}
+                                </select>
+                            </td>
+                            <td>
+                                <select name="trackbackcode">
+                                    {trackback_options}
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+            <div id="se_images" style="display:none;">
+                <fieldset style="margin-top:10px;"><legend>{lang_images}</legend>
+                    {saved_images}
+                    {image_form_elements}
+                </fieldset>
+            </div>
+            <div id="se_archive" style="display:none;">
+                <fieldset style="margin-top:10px;">
+                    <legend>{lang_archivetitle}</legend>
+                    <table cellspacing="0" cellpadding="3" style="width:100%;">
+                        <tr>
+                            <td style="width:20%; text-align:right; padding-right:5px;">{lang_option}:</td>
+                            <td style="width:20%;">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
+                            <td style="text-align:left;">
+                                <label for="storycode10">
+                                    <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
+                                </label>&nbsp;
+                            <label for="storycode11">
+                                <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}>{lang_optiondelete}
+                            </label>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;vertical-align:top;padding-right:5px;">{lang_date}:</td>
+                            <td colspan="2">
+                                <select id="expire_month" name="expire_month">
+                                    {expire_month_options}
+                                </select>
+                                <select name="expire_day">
+                                    {expire_day_options}
+                                </select>
+                                <select name="expire_year">
+                                    {expire_year_options}
+                                </select>
+                                <select name="expire_hour">
+                                    {expire_hour_options}
+                                </select>&nbsp;:
+                                <select name="expire_minute">
+                                    {expire_minute_options}
+                                </select>
+                                {expireampm_selection}<br>
+                                <input type="hidden" name="expire_second" value="{expire_second}">
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+            <fieldset id="se_perms" style="margin-top:10px; display:none;">
+                <legend>{lang_permissions}</legend>
+                <p><b>{lang_owner}:</b> {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></p>
+                <p><b>{lang_group}:</b> {group_dropdown}</p>
+                <p><b>{lang_permissions}:</b></p>
+                <p>{lang_perm_key}</p>
+                {permissions_editor}
+                <p>{permissions_msg}</p>
+            </fieldset>
+        </div>
+        <div id="se_bottom" style="width:100%; paddin:3px; margin-top:20px;">
+            <input type="submit" value="{lang_save}" name="mode">
+            <span style="padding-right:10px;padding-left:10px;"><input type="submit" value="{lang_preview}" name="mode"></span>
+            <span style="padding-right:50px;"><input type="submit" value="{lang_cancel}" name="mode"></span>
+            {delete_option}
+            {submission_option}
+            <input type="hidden" name="old_sid" value="{old_story_id}">
+            <input type="hidden" name="hour_mode" value="{hour_mode}">
+        </div>
+    </form>
+    <div id="preview" style="width:99%; border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">
+        {preview_content}
+    </div>
 
-<script>
-<!-- This code will only be executed by a browser that suppports Javascript -->
+    <script type="text/javascript">
+        <!-- This code will only be executed by a browser that suppports Javascript -->
 
-var jstest = {showarchivedisabled};
-if (jstest) {
-    document.frmstory.expire_month.disabled=true;
-    document.frmstory.expire_day.disabled=true;
-    document.frmstory.expire_year.disabled=true;
-    document.frmstory.expire_hour.disabled=true;
-    document.frmstory.expire_minute.disabled=true;
-    document.frmstory.expire_ampm.disabled=true;
-    document.frmstory.storycode10.disabled=true;
-    document.frmstory.storycode11.disabled=true;
+        var jstest = {showarchivedisabled};
+        if (jstest) {
+            document.frmstory.expire_month.disabled=true;
+            document.frmstory.expire_day.disabled=true;
+            document.frmstory.expire_year.disabled=true;
+            document.frmstory.expire_hour.disabled=true;
+            document.frmstory.expire_minute.disabled=true;
+            document.frmstory.expire_ampm.disabled=true;
+            document.frmstory.storycode10.disabled=true;
+            document.frmstory.storycode11.disabled=true;
 
-}
-
-</script>
+        }
+    </script>
 </div>
