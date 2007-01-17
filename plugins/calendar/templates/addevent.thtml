@@ -4,7 +4,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <table cellpadding="2" cellspacing="2" border="0">
+                                        <table cellpadding="2" cellspacing="2">
                                             <tr>
                                                 <td align="right"><b>{lang_event}:</b></td>
                                                 <td>{event_begin_anchortag}{event_title}{event_end_anchortag}</td>
