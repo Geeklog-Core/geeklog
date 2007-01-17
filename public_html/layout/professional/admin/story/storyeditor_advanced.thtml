@@ -288,7 +288,7 @@
     <tr>
         <td>
             {preview_content}
-        </td.
+        </td>
     </tr>
 </table>
 
