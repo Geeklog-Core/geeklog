@@ -1,38 +1,32 @@
                             {start_block}
-                            <table cellpadding="3" cellspacing="0" width="100%">
-                                <tr>
-                                    <td>
-                                        <form action="{site_url}/users.php" method="post">
-                                            <table cellspacing="0" cellpadding="3">
-                                                <tr>
-                                                    <td colspan="2" width="100%">{lang_instructions}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_username}:</b></td>
-                                                    <td><input type="text" size="16" maxlength="16" name="username" value="{username}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_email}:</b></td>
-                                                    <td><input type="text" size="32" maxlength="96" name="email" value="{email}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="alignright"><b>{lang_email_conf}:</b></td>
-                                                    <td><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="aligncenter warning" colspan="2" width="100%">{lang_warning}</td>
-                                                </tr>
-                                                {captcha}
-                                                <tr>
-                                                    <td class="aligncenter" colspan="2" width="100%">
-                                                        <input type="hidden" name="mode" value="create">
-                                                        <input type="submit" value="{lang_register}">
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
+                                <form action="{site_url}/users.php" method="post">
+                                    <table cellspacing="0" cellpadding="3">
+                                        <tr>
+                                            <td colspan="2" width="100%">{lang_instructions}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="alignright" width="50%"><b>{lang_username}:</b></td>
+                                            <td width="50%"><input type="text" size="16" maxlength="16" name="username" value="{username}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="alignright" width="50%"><b>{lang_email}:</b></td>
+                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email" value="{email}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="alignright" width="50%"><b>{lang_email_conf}:</b></td>
+                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="aligncenter warning" colspan="2" width="100%">{lang_warning}</td>
+                                        </tr>
+                                        {captcha}
+                                        <tr>
+                                            <td class="aligncenter" colspan="2" width="100%">
+                                                <input type="hidden" name="mode" value="create">
+                                                <input type="submit" value="{lang_register}">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
                             {end_block}
 
