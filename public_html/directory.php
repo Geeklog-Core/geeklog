@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.13 2006/12/11 11:49:17 dhaun Exp $
+// $Id: directory.php,v 1.14 2007/01/17 08:59:27 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -59,7 +59,7 @@ if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
     $display .= $login->finish ($login->get_var ('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    echo $display; 
+    echo $display;
     exit;
 }
 
@@ -108,7 +108,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     if (!$standalone) {
         $retval .= ' style="display:inline; float:right"' . LB;
     }
-    $retval .= '>' . LB;
+    $retval .= '><fieldset>' . LB;
     $retval .= '<select name="topic" onchange="this.form.submit()">' . LB;
     $retval .= '<option value="all"';
     if ($topic == 'all') {
@@ -119,7 +119,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     $retval .= '</select>' . LB;
     $retval .= '<input type="hidden" name="year" value="' . $year . '">';
     $retval .= '<input type="hidden" name="month" value="' . $month . '">';
-    $retval .= '</form>' . LB;
+    $retval .= '</fieldset></form>' . LB;
 
     return $retval;
 }
@@ -332,7 +332,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
 * @return   string          list of months (+ number of stories) for given year
 *
 */
-function DIR_displayYear ($topic, $year, $main = false) 
+function DIR_displayYear ($topic, $year, $main = false)
 {
     global $_CONF, $_TABLES, $LANG_MONTH, $LANG_DIR;
 
