@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.244 2007/01/17 09:22:59 ospiess Exp $
+// $Id: config.php,v 1.245 2007/01/17 09:28:19 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -479,11 +479,11 @@ $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and storie
 // | staticpages/index.php. If set true and advanced template exists           |
 // | Note: If enabled, the default postmode will be html                       |
 // +---------------------------------------------------------------------------+
-$_CONF['advanced_editor'] = true;
+$_CONF['advanced_editor'] = false;
 
 // Allow input method "wiki-style". This allows a markup like Wikipedia is
 // using instead of using HTML or Plaintext. HTML is not interpreted.
-$_CONF['wikitext_editor'] = true;
+$_CONF['wikitext_editor'] = false;
 
 // +---------------------------------------------------------------------------+
 // | Internal Geeklog CRON or scheduled Task/Function setting                  |
