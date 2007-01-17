@@ -30,10 +30,10 @@
             </tr>
         </table>
     </div>
-    <table cellspacing="0" cellpadding="0" width="100%">
+    <table cellspacing="0" cellpadding="0" style="width:100%;">
         <tr>
             {left_blocks}
-            <td class="story-container" width="100%" style="vertical-align:top;">
+            <td class="story-container"  style="width:100%; vertical-align:top;">
                 <div class="header-welcomeanddate-box">
                     <div class="header-welcomeanddate-text">
                         <a href="{site_url}">{welcome_msg}</a><br>{datetime}
