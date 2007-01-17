@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2007 (1.4.x)
 ------------
 
+- Added optional Wikitext postmode for stories [Oliver]
 - Addded optional noreply-email address option to config.php to prevent 
   spammers retrieving the admin's email address from registering online [Oliver]
 - Added support for "Microsummaries" to index.php.
