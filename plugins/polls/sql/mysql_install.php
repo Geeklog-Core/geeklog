@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.2 2007/01/16 04:01:07 ospiess Exp $
+// $Id: mysql_install.php,v 1.3 2007/01/19 18:07:43 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
@@ -55,7 +55,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['polltopics']} (
-  pid varchar(20) NOT NULL default '',
+  pid varchar(20) NOT NULL,
   topic varchar(255) default NULL,
   voters mediumint(8) unsigned default NULL,
   questions int(11) NOT NULL,
@@ -71,12 +71,12 @@ CREATE TABLE {$_TABLES['polltopics']} (
   perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX pollquestions_qid(qid),
+  INDEX pollquestions_qid(pid),
   INDEX pollquestions_date(date),
   INDEX pollquestions_display(display),
   INDEX pollquestions_commentcode(commentcode),
   INDEX pollquestions_statuscode(statuscode),
-  PRIMARY KEY  (qid)
+  PRIMARY KEY  (pid)
 ) TYPE=MyISAM
 ";
 
