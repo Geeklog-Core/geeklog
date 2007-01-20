@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.251 2007/01/17 09:22:59 ospiess Exp $
+// $Id: story.php,v 1.252 2007/01/20 16:50:09 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -827,7 +827,10 @@ function submitstory($type='')
         require_once($_CONF['path_system'] . 'classes/upload.class.php');
         $upload = new upload();
 
-        $upload->setDebug(true);
+        if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
+            $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
+            $upload->setDebug (true);
+        }
         $upload->setMaxFileUploads ($_CONF['maximagesperarticle']);
         if (!empty($_CONF['image_lib'])) {
             if ($_CONF['image_lib'] == 'imagemagick') {
@@ -841,10 +844,6 @@ function submitstory($type='')
                 $upload->setGDLib ();
             }
             $upload->setAutomaticResize(true);
-            if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
-                $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
-                $upload->setDebug (true);
-            }
             if ($_CONF['keep_unscaled_image'] == 1) {
                 $upload->keepOriginalImage (true);
             } else {
@@ -890,7 +889,6 @@ function submitstory($type='')
         }
         $upload->setFileNames($filenames);
         reset($_FILES);
-        $upload->setDebug(true);
         $upload->uploadFiles();
 
         if ($upload->areErrors()) {
