@@ -4,12 +4,12 @@
 * File: IP.Examine.class.php
 * This is the IP BlackList Examine class for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2006 by the following authors:
+* Copyright (C) 2004-2007 by the following authors:
 * Author        Tom Willett        tomw AT pigstye DOT net
 *
 * Licensed under GNU General Public License
 *
-* $Id: IP.Examine.class.php,v 1.9 2006/09/06 05:31:00 ospiess Exp $
+* $Id: IP.Examine.class.php,v 1.10 2007/01/20 16:29:57 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'IP.Examine.class.php') !== false) {
@@ -57,18 +57,87 @@ class IP extends BaseCommand {
      */
     function reexecute($comment, $date, $ip, $type)
     {
-            return $this->_process($ip);
+        return $this->_process($ip);
     }
 
-        /**
-         * Private internal method, this actually processes a given ip
-         * address against a blacklist of IP regular expressions.
-         *
-         * @param $ip    string    IP address of comment poster
-         */
+    /**
+     * Private internal method to match an IP address against a CIDR
+     *
+     * @param   string  $iptocheck  IP address to check
+     * @param   string  $CIDR       IP address range to check against
+     * @return  boolean             true if IP falls into the CIDR, else false
+     *
+     * Original author: Ian B, taken from
+     * http://www.php.net/manual/en/function.ip2long.php#71939
+     *
+     */
+    function _matchCIDR ($iptocheck, $CIDR)
+    {
+        // get the base and the bits from the ban in the database
+        list($base, $bits) = explode('/', $CIDR);
+
+        // now split it up into it's classes
+        list($a, $b, $c, $d) = explode('.', $base);
+
+        // now do some bit shifting/switching to convert to ints
+        $i = ($a << 24) + ($b << 16) + ($c << 8) + $d;
+        $mask = $bits == 0 ? 0 : (~0 << (32 - $bits));
+
+        // here's our lowest int
+        $low = $i & $mask;
+
+        // here's our highest int
+        $high = $i | (~$mask & 0xFFFFFFFF);
+
+        // now split the ip were checking against up into classes
+        list($a, $b, $c, $d) = explode('.', $iptocheck);
+
+        // now convert the ip we're checking against to an int
+        $check = ($a << 24) + ($b << 16) + ($c << 8) + $d;
+
+        // if the ip is within the range, including
+        // highest/lowest values, then it's witin the CIDR range
+        if (($check >= $low) && ($check <= $high)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Private internal method to match an IP address against an address range
+     *
+     * @param   string  $ip     IP address to check
+     * @param   string  $range  IP address range to check against
+     * @return  boolean         true if IP falls into the IP range, else false
+     *
+     * Original authors: dh06 and Stephane, taken from
+     * http://www.php.net/manual/en/function.ip2long.php#70707
+     *
+     */
+    function _matchRange ($ip, $range)
+    {
+        $d = strpos ($range, '-');
+        if ($d !== false) {
+           $from = ip2long (trim (substr ($range, 0, $d)));
+           $to = ip2long (trim (substr ($range, $d + 1)));
+
+           $ip = ip2long ($ip);
+           return (($ip >= $from) && ($ip <= $to));
+        }
+
+        return false;
+    }
+
+    /**
+     * Private internal method, this actually processes a given ip
+     * address against a blacklist of IP regular expressions.
+     *
+     * @param $ip    string    IP address of comment poster
+     */
     function _process($ip)
     {
-            global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
+        global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             $uid = $_USER['uid'];
@@ -83,9 +152,19 @@ class IP extends BaseCommand {
         $nrows = DB_numRows($result);
 
         $ans = 0;
-        for ($i = 1; $i <= $nrows; $i++) {
+        for ($i = 0; $i < $nrows; $i++) {
             list ($val) = DB_fetchArray ($result);
-            if ( preg_match ("#$val#i", $ip)) {
+
+            $matches = false;
+            if (strpos ($val, '/') !== false) {
+                $matches = $this->_matchCIDR ($ip, $val);
+            } else if (strpos ($val, '-') !== false) {
+                $matches = $this->_matchRange ($ip, $val);
+            } else {
+                $matches = (preg_match ("#$val#i", $ip) == 0 ? false : true);
+            }
+
+            if ($matches) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log ($LANG_SX00['foundspam'] . $val .
                            $LANG_SX00['foundspam2'] . $uid .
@@ -93,6 +172,7 @@ class IP extends BaseCommand {
                 break;
             }
         }
+
         return $ans;
     }
 }

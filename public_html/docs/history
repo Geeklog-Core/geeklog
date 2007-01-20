@@ -29,20 +29,25 @@ GeekLog History/Changes:
 - Remove the "Are you secure?" (getBent) block from the database as its
   functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
 
-Static Pages Plugin
-------------
-- The static pages editor was looking for the advanced editor template in the
-  wrong place, due to an uninitialized variable (reported by k74) [Dirk]
-
 Links plugin (1.0.2)
 ------------
 - Added "Report Broken Link" function [Oliver]
 
-Polls Plugin (2.0)
+Polls plugin (2.0)
 ------------
 - Added Support for multiple questions grouped into a survey [Oliver]
 - Added Support for closing polls [Oliver]
 - Added Support for hiding poll results of open polls [Oliver]
+
+Spam-X plugin
+-------------
+- Added support for blocking entire IP ranges, using either CIDR notation or
+  simple x.x.x.x-y.y.y.y ranges [Dirk]
+
+Static Pages plugin
+-------------------
+- The static pages editor was looking for the advanced editor template in the
+  wrong place, due to an uninitialized variable (reported by k74) [Dirk]
 
 
 Dec 31, 2006 (1.4.1)
@@ -230,7 +235,7 @@ Nov 5, 2006 (1.4.1b2)
   by gape
 
 Calendar plugin
-------------
+---------------
 - Created a dedicated stylesheet file and include the file only if the URL
   contains the word 'calendar' [Oliver]
 - Tweaked the Calendar search result listing: Removed the Event Description
