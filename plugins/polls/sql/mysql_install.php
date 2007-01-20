@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.3 2007/01/19 18:07:43 ospiess Exp $
+// $Id: mysql_install.php,v 1.4 2007/01/20 02:31:07 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
@@ -83,7 +83,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollvoters']} (
   id int(10) unsigned NOT NULL auto_increment,
-  qid varchar(20) NOT NULL default '',
+  pid varchar(20) NOT NULL default '',
   ipaddress varchar(15) NOT NULL default '',
   date int(10) unsigned default NULL,
   PRIMARY KEY  (id)
