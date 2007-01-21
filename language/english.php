@@ -166,7 +166,8 @@ $LANG01 = array(
     123 => 'All HTML is allowed',
     124 => 'Click to delete all checked items',
     125 => 'Are you sure you want to Delete all checked items?',
-    126 => 'Select or de-select all items'
+    126 => 'Select or de-select all items',
+    127 => 'Permalink'
 );
 
 ###############################################################################
