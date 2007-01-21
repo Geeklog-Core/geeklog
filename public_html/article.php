@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.85 2007/01/11 20:40:40 mjervis Exp $
+// $Id: article.php,v 1.86 2007/01/21 10:13:26 mjervis Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -204,7 +204,7 @@ if ($A['count'] > 0) {
             $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
         }
 
-        DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '{$story->getSid()}') AND (date <= NOW()) AND (draft_flag = 0)");
+        DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '".$story->getSid()."') AND (date <= NOW()) AND (draft_flag = 0)");
 
         // Display whats related
 
