@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Functions needed to handle trackback comments.                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2006 by the following authors:                         |
+// | Copyright (C) 2005-2007 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-trackback.php,v 1.45 2006/10/24 07:50:17 ospiess Exp $
+// $Id: lib-trackback.php,v 1.46 2007/01/27 16:20:55 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -743,7 +743,7 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
 */
 function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
 {
-    global $_CONF, $LANG_TRB, $LANG_CHARSET;
+    global $_CONF, $LANG_TRB;
 
     if (empty ($blog)) {
         $blog = $_CONF['site_name'];
@@ -769,16 +769,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
     $toSend = 'url=' . rawurlencode ($url) . '&title=' . rawurlencode ($title)
             . '&blog_name=' . rawurlencode ($blog) . '&excerpt='
             . rawurlencode ($excerpt);
-
-    if (empty ($LANG_CHARSET)) {
-        $charset = $_CONF['default_charset'];
-
-        if (empty ($charset)) {
-            $charset = 'iso-8859-1';
-        }
-    } else {
-        $charset = $LANG_CHARSET;
-    }
+    $charset = COM_getCharset ();
 
     fputs ($sock, 'POST ' . $target['path'] . $target['query'] . " HTTP/1.0\r\n");
     fputs ($sock, 'Host: ' . $target['host'] . "\r\n");

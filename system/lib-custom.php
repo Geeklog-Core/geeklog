@@ -20,7 +20,7 @@
 // | not include lib-common.php in this file.                                  |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.36 2006/12/14 05:19:58 blaine Exp $
+// $Id: lib-custom.php,v 1.37 2007/01/27 16:20:55 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -411,16 +411,7 @@ function CUSTOM_showBlocks($showblocks)
 /*
 function CUSTOM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0)
 {
-    global $_CONF, $LANG_CHARSET;
-
-    if (empty ($LANG_CHARSET)) {
-        $charset = $_CONF['default_charset'];
-        if (empty ($charset)) {
-            $charset = 'iso-8859-1';
-        }
-    } else {
-        $charset = $LANG_CHARSET;
-    }
+    global $_CONF;
 
     if (empty ($from)) {
         $from = $_CONF['site_name'] . ' <' . $_CONF['site_mail'] . '>';
@@ -433,6 +424,7 @@ function CUSTOM_mail($to, $subject, $message, $from = '', $html = false, $priori
         $headers .= 'X-Priority: ' . $priority . "\r\n";
     }
 
+    $charset = COM_getCharset ();
     if ($html) {
         $headers .= "Content-Type: text/html; charset={$charset}\r\n"
                  .  'Content-Transfer-Encoding: 8bit';

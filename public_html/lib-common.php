@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.613 2007/01/16 07:18:13 ospiess Exp $
+// $Id: lib-common.php,v 1.614 2007/01/27 16:20:55 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -818,8 +818,8 @@ function COM_renderMenu( &$header, $plugin_menu )
 
 function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_CHARSET,
-           $LANG_DIRECTION, $_IMAGE_TYPE, $topic, $_COM_VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
+           $_IMAGE_TYPE, $topic, $_COM_VERBOSE;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -831,16 +831,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     }
 
     // send out the charset header
-
-    if( empty( $LANG_CHARSET )) {
-        $charset = $_CONF['default_charset'];
-        if( empty( $charset )) {
-            $charset = 'iso-8859-1';
-        }
-    } else {
-        $charset = $LANG_CHARSET;
-    }
-    header ('Content-Type: text/html; charset=' . $charset);
+    header( 'Content-Type: text/html; charset=' . COM_getCharset());
 
     // If we reach here then either we have the default theme OR
     // the current theme only needs the default variable substitutions
@@ -1049,21 +1040,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'css_url', $_CONF['layout_url'] . '/style.css' );
     $header->set_var( 'theme', $_CONF['theme'] );
 
-    if( empty( $LANG_CHARSET ))
-    {
-        $charset = $_CONF['default_charset'];
-
-        if( empty( $charset ))
-        {
-            $charset = 'iso-8859-1';
-        }
-    }
-    else
-    {
-        $charset = $LANG_CHARSET;
-    }
-
-    $header->set_var( 'charset', $charset );
+    $header->set_var( 'charset', COM_getCharset())
     if( empty( $LANG_DIRECTION ))
     {
         // default to left-to-right
@@ -2878,21 +2855,9 @@ function COM_isEmail( $email )
 */
 function COM_emailEscape( $string )
 {
-    global $_CONF, $LANG_CHARSET;
+    global $_CONF;
 
-    if( empty( $LANG_CHARSET ))
-    {
-        $charset = $_CONF['default_charset'];
-        if( empty( $charset ))
-        {
-            $charset = 'iso-8859-1';
-        }
-    }
-    else
-    {
-        $charset = $LANG_CHARSET;
-    }
-
+    $charset = COM_getCharset();
     if(( $charset == 'utf-8' ) && ( $string != utf8_decode( $string )))
     {
         if( function_exists( 'iconv_mime_encode' ))
@@ -2961,7 +2926,7 @@ function COM_formatEmailAddress( $name, $address )
 */
 function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc = '' )
 {
-    global $_CONF, $LANG_CHARSET;
+    global $_CONF;
 
     static $mailobj;
 
@@ -2999,19 +2964,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
         }
     }
 
-    if( empty( $LANG_CHARSET ))
-    {
-        $charset = $_CONF['default_charset'];
-        if( empty( $charset ))
-        {
-            $charset = 'iso-8859-1';
-        }
-    }
-    else
-    {
-        $charset = $LANG_CHARSET;
-    }
-
+    $charset = COM_getCharset();
     $headers = array();
 
     $headers['From'] = $from;
@@ -3433,7 +3386,7 @@ function COM_rdfCheck( $bid, $rdfurl, $date, $maxheadlines = 0 )
 */
 function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
 {
-    global $_CONF, $_TABLES, $LANG21, $LANG_CHARSET;
+    global $_CONF, $_TABLES, $LANG21;
 
     // Import the feed handling classes:
     require_once( $_CONF['path_system']
@@ -3469,19 +3422,7 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
         $update = date( 'Y-m-d H:i:s' );
         $result = DB_change( $_TABLES['blocks'], 'rdfupdated', $update,
                                                  'bid', $bid );
-
-        if( empty( $LANG_CHARSET ))
-        {
-            $charset = $_CONF['default_charset'];
-            if( empty( $charset ))
-            {
-                $charset = 'iso-8859-1';
-            }
-        }
-        else
-        {
-            $charset = $LANG_CHARSET;
-        }
+        $charset = COM_getCharset();
 
         // format articles for display
         $readmax = min( $maxheadlines, count( $feed->articles ));
@@ -6075,6 +6016,33 @@ function COM_truncate( $text, $maxlen, $filler = '' )
     }
 
     return $text;
+}
+
+/**
+* Get the current character set
+*
+* @return   string      character set, e.g. 'utf-8'
+*
+* Uses (if available, and in this order)
+* - $LANG_CHARSET (from the current language file)
+* - $_CONF['default_charset'] (from config.php)
+* - 'iso-8859-1' (hard-coded fallback)
+*
+*/
+function COM_getCharset()
+{
+    global $_CONF, $LANG_CHARSET;
+
+    if( empty( $LANG_CHARSET )) {
+        $charset = $_CONF['default_charset'];
+        if( empty( $charset )) {
+            $charset = 'iso-8859-1';
+        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+
+    return $charset;
 }
 
 /**

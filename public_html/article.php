@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.86 2007/01/21 10:13:26 mjervis Exp $
+// $Id: article.php,v 1.87 2007/01/27 16:20:55 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -126,15 +126,7 @@ if ($A['count'] > 0) {
         $story_template->set_var ('page_title',
                 $_CONF['site_name'] . ': ' . $story->displayElements('title'));
         $story_template->set_var ( 'story_title', $story->DisplayElements( 'title' ) );
-        if (empty ($LANG_CHARSET)) {
-            $charset = $_CONF['default_charset'];
-            if (empty( $charset)) {
-                $charset = 'iso-8859-1';
-            }
-        } else {
-            $charset = $LANG_CHARSET;
-        }
-        header ('Content-Type: text/html; charset='. $charset);
+        header ('Content-Type: text/html; charset=' . COM_getCharset ());
         $story_template->set_var ('story_date', $story->displaElements('date'));
 
         if ($_CONF['contributedbyline'] == 1) {

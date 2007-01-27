@@ -3,6 +3,9 @@ GeekLog History/Changes:
 ??? ??, 2007 (1.4.x)
 ------------
 
+- Introduced COM_getCharset which returns the currently used character set (to
+  avoid code duplication). It should be save to simply use $LANG_CHARSET in
+  most cases, though [Dirk]
 - Added optional Wikitext postmode for stories [Oliver]
 - Addded optional noreply-email address option to config.php to prevent 
   spammers retrieving the admin's email address from registering online [Oliver]
