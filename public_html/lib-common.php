@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.614 2007/01/27 16:20:55 dhaun Exp $
+// $Id: lib-common.php,v 1.615 2007/01/27 16:57:30 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1040,7 +1040,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'css_url', $_CONF['layout_url'] . '/style.css' );
     $header->set_var( 'theme', $_CONF['theme'] );
 
-    $header->set_var( 'charset', COM_getCharset())
+    $header->set_var( 'charset', COM_getCharset());
     if( empty( $LANG_DIRECTION ))
     {
         // default to left-to-right
