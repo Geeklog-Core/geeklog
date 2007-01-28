@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.87 2007/01/27 16:20:55 dhaun Exp $
+// $Id: article.php,v 1.88 2007/01/28 10:15:03 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -292,7 +292,7 @@ if ($A['count'] > 0) {
             require_once ( $_CONF['path_system'] . 'lib-comment.php' );
             $story_template->set_var ('commentbar',
                     CMT_userComments ($story->getSid(), $story->displayElements('title'), 'article',
-                                      $order, $mode, 0, $page, false, $delete_option));
+                                      $order, $mode, 0, $page, false, $delete_option, $story->displayElements('commentcode')));
         }
         if ($_CONF['trackback_enabled'] && ($story->displayElements('trackbackcode') >= 0) &&
                 $show_comments) {

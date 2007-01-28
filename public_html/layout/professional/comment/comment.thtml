@@ -5,7 +5,7 @@
   <div style="vertical-align: top">{comments}</div>
   <div>
    <span {hide_if_preview}>
-    [ <a href="{reply_link}">{lang_replytothis}</a> {parent_link} {delete_option} | <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="self bookmark" title="{lang_permlink}">#</a> ]
+    [ {reply_option} {parent_link} {delete_option} <a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="self bookmark" title="{lang_permlink}">#</a> ]
    </span>
   </div>
 </div>

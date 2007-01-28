@@ -1451,6 +1451,7 @@ set identity_insert {$_TABLES['blocks']} off
 
 $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (0,'Comments Enabled')";
 $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (-1,'Comments Disabled')";
+$_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Comments Closed')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('flat','Flat')";
 $_SQL[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('nested','Nested')";

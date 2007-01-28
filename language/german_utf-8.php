@@ -1467,7 +1467,8 @@ $LANG_ADMIN = array (
 
 $LANG_commentcodes = array(
     0   => 'Kommentare erlaubt',
-    -1  => 'Keine Kommentare'
+    -1  => 'Keine Kommentare',
+    1   => 'Kommentare erlaubt'
 );
 
 $LANG_commentmodes = array(

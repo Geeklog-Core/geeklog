@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.80 2007/01/27 08:19:10 mjervis Exp $
+// $Id: lib-story.php,v 1.81 2007/01/28 10:15:03 dhaun Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -312,14 +312,17 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         . '/comment.php?sid=' . $story->getsid()
                         . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
             }
-            $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
+            if( $story->DisplayElements( 'commentcode' ) == 0 )
+            {
+                $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
                             . $story->getSid() . '&amp;pid=0&amp;type=article';
-            $article->set_var( 'post_comment_link','<a href="'
-                    . $postCommentUrl . '">' . $LANG01[60] . '</a>' );
-            $article->set_var( 'lang_post_comment', $LANG01[60] );
-            $article->set_var( 'start_post_comment_anchortag',
-                               '<a href="' . $postCommentUrl . '">' );
-            $article->set_var( 'end_post_comment_anchortag', '</a>' );
+                $article->set_var( 'post_comment_link','<a href="'
+                            . $postCommentUrl . '">' . $LANG01[60] . '</a>' );
+                $article->set_var( 'lang_post_comment', $LANG01[60] );
+                $article->set_var( 'start_post_comment_anchortag',
+                                   '<a href="' . $postCommentUrl . '">' );
+                $article->set_var( 'end_post_comment_anchortag', '</a>' );
+            }
         }
 
         if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) &&

@@ -18,7 +18,7 @@
             <input type="hidden" name="sid" value="{sid}">
             <input type="hidden" name="pid" value="0">
             <input type="hidden" name="type" value="{comment_type}">
-            <input type="submit" name="reply" value="{lang_reply}">
+            <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}">
         </fieldset>
     </form>
 </div>

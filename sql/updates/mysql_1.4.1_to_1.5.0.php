@@ -28,4 +28,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
 
 $_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) SELECT pid, topic FROM {$_TABLES['polltopics']}";
 
+// new comment code: close comments
+$_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Comments Closed')";
+
 ?>

@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Polls      |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.63 2007/01/16 06:10:38 ospiess Exp $
+// $Id: functions.inc,v 1.64 2007/01/28 10:15:03 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -111,7 +111,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 
     $commentcode = DB_getItem ($_TABLES['polltopics'], 'commentcode',
                                "pid = '$id'");
-    if ($commentcode < 0) {
+    if ($commentcode != 0) {
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
@@ -899,10 +899,12 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                     $Q['perm_anon']) == 3 ? true : false);
                 require_once $_CONF['path_system'] . 'lib-comment.php';
                 $retval .= CMT_userComments($pid, $Q['topic'], 'polls',
-                                             $order, $mode, 0, 1, false, $delete_option);
+                                            $order, $mode, 0, 1, false,
+                                            $delete_option, $Q['commentcode']);
             }
         }
     }
+
     return $retval;
 }
 
@@ -970,7 +972,7 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
 
     $retval = '';
 
-    $sql = "SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['polltopics']} WHERE (pid = '$id')" . COM_getPermSQL('AND') . ' GROUP BY pid';
+    $sql = "SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['polltopics']} WHERE (pid = '$id')" . COM_getPermSQL('AND') . ' GROUP BY pid';
     $result = DB_query ($sql);
     $A = DB_fetchArray ($result);
     $allowed = $A['count'];
@@ -981,7 +983,8 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
                     $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                     $A['perm_anon']) == 3));
         $retval .= CMT_userComments ($id, $title, 'polls', $order, $format,
-                                     $cid, $page, $view, $delete_option);
+                                     $cid, $page, $view, $delete_option,
+                                     $A['commentcode']);
     } else {
         $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))

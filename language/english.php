@@ -1468,7 +1468,8 @@ $LANG_ADMIN = array (
 
 $LANG_commentcodes = array(
     0   => 'Comments Enabled',
-    -1  => 'Comments Disabled'
+    -1  => 'Comments Disabled',
+    1   => 'Comments Closed'
 );
 
 $LANG_commentmodes = array(

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.50 2007/01/14 16:44:49 dhaun Exp $
+// $Id: lib-comment.php,v 1.51 2007/01/28 10:15:03 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -50,17 +50,18 @@ if( $_CONF['allow_user_photo'] )
 *
 * Prints the control that allows the user to interact with Geeklog Comments
 *
-* @param        string      $sid        ID of item in question
-* @param        string      $title      Title of item
-* @param        string      $type       Type of item (i.e. story, photo, etc)
-* @param        string      $order      Order that comments are displayed in
-* @param        string      $mode       Mode (nested, flat, etc.)
+* @param    string  $sid    ID of item in question
+* @param    string  $title  Title of item
+* @param    string  $type   Type of item (i.e. story, photo, etc)
+* @param    string  $order  Order that comments are displayed in
+* @param    string  $mode   Mode (nested, flat, etc.)
+* @param    int     $ccode  Comment code: -1=no comments, 0=allowed, 1=closed
+* @return   string          HTML Formated comment bar
 * @see CMT_userComments
 * @see CMT_commentChildren
-* @return     string   HTML Formated comment bar
 *
 */
-function CMT_commentBar( $sid, $title, $type, $order, $mode )
+function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
@@ -79,6 +80,11 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'lang_reply', $LANG01[60] );
     $commentbar->set_var( 'lang_disclaimer', $LANG01[26] );
 
+    if( $ccode == 0 ) {
+        $commentbar->set_var( 'reply_hidden_or_submit', 'submit' );
+    } else {
+        $commentbar->set_var( 'reply_hidden_or_submit', 'hidden' );
+    }
     $commentbar->set_var( 'story_title', stripslashes( $title ));
     $commentbar->set_var( 'num_comments', COM_numberFormat( $nrows ));
     $commentbar->set_var( 'comment_type', $type );
@@ -182,16 +188,17 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
 * -For previews, &$comments is assumed to be an associative array containing
 *  data for a single comment.
 *
-* @param     array      &$comments Database result set of comments to be printed
-* @param     string     $mode      'flat', 'threaded', etc
-* @param     string     $type      Type of item (article, poll, etc.)
-* @param     string     $order     How to order the comments 'ASC' or 'DESC'
-* @param     boolean    $delete_option   if current user can delete comments
-* @param     boolean    $preview   Preview display (for edit) or not
-* @return    string     HTML       Formated Comment
+* @param    array    &$comments Database result set of comments to be printed
+* @param    string   $mode      'flat', 'threaded', etc
+* @param    string   $type      Type of item (article, poll, etc.)
+* @param    string   $order     How to order the comments 'ASC' or 'DESC'
+* @param    boolean  $delete_option   if current user can delete comments
+* @param    boolean  $preview   Preview display (for edit) or not
+* @param    int      $ccode     Comment code: -1=no comments, 0=allowed, 1=closed
+* @return   string   HTML       Formated Comment
 *
 */
-function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
+function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false, $ccode = 0 )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $MESSAGE, $_IMAGE_TYPE;
 
@@ -205,12 +212,18 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     // generic template variables
     $template->set_var( 'site_url', $_CONF['site_url'] );
     $template->set_var( 'layout_url', $_CONF['layout_url'] );
-    $template->set_var( 'lang_replytothis', $LANG01[43] );
-    $template->set_var( 'lang_reply', $LANG01[25] );
     $template->set_var( 'lang_authoredby', $LANG01[42] );
     $template->set_var( 'lang_on', $LANG01[36] );
     $template->set_var( 'lang_permlink', $LANG01[120] );
     $template->set_var( 'order', $order );
+
+    if( $ccode == 0 ) {
+        $template->set_var( 'lang_replytothis', $LANG01[43] );
+        $template->set_var( 'lang_reply', $LANG01[25] );
+    } else {
+        $template->set_var( 'lang_replytothis', '' );
+        $template->set_var( 'lang_reply', '' );
+    }
 
     // Make sure we have a default value for comment indentation
     if( !isset( $_CONF['comment_indent'] )) {
@@ -313,7 +326,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         if( $mode == 'threaded' && $A['pid'] != 0 && $indent == 0 ) {
             $result = DB_query( "SELECT title,pid FROM {$_TABLES['comments']} WHERE cid = '{$A['pid']}'" );
             $P = DB_fetchArray( $result );
-            if ($P['pid'] != 0) {
+            if( $P['pid'] != 0 ) {
                 $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
                        . $A['sid'] . '&amp;title=' . urlencode( htmlspecialchars( $P['title'] ))
                        . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
@@ -324,7 +337,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                        . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;cid='
                        . $A['pid'] . '&amp;format=threaded';
             }
-            $template->set_var( 'parent_link', "| <a href=\"$plink\">{$LANG01[44]}</a>");
+            $template->set_var( 'parent_link', '<a href="' . $plink . '">'
+                                               . $LANG01[44] . '</a> | ');
         } else {
             $template->set_var( 'parent_link', '');
         }
@@ -335,27 +349,27 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // If deletion is allowed, displays delete link
         if( $delete_option ) {
-            $deloption = '| <a href="' . $_CONF['site_url']
+            $deloption = '<a href="' . $_CONF['site_url']
                        . '/comment.php?mode=delete&amp;cid='
                        . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type='
                        . $type . '" onclick="return confirm(\'' . $MESSAGE[76]
-                       . '\');">' . $LANG01[28] . '</a> ';
+                       . '\');">' . $LANG01[28] . '</a> | ';
             if( !empty( $A['ipaddress'] )) {
                 if( empty( $_CONF['ip_lookup'] )) {
-                    $deloption .= '| ' . $A['ipaddress'] . ' ';
+                    $deloption .= $A['ipaddress'] . '  | ';
                 } else {
                     $iplookup = str_replace( '*', $A['ipaddress'],
                                              $_CONF['ip_lookup'] );
-                    $deloption .= '| <a href="' . $iplookup . '">'
-                               . $A['ipaddress'] . '</a> ';
+                    $deloption .= '<a href="' . $iplookup . '">'
+                               . $A['ipaddress'] . '</a> | ';
                 }
             }
             $template->set_var( 'delete_option', $deloption );
         } else if( !empty( $_USER['username'] )) {
-            $reportthis = ' | <a href="' . $_CONF['site_url']
+            $reportthis = '<a href="' . $_CONF['site_url']
                         . '/comment.php?mode=report&amp;cid=' . $A['cid']
                         . '&amp;type=' . $type . '" title="' . $LANG01[110]
-                        . '">' . $LANG01[109] . '</a> ';
+                        . '">' . $LANG01[109] . '</a> | ';
             $template->set_var( 'delete_option', $reportthis );
         } else {
             $template->set_var( 'delete_option', '' );
@@ -380,9 +394,18 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A['comment'] = PLG_replaceTags( $A['comment'] );
 
         // create a reply to link
-        $reply_link = "{$_CONF['site_url']}/comment.php?sid={$A['sid']}&amp;pid={$A['cid']}"
-                    . "&amp;title=" . urlencode($A['title']) . "&amp;type={$A['type']}";
-        $template->set_var( 'reply_link', $reply_link);
+        $reply_link = '';
+        if( $ccode == 0 ) {
+            $reply_link = $_CONF['site_url'] . '/comment.php?sid=' . $A['sid']
+                        . '&amp;pid=' . $A['cid'] . '&amp;title='
+                        . urlencode( $A['title'] ) . '&amp;type=' . $A['type'];
+            $reply_option = '<a href="' . $reply_link . '">' . $LANG01[43]
+                          . '</a> | ';
+            $template->set_var( 'reply_option', $reply_option );
+        } else {
+            $template->set_var( 'reply_option', '' );
+        }
+        $template->set_var( 'reply_link', $reply_link );
 
         // format title for display, must happen after reply_link is created
         $A['title'] = htmlspecialchars( $A['title'] );
@@ -410,21 +433,22 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 *
 * Begins displaying user comments for an item
 *
-* @param        string      $sid       ID for item to show comments for
-* @param        string      $title     Title of item
-* @param        string      $type      Type of item (article, poll, etc.)
-* @param        string      $order     How to order the comments 'ASC' or 'DESC'
-* @param        string      $mode      comment mode (nested, flat, etc.)
-* @param        int         $pid       id of parent comment
-* @param        int         $page      page number of comments to display
-* @param        boolean     $cid       true if $pid should be interpreted as a cid instead
-* @param        boolean     $delete_option   if current user can delete comments
+* @param    string      $sid       ID for item to show comments for
+* @param    string      $title     Title of item
+* @param    string      $type      Type of item (article, poll, etc.)
+* @param    string      $order     How to order the comments 'ASC' or 'DESC'
+* @param    string      $mode      comment mode (nested, flat, etc.)
+* @param    int         $pid       id of parent comment
+* @param    int         $page      page number of comments to display
+* @param    boolean     $cid       true if $pid should be interpreted as a cid instead
+* @param    boolean     $delete_option   if current user can delete comments
+* @param    int         $ccode     Comment code: -1=no comments, 0=allowed, 1=closed
+* @return   string  HTML Formated Comments
 * @see function CMT_commentBar
 * @see function CMT_commentChildren
-* @return     string  HTML Formated Comments
 *
 */
-function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $cid = false, $delete_option = false )
+function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $cid = false, $delete_option = false, $ccode = 0 )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
@@ -463,7 +487,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
     $template->set_var( 'site_url', $_CONF['site_url'] );
     $template->set_var( 'layout_url', $_CONF['layout_url'] );
     $template->set_var( 'commentbar',
-                        CMT_commentBar( $sid, $title, $type, $order, $mode));
+            CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode ));
     $template->set_var( 'sid', $sid );
     $template->set_var( 'comment_type', $type );
 
@@ -552,7 +576,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $thecomments = '';
         $result = DB_query( $q );
         $thecomments .= CMT_getComment( $result, $mode, $type, $order,
-                                        $delete_option );
+                                        $delete_option, false, $ccode );
 
         // Pagination
         $tot_pages =  ceil( $count / $limit );

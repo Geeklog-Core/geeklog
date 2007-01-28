@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.112 2006/12/11 11:49:17 dhaun Exp $
+// $Id: comment.php,v 1.113 2007/01/28 10:15:03 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -203,9 +203,9 @@ function handleView($view = true)
 
     switch ( $type ) {
         case 'article':
-            $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
+            $sql = 'SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, perm_group, '
                  . "perm_members, perm_anon FROM {$_TABLES['stories']} WHERE (sid = '$sid') "
-                 . 'AND (draft_flag = 0) AND (commentcode = 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
+                 . 'AND (draft_flag = 0) AND (commentcode >= 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
                  . COM_getTopicSQL('AND') . ' GROUP BY sid,owner_id, group_id, perm_owner, perm_group,perm_members, perm_anon ';
             $result = DB_query ($sql);
             $B = DB_fetchArray ($result);
@@ -225,7 +225,8 @@ function handleView($view = true)
                     $page = COM_applyFilter ($_REQUEST['page'], true);
                 }
                 $display .= CMT_userComments ($sid, $title, $type, $order,
-                                $format, $cid, $page, $view, $delete_option);
+                                $format, $cid, $page, $view, $delete_option,
+                                $B['commentcode']);
             } else {
                 $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                     COM_getBlockTemplate ('_msg_block', 'header'))

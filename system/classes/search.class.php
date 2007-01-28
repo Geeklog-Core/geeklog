@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.57 2006/10/07 08:38:24 dhaun Exp $
+// $Id: search.class.php,v 1.58 2007/01/28 10:15:03 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -375,7 +375,7 @@ class Search {
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "WHERE ";
             $sql .= " {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND ";
-            $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode = 0) AND ({$_TABLES['stories']}.date <= NOW()) ";
+            $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0) AND ({$_TABLES['stories']}.date <= NOW()) ";
 
             if (!empty ($this->_query)) {
                 if($this->_keyType == 'phrase') {
