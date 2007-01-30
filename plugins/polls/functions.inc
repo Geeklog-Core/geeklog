@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.65 2007/01/30 19:55:05 ospiess Exp $
+// $Id: functions.inc,v 1.66 2007/01/30 20:03:45 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -606,6 +606,17 @@ function POLLS_pollVote($pid, $showall=true)
                     $poll->set_var('poll_comments_url', '');
                 }
                 $retval =  $poll->finish($poll->parse('output', 'block')) . LB;
+
+                if($showall == true && $P['commentcode'] >= 0 ) {
+                    $delete_option = (SEC_hasRights('polls.edit') &&
+                        SEC_hasAccess($P['owner_id'], $P['group_id'],
+                        $P['perm_owner'], $P['perm_group'], $P['perm_members'],
+                        $P['perm_anon']) == 3 ? true : false);
+                    require_once $_CONF['path_system'] . 'lib-comment.php';
+                    $retval .= CMT_userComments($pid, $P['topic'], 'polls',
+                                                $order, $mode, 0, 1, false,
+                                                $delete_option, $P['commentcode']);
+                }
             }
         }
     } else {
