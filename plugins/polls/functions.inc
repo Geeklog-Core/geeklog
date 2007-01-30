@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.64 2007/01/28 10:15:03 dhaun Exp $
+// $Id: functions.inc,v 1.65 2007/01/30 19:55:05 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -632,7 +632,6 @@ function POLLS_pollVote($pid, $showall=true)
 function POLLS_showPoll($size, $pid='', $showall=false )
 {
     global $_CONF, $_PO_CONF, $_TABLES;
-
     $retval = '';
 
     DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_PO_CONF['polladdresstime']}");
@@ -749,6 +748,7 @@ function POLLS_pollsave($pid, $qid, $aid)
 */
 function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
 {
+
     global $_CONF, $_TABLES, $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE,
         $_USER, $LANG25, $_USER;
 
@@ -757,19 +757,19 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
         . "perm_owner,perm_group,perm_members,perm_anon "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'";
     $topic = DB_query($topic_sql);
-    $Q = DB_fetchArray($topic);
+    $P = DB_fetchArray($topic);
 
-    if(SEC_hasAccess($Q['owner_id'], $Q['group_id'], $Q['perm_owner'],
-        $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']) == 0 ) {
+    if(SEC_hasAccess($P['owner_id'], $P['group_id'], $P['perm_owner'],
+        $P['perm_group'], $P['perm_members'], $P['perm_anon']) == 0 ) {
         return $retval;
     }
 
     if ((
-            $Q['hideresults'] == 1
+            $P['hideresults'] == 1
         ) || (
-            ($Q['hideresults'] == 0) && ($_USER['uid'] == $Q['owner_id'])
+            ($P['hideresults'] == 0) && ($_USER['uid'] == $P['owner_id'])
         ) || (
-            ($Q['hideresults'] == 0) && (SEC_inGroup('Root'))
+            ($P['hideresults'] == 0) && (SEC_inGroup('Root'))
         )
     ) {
         $retval = '';
@@ -799,12 +799,12 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 'votes_num' => 'pollvotes_num.thtml' ));
             $poll->set_var('site_url', $_CONF['site_url']);
             $poll->set_var('layout_url', $_CONF['layout_url']);
-            $poll->set_var('poll_topic', $Q['topic']);
+            $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_id', $pid);
-            $poll->set_var('num_votes', COM_numberFormat($Q['voters']));
+            $poll->set_var('num_votes', COM_numberFormat($P['voters']));
             $poll->set_var('lang_votes', $LANG_POLLS['votes']);
-            $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],
-                $T['perm_group'],$T['perm_members'],$T['perm_anon']);
+            $access = SEC_hasAccess($P['owner_id'],$P['group_id'],$P['perm_owner'],
+                $P['perm_group'],$P['perm_members'],$P['perm_anon']);
             if ($access == 3) {
                 $editlink .= ' <a href="' . $_CONF['site_admin_url']
                     . '/plugins/polls/index.php?mode=edit&amp;pid='
@@ -874,7 +874,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 }
             }
 
-            if($Q['commentcode'] >= 0 ) {
+            if($P['commentcode'] >= 0 ) {
                 $num_comments = DB_count($_TABLES['comments'],
                         array('sid', 'type' ), array($pid, 'polls' ));
                 $poll->set_var('num_comments',
@@ -892,15 +892,15 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
 
             $retval .= $poll->finish($poll->parse('output', 'result' ));
 
-            if($scale > 399 && $Q['commentcode'] >= 0 ) {
+            if($scale > 399 && $P['commentcode'] >= 0 ) {
                 $delete_option = (SEC_hasRights('polls.edit') &&
-                    SEC_hasAccess($Q['owner_id'], $Q['group_id'],
-                    $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
-                    $Q['perm_anon']) == 3 ? true : false);
+                    SEC_hasAccess($P['owner_id'], $P['group_id'],
+                    $P['perm_owner'], $P['perm_group'], $P['perm_members'],
+                    $P['perm_anon']) == 3 ? true : false);
                 require_once $_CONF['path_system'] . 'lib-comment.php';
-                $retval .= CMT_userComments($pid, $Q['topic'], 'polls',
+                $retval .= CMT_userComments($pid, $P['topic'], 'polls',
                                             $order, $mode, 0, 1, false,
-                                            $delete_option, $Q['commentcode']);
+                                            $delete_option, $P['commentcode']);
             }
         }
     }
@@ -972,7 +972,11 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
 
     $retval = '';
 
-    $sql = "SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon FROM {$_TABLES['polltopics']} WHERE (pid = '$id')" . COM_getPermSQL('AND') . ' GROUP BY pid';
+    $sql = "SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, "
+        . "perm_group, perm_members, perm_anon "
+        . "FROM {$_TABLES['polltopics']} "
+        . "WHERE (pid = '$id')" . COM_getPermSQL('AND')
+        . ' GROUP BY pid';
     $result = DB_query ($sql);
     $A = DB_fetchArray ($result);
     $allowed = $A['count'];
