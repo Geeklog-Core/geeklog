@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.80 2007/01/31 08:10:46 ospiess Exp $
+// $Id: functions.inc,v 1.81 2007/01/31 08:26:31 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -831,18 +831,19 @@ function SP_render_content ($sp_content, $sp_php)
     global $_SP_CONF, $LANG_STATIC;
 
     $retval = '';
+    $php_retval = '';
 
     if ($_SP_CONF['allow_php'] == 1) {
         // Check for type (ie html or php)
         if ($sp_php == 1) {
-            $sp_content .= eval ($sp_content);
+            $php_retval = eval ($sp_content);
         } else if ($sp_php == 2) {
             ob_start ();
             eval ($sp_content);
-            $sp_content .= ob_get_contents ();
+            $php_retval = ob_get_contents ();
             ob_end_clean ();
         }
-        $retval .= PLG_replacetags ($sp_content);
+        $retval .= PLG_replacetags ($php_retval);
     } else {
         if ($sp_php != 0) {
             COM_errorLog ("PHP in static pages is disabled. Can not display page '$page'.", 1);
