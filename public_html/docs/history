@@ -53,6 +53,7 @@ Static Pages plugin
 -------------------
 - The static pages editor was looking for the advanced editor template in the
   wrong place, due to an uninitialized variable (reported by k74) [Dirk]
+- Allow static pages to replace tags also on PHP-generated conten [Oliver]
 
 
 Dec 31, 2006 (1.4.1)
