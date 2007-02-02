@@ -2,7 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
-
+- Show autotags in story editor to Admin even if all HTML is allowed [Oliver]
 - Allow comments to be closed, i.e. display the existing comments but don't
   accept any new ones [Dirk]
 - Introduced COM_getCharset which returns the currently used character set (to
