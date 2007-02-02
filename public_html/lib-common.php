@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.616 2007/01/28 10:15:35 dhaun Exp $
+// $Id: lib-common.php,v 1.617 2007/02/02 06:17:12 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3491,44 +3491,45 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
     {
         if( !$list_only )
         {
-            $retval .= '<span class="warningsmall">' . $LANG01[123] . '</span>';
+            $retval .= '<span class="warningsmall">' . $LANG01[123] . '</span>, ';
         }
 
-        return $retval;
-    }
-
-    if( !$list_only )
-    {
-        $retval .= '<span class="warningsmall">' . $LANG01[31] . ' ';
-    }
-
-    $allow_page_break = false;
-    if( empty( $permissions ) || !SEC_hasRights( $permissions ) ||
-            empty( $_CONF['admin_html'] ))
-    {
-        $html = $_CONF['user_html'];
     }
     else
     {
-        $html = array_merge_recursive( $_CONF['user_html'],
-                                       $_CONF['admin_html'] );
-        if( $_CONF['allow_page_breaks'] == 1 )
+        if( !$list_only )
         {
-            $perms = explode( ',', $permissions );
-            foreach( $perms as $p )
+            $retval .= '<span class="warningsmall">' . $LANG01[31] . ' ';
+        }
+
+        $allow_page_break = false;
+        if( empty( $permissions ) || !SEC_hasRights( $permissions ) ||
+                empty( $_CONF['admin_html'] ))
+        {
+            $html = $_CONF['user_html'];
+        }
+        else
+        {
+            $html = array_merge_recursive( $_CONF['user_html'],
+                                           $_CONF['admin_html'] );
+            if( $_CONF['allow_page_breaks'] == 1 )
             {
-                if( substr( $p, 0, 6 ) == 'story.' )
+                $perms = explode( ',', $permissions );
+                foreach( $perms as $p )
                 {
-                    $allow_page_break = true;
-                    break;
+                    if( substr( $p, 0, 6 ) == 'story.' )
+                    {
+                        $allow_page_break = true;
+                        break;
+                    }
                 }
             }
         }
-    }
 
-    foreach( $html as $tag => $attr )
-    {
-        $retval .= '&lt;' . $tag . '&gt;, ';
+        foreach( $html as $tag => $attr )
+        {
+            $retval .= '&lt;' . $tag . '&gt;, ';
+        }
     }
 
     $retval .= '[code]';
