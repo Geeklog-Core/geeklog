@@ -2,6 +2,9 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Added {story_topic_image_no_align} and {story_anchortag_and_image_no_align}
+  in stories so that you have access to the topic image without the alignment
+  (feature request #410) [Dirk]
 - Show autotags in story editor to Admin even if all HTML is allowed [Oliver]
 - Allow comments to be closed, i.e. display the existing comments but don't
   accept any new ones [Dirk]

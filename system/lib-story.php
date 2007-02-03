@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.81 2007/01/28 10:15:03 dhaun Exp $
+// $Id: lib-story.php,v 1.82 2007/02/03 15:47:26 dhaun Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -161,13 +161,21 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         if( !empty( $imageurl ))
         {
             $imageurl = COM_getTopicImageUrl( $imageurl );
-            $topicimage = '<img align="' . $_CONF['article_image_align']
-                        . '" src="' . $imageurl . '" alt="' . $topicname
-                        . '" title="' . $topicname . '">';
+            $article->set_var( 'story_topic_image_url', $imageurl );
+            $topicimage = '<img src="' . $imageurl . '" align="'
+                        . $_CONF['article_image_align'] . '" alt="'
+                        . $topicname . '" title="' . $topicname . '">';
             $article->set_var( 'story_anchortag_and_image', '<a href="'
                         . $topicurl . '" rel="category tag">' . $topicimage
                         . '</a>' );
             $article->set_var( 'story_topic_image', $topicimage );
+            $topicimage_noalign = '<img src="' . $imageurl . '" alt="'
+                        . $topicname . '" title="' . $topicname . '">';
+            $article->set_var( 'story_anchortag_and_image_no_align', '<a href="'
+                        . $topicurl . '" rel="category tag">'
+                        . $topicimage_noalign . '</a>' );
+            $article->set_var( 'story_topic_image_no_align',
+                               $topicimage_noalign );
         }
     }
     $article->set_var( 'story_topic_url', $topicurl );
