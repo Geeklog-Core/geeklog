@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the CAlendar   |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.61 2006/12/18 06:45:37 ospiess Exp $
+// $Id: functions.inc,v 1.62 2007/02/03 17:29:33 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1457,11 +1457,11 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         $sql .= "OR title LIKE '%$mysearchterm%') ";
     }
 
-    if (!empty($dateStart) AND !empty($dateEnd)) {
-        $delim = substr($dateStart, 4, 1);
+    if (!empty($datestart) AND !empty($dateend)) {
+        $delim = substr($datestart, 4, 1);
         if (!empty($delim)) {
-            $DS = explode($delim, $dateStart);
-            $DE = explode($delim, $dateEnd);
+            $DS = explode($delim, $datestart);
+            $DE = explode($delim, $dateend);
             $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
             $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
             $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
