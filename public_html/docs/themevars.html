@@ -344,9 +344,20 @@ display preferences:</p>
     <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
     <td>Topic icon for the story's topic, enclosed in a link to the site's
         index page, sorted by topic.</td></tr>
+<tr><td><code>story_anchortag_and_image_no_align</code></td>
+    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
+    <td>Same as <code>{story_anchortag_and_image}</code> but without the
+        <code>align</code> attribute for the topic image.</td></tr>
 <tr><td><code>story_topic_image</code></td>
-    <td><code>&lt;img align="right" src="http://www.example.com/<br>images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
+    <td><code>&lt;img src="http://www.example.com/<br>images/topics/topic_gl.gif" align="right" alt="Geeklog" title="Geeklog"&gt;</code></td>
     <td>Topic icon for the story.</td></tr>
+<tr><td><code>story_topic_image_no_align</code></td>
+    <td><code>&lt;img src="http://www.example.com/<br>images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
+    <td>Same as <code>{story_topic_image}</code> but without the
+        <code>align</code> attribute for the topic image.</td></tr>
+<tr><td><code>story_topic_image_url</code></td>
+    <td><code>http://www.example.com/<br>images/topics/topic_gl.gif</code></td>
+    <td>Just the URL of the topic icon.</td></tr>
 <tr><td><code>story_topic_id</code></td>
     <td>General</td>
     <td>Id (internal name) of the topic, e.g. to be used in links.</td></tr>
