@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.103 2007/01/13 11:11:02 ospiess Exp $
+// $Id: moderation.php,v 1.104 2007/02/03 20:36:53 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -600,7 +600,7 @@ function moderateusers ($uid, $action, $count)
         foreach($_POST['delitem'] as $del_uid) {
             $del_uid = COM_applyFilter($del_uid,true);
             if ($del_uid > 1) {
-                USER_deleteAccount ($uid[$i]);
+                USER_deleteAccount ($del_uid);
             }
         }
     }
