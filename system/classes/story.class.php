@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.3 2007/01/17 09:22:59 ospiess Exp $
+// $Id: story.class.php,v 1.4 2007/02/04 10:07:04 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -185,7 +185,7 @@ class Story
                               'story_trackbacks' => array(STORY_AL_NUMERIC, '_trackbacks'),
                               'owner_id' => array(STORY_AL_NUMERIC, '_owner_id'),
                               'group_id' => array(STORY_AL_NUMERIC, '_group_id'),
-                              'type' => array(STORY_AL_ALPHANUM, '_type'),
+                              'type' => array(STORY_AL_ALPHANUM, 'type'),
                               'hits' => array(STORY_AL_NUMERIC, '_hits'),
                               'comments' => array(STORY_AL_NUMERIC, '_comments'),
                               'trackbacks' => array(STORY_AL_NUMERIC, '_trackbacks')
@@ -231,6 +231,7 @@ class Story
         }
         // Overwrite the date with the timestamp.
         $this->_date = $story['unixdate'];
+        $this->_expire = $story['expireunix'];
         // Store the original SID
         $this->_originalSid = $this->_sid;
     }
@@ -255,13 +256,13 @@ class Story
         {
             $sql = array();
 
-            $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
+            $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, "
               . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
               . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
               . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
 
             $sql['mssql'] = "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.in_transit, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
-              . " UNIX_TIMESTAMP(s.date) AS unixdate, "
+              . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, "
               . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl "
               . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t "
               . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
@@ -502,7 +503,7 @@ class Story
             DB_query( $sql );
         }
 
-        if( $this->_type == 'submission' )
+        if( $this->type == 'submission' )
         {
             /* there might be a submission, clean it up */
             DB_delete ($_TABLES['storysubmission'], 'sid', $checksid);
@@ -531,7 +532,15 @@ class Story
         // Handle Magic GPC Garbage:
         while( list($key, $value) = each($array) )
         {
+            if( !is_array( $value ) )
+            {
             $array[$key] = COM_stripslashes($value);
+            } else {
+                while( list($subkey, $subvalue) = each( $value ) )
+                {
+                    $value[$subkey] = COM_stripslashes( $subvalue );
+                }   
+            }            
         }
 
         /* Load the trivial stuff: */
@@ -917,9 +926,6 @@ class Story
      */
     function EditElements($item='title')
     {
-        if (empty ($this->_expire) || (date('Y', strtotime($this->_expire)) < 2000)) {
-            $this->_expire = time();
-        }
         switch(strtolower($item))
         {
             case 'unixdate':
@@ -1266,6 +1272,8 @@ class Story
             $this->_statuscode = 0;
         }
 
+        if( array_key_exists( 'expire_ampm', $array ) )
+        {
         $expire_ampm = COM_applyFilter ($array['expire_ampm']);
         $expire_hour = COM_applyFilter ($array['expire_hour'], true);
         $expire_minute = COM_applyFilter ($array['expire_minute'], true);
@@ -1273,8 +1281,6 @@ class Story
         $expire_year = COM_applyFilter ($array['expire_year'], true);
         $expire_month = COM_applyFilter ($array['expire_month'], true);
         $expire_day = COM_applyFilter ($array['expire_day'], true);
-
-        if (isset ($expire_hour))  {
             if ($expire_ampm == 'pm') {
                 if ($expire_hour < 12) {
                     $expire_hour = $expire_hour + 12;
