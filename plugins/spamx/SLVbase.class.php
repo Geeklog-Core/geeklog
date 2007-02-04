@@ -9,7 +9,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: SLVbase.class.php,v 1.5 2006/12/10 08:57:49 dhaun Exp $
+* $Id: SLVbase.class.php,v 1.6 2007/02/04 22:09:29 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'SLVbase.class.php') !== false) {
@@ -156,7 +156,8 @@ class SLVbase {
                         $comment, $matches );
         for ($i = 0; $i < count ($matches[0]); $i++) {
             $url = $matches[1][$i];
-            if (strpos ($url, $_CONF['site_url']) === 0) {
+            if (!empty ($_CONF['site_url']) &&
+                    strpos ($url, $_CONF['site_url']) === 0) {
                 // skip links to our own site
                 continue;
             } else {

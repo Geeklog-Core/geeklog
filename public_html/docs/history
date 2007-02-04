@@ -51,6 +51,8 @@ Polls plugin (2.0)
 
 Spam-X plugin
 -------------
+- Fixed an error with the SLV module when $_CONF['site_url'] was empty
+  (reported by AA6QN) [Dirk]
 - Added support for blocking entire IP ranges, using either CIDR notation or
   simple x.x.x.x-y.y.y.y ranges [Dirk]
 
