@@ -1,4 +1,4 @@
-        {formatted_article} {send_trackback_link}
+        {formatted_article}
         <table width="100%">
             <tr><td style="vertical-align:top;">{whats_related}</td>
                 <td style="vertical-align:top;">{story_options}</td></tr>
