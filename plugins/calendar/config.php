@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Calendar plugin configuration file                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,9 +33,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.8 2006/09/03 21:08:03 dhaun Exp $
+// $Id: config.php,v 1.9 2007/02/05 09:47:40 ospiess Exp $
 
-$_CA_CONF['version']            = '1.0.0'; // Plugin Version
+$_CA_CONF['version']            = '1.0.1'; // Plugin Version
 
 // Calendar Settings
 
@@ -48,7 +48,7 @@ $_CA_CONF['eventsubmission'] = 1;
 
 /**
  * Set to 1 to hide the "Calendar" entry from the top menu:
- * 
+ *
  * @global array $_CA_CONF['hidecalendarmenu']
  */
 $_CA_CONF['hidecalendarmenu']    = 0;
