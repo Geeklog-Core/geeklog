@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.62 2007/02/03 17:29:33 dhaun Exp $
+// $Id: functions.inc,v 1.63 2007/02/05 09:40:25 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -765,6 +765,122 @@ function CALENDAR_deleteEvent ($eid)
     return COM_refresh ($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');
 }
 
+function CALENDAR_listOld() {
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS, $LANG01,
+        $_IMAGE_TYPE;
+
+    if (isset($_REQUEST['usr_time'])) {
+        $usr_time = $_REQUEST['usr_time'];
+    } else {
+        $usr_time = 12;
+    }
+
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
+    $retval = '';
+
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true),
+        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+        array('text' => $LANG_CAL_ADMIN[14], 'field' => 'datestart', 'sort' => true),
+        array('text' => $LANG_CAL_ADMIN[15], 'field' => 'dateend', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
+
+    $menu_arr = array (
+        array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=edit',
+            'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php',
+            'text' => $LANG_CAL_ADMIN['32']),
+        array('url' => $_CONF['site_admin_url'],
+            'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $cal_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/admin');
+    $cal_templates->set_file (array ('form' => 'batchdelete.thtml'));
+    $cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $cal_templates->set_var ('usr_time', $usr_time);
+    $cal_templates->set_var ('lang_text_start', $LANG_CAL_ADMIN[28]);
+    $cal_templates->set_var ('lang_text_end', $LANG_CAL_ADMIN[29]);
+    $cal_templates->set_var ('lang_updatelist', $LANG_CAL_ADMIN[30]);
+    $cal_templates->set_var ('lang_delete_sel', $LANG_ADMIN['delete_sel']);
+    $cal_templates->set_var ('lang_delconfirm', $LANG_CAL_ADMIN[31]);
+    $cal_templates->parse('form', 'form');
+    $desc = $cal_templates->finish($cal_templates->get_var('form'));
+
+    $text_arr = array(
+        'has_menu' =>  true,
+        'has_extras'   => true,
+        'title' => $LANG_CAL_ADMIN[11],
+        'instructions' => $LANG_CAL_ADMIN[27] . $usr_time . "$desc",
+        'icon' => $_CONF['site_url'] . '/calendar/images/calendar.' . $_IMAGE_TYPE,
+        'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php?mode=batchdelete"
+    );
+
+    $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
+        ."FROM {$_TABLES['events']} "
+        ."LEFT JOIN {$_TABLES['users']} "
+        ."ON {$_TABLES['events']}.owner_id={$_TABLES['users']}.uid "
+        ."WHERE 1=1 ";
+
+    $filterstr = " AND UNIX_TIMESTAMP() - UNIX_TIMESTAMP(dateend) > " . $usr_time * 2592000 . " ";
+
+    $query_arr = array (
+        'table' => 'events',
+        'sql' => $sql,
+        'query_fields' => array('title', 'datestart', 'dateend'),
+        'default_filter' => $filterstr . COM_getPermSQL('AND')
+    );
+
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'eid');
+
+    $retval .= ADMIN_list (
+        'calendar', 'plugin_getListField_calendar',
+        $header_arr, $text_arr, $query_arr, $menu_arr,
+        $defsort_arr, '', '', $listoptions
+    );
+
+    return $retval;
+}
+
+
+/**
+* This function deletes the events selected in the listOld function
+*
+* @return   string          HTML with success or error message
+*
+*/
+function CALENDAR_deleteOld() {
+    global $_CONF, $LANG_CAL_ADMIN;
+    $msg = '';
+    $event_list = array();
+    if (isset($_POST['delitem'])) {
+        $event_list = $_POST['delitem'];
+    }
+
+    if (count($event_list) == 0) {
+        $msg = $LANG_CAL_ADMIN[33] . "<br>";
+    }
+    $c = 0;
+    if (isset($event_list) AND is_array($event_list)) {
+        foreach($event_list as $delitem) {
+            $delitem = COM_applyFilter($delitem);
+            if (!CALENDAR_deleteEvent ($delitem)) {
+                $msg .= "<strong>{$LANG_CAL_ADMIN[34]} $delitem $LANG_CAL_ADMIN[35]}</strong><br>\n";
+            } else {
+                $c++; // count the deleted users
+            }
+        }
+    }
+    // Since this function is used for deletion only, its necessary to say that
+    // zero where deleted instead of just leaving this message away.
+    COM_numberFormat($c); // just in case we have more than 999)..
+    $msg .= "{$LANG_CAL_ADMIN[36]}: $c<br>\n";
+    return $msg;
+}
+
 function CALENDAR_listevents()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS,
@@ -789,6 +905,8 @@ function CALENDAR_listevents()
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=edit',
                           'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=batchdelete',
+                          'text' => $LANG_CAL_ADMIN[26]),
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
@@ -1559,6 +1677,9 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
                             $A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     switch($fieldname) {
+        case "delete":
+            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['eid']}]\" checked=\"checked\">";
+            break;
         case "edit":
             if ($access == 3) {
                 $retval = "<a href=\"{$_CONF['site_admin_url']}"

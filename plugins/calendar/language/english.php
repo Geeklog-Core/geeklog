@@ -26,10 +26,10 @@
 ###############################################################################
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:    $LANG - variable name
+#            XX - file id number
+#            YY - phrase id number
 ###############################################################################
 
 # index.php
@@ -154,7 +154,18 @@ $LANG_CAL_ADMIN = array(
     22 => 'delete',
     23 => 'Bad start date.',
     24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    25 => 'End date is before start date.',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
