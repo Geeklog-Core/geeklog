@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.158 2007/01/17 09:00:22 ospiess Exp $
+// $Id: usersettings.php,v 1.159 2007/02/05 09:00:49 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -1128,7 +1128,7 @@ function userprofile ($user, $msg = 0)
     if (SEC_hasRights('user.edit')) {
         global $_IMAGE_TYPE, $LANG_ADMIN;
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
+             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
              . '" title="' . $LANG_ADMIN['edit'] . '">';
         $edit_link_url = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">$edit_icon</a>";
         $user_templates->set_var ('edit_link', $edit_link_url);
