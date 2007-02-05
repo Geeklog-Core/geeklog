@@ -1,7 +1,7 @@
 <table border="0" cellspacing="0" cellpadding="2" style="margin-top:5px;">
     <tr>
         <td>
-            <a href="{site_admin_url}/plugins/{plugin}/index.php"><img src="{site_admin_url}/plugins/{plugin}/images/{plugin}.png" border="0" alt="[{plugin_name}]"></a>
+            <a href="{site_admin_url}/plugins/{plugin}/index.php"><img src="{site_admin_url}/plugins/{plugin}/images/{plugin}.png" alt="[{plugin_name}]"></a>
         </td>
         <td>
             <h1>{header}</h1>
