@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.182 2007/01/14 03:34:00 ospiess Exp $
+// $Id: user.php,v 1.183 2007/02/05 09:30:53 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -789,7 +789,7 @@ function batchdelete()
     $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
         $query_arr, $menu_arr, $defsort_arr, '', '', $listoptions);
 
-    $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"></form>" . LB;
+    // $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"></form>" . LB;
     return $display;
 //
 
@@ -814,8 +814,8 @@ function batchdeleteexec()
     }
     $c = 0;
 
-    if (isset($_POST['delitem']) AND is_array($_POST['delitem'])) {
-        foreach($_POST['delitem'] as $delitem) {
+    if (isset($user_list) AND is_array($user_list)) {
+        foreach($user_list as $delitem) {
             $delitem = COM_applyFilter($delitem);
             if (!USER_deleteAccount ($delitem)) {
                 $msg .= "<strong>{$LANG28[2]} $delitem {$LANG28[70]}</strong><br>\n";
@@ -993,6 +993,10 @@ function deleteUser ($uid)
 $mode = '';
 if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
+}
+
+if (isset($_POST["delbutton_x"])) {
+    $mode = batchdeleteexec;
 }
 
 if (isset ($_REQUEST['order'])) {
