@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2006/09/04 07:40:33 dhaun Exp $
+// $Id: index.php,v 1.19 2007/02/05 09:41:03 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -47,9 +47,9 @@ if (empty ($_USER['username']) &&
     $login = new Template($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
     $login->set_var ('login_message', $LANG_LOGIN[2]);
-    $login->set_var ('site_url', $_CONF['site_url']);   
-    $login->set_var ('site_admin_url', $_CONF['site_admin_url']);   
-    $login->set_var ('layout_url', $_CONF['layout_url']);   
+    $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $login->set_var ('layout_url', $_CONF['layout_url']);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');
@@ -94,7 +94,7 @@ function getDayViewData($result, $cur_time = '')
             }
             $endhour = date('G', strtotime($A['dateend'] . ' ' . $A['timeend']));
             if (date('i', strtotime($A['dateend'] . ' ' . $A['timeend'])) == '00') {
-                $endhour = $endhour - 1; 
+                $endhour = $endhour - 1;
             }
             $hourcols[$starthour] = $hourcols[$starthour] + 1;
             if ($hourcols[$starthour] > $max) {
@@ -135,9 +135,9 @@ function setCalendarLanguage (&$aCalendar)
     $aCalendar->setLanguage ($lang_days, $lang_months, $_CONF['week_start']);
 }
 
-/**                     
-* Returns an abbreviated day's name 
-*                       
+/**
+* Returns an abbreviated day's name
+*
 * @param    int     $day    1 = Sunday, 2 = Monday, ...
 * @return   string          abbreviated day's name (3 characters)
 *
@@ -223,7 +223,7 @@ function getDeleteImageLink ($mode, $A)
                     . '/calendar/event.php?action=deleteevent&amp;eid='
                     . $A['eid'] . '"><img src="' . $_CONF['site_url']
                     . '/calendar/images/delete_event.' . $_IMAGE_TYPE
-                    . '" border="0" alt="' . $LANG_CAL_2[30] . '" title="'
+                    . '" alt="' . $LANG_CAL_2[30] . '" title="'
                     . $LANG_CAL_2[30] . '"></a>';
         }
     } else if (SEC_hasRights ('calendar.edit')) {
@@ -235,7 +235,7 @@ function getDeleteImageLink ($mode, $A)
                     . '&amp;eid=' . $A['eid'] . '"><img src="'
                     . $_CONF['site_url']
                     . '/calendar/images/delete_event.' . $_IMAGE_TYPE
-                    . '" border="0" alt="' . $LANG_CAL_2[30] . '" title="'
+                    . '" alt="' . $LANG_CAL_2[30] . '" title="'
                     . $LANG_CAL_2[30] . '"></a>';
         }
     }
@@ -264,7 +264,7 @@ function getSmallCalendar ($m, $y, $mode = '')
         $mode = '&amp;mode=' . $mode;
     }
 
-    $retval .= '<table class="smallcal">' . LB 
+    $retval .= '<table class="smallcal">' . LB
             . '<tr class="smallcal-headline"><td align="center" colspan="7">'
             . '<a href="' . $_CONF['site_url'] . '/calendar/index.php?month='
             . $m . '&amp;year=' . $y . $mode . '">' . $mycal->getMonthName ($m)
@@ -304,7 +304,7 @@ function getSmallCalendar ($m, $y, $mode = '')
     }
 
     $retval .= '</table>' . LB;
-    
+
     return $retval;
 }
 
@@ -356,11 +356,11 @@ function getQuickAdd($tpl, $month, $day, $year)
     return $tpl;
 }
 
-/** 
+/**
 * Returns timestamp for the prior sunday of a given day
 *
 */
-function getPriorSunday($month, $day, $year) 
+function getPriorSunday($month, $day, $year)
 {
     $thestamp = mktime(0, 0, 0, $month, $day, $year);
     $newday = $day - date('w', $thestamp);
@@ -562,7 +562,7 @@ case 'day':
             } else {
                 $cal_templates->set_var('br', '');
             }
-            $cal_templates->parse('allday_events','event', true); 
+            $cal_templates->parse('allday_events','event', true);
             next($alldaydata);
         }
     } else {
@@ -715,8 +715,8 @@ case 'week':
             $add_str =  $LANG_CAL_2[8];
         } else {
             $add_str =  $LANG_CAL_2[42];
-        }    
-        
+        }
+
         $cal_templates->set_var ('langlink_addevent' . $i, '<a href="'
             . $_CONF['site_url'] . '/submit.php?type=calendar&amp;'
             . addMode ($mode) . 'day=' . $daynum . '&amp;month=' . $monthnum
@@ -742,13 +742,13 @@ case 'week':
                 $endmonth = date('n',$endstamp);
                 if (($startmonth == $monthnum && $daynum > $startday) OR ($startmonth <> $monthnum)) {
                     $starttime = date('n/j g:i a',$startstamp);
-                } else { 
-                    $starttime = date('g:i a', $startstamp); 
+                } else {
+                    $starttime = date('g:i a', $startstamp);
                 }
                 if (($endmonth == $monthnum && $daynum < $endday) OR ($endmonth <> $monthnum)) {
                     $endtime = date('n/j g:i a', $endstamp);
-                } else { 
-                    $endtime = date('g:i a', $endstamp); 
+                } else {
+                    $endtime = date('g:i a', $endstamp);
                 }
                 $cal_templates->set_var('event_starttime', $starttime);
                 $cal_templates->set_var('event_endtime', ' - ' . $endtime);
@@ -776,7 +776,7 @@ case 'week':
     $display .= $cal_templates->parse('output','week');
     $display .= COM_siteFooter();
     break;
-    
+
 case 'addentry':
     $display .= plugin_submit_calendar($mode);
     break;
@@ -903,7 +903,7 @@ for ($i = 1; $i <= 6; $i++) {
             if (($currentyear > $year) OR
                 ($currentmonth > $month && $currentyear == $year) OR
                 ($currentmonth == $month && $currentday > $curday->daynumber && $currentyear == $year)) {
-                $cal_templates->set_var('cal_day_style', 'cal-oldday'); 
+                $cal_templates->set_var('cal_day_style', 'cal-oldday');
             } else {
                 if ($currentyear == $year && $currentmonth == $month && $currentday == $curday->daynumber) {
                     $cal_templates->set_var('cal_day_style','cal-today');
@@ -933,7 +933,7 @@ for ($i = 1; $i <= 6; $i++) {
                 $calsql_tbl = $_TABLES['events'];
                 $calsql_filt = COM_getPermSql ('AND');
             }
-            
+
             $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM $calsql_tbl WHERE "
                     . "((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" "
                     . "AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") "
@@ -1006,19 +1006,19 @@ for ($i = 1; $i <= 6; $i++) {
     if ($i < 6) {
         $data = $cal->getDayData ($i + 1, 1);
         if (empty ($data)) {
-            break;     
+            break;
         }
     }
 }
 
 if ($mode == 'personal') {
     $cal_templates->set_var('lang_mastercal', $LANG_CAL_2[25] . $LANG_CAL_2[11]);
-    $cal_templates->parse('master_calendar_option','mastercal',true); 
+    $cal_templates->parse('master_calendar_option','mastercal',true);
 } else {
     if (isset ($_USER['uid']) && ($_USER['uid'] > 1) &&
             ($_CA_CONF['personalcalendars'] == 1)) {
         $cal_templates->set_var('lang_mycalendar', $LANG_CAL_2[12]);
-        $cal_templates->parse('personal_calendar_option','personalcal',true); 
+        $cal_templates->parse('personal_calendar_option','personalcal',true);
     } else {
         $cal_templates->set_var('personal_calendar_option','&nbsp;');
     }
@@ -1036,7 +1036,7 @@ if ($mode == 'personal') {
     $cal_templates->set_var('addevent_formurl', '/calendar/index.php');
 } else {
     $cal_templates->set_var('lang_addevent', $LANG_CAL_2[42]);
-    $cal_templates->set_var('addevent_formurl', '/submit.php?type=calendar');   
+    $cal_templates->set_var('addevent_formurl', '/submit.php?type=calendar');
 }
 $cal_templates->parse('add_event_option','addevent',true);
 $cal_templates->parse('output','calendar');
@@ -1045,7 +1045,7 @@ $display .= $cal_templates->finish($cal_templates->get_var('output'));
 $display .= COM_siteFooter();
 break;
 
-} // end switch	
+} // end switch
 
 echo $display;
 
