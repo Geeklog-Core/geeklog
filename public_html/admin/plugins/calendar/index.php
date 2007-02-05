@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.26 2006/09/03 09:43:36 dhaun Exp $
+// $Id: index.php,v 1.27 2007/02/05 09:40:51 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -71,6 +71,7 @@ if (!SEC_hasRights('calendar.edit')) {
 * @return   string          HTML for event editor or error message
 *
 */
+
 function CALENDAR_editEvent ($mode, $A, $msg = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $_CA_CONF, $LANG_CAL_1,
@@ -188,7 +189,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $start_stamp = time ();
     } else {
         $start_stamp = strtotime ($A['datestart']);
-    }   
+    }
     $A['dateend'] = trim ($A['dateend'] . ' ' . $A['timeend']);
     if (empty ($A['dateend'])) {
         $end_stamp = time ();
@@ -266,9 +267,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $event_templates->set_var ('hour_mode', 12);
     }
 
-    $event_templates->set_var ('startampm_selection', 
+    $event_templates->set_var ('startampm_selection',
                         COM_getAmPmFormSelection ('start_ampm', $startampm));
-    $event_templates->set_var ('endampm_selection', 
+    $event_templates->set_var ('endampm_selection',
                         COM_getAmPmFormSelection ('end_ampm', $endampm));
 
     $event_templates->set_var ('startminute_options',
@@ -560,6 +561,9 @@ $mode = '';
 if (isset($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
+if (isset($_POST["delbutton_x"])) {
+    $mode = batchdeleteexec;
+}
 
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $eid = COM_applyFilter ($_REQUEST['eid']);
@@ -637,6 +641,28 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[1]);
     $display .= CALENDAR_editEvent ($mode, $A);
     $display .= COM_siteFooter ();
+} else if ($mode == 'batchdelete') {
+    // list_old
+    $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11]);
+    if (isset ($_REQUEST['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
+                                                      true), 'calendar');
+    }
+    $display .= CALENDAR_listOld();
+    $display .= COM_siteFooter ();
+} else if ($mode == 'batchdeleteexec') {
+    $msg = CALENDAR_deleteOld();
+    $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11]);
+    $timestamp = strftime( $_CONF['daytime'] );
+    $display .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
+                           COM_getBlockTemplate( '_msg_block', 'header' ))
+            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '" align="left"'
+            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
+            . $msg . '</p>'
+            . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
+    $display .= CALENDAR_listOld();
+    $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11]);
     if (isset ($_REQUEST['msg'])) {
@@ -646,7 +672,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= CALENDAR_listevents();
     $display .= COM_siteFooter ();
 }
-
 echo $display;
 
 ?>
