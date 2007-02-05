@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.20 2006/12/11 13:25:31 dhaun Exp $
+// $Id: event.php,v 1.21 2007/02/05 09:34:13 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -47,7 +47,7 @@ require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
 * @return   string          HTML for confirmation form
 *
 */
-function adduserevent ($eid) 
+function adduserevent ($eid)
 {
     global $_CONF, $_TABLES, $LANG_CAL_1;
 
@@ -109,13 +109,13 @@ function adduserevent ($eid)
                                 PLG_replaceTags ($description));
         $cal_template->set_var('event_id', $eid);
         $cal_template->set_var('lang_addtomycalendar', $LANG_CAL_1[9]);
-        $cal_template->parse('output','addevent');     
+        $cal_template->parse('output','addevent');
         $retval .= $cal_template->finish($cal_template->get_var('output'));
         $retval .= COM_endBlock ();
     } else {
         $retval .= COM_showMessage(23);
-    }    
-    
+    }
+
     return $retval;
 }
 
@@ -143,7 +143,7 @@ function saveuserevent ($eid)
 
             $savesql = "INSERT INTO {$_TABLES['personal_events']} "
              . "(eid,uid,title,event_type,datestart,dateend,timestart,timeend,allday,location,address1,address2,city,state,"
-             . "zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon) SELECT eid," 
+             . "zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon) SELECT eid,"
              . $_USER['uid'] . ",title,event_type,datestart,dateend,timestart,timeend,allday,location,address1,address2,"
              . "city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM "
              . "{$_TABLES['events']} WHERE eid = '{$eid}'";
@@ -267,7 +267,7 @@ function editpersonalevent ($A)
     $cal_templates->set_var ('lang_alldayevent', $LANG_CAL_1[31]);
     if ($A['allday'] == 1) {
         $cal_templates->set_var ('allday_checked', 'checked="checked"');
-    } else { 
+    } else {
         $cal_templates->set_var ('allday_checked', '');
     }
 
@@ -306,7 +306,7 @@ function editpersonalevent ($A)
         $cal_templates->set_var ('hour_mode', 12);
     }
 
-    return $cal_templates->parse ('output', 'form'); 
+    return $cal_templates->parse ('output', 'form');
 }
 
 /**
@@ -316,7 +316,7 @@ function editpersonalevent ($A)
 *
 */
 function setCalendarLanguage (&$aCalendar)
-{ 
+{
     global $LANG_WEEK, $LANG_MONTH, $LANG_CAL_2;
 
     $lang_days = array ('sunday'    => $LANG_WEEK[1],
@@ -339,7 +339,7 @@ function setCalendarLanguage (&$aCalendar)
                           'november'  => $LANG_MONTH[11],
                           'december'  => $LANG_MONTH[12]);
     $aCalendar->setLanguage ($lang_days, $lang_months);
-}   
+}
 
 
 // MAIN
@@ -499,7 +499,7 @@ default:
             'details'   => 'eventdetails.thtml',
             'addremove' => 'addremoveevent.thtml'
             ));
-        
+
     $cal_templates->set_var ('lang_addevent', $LANG_CAL_1[6]);
     $cal_templates->set_var ('lang_backtocalendar', $LANG_CAL_1[15]);
     if ($mode == 'personal') {
@@ -659,7 +659,7 @@ default:
                                          PLG_replaceTags ($description));
                 $cal_templates->set_var ('lang_event_type', $LANG_CAL_1[37]);
                 $cal_templates->set_var ('event_type', $A['event_type']);
-                $cal_templates->parse ('event_details', 'details', true); 
+                $cal_templates->parse ('event_details', 'details', true);
             }
         }
 
@@ -671,7 +671,7 @@ default:
             $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
                     . '"><img src="' . $_CONF['layout_url']
                     . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
-                    . '" title="' . $LANG01[4] . '" border="0"></a>');
+                    . '" title="' . $LANG01[4] . '"></a>');
         } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                 $A['perm_anon']) == 3) && SEC_hasRights ('calendar.edit')) {
@@ -682,7 +682,7 @@ default:
             $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
                     . '"><img src="' . $_CONF['layout_url']
                     . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
-                    . '" title="' . $LANG01[4] . '" border="0"></a>');
+                    . '" title="' . $LANG01[4] . '"></a>');
             $cal_templates->set_var ('hits_admin',
                                      COM_numberFormat ($A['hits']));
             $cal_templates->set_var ('lang_hits_admin', $LANG10[30]);
