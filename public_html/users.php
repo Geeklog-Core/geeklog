@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.152 2007/01/16 07:18:13 ospiess Exp $
+// $Id: users.php,v 1.153 2007/02/05 09:00:15 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -149,7 +149,7 @@ function userprofile ($user, $msg = 0)
         global $_IMAGE_TYPE, $LANG_ADMIN;
 
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-                   . $_IMAGE_TYPE . '" border="0" alt="' . $LANG_ADMIN['edit']
+                   . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
                    . '" title="' . $LANG_ADMIN['edit'] . '">';
         $edit_link_url = '<a href="' . $_CONF['site_admin_url']
                        . '/user.php?mode=edit&amp;uid=' . $A['uid'] .'">'
