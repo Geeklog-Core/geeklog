@@ -39,6 +39,10 @@ GeekLog History/Changes:
 - Remove the "Are you secure?" (getBent) block from the database as its
   functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
 
+Calendar plugin (1.0.1)
+------------
+- Added Batch-Delete functionality [Oliver]
+
 Links plugin (1.0.2)
 ------------
 - Added "Report Broken Link" function [Oliver]
