@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.618 2007/02/03 17:04:57 dhaun Exp $
+// $Id: lib-common.php,v 1.619 2007/02/08 01:38:54 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5738,6 +5738,27 @@ function COM_getTopicImageUrl( $imageurl )
 
     return $iconurl;
 }
+
+/**
+ * Create an HTML link
+ *
+ * $param   string  $content    the object to be linked (text, image etc)
+ * $param   string  $url        the URL the link will point to
+ * $param   array   $attr       an array of optional attributes for the link
+ *                              for example array('title' => 'whatever');
+ * $return  string              the HTML link
+ */
+// COM_createLink($content, $url, $attr);
+function COM_createLink($content, $url, $attr=array()) { //attr optional
+    global $_CONF;
+    $arttr_str = ''; // init string
+    foreach ($attr as $key => $value) { //iterate array
+        $attr_str .= " $key=\"$value$ext_class\""; // create attributes
+    }
+    $out = "<a$attr_str href=\"$url\">$content</a>"; // create html
+    return $out;
+}
+
 
 /**
 * Try to determine the user's preferred language by looking at the
