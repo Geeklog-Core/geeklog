@@ -215,6 +215,10 @@ select {
 .aligntop {
   vertical-align:top;
 }
+/* general formatting classes **************************************************/
+.b {
+  font-weight:bold;
+}
 /* Blocks *********************************************************************/
 .block-box-left {
   margin:10px;
