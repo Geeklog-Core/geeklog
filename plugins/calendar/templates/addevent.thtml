@@ -4,7 +4,7 @@
                                 </tr>
                                 <tr>
                                     <td align="right"><b>{lang_event}:</b></td>
-                                    <td>{event_begin_anchortag}{event_title}{event_end_anchortag}</td>
+                                    <td>{event_title}</td>
                                 </tr>
                                 <tr>
                                     <td align="right"><b>{lang_starts}:</b></td>
@@ -34,4 +34,3 @@
                                     </td>
                                 </tr>
                             </table>
-
