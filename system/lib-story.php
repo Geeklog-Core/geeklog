@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.83 2007/02/08 02:30:00 ospiess Exp $
+// $Id: lib-story.php,v 1.84 2007/02/08 08:49:45 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -116,19 +116,17 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'contributedby_fullname',$story->DisplayElements('fullname') );
         }
         $authorname = COM_getDisplayName( $story->DisplayElements('uid'), $story->DisplayElements('username'), $fullname );
-        $article->set_var( 'contributedby_author', $authorname );
+
         $article->set_var( 'author', $authorname );
+        $profileUrl = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+            . $story->DisplayElements('uid');
 
         if( $story->DisplayElements('uid') > 1 )
         {
-            $profileUrl = $_CONF['site_url']
-                        . '/users.php?mode=profile&amp;uid=' . $story->DisplayElements('uid');
-            $article->set_var( 'start_contributedby_anchortag',
-                    '<a class="storybyline" href="' . $profileUrl . '">' );
-            $article->set_var( 'end_contributedby_anchortag', '</a>' );
             $article->set_var( 'contributedby_url', $profileUrl );
+            $authorname = COM_createLink($authorname, $profileUrl, array('class' => 'storybyline'));
         }
-
+        $article->set_var( 'contributedby_author', $authorname );
         $photo = '';
         if( $_CONF['allow_user_photo'] )
         {
@@ -137,11 +135,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         if( !empty( $photo ))
         {
             $article->set_var( 'contributedby_photo', $photo );
-            $article->set_var( 'camera_icon', '<a href="' . $_CONF['site_url']
-                    . '/users.php?mode=profile&amp;uid=' . $story->DisplayElements('uid')
-                    . '"><img src="' . $_CONF['layout_url']
-                    . '/images/smallcamera.' . $_IMAGE_TYPE
-                    . '" alt=""></a>' );
+            $camera_icon = '<img src="' . $_CONF['layout_url']
+                .'/images/smallcamera.' . $_IMAGE_TYPE . '" alt="">';
+            $article->set_var( 'camera_icon', COM_createLink($camera_icon, $profileUrl));
         }
         else
         {
@@ -165,15 +161,23 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $topicimage = '<img src="' . $imageurl . '" align="'
                         . $_CONF['article_image_align'] . '" alt="'
                         . $topicname . '" title="' . $topicname . '">';
-            $article->set_var( 'story_anchortag_and_image', '<a href="'
-                        . $topicurl . '" rel="category tag">' . $topicimage
-                        . '</a>' );
+            $article->set_var( 'story_anchortag_and_image',
+                COM_createLink(
+                    $topicimage,
+                    $topicurl,
+                    array('rel'=>"category tag")
+                )
+            );
             $article->set_var( 'story_topic_image', $topicimage );
             $topicimage_noalign = '<img src="' . $imageurl . '" alt="'
                         . $topicname . '" title="' . $topicname . '">';
-            $article->set_var( 'story_anchortag_and_image_no_align', '<a href="'
-                        . $topicurl . '" rel="category tag">'
-                        . $topicimage_noalign . '</a>' );
+            $article->set_var( 'story_anchortag_and_image_no_align',
+                COM_createLink(
+                    $topicimage_noalign,
+                    $topicurl,
+                    array('rel'=>"category tag")
+                )
+            );
             $article->set_var( 'story_topic_image_no_align',
                                $topicimage_noalign );
         }
@@ -183,7 +187,13 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $recent_post_anchortag = '';
     $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                 . $story->getSid() );
-    $article->set_var( 'story_title', $story->DisplayElements('title'));
+    $article->set_var( 'story_title',
+        COM_createLink(
+            $story->DisplayElements('title'),
+            $articleUrl,
+            array('class'=>'non-ul')
+        )
+    );
     $article->set_var( 'lang_permalink', $LANG01[127] );
 
     $show_comments = true;
@@ -215,12 +225,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     }
                 }
                 $article_array = explode( '[page_break]', $bodytext );
-                $pagelinks = COM_printPageNavigation( $articleUrl, $story_page,
-                                                      count( $article_array ),
-                                                      'mode=',
-                                                      $_CONF['url_rewrite'],
-                                                      $LANG01[118]
-                                                      );
+                $pagelinks = COM_printPageNavigation(
+                    $articleUrl, $story_page, count( $article_array ),
+                    'mode=', $_CONF['url_rewrite'], $LANG01[118]);
                 if( count( $article_array ) > 1 )
                 {
                     $bodytext = $article_array[$story_page - 1];
@@ -252,8 +259,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $url = $_CONF['site_admin_url']
                  . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
-            $article->set_var( 'send_trackback_link', '<a href="' . $url . '">'
-                 . $LANG_TRB['send_trackback'] . '</a>' );
+            $article->set_var( 'send_trackback_link',
+                COM_createLink($LANG_TRB['send_trackback'], $url)
+            );
             $article->set_var( 'send_trackback_url', $url );
             $article->set_var( 'lang_send_trackback_text',
                                $LANG_TRB['send_trackback'] );
@@ -274,17 +282,15 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $numwords = COM_NumberFormat (sizeof( explode( ' ', strip_tags( $bodytext ))));
             $article->set_var( 'readmore_words', $numwords );
 
-            $article->set_var( 'readmore_link', '<a href="' . $articleUrl
-                    . '" class="story-read-more-link">' . $LANG01[2] . '</a> ('
-                    . $numwords . ' ' . $LANG01[62] . ') ' );
-            $article->set_var( 'start_readmore_anchortag', '<a href="'
-                    . $articleUrl . '" class="story-read-more-link">' );
-            $article->set_var( 'end_readmore_anchortag', '</a>' );
+            $article->set_var( 'readmore_link',
+                COM_createLink(
+                    $LANG01[2],
+                    $articleUrl,
+                    array('class'=>'story-read-more-link')
+                )
+                . ' (' . $numwords . ' ' . $LANG01[62] . ') ' );
             $article->set_var( 'read_more_class', 'class="story-read-more"' );
         }
-        $article->set_var( 'start_storylink_anchortag', '<a href="'
-                . $articleUrl . '" class="non-ul">' );
-        $article->set_var( 'end_storylink_anchortag', '</a>' );
 
         if(( $story->DisplayElements('commentcode') >= 0 ) and ( $show_comments ))
         {
@@ -314,16 +320,16 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             else
             {
                 $article->set_var( 'comments_with_count', $comments_with_count);
-                $recent_post_anchortag = ' <a href="' . $_CONF['site_url']
-                        . '/comment.php?sid=' . $story->getsid()
-                        . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
+                $recent_post_anchortag = COM_createLink($LANG01[60],
+                    $_CONF['site_url'] . '/comment.php?sid=' . $story->getsid()
+                        . '&amp;pid=0&amp;type=article');
             }
             if( $story->DisplayElements( 'commentcode' ) == 0 )
             {
                 $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
                             . $story->getSid() . '&amp;pid=0&amp;type=article';
-                $article->set_var( 'post_comment_link','<a href="'
-                            . $postCommentUrl . '">' . $LANG01[60] . '</a>' );
+                $article->set_var( 'post_comment_link',
+                        COM_createLink($LANG01[60], $postCommentUrl));
                 $article->set_var( 'lang_post_comment', $LANG01[60] );
                 $article->set_var( 'start_post_comment_anchortag',
                                    '<a href="' . $postCommentUrl . '">' );
@@ -343,13 +349,25 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'trackbacks_count', $num_trackbacks );
             $article->set_var( 'lang_trackbacks', $LANG_TRB['trackbacks'] );
             $article->set_var( 'trackbacks_with_count',
-                               sprintf( $LANG01[122], $num_trackbacks ));
+                COM_createLink(
+                    sprintf( $LANG01[122], $num_trackbacks ),
+                    $trackbacksUrl
+                )
+            );
+
 
             if( $story->DisplayElements('trackbacks') > 0 )
             {
-                $article->set_var( 'start_trackbacks_anchortag', '<a href="'
-                        . $trackbacksUrl . '">' );
-                $article->set_var( 'end_trackbacks_anchortag', '</a>' );
+                $article->set_var( 'trackbacks_with_count',
+                    COM_createLink(
+                        sprintf( $LANG01[122], $num_trackbacks ),
+                        $trackbacksUrl
+                    )
+                );
+            }
+            else
+            {
+                $article->set_var( 'trackbacks_with_count', $trackbacksUrl);
             }
         }
 
