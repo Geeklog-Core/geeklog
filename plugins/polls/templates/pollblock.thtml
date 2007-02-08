@@ -1,12 +1,12 @@
 <div class="poll-topic">{poll_topic}</div>
 <form action="{poll_vote_url}" name="Vote" method="POST">
-    <fieldset>
-        <input type="hidden" name="pid" value="{poll_id}">
+    <div>
+    <input type="hidden" name="pid" value="{poll_id}">
             {poll_questions}
         <span class="pluginTinyText">{poll_notification}</span><br>
         <input type="submit" value="{lang_vote}">
-        {poll_results}{poll_edit}
-    </fieldset>
+        {poll_results} {poll_edit}
+    </div>
 </form>
 <span class="pluginTinyText">
     <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_votes} {poll_comments}
