@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.13 2007/01/15 04:14:43 ospiess Exp $
+// $Id: index.php,v 1.14 2007/02/08 05:57:18 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -78,20 +78,19 @@ function prepare_link_item ($A, &$template)
     $reporturl = $_CONF['admin_url']
              . '/links/index.php?mode=report&amp;lid=' . $A['lid']
              . '&amp;url='. $A['url'] . '&amp;title=' . stripslashes ($A['title']);
-    $template->set_var ('link_broken', '<a class="pluginSmallText" href="'
-        . $reporturl . '">' . $LANG_LINKS[117] . '</a>');
+    $template->set_var ('link_broken',
+        COM_createLink($LANG_LINKS[117], $reporturl, array('class'=>"pluginSmallText"))
+    );
 
     if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
             $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
             SEC_hasRights ('links.edit')) {
         $editurl = $_CONF['site_admin_url']
                  . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
-        $template->set_var ('link_edit', '<a href="' . $editurl . '">'
-                 . $LANG_ADMIN['edit'] . '</a>');
-        $template->set_var ('edit_icon', '<a href="' . $editurl . '"><img src="'
-                 . $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE
-                 . '" alt="' . $LANG_ADMIN['edit'] . '" title="'
-                 . $LANG_ADMIN['edit'] . '"></a>');
+        $template->set_var ('link_edit', COM_createLink($LANG_ADMIN['edit'],$editurl));
+        $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit$_IMAGE_TYPE\" "
+            . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\">";
+        $template->set_var ('edit_icon', COM_createLink($edit_icon, $editurl));
     } else {
         $template->set_var ('link_edit', '');
         $template->set_var ('edit_icon', '');
