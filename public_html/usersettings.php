@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.159 2007/02/05 09:00:49 ospiess Exp $
+// $Id: usersettings.php,v 1.160 2007/02/08 04:20:09 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -962,8 +962,8 @@ function saveuser($A)
 
     // a quick spam check with the unfiltered field contents
     $profile = '<h1>' . $LANG04[1] . ' ' . $_USER['username'] . '</h1>'
-             . '<p><a href="' . $A['homepage'] . '">' . $A['homepage']
-             . '</a><br>' . $A['location'] . '<br>' . $A['sig'] . '<br>'
+             . '<p>'. COM_createLink($A['homepage'], $A['homepage'])
+             . '<br>' . $A['location'] . '<br>' . $A['sig'] . '<br>'
              . $A['about'] . '<br>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
     if ($result > 0) {
@@ -1130,7 +1130,10 @@ function userprofile ($user, $msg = 0)
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
              . '" title="' . $LANG_ADMIN['edit'] . '">';
-        $edit_link_url = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">$edit_icon</a>";
+        $edit_link_url = COM_createLink(
+            $edit_icon,
+            "{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}"
+        );
         $user_templates->set_var ('edit_link', $edit_link_url);
     }
 
@@ -1191,12 +1194,14 @@ function userprofile ($user, $msg = 0)
             $articleUrl = COM_buildUrl ($_CONF['site_url']
                                         . '/article.php?story=' . $C['sid']);
             $user_templates->set_var ('article_url', $articleUrl);
-            $user_templates->set_var ('story_begin_href',
-                                      '<a href="' . $articleUrl . '">');
             $C['title'] = str_replace ('$', '&#36;', $C['title']);
             $user_templates->set_var ('story_title',
-                                      stripslashes ($C['title']));
-            $user_templates->set_var ('story_end_href', '</a>');
+                COM_createLink(
+                    stripslashes ($C['title']),
+                    $articleUrl,
+                    array('class'=> 'b')
+                )
+            );
             $storytime = COM_getUserDateTimeFormat ($C['unixdate']);
             $user_templates->set_var ('story_date', $storytime[0]);
             $user_templates->parse ('story_row', 'strow', true);
@@ -1242,13 +1247,16 @@ function userprofile ($user, $msg = 0)
             $C = DB_fetchArray ($result);
             $user_templates->set_var ('cssid', ($i % 2) + 1);
             $user_templates->set_var ('row_number', ($i + 1) . '.');
-            $user_templates->set_var ('comment_begin_href',
-                    '<a href="' . $_CONF['site_url'] .
-                    '/comment.php?mode=view&amp;cid=' . $C['cid']. '">');
+            $comment_url = $_CONF['site_url']
+                . '/comment.php?mode=view&amp;cid=' . $C['cid'];
             $C['title'] = str_replace ('$', '&#36;', $C['title']);
             $user_templates->set_var ('comment_title',
-                                      stripslashes ($C['title']));
-            $user_templates->set_var ('comment_end_href', '</a>');
+                COM_createLink(
+                    stripslashes ($C['title']),
+                    $comment_url,
+                    array('class'=> 'b')
+                )
+            );
             $commenttime = COM_getUserDateTimeFormat ($C['unixdate']);
             $user_templates->set_var ('comment_date', $commenttime[0]);
             $user_templates->parse ('comment_row', 'row', true);
