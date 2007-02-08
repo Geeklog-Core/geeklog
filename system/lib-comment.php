@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.51 2007/01/28 10:15:03 dhaun Exp $
+// $Id: lib-comment.php,v 1.52 2007/02/08 06:30:32 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -97,9 +97,13 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
         $commentbar->set_var( 'article_url', $articleUrl );
 
         if( $page == 'comment.php' ) {
-            $commentbar->set_var( 'start_storylink_anchortag', '<a href="'
-                    . $articleUrl . '" class="non-ul">' );
-            $commentbar->set_var( 'end_storylink_anchortag', '</a>' );
+            $commentbar->set_var( 'start_storylink_anchortag',
+                COM_createLink(
+                    stripslashes( $title ),
+                    $articleUrl,
+                    array('class'=>'non-ul b')
+                )
+            );
         }
     } else { // for a plugin
         // Link to plugin defined link or lacking that a generic link that the plugin should support (hopefully)
@@ -284,20 +288,25 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             }
             if( !empty( $photo )) {
                 $template->set_var( 'author_photo', $photo );
-                $template->set_var( 'camera_icon', '<a href="'
-                        . $_CONF['site_url']
-                        . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                        . '"><img src="' . $_CONF['layout_url']
-                        . '/images/smallcamera.' . $_IMAGE_TYPE
-                        . '" alt=""></a>' );
+                $camera_icon = '<img src="' . $_CONF['layout_url']
+                    . '/images/smallcamera.' . $_IMAGE_TYPE . '" alt="">';
+                $template->set_var( 'camera_icon',
+                    COM_createLink(
+                        $camera_icon,
+                        $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid']
+                    )
+                );
             } else {
                 $template->set_var( 'author_photo', '' );
                 $template->set_var( 'camera_icon', '' );
             }
 
-            $template->set_var( 'start_author_anchortag', '<a href="'
-                    . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-                    . $A['uid'] . '">' );
+            $template->set_var( 'start_author_anchortag',
+                COM_createLink(
+                    $A['username'],
+                    $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid']
+                )
+            );
             $template->set_var( 'end_author_anchortag', '</a>' );
         } else {
             $template->set_var( 'author', $A['username'] );
@@ -337,8 +346,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                        . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;cid='
                        . $A['pid'] . '&amp;format=threaded';
             }
-            $template->set_var( 'parent_link', '<a href="' . $plink . '">'
-                                               . $LANG01[44] . '</a> | ');
+            $template->set_var( 'parent_link', COM_createLink($LANG01[44], $plink));
         } else {
             $template->set_var( 'parent_link', '');
         }
@@ -349,27 +357,25 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // If deletion is allowed, displays delete link
         if( $delete_option ) {
-            $deloption = '<a href="' . $_CONF['site_url']
-                       . '/comment.php?mode=delete&amp;cid='
-                       . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type='
-                       . $type . '" onclick="return confirm(\'' . $MESSAGE[76]
-                       . '\');">' . $LANG01[28] . '</a> | ';
+            $dellink = $_CONF['site_url'] . '/comment.php?mode=delete&amp;cid='
+                . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type;
+            $delattr = array('onclick' => "return confirm(\"{$MESSAGE[76]}\");");
+            $deloption = COM_createLink( $LANG01[28], $dellink, $delattr) . ' | ';
             if( !empty( $A['ipaddress'] )) {
                 if( empty( $_CONF['ip_lookup'] )) {
                     $deloption .= $A['ipaddress'] . '  | ';
                 } else {
-                    $iplookup = str_replace( '*', $A['ipaddress'],
-                                             $_CONF['ip_lookup'] );
-                    $deloption .= '<a href="' . $iplookup . '">'
-                               . $A['ipaddress'] . '</a> | ';
+                    $iplookup = str_replace( '*', $A['ipaddress'], $_CONF['ip_lookup'] );
+                    $deloption .= COM_createLink($A['ipaddress'], $iplookup) . ' | ';
                 }
             }
             $template->set_var( 'delete_option', $deloption );
         } else if( !empty( $_USER['username'] )) {
-            $reportthis = '<a href="' . $_CONF['site_url']
-                        . '/comment.php?mode=report&amp;cid=' . $A['cid']
-                        . '&amp;type=' . $type . '" title="' . $LANG01[110]
-                        . '">' . $LANG01[109] . '</a> | ';
+            $reportthis_link = $_CONF['site_url']
+                . '/comment.php?mode=report&amp;cid=' . $A['cid']
+                . '&amp;type=' . $type;
+            $report_attr = array('title' => $LANG01[110]);
+            $reportthis = COM_createLink($LANG01[109], $reportthis_link, $report_attr) . ' | ';
             $template->set_var( 'delete_option', $reportthis );
         } else {
             $template->set_var( 'delete_option', '' );
@@ -399,8 +405,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $reply_link = $_CONF['site_url'] . '/comment.php?sid=' . $A['sid']
                         . '&amp;pid=' . $A['cid'] . '&amp;title='
                         . urlencode( $A['title'] ) . '&amp;type=' . $A['type'];
-            $reply_option = '<a href="' . $reply_link . '">' . $LANG01[43]
-                          . '</a> | ';
+            $reply_option = COM_createLink($LANG01[43], $reply_link ) . ' | ';
             $template->set_var( 'reply_option', $reply_option );
         } else {
             $template->set_var( 'reply_option', '' );
