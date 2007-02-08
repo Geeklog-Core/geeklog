@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.52 2007/02/08 06:30:32 ospiess Exp $
+// $Id: lib-comment.php,v 1.53 2007/02/08 06:38:15 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -359,7 +359,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         if( $delete_option ) {
             $dellink = $_CONF['site_url'] . '/comment.php?mode=delete&amp;cid='
                 . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type;
-            $delattr = array('onclick' => "return confirm(\"{$MESSAGE[76]}\");");
+            $delattr = array('onclick' => "return confirm('{$MESSAGE[76]}');");
             $deloption = COM_createLink( $LANG01[28], $dellink, $delattr) . ' | ';
             if( !empty( $A['ipaddress'] )) {
                 if( empty( $_CONF['ip_lookup'] )) {
