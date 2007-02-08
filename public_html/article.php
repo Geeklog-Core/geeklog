@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.90 2007/02/08 02:33:53 ospiess Exp $
+// $Id: article.php,v 1.91 2007/02/08 02:37:36 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -161,7 +161,7 @@ if ($A['count'] > 0) {
             $story_template->set_var ('lang_comments', $LANG01[3]);
             $comments_with_count = sprintf ($LANG01[121], $numComments);
 
-            if ($numComments > 0) {
+            if ($comments > 0) {
                 $comments_with_count = COM_createLink($comments_with_count, $commentsUrl);
             }
             $story_template->set_var ('comments_with_count', $comments_with_count);
