@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.115 2007/01/14 13:13:57 mjervis Exp $
+// $Id: submit.php,v 1.116 2007/02/08 03:55:29 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -102,7 +102,7 @@ function submissionform($type='story', $mode = '', $topic = '')
                     $retval .= $formresult;
                 }
             } else {
-                $retval .= submitstory($topic);  
+                $retval .= submitstory($topic);
             }
         }
     }
@@ -114,12 +114,12 @@ function submissionform($type='story', $mode = '', $topic = '')
 * Shows the story submission form
 *
 */
-function submitstory($topic = '') 
+function submitstory($topic = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG12, $LANG24;
 
     $retval = '';
-    
+
     $story = new Story();
 
     if( isset( $_POST['mode'] ) && ( $_POST['mode'] == $LANG12[32] ) )
@@ -132,12 +132,12 @@ function submitstory($topic = '')
     } else {
         $story->initSubmission($topic);
     }
-    
+
     $retval .= COM_startBlock($LANG12[6],'submitstory.html');
 
     $storyform = new Template($_CONF['path_layout'] . 'submit');
     if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) &&
-        file_exists ($_CONF['path_layout'] . 'submit/submitstory_advanced.thtml')) { 
+        file_exists ($_CONF['path_layout'] . 'submit/submitstory_advanced.thtml')) {
         $storyform->set_file('storyform','submitstory_advanced.thtml');
         $storyform->set_var ('change_editormode', 'onChange="change_editmode(this);"');
         $storyform->set_var ('lang_expandhelp', $LANG24[67]);
@@ -174,9 +174,16 @@ function submitstory($topic = '')
         $storyform->set_var('lang_loginout', $LANG12[2]);
         $storyform->set_var('separator', ' | ');
         $storyform->set_var('seperator', ' | ');
-        $storyform->set_var('create_account','<a href="' . $_CONF['site_url'] . '/users.php?mode=new" rel="nofollow">' . $LANG12[53] . '</a>');
+        $storyform->set_var(
+            'create_account',
+            COM_createLink(
+                $LANG12[53],
+                $_CONF['site_url'] . '/users.php?mode=new',
+                array('rel'=>"nofollow")
+            )
+        );
     }
-    
+
     $storyform->set_var('lang_title', $LANG12[10]);
     $storyform->set_var('story_title', $story->EditElements('title'));
     $storyform->set_var('lang_topic', $LANG12[28]);
@@ -217,7 +224,7 @@ function submitstory($topic = '')
 function sendNotification ($table, $story)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG24, $LANG29, $LANG_ADMIN;
-           
+
     $title = COM_undoSpecialChars( $story->displayElements('title') );
     if ($A['postmode'] == 'html') {
         $A['introtext'] = strip_tags ($A['introtext']);
@@ -265,7 +272,7 @@ function savestory ($A)
     global $_CONF, $_TABLES, $_USER;
 
     $retval = '';
-    
+
     $story = new Story();
     $story->loadSubmission();
 
@@ -276,9 +283,9 @@ function savestory ($A)
         COM_updateSpeedlimit ('submit');
         COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
-    
+
     COM_updateSpeedlimit ('submit');
-    
+
     $result = $story->SaveSubmission();
     if( $result == STORY_NO_ACCESS_TOPIC )
     {
@@ -290,14 +297,14 @@ function savestory ($A)
         {
             sendNotification ($_TABLES['storysubmission'], $story);
         }
-        
-        if( $result == STORY_SAVED ) 
+
+        if( $result == STORY_SAVED )
         {
             $retval = COM_refresh( COM_buildUrl( $_CONF['site_url']
                                . '/article.php?story=' . $story->_getSid() ) );
         } else {
             $retval = COM_refresh( $_CONF['site_url'] . '/index.php?msg=2' );
-        }    
+        }
     }
 
     return $retval;
@@ -310,7 +317,7 @@ function savestory ($A)
 * @param    array   $A      Data for that submission
 *
 */
-function savesubmission($type, $A) 
+function savesubmission($type, $A)
 {
     global $_CONF, $_TABLES, $_USER, $LANG12;
 
@@ -433,7 +440,7 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
             break;
     }
     $display .= COM_siteHeader ('menu', $pagetitle);
-    $display .= submissionform($type, $mode, $topic); 
+    $display .= submissionform($type, $mode, $topic);
     $display .= COM_siteFooter();
 }
 
