@@ -7,6 +7,10 @@ if (strpos ($_SERVER['PHP_SELF'], 'functions.php') !== false) {
 
 $_IMAGE_TYPE = 'png';
 
+if (!defined ('XHTML')) {
+    define('XHTML',''); // change this to ' /' for XHTML
+}
+
 $result = DB_query ("SELECT onleft,name FROM {$_TABLES['blocks']} WHERE is_enabled = 1");
 $nrows = DB_numRows ($result);
 for ($i = 0; $i < $nrows; $i++) {

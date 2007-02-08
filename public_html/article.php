@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.88 2007/01/28 10:15:03 dhaun Exp $
+// $Id: article.php,v 1.89 2007/02/08 02:22:15 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -119,7 +119,7 @@ if ($A['count'] > 0) {
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                  . COM_siteFooter ();
     } elseif ( $result == STORY_INVALID_SID ) {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');  
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
         $story_template = new Template ($_CONF['path_layout'] . 'article');
         $story_template->set_file ('article', 'printable.thtml');
@@ -139,7 +139,7 @@ if ($A['count'] > 0) {
 
         $story_template->set_var ('story_introtext',
                                     $story->DisplayElements('introtext'));
-        $story_template->set_var ('story_bodytext', 
+        $story_template->set_var ('story_bodytext',
                                     $story->DisplayElements('bodytext'));
 
         $story_template->set_var ('site_url', $_CONF['site_url']);
@@ -159,14 +159,12 @@ if ($A['count'] > 0) {
                     $numComments . ' ' . $LANG01[3]);
             $story_template->set_var ('comments_count', $numComments);
             $story_template->set_var ('lang_comments', $LANG01[3]);
-            $story_template->set_var ('comments_with_count',
-                    sprintf ($LANG01[121], $numComments));
+            $comments_with_count = sprintf ($LANG01[121], $numComments);
 
             if ($comments > 0) {
-                $story_template->set_var ('start_comments_anchortag',
-                        '<a href="' . $commentsUrl . '">');
-                $story_template->set_var ('end_comments_anchortag', '</a>');
+                $comments_with_count = COM_createLink($comments_with_count, $commentsUrl);
             }
+            $story_template->set_var ('comments_with_count', $comments_with_count);
         }
         $story_template->set_var ('lang_full_article', $LANG08[33]);
         $story_template->set_var ('article_url', $articleUrl);
@@ -212,8 +210,7 @@ if ($A['count'] > 0) {
                  ($_CONF['emailstoryloginrequired'] == 0)))) {
             $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $story->getSid()
                       . '&amp;what=emailstory';
-            $story_options[] = '<a href="' . $emailUrl . '">' . $LANG11[2]
-                             . '</a>';
+            $story_options[] = COM_createLink($LANG11[2], $emailUrl);
             $story_template->set_var ('email_story_url', $emailUrl);
             $story_template->set_var ('lang_email_story', $LANG11[2]);
             $story_template->set_var ('lang_email_story_alt', $LANG01[64]);
@@ -221,8 +218,7 @@ if ($A['count'] > 0) {
         $printUrl = COM_buildUrl ($_CONF['site_url']
                 . '/article.php?story=' . $story->getSid() . '&amp;mode=print');
         if ($_CONF['hideprintericon'] == 0) {
-            $story_options[] = '<a href="' . $printUrl . '">' . $LANG11[3]
-                             . '</a>';
+            $story_options[] = COM_createLink($LANG11[3], $printUrl);
             $story_template->set_var ('print_story_url', $printUrl);
             $story_template->set_var ('lang_print_story', $LANG11[3]);
             $story_template->set_var ('lang_print_story_alt', $LANG01[65]);
@@ -231,8 +227,7 @@ if ($A['count'] > 0) {
             $pdfUrl = $_CONF['site_url']
                     . '/pdfgenerator.php?pageType=2&amp;pageData='
                     . urlencode ($printUrl);
-            $story_options[] = '<a href="' . $pdfUrl . '">' . $LANG11[5]
-                             . '</a>';
+            $story_options[] = COM_createLink($LANG11[5], $pdfUrl);
             $story_template->set_var ('pdf_story_url', $printUrl);
             $story_template->set_var ('lang_pdf_story', $LANG11[5]);
         }
@@ -301,8 +296,8 @@ if ($A['count'] > 0) {
                     ($story->displayElements('day') < time ())) {
                     $url = $_CONF['site_admin_url']
                          . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
-                    $story_template->set_var ('send_trackback_link', '<a href="'
-                         . $url . '">' . $LANG_TRB['send_trackback'] . '</a>');
+                    $story_template->set_var ('send_trackback_link',
+                        COM_createLink($LANG_TRB['send_trackback'], $url));
                     $story_template->set_var ('send_trackback_url', $url);
                     $story_template->set_var ('lang_send_trackback_text',
                                               $LANG_TRB['send_trackback']);

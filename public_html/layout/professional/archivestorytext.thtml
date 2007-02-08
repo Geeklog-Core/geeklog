@@ -14,7 +14,7 @@
     <div class="story-footer">
         {edit_link}&nbsp;{page_selector}<br>
         {readmore_link} {post_comment_link}<br>
-        {plugin_itemdisplay}{start_comments_anchortag}{comments_with_count}{end_comments_anchortag} {start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}
+        {plugin_itemdisplay}{comments_with_count} {start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}
     </div>
 </div>
 <div class="block-divider"> </div>

@@ -272,18 +272,12 @@ enabled and when comments have been made to the story already:</p>
     <td>2 comments</td>
     <td>The number of comments, followed by the word "comments" in the user's
         preferred language.</td></tr>
-<tr><td><code>comments_count</code></td>
+<tr><td><code>comments_with_count</code></td>
     <td>2</td>
-    <td>The number of comments to the story (will always be 1 or greater).</td></tr>
+    <td>The number of comments to the story (will always be 1 or greater). <br>This string becomes a link as soon as there are comments available, pointing to <code>&lt;a href=".../article.php?story=20021022234959146#comments"&gt;</code></td></tr>
 <tr><td><code>lang_comments</code></td>
     <td>comments</td>
     <td>The word "comments" in the user's preferred language.</td></tr>
-<tr><td><code>start_comments_anchortag</code></td>
-    <td><code>&lt;a href=".../article.php<br>?story=20021022234959146#comments"&gt;</code></td>
-    <td>Opening tag for a link to the comments section of a story.</td></tr>
-<tr><td><code>end_comments_anchortag</code></td>
-    <td><code>&lt;/a&gt;</code></td>
-    <td>Closing tag for a link to the comments section of a story.</td></tr>
 <tr><td><code>post_comment_link</code></td>
     <td><code>&lt;a href=".../comment.php<br>?sid=20021022234959146&amp;pid=0<br>&amp;type=article"&gt;Post a comment&lt;/a&gt;</code></td>
     <td>Link to the comment submission form (using "Post a comment" in the

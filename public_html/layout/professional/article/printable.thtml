@@ -12,7 +12,7 @@
 
     <p>{story_bodytext}</p>
 
-    <p>{start_comments_anchortag}{comments_with_count}{end_comments_anchortag}</p>
+    <p>{comments_with_count}</p>
 
     <hr>
 
