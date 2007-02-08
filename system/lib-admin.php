@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.97 2007/01/14 03:30:02 ospiess Exp $
+// $Id: lib-admin.php,v 1.98 2007/02/08 06:15:44 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -589,7 +589,8 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
         switch($fieldname) {
             case "edit":
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/block.php?mode=edit&amp;bid={$A['bid']}\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/block.php?mode=edit&amp;bid={$A['bid']}");
                 }
                 break;
             case 'title':
@@ -668,9 +669,11 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
         switch($fieldname) {
             case 'edit':
                 if ($show_all_groups) {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}&amp;chk_showall=1\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}&amp;chk_showall=1");
                 } else {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}");
                 }
                 break;
             case 'grp_gl_core':
@@ -682,15 +685,17 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
                 break;
             case 'list':
                 if ($show_all_groups) {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1\">"
-                             ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
-                             ."<a href=\"{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1\">"
-                             ."{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['list'],
+                        "{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1")
+                        ."&nbsp;&nbsp;"
+                        . COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1");
                 } else {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}\">"
-                             ."{$icon_arr['list']}</a>&nbsp;&nbsp;"
-                             ."<a href=\"{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}\">"
-                             ."{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['list'],
+                        "{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}")
+                        ."&nbsp;&nbsp;"
+                        . COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}");
                 }
                 break;
             default:
@@ -713,7 +718,8 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = '<input type="checkbox" name="delitem[]" checked="checked">';
             break;
         case 'edit':
-            $retval = "<a href=\"{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}\">{$icon_arr['edit']}</a>";
+            $retval = COM_createLink($icon_arr['edit'],
+                "{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}");
             break;
         case 'username':
             $photoico = '';
@@ -723,9 +729,8 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             } else {
                 $photoico = '';
             }
-            $retval = '<a href="' . $_CONF['site_url']
-                    . '/users.php?mode=profile&amp;uid=' .  $A['uid'] . '">'
-                    . $fieldvalue . '</a>' . $photoico;
+            $retval = COM_createLink($fieldvalue, $_CONF['site_url']
+                    . '/users.php?mode=profile&amp;uid=' .  $A['uid']) . $photoico;
             break;
         case 'lastlogin':
             if ($fieldvalue < 1) {
@@ -801,7 +806,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             $A['title'] = str_replace('$', '&#36;', $A['title']);
             $article_url = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
                                   . $A['sid']);
-            $retval =  "<a href=\"$article_url\">" . stripslashes($A['title']) . "</a>";
+            $retval = COM_createLink(stripslashes($A['title']), $article_url);
             break;
         case "draft_flag":
             if ($A['draft_flag'] == 1) {
@@ -829,9 +834,11 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = $access;
             } else if ($access == $LANG_ACCESS['edit']) {
                 if ($fieldname == 'edit_adv') {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=adv&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=adv&amp;sid={$A['sid']}");
                 } else if ($fieldname == 'edit') {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=std&amp;sid={$A['sid']}\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=std&amp;sid={$A['sid']}");
                 }
             }
             break;
@@ -849,7 +856,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
                 $url = $_CONF['site_admin_url']
                      . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
-                $retval = '<a href="' . $url . '">' . $pingico . '</a>';
+                $retval = COM_createLink($pingico, $url);
             } else {
                 $retval = '';
             }
@@ -879,7 +886,8 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF['site_admin_url']}/syndication.php?mode=edit&amp;fid={$A['fid']}\">{$icon_arr['edit']}</a>";
+            $retval = COM_createLink($icon_arr['edit'],
+                "{$_CONF['site_admin_url']}/syndication.php?mode=edit&amp;fid={$A['fid']}");
             break;
         case 'type':
             $retval = ucwords($A['type']);
@@ -912,7 +920,7 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
             break;
         case 'filename':
             $url = SYND_getFeedUrl ();
-            $retval = '<a href="' . $url . $A['filename'] . '">' . $A['filename'] . '</a>';
+            $retval = COM_createLink($A['filename'], $url . $A['filename']);
             break;
         default:
             $retval = $fieldvalue;
@@ -927,7 +935,8 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}\">{$icon_arr['edit']}</a>";
+            $retval = COM_createLink($icon_arr['edit'],
+                "{$_CONF['site_admin_url']}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}");
             break;
         case 'pi_version':
             $plugin_code_version = PLG_chkVersion ($A['pi_name']);
@@ -977,7 +986,7 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
     }
     switch ($fieldname) {
         case 'edit':
-            $retval = "<a href=\"{$A['edit']}\">{$icon_arr['edit']}</a>";
+            $retval = COM_createLink($icon_arr['edit'], $A['edit']);
             break;
         case 'delete':
             $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\">";
@@ -1014,10 +1023,11 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF['site_admin_url']}/trackback.php?mode=editservice&amp;service_id={$A['pid']}\">{$icon_arr['edit']}</a>";
+            $retval = COM_createLink($icon_arr['edit'],
+                "{$_CONF['site_admin_url']}/trackback.php?mode=editservice&amp;service_id={$A['pid']}");
             break;
         case "name":
-            $retval = "<a href=\"{$A['site_url']}\">{$A['name']}</a>";
+            $retval = COM_createLink($A['name'], $A['site_url']);
             break;
         case "method":
             if ($A['method'] == 'weblogUpdates.ping') {
