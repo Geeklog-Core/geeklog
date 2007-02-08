@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.21 2007/02/05 09:34:13 ospiess Exp $
+// $Id: event.php,v 1.22 2007/02/08 05:10:02 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -67,19 +67,15 @@ function adduserevent ($eid)
         $cal_template->set_var('layout_url', $_CONF['layout_url']);
         $cal_template->set_var('intro_msg', $LANG_CAL_1[8]);
         $cal_template->set_var('lang_event', $LANG_CAL_1[12]);
-        $cal_template->set_var('event_title',stripslashes($A['title']));
+        $event_title = stripslashes($A['title']);
 
         if (!empty ($A['url']) && ($A['url'] != 'http://')) {
             $cal_template->set_var ('event_url', $A['url']);
-            $cal_template->set_var ('event_begin_anchortag',
-                                    '<a href="' . $A['url'] . '">');
-            $cal_template->set_var ('event_end_anchortag', '</a>');
+            $event_title = COM_createLink($event_title, $A['url']);
         } else {
             $cal_template->set_var ('event_url', '');
-            $cal_template->set_var ('event_begin_anchortag', '');
-            $cal_template->set_var ('event_end_anchortag', '');
         }
-
+        $cal_template->set_var ('event_title', $event_title);
         $cal_template->set_var('lang_starts', $LANG_CAL_1[13]);
         $cal_template->set_var('lang_ends', $LANG_CAL_1[14]);
 
@@ -539,34 +535,27 @@ default:
                 $cal_templates->set_var('site_url', $_CONF['site_url']);
                 $cal_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
                 $cal_templates->set_var('layout_url', $_CONF['layout_url']);
+                $event_title = stripslashes($A['title']);
                 if (!empty($A['url'])) {
-                    $cal_templates->set_var('event_begin_anchortag', '<a href="'.$A['url'].'">');
-                    $cal_templates->set_var('event_title', stripslashes($A['title']));
-                    $cal_templates->set_var('event_end_anchortag', '</a>');
-                } else {
-                    $cal_templates->set_var('event_begin_anchortag', '');
-                    $cal_templates->set_var('event_title', stripslashes($A['title']));
-                    $cal_templates->set_var('event_end_anchortag', '');
+                    $event_title = COM_createLink($event_title, $A['url']);
                 }
-
+                $cal_templates->set_var('event_title', $event_title);
                 if (!empty ($_USER['uid']) && ($_USER['uid'] > 1) &&
                         ($_CA_CONF['personalcalendars'] == 1)) {
                     $tmpresult = DB_query("SELECT * FROM {$_TABLES['personal_events']} "
                                         . "WHERE eid='{$A['eid']}' AND uid={$_USER['uid']}");
                     $tmpnrows = DB_numRows($tmpresult);
                     if ($tmpnrows > 0) {
-                        $cal_templates->set_var('addremove_begin_anchortag','<a href="'
-                            . $_CONF['site_url'] . '/calendar/event.php?eid=' . $A['eid']
-                            . '&amp;mode=personal&amp;action=deleteevent">');
-                        $cal_templates->set_var('lang_addremovefromcal',$LANG_CAL_1[10]);
-                        $cal_templates->set_var('addremove_end_anchortag', '</a>');
+                        $addremovelink = $_CONF['site_url'] . '/calendar/event.php?eid='
+                            . $A['eid'] . '&amp;mode=personal&amp;action=deleteevent';
+                        $addremovetxt = $LANG_CAL_1[10];
                     } else {
-                        $cal_templates->set_var('addremove_begin_anchortag','<a href="'
-                            . $_CONF['site_url'] . '/calendar/event.php?eid=' . $A['eid']
-                            . '&amp;mode=personal&amp;action=addevent">');
-                        $cal_templates->set_var('lang_addremovefromcal',$LANG_CAL_1[9]);
-                        $cal_templates->set_var('addremove_end_anchortag', '</a>');
+                        $addremovelink = $_CONF['site_url'] . '/calendar/event.php?eid='
+                            . $A['eid'] . '&amp;mode=personal&amp;action=addevent';
+                        $addremovetxt = $LANG_CAL_1[9];
                     }
+                    $cal_templates->set_var('lang_addremovefromcal',
+                        COM_createLink($addremovetxt, $addremovelink));
                     $cal_templates->parse('addremove_event','addremove');
                 }
                 $cal_templates->set_var('lang_when', $LANG_CAL_1[3]);
@@ -666,23 +655,21 @@ default:
         if ($mode == 'personal') {
             $editurl = $_CONF['site_url'] . '/calendar/event.php?action=edit'
                      . '&amp;eid=' . $eid;
-            $cal_templates->set_var ('event_edit', '<a href="' .$editurl . '">'
-                    . $LANG01[4] . '</a>');
-            $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
-                    . '"><img src="' . $_CONF['layout_url']
-                    . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
-                    . '" title="' . $LANG01[4] . '"></a>');
+            $cal_templates->set_var ('event_edit', COM_createLink($LANG01[4], $editurl));
+            $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+                . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
+                . $LANG01[4] . '">';
+            $cal_templates->set_var ('edit_icon', COM_createLink($img, $editurl));
         } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                 $A['perm_anon']) == 3) && SEC_hasRights ('calendar.edit')) {
             $editurl = $_CONF['site_admin_url']
                      . '/plugins/calendar/index.php?mode=edit&amp;eid=' . $eid;
-            $cal_templates->set_var ('event_edit', '<a href="' .$editurl . '">'
-                    . $LANG01[4] . '</a>');
-            $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
-                    . '"><img src="' . $_CONF['layout_url']
-                    . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
-                    . '" title="' . $LANG01[4] . '"></a>');
+            $cal_templates->set_var ('event_edit', COM_createLink($LANG01[4], $editurl));
+            $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+                . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
+                . $LANG01[4] . '">';
+            $cal_templates->set_var ('edit_icon', COM_createLink($img, $editurl));
             $cal_templates->set_var ('hits_admin',
                                      COM_numberFormat ($A['hits']));
             $cal_templates->set_var ('lang_hits_admin', $LANG10[30]);
