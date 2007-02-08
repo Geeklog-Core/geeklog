@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.82 2007/02/03 15:47:26 dhaun Exp $
+// $Id: lib-story.php,v 1.83 2007/02/08 02:30:00 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -296,8 +296,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'comments_count',
                     COM_numberFormat ( $story->DisplayElements('comments') ));
             $article->set_var( 'lang_comments', $LANG01[3] );
-            $article->set_var( 'comments_with_count',
-                    sprintf( $LANG01[121], COM_numberFormat( $story->DisplayElements('comments') )));
+            $comments_with_count = sprintf( $LANG01[121], COM_numberFormat( $story->DisplayElements('comments') ));
 
             if( $story->DisplayElements('comments') > 0 )
             {
@@ -310,12 +309,11 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         . $LANG01[104] . ' ' . COM_getDisplayName ($C['cuid'],
                                                 $C['username'], $C['fullname'])
                         . '</span>';
-                $article->set_var( 'start_comments_anchortag', '<a href="'
-                        . $commentsUrl . '">' );
-                $article->set_var( 'end_comments_anchortag', '</a>' );
+                $article->set_var( 'comments_with_count', COM_createLink($comments_with_count, $commentsUrl));
             }
             else
             {
+                $article->set_var( 'comments_with_count', $comments_with_count);
                 $recent_post_anchortag = ' <a href="' . $_CONF['site_url']
                         . '/comment.php?sid=' . $story->getsid()
                         . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
