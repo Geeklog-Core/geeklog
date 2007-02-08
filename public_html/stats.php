@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.49 2006/10/11 20:08:41 dhaun Exp $
+// $Id: stats.php,v 1.50 2007/02/08 03:52:48 ospiess Exp $
 
 require_once('lib-common.php');
 require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -54,7 +54,7 @@ if (empty ($_USER['username']) &&
     $display .= $login->finish ($login->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter();
-    echo $display; 
+    echo $display;
     exit;
 }
 
@@ -92,7 +92,7 @@ $data_arr[] = array('title' => $LANG10[27], 'stats' => COM_NumberFormat ($active
 $topicsql = COM_getTopicSql ('AND');
 
 $id = array ('draft_flag', 'date');
-$values = array ('0', 'NOW()');	
+$values = array ('0', 'NOW()');
 $result = DB_query ("SELECT COUNT(*) AS count,SUM(comments) AS ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql);
 $A = DB_fetchArray ($result);
 if (empty ($A['ccount'])) {
@@ -139,8 +139,8 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+        $A['sid'] = COM_createLink($A['title'],  COM_buildUrl ($_CONF['site_url']
+                  . "/article.php?story={$A['sid']}"));
         $A['hits'] = COM_NumberFormat ($A['hits']);
         $data_arr[$i] = $A;
 
@@ -166,10 +166,10 @@ if ($nrows > 0) {
                       'title'        => $LANG10[11],
     );
     for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);	
+        $A = DB_fetchArray($result);
         $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+        $A['sid'] = COM_createLink($A['title'], COM_buildUrl ($_CONF['site_url']
+                  . "/article.php?story={$A['sid']}"));
         $A['comments'] = COM_NumberFormat ($A['comments']);
         $data_arr[$i] = $A;
     }
@@ -198,8 +198,8 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
             $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                      . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+            $A['sid'] = COM_createLink($A['title'], COM_buildUrl ($_CONF['site_url']
+                      . "/article.php?story={$A['sid']}"));
             $A['count'] = COM_NumberFormat ($A['count']);
             $data_arr[$i] = $A;
         }
@@ -229,8 +229,8 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                  . "/article.php?story={$A['sid']}"). "\">{$A['title']}</a>";
+        $A['sid'] = COM_createLink($A['title'], COM_buildUrl ($_CONF['site_url']
+                  . "/article.php?story={$A['sid']}"));
         $A['numemails'] = COM_NumberFormat ($A['numemails']);
         $data_arr[$i] = $A;
 
