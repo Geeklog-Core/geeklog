@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.114 2007/01/09 09:24:25 ospiess Exp $
+// $Id: lib-plugins.php,v 1.115 2007/02/08 06:33:09 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1394,7 +1394,7 @@ function PLG_replaceTags ($content, $plugin = '')
                 }
 
                 if (!empty ($url)) {
-                    $filelink = '<a href="' . $url . '">' . $linktext . '</a>';
+                    $filelink = COM_createLink($linktext, $url);
                     $content = str_replace ($autotag['tagstr'], $filelink,
                                             $content);
                 }
