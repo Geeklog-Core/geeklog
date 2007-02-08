@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.89 2007/02/08 02:22:15 ospiess Exp $
+// $Id: article.php,v 1.90 2007/02/08 02:33:53 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -127,7 +127,7 @@ if ($A['count'] > 0) {
                 $_CONF['site_name'] . ': ' . $story->displayElements('title'));
         $story_template->set_var ( 'story_title', $story->DisplayElements( 'title' ) );
         header ('Content-Type: text/html; charset=' . COM_getCharset ());
-        $story_template->set_var ('story_date', $story->displaElements('date'));
+        $story_template->set_var ('story_date', $story->displayElements('date'));
 
         if ($_CONF['contributedbyline'] == 1) {
             $story_template->set_var ('lang_contributedby', $LANG01[1]);
@@ -161,7 +161,7 @@ if ($A['count'] > 0) {
             $story_template->set_var ('lang_comments', $LANG01[3]);
             $comments_with_count = sprintf ($LANG01[121], $numComments);
 
-            if ($comments > 0) {
+            if ($numComments > 0) {
                 $comments_with_count = COM_createLink($comments_with_count, $commentsUrl);
             }
             $story_template->set_var ('comments_with_count', $comments_with_count);
