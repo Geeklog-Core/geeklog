@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.253 2007/02/04 10:07:04 mjervis Exp $
+// $Id: story.php,v 1.254 2007/02/08 04:44:26 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -684,8 +684,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             $result_articles = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '".$story->getSid()."'");
             for ($z = 1; $z <= $icount; $z++) {
                 $I = DB_fetchArray($result_articles);
-                $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '">' . $I['ai_filename'] . '</a>';
-                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG_ADMIN['delete'] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><br>';
+                $saved_images .= $z . ') '
+                    . COM_createLink($I['ai_filename'],
+                        $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'])
+                    . '&nbsp;&nbsp;&nbsp;' . $LANG_ADMIN['delete']
+                    . ': <input type="checkbox" name="delete[' .$I['ai_img_num']
+                    . ']"><br>';
             }
         }
 
