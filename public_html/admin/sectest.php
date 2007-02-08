@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.5 2007/01/06 12:04:55 dhaun Exp $
+// $Id: sectest.php,v 1.6 2007/02/08 04:42:48 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -269,7 +269,10 @@ if (!empty ($url)) {
     $display .= '<ol>';
 
     if (strpos ($_SERVER['PHP_SELF'], 'public_html') !== false) {
-        $display .= '<li>"public_html" should never be part of your site\'s URL. Please read the part about public_html in the <a href="../docs/install.html#public_html">installation instructions</a> again and change your setup accordingly before you proceed.</li>';
+        $display .= '<li>"public_html" should never be part of your site\'s URL.'
+            ." Please read the part about public_html in the "
+            . COM_createLink('installation instructions', "../docs/install.html#public_html")
+            . ' again and change your setup accordingly before you proceed.</li>';
         $failed_tests++;
     }
 
@@ -341,7 +344,11 @@ if (empty ($LANG_DIRECTION)) {
                   . '</strong>';
 }
 
-$display .= '<p>To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) <a href="http://lists.geeklog.net/mailman/listinfo/geeklog-announce">geeklog-announce</a> mailing list and/or use the ' . $versioncheck . ' option in your Admin menu from time to time to check for available updates.</p>';
+$display .= '<p>To stay informed about new Geeklog releases and possible '
+    . "security issues, we suggest that you subscribe to the (low-traffic) "
+    . COM_createLink('geeklog-announce', 'http://lists.geeklog.net/mailman/listinfo/geeklog-announce')
+    . 'mailing list and/or use the ' . $versioncheck
+    . ' option in your Admin menu from time to time to check for available updates.</p>';
 
 $display .= COM_endBlock ();
 $display .= '</div>' . LB;
