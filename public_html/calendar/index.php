@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.19 2007/02/05 09:41:03 ospiess Exp $
+// $Id: index.php,v 1.20 2007/02/08 05:39:11 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -214,29 +214,23 @@ function getDeleteImageLink ($mode, $A)
     global $_CONF, $LANG_CAL_ADMIN, $LANG_CAL_2, $_IMAGE_TYPE;
 
     $retval = '';
-
+    $img = '<img src="' . $_CONF['site_url']
+        . '/calendar/images/delete_event.' . $_IMAGE_TYPE
+        . '" alt="' . $LANG_CAL_2[30] . '" title="'
+        . $LANG_CAL_2[30] . '">';
     if ($mode == 'personal') {
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0) {
-
-            $retval = '<a href="' . $_CONF['site_url']
+            $retval = COM_createLink($img, $_CONF['site_url']
                     . '/calendar/event.php?action=deleteevent&amp;eid='
-                    . $A['eid'] . '"><img src="' . $_CONF['site_url']
-                    . '/calendar/images/delete_event.' . $_IMAGE_TYPE
-                    . '" alt="' . $LANG_CAL_2[30] . '" title="'
-                    . $LANG_CAL_2[30] . '"></a>';
+                    . $A['eid']);
         }
     } else if (SEC_hasRights ('calendar.edit')) {
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
-
-            $retval = '<a href="' . $_CONF['site_admin_url']
+            $retval = COM_createLink($img, $_CONF['site_admin_url']
                     . '/plugins/calendar/index.php?mode=' . $LANG_CAL_ADMIN[22]
-                    . '&amp;eid=' . $A['eid'] . '"><img src="'
-                    . $_CONF['site_url']
-                    . '/calendar/images/delete_event.' . $_IMAGE_TYPE
-                    . '" alt="' . $LANG_CAL_2[30] . '" title="'
-                    . $LANG_CAL_2[30] . '"></a>';
+                    . '&amp;eid=' . $A['eid']);
         }
     }
 
@@ -266,9 +260,9 @@ function getSmallCalendar ($m, $y, $mode = '')
 
     $retval .= '<table class="smallcal">' . LB
             . '<tr class="smallcal-headline"><td align="center" colspan="7">'
-            . '<a href="' . $_CONF['site_url'] . '/calendar/index.php?month='
-            . $m . '&amp;year=' . $y . $mode . '">' . $mycal->getMonthName ($m)
-            . '</a></td></tr>' . makeDaysHeadline () . LB;
+            . COM_createLink($mycal->getMonthName ($m), $_CONF['site_url']
+                . '/calendar/index.php?month=' . $m . '&amp;year=' . $y . $mode)
+            . '</td></tr>' . makeDaysHeadline () . LB;
 
     for ($i = 1; $i <= 6; $i++) {
         if ($i % 2 == 0) {
@@ -515,13 +509,17 @@ case 'day':
     $cal_templates->set_var('currentday', strftime('%A, %x',mktime(0, 0, 0,$month, $day, $year)));
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
-        $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="'
-                               . $_CONF['site_url'] . "/calendar/index.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG_CAL_2[11] . '</a>]');
+        $cal_templates->set_var('calendar_toggle', '|&nbsp;'
+            . COM_createLink($LANG_CAL_2[11], $_CONF['site_url']
+                . "/calendar/index.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year")
+        );
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
         if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
-            $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="'
-                                   . $_CONF['site_url'] . "/calendar/index.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG_CAL_2[12] . '</a>]');
+            $cal_templates->set_var('calendar_toggle', '|&nbsp;'
+                . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
+                    . "/calendar/index.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year")
+            );
         } else {
             $cal_templates->set_var('calendar_toggle', ']');
         }
@@ -626,15 +624,17 @@ case 'week':
     $cal_templates->set_var('lang_week', $LANG_CAL_2[27]);
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
-        $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="' . $_CONF['site_url']
-                                                 . "/calendar/index.php?view=week&amp;month=$month&amp;day=$day&amp;year=$year\">"
-                                                 . $LANG_CAL_2[11] . '</a>]');
+        $cal_templates->set_var('calendar_toggle', '|&nbsp;'
+            . COM_createLink($LANG_CAL_2[11], $_CONF['site_url']
+                . "/calendar/index.php?view=week&amp;month=$month&amp;day=$day&amp;year=$year")
+        );
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
         if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
-            $cal_templates->set_var('calendar_toggle', '|&nbsp;<a href="' . $_CONF['site_url']
-                                                     . "/calendar/index.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">"
-                                                     . $LANG_CAL_2[12] . '</a>]');
+            $cal_templates->set_var('calendar_toggle', '|&nbsp;'
+                . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
+                    . "/calendar/index.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year")
+            );
         } else {
             $cal_templates->set_var('calendar_toggle', ']');
         }
@@ -706,21 +706,21 @@ case 'week':
             $cal_templates->set_var('class'.$i,'weekview-offday');
         }
         $monthname = $cal->getMonthName($monthnum);
-        $cal_templates->set_var ('day' . $i, $dayname . ', <a href="'
-            . $_CONF['site_url'] . '/calendar/index.php?' . addMode ($mode)
-            . 'view=day&amp;day=' . $daynum . '&amp;month=' . $monthnum
-            . '&amp;year=' . $yearnum . '">' . strftime ('%x', $thedate[1])
-            . '</a>');
+        $cal_templates->set_var ('day' . $i, $dayname . ', '
+            . COM_createLink( strftime ('%x', $thedate[1]),
+            $_CONF['site_url'] . '/calendar/index.php?' . addMode ($mode)
+            . "view=day&amp;day$daynum &amp;month=$monthnum&amp;year=$yearnum")
+        );
         if ($mode == 'personal') {
             $add_str =  $LANG_CAL_2[8];
         } else {
             $add_str =  $LANG_CAL_2[42];
         }
 
-        $cal_templates->set_var ('langlink_addevent' . $i, '<a href="'
-            . $_CONF['site_url'] . '/submit.php?type=calendar&amp;'
-            . addMode ($mode) . 'day=' . $daynum . '&amp;month=' . $monthnum
-            . '&amp;year=' . $yearnum . '">' . $add_str . '</a>');
+        $cal_templates->set_var ('langlink_addevent' . $i,
+            COM_createLink($add_str, $_CONF['site_url'] . '/submit.php?type=calendar&amp;'
+            . addMode ($mode) . "day=$daynum&amp;month=$monthnum&amp;year=$yearnum")
+        );
         if ($mode == 'personal') {
             $calsql = "SELECT eid,title,datestart,dateend,timestart,timeend,allday,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" BETWEEN datestart AND dateend)) ORDER BY datestart,timestart";
         } else {
@@ -753,10 +753,11 @@ case 'week':
                 $cal_templates->set_var('event_starttime', $starttime);
                 $cal_templates->set_var('event_endtime', ' - ' . $endtime);
             }
-            $cal_templates->set_var ('event_title_and_link', '<a href="'
-                . $_CONF['site_url'] . '/calendar/event.php?' . addMode ($mode)
-                . 'eid=' . $A['eid'] . '">' . stripslashes($A['title'])
-                . '</a>');
+            $cal_templates->set_var ('event_title_and_link',
+                COM_createLink(stripslashes($A['title']), $_CONF['site_url']
+                    . '/calendar/event.php?' . addMode ($mode)
+                . 'eid=' . $A['eid'])
+            );
             // Provide delete event link if user has access
             $cal_templates->set_var ('delete_imagelink',
                                      getDeleteImageLink ($mode, $A));
@@ -916,11 +917,13 @@ for ($i = 1; $i <= 6; $i++) {
                 $curday->daynumber = '0' . $curday->daynumber;
             }
 
-            $cal_templates->set_var ('cal_day_anchortags', '<a href="'
-                . $_CONF['site_url'] . '/calendar/index.php?view=day&amp;'
-                . addMode ($mode) . 'day=' . $curday->daynumber. '&amp;month='
-                . $month . '&amp;year=' . $year . '" class="cal-date">'
-                . $curday->daynumber. '</a><hr>');
+            $cal_templates->set_var ('cal_day_anchortags',
+                COM_createLink($curday->daynumber, $_CONF['site_url']
+                    . '/calendar/index.php?view=day&amp;' . addMode ($mode)
+                    . 'day=' . $curday->daynumber . "&amp;month=$month&amp;year=$year",
+                    array('class'=>'cal-date'))
+                . '<hr>'
+            );
 
             if (strlen($month) == 1) {
                 $month = '0' . $month;
@@ -951,10 +954,13 @@ for ($i = 1; $i <= 6; $i++) {
                     $results = DB_fetchArray ($query2);
                     if ($results['title']) {
                         $cal_templates->set_var ('cal_day_entries', '');
-                        $entries .= '<a href="' . $_CONF['site_url']
-                            . '/calendar/event.php?' . addMode ($mode)
-                            . 'eid=' . $results['eid'] . '" class="cal-event">'
-                            . stripslashes ($results['title']) . '</a><hr>';
+                        $entries .=
+                            COM_createLink(
+                                stripslashes ($results['title']),
+                                $_CONF['site_url'] . '/calendar/event.php?' . addMode ($mode)
+                                . 'eid=' . $results['eid'],
+                                array('class'=>'cal-event'))
+                            . '<hr>';
                     }
                 }
                 for ($z = $z; $z <= 4; $z++) {
