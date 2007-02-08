@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.14 2007/01/17 08:59:27 ospiess Exp $
+// $Id: directory.php,v 1.15 2007/02/08 02:52:41 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -138,19 +138,13 @@ function DIR_monthLink ($topic, $year, $month, $count)
 {
     global $_CONF, $LANG_MONTH;
 
-    $retval = '';
+    $retval = $LANG_MONTH[$month] . ' (' . COM_numberFormat ($count) . ')' . LB;
 
     if ($count > 0) {
-        $retval .= '<a href="' . COM_buildUrl ($_CONF['site_url'] . '/'
-                . THIS_SCRIPT . '?topic=' . urlencode ($topic) . '&amp;year='
-                . $year . '&amp;month=' . $month) . '">';
-    }
-
-    $retval .= $LANG_MONTH[$month] . ' (' . COM_numberFormat ($count) . ')'
-            . LB;
-
-    if ($count > 0) {
-        $retval .= '</a>';
+        $month_url = COM_buildUrl ($_CONF['site_url'] . '/'
+            . THIS_SCRIPT . '?topic=' . urlencode ($topic) . '&amp;year='
+            . $year . '&amp;month=' . $month);
+        $retval =  COM_createLink ($retval, $month_url);
     }
 
     $retval .= LB;
@@ -210,8 +204,7 @@ function DIR_navBar ($topic, $year, $month = 0)
         if ($month > 0) {
             $url .= '&amp;month=' . $prevmonth;
         }
-        $retval .= '<a href="' . COM_buildUrl ($url) . '">' . $LANG05[6]
-                . '</a>';
+        $retval .= COM_createLink($LANG05[6], COM_buildUrl ($url));
     } else {
         $retval .= $LANG05[6];
     }
@@ -222,7 +215,8 @@ function DIR_navBar ($topic, $year, $month = 0)
     if ($topic != 'all') {
         $url = COM_buildUrl ($url . '?topic=' . urlencode ($topic));
     }
-    $retval .= '<a href="' . $url . '">' . $LANG_DIR['nav_top'] . '</a>';
+
+    $retval .= COM_createLink($LANG_DIR['nav_top'] , $url);
 
     $retval .= ' | ';
 
@@ -232,8 +226,7 @@ function DIR_navBar ($topic, $year, $month = 0)
         if ($month > 0) {
             $url .= '&amp;month=' . $nextmonth;
         }
-        $retval .= '<a href="' . COM_buildUrl ($url) . '">' . $LANG05[5]
-                . '</a>';
+        $retval .= COM_createLink($LANG05[5], $url);
     } else {
         $retval .= $LANG05[5];
     }
@@ -306,8 +299,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
 
             $url = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
                                  . $A['sid']);
-            $entries[] = '<a href="' . $url . '">' . stripslashes ($A['title'])
-                       . '</a>';
+            $entries[] = COM_createLink(stripslashes ($A['title']), $url);
         }
 
         if (sizeof ($entries) > 0) {
