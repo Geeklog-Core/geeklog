@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.15 2007/02/08 02:52:41 ospiess Exp $
+// $Id: directory.php,v 1.16 2007/02/08 02:57:08 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -226,7 +226,7 @@ function DIR_navBar ($topic, $year, $month = 0)
         if ($month > 0) {
             $url .= '&amp;month=' . $nextmonth;
         }
-        $retval .= COM_createLink($LANG05[5], $url);
+        $retval .= COM_createLink($LANG05[5], COM_buildUrl ($url));
     } else {
         $retval .= $LANG05[5];
     }
