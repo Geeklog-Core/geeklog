@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.16 2007/01/16 04:02:25 ospiess Exp $
+// $Id: install.php,v 1.17 2007/02/08 04:50:59 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -358,8 +358,9 @@ if ($_REQUEST['action'] == 'uninstall') {
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 } else if (DB_getItem($_TABLES['plugins'],'pi_version','pi_name="polls"') !== $_PO_CONF['version']) {
-    $display .= $LANG_POLLS['upgrade1'] . ' <a href="' . $_CONF['site_admin_url']
-        . '/plugins/polls/install.php?action=upgrade">' .$LANG_POLLS['upgrade2']. '</a>.';
+    $display .= $LANG_POLLS['upgrade1']
+        . COM_createLink($LANG_POLLS['upgrade2'], $_CONF['site_admin_url']
+        . '/plugins/polls/install.php?action=upgrade');
 } else {
     // plugin already installed
     $display .= COM_siteHeader ('menu', $LANG01[77])

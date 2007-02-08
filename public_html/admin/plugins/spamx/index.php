@@ -51,9 +51,9 @@ if (!SEC_hasRights ('spamx.admin')) {
     exit;
 }
 
- 
+
 /**
-* Main 
+* Main
 */
 
 $display = COM_siteHeader ('menu', $LANG_SX00['plugin_name']);
@@ -71,8 +71,8 @@ $display .= '<p>';
 $files = array ();
 if ($dir = @opendir ($_CONF['path'] . 'plugins/spamx/')) {
     while (($file = readdir ($dir)) !== false) {
-        if (is_file ($_CONF['path'] . 'plugins/spamx/' . $file)) 
-        { 
+        if (is_file ($_CONF['path'] . 'plugins/spamx/' . $file))
+        {
             if (substr ($file, -16) == '.Admin.class.php') {
                 $tmp = str_replace ('.Admin.class.php', '', $file);
                 array_push ($files, $tmp);
@@ -86,12 +86,11 @@ $display .= '<p><b>' . $LANG_SX00['adminc'] . '</b></p><ul>';
 foreach ($files as $file) {
     require_once ($_CONF['path'] . 'plugins/spamx/' . $file . '.Admin.class.php');
     $CM = new $file;
-    $display .= '<li><a href="' . $_CONF['site_admin_url']
-             . '/plugins/spamx/index.php?command=' . $file . '">' . $CM->link ()
-             . '</a></li>';
+    $display .= '<li>' . COM_createLink($CM->link (), $_CONF['site_admin_url']
+             . '/plugins/spamx/index.php?command=' . $file) . '</li>';
 }
-$display .= '<li><a href="' . $_CONF['site_url'] . '/docs/spamx.html">'
-         . $LANG_SX00['documentation'] . '</a></li>';
+$display .= '<li>' . COM_createLink($LANG_SX00['documentation'],
+            $_CONF['site_url'] . '/docs/spamx.html') . '</li>';
 $display .= '</ul>';
 
 if (isset ($_REQUEST['command'])) {
