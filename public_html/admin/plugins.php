@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.68 2007/01/13 11:11:02 ospiess Exp $
+// $Id: plugins.php,v 1.69 2007/02/08 04:39:43 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -294,14 +294,14 @@ function show_newplugins ()
                     COM_startBlock ($LANG32[14], '',
                             COM_getBlockTemplate ('_admin_block', 'header')));
             for ($i = 0; $i < sizeof ($newplugins); $i++) {
-                $newtemplate->set_var ('lang_install', $LANG32[22]);
+
                 $newtemplate->set_var ('pi_name', $newplugins[$i]);
                 $newtemplate->set_var ('row_num', $i + 1);
                 $newtemplate->set_var ('cssid', $i%2 + 1);
-                $newtemplate->set_var ('start_install_anchortag', '<a href="'
-                    . $_CONF['site_admin_url'] . '/plugins/' . $newplugins[$i]
-                    . '/install.php?action=install">');
-                $newtemplate->set_var ('end_install_anchortag', '</a>');
+                $newtemplate->set_var ('lang_install', COM_createLink($LANG32[22],
+                    $_CONF['site_admin_url'] . '/plugins/' . $newplugins[$i]
+                    . '/install.php?action=install')
+                );
                 $newtemplate->parse ('plugin_list', 'row', true);
             }
             $newtemplate->set_var ('end_block',
@@ -314,10 +314,10 @@ function show_newplugins ()
             $retval .= '<table border="0">' . LB;
             $retval .= '<tr><th align="left">' . $LANG32[16] .'</th></tr>' . LB;
             for ($i = 0; $i < sizeof ($newplugins); $i++) {
-                $retval .= '<tr><td>' . $newplugins[$i] . '</td><td><a href="'
-                    . $_CONF['site_admin_url'] . '/plugins/' . $newplugins[$i]
-                    . '/install.php?action=install">' . $LANG32[22]
-                    . '</a></td></tr>' . LB;
+                $retval .= '<tr><td>' . $newplugins[$i] . '</td><td>'
+                    . COM_createLink($LANG32[22], $_CONF['site_admin_url']
+                    . "/plugins/{$newplugins[$i]}/install.php?action=install")
+                    . '</td></tr>' . LB;
             }
             $retval .= '</table>' . LB;
             $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block',
