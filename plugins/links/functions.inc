@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.71 2006/12/18 06:45:37 ospiess Exp $
+// $Id: functions.inc,v 1.72 2007/02/08 01:42:16 ospiess Exp $
 
 
 /**
@@ -140,16 +140,14 @@ function plugin_getwhatsnew_links()
 
             $title = COM_truncate( $A['title'], $_CONF['title_trim_length'],
                                    '...' );
+            $link_title = array();
             if( $title != $A['title'] )
             {
-                $newlinks[] = '<a href="' . $lcount . '" title="'
-                            . $A['title'] . '">' . $title . '</a>' . LB;
+                $link_title = array('title'=>$A['title']);
             }
-            else
-            {
-                $newlinks[] = '<a href="' . $lcount . '">' . $A['title']
-                            . '</a>' . LB;
-            }
+
+            $newlinks[] = COM_createLink(
+                $title, $lcount, $link_title) . LB;
         }
 
         $retval .= COM_makeList( $newlinks, 'list-new-plugins' );
@@ -187,7 +185,7 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
         } else {
             $linktext = $autotag['parm2'];
         }
-        $link = '<a href="' . $url . '">' . $linktext . '</a>';
+        $link = COM_createLink($linktext, $url);
         $content = str_replace ($autotag['tagstr'], $link, $content);
 
         return $content;
@@ -270,8 +268,7 @@ function plugin_showstats_links ($showsitestats)
             $title = stripslashes (str_replace ('$', '&#36;', $A['title']));
             $url = COM_buildUrl ($_CONF['site_url']
                         . '/links/portal.php?what=link&amp;item=' . $A['lid']);
-            $sid = '<a href="' . $url . '" title="' . $A['url'] . '">' . $title
-                 . '</a>';
+            $sid = COM_createLink($title, $url, array('title'=> $A['url']) );
             $hits = COM_numberFormat ($A['hits']);
             $data_arr[] = array('title' => $title,
                                 'sid' => $sid,
@@ -444,17 +441,17 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
         $A['title'] = stripslashes ($A['title']);
         $submitter = COM_getDisplayName ($A['owner_id']);
         if ($A['owner_id'] > 1) {
-            $profile = '<a href="' . $_CONF['site_url']
-                     . '/users.php?mode=profile&amp;uid=' . $A['owner_id']
-                     . '">' . $submitter . '</a>';
+            $profile_url = $_CONF['site_url']
+                     . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+            $profile = COM_createLink($submitter, $profile_url);
         } else {
             $profile = $submitter;
         }
         $linkUrl = COM_buildURL ($_CONF['site_url']
                                  . '/links/portal.php?what=link&amp;item='
                                  . $A['lid']);
-        $anchor = '<a href="' . $linkUrl . '" title="' . $A['url'] . '">';
-        $row = array ($anchor . $A['title'] . '</a>', $thetime[0], $profile,
+        $anchor = COM_createLink($A['title'], $linkUrl, array('title'=> $A['url']));
+        $row = array ($anchor, $thetime[0], $profile,
                       COM_NumberFormat ($A['hits']));
         $plugin_results->addSearchResult ($row);
         $plugin_results->num_searchresults++;
@@ -1086,7 +1083,7 @@ function plugin_save_submit_links ($A)
     }
 
     // pseudo-formatted link description for the spam check
-    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a> ('
+    $spamcheck = '<p>'. COM_createLink($A['title'], $A['url']) .' ('
                . $A['category'] . ', ' . $A['categorydd'] . ')<br>'
                . $A['description'] . '</p>';
     $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
@@ -1186,7 +1183,10 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
         switch($fieldname) {
             case 'edit':
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink(
+                        $icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}"
+                    );
                 }
                 break;
             case 'access':
@@ -1197,8 +1197,7 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 break;
             case 'title':
-                $title = stripslashes($A['title']);
-                $retval = "<a href=\"{$A['url']}\">$title</a>";
+                $retval = COM_createLink(stripslashes($A['title']), $A['url']);
                 break;
             default:
                 $retval = $fieldvalue;

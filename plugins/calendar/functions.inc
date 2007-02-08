@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.63 2007/02/05 09:40:25 ospiess Exp $
+// $Id: functions.inc,v 1.64 2007/02/08 01:42:16 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -234,19 +234,23 @@ function phpblock_calendar( $help='', $title='' )
                     // Now display this event record.
                     if( $numDays < $range ) {
                         // Display the url now!
-                        $newevent = '<a href="' . $_CONF['site_url']
+                        $newevent_url = $_CONF['site_url']
                                   . '/calendar/event.php?';
 
                         if( $z == 2 ) {
-                            $newevent .= 'mode=personal&amp;';
+                            $newevent_url .= 'mode=personal&amp;';
                         }
 
-                        $newevent .= 'eid=' . $theEvent['eid'] . '"';
+                        $newevent_url .= 'eid=' . $theEvent['eid'] . '"';
                         if( $todaysEvent ) {
-                            $newevent .= ' class="' . $todaysClassName . '"';
+                            $attr = array('class' => $todaysClassName);
                         }
-                        $newevent .= '>' . stripslashes( $theEvent['title'] )
-                                  . '</a>';
+
+                        $newevent = COM_createLink(
+                            stripslashes( $theEvent['title'] ),
+                            $newevent_url,
+                            $attr
+                        );
                         $newevents[] = $newevent;
                     }
 
@@ -431,7 +435,7 @@ function plugin_savesubmission_calendar($A)
     }
 
     // pseudo-formatted event description for the spam check
-    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a><br>'
+    $spamcheck = COM_createLink($A['title'], $A['url']) . '<br>'
                . $A['location'] . '<br>' . $A['address1'] . '<br>'
                . $A['address2'] . '<br>' . $A['city'] . ', ' . $A['zipcode']
                . '<br>' . $A['description'] . '</p>';
@@ -1014,7 +1018,7 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
         } else {
             $linktext = $autotag['parm2'];
         }
-        $link = '<a href="' . $url . '">' . $linktext . '</a>';
+        $link = COM_createLink($linktext, $url);
         $content = str_replace ($autotag['tagstr'], $link, $content);
 
         return $content;
@@ -1209,8 +1213,8 @@ function plugin_showstats_calendar ($showsitestats)
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-            $A['sid'] = "<a href=\"" . $_CONF['site_url']
-                      . "/calendar/event.php?eid={$A['eid']}\">{$A['title']}</a>";
+            $A['sid'] = COM_createLink($A['title'], $_CONF['site_url']
+                      . "/calendar/event.php?eid={$A['eid']}");
             $A['hits'] = COM_NumberFormat ($A['hits']);
             $data_arr[$i] = $A;
         }
@@ -1633,10 +1637,9 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         $thetime = COM_getUserDateTimeFormat ($A['day']);
         $A['title'] = stripslashes ($A['title']);
         $A['title'] = str_replace ('$', '&#36;', $A['title']);
-        $row = array ('<a href="' . $_CONF['site_url']
-                            . '/calendar/event.php?eid=' . $A['eid'] . '">'
-                            . $A['title'] . '</a>', $fulldate,
-                            stripslashes ($A['event_type']));
+        $link = COM_createLink($A['title'], $_CONF['site_url']
+                            . '/calendar/event.php?eid=' . $A['eid'], $attr);
+        $row = array ($link, $fulldate, stripslashes ($A['event_type']));
         $event_results->addSearchResult($row);
         $event_results->num_searchresults++;
     }
@@ -1682,16 +1685,18 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
             break;
         case "edit":
             if ($access == 3) {
-                $retval = "<a href=\"{$_CONF['site_admin_url']}"
-                        . "/plugins/calendar/index.php?mode=edit&amp;eid="
-                        . "{$A['eid']}\">{$icon_arr['edit']}</a>";
+                $retval = COM_createLink(
+                    $icon_arr['edit'],
+                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php "
+                    . "?mode=edit&amp;eid={$A['eid']}");
             }
             break;
         case "copy":
             if ($access == 3) {
-                $retval = "<a href=\"{$_CONF['site_admin_url']}"
-                        . "/plugins/calendar/index.php?mode=clone&amp;eid="
-                        . "{$A['eid']}\">{$icon_arr['copy']}</a>";
+                $retval = COM_createLink(
+                    $icon_arr['copy'],
+                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php "
+                    . "?mode=clone&amp;eid={$A['eid']}");
             }
             break;
         case 'access':
@@ -1703,8 +1708,9 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
             break;
         case 'title':
             $retval = stripslashes ($A['title']);
-            $retval = "<a href=\"{$_CONF['site_url']}/calendar/event.php?eid="
-                    . "{$A['eid']}\">$retval</a>";
+            $retval = COM_createLink( $retval,
+                "{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}"
+            );
             break;
         case 'username':
             $retval = COM_getDisplayName ($A['owner_id'], $A['username'], $A['fullname']);

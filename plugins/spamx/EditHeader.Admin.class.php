@@ -11,7 +11,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.6 2007/01/14 03:28:13 ospiess Exp $
+* $Id: EditHeader.Admin.class.php,v 1.7 2007/02/08 01:42:16 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
@@ -70,7 +70,9 @@ class EditHeader extends BaseAdmin {
         for ($i = 0; $i < $nrows; $i++) {
             list($e) = DB_fetchArray ($result);
 
-            $display .= '<li><a href="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditHeader&amp;action=delete&amp;entry=' . urlencode ($e) . '">' . $e . '</a></li>';
+            $display .= '<li>'. COM_createLink($e , $_CONF['site_admin_url']
+                . '/plugins/spamx/index.php?command=EditHeader&amp;action=delete&amp;entry='
+                . urlencode ($e)) . '</li>';
         }
         $display .= '</ul><p>' . $LANG_SX00['e1'] . '</p>';
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>';

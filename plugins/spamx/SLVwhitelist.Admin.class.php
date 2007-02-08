@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: SLVwhitelist.Admin.class.php,v 1.2 2007/01/14 03:28:13 ospiess Exp $
+* $Id: SLVwhitelist.Admin.class.php,v 1.3 2007/02/08 01:42:17 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'SLVwhitelist.Admin.class.php') !== false) {
@@ -63,7 +63,10 @@ class SLVwhitelist extends BaseAdmin {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
             $e = $A['value'];
-            $display .= '<li><a href="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=SLVwhitelist&amp;action=delete&amp;entry=' . urlencode ($e) . '">' . htmlspecialchars ($e) . '</a></li>' . LB;
+            $display .= '<li>' . COM_createLink(htmlspecialchars ($e),
+                $_CONF['site_admin_url']
+                . '/plugins/spamx/index.php?command=SLVwhitelist&amp;action=delete&amp;entry='
+                . urlencode ($e)) .'</li>' . LB;
         }
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;

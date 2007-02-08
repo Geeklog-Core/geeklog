@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.82 2007/01/31 08:46:17 ospiess Exp $
+// $Id: functions.inc,v 1.83 2007/02/08 01:42:17 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -157,8 +157,8 @@ function plugin_showstats_staticpages($showsitestats)
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
             $A['sp_title'] = stripslashes ($A['sp_title']);
-            $A['sid'] = "<a href=\"" . COM_buildUrl ($_CONF['site_url']
-                      . "/staticpages/index.php?page={$A['sp_id']}"). "\">{$A['sp_title']}</a>";
+            $A['sid'] = COM_createLink($A['sp_title'], COM_buildUrl ($_CONF['site_url']
+                      . "/staticpages/index.php?page={$A['sp_id']}"));
             $A['sp_hits'] = COM_NumberFormat ($A['sp_hits']);
             $data_arr[$i] = $A;
         }
@@ -331,9 +331,9 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         }
         $profile = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
                  . $A['sp_uid'];
-        $row = array ('<a href="' . $pageurl . '">' . $A['sp_title'] . '</a>',
+        $row = array (COM_createLink($A['sp_title'], $pageurl),
                       $thetime[0],
-                      '<a href="' . $profile . '">' . $author . '</a>',
+                      COM_createLink($author, $profile),
                       COM_NumberFormat ($A['sp_hits']));
         $plugin_results->addSearchResult ($row);
         $plugin_results->num_searchresults++;
@@ -517,10 +517,10 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             if ((SEC_hasAccess ($spresult['owner_id'], $spresult['group_id'], $spresult['perm_owner'],
                 $spresult['perm_group'], $spresult['perm_members'], $spresult['perm_anon']) == 3) &&
                 SEC_hasRights ('staticpages.edit')) {
-                $retval .= '<p align="center"><a href="' . $_CONF['site_admin_url']
+                $retval .= '<p align="center">'
+                        . COM_createLink($LANG_STATIC['edit'], $_CONF['site_admin_url']
                         . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
-                        . $spresult['sp_id'] . '">';
-                $retval .= $LANG_STATIC['edit'] . '</a></p>';
+                        . $spresult['sp_id']) . '</p>';
             }
 
             if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
@@ -608,7 +608,7 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
         } else {
             $linktext = $autotag['parm2'];
         }
-        $link = '<a href="' . $url . '">' . $linktext . '</a>';
+        $link = COM_createLink($linktext, $url);
         $content = str_replace ($autotag['tagstr'], $link, $content);
 
         return $content;
@@ -780,17 +780,18 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 
     switch($fieldname) {
         case "edit":
-            $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$A['sp_id']}\">{$icon_arr['edit']}</a>";
+            $retval = COM_createLink($icon_arr['edit'],
+                "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$A['sp_id']}");
             break;
         case "copy":
-            $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}\">{$icon_arr['copy']}</a>";
+            $retval = COM_createLink($icon_arr['copy'],
+                "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}");
             break;
         case "sp_title":
             $sp_title = stripslashes ($A['sp_title']);
             $url = COM_buildUrl ($_CONF['site_url'] .
                                  '/staticpages/index.php?page=' . $A['sp_id']);
-            $retval = '<a href="' . $url . '" title="'
-                    . $LANG_STATIC['title_display'] . '">' . $sp_title . '</a>';
+            $retval = COM_createLink($sp_title, $url, array('title'=>$LANG_STATIC['title_display']));
             break;
         case "sp_uid":
             $retval = COM_getDisplayName ($A['sp_uid']);

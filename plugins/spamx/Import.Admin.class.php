@@ -3,19 +3,19 @@
 /**
  * file:  Import.Admin.class.php
  * MTBlacklist refresh module
- * 
+ *
  * Updates Sites MT Blacklist via Master MT Blacklist rss feed
- * 
+ *
  * Copyright (C) 2004-2006 by the following authors:
  * Author      Tom Willett     tomw AT pigstye DOT net
  * Author      Dirk Haun       dirk AT haun-online DOT de
- * 
+ *
  * Licensed under GNU General Public License
- * 
+ *
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
- * $Id: Import.Admin.class.php,v 1.10 2006/06/25 08:40:54 dhaun Exp $
+ * $Id: Import.Admin.class.php,v 1.11 2007/02/08 01:42:17 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'Import.Admin.class.php') !== false) {
@@ -36,10 +36,10 @@ class Import extends BaseAdmin {
             $display = $this->_update_blacklist ();
         } else {
             $display = $this->_initial_import ();
-        } 
+        }
 
         return $display;
-    } 
+    }
 
     function link ()
     {
@@ -49,10 +49,10 @@ class Import extends BaseAdmin {
             $display = $LANG_SX00['uMTlist'];
         } else {
             $display = $LANG_SX00['initial_import'];
-        } 
+        }
 
         return $display;
-    } 
+    }
 
     /**
      * Update MT Blacklist from RSS feed
@@ -64,12 +64,13 @@ class Import extends BaseAdmin {
         require_once($_CONF['path'] . 'plugins/spamx/magpierss/rss_fetch.inc');
         require_once($_CONF['path'] . 'plugins/spamx/magpierss/rss_utils.inc');
 
-        $rss = fetch_rss($_SPX_CONF['rss_url']); 
+        $rss = fetch_rss($_SPX_CONF['rss_url']);
         if ($rss === false) {
             if (strpos ($_SPX_CONF['rss_url'], 'jayallen.org') === false) {
                 return '<p>An error occured when updating MT Blacklist</p>';
             } else {
-                return '<p>Please note that MT-Blacklist has been <a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a> and will not be updated any more.</p>';
+                $url = COM_createLink('discontinued', 'http://www.geeklog.net/article.php/mt-blacklist-discontinued');
+                return '<p>Please note that MT-Blacklist has been $url and will not be updated any more.</p>';
             }
         }
 
@@ -82,7 +83,7 @@ class Import extends BaseAdmin {
             // $published_time = parse_w3cdtf( $item['dc']['date'] );
             $entry = substr($item['description'], 0, -3); // blacklist entry
             $subject = $item['dc']['subject']; // indicates addition or deletion
-             
+
             // is this an addition or a deletion?
             if (strpos($subject, 'addition') !== false) {
                 // save it to database
@@ -91,7 +92,7 @@ class Import extends BaseAdmin {
                 if ($nrows < 1) {
                     $result = DB_query('INSERT INTO ' . $_TABLES['spamx'] . ' VALUES ("MTBlacklist","' . $entry . '")');
                     $to_add[] = $entry;
-                } 
+                }
             } else if (strpos($subject, 'deletion') !== false) {
                 // delete it from database
                 $result = DB_query('SELECT * FROM ' . $_TABLES['spamx'] . ' where name="MTBlacklist" AND value="' . $entry . '"');
@@ -99,22 +100,22 @@ class Import extends BaseAdmin {
                 if ($nrows >= 1) {
                     $result = DB_query('DELETE FROM ' . $_TABLES['spamx'] . ' where name="MTBlacklist" AND value="' . $entry . '"');
                     $to_delete[] = $entry;
-                } 
-            } 
-        } 
+                }
+            }
+        }
         $display = '<hr><p><b>' . $LANG_SX00['entriesadded'] . '</b></p><ul>';
         foreach ($to_add as $e) {
             $display .= "<li>$e</li>";
-        } 
+        }
         $display .= '</ul><p><b>' . $LANG_SX00['entriesdeleted'] . '</b></p><ul>';
         foreach ($to_delete as $e) {
             $display .= "<li>$e</li>";
-        } 
+        }
         $display .= '</ul>';
         SPAMX_log($LANG_SX00['uMTlist'] . $LANG_SX00['uMTlist2'] . count($to_add) . $LANG_SX00['uMTlist3'] . count($to_delete) . $LANG_SX00['entries']);
 
         return $display;
-    } 
+    }
 
     /**
      * Initial import of the MT Blacklist
@@ -134,7 +135,7 @@ class Import extends BaseAdmin {
                      . $LANG_SX00['entries']);
             } else {
                 $display = $LANG_SX00['import_failure'];
-            } 
+            }
         } else { // read blacklist from local file
             $fromfile = $_CONF['path_data'] . 'blacklist.txt';
 
@@ -149,14 +150,14 @@ class Import extends BaseAdmin {
                          . $LANG_SX00['entries']);
                 } else {
                     $display = $LANG_SX00['import_failure'];
-                } 
+                }
             } else {
                 $display = sprintf ($LANG_SX00['allow_url_fopen'],
                     $_CONF['path_data']);
-                $display .= '<p><a href="' . $_SPX_CONF['mtblacklist_url']
-                 . '">' . $_SPX_CONF['mtblacklist_url'] . '</a>';
-            } 
-        } 
+                $display .= '<p>'. COM_createLink($_SPX_CONF['mtblacklist_url'],
+                    $_SPX_CONF['mtblacklist_url']);
+            }
+        }
         // Import Personal Blacklist for existing users.
         $fromfile = $_CONF['path_html'] . 'spamx/blacklist.php';
         if (file_exists ($fromfile)) {
@@ -170,15 +171,15 @@ class Import extends BaseAdmin {
                      . $LANG_SX00['entries']);
             } else {
                 $display .= $LANG_SX00['import_failure'];
-            } 
-        } 
+            }
+        }
 
         return $display;
-    } 
+    }
 
     /**
      * Import the blacklist
-     * 
+     *
      * @param array $lines The blacklist
      * @return int number of lines imported
      */
@@ -195,15 +196,15 @@ class Import extends BaseAdmin {
                      . ' VALUES ("MTBlacklist","' . addslashes ($entry)
                      . '")');
                 $count++;
-            } 
-        } 
+            }
+        }
 
         return $count;
-    } 
+    }
 
     /**
      * Import personal blacklist
-     * 
+     *
      * @param array $lines The blacklist
      * @return int number of lines imported
      */
@@ -217,11 +218,11 @@ class Import extends BaseAdmin {
                 DB_query ('INSERT INTO ' . $_TABLES['spamx']
                      . ' VALUES ("Personal","' . $entry . '")');
                 $count++;
-            } 
-        } 
+            }
+        }
 
         return $count;
-    } 
-} 
+    }
+}
 
 ?>

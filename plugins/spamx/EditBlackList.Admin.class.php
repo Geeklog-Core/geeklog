@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: EditBlackList.Admin.class.php,v 1.8 2007/01/14 03:28:13 ospiess Exp $
+ * $Id: EditBlackList.Admin.class.php,v 1.9 2007/02/08 01:42:16 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditBlackList.Admin.class.php') !== false) {
@@ -68,7 +68,10 @@ class EditBlackList extends BaseAdmin {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
             $e = $A['value'];
-            $display .= '<li><a href="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditBlackList&amp;action=delete&amp;entry=' . urlencode ($e) . '">' . htmlspecialchars ($e) . '</a></li>' . LB;
+            $display .= '<li>' . COM_createLink(htmlspecialchars ($e),
+                $_CONF['site_admin_url']
+                . '/plugins/spamx/index.php?command=EditBlackList&amp;action=delete&amp;entry='
+                . urlencode ($e)) . '</li>' . LB;
         }
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;

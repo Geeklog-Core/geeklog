@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.66 2007/01/30 20:03:45 ospiess Exp $
+// $Id: functions.inc,v 1.67 2007/02/08 01:42:16 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -236,7 +236,7 @@ function plugin_showstats_polls ($showsitestats)
             $A = DB_fetchArray ($result);
             $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']
                  . '&amp;aid=-1';
-            $pid = '<a href="' . $url . '">' . $A['topic'] . '</a>';
+            $pid = COM_createLink($A['topic'], $url);
             $voters = COM_NumberFormat ($A['voters']);
             $data_arr[] = array ('pid' => $pid, 'voters' => $voters);
         }
@@ -539,16 +539,16 @@ function POLLS_pollVote($pid, $showall=true)
                         ($P['hideresults'] == 1) && (SEC_inGroup('Root'))
                     )
                 ) {
-                    $results = "<a href=\"{$_CONF['site_url']}/polls/index.php?pid="
-                    . "$pid&amp;aid=-1\">{$LANG_POLLS['results']}</a>";
+                    $results = COM_createLink($LANG_POLLS['results'],
+                        "{$_CONF['site_url']}/polls/index.php?pid="
+                        . "$pid&amp;aid=-1");
                 }
                 $poll->set_var('poll_results', $results);
                 $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],
                     $T['perm_group'],$T['perm_members'],$T['perm_anon']);
                 if ($access == 3) {
-                    $editlink .= ' <a href="' . $_CONF['site_admin_url']
-                        . '/plugins/polls/index.php?mode=edit&amp;pid='
-                        . $pid . '">'. $LANG25[27] . '</a>';
+                    $editlink .= COM_createLink($LANG25[27], $_CONF['site_admin_url']
+                        . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
                     $poll->set_var('poll_edit', $editlink);
                 }
                 for($j=0; $j<$nquestions; $j++) {
@@ -817,9 +817,8 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
             $access = SEC_hasAccess($P['owner_id'],$P['group_id'],$P['perm_owner'],
                 $P['perm_group'],$P['perm_members'],$P['perm_anon']);
             if ($access == 3) {
-                $editlink .= ' <a href="' . $_CONF['site_admin_url']
-                    . '/plugins/polls/index.php?mode=edit&amp;pid='
-                    . $pid . '">'. $LANG25[27] . '</a>';
+                $editlink .= COM_createLink($LANG25[27], $_CONF['site_admin_url']
+                    . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid);
                 $poll->set_var('poll_edit', $editlink);
             }
             if ($_PO_CONF['answerorder'] == 'voteorder'){
@@ -880,7 +879,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 $poll->clear_var('poll_votes');
                 if (($scale < 100) && ($j < 1)) {
                     $url = $_CONF['site_url'] . "/polls/index.php?pid=$pid";
-                    $poll->set_var('notification', "<a href=\"$url\">{$LANG25[40]}</a><br>");
+                    $poll->set_var('notification', COM_createLink($LANG25[40], $url). "<br>");
                     break;
                 }
             }
@@ -1023,7 +1022,8 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
         switch($fieldname) {
             case 'edit':
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php?mode=edit&amp;pid={$A['pid']}\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink($icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/plugins/polls/index.php?mode=edit&amp;pid={$A['pid']}");
                 }
                 break;
             case 'unixdate':
@@ -1036,7 +1036,8 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
                         ($Q['hideresults'] == 1) && (SEC_inGroup('Root'))
                     )
                 ) {
-                    $retval = "<a href=\"{$_CONF['site_url']}/polls/index.php?pid={$A['pid']}\">$fieldvalue</a>";
+                    $retval = COM_createLink($fieldvalue,
+                        "{$_CONF['site_url']}/polls/index.php?pid={$A['pid']}");
                 } else {
                     $retval = $fieldvalue;
                 }
