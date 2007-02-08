@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.34 2007/01/13 17:47:53 ospiess Exp $
+// $Id: index.php,v 1.35 2007/02/08 04:56:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -87,10 +87,15 @@ function display_page ($page, $A, $noboxes)
         if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
                 SEC_hasRights ('staticpages.edit')) {
-            $retval .= '<br><a href="' . $_CONF['site_admin_url']
-                    . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
-                    . $page . '">';
-            $retval .= $LANG_STATIC['edit'] . '</a>';
+            $url = $_CONF['site_admin_url']
+                . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page;
+            $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
+            $link_html .= COM_createLink(
+                $LANG_STATIC['edit'], //display
+                $url,  //target
+                $attr //other attributes
+            );
+            $retval .= '<br>' . $link_html;
         }
         $retval .= '</p>';
     }
@@ -100,9 +105,9 @@ function display_page ($page, $A, $noboxes)
     }
 
     if ($A['sp_format'] <> 'blankpage') {
-    	if (($A['sp_format'] == 'allblocks') && ($noboxes != 1)) {
+        if (($A['sp_format'] == 'allblocks') && ($noboxes != 1)) {
             $retval .= COM_siteFooter (true);
-    	} else {
+        } else {
             $retval .= COM_siteFooter ();
         }
     }
@@ -215,11 +220,11 @@ if (!($error)) {
         $retval .= COM_siteFooter (true);
     } else {
         $retval = COM_siteHeader ('menu');
-	    $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+        $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
-    	$retval .= $LANG_STATIC['deny_msg'];
-	    $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    	$retval .= COM_siteFooter (true);
+        $retval .= $LANG_STATIC['deny_msg'];
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_siteFooter (true);
     }
 }
 
