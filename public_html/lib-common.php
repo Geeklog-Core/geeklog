@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.619 2007/02/08 01:38:54 ospiess Exp $
+// $Id: lib-common.php,v 1.620 2007/02/08 03:48:25 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1357,19 +1357,17 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     if( !empty( $helpfile ))
     {
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
+        $help_content = '<img src="' . $helpimg. '" alt="?">';
+        $help_attr = array('class'=>'blocktitle', 'target'=>'_blank');
         if( !stristr( $helpfile, 'http://' ))
         {
-            $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile
-                . '" target="_blank"><img src="' . $helpimg
-                . '" border="0" alt="?"></a>';
+            $help_url = $_CONF['site_url'] . "/help/$helpfile";
         }
         else
         {
-            $help = '<a class="blocktitle" href="' . $helpfile
-                . '" target="_blank"><img src="' . $helpimg
-                . '" border="0" alt="?"></a>';
+            $help_url = $helpfile;
         }
-
+        $help = COM_createLink($help_content, $help_url, $help_attr);
         $block->set_var( 'block_help', $help );
     }
 
@@ -3059,9 +3057,10 @@ function COM_olderStuff()
                 $day = $daycheck;
             }
 
-            $oldnews[] = '<a href="' . COM_buildUrl( $_CONF['site_url']
-                . '/article.php?story=' . $A['sid'] ) . '">' . $A['title']
-                . '</a> (' . COM_numberFormat( $A['comments'] ) . ')';
+            $oldnews_url = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                . $A['sid'] );
+            $oldnews[] = COM_createLink($A['title'], $oldnews_url)
+                .' (' . COM_numberFormat( $A['comments'] ) . ')';
         }
 
         if( !empty( $oldnews ))
@@ -3443,8 +3442,7 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
             {
                 $title = utf8_decode( $feed->articles[$i]['title'] );
             }
-            $content = '<a href="' . $feed->articles[$i]['link'] . '">'
-                     . $title . '</a>';
+            $content = COM_createLink($title, $feed->articles[$i]['link']);
             $articles[] = $content;
         }
 
@@ -3461,8 +3459,8 @@ function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
         // failed to aquire info, 0 out the block and log an error
         COM_errorLog( "Unable to aquire feed reader for $rdfurl", 1 );
         COM_errorLog( $factory->errorStatus[0] . ' ' .
-        							$factory->errorStatus[1] . ' ' .
-        							$factory->errorStatus[2] );
+                                    $factory->errorStatus[1] . ' ' .
+                                    $factory->errorStatus[2] );
         $result = DB_change( $_TABLES['blocks'], 'content',
                              addslashes( $LANG21[4] ), 'bid', $bid );
     }
@@ -3859,8 +3857,8 @@ function COM_whatsNewBlock( $help = '', $title = '' )
             }
             else
             {
-                $retval .= '<a href="' . $_CONF['site_url']
-                    . '/index.php?display=new">' . $newmsg . '</a><br>';
+                $retval .= COM_createLink($newmsg, $_CONF['site_url']
+                    . '/index.php?display=new') . '<br>';
             }
         }
         else
@@ -3912,23 +3910,21 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
                 if(( $A['type'] == 'article' ) || empty( $A['type'] ))
                 {
-                    $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
-                        . '/article.php?story=' . $A['sid'] ) . '#comments' . '"';
+                    $url = COM_buildUrl( $_CONF['site_url']
+                        . '/article.php?story=' . $A['sid'] ) . '#comments';
                 }
 
                 $title = COM_undoSpecialChars( stripslashes( $A['title'] ));
                 $titletouse = COM_truncate( $title, $_CONF['title_trim_length'],
                                             '...' );
-
                 if( $title != $titletouse )
                 {
-                    $urlstart .= ' title="' . htmlspecialchars( $title ) . '">';
+                    $attr = array('title' => htmlspecialchars($title));
                 }
                 else
                 {
-                    $urlstart .= '>';
+                    $attr = array();
                 }
-
                 $acomment = str_replace( '$', '&#36;', $titletouse );
                 $acomment = str_replace( ' ', '&nbsp;', $acomment );
 
@@ -3937,7 +3933,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
                     $acomment .= ' [+' . $A['dups'] . ']';
                 }
 
-                $newcomments[] = $urlstart . $acomment . '</a>';
+                $newcomments[] = COM_createLink($acomment, $url, $attr);
             }
 
             $retval .= COM_makeList( $newcomments, 'list-new-comments' );
@@ -3973,8 +3969,8 @@ function COM_whatsNewBlock( $help = '', $title = '' )
             {
                 $A = DB_fetchArray( $result );
 
-                $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
-                    . '/article.php?story=' . $A['sid'] ) . '#trackback' . '"';
+                $url = COM_buildUrl( $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] ) . '#trackback';
 
                 $title = COM_undoSpecialChars( stripslashes( $A['title'] ));
                 $titletouse = COM_truncate( $title, $_CONF['title_trim_length'],
@@ -3982,13 +3978,12 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
                 if( $title != $titletouse )
                 {
-                    $urlstart .= ' title="' . htmlspecialchars( $title ) . '">';
+                    $attr = array('title' => htmlspecialchars($title));
                 }
                 else
                 {
-                    $urlstart .= '>';
+                    $attr = array();
                 }
-
                 $acomment = str_replace( '$', '&#36;', $titletouse );
                 $acomment = str_replace( ' ', '&nbsp;', $acomment );
 
@@ -3997,7 +3992,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
                     $acomment .= ' [+' . $A['count'] . ']';
                 }
 
-                $newcomments[] = $urlstart . $acomment . '</a>';
+                $newcomments[] = COM_createLink($acomment, $url, $attr);
             }
 
             $retval .= COM_makeList( $newcomments, 'list-new-trackbacks' );
@@ -4197,14 +4192,13 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     if( $curpage > 1 )
     {
-        $retval .= '<a href="' . $base_url . '">' . $LANG05[7] . '</a> | ';
+        $retval .= COM_createLink($LANG05[7], $base_url) . ' | ';
         $pg = '';
         if( ( $curpage - 1 ) > 1 )
         {
             $pg = $sep . $page_str . ( $curpage - 1 );
         }
-        $retval .= '<a href="' . $base_url . $pg . '">' . $LANG05[6]
-                . '</a> | ';
+        $retval .= COM_createLink($LANG05[6], $base_url . $pg ) . ' | ';
     }
     else
     {
@@ -4230,8 +4224,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
             {
                 $pg = $sep . $page_str . $pgcount;
             }
-            $retval .= '<a href="' . $base_url . $pg . '">' . $pgcount
-                    . '</a> ';
+            $retval .= COM_createLink($pgcount, $base_url . $pg);
         }
     }
 
@@ -4246,10 +4239,10 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     }
     else
     {
-        $retval .= '| <a href="' . $base_url . $sep . $page_str
-                . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
-        $retval .= '| <a href="' . $base_url . $sep . $page_str . $num_pages
-                . '">' . $LANG05[8] . '</a>';
+        $retval .= '| ' . COM_createLink($LANG05[5], $base_url . $sep . $page_str
+            . ( $curpage + 1 ) . $pg);
+        $retval .= '| ' . COM_createLink($LANG05[8], $base_url . $sep . $page_str
+            . $num_pages);
     }
 
     if( !empty( $retval ))
@@ -4399,17 +4392,14 @@ function phpblock_whosonline()
                 $username = COM_getDisplayName( $A['uid'], $A['username'],
                                                 $fullname );
             }
-            $retval .= '<a href="' . $_CONF['site_url']
-                    . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
-                    . $username . '</a>';
+            $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
+            $retval .= COM_createLink($username, $url);
 
             if( !empty( $A['photo'] ) AND $_CONF['allow_user_photo'] == 1)
             {
-                $retval .= '&nbsp;<a href="' . $_CONF['site_url']
-                        . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                        . '"><img src="' . $_CONF['layout_url']
-                        . '/images/smallcamera.' . $_IMAGE_TYPE
-                        . '" border="0" alt=""></a>';
+                $usrimg = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
+                    . $_IMAGE_TYPE . '" border="0" alt="">';
+                $retval .= '&nbsp;' . COM_createLink($userimg, $url);
             }
             $retval .= '<br>';
             $num_reg++;
@@ -5759,7 +5749,6 @@ function COM_createLink($content, $url, $attr=array()) { //attr optional
     return $out;
 }
 
-
 /**
 * Try to determine the user's preferred language by looking at the
 * "Accept-Language" header sent by their browser (assuming they bothered
@@ -5951,7 +5940,7 @@ function phpblock_switch_language()
 
         $switchUrl = COM_buildUrl( $_CONF['site_url'] . '/switchlang.php?lang='
                                    . $newLangId );
-        $retval .= '<a href="' . $switchUrl . '">' . $newLang . '</a>';
+        $retval .= COM_createLink($newLang, $switchUrl);
     }
     else
     {
