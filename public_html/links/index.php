@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.15 2007/02/10 14:18:38 ospiess Exp $
+// $Id: index.php,v 1.16 2007/02/10 14:56:25 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -118,7 +118,7 @@ if ($mode == 'report') {
         $url = COM_applyFilter ($_GET['url']);
     }
     $editurl = $_CONF['site_admin_url']
-        . '/plugins/links/index.php?mode=edit&amp;lid=' . $lid;
+        . '/plugins/links/index.php?mode=edit&lid=' . $lid;
     $msg = $LANG_LINKS[119] . " $title ( $url )". LB
         .  $LANG_LINKS[120] . $editurl . LB
         .  $LANG_LINKS[121] . $_USER['username'] . ", IP: " . $_SERVER["REMOTE_ADDR"];
