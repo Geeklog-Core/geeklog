@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.72 2007/02/08 01:42:16 ospiess Exp $
+// $Id: functions.inc,v 1.73 2007/02/10 16:03:31 ospiess Exp $
 
 
 /**
@@ -740,9 +740,13 @@ function plugin_enablestatechange_links ($enable)
 * This may get called by the install routine to undo anything done to this
 * point.
 *
+* this function is replaced by the automated uninstall feature.
+*
 * @return   boolean     true: uninstalled successfully
 *
 */
+
+/*
 function plugin_uninstall_links ()
 {
     global $_CONF, $_TABLES;
@@ -861,6 +865,8 @@ function plugin_uninstall_links ()
 
     return true;
 }
+
+*/
 
 /**
 * Counts the items that are submitted
@@ -1266,6 +1272,29 @@ function plugin_templatesetvars_links ($templatename, &$template)
     if ($templatename == 'header') {
         $template->set_var ('button_links', $LANG_LINKS[14]);
     }
+}
+
+/**
+* Automatic uninstall function for plugins
+*
+* @return   array
+*
+* This code is automatically uninstalling the plugin.
+* It passes an array to the core code function that removes
+* tables, groups, features and php blocks from the tables.
+* Additionally, this code can perform special actions that cannot be
+* foreseen by the core code (interactions with other plugins for example)
+*
+*/
+function plugin_autouninstall_links ()
+{
+    $out = array (
+        'tables' => array('links','linksubmission'),
+        'groups' => array('Links Admin'),
+        'features' => array('links.edit', 'links.moderate', 'links.submit'),
+        'php_blocks' => array()
+    );
+    return $out;
 }
 
 ?>
