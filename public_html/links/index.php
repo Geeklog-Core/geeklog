@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.14 2007/02/08 05:57:18 ospiess Exp $
+// $Id: index.php,v 1.15 2007/02/10 14:18:38 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -123,7 +123,7 @@ if ($mode == 'report') {
         .  $LANG_LINKS[120] . $editurl . LB
         .  $LANG_LINKS[121] . $_USER['username'] . ", IP: " . $_SERVER["REMOTE_ADDR"];
     COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg, $_CONF['site_mail']);
-    $message = array ($LANG_LINK[123], $LANG_LINK[122]);
+    $message = array ($LANG_LINKS[123], $LANG_LINKS[122]);
 }
 
 if (empty ($_USER['username']) &&
