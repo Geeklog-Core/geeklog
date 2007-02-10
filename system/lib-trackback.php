@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-trackback.php,v 1.46 2007/01/27 16:20:55 dhaun Exp $
+// $Id: lib-trackback.php,v 1.47 2007/02/10 15:18:04 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -370,8 +370,7 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
     $template->set_var ('lang_tracked_on', $LANG_TRB['tracked_on']);
     $template->set_var ('lang_readmore', $LANG_TRB['read_more']);
 
-    $anchor = '<a href="' . $url . '">';
-    $readmore = $anchor . $LANG_TRB['read_more'] . '</a>';
+    $readmore = COM_createLink($LANG_TRB['read_more'], $url);
 
     $template->set_var ('readmore_link', $readmore);
     $template->set_var ('start_readmore_anchortag', $anchor);
@@ -402,17 +401,17 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
     $deloption = '';
     if ($delete_option) {
         $deloption .= '[ ';
-        $deloption .= '<a href="' . $_CONF['site_admin_url']
-                   . '/trackback.php?mode=delete&amp;cid=' . $cid
-                   . '" onclick="return confirm(\'' . $MESSAGE[76] . '\');">'
-                   . $LANG01[28] . '</a>';
+        $deloption .= COM_createLink(
+            $LANG01[28],
+            $_CONF['site_admin_url'] . '/trackback.php?mode=delete&amp;cid=' . $cid,
+            array('onclick'=> "return confirm('{$MESSAGE[76]}');")
+        );
         if (!empty ($ipaddress)) {
             if (empty ($_CONF['ip_lookup'])) {
                 $deloption .= ' | ' . $ipaddress;
             } else {
                 $iplookup = str_replace ('*', $ipaddress, $_CONF['ip_lookup']);
-                $deloption .= ' | <a href="' . $iplookup . '">' . $ipaddress
-                           . '</a>';
+                $deloption .= ' | ' . COM_createLink($ipaddress, $iplookup);
             }
         }
         $deloption .= ' ]';
@@ -675,7 +674,7 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
 {
     global $_CONF, $_TABLES, $LANG_TRB;
 
-    $link_and_title = '<a href="' . $permalink . '">' . $title . '</a>';
+    $link_and_title = COM_createLink($title, $permalink);
     if (empty ($trackback_url)) {
         $trackback_url = TRB_makeTrackbackUrl ($sid, $type);
     }
