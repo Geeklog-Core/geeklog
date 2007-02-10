@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.115 2007/02/08 06:33:09 ospiess Exp $
+// $Id: lib-plugins.php,v 1.116 2007/02/10 15:58:34 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -80,7 +80,7 @@ function PLG_callFunctionForAllPlugins($function_name)
 *
 * This is a generic function used by some of the other API functions to
 * call a function for a specific plugin and, optionally pass parameters.
-* This function can handle up to 5 arguments and if more exist it will
+* This function can handle up to 7 arguments and if more exist it will
 * try to pass the entire args array to the function.
 *
 * @param        string      $function       holds name of function to call
@@ -182,57 +182,47 @@ function PLG_uninstall ($type)
         return false;
     }
 
-    $retval = PLG_callFunctionForOnePlugin ('plugin_uninstall_' . $type);
-
-    if ($retval === true) {
-        $plg = array_search ($type, $_PLUGINS);
-        if ($plg !== false) {
-            unset ($_PLUGINS[$plg]);
-        }
-
-        return true;
-    /**
-    } else if ($PLG_$type['auto_uninstall'] == true)
+    if (function_exists('plugin_autouninstall_' . $type)) {
+        COM_errorLog ("Auto-uninstalling plugin $type:", 1);
+        $function = 'plugin_autouninstall_' . $type;
+        $remvars = $function();
 
         // removing tables
-        $i = count($PLG_$type['tables']);
-        for ($i=0; $i < count; $i++) {
-            COM_errorLog ('Dropping table' . $_PLG_$type['tables'][$i], 1);
-            DB_query ("DROP TABLE {$_TABLES[$_PLG_$type['tables'][$i]]}");
+        for ($i=0; $i < count($remvars['tables']); $i++) {
+            COM_errorLog ("Dropping table {$_TABLES[$remvars['tables'][$i]]}", 1);
+            DB_query ("DROP TABLE {$_TABLES[$remvars['tables'][$i]]}");
             COM_errorLog ('...success', 1);
         }
 
         // removing groups
-        $i = count($PLG_$type['groups']);
-        for ($i=0; $i < count; $i++) {
+        for ($i=0; $i < count($remvars['groups']); $i++) {
             $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                  "grp_name = '{$_PLG_$type['groups'][$i]}'");
+                                  "grp_name = '{$remvars['groups'][$i]}'");
             if (!empty ($grp_id)) {
-                COM_errorLog ('Attempting to remove the {$_PLG_$type['groups'][$i]} group', 1);
+                COM_errorLog ("Attempting to remove the {$remvars['groups'][$i]} group", 1);
                 DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
                 COM_errorLog ('...success', 1);
-                COM_errorLog ('Attempting to {$_PLG_$type['groups'][$i]} group from all groups.', 1);
+                COM_errorLog ("Attempting to {$remvars['groups'][$i]} group from all groups.", 1);
                 DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
                 COM_errorLog ('...success', 1);
             }
         }
 
         // removing features
-        $i = count($PLG_$type['features']);
-        for ($i=0; $i < count; $i++) {
+        for ($i=0; $i < count($remvars['features']); $i++) {
             $access_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                                    "ft_name = '{$_PLG_$type['features'][$i]}'");
+                                    "ft_name = '{$remvars['features'][$i]}'");
             if (!empty ($acess_id)) {
-                COM_errorLog ('Attempting to remove {$_PLG_$type['features'][$i]} rights from all groups' ,1);
+                COM_errorLog ("Attempting to remove {$remvars['features'][$i]} rights from all groups" ,1);
                 DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
                 COM_errorLog ('...success', 1);
-                COM_errorLog ('Attempting to remove the {$_PLG_$type['features'][$i]} feature', 1);
+                COM_errorLog ("Attempting to remove the {$remvars['features'][$i]} feature", 1);
                 DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
                 COM_errorLog ('...success', 1);
             }
         }
 
-        #uninstall feeds
+        // uninstall feeds
         $sql = "SELECT filename FROM {$_TABLES['syndication']} WHERE type = '$type';";
         $result = DB_query( $sql );
         $nrows = DB_numRows( $result );
@@ -258,10 +248,9 @@ function PLG_uninstall ($type)
         }
 
         // uninstall php-blocks
-        $i = count($PLG_$type['php_blocks']);
-        for ($i=0; $i < count; $i++) {
+        for ($i=0; $i <  count($remvars['php_blocks']); $i++) {
             DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
-                                           array ('phpblock', 'phpblock_{$_PLG_$type['php_blocks'][$i]}'));
+                                           array ('phpblock', "phpblock_{$remvars['php_blocks'][$i]}"));
         }
 
         // uninstall the plugin
@@ -270,7 +259,21 @@ function PLG_uninstall ($type)
         COM_errorLog ('...success',1);
 
         COM_errorLog ('Finished uninstalling the $type plugin.', 1);
-    **/
+
+        return true;
+    } else {
+
+        $retval = PLG_callFunctionForOnePlugin ('plugin_uninstall_' . $type);
+
+        if ($retval === true) {
+            $plg = array_search ($type, $_PLUGINS);
+            if ($plg !== false) {
+                unset ($_PLUGINS[$plg]);
+            }
+
+            return true;
+
+        }
     }
 
     return false;
