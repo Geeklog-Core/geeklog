@@ -2,6 +2,10 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Implemented new Autouninstall for plugins. Plugins runs a function that passes
+  a specific array to a core function that removes all given element of the plugin.
+  The function inside the plugin can handle aditional removals that the core code
+  cannot [Oliver]
 - Fixed search by date in Calendar (reported and patch provided by Jeffrey Hare)
 - Only allow autotags in normal blocks (bug #653) [Dirk]
 - Added {story_topic_image_no_align} and {story_anchortag_and_image_no_align}
@@ -41,20 +45,24 @@ GeekLog History/Changes:
 
 Calendar plugin (1.0.1)
 ------------
+- Autouninstall implemented [Oliver]
 - Added Batch-Delete functionality [Oliver]
 
 Links plugin (1.0.2)
 ------------
+- Autouninstall implemented [Oliver]
 - Added "Report Broken Link" function [Oliver]
 
 Polls plugin (2.0)
 ------------
+- Autouninstall implemented [Oliver]
 - Added Support for multiple questions grouped into a survey [Oliver]
 - Added Support for closing polls [Oliver]
 - Added Support for hiding poll results of open polls [Oliver]
 
 Spam-X plugin
 -------------
+- Autouninstall implemented [Oliver]
 - Fixed an error with the SLV module when $_CONF['site_url'] was empty
   (reported by AA6QN) [Dirk]
 - Added support for blocking entire IP ranges, using either CIDR notation or
@@ -62,6 +70,7 @@ Spam-X plugin
 
 Static Pages plugin
 -------------------
+- Autouninstall implemented [Oliver]
 - The static pages editor was looking for the advanced editor template in the
   wrong place, due to an uninitialized variable (reported by k74) [Dirk]
 - Allow static pages to replace tags also on PHP-generated conten [Oliver]
