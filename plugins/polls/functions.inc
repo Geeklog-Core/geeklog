@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.68 2007/02/11 01:07:33 ospiess Exp $
+// $Id: functions.inc,v 1.69 2007/02/11 01:12:43 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -385,7 +385,7 @@ function plugin_enablestatechange_polls ($enable)
 * @steps   Array    Holds all the steps that have been completed by the install
 *
 */
-
+/*
 function plugin_uninstall_polls($steps = '')
 {
     global $_TABLES;
@@ -454,7 +454,7 @@ function plugin_uninstall_polls($steps = '')
 
     return true;
 }
-
+*/
 
 /**
 * Automatic uninstall function for plugins
@@ -471,9 +471,13 @@ function plugin_uninstall_polls($steps = '')
 function plugin_autouninstall_polls ()
 {
     $out = array (
+        /* give the name of the tables, without $_TABLES[] */
         'tables' => array('pollanswers','polltopics','pollvoters','pollquestions'),
+        /* give the full name of the group, as in the db */
         'groups' => array('Polls Admin'),
+        /* give the full name of the feature, as in the db */
         'features' => array('polls.edit'),
+        /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_polls')
     );
     return $out;

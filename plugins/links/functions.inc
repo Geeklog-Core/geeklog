@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.74 2007/02/11 01:07:33 ospiess Exp $
+// $Id: functions.inc,v 1.75 2007/02/11 01:12:43 ospiess Exp $
 
 
 /**
@@ -1289,9 +1289,13 @@ function plugin_templatesetvars_links ($templatename, &$template)
 function plugin_autouninstall_links ()
 {
     $out = array (
+        /* give the name of the tables, without $_TABLES[] */
         'tables' => array('links','linksubmission'),
+        /* give the full name of the group, as in the db */
         'groups' => array('Links Admin'),
+        /* give the full name of the feature, as in the db */
         'features' => array('links.edit', 'links.moderate', 'links.submit'),
+        /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array()
     );
     return $out;
