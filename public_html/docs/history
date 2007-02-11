@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Need to include parameters in the URL when sending Pingbacks, e.g. to
+  Serendipity [Dirk]
 - When sending Pingbacks, also search for <link rel="pingback"> if the linked
   site does not send an X-Pingback header [Dirk]
 - When sending Pingbacks for a story that had identical link texts for different

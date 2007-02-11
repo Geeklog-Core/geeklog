@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.8 2007/02/11 17:37:25 dhaun Exp $
+// $Id: lib-pingback.php,v 1.9 2007/02/11 19:55:58 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-pingback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -119,6 +119,9 @@ function PNB_sendPingback ($sourceURI, $targetURI)
         } else {
             $parts['port'] = 80;
         }
+    }
+    if (!empty ($parts['query'])) {
+        $parts['path'] .= '?' . $parts['query'];
     }
     $client = new XML_RPC_Client ($parts['path'], $parts['host'], $parts['port']);
     //$client->setDebug (1);
