@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.64 2007/02/08 01:42:16 ospiess Exp $
+// $Id: functions.inc,v 1.65 2007/02/11 01:32:53 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1379,7 +1379,9 @@ function plugin_enablestatechange_calendar ($enable)
 *
 * @steps   Array    Holds all the steps that have been completed by the install
 *
+* this function is replaced by the automated uninstall feature.
 */
+/*
 function plugin_uninstall_calendar ($steps = '')
 {
     global $_TABLES;
@@ -1444,6 +1446,34 @@ function plugin_uninstall_calendar ($steps = '')
 
     return true;
 }
+*/
+/**
+* Automatic uninstall function for plugins
+*
+* @return   array
+*
+* This code is automatically uninstalling the plugin.
+* It passes an array to the core code function that removes
+* tables, groups, features and php blocks from the tables.
+* Additionally, this code can perform special actions that cannot be
+* foreseen by the core code (interactions with other plugins for example)
+*
+*/
+function plugin_autouninstall_calendar ()
+{
+    $out = array (
+        /* give the name of the tables, without $_TABLES[] */
+        'tables' => array('events','eventsubmission','personal_events'),
+        /* give the full name of the group, as in the db */
+        'groups' => array('Calendar Admin'),
+        /* give the full name of the feature, as in the db */
+        'features' => array('calendar.edit', 'calendar.moderate', 'calendar.submit'),
+        /* give the full name of the block, including 'phpblock_', etc */
+        'php_blocks' => array('phpblock_calendar')
+    );
+    return $out;
+}
+
 
 /**
 * Get path for the template files.
