@@ -34,11 +34,9 @@
     <table cellspacing="0" cellpadding="0" style="width:100%;">
         <tr>
             {left_blocks}
-            <td class="story-container"  style="width:100%; vertical-align:top;">
-                <div class="header-welcomeanddate-box">
-                    <div class="header-welcomeanddate-text">
-                        <a href="{site_url}">{welcome_msg}</a><br>{datetime}
-                    </div>
-                </div>
+            <td class="story-container">
+                <p class="header-welcomeanddate-text">
+                    <a href="{site_url}">{welcome_msg}</a><br>{datetime}
+                </p>
 
                 <!-- START OF CONTENT AREA -->

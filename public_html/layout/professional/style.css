@@ -483,14 +483,12 @@ select {
   color:#FF0000;
   font-size:0.9em;
 }
-.header-welcomeanddate-box {
-  border-bottom:1px solid #CCCCCC;
-  height:52px;
-}
 .header-welcomeanddate-text {
-  position:relative;
-  top:12px;
-  left:4px;
+  padding-top:12px;
+  padding-left:4px;
+  margin: 0px;
+  height:40px;
+  border-bottom:1px solid #CCCCCC;
 }
 /******************************************************************************/
 .highlight {
@@ -618,6 +616,8 @@ select {
 .story-container {
   /* frame around all stories & centerblocks*/
   padding-right:9px;
+  width:100%;
+  vertical-align:top;
 }
 .story-footer {
   /* the bottom of the story with edit-links etc */
