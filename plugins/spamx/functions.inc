@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.29 2007/02/11 01:57:10 ospiess Exp $
+ * $Id: functions.inc,v 1.30 2007/02/11 02:06:28 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -324,64 +324,6 @@ function plugin_geticon_spamx ()
 
     return $_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.png';
 }
-
-/**
- * Removes the datastructures for this plugin from the Geeklog database.
- * This routine will get called from the Plugin install program if user select De-Install or if Delete is used in the Plugin Editor.
- * The Plugin Installer will also call this routine upon and install error to remove anything it has created.
- * The Plugin installer will pass the optional parameter which will then double check that plugin has first been disabled.
- *
- * Returns True if all Plugin related data is removed without error
- *
- * @param string $installCheck Default is blank but if set, check if plugin is disabled first
- * @return boolean True if successful false otherwise
- */
-/*
-function plugin_uninstall_spamx($installCheck = '')
-{
-    global $_TABLES, $LANG_SX00;
-
-    $pi_name = 'spamx';
-    $FEATURES = array ('spamx.admin', 'spamx.view');
-    $admin_group = 'spamx Admin';
-    // Check and see if plugin is still enabled - if so display warning and exit
-    if ($installCheck != '' && DB_getItem($_TABLES['plugins'], 'pi_enabled', 'pi_name = "' . $pi_name . '"')) {
-        COM_errorLog("Plugin is installed and enabled. Disable first if you want to de-install it", 1);
-        $display .= COM_startBlock($LANG_SX00['warning']);
-        $display .= $LANG_SX00['enabled'];
-        $display .= COM_endBlock();
-        echo $display;
-        return false;
-        exit;
-    }
-    // Ok to proceed and delete plugin
-    // Unregister the plugin with Geeklog
-    COM_errorLog('Attempting to unregister the spamx plugin from Geeklog', 1);
-    DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'spamx'", 1);
-    // Remove Security for this plugin
-    $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name = '{$admin_group}'");
-
-    COM_errorLog("Removing $pi_name Admin Group", 1);
-    DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id", 1);
-    DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = '{$pi_name}_gid'");
-    DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = 'spamx.counter'");
-    COM_errorLog("Removing root users from admin of $pi_name");
-    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id", 1);
-    // Remove all the associated features -- access rights
-    foreach ($FEATURES as $feature) {
-        COM_errorLog("Removing $feature feature and rights to it", 1);
-        $feat_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$feature'");
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $feat_id", 1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $feat_id", 1);
-    }
-
-    COM_errorLog ('Dropping ' . $_TABLES['spamx'] . ' table.', 1);
-    DB_query ("DROP TABLE {$_TABLES['spamx']}", 1);
-
-    COM_errorLog('...success', 1);
-    return true;
-}
-*/
 
 /**
 * Automatic uninstall function for plugins

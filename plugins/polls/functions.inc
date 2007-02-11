@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.70 2007/02/11 01:55:11 ospiess Exp $
+// $Id: functions.inc,v 1.71 2007/02/11 02:06:28 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -373,88 +373,6 @@ function plugin_enablestatechange_polls ($enable)
     // toggle Poll block
     DB_query ("UPDATE {$_TABLES['blocks']} SET is_enabled = $is_enabled WHERE (type = 'phpblock') AND (phpblockfn = 'phpblock_polls')");
 }
-
-/**
-* Removes the datastructures for this plugin from the Geeklog database
-*
-* This may get called by the install routine to undo anything done to this
-* point.  To do that, $steps will have a list of steps to undo
-*
-* this function is replaced by the automated uninstall feature.
-*
-* @steps   Array    Holds all the steps that have been completed by the install
-*
-*/
-/*
-function plugin_uninstall_polls($steps = '')
-{
-    global $_TABLES;
-
-    // Uninstalls the polls plugin
-
-    if (empty($steps) OR $steps['createtable'] == 1) {
-        // Remove the polltopics and pollanswers tables
-        COM_errorLog('Dropping polls answers table',1);
-        DB_query("DROP TABLE {$_TABLES['pollanswers']}");
-        COM_errorLog('...success',1);
-        COM_errorLog('Dropping polls topics table',1);
-        DB_query("DROP TABLE {$_TABLES['polltopics']}");
-        COM_errorLog('...success',1);
-        COM_errorLog('Dropping pollvoters table',1);
-        DB_query("DROP TABLE {$_TABLES['pollvoters']}");
-        COM_errorLog('...success',1);
-    }
-
-    // Remove polls block
-    DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
-                                   array ('phpblock', 'phpblock_polls'));
-
-    // Remove security for this plugin
-
-    // Remove the polls admin group
-    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Polls Admin'");
-
-    if (empty($steps) OR $steps['insertgroup'] == 1) {
-        COM_errorLog('Attempting to remove the Polls Admin Group', 1);
-        DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
-        COM_errorLog('...success',1);
-    }
-
-    // Remove related features
-    $edit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'polls.edit'");
-
-    if (empty($steps) OR $steps['addededittogroup'] == 1) {
-        // Remove access to those features
-        COM_errorLog('Attempting to remove rights to polls.edit from all groups',1);
-        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
-        COM_errorLog('...success',1);
-    }
-
-    if (empty($steps) OR $steps['addedrootuserstogroup'] == 1) {
-        // Remove root users from the group
-        COM_errorLog('Attempting to remove root users from admin of polls pages');
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
-        COM_errorLog('...success',1);
-    }
-
-    if (empty($steps) OR $steps['insertedfeatureedit'] == 1) {
-        COM_errorLog('Attempting to remove the polls.edit feature',1);
-        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
-        COM_errorLog('...success',1);
-    }
-
-    // Unregister the plugin with Geeklog
-    // Always attempt to remove these entries or lib-common.php would still
-    // try and read our functions.inc file ...
-    COM_errorLog('Attempting to unregister the polls plugin from Geeklog',1);
-    DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'polls'");
-    COM_errorLog('...success',1);
-
-    COM_errorLog('leaving plugin_uninstall_polls',1);
-
-    return true;
-}
-*/
 
 /**
 * Automatic uninstall function for plugins

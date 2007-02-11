@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.66 2007/02/11 01:55:11 ospiess Exp $
+// $Id: functions.inc,v 1.67 2007/02/11 02:06:28 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1371,82 +1371,6 @@ function plugin_enablestatechange_calendar ($enable)
     DB_query ("UPDATE {$_TABLES['blocks']} SET is_enabled = $is_enabled WHERE (type = 'phpblock') AND (phpblockfn = 'phpblock_calendar')");
 }
 
-/**
-* Removes the datastructures for this plugin from the Geeklog database
-*
-* This may get called by the install routine to undo anything done to this
-* point.  To do that, $steps will have a list of steps to undo
-*
-* @steps   Array    Holds all the steps that have been completed by the install
-*
-* this function is replaced by the automated uninstall feature.
-*/
-/*
-function plugin_uninstall_calendar ($steps = '')
-{
-    global $_TABLES;
-
-    // Uninstalls the calendar plugin
-
-    COM_errorLog('Dropping events table', 1);
-    DB_query("DROP TABLE {$_TABLES['events']}");
-    COM_errorLog('...success', 1);
-    COM_errorLog('Dropping event submission table', 1);
-    DB_query("DROP TABLE {$_TABLES['eventsubmission']}");
-    COM_errorLog('...success', 1);
-    COM_errorLog('Dropping personal events table', 1);
-    DB_query("DROP TABLE {$_TABLES['personal_events']}");
-    COM_errorLog('...success', 1);
-
-    // Remove Upcoming Events block
-    DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
-                                   array ('phpblock', 'phpblock_calendar'));
-
-    // Remove security for this plugin
-
-    // Remove the calendar admin group
-    $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                          "grp_name = 'Calendar Admin'");
-
-    // Remove Calendar Admin group from all other groups
-    if (!empty ($grp_id)) {
-        COM_errorLog ('Attempting to remove Calendar Admin group from all groups' , 1);
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
-        COM_errorLog ('...success', 1);
-
-        COM_errorLog('Attempting to remove the Calendar Admin Group', 1);
-        DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
-        COM_errorLog('...success', 1);
-    }
-
-    // Remove related features
-    $features = array ('calendar.edit', 'calendar.moderate', 'calendar.submit');
-
-    foreach ($features as $f) {
-        $feat_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$f'");
-        if (!empty ($feat_id)) {
-            COM_errorLog ("Attempting to remove $f rights from all groups", 1);
-            DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $feat_id");
-            COM_errorLog ('...success', 1);
-
-            COM_errorLog ("Attempting to remove the $f feature", 1);
-            DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $feat_id");
-            COM_errorLog ('...success', 1);
-        }
-    }
-
-    // Unregister the plugin with Geeklog
-    // Always attempt to remove this entry or lib-common.php would still
-    // try and read our functions.inc file ...
-    COM_errorLog('Attempting to unregister the calendar plugin from Geeklog', 1);
-    DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'calendar'");
-    COM_errorLog('...success', 1);
-
-    COM_errorLog ('Finished uninstalling the Calendar plugin.', 1);
-
-    return true;
-}
-*/
 /**
 * Automatic uninstall function for plugins
 *

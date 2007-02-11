@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.76 2007/02/11 01:55:11 ospiess Exp $
+// $Id: functions.inc,v 1.77 2007/02/11 02:06:28 ospiess Exp $
 
 
 /**
@@ -733,140 +733,6 @@ function plugin_enablestatechange_links ($enable)
     // toggle links feeds
     DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = $is_enabled WHERE type = 'links'");
 }
-
-/**
-* Removes the datastructures for this plugin from the Geeklog database
-*
-* This may get called by the install routine to undo anything done to this
-* point.
-*
-* this function is replaced by the automated uninstall feature.
-*
-* @return   boolean     true: uninstalled successfully
-*
-*/
-
-
-function plugin_uninstall_links ()
-{
-    global $_CONF, $_TABLES;
-
-    // Uninstalls the links plugin
-
-    // Remove the linksubmisssion table
-    COM_errorLog ('Dropping linksubmission table', 1);
-    DB_query ("DROP TABLE {$_TABLES['linksubmission']}");
-    COM_errorLog ('...success', 1);
-
-    // Remove the links table
-    COM_errorLog ('Dropping links table', 1);
-    DB_query ("DROP TABLE {$_TABLES['links']}");
-    COM_errorLog ('...success', 1);
-
-    // Remove feed files
-    COM_errorLog ('removing links feed files', 1);
-    $sql = "SELECT filename FROM {$_TABLES['syndication']} WHERE type = 'links';";
-    $result = DB_query( $sql );
-    $nrows = DB_numRows( $result );
-    COM_errorLog ($nrows. ' files stored in table.', 1);
-    if ( $nrows > 0 ) {
-        for ( $i = 0; $i < $nrows; $i++ ) {
-            $fcount = $i + 1;
-            $A = DB_fetchArray( $result );
-            $fullpath = SYND_getFeedPath( $A[0] );
-            if ( file_exists( $fullpath ) ) {
-                unlink ($fullpath);
-                COM_errorLog ("removed file $fcount of $nrows: $fullpath", 1);
-            } else {
-                COM_errorLog ("cannot remove file $fcount of $nrows, it does not exist! ($fullpath)", 1);
-            }
-        }
-    }
-    COM_errorLog ('...success', 1);
-
-    // Remove Links Feeds from syndiaction table
-    COM_errorLog ('removing links feeds from table', 1);
-    DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE type = 'links'");
-    COM_errorLog ('...success', 1);
-
-    // Remove security for this plugin
-
-    // Remove the links admin group
-    $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                          "grp_name = 'Links Admin'");
-
-    if (!empty ($grp_id)) {
-        COM_errorLog ('Attempting to remove the Links Admin group', 1);
-        DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // Remove related features
-    $edit_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                           "ft_name = 'links.edit'");
-    $moderate_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                               "ft_name = 'links.moderate'");
-    $submit_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                             "ft_name = 'links.submit'");
-
-    // Remove access to those features
-    if (!empty ($edit_id)) {
-        COM_errorLog ('Attempting to remove links.edit rights from all groups' ,1);
-        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($moderate_id)) {
-        COM_errorLog ('Attempting to remove links.moderate rights from all groups', 1);
-        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $moderate_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($submit_id)) {
-        COM_errorLog ('Attempting to remove links.submit rights from all groups', 1);
-        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $submit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // Remove Links Admin group from all other groups
-    if (!empty ($grp_id)) {
-        COM_errorLog ('Attempting to Links Admin group from all groups.', 1);
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // remove features
-    if (!empty ($edit_id)) {
-        COM_errorLog ('Attempting to remove the links.edit feature', 1);
-        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($moderate_id)) {
-        COM_errorLog ('Attempting to remove the links.moderate feature', 1);
-        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $moderate_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($submit_id)) {
-        COM_errorLog ('Attempting to remove the links.submit feature', 1);
-        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $submit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // Unregister the plugin with Geeklog
-    // Always attempt to remove these entries or lib-common.php would still
-    // try and read our functions.inc file ...
-    COM_errorLog ('Attempting to unregister the plugin from Geeklog', 1);
-    DB_query ("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'links'");
-    COM_errorLog ('...success',1);
-
-    COM_errorLog ('Finished uninstalling the Links plugin.', 1);
-
-    return true;
-}
-
-
 
 /**
 * Counts the items that are submitted
