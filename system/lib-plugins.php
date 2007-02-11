@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.117 2007/02/11 01:13:52 ospiess Exp $
+// $Id: lib-plugins.php,v 1.118 2007/02/11 01:42:56 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -214,10 +214,10 @@ function PLG_uninstall ($type)
                                     "ft_name = '{$remvars['features'][$i]}'");
             if (!empty ($acess_id)) {
                 COM_errorLog ("Attempting to remove {$remvars['features'][$i]} rights from all groups" ,1);
-                DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
+                DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $access_id");
                 COM_errorLog ('...success', 1);
                 COM_errorLog ("Attempting to remove the {$remvars['features'][$i]} feature", 1);
-                DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
+                DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $access_id");
                 COM_errorLog ('...success', 1);
             }
         }
