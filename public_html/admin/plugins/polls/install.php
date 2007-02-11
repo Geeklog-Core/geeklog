@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.17 2007/02/08 04:50:59 ospiess Exp $
+// $Id: install.php,v 1.18 2007/02/11 01:13:21 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -68,7 +68,8 @@ $MAPPINGS['polls.edit']         = array ($pi_admin);
 // Insert table name and sql to insert default data for your plugin.
 // Note: '#group#' will be replaced with the id of the plugin's admin group.
 $DEFVALUES = array();
-$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, date, display, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,NOW(),1,0,0,{$_USER['uid']},#group#,3,3)";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, questions, date, display, open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
+    . "VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 0, 2, NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
 // more default data is in the install SQL file in the plugin's directory
 
 /**
@@ -170,8 +171,6 @@ function plugin_install_now()
 
     COM_errorLog ("Attempting to install the $pi_display_name plugin", 1);
 
-    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
-
     // create the plugin's groups
     $admin_group_id = 0;
     foreach ($GROUPS as $name => $desc) {
@@ -181,7 +180,7 @@ function plugin_install_now()
         $grp_desc = addslashes ($desc);
         DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
         if (DB_error ()) {
-            $uninstall_plugin ();
+            PLG_uninstall ($pi_name);
 
             return false;
         }
@@ -216,7 +215,7 @@ function plugin_install_now()
             DB_query ($sql);
             if (DB_error ()) {
                 COM_errorLog ('Error creating table', 1);
-                $uninstall_plugin ();
+                PLG_uninstall ($pi_name);
 
                 return false;
             }
@@ -232,7 +231,7 @@ function plugin_install_now()
         DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
                   . "VALUES ('$ft_name', '$ft_desc')", 1);
         if (DB_error ()) {
-            $uninstall_plugin ();
+            PLG_uninstall ($pi_name);
 
             return false;
         }
@@ -244,7 +243,7 @@ function plugin_install_now()
                 COM_errorLog ("Adding $feature feature to the $group group", 1);
                 DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$GROUPS[$group]})");
                 if (DB_error ()) {
-                    $uninstall_plugin ();
+                    PLG_uninstall ($pi_name);
 
                     return false;
                 }
@@ -259,7 +258,7 @@ function plugin_install_now()
     DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES "
               . "($admin_group_id, NULL, 1)");
     if (DB_error ()) {
-        $uninstall_plugin ();
+        PLG_uninstall ($pi_name);
 
         return false;
     }
@@ -270,7 +269,8 @@ function plugin_install_now()
         $sql = str_replace ('#group#', $admin_group_id, $sql);
         DB_query ($sql, 1);
         if (DB_error ()) {
-            $uninstall_plugin ();
+            COM_errorLog ($sql, 1);
+            PLG_uninstall ($pi_name);
 
             return false;
         }
@@ -286,7 +286,7 @@ function plugin_install_now()
         . "('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
 
     if (DB_error ()) {
-        $uninstall_plugin ();
+        PLG_uninstall ($pi_name);
 
         return false;
     }
@@ -294,7 +294,7 @@ function plugin_install_now()
     // give the plugin a chance to perform any post-install operations
     if (function_exists ('plugin_postinstall')) {
         if (!plugin_postinstall ()) {
-            $uninstall_plugin ();
+            PLG_uninstall ($pi_name);
 
             return false;
         }
@@ -310,8 +310,7 @@ function plugin_install_now()
 $display = '';
 
 if ($_REQUEST['action'] == 'uninstall') {
-    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
-    if ($uninstall_plugin ()) {
+    if (PLG_uninstall ($pi_name)) {
         $display = COM_refresh ($_CONF['site_admin_url']
                                 . '/plugins.php?msg=45');
     } else {
