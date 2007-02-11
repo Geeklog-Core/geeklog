@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.116 2007/02/10 15:58:34 ospiess Exp $
+// $Id: lib-plugins.php,v 1.117 2007/02/11 01:13:52 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -247,10 +247,15 @@ function PLG_uninstall ($type)
             COM_errorLog ('...success', 1);
         }
 
+        // remove comments for this plugin
+        COM_errorLog ("Attempting to remove comments for $type", 1);
+        DB_query ("DELETE FROM {$_TABLES['comments']} WHERE type = '$type'");
+        COM_errorLog ('...success', 1);
+
         // uninstall php-blocks
         for ($i=0; $i <  count($remvars['php_blocks']); $i++) {
             DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
-                                           array ('phpblock', "phpblock_{$remvars['php_blocks'][$i]}"));
+                                           array ('phpblock', $remvars['php_blocks'][$i]));
         }
 
         // uninstall the plugin
