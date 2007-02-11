@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin functions handle Trackback, Pingback, and Ping                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2006 by the following authors:                         |
+// | Copyright (C) 2005-2007 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.43 2006/08/19 13:59:28 dhaun Exp $
+// $Id: trackback.php,v 1.44 2007/02/11 09:10:41 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -231,9 +231,10 @@ function sendPingbacks ($type, $id)
     if ($numlinks > 0) {
         $links = array ();
         for ($i = 0; $i < $numlinks; $i++) {
-            $links[$matches[2][$i]] = $matches[1][$i];
+            if (!isset ($links[$matches[1][$i]])) {
+                $links[$matches[1][$i]] = $matches[2][$i];
+            }
         }
-        $links = array_unique ($links);
 
         $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
         $template->set_file (array ('list' => 'pingbacklist.thtml',
@@ -245,7 +246,7 @@ function sendPingbacks ($type, $id)
         $template->set_var ('lang_results', $LANG_TRB['pingback_results']);
 
         $counter = 1;
-        foreach ($links as $key => $URLtoPing) {
+        foreach ($links as $URLtoPing => $linktext) {
             $result = PNB_sendPingback ($url, $URLtoPing);
             $resend = '';
             if (empty ($result)) {
@@ -257,7 +258,7 @@ function sendPingbacks ($type, $id)
             $parts = parse_url ($URLtoPing);
 
             $template->set_var ('url_to_ping', $URLtoPing);
-            $template->set_var ('link_text', $key);
+            $template->set_var ('link_text', $linktext);
             $template->set_var ('host_name', $parts['host']);
             $template->set_var ('pingback_result', $result);
             $template->set_var ('resend', $resend);
