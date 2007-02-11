@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.4 2007/01/20 02:31:07 ospiess Exp $
+// $Id: mysql_install.php,v 1.5 2007/02/11 01:08:32 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
@@ -58,11 +58,11 @@ CREATE TABLE {$_TABLES['polltopics']} (
   pid varchar(20) NOT NULL,
   topic varchar(255) default NULL,
   voters mediumint(8) unsigned default NULL,
-  questions int(11) NOT NULL,
+  questions int(11) NOT NULL default '0',
   date datetime default NULL,
   display tinyint(4) NOT NULL default '0',
-  open tinyint(4) NOT NULL,
-  hideresults tinyint(1) NOT NULL,
+  open tinyint(4) NOT NULL default '1',
+  hideresults tinyint(1) NOT NULL default '1',
   commentcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',
@@ -93,5 +93,19 @@ CREATE TABLE {$_TABLES['pollvoters']} (
 // Note: The 'pollquestion' entry for the above answers is in the install script
 
 $_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'polls_block','phpblock','Poll','all',30,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
+
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 1, 'MS SQL support', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 2, 'Multi-language support', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 3, 'Calendar as a plugin', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 4, 'SLV spam protection', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 5, 'Mass-delete users', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 6, 'Other', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 1, 'Story-Images', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 2, 'User-Rights handling', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 3, 'The Support', 0, '');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 4, 'Plugin Availability', 0, '');";
+
+$_SQL[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`qid`, `pid`, `question`) VALUES (0, 'geeklogfeaturepoll', 'What is the best new feature of Geeklog?');";
+$_SQL[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`qid`, `pid`, `question`) VALUES (1, 'geeklogfeaturepoll', 'What is the all-time best feature of Geeklog?');";
 
 ?>
