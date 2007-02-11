@@ -19,17 +19,11 @@
             {menu_elements}
         </div>
     </div>
-    <div class="header-logobg-container-outer">
-        <table width="100%" cellpadding="0" cellspacing="0" class="header-logobg-container-inner">
-            <tr>
-                <td class="header-logobg-left">
-                    <a href="{site_url}/"><img src="{site_logo}" width="151" height="56" alt="{site_name}"></a>
-                </td>
-                <td class="header-logobg-right">
-                    <span class="site-slogan">{site_slogan}</span>
-                </td>
-            </tr>
-        </table>
+    <div class="header-logobg-container-inner">
+        <a class="header-logo" href="{site_url}/">
+            <img src="{site_logo}" width="151" height="56" alt="{site_name}">
+        </a>
+        <span class="header-slogan">{site_slogan}</span>
     </div>
     <table cellspacing="0" cellpadding="0" style="width:100%;">
         <tr>

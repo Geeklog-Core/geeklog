@@ -215,6 +215,9 @@ select {
 .aligntop {
   vertical-align:top;
 }
+.clearboth {
+  clear:both;
+}
 /* general formatting classes **************************************************/
 .b {
   font-weight:bold;
@@ -423,30 +426,22 @@ select {
   margin-left:105px;
 }
 /* Header *********************************************************************/
-.header-logobg-left {
-  padding-top:4px;
-  text-align:left;
-  vertical-align:middle;
-  margin-top:11px;
+.header-logo{
+  float:left;
   padding-left:15px;
-  width:50%;
-  height:78px;
+  padding-top:13px;
 }
-.header-logobg-right {
-  padding-top:4px;
-  text-align:right;
+.header-slogan{
+  float:right;
+  line-height:78px;
   padding-right:15px;
-  vertical-align:middle;
-  width:50%;
-  height:78px;
+  color: #ffffff;
 }
 .header-logobg-container-inner {
   background:url(images/header-bg.png) #1A3955;
   border-bottom:1px solid #CCCCCC;
-}
-.header-logobg-container-outer {
-  background:#FFFFFF;
-  padding-bottom:1px;
+  height:78px;
+  margin-bottom:1px;
 }
 .header-navigation-container {
   border-bottom:1px solid #FFFFFF;
