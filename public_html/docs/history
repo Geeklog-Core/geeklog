@@ -2,10 +2,14 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- When sending Pingbacks, also search for <link rel="pingback"> if the linked
+  site does not send an X-Pingback header [Dirk]
+- When sending Pingbacks for a story that had identical link texts for different
+  URLs, only the last of those links was pinged [Dirk]
 - Implemented new Autouninstall for plugins. Plugins runs a function that passes
-  a specific array to a core function that removes all given element of the plugin.
-  The function inside the plugin can handle aditional removals that the core code
-  cannot [Oliver]
+  a specific array to a core function that removes all given element of the
+  plugin.  The function inside the plugin can handle aditional removals that
+  the core code cannot [Oliver]
 - Fixed search by date in Calendar (reported and patch provided by Jeffrey Hare)
 - Only allow autotags in normal blocks (bug #653) [Dirk]
 - Added {story_topic_image_no_align} and {story_anchortag_and_image_no_align}

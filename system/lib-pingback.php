@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-pingback.php                                                          |
 // |                                                                           |
 // | Functions needed to handle pingbacks.                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005 by the following authors:                              |
+// | Copyright (C) 2005-2007 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.7 2006/06/15 18:26:45 dhaun Exp $
+// $Id: lib-pingback.php,v 1.8 2007/02/11 17:37:25 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-pingback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -41,28 +41,53 @@ require_once ('XML/RPC.php');
 /**
 * Get the Pingback URL for a given URL
 *
-* Note: Only checks for the 'X-Pingback:' header.
-*
 * @param    string  $url    URL to get the Pingback URL for
 * @return   string          Pingback URL or empty string
 *
 */
-function PNB_getPingbackUrl ($url)
+function PNB_getPingbackUrl($url)
 {
-    require_once ('HTTP/Request.php');
+    require_once 'HTTP/Request.php';
 
     $retval = '';
 
-    $req =& new HTTP_Request ($url);
-    $req->setMethod (HTTP_REQUEST_METHOD_HEAD);
-    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
+    $req = new HTTP_Request($url);
+    $req->setMethod(HTTP_REQUEST_METHOD_HEAD);
+    $req->addHeader('User-Agent', 'GeekLog/' . VERSION);
 
-    $response = $req->sendRequest ();
-    if (PEAR::isError ($response)) {
-        COM_errorLog ('Pingback: ' . $response->getMessage());
+    $response = $req->sendRequest();
+    if (PEAR::isError($response)) {
+        COM_errorLog('Pingback (HEAD): ' . $response->getMessage());
         return false;
     } else {
-        $retval = $req->getResponseHeader ('X-Pingback');
+        $retval = $req->getResponseHeader('X-Pingback');
+    }
+
+    if (empty($retval)) {
+        // search for <link rel="pingback">
+        $req = new HTTP_Request($url);
+        $req->setMethod(HTTP_REQUEST_METHOD_GET);
+        $req->addHeader('User-Agent', 'GeekLog/' . VERSION);
+
+        $response = $req->sendRequest();
+        if (PEAR::isError($response)) {
+            COM_errorLog('Pingback (GET): ' . $response->getMessage());
+            return false;
+        } elseif ($req->getResponseCode() == 200) {
+            $body = $req->getResponseBody();
+
+            // only search for the first match - it doesn't make sense to have
+            // more than one pingback URL
+            $found = preg_match("/<link rel=\"pingback\"[^>]*href=[\"']([^\"']*)[\"'][^>]*>/i", $body, $matches);
+            if (($found === 1) && !empty($matches[1])) {
+                $url = str_replace('&amp;', '&', $matches[1]);
+                $retval = urldecode($url);
+            }
+        } else {
+            COM_errorLog('Pingback (GET): Got HTTP response code '
+                         . $req->getResponseCode() . " when requesting $url");
+            return false;
+        }
     }
 
     return $retval;
