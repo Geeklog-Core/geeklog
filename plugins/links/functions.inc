@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.73 2007/02/10 16:03:31 ospiess Exp $
+// $Id: functions.inc,v 1.74 2007/02/11 01:07:33 ospiess Exp $
 
 
 /**
@@ -746,7 +746,7 @@ function plugin_enablestatechange_links ($enable)
 *
 */
 
-/*
+
 function plugin_uninstall_links ()
 {
     global $_CONF, $_TABLES;
@@ -866,7 +866,7 @@ function plugin_uninstall_links ()
     return true;
 }
 
-*/
+
 
 /**
 * Counts the items that are submitted

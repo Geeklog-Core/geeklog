@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.67 2007/02/08 01:42:16 ospiess Exp $
+// $Id: functions.inc,v 1.68 2007/02/11 01:07:33 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -380,9 +380,12 @@ function plugin_enablestatechange_polls ($enable)
 * This may get called by the install routine to undo anything done to this
 * point.  To do that, $steps will have a list of steps to undo
 *
+* this function is replaced by the automated uninstall feature.
+*
 * @steps   Array    Holds all the steps that have been completed by the install
 *
 */
+
 function plugin_uninstall_polls($steps = '')
 {
     global $_TABLES;
@@ -450,6 +453,30 @@ function plugin_uninstall_polls($steps = '')
     COM_errorLog('leaving plugin_uninstall_polls',1);
 
     return true;
+}
+
+
+/**
+* Automatic uninstall function for plugins
+*
+* @return   array
+*
+* This code is automatically uninstalling the plugin.
+* It passes an array to the core code function that removes
+* tables, groups, features and php blocks from the tables.
+* Additionally, this code can perform special actions that cannot be
+* foreseen by the core code (interactions with other plugins for example)
+*
+*/
+function plugin_autouninstall_polls ()
+{
+    $out = array (
+        'tables' => array('pollanswers','polltopics','pollvoters','pollquestions'),
+        'groups' => array('Polls Admin'),
+        'features' => array('polls.edit'),
+        'php_blocks' => array('phpblock_polls')
+    );
+    return $out;
 }
 
 /**
