@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.120 2007/02/11 02:03:14 ospiess Exp $
+// $Id: lib-plugins.php,v 1.121 2007/02/11 10:00:53 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -186,6 +186,10 @@ function PLG_uninstall ($type)
         COM_errorLog ("Auto-uninstalling plugin $type:", 1);
         $function = 'plugin_autouninstall_' . $type;
         $remvars = $function();
+
+        if (empty ($remvars) || $remvars == false) {
+            return false;
+        }
 
         // removing tables
         for ($i=0; $i < count($remvars['tables']); $i++) {
