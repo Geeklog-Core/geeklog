@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.118 2007/02/11 01:42:56 ospiess Exp $
+// $Id: lib-plugins.php,v 1.119 2007/02/11 01:55:51 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -191,6 +191,13 @@ function PLG_uninstall ($type)
         for ($i=0; $i < count($remvars['tables']); $i++) {
             COM_errorLog ("Dropping table {$_TABLES[$remvars['tables'][$i]]}", 1);
             DB_query ("DROP TABLE {$_TABLES[$remvars['tables'][$i]]}");
+            COM_errorLog ('...success', 1);
+        }
+
+        // removing variables
+        for ($i=0; $i < count($remvars['vars']); $i++) {
+            COM_errorLog ("Removing variable {$_TABLES[$remvars['vars'][$i]]}", 1);
+            DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = '{$_TABLES[$remvars['vars'][$i]]}'");
             COM_errorLog ('...success', 1);
         }
 
