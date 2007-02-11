@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.28 2007/02/11 01:55:11 ospiess Exp $
+ * $Id: functions.inc,v 1.29 2007/02/11 01:57:10 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -381,7 +381,7 @@ function plugin_uninstall_spamx($installCheck = '')
     COM_errorLog('...success', 1);
     return true;
 }
-*/ 
+*/
 
 /**
 * Automatic uninstall function for plugins
@@ -395,7 +395,7 @@ function plugin_uninstall_spamx($installCheck = '')
 * foreseen by the core code (interactions with other plugins for example)
 *
 */
-function plugin_autouninstall_staticpages ()
+function plugin_autouninstall_spamx ()
 {
     $out = array (
         /* give the name of the tables, without $_TABLES[] */
