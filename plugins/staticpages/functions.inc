@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.84 2007/02/11 01:44:58 ospiess Exp $
+// $Id: functions.inc,v 1.85 2007/02/11 01:55:11 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -657,7 +657,9 @@ function plugin_upgrade_staticpages ()
 *
 * @steps   Array    Holds all the steps that have been completed by the install
 *
+* this function is replaced by the automated uninstall feature.
 */
+/*
 function plugin_uninstall_staticpages($steps = '')
 {
     global $_TABLES;
@@ -744,6 +746,7 @@ function plugin_uninstall_staticpages($steps = '')
 
     return true;
 }
+*/
 
 /**
 * Automatic uninstall function for plugins
@@ -767,7 +770,9 @@ function plugin_autouninstall_staticpages ()
         /* give the full name of the feature, as in the db */
         'features' => array('staticpages.edit', 'staticpages.delete', 'staticpages.PHP'),
         /* give the full name of the block, including 'phpblock_', etc */
-        'php_blocks' => array('phpblock_calendar')
+        'php_blocks' => array('phpblock_calendar'),
+        /* give all vars with their name */
+        'vars'=> array()
     );
     return $out;
 }

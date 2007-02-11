@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.65 2007/02/11 01:32:53 ospiess Exp $
+// $Id: functions.inc,v 1.66 2007/02/11 01:55:11 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1469,7 +1469,9 @@ function plugin_autouninstall_calendar ()
         /* give the full name of the feature, as in the db */
         'features' => array('calendar.edit', 'calendar.moderate', 'calendar.submit'),
         /* give the full name of the block, including 'phpblock_', etc */
-        'php_blocks' => array('phpblock_calendar')
+        'php_blocks' => array('phpblock_calendar'),
+        /* give all vars with their name */
+        'vars'=> array()
     );
     return $out;
 }

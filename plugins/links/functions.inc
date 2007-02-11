@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.75 2007/02/11 01:12:43 ospiess Exp $
+// $Id: functions.inc,v 1.76 2007/02/11 01:55:11 ospiess Exp $
 
 
 /**
@@ -1296,7 +1296,9 @@ function plugin_autouninstall_links ()
         /* give the full name of the feature, as in the db */
         'features' => array('links.edit', 'links.moderate', 'links.submit'),
         /* give the full name of the block, including 'phpblock_', etc */
-        'php_blocks' => array()
+        'php_blocks' => array(),
+        /* give all vars with their name */
+        'vars'=> array()
     );
     return $out;
 }

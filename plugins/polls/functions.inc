@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.69 2007/02/11 01:12:43 ospiess Exp $
+// $Id: functions.inc,v 1.70 2007/02/11 01:55:11 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -478,7 +478,9 @@ function plugin_autouninstall_polls ()
         /* give the full name of the feature, as in the db */
         'features' => array('polls.edit'),
         /* give the full name of the block, including 'phpblock_', etc */
-        'php_blocks' => array('phpblock_polls')
+        'php_blocks' => array('phpblock_polls'),
+        /* give all vars with their name */
+        'vars'=> array()
     );
     return $out;
 }
