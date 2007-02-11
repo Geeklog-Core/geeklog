@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.83 2007/02/08 01:42:17 ospiess Exp $
+// $Id: functions.inc,v 1.84 2007/02/11 01:44:58 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -743,6 +743,33 @@ function plugin_uninstall_staticpages($steps = '')
     COM_errorLog('leaving plugin_uninstall_staticpages',1);
 
     return true;
+}
+
+/**
+* Automatic uninstall function for plugins
+*
+* @return   array
+*
+* This code is automatically uninstalling the plugin.
+* It passes an array to the core code function that removes
+* tables, groups, features and php blocks from the tables.
+* Additionally, this code can perform special actions that cannot be
+* foreseen by the core code (interactions with other plugins for example)
+*
+*/
+function plugin_autouninstall_staticpages ()
+{
+    $out = array (
+        /* give the name of the tables, without $_TABLES[] */
+        'tables' => array('staticpage'),
+        /* give the full name of the group, as in the db */
+        'groups' => array('Static Page Admin'),
+        /* give the full name of the feature, as in the db */
+        'features' => array('staticpages.edit', 'staticpages.delete', 'staticpages.PHP'),
+        /* give the full name of the block, including 'phpblock_', etc */
+        'php_blocks' => array('phpblock_calendar')
+    );
+    return $out;
 }
 
 /**
