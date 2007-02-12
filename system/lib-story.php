@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.86 2007/02/12 07:49:50 ospiess Exp $
+// $Id: lib-story.php,v 1.87 2007/02/12 07:57:37 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -360,13 +360,15 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     $trackbacksUrl
                 )
             );
-
-            $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
-                . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
-                . '" title="' . $LANG_TRB['send_trackback'] . '">';
-            $article->set_var( 'send_trackback_icon',
-                '&nbsp;'. COM_createLink($pingico, $url)
-            );
+            if(SEC_hasRights( 'story.ping' ))
+            {
+                $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+                    . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
+                    . '" title="' . $LANG_TRB['send_trackback'] . '">';
+                $article->set_var( 'send_trackback_icon',
+                    '&nbsp;'. COM_createLink($pingico, $url)
+                );
+            }
 
             if( $story->DisplayElements('trackbacks') > 0 )
             {
