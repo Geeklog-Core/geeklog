@@ -613,6 +613,7 @@ select {
 .story-icons {
   /* print & mail icons in a storybox */
   float:right;
+  padding-top:10px;
 }
 .story-container {
   /* frame around all stories & centerblocks*/
