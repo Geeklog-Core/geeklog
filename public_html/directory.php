@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.16 2007/02/08 02:57:08 ospiess Exp $
+// $Id: directory.php,v 1.17 2007/02/12 06:52:58 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -108,7 +108,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     if (!$standalone) {
         $retval .= ' style="display:inline; float:right"' . LB;
     }
-    $retval .= '><fieldset>' . LB;
+    $retval .= '><div>' . LB;
     $retval .= '<select name="topic" onchange="this.form.submit()">' . LB;
     $retval .= '<option value="all"';
     if ($topic == 'all') {
@@ -119,7 +119,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     $retval .= '</select>' . LB;
     $retval .= '<input type="hidden" name="year" value="' . $year . '">';
     $retval .= '<input type="hidden" name="month" value="' . $month . '">';
-    $retval .= '</fieldset></form>' . LB;
+    $retval .= '</div></form>' . LB;
 
     return $retval;
 }

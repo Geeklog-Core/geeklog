@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.621 2007/02/12 06:30:47 ospiess Exp $
+// $Id: lib-common.php,v 1.622 2007/02/12 06:52:58 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5745,6 +5745,32 @@ function COM_createLink($content, $url, $attr=array()) {
         $attr_str .= " $key=\"$value$ext_class\"";
     }
     $out = "<a$attr_str href=\"$url\">$content</a>";
+    return $out;
+}
+
+/**
+ * Create an HTML img
+ *
+ * $param   string  $url        the URL of the image, either starting with
+ *                              http://... or $_CONF['layout_url'] is prepended
+ * $param   string  $alt        the 'alt'-tag of the image
+ * $param   array   $attr       an array of optional attributes for the link
+ *                              for example array('title' => 'whatever');
+ * $return  string              the HTML img
+ */
+function COM_createImage($url, $alt, $attr=array()) {
+    global $_CONF;
+
+    $arttr_str = '';
+    foreach ($attr as $key => $value) {
+        $attr_str .= " $key=\"$value\"";
+    }
+
+    if (strpos($url, 'http://') !== 0) {
+        $url = $_CONF['layout_url'] . $url;
+    }
+
+    $out = "<img$attr_str src=\"$url\" alt=\"$alt\" " . XHTML . ">";
     return $out;
 }
 

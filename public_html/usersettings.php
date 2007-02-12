@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.160 2007/02/08 04:20:09 ospiess Exp $
+// $Id: usersettings.php,v 1.161 2007/02/12 06:52:58 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -275,13 +275,13 @@ function confirmAccountDelete ($form_reqid)
                                COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= '<p>' . $LANG04[98] . '</p>' . LB;
     $retval .= '<form action="' . $_CONF['site_url']
-            . '/usersettings.php" method="POST"><fieldset>' . LB;
+            . '/usersettings.php" method="POST"><div>' . LB;
     $retval .= '<p align="center"><input type="submit" name="btnsubmit" value="'
             . $LANG04[96] . '"></p>' . LB;
     $retval .= '<input type="hidden" name="mode" value="deleteconfirmed">' . LB;
     $retval .= '<input type="hidden" name="account_id" value="' . $reqid
             . '">' . LB;
-    $retval .= '</fieldset></form>' . LB;
+    $retval .= '</div></form>' . LB;
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $retval .= COM_siteFooter ();
 
