@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.254 2007/02/08 04:44:26 ospiess Exp $
+// $Id: story.php,v 1.255 2007/02/12 19:12:15 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -394,14 +394,16 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 //            }
 //            $previewContent = STORY_renderArticle ($A, 'p');
 //        }
+        if ($story->hasContent()) {
         $previewContent = STORY_renderArticle($story, 'p');
-        if ($advanced_editormode AND $previewContent != '' ) {
+            if ($advanced_editormode AND $previewContent != '' ) { 
             $story_templates->set_var('preview_content', $previewContent);
-        } else {
+            } elseif ($previewContent != '') {
             $display = COM_startBlock ($LANG24[26], '',
                             COM_getBlockTemplate ('_admin_block', 'header'));
             $display .= $previewContent;
             $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+            }
         }
 //    }
 

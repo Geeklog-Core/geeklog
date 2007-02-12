@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.5 2007/02/12 06:26:25 ospiess Exp $
+// $Id: story.class.php,v 1.6 2007/02/12 19:12:15 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -206,6 +206,19 @@ class Story
     {
         $this->mode = $mode;
     }
+    
+    /**
+     * Check to see if there is any content in the story, for
+     * bothering to preview testing really.
+     *
+     * @return boolean trim(title+intro+body) != ''
+     */
+    function hasContent()
+    {
+        $test = $this->_title.$this->_introtext.$this->_bodytext;
+        $test = trim($test);
+        return ($test != '');
+    }   
 
     /**
       * Loads a story object from an array (that's come back from the db..)

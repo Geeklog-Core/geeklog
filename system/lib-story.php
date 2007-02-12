@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.88 2007/02/12 11:30:48 ospiess Exp $
+// $Id: lib-story.php,v 1.89 2007/02/12 19:12:15 mjervis Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -476,16 +476,19 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     {
         $article->set_var( 'lang_todays_featured_article', $LANG05[4] );
         $article->parse( 'story_bodyhtml', 'featuredbodytext', true );
+        PLG_templateSetVars( 'featuredstorytext', $article );
         $article->parse( 'finalstory', 'featuredarticle' );
     }
     elseif( $story->DisplayElements('statuscode') == 10 AND $story->DisplayElements('expire') <= time() )
     {
         $article->parse( 'story_bodyhtml', 'archivestorybodytext', true );
+        PLG_templateSetVars( 'archivestorytext', $article );
         $article->parse( 'finalstory', 'archivearticle' );
     }
     else
     {
         $article->parse( 'story_bodyhtml', 'bodytext', true );
+        PLG_templateSetVars( 'storytext', $article );
         $article->parse( 'finalstory', 'article' );
     }
 
