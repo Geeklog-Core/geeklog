@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.39 2007/02/12 09:47:33 ospiess Exp $
+// $Id: index.php,v 1.40 2007/02/12 11:29:53 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -74,7 +74,8 @@ function display_page ($page, $A, $noboxes)
                 . $LANG_STATIC['printable_format'] . '">';
             $print_url = COM_buildURL ($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
-            $icons .= COM_createLink($printicon, $print_url);
+            $icon = COM_createLink($printicon, $print_url);
+            $spage->set_var('print_icon', $icon);
         }
         if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
@@ -85,15 +86,15 @@ function display_page ($page, $A, $noboxes)
             $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
             $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG_STATIC['edit']
                 . '" title="' . $LANG_STATIC['edit'] . '">';
-            $icons .=
+            $icon =
                 '&nbsp;' . COM_createLink(
                 $editiconhtml, //display
                 $url,  //target
                 $attr //other attributes
             );
+            $spage->set_var('edit_icon', $icon);
         }
     }
-    $spage->set_var('icons', $icons);
 
     $content = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
     $spage->set_var('content', $content );
