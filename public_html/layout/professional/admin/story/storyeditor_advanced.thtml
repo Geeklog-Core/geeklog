@@ -1,6 +1,6 @@
 <!-- Hide the Advanced Editor as Javascript is required. If JS is not enabled then the message below in the <nonscript> tags will be displayed -->
 <noscript>
-    <div class="pluginAlert" style="border:1px dashed #ccc;text-align:center;margin-top:10px;padding:15px;">{lang_nojavascript}
+    <div class="pluginAlert aligncenter" style="border:1px dashed #ccc;margin-top:10px;padding:15px;">{lang_nojavascript}
     <p>{no_javascript_return_link}</p>
     </div>
 </noscript>
@@ -170,9 +170,9 @@
                     <legend>{lang_archivetitle}</legend>
                     <table cellspacing="0" cellpadding="3" style="width:100%;">
                         <tr>
-                            <td style="width:20%; text-align:right; padding-right:5px;">{lang_option}:</td>
+                            <td class="alignright" style="width:20%; padding-right:5px;">{lang_option}:</td>
                             <td style="width:20%;">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
-                            <td style="text-align:left;">
+                            <td class="alignleft">
                                 <label for="storycode10">
                                     <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
                                 </label>&nbsp;
@@ -181,7 +181,7 @@
                             </label>
                         </tr>
                         <tr>
-                            <td style="text-align:right;vertical-align:top;padding-right:5px;">{lang_date}:</td>
+                            <td class="alignright" style="vertical-align:top;padding-right:5px;">{lang_date}:</td>
                             <td colspan="2">
                                 <select id="expire_month" name="expire_month">
                                     {expire_month_options}

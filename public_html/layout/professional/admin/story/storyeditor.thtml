@@ -75,9 +75,9 @@ function enablearchive(obj) {
                                                 <tr>
                                                     <td colspan="3" style="padding-left:20px;">{lang_archivetitle}</td>
                                                 <tr>
-                                                    <td width="20%" style="text-align:right;padding-right:5px;">{lang_option}:</td>
+                                                    <td width="20%" class="alignright" style="padding-right:5px;">{lang_option}:</td>
                                                     <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
-                                                    <td style="text-align:left;">
+                                                    <td class="alignleft">
                                                         <label for="storycode10">
                                                             <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
                                                         </label>&nbsp;
@@ -86,7 +86,7 @@ function enablearchive(obj) {
                                                     </label>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align:right;vertical-align:top;padding-right:5px;">{lang_date}:</td>
+                                                    <td class="alignright" style="vertical-align:top;padding-right:5px;">{lang_date}:</td>
                                                     <td colspan="2">
                                                         <select id="expire_month" name="expire_month">
                                                             {expire_month_options}
