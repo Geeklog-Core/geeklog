@@ -2,13 +2,13 @@
                 <td class="block-featured-left" style="vertical-align:top;">
                     <div class="searchform-box">
                         <form class="searchform-elements" action="{site_url}/search.php" method="GET">
-                            <fieldset><legend></legend>
+                            <div><legend></legend>
                                 <input type="text" name="query" size="28" maxlength="255"><br>
                                 <input type="hidden" name="type" value="all">
                                 <a href="{site_url}/search.php" class="advancedsearch">{button_advsearch}</a>&nbsp;
                                 <input type="hidden" name="mode" value="search">
                                 <input type="submit" value="{button_search}">
-                            </fieldset>
+                            </div>
                         </form>
                     </div>
                     <div class="block-bg-left">
@@ -19,4 +19,3 @@
                 <td class="block-outerborder-left">
                     <div style="background:transparent; width:10px; height:1px;"></div>
                 </td>
-

@@ -1,10 +1,10 @@
 <form style="display:inline" action="{site_admin_url}/user.php?mode=batchdelete" method="post">
-    <fieldset>
+    <div>
         <input type="hidden" name="mode" value="batchdelete">
         <input type="hidden" name="usr_type" value="{usr_type}">
         <input type="hidden" name="usr_time[{usr_type}]" value="{usr_time}">
         {lang_instruction}
         <p>{options_list}</p>
         <input type="submit" name="submit" value="{lang_updatelist}">&nbsp;
-    </fieldset>
+    </div>
 </form>
