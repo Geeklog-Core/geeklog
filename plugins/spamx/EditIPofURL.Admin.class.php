@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIPofURL.Admin.class.php,v 1.7 2007/02/08 01:42:16 ospiess Exp $
+* $Id: EditIPofURL.Admin.class.php,v 1.8 2007/02/12 06:52:15 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditIPofURL.Admin.class.php') !== false) {
@@ -69,9 +69,9 @@ class EditIPofUrl extends BaseAdmin {
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
         $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIPofUrl">';
-        $display .= '<fieldset><input type="text" size ="30" name="pentry">&nbsp;&nbsp;&nbsp;';
+        $display .= '<div><input type="text" size ="30" name="pentry">&nbsp;&nbsp;&nbsp;';
         $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">' . LB;
-        $display .= '</fieldset></form>' . LB;
+        $display .= '</div></form>' . LB;
 
         return $display;
     }

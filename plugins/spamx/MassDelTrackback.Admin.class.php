@@ -12,7 +12,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelTrackback.Admin.class.php,v 1.7 2007/01/14 03:28:13 ospiess Exp $
+* $Id: MassDelTrackback.Admin.class.php,v 1.8 2007/02/12 06:52:15 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'MassDelTrackback.Admin.class.php') !== false) {
@@ -85,7 +85,7 @@ class MassDelTrackback extends BaseAdmin {
             }
             $display .= $numc . $LANG_SX00['comdel'];
         } else {
-            $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=MassDelTrackback"><fieldset>';
+            $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=MassDelTrackback"><div>';
             $display .= $LANG_SX00['numtocheck'] . '&nbsp;&nbsp&nbsp' . ' <select name="limit">';
             $display .= '<option value="10">10</option>'
                      .  '<option value="50">50</option>'
@@ -101,7 +101,7 @@ class MassDelTrackback extends BaseAdmin {
             $display .= $LANG_SX00['note5'];
             $display .= $LANG_SX00['note6'];
             $display .= '<input type="submit" name="action" value="' . $LANG_SX00['deletespam'] . '">';
-            $display .= '</fieldset></form>';
+            $display .= '</div></form>';
         }
 
         return $display;
