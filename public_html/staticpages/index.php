@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.38 2007/02/12 09:20:28 ospiess Exp $
+// $Id: index.php,v 1.39 2007/02/12 09:47:33 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -72,7 +72,7 @@ function display_page ($page, $A, $noboxes)
             $printicon = '<img src="' . $_CONF['layout_url'] . '/images/print.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
                 . $LANG_STATIC['printable_format'] . '">';
-            $printurl = COM_buildURL ($_CONF['site_url']
+            $print_url = COM_buildURL ($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
             $icons .= COM_createLink($printicon, $print_url);
         }
