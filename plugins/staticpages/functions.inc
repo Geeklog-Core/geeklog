@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.86 2007/02/11 02:06:28 ospiess Exp $
+// $Id: functions.inc,v 1.87 2007/02/12 09:47:11 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -441,7 +441,7 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
 */
 function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 {
-    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC;
+    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC, $_IMAGE_TYPE;
 
     $retval = '';
 
@@ -491,10 +491,10 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     $pages = DB_numRows ($result);
     if ($pages > 0) {
         for ($i = 0; $i < $pages; $i++) {
-            $spresult = DB_fetchArray ($result);
+            $S = DB_fetchArray ($result);
 
             if ($where == 0) {
-                switch ($spresult['sp_format']) {
+                switch ($S['sp_format']) {
                     case 'noblocks':
                         $retval .= COM_siteHeader ('none');
                         break;
@@ -506,38 +506,60 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 $retval .= COM_showMessage ($_GET['msg']);
             }
 
-            if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
-                && (($where != 0) || ($spresult['sp_format'] != 'blankpage'))) {
-                $retval .= COM_startBlock ($spresult['sp_title'], $spresult['sp_help'],
+            if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
+                && (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
+                $retval .= COM_startBlock ($S['sp_title'], $S['sp_help'],
                     COM_getBlockTemplate ('_staticpages_centerblock', 'header'));
             }
 
-            $retval .= SP_render_content (stripslashes ($spresult['sp_content']), $spresult['sp_php']);
+            $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
+            $spage -> set_file( array('page'=>'centerblock.thtml'));
 
-            if ((SEC_hasAccess ($spresult['owner_id'], $spresult['group_id'], $spresult['perm_owner'],
-                $spresult['perm_group'], $spresult['perm_members'], $spresult['perm_anon']) == 3) &&
-                SEC_hasRights ('staticpages.edit')) {
-                $retval .= '<p align="center">'
-                        . COM_createLink($LANG_STATIC['edit'], $_CONF['site_admin_url']
-                        . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
-                        . $spresult['sp_id']) . '</p>';
+            $icons = '';
+            if ($_CONF['hideprintericon'] == 0) {
+                $printicon = '<img src="' . $_CONF['layout_url'] . '/images/print.'
+                    . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
+                    . $LANG_STATIC['printable_format'] . '">';
+                $print_url = COM_buildURL ($_CONF['site_url']
+                    . '/staticpages/index.php?page=' . $S['sp_id'] . '&amp;mode=print');
+                $icons .= COM_createLink($printicon, $print_url);
             }
+            if ((SEC_hasAccess ($S['owner_id'], $S['group_id'], $S['perm_owner'],
+                    $S['perm_group'], $S['perm_members'], $S['perm_anon']) == 3) &&
+                    SEC_hasRights ('staticpages.edit')) {
+                $url = $_CONF['site_admin_url']
+                    . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $S['sp_id'];
+                $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
+                $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+                $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG_STATIC['edit']
+                    . '" title="' . $LANG_STATIC['edit'] . '">';
+                $icons .=
+                    '&nbsp;' . COM_createLink(
+                    $editiconhtml, //display
+                    $url,  //target
+                    $attr //other attributes
+                );
+            }
+            $spage->set_var('icons', $icons);
 
-            if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
-                && (($where != 0) || ($spresult['sp_format'] != 'blankpage'))) {
+            $content = SP_render_content (stripslashes ($S['sp_content']), $S['sp_php']);
+            $spage->set_var('content', $content );
+            $retval .= $spage->finish($spage->parse('output', 'page'));
+            if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
+                && (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
                 $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_centerblock', 'footer'));
             }
 
             if ($where == 0) {
-                if ($spresult['sp_format'] == 'allblocks') {
+                if ($S['sp_format'] == 'allblocks') {
                     $retval .= COM_siteFooter (true);
-                } else if ($spresult['sp_format'] != 'blankpage') {
+                } else if ($S['sp_format'] != 'blankpage') {
                     $retval .= COM_siteFooter ();
                 }
             }
 
             // increment hit counter for page
-            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$spresult['sp_id']}'");
+            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$S['sp_id']}'");
         }
     }
 
