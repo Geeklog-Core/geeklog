@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.58 2007/01/28 10:15:03 dhaun Exp $
+// $Id: search.class.php,v 1.59 2007/02/12 05:48:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -316,12 +316,10 @@ class Search {
                 if ($A['uid'] == 1) {
                     $profile = $author;
                 } else {
-                    $profile = '<a href="' . $_CONF['site_url']
-                             . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                             . '">' . $author . '</a>';
+                    $profile = COM_createLink($author, $_CONF['site_url']
+                             . '/users.php?mode=profile&amp;uid=' . $A['uid']);
                 }
-                $row = array ('<a href="' . $articleUrl . '">'
-                                          . stripslashes ($A['title']) . '</a>',
+                $row = array (COM_createLink( stripslashes ($A['title']), $articleUrl),
                               $thetime[0]);
                 if ($_CONF['contributedbyline'] == 1) {
                     $row[] = $profile;
@@ -459,10 +457,9 @@ class Search {
             $names = array ();
             while ($A = DB_fetchArray($result_comments)) {
                 $A['title'] = str_replace('$','&#36;',$A['title']);
-                $A['title'] = '<a href="' . $_CONF['site_url']
-                            . '/comment.php?mode=view&amp;cid=' . $A['cid']
-                            . $querystring . '">' . stripslashes ($A['title'])
-                            . '</a>';
+                $A['title'] = COM_createLink(stripslashes ($A['title']),
+                    $_CONF['site_url'] . '/comment.php?mode=view&amp;cid='
+                    . $A['cid'] . $querystring);
                 $thetime = COM_getUserDateTimeFormat ($A['day']);
                 if (empty ($names[$A['uid']])) {
                     $names[$A['uid']] = COM_getDisplayName ($A['uid']);
@@ -471,9 +468,8 @@ class Search {
                 if ($A['uid'] == 1) {
                     $profile = $author;
                 } else {
-                    $profile = '<a href="' . $_CONF['site_url']
-                             . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                             . '">' . $author . '</a>';
+                    $profile = COM_createLink($author, $_CONF['site_url']
+                             . '/users.php?mode=profile&amp;uid=' . $A['uid']);
                 }
                 $row = array ($A['title'], $thetime[0], $profile);
                 $comment_results->addSearchResult($row);
@@ -497,7 +493,11 @@ class Search {
         if ($pages > 1) {
             if ($resultPage > 1) {
                 $previous = $resultPage - 1;
-                $pager .= ' <a href="' . $_CONF['site_url'] . '/search.php?query=' . $urlQuery . '&amp;keyType=' . $this->_keyType . '&amp;page=' . $previous . '&amp;type=' . $this->_type . '&amp;topic=' . $this->_topic . '&amp;mode=search' . $extra . '">' . $LANG09[47] . '</a> ';
+                $pager_url = $_CONF['site_url'] . '/search.php?query=' . $urlQuery
+                    . '&amp;keyType=' . $this->_keyType . '&amp;page=' . $previous
+                    . '&amp;type=' . $this->_type . '&amp;topic=' . $this->_topic
+                    . '&amp;mode=search' . $extra;
+                $pager .= COM_createLink($LANG09[47], $pager_url);
             }
             if ($pages <= 20) {
                 $startPage = 1;
@@ -516,12 +516,18 @@ class Search {
                 if ($i == $resultPage) {
                     $pager .= " <b>$i</b> ";
                 } else {
-                    $pager .= " <a href = {$_CONF['site_url']}/search.php?query=$urlQuery&keyType=$this->_keyType&page=$i&type=$this->_type&topic=$this->_topic&mode=search$extra>$i</a> ";
+                    $pager_url = "{$_CONF['site_url']}/search.php?query=$urlQuery"
+                        . "&keyType=$this->_keyType&page=$i&type=$this->_type"
+                        . "&topic=$this->_topic&mode=search$extra";
+                    $pager .= COM_createLink($i,$pager_url);
                 }
             }
             if ($resultPage < $pages) {
                 $next = $resultPage+1;
-                $pager .= " <a href = {$_CONF['site_url']}/search.php?query=$urlQuery&keyType=$this->_keyType&page=$next&type=$this->_type&topic=$this->_topic&mode=search$extra>{$LANG09[46]}</a> ";
+                $pager_url = "{$_CONF['site_url']}/search.php?query=$urlQuery"
+                    . "&keyType=$this->_keyType&page=$next&type=$this->_type"
+                    . "&topic=$this->_topic&mode=search$extra";
+                $pager .= COM_createLink($LANG09[46], $pager_url);
             }
         }
         return $pager;
@@ -699,8 +705,8 @@ class Search {
             }
         }
         if ($numpages > $this->_page) {
-            $next = '<a href="' . $searchUrl . $queryUrl . '&amp;page='
-                  . ($this->_page + 1) . '">' . $LANG09[58] . '</a>';
+            $next = COM_createLink($LANG09[58], $searchUrl . $queryUrl . '&amp;page='
+                . ($this->_page + 1));
         } else {
             $next = $LANG09[58];
         }
@@ -724,7 +730,7 @@ class Search {
             $searchmain->set_var ('start_refine_anchortag', $refineLink);
             $searchmain->set_var ('end_refine_anchortag', '</a>');
             $searchmain->set_var ('refine_search',
-                                  $refineLink . $LANG09[61] . '</a>');
+                COM_createLink($LANG09[61], $refineUrl));
         }
         $retval .= $searchmain->parse ('output', 'searchresults');
 
