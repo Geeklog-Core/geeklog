@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.620 2007/02/08 03:48:25 ospiess Exp $
+// $Id: lib-common.php,v 1.621 2007/02/12 06:30:47 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5738,14 +5738,13 @@ function COM_getTopicImageUrl( $imageurl )
  *                              for example array('title' => 'whatever');
  * $return  string              the HTML link
  */
-// COM_createLink($content, $url, $attr);
-function COM_createLink($content, $url, $attr=array()) { //attr optional
+function COM_createLink($content, $url, $attr=array()) {
     global $_CONF;
-    $arttr_str = ''; // init string
-    foreach ($attr as $key => $value) { //iterate array
-        $attr_str .= " $key=\"$value$ext_class\""; // create attributes
+    $arttr_str = '';
+    foreach ($attr as $key => $value) {
+        $attr_str .= " $key=\"$value$ext_class\"";
     }
-    $out = "<a$attr_str href=\"$url\">$content</a>"; // create html
+    $out = "<a$attr_str href=\"$url\">$content</a>";
     return $out;
 }
 
