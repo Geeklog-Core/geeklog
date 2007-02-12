@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.85 2007/02/12 06:39:44 ospiess Exp $
+// $Id: lib-story.php,v 1.86 2007/02/12 07:49:50 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -262,6 +262,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'send_trackback_link',
                 COM_createLink($LANG_TRB['send_trackback'], $url)
             );
+            $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+                . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
+                . '" title="' . $LANG_TRB['send_trackback'] . '">';
+            $article->set_var( 'send_trackback_icon',
+                '&nbsp;'. COM_createLink($pingico, $url)
+            );
             $article->set_var( 'send_trackback_url', $url );
             $article->set_var( 'lang_send_trackback_text',
                                $LANG_TRB['send_trackback'] );
@@ -355,6 +361,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 )
             );
 
+            $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+                . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
+                . '" title="' . $LANG_TRB['send_trackback'] . '">';
+            $article->set_var( 'send_trackback_icon',
+                '&nbsp;'. COM_createLink($pingico, $url)
+            );
 
             if( $story->DisplayElements('trackbacks') > 0 )
             {
@@ -384,10 +396,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $story->getSid()
                       . '&amp;what=emailstory';
-            $article->set_var( 'email_icon', '<a href="' . $emailUrl . '">'
-                . '<img src="' . $_CONF['layout_url'] . '/images/mail.'
+            $emailicon = '<img src="' . $_CONF['layout_url'] . '/images/mail.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[64] . '" title="'
-                . $LANG11[2] . '"></a>' );
+                . $LANG11[2] . '">';
+            $article->set_var( 'email_icon',
+                '&nbsp;'. COM_createLink($emailicon, $emailUrl)
+            );
             $article->set_var( 'email_story_url', $emailUrl );
             $article->set_var( 'lang_email_story', $LANG11[2] );
             $article->set_var( 'lang_email_story_alt', $LANG01[64] );
@@ -400,10 +414,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         }
         else
         {
-            $article->set_var( 'print_icon', '<a href="' . $printUrl . '">'
-                . '<img src="' . $_CONF['layout_url']
+            $printicon = '<img src="' . $_CONF['layout_url']
                 . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65]
-                . '" title="' . $LANG11[3] . '"></a>' );
+                . '" title="' . $LANG11[3] . '">';
+            $article->set_var( 'print_icon',
+                '&nbsp;' . COM_createLink($printicon, $printUrl)
+            );
             $article->set_var( 'print_story_url', $printUrl );
             $article->set_var( 'lang_print_story', $LANG11[3] );
             $article->set_var( 'lang_print_story_alt', $LANG01[65] );
@@ -412,10 +428,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $pdfUrl = $_CONF['site_url'] . '/pdfgenerator.php?pageType=2&amp;'
                     . 'pageData=' . urlencode( $printUrl );
+            $pdficon = '<img src="'. $_CONF['layout_url'] . '/images/pdf.'
+                         . $_IMAGE_TYPE . '" alt="'. $LANG01[111]
+                         .'" title="'. $LANG11[5] .'">';
             $article->set_var( 'pdf_icon',
-                sprintf( '<a href="%s"><img src="%s/images/pdf.'
-                         . $_IMAGE_TYPE . '" alt="%s" title="%s"></a>',
-                         $pdfUrl, $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
+                '&nbsp;'. COM_createLink($pdficon, $pdfUrl)
+            );
             $article->set_var( 'pdf_story_url', $pdfUrl );
             $article->set_var( 'lang_pdf_story', $LANG11[5] );
             $article->set_var( 'lang_pdf_story_alt', $LANG01[111] );
@@ -434,19 +452,22 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
     if( $story->checkAccess() == 3 AND SEC_hasrights( 'story.edit' ) AND ( $index != 'p' ))
     {
-        $article->set_var( 'edit_link', '<a href="' . $_CONF['site_admin_url']
-                . '/story.php?mode=edit&amp;sid=' . $story->getSid() . '">'
-                . $LANG01[4] . '</a>' );
+        $article->set_var( 'edit_link',
+            COM_createLink($LANG01[4], $_CONF['site_admin_url']
+                . '/story.php?mode=edit&amp;sid=' . $story->getSid())
+            );
         $article->set_var( 'edit_url', $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $story->getSid() );
         $article->set_var( 'lang_edit_text',  $LANG01[4] );
         $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
-        $article->set_var( 'edit_icon', '<a href="' . $_CONF['site_admin_url']
-                . '/story.php?mode=edit&amp;sid=' . $story->getSid() . '"><img src="'
-                . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4]
-                . '"></a>' );
-        $article->set_var( 'edit_image',  '<img src="' . $editicon . '" alt="'
-                . $LANG01[4] . '" title="' . $LANG01[4] . '">' );
+        $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4] . '">';
+        $article->set_var( 'edit_icon',
+            '&nbsp' . COM_createLink(
+                $editiconhtml,
+                $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid=' . $story->getSid()
+            )
+        );
+        $article->set_var( 'edit_image', $editiconhtml);
     }
 
     if( $story->DisplayElements('featured') == 1 )
