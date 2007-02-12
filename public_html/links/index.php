@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.16 2007/02/10 14:56:25 ospiess Exp $
+// $Id: index.php,v 1.17 2007/02/12 05:43:47 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -75,6 +75,12 @@ function prepare_link_item ($A, &$template)
     $template->set_var ('link_hits', COM_numberFormat ($A['hits']));
     $template->set_var ('link_description',
                         nl2br (stripslashes ($A['description'])));
+    $content = stripslashes ($A['title']);
+    $attr = array(
+        'title' => stripslashes ($A['title']),
+        'class' => 'ext-link');
+    $html = COM_createLink($content, $url, $attr);
+    $template->set_var ('link_html', $html);
     $reporturl = $_CONF['admin_url']
              . '/links/index.php?mode=report&amp;lid=' . $A['lid']
              . '&amp;url='. $A['url'] . '&amp;title=' . stripslashes ($A['title']);
