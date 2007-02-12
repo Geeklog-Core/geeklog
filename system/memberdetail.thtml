@@ -5,20 +5,20 @@
 <form action="{post_url}" method="POST">
     <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
-            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{USERNAME}</b><br><small style="color:#676767">{USERNAME_HELP}</small></td>
+            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{USERNAME}</b><br><small style="color:#676767">{USERNAME_HELP}</small></td>
             <td align="left" valign="middle"><input type="text" name="username" size="16" maxlength="16" value="{username}"></td>
         </tr>
         {passwd_input}
         <tr>
-            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{FULLNAME}</b><br><small style="color:#676767">{FULLNAME_HELP}</small></td>
+            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{FULLNAME}</b><br><small style="color:#676767">{FULLNAME_HELP}</small></td>
             <td align="left" valign="middle"><input type="text" name="fullname" size="32" maxlength="80" value="{fullname}"></td>
         </tr>
         <tr>
-            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{EMAIL}</b><br><small style="color:#676767">{EMAIL_HELP}</small></td>
+            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{EMAIL}</b><br><small style="color:#676767">{EMAIL_HELP}</small></td>
             <td align="left" valign="middle"><input type="text" name="email" size="32" maxlength="96" value="{email}"></td>
         </tr>
         <tr>
-            <td align="right" style="text-align:left;vertical-align:middle;padding-left:10px;"><b>{EMAIL_CONF}</b><br><small style="color:#676767">{EMAIL_CONF_HELP}</small></td>
+            <td align="right" class="alignleft"  style="vertical-align:middle;padding-left:10px;"><b>{EMAIL_CONF}</b><br><small style="color:#676767">{EMAIL_CONF_HELP}</small></td>
             <td align="left" valign="middle"><input type="text" name="email_conf" size="32" maxlength="96" value="{email_conf}"></td>
         </tr>
         <tr>
