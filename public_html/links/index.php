@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.17 2007/02/12 05:43:47 ospiess Exp $
+// $Id: index.php,v 1.18 2007/02/12 11:28:45 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -94,7 +94,7 @@ function prepare_link_item ($A, &$template)
         $editurl = $_CONF['site_admin_url']
                  . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
         $template->set_var ('link_edit', COM_createLink($LANG_ADMIN['edit'],$editurl));
-        $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit$_IMAGE_TYPE\" "
+        $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit.$_IMAGE_TYPE\" "
             . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\">";
         $template->set_var ('edit_icon', COM_createLink($edit_icon, $editurl));
     } else {
