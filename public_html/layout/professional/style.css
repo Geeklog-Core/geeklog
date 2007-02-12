@@ -222,6 +222,12 @@ select {
 .b {
   font-weight:bold;
 }
+.ext-link {
+  background-color: transparent;
+  background: url(./images/external.png) right center no-repeat;
+  background-attachment: scroll;
+  padding-right: 13px;
+}
 /* Blocks *********************************************************************/
 .block-box-left {
   margin:10px;
