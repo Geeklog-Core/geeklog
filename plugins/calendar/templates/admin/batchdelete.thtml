@@ -2,7 +2,7 @@
     <fieldset>
         <input type="hidden" name="mode" value="batchdelete">
         <input type="hidden" name="usr_time" value="{usr_time}">
-        {lang_text_start} <input style="text-align:center" type="text" name="usr_time" value="{usr_time}" size="3">{lang_text_end}<br>
+        {lang_text_start} <input class="aligncenter" type="text" name="usr_time" value="{usr_time}" size="3">{lang_text_end}<br>
         <input type="submit" name="submit" value="{lang_updatelist}">
     </fieldset>
 </form>
