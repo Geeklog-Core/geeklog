@@ -16,7 +16,7 @@
         {story_anchortag_and_image}{story_introtext}
     </div>
     <div class="story-footer">
-        {send_trackback_link}&nbsp;{page_selector}<br>
+        {page_selector}<br>
         {readmore_link} {post_comment_link}<br>
         {plugin_itemdisplay}{comments_with_count} {trackbacks_with_count}
     </div>
