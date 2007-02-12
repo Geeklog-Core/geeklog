@@ -76,6 +76,7 @@ Spam-X plugin
 
 Static Pages plugin
 -------------------
+- Now using a template to display static pages [Oliver]
 - Autouninstall implemented [Oliver]
 - The static pages editor was looking for the advanced editor template in the
   wrong place, due to an uninitialized variable (reported by k74) [Dirk]
