@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.77 2007/02/11 02:06:28 ospiess Exp $
+// $Id: functions.inc,v 1.78 2007/02/12 05:43:07 ospiess Exp $
 
 
 /**
@@ -185,7 +185,10 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
         } else {
             $linktext = $autotag['parm2'];
         }
-        $link = COM_createLink($linktext, $url);
+        $attr = array(
+            'title' => $linktext,
+            'class' => 'ext-link');
+        $link = COM_createLink($linktext, $url, $attr);
         $content = str_replace ($autotag['tagstr'], $link, $content);
 
         return $content;
