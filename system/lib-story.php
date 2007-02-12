@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.87 2007/02/12 07:57:37 ospiess Exp $
+// $Id: lib-story.php,v 1.88 2007/02/12 11:30:48 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -266,7 +266,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
                 . '" title="' . $LANG_TRB['send_trackback'] . '">';
             $article->set_var( 'send_trackback_icon',
-                '&nbsp;'. COM_createLink($pingico, $url)
+                COM_createLink($pingico, $url)
             );
             $article->set_var( 'send_trackback_url', $url );
             $article->set_var( 'lang_send_trackback_text',
@@ -366,7 +366,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
                     . '" title="' . $LANG_TRB['send_trackback'] . '">';
                 $article->set_var( 'send_trackback_icon',
-                    '&nbsp;'. COM_createLink($pingico, $url)
+                    COM_createLink($pingico, $url)
                 );
             }
 
@@ -402,7 +402,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[64] . '" title="'
                 . $LANG11[2] . '">';
             $article->set_var( 'email_icon',
-                '&nbsp;'. COM_createLink($emailicon, $emailUrl)
+                COM_createLink($emailicon, $emailUrl)
             );
             $article->set_var( 'email_story_url', $emailUrl );
             $article->set_var( 'lang_email_story', $LANG11[2] );
@@ -420,7 +420,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65]
                 . '" title="' . $LANG11[3] . '">';
             $article->set_var( 'print_icon',
-                '&nbsp;' . COM_createLink($printicon, $printUrl)
+                COM_createLink($printicon, $printUrl)
             );
             $article->set_var( 'print_story_url', $printUrl );
             $article->set_var( 'lang_print_story', $LANG11[3] );
@@ -434,7 +434,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                          . $_IMAGE_TYPE . '" alt="'. $LANG01[111]
                          .'" title="'. $LANG11[5] .'">';
             $article->set_var( 'pdf_icon',
-                '&nbsp;'. COM_createLink($pdficon, $pdfUrl)
+                COM_createLink($pdficon, $pdfUrl)
             );
             $article->set_var( 'pdf_story_url', $pdfUrl );
             $article->set_var( 'lang_pdf_story', $LANG11[5] );
@@ -464,7 +464,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
         $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4] . '">';
         $article->set_var( 'edit_icon',
-            '&nbsp' . COM_createLink(
+            COM_createLink(
                 $editiconhtml,
                 $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid=' . $story->getSid()
             )
