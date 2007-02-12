@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.84 2007/02/08 08:49:45 ospiess Exp $
+// $Id: lib-story.php,v 1.85 2007/02/12 06:39:44 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -367,7 +367,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             }
             else
             {
-                $article->set_var( 'trackbacks_with_count', $trackbacksUrl);
+                $article->set_var( 'trackbacks_with_count',
+                        sprintf( $LANG01[122], $num_trackbacks )
+                );
             }
         }
 
