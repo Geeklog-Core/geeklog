@@ -215,6 +215,9 @@ select {
 .aligntop {
   vertical-align:top;
 }
+.floatright {
+  float:right;
+}
 .clearboth {
   clear:both;
 }
