@@ -307,7 +307,7 @@ select {
   color:#000000;
 }
 .block-helpicon {
-  padding-top:0px;
+  padding-top:5px;
   text-align:right;
   float:right;
 }
@@ -617,6 +617,9 @@ select {
   /* print & mail icons in a storybox */
   float:right;
   padding-top:10px;
+}
+.story-icons a{
+  margin-left:5px;
 }
 .story-container {
   /* frame around all stories & centerblocks*/
