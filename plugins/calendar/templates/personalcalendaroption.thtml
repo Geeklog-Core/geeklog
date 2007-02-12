@@ -1,5 +1,5 @@
                                             <form method="post" action="index.php?mode=personal">
-                                                <fieldset>
+                                                <div>
                                                     <input type="submit" name="action" value="{lang_mycalendar}">
-                                                </fieldset>
+                                                </div>
                                             </form>

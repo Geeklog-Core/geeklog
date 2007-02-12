@@ -1,5 +1,5 @@
                                             <form method="post" action="index.php">
-                                                <fieldset>
+                                                <div>
                                                     <input type="submit" name="action" value="{lang_mastercal}">
-                                                </fieldset>
+                                                </div>
                                             </form>

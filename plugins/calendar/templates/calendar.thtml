@@ -21,7 +21,7 @@
                                                             <tr>
                                                                 <td colspan="2" align="center">
                                                                     <form method="post" action="index.php">
-                                                                        <fieldset>
+                                                                        <div>
                                                                             <input type="hidden" name="mode" value="{mode}">
                                                                             <select name="month" onChange="this.form.submit()">
                                                                                 <option value="1" {selected_jan}>{lang_january}</option>
@@ -40,7 +40,7 @@
                                                                             <select name="year" onChange="this.form.submit()">
                                                                                 {year_options}
                                                                             </select>
-                                                                        </fieldset>
+                                                                        </div>
                                                                     </form><br>
                                                                 </td>
                                                             </tr>
@@ -77,12 +77,12 @@
                                     <tr>
                                         <td>
                                             <form method="post" action="index.php">
-                                                <fieldset>
+                                                <div>
                                                     <input type="submit" value="<<">
                                                     <input type="hidden" name="month" value="{cal_prevmo_num}">
                                                     <input type="hidden" name="year" value="{cal_prevyr_num}">
                                                     <input type="hidden" name="mode" value="{mode}">
-                                                </fieldset>
+                                                </div>
                                             </form>
                                         </td>
                                         <td>
@@ -94,16 +94,15 @@
                                         </td>
                                         <td>
                                             <form method="post" action="index.php">
-                                                <fieldset>
+                                                <div>
                                                     <input type="submit" value=">>">
                                                     <input type="hidden" name="month" value="{cal_nextmo_num}">
                                                     <input type="hidden" name="year" value="{cal_nextyr_num}">
                                                     <input type="hidden" name="mode" value="{mode}">
-                                                </fieldset>
+                                                </div>
                                             </form>
                                         </td>
                                     </tr>
                                 </table>
 
                                 <!-- End Calendar -->
-
