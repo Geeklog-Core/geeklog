@@ -1,17 +1,17 @@
 <form action="{site_url}/comment.php" method="POST">
-    <fieldset>
-    <div id="commentarea">
-        {comment}
+    <div>
+        <div id="commentarea">
+            {comment}
+        </div>
+        <hr>
+        <p>
+            {lang_report_this}
+        </p>
+        <p>
+            <input type="hidden" name="cid" value="{cid}">
+            <input type="hidden" name="type" value="{type}">
+            <input type="hidden" name="mode" value="sendreport">
+            <input type="submit" name="sendit" value="{lang_send_report}">
+        </p>
     </div>
-    <hr>
-    <p>
-        {lang_report_this}
-    </p>
-    <p>
-        <input type="hidden" name="cid" value="{cid}">
-        <input type="hidden" name="type" value="{type}">
-        <input type="hidden" name="mode" value="sendreport">
-        <input type="submit" name="sendit" value="{lang_send_report}">
-    </p>
-    </fieldset>
 </form>
