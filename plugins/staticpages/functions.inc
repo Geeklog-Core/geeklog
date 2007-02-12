@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.87 2007/02/12 09:47:11 ospiess Exp $
+// $Id: functions.inc,v 1.88 2007/02/12 11:29:36 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -522,7 +522,8 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                     . $LANG_STATIC['printable_format'] . '">';
                 $print_url = COM_buildURL ($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $S['sp_id'] . '&amp;mode=print');
-                $icons .= COM_createLink($printicon, $print_url);
+                $icon .= COM_createLink($printicon, $print_url);
+                $spage->set_var('print_icon', $icon);
             }
             if ((SEC_hasAccess ($S['owner_id'], $S['group_id'], $S['perm_owner'],
                     $S['perm_group'], $S['perm_members'], $S['perm_anon']) == 3) &&
@@ -533,12 +534,13 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
                 $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG_STATIC['edit']
                     . '" title="' . $LANG_STATIC['edit'] . '">';
-                $icons .=
+                $icon =
                     '&nbsp;' . COM_createLink(
                     $editiconhtml, //display
                     $url,  //target
                     $attr //other attributes
                 );
+                $spage->set_var('edit_icon', $icon);
             }
             $spage->set_var('icons', $icons);
 
