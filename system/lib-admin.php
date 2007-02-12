@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.98 2007/02/08 06:15:44 ospiess Exp $
+// $Id: lib-admin.php,v 1.99 2007/02/12 06:54:13 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -609,9 +609,9 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
                     } else {
                         $switch = '';
                     }
-                    $retval = "<form action=\"{$_CONF['site_admin_url']}/block.php\" method=\"post\"><fieldset>"
+                    $retval = "<form action=\"{$_CONF['site_admin_url']}/block.php\" method=\"post\"><div>"
                              ."<input type=\"checkbox\" name=\"blkenable\" onclick=\"submit()\" value=\"{$A['bid']}\" $switch>"
-                             ."<input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></fieldset></form>";
+                             ."<input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></div></form>";
                 }
                 break;
             case 'move':
@@ -904,9 +904,9 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/syndication.php\" method=\"POST\"><fieldset>"
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/syndication.php\" method=\"POST\"><div>"
                      ."<input type=\"checkbox\" name=\"feedenable\" onclick=\"submit()\" value=\"{$A['fid']}\" $switch>"
-                     ."<input type=\"hidden\" name=\"feedChange\" value=\"{$A['fid']}\"></fieldset></form>";
+                     ."<input type=\"hidden\" name=\"feedChange\" value=\"{$A['fid']}\"></div></form>";
             break;
         case 'header_tid':
             if ($A['header_tid'] == 'all') {
@@ -962,10 +962,10 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/plugins.php\" method=\"post\"><fieldset>"
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/plugins.php\" method=\"post\"><div>"
                      ."<input type=\"checkbox\" name=\"pluginenable\" onclick=\"submit()\" value=\"{$A['pi_name']}\" $switch>"
                      ."<input type=\"hidden\" name=\"pluginChange\" value=\"{$A['pi_name']}\">"
-                     ."</fieldset></form>";
+                     ."</div></form>";
             break;
         default:
             $retval = $fieldvalue;
@@ -1045,10 +1045,10 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/trackback.php\" method=\"POST\"><fieldset>"
+            $retval = "<form action=\"{$_CONF['site_admin_url']}/trackback.php\" method=\"POST\"><div>"
                      ."<input type=\"checkbox\" name=\"serviceenable\" onclick=\"submit()\" value=\"{$A['pid']}\" $switch>"
                      ."<input type=\"hidden\" name=\"serviceChange\" value=\"{$A['pid']}\">"
-                     ."</fieldset></form>";
+                     ."</div></form>";
             break;
         default:
             $retval = $fieldvalue;
