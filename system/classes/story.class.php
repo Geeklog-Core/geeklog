@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.4 2007/02/04 10:07:04 mjervis Exp $
+// $Id: story.class.php,v 1.5 2007/02/12 06:26:25 ospiess Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -539,8 +539,8 @@ class Story
                 while( list($subkey, $subvalue) = each( $value ) )
                 {
                     $value[$subkey] = COM_stripslashes( $subvalue );
-                }   
-            }            
+                }
+            }
         }
 
         /* Load the trivial stuff: */
@@ -803,8 +803,6 @@ class Story
         {
             $A = DB_fetchArray($result);
 
-            $lLinkPrefix = '';
-            $lLinkSuffix = '';
             if ($_CONF['keep_unscaled_image'] == 1) {
                 $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
                         strrpos ($A['ai_filename'], '.'), 1);
@@ -818,11 +816,6 @@ class Story
                 } else {
                     $lFilename_large_URL = $_CONF['site_url']
                         . '/getimage.php?mode=show&amp;image=' . $lFilename_large;
-                }
-                if (file_exists ($lFilename_large_complete)) {
-                    $lLinkPrefix = '<a href="' . $lFilename_large_URL
-                                 . '" title="' . $LANG24[57] . '">';
-                    $lLinkSuffix = '</a>';
                 }
             }
 
@@ -859,12 +852,26 @@ class Story
                     } else {
                         $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
                     }
-                    $intro = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
-                    $body = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
-                    $intro = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
-                    $body = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
-                    $intro = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
-                    $body = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
+                    $lLinkPrefix = '';
+                    $lLinkSuffix = '';
+                    if (file_exists ($lFilename_large_complete)) {
+                        $lLinkPrefix = '<a href="' . $lFilename_large_URL
+                                     . '" title="' . $LANG24[57] . '">';
+                        $lLinkSuffix = '</a>';
+                    }
+                    $lLink_url = $lFilename_large_URL;
+                    $lLink_attr = array('title'=>$LANG24[57]);
+
+                    $img_noalign = '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">';
+                    $img_leftalgn = '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' ;
+                    $img_rightalgn = '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">';
+
+                    $intro = str_replace($norm, COM_createLink($img_noalign, $lLink_url, $lLink_attr), $intro);
+                    $body = str_replace($norm, COM_createLink($img_noalign, $lLink_url, $lLink_attr), $body);
+                    $intro = str_replace($left, COM_createLink($img_leftalgn, $lLink_url, $lLink_attr), $intro);
+                    $body = str_replace($left, COM_createLink($img_leftalgn, $lLink_url, $lLink_attr), $body);
+                    $intro = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $intro);
+                    $body = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $body);
 
                     if (($_CONF['allow_user_scaling'] == 1) and
                         ($_CONF['keep_unscaled_image'] == 1)) {
