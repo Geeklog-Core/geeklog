@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.37 2007/02/12 08:11:19 ospiess Exp $
+// $Id: index.php,v 1.38 2007/02/12 09:20:28 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -63,6 +63,9 @@ function display_page ($page, $A, $noboxes)
                         COM_getBlockTemplate ('_staticpages_block', 'header'));
     }
 
+    $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
+    $spage -> set_file( array('page'=>'staticpage.thtml'));
+
     if ($A['sp_format'] <> 'blankpage') {
         $icons = '';
         if ($_CONF['hideprintericon'] == 0) {
@@ -90,28 +93,29 @@ function display_page ($page, $A, $noboxes)
             );
         }
     }
-    if ($icons !== '') {
-        $retval  .= "<span class=\"floatright\">$icons</span>";
-    }
+    $spage->set_var('icons', $icons);
 
-    $retval .= SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
+    $content = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
+    $spage->set_var('content', $content );
 
     if ($A['sp_format'] <> 'blankpage') {
         $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
-        $retval .= '<p align="center"><br>';
         if ($_SP_CONF['show_date'] == 1) {
-            $retval .= $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
+            $lastupdate = $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
+            $spage->set_var('lastupdate', $lastupdate);
         }
+
 
         if ($_SP_CONF['show_hits'] == 1) {
             if ($_SP_CONF['show_date'] == 1) {
-                $retval .= "; ";
+                $hits = "| ";
             }
-            $retval .= ' ' . COM_numberFormat ($A['sp_hits'])
-                    . ' ' . $LANG_STATIC['hits'];
+            $hits = COM_numberFormat ($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
+            $spage->set_var('hits', $hits);
         }
 
     }
+    $retval .= $spage->finish($spage->parse('output', 'page'));
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_block',
                                                        'footer'));
