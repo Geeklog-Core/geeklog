@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.36 2007/02/08 05:57:18 ospiess Exp $
+// $Id: index.php,v 1.37 2007/02/12 08:11:19 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -63,6 +63,37 @@ function display_page ($page, $A, $noboxes)
                         COM_getBlockTemplate ('_staticpages_block', 'header'));
     }
 
+    if ($A['sp_format'] <> 'blankpage') {
+        $icons = '';
+        if ($_CONF['hideprintericon'] == 0) {
+            $printicon = '<img src="' . $_CONF['layout_url'] . '/images/print.'
+                . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
+                . $LANG_STATIC['printable_format'] . '">';
+            $printurl = COM_buildURL ($_CONF['site_url']
+                . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
+            $icons .= COM_createLink($printicon, $print_url);
+        }
+        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+                SEC_hasRights ('staticpages.edit')) {
+            $url = $_CONF['site_admin_url']
+                . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page;
+            $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
+            $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+            $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG_STATIC['edit']
+                . '" title="' . $LANG_STATIC['edit'] . '">';
+            $icons .=
+                '&nbsp;' . COM_createLink(
+                $editiconhtml, //display
+                $url,  //target
+                $attr //other attributes
+            );
+        }
+    }
+    if ($icons !== '') {
+        $retval  .= "<span class=\"floatright\">$icons</span>";
+    }
+
     $retval .= SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
 
     if ($A['sp_format'] <> 'blankpage') {
@@ -80,29 +111,6 @@ function display_page ($page, $A, $noboxes)
                     . ' ' . $LANG_STATIC['hits'];
         }
 
-        if ($_CONF['hideprintericon'] == 0) {
-            $printicon = '<img src="' . $_CONF['layout_url'] . '/images/print.'
-                . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
-                . $LANG_STATIC['printable_format'] . '">';
-            $printurl = COM_buildURL ($_CONF['site_url']
-                . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
-            $retval .= COM_createLink($printicon, $print_url);
-        }
-
-        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
-                SEC_hasRights ('staticpages.edit')) {
-            $url = $_CONF['site_admin_url']
-                . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page;
-            $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
-            $link_html .= COM_createLink(
-                $LANG_STATIC['edit'], //display
-                $url,  //target
-                $attr //other attributes
-            );
-            $retval .= '<br>' . $link_html;
-        }
-        $retval .= '</p>';
     }
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_block',
