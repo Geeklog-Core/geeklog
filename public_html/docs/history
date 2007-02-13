@@ -56,8 +56,10 @@ Calendar plugin (1.0.1)
 - Autouninstall implemented [Oliver]
 - Added Batch-Delete functionality [Oliver]
 
-Links plugin (1.0.2)
+Links plugin (1.1)
 ------------
+- Added owner_id field to submissions to record submitter and align with 
+  stories behavior [Oliver]
 - Autouninstall implemented [Oliver]
 - Added "Report Broken Link" function [Oliver]
 
