@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.78 2007/02/12 05:43:07 ospiess Exp $
+// $Id: functions.inc,v 1.79 2007/02/13 03:18:33 ospiess Exp $
 
 
 /**
@@ -714,7 +714,14 @@ function plugin_upgrade_links ()
         return 3002;
     }
 
-    // no db changes - just update the version numbers
+    $current_version = DB_getItem ($_TABLES['plugins'], 'pi_version',
+                                   "pi_name = 'links'");
+    if ($current_version !== '1.1') {
+        // add owner field to submission table
+        $sql = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
+        $result = DB_query ($sql);
+    }
+
     DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'links'");
 
     return true;
@@ -973,11 +980,15 @@ function plugin_save_submit_links ($A)
     $A['url'] = addslashes (COM_sanitizeUrl ($A['url']));
     $A['lid'] = addslashes (COM_makeSid ());
     COM_updateSpeedlimit ('submit');
-
+    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        $owner_id = $_USER['uid'];
+    } else {
+        $owner_id = 1; // anonymous user
+    }
     if (($_LI_CONF['linksubmission'] == 1) && !SEC_hasRights ('links.submit')) {
         $result = DB_save ($_TABLES['linksubmission'],
-                    'lid,category,url,description,title,date',
-                    "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW()");
+                    'lid,category,url,description,title,date,owner_id',
+                    "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
 
         if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
             LINKS_sendNotification ($_TABLES['linksubmission'], $A);
@@ -985,11 +996,7 @@ function plugin_save_submit_links ($A)
 
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=1&plugin=links');
     } else { // add link directly
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $owner_id = $_USER['uid'];
-        } else {
-            $owner_id = 1; // anonymous user
-        }
+
         $result = DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,owner_id', "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
         if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
             LINKS_sendNotification ($_TABLES['links'], $A);

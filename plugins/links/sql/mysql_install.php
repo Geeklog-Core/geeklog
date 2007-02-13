@@ -31,26 +31,26 @@
 // +---------------------------------------------------------------------------+
 //
 
-/** 
- * Links plugin Installation SQL  
- * 
+/**
+ * Links plugin Installation SQL
+ *
  * @package Links
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
- * 
+ *
  */
 
 
 
-// $Id: mysql_install.php,v 1.1 2006/08/19 18:51:48 dhaun Exp $
+// $Id: mysql_install.php,v 1.2 2007/02/13 03:18:34 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['links']} (
@@ -83,6 +83,7 @@ CREATE TABLE {$_TABLES['linksubmission']} (
   title varchar(96) default NULL,
   hits int(11) default NULL,
   date datetime default NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
   PRIMARY KEY  (lid)
 ) TYPE=MyISAM
 ";
