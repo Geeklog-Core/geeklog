@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- fixed bug [#648] sending new password email returns "Ok" message although 
+  it fails when SMTP Server cannot be reached [Oliver]
 - Need to include parameters in the URL when sending Pingbacks, e.g. to
   Serendipity [Dirk]
 - When sending Pingbacks, also search for <link rel="pingback"> if the linked
