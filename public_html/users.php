@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.154 2007/02/08 04:06:45 ospiess Exp $
+// $Id: users.php,v 1.155 2007/02/13 02:07:52 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -346,9 +346,11 @@ function emailpassword ($username, $msg = 0)
             return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
         }
 
-        USER_createAndSendPassword ($username, $A['email'], $A['uid']);
+        $mailresult = USER_createAndSendPassword ($username, $A['email'], $A['uid']);
 
-        if ($msg) {
+        if ($mailresult == false) {
+            $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=85");
+        } else if ($msg) {
             $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=$msg");
         } else {
             $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=1");

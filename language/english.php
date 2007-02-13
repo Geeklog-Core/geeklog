@@ -1143,7 +1143,8 @@ $MESSAGE = array(
     81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
     82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
     83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
-    84 => 'To delete your account, please enter your current password.'
+    84 => 'To delete your account, please enter your current password.',
+    85 => 'There was a problem sending the email.'
 );
 
 ###############################################################################
