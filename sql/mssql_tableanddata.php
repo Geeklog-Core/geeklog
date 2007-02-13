@@ -470,6 +470,7 @@ CREATE TABLE [dbo].[{$_TABLES['storysubmission']}] (
     [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [date] [datetime] NULL ,
     [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
