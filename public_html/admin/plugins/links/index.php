@@ -1,6 +1,6 @@
 <?php
 
-// Reminder: always indent with 4 spaces (no tabs). 
+// Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
 // | Links Plugin 1.0                                                          |
 // +---------------------------------------------------------------------------+
@@ -33,24 +33,24 @@
 // +---------------------------------------------------------------------------+
 //
 
-/** 
- * Geeklog links administration page. 
- * 
+/**
+ * Geeklog links administration page.
+ *
  * @package Links
  * @subpackage admin
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
  */
- 
-// $Id: index.php,v 1.39 2006/09/23 20:52:44 dhaun Exp $
+
+// $Id: index.php,v 1.40 2007/02/13 03:19:12 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -78,7 +78,7 @@ if (!SEC_hasRights ('links.edit')) {
 /**
 * Shows the links editor
 *
-* @param  string  $mode   Used to see if we are moderating a link or simply editing one 
+* @param  string  $mode   Used to see if we are moderating a link or simply editing one
 * @param  string  $lid    ID of link to edit
 * @global array core config vars
 * @global array core group data
@@ -90,7 +90,7 @@ if (!SEC_hasRights ('links.edit')) {
 * @return string HTML for the link editor form
 *
 */
-function editlink ($mode, $lid = '') 
+function editlink ($mode, $lid = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $_LI_CONF,
            $LANG_LINKS_ADMIN, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE;
@@ -124,9 +124,9 @@ function editlink ($mode, $lid = '')
             $A['url'] = '';
             $A['description'] = '';
             $A['title']= '';
+            $A['owner_id'] = $_USER['uid'];
         }
         $A['hits'] = 0;
-        $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Links Admin'])) {
             $A['group_id'] = $_GROUPS['Links Admin'];
         } else {
@@ -174,7 +174,7 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $ownername = COM_getDisplayName ($A['owner_id']);
     $link_templates->set_var('owner_username', DB_getItem($_TABLES['users'],
-                             'username', "uid = {$A['owner_id']}")); 
+                             'username', "uid = {$A['owner_id']}"));
     $link_templates->set_var('owner_name', $ownername);
     $link_templates->set_var('owner', $ownername);
     $link_templates->set_var('link_ownerid', $A['owner_id']);
@@ -230,7 +230,7 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
     }
 
-    // clean 'em up 
+    // clean 'em up
     $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
     $title = addslashes (COM_checkHTML (COM_checkWords ($title)));
     $category = addslashes ($category);
