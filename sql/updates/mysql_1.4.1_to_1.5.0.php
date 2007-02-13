@@ -31,4 +31,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) SELECT pid, t
 // new comment code: close comments
 $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Comments Closed')";
 
+// add owner-field to links-submission
+$_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
+
 ?>

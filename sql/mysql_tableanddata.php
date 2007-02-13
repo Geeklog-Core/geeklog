@@ -235,6 +235,7 @@ CREATE TABLE {$_TABLES['linksubmission']} (
   title varchar(96) default NULL,
   hits int(11) default NULL,
   date datetime default NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
   PRIMARY KEY  (lid)
 ) TYPE=MyISAM
 ";
