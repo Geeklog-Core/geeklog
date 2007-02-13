@@ -1618,7 +1618,7 @@ set identity_insert {$_TABLES['pingservice']} off
 
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('staticpages', '1.4.3','1.4.1',1,'http://www.geeklog.net/')";
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.1.0','1.4.1',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx')";
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0.2', '1.4.1', 1, 'http://www.geeklog.net/')";
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.1', '1.4.1', 1, 'http://www.geeklog.net/')";
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('polls', '2.0', '1.4.1', '1', 'http://www.geeklog.net/')";
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.1', '1.4.1', '1', 'http://www.geeklog.net/')";
 
