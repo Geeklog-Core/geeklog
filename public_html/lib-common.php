@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.622 2007/02/12 06:52:58 ospiess Exp $
+// $Id: lib-common.php,v 1.623 2007/02/17 15:38:39 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3051,7 +3051,7 @@ function COM_olderStuff()
                 }
 
                 $day2 = strftime( $dateonly, $A['day'] );
-                $string .= '<h3>' . $daycheck . '<small>' . $day2
+                $string .= '<h3>' . $daycheck . ' <small>' . $day2
                         . '</small></h3>' . LB;
                 $oldnews = array();
                 $day = $daycheck;

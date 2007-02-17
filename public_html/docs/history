@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Added a missing blank between the day's name and the date in the Older Stories
+  block (reported by Jeruvy's girlfriend, via IRC) [Dirk]
 - fixed bug [#648] sending new password email returns "Ok" message although 
   it fails when SMTP Server cannot be reached [Oliver]
 - Need to include parameters in the URL when sending Pingbacks, e.g. to
