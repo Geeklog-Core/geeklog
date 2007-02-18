@@ -450,7 +450,7 @@ CREATE TABLE {$_TABLES['storysubmission']} (
   tid varchar(20) NOT NULL default 'General',
   title varchar(128) default NULL,
   introtext text,
-  bodytext text;
+  bodytext text,
   date datetime default NULL,
   postmode varchar(10) NOT NULL default 'html',
   PRIMARY KEY  (sid)
