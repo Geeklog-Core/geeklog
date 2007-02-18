@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.121 2007/02/11 10:00:53 ospiess Exp $
+// $Id: lib-plugins.php,v 1.122 2007/02/18 19:22:08 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1337,19 +1337,20 @@ function PLG_replaceTags ($content, $plugin = '')
 
     // For each supported module, scan the content looking for any AutoLink tags
     $tags = array ();
+    $contentlen = MBYTE_strlen ($content);
+    $content_lower = MBYTE_strtolower ($content);
     foreach ($autolinkModules as $moduletag => $module) {
         $autotag_prefix = '['. $moduletag . ':';
         $offset = 0;
         $prev_offset = 0;
-        $contentlen = MBYTE_strlen ($content);
         while ($offset < $contentlen) {
-            $start_pos = MBYTE_strpos (MBYTE_strtolower ($content), $autotag_prefix,
-                                 $offset);
+            $start_pos = MBYTE_strpos ($content_lower, $autotag_prefix,
+                                       $offset);
             if ($start_pos === false) {
                 break;
             } else {
-                $end_pos = MBYTE_strpos (MBYTE_strtolower ($content), ']', $start_pos);
-                $next_tag = MBYTE_strpos (MBYTE_strtolower ($content), '[', $start_pos + 1);
+                $end_pos  = MBYTE_strpos ($content_lower, ']', $start_pos);
+                $next_tag = MBYTE_strpos ($content_lower, '[', $start_pos + 1);
                 if (($end_pos > $start_pos) AND
                         (($next_tag === false) OR ($end_pos < $next_tag))) {
                     $taglength = $end_pos - $start_pos + 1;
