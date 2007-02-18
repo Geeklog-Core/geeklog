@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.624 2007/02/18 18:25:48 dhaun Exp $
+// $Id: lib-common.php,v 1.625 2007/02/18 19:23:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1078,12 +1078,13 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     }
     else
     {
-        for( $i = 1; $i <= count( $plugin_menu ); $i++ )
+        $count_plugin_menu = count( $plugin_menu );
+        for( $i = 1; $i <= $count_plugin_menu; $i++ )
         {
             $header->set_var( 'menuitem_url', current( $plugin_menu ));
             $header->set_var( 'menuitem_text', key( $plugin_menu ));
 
-            if( $i == count( $plugin_menu ))
+            if( $i == $count_plugin_menu )
             {
                 $header->parse( 'plg_menu_elements', 'menuitem_last', true );
             }
@@ -1612,11 +1613,13 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
         {
             $retval .= '<input type="checkbox" name="' . $table . '[]" value="' . $A[0] . '"';
 
-            for( $x = 0; $x < sizeof( $S ); $x++ )
+            $sizeS = sizeof( $S );
+            for( $x = 0; $x < $sizeS; $x++ )
             {
                 if( $A[0] == $S[$x] )
                 {
                     $retval .= ' checked="checked"';
+                    break;
                 }
             }
 
@@ -2641,7 +2644,8 @@ function COM_checkWords( $Message )
                     break;
             }
 
-            for( $i = 0; $i < count( $_CONF['censorlist']); $i++ )
+            $censor_entries = count( $_CONF['censorlist'] );
+            for( $i = 0; $i < $censor_entries; $i++ )
             {
                 $EditedMessage = MBYTE_eregi_replace( $RegExPrefix . $_CONF['censorlist'][$i] . $RegExSuffix, "\\1$Replacement\\2", $EditedMessage );
             }
@@ -3227,9 +3231,10 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     // sort the resulting array by block order
     $column = 'blockorder';
     $sortedBlocks = $blocks;
-    for( $i = 0; $i < sizeof( $sortedBlocks ) - 1; $i++ )
+    $num_sortedBlocks = sizeof( $sortedBlocks );
+    for( $i = 0; $i < $num_sortedBlocks - 1; $i++ )
     {
-        for( $j = 0; $j < sizeof( $sortedBlocks ) - 1 - $i; $j++ )
+        for( $j = 0; $j < $num_sortedBlocks - 1 - $i; $j++ )
         {
             if( $sortedBlocks[$j][$column] > $sortedBlocks[$j+1][$column] )
             {
@@ -4063,7 +4068,8 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
     $time_description  = array( 'minute',  'hour',  'day',  'week',  'month'  );
     $times_description = array( 'minutes', 'hours', 'days', 'weeks', 'months' );
 
-    for( $s = 0; $s < count( $time_divider ); $s++ )
+    $time_dividers = count( $time_divider );
+    for( $s = 0; $s < $time_dividers; $s++ )
     {
         $time = $time / $time_divider[$s];
         if( $time < $time_divider[$s + 1] )
