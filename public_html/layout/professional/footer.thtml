@@ -6,7 +6,7 @@
     {centerblockfooter-span}
     <table cellpadding="0" cellspacing="0" width="100%" class="footer-divider-top">
         <tr>
-            <td class="footerblock" style="width:70%;">
+            <td class="footerblock alignleft" style="width:70%;">
                 {copyright_notice}
             </td>
             <td class="footerblock alignright" style="width:30%;">
