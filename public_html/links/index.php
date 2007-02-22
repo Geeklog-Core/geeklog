@@ -52,102 +52,19 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.18 2007/02/12 11:28:45 ospiess Exp $
+// $Id: index.php,v 1.19 2007/02/22 07:38:50 ospiess Exp $
 
 require_once ('../lib-common.php');
 
 /**
-* Prepare a link item for rendering
+* create the links list depending on the category given
 *
-* @param    array   $A          link details
-* @param    ref     $template   reference of the links template
-*
+*  return       string      the links page
 */
-function prepare_link_item ($A, &$template)
-{
-    global $_CONF, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE;
-
-    $url = COM_buildUrl ($_CONF['site_url']
-                 . '/links/portal.php?what=link&amp;item=' . $A['lid']);
-    $template->set_var ('link_url', $url);
-    $template->set_var ('link_actual_url', $A['url']);
-    $template->set_var ('link_name', stripslashes ($A['title']));
-    $template->set_var ('link_hits', COM_numberFormat ($A['hits']));
-    $template->set_var ('link_description',
-                        nl2br (stripslashes ($A['description'])));
-    $content = stripslashes ($A['title']);
-    $attr = array(
-        'title' => stripslashes ($A['title']),
-        'class' => 'ext-link');
-    $html = COM_createLink($content, $url, $attr);
-    $template->set_var ('link_html', $html);
-    $reporturl = $_CONF['admin_url']
-             . '/links/index.php?mode=report&amp;lid=' . $A['lid']
-             . '&amp;url='. $A['url'] . '&amp;title=' . stripslashes ($A['title']);
-    $template->set_var ('link_broken',
-        COM_createLink($LANG_LINKS[117], $reporturl, array('class'=>"pluginSmallText"))
-    );
-
-    if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-            $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
-            SEC_hasRights ('links.edit')) {
-        $editurl = $_CONF['site_admin_url']
-                 . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
-        $template->set_var ('link_edit', COM_createLink($LANG_ADMIN['edit'],$editurl));
-        $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit.$_IMAGE_TYPE\" "
-            . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\">";
-        $template->set_var ('edit_icon', COM_createLink($edit_icon, $editurl));
-    } else {
-        $template->set_var ('link_edit', '');
-        $template->set_var ('edit_icon', '');
-    }
-
-}
-
-
-// MAIN
-
-$display = '';
-$mode = '';
-if (isset ($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-}
-
-if ($mode == 'report') {
-    if (isset ($_GET['title'])) {
-        $title = COM_applyFilter ($_GET['title']);
-    }
-    if (isset ($_GET['lid'])) {
-        $lid = COM_applyFilter ($_GET['lid']);
-    }
-    if (isset ($_GET['url'])) {
-        $url = COM_applyFilter ($_GET['url']);
-    }
-    $editurl = $_CONF['site_admin_url']
-        . '/plugins/links/index.php?mode=edit&lid=' . $lid;
-    $msg = $LANG_LINKS[119] . " $title ( $url )". LB
-        .  $LANG_LINKS[120] . $editurl . LB
-        .  $LANG_LINKS[121] . $_USER['username'] . ", IP: " . $_SERVER["REMOTE_ADDR"];
-    COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg, $_CONF['site_mail']);
-    $message = array ($LANG_LINKS[123], $LANG_LINKS[122]);
-}
-
-if (empty ($_USER['username']) &&
-    (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
-    $display .= COM_siteHeader ('menu', $LANG_LINKS[114]);
-    $display .= COM_startBlock ($LANG_LOGIN[1], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $login = new Template ($_CONF['path_layout'] . 'submit');
-    $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-    $login->set_var ('login_message', $LANG_LOGIN[2]);
-    $login->set_var ('site_url', $_CONF['site_url']);
-    $login->set_var ('lang_login', $LANG_LOGIN[3]);
-    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-    $login->parse ('output', 'login');
-    $display .= $login->finish ($login->get_var ('output'));
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-} else {
+function links_list() {
+    global $_CONF, $_LI_CONF, $LANG_LINKS_ADMIN, $LANG_LINKS, $_TABLES;
     $category = '';
+    $display = '';
     if (isset ($_GET['category'])) {
         $category = strip_tags (COM_stripslashes ($_GET['category']));
     }
@@ -323,6 +240,102 @@ if (empty ($_USER['username']) &&
     $linklist->set_var ('blockfooter',COM_endBlock());
     $linklist->parse ('output', 'linklist');
     $display .= $linklist->finish ($linklist->get_var ('output'));
+    return $display;
+}
+
+
+/**
+* Prepare a link item for rendering
+*
+* @param    array   $A          link details
+* @param    ref     $template   reference of the links template
+*
+*/
+function prepare_link_item ($A, &$template)
+{
+    global $_CONF, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE;
+
+    $url = COM_buildUrl ($_CONF['site_url']
+                 . '/links/portal.php?what=link&amp;item=' . $A['lid']);
+    $template->set_var ('link_url', $url);
+    $template->set_var ('link_actual_url', $A['url']);
+    $template->set_var ('link_name', stripslashes ($A['title']));
+    $template->set_var ('link_hits', COM_numberFormat ($A['hits']));
+    $template->set_var ('link_description',
+                        nl2br (stripslashes ($A['description'])));
+    $content = stripslashes ($A['title']);
+    $attr = array(
+        'title' => stripslashes ($A['title']),
+        'class' => 'ext-link');
+    $html = COM_createLink($content, $url, $attr);
+    $template->set_var ('link_html', $html);
+    $reporturl = $_CONF['admin_url']
+             . '/links/index.php?mode=report&amp;lid=' . $A['lid']
+             . '&amp;url='. $A['url'] . '&amp;title=' . stripslashes ($A['title']);
+    $template->set_var ('link_broken',
+        COM_createLink($LANG_LINKS[117], $reporturl, array('class'=>"pluginSmallText"))
+    );
+
+    if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+            $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+            SEC_hasRights ('links.edit')) {
+        $editurl = $_CONF['site_admin_url']
+                 . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
+        $template->set_var ('link_edit', COM_createLink($LANG_ADMIN['edit'],$editurl));
+        $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit.$_IMAGE_TYPE\" "
+            . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\">";
+        $template->set_var ('edit_icon', COM_createLink($edit_icon, $editurl));
+    } else {
+        $template->set_var ('link_edit', '');
+        $template->set_var ('edit_icon', '');
+    }
+
+}
+
+
+// MAIN
+
+$display = '';
+$mode = '';
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
+}
+
+if ($mode == 'report') {
+    if (isset ($_GET['title'])) {
+        $title = COM_applyFilter ($_GET['title']);
+    }
+    if (isset ($_GET['lid'])) {
+        $lid = COM_applyFilter ($_GET['lid']);
+    }
+    if (isset ($_GET['url'])) {
+        $url = COM_applyFilter ($_GET['url']);
+    }
+    $editurl = $_CONF['site_admin_url']
+        . '/plugins/links/index.php?mode=edit&lid=' . $lid;
+    $msg = $LANG_LINKS[119] . " $title ( $url )". LB
+        .  $LANG_LINKS[120] . $editurl . LB
+        .  $LANG_LINKS[121] . $_USER['username'] . ", IP: " . $_SERVER["REMOTE_ADDR"];
+    COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg, $_CONF['site_mail']);
+    $message = array ($LANG_LINKS[123], $LANG_LINKS[122]);
+}
+
+if (empty ($_USER['username']) &&
+    (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
+    $display .= COM_siteHeader ('menu', $LANG_LINKS[114]);
+    $display .= COM_startBlock ($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+    $login = new Template ($_CONF['path_layout'] . 'submit');
+    $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('lang_login', $LANG_LOGIN[3]);
+    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+    $login->parse ('output', 'login');
+    $display .= $login->finish ($login->get_var ('output'));
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+} else {
+    $display .= links_list();
 
 }
 
