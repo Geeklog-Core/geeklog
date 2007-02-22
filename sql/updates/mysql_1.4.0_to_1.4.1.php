@@ -6,12 +6,6 @@ $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VA
 // add the 'Syndication Admin' group
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Syndication Admin', 'Can create and modify web feeds for the site',1) ";
 
-// update plugin version numbers
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'polls'";
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'spamx'";
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.3', pi_gl_version = '1.4.1' WHERE pi_name = 'staticpages'";
-
 // Calendar plugin
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.0', '1.4.1', 1, 'http://www.geeklog.net/')";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'calendar.edit', ft_gl_core = '0' WHERE ft_name = 'event.edit'";
@@ -75,10 +69,13 @@ function upgrade_ensureLastScheduledRunFlag ()
 function upgrade_plugins_141 ()
 {
     global $_TABLES;
-
+    if (DB_count ($_TABLES['plugins'], 'pi_name', 'links') == 1) {
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'");
+    }
     // add remarks-field to polls
     if (DB_count ($_TABLES['plugins'], 'pi_name', 'polls') == 1) {
         DB_query ("ALTER TABLE {$_TABLES['pollanswers']} ADD remark varchar(255) NULL AFTER votes");
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'polls'");
     }
 
     if (DB_count ($_TABLES['plugins'], 'pi_name', 'spamx') == 1) {
@@ -91,12 +88,14 @@ function upgrade_plugins_141 ()
         if (empty ($val)) {
             DB_save ($_TABLES['vars'], 'name,value', "'spamx.counter','0'");
         }
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'spamx'");
     }
 
     // add field to support advanced editor and a help link in staticpages
     if (DB_count ($_TABLES['plugins'], 'pi_name', 'staticpages') == 1) {
         DB_query ("ALTER TABLE {$_TABLES['staticpage']} ADD postmode varchar(16) DEFAULT 'html' NOT NULL AFTER sp_inblock");
         DB_query ("ALTER TABLE {$_TABLES['staticpage']} ADD sp_help varchar(255) default '' AFTER sp_centerblock");
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.3', pi_gl_version = '1.4.1' WHERE pi_name = 'staticpages'");
     }
 }
 
