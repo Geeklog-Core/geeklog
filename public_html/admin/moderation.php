@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.105 2007/02/08 04:14:59 ospiess Exp $
+// $Id: moderation.php,v 1.106 2007/02/23 01:25:11 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -298,21 +298,20 @@ function itemlist($type)
                       'no_data'   => $LANG29[39],
                       'form_url'  => "{$_CONF['site_admin_url']}/moderation.php"
     );
-
-
-    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
-    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(), $listoptions);
+    $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
-        $retval .= LB . $table . LB
-                . '<input type="hidden" name="type" value="' . $type . '">' . LB
+        $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '">' . LB
                 . '<input type="hidden" name="mode" value="moderation">' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '">'
                 . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"></p></form>' . LB;
-    } else {
-        $retval .= $table;
+                . $LANG_ADMIN['submit'] . '"></p>' . LB;
     }
+
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
+    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                              $text_arr, $data_arr, array(), $listoptions,
+                              $form_arr);
+    $retval .= $table;
 
     return $retval;
 }
@@ -362,19 +361,20 @@ function userlist ()
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
 
-    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(), $listoptions);
+    $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
-        $retval .= LB . $table . LB
-                . '<input type="hidden" name="type" value="user">' . LB
+        $form_arr['bottom'] = '<input type="hidden" name="type" value="user">' . LB
                 . '<input type="hidden" name="mode" value="moderation">' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '">'
                 . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"></p></form>' . LB;
-
-    } else {
-        $retval .= $table;
+                . $LANG_ADMIN['submit'] . '"></p>' . LB;
     }
+
+    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                              $text_arr, $data_arr, array(), $listoptions,
+                              $form_arr);
+    $retval .= $table;
+
 
     return $retval;
 }
@@ -423,20 +423,21 @@ function draftlist ()
                       'no_data'   => $LANG29[39],
                       'form_url'  => "{$_CONF['site_admin_url']}/moderation.php");
 
-    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
-    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(), $listoptions);
+    $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
-        $retval .= LB . $table . LB
-                . '<input type="hidden" name="type" value="draft">' . LB
+        $form_arr['bottom'] = '<input type="hidden" name="type" value="draft">' . LB
                 . '<input type="hidden" name="mode" value="moderation">' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '">'
                 . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"></p></form>' . LB;
-    } else {
-        $retval .= $table;
+                . $LANG_ADMIN['submit'] . '"></p>' . LB;
     }
 
+    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
+    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                              $text_arr, $data_arr, array(), $listoptions,
+                              $form_arr);
+
+    $retval .= $table;
     return $retval;
 }
 
