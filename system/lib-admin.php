@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.99 2007/02/12 06:54:13 ospiess Exp $
+// $Id: lib-admin.php,v 1.100 2007/02/23 01:25:23 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -52,7 +52,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
 *
 */
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
-                           $data_arr, $menu_arr = '', $options = '')
+                           $data_arr, $menu_arr = '', $options = '', $form_arr='')
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
@@ -95,7 +95,12 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('lang_deleteall', $LANG01[124]);
     $admin_templates->set_var('lang_delconfirm', $LANG01[125]);
-
+    if (isset($form_arr['top'])) {
+        $admin_templates->set_var('formfields_top', $form_arr['top']);
+    }
+    if (isset($form_arr['bottom'])) {
+        $admin_templates->set_var('formfields_bottom', $form_arr['bottom']);
+    }
     if ($text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
             $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
@@ -213,7 +218,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 *
 */
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
-            $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '', $options = '')
+            $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '',
+            $options = '', $form_arr='')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $LANG01, $_IMAGE_TYPE, $MESSAGE;
 
@@ -294,7 +300,12 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('lang_deleteall', $LANG01[124]);
     $admin_templates->set_var('lang_delconfirm', $LANG01[125]);
-
+    if (isset($form_arr['top'])) {
+        $admin_templates->set_var('formfields_top', $form_arr['top']);
+    }
+    if (isset($form_arr['bottom'])) {
+        $admin_templates->set_var('formfields_bottom', $form_arr['bottom']);
+    }
     // Check if the delete checkbox and support for the delete all feature should be displayed
     if (is_array($options) AND $options['chkdelete']) {
         $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
