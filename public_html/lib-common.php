@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.625 2007/02/18 19:23:26 dhaun Exp $
+// $Id: lib-common.php,v 1.626 2007/02/24 15:45:00 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4417,8 +4417,7 @@ function phpblock_whosonline()
         }
     }
 
-    $result = DB_query( "SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1" );
-    $num_anon += DB_numRows( $result );
+    $num_anon += DB_count( $_TABLES['sessions'], 'uid', 1 );
 
     if(( $_CONF['whosonline_anonymous'] == 1 ) &&
             ( empty( $_USER['uid'] ) || ( $_USER['uid'] == 1 )))
