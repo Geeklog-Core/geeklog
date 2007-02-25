@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.626 2007/02/24 15:45:00 dhaun Exp $
+// $Id: lib-common.php,v 1.627 2007/02/25 22:13:11 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -377,7 +377,7 @@ if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
 }
 
 // Clear out any expired sessions
-DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
+DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
 
 /**
 *
