@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.91 2007/02/08 02:37:36 ospiess Exp $
+// $Id: article.php,v 1.92 2007/02/28 02:43:02 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -218,7 +218,7 @@ if ($A['count'] > 0) {
         $printUrl = COM_buildUrl ($_CONF['site_url']
                 . '/article.php?story=' . $story->getSid() . '&amp;mode=print');
         if ($_CONF['hideprintericon'] == 0) {
-            $story_options[] = COM_createLink($LANG11[3], $printUrl);
+            $story_options[] = COM_createLink($LANG11[3], $printUrl, array('rel' => 'nofollow'));
             $story_template->set_var ('print_story_url', $printUrl);
             $story_template->set_var ('lang_print_story', $LANG11[3]);
             $story_template->set_var ('lang_print_story_alt', $LANG01[65]);
