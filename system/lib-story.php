@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.90 2007/02/18 20:33:52 ospiess Exp $
+// $Id: lib-story.php,v 1.91 2007/02/28 02:57:25 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -423,7 +423,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65]
                 . '" title="' . $LANG11[3] . '">';
             $article->set_var( 'print_icon',
-                COM_createLink($printicon, $printUrl)
+                COM_createLink($printicon, $printUrl, array('rel' => 'nofollow'))
             );
             $article->set_var( 'print_story_url', $printUrl );
             $article->set_var( 'lang_print_story', $LANG11[3] );
