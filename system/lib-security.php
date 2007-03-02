@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.55 2006/10/24 08:09:50 ospiess Exp $
+// $Id: lib-security.php,v 1.56 2007/03/02 08:02:35 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -830,7 +830,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
                         $loginname = custom_uniqueRemoteUsername($loginname, $service);
                     }
                 }
-                USER_createAccount($loginname, $authmodule->email, md5($passwd), '', '', $remoteusername, $service);
+                USER_createAccount($loginname, $authmodule->email, md5($passwd), $authmodule->fullname, $authmodule->homepage, $remoteusername, $service);
                 $uid = DB_getItem ($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$service'");
                 // Store full remote account name:
                 $service = addslashes($service);
