@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.116 2007/02/08 03:55:29 ospiess Exp $
+// $Id: submit.php,v 1.117 2007/03/02 07:39:47 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -301,7 +301,7 @@ function savestory ($A)
         if( $result == STORY_SAVED )
         {
             $retval = COM_refresh( COM_buildUrl( $_CONF['site_url']
-                               . '/article.php?story=' . $story->_getSid() ) );
+                               . '/article.php?story=' . $story->getSid() ) );
         } else {
             $retval = COM_refresh( $_CONF['site_url'] . '/index.php?msg=2' );
         }
