@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.255 2007/02/12 19:12:15 mjervis Exp $
+// $Id: story.php,v 1.256 2007/03/02 08:05:28 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -360,52 +360,17 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var ('layout_url',     $_CONF['layout_url']);
     $story_templates->set_var ('hour_mode',      $_CONF['hour_mode']);
 
-//    if (!empty($A['title'])) {
-//
-//        if (DB_count ($_TABLES['article_images'], 'ai_sid', $story->getSid()) > 0) {
-//            $has_images = true;
-//        } else {
-//            $has_images = false;
-//        }
-//
-//        $previewContent = '';
-//        if ($A['postmode'] == 'plaintext') {
-//            $B = $A;
-//
-//            // if the plain-text story has images embedded, we'll have to do
-//            // some awkward back-and-forth conversion ...
-//            if ($has_images) {
-//                list ($B['introtext'], $B['bodytext']) = STORY_replace_images ($A['sid'], $B['introtext'], $B['bodytext']);
-//            }
-//
-//            $B['introtext'] = COM_makeClickableLinks ($B['introtext']);
-//            if (!empty ($B['bodytext'])) {
-//                $B['bodytext'] = COM_makeClickableLinks ($B['bodytext']);
-//            }
-//
-//            if ($has_images) {
-//                list ($errors, $B['introtext'], $B['bodytext']) = STORY_insert_images ($A['sid'], $B['introtext'], $B['bodytext']);
-//            }
-//            $previewContent = STORY_renderArticle ($B, 'p');
-//
-//        } else {
-//            if ($has_images) {
-//                list ($errors, $A['introtext'], $A['bodytext']) = STORY_insert_images ($A['sid'], $A['introtext'], $A['bodytext']);
-//            }
-//            $previewContent = STORY_renderArticle ($A, 'p');
-//        }
-        if ($story->hasContent()) {
+    if ($story->hasContent()) {
         $previewContent = STORY_renderArticle($story, 'p');
-            if ($advanced_editormode AND $previewContent != '' ) { 
+        if ($advanced_editormode AND $previewContent != '' ) { 
             $story_templates->set_var('preview_content', $previewContent);
-            } elseif ($previewContent != '') {
+        } elseif ($previewContent != '') {
             $display = COM_startBlock ($LANG24[26], '',
                             COM_getBlockTemplate ('_admin_block', 'header'));
             $display .= $previewContent;
             $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-            }
         }
-//    }
+    }
 
     if ($advanced_editormode) {
         $navbar = new navbar;
