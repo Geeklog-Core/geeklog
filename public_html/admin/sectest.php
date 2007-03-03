@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.6 2007/02/08 04:42:48 ospiess Exp $
+// $Id: sectest.php,v 1.7 2007/03/03 17:35:46 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -130,7 +130,7 @@ function interpretResult ($retcode, $msg)
     if ($retcode == 200) {
         $retval = 'Your <strong>' . $msg . '</strong> is reachable from the web.<br><em>This is a security risk and should be fixed!</em>';
         $failed_tests++;
-    } else if (($retcode == 401) || ($retcode == 404)) {
+    } elseif (($retcode == 401) || ($retcode == 403) || ($retcode == 404)) {
         $retval = 'Good! Your ' . $msg . ' is not reachable from the web.';
     } else if (is_numeric ($retcode)) {
         $retval = 'Got an HTTP result code ' . $retcode . ' when trying to test your ' . $msg . '. Not sure what to make of it ...';
