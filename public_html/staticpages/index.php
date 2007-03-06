@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.40 2007/02/12 11:29:53 ospiess Exp $
+// $Id: index.php,v 1.41 2007/03/06 06:16:14 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -165,9 +165,80 @@ function print_page ($page, $A)
     return $print->finish ($print->get_var ('output'));
 }
 
+function return_staticpage($page='', $mode='')
+{
+    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
+    $error = 0;
+
+    if ($page == '') {
+        $error = 1;
+    }
+    $perms = SP_getPerms ();
+    if (!empty ($perms)) {
+        $perms = ' AND ' . $perms;
+    }
+    $sql = array();
+    $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,"
+        ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,"
+        ."sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
+    $sql['mssql'] = "SELECT sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
+        ."sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,"
+        ."perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} "
+        ."WHERE (sp_id = '$page')" . $perms;
+    $result = DB_query ($sql);
+    $count = DB_numRows ($result);
+
+    if ($count == 0 || $count > 1) {
+        $error = 1;
+    }
+
+    if (!($error)) {
+        $A = DB_fetchArray ($result);
+        $_CONF['pagetitle'] = stripslashes ($A['sp_title']);
+
+        if (!empty ($mode) && ($mode == 'print')) {
+            $retval = print_page ($page, $A);
+        } else {
+            $retval = display_page ($page, $A, $noboxes);
+        }
+
+        // increment hit counter for page
+        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'");
+
+    } else { // an error occured (page not found, access denied, ...)
+
+        if (empty ($page)) {
+            $failflg = 0;
+        } else {
+            $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
+        }
+        if ($failflg) {
+            $retval = COM_siteHeader ('menu');
+            $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+            $login = new Template ($_CONF['path_layout'] . 'submit');
+            $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+            $login->set_var ('login_message', $LANG_LOGIN[2]);
+            $login->set_var ('site_url', $_CONF['site_url']);
+            $login->set_var ('lang_login', $LANG_LOGIN[3]);
+            $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+            $login->parse ('output', 'login');
+            $retval .= $login->finish ($login->get_var ('output'));
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $retval .= COM_siteFooter (true);
+        } else {
+            $retval = COM_siteHeader ('menu');
+            $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+            $retval .= $LANG_STATIC['deny_msg'];
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $retval .= COM_siteFooter (true);
+        }
+    }
+    return $retval;
+}
 
 // MAIN
-$error = 0;
 
 if (!empty ($_USER['uid'])) {
     $noboxes = DB_getItem ($_TABLES['userindex'], 'noboxes',
@@ -183,68 +254,7 @@ if ($mode != 'print') {
     unset ($mode);
 }
 
-if (empty ($page)) {
-    $error = 1;
-} else {
-
-    $perms = SP_getPerms ();
-    if (!empty ($perms)) {
-        $perms = ' AND ' . $perms;
-    }
-    $sql = array();
-    $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
-    $sql['mssql'] = "SELECT sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
-    $result = DB_query ($sql);
-    $count = DB_numRows ($result);
-
-    if ($count == 0 || $count > 1) {
-        $error = 1;
-    }
-}
-
-if (!($error)) {
-    $A = DB_fetchArray ($result);
-    $_CONF['pagetitle'] = stripslashes ($A['sp_title']);
-
-    if (!empty ($mode) && ($mode == 'print')) {
-        $retval = print_page ($page, $A);
-    } else {
-        $retval = display_page ($page, $A, $noboxes);
-    }
-
-    // increment hit counter for page
-    DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'");
-
-} else { // an error occured (page not found, access denied, ...)
-
-    if (empty ($page)) {
-        $failflg = 0;
-    } else {
-        $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
-    }
-    if ($failflg) {
-        $retval = COM_siteHeader ('menu');
-        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $login = new Template ($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
-        $login->set_var ('site_url', $_CONF['site_url']);
-        $login->set_var ('lang_login', $LANG_LOGIN[3]);
-        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $login->parse ('output', 'login');
-        $retval .= $login->finish ($login->get_var ('output'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter (true);
-    } else {
-        $retval = COM_siteHeader ('menu');
-        $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG_STATIC['deny_msg'];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter (true);
-    }
-}
+$retval = return_staticpage($page, $mode);
 
 echo $retval;
 
