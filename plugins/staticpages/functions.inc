@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.88 2007/02/12 11:29:36 ospiess Exp $
+// $Id: functions.inc,v 1.89 2007/03/06 06:41:21 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -124,6 +124,208 @@ function SP_countVisiblePages ()
     $A = DB_fetchArray ($result);
 
     return $A['cnt'];
+}
+
+/**
+* Prepare static page for display.
+*
+* @param    string  $page       static page id
+* @param    array   $A          static page data
+* @param    int     $noboxes    the user's "noboxes" setting (see Preferences)
+* @return   string              HTML for the static page
+*
+*/
+function SP_displayPage ($page, $A, $noboxes)
+{
+    global $_CONF, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
+
+    $retval = '';
+
+    if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
+        $retval .= COM_siteHeader ('menu');
+    } else {
+        if ($A['sp_format'] <> 'blankpage') {
+            $retval .= COM_siteHeader ('none');
+        }
+    }
+    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
+        $retval .= COM_startBlock (stripslashes ($A['sp_title']), $A['sp_help'],
+                        COM_getBlockTemplate ('_staticpages_block', 'header'));
+    }
+
+    $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
+    $spage -> set_file( array('page'=>'staticpage.thtml'));
+
+    if ($A['sp_format'] <> 'blankpage') {
+        $icons = '';
+        if ($_CONF['hideprintericon'] == 0) {
+            $printicon = '<img src="' . $_CONF['layout_url'] . '/images/print.'
+                . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
+                . $LANG_STATIC['printable_format'] . '">';
+            $print_url = COM_buildURL ($_CONF['site_url']
+                . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
+            $icon = COM_createLink($printicon, $print_url);
+            $spage->set_var('print_icon', $icon);
+        }
+        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+                SEC_hasRights ('staticpages.edit')) {
+            $url = $_CONF['site_admin_url']
+                . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page;
+            $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
+            $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+            $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG_STATIC['edit']
+                . '" title="' . $LANG_STATIC['edit'] . '">';
+            $icon =
+                '&nbsp;' . COM_createLink(
+                $editiconhtml, //display
+                $url,  //target
+                $attr //other attributes
+            );
+            $spage->set_var('edit_icon', $icon);
+        }
+    }
+
+    $content = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
+    $spage->set_var('content', $content );
+
+    if ($A['sp_format'] <> 'blankpage') {
+        $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
+        if ($_SP_CONF['show_date'] == 1) {
+            $lastupdate = $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
+            $spage->set_var('lastupdate', $lastupdate);
+        }
+
+
+        if ($_SP_CONF['show_hits'] == 1) {
+            if ($_SP_CONF['show_date'] == 1) {
+                $hits = "| ";
+            }
+            $hits = COM_numberFormat ($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
+            $spage->set_var('hits', $hits);
+        }
+
+    }
+    $retval .= $spage->finish($spage->parse('output', 'page'));
+    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_block',
+                                                       'footer'));
+    }
+
+    if ($A['sp_format'] <> 'blankpage') {
+        if (($A['sp_format'] == 'allblocks') && ($noboxes != 1)) {
+            $retval .= COM_siteFooter (true);
+        } else {
+            $retval .= COM_siteFooter ();
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Prepare static page for print (i.e. display as "printable version").
+*
+* @param    string  $page       static page id
+* @param    array   $A          static page data
+* @return   string              HTML for the static page
+*
+*/
+function SP_printPage ($page, $A)
+{
+    global $_CONF;
+
+    $template_path = staticpages_templatePath ();
+    $print = new Template ($template_path);
+    $print->set_file (array ('print' => 'printable.thtml'));
+    $print->set_var ('site_url', $_CONF['site_url']);
+    $print->set_var ('site_name', $_CONF['site_name']);
+    $print->set_var ('site_slogan', $_CONF['site_slogan']);
+
+    $print->set_var ('page_title', $_CONF['site_name'] . ' - '
+                                   . stripslashes ($A['sp_title']));
+    $print->set_var ('sp_url', COM_buildUrl ($_CONF['site_url']
+                               . '/staticpages/index.php?page=' . $page));
+    $print->set_var ('sp_title', stripslashes ($A['sp_title']));
+    $print->set_var ('sp_content',
+            SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']));
+    $print->set_var ('sp_hits', COM_numberFormat ($A['sp_hits']));
+    $print->parse ('output', 'print');
+
+    return $print->finish ($print->get_var ('output'));
+}
+
+function SP_returnStaticpage($page='', $mode='')
+{
+    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
+    $error = 0;
+
+    if ($page == '') {
+        $error = 1;
+    }
+    $perms = SP_getPerms ();
+    if (!empty ($perms)) {
+        $perms = ' AND ' . $perms;
+    }
+    $sql = array();
+    $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,"
+        ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,"
+        ."sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
+    $sql['mssql'] = "SELECT sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
+        ."sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,"
+        ."perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} "
+        ."WHERE (sp_id = '$page')" . $perms;
+    $result = DB_query ($sql);
+    $count = DB_numRows ($result);
+
+    if ($count == 0 || $count > 1) {
+        $error = 1;
+    }
+
+    if (!($error)) {
+        $A = DB_fetchArray ($result);
+        $_CONF['pagetitle'] = stripslashes ($A['sp_title']);
+
+        if (!empty ($mode) && ($mode == 'print')) {
+            $retval = SP_printPage ($page, $A);
+        } else {
+            $retval = SP_displayPage ($page, $A, $noboxes);
+        }
+
+        // increment hit counter for page
+        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'");
+
+    } else { // an error occured (page not found, access denied, ...)
+
+        if (empty ($page)) {
+            $failflg = 0;
+        } else {
+            $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
+        }
+        if ($failflg) {
+            $retval = COM_siteHeader ('menu');
+            $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+            $login = new Template ($_CONF['path_layout'] . 'submit');
+            $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+            $login->set_var ('login_message', $LANG_LOGIN[2]);
+            $login->set_var ('site_url', $_CONF['site_url']);
+            $login->set_var ('lang_login', $LANG_LOGIN[3]);
+            $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+            $login->parse ('output', 'login');
+            $retval .= $login->finish ($login->get_var ('output'));
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $retval .= COM_siteFooter (true);
+        } else {
+            $retval = COM_siteHeader ('menu');
+            $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+            $retval .= $LANG_STATIC['deny_msg'];
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $retval .= COM_siteFooter (true);
+        }
+    }
+    return $retval;
 }
 
 /**
@@ -413,7 +615,7 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
     } else {
         $uid = $u_id;
         $GROUPS = SEC_getUserGroups ($uid);
-	}
+    }
 
     $sql = '(';
 
@@ -621,19 +823,24 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
     global $_CONF, $_TABLES;
 
     if ($op == 'tagname' ) {
-        return 'staticpage';
+        return array('staticpage', 'staticpage_content');
     } else if ($op == 'parse') {
-        $sp_id = COM_applyFilter ($autotag['parm1']);
-        $url = COM_buildUrl ($_CONF['site_url'] . '/staticpages/index.php?page='
-                             . $sp_id);
-        if (empty ($autotag['parm2'])) {
-            $linktext = stripslashes (DB_getItem ($_TABLES['staticpage'],
-                                      'sp_title', "sp_id = '$sp_id'"));
-        } else {
-            $linktext = $autotag['parm2'];
+        if ($autotag['tag'] == 'staticpage' ) {
+            $sp_id = COM_applyFilter ($autotag['parm1']);
+            $url = COM_buildUrl ($_CONF['site_url'] . '/staticpages/index.php?page='
+                                 . $sp_id);
+            if (empty ($autotag['parm2'])) {
+                $linktext = stripslashes (DB_getItem ($_TABLES['staticpage'],
+                                          'sp_title', "sp_id = '$sp_id'"));
+            } else {
+                $linktext = $autotag['parm2'];
+            }
+            $link = COM_createLink($linktext, $url);
+            $content = str_replace ($autotag['tagstr'], $link, $content);
+        } else if ($autotag['tag'] == 'staticpage_content') {
+            $sp_id = COM_applyFilter ($autotag['parm1']);
+            $content = SP_returnStaticpage($sp_id);
         }
-        $link = COM_createLink($linktext, $url);
-        $content = str_replace ($autotag['tagstr'], $link, $content);
 
         return $content;
     }
