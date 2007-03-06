@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.90 2007/03/06 07:00:05 ospiess Exp $
+// $Id: functions.inc,v 1.91 2007/03/06 07:23:54 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -288,6 +288,8 @@ function SP_returnStaticpage($page='', $mode='')
 
         if (!empty ($mode) && ($mode == 'print')) {
             $retval = SP_printPage ($page, $A);
+        } else if ($mode =='autotag') {
+            $retval = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
         } else {
             $retval = SP_displayPage ($page, $A, $noboxes);
         }
