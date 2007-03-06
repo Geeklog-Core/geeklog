@@ -91,6 +91,8 @@ form div.notes li {
 }
 form fieldset div.notes {
   float:right;
+  position:absolute;
+  right:30px;
   width:170px;
   height:auto;
   margin:0px 0px 10px 10px;
