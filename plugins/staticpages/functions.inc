@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.89 2007/03/06 06:41:21 ospiess Exp $
+// $Id: functions.inc,v 1.90 2007/03/06 07:00:05 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -303,7 +303,9 @@ function SP_returnStaticpage($page='', $mode='')
             $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
         }
         if ($failflg) {
-            $retval = COM_siteHeader ('menu');
+            if ($mode !== 'autotag') {
+                $retval = COM_siteHeader ('menu');
+            }
             $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $login = new Template ($_CONF['path_layout'] . 'submit');
@@ -315,14 +317,20 @@ function SP_returnStaticpage($page='', $mode='')
             $login->parse ('output', 'login');
             $retval .= $login->finish ($login->get_var ('output'));
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $retval .= COM_siteFooter (true);
+            if ($mode !== 'autotag') {
+                $retval .= COM_siteFooter (true);
+            }
         } else {
-            $retval = COM_siteHeader ('menu');
+            if ($mode !== 'autotag') {
+                $retval = COM_siteHeader ('menu');
+            }
             $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG_STATIC['deny_msg'];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $retval .= COM_siteFooter (true);
+            if ($mode !== 'autotag') {
+                $retval .= COM_siteFooter (true);
+            }
         }
     }
     return $retval;
@@ -839,7 +847,7 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
             $content = str_replace ($autotag['tagstr'], $link, $content);
         } else if ($autotag['tag'] == 'staticpage_content') {
             $sp_id = COM_applyFilter ($autotag['parm1']);
-            $content = SP_returnStaticpage($sp_id);
+            $content = SP_returnStaticpage($sp_id, 'autotag');
         }
 
         return $content;
