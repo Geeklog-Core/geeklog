@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.50 2007/02/08 03:52:48 ospiess Exp $
+// $Id: stats.php,v 1.51 2007/03/06 05:04:34 ospiess Exp $
 
 require_once('lib-common.php');
 require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -65,8 +65,8 @@ $display .= COM_siteHeader ('menu', $LANG10[1]);
 // Overall Site Statistics
 
 $header_arr = array(
-    array('text' => $LANG10[1], 'field' => 'title', 'width' => '90%', 'header_class' => 'stats-header-title'),
-    array('text' => "", 'field' => 'stats', 'width' => '10%', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
+    array('text' => $LANG10[1], 'field' => 'title', 'header_class' => 'stats-header-title'),
+    array('text' => "", 'field' => 'stats', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
 );
 $data_arr = array();
 $text_arr = array('has_menu'     =>  false,
