@@ -2,7 +2,7 @@
                 <td class="block-featured-left" style="vertical-align:top;">
                     <div class="searchform-box">
                         <form class="searchform-elements" action="{site_url}/search.php" method="GET">
-                            <div><legend></legend>
+                            <div>
                                 <input type="text" name="query" size="28" maxlength="255"><br>
                                 <input type="hidden" name="type" value="all">
                                 <a href="{site_url}/search.php" class="advancedsearch">{button_advsearch}</a>&nbsp;
