@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.106 2007/02/23 01:25:11 ospiess Exp $
+// $Id: moderation.php,v 1.107 2007/03/08 14:00:52 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -303,7 +303,7 @@ function itemlist($type)
         $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '">' . LB
                 . '<input type="hidden" name="mode" value="moderation">' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '">'
-                . '<p align="center"><input type="submit" value="'
+                . '<p class="aligncenter"><input type="submit" value="'
                 . $LANG_ADMIN['submit'] . '"></p>' . LB;
     }
 
@@ -627,13 +627,12 @@ function security_check_reminder ()
 
     $done = DB_getItem ($_TABLES['vars'], 'value', "name = 'security_check'");
     if ($done != 1) {
-        $message = 'Please ' . COM_createLink('check the security of your site', $_CONF['site_admin_url'] . '/sectest.php') . 'before using it!';
+        $message = 'Please ' . COM_createLink('check the security of your site', $_CONF['site_admin_url'] . '/sectest.php') . ' before using it!';
         $retval .= COM_startBlock ($MESSAGE[40], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
-            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.' . $_IMAGE_TYPE . '" align="left"'
-            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
-            . $message . '</p>'
+            . '<p style="padding:5px"><img  style="padding-right:5px;" src="' . $_CONF['layout_url']
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '"'
+            . ' alt="">' . $message . '</p>'
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
