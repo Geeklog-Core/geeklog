@@ -2,6 +2,7 @@
 <script type="text/JavaScript" src="{site_url}/javascript/profile_editor.js"></script>
 
 <div id="pe_navbar" class="jsenabled_show" style="display:none">{navbar}</div>
+<div class="clearboth"></div>
 <form action="{site_url}/usersettings.php" method="POST" {enctype}>
     <div id="pe_preview" style="display:none;">
         <fieldset style="margin-top:10px;">
@@ -55,7 +56,7 @@
     </fieldset>
     </div>
     <div id="pe_userinfo" class="jsenabled_hide">
-        <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>{lang_personal_info_legend}</legend>
+        <fieldset style="margin-top:10px;"><legend>{lang_personal_info_legend}</legend>
           <div class="notes">
             <h4>{lang_userinfo_help_title}</h4>
             <p class="last">{lang_userinfo_help}</p>
