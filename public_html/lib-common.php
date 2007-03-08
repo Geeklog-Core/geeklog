@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.627 2007/02/25 22:13:11 blaine Exp $
+// $Id: lib-common.php,v 1.628 2007/03/08 12:47:16 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1359,7 +1359,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     {
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
         $help_content = '<img src="' . $helpimg. '" alt="?">';
-        $help_attr = array('class'=>'blocktitle', 'target'=>'_blank');
+        $help_attr = array('class'=>'blocktitle');
         if( !stristr( $helpfile, 'http://' ))
         {
             $help_url = $_CONF['site_url'] . "/help/$helpfile";
