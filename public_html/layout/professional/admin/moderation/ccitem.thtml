@@ -1,5 +1,5 @@
         <div class="moderation-cc-item" style="width:{cc_icon_width}%">
-            <a href="{page_url}"><img src="{page_image}" alt="">
-                <div>{option_label}</div>
-            </a>
+            <a href="{page_url}"><img src="{page_image}" alt=""></a><br>
+            <a href="{page_url}">{option_label}</a>
+
         </div>
