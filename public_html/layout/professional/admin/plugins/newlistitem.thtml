@@ -1,5 +1,0 @@
-  <tr class="pluginRow{cssid}" >
-    <td>{row_num}</td>
-    <td width="30%" style="padding-left:5px;" class="nowrap">{pi_name}</td>
-    <td style="padding-left:10px;">{lang_install}</td>
-</tr>
