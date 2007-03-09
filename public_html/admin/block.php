@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.108 2006/10/03 09:02:27 dhaun Exp $
+// $Id: block.php,v 1.109 2007/03/09 01:31:06 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -359,7 +359,7 @@ function listblocks()
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
     $retval = '';
-    
+
     reorderblocks();
 
     $header_arr = array(      # display 'text' and use table field 'field'
@@ -681,19 +681,25 @@ function moveBlock()
 /**
 * Enable and Disable block
 */
-function changeBlockStatus ($bid)
+function changeBlockStatus ($bid_arr)
 {
     global $_CONF, $_TABLES;
-    
-    $bid = COM_applyFilter($bid);
-
-    if (DB_getItem($_TABLES['blocks'],"is_enabled", "bid=$bid")) {
-        DB_query("UPDATE {$_TABLES['blocks']} set is_enabled = '0' WHERE bid=$bid");
-        return;
-    } else {
-        DB_query("UPDATE {$_TABLES['blocks']} set is_enabled = '1' WHERE bid=$bid");
-        return;
+    $reset = false;
+    foreach ($bid_arr as $bid => $side) {
+        $bid = COM_applyFilter($bid, true);
+        $side = COM_applyFilter($side, true);
+        // first, disable all, but only once
+        if (!$reset) {
+            $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '0' WHERE onleft='$side';";
+            DB_query($sql);
+            $reset = true;
+        }
+        // the enable those in the array
+        $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '1' WHERE bid='$bid' AND onleft='$side'";
+        DB_query($sql);
     }
+
+    return;
 }
 
 /**
@@ -732,8 +738,8 @@ if (!empty($_REQUEST['bid'])) {
     $bid = COM_applyFilter ($_REQUEST['bid']);
 }
 
-if (isset ($_POST['blkChange'])) {
-    changeBlockStatus ($_POST['blkChange']);
+if (isset ($_POST['blkenable'])) {
+    changeBlockStatus ($_POST['blkenable']);
 }
 
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
@@ -811,5 +817,5 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 }
 
 echo $display;
-
+echo phpinfo();
 ?>
