@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.246 2007/03/09 07:12:58 ospiess Exp $
+// $Id: config.php,v 1.247 2007/03/09 07:19:34 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -835,7 +835,7 @@ if ($_CONF['advanced_editor']) {
 // Obviously, you should only enable this if you know what you're doing and
 // when you can trust all the users in the 'Root' group not to use this for
 // Cross Site Scripting, defacements, etc. USE AT YOUR OWN RISK!
-$_CONF['skip_html_filter_for_root'] = 1;
+$_CONF['skip_html_filter_for_root'] = 0;
 
 // list of protocols that are allowed in links
 $_CONF['allowed_protocols'] = array ('http', 'https', 'ftp');
@@ -867,7 +867,7 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 //
 // Note: Works with Apache (Linux and Windows successfully tested).
 //       Unresolvable issues with systems running IIS; known PHP CGI bug.
-$_CONF['url_rewrite'] = true; // false = off, true = on
+$_CONF['url_rewrite'] = false; // false = off, true = on
 
 // Define default permissions for new objects created from the Admin panels.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
