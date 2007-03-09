@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.106 2007/03/09 03:27:32 ospiess Exp $
+// $Id: lib-admin.php,v 1.107 2007/03/09 04:16:19 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1025,7 +1025,6 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
 function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $LANG_TRB;
-
     $retval = '';
 
     switch($fieldname) {
@@ -1048,14 +1047,12 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
             break;
         case "is_enabled":
             if ($A['is_enabled'] == 1) {
-                $switch = 'checked="checked"';
+                $switch = ' checked="checked"';
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/trackback.php\" method=\"POST\"><div>"
-                     ."<input type=\"checkbox\" name=\"serviceenable\" onclick=\"submit()\" value=\"{$A['pid']}\" $switch>"
-                     ."<input type=\"hidden\" name=\"serviceChange\" value=\"{$A['pid']}\">"
-                     ."</div></form>";
+            $retval = "<input type=\"checkbox\" name=\"changedservices[]\" "
+                . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch>";
             break;
         default:
             $retval = $fieldvalue;
