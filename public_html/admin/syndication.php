@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.49 2006/08/19 13:59:28 dhaun Exp $
+// $Id: syndication.php,v 1.50 2007/03/09 02:40:19 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -55,17 +55,19 @@ if (!SEC_hasRights ('syndication.edit')) {
 * @return   void
 *
 */
-function changeFeedStatus ($fid)
+function changeFeedStatus ($fid_arr)
 {
     global $_TABLES;
-
-    $feed_id = addslashes (COM_applyFilter ($fid, true));
-    if (!empty ($fid)) {
-        $is_enabled = 1;
-        if (DB_getItem ($_TABLES['syndication'], 'is_enabled', "fid = '$fid'")) {
-            $is_enabled = 0;
+    // first disable all
+    DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '0'");
+    if (isset($fid_arr)) {
+        foreach ($fid_arr as $fid) {
+            $feed_id = addslashes (COM_applyFilter ($fid, true));
+            if (!empty ($fid)) {
+                // now enable those in the array
+                DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '1' WHERE fid = '$fid'");
+            }
         }
-        DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '$is_enabled' WHERE fid = '$fid'");
     }
 }
 
@@ -159,9 +161,12 @@ function listfeeds()
                        'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
                        'query_fields' => array('title', 'filename'),
                        'default_filter' => '');
+    // this is a dummy-variable so we know the form has been used if all feeds should be disabled
+    // in order to disable the last one.
+    $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true">');
 
     $retval .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
     return $retval;
 }
 
@@ -235,7 +240,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('lang_charset', $LANG33[31]);
     $feed_template->set_var ('lang_language', $LANG33[32]);
     $feed_template->set_var ('lang_topic', $LANG33[33]);
-    
+
     if ($A['header_tid'] == 'all') {
         $feed_template->set_var('all_selected', 'selected="selected"');
     } elseif ($A['header_tid'] == 'none') {
@@ -442,7 +447,7 @@ function savefeed ($A)
                 . $LANG33[51]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                 . editfeed ($A['fid'], $A['type'])
-                . COM_siteFooter ();  
+                . COM_siteFooter ();
         return $retval;
     }
 
@@ -517,8 +522,8 @@ function deletefeed ($fid)
 // MAIN
 $display = '';
 
-if ($_CONF['backend'] && isset ($_POST['feedChange'])) {
-    changeFeedStatus ($_POST['feedChange']);
+if ($_CONF['backend'] && isset ($_POST['feedenabler'])) {
+    changeFeedStatus ($_POST['enabledfeeds']);
 }
 $mode = '';
 if (isset($_REQUEST['mode'])) {
@@ -558,5 +563,4 @@ else
 }
 
 echo $display;
-
 ?>
