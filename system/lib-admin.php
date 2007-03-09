@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.100 2007/02/23 01:25:23 ospiess Exp $
+// $Id: lib-admin.php,v 1.101 2007/03/09 01:31:19 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -620,9 +620,9 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
                     } else {
                         $switch = '';
                     }
-                    $retval = "<form action=\"{$_CONF['site_admin_url']}/block.php\" method=\"post\"><div>"
-                             ."<input type=\"checkbox\" name=\"blkenable\" onclick=\"submit()\" value=\"{$A['bid']}\" $switch>"
-                             ."<input type=\"hidden\" name=\"blkChange\" value=\"{$A['bid']}\"></div></form>";
+                    $retval = "<input type=\"checkbox\" name=\"blkenable[{$A['bid']}]\" "
+                        . "onclick=\"submit()\" value=\"{$A['onleft']}\" $switch>{$A['bid']}";
+
                 }
                 break;
             case 'move':
@@ -637,7 +637,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
                         $moveTitleMsg = $LANG21[60];
                         $switchside = '0';
                     }
-                    $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" border=\"0\" usemap=\"#arrow{$A['bid']}\" alt=\"\">"
+                    $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\">"
                             ."<map name=\"arrow{$A['bid']}\">"
                             ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up\" alt=\"{$LANG21[58]}\">"
                             ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside\" alt=\"$moveTitleMsg\">"
