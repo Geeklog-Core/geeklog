@@ -367,7 +367,7 @@ $LANG04 = array(
     158 => 'Time Zone',
     160 => 'I agree',
     161 => 'I do not agree',
-    162 => 'In order to be able to post comments on this site, you have to confirm the following user agreement:'
+    162 => 'In order to be able to post comments on this site, you have to confirm the following user agreement. Since you either did not do so yet, or since the agreement was changed since your last confirmation, please read the following text and then click on the appropriate button below.'
 );
 
 ###############################################################################
