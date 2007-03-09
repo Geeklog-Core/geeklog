@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.71 2007/02/11 02:06:28 ospiess Exp $
+// $Id: functions.inc,v 1.72 2007/03/09 04:44:13 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -498,7 +498,10 @@ function POLLS_pollVote($pid, $showall=true)
                 $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],
                     $T['perm_group'],$T['perm_members'],$T['perm_anon']);
                 if ($access == 3) {
-                    $editlink .= COM_createLink($LANG25[27], $_CONF['site_admin_url']
+                    $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+                    $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG25[27]
+                        . '" title="' . $LANG25[27] . '">';
+                    $editlink .= COM_createLink($editiconhtml, $_CONF['site_admin_url']
                         . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
                     $poll->set_var('poll_edit', $editlink);
                 }
