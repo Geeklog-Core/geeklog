@@ -31,7 +31,9 @@
                                             <td><input type="checkbox" name="hideresults" {poll_hideresults}> {poll_hideresults_explain}</td>
                                         </tr>
                                     </table>
-                                    <div id="po_navbar" class="jsenabled_show">{navbar}</div><div class="clearboth"></div>
+                                    <div id="po_navbar" class="jsenabled_show">
+                                        {navbar}
+                                    </div>
                                     {question_list}
                                     <h2>{lang_accessrights}</h2>
                                     {lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"><br>
