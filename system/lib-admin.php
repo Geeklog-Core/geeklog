@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.105 2007/03/09 02:52:01 ospiess Exp $
+// $Id: lib-admin.php,v 1.106 2007/03/09 03:27:32 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -967,14 +967,12 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             break;
         case 'enabled':
             if ($A['pi_enabled'] == 1) {
-                $switch = 'checked="checked"';
+                $switch = ' checked="checked"';
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/plugins.php\" method=\"post\"><div>"
-                     ."<input type=\"checkbox\" name=\"pluginenable\" onclick=\"submit()\" value=\"{$A['pi_name']}\" $switch>"
-                     ."<input type=\"hidden\" name=\"pluginChange\" value=\"{$A['pi_name']}\">"
-                     ."</div></form>";
+            $retval = "<input type=\"checkbox\" name=\"enabledplugins[{$A['pi_name']}]\" "
+                . "onclick=\"submit()\" value=\"1\"$switch>";
             break;
         default:
             $retval = $fieldvalue;
