@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.103 2007/03/09 01:39:32 ospiess Exp $
+// $Id: lib-admin.php,v 1.104 2007/03/09 02:40:33 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -622,7 +622,6 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
                     }
                     $retval = "<input type=\"checkbox\" name=\"blkenable[{$A['bid']}]\" "
                         . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch>";
-
                 }
                 break;
             case 'move':
@@ -911,13 +910,12 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
             break;
         case 'is_enabled':
             if ($A['is_enabled'] == 1) {
-                $switch = 'checked="checked"';
+                $switch = ' checked="checked"';
             } else {
                 $switch = '';
             }
-            $retval = "<form action=\"{$_CONF['site_admin_url']}/syndication.php\" method=\"POST\"><div>"
-                     ."<input type=\"checkbox\" name=\"feedenable\" onclick=\"submit()\" value=\"{$A['fid']}\" $switch>"
-                     ."<input type=\"hidden\" name=\"feedChange\" value=\"{$A['fid']}\"></div></form>";
+            $retval = "<input type=\"checkbox\" name=\"enabledfeeds[]\" "
+                . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch>";
             break;
         case 'header_tid':
             if ($A['header_tid'] == 'all') {
