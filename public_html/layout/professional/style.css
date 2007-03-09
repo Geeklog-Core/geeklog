@@ -175,6 +175,15 @@ select {
 
 /* CLASSES ********************************************************************/
 
+.agreement { /* user agreement wrapper div */
+  border:1px dashed #444444;
+  padding: 10px;
+  margin: 15px;
+  background-color: #DDDDDD;
+  text-align: justify;
+
+}
+
 /* Admin lists ****************************************************************/
 .admin-list-icon {
   float:left;
