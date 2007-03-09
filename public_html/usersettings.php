@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.161 2007/02/12 06:52:58 ospiess Exp $
+// $Id: usersettings.php,v 1.162 2007/03/09 07:04:16 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -1520,7 +1520,10 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         $display = COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?mode=edit&msg=5');
         break;
-
+    case 'agreement':
+        $url = USER_agreement($_POST['action'], $_POST['next_url']);
+        $display = COM_refresh($url);
+        break;
     default: // also if $mode == 'preferences' or 'comments'
         $display .= COM_siteHeader ('menu', $LANG01[49]);
         $msg = 0;

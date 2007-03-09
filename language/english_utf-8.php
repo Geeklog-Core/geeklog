@@ -364,7 +364,10 @@ $LANG04 = array(
     155 => 'Privacy',
     156 => 'Delete Account',
     157 => 'Delete Option',
-    158 => 'Time Zone'
+    158 => 'Time Zone',
+    160 => 'I agree',
+    161 => 'I do not agree',
+    162 => 'In order to be able to post comments on this site, you have to confirm the following user agreement:'
 );
 
 ###############################################################################
@@ -896,7 +899,11 @@ $LANG28 = array(
     73 => 'Are You sure you want to permanently delete ALL selected users?',
     74 => 'Recent Users',
     75 => 'Users that registered in the last ',
-    76 => ' months'
+    76 => ' months',
+    77 => 'User Agreement',
+    78 => '%1 agreements have been successfully revoked!',
+    79 => 'Before users can post comments on your site, they must confirm the following user agreement. If you change this text, you will have to ask you user again to confirm the agreement. To do so, <a href="%s" onclick="return confirm(\'Are you sure you want to revoke all user agreements?\');">revoke</a> the users confirmations. Currently, <b>%s</b> users confirmed.' . LB,
+    80 => 'If you want to have users confirm a User agreement, you have to set $_CONF[\'commentsloginrequired\'] = 1 in your config.php and set $_CONF[\'user_agreement\'] to a valid agreemtent text.'
 );
 
 ###############################################################################
