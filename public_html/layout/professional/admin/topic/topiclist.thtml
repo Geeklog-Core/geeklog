@@ -1,16 +1,14 @@
-                            <form>
-                                <table cellspacing="0" cellpadding=2 width="100%">
-                                    <tr>
-                                        <td rowspan="2">
-                                            <img src="{layout_url}/images/icons/topic.png" alt="">
-                                        </td>
-                                        <td><a href="{site_admin_url}/topic.php?mode=edit">{lang_newtopic}</a> | <a href="{site_admin_url}">{lang_adminhome}</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{lang_instructions}</td>
-                                    </tr>
-                                </table>
-                                <table cellspacing="0" cellpadding="2" width="100%">
-                                    {list_row}
-                                </table>
-                            </form>
+                            <table cellspacing="0" cellpadding=2 width="100%">
+                                <tr>
+                                    <td rowspan="2">
+                                        <img src="{layout_url}/images/icons/topic.png" alt="">
+                                    </td>
+                                    <td><a href="{site_admin_url}/topic.php?mode=edit">{lang_newtopic}</a> | <a href="{site_admin_url}">{lang_adminhome}</a></td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_instructions}</td>
+                                </tr>
+                            </table>
+                            <table cellspacing="0" cellpadding="2" width="100%">
+                                {list_row}
+                            </table>

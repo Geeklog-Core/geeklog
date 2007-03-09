@@ -1,5 +1,7 @@
-                            {begin_row} 
+                            {begin_row}
                             <td>
-                                <a href="{site_admin_url}/topic.php?mode=edit&amp;tid={topic_id}">{image_tag}<div>{topic_name}</div></a>{default_topic} ({topic_access})
+                                <a href="{site_admin_url}/topic.php?mode=edit&amp;tid={topic_id}">{image_tag}</a><br>
+                                <a href="{site_admin_url}/topic.php?mode=edit&amp;tid={topic_id}">{topic_name}</a>
+                                {default_topic} ({topic_access})
                             </td>
                             {end_row}
