@@ -1,11 +1,11 @@
-<div class="poll-topic">{poll_topic}</div>
+<div class="poll-topic">{poll_topic}</div><span class="floatright">{edit_icon}</span>
 <form action="{poll_vote_url}" name="Vote" method="POST">
     <div>
     <input type="hidden" name="pid" value="{poll_id}">
             {poll_questions}
         <span class="pluginTinyText">{poll_notification}</span><br>
         <input type="submit" value="{lang_vote}">
-        {poll_results} {poll_edit}
+        {poll_results}
     </div>
 </form>
 <span class="pluginTinyText">
