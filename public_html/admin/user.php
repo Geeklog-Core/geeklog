@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.184 2007/02/12 06:52:58 ospiess Exp $
+// $Id: user.php,v 1.185 2007/03/09 07:04:40 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -389,6 +389,10 @@ function listusers()
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
+    if ($_CONF['user_agreement'] !== false) {
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/user.php?mode=agreement',
+                          'text' => $LANG28[77]);
+    }
 
     $text_arr = array('has_menu'     => true,
                       'has_extras'   => true,
@@ -759,6 +763,10 @@ function batchdelete()
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
+    if ($_CONF['user_agreement'] !== false) {
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/user.php?mode=agreement',
+                          'text' => $LANG28[77]);
+    }
 
     $text_arr = array('has_menu'     => true,
                       'has_extras'   => true,
@@ -1086,6 +1094,15 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
             . $msg . '</p>'
             . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     $display .= batchdelete();
+    $display .= COM_siteFooter();
+} else if ($mode == 'agreement') {
+    $display .= COM_siteHeader ('menu', $LANG28[77]);
+    $display .= USER_agreement('admin');
+    $display .= COM_siteFooter();
+} else if ($mode == 'massrevoke') {
+    USER_agreement('massrevoke');
+    $display .= COM_siteHeader ('menu', $LANG28[77]);
+    $display .= USER_agreement('admin');
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG28[11]);
