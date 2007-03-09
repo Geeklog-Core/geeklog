@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.69 2007/02/08 04:39:43 ospiess Exp $
+// $Id: plugins.php,v 1.70 2007/03/09 03:27:18 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -160,20 +160,21 @@ function plugineditor ($pi_name, $confirmed = 0)
 * @return   void
 *
 */
-function changePluginStatus ($pi_name)
+function changePluginStatus ($pi_name_arr)
 {
     global $_TABLES, $_DB_table_prefix;
-
-    $pi_name = addslashes (COM_applyFilter ($pi_name));
-    if (!empty ($pi_name)) {
-        $pi_enabled = 1;
-        if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$pi_name'")) {
-            $pi_enabled = 0;
+    // first, get a list of all plugins
+    $rst = DB_query ("SELECT pi_name, pi_enabled FROM {$_TABLES['plugins']}");
+    $plg_count = DB_numRows($rst);
+    for ($i=0; $i<$plg_count; $i++) { // iterate and check/change match with array
+        $P = DB_fetchArray($rst);
+        if (isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 0) { // enable it
+            PLG_enableStateChange ($P['pi_name'], true);
+            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_enabled = '1' WHERE pi_name = '{$P['pi_name']}'");
+        } else if (!isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 1) {  // disable it
+            PLG_enableStateChange ($P['pi_name'], false);
+            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_enabled = '0' WHERE pi_name = '{$P['pi_name']}'");
         }
-
-        PLG_enableStateChange ($pi_name, ($pi_enabled == 1) ? true : false);
-
-        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_enabled = '$pi_enabled' WHERE pi_name = '$pi_name'");
     }
 }
 
@@ -453,16 +454,19 @@ function listplugins ()
                                ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1=1",
                        'query_fields' => array('pi_name'),
                        'default_filter' => '');
+    // this is a dummy-variable so we know the form has been used if all plugins should be disabled
+    // in order to disable the last one.
+    $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true">');
 
     return ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
-                       $text_arr, $query_arr, $menu_arr, $defsort_arr);
+                       $text_arr, $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
 
 }
 
 // MAIN
 $display = '';
-if (isset ($_POST['pluginChange'])) {
-    changePluginStatus ($_POST['pluginChange']);
+if (isset ($_POST['pluginenabler'])) {
+    changePluginStatus ($_POST['enabledplugins']);
 
     // force a refresh so that the information of the plugin that was just
     // enabled / disabled (menu entries, etc.) is displayed properly
@@ -528,5 +532,4 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 }
 
 echo $display;
-
 ?>
