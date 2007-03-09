@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.245 2007/01/17 09:28:19 ospiess Exp $
+// $Id: config.php,v 1.246 2007/03/09 07:12:58 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -752,6 +752,12 @@ $_CONF['comment_limit']         = 100;        // Default Number of Comments unde
 $_CONF['comment_mode']          = 'threaded';
 // Allow / disallow comments to stories by default (can be changed individually for every story)
 $_CONF['comment_code']          = 0;          // 0 = comments enabled, -1 = disabled
+// Only allow comments to users that agreed to the site user agreement?
+// Set false if not, otherwise either the path the the file where the text is stored
+// or '[staticpage_content:staticpageID]' in case you stored that text in a static page
+// or any other autotag that returns the user agreement text.
+// If you allow anonymous comments, this feature is automaticall disabled.
+$_CONF['user_agreement']        = false;
 
 // Password setting: minimum time between two requests for a new password
 $_CONF['passwordspeedlimit'] = 300; // seconds = 5 minutes
@@ -829,7 +835,7 @@ if ($_CONF['advanced_editor']) {
 // Obviously, you should only enable this if you know what you're doing and
 // when you can trust all the users in the 'Root' group not to use this for
 // Cross Site Scripting, defacements, etc. USE AT YOUR OWN RISK!
-$_CONF['skip_html_filter_for_root'] = 0;
+$_CONF['skip_html_filter_for_root'] = 1;
 
 // list of protocols that are allowed in links
 $_CONF['allowed_protocols'] = array ('http', 'https', 'ftp');
@@ -861,7 +867,7 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 //
 // Note: Works with Apache (Linux and Windows successfully tested).
 //       Unresolvable issues with systems running IIS; known PHP CGI bug.
-$_CONF['url_rewrite'] = false; // false = off, true = on
+$_CONF['url_rewrite'] = true; // false = off, true = on
 
 // Define default permissions for new objects created from the Admin panels.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
