@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.110 2007/03/09 01:32:33 ospiess Exp $
+// $Id: block.php,v 1.111 2007/03/09 02:51:48 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -393,9 +393,12 @@ function listblocks()
                        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 1",
                        'query_fields' => array('title', 'content'),
                        'default_filter' => COM_getPermSql ('AND'));
+    // this is a dummy-variable so we know the form has been used if all blocks should be disabled
+    // on one side in order to disable the last one. The value is the onleft var
+    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1">');
 
     $retval .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
 
     $query_arr = array('table' => 'blocks',
                        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 0",
@@ -408,9 +411,12 @@ function listblocks()
                       'icon' => $_CONF['layout_url'] . '/images/icons/block.'
                                 . $_IMAGE_TYPE,
                       'form_url' => $_CONF['site_admin_url'] . '/block.php');
+    // this is a dummy-variable so we know the form has been used if all blocks should be disabled
+    // on one side in order to disable the last one. The value is the onleft var
+    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="0">');
 
     $retval .= ADMIN_list ('blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
 
     return $retval;
 }
@@ -681,24 +687,21 @@ function moveBlock()
 /**
 * Enable and Disable block
 */
-function changeBlockStatus ($bid_arr)
+function changeBlockStatus ($side, $bid_arr)
 {
     global $_CONF, $_TABLES;
-    $reset = false;
-    foreach ($bid_arr as $bid => $side) {
-        $bid = COM_applyFilter($bid, true);
-        $side = COM_applyFilter($side, true);
-        // first, disable all, but only once
-        if (!$reset) {
-            $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '0' WHERE onleft='$side';";
+    // first, disable all on the requested side
+    $side = COM_applyFilter($side, true);
+    $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '0' WHERE onleft='$side';";
+    DB_query($sql);
+    if (isset($bid_arr)) {
+        foreach ($bid_arr as $bid => $side) {
+            $bid = COM_applyFilter($bid, true);
+            // the enable those in the array
+            $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '1' WHERE bid='$bid' AND onleft='$side'";
             DB_query($sql);
-            $reset = true;
         }
-        // the enable those in the array
-        $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '1' WHERE bid='$bid' AND onleft='$side'";
-        DB_query($sql);
     }
-
     return;
 }
 
@@ -738,8 +741,8 @@ if (!empty($_REQUEST['bid'])) {
     $bid = COM_applyFilter ($_REQUEST['bid']);
 }
 
-if (isset ($_POST['blkenable'])) {
-    changeBlockStatus ($_POST['blkenable']);
+if (isset ($_POST['blockenabler'])) {
+    changeBlockStatus ($_POST['blockenabler'], $_POST['enabledblocks']);
 }
 
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
