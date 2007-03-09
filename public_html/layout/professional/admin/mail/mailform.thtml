@@ -1,5 +1,4 @@
 <form action="{php_self}" method="POST">
-    <input type="hidden" name="mail" value="mail">
     {startblock_email}
     <table cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
         <tr>
@@ -51,6 +50,7 @@
         <tr>
             <td colspan="2" class="aligncenter">
                 <input type="submit" value="{lang_send}">
+                <input type="hidden" name="mail" value="mail">
             </td>
         </tr>
     </table>
