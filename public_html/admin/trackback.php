@@ -1,6 +1,6 @@
 <?php
 
-/* Reminder: always indent with 4 spaces (no tabs). */                         
+/* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.44 2007/02/11 09:10:41 dhaun Exp $
+// $Id: trackback.php,v 1.45 2007/03/09 04:15:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -49,7 +49,7 @@ $display = '';
 if (!SEC_hasRights ('story.ping')) {
     $display .= COM_siteHeader ('menu', $MESSAGE[30]);
     $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header')); 
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[34];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
@@ -504,9 +504,12 @@ function listServices ()
                        'default_filter' => "",
                        'no_data' => $LANG_TRB['no_services']);
 
-    $retval .= ADMIN_list ("pingservice", "ADMIN_getListField_trackback", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+    // this is a dummy-variable so we know the form has been used if all services should be disabled
+    // in order to disable the last one.
+    $form_arr = array('bottom' => '<input type="hidden" name="serviceChanger" value="true">');
 
+    $retval .= ADMIN_list ("pingservice", "ADMIN_getListField_trackback", $header_arr, $text_arr,
+                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
 
     if ($_CONF['trackback_enabled']) {
         $retval .= freshTrackback ();
@@ -716,17 +719,18 @@ function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
 * @return   void
 *
 */
-function changeServiceStatus ($pid)
+function changeServiceStatus ($pid_arr)
 {
     global $_TABLES;
-
-    $pid = addslashes (COM_applyFilter ($pid, true));
-    if (!empty ($pid)) {
-        $is_enabled = 1;
-        if (DB_getItem ($_TABLES['pingservice'], 'is_enabled', "pid = '$pid'")) {
-            $is_enabled = 0;
+    // first, disable all
+    DB_query ("UPDATE {$_TABLES['pingservice']} SET is_enabled = '0'");
+    if (isset($pid_arr)) {
+        foreach ($pid_arr as $pid) { //enable those listed
+            $pid = addslashes (COM_applyFilter ($pid, true));
+            if (!empty ($pid)) {
+                DB_query ("UPDATE {$_TABLES['pingservice']} SET is_enabled = '1' WHERE pid = '$pid'");
+            }
         }
-        DB_query ("UPDATE {$_TABLES['pingservice']} SET is_enabled = '$is_enabled' WHERE pid = '$pid'");
     }
 }
 
@@ -776,8 +780,8 @@ function freshPingback ()
 // MAIN
 $display = '';
 $mode = '';
-if ($_CONF['ping_enabled'] && isset ($_POST['serviceChange'])) {
-    changeServiceStatus ($_POST['serviceChange']);
+if ($_CONF['ping_enabled'] && isset ($_POST['serviceChanger'])) {
+    changeServiceStatus ($_POST['changedservices']);
 }
 
 if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
@@ -804,7 +808,7 @@ if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
     if (isset($_REQUEST['mode'])) {
         $mode = COM_applyFilter ($_REQUEST['mode']);
     }
-    
+
 }
 
 // sanity check for modes, depending on enabled features ...
