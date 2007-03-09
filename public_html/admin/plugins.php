@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.70 2007/03/09 03:27:18 ospiess Exp $
+// $Id: plugins.php,v 1.71 2007/03/09 03:46:43 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -244,7 +244,7 @@ function show_newplugins ()
     $fd = opendir ($plugins_dir);
     $index = 1;
     $retval = '';
-    $newplugins = array ();
+    $data_arr = array();
     while (($dir = @readdir ($fd)) == TRUE) {
         if (is_dir ($plugins_dir . $dir) && ($dir <> '.') && ($dir <> '..') &&
                 ($dir <> 'CVS') && (substr ($dir, 0 , 1) <> '.')) {
@@ -272,60 +272,29 @@ function show_newplugins ()
                         . '/install.php', 'r');
                     if ($fh) {
                         fclose ($fh);
-                        $newplugins[] = $dir;
+                        $data_arr[] = array(
+                            'pi_name' => $dir,
+                            'number' => $index,
+                            'install_link'=> COM_createLink($LANG32[22],
+                                $_CONF['site_admin_url'] . '/plugins/' . $dir
+                                . '/install.php?action=install')
+                        );
+                        $index++;
                     }
                 }
             }
         }
     }
 
-    if (sizeof ($newplugins) > 0) {
-        sort ($newplugins);
-        $templdir = $_CONF['path_layout'] . 'admin/plugins';
-        if (file_exists ($templdir . '/newpluginlist.thtml') &&
-                file_exists ($templdir . '/newlistitem.thtml')) {
-            $newtemplate = new Template ($templdir);
-            $newtemplate->set_file (array ('list'=>'newpluginlist.thtml',
-                                           'row'=>'newlistitem.thtml'));
-            $newtemplate->set_var ('site_url', $_CONF['site_url']);
-            $newtemplate->set_var ('site_admin_url', $_CONF['site_admin_url']);
-            $newtemplate->set_var ('layout_url', $_CONF['layout_url']);
-            $newtemplate->set_var ('lang_pluginname', $LANG32[16]);
-            $newtemplate->set_var ('start_block_newlist',
-                    COM_startBlock ($LANG32[14], '',
-                            COM_getBlockTemplate ('_admin_block', 'header')));
-            for ($i = 0; $i < sizeof ($newplugins); $i++) {
+    $header_arr = array(      # display 'text' and use table field 'field'
+                    array('text' => '#', 'field' => 'number'),
+                    array('text' => $LANG32[16], 'field' => 'pi_name'),
+                    array('text' => '', 'field' => 'install_link')
+    );
 
-                $newtemplate->set_var ('pi_name', $newplugins[$i]);
-                $newtemplate->set_var ('row_num', $i + 1);
-                $newtemplate->set_var ('cssid', $i%2 + 1);
-                $newtemplate->set_var ('lang_install', COM_createLink($LANG32[22],
-                    $_CONF['site_admin_url'] . '/plugins/' . $newplugins[$i]
-                    . '/install.php?action=install')
-                );
-                $newtemplate->parse ('plugin_list', 'row', true);
-            }
-            $newtemplate->set_var ('end_block',
-                COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
-            $newtemplate->parse ('output', 'list');
-            $retval .= $newtemplate->finish ($newtemplate->get_var ('output'));
-        } else {
-            $retval =  COM_startBlock ($LANG32[14], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-            $retval .= '<table border="0">' . LB;
-            $retval .= '<tr><th align="left">' . $LANG32[16] .'</th></tr>' . LB;
-            for ($i = 0; $i < sizeof ($newplugins); $i++) {
-                $retval .= '<tr><td>' . $newplugins[$i] . '</td><td>'
-                    . COM_createLink($LANG32[22], $_CONF['site_admin_url']
-                    . "/plugins/{$newplugins[$i]}/install.php?action=install")
-                    . '</td></tr>' . LB;
-            }
-            $retval .= '</table>' . LB;
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block',
-                                                           'footer'));
-        }
-    }
-
+    $text_arr = array('title' => $LANG32[14]);
+    $retval .= ADMIN_simpleList('', $header_arr, $text_arr,
+                           $data_arr);
     return $retval;
 }
 
