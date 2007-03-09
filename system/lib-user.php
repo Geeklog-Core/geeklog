@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.36 2007/03/09 07:04:16 ospiess Exp $
+// $Id: lib-user.php,v 1.37 2007/03/09 07:13:35 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -617,7 +617,7 @@ function USER_agreement($action, $return_page='')
         if (substr($_CONF['user_agreement'], 0, 1) =='[') {
             $out = PLG_replaceTags($_CONF['user_agreement']);
         } else if (file_exists($_CONF['user_agreement'])) {
-            $out = file($file);
+            $out = file_get_contents($file);
         }
         break;
     case 'notify':
