@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.72 2007/03/09 04:44:13 ospiess Exp $
+// $Id: functions.inc,v 1.73 2007/03/09 04:52:18 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -448,7 +448,7 @@ function polls_templatePath ($path = '')
 
 function POLLS_pollVote($pid, $showall=true)
 {
-    global $_CONF, $_TABLES, $LANG_POLLS, $LANG01, $_USER, $LANG25;
+    global $_CONF, $_TABLES, $LANG_POLLS, $LANG01, $_USER, $LANG25, $_IMAGE_TYPE;
     $retval = '';
 
     $topic = DB_query("SELECT topic,voters,commentcode,open,hideresults,owner_id "
