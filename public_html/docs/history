@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Implemented optional User Agreement functionality [Oliver]
+- Fixed numerous HTML errors in admin pages [Oliver]
 - Added a missing blank between the day's name and the date in the Older Stories
   block (reported by Jeruvy's girlfriend, via IRC) [Dirk]
 - fixed bug [#648] sending new password email returns "Ok" message although 
@@ -82,6 +84,8 @@ Spam-X plugin
 
 Static Pages plugin
 -------------------
+- New Static pages Autotag: staticpage_content to return the contents of a 
+  static page instead of a link to a static page [Oliver]
 - Now using a template to display static pages [Oliver]
 - Autouninstall implemented [Oliver]
 - The static pages editor was looking for the advanced editor template in the
