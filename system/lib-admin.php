@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.101 2007/03/09 01:31:19 ospiess Exp $
+// $Id: lib-admin.php,v 1.102 2007/03/09 01:34:38 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -621,7 +621,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
                         $switch = '';
                     }
                     $retval = "<input type=\"checkbox\" name=\"blkenable[{$A['bid']}]\" "
-                        . "onclick=\"submit()\" value=\"{$A['onleft']}\" $switch>{$A['bid']}";
+                        . "onclick=\"submit()\" value=\"{$A['onleft']}\" $switch>";
 
                 }
                 break;
