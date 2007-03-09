@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.71 2007/03/09 03:46:43 ospiess Exp $
+// $Id: plugins.php,v 1.72 2007/03/09 03:57:08 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -238,7 +238,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 function show_newplugins ()
 {
     global $_CONF, $_TABLES, $LANG32;
-
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
     $plugins = array ();
     $plugins_dir = $_CONF['path'] . 'plugins/';
     $fd = opendir ($plugins_dir);
