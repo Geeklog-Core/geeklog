@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.109 2007/03/09 01:31:06 ospiess Exp $
+// $Id: block.php,v 1.110 2007/03/09 01:32:33 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -817,5 +817,4 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 }
 
 echo $display;
-echo phpinfo();
 ?>
