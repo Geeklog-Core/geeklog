@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.91 2007/03/06 07:23:54 ospiess Exp $
+// $Id: functions.inc,v 1.92 2007/03/13 05:10:49 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -255,6 +255,14 @@ function SP_printPage ($page, $A)
     return $print->finish ($print->get_var ('output'));
 }
 
+/**
+* Prepare static page for display
+*
+* @param    string  $page       static page id
+* @param    string  $mode       type of display to return ('', 'print', 'autotag'
+* @return   string              HTML for the static page
+*
+*/
 function SP_returnStaticpage($page='', $mode='')
 {
     global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
