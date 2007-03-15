@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.92 2007/03/13 05:10:49 ospiess Exp $
+// $Id: functions.inc,v 1.93 2007/03/15 19:10:08 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -661,7 +661,7 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
 */
 function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 {
-    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC, $_IMAGE_TYPE, $LANG01;
 
     $retval = '';
 
@@ -733,7 +733,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             }
 
             $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
-            $spage -> set_file( array('page'=>'centerblock.thtml'));
+            $spage->set_file( array('page'=>'centerblock.thtml'));
 
             $icons = '';
             if ($_CONF['hideprintericon'] == 0) {
@@ -742,7 +742,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                     . $LANG_STATIC['printable_format'] . '">';
                 $print_url = COM_buildURL ($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $S['sp_id'] . '&amp;mode=print');
-                $icon .= COM_createLink($printicon, $print_url);
+                $icon = COM_createLink($printicon, $print_url);
                 $spage->set_var('print_icon', $icon);
             }
             if ((SEC_hasAccess ($S['owner_id'], $S['group_id'], $S['perm_owner'],
