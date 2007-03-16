@@ -630,6 +630,7 @@ select {
   /* the bottom of the story with edit-links etc */
   padding:3px;
   text-align:center;
+  clear:both;
 }
 .story-information {
   /* the author, views and date of a story */
