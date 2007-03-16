@@ -254,9 +254,8 @@ select {
 .block-box-left ul,
 .block-box-right ul {
   /* do not indent lists in the blocks too much */
+  margin:0px;
   padding-left:20px;
-  margin-top:0px;
-  margin-bottom:0px;
 }
 .block-bg-left,
 .block-bg-right{
@@ -339,16 +338,6 @@ select {
   padding-bottom:5px;
   text-align:left;
 }
-
-/* Block Lists ****************************************************************/
-.list-feed,
-.list-new-plugins,
-.list-new-comments,
-.list-new-trackbacks,
-.list-older-stories {
-  margin:0px;padding:0px;
-}
-
 /* Comments *******************************************************************/
 .commentbar-line1 {
   background:transparent;
