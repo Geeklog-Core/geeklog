@@ -3,7 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2007 (1.4.x)
 ------------
 - All plugin API's, where not doing very, very plugin specific activities now
-  call a matching CUSTOM_ function.
+  call a matching CUSTOM_ function. [Mike]
 - Integrated support for passing parameters to phpblock functions (Patch #643 by
   Joe Mucchiello) [Mike]
 - Implemented optional User Agreement functionality [Oliver]
