@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.256 2007/03/02 08:05:28 mjervis Exp $
+// $Id: story.php,v 1.257 2007/03/17 09:20:46 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -284,44 +284,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     } elseif( $result == STORY_DUPLICATE_SID) {
         $display .= COM_errorLog ($LANG24[24], 2);
     }
-
-//    } else {
-//        $A = $_POST;
-//        $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
-//        $A += DB_fetchArray($res);
-//        $res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
-//        $A += DB_fetchArray($res);
-//        if (empty ($A['ampm'])) {
-//            $A['ampm'] = $A['publish_ampm'];
-//        }
-//        if (isset ($A['draft_flag']) && ($A['draft_flag'] == 'on')) {
-//            $A['draft_flag'] = 1;
-//        } else {
-//            $A['draft_flag'] = 0;
-//        }
-//        if (isset ($A['show_topic_icon']) && ($A['show_topic_icon'] == 'on')) {
-//            $A['show_topic_icon'] = 1;
-//        } else {
-//            $A['show_topic_icon'] = 0;
-//        }
-//        if (!isset ($A['statuscode'])) {
-//            $A['statuscode'] = 0;
-//        }
-//
-//        // Convert array values to numeric permission values
-//        list($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) = SEC_getPermissionValues($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-//        if ($A['postmode'] == 'html' OR $A['postmode'] == 'adveditor') {
-//            $A['introtext'] = COM_checkHTML(COM_checkWords($A['introtext']));
-//            $A['bodytext'] = COM_checkHTML(COM_checkWords($A['bodytext']));
-//            $A['title'] = COM_checkHTML(htmlspecialchars(COM_checkWords($A['title'])));
-//        } else {
-//            $A['introtext'] = COM_undoClickableLinks (htmlspecialchars(COM_checkWords($A['introtext'])));
-//            $A['bodytext'] = COM_undoClickableLinks (htmlspecialchars(COM_checkWords($A['bodytext'])));
-//            $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
-//        }
-//        $A['title'] = strip_tags($A['title']);
-//        $access = 3;
-//    }
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
@@ -586,36 +548,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             COM_optionList ($_TABLES['frontpagecodes'], 'code,name',
                             $story->EditElements('frontpage')));
 
-//    if ($A['postmode'] == 'plaintext') {
-//        $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
-//        if (!empty ($A['bodytext'])) {
-//            $A['bodytext']  = COM_undoClickableLinks ($A['bodytext']);
-//        }
-//    }
-//
-//    list($newintro, $newbody) = STORY_replace_images ($A['sid'],
-//            stripslashes ($A['introtext']), stripslashes ($A['bodytext']));
-//
-//    if ($A['postmode'] == 'plaintext') {
-//        $newintro = str_replace('$','&#36;',$newintro);
-//        $newbody = str_replace('$','&#36;',$newbody);
-//    } else {
-//        // Insert [code] and [/code] if needed
-//        $newintro = str_replace('<pre><code>','[code]',$newintro);
-//        $newbody = str_replace('<pre><code>','[code]',$newbody);
-//        $newintro = str_replace('</code></pre>','[/code]',$newintro);
-//        $newbody = str_replace('</code></pre>','[/code]',$newbody);
-//
-//        $newintro = htmlspecialchars ($newintro);
-//        $newbody = htmlspecialchars ($newbody);
-//    }
-//
-//    $newintro = str_replace('{','&#123;',$newintro);
-//    $newintro = str_replace('}','&#125;',$newintro);
     $story_templates->set_var('story_introtext', $story->EditElements('introtext'));
 
-//    $newbody = str_replace('{','&#123;',$newbody);
-//    $newbody = str_replace('}','&#125;',$newbody);
     $story_templates->set_var('story_bodytext', $story->EditElements('bodytext'));
     $story_templates->set_var('lang_introtext', $LANG24[16]);
     $story_templates->set_var('lang_bodytext', $LANG24[17]);
@@ -779,12 +713,15 @@ function submitstory($type='')
     }
 
     // Delete any images if needed
-    for ($i = 1; $i <= count($delete); $i++) {
-        $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename', "ai_sid = '{$sid}' AND ai_img_num = " . key ($delete));
+    if (array_key_exists('delete', $_POST)) {
+        $delete = count($_POST['delete']);
+        for ($i = 1; $i <= $delete; $i++) {
+            $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename', "ai_sid = '{$sid}' AND ai_img_num = " . key($_POST['delete']));
         STORY_deleteImage ($ai_filename);
 
-        DB_query ("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key ($delete));
-        next ($delete);
+            DB_query ("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key($_POST['delete']));
+            next($_POST['delete']);
+        }
     }
 
     // OK, let's upload any pictures with the article
