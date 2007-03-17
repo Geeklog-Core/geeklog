@@ -37,4 +37,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) un
 // update plugin version numbers
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
 $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0', pi_gl_version = '1.4.1' WHERE pi_name = 'polls'";
+
+// Increase block function size to accept arguments:
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR(128)";
 ?>

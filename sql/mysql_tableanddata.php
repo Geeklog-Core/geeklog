@@ -23,7 +23,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   rdfupdated datetime NOT NULL default '0000-00-00 00:00:00',
   rdflimit smallint(5) unsigned NOT NULL default '0',
   onleft tinyint(3) unsigned NOT NULL default '1',
-  phpblockfn varchar(64) default '',
+  phpblockfn varchar(128) default '',
   help varchar(255) default '',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',

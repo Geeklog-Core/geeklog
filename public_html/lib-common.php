@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.629 2007/03/13 04:02:27 ospiess Exp $
+// $Id: lib-common.php,v 1.630 2007/03/17 14:20:50 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3295,6 +3295,12 @@ function COM_formatBlock( $A, $noboxes = false )
         if( !( $A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'" ) == 0 ))
         {
             $function = $A['phpblockfn'];
+            $matches = array();
+            if (preg_match('/^(phpblock_\w*)\\((.*)\\)$/', $function, $matches) == 1)
+            {
+                $function = $matches[1];
+                $args = $matches[2];
+            }
             $blkheader = COM_startBlock( $A['title'], $A['help'],
                     COM_getBlockTemplate( $A['name'], 'header' ));
             $blkfooter = COM_endBlock( COM_getBlockTemplate( $A['name'],
@@ -3302,7 +3308,11 @@ function COM_formatBlock( $A, $noboxes = false )
 
             if( function_exists( $function ))
             {
-                $fretval = $function();
+               if (isset($args))
+                    $fretval = $function($A, $args);
+                } else {
+                    $fretval = $function();
+                }
                 if( !empty( $fretval ))
                 {
                     $retval .= $blkheader;
