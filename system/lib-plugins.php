@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.123 2007/03/15 02:42:38 ospiess Exp $
+// $Id: lib-plugins.php,v 1.124 2007/03/17 15:13:15 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -68,10 +68,14 @@ function PLG_callFunctionForAllPlugins($function_name)
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
-        $function = $function_name . $pi_name;
+        $function = 'plugin_' . $function_name . '_' . $pi_name;
         if (function_exists($function)) {
             $function();
         }
+    }
+    $function = 'custom_' . $function_name;
+    if (function_exists($function)) {
+        $function();
     }
 }
 
@@ -313,7 +317,7 @@ function PLG_enableStateChange ($type, $enable)
 */
 function PLG_isModerator()
 {
-    return PLG_callFunctionForAllPlugins('plugin_ismoderator_');
+    return PLG_callFunctionForAllPlugins('ismoderator');
 }
 
 /**
@@ -465,6 +469,15 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
             }
         }
     }
+    
+    $function = 'custom_commentPreSave';
+    if (function_exists($function)) {
+        $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postmode);
+        if ($someError) {
+            // Custom function refused save:
+            return $someError;
+        }
+    }
 
     return false;
 }
@@ -495,6 +508,15 @@ function PLG_itemPreSave($type, $content)
                 // Plugin doesn't want to save the item
                 return $msgError;
             }
+        }
+    }
+    
+    $function = 'custom_itemPreSave';
+    if (function_exists ($function)) {
+        $msgError = $function ($type, $content);
+        if (!empty ($msgError)) {
+            // Custom doesn't want to save the item
+            return $msgError;
         }
     }
 
@@ -568,6 +590,29 @@ function PLG_getPluginStats ($showsitestats)
             }
         }
     }
+    
+    if ($showsitestats == 3) {
+        $function = 'custom_statssummary';
+        if (function_exists ($function)) {
+            $summary = $function ();
+            if (is_array ($summary)) {
+                $retval['Custom'] = $summary;
+            }
+        }
+    } else if ($showsitestats == 1) {
+        $function1 = 'custom_showstats';
+        $function2 = 'custom_statssummary';
+        if (!function_exists ($function2)) {
+            if (function_exists ($function1)) {
+                $retval .= $function1 ($showsitestats);
+            }
+        }
+    } else if ($showsitestats == 2) {
+        $function = 'custom_showstats';
+        if (function_exists ($function)) {
+            $retval .= $function ($showsitestats);
+        }
+    }
 
     return $retval;
 }
@@ -596,6 +641,15 @@ function PLG_getSearchTypes()
             }
         } // no else because this is not a required API function
     }
+    
+    $function = 'custom_searchtypes';
+    if (function_exists ($function)) {
+        $cur_types = $function ();
+        if (is_array ($cur_types) && (count ($cur_types) > 0)) {
+            $types = array_merge ($types, $cur_types);
+        }
+    }
+    
     asort($types);
     return $types;
 }
@@ -659,6 +713,14 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
             $total_plugins = $total_plugins + $plugin_result->num_itemssearched;
             $search_results[] = $plugin_result;
         } // no else because implementation of this API function not required
+    }
+    
+    $function = 'custom_dopluginsearch';
+    if (function_exists($function)) {
+        $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
+        $nrows_plugins = $nrows_plugins + $plugin_result->num_searchresults;
+        $total_plugins = $total_plugins + $plugin_result->num_itemssearched;
+        $search_results[] = $plugin_result;
     }
 
     return array($nrows_plugins, $total_plugins, $search_results);
@@ -968,7 +1030,7 @@ function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
         $PLG_bufferCenterAPI = array ();
         foreach ($_PLUGINS as $pi_name) {
             $function = 'plugin_centerblock_' . $pi_name;
-            if (function_exists ($function)) {
+            if (function_exists($function)) {
                 $PLG_bufferCenterAPI[$pi_name] = $function;
             }
         }
@@ -976,11 +1038,15 @@ function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
     }
 
     foreach ($PLG_bufferCenterAPI as $function) {
-        $retval .= $function ($where, $page, $topic);
+        $retval .= $function($where, $page, $topic);
 
         if (($where == 0) && !empty ($retval)) {
             break;
         }
+    }
+    $function = 'custom_centerblock';
+    if (function_exists($function)) {
+        $retval .= $function($where, $page, $topic);
     }
 
     return $retval;
@@ -998,9 +1064,14 @@ function PLG_createUser ($uid)
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_create_' . $pi_name;
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $function ($uid);
         }
+    }
+    
+    $function = 'custom_user_create';
+    if (function_exists($function)) {
+        $function($uid);
     }
 }
 
@@ -1017,8 +1088,13 @@ function PLG_deleteUser ($uid)
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_delete_' . $pi_name;
         if (function_exists ($function)) {
-            $function ($uid);
+            $function $uid);
         }
+        }
+    
+    $function = 'custom_user_delete';
+    if (function_exists($function)) {
+        $function($uid);
     }
 }
 
@@ -1038,9 +1114,14 @@ function PLG_loginUser ($uid)
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_login_' . $pi_name;
-        if (function_exists ($function)) {
-            $function ($uid);
+        if (function_exists($function)) {
+            $function($uid);
         }
+        }
+    
+    $function = 'custom_user_login';
+    if (function_exists($function)) {
+        $function($uid);
     }
 }
 
@@ -1058,9 +1139,14 @@ function PLG_logoutUser ($uid)
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_logout_' . $pi_name;
-        if (function_exists ($function)) {
-            $function ($uid);
+        if (function_exists($function)) {
+            $function($uid);
         }
+        }
+    
+    $function = 'custom_user_logout';
+    if (function_exists($function)) {
+        $function($uid);
     }
 }
 
@@ -1077,9 +1163,14 @@ function PLG_userInfoChanged ($uid)
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_changed_' . $pi_name;
-        if (function_exists ($function)) {
-            $function ($uid);
+        if (function_exists($function)) {
+            $function($uid);
         }
+        }
+    
+    $function = 'custom_user_changed';
+    if (function_exists($function)) {
+        $function($uid);
     }
 }
 
@@ -1097,9 +1188,14 @@ function PLG_groupChanged ($grp_id, $mode)
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_group_changed_' . $pi_name;
-        if (function_exists ($function)) {
-            $function ($grp_id, $mode);
+        if (function_exists($function)) {
+            $function($grp_id, $mode);
         }
+        }
+    
+    $function = 'custom_group_changed';
+    if (function_exists($function)) {
+        $function($uid);
     }
 }
 
@@ -1120,6 +1216,11 @@ function PLG_profileVariablesEdit ($uid, &$template)
         if (function_exists($function)) {
             $function ($uid, $template);
         }
+    }
+    
+    $function = 'custom_profilevariablesedit';
+    if (function_exists($function)) {
+        $function($uid, $template);
     }
 }
 
@@ -1143,7 +1244,12 @@ function PLG_profileBlocksEdit ($uid)
             $retval .= $function ($uid);
         }
     }
-
+    
+    $function = 'custom_profileblocksedit';
+    if (function_exists($function)) {
+        $retval .= $function($uid);
+    }
+    
     return $retval;
 }
 
@@ -1164,6 +1270,11 @@ function PLG_profileVariablesDisplay ($uid, &$template)
         if (function_exists($function)) {
             $function ($uid, $template);
         }
+    }
+    
+    $function = 'custom_profilevariablesdisplay';
+    if (function_exists($function)) {
+        $function($uid, $template);
     }
 }
 
@@ -1187,6 +1298,11 @@ function PLG_profileBlocksDisplay ($uid)
             $retval .= $function ($uid);
         }
     }
+    
+    $function = 'custom_profileblocksdisplay';
+    if (function_exists($function)) {
+        $retval .= $function($uid);
+    }
 
     return $retval;
 }
@@ -1204,7 +1320,7 @@ function PLG_profileBlocksDisplay ($uid)
 function PLG_profileExtrasSave ($plugin = '')
 {
     if (empty ($plugin)) {
-        PLG_callFunctionForAllPlugins ('plugin_profileextrassave_');
+        PLG_callFunctionForAllPlugins ('profileextrassave');
     } else {
         PLG_callFunctionForOnePlugin ('plugin_profileextrassave_' . $plugin);
     }
@@ -1256,7 +1372,12 @@ function PLG_getHeaderCode()
             $headercode .= $function();
         }
     }
-
+    
+    $function = 'custom_getheadercode';
+    if (function_exists($function)) {
+        $headercode .= $function();
+    }
+    
     return $headercode;
 }
 
@@ -1268,11 +1389,11 @@ function PLG_getHeaderCode()
 * @return   array   All currently supported autolink tags
 *
 */
-function PLG_collectTags ()
+function PLG_collectTags()
 {
     global $_CONF, $_PLUGINS;
 
-    if (isset ($_CONF['disable_autolinks']) && ($_CONF['disable_autolinks'] == 1)) {
+    if (isset($_CONF['disable_autolinks']) && ($_CONF['disable_autolinks'] == 1)) {
         // autolinks are disabled - return an empty array
         return array ();
     }
@@ -1283,9 +1404,9 @@ function PLG_collectTags ()
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $autotag = $function ('tagname');
-            if (is_array ($autotag)) {
+            if (is_array($autotag)) {
                 foreach ($autotag as $tag) {
                     $autolinkModules[$tag] = $pi_name;
                 }
@@ -1308,7 +1429,7 @@ function PLG_collectTags ()
 * @param   string   $plugin    Optional if you only want to parse using a specific plugin
 *
 */
-function PLG_replaceTags ($content, $plugin = '')
+function PLG_replaceTags($content, $plugin = '')
 {
     global $_CONF, $_TABLES, $LANG32;
 
@@ -1421,19 +1542,27 @@ function PLG_replaceTags ($content, $plugin = '')
 * @return   array   array of plugin names (can be empty)
 *
 */
-function PLG_supportingFeeds ()
+function PLG_supportingFeeds()
 {
     global $_PLUGINS;
 
-    $plugins = array ();
+    $plugins = array();
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getfeednames_' . $pi_name;
-        if (function_exists ($function)) {
-            $feeds = $function ();
-            if (is_array ($feeds) && (sizeof ($feeds) > 0)) {
+        if (function_exists($function)) {
+            $feeds = $function();
+            if (is_array($feeds) && (sizeof($feeds) > 0)) {
                 $plugins[] = $pi_name;
             }
+        }
+    }
+    
+    $function = 'custom_getfeednames';
+    if (function_exists($function)) {
+        $feeds = $function();
+        if (is_array($feeds) && (sizeof($feeds) > 0)) {
+            $plugins[] = 'custom';
         }
     }
 
@@ -1449,18 +1578,28 @@ function PLG_supportingFeeds ()
 * @return   array             array of id/name pairs
 *
 */
-function PLG_getFeedNames ($plugin)
+function PLG_getFeedNames($plugin)
 {
     global $_PLUGINS;
 
     $feeds = array ();
-
-    if (in_array ($plugin, $_PLUGINS)) {
+    
+    if ($plugin == 'custom')
+    {
+        $function = 'custom_getfeednames';
+        if (function_exists($function)) {
+            $feeds = $function();
+        }
+    } else {
+        if (in_array($plugin, $_PLUGINS)) {
         $function = 'plugin_getfeednames_' . $plugin;
-        if (function_exists ($function)) {
-            $feeds = $function ();
+            if (function_exists($function)) {
+                $feeds = $function();
+            }   
         }
     }
+    
+
 
     return $feeds;
 }
@@ -1481,17 +1620,24 @@ function PLG_getFeedNames ($plugin)
 * @return   array                  content of feed
 *
 */
-function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data, $feedType, $feedVersion)
+function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $feedVersion)
 {
     global $_PLUGINS;
 
     $content = array ();
 
+    if ($plugin == 'custom') {
+        $function = 'custom_getfeedcontent';
+        if (function_exists($function)) {
+            $content = $function($feed, $link, $update_date, $feedType, $feedVersion);
+        }
+    } else {
     if (in_array ($plugin, $_PLUGINS)) {
         $function = 'plugin_getfeedcontent_' . $plugin;
         if (function_exists ($function)) {
             $content = $function ($feed, $link, $update_data, $feedType, $feedVersion);
         }
+    }
     }
 
     return $content;
@@ -1522,6 +1668,13 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
             $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
         }
     }
+    
+    $function = 'custom_feedElementExtensions';
+    if (function_exists($function))
+    {
+        $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
+    }
+    
     return $extensions;
 }
 
@@ -1547,6 +1700,12 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, 
         {
             $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
+    }
+    
+    $function = 'custom_feedNSExtensions';
+    if (function_exists($function))
+    {
+        $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion, $topic, $fid));
     }
 
     return $namespaces;
@@ -1574,6 +1733,12 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
             $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
     }
+    
+    $function = 'custom_feedExtensionTags';
+    if (function_exists($function))
+    {
+        $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion, $topic, $fid));
+    }
 
     return $tags;
 }
@@ -1597,18 +1762,26 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
 *       different method to check if its feed has to be updated.
 *
 */
-function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
+function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
 {
     global $_PLUGINS;
 
     $is_current = true;
 
-    if (in_array ($plugin, $_PLUGINS)) {
-        $function = 'plugin_feedupdatecheck_' . $plugin;
-        if (function_exists ($function)) {
+    if ($plugin == 'custom') {
+        $function = 'custom_feedupdatecheck';
+        if (function_exists($function)) {
             $is_current = $function ($feed, $topic, $update_data, $limit,
                             $updated_type, $updated_topic, $updated_id);
         }
+    } else {
+        if (in_array($plugin, $_PLUGINS)) {
+        $function = 'plugin_feedupdatecheck_' . $plugin;
+            if (function_exists($function)) {
+                $is_current = $function($feed, $topic, $update_data, $limit,
+                            $updated_type, $updated_topic, $updated_id);
+        }
+    }
     }
 
     return $is_current;
@@ -1620,23 +1793,23 @@ function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit, $upd
 * @return   array   array($headlines[], $bylines[], $content[$entries[]])
 *
 */
-function PLG_getWhatsNew ()
+function PLG_getWhatsNew()
 {
     global $_PLUGINS;
 
-    $newheadlines = array ();
-    $newbylines   = array ();
-    $newcontent   = array ();
+    $newheadlines = array();
+    $newbylines   = array();
+    $newcontent   = array();
 
     foreach ($_PLUGINS as $pi_name) {
         $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
-        if (function_exists ($fn_head)) {
-            $supported = $fn_head ();
-            if (is_array ($supported)) {
-                list ($headline, $byline) = $supported;
+        if (function_exists($fn_head)) {
+            $supported = $fn_head();
+            if (is_array($supported)) {
+                list($headline, $byline) = $supported;
 
                 $fn_new = 'plugin_getwhatsnew_' . $pi_name;
-                if (function_exists ($fn_new)) {
+                if (function_exists($fn_new)) {
                     $whatsnew = $fn_new ();
                     $newcontent[] = $whatsnew;
                     $newheadlines[] = $headline;
@@ -1645,8 +1818,24 @@ function PLG_getWhatsNew ()
             }
         }
     }
+    
+    $fn_head = 'custom_whatsnewsupported';
+    if (function_exists($fn_head)) {
+        $supported = $fn_head();
+        if (is_array($supported)) {
+            list($headline, $byline) = $supported;
 
-    return array ($newheadlines, $newbylines, $newcontent);
+            $fn_new = 'custom_getwhatsnew';
+            if (function_exists($fn_new)) {
+                $whatsnew = $fn_new ();
+                $newcontent[] = $whatsnew;
+                $newheadlines[] = $headline;
+                $newbylines[] = $byline;
+            }
+        }
+    }
+
+    return array($newheadlines, $newbylines, $newcontent);
 }
 
 /**
@@ -1675,20 +1864,31 @@ function PLG_getWhatsNew ()
 * will also send an HTTP status code 403 with the message.
 *
 */
-function PLG_checkforSpam ($content, $action = -1)
+function PLG_checkforSpam($content, $action = -1)
 {
     global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_checkforSpam_' . $pi_name;
-        if (function_exists ($function)) {
-            $result = $function ($content, $action);
+        if (function_exists($function)) {
+            $result = $function($content, $action);
             if ($result > 0) { // Plugin found a match for spam
 
-                $result = PLG_spamAction ($content, $action);
+                $result = PLG_spamAction($content, $action);
 
                 return $result;
             }
+        }
+    }
+    
+    $function = 'custom_checkforSpam';
+    if (function_exists($function)) {
+        $result = $function($content, $action);
+        if ($result > 0) { // Plugin found a match for spam
+
+            $result = PLG_spamAction($content, $action);
+
+            return $result;
         }
     }
 
@@ -1708,7 +1908,7 @@ function PLG_checkforSpam ($content, $action = -1)
 * @return   integer             > 0: spam detected, == 0: no spam detected
 *
 */
-function PLG_spamAction ($content, $action = -1)
+function PLG_spamAction($content, $action = -1)
 {
     global $_PLUGINS;
 
@@ -1716,10 +1916,16 @@ function PLG_spamAction ($content, $action = -1)
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_spamaction_' . $pi_name;
-        if (function_exists ($function)) {
-            $res = $function ($content, $action);
-            $result = max ($result, $res);
+        if (function_exists($function)) {
+            $res = $function($content, $action);
+            $result = max($result, $res);
         }
+    }
+    
+    $function = 'custom_spamaction';
+    if (function_exists($function)) {
+        $res = $function($content, $action);
+        $result = max($result, $res);
     }
 
     return $result;
@@ -1824,7 +2030,7 @@ function PLG_runScheduledTask ()
 * @returns  mixed           Boolean false for "no error", or an error msg text
 *
 */
-function PLG_itemSaved ($id, $type)
+function PLG_itemSaved($id, $type)
 {
     global $_PLUGINS;
 
@@ -1833,15 +2039,15 @@ function PLG_itemSaved ($id, $type)
     $plugins = count ($_PLUGINS);
     for ($save = 0; $save < $plugins; $save++) {
         $function = 'plugin_itemsaved_' . $_PLUGINS[$save];
-        if (function_exists ($function)) {
-            $error = $function ($id, $type);
+        if (function_exists($function)) {
+            $error = $function($id, $type);
             if ($error !== false) {
                 // plugin reported a problem - abort
 
                 for ($abort = 0; $abort < $save; $abort++) {
                     $function = 'plugin_abortsave_' . $_PLUGINS[$abort];
-                    if (function_exists ($function)) {
-                        $function ($id, $type);
+                    if (function_exists($function)) {
+                        $function($id, $type);
                     }
                 }
                 break; // out of for($save) loop
@@ -1872,14 +2078,27 @@ function PLG_itemSaved ($id, $type)
 *
 */
 
-function PLG_itemDisplay ($id, $type)
+function PLG_itemDisplay($id, $type)
 {
     global $_PLUGINS;
     $result_arr = array();
 
-    $plugins = count ($_PLUGINS);
+    $plugins = count($_PLUGINS);
     for ($display = 0; $display < $plugins; $display++) {
         $function = 'plugin_itemdisplay_' . $_PLUGINS[$display];
+        if (function_exists($function)) {
+            $result = $function($id, $type);
+            if ($result[0] == false) {
+                // plugin reported a problem - do not add and continue
+                COM_errorLog($result[1], 1);
+            } else {
+                array_shift($result);
+                $result_arr = array_merge($result_arr,$result);
+            }
+        }
+    }
+    
+    $function = 'custom_itemdisplay';
         if (function_exists ($function)) {
             $result = $function ($id, $type);
             if ($result[0] == false) {
@@ -1890,7 +2109,6 @@ function PLG_itemDisplay ($id, $type)
                 $result_arr = array_merge($result_arr,$result);
             }
         }
-    }
 
     return $result_arr;
 }
@@ -1908,7 +2126,7 @@ function PLG_itemDisplay ($id, $type)
 * @return   array of block data
 *
 */
-function PLG_getBlocks( $side, $topic='')
+function PLG_getBlocks($side, $topic='')
 {
     global $_PLUGINS;
 
@@ -1919,22 +2137,19 @@ function PLG_getBlocks( $side, $topic='')
         if (function_exists($function))
         {
             $items = $function($side, $topic='');
-            if (is_array ($items))
+            if (is_array($items))
             {
-                $ret = array_merge ($ret, $items);
+                $ret = array_merge($ret, $items);
             }
         }
     }
 
-    // future code to do a lib-custom function
-    /*
     if (function_exists('CUSTOM_getBlocks')) {
        $cust_items .= CUSTOM_getBlocks($side, $topic='');
-       if (is_array ($cust_items)) {
-          $ret = array_merge ($ret, $cust_items)
+       if (is_array($cust_items)) {
+          $ret = array_merge($ret, $cust_items)
        }
     }
-    */
 
     return $ret;
 }
@@ -1946,7 +2161,7 @@ function PLG_getBlocks( $side, $topic='')
 * @return   string          URL of the icon
 *
 */
-function PLG_getIcon ($type)
+function PLG_getIcon($type)
 {
     global $_CONF;
 
@@ -1954,17 +2169,17 @@ function PLG_getIcon ($type)
 
     // try the "geticon" function first
     $function = 'plugin_geticon_' . $type;
-    if (function_exists ($function)) {
+    if (function_exists($function)) {
         $retval = $function ();
     }
 
     // if that didn't work, try the "cclabel" function
     if (empty ($retval)) {
         $function = 'plugin_cclabel_' . $type;
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $cclabel = $function ();
-            if (is_array ($cclabel)) {
-                if (!empty ($cclabel[2])) {
+            if (is_array($cclabel)) {
+                if (!empty($cclabel[2])) {
                     $retval = $cclabel[2];
                 }
             }
@@ -1972,7 +2187,7 @@ function PLG_getIcon ($type)
     }
 
     // lastly, search for the icon (assuming it's a GIF)
-    if (empty ($retval)) {
+    if (empty($retval)) {
         $icon = $_CONF['site_url'] . '/' . $type . '/images/' . $type . '.gif';
         $fh = @fopen ($icon, 'r');
         if ($fh === false) {
