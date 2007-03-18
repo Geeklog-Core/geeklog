@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.15 2007/01/15 03:50:04 ospiess Exp $
+# $Id: english.php,v 1.16 2007/03/18 20:00:43 ospiess Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -158,7 +158,9 @@ $LANG_LINKS_ADMIN = array(
     20 => 'If other, specify',
     21 => 'save',
     22 => 'cancel',
-    23 => 'delete'
+    23 => 'delete',
+    24 => 'Link not found',
+    25 => 'The link you selected for editing could not be found.'
 );
 
 ?>

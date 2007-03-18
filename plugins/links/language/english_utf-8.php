@@ -24,24 +24,24 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english_utf-8.php,v 1.3 2006/08/10 09:00:39 ospiess Exp $
+# $Id: english_utf-8.php,v 1.4 2007/03/18 20:00:43 ospiess Exp $
 
-/** 
- * This is the english language page for the Geeklog links Plug-in! 
- * 
+/**
+ * This is the english language page for the Geeklog links Plug-in!
+ *
  * @package Links
  * @subpackage Language
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
- * 
+ *
  */
 
 
@@ -53,8 +53,8 @@
 ###############################################################################
 /**
 * the link plugin's lang array
-* 
-* @global array $LANG_LINKS 
+*
+* @global array $LANG_LINKS
 */
 $LANG_LINKS= array(
     10 => 'Submissions',
@@ -69,7 +69,7 @@ $LANG_LINKS= array(
 # for stats
 /**
 * the link plugin's lang stats array
-* 
+*
 * @global array $LANG_LINKS_STATS
 */
 $LANG_LINKS_STATS = array(
@@ -84,8 +84,8 @@ $LANG_LINKS_STATS = array(
 # for the search
 /**
 * the link plugin's lang search array
-* 
-* @global array $LANG_LINKS_SEARCH 
+*
+* @global array $LANG_LINKS_SEARCH
 */
 $LANG_LINKS_SEARCH = array(
  'results' => 'Link Results',
@@ -98,8 +98,8 @@ $LANG_LINKS_SEARCH = array(
 # for the submission form
 /**
 * the link plugin's lang submit form array
-* 
-* @global array $LANG_LINKS_SUBMIT 
+*
+* @global array $LANG_LINKS_SUBMIT
 */
 $LANG_LINKS_SUBMIT = array(
     1 => 'Submit a Link',
@@ -130,8 +130,8 @@ $PLG_links_MESSAGE3002 = $LANG32[9];
 # admin/link.php
 /**
 * the link plugin's lang admin array
-* 
-* @global array $LANG_LINKS_ADMIN 
+*
+* @global array $LANG_LINKS_ADMIN
 */
 $LANG_LINKS_ADMIN = array(
     1 => 'Link Editor',
@@ -152,7 +152,9 @@ $LANG_LINKS_ADMIN = array(
     20 => 'If other, specify',
     21 => 'save',
     22 => 'cancel',
-    23 => 'delete'
+    23 => 'delete',
+    24 => 'Link not found',
+    25 => 'The link you selected for editing could not be found.'
 );
 
 ?>
