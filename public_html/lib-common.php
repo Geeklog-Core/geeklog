@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.630 2007/03/17 14:20:50 mjervis Exp $
+// $Id: lib-common.php,v 1.631 2007/03/18 19:17:52 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3308,7 +3308,7 @@ function COM_formatBlock( $A, $noboxes = false )
 
             if( function_exists( $function ))
             {
-               if (isset($args))
+                if (isset($args)) {
                     $fretval = $function($A, $args);
                 } else {
                     $fretval = $function();
