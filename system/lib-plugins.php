@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.124 2007/03/17 15:13:15 mjervis Exp $
+// $Id: lib-plugins.php,v 1.125 2007/03/18 19:23:28 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1088,9 +1088,9 @@ function PLG_deleteUser ($uid)
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_delete_' . $pi_name;
         if (function_exists ($function)) {
-            $function $uid);
+            $function($uid);
         }
-        }
+    }
     
     $function = 'custom_user_delete';
     if (function_exists($function)) {
@@ -2147,7 +2147,7 @@ function PLG_getBlocks($side, $topic='')
     if (function_exists('CUSTOM_getBlocks')) {
        $cust_items .= CUSTOM_getBlocks($side, $topic='');
        if (is_array($cust_items)) {
-          $ret = array_merge($ret, $cust_items)
+          $ret = array_merge($ret, $cust_items);
        }
     }
 
