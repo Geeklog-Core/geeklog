@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.40 2007/02/13 03:19:12 ospiess Exp $
+// $Id: index.php,v 1.41 2007/03/18 20:00:55 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -104,6 +104,13 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('layout_url',$_CONF['layout_url']);
     if ($mode <> 'editsubmission' AND !empty($lid)) {
         $result = DB_query("SELECT * FROM {$_TABLES['links']} WHERE lid ='$lid'");
+        if (DB_numRows($result) !== 1) {
+            $msg = COM_startBlock ($LANG_LINKS_ADMIN[24], '',
+                COM_getBlockTemplate ('_msg_block', 'header'));
+            $msg .= $LANG_LINKS_ADMIN[25];
+            $msg .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            return $msg;
+        }
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
