@@ -63,6 +63,8 @@ $e = $pkg->setOptions(
     )
 );
 
+$pkg->addPackageDepWithChannel('required', 'Geeklog_FCKeditor', 'pear.geeklog.net', '2.3.1');
+
 include $glDir . '/system/build/buildpackage-end.php';
 
 ?>
