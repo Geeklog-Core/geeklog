@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.631 2007/03/18 19:17:52 dhaun Exp $
+// $Id: lib-common.php,v 1.632 2007/03/19 09:57:15 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2746,6 +2746,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     }
     while( $start_pos !== false );
 
+
     if( isset( $_CONF['skip_html_filter_for_root'] ) &&
              ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
             SEC_inGroup( 'Root' ))
@@ -2781,7 +2782,6 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     {
         $filter->AddHTML( $tag, $attr );
     }
-
     return $filter->Parse( $str );
 }
 
@@ -3308,17 +3308,18 @@ function COM_formatBlock( $A, $noboxes = false )
 
             if( function_exists( $function ))
             {
-                if (isset($args)) {
+               if (isset($args))
+               {
                     $fretval = $function($A, $args);
-                } else {
+               } else {
                     $fretval = $function();
-                }
-                if( !empty( $fretval ))
-                {
+               }
+               if( !empty( $fretval ))
+               {
                     $retval .= $blkheader;
                     $retval .= $fretval;
                     $retval .= $blkfooter;
-                }
+               }
             }
             else
             {

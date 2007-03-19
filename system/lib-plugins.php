@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.125 2007/03/18 19:23:28 dhaun Exp $
+// $Id: lib-plugins.php,v 1.126 2007/03/19 09:57:15 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1117,7 +1117,7 @@ function PLG_loginUser ($uid)
         if (function_exists($function)) {
             $function($uid);
         }
-        }
+    }
     
     $function = 'custom_user_login';
     if (function_exists($function)) {
@@ -1142,7 +1142,7 @@ function PLG_logoutUser ($uid)
         if (function_exists($function)) {
             $function($uid);
         }
-        }
+    }
     
     $function = 'custom_user_logout';
     if (function_exists($function)) {
@@ -1166,7 +1166,7 @@ function PLG_userInfoChanged ($uid)
         if (function_exists($function)) {
             $function($uid);
         }
-        }
+    }
     
     $function = 'custom_user_changed';
     if (function_exists($function)) {
@@ -1191,7 +1191,7 @@ function PLG_groupChanged ($grp_id, $mode)
         if (function_exists($function)) {
             $function($grp_id, $mode);
         }
-        }
+    }
     
     $function = 'custom_group_changed';
     if (function_exists($function)) {
@@ -1592,7 +1592,7 @@ function PLG_getFeedNames($plugin)
         }
     } else {
         if (in_array($plugin, $_PLUGINS)) {
-        $function = 'plugin_getfeednames_' . $plugin;
+            $function = 'plugin_getfeednames_' . $plugin;
             if (function_exists($function)) {
                 $feeds = $function();
             }   
@@ -1632,12 +1632,12 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
             $content = $function($feed, $link, $update_date, $feedType, $feedVersion);
         }
     } else {
-    if (in_array ($plugin, $_PLUGINS)) {
-        $function = 'plugin_getfeedcontent_' . $plugin;
-        if (function_exists ($function)) {
-            $content = $function ($feed, $link, $update_data, $feedType, $feedVersion);
+        if (in_array ($plugin, $_PLUGINS)) {
+            $function = 'plugin_getfeedcontent_' . $plugin;
+            if (function_exists ($function)) {
+                $content = $function ($feed, $link, $update_data, $feedType, $feedVersion);
+            }
         }
-    }
     }
 
     return $content;
@@ -1776,12 +1776,12 @@ function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $upda
         }
     } else {
         if (in_array($plugin, $_PLUGINS)) {
-        $function = 'plugin_feedupdatecheck_' . $plugin;
+            $function = 'plugin_feedupdatecheck_' . $plugin;
             if (function_exists($function)) {
                 $is_current = $function($feed, $topic, $update_data, $limit,
-                            $updated_type, $updated_topic, $updated_id);
+                                $updated_type, $updated_topic, $updated_id);
+            }
         }
-    }
     }
 
     return $is_current;
@@ -2099,16 +2099,16 @@ function PLG_itemDisplay($id, $type)
     }
     
     $function = 'custom_itemdisplay';
-        if (function_exists ($function)) {
-            $result = $function ($id, $type);
-            if ($result[0] == false) {
-                // plugin reported a problem - do not add and continue
-                COM_errorLog( $result[1], 1);
-            } else {
-                array_shift($result);
-                $result_arr = array_merge($result_arr,$result);
-            }
+    if (function_exists ($function)) {
+        $result = $function ($id, $type);
+        if ($result[0] == false) {
+            // plugin reported a problem - do not add and continue
+            COM_errorLog( $result[1], 1);
+        } else {
+            array_shift($result);
+            $result_arr = array_merge($result_arr,$result);
         }
+    }
 
     return $result_arr;
 }
@@ -2131,14 +2131,11 @@ function PLG_getBlocks($side, $topic='')
     global $_PLUGINS;
 
     $ret = array();
-    foreach ($_PLUGINS as $pi_name)
-    {
+    foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getBlocks_' . $pi_name;
-        if (function_exists($function))
-        {
+        if (function_exists($function)) {
             $items = $function($side, $topic='');
-            if (is_array($items))
-            {
+            if (is_array($items)) {
                 $ret = array_merge($ret, $items);
             }
         }
