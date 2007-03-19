@@ -1,6 +1,6 @@
 <?php
 
-$_SP_CONF['version'] = '1.4.3';
+$_SP_CONF['version'] = '1.4.4';
 
 // If you don't plan on using PHP code in static pages, you should set this
 // to 0, thus disabling the execution of PHP.
