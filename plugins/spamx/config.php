@@ -9,10 +9,10 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: config.php,v 1.18 2006/09/03 15:33:47 dhaun Exp $
+ * $Id: config.php,v 1.19 2007/03/19 18:44:38 tony Exp $
  */
 
-$_SPX_CONF['version'] = '1.1.0';
+$_SPX_CONF['version'] = '1.1.1';
 
 // Default Spam-X Action
 $_SPX_CONF['action'] = 128; // Default is to ignore (delete) the post
