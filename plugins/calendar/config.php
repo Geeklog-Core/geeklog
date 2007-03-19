@@ -33,9 +33,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.9 2007/02/05 09:47:40 ospiess Exp $
+// $Id: config.php,v 1.10 2007/03/19 18:42:43 tony Exp $
 
-$_CA_CONF['version']            = '1.0.1'; // Plugin Version
+$_CA_CONF['version']            = '1.0.2'; // Plugin Version
 
 // Calendar Settings
 
