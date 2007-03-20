@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.7 2007/03/17 09:20:47 mjervis Exp $
+// $Id: story.class.php,v 1.8 2007/03/20 19:59:38 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -901,6 +901,11 @@ class Story
     function insertImages()
     {
         global $_CONF, $_TABLES, $LANG24;
+        
+        // Grab member vars into locals:
+        $intro = $this->_introtext;
+        $body = $this->_bodytext;
+        $fulltext = "$intro $body";
 
         $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE "
                             ."ai_sid = '{$this->_sid}' ORDER BY ai_img_num"
@@ -925,11 +930,6 @@ class Story
             $unscalednorm = '[unscaled' . $i . ']';
             $unscaledleft = '[unscaled' . $i . '_left]';
             $unscaledright = '[unscaled' . $i . '_right]';
-
-            // Grab member vars into locals:
-            $intro = $this->_introtext;
-            $body = $this->_bodytext;
-            $fulltext = "$intro $body";
 
             // See how many times image $i is used in the fulltext of the article:
             $icount = substr_count($fulltext, $norm) + substr_count($fulltext, $left) +
