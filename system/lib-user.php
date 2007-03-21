@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.37 2007/03/09 07:13:35 ospiess Exp $
+// $Id: lib-user.php,v 1.38 2007/03/21 00:56:18 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -639,7 +639,7 @@ function USER_agreement($action, $return_page='')
         break;
     case 'check':
         if (!isset($_USER['agreement'])) {
-            $_USER['agreement'] = DB_getItem($_TABLE['users'] ,'agreement',"uid='{$_USER['uid']}");
+            $_USER['agreement'] = DB_getItem($_TABLES['users'] ,'agreement',"uid='{$_USER['uid']}");
         }
         if ($_CONF['commentsloginrequired'] == 0) {
             $out = true;
