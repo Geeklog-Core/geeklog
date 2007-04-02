@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <td class="alignright">{lang_title}:</td>
-                <td><input type="text" size="48" maxlength="255" name="title" value="{story_title}"></td>
+                <td><input type="text" size="48" maxlength="128" name="title" value="{story_title}"></td>
             </tr>
             <tr>
                 <td class="alignright" style="vertical-align:top;">{lang_sid}:</td>
