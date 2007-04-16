@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Made admin/sectest.php recognize 403 status codes (reported by THX100) [Dirk]
 - All plugin API's, where not doing very, very plugin specific activities now
   call a matching CUSTOM_ function. [Mike]
 - Integrated support for passing parameters to phpblock functions (Patch #643 by
