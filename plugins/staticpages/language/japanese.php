@@ -2,12 +2,11 @@
 
 ###############################################################################
 # japanese.php
-# This is the english language page for the Geeklog Static Page Plug-in!
+# This is the Japanese language page for the Geeklog Static Page Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
-# Tranlated by SaY and Geeklog Japanese group
-# sakata@ecofirm.com
+# Tranlated by Geeklog Japanese group SaY and Ivy
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# Last Update 2006/12/12 by Ivy (Geeklog Japanese)
+# Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
 ###############################################################################
 # Array Format: 
@@ -44,7 +43,7 @@ $LANG_STATIC= array(
     'title' => 'タイトル',
     'content' => '内容',
     'hits' => '閲覧件数',
-    'staticpagelist' => '静的ページ一覧',
+    'staticpagelist' => '静的ページ管理',
     'url' => 'URL',
     'edit' => '編集',
     'lastupdated' => '最終更新日：',
@@ -60,28 +59,28 @@ $LANG_STATIC= array(
     'preview' => 'プレビュー',
     'delete' => '削除',
     'cancel' => 'キャンセル',
-    'access_denied' => '申し訳ありません。先にログインしてください。',
+    'access_denied' => '申し訳ありませんが，先にログインしてください。',
     'access_denied_msg' => 'チェックするとアクセス権限がない場合に画面が自動的に遷移してログイン画面が表示されます。チェックをしない場合には「権限がない」というメッセージが表示されます。',
     'all_html_allowed' => 'すべてのHTMLが利用できます。',
     'results' => '静的ページ検索結果',
     'author' => '所有者',
     'no_title_or_content' => '<b>タイトル</b>と<b>内容</b>を記入してください。',
     'no_such_page_anon' => 'ログインしてください。',
-    'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト（{$_CONF["site_name"]}）のメンバーではないためだと考えられます。{$_CONF["site_name"]}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
+    'no_page_access_msg' => "この問題は，まだログインしていないか，そもそもこのサイト（{$_CONF["site_name"]}）のメンバーではないためだと考えられます。{$_CONF["site_name"]}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか，適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
-    'php_warn' => '<br>注意：このオプションを有効にすると、あなたのページに含まれるPHPコードが実行されます。利用には細心の注意を払ってください。静的ページPHPを利用する場合には、あらかじめ管理画面「グループ:Static Page Admin」で、権限「staticpages.PHP」にチェックしてください。PHPを使う場合、通常(return)なしの「PHPを実行する」モードで利用してください。',
+    'php_warn' => '<br>注意：このオプションを有効にすると，あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には，あらかじめ管理画面「グループ:Static Page Admin」で，権限「staticpages.PHP」にチェックしてください。PHPを使う場合，通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
     'exit_msg' => '閲覧権限がない場合: ',
-    'exit_info' => 'チェックすると、閲覧権限がない場合にログイン要求画面が表示されます。<br>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
-    'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか、権限がないかのいずれかです。',
+    'exit_info' => 'チェックすると，閲覧権限がない場合にログイン要求画面が表示されます。<br>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
+    'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか，権限がないかのいずれかです。',
     'stats_headline' => '静的ページ（上位10件）',
     'stats_page_title' => 'タイトル',
     'stats_hits' => '閲覧数',
-    'stats_no_hits' => '静的ページがないか、閲覧者がいないかのどちらかです。',
-    'id' => 'ID（ページ名）',
+    'stats_no_hits' => '静的ページがないか，閲覧者がいないかのどちらかです。',
+    'id' => 'ID',
     'duplicate_id' => '指定したIDはすでに使われています。別のIDをご使用ください。',
-    'instructions' => 'ページを編集・削除するためには、以下のページ番号をクリックしてください。ページを閲覧する場合は、タイトルをクリックしてください。新しいページを作成する場合には、「新規」ボタンを押してください。[C]を押すと、既存のページのコピーを作成できます。',
-    'centerblock' => 'センターブロック表示: ',
-    'centerblock_msg' => 'チェックすると、トップページまたは話題のトップページのセンターブロックに表示されます。表示はIDでソートされます。',
+    'instructions' => 'ページを編集・削除は，各ページの先頭の編集アイコンをクリック。ページの閲覧は，タイトルをクリック。新しいページを作成する場合は「新規作成」リンクをクリック。ページのコピーは[C]をクリックしてください。',
+    'centerblock' => 'センターエリア表示: ',
+    'centerblock_msg' => 'チェックすると，トップページまたは話題のトップページのセンターエリアに表示されます。表示はIDでソートされます。',
     'topic' => '話題: ',
     'position' => '表示場所: ',
     'all_topics' => 'すべて',
@@ -93,7 +92,7 @@ $LANG_STATIC= array(
     'position_entire' => 'ページ全体',
     'position_menutab' => 'ヘッダ',
     'position_footer' => 'フッタ',
-    'head_centerblock' => 'トップページ表示',
+    'head_centerblock' => 'トップ表示',
     'centerblock_no' => 'いいえ',
     'centerblock_top' => '上部',
     'centerblock_second' => '記事の上',
@@ -102,8 +101,8 @@ $LANG_STATIC= array(
     'centerblock_menutab' => 'ヘッダ',
     'centerblock_footer' => 'フッタ',
     'centerblock_entire' => 'ページ全体',
-    'inblock_msg' => 'タイトル表示: ',
-    'inblock_info' => 'チェックすると、タイトルが表示されます。チェックをはずすと、タイトルは表示されません。',
+    'inblock_msg' => 'ブロックで囲む: ',
+    'inblock_info' => 'チェックすると，タイトルが表示され，コンテンツがブロックで囲まれます。',
     'title_edit' => '編集',
     'title_copy' => 'コピーを作成',
     'title_display' => 'ページを表示する',

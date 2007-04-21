@@ -8,7 +8,7 @@
 # tony@tonybibbs.com
 # Copyright (C) 2005 Trinity Bays
 # trinity93@gmail.com
-# Tranlated by Geeklog Japanese group
+# Tranlated by Geeklog Japanese group SaY and Ivy
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# Last Update 2006/12/12 by Ivy (Geeklog Japanese)
+# Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
 ###############################################################################
 # Array Format: 
@@ -57,7 +57,7 @@ $LANG25 = array(
     3 => '作成日時',
     4 => "アンケート（ %s ）が保存されました",
     5 => 'アンケートの編集',
-    6 => 'アンケートの ID',
+    6 => 'アンケートID',
     7 => '(スペースを含まないこと)',
     8 => 'ホームページに表示する',
     9 => '質問すること',
@@ -68,9 +68,9 @@ $LANG25 = array(
     14 => '保存',
     15 => '中止',
     16 => '削除',
-    17 => '投票IDを入力してください',
+    17 => 'アンケートIDを入力してください',
     18 => 'アンケート一覧',
-    19 => 'アンケートの削除・編集はタイトル左のアイコンをクリック、新規に作成する場合は「新規作成」をクリックしてください。タイトルをクリックするとアンケートを閲覧できます。',
+    19 => 'アンケートの削除・編集はタイトル左のアイコンをクリック，新規に作成する場合は「新規作成」をクリックしてください。タイトルをクリックするとアンケートを閲覧できます。',
     20 => '投票者',
     21 => 'アクセスが拒否されました',
     22 => "管理権限のないアンケートを編集しようとしました。この行為は記録されます。<a href=\"{$_CONF['site_admin_url']}/poll.php\">投票の管理画面</a>に戻ってください。",

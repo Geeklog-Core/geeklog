@@ -2,7 +2,7 @@
 
 /**
  * File: japanese.php
- * This is the English language file for the Geeklog Spam-X plugin
+ * This is the Japanese language file for the Geeklog Spam-X plugin
  * 
  * Copyright (C) 2004-2006 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
@@ -10,9 +10,9 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese.php,v 1.2 2006/12/11 16:58:02 dhaun Exp $
+ * $Id: japanese.php,v 1.3 2007/04/21 19:19:24 dhaun Exp $
  */
-# Last Update 2006/12/12 by Ivy (Geeklog Japanese)
+# Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
 
 $LANG_SX00 = array (
