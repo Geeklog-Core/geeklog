@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Links Plugin                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.19 2007/02/22 07:38:50 ospiess Exp $
+// $Id: index.php,v 1.20 2007/04/21 17:15:18 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -61,8 +61,10 @@ require_once ('../lib-common.php');
 *
 *  return       string      the links page
 */
-function links_list() {
+function links_list($message)
+{
     global $_CONF, $_LI_CONF, $LANG_LINKS_ADMIN, $LANG_LINKS, $_TABLES;
+
     $category = '';
     $display = '';
     if (isset ($_GET['category'])) {
@@ -92,9 +94,9 @@ function links_list() {
     }
     $display .= COM_siteHeader ('menu', $page_title);
 
-    if (!empty($message[0])) {
+    if (is_array($message) && !empty($message[0])) {
         $display .= COM_startBlock ($message[0], '',
-            COM_getBlockTemplate ('_msg_block', 'header'));
+                COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $message[1];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
@@ -253,7 +255,7 @@ function links_list() {
 */
 function prepare_link_item ($A, &$template)
 {
-    global $_CONF, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE;
+    global $_CONF, $_USER, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE;
 
     $url = COM_buildUrl ($_CONF['site_url']
                  . '/links/portal.php?what=link&amp;item=' . $A['lid']);
@@ -269,12 +271,17 @@ function prepare_link_item ($A, &$template)
         'class' => 'ext-link');
     $html = COM_createLink($content, $url, $attr);
     $template->set_var ('link_html', $html);
-    $reporturl = $_CONF['admin_url']
-             . '/links/index.php?mode=report&amp;lid=' . $A['lid']
-             . '&amp;url='. $A['url'] . '&amp;title=' . stripslashes ($A['title']);
-    $template->set_var ('link_broken',
-        COM_createLink($LANG_LINKS[117], $reporturl, array('class'=>"pluginSmallText"))
-    );
+    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        $reporturl = $_CONF['site_url']
+                 . '/links/index.php?mode=report&amp;lid=' . $A['lid'];
+        $template->set_var ('link_broken',
+                COM_createLink($LANG_LINKS[117], $reporturl,
+                               array('class' => 'pluginSmallText',
+                                     'rel'   => 'nofollow'))
+        );
+    } else {
+        $template->set_var ('link_broken', '');
+    }
 
     if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
             $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
@@ -289,7 +296,6 @@ function prepare_link_item ($A, &$template)
         $template->set_var ('link_edit', '');
         $template->set_var ('edit_icon', '');
     }
-
 }
 
 
@@ -301,23 +307,25 @@ if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
-if ($mode == 'report') {
-    if (isset ($_GET['title'])) {
-        $title = COM_applyFilter ($_GET['title']);
-    }
+$message = array();
+if (($mode == 'report') && (isset($_USER['uid']) && ($_USER['uid'] > 1))) {
     if (isset ($_GET['lid'])) {
-        $lid = COM_applyFilter ($_GET['lid']);
+        $lid = COM_applyFilter($_GET['lid']);
     }
-    if (isset ($_GET['url'])) {
-        $url = COM_applyFilter ($_GET['url']);
+    if (!empty($lid)) {
+        $lidsl = addslashes($lid);
+        $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lidsl'");
+        list($url, $title) = DB_fetchArray($result);
+
+        $editurl = $_CONF['site_admin_url']
+                 . '/plugins/links/index.php?mode=edit&lid=' . $lid;
+        $msg = $LANG_LINKS[119] . LB . LB . "$title, <$url>". LB . LB
+             .  $LANG_LINKS[120] . LB . '<' . $editurl . '>' . LB . LB
+             .  $LANG_LINKS[121] . $_USER['username'] . ', IP: '
+             . $_SERVER['REMOTE_ADDR'];
+        COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg);
+        $message = array($LANG_LINKS[123], $LANG_LINKS[122]);
     }
-    $editurl = $_CONF['site_admin_url']
-        . '/plugins/links/index.php?mode=edit&lid=' . $lid;
-    $msg = $LANG_LINKS[119] . " $title ( $url )". LB
-        .  $LANG_LINKS[120] . $editurl . LB
-        .  $LANG_LINKS[121] . $_USER['username'] . ", IP: " . $_SERVER["REMOTE_ADDR"];
-    COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg, $_CONF['site_mail']);
-    $message = array ($LANG_LINKS[123], $LANG_LINKS[122]);
 }
 
 if (empty ($_USER['username']) &&
@@ -335,7 +343,7 @@ if (empty ($_USER['username']) &&
     $display .= $login->finish ($login->get_var ('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 } else {
-    $display .= links_list();
+    $display .= links_list($message);
 
 }
 
