@@ -1,6 +1,6 @@
 <div class="comment" style="padding-left: {indent}px">
   <div class="commenttitle">{title}</div>
-  <div>{lang_authoredby} {author} {lang_on}
+  <div>{lang_authoredby} {start_author_anchortag}{author}{end_author_anchortag} {lang_on}
 {date}</div>
   <div style="vertical-align: top">{comments}</div>
   <div>

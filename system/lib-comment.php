@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.55 2007/04/21 13:36:19 dhaun Exp $
+// $Id: lib-comment.php,v 1.56 2007/04/21 16:25:27 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -301,12 +301,9 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 $template->set_var( 'camera_icon', '' );
             }
 
-            $template->set_var( 'start_author_anchortag',
-                COM_createLink(
-                    $A['username'],
-                    $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                )
-            );
+            $template->set_var( 'start_author_anchortag', '<a href="'
+                    . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+                    . $A['uid'] . '">' );
             $template->set_var( 'end_author_anchortag', '</a>' );
         } else {
             $template->set_var( 'author', $A['username'] );
