@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.54 2007/03/09 07:04:16 ospiess Exp $
+// $Id: lib-comment.php,v 1.55 2007/04/21 13:36:19 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -636,8 +636,6 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
         $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         return $retval;
-    } else if (!USER_agreement('check')) {
-        $retval .= USER_agreement('notify', $_CONF['site_url'] . $_SERVER["REQUEST_URI"]);
     } else {
         COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'comment');
 

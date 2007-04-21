@@ -7,7 +7,6 @@ GeekLog History/Changes:
   call a matching CUSTOM_ function. [Mike]
 - Integrated support for passing parameters to phpblock functions (Patch #643 by
   Joe Mucchiello) [Mike]
-- Implemented optional User Agreement functionality [Oliver]
 - Fixed numerous HTML errors in admin pages [Oliver]
 - Added a missing blank between the day's name and the date in the Older Stories
   block (reported by Jeruvy's girlfriend, via IRC) [Dirk]

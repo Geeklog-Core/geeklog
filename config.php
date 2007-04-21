@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.247 2007/03/09 07:19:34 ospiess Exp $
+// $Id: config.php,v 1.248 2007/04/21 13:36:19 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -752,12 +752,6 @@ $_CONF['comment_limit']         = 100;        // Default Number of Comments unde
 $_CONF['comment_mode']          = 'threaded';
 // Allow / disallow comments to stories by default (can be changed individually for every story)
 $_CONF['comment_code']          = 0;          // 0 = comments enabled, -1 = disabled
-// Only allow comments to users that agreed to the site user agreement?
-// Set false if not, otherwise either the path the the file where the text is stored
-// or '[staticpage_content:staticpageID]' in case you stored that text in a static page
-// or any other autotag that returns the user agreement text.
-// If you allow anonymous comments, this feature is automaticall disabled.
-$_CONF['user_agreement']        = false;
 
 // Password setting: minimum time between two requests for a new password
 $_CONF['passwordspeedlimit'] = 300; // seconds = 5 minutes

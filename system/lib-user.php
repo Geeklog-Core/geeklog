@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.38 2007/03/21 00:56:18 ospiess Exp $
+// $Id: lib-user.php,v 1.39 2007/04/21 13:36:19 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -596,89 +596,5 @@ function USER_emailMatches ($email, $domain_list)
 
     return $match_found;
 }
-
-/**
- * Manage the user agreement process
- *
- * $param   string  $action     action to be executed by the funciton
- * $return  string              the HTML for the form or page
- */
-function USER_agreement($action, $return_page='')
-{
-    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG28;
-    // never trust $uid ...
-    if (empty ($_USER['uid'])) {
-        $uid = 1;
-    } else {
-        $uid = $_USER['uid'];
-    }
-    switch ($action) {
-    case 'gettext':
-        if (substr($_CONF['user_agreement'], 0, 1) =='[') {
-            $out = PLG_replaceTags($_CONF['user_agreement']);
-        } else if (file_exists($_CONF['user_agreement'])) {
-            $out = file_get_contents($file);
-        }
-        break;
-    case 'notify':
-        $agree = new Template ($_CONF['path_layout']. "users");
-        $agree->set_file (array ('agree' => 'agreement.thtml'));
-        $agree->set_var ('site_url', $_CONF['site_url']);
-        $text = "<div class=\"agreement\"><h2>{$LANG28[77]}</h2>"
-            . "<p>{$LANG04[162]}</p>"
-            .USER_agreement('gettext')."</div>";
-        $agree->set_var ('agreement_text', $text);
-        $agree->set_var ('next_url', $return_page);
-        $agree->set_var ('lang_agree', $LANG04[160]);
-        $agree->set_var ('lang_notagree', $LANG04[161]);
-        $agree->parse ('output', 'agree');
-        $out .= $agree->finish($agree->get_var('output'));
-        break;
-    case 'massrevoke':
-        DB_change($_TABLES['users'],'agreement',0,'','',$return_page,false);
-        break;
-    case 'check':
-        if (!isset($_USER['agreement'])) {
-            $_USER['agreement'] = DB_getItem($_TABLES['users'] ,'agreement',"uid='{$_USER['uid']}");
-        }
-        if ($_CONF['commentsloginrequired'] == 0) {
-            $out = true;
-        } else if ($uid > 1 && ($_CONF['user_agreement'] !== false) && ($_USER['agreement'] == 0)) {
-            $out = false;
-        } else if ($uid > 1 && ($_CONF['user_agreement'] !== false) && ($_USER['agreement'] == 1)) {
-            $out = true;
-        }
-        break;
-    case 'decision':
-        if ($_POST['submit'] == $LANG04[160]) { // agree
-            DB_change($_TABLES['users'],'agreement',1,'uid',$uid,$return_page,false);
-            $out = $return_page;
-            $_USER['agreement'] == 1;
-        } else if ($_POST['submit'] == $LANG04[161]) { //disagre
-            DB_change($_TABLES['users'],'agreement',0,'uid',$uid,$return_page,false);
-            $out = $_CONF['site_url'];
-        }
-        break;
-    case 'admin':
-        $out = COM_startBlock ($LANG28[77], '',
-                    COM_getBlockTemplate ('_admin_block', 'header'));
-        if ($_CONF['commentsloginrequired'] == 0) {
-            $out .= $LANG28[80];
-        } else {
-            $url = $_CONF['admin_url'] . "user.php?mode=massrevoke";
-            $current = DB_count($_TABLES['users'],'agreement',1);
-
-            $out .= sprintf($LANG28[79],$url,$current)
-                . "<div class=\"agreement\"><h2>{$LANG28[77]}</h2>"
-                . USER_agreement('gettext')."</div>";
-        }
-        $out .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-        break;
-    }
-
-    return $out;
-}
-
 
 ?>

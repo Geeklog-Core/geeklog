@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.162 2007/03/09 07:04:16 ospiess Exp $
+// $Id: usersettings.php,v 1.163 2007/04/21 13:36:19 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -1519,10 +1519,6 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         PLG_profileExtrasSave ($_POST['plugin']);
         $display = COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?mode=edit&msg=5');
-        break;
-    case 'agreement':
-        $url = USER_agreement($_POST['action'], $_POST['next_url']);
-        $display = COM_refresh($url);
         break;
     default: // also if $mode == 'preferences' or 'comments'
         $display .= COM_siteHeader ('menu', $LANG01[49]);

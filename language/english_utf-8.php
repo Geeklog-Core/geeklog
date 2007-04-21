@@ -1,7 +1,8 @@
 <?php
 
 ###############################################################################
-# english.php
+# english_utf-8.php
+#
 # This is the english language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
@@ -123,7 +124,7 @@ $LANG01 = array(
     80 => 'stories in last',
     81 => 'story in last',
     82 => 'hours',
-    83 => 'COMMENTS',
+    83 => 'Comments',
     84 => '',
     85 => 'last 48 hrs',
     86 => 'No new comments',
@@ -139,7 +140,7 @@ $LANG01 = array(
     96 => 'Groups',
     97 => 'Word List',
     98 => 'Plugins',
-    99 => 'STORIES',
+    99 => 'Stories',
     100 => 'No new stories',
     101 => '',
     102 => '',
@@ -154,7 +155,7 @@ $LANG01 = array(
     111 => 'View PDF Version',
     112 => 'Registered Users',
     113 => 'Documentation',
-    114 => 'TRACKBACKS',
+    114 => 'Trackbacks',
     115 => 'No new trackback comments',
     116 => 'Trackback',
     117 => 'Directory',
@@ -365,9 +366,7 @@ $LANG04 = array(
     156 => 'Delete Account',
     157 => 'Delete Option',
     158 => 'Time Zone',
-    160 => 'I agree',
-    161 => 'I do not agree',
-    162 => 'In order to be able to post comments on this site, you have to confirm the following user agreement. Since you either did not do so yet, or since the agreement was changed since your last confirmation, please read the following text and then click on the appropriate button below.'
+    159 => 'This email was generated automatically. Please do not reply to this email.'
 );
 
 ###############################################################################
@@ -772,7 +771,7 @@ $LANG24 = array(
     75 => 'Full Featured',
     76 => 'Publish Options',
     77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&sid=%s&editopt=default">here</a> to use default editor',
+    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
     79 => 'Preview',
     80 => 'Editor',
     81 => 'Publish Options',
@@ -781,7 +780,8 @@ $LANG24 = array(
     84 => 'Permissions',
     85 => 'Show All',
     86 => 'Advanced Editor',
-    87 => 'Story Stats'
+    87 => 'Story Stats',
+    88 => 'Wiki-style format'
 );
 
 
@@ -894,16 +894,12 @@ $LANG28 = array(
     68 => 'Online Hours',
     69 => 'Offline Months',
     70 => 'could not be deleted',
-    71 => 'sucessfully deleted',
+    71 => 'Sucessfully deleted',
     72 => 'No User selected for deletion',
     73 => 'Are You sure you want to permanently delete ALL selected users?',
     74 => 'Recent Users',
     75 => 'Users that registered in the last ',
-    76 => ' months',
-    77 => 'User Agreement',
-    78 => '%1 agreements have been successfully revoked!',
-    79 => 'Before users can post comments on your site, they must confirm the following user agreement. If you change this text, you will have to ask you user again to confirm the agreement. To do so, <a href="%s" onclick="return confirm(\'Are you sure you want to revoke all user agreements?\');">revoke</a> the users confirmations. Currently, <b>%s</b> users confirmed.' . LB,
-    80 => 'If you want to have users confirm a User agreement, you have to set $_CONF[\'commentsloginrequired\'] = 1 in your config.php and set $_CONF[\'user_agreement\'] to a valid agreemtent text.'
+    76 => ' months'
 );
 
 ###############################################################################
@@ -1148,7 +1144,8 @@ $MESSAGE = array(
     81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
     82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
     83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
-    84 => 'To delete your account, please enter your current password.'
+    84 => 'To delete your account, please enter your current password.',
+    85 => 'There was a problem sending the email.'
 );
 
 ###############################################################################

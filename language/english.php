@@ -2,6 +2,7 @@
 
 ###############################################################################
 # english.php
+#
 # This is the english language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
