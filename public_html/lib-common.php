@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.634 2007/04/21 17:13:37 dhaun Exp $
+// $Id: lib-common.php,v 1.635 2007/04/21 17:26:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4242,7 +4242,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
             {
                 $pg = $sep . $page_str . $pgcount;
             }
-            $retval .= COM_createLink($pgcount, $base_url . $pg);
+            $retval .= COM_createLink($pgcount, $base_url . $pg) . ' ';
         }
     }
 
@@ -4257,10 +4257,10 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     }
     else
     {
-        $retval .= '| ' . COM_createLink($LANG05[5], $base_url . $sep . $page_str
-            . ( $curpage + 1 ) . $pg);
-        $retval .= '| ' . COM_createLink($LANG05[8], $base_url . $sep . $page_str
-            . $num_pages);
+        $retval .= '| ' . COM_createLink($LANG05[5], $base_url . $sep
+                                         . $page_str . ($curpage + 1) . $pg);
+        $retval .= ' | ' . COM_createLink($LANG05[8], $base_url . $sep
+                                          . $page_str . $num_pages);
     }
 
     if( !empty( $retval ))
