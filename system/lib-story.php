@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.94 2007/04/22 11:54:29 ospiess Exp $
+// $Id: lib-story.php,v 1.95 2007/04/22 13:20:35 dhaun Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -343,10 +343,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
                             . $story->getSid() . '&amp;pid=0&amp;type=article';
                 $article->set_var( 'post_comment_link',
-                        COM_createLink($LANG01[60], $postCommentUrl));
+                        COM_createLink($LANG01[60], $postCommentUrl,
+                                       array('rel' => 'nofollow')));
                 $article->set_var( 'lang_post_comment', $LANG01[60] );
                 $article->set_var( 'start_post_comment_anchortag',
-                                   '<a href="' . $postCommentUrl . '">' );
+                                   '<a href="' . $postCommentUrl
+                                   . '" rel="nofollow">' );
                 $article->set_var( 'end_post_comment_anchortag', '</a>' );
             }
         }
