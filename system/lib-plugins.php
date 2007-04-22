@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.126 2007/03/19 09:57:15 mjervis Exp $
+// $Id: lib-plugins.php,v 1.127 2007/04/22 14:19:19 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -84,7 +84,8 @@ function PLG_callFunctionForAllPlugins($function_name)
 *
 * This is a generic function used by some of the other API functions to
 * call a function for a specific plugin and, optionally pass parameters.
-* This function can handle any number of arguments
+* This function can handle up to 5 arguments and if more exist it will
+* try to pass the entire args array to the function.
 *
 * @param        string      $function       holds name of function to call
 * @param        array       $args           arguments to send to function
@@ -97,22 +98,37 @@ function PLG_callFunctionForOnePlugin($function, $args='')
         if (empty ($args)) {
             $args = array ();
         }
-        // great, function exists, construct code
-        $i = 1;
-        $f_args = '';
-        $count_args = count($args);
-        // add all arguments together to create function call
-        foreach ($args as $arg) {
-            $f_args .= $arg;
-            if ($i < $count_args) {
-                $f_args .= ", ";
-            }
-            $i++;
+
+        // great, function exists, run it
+        switch (count($args)) {
+        case 0:
+            return $function();
+            break;
+        case 1:
+            return $function($args[1]);
+            break;
+        case 2:
+            return $function($args[1], $args[2]);
+            break;
+        case 3:
+            return $function($args[1], $args[2], $args[3]);
+            break;
+        case 4:
+            return $function($args[1], $args[2], $args[3], $args[4]);
+            break;
+        case 5:
+            return $function($args[1], $args[2], $args[3], $args[4], $args[5]);
+            break;
+        case 6:
+            return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
+            break;
+        case 7:
+            return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
+            break;
+        default:
+            return $function($args);
+            break;
         }
-        // insert arguments in our function
-        $code = "return $function($f_args);";
-        // now run it
-        return eval($code);
     } else {
         return false;
     }
