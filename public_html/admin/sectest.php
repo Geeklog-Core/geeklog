@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.8 2007/04/22 08:23:56 dhaun Exp $
+// $Id: sectest.php,v 1.9 2007/04/22 17:04:43 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -357,9 +357,9 @@ if (empty ($LANG_DIRECTION)) {
 }
 
 $display .= '<p>To stay informed about new Geeklog releases and possible '
-    . "security issues, we suggest that you subscribe to the (low-traffic) "
+    . 'security issues, we suggest that you subscribe to the (low-traffic) '
     . COM_createLink('geeklog-announce', 'http://lists.geeklog.net/mailman/listinfo/geeklog-announce')
-    . 'mailing list and/or use the ' . $versioncheck
+    . ' mailing list and/or use the ' . $versioncheck
     . ' option in your Admin menu from time to time to check for available updates.</p>';
 
 $display .= COM_endBlock ();
