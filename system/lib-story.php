@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.92 2007/03/02 08:09:34 mjervis Exp $
+// $Id: lib-story.php,v 1.93 2007/04/22 11:30:09 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -291,7 +291,17 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 . ' (' . $numwords . ' ' . $LANG01[62] . ') ' );
             $article->set_var( 'read_more_class', 'class="story-read-more"' );
         }
-
+        
+        $article->set_var( 'start_storylink_anchortag', '<a href="'
+                . $articleUrl . '" class="non-ul">' );
+        $article->set_var( 'end_storylink_anchortag', '</a>' );
+        $article->set_var( 'story_title_link',
+            COM_createLink(
+                    $story->DisplayElements('title'),
+                    $articleUrl,
+                    array('class'=>'non-ul')
+        ) );
+        
         if(( $story->DisplayElements('commentcode') >= 0 ) and ( $show_comments ))
         {
             $commentsUrl = COM_buildUrl( $_CONF['site_url']
