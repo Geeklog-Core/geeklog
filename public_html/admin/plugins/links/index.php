@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.41 2007/03/18 20:00:55 ospiess Exp $
+// $Id: index.php,v 1.42 2007/04/22 04:52:05 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -338,11 +338,19 @@ function listlinks ()
                     array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
                     array('text' => $LANG_LINKS_ADMIN[14], 'field' => 'category', 'sort' => true));
 
+    $validate = '';
+    if (isset($_GET['checkhtml'])) {
+        $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'htmlcode', 'sort' => false);
+        $validate = '?checkhtml=true';
+    }
+
     $defsort_arr = array('field' => 'title', 'direction' => 'asc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
                           'text' => $LANG_ADMIN['create_new']),
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
+                          'text' => $LANG_LINKS_ADMIN[26]),
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
 
@@ -350,7 +358,7 @@ function listlinks ()
                       'has_extras'   => true,
                       'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
                       'icon' => $_CONF['site_url'] . '/links/images/links.png',
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php");
+                      'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php$validate");
 
     $query_arr = array('table' => 'links',
                        'sql' => "SELECT * FROM {$_TABLES['links']} WHERE 1=1",

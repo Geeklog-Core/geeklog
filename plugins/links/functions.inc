@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.79 2007/02/13 03:18:33 ospiess Exp $
+// $Id: functions.inc,v 1.80 2007/04/22 04:51:28 ospiess Exp $
 
 
 /**
@@ -1081,6 +1081,9 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
             case 'title':
                 $retval = COM_createLink(stripslashes($A['title']), $A['url']);
                 break;
+            case 'htmlcode';
+                $retval = links_validateUrl($A['url']);
+                break;
             default:
                 $retval = $fieldvalue;
                 break;
@@ -1125,6 +1128,38 @@ function links_getCategoryList (&$current_category)
     }
 
     return $retval;
+}
+
+function links_validateUrl($url) {
+    global $LANG_LINKS_STATUS;
+    $header_str = '';
+    $url_arr = parse_url($url);
+    $socket = @fsockopen($url_arr['host'], 80, $err_no, $err_txt, 10);
+    if ($socket) {
+        if (empty($url_arr['path'])) {
+            $url_arr['path'] = "/";
+        }
+        $query = '';
+        if (isset($url_arr['query'])) {
+            $query = "?{$url_arr['query']}";
+        }
+        $send_header = "HEAD {$url_arr['path']} HTTP/1.1\r\n"
+            . "User-Agent: Geeklog Link Checker\r\n"
+            . "Host: {$url_arr['host']}\r\n"
+            . "Connection: close\r\n\r\n";
+        fputs($socket, $send_header);
+        while($str = fgets($socket, 1024)) {
+            if (eregi("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", $str)) {
+                $status_code = trim(eregi_replace("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", "\\1", $str));
+            }
+        }
+        fclose($socket);
+        $status_code = $status_code . ": " . $LANG_LINKS_STATUS[$status_code];
+    }
+    if (!isset($status_code)) {
+        $status_code = $LANG_LINKS_STATUS[999];
+    }
+    return $status_code;
 }
 
 /**
