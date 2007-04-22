@@ -59,6 +59,15 @@ GeekLog History/Changes:
 - Remove the "Are you secure?" (getBent) block from the database as its
   functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
 
+- New Czech language file for the Calendar and Links plugins, provided
+  by Ondrej Rusek
+- Updated Dutch language files, provided by Ronald Edelschaap
+- Updated Japanese language files for Geeklog and all the plugins, provided
+  by the Geeklog Japanese group
+- New Korean language files for Geeklog and most of the plugins, provided
+  by Tetsuko Komma and Kim Younghie
+
+
 Calendar plugin (1.0.1)
 ------------
 - Autouninstall implemented [Oliver]
