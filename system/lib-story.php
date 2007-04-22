@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.93 2007/04/22 11:30:09 ospiess Exp $
+// $Id: lib-story.php,v 1.94 2007/04/22 11:54:29 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -187,10 +187,13 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $recent_post_anchortag = '';
     $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                                 . $story->getSid());
+    $article->set_var('story_title_link', $story->DisplayElements('title'));
     $article->set_var('story_title', $story->DisplayElements('title'));
     $article->set_var('lang_permalink', $LANG01[127]);
 
     $show_comments = true;
+    
+    // n = 'Compact display' for list of stories. p = 'Preview' mode.
     if(( $index == 'n' ) || ( $index == 'p' ))
     {
         if( empty( $bodytext ))
@@ -300,7 +303,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     $story->DisplayElements('title'),
                     $articleUrl,
                     array('class'=>'non-ul')
-        ) );
+            )
+        );
         
         if(( $story->DisplayElements('commentcode') >= 0 ) and ( $show_comments ))
         {
