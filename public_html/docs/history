@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Changed the Security Check to only check if any Root users have their password
+  as "password" [Dirk]
 - Made admin/sectest.php recognize 403 status codes (reported by THX100) [Dirk]
 - All plugin API's, where not doing very, very plugin specific activities now
   call a matching CUSTOM_ function. [Mike]

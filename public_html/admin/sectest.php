@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.7 2007/03/03 17:35:46 dhaun Exp $
+// $Id: sectest.php,v 1.8 2007/04/22 08:23:56 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -246,10 +246,22 @@ function checkDefaultPassword ()
     $retval = '';
 
     // check to see if any account still has 'password' as its password.
-    $count = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['users']} WHERE passwd='" . md5 ('password') . "'");
-    $A = DB_fetchArray ($count);
-    if ($A['count'] > 0) {
-        $retval .= '<li>You still have not changed the <strong>default password</strong> from "password" on ' . $A['count'] . ' account(s).';
+    $pwdRoot = 0;
+    $pwdUser = 0;
+    $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE passwd='" . md5 ('password') . "'");
+    $numPwd = DB_numRows($result);
+    if ($numPwd > 0) {
+        for ($i = 0; $i < $numPwd; $i++) {
+            list($uid) = DB_fetchArray($result);
+            if (SEC_inGroup('Root', $uid)) {
+                $pwdRoot++;
+            } else {
+                $pwdUser++;
+            }
+        }
+    }
+    if ($pwdRoot > 0) {
+        $retval .= '<li>You still have not changed the <strong>default password</strong> from "password" on ' . $pwdRoot . ' Root user account(s).';
         $failed_tests++;
     } else {
         $retval .= '<li>Good! You seem to have changed the default account password already.</li>';
