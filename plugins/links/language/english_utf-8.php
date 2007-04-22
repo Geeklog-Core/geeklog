@@ -2,12 +2,13 @@
 
 ###############################################################################
 # english_utf-8.php
-# This is the english language page for the Geeklog links Plug-in!
+#
+# This is the english language file for the Geeklog Links Plugin
 #
 # Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
+# tony AT tonybibbs DOT com
 # Copyright (C) 2005 Trinity Bays
-# trinity93@gmail.com
+# trinity93 AT gmail DOT com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english_utf-8.php,v 1.4 2007/03/18 20:00:43 ospiess Exp $
+# $Id: english_utf-8.php,v 1.5 2007/04/22 13:24:33 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -34,13 +35,11 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93@steubentech.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * @author Blaine Lang <langmail@sympatico.ca>
- * @author Dirk Haun <dirk@haun-online.de>
+ * @author Trinity Bays <trinity93 AT steubentech DOT com>
+ * @author Tony Bibbs <tony AT tonybibbs DOT com>
+ * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
  *
  */
 
@@ -59,10 +58,17 @@
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
-    84 => 'LINKS',
+    84 => 'Links',
     88 => 'No recent new links',
     114 => 'Links',
-    116 => 'Add A Link'
+    116 => 'Add A Link',
+    117 => 'Report Broken Link',
+    118 => 'Broken Link Report',
+    119 => 'The following link has been reported to be broken: ',
+    120 => 'To edit the link, click here: ',
+    121 => 'The broken Link was reported by: ',
+    122 => 'Thank you for reporting this broken link. The administrator will correct the problem as soon as possible',
+    123 => 'Thank you'
 );
 
 ###############################################################################
@@ -94,6 +100,7 @@ $LANG_LINKS_SEARCH = array(
  'author' => 'Submited by',
  'hits' => 'Clicks'
 );
+
 ###############################################################################
 # for the submission form
 /**
@@ -154,7 +161,52 @@ $LANG_LINKS_ADMIN = array(
     22 => 'cancel',
     23 => 'delete',
     24 => 'Link not found',
-    25 => 'The link you selected for editing could not be found.'
+    25 => 'The link you selected for editing could not be found.',
+    26 => 'Verify Links',
+    27 => 'HTML Status'
 );
+
+$LANG_LINKS_STATUS = array(
+    100 => "Continue",
+    101 => "Switching Protocols",
+    200 => "OK",
+    201 => "Created",
+    202 => "Accepted",
+    203 => "Non-Authoritative Information",
+    204 => "No Content",
+    205 => "Reset Content",
+    206 => "Partial Content",
+    300 => "Multiple Choices",
+    301 => "Moved Permanently",
+    302 => "Found",
+    303 => "See Other",
+    304 => "Not Modified",
+    305 => "Use Proxy",
+    307 => "Temporary Redirect",
+    400 => "Bad Request",
+    401 => "Unauthorized",
+    402 => "Payment Required",
+    403 => "Forbidden",
+    404 => "Not Found",
+    405 => "Method Not Allowed",
+    406 => "Not Acceptable",
+    407 => "Proxy Authentication Required",
+    408 => "Request Timeout",
+    409 => "Conflict",
+    410 => "Gone",
+    411 => "Length Required",
+    412 => "Precondition Failed",
+    413 => "Request Entity Too Large",
+    414 => "Request-URI Too Long",
+    415 => "Unsupported Media Type",
+    416 => "Requested Range Not Satisfiable",
+    417 => "Expectation Failed",
+    500 => "Internal Server Error",
+    501 => "Not Implemented",
+    502 => "Bad Gateway",
+    503 => "Service Unavailable",
+    504 => "Gateway Timeout",
+    505 => "HTTP Version Not Supported",
+    999 => "Connection Timed out");
 
 ?>

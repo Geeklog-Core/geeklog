@@ -2,6 +2,7 @@
 
 ###############################################################################
 # english_utf-8.php
+#
 # This is the english language page for the Geeklog Polls Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -41,7 +42,13 @@ $LANG_POLLS = array(
     'stats_votes'       => 'Votes',
     'stats_none'        => 'It appears that there are no polls on this site or no one has ever voted.',
     'stats_summary'     => 'Polls (Answers) in the system',
-    'open_poll'         => 'Open for Voting'
+    'open_poll'         => 'Open for Voting',
+    'answer_all'        => 'Please answer all remaining questions',
+    'not_saved'         => 'Result not saved',
+    'upgrade1'          => 'You installed a new version of the Polls plugin. Please',
+    'upgrade2'          => 'upgrade'
+
+
 );
 
 ###############################################################################
@@ -86,7 +93,8 @@ $LANG25 = array(
     36 => 'more questions.',
     37 => 'Hide results while poll is open',
     38 => 'While the poll is open, only the owner & root can see the results',
-    39 => 'The topic will be only displayed if there are more than 1 questions.'
+    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE19 = 'Your poll has been successfully saved.';

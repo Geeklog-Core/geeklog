@@ -2,6 +2,7 @@
 
 ###############################################################################
 # english.php
+#
 # This is the english language file for the Geeklog Links Plugin
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -24,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.17 2007/04/22 04:51:28 ospiess Exp $
+# $Id: english.php,v 1.18 2007/04/22 13:24:33 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
