@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.635 2007/04/21 17:26:04 dhaun Exp $
+// $Id: lib-common.php,v 1.636 2007/04/24 19:18:01 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5749,11 +5749,11 @@ function COM_getTopicImageUrl( $imageurl )
 /**
  * Create an HTML link
  *
- * $param   string  $content    the object to be linked (text, image etc)
- * $param   string  $url        the URL the link will point to
- * $param   array   $attr       an array of optional attributes for the link
+ * @param   string  $content    the object to be linked (text, image etc)
+ * @param   string  $url        the URL the link will point to
+ * @param   array   $attr       an array of optional attributes for the link
  *                              for example array('title' => 'whatever');
- * $return  string              the HTML link
+ * @return  string              the HTML link
  */
 function COM_createLink($content, $url, $attr = array())
 {
@@ -5771,12 +5771,12 @@ function COM_createLink($content, $url, $attr = array())
 /**
  * Create an HTML img
  *
- * $param   string  $url        the URL of the image, either starting with
+ * @param   string  $url        the URL of the image, either starting with
  *                              http://... or $_CONF['layout_url'] is prepended
- * $param   string  $alt        the 'alt'-tag of the image
- * $param   array   $attr       an array of optional attributes for the link
+ * @param   string  $alt        the 'alt'-tag of the image
+ * @param   array   $attr       an array of optional attributes for the link
  *                              for example array('title' => 'whatever');
- * $return  string              the HTML img
+ * @return  string              the HTML img
  */
 function COM_createImage($url, $alt, $attr=array())
 {
