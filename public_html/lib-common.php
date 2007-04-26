@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.636 2007/04/24 19:18:01 dhaun Exp $
+// $Id: lib-common.php,v 1.637 2007/04/26 19:26:42 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5778,21 +5778,24 @@ function COM_createLink($content, $url, $attr = array())
  *                              for example array('title' => 'whatever');
  * @return  string              the HTML img
  */
-function COM_createImage($url, $alt, $attr=array())
+function COM_createImage($url, $alt = "", $attr = array())
 {
     global $_CONF;
 
-    $arttr_str = '';
-    foreach ($attr as $key => $value) {
-        $attr_str .= " $key=\"$value\"";
-    }
+    $retval = '';
 
     if (strpos($url, 'http://') !== 0) {
         $url = $_CONF['layout_url'] . $url;
     }
+    $attr_str = 'src="' . $url . '"';
 
-    $out = "<img$attr_str src=\"$url\" alt=\"$alt\" " . XHTML . ">";
-    return $out;
+    foreach ($attr as $key => $value) {
+        $attr_str .= " $key=\"$value\"";
+    }
+
+    $retval = "<img $attr_str alt=\"$alt\" " . XHTML . ">";
+
+    return $retval;
 }
 
 /**
