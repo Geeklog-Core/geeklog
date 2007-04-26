@@ -70,12 +70,12 @@ GeekLog History/Changes:
   by Tetsuko Komma and Kim Younghie
 
 
-Calendar plugin (1.0.1)
+Calendar plugin (1.0.2)
 ------------
 - Autouninstall implemented [Oliver]
 - Added Batch-Delete functionality [Oliver]
 
-Links plugin (1.1)
+Links plugin (1.1.1)
 ------------
 - Added owner_id field to submissions to record submitter and align with 
   stories behavior [Oliver]
@@ -83,14 +83,14 @@ Links plugin (1.1)
 - Added "Report Broken Link" function [Oliver]
 - Added Link Verification to Link Admin [Oliver]
 
-Polls plugin (2.0)
+Polls plugin (2.0.1)
 ------------
 - Autouninstall implemented [Oliver]
 - Added Support for multiple questions grouped into a survey [Oliver]
 - Added Support for closing polls [Oliver]
 - Added Support for hiding poll results of open polls [Oliver]
 
-Spam-X plugin
+Spam-X plugin (1.1.1)
 -------------
 - Autouninstall implemented [Oliver]
 - Fixed an error with the SLV module when $_CONF['site_url'] was empty
@@ -98,7 +98,7 @@ Spam-X plugin
 - Added support for blocking entire IP ranges, using either CIDR notation or
   simple x.x.x.x-y.y.y.y ranges [Dirk]
 
-Static Pages plugin
+Static Pages plugin (1.4.4)
 -------------------
 - New Static pages Autotag: staticpage_content to return the contents of a 
   static page instead of a link to a static page [Oliver]
