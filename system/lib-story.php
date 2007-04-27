@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.95 2007/04/22 13:20:35 dhaun Exp $
+// $Id: lib-story.php,v 1.96 2007/04/27 19:53:38 dhaun Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -292,7 +292,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     array('class'=>'story-read-more-link')
                 )
                 . ' (' . $numwords . ' ' . $LANG01[62] . ') ' );
-            $article->set_var( 'read_more_class', 'class="story-read-more"' );
+            $article->set_var('read_more_class', 'class="story-read-more-link"');
         }
         
         $article->set_var( 'start_storylink_anchortag', '<a href="'
