@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.96 2007/04/27 19:53:38 dhaun Exp $
+// $Id: lib-story.php,v 1.97 2007/04/27 19:57:20 dhaun Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -282,7 +282,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
             $article->set_var( 'lang_readmore_words', $LANG01[62] );
-            $numwords = COM_NumberFormat (sizeof( explode( ' ', strip_tags( $bodytext ))));
+            $numwords = COM_numberFormat (sizeof( explode( ' ', strip_tags( $bodytext ))));
             $article->set_var( 'readmore_words', $numwords );
 
             $article->set_var( 'readmore_link',
@@ -292,6 +292,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     array('class'=>'story-read-more-link')
                 )
                 . ' (' . $numwords . ' ' . $LANG01[62] . ') ' );
+            $article->set_var('start_readmore_anchortag', '<a href="'
+                    . $articleUrl . '" class="story-read-more-link">');
+            $article->set_var('end_readmore_anchortag', '</a>');
             $article->set_var('read_more_class', 'class="story-read-more-link"');
         }
         
