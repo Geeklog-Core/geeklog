@@ -56,6 +56,8 @@ CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
     [content] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [rdfurl] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [rdfupdated] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [rdf_last_modified] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [rdf_etag] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [rdflimit] [numeric](5, 0) NULL ,
     [onleft] [tinyint] NULL ,
     [phpblockfn] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,

@@ -48,6 +48,8 @@
     var $reader;
     var $userAgent;
     var $errorStatus;
+    var $lastModified;
+    var $eTag;
 
     /**
       * Constructor, loads feedparser classes into memory.
@@ -73,14 +75,16 @@
           }
         }
       }
+      $this->lastModified = '';
+      $this->eTag = '';
     }
 
     /**
       * Method to get a feed handler class.
       *
       * This function takes a url, fetches it, parses it, and thus figures out
-      * what type of feed parser to return, with the contents all parsed for your
-      * viewing pleasure.
+      * what type of feed parser to return, with the contents all parsed for
+      * your viewing pleasure.
       *
       * @access public
       * @param string $url The url to a feed type to syndicate.
@@ -171,21 +175,32 @@
       *
       * @access private
       * @param string $url The URL to open.
+      * @return mixed      HTTP response body or boolean false
       */
     function _getFeed( $url )
     {
-      $req =& new HTTP_Request($url, array('allowRedirects' => true));
-      if ($this->userAgent != '')
-      {
-        $req->addHeader('User-Agent', $this->userAgent);
-      }
-      $response = $req->sendRequest();
-      if (!PEAR::isError($response)) {
-        return $req->getResponseBody();
-      } else {
-      	$this->errorStatus = array('HTTP Fetch Failed', $response->getCode(), $response->getMessage());
-        return false;
-      }
+        $req = new HTTP_Request($url, array('allowRedirects' => true));
+        if ($this->userAgent != '') {
+            $req->addHeader('User-Agent', $this->userAgent);
+        }
+        if (!empty($this->lastModified) && !empty($this->eTag)) {
+            $req->addHeader('If-Modified-Since', $this->lastModified);
+            $req->addHeader('If-None-Match', $this->eTag);
+        }
+        $response = $req->sendRequest();
+        if (!PEAR::isError($response)) {
+            if ($req->getResponseCode() == 304) {
+                $this->errorStatus = false; // indicate no error, just unchanged
+                return false;
+            } else {
+                $this->lastModified = $req->getResponseHeader('Last-Modified');
+                $this->eTag = $req->getResponseHeader('ETag');
+                return $req->getResponseBody();
+            }
+        } else {
+      	    $this->errorStatus = array('HTTP Fetch Failed', $response->getCode(), $response->getMessage());
+            return false;
+        }
     }
 
     /**

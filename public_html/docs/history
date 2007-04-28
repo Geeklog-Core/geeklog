@@ -2,6 +2,10 @@ GeekLog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Portal blocks now use the HTTP Last-Modified and ETag headers to only request
+  feeds when they have changed [Dirk]
+- The {read_more_class} variable now contains class="story-read-more-link" (if
+  defined) for consistency with the class name used in {readmore_link} [Dirk]
 - Changed the Security Check to only check if any Root users have their password
   as "password" [Dirk]
 - Made admin/sectest.php recognize 403 status codes (reported by THX100) [Dirk]

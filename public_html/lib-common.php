@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.637 2007/04/26 19:26:42 dhaun Exp $
+// $Id: lib-common.php,v 1.638 2007/04/28 17:23:36 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3402,84 +3402,93 @@ function COM_rdfCheck( $bid, $rdfurl, $date, $maxheadlines = 0 )
 * @see function COM_rdfCheck
 *
 */
-function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
+function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 {
     global $_CONF, $_TABLES, $LANG21;
 
     // Import the feed handling classes:
-    require_once( $_CONF['path_system']
-                  . '/classes/syndication/parserfactory.class.php' );
-    require_once( $_CONF['path_system']
-                  . '/classes/syndication/feedparserbase.class.php' );
+    require_once $_CONF['path_system']
+                 . '/classes/syndication/parserfactory.class.php';
+    require_once $_CONF['path_system']
+                 . '/classes/syndication/feedparserbase.class.php';
+
+    $result = DB_query("SELECT rdf_last_modified, rdf_etag FROM {$_TABLES['blocks']} WHERE bid = $bid");
+    list($last_modified, $etag) = DB_fetchArray($result);
 
     // Load the actual feed handlers:
-    $factory = new FeedParserFactory( $_CONF['path_system']
-                                      . '/classes/syndication/' );
+    $factory = new FeedParserFactory($_CONF['path_system']
+                                     . '/classes/syndication/');
     $factory->userAgent = 'GeekLog/' . VERSION;
-    $feed = $factory->reader( $rdfurl, $_CONF['default_charset'] );
+    if (!empty($last_modified) && !empty($etag)) {
+        $factory->lastModified = $last_modified;
+        $factory->eTag = $etag;
+    }
 
     // Aquire a reader:
-    if( $feed )
-    {
+    $feed = $factory->reader($rdfurl, $_CONF['default_charset']);
+
+    if ($feed) {
         /* We have located a reader, and populated it with the information from
          * the syndication file. Now we will sort out our display, and update
          * the block.
          */
-        if( $maxheadlines == 0 )
-        {
-            if( !empty( $_CONF['syndication_max_headlines'] ))
-            {
+        if ($maxheadlines == 0) {
+            if (!empty($_CONF['syndication_max_headlines'])) {
                 $maxheadlines = $_CONF['syndication_max_headlines'];
-            }
-            else
-            {
-                $maxheadlines = count( $feed->articles );
+            } else {
+                $maxheadlines = count($feed->articles);
             }
         }
 
-        $update = date( 'Y-m-d H:i:s' );
-        $result = DB_change( $_TABLES['blocks'], 'rdfupdated', $update,
-                                                 'bid', $bid );
+        $update = date('Y-m-d H:i:s');
+        $last_modified = '';
+        if (!empty($factory->lastModified)) {
+            $last_modified = addslashes($factory->lastModified);
+        }
+        $etag = '';
+        if (!empty($factory->eTag)) {
+            $etag = addslashes($factory->eTag);
+        }
+
+        if (empty($last_modified) || empty($etag)) {
+            DB_query("UPDATE {$_TABLES['blocks']} SET rdfupdated = '$update', rdf_last_modified = NULL, rdf_etag = NULL WHERE bid = '$bid'");
+        } else {
+            DB_query("UPDATE {$_TABLES['blocks']} SET rdfupdated = '$update', rdf_last_modified = '$last_modified', rdf_etag = '$etag' WHERE bid = '$bid'");
+        }
+
         $charset = COM_getCharset();
 
         // format articles for display
-        $readmax = min( $maxheadlines, count( $feed->articles ));
-        for( $i = 0; $i < $readmax; $i++ )
-        {
-            if( empty( $feed->articles[$i]['title'] ))
-            {
+        $readmax = min($maxheadlines, count($feed->articles));
+        for ($i = 0; $i < $readmax; $i++) {
+            if (empty($feed->articles[$i]['title'])) {
                 $feed->articles[$i]['title'] = $LANG21[61];
             }
 
-            if( $charset == 'utf-8' )
-            {
+            if ($charset == 'utf-8') {
                 $title = $feed->articles[$i]['title'];
-            }
-            else
-            {
-                $title = utf8_decode( $feed->articles[$i]['title'] );
+            } else {
+                $title = utf8_decode($feed->articles[$i]['title']);
             }
             $content = COM_createLink($title, $feed->articles[$i]['link']);
             $articles[] = $content;
         }
 
         // build a list
-        $content = COM_makeList( $articles, 'list-feed' );
-        $content = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $content );
+        $content = COM_makeList($articles, 'list-feed');
+        $content = preg_replace("/(\015\012)|(\015)|(\012)/", '', $content);
 
         // Standard theme based function to put it in the block
-        $result = DB_change( $_TABLES['blocks'], 'content',
-                             addslashes( $content ), 'bid', $bid );
-    }
-    else
-    {
+        $result = DB_change($_TABLES['blocks'], 'content',
+                            addslashes($content), 'bid', $bid);
+    } else if ($factory->errorStatus !== false) {
         // failed to aquire info, 0 out the block and log an error
-        COM_errorLog( "Unable to aquire feed reader for $rdfurl", 1 );
-        COM_errorLog( $factory->errorStatus[0] . ' ' .
-                                    $factory->errorStatus[1] . ' ' .
-                                    $factory->errorStatus[2] );
-        $result = DB_change( $_TABLES['blocks'], 'content',
-                             addslashes( $LANG21[4] ), 'bid', $bid );
+        COM_errorLog("Unable to aquire feed reader for $rdfurl", 1);
+        COM_errorLog($factory->errorStatus[0] . ' ' .
+                     $factory->errorStatus[1] . ' ' .
+                     $factory->errorStatus[2]);
+        $content = addslashes($LANG21[4]);
+        DB_query("UPDATE {$_TABLES['blocks']} SET content = '$content', rdf_last_modified = NULL, rdf_etag = NULL WHERE bid = $bid");
     }
 }
 

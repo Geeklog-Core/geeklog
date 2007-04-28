@@ -21,6 +21,8 @@ CREATE TABLE {$_TABLES['blocks']} (
   allow_autotags tinyint(1) unsigned NOT NULL DEFAULT '0',
   rdfurl varchar(255) default NULL,
   rdfupdated datetime NOT NULL default '0000-00-00 00:00:00',
+  rdf_last_modified varchar(40) default NULL,
+  rdf_etag varchar(40) default NULL,
   rdflimit smallint(5) unsigned NOT NULL default '0',
   onleft tinyint(3) unsigned NOT NULL default '1',
   phpblockfn varchar(128) default '',

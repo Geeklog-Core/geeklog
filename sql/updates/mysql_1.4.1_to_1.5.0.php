@@ -26,7 +26,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
     ) TYPE=MyISAM
     ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) SELECT pid, topic FROM {$_TABLES['polltopics']}";
+//$_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) SELECT pid, topic FROM {$_TABLES['polltopics']}";
 
 // new comment code: close comments
 $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Comments Closed')";
@@ -40,4 +40,8 @@ $_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0', pi_gl_version = 
 
 // Increase block function size to accept arguments:
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR(128)";
+
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DEFAULT NULL AFTER rdfupdated";
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL AFTER rdf_last_modified";
+
 ?>
