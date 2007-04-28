@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.20 2007/04/21 17:15:18 dhaun Exp $
+// $Id: index.php,v 1.21 2007/04/28 18:55:47 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -63,7 +63,8 @@ require_once ('../lib-common.php');
 */
 function links_list($message)
 {
-    global $_CONF, $_LI_CONF, $LANG_LINKS_ADMIN, $LANG_LINKS, $_TABLES;
+    global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN, $LANG_LINKS,
+           $LANG_LINKS_STATS;
 
     $category = '';
     $display = '';
