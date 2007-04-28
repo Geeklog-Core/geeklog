@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.73 2007/01/13 11:11:02 ospiess Exp $
+// $Id: topic.php,v 1.74 2007/04/28 19:41:29 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -69,7 +69,16 @@ function edittopic ($tid = '')
 
     $retval = '';
 
-    if (!empty($tid)) {
+    if (empty($tid)) {
+        // new topic - set defaults
+        $A = array();
+        $A['tid'] = '';
+        $A['topic'] = '';
+        $A['sortnum'] = 0;
+        $A['limitnews'] = ''; // leave empty!
+        $A['is_default'] = 0;
+        $A['archive_flag'] = 0;
+    } else {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid ='$tid'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -548,7 +557,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                            $_POST['is_default'], $_POST['is_archive']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG27[1]);
-    $display .= edittopic (COM_applyFilter ($_GET['tid']));
+    $tid = '';
+    if (isset($_GET['tid'])) {
+        $tid = COM_applyFilter($_GET['tid']);
+    }
+    $display .= edittopic($tid);
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu', $LANG27[8]);
