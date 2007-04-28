@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Static Page Plugin                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.42 2007/03/06 06:41:32 ospiess Exp $
+// $Id: index.php,v 1.43 2007/04/28 18:38:21 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -48,7 +48,7 @@ COM_setArgNames (array ('page', 'mode'));
 $page = COM_applyFilter (COM_getArgument ('page'));
 $mode = COM_applyFilter (COM_getArgument ('mode'));
 if ($mode != 'print') {
-    unset ($mode);
+    $mode = '';
 }
 
 $retval = SP_returnStaticpage($page, $mode);
