@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.638 2007/04/28 17:23:36 dhaun Exp $
+// $Id: lib-common.php,v 1.639 2007/04/28 18:32:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4426,7 +4426,7 @@ function phpblock_whosonline()
             {
                 $usrimg = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
                     . $_IMAGE_TYPE . '" border="0" alt="">';
-                $retval .= '&nbsp;' . COM_createLink($userimg, $url);
+                $retval .= '&nbsp;' . COM_createLink($usrimg, $url);
             }
             $retval .= '<br>';
             $num_reg++;
