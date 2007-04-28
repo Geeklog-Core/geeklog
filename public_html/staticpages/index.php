@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Page Geeklog Plugin 1.4.3                                          |
+// | Static Page Geeklog Plugin 1.4.4                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -31,22 +31,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.43 2007/04/28 18:38:21 dhaun Exp $
+// $Id: index.php,v 1.44 2007/04/28 18:54:03 dhaun Exp $
 
-require_once ('../lib-common.php');
+require_once '../lib-common.php';
 
 // MAIN
 
-if (!empty ($_USER['uid'])) {
-    $noboxes = DB_getItem ($_TABLES['userindex'], 'noboxes',
-                           "uid = '{$_USER['uid']}'");
-} else {
-    $noboxes = 0;
-}
-
-COM_setArgNames (array ('page', 'mode'));
-$page = COM_applyFilter (COM_getArgument ('page'));
-$mode = COM_applyFilter (COM_getArgument ('mode'));
+COM_setArgNames(array('page', 'mode'));
+$page = COM_applyFilter(COM_getArgument('page'));
+$mode = COM_applyFilter(COM_getArgument('mode'));
 if ($mode != 'print') {
     $mode = '';
 }

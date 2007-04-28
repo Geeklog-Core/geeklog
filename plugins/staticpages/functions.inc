@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.3                                                 |
+// | Static Pages Plugin 1.4.4                                                 |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.93 2007/03/15 19:10:08 mjervis Exp $
+// $Id: functions.inc,v 1.94 2007/04/28 18:54:03 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -131,13 +131,13 @@ function SP_countVisiblePages ()
 *
 * @param    string  $page       static page id
 * @param    array   $A          static page data
-* @param    int     $noboxes    the user's "noboxes" setting (see Preferences)
 * @return   string              HTML for the static page
 *
 */
-function SP_displayPage ($page, $A, $noboxes)
+function SP_displayPage ($page, $A)
 {
-    global $_CONF, $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
+    global $_CONF, $_TABLES, $_USER,
+           $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
 
     $retval = '';
 
@@ -196,7 +196,6 @@ function SP_displayPage ($page, $A, $noboxes)
             $spage->set_var('lastupdate', $lastupdate);
         }
 
-
         if ($_SP_CONF['show_hits'] == 1) {
             if ($_SP_CONF['show_date'] == 1) {
                 $hits = "| ";
@@ -213,10 +212,19 @@ function SP_displayPage ($page, $A, $noboxes)
     }
 
     if ($A['sp_format'] <> 'blankpage') {
-        if (($A['sp_format'] == 'allblocks') && ($noboxes != 1)) {
-            $retval .= COM_siteFooter (true);
+        if (!isset($_USER['noboxes'])) {
+            if (empty($_USER['uid']) || ($_USER['uid'] == 1)) {
+                $_USER['noboxes'] = 0;
+            } else {
+                $_USER['noboxes'] = DB_getItem($_TABLES['userindex'],
+                                        'noboxes', "uid = '{$_USER['uid']}'");
+            }
+        }
+
+        if (($A['sp_format'] == 'allblocks') && ($_USER['noboxes'] != 1)) {
+            $retval .= COM_siteFooter(true);
         } else {
-            $retval .= COM_siteFooter ();
+            $retval .= COM_siteFooter();
         }
     }
 
@@ -266,6 +274,7 @@ function SP_printPage ($page, $A)
 function SP_returnStaticpage($page='', $mode='')
 {
     global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
+
     $error = 0;
 
     if ($page == '') {
@@ -299,7 +308,7 @@ function SP_returnStaticpage($page='', $mode='')
         } else if ($mode =='autotag') {
             $retval = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
         } else {
-            $retval = SP_displayPage ($page, $A, $noboxes);
+            $retval = SP_displayPage ($page, $A);
         }
 
         // increment hit counter for page
@@ -343,6 +352,7 @@ function SP_returnStaticpage($page='', $mode='')
             }
         }
     }
+
     return $retval;
 }
 
