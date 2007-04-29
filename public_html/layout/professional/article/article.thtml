@@ -1,7 +1,5 @@
         {formatted_article}
-        <table width="100%">
-            <tr><td style="vertical-align:top;">{whats_related}</td>
-                <td style="vertical-align:top;">{story_options}</td></tr>
-        </table>
+        <div class="floatleft" style="width:50%;">{whats_related}</div>
+        <div class="floatleft" style="width:50%;">{story_options}</div>
         {trackback}
         {commentbar}
