@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.97 2007/04/27 19:57:20 dhaun Exp $
+// $Id: lib-story.php,v 1.98 2007/04/29 17:54:59 dhaun Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -146,8 +146,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         }
     }
 
-    $article->set_var( 'story_topic_id', $story->DisplayElements('tid') );
-    $article->set_var( 'story_topic_name', $story->DisplayElements('topic') );
+    $topicname = $story->DisplayElements('topic');
+    $article->set_var('story_topic_id', $story->DisplayElements('tid'));
+    $article->set_var('story_topic_name', $topicname);
 
     $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $story->DisplayElements('tid');
     if(( !isset( $_USER['noicons'] ) OR ( $_USER['noicons'] != 1 )) AND
