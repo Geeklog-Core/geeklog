@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.73 2007/03/09 04:52:18 ospiess Exp $
+// $Id: functions.inc,v 1.74 2007/04/29 14:12:13 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -452,6 +452,7 @@ function POLLS_pollVote($pid, $showall=true)
     $retval = '';
 
     $topic = DB_query("SELECT topic,voters,commentcode,open,hideresults,owner_id "
+        . ",group_id,perm_owner,perm_group,perm_anon,perm_members "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
     $ntopics = DB_numRows($topic);
 
@@ -495,16 +496,23 @@ function POLLS_pollVote($pid, $showall=true)
                         . "$pid&amp;aid=-1");
                 }
                 $poll->set_var('poll_results', $results);
-                $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],
-                    $T['perm_group'],$T['perm_members'],$T['perm_anon']);
+                $access = SEC_hasAccess($topic['owner_id'],$topic['group_id'],$topic['perm_owner'],
+                    $topic['perm_group'],$topic['perm_members'],$topic['perm_anon']);
                 if ($access == 3) {
                     $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
                     $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG25[27]
                         . '" title="' . $LANG25[27] . '">';
-                    $editlink .= COM_createLink($editiconhtml, $_CONF['site_admin_url']
+                    $editlink = COM_createLink($editiconhtml, $_CONF['site_admin_url']
                         . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
                     $poll->set_var('poll_edit', $editlink);
                 }
+                
+                if (array_key_exists('aid', $_POST)) {
+                    $aid = $_POST['aid'];
+                } else {
+                    $aid = array();
+                }
+                
                 for($j=0; $j<$nquestions; $j++) {
                     $Q = DB_fetchArray($questions);
                     $poll->set_var('poll_question', " ".$Q['question']);
@@ -528,8 +536,7 @@ function POLLS_pollVote($pid, $showall=true)
                     $nanswers = DB_numRows($answers );
                     for($i=0; $i<$nanswers; $i++) {
                         $A = DB_fetchArray($answers );
-                        $aid = $_POST['aid'];
-                        if ($aid[$j] == $A['aid']) {
+                        if (($j < count($aid)) && ($aid[$j] == $A['aid'])) {
                             $poll->set_var('selected', ' checked');
                         }
                         $poll->set_var('answer_id', $A['aid']);
