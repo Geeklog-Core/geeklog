@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.8 2007/03/20 19:59:38 mjervis Exp $
+// $Id: story.class.php,v 1.9 2007/04/29 14:10:07 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -189,7 +189,9 @@ class Story
            'perm_owner',
            'perm_group',
            'perm_members',
-           'perm_anon'
+           'perm_anon',
+           'imageurl',
+           'topic'
          );
     /**
      * Magic array used for loading basic data from posted form. Of form:
@@ -692,6 +694,12 @@ class Story
         if (($access < 3) || !SEC_hasTopicAccess($this->_tid) || !SEC_inGroup($this->_group_id)) {
             return STORY_NO_ACCESS_PARAMS;
         }
+        
+        /* Load up the topic name and icon */
+        $topic = DB_Query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid='{$this->_tid}'");
+        $topic = DB_fetchArray($topic);
+        $this->_topic = $topic['topic'];
+        $this->_imageurl = $topic['imageurl'];
 
         //$title = COM_stripSlashes( $array['title'] );
         //$intro = COM_stripSlashes( $array['introtext'] );
