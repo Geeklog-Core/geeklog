@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.9 2007/02/11 19:55:58 dhaun Exp $
+// $Id: lib-pingback.php,v 1.10 2007/04/30 08:37:41 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-pingback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -217,6 +217,150 @@ function PNB_sendExtendedPing ($url, $blogname, $blogurl, $changedurl, $feedurl)
         $retval = $client->errstring;
     } else if ($response->faultCode () != 0) {
         $retval = $response->faultString ();
+    }
+
+    return $retval;
+}
+
+/**
+* Create an extract from some piece of HTML containing a given URL
+*
+* This somewhat convoluted piece of code will extract the text around a
+* given link located somewhere in the given piece of HTML. It returns
+* the actual link text plus some of the text before and after the link.
+*
+* @param    string  $html   The piece of HTML to search through
+* @param    string  $url    URL that should be contained in $html somewhere
+* @param    int     $xlen   Max. length of extract (default: 255 characters)
+* @return   string          Extract: The link text and some surrounding text
+* @note     Returns an empty string when $url is not found in $html.
+*
+*/
+function PNB_makeExtract($html, $url, $xlen = 255)
+{
+    $retval = '';
+
+    // the extract will come out as
+    // [...] before linktext after [...]
+    $fill_start = '[...] ';
+    $fill_end   = ' [...]';
+
+    $f1len = MBYTE_strlen($fill_start);
+    $f2len = MBYTE_strlen($fill_end);
+
+    // extract all links
+    preg_match_all("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
+                   $html, $matches);
+
+    $before = '';
+    $after = '';
+    $linktext = '';
+    $num_matches = count($matches[0]);
+    for ($i = 0; $i < $num_matches; $i++) {
+        if ($matches[1][$i] == $url) {
+            $pos = MBYTE_strpos($html, $matches[0][$i]);
+            $before = strip_tags(MBYTE_substr($html, 0, $pos));
+
+            $pos += MBYTE_strlen($matches[0][$i]);
+            $after = strip_tags(MBYTE_substr($html, $pos));
+
+            $linktext = trim(strip_tags($matches[2][$i]));
+            break;
+        }
+    }
+
+    $bspace = (MBYTE_substr($before, -1) == ' ' ? true : false);
+    $aspace = (MBYTE_substr($after, 0, 1) == ' ' ? true : false);
+
+    $before = trim($before);
+    $after = trim($after);
+
+    // get rid of multiple whitespace
+    $pat = array('/^\s+/', '/\s{2,}/', '/\s+\$/');
+    $rep = array('',       ' ',        '');
+    $before   = preg_replace($pat, $rep, $before);
+    $linktext = preg_replace($pat, $rep, $linktext);
+    $after    = preg_replace($pat, $rep, $after);
+
+    $tlen = MBYTE_strlen($linktext);
+    if ($tlen >= $xlen) {
+        // Special case: The actual link text is already longer (or as long) as
+        // requested. We don't use the "fillers" here but only return the
+        // (shortened) link text itself.
+        if ($tlen > $xlen) {
+            $retval = MBYTE_substr($linktext, 0, $xlen - 3) . '...';
+        } else {
+            $retval = $linktext;
+        }
+    } else {
+        if (!empty($before)) {
+            $tlen++;
+        }
+        if (!empty($after)) {
+            $tlen++;
+        }
+
+        // make "before" and "after" text have equal length
+        $rest = ($xlen - $tlen) / 2;
+
+        // format "before" text
+        $blen = MBYTE_strlen($before);
+        if ($blen < $rest) {
+            // if "before" text is too short, make "after" text longer
+            $rest += ($rest - $blen);
+            $retval .= $before;
+        } else if ($blen > $rest) {
+            $work = MBYTE_substr($before, -($rest * 2));
+            $w = explode(' ', $work);
+            array_shift($w); // drop first word, as it's probably truncated
+            $w = array_reverse($w);
+
+            $fill = $rest - $f1len;
+            $b = '';
+            foreach ($w as $word) {
+                if (MBYTE_strlen($b) + MBYTE_strlen($word) + 1 > $fill) {
+                    break;
+                }
+                $b = $word . ' ' . $b;
+            }
+            $b = trim($b);
+
+            $retval .= $fill_start . $b;
+
+            $blen = MBYTE_strlen($b);
+            if ($blen < $fill) {
+                $rest += ($fill - $blen);
+            }
+        }
+
+        // actual link text
+        if (!empty($before) && $bspace) {
+            $retval .= ' ';
+        }
+        $retval .= $linktext;
+        if (!empty($after) && $aspace) {
+            $retval .= ' ';
+        }
+
+        // format "after" text
+        if (!empty($after)) {
+            $alen = MBYTE_strlen($after);
+            if ($alen > $rest) {
+                $work = MBYTE_substr($after, 0, ($rest * 2));
+                $w = explode(' ', $work);
+                array_pop($w); // drop last word, as it's probably truncated
+
+                $fill = $rest - $f2len;
+                $a = '';
+                foreach ($w as $word) {
+                    if (MBYTE_strlen($a) + MBYTE_strlen($word) + 1 > $fill) {
+                        break;
+                    }
+                    $a .= $word . ' ';
+                }
+                $retval .= trim($a) . $fill_end;
+            }
+        }
     }
 
     return $retval;

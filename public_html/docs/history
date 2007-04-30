@@ -1,7 +1,9 @@
-GeekLog History/Changes:
+Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- When receiving a Pingback, optionally create an excerpt from the text of the
+  site that sent the Pingback [Dirk]
 - Portal blocks now use the HTTP Last-Modified and ETag headers to only request
   feeds when they have changed [Dirk]
 - The {read_more_class} variable now contains class="story-read-more-link" (if
@@ -75,7 +77,7 @@ GeekLog History/Changes:
 
 
 Calendar plugin (1.0.2)
-------------
+---------------
 - Autouninstall implemented [Oliver]
 - Added Batch-Delete functionality [Oliver]
 

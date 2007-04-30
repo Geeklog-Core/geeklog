@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Handle pingbacks for stories and plugins.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2006 by the following authors:                         |
+// | Copyright (C) 2005-2007 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,16 +29,17 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.16 2006/09/30 19:15:27 dhaun Exp $
+// $Id: pingback.php,v 1.17 2007/04/30 08:37:41 dhaun Exp $
 
-require_once ('lib-common.php');
+require_once 'lib-common.php';
 
 // once received, we're handling pingbacks like trackbacks,
 // so we use the trackback library even when trackback may be disabled
-require_once ($_CONF['path_system'] . 'lib-trackback.php');
+require_once $_CONF['path_system'] . 'lib-pingback.php';
+require_once $_CONF['path_system'] . 'lib-trackback.php';
 
 // PEAR class to handle XML-RPC
-require_once ('XML/RPC/Server.php');
+require_once 'XML/RPC/Server.php';
 
 // Note: Error messages are hard-coded in English since there is no way of
 // knowing which language the sender of the pingback may prefer.
@@ -71,7 +72,7 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
 {
     global $_CONF, $_TABLES, $PNB_ERROR;
 
-    require_once ('HTTP/Request.php');
+    require_once 'HTTP/Request.php';
 
     if (!isset ($_CONF['check_trackback_link'])) {
         $_CONF['check_trackback_link'] = 2;
@@ -123,6 +124,7 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
     // See if we can read the page linking to us and extract at least
     // the page's title out of it ...
     $title = '';
+    $excerpt = '';
     $req = new HTTP_Request ($url);
     $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
     $response = $req->sendRequest ();
@@ -155,6 +157,10 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
                 $title = trim (COM_undoSpecialChars ($content[1]));
             }
 
+            if (isset($_CONF['pingback_extracts']) && $_CONF['pingback_extracts']) {
+                $excerpt = PNB_makeExtract($body, $oururl);
+            }
+
             // we could also run the rest of the other site's page
             // through the spam filter here ...
         } else if ($_CONF['check_trackback_link'] & 3) {
@@ -167,14 +173,14 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
     }
 
     // check for spam first
-    $saved = TRB_checkForSpam ($url, $title);
+    $saved = TRB_checkForSpam ($url, $title, '', $excerpt);
 
     if ($saved == TRB_SAVE_SPAM) {
         return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
     }
 
     // save as a trackback comment
-    $saved = TRB_saveTrackbackComment ($id, $type, $url, $title);
+    $saved = TRB_saveTrackbackComment ($id, $type, $url, $title, '', $excerpt);
 
     if ($saved == TRB_SAVE_REJECT) {
         return new XML_RPC_Response (0, 49, $PNB_ERROR['multiple']);
