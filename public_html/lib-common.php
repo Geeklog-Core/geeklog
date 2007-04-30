@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.639 2007/04/28 18:32:50 dhaun Exp $
+// $Id: lib-common.php,v 1.640 2007/04/30 19:01:49 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -356,7 +356,7 @@ else if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
 }
 
 // Handle Who's Online block
-if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
+if( COM_isAnonUser() )
 {
     // The following code handles anonymous users so they show up properly
     DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$_SERVER['REMOTE_ADDR']}' AND uid = 1" );
@@ -401,7 +401,7 @@ if( setlocale( LC_ALL, $_CONF['locale'] ) === false )
 *
 */
 
-if( isset( $_USER['uid'] ))
+if( !COM_isAnonUser() )
 {
     $_GROUPS = SEC_getUserGroups( $_USER['uid'] );
 }
@@ -568,7 +568,7 @@ function COM_renderMenu( &$header, $plugin_menu )
                 'contribute', 'search', 'stats', 'directory', 'plugins' );
     }
 
-    $anon = ( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 )) ? true : false;
+    $anon = COM_isAnonUser();
     $menuCounter = 0;
     $allowedCounter = 0;
     $counter = 0;
@@ -913,7 +913,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url']
                           . '/" title="' . $LANG01[90] . '">';
     }
-    $loggedInUser = ( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 ));
+    $loggedInUser = !COM_isAnonUser();
     if( $loggedInUser || (( $_CONF['loginrequired'] == 0 ) &&
                 ( $_CONF['searchloginrequired'] == 0 )))
     {
@@ -1895,7 +1895,7 @@ function COM_showTopics( $topic='' )
     }
 
     $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}" . $langsql;
-    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
+    if( !COM_isAnonUser() )
     {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
@@ -2071,7 +2071,7 @@ function COM_userMenu( $help='', $title='' )
 
     $retval = '';
 
-    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
+    if( !COM_isAnonUser() )
     {
         $usermenu = new Template( $_CONF['path_layout'] );
         if( isset( $_BLOCK_TEMPLATE['useroption'] ))
@@ -3102,7 +3102,7 @@ function COM_showBlock( $name, $help='', $title='' )
 
     if( !isset( $_USER['noboxes'] ))
     {
-        if( !empty( $_USER['uid'] ))
+        if( !COM_isAnonUser() )
         {
             $_USER['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes',
                                             "uid = {$_USER['uid']}" );
@@ -3165,7 +3165,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     // Get user preferences on blocks
     if( !isset( $_USER['noboxes'] ) || !isset( $_USER['boxes'] ))
     {
-        if( !empty( $_USER['uid'] ))
+        if( !COM_isAnonUser() )
         {
             $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} "
                                ."WHERE uid = '{$_USER['uid']}'" );
@@ -3632,7 +3632,7 @@ function COM_getDisplayName( $uid = '', $username='', $fullname='', $remoteusern
 
     if ($uid == '')
     {
-        if( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 ))
+        if( COM_isAnonUser() )
         {
             $uid = 1;
         }
@@ -3910,7 +3910,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
         $stwhere = '';
 
-        if( !empty( $_USER['uid'] ))
+        if( !COM_isAnonUser() )
         {
             $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
             $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
@@ -4302,7 +4302,7 @@ function COM_getUserDateTimeFormat( $date='' )
 
     // Get display format for time
 
-    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 ))
+    if( !COM_isAnonUser() )
     {
         if( empty( $_USER['format'] ))
         {
@@ -4441,7 +4441,7 @@ function phpblock_whosonline()
     $num_anon += DB_count( $_TABLES['sessions'], 'uid', 1 );
 
     if(( $_CONF['whosonline_anonymous'] == 1 ) &&
-            ( empty( $_USER['uid'] ) || ( $_USER['uid'] == 1 )))
+            COM_isAnonUser() )
     {
         // note that we're overwriting the contents of $retval here
         if( $num_reg > 0 )
@@ -4999,7 +4999,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     }
     if( $u_id <= 0)
     {
-        if( empty( $_USER['uid'] ))
+        if( COM_isAnonUser() )
         {
             $uid = 1;
         }
@@ -5014,7 +5014,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     }
 
     $UserGroups = array();
-    if(( empty( $_USER['uid'] ) && ( $uid == 1 )) || ( $uid == $_USER['uid'] ))
+    if( COM_isAnonUser() || ( $uid == $_USER['uid'] ))
     {
         if( empty( $_GROUPS ))
         {
@@ -5088,7 +5088,7 @@ function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
     $UserGroups = array();
     if(( $u_id <= 0 ) || ( $u_id == $_USER['uid'] ))
     {
-        if( isset( $_USER['uid'] ))
+        if( !COM_isAnonUser() )
         {
             $uid = $_USER['uid'];
         }
@@ -6210,6 +6210,34 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     }
 
     exit;
+}
+
+/**
+  * Checks to see if a specified user, or the current user if non-specified
+  * is the anonymous user.
+  *
+  * @param  int $uid    ID of the user to check, or none for the current user.
+  * @return boolean     true if the user is the anonymous user.
+  */
+function COM_isAnonUser($uid = '')
+{
+    global $_USER;
+    
+    /* If no user was specified, fail over to the current user if there is one */
+    if( empty( $uid ) )
+    {
+        if( isset( $_USER['uid'] ) )
+        {
+            $uid = $_USER['uid'];
+        }
+    }   
+    
+    if( !empty( $uid ) )
+    {
+        return ($uid == 1);
+    } else {
+        return true;
+    }
 }
 
 // Now include all plugin functions
