@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.10 2007/04/30 18:09:56 mjervis Exp $
+// $Id: story.class.php,v 1.11 2007/04/30 19:20:41 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -360,11 +360,11 @@ class Story
          */
         reset($this->_dbFields);
 
-        while ($fieldname = each($this->_dbFields)) {
-            $varname = '_' . $fieldname[1];
+        while (list($fieldname,$save) = each($this->_dbFields)) {
+            $varname = '_' . $fieldname;
 
-            if (array_key_exists($fieldname[1], $story)) {
-                $this->{$varname}= stripslashes($story[$fieldname[1]]);
+            if (array_key_exists($fieldname, $story)) {
+                $this->{$varname}= stripslashes($story[$fieldname]);
             }
         }
 
