@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.9 2007/04/29 14:10:07 mjervis Exp $
+// $Id: story.class.php,v 1.10 2007/04/30 18:09:56 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -158,40 +158,49 @@ class Story
 
     /**
      * Magic array used for cheating when loading/saving stories from/to db.
+     *
+     * List of database field names (which are translated into member variables
+     * by prepending _ to the value) as pointers to whether or not they are used
+     * to save data. Everything with a save value of 1 will be saved, those with
+     * a save value of 0 will just be loaded.
+     *
+     * This allows us to automate the loading of story, user and topic from a
+     * datbase result array, and generate saving of a story, from the same
+     * magic array.
      */
     var $_dbFields = array
          (
-           'sid',
-           'uid',
-           'draft_flag',
-           'tid',
-           'date',
-           'title',
-           'introtext',
-           'bodytext',
-           'hits',
-           'numemails',
-           'comments',
-           'trackbacks',
-           'related',
-           'featured',
-           'show_topic_icon',
-           'commentcode',
-           'trackbackcode',
-           'statuscode',
-           'expire',
-           'postmode',
-           'advanced_editor_mode',
-           'frontpage',
-           'in_transit',
-           'owner_id',
-           'group_id',
-           'perm_owner',
-           'perm_group',
-           'perm_members',
-           'perm_anon',
-           'imageurl',
-           'topic'
+           'sid' => 1,
+           'uid' => 1,
+           'draft_flag' => 1,
+           'tid' => 1,
+           'date' => 1,
+           'title' => 1,
+           'introtext' => 1,
+           'bodytext' => 1,
+           'hits' => 1,
+           'numemails' => 1,
+           'comments' => 1,
+           'trackbacks' => 1,
+           'related' => 1,
+           'featured' => 1,
+           'show_topic_icon' => 1,
+           'commentcode' => 1,
+           'trackbackcode' => 1,
+           'statuscode' => 1,
+           'expire' => 1,
+           'postmode' => 1,
+           'advanced_editor_mode' => 1,
+           'frontpage' => 1,
+           'in_transit' => 1,
+           'owner_id' => 1,
+           'group_id' => 1,
+           'perm_owner' => 1,
+           'perm_group' => 1,
+           'perm_members' => 1,
+           'perm_anon' => 1,
+           'imageurl' => 0,
+           'topic' => 0
          );
     /**
      * Magic array used for loading basic data from posted form. Of form:
@@ -607,10 +616,16 @@ class Story
         $values = ' VALUES (';
         reset($this->_dbFields);
 
-        while ($fieldname = each($this->_dbFields)) {
-            $varname = '_' . $fieldname[1];
-            $sql .= $fieldname[1] . ', ';
+        /* This uses the database field array to generate a SQL Statement. This
+         * means that when adding new fields to save and load, all we need to do
+         * is add the field name to the array, and the code will magically cope.
+         */
+        while (list($fieldname, $save) = each($this->_dbFields)) {
+            if ($save === 1) {
+                $varname = '_' . $fieldname;
+                $sql .= $fieldname . ', ';
             $values .= '\'' . addslashes($this->{$varname}) . '\', ';
+            }
         }
 
         $sql = substr($sql, 0, strlen($sql) - 2);
