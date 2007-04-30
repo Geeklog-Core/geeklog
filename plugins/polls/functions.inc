@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.74 2007/04/29 14:12:13 mjervis Exp $
+// $Id: functions.inc,v 1.75 2007/04/30 18:05:14 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -720,9 +720,8 @@ function POLLS_pollsave($pid, $qid, $aid)
 */
 function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
 {
-
-    global $_CONF, $_TABLES, $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE,
-        $_USER, $LANG25, $_USER;
+    global $_CONF, $_TABLES, $_USER,
+           $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE, $LANG25;
 
     $retval = '';
     $topic_sql = "SELECT topic,voters,open,hideresults,commentcode,owner_id,group_id,"
@@ -739,7 +738,8 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
     if ((
             $P['hideresults'] == 1
         ) || (
-            ($P['hideresults'] == 0) && ($_USER['uid'] == $P['owner_id'])
+            ($P['hideresults'] == 0) && (isset($_USER['uid']) &&
+                                         ($_USER['uid'] == $P['owner_id']))
         ) || (
             ($P['hideresults'] == 0) && (SEC_inGroup('Root'))
         )
