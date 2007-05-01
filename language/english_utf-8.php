@@ -1231,7 +1231,8 @@ $LANG_DB_BACKUP = array(
     'backup_file' => 'Backup file',
     'size' => 'Size',
     'bytes' => 'Bytes',
-    'total_number' => 'Total number of backups: %d'
+    'total_number' => 'Total number of backups: %d',
+    'download' => 'Click to download this file.'
 );
 
 ###############################################################################

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.12 2005/11/19 03:58:20 vinny Exp $
+// $Id: downloader.class.php,v 1.13 2007/05/01 17:32:57 dhaun Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -214,7 +214,8 @@ class downloader
                     'swf' => 'application/x-shockwave-flash',
                     'doc' => 'application/msword',
                     'xls' => 'application/vnd.ms-excel',
-                    'exe' => 'application/octet-stream'
+                    'exe' => 'application/octet-stream',
+                    'sql' => 'text/plain'
                 );
         } else {
             $this->_availableMimeTypes = $extensions;
