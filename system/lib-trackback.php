@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-trackback.php,v 1.47 2007/02/10 15:18:04 ospiess Exp $
+// $Id: lib-trackback.php,v 1.48 2007/05/01 07:35:26 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -370,6 +370,7 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
     $template->set_var ('lang_tracked_on', $LANG_TRB['tracked_on']);
     $template->set_var ('lang_readmore', $LANG_TRB['read_more']);
 
+    $anchor = '<a href="' . $url . '">';
     $readmore = COM_createLink($LANG_TRB['read_more'], $url);
 
     $template->set_var ('readmore_link', $readmore);
