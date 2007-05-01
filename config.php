@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.249 2007/04/30 08:37:41 dhaun Exp $
+// $Id: config.php,v 1.250 2007/05/01 07:48:41 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -590,10 +590,10 @@ $_CONF['check_trackback_link'] = 2;
 // 0 = skip, 1 = allow, with speed limit, 2 = allow, without speed limit
 $_CONF['pingback_self'] = 0;
 
-// Pingbacks don't include an extract of the text linking to us. When enabled,
-// this will read the site that sent the pingback and create an extract from
+// Pingbacks don't include an excerpt of the text linking to us. When enabled,
+// this will read the site that sent the pingback and create an excerpt from
 // the text around the link to us.
-$_CONF['pingback_extracts'] = true;
+$_CONF['pingback_excerpt'] = true;
 
 // Link to the documentation from the Admin block (0 = hide link, 1 = show)
 $_CONF['link_documentation'] = 1;

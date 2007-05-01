@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.10 2007/04/30 08:37:41 dhaun Exp $
+// $Id: lib-pingback.php,v 1.11 2007/05/01 07:48:41 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-pingback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -223,7 +223,7 @@ function PNB_sendExtendedPing ($url, $blogname, $blogurl, $changedurl, $feedurl)
 }
 
 /**
-* Create an extract from some piece of HTML containing a given URL
+* Create an excerpt from some piece of HTML containing a given URL
 *
 * This somewhat convoluted piece of code will extract the text around a
 * given link located somewhere in the given piece of HTML. It returns
@@ -231,16 +231,16 @@ function PNB_sendExtendedPing ($url, $blogname, $blogurl, $changedurl, $feedurl)
 *
 * @param    string  $html   The piece of HTML to search through
 * @param    string  $url    URL that should be contained in $html somewhere
-* @param    int     $xlen   Max. length of extract (default: 255 characters)
+* @param    int     $xlen   Max. length of excerpt (default: 255 characters)
 * @return   string          Extract: The link text and some surrounding text
 * @note     Returns an empty string when $url is not found in $html.
 *
 */
-function PNB_makeExtract($html, $url, $xlen = 255)
+function PNB_makeExcerpt($html, $url, $xlen = 255)
 {
     $retval = '';
 
-    // the extract will come out as
+    // the excerpt will come out as
     // [...] before linktext after [...]
     $fill_start = '[...] ';
     $fill_end   = ' [...]';

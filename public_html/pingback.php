@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.17 2007/04/30 08:37:41 dhaun Exp $
+// $Id: pingback.php,v 1.18 2007/05/01 07:48:41 dhaun Exp $
 
 require_once 'lib-common.php';
 
@@ -157,8 +157,8 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
                 $title = trim (COM_undoSpecialChars ($content[1]));
             }
 
-            if (isset($_CONF['pingback_extracts']) && $_CONF['pingback_extracts']) {
-                $excerpt = PNB_makeExtract($body, $oururl);
+            if (isset($_CONF['pingback_excerpt']) && $_CONF['pingback_excerpt']) {
+                $excerpt = PNB_makeExcerpt($body, $oururl);
             }
 
             // we could also run the rest of the other site's page
