@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.107 2007/03/09 04:16:19 ospiess Exp $
+// $Id: lib-admin.php,v 1.108 2007/05/01 12:04:17 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -101,7 +101,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     if (isset($form_arr['bottom'])) {
         $admin_templates->set_var('formfields_bottom', $form_arr['bottom']);
     }
-    if ($text_arr['has_menu']) {
+    if (isset($text_arr['has_menu']) && $text_arr['has_menu']) {
         for ($i = 0; $i < count($menu_arr); $i++) {
             $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
             $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
