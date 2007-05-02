@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.35 2007/05/01 17:32:57 dhaun Exp $
+// $Id: database.php,v 1.36 2007/05/02 18:23:23 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -162,10 +162,10 @@ function downloadbackup($file)
 
 // MAIN
 $display = '';
-$display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
 
 // If user isn't a root user or if the backup feature is disabled, bail.
 if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
     $display .= COM_startBlock($MESSAGE[30], '',
                     COM_getBlockTemplate('_msg_block', 'header'));
     $display .= $MESSAGE[46];
@@ -187,6 +187,7 @@ if (isset($_GET['mode'])) {
 
 // Perform the backup if asked
 if ($mode == 'backup') {
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
     if (is_dir($_CONF['backup_path'])) {
         $curdatetime = date('Y_m_d_H_i_s');
         $backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";
