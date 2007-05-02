@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.36 2007/05/02 18:23:23 dhaun Exp $
+// $Id: database.php,v 1.37 2007/05/02 18:35:46 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -255,6 +255,8 @@ if ($mode == 'backup') {
         downloadbackup($file);
         exit;
     }
+} else {
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
 }
 
 // Show last ten backups
