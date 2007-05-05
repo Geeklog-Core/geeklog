@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.68 2007/05/05 14:30:05 dhaun Exp $
+// $Id: functions.inc,v 1.69 2007/05/05 14:45:55 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1593,8 +1593,11 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         $thetime = COM_getUserDateTimeFormat ($A['day']);
         $A['title'] = stripslashes ($A['title']);
         $A['title'] = str_replace ('$', '&#36;', $A['title']);
-        $link = COM_createLink($A['title'], $_CONF['site_url']
-                               . '/calendar/event.php?eid=' . $A['eid']);
+        $url = $_CONF['site_url'] . '/calendar/event.php?eid=' . $A['eid'];
+        if (!empty($query)) {
+            $url .= '&amp;query=' . urlencode($query);
+        }
+        $link = COM_createLink($A['title'], $url);
         $row = array ($link, $fulldate, stripslashes ($A['event_type']));
         $event_results->addSearchResult($row);
         $event_results->num_searchresults++;

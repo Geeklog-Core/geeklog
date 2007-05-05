@@ -79,6 +79,7 @@ Geeklog History/Changes:
 
 Calendar plugin (1.0.2)
 ---------------
+- Highlight search queries [Dirk]
 - Autouninstall implemented [Oliver]
 - Added Batch-Delete functionality [Oliver]
 

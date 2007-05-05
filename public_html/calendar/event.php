@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Shows details of an event or events                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.22 2007/02/08 05:10:02 ospiess Exp $
+// $Id: event.php,v 1.23 2007/05/05 14:45:55 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -440,6 +440,10 @@ default:
     if (isset ($_GET['eid'])) {
         $eid = COM_applyFilter ($_GET['eid']);
     }
+    $query = '';
+    if (isset($_GET['query'])) {
+        $query = COM_applyFilter($_GET['query']);
+    }
     if (!empty ($eid)) {
         if (($mode == 'personal') && ($_CA_CONF['personalcalendars'] == 1) &&
                 (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
@@ -639,13 +643,16 @@ default:
                     }
                 }
 
-                $cal_templates->set_var ('lang_description', $LANG_CAL_1[5]);
-                $description = stripslashes ($A['description']);
+                $cal_templates->set_var('lang_description', $LANG_CAL_1[5]);
+                $description = stripslashes($A['description']);
                 if ($A['postmode'] == 'plaintext') {
-                    $description = nl2br ($description);
+                    $description = nl2br($description);
                 }
-                $cal_templates->set_var ('event_description',
-                                         PLG_replaceTags ($description));
+                $description = PLG_replaceTags($description);
+                if (!empty($query)) {
+                    $description = COM_highlightQuery($description, $query);
+                }
+                $cal_templates->set_var ('event_description', $description);
                 $cal_templates->set_var ('lang_event_type', $LANG_CAL_1[37]);
                 $cal_templates->set_var ('event_type', $A['event_type']);
                 $cal_templates->parse ('event_details', 'details', true);
