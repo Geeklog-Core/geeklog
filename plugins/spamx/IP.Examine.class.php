@@ -9,7 +9,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: IP.Examine.class.php,v 1.10 2007/01/20 16:29:57 dhaun Exp $
+* $Id: IP.Examine.class.php,v 1.11 2007/05/05 18:28:39 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'IP.Examine.class.php') !== false) {
@@ -19,7 +19,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'IP.Examine.class.php') !== false) {
 /**
 * Include Abstract Examine Class
 */
-require_once($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
 * Examines Comment according to Personal BLacklist
@@ -76,8 +76,15 @@ class IP extends BaseCommand {
         // get the base and the bits from the ban in the database
         list($base, $bits) = explode('/', $CIDR);
 
-        // now split it up into it's classes
-        list($a, $b, $c, $d) = explode('.', $base);
+        // now split it up into its classes
+        $classes = explode('.', $base);
+        $elements = count($classes);
+        if ($elements < 4) {
+            for ($i = $elements; $i < 4; $i++) {
+                $classes[$i] = 0;
+            }
+        }
+        list($a, $b, $c, $d) = $classes;
 
         // now do some bit shifting/switching to convert to ints
         $i = ($a << 24) + ($b << 16) + ($c << 8) + $d;
