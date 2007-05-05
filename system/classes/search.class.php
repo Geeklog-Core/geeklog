@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.59 2007/02/12 05:48:07 ospiess Exp $
+// $Id: search.class.php,v 1.60 2007/05/05 17:51:35 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -676,8 +676,10 @@ class Search {
             $urlQuery = urlencode ($this->_query);
             $queryUrl .= '&amp;query=' . $urlQuery;
         }
-        $queryUrl .= '&amp;keyType=' . $this->_keyType
-                  . '&amp;type=' . $this->_type;
+        if (!empty($this->_keyType)) {
+            $queryUrl .= '&amp;keyType=' . $this->_keyType;
+        }
+        $queryUrl .= '&amp;type=' . $this->_type;
         if (!empty ($this->_dateStart)) {
             $queryUrl .= '&amp;datestart=' . $this->_dateStart;
         }
