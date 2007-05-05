@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.60 2007/05/05 17:51:35 dhaun Exp $
+// $Id: search.class.php,v 1.61 2007/05/05 17:52:35 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -482,55 +482,6 @@ class Search {
         }
 
         return $comment_results;
-    }
-
-    function _showPager($resultPage, $pages, $extra='')
-    {
-        global $_CONF, $LANG09;
-
-        $urlQuery = urlencode($this->_query);
-        $pager = '';
-        if ($pages > 1) {
-            if ($resultPage > 1) {
-                $previous = $resultPage - 1;
-                $pager_url = $_CONF['site_url'] . '/search.php?query=' . $urlQuery
-                    . '&amp;keyType=' . $this->_keyType . '&amp;page=' . $previous
-                    . '&amp;type=' . $this->_type . '&amp;topic=' . $this->_topic
-                    . '&amp;mode=search' . $extra;
-                $pager .= COM_createLink($LANG09[47], $pager_url);
-            }
-            if ($pages <= 20) {
-                $startPage = 1;
-                $endPage = $pages;
-            } else {
-                $startPage = $resultPage - 10;
-                if ($startPage < 1) {
-                    $startPage = 1;
-                }
-                $endPage = $resultPage + 9;
-                if ($endPage > $pages) {
-                    $endPage = $pages;
-                }
-            }
-            for ($i = $startPage; $i <= $endPage; $i++) {
-                if ($i == $resultPage) {
-                    $pager .= " <b>$i</b> ";
-                } else {
-                    $pager_url = "{$_CONF['site_url']}/search.php?query=$urlQuery"
-                        . "&keyType=$this->_keyType&page=$i&type=$this->_type"
-                        . "&topic=$this->_topic&mode=search$extra";
-                    $pager .= COM_createLink($i,$pager_url);
-                }
-            }
-            if ($resultPage < $pages) {
-                $next = $resultPage+1;
-                $pager_url = "{$_CONF['site_url']}/search.php?query=$urlQuery"
-                    . "&keyType=$this->_keyType&page=$next&type=$this->_type"
-                    . "&topic=$this->_topic&mode=search$extra";
-                $pager .= COM_createLink($LANG09[46], $pager_url);
-            }
-        }
-        return $pager;
     }
 
     /**
