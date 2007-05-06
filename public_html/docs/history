@@ -2,9 +2,10 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Revamped DB Backups option. It now lists all backups (all .sql file), and you
+  can download and delete backups from there [Dirk]
 - Added support for the ProjectHoneyPot.org http:BL API to SpamX [Mike]
 - Fixed checking for errors when sending Pingbacks or Pings [Mike, Dirk]
-- Allow downloading of database backups from the DB Backups option [Dirk]
 - When receiving a Pingback, optionally create an excerpt from the text of the
   site that sent the Pingback [Dirk]
 - Portal blocks now use the HTTP Last-Modified and ETag headers to only request

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.39 2007/05/06 11:24:03 dhaun Exp $
+// $Id: database.php,v 1.40 2007/05/06 17:37:46 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -63,6 +63,12 @@ function compareBackupFiles($pFileA, $pFileB)
     return ($lFiletimeA > $lFiletimeB) ? -1 : 1;
 }
 
+/**
+* List all backups, i.e. all files ending in .sql
+*
+* @return   string      HTML for the list of files or an error when not writable
+*
+*/
 function listbackups()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG08, $LANG_ADMIN, $LANG_DB_BACKUP;
@@ -82,15 +88,15 @@ function listbackups()
                 $backups[] = $file;
             }
         }
+
         // AS, 2004-03-29 - Sort backup files by date, newest first.
         // Order given by 'readdir' might not be correct.
         usort($backups, 'compareBackupFiles');
-        $backups = array_slice($backups, 0, 10);
-        reset($backups);
 
         $data_arr = array();
-        for ($i = 0; $i < count($backups); $i++) {
-            $thisUrl = $_CONF['site_admin_url'] . '/database.php';
+        $thisUrl = $_CONF['site_admin_url'] . '/database.php';
+        $num_backups = count($backups);
+        for ($i = 0; $i < $num_backups; $i++) {
             $downloadUrl = $thisUrl . '?mode=download&amp;file='
                          . urlencode($backups[$i]);
             $downloadLink = COM_createLink($backups[$i], $downloadUrl,
@@ -99,7 +105,8 @@ function listbackups()
             $backupfilesize = COM_numberFormat(filesize($backupfile))
                             . ' <b>' . $LANG_DB_BACKUP['bytes'] . '</b>';
             $data_arr[$i] = array('file' => $downloadLink,
-                                  'size' => $backupfilesize);
+                                  'size' => $backupfilesize,
+                                  'filename' => $backups[$i]);
         }
 
         $menu_arr = array(
@@ -116,12 +123,19 @@ function listbackups()
         );
 
         $text_arr = array('has_menu' => true,
-                          'instructions' => $LANG_DB_BACKUP['db_explanation']
-                                            . '<br>' . sprintf($LANG_DB_BACKUP['total_number'], $index),
-                          'icon' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE,
-                          'title' => $LANG_DB_BACKUP['last_ten_backups']
+                          'instructions' => '<p>' . $LANG_DB_BACKUP['db_explanation'] . '</p><p>' . sprintf($LANG_DB_BACKUP['total_number'], $index) . '</p>',
+                          'icon' => $_CONF['layout_url']
+                                    . '/images/icons/database.' . $_IMAGE_TYPE,
+                          'title' => $LANG_DB_BACKUP['last_ten_backups'],
+                          'form_url' => $thisUrl
         );
-        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr, $menu_arr);
+        $form_arr = array('bottom' => '', 'top' => '');
+        if ($num_backups > 0) {
+            $form_arr['bottom'] = '<input type="hidden" name="mode" value="delete">' . LB;
+        }
+        $listoptions = array('chkdelete' => true, 'chkminimum' => 0,
+                             'chkfield' => 'filename');
+        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr, $menu_arr, $listoptions, $form_arr);
     } else {
         $retval .= COM_startBlock($LANG08[06], '',
                             COM_getBlockTemplate('_msg_block', 'header'));
@@ -255,6 +269,10 @@ if (isset($_GET['mode'])) {
     } else if ($_GET['mode'] == 'download') {
         $mode = 'download';
     }
+} else if (isset($_POST['mode'])) {
+    if (($_POST['mode'] == 'delete') && isset($_POST['delitem'])) {
+        $mode = 'delete';
+    }
 }
 
 if ($mode == 'download') {
@@ -274,12 +292,20 @@ if ($mode == 'download') {
 
 $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
 
-// Perform the backup if asked
 if ($mode == 'backup') {
+    // Perform the backup if asked
     $display .= dobackup();
+} else if ($mode == 'delete') {
+    foreach ($_POST['delitem'] as $delfile) {
+        $file = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $delfile);
+        $file = str_replace('..', '', $file);
+        if (!@unlink($_CONF['backup_path'] . $file)) {
+            COM_errorLog('Unable to remove backup file "' . $file . '"');
+        }
+    }
 }
 
-// Show last ten backups
+// Show all backups
 
 $display .= listbackups();
 

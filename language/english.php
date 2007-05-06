@@ -1220,10 +1220,10 @@ $LANG_ACCESS = array(
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'last_ten_backups' => 'Last 10 Backups',
+    'last_ten_backups' => 'Database Backups',
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
-    'db_explanation' => 'To create a new backup of your site\'s database, click on "Create New" above.',
+    'db_explanation' => 'To create a new backup of your site\'s database, click on "Create New" above. Click on a file name to download that backup.',
     'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
@@ -1232,7 +1232,7 @@ $LANG_DB_BACKUP = array(
     'size' => 'Size',
     'bytes' => 'Bytes',
     'total_number' => 'Total number of backups: %d',
-    'download' => 'Click to download this file.'
+    'download' => 'Click to download this file'
 );
 
 ###############################################################################
