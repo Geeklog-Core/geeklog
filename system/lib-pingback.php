@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.11 2007/05/01 07:48:41 dhaun Exp $
+// $Id: lib-pingback.php,v 1.12 2007/05/06 08:01:02 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-pingback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -131,7 +131,7 @@ function PNB_sendPingback ($sourceURI, $targetURI)
                    new XML_RPC_Value ($targetURI, 'string')));
 
     $response = $client->send ($msg, 0, $parts['scheme']);
-    if ($response == 0) {
+    if (!is_object($response) && ($response == 0)) {
         $retval = $client->errstring;
     } else if ($response->faultCode () != 0) {
         $retval = $response->faultString ();
@@ -171,7 +171,7 @@ function PNB_sendPing ($url, $blogname, $blogurl, $changedurl)
                    new XML_RPC_Value ($changedurl, 'string')));
 
     $response = $client->send ($msg, 0, $parts['scheme']);
-    if ($response == 0) {
+    if (!is_object($response) && ($response == 0)) {
         $retval = $client->errstring;
     } else if ($response->faultCode () != 0) {
         $retval = $response->faultString ();
@@ -213,7 +213,7 @@ function PNB_sendExtendedPing ($url, $blogname, $blogurl, $changedurl, $feedurl)
                    new XML_RPC_Value ($feedurl, 'string')));
 
     $response = $client->send ($msg, 0, $parts['scheme']);
-    if ($response == 0) {
+    if (!is_object($response) && ($response == 0)) {
         $retval = $client->errstring;
     } else if ($response->faultCode () != 0) {
         $retval = $response->faultString ();

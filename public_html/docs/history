@@ -2,6 +2,7 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Fixed checking for errors when sending Pingbacks or Pings [Mike, Dirk]
 - Allow downloading of database backups from the DB Backups option [Dirk]
 - When receiving a Pingback, optionally create an excerpt from the text of the
   site that sent the Pingback [Dirk]
