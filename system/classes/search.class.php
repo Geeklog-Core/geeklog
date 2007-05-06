@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.61 2007/05/05 17:52:35 dhaun Exp $
+// $Id: search.class.php,v 1.62 2007/05/06 19:20:19 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -208,8 +208,6 @@ class Search {
     {
         global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG09;
 
-        $urlQuery = urlencode ($this->_query);
-
         if ($this->_type == 'all' OR $this->_type == 'stories') {
 
             $select = "SELECT u.username,u.fullname,s.uid,sid,title,introtext,bodytext,hits,UNIX_TIMESTAMP(date) AS day,'story' AS type";
@@ -305,12 +303,12 @@ class Search {
                 // get rows
                 $A['title'] = str_replace ('$', '&#36;', $A['title']);
                 $thetime = COM_getUserDateTimeFormat ($A['day']);
-                if (empty ($urlQuery)) {
-                    $articleUrl = COM_buildUrl ($_CONF['site_url']
+                if (empty($this->_query)) {
+                    $articleUrl = COM_buildUrl($_CONF['site_url']
                                     . '/article.php?story=' . $A['sid']);
                 } else {
                     $articleUrl = $_CONF['site_url'] . '/article.php?story='
-                        . $A['sid'] . '&amp;query=' . urlencode ($urlQuery);
+                        . $A['sid'] . '&amp;query=' . urlencode($this->_query);
                 }
                 $author = $this->_displayName ($A['username'], $A['fullname']);
                 if ($A['uid'] == 1) {
