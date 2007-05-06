@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.109 2007/05/06 15:16:21 dhaun Exp $
+// $Id: lib-admin.php,v 1.110 2007/05/06 17:35:40 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -131,7 +131,11 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     // Check if the delete checkbox and support for the delete all feature should be displayed
-    if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
+    $min_data = 1;
+    if (is_array($options) && isset($options['chkminimum'])) {
+        $min_data = $options['chkminimum'];
+    }
+    if (count($data_arr) > $min_data AND is_array($options) AND $options['chkdelete']) {
         $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
         $admin_templates->set_var('class', "admin-list-headerfield");
         $admin_templates->set_var('show_deleteimage', '');
@@ -164,7 +168,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     } else {
         $admin_templates->set_var('show_message', 'display:none;');
         for ($i = 0; $i < count($data_arr); $i++) {
-            if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
+            if (count($data_arr) > $min_data AND is_array($options) AND $options['chkdelete']) {
                 $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
                 $admin_templates->set_var('class', "admin-list-field");
                 $admin_templates->parse('item_field', 'field', true);
