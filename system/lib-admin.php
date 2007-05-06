@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.108 2007/05/01 12:04:17 dhaun Exp $
+// $Id: lib-admin.php,v 1.109 2007/05/06 15:16:21 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -166,6 +166,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         for ($i = 0; $i < count($data_arr); $i++) {
             if (count($data_arr) > 1 AND is_array($options) AND $options['chkdelete']) {
                 $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
+                $admin_templates->set_var('class', "admin-list-field");
                 $admin_templates->parse('item_field', 'field', true);
             }
             for ($j = 0; $j < count($header_arr); $j++) {
@@ -198,8 +199,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     $admin_templates->parse('output', 'list');
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    return $retval;
 
+    return $retval;
 }
 
 /**
