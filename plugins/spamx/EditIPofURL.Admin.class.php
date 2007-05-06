@@ -4,13 +4,13 @@
 * File: EditIPofURL.Admin.class.php
 * This is the Edit IPBlacklist Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2006 by the following authors:
+* Copyright (C) 2004-2007 by the following authors:
 * Author    Tom Willett     tomw AT pigstye DOT net
 *           Dirk Haun       dirk AT haun-online DOT de
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIPofURL.Admin.class.php,v 1.8 2007/02/12 06:52:15 ospiess Exp $
+* $Id: EditIPofURL.Admin.class.php,v 1.9 2007/05/06 08:21:11 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditIPofURL.Admin.class.php') !== false) {
@@ -21,7 +21,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'EditIPofURL.Admin.class.php') !== false) {
 * IP of URL Black List Editor
 */
 
-require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
 class EditIPofUrl extends BaseAdmin {
     /**
@@ -32,10 +32,10 @@ class EditIPofUrl extends BaseAdmin {
         global $_CONF, $_TABLES, $LANG_SX00;
 
         $action = '';
-        if (isset ($_GET['action'])) {
-            $action = COM_applyFilter ($_GET['action']);
-        } else if (isset ($_POST['paction'])) {
-            $action = COM_applyFilter ($_POST['paction']);
+        if (isset($_GET['action'])) {
+            $action = $_GET['action'];
+        } else if (isset($_POST['paction'])) {
+            $action = $_POST['paction'];
         }
 
         $entry = '';

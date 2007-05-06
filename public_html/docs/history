@@ -102,6 +102,8 @@ Polls plugin (2.0.1)
 
 Spam-X plugin (1.1.1)
 -------------
+- Fixed the "edit" modules not working with the French language files (reported
+  bye Joe) [Dirk]
 - Autouninstall implemented [Oliver]
 - Fixed an error with the SLV module when $_CONF['site_url'] was empty
   (reported by AA6QN) [Dirk]

@@ -4,14 +4,14 @@
 * File: EditHeader.Admin.class.php
 * This is the Edit HTTP Header Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2005-2006 by the following authors:
+* Copyright (C) 2005-2007 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
 *
 * based on the works of Tom Willett <tomw AT pigstye DOT net>
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.7 2007/02/08 01:42:16 ospiess Exp $
+* $Id: EditHeader.Admin.class.php,v 1.8 2007/05/06 08:21:11 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
@@ -22,7 +22,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
 * HTTP Header Editor
 */
 
-require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
 class EditHeader extends BaseAdmin {
     /**
@@ -33,10 +33,10 @@ class EditHeader extends BaseAdmin {
         global $_CONF, $_TABLES, $LANG_SX00;
 
         $action = '';
-        if (isset ($_GET['action'])) {
-            $action = COM_applyFilter ($_GET['action']);
-        } else if (isset ($_POST['paction'])) {
-            $action = COM_applyFilter ($_POST['paction']);
+        if (isset($_GET['action'])) {
+            $action = $_GET['action'];
+        } else if (isset($_POST['paction'])) {
+            $action = $_POST['paction'];
         }
 
         if ($action == 'delete') {

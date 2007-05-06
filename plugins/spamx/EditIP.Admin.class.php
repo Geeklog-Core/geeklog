@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIP.Admin.class.php,v 1.9 2007/02/12 06:52:15 ospiess Exp $
+* $Id: EditIP.Admin.class.php,v 1.10 2007/05/06 08:21:11 dhaun Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditIP.Admin.class.php') !== false) {
@@ -21,7 +21,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'EditIP.Admin.class.php') !== false) {
 * IP Black List Editor
 */
 
-require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
 class EditIP extends BaseAdmin {
     /**
@@ -32,10 +32,10 @@ class EditIP extends BaseAdmin {
         global $_CONF, $_TABLES, $LANG_SX00;
 
         $action = '';
-        if (isset ($_GET['action'])) {
-            $action = COM_applyFilter ($_GET['action']);
-        } else if (isset ($_POST['paction'])) {
-            $action = COM_applyFilter ($_POST['paction']);
+        if (isset($_GET['action'])) {
+            $action = $_GET['action'];
+        } else if (isset($_POST['paction'])) {
+            $action = $_POST['paction'];
         }
 
         $entry = '';
