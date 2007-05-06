@@ -59,6 +59,7 @@ dropped in and it will be added to the plugin.</p>
 <li><a href="#ip">IP Filter</a></li>
 <li><a href="#ipofurl">IP of URL Filter</a></li>
 <li><a href="#header">HTTP Header Filter</a></li>
+<li><a href="#honeypot">Project Honeypot Filter</a></li>
 </ul>
 
 <h3><a name="slv">Spam Link Verification (SLV)</a></h3>
@@ -146,11 +147,35 @@ headers. For example, some spammers are using Perl scripts to send their spam
 posts. The user agent (browser identification) sent by Perl scripts is usually
 something like "libwww-perl/5.805" (the version number may vary). So to block
 posts made by this user agent, you would enter:</p>
+
 <table border="0" style="width:15em">
 <tr><td><b>Header:</b></td><td align="left"><kbd>User-Agent</kbd></td></tr>
 <tr><td><b>Content:</b></td><td align="left"><kbd>^libwww-perl</kbd></td></tr>
 </table>
 <p>This would block all posts from user agents beginning with "libwww-perl".</p>
+
+<h3><a name="honeypot">Project Honeypot http:BL Filter</a></h3>
+
+<p><a href="http://www.projecthoneypot.org" title="visit the project honey pot site">ProjectHoneypot.org</a>
+    is a new service providing a way of trapping malicious web users with
+    <a href="http://en.wikipedia.org/wiki/Honeypot_%28computing%29" title="view the wikipedia defintion of a Honeypot">honeypots</a>.
+    Essentially this provides traps for email address harvesting bots, spammers,
+    and people trying to exploit web sites. Using the honeypots, the project
+    gathers and maintains an active blacklist of IP addresses categorised by
+    threat type, level and activity.</p>
+
+<p>With the ProjectHoneyPot filter module, you can block posts from known bad
+    ip addresses as identified by the <a href="http://www.projecthoneypot.org/httpbl_configure.php">http:BL</a>
+    blacklist.
+    </p>
+    <p>In order to do so, you must first <a href="http://www.projecthoneypot.org/create_account.php">Register with projectHoneyPot</a>,
+        <a href="http://www.projecthoneypot.org/manage_honey_pots.php">install a honeypot</a> or
+        <a href="http://www.projecthoneypot.org/manage_quicklink.php">quick link</a> and
+        <a href="http://www.projecthoneypot.org/httpbl_configure.php">get an access key</a>
+        for the http:BL.</p>
+    <p>Once you have done this, and inserted appropriate details into the SpamX
+        config.php file, http:BL blocking will be used for all filtered content
+    automatically.</p>
 
 
 <h2><a name="action">Action Modules</a></h2>
