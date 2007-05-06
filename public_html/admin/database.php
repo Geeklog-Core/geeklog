@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.38 2007/05/06 10:17:59 dhaun Exp $
+// $Id: database.php,v 1.39 2007/05/06 11:24:03 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -104,7 +104,7 @@ function listbackups()
 
         $menu_arr = array(
                         array('url' => $_CONF['site_admin_url']
-                                       . '/database.php?mode=' . $LANG_DB_BACKUP['do_backup'],
+                                       . '/database.php?mode=backup',
                               'text' => $LANG_ADMIN['create_new']),
                         array('url' => $_CONF['site_admin_url'],
                               'text' => $LANG_ADMIN['admin_home'])
@@ -170,10 +170,11 @@ function dobackup()
                 $timestamp = strftime($_CONF['daytime']);
                 $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp,
                               '', COM_getBlockTemplate('_msg_block', 'header'))
-                        . '<img src="' . $_CONF['layout_url'] . '/images/'
-                        . 'sysmessage.' . $_IMAGE_TYPE
-                        . '" align="top" alt="">'
-                        . $LANG_DB_BACKUP['backup_successful'] . '<br><br>'
+                        . '<p style="padding:5px"><img src="'
+                        . $_CONF['layout_url'] . '/images/sysmessage.'
+                        . $_IMAGE_TYPE . '" border="0" align="left" alt=""'
+                        . ' style="padding-right:5px; padding-bottom:3px">'
+                        . $LANG_DB_BACKUP['backup_successful'] . '</p>'
                         . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
             } else {
                 $retval .= COM_startBlock($LANG08[06], '',
@@ -249,7 +250,7 @@ if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
 
 $mode = '';
 if (isset($_GET['mode'])) {
-    if ($_GET['mode'] == $LANG_DB_BACKUP['do_backup']) {
+    if ($_GET['mode'] == 'backup') {
         $mode = 'backup';
     } else if ($_GET['mode'] == 'download') {
         $mode = 'download';
