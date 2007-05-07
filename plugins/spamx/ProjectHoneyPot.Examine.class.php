@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: ProjectHoneyPot.Examine.class.php,v 1.1 2007/05/06 14:18:30 mjervis Exp $
+// $Id: ProjectHoneyPot.Examine.class.php,v 1.2 2007/05/07 19:40:45 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'ProjectHoneyPot.Examine.class.php') !== false) {
     die ('This file can not be used on its own!');
@@ -139,7 +139,7 @@ class ProjectHoneyPot extends BaseCommand {
                             $type = '"Suspicious" and "Comment Spammer"';
                             break;
                         case HTTP_BL_HARVESTER_COMMENT: // harvester & comment spammer
-                            $type = '"Harvester" and "Comment Apmmer"';
+                            $type = '"Harvester" and "Comment Spammer"';
                             break;
                         case HTTP_BL_ALL: // suspicious, harvesting comment spammer
                             $type = '"Suspicious", "Harvester" and "Comment Spammer"';
@@ -151,7 +151,7 @@ class ProjectHoneyPot extends BaseCommand {
                     // Either invalid query, or, a search engine.
                     if (!($resultArray[3] == HTTP_BL_SEARCH_ENGINE)) {
                         SPAMX_Log('Invalid response from http:BL queried: "' .
-                                    $querydomain . '". Recieved: "' . $result . '"');
+                                    $querydomain . '". Received: "' . $result . '"');
                     }
                     $ans = 0;
                 }
