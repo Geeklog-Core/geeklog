@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.94 2007/04/28 18:54:03 dhaun Exp $
+// $Id: functions.inc,v 1.95 2007/05/08 19:24:08 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -733,7 +733,12 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                         $retval .= COM_siteHeader ('menu');
                         break;
                 }
-                $retval .= COM_showMessage ($_GET['msg']);
+                if (isset($_GET['msg'])) {
+                    $msg = COM_applyFilter($_GET['msg'], true);
+                    if ($msg > 0) {
+                        $retval .= COM_showMessage($msg);
+                    }
+                }
             }
 
             if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
