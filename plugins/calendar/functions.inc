@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.69 2007/05/05 14:45:55 dhaun Exp $
+// $Id: functions.inc,v 1.70 2007/05/12 19:54:17 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1043,15 +1043,17 @@ function plugin_getfeednames_calendar()
 /**
 * Get content for a feed that holds all events.
 *
-* @param    string   $limit    number of entries or number of stories
+* @param    string   $feed     feed ID
 * @param    string   $link     link to homepage
 * @param    string   $update   list of story ids
 * @return   array              content of the feed
 *
 */
-function plugin_getfeedcontent_calendar( $limit, &$link, &$update, $feedType, $feedVersion )
+function plugin_getfeedcontent_calendar( $feed, &$link, &$update, $feedType, $feedVersion )
 {
     global $_CONF, $_TABLES;
+
+    $limit = DB_getItem($_TABLES['syndication'], 'limits', "fid = '$feed'");
 
     $where = '';
     if( !empty( $limit )) {

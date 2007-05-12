@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Fixed Calendar feeds: The first parameter to the getFeedContent function is
+  the feed's ID, not the feed limit (bug #659) [Dirk]
 - Revamped DB Backups option. It now lists all backups (all .sql file), and you
   can download and delete backups from there [Dirk]
 - Added support for the ProjectHoneyPot.org http:BL API to SpamX [Mike]
