@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.640 2007/04/30 19:01:49 mjervis Exp $
+// $Id: lib-common.php,v 1.641 2007/05/12 20:28:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4267,7 +4267,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     else
     {
         $retval .= '| ' . COM_createLink($LANG05[5], $base_url . $sep
-                                         . $page_str . ($curpage + 1) . $pg);
+                                         . $page_str . ($curpage + 1));
         $retval .= ' | ' . COM_createLink($LANG05[8], $base_url . $sep
                                           . $page_str . $num_pages);
     }
