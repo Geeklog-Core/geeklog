@@ -4,9 +4,8 @@ Geeklog History/Changes:
 ------------
 - Fixed Calendar feeds: The first parameter to the getFeedContent function is
   the feed's ID, not the feed limit (bug #659) [Dirk]
-- Revamped DB Backups option. It now lists all backups (all .sql file), and you
-  can download and delete backups from there [Dirk]
-- Added support for the ProjectHoneyPot.org http:BL API to SpamX [Mike]
+- Revamped DB Backups option. It now lists all backups (all .sql files), and
+  lets you download and delete backups from there [Dirk]
 - Fixed checking for errors when sending Pingbacks or Pings [Mike, Dirk]
 - When receiving a Pingback, optionally create an excerpt from the text of the
   site that sent the Pingback [Dirk]
@@ -106,6 +105,7 @@ Polls plugin (2.0.1)
 
 Spam-X plugin (1.1.1)
 -------------
+- Added support for the ProjectHoneyPot.org http:BL API [Mike]
 - Fixed the "edit" modules not working with the French language files (reported
   bye Joe) [Dirk]
 - Autouninstall implemented [Oliver]
