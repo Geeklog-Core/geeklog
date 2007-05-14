@@ -166,7 +166,7 @@ $LANG_CAL_MESSAGE = array(
     'unauth'    => 'U heeft geen toegang tot het gebeurtenis-beheerdersgedeelte. Alle toegangspogingen worden opgeslagen.'
 );
 
-$PLG_calendar_MESSAGE4  = "Danke für Deinen Beitrag zu {$_CONF['site_name']}. Dein Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald im <a href=\"{$_CONF['site_url']}/calendar/index.php\">Kalender</a> aufgelistet werden.";
+$PLG_calendar_MESSAGE4 = "Dank U voor uw bijdrage aan {$_CONF['site_name']}. Uw evenement wordt nu beoordeeld. Zodra deze geaccepteerd is wordt deze zo snel mogelijk in de <a href=\"{$_CONF['site_url']}/calendar/index.php\">kalender</a> opgenomen.";
 $PLG_calendar_MESSAGE17 = 'Uw gebeurtenis wordt opgeslagen.';
 $PLG_calendar_MESSAGE18 = 'De gebeurtenis wordt verwijderd.';
 $PLG_calendar_MESSAGE24 = 'De gebeurtenis is in uw kalender opgenomen.';
