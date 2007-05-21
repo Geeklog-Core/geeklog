@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.98 2007/04/29 17:54:59 dhaun Exp $
+// $Id: lib-story.php,v 1.99 2007/05/21 06:19:38 mjervis Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -95,6 +95,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
     $article->set_var( 'layout_url', $_CONF['layout_url'] );
     $article->set_var( 'site_url', $_CONF['site_url'] );
+    $article->set_var( 'site_name', $_CONF['site_name'] );
     $article->set_var( 'story_date', $story->DisplayElements('date') );
     $article->set_var( 'story_date_short', $story->DisplayElements('shortdate') );
     $article->set_var( 'story_date_only', $story->DisplayElements('dateonly') );

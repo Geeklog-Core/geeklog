@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Pass site_name into story templates so advanced linking to items like digg.com
+  can be templated cross-site. [Mike]
 - Fixed Calendar feeds: The first parameter to the getFeedContent function is
   the feed's ID, not the feed limit (bug #659) [Dirk]
 - Revamped DB Backups option. It now lists all backups (all .sql files), and
