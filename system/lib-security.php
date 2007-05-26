@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.56 2007/03/02 08:02:35 mjervis Exp $
+// $Id: lib-security.php,v 1.57 2007/05/26 19:29:44 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -742,7 +742,7 @@ function SEC_checkUserStatus($userid)
     {
         $redirect = true;
     } else {
-        if (($_REQUEST['mode'] == 'logout') || ($_REQUEST['mode'] == ''))
+        if (empty($_REQUEST['mode']) || ($_REQUEST['mode'] == 'logout'))
         {
             $redirect = false;
         } else {
