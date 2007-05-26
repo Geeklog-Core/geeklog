@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.75 2007/04/30 18:05:14 dhaun Exp $
+// $Id: functions.inc,v 1.76 2007/05/26 16:54:11 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -486,7 +486,7 @@ function POLLS_pollVote($pid, $showall=true)
                 $results = "";
 
                 if (($P['open'] == 0) || (
-                        ($P['hideresults'] == 1) && ($_USER['uid'] == $P['owner_id'])
+                        ($P['hideresults'] == 1) && (isset($_USER['uid']) && $_USER['uid'] == $P['owner_id'])
                     ) || (
                         ($P['hideresults'] == 1) && (SEC_inGroup('Root'))
                     )
