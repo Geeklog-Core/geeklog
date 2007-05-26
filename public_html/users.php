@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.155 2007/02/13 02:07:52 ospiess Exp $
+// $Id: users.php,v 1.156 2007/05/26 19:31:59 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -612,7 +612,9 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     }
     $user_templates->set_var('lang_login', $LANG04[80]);
     $user_templates->set_var('end_block', COM_endBlock());
-    if ($_CONF['remoteauthentication'] && !$_CONF['usersubmission']) {
+
+    // 3rd party remote authentification.
+    if ($_CONF['user_logging_method']['3rdparty'] && !$_CONF['usersubmission']) {
         /* Build select */
         $select = '<select name="service"><option value="">' .
                         $_CONF['site_name'] . '</option>';
@@ -632,11 +634,27 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
         $user_templates->set_var('lang_service', $LANG04[121]);
         $user_templates->set_var('select_service', $select);
         $user_templates->parse('output', 'services');
-        $user_templates->set_var('services', $user_templates->finish($user_templates->get_var('output')));
+        $user_templates->set_var('services',
+               $user_templates->finish($user_templates->get_var('output')));
     } else {
         $user_templates->set_var('services', '');
     }
+
+    // OpenID remote authentification.
+    if ($_CONF['user_logging_method']['openid'] && !$_CONF['usersubmission']) {
+        $user_templates->set_file('openid_login', '../loginform_openid.thtml');
+        $user_templates->set_var('lang_openid_login', $LANG01[128]);
+        $app_url = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+        $user_templates->set_var('app_url', $app_url);
+        $user_templates->parse('output', 'openid_login');
+        $user_templates->set_var('openid_login',
+            $user_templates->finish($user_templates->get_var('output')));
+    } else {
+        $user_templates->set_var('openid_login', '');
+    }
+
     $user_templates->parse('output', 'login');
+
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
     return $retval;
@@ -985,10 +1003,63 @@ default:
     $uid = '';
     if (!empty($loginname) && !empty($passwd) && empty($service)) {
         $status = SEC_authenticate($loginname, $passwd, $uid);
-    } elseif(( $_CONF['usersubmission'] == 0) && $_CONF['remoteauthentication'] && ($service != '')) {
+
+    } elseif (( $_CONF['usersubmission'] == 0) && $_CONF['user_logging_method']['3rdparty'] && ($service != '')) {
         /* Distributed Authentication */
         //pass $loginname by ref so we can change it ;-)
         $status = SEC_remoteAuthentication($loginname, $passwd, $service, $uid);
+
+    } elseif (($_CONF['usersubmission'] == 0) && $_CONF['user_logging_method']['openid'] && (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))) {
+        // Here we go with the handling of OpenID authentification.
+
+        require_once $_CONF['path_system'] . 'classes/openidhelper.class.php';
+
+        $query = array_merge($_GET, $_POST);
+        $consumer = new SimpleConsumer();
+        $handler = new SimpleActionHandler($query, $consumer);
+
+        if (isset($query['identity_url']) && $query['identity_url'] != 'http://') {
+            $identity_url = $query['identity_url'];
+            $ret = $consumer->find_identity_info($identity_url);
+            if (!$ret) {
+                COM_errorLog('Unable to find an OpenID server for the identity URL ' . $identity_url);
+                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=89');
+                exit;
+            } else {
+                // Found identity server info.
+                list($identity_url, $server_id, $server_url) = $ret;
+
+                // Redirect the user-agent to the OpenID server
+                // which we are requesting information from.
+                header('Location: ' . $consumer->handle_request(
+                        $server_id, $server_url,
+                        oidUtil::append_args($_CONF['site_url'] . '/users.php',
+                            array('openid_login' => '1',
+                                  'open_id' => $identity_url)), // Return to.
+                        $_CONF['site_url'], // Trust root.
+                        null,
+                        "email,nickname,fullname")); // Required fields.
+            }
+        } elseif (isset($query['openid.mode']) || isset($query['openid_mode'])) {
+            $openid_mode = '';
+            if (isset($query['openid.mode'])) {
+                $openid_mode = $query['openid.mode'];
+            } else if(isset($query['openid_mode'])) {
+                $openid_mode = $query['openid_mode'];
+            }
+            if ($openid_mode == 'cancel') {
+                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=90');
+                exit;
+            } else {
+               $openid = $handler->getOpenID();
+               $req = new ConsumerRequest($openid, $query, 'GET');
+               $response = $consumer->handle_response($req);
+               $response->doAction($handler);
+            }
+        } else {
+            echo COM_refresh($_CONF['site_url'] . '/users.php?msg=91');
+            exit;
+        }
     } else {
         $status = -1;
     }
@@ -996,7 +1067,7 @@ default:
     if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
         $userdata = SESS_getUserDataFromId($uid);
-        $_USER=$userdata;
+        $_USER = $userdata;
         $sessid = SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
         PLG_loginUser ($_USER['uid']);
@@ -1047,7 +1118,10 @@ default:
                    $_CONF['cookie_path'], $_CONF['cookiedomain'],
                    $_CONF['cookiesecure']);
 
-        if (!empty ($_SERVER['HTTP_REFERER']) && (strstr ($_SERVER['HTTP_REFERER'], '/users.php') === false)) {
+        if (!empty($_SERVER['HTTP_REFERER'])
+                && (strstr($_SERVER['HTTP_REFERER'], '/users.php') === false)
+                && (substr($_SERVER['HTTP_REFERER'], 0,
+                        strlen($_CONF['site_url'])) == $_CONF['site_url'])) {
             $indexMsg = $_CONF['site_url'] . '/index.php?msg=';
             if (substr ($_SERVER['HTTP_REFERER'], 0, strlen ($indexMsg)) == $indexMsg) {
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');

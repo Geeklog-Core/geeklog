@@ -2,6 +2,7 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Added OpenID support, provided by Choplair
 - Pass site_name into story templates so advanced linking to items like digg.com
   can be templated cross-site. [Mike]
 - Fixed Calendar feeds: The first parameter to the getFeedContent function is

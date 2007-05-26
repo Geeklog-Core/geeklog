@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.39 2007/04/21 13:36:19 dhaun Exp $
+// $Id: lib-user.php,v 1.40 2007/05/26 19:31:59 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -224,6 +224,7 @@ function USER_sendActivationEmail ($username, $useremail)
     } else {
         $mailfrom = $_CONF['site_mail'];
     }
+
     return COM_mail ($useremail, $subject, $mailtext, $mailfrom);
 }
 
@@ -595,6 +596,43 @@ function USER_emailMatches ($email, $domain_list)
     }
 
     return $match_found;
+}
+
+/**
+* Ensure unique username
+*
+* Checks that $username does not exist yet and creates a new unique username
+* (based off of $username) if necessary.
+* Mostly useful for creating accounts for remote users.
+*
+* @param    string  $username   initial username
+* @return   string              unique username
+* @bugs     Race conditions apply ...
+*
+*/
+function USER_uniqueUsername($username)
+{
+    global $_TABLES;
+
+    if (function_exists('CUSTOM_uniqueUsername')) {
+        return CUSTOM_uniqueUsername($username);
+    }
+
+    $try = $username;
+    do {
+        $try = addslashes($try);
+        $uid = DB_getItem($_TABLES['users'], 'uid', "username = '$try'");
+        if (!empty($uid)) {
+            $r = rand(2, 9999);
+            if (strlen($username) > 12) {
+                $try = sprintf('%s%d', substr($username, 0, 12), $r);
+            } else {
+                $try = sprintf('%s%d', $username, $r);
+            }
+        }
+    } while (!empty($uid));
+
+    return $try;
 }
 
 ?>

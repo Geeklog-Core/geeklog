@@ -168,7 +168,8 @@ $LANG01 = array(
     124 => 'Click to delete all checked items',
     125 => 'Are you sure you want to Delete all checked items?',
     126 => 'Select or de-select all items',
-    127 => 'Permalink'
+    127 => 'Permalink',
+    128 => 'Login with OpenID:'
 );
 
 ###############################################################################
@@ -1145,7 +1146,13 @@ $MESSAGE = array(
     82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
     83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
     84 => 'To delete your account, please enter your current password.',
-    85 => 'There was a problem sending the email.'
+    85 => 'There was a problem sending the email.',
+    86 => 'The OpenID server invalidated your login attempt.',
+    87 => 'OpenID login operation cancelled by user.',
+    88 => 'The OpenID server returned an error.',
+    89 => 'Unable to find an OpenID server for the given identity URL.',
+    90 => 'OpenID indentification cancelled.',
+    91 => 'You specified an invalid indentity URL.'
 );
 
 ###############################################################################

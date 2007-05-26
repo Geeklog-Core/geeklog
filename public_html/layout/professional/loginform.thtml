@@ -8,5 +8,6 @@
         <input type="submit" value="{lang_login}">
     </div>
 </form>
-{lang_signup}<br>
-{lang_forgetpassword}
+<p>{lang_signup}<br>
+{lang_forgetpassword}</p>
+{openid_login}

@@ -1,0 +1,5 @@
+<form action="{site_url}/users.php?openid_login=1" method="POST">
+  <b><label for="identity_url">{lang_openid_login}</label></b><br>
+  <input name="identity_url" style='background: url("{site_url}/images/openid_login_icon.png") no-repeat;background-color:#fff;background-position:0 50%;color:#000;padding-left:18px;font-family:monospace;font-size:10px' value="http://" size="18" />
+  <input src="{site_url}/images/right_arrow.png" style="padding:1px;margin-bottom:-5px;height:16px;width:16px;border:1px" type="image" />
+</form>

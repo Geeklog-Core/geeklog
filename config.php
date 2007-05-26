@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.250 2007/05/01 07:48:41 dhaun Exp $
+// $Id: config.php,v 1.251 2007/05/26 19:31:58 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -258,11 +258,18 @@ $_CONF['show_servicename'] = true; // Set to false to not show it.
 $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 
 // +---------------------------------------------------------------------------+
-// | Support for remote authentication of users, i.e. logging in via other     |
-// | supported remote servers. Requires custom classes in:                     |
-// | system/classes/authentication/                                            |
+// | Support for various remote methods to create users and log in,            |
+// | in addition to the classic GeekLog-only internal account.                 |
 // +---------------------------------------------------------------------------+
-$_CONF['remoteauthentication'] = false;  // Set to true to enable remote logins.
+$_CONF['user_logging_method'] = array(
+    'standard' => true,  // Geeklog's built-in login method
+                         // Note: can not be disabled yet
+    'openid'   => false, // Set to true to enable OpenID remote logging support.
+    '3rdparty' => false  // Set to true to enable various other remote
+                         // authentification methods (requires custom classes in
+                         // system/classes/authentication).
+);
+
 
 // +---------------------------------------------------------------------------+
 // | Define action to be taken by Spam-X module if spam detected               |
