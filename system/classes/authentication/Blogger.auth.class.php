@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | Blogger.auth.class.php                                                    |
 // |                                                                           |
 // | Geeklog Distributed Authentication Module.                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Michael Jervis   - mike@fuckingbrit.com                          |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: Blogger.auth.class.php,v 1.6 2007/03/02 08:02:34 mjervis Exp $
+// $Id: Blogger.auth.class.php,v 1.7 2007/05/26 14:19:04 dhaun Exp $
 
 // PEAR class to handle XML-RPC
 require_once ('XML/RPC.php');
@@ -72,3 +72,5 @@ class Blogger
         }
     }
 }
+
+?>
