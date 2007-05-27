@@ -196,7 +196,7 @@ class SimpleHTTPClient extends HTTPClient {
     	
     	$data = '';
     	while (!feof($fp)) {
-    		$data.= fgets($fp, 1024);
+    		$data.= @fgets($fp, 1024);
         }
             
     	fclose($fp);
