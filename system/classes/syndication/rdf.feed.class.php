@@ -110,6 +110,7 @@
       $this->namespaces[] = 'xmlns:dc="http://purl.org/dc/elements/1.1/"';
       $this->namespaces[] = 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"';
       $this->namespaces[] = 'xmlns="http://purl.org/rss/1.0/"';
+      $this->namespaces[] = 'xmlns:content="http://purl.org/rss/1.0/modules/content/"';
       $xml .= '<rdf:RDF'.$this->_injectNamespaces().">\n";
       $xml .= "<channel  rdf:about=\"{$this->feedlogo}\">\n";
       $xml .= "<title>".$this->_safeXML( $this->title )."</title>\n";
