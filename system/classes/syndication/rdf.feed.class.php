@@ -87,9 +87,9 @@
                           . "</content:encoded>\n";
         }
       }
-      if( is_array( $article->extensions ) )
+      if( is_array( $article['extensions'] ) )
       {
-        foreach( $article->extensions as $extendingTag )
+        foreach( $article['extensions'] as $extendingTag )
         {
             $xml .= "$extendingTag\n";
         }
