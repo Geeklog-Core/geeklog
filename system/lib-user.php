@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.41 2007/06/09 20:43:41 blaine Exp $
+// $Id: lib-user.php,v 1.42 2007/06/09 21:14:10 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -644,7 +644,8 @@ function USER_uniqueUsername($username)
 * @return   array                   Array of child groups
 *
 */
-function USER_getChildGroups($groupid) {
+function USER_getChildGroups($groupid)
+{
     global $_TABLES;
     $to_check = array ();
     array_push ($to_check, $groupid);
