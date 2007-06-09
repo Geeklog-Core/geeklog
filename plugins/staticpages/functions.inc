@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.95 2007/05/08 19:24:08 dhaun Exp $
+// $Id: functions.inc,v 1.96 2007/06/09 17:48:21 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -223,6 +223,8 @@ function SP_displayPage ($page, $A)
 
         if (($A['sp_format'] == 'allblocks') && ($_USER['noboxes'] != 1)) {
             $retval .= COM_siteFooter(true);
+        } else if (($A['sp_format'] == 'leftblocks') || ($A['sp_format'] == 'noblocks')) {
+            $retval .= COM_siteFooter(false);
         } else {
             $retval .= COM_siteFooter();
         }
