@@ -2,19 +2,19 @@
       <div class="notes">
         <h4>{lang_comment_help_title}</h4>
         {lang_comment_help}
-       </div>
-<table class="inputTable">
-  <tr>
-    <td><label>{lang_displaymode}</label></td>
-    <td>{displaymode_selector}</td>
-  </tr>
-  <tr>
-    <td><label>{lang_sortorder}</label></td>
-    <td>{sortorder_selector}</td>
-  </tr>
-  <tr>
-     <td><label for="commentlimit">{lang_commentlimit}:</label></td>
-     <td><input type="text" id="commentlimit" name="commentlimit" size="5" maxlength="5" value="{commentlimit_value}"></td>
-  </tr>
-</table>
+    </div>
+    <table class="inputTable">
+      <tr>
+        <td><label>{lang_displaymode}</label></td>
+        <td>{displaymode_selector}</td>
+      </tr>
+      <tr>
+        <td><label>{lang_sortorder}</label></td>
+        <td>{sortorder_selector}</td>
+      </tr>
+      <tr>
+         <td><label for="commentlimit">{lang_commentlimit}:</label></td>
+         <td><input type="text" id="commentlimit" name="commentlimit" size="5" maxlength="5" value="{commentlimit_value}"></td>
+      </tr>
+    </table>
 </fieldset>

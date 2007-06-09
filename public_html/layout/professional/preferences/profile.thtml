@@ -23,8 +23,9 @@
         <fieldset style="margin-top:10px;"><legend>{lang_password_email_legend}</legend>
           <div class="notes">
             <h4>{lang_password_help_title}</h4>
-            <p class="last">{lang_password_help}</p>
+            <p class="last">{lang_password_help}<br /><br />
             <span class="warningsmall">{lang_enter_current_password}</span>
+	    </p>
            </div>
            <table class="inputTable">
                <tr>
