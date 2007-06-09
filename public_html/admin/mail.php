@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.32 2006/02/26 18:12:10 dhaun Exp $
+// $Id: mail.php,v 1.33 2007/06/09 20:43:41 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -121,6 +121,8 @@ function display_form ()
 function send_messages ($vars)
 {
     global $_CONF, $_TABLES, $LANG31;
+    
+    require_once($_CONF['path_system'] . 'lib-user.php');
 
     $retval = '';
 
@@ -148,17 +150,19 @@ function send_messages ($vars)
     } else {
         $html = false;
     }
+    
+    $groupList = implode (',', USER_getChildGroups($vars['to_group']));
 
     // and now mail it
     if (isset ($vars['overstyr'])) {
-        $sql = "SELECT username,fullname,email FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
+        $sql = "SELECT DISTINCT username,fullname,email FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
         $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
-        $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id = {$vars['to_group']}";
+        $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id in  IN ({$groupList})";
     } else {
-        $sql = "SELECT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
+        $sql = "SELECT DISTINCT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
         $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
-        $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id = {$vars['to_group']}";
+        $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id  IN ({$groupList})";
     }
 
     $result = DB_query ($sql);

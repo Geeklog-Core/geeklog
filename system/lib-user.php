@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.40 2007/05/26 19:31:59 dhaun Exp $
+// $Id: lib-user.php,v 1.41 2007/06/09 20:43:41 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -634,5 +634,39 @@ function USER_uniqueUsername($username)
 
     return $try;
 }
+
+
+/**
+* Used to return an array of groups that a base group contains
+* GL supports hierarchical groups and this will return all the child groups
+*
+* @param    int     $groupid        Group id to get list of groups for
+* @return   array                   Array of child groups
+*
+*/
+function USER_getChildGroups($groupid) {
+    global $_TABLES;
+    $to_check = array ();
+    array_push ($to_check, $groupid);
+    $groups = array ();
+    while (sizeof ($to_check) > 0) {
+        $thisgroup = array_pop ($to_check);
+        if ($thisgroup > 0) {
+            $result = DB_query ("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $thisgroup");
+            $numGroups = DB_numRows ($result);
+            for ($i = 0; $i < $numGroups; $i++) {
+                $A = DB_fetchArray ($result);
+                if (!in_array ($A['ug_grp_id'], $groups)) {
+                    if (!in_array ($A['ug_grp_id'], $to_check)) {
+                        array_push ($to_check, $A['ug_grp_id']);
+                    }
+                }
+            }
+            $groups[] = $thisgroup;
+        }
+    }
+    return $groups;   
+}
+
 
 ?>
