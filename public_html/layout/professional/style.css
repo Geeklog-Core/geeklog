@@ -82,10 +82,15 @@ form div.notes p,
 form div small {
   line-height:125%;
 }
-
-form div.notes li {
-  margin-left:5px;
-  list-style-position:inside;
+form div.notes ul {
+  margin:0px;
+  padding:0px;
+  padding-left:2px;
+}
+form div.notes ul li {
+  margin-left:15px;
+  list-style-position:outside;
+  padding-right:2px;
 }
 form fieldset div.notes {
   float:right;

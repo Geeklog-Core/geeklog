@@ -1,11 +1,13 @@
 <fieldset style="margin-top:10px;"><legend>{lang_comment_title}</legend>
-      <div class="notes">
+      <div class="notes" style="width:250px;">
         <h4>{lang_comment_help_title}</h4>
+        <ul>
         {lang_comment_help}
+        </ul>
     </div>
     <table class="inputTable">
       <tr>
-        <td><label>{lang_displaymode}</label></td>
+        <td width="120"><label>{lang_displaymode}</label></td>
         <td>{displaymode_selector}</td>
       </tr>
       <tr>

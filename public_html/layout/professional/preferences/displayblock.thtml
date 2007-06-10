@@ -1,13 +1,15 @@
     <fieldset id="pe_userinfo" style="margin-top:10px;"><legend>{lang_misc_title}</legend>
-        <div class="notes">
+        <div class="notes" style="width:250px;">
         <h4>{lang_misc_help_title}</h4>
+             <ul>
             {lang_misc_help}
+            </ul>
         </div>
         <table class="inputTable">
             {language_selection}
             {theme_selection}
             <tr>
-                <td width="100px"><label for="noicons">{lang_noicons}:</label></td>
+                <td width="120px"><label for="noicons">{lang_noicons}:</label></td>
                 <td><input type="checkbox" id="noicons" name="noicons" {noicons_checked}></td>
             </tr>
             <tr>
@@ -18,8 +20,10 @@
                 <td width="100px"><label for="maxstories">{lang_maxstories}:</label></td>
                 <td><input type="text" size="3" maxlength="3" id="maxstories" name="maxstories" value="{maxstories_value}"></td>
             </tr>
+            </table>
+            <table class="inputTable">
             <tr>
-                <td width="100px"><label>{lang_timezone}:</label></td>
+                <td width="120px"><label>{lang_timezone}:</label></td>
                 <td>{timezone_selector}</td>
             </tr>
             <tr>

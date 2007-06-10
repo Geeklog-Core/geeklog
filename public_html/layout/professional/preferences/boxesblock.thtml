@@ -1,6 +1,6 @@
 <fieldset style="margin-top:10px;">
     <legend>{lang_boxes_title}</legend>
-      <div class="notes">
+      <div class="notes" style="width:200px;">
         <h4>{lang_boxes_help_title}</h4>
         {lang_boxes}
        </div>

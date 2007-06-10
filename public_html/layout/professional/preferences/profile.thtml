@@ -2,7 +2,7 @@
 <script type="text/JavaScript" src="{site_url}/javascript/profile_editor.js"></script>
 
 <div id="pe_navbar" class="jsenabled_show" style="display:none">{navbar}</div>
-<div class="clearboth"></div>
+<div class="clearboth" style="min-width:600px;">
 <form action="{site_url}/usersettings.php" method="POST" {enctype}>
     <div id="pe_preview" style="display:none;">
         <fieldset style="margin-top:10px;">
@@ -23,13 +23,14 @@
         <fieldset style="margin-top:10px;"><legend>{lang_password_email_legend}</legend>
           <div class="notes">
             <h4>{lang_password_help_title}</h4>
-            <p class="last">{lang_password_help}<br /><br />
-            <span class="warningsmall">{lang_enter_current_password}</span>
-	    </p>
+            <p class="last">
+                {lang_password_help}<br /><br />
+                <span class="warningsmall">{lang_enter_current_password}</span>  
+            </p>
            </div>
-           <table class="inputTable">
+           <table class="inputTable" border="0">
                <tr>
-                    <td width="150px"><label for="passwd">{lang_password}:</label></td>
+                    <td width="150px" nowrap><label for="passwd">{lang_password}:</label></td>
                     <td><input type="password" id="passwd" name="passwd" size="32" maxlength="32" value="{password_value}"></td>
                </tr>
                <tr>
@@ -60,7 +61,7 @@
         <fieldset style="margin-top:10px;"><legend>{lang_personal_info_legend}</legend>
           <div class="notes">
             <h4>{lang_userinfo_help_title}</h4>
-            <p class="last">{lang_userinfo_help}</p>
+                <ul>{lang_userinfo_help}</ul>
            </div>
            <table class="inputTable">
                <tr>
@@ -96,7 +97,7 @@
       <input type="submit" name="btncancel" value="{lang_cancel}">
     </p>
 </form>
-
+</div>
 <!-- JS Functions which will execute only if JS enabled will un-hide the special features that enhance the profile editor -->
 <script type="text/JavaScript">
 var el;
