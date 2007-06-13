@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Bugfix: Atom always assumes 0.3 and doesn't handle article dates. (Reported by
+  mystral kk on the forums).
 - Bugfix: Allow the static pages "page format" setting to override
   $_CONF['show_right_blocks'] (reported by Simon Lord)
 - Added OpenID support, provided by Choplair

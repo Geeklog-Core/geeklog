@@ -26,7 +26,7 @@
   /*  3. This notice may not be removed or altered from any source            */
   /*     distribution.                                                        */
   /****************************************************************************/
-  // $Id: atom.feed.class.php,v 1.11 2006/05/18 20:27:31 mjervis Exp $
+  // $Id: atom.feed.class.php,v 1.12 2007/06/13 06:22:48 mjervis Exp $
 
   /**
     * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -224,9 +224,9 @@
         } else if( $this->_currentTag == 'MODIFIED' ) {
           $this->_currentItem['date'] = $data;
         } else if( $this->_currentTag == 'ISSUED' ) {
-          if( empty( $this->currentItem['date'] ) )
+          if( empty( $this->_currentItem['date'] ) )
           {
-            $this->currentITem['date'] = $data;
+            $this->_currentItem['date'] = $data;
           }
         }
       } else {
@@ -444,9 +444,9 @@
         } else if( $this->_currentTag == 'UPDATED' ) {
           $this->_currentItem['date'] = $data;
         } else if( $this->_currentTag == 'PUBLISHED' ) {
-          if( empty( $this->currentItem['date'] ) )
+          if( empty( $this->_currentItem['date'] ) )
           {
-            $this->currentITem['date'] = $data;
+            $this->_currentItem['date'] = $data;
           }
         }
       } else {

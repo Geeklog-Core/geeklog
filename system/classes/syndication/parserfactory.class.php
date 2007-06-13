@@ -253,7 +253,6 @@
           } else {
             $this->readerName = 'Atom10';
           }
-          $this->readerName = 'Atom03';
         } elseif ( $name == 'RSS' ) {
           if( array_key_exists('VERSION', $attributes) )
           {
