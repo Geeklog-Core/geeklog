@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.110 2007/05/06 17:35:40 dhaun Exp $
+// $Id: lib-admin.php,v 1.111 2007/07/11 01:33:58 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -137,7 +137,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     }
     if (count($data_arr) > $min_data AND is_array($options) AND $options['chkdelete']) {
         $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
-        $admin_templates->set_var('class', "admin-list-headerfield");
+        $admin_templates->set_var('class', "admin-list-field");
         $admin_templates->set_var('show_deleteimage', '');
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('on_click');
@@ -314,7 +314,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     // Check if the delete checkbox and support for the delete all feature should be displayed
     if (is_array($options) AND $options['chkdelete']) {
         $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
-        $admin_templates->set_var('class', "admin-list-headerfield");
+        $admin_templates->set_var('class', "admin-list-field");
         $admin_templates->set_var('show_deleteimage', '');
         $admin_templates->parse('header_row', 'header', true);
         $admin_templates->clear_var('on_click');
