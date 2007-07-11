@@ -36,7 +36,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.93 2007/01/13 20:07:59 dhaun Exp $
+// $Id: install.php,v 1.94 2007/07/11 02:35:51 ospiess Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -64,7 +64,7 @@ if (!defined ('VERSION')) {
 function php_v ()
 {
     $phpv = explode ('.', phpversion ());
-                                                                                
+
     return array ($phpv[0], $phpv[1], (int) $phpv[2]);
 }
 
@@ -414,7 +414,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
         } else {
             // This is a fresh MySQL installation
             $db_templates->set_var ('upgrade', 0);
-    
+
             if (innodb_supported ()) {
                 $innodb_option = '<tr><td align="left">';
                 $innodb_option .= '<p>Using InnoDB tables may improve performance on (very) large sites, but makes database backups more complicated. Leave the option unchecked unless you know what you\'re doing.</p>';
@@ -440,7 +440,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
     $_DB->setDisplayError (true);
 
     // Because the create table syntax can vary from dbms-to-dbms we are
-    // leaving that up to each database driver (e.g. mysql.class.php, 
+    // leaving that up to each database driver (e.g. mysql.class.php,
     // postgresql.class.php, etc)
 
     // Get DBMS-specific create table array and data array
@@ -458,7 +458,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
                 if ($use_innodb) {
                     $sql = str_replace ('MyISAM', 'InnoDB', $sql);
                 }
-            
+
                 DB_query ($sql);
             }
             if ($use_innodb) {
@@ -469,7 +469,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
             foreach ($_SQL as $sql) {
                 DB_query ($sql);
             }
-            break;   
+            break;
     }
 
     // Now insert mandatory data and a small subset of initial data
@@ -674,7 +674,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $current_gl_version = '1.3.4';
             $_SQL = '';
             break;
-	case '1.3.4':
+        case '1.3.4':
             require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.4_to_1.3.5.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 DB_query(current($_SQL));
@@ -859,7 +859,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $current_gl_version = '1.3.9';
             $_SQL = '';
             break;
-	case '1.3.9':
+        case '1.3.9':
             require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.9_to_1.3.10.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 DB_query(current($_SQL));
@@ -892,7 +892,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $current_gl_version = '1.3.10';
             $_SQL = '';
             break;
-	case '1.3.10':
+        case '1.3.10':
             require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.10_to_1.3.11.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 DB_query(current($_SQL));
@@ -903,7 +903,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $_SQL = '';
             break;
 
-    case '1.3.11':
+        case '1.3.11':
             require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.11_to_1.4.0.php');
             for ($i = 0; $i < count ($_SQL); $i++) {
                 DB_query (current ($_SQL));
@@ -917,7 +917,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $_SQL = '';
             break;
 
-    case '1.4.0':
+        case '1.4.0':
             require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.0_to_1.4.1.php');
             for ($i = 0; $i < count ($_SQL); $i++) {
                 DB_query (current ($_SQL));
@@ -932,13 +932,13 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $_SQL = '';
             break;
 
-    case '1.4.1':
+        case '1.4.1':
             require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.1_to_1.4.2.php');
             for ($i = 0; $i < count ($_SQL); $i++) {
                 DB_query (current ($_SQL));
                 next ($_SQL);
             }
-
+            upgrade_PollPlugin();
             $current_gl_version = '1.4.2';
             $_SQL = '';
             break;
@@ -1030,7 +1030,7 @@ case 1:
         $upgrade = 0;
     }
     $display .= INST_getDatabaseSettings ($_POST['install_type'],
-                                          $_POST['geeklog_path']); 
+                                          $_POST['geeklog_path']);
     break;
 
 case 2:
