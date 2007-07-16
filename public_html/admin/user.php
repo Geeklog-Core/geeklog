@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.186 2007/04/21 13:36:19 dhaun Exp $
+// $Id: user.php,v 1.187 2007/07/16 02:43:23 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -67,7 +67,7 @@ if (!SEC_hasRights('user.edit')) {
 * @see function COM_checkList
 *
 */
-function GROUP_checkList ($table, $selection, $where='', $selected='')
+function GROUP_checkList ($table, $selection, $where='', $selected='', $orderby='')
 {
     global $_TABLES, $LANG_ACCESS;
 
@@ -76,6 +76,9 @@ function GROUP_checkList ($table, $selection, $where='', $selected='')
     $sql = "SELECT $selection FROM $table";
     if (!empty ($where)) {
         $sql .= " WHERE $where";
+    }
+    if (!empty ($orderby)) {
+        $sql .= " ORDER BY $orderby";
     }
     $result = DB_query ($sql);
     $nrows = DB_numRows ($result);
@@ -335,7 +338,7 @@ function edituser($uid = '', $msg = '')
         $where = 'grp_id IN (' . implode (',', $thisUsersGroups) . ')';
         $user_templates->set_var ('group_options',
                 GROUP_checkList ($_TABLES['groups'], 'grp_id,grp_name',
-                                 $where, $selected));
+                                 $where, $selected, 'grp_name'));
         $user_templates->parse('group_edit', 'groupedit', true);
     } else {
         // user doesn't have the rights to edit a user's groups so set to -1
