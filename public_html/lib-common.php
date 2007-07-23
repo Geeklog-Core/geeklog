@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.642 2007/05/26 19:31:58 dhaun Exp $
+// $Id: lib-common.php,v 1.643 2007/07/23 00:29:31 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2556,7 +2556,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $link_array[$LANG01[113]] = $menu_item;
         }
 
-        if( SEC_inGroup( 'Root' ))
+        if( $_CONF['link_versionchecker'] == 1 AND SEC_inGroup( 'Root' ))
         {
             $adminmenu->set_var( 'option_url',
                'http://www.geeklog.net/versionchecker.php?version=' . VERSION );

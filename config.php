@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.253 2007/06/02 07:17:27 dhaun Exp $
+// $Id: config.php,v 1.254 2007/07/23 00:29:31 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -604,6 +604,9 @@ $_CONF['pingback_excerpt'] = true;
 
 // Link to the documentation from the Admin block (0 = hide link, 1 = show)
 $_CONF['link_documentation'] = 1;
+
+// Link to the Geeklog version check from the Admin block (0 = hide link, 1 = show)
+$_CONF['link_versionchecker'] = 1;
 
 // Story Settings
 $_CONF['maximagesperarticle']   = 5;
