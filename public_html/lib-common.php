@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.643 2007/07/23 00:29:31 blaine Exp $
+// $Id: lib-common.php,v 1.644 2007/07/23 01:36:11 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3191,31 +3191,36 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         }
     }
 
-    $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date "
-         . "FROM {$_TABLES['blocks']} WHERE is_enabled = 1";
+    $blocksql['mssql']  = "SELECT bid, is_enabled, name, type, title, tid, blockorder, cast(content as text) as content, ";
+    $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
+    $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
+
+    $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
+    
+    $commonsql = "FROM {$_TABLES['blocks']} WHERE is_enabled = 1";
 
     if( $side == 'left' )
     {
-        $sql .= " AND onleft = 1";
+        $commonsql .= " AND onleft = 1";
     }
     else
     {
-        $sql .= " AND onleft = 0";
+        $commonsql .= " AND onleft = 0";
     }
 
     if( !empty( $topic ))
     {
-        $sql .= " AND (tid = '$topic' OR tid = 'all')";
+        $commonsql .= " AND (tid = '$topic' OR tid = 'all')";
     }
     else
     {
         if( COM_onFrontpage() )
         {
-            $sql .= " AND (tid = 'homeonly' OR tid = 'all')";
+            $commonsql .= " AND (tid = 'homeonly' OR tid = 'all')";
         }
         else
         {
-            $sql .= " AND (tid = 'all')";
+            $commonsql .= " AND (tid = 'all')";
         }
     }
 
@@ -3223,12 +3228,14 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     {
         $BOXES = str_replace( ' ', ',', $_USER['boxes'] );
 
-        $sql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
+        $commonsql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
 
-    $sql .= ' ORDER BY blockorder,title asc';
+    $commonsql .= ' ORDER BY blockorder,title asc';
 
-    $result = DB_query( $sql );
+    $blocksql['mysql'] .= $commonsql;
+    $blocksql['mssql'] .= $commonsql;
+    $result = DB_query( $blocksql );
     $nrows = DB_numRows( $result );
 
     // convert result set to an array of associated arrays

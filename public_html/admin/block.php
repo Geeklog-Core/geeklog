@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.112 2007/05/12 12:51:13 dhaun Exp $
+// $Id: block.php,v 1.113 2007/07/23 01:36:11 blaine Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -188,7 +188,13 @@ function editblock ($bid = '')
     $retval = '';
 
     if (!empty($bid)) {
-        $result = DB_query("SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'");
+        $sql['mysql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
+        
+        $sql['mssql'] = "SELECT bid, is_enabled, name, type, title, tid, blockorder, cast(content as text) as content, rdfurl, ";
+        $sql['mssql'] .= "rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id,group_id, ";
+        $sql['mssql'] .= "perm_owner, perm_group, perm_members, perm_anon, allow_autotags FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
+        
+        $result = DB_query($sql);
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 2 || $access == 0 || hasBlockTopicAccess ($A['tid']) < 3) {
