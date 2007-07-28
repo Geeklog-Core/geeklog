@@ -3,14 +3,10 @@ Geeklog History/Changes:
 ??? ??, 2007 (1.4.x)
 ------------
 - Bugfix: Atom always assumes 0.3 and doesn't handle article dates. (Reported by
-  mystral kk on the forums).
-- Bugfix: Allow the static pages "page format" setting to override
-  $_CONF['show_right_blocks'] (reported by Simon Lord)
+  mystral kk on the forums). [Mike]
 - Added OpenID support, provided by Choplair
 - Pass site_name into story templates so advanced linking to items like digg.com
   can be templated cross-site. [Mike]
-- Fixed Calendar feeds: The first parameter to the getFeedContent function is
-  the feed's ID, not the feed limit (bug #659) [Dirk]
 - Revamped DB Backups option. It now lists all backups (all .sql files), and
   lets you download and delete backups from there [Dirk]
 - Fixed checking for errors when sending Pingbacks or Pings [Mike, Dirk]
@@ -91,6 +87,8 @@ Geeklog History/Changes:
 
 Calendar plugin (1.0.2)
 ---------------
+- Fixed Calendar feeds: The first parameter to the getFeedContent function is
+  the feed's ID, not the feed limit (bug #659) [Dirk]
 - Highlight search queries [Dirk]
 - Autouninstall implemented [Oliver]
 - Added Batch-Delete functionality [Oliver]
@@ -123,6 +121,8 @@ Spam-X plugin (1.1.1)
 
 Static Pages plugin (1.4.4)
 -------------------
+- Bugfix: Allow the static pages "page format" setting to override
+  $_CONF['show_right_blocks'] (reported by Simon Lord) [Dirk]
 - New Static pages Autotag: staticpage_content to return the contents of a 
   static page instead of a link to a static page [Oliver]
 - Now using a template to display static pages [Oliver]
