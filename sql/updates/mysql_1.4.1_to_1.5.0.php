@@ -24,10 +24,11 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DEFAULT NULL AFTER rdfupdated";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL AFTER rdf_last_modified";
 
-function upgrade_PollPlugin()
+function upgrade_PollsPlugin()
 {
     global $_TABLES;
-    // Poll plugin updates
+
+    // Polls plugin updates
     $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'polls';";
     $check_rst = DB_query ($check_sql);
     if (DB_numRows($check_rst) == 1) {
@@ -42,7 +43,7 @@ function upgrade_PollPlugin()
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $P_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
-              qid mediumint(9) NOT NULL DEFAULT '0',
+              qid mediumint(9) NOT NULL auto_increment,
               pid varchar(20) NOT NULL,
               question varchar(255) NOT NULL,
               PRIMARY KEY (qid)
