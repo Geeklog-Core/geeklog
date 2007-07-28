@@ -47,6 +47,7 @@ function upgrade_PollPlugin() {
               PRIMARY KEY (qid)
             ) TYPE=MyISAM
             ";
+        $P_SQL = INST_checkInnodbUpgrade($P_SQL);
         for ($i = 0; $i < count ($P_SQL); $i++) {
             DB_query (current ($P_SQL));
             next ($P_SQL);
