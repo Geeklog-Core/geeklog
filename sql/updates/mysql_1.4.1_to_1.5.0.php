@@ -24,10 +24,11 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DEFAULT NULL AFTER rdfupdated";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL AFTER rdf_last_modified";
 
-function upgrade_PollPlugin() {
+function upgrade_PollPlugin()
+{
     global $_TABLES;
     // Poll plugin updates
-    $check_sql = "SELECT pi_name FROM `gl_plugins` WHERE pi_name = 'polls';";
+    $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'polls';";
     $check_rst = DB_query ($check_sql);
     if (DB_numRows($check_rst) == 1) {
         $P_SQL = array();
