@@ -15,7 +15,7 @@
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
- * $Id: Import.Admin.class.php,v 1.12 2007/05/28 17:21:32 dhaun Exp $
+ * $Id: Import.Admin.class.php,v 1.13 2007/07/29 08:06:31 dhaun Exp $
  */
 
 if (strpos($_SERVER['PHP_SELF'], 'Import.Admin.class.php') !== false) {
@@ -64,6 +64,9 @@ class Import extends BaseAdmin {
         require_once $_CONF['path'] . 'plugins/spamx/magpierss/rss_fetch.inc';
         require_once $_CONF['path'] . 'plugins/spamx/magpierss/rss_utils.inc';
 
+        if (!defined('MAGPIE_USER_AGENT')) {
+            define('MAGPIE_USER_AGENT', 'Geeklog/' . VERSION);
+        }
         $rss = fetch_rss($_SPX_CONF['rss_url']);
         if ($rss === false) {
             if (strpos($_SPX_CONF['rss_url'], 'jayallen.org') === false) {
