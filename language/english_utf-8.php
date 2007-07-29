@@ -359,16 +359,24 @@ $LANG04 = array(
     148 => 'User Information',
     149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
     150 => 'Warning: Javascript recommended for enhanced functionality',
-    151 => 'Preview',
-    152 => 'Username & Password',
-    153 => 'Layout & Language',
-    154 => 'Content',
-    155 => 'Privacy',
     156 => 'Delete Account',
     157 => 'Delete Option',
     158 => 'Time Zone',
     159 => 'This email was generated automatically. Please do not reply to this email.'
 );
+
+###############################################################################
+# Customize if need to modify the Tabbed navbar MyAccount panels used. Array index key matches preference div id
+
+$LANG_MYACCOUNT = array(
+    'pe_preview'   => 'Preview',
+    'pe_namepass'  => 'Username & Password',
+    'pe_userinfo'  => 'About You',
+    'pe_layout'    => 'Layout & Language',
+    'pe_content'   => 'Content',
+    'pe_privacy'   => 'Privacy'
+);
+
 
 ###############################################################################
 # index.php

@@ -1,16 +1,16 @@
 <noscript><div class="pluginAlert" style="padding:10px;">{no_javascript_warning}</div></noscript>
 <script type="text/JavaScript" src="{site_url}/javascript/profile_editor.js"></script>
 
-<div id="pe_navbar" class="jsenabled_show" style="display:none">{navbar}</div>
+<div id="pe_navbar" style="display:none">{navbar}</div>
 <div class="clearboth" style="min-width:600px;">
 <form action="{site_url}/usersettings.php" method="POST" {enctype}>
-    <div id="pe_preview" style="display:none;">
+<div id="pe_preview" class="jsenabled_hide" style="display:none;">
         <fieldset style="margin-top:10px;">
             <legend>{lang_preview_title}</legend>
             {preview}
         </fieldset>
     </div>
-    <div id="pe_namepass">
+<div id="pe_namepass" class="jsenabled_show">
         <fieldset style="margin-top:10px;"><legend>{lang_name_legend}</legend>
            <table class="inputTable">
                    {username_option}
@@ -100,14 +100,26 @@
 </div>
 <!-- JS Functions which will execute only if JS enabled will un-hide the special features that enhance the profile editor -->
 <script type="text/JavaScript">
-var el;
-el=document.getElementsByTagName('div');
-for(i=0;i<el.length;i++){
-    if(el[i].className == 'jsenabled_show'){
-        el[i].style.display = '';
-    } else if(el[i].className == 'jsenabled_hide'){
-        el[i].style.display = 'none';
+    <!-- Initially the navbar is hidden - in case JS is disabled. Enable it now -->
+    document.getElementById('pe_navbar').style.display='';
+
+    /* Now cycle through the profile tabs as the number in the template could have been modified (personalized)
+       If you add custom panels, just ensure you use the class jsenabled_hide or jsenabled_show
+       Build an object that can then be referenced in the functon showhideProfileEditorDiv
+    */
+
+    var profilepanels = new Object;
+    var el;
+    el=document.getElementsByTagName('div');
+    for(i=0;i<el.length;i++) {
+        var divname = el[i].id  
+        if(el[i].className == 'jsenabled_show'){
+            el[i].style.display = '';
+            profilepanels[divname] = 'show';
+        } else if(el[i].className == 'jsenabled_hide'){
+            el[i].style.display = 'none';
+            profilepanels[divname] = 'hidden';   
+        }
     }
-}
 
 </script>

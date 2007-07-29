@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.163 2007/04/21 13:36:19 dhaun Exp $
+// $Id: usersettings.php,v 1.164 2007/07/29 21:40:00 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -52,7 +52,7 @@ $_US_VERBOSE = false;
 */
 function edituser()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN;
 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray ($result);
@@ -65,13 +65,12 @@ function edituser()
 
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
     $navbar = new navbar;
-    $navbar->add_menuitem($LANG04[151],'showhideProfileEditorDiv("preview",0);return false;',true);
-    $navbar->add_menuitem($LANG04[152],'showhideProfileEditorDiv("namepass",1);return false;',true);
-    $navbar->add_menuitem($LANG04[130],'showhideProfileEditorDiv("userinfo",2);return false;',true);
-    $navbar->add_menuitem($LANG04[153],'showhideProfileEditorDiv("layout",3);return false;',true);
-    $navbar->add_menuitem($LANG04[154],'showhideProfileEditorDiv("content",4);return false;',true);
-    $navbar->add_menuitem($LANG04[155],'showhideProfileEditorDiv("privacy",5);return false;',true);
-    $navbar->set_selected($LANG04[152]);
+    $cnt = 0;
+    foreach ($LANG_MYACCOUNT as $id => $label) {
+        $navbar->add_menuitem($label,'showhideProfileEditorDiv("'.$id.'",'.$cnt.');return false;',true);
+        $cnt++;
+    }
+    $navbar->set_selected($LANG_MYACCOUNT['pe_namepass']);
     $preferences->set_var ('navbar', $navbar->generate());
 
     $preferences->set_var ('site_url', $_CONF['site_url']);
@@ -602,6 +601,7 @@ function editpreferences()
     } else {
         $preferences->set_var ('showonline_checked', '');
     }
+    PLG_profileVariablesEdit ($_USER['uid'], $preferences);
     $preferences->parse ('privacy_block', 'privacy', true);
 
     // excluded items block
