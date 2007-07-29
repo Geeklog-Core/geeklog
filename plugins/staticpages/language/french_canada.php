@@ -65,6 +65,7 @@ $LANG_STATIC= array(
     results => 'Résultats des pages statiques',
     author => 'Auteur',
     no_title_or_content => 'Vous devez au minimum inscrire quelque chose dans les champs <b>titre</b> et <b>contenu</b>.',
+    no_such_page_logged_in => 'Désolé '.$_USER['username'].'..',
     no_such_page_anon => 'Prière de vous enregistrer',
     no_page_access_msg => "Ce pourrait être parce que vous ne vous êtes pas enregistré, ou inscrit comme membre de {$_CONF["site_name"]}. Veuillez <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> vous inscrire comme membre</a> de {$_CONF["site_name"]} pour recevoir toutes les permissions nécessaires",
     php_msg => 'PHP: ',
