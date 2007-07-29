@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Avoid division by zero error when $_CONF['limitnews'] == 0
+  (reported by Samuel M. Stone) [Dirk]
 - Bugfix: Atom always assumes 0.3 and doesn't handle article dates. (Reported by
   mystral kk on the forums). [Mike]
 - Added OpenID support, provided by Choplair

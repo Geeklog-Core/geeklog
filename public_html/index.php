@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.94 2007/04/29 14:10:07 mjervis Exp $
+// $Id: index.php,v 1.95 2007/07/29 07:50:07 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -190,6 +190,9 @@ if ($maxstories == 0) {
 }
 
 $limit = $maxstories;
+if ($limit < 1) {
+    $limit = 1;
+}
 
 // Geeklog now allows for articles to be published in the future.  Because of
 // this, we need to check to see if we need to rebuild the RDF file in the case
