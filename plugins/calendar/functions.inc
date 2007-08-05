@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.70 2007/05/12 19:54:17 dhaun Exp $
+// $Id: functions.inc,v 1.71 2007/08/05 07:51:40 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -769,7 +769,8 @@ function CALENDAR_deleteEvent ($eid)
     return COM_refresh ($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');
 }
 
-function CALENDAR_listOld() {
+function CALENDAR_listOld()
+{
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS, $LANG01,
         $_IMAGE_TYPE;
 
@@ -819,7 +820,7 @@ function CALENDAR_listOld() {
         'has_extras'   => true,
         'title' => $LANG_CAL_ADMIN[11],
         'instructions' => $LANG_CAL_ADMIN[27] . $usr_time . "$desc",
-        'icon' => $_CONF['site_url'] . '/calendar/images/calendar.' . $_IMAGE_TYPE,
+        'icon' => plugin_geticon_calendar(),
         'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php?mode=batchdelete"
     );
 
@@ -919,7 +920,7 @@ function CALENDAR_listevents()
                       'has_extras'   => true,
                       'title' => $LANG_CAL_ADMIN[11],
                       'instructions' => $LANG_CAL_ADMIN[12],
-                      'icon' => $_CONF['site_url'] . '/calendar/images/calendar.' . $_IMAGE_TYPE,
+                      'icon' => plugin_geticon_calendar(),
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php");
 
     $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
