@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.81 2007/01/13 22:15:55 dhaun Exp $
+// $Id: index.php,v 1.82 2007/08/05 08:05:08 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -396,7 +396,7 @@ function liststaticpages()
                        'has_extras'   => true,
                        'title' => $LANG_STATIC['staticpagelist'],
                        'instructions' => $LANG_STATIC['instructions'],
-                       'icon' => $_CONF['site_url'] . '/staticpages/images/staticpages.png',
+                       'icon' => plugin_geticon_staticpages(),
                        'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
 
     $query_arr = array('table' => 'staticpage',

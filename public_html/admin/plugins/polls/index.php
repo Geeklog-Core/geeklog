@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.41 2007/01/16 04:02:25 ospiess Exp $
+// $Id: index.php,v 1.42 2007/08/05 08:05:08 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -89,7 +89,7 @@ function listpolls()
     $text_arr = array('has_menu' => true,
                       'has_extras' => true,
                       'title' => $LANG25[18], 'instructions' => $LANG25[19],
-                      'icon' => $_CONF['site_url'] . '/polls/images/polls.png',
+                      'icon' => plugin_geticon_polls(),
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php");
 
     $query_arr = array('table' => 'polltopics',
