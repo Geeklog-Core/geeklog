@@ -26,7 +26,7 @@
  *
  * @author Christian Weiske <cweiske@cweiske.de>
  * @author Tony Bibbs <tony.bibbs@geeklog.net>
- * @version $Id: buildpackage.php,v 1.1 2007/03/19 18:40:39 tony Exp $
+ * @version $Id: buildpackage.php,v 1.2 2007/08/05 09:33:02 dhaun Exp $
  * @copyright The Geeklog Development Team, 2007
  * @todo chmod directories as said in public_html/docs/install.html
  * 
@@ -59,14 +59,14 @@ EOT;
 
 // Longer description
 $description = <<<EOT
-GeekLog was originally developed for the Security Geeks web site and was originally authored by 
+Geeklog was originally developed for the Security Geeks web site and was originally authored by 
 Jason Whittenburg. In early 2001, Jason decided it was time to devote his time to other things and 
 handed the project over to Tony Bibbs who uses Geeklog to run Iowa Outdoors. Tony is currently 
 focusing on getting the next generation Geeklog, dubbed GL2, off the ground, while Dirk Haun is now 
 maintaining the 1.x branch.
 
 Geeklog is bona fide open-source software and has been released under the GNU GPL for use by others. 
-Configuring GeekLog is meant to be an easy process though it will require you to have access to 
+Configuring Geeklog is meant to be an easy process though it will require you to have access to 
 several components of your system.
 
 It's assumed that you have some working experience with some form of Apache (or IIS), SQL databases 

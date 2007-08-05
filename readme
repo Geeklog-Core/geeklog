@@ -1,4 +1,4 @@
-GeekLog Readme
+Geeklog Readme
 December 28, 2002 
 
 For the installation instructions please see public_html/docs/install.html
@@ -8,15 +8,15 @@ WELCOME
 Geeklog is the source code and database that was originally used to run 
 SecurityGeeks and NewsGeeks, and has since been released under the GNU General 
 Public License. It is a bona fide Open Source / Free Software project. Use 
-this site to get the GeekLog source, read the latest GeekLog news, and 
+this site to get the Geeklog source, read the latest Geeklog news, and 
 participate in Geeklog discussions.  The template code Geeklog uses is from 
 PHPLib, however, which is under the LGPL.
 
-GeekLog is run by Tony Bibbs, but like all good open source projects,
+Geeklog is run by Tony Bibbs, but like all good open source projects,
 depends on the community. Thanks for your continued support, and let us know
-what we can do to make GeekLog better. 
+what we can do to make Geeklog better. 
 
-A summary of GeekLog's feature are as follows:
+A summary of Geeklog's feature are as follows:
 
 - Easy to install.
 - Full localization and locale aware.
@@ -45,7 +45,7 @@ A summary of GeekLog's feature are as follows:
 
 LICENSE
 -------
-GeekLog is licensed under the GPL. There should be an included LICENSE file - if
+Geeklog is licensed under the GPL. There should be an included LICENSE file - if
 it really interests you (or you having trouble sleeping) go ahead and read it.
 
 In a nice gesture you could provide a link back to us:
@@ -61,7 +61,7 @@ The best support channel is a mailing list located at:
 
 http://lists.geeklog.net/listinfo/geeklog-users
 
-Additionally the GeekLog home page is a good source of information at:
+Additionally the Geeklog home page is a good source of information at:
 
 http://www.geeklog.net
 
@@ -103,9 +103,9 @@ SPECIAL THANKS
 I want to send out thanks to:
 
 Jason Whittenburg - He is the original Geeklog developer!
-PHPWebLog Project - Some of the functions in GeekLog came from them!
-PHPSlash Project - Some of the functions in GeekLog came from them!
-thatphpware Project - Some of the functions in GeekLog came from them!
+PHPWebLog Project - Some of the functions in Geeklog came from them!
+PHPSlash Project - Some of the functions in Geeklog came from them!
+thatphpware Project - Some of the functions in Geeklog came from them!
 PHPBB Project - Some of the functions in Geeklog came from them!
 PHPLib Project - Thanks for the great template engine!
 
