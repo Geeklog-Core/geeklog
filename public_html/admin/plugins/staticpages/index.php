@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.83 2007/08/09 08:02:53 ospiess Exp $
+// $Id: index.php,v 1.84 2007/08/09 14:47:14 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -439,6 +439,7 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
         $A['unixdate'] = time ();
         $A['sp_help'] = '';
         $A['sp_old_id'] = '';
+        $A['commentcode'] = $_CONF['comment_code'];
         $A['sp_where'] = 1; // default new pages to "top of page"
     } elseif (!empty ($sp_id) && $mode == 'clone') {
         $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL ('AND', 0, 3));
@@ -448,6 +449,7 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
         $A['unixdate'] = time ();
         $A['sp_hits'] = 0;
         $A['sp_old_id'] = '';
+        $A['commentcode'] = $_CONF['comment_code'];
     } else {
         $A = $_POST;
         if (empty ($A['unixdate'])) {
