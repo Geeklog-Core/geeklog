@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.131 2007/08/09 07:41:28 ospiess Exp $
+// $Id: lib-plugins.php,v 1.132 2007/08/09 13:39:12 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -44,7 +44,13 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-plugins.php') !== false) {
     die ('This file can not be used on its own!');
 }
 
-require_once($_CONF['path_system'] . 'classes/plugin.class.php');
+require_once $_CONF['path_system'] . 'classes/plugin.class.php';
+
+// Response codes for the service invocation PLG_invokeService()
+define('PLG_RET_OK',                 0); 
+define('PLG_RET_ERROR',             -1);
+define('PLG_RET_PERMISSION_DENIED', -2);
+define('PLG_RET_AUTH_FAILED',       -3);
 
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = array ();
@@ -2262,6 +2268,33 @@ function PLG_getIcon($type)
             $retval = $icon;
             fclose ($fh);
         }
+    }
+
+    return $retval;
+}
+
+/**
+ * Invoke a service
+ *
+ * @param   string  type    The plugin type whose service is to be called
+ * @param   string  action  The service action to be performed
+ * @param   array   args    The arguments to be passed to the service invoked
+ * @param   array   output  The output variable that will contain the output after invocation
+ * @param   array   svc_msg The output variable that will contain the service messages
+ * @return  int             The result of the invocation
+ *
+ */
+function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
+{
+    $retval = PLG_RET_ERROR;
+
+    $output = '';
+    $svc_msg = '';
+
+    // Check if the plugin type and action are valid
+    $function = 'service_' . $action . '_' . $type;
+    if (function_exists($function)) {
+        $retval = $function($args, $output, $svc_msg);
     }
 
     return $retval;
