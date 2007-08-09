@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.644 2007/07/23 01:36:11 blaine Exp $
+// $Id: lib-common.php,v 1.645 2007/08/09 06:59:11 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5193,9 +5193,26 @@ function COM_stripslashes( $text )
 */
 function COM_applyFilter( $parameter, $isnumeric = false )
 {
+    $p = COM_stripslashes($parameter);
+
+    return COM_applyBasicFilter($p, $isnumeric);
+}
+
+/**
+* Filter parameters
+*
+* @param    string    $parameter   the parameter to test
+* @param    boolean   $isnumeric   true if $parameter is supposed to be numeric
+* @return   string    the filtered parameter (may now be empty or 0)
+*
+* @note     Use this function instead of COM_applyFilter for parameters
+*           _not_ coming in through a GET or POST request.
+*
+*/
+function COM_applyBasicFilter( $parameter, $isnumeric = false )
+{
     $log_manipulation = false; // set to true to log when the filter applied
 
-    $p = COM_stripslashes( $parameter );
     $p = strip_tags( $p );
     $p = COM_killJS( $p ); // doesn't help a lot right now, but still ...
 
