@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.11 2007/04/30 19:20:41 mjervis Exp $
+// $Id: story.class.php,v 1.12 2007/08/09 07:58:21 ospiess Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -709,7 +709,7 @@ class Story
         if (($access < 3) || !SEC_hasTopicAccess($this->_tid) || !SEC_inGroup($this->_group_id)) {
             return STORY_NO_ACCESS_PARAMS;
         }
-        
+
         /* Load up the topic name and icon */
         $topic = DB_Query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid='{$this->_tid}'");
         $topic = DB_fetchArray($topic);
@@ -856,7 +856,7 @@ class Story
 
         $tmptid = addslashes(COM_sanitizeID($this->_tid));
 
-        $result = DB_query('SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM ' . 
+        $result = DB_query('SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM ' .
                             "{$_TABLES['topics']} WHERE tid = '{$tmptid}'" .
                             COM_getTopicSQL('AND'));
 
@@ -924,7 +924,7 @@ class Story
     function insertImages()
     {
         global $_CONF, $_TABLES, $LANG24;
-        
+
         // Grab member vars into locals:
         $intro = $this->_introtext;
         $body = $this->_bodytext;
@@ -971,9 +971,9 @@ class Story
                 // We had no errors, so this image and all previous images
                 // are used, so we will then go and replace them
                 if (count($errors) == 0) {
-                    
+
                     $imgpath = '';
-                    
+
                     // If we are storing images on a "standard path" i.e. is
                     // available to the host web server, then the url to this
                     // image is based on the path to images, site url, articles
@@ -988,13 +988,13 @@ class Story
                     } else {
                         $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
                     }
-                    
+
                     // Build image tags for each flavour of the image:
                     $img_noalign = '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">';
-                    $img_leftalgn = '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">';
-                    $img_rightalgn = '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">';
-                    
-                    
+                    $img_leftalgn = '<img ' . $sizeattributes . 'class="floatleft" src="' . $imgSrc . '" alt="">';
+                    $img_rightalgn = '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt="">';
+
+
                     // Are we keeping unscaled images?
                     if ($_CONF['keep_unscaled_image'] == 1) {
                         // Yes we are, so, we need to find out what the filename
@@ -1003,7 +1003,7 @@ class Story
                                                 strrpos($A['ai_filename'], '.'), 1);
                         $lFilename_large_complete = $_CONF['path_images'] . 'articles/' .
                                                         $lFilename_large;
-                        
+
                         // We need to map that filename to the right location
                         // or the fetch script:
                         if ($stdImageLoc) {
@@ -1014,18 +1014,18 @@ class Story
                                                     '/getimage.php?mode=show&amp;image=' .
                                                     $lFilename_large;
                         }
-                        
+
                         // And finally, replace the [imagex_mode] tags with the image and it's
                         // hyperlink:
                         $lLink_url = $lFilename_large_URL;
                         $lLink_attr = array('title' => $LANG24[57]);
-    
+
                         $intro = str_replace($norm,  COM_createLink($img_noalign,   $lLink_url, $lLink_attr), $intro);
                         $body  = str_replace($norm,  COM_createLink($img_noalign,   $lLink_url, $lLink_attr), $body);
                         $intro = str_replace($left,  COM_createLink($img_leftalgn,  $lLink_url, $lLink_attr), $intro);
                         $body  = str_replace($left,  COM_createLink($img_leftalgn,  $lLink_url, $lLink_attr), $body);
                         $intro = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $intro);
-                        $body  = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $body);                        
+                        $body  = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $body);
                     } else {
                         // We aren't wrapping our image tags in hyperlinks, so
                         // just replace the [imagex_mode] tags with the image:
@@ -1034,7 +1034,7 @@ class Story
                         $intro = str_replace($left,  $img_leftalgn,  $intro);
                         $body  = str_replace($left,  $img_leftalgn,  $body);
                         $intro = str_replace($right, $img_rightalgn, $intro);
-                        $body  = str_replace($right, $img_rightalgn, $body); 
+                        $body  = str_replace($right, $img_rightalgn, $body);
                     }
 
                     // And insert the unscaled mode images:
@@ -1060,7 +1060,7 @@ class Story
                 }
             }
         }
-        
+
         $this->_introtext = $intro;
         $this->_bodytext  = $body;
 
@@ -1104,25 +1104,25 @@ class Story
         } else {
             $count = count($this->_storyImages);
         }
-        
+
         // If the article has any images, remove them back to [image] tags.
         for ($i = 0; $i < $count; $i++) {
             $A = $this->_storyImages[$i];
-            
+
             $imageX = '[image' . ($i + 1) . ']';
             $imageX_left = '[image' . ($i + 1) . '_left]';
             $imageX_right = '[image' . ($i + 1) . '_right]';
-        
+
             $sizeattributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
-        
+
             $lLinkPrefix = '';
             $lLinkSuffix = '';
-        
+
             if ($_CONF['keep_unscaled_image'] == 1) {
                 $lFilename_large = substr_replace($A['ai_filename'],
                 '_original.', strrpos($A['ai_filename'], '.'), 1);
                 $lFilename_large_complete = $_CONF['path_images'] . 'articles/' . $lFilename_large;
-        
+
                 if ($stdImageLoc) {
                     $imgpath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
                     $lFilename_large_URL = $_CONF['site_url'] . '/' . $imgpath . 'articles/' . $lFilename_large;
@@ -1130,7 +1130,7 @@ class Story
                     $lFilename_large_URL = $_CONF['site_url'] . '/getimage.php?mode=show&amp;image='
                                            . $lFilename_large;
                 }
-        
+
                 if (file_exists($lFilename_large_complete)) {
                     $lLinkPrefix = '<a href="' . $lFilename_large_URL . '" title="' . $LANG24[57] . '">';
                     $lLinkSuffix = '</a>';
@@ -1145,11 +1145,11 @@ class Story
             }
 
             $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
-            $left = $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">'
+            $left = $lLinkPrefix . '<img ' . $sizeattributes . 'class="floatleft" src="' . $imgSrc . '" alt="">'
                     . $lLinkSuffix;
-            $right = $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">'
+            $right = $lLinkPrefix . '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt="">'
                     . $lLinkSuffix;
-                    
+
             $text = str_replace($norm, $imageX, $text);
             $text = str_replace($left, $imageX_left, $text);
             $text = str_replace($right, $imageX_right, $text);
@@ -1523,7 +1523,7 @@ class Story
         $out = '';
 
         $out = $this->replaceImages($in);
-        
+
         if ($this->_postmode == 'plaintext') {
             $out = COM_undoClickableLinks($out);
             $out = $this->_displayEscape($out);

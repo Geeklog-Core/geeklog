@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.99 2007/05/21 06:19:38 mjervis Exp $
+// $Id: lib-story.php,v 1.100 2007/08/09 07:58:21 ospiess Exp $
 require_once ($_CONF['path_system'] . '/classes/story.class.php');
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
@@ -160,7 +160,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $imageurl = COM_getTopicImageUrl( $imageurl );
             $article->set_var( 'story_topic_image_url', $imageurl );
-            $topicimage = '<img src="' . $imageurl . '" align="'
+            $topicimage = '<img src="' . $imageurl . '" class="float'
                         . $_CONF['article_image_align'] . '" alt="'
                         . $topicname . '" title="' . $topicname . '">';
             $article->set_var( 'story_anchortag_and_image',
@@ -194,7 +194,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $article->set_var('lang_permalink', $LANG01[127]);
 
     $show_comments = true;
-    
+
     // n = 'Compact display' for list of stories. p = 'Preview' mode.
     if(( $index == 'n' ) || ( $index == 'p' ))
     {
@@ -299,7 +299,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var('end_readmore_anchortag', '</a>');
             $article->set_var('read_more_class', 'class="story-read-more-link"');
         }
-        
+
         $article->set_var( 'start_storylink_anchortag', '<a href="'
                 . $articleUrl . '" class="non-ul">' );
         $article->set_var( 'end_storylink_anchortag', '</a>' );
@@ -310,7 +310,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     array('class'=>'non-ul')
             )
         );
-        
+
         if(( $story->DisplayElements('commentcode') >= 0 ) and ( $show_comments ))
         {
             $commentsUrl = COM_buildUrl( $_CONF['site_url']
@@ -816,8 +816,8 @@ function STORY_replace_images($sid, $intro, $body)
                 . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
         }
         $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
-        $left = $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
-        $right = $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
+        $left = $lLinkPrefix . '<img ' . $sizeattributes . 'class="alignleft" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
+        $right = $lLinkPrefix . '<img ' . $sizeattributes . 'class="alignright" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
 
         $fulltext = $intro . ' ' . $body;
         $intro = str_replace ($norm,  $imageX,       $intro);
