@@ -27,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.14 2007/03/19 18:43:35 tony Exp $
+// $Id: config.php,v 1.15 2007/08/09 06:47:45 ospiess Exp $
 /**
  * Links plugin configuration file
  *
@@ -139,6 +139,15 @@ $_LI_CONF['notification'] = 0;
  * @global array $_LI_CONF['delete_links']
  */
 $_LI_CONF['delete_links'] = 0;
+
+/** What to show after a link has been saved? Possible choices:
+ * 'item' -> forward to the target of the link
+ * 'list' -> display the admin-list of links
+ * 'plugin' -> display the public homepage of the links plugin
+ * 'home' -> display the site homepage
+ * 'admin' -> display the site admin homepage
+ */
+$_LI_CONF['aftersave'] = 'admin';
 
 /**
  * Define default permissions for new links created from the Admin panel.
