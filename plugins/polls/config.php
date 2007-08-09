@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.12 2007/08/09 07:03:34 ospiess Exp $
+// $Id: config.php,v 1.13 2007/08/09 07:05:51 ospiess Exp $
 
 $_PO_CONF['version']            = '2.0.1'; // Plugin Version
 
@@ -74,7 +74,7 @@ $_PO_CONF['delete_polls'] = 0;
  * 'home' -> display the site homepage
  * 'admin' -> display the site admin homepage
  */
-$_PO_CONF['aftersave'] = 'plugin';
+$_PO_CONF['aftersave'] = 'item';
 
 // Define default permissions for new polls created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
