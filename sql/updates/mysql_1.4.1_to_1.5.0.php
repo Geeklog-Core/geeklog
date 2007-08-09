@@ -71,4 +71,23 @@ function upgrade_PollsPlugin()
     }
 }
 
+function upgrade_StaticpagesPlugin()
+{
+    global $_TABLES;
+
+    // Polls plugin updates
+    $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'staticpages';";
+    $check_rst = DB_query ($check_sql);
+    if (DB_numRows($check_rst) == 1) {
+        $P_SQL = array();
+        $P_SQL[] = "ALTER TABLE `{$_TABLES['staticpage']}` ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
+
+        $P_SQL = INST_checkInnodbUpgrade($P_SQL);
+        for ($i = 0; $i < count ($P_SQL); $i++) {
+            DB_query (current ($P_SQL));
+            next ($P_SQL);
+        }
+    }
+}
+
 ?>

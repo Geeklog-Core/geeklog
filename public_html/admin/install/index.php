@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.2 2007/07/28 20:32:16 dhaun Exp $
+// $Id: index.php,v 1.3 2007/08/09 08:09:34 ospiess Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -75,7 +75,7 @@ function php_v ()
 function mysql_v ()
 {
     global $_DB_host, $_DB_user, $_DB_pass;
-    
+
     mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
     $mysqlv = '';
 
@@ -199,7 +199,7 @@ function INST_checkTableExists ($table)
 /**
  * Sets up the database tables
  *
- * @param  bool $use_innodb Whether to use InnoDB table support if using MySQL 
+ * @param  bool $use_innodb Whether to use InnoDB table support if using MySQL
  * @return bool             True if successful
  *
  */
@@ -210,7 +210,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
     $_DB->setDisplayError (true);
 
     // Because the create table syntax can vary from dbms-to-dbms we are
-    // leaving that up to each database driver (e.g. mysql.class.php, 
+    // leaving that up to each database driver (e.g. mysql.class.php,
     // postgresql.class.php, etc)
 
     // Get DBMS-specific create table array and data array
@@ -239,7 +239,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
             foreach ($_SQL as $sql) {
                 DB_query ($sql);
             }
-            break;   
+            break;
     }
 
     // Now insert mandatory data and a small subset of initial data
@@ -674,6 +674,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
                 next ($_SQL);
             }
             upgrade_PollsPlugin();
+            upgrade_StaticpagesPlugin();
             $current_gl_version = '1.4.2';
             $_SQL = '';
             break;
@@ -715,7 +716,7 @@ function innodb_supported()
 
 /**
  * Check to see if config.php and lib-common.php are writeable by the web
- * server. If they aren't display a warning message. 
+ * server. If they aren't display a warning message.
  *
  * @param  string $config_path    Path to config.php
  * @param  string $libcommon_path Path to lib-common.php
@@ -723,7 +724,7 @@ function innodb_supported()
  * @author Matt West             matt AT mattdanger DOT net
  *
  */
-function INST_checkRequiredPerms($config_path, $libcommon_path) 
+function INST_checkRequiredPerms($config_path, $libcommon_path)
 {
 
     if ((!$config_file = @fopen ($config_path . 'config.php', 'a')) || (!$libcommon_file = @fopen ($libcommon_path . 'lib-common.php', 'a'))) {
@@ -732,10 +733,10 @@ function INST_checkRequiredPerms($config_path, $libcommon_path)
         return false;
 
     } else {
-    
+
         // Able to modify, all is well
         return true;
-    
+
     }
 
 }
@@ -754,9 +755,9 @@ function INST_permissionWarning($config_path, $libcommon_path)
         <div class="install-path-container-outer">
             <div class="install-path-container-inner">
                 <h2>Stop!</h2>
-    
+
                 <p>It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.</p>
-    
+
                 <br />
                 <p><label class="file-permission-list"><b>File/Directory</b></label> <b>Permissions</b></p>
         ' . LB;
@@ -766,7 +767,7 @@ function INST_permissionWarning($config_path, $libcommon_path)
         $display .= '<p><label class="file-permission-list"><code>' . $config_path . 'config.php' . '</code></label>' ;
         $config_perms = sprintf ("%3o", @fileperms ($config_path . 'config.php') & 0777);
         $display .= '<span class="error">Change to 777</span> (Currently ' . $config_perms . ')</p>' . LB ;
-    } else { 
+    } else {
         fclose ($config_file);
     }
 
@@ -775,7 +776,7 @@ function INST_permissionWarning($config_path, $libcommon_path)
         $display .= '<p><label class="file-permission-list"><code>' . $libcommon_path . 'lib-common.php' . '</code></label>' ;
         $libcommonPerms = sprintf ("%3o", @fileperms ($libcommon_path . 'lib-common.php') & 0777);
         $display .= '<span class="error">Change to 777</span> (Currently ' . $libcommonPerms . ')</p>' . LB ;
-    } else { 
+    } else {
         fclose ($libcommon_file);
     }
 
@@ -791,16 +792,16 @@ function INST_permissionWarning($config_path, $libcommon_path)
 }
 
 /**
- * Returns the HTML form to return the user's inputted data to the 
+ * Returns the HTML form to return the user's inputted data to the
  * previous page.
  *
  * @return   string   HTML form code.
  *
  */
-function INST_showReturnFormData() 
+function INST_showReturnFormData()
 {
-    global $site_name, $site_slogan, $db_type, $db_host, $db_name, 
-        $db_user, $db_prefix, $site_url, $site_admin_url, $site_mail, 
+    global $site_name, $site_slogan, $db_type, $db_host, $db_name,
+        $db_user, $db_prefix, $site_url, $site_admin_url, $site_mail,
         $noreply_mail;
     $display = '
         <form action="index.php" method="POST">
@@ -869,7 +870,7 @@ $display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http
                     <span class="site-slogan">' . $LANG_INSTALL[2] . ' <br /><br />
                     <form action="index.php" method="POST">' . LB;
 
-$_PATH = array( 'config', 'public_html', 'backups', 'data', 'language', 'logs', 'system'); 
+$_PATH = array( 'config', 'public_html', 'backups', 'data', 'language', 'logs', 'system');
 if (isset( $_GET['mode'] ) || isset( $_POST['mode'] )) {
     $value = (isset( $_POST['mode'] )) ? $_POST['mode'] : $_GET['mode'];
     $display .= '<input type="hidden" name="mode" value="' . $value . '">' . LB;
@@ -913,7 +914,7 @@ if (isset( $_GET['mode'] )) {
 switch ($mode) {
 
     /**
-     * The first thing the script does is to check for the location of 
+     * The first thing the script does is to check for the location of
      * critical Geeklog system files. It checks the default location
      * and the public_html/ directory. If it can't find the files in
      * either of those places it will ask the user to specify their location.
@@ -947,10 +948,10 @@ switch ($mode) {
 
             foreach ($_PATH as $name => $path) {
                 if ( !file_exists( $gl_path . $name ) && !file_exists( $gl_path . 'public_html/' . $name ) ) {
-                    // If the file/directory is not located in the default location  
+                    // If the file/directory is not located in the default location
                     // or in public_html have the user enter its location.
-                    $form_fields .= '<p><label>' . $name . '</label> <input type="text" name="' 
-                                  . str_replace( '/', '', str_replace( '.php', '', $name ) ) 
+                    $form_fields .= '<p><label>' . $name . '</label> <input type="text" name="'
+                                  . str_replace( '/', '', str_replace( '.php', '', $name ) )
                                   . '_path" value="/path/to/' . $name . '" size="25"></p>'  . LB;
                     $num_errors++;
                 } else {
@@ -958,16 +959,16 @@ switch ($mode) {
                     $_PATH[$name] = (file_exists( $gl_path . $name )) ? $gl_path . $name : $gl_path . 'public_html/' . $name;
 
                     // Create a hidden form value incase the form has to be displayed
-                    $form_fields .= '<input type="hidden" name="' . str_replace('/', '', str_replace('.php', '', $name)) 
+                    $form_fields .= '<input type="hidden" name="' . str_replace('/', '', str_replace('.php', '', $name))
                                   . '_path" value="' . $_PATH[$name] . '">' . LB;
                 }
             }
 
             if ($num_errors == 0) {
                 // If the script was able to locate all the system files/directories move onto the next step
-                $req_string = 'index.php?mode=check_permissions' . 
-                            '&config_path=' . $_PATH['config.php'] . 
-                            '&public_html_path=' . $_PATH['public_html/'] . 
+                $req_string = 'index.php?mode=check_permissions' .
+                            '&config_path=' . $_PATH['config.php'] .
+                            '&public_html_path=' . $_PATH['public_html/'] .
                             '&backups_path=' . $_PATH['backups/'] .
                             '&data_path=' . $_PATH['data/'] .
                             '&language_path=' . $_PATH['language/'] .
@@ -1020,7 +1021,7 @@ switch ($mode) {
             $_PERMS['config.php']      = sprintf( "%3o", @fileperms( $_PATH['config.php'] ) & 0777 );
             $display_permissions .= '<span class="error">' . $LANG_INSTALL[12] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['config.php'] . ')</p>' . LB ;
             $failed++;
-        } else { 
+        } else {
             fclose( $config_file );
         }
 
@@ -1030,7 +1031,7 @@ switch ($mode) {
             $_PERMS['lib-common.php']   = sprintf( "%3o", @fileperms( $_PATH['public_html/'] . 'lib-common.php' ) & 0777 );
             $display_permissions .= '<span class="error">' . $LANG_INSTALL[12] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['lib-common.php'] . ')</p>' . LB ;
             $failed++;
-        } else { 
+        } else {
             fclose( $libcommon_file );
         }
 
@@ -1062,17 +1063,17 @@ switch ($mode) {
         $_CONF['rdf_file'] = $_PATH['public_html/'] . 'backend/geeklog.rss';
         if ($_CONF['backend'] > 0) {
             // If GL headlines are enabled
-            if (!$file = @fopen( $_CONF['rdf_file'], 'w' )) { 
+            if (!$file = @fopen( $_CONF['rdf_file'], 'w' )) {
                 // Permissions are incorrect
                 $_PERMS['rdf'] = sprintf( "%3o", @fileperms( $_CONF['rdf_file'] ) & 0777 );
                 $display_permissions .= '<p><label class="file-permission-list"><code>' . $_CONF['rdf_file'] . '</code></label>' ;
                 $display_permissions .= '<span class="error">' . $LANG_INSTALL[14] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['rdf'] . ') </p>' . LB;
                 $failed++;
-            } else { 
+            } else {
                 // Permissions are correct
                 fclose ($file);
             }
-        } else { 
+        } else {
             // If GL headlines are disabled
             $display_permissions .= '<p><label class="file-permission-list"><code>' . $_CONF['path'] . 'public_html/backend' . '</code></label> ' ;
             $display_permissions .= $LANG_INSTALL[14] . '</p>' . LB;
@@ -1088,13 +1089,13 @@ switch ($mode) {
                 $_PERMS['userphoto'] = sprintf( "%3o", @fileperms( $_CONF['path_images'] . 'userphotos/' ) & 0777 );
                 $display_permissions .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] . 'userphotos/</code></label>' ;
                 $display_permissions .= '<span class="error">' . $LANG_INSTALL[14] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['userphoto'] . ') </p>' . LB;
-            } else { 
+            } else {
                 // Permissions are correct
                 fclose( $file );
                 unlink( $_CONF['path_images'] . 'userphotos/test.gif' );
                 $successful++;
             }
-        } else { 
+        } else {
             // If user photos are disabled
             $display_permissions .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] . 'userphotos/</code></label> ' ;
             $display_permissions .= $LANG_INSTALL[17] . '</p>' . LB;
@@ -1110,12 +1111,12 @@ switch ($mode) {
                 $display_permissions .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] . 'articles/</code></label>' ;
                 $display_permissions .= '<span class="error">' . $LANG_INSTALL[14] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['articles'] . ') </p>' . LB;
                 $failed++;
-            } else { 
+            } else {
                 // Permissions are correct
                 fclose( $file );
                 unlink( $_CONF['path_images'] . 'articles/test.gif' );
             }
-        } else { 
+        } else {
             // If articles are disabled
             $display_permissions .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] . 'articles/</code></label> ' ;
             $display_permissions .= $LANG_INSTALL[18] . '</p>' . LB;
@@ -1129,7 +1130,7 @@ switch ($mode) {
             $display_permissions .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] . 'topics/</code></label>' ;
             $display_permissions .= '<span class="error">' . $LANG_INSTALL[14] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['topics'] . ') </p>' . LB;
             $failed++;
-        } else { 
+        } else {
             // Permissions are correct
             fclose( $file );
             unlink( $_CONF['path_images'] . 'topics/test.gif' );
@@ -1145,7 +1146,7 @@ switch ($mode) {
                 $display_permissions .= '<p><label class="file-permission-list"><code>' . $_PATH['backups/'] . '</code></label>' ;
                 $display_permissions .= '<span class="error">' . $LANG_INSTALL[14] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['backups'] . ') </p>' . LB;
                 $failed++;
-            } else { 
+            } else {
                 // Permissions are correct
                 fclose( $file );
                 unlink( $_PATH['backups/'] . 'test.txt' );
@@ -1159,7 +1160,7 @@ switch ($mode) {
             $display_permissions .= '<p><label class="file-permission-list"><code>' . $_PATH['data/'] . '</code></label>' ;
             $display_permissions .= '<span class="error">' . $LANG_INSTALL[14] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['data'] . ') </p>' . LB;
             $failed++;
-        } else { 
+        } else {
             // Permissions are correct
             fclose( $file );
             unlink( $_PATH['data/'] . 'test.txt' );
@@ -1171,7 +1172,7 @@ switch ($mode) {
 
             $display .= '
             <p>' . $LANG_INSTALL[19] . '</p>
-            ' . $display_permissions . '<br /><p><strong><span class="error">' . $LANG_INSTALL[20] . '</span></strong> 
+            ' . $display_permissions . '<br /><p><strong><span class="error">' . $LANG_INSTALL[20] . '</span></strong>
             ' . $LANG_INSTALL[21] . '</p>
             <p>' . $LANG_INSTALL[22] . '</p>
             <br /><br />' . LB;
@@ -1179,9 +1180,9 @@ switch ($mode) {
         }
 
         // If the script was able to locate all the system files/directories move onto the next step
-        $req_string = 'index.php?mode=write_paths' . 
-                    '&config_path=' . $_PATH['config.php'] . 
-                    '&public_html_path=' . $_PATH['public_html/'] . 
+        $req_string = 'index.php?mode=write_paths' .
+                    '&config_path=' . $_PATH['config.php'] .
+                    '&public_html_path=' . $_PATH['public_html/'] .
                     '&backups_path=' . $_PATH['backups/'] .
                     '&data_path=' . $_PATH['data/'] .
                     '&language_path=' . $_PATH['language/'] .
@@ -1226,7 +1227,7 @@ switch ($mode) {
             fclose( $config_file );
 
             // /path/to/geeklog
-            $config_data = str_replace( "\$_CONF['path']            = '/path/to/geeklog/'", "\$_CONF['path']            = '" 
+            $config_data = str_replace( "\$_CONF['path']            = '/path/to/geeklog/'", "\$_CONF['path']            = '"
                                     . str_replace( 'config.php', '', $_PATH['config.php'] ) . "'", $config_data );
 
             // public_html/
@@ -1295,7 +1296,7 @@ switch ($mode) {
             case 1:
 
                 // Set all the form values either with their defaults or with received POST data.
-                // The only instance where you'd get POST data would be if the user has to 
+                // The only instance where you'd get POST data would be if the user has to
                 // go back because they entered incorrect database information.
                 $site_name = (isset( $_POST['site_name'] )) ? str_replace( '\\', '', $_POST['site_name'] ) : $LANG_INSTALL[29];
                 $site_slogan = (isset( $_POST['site_slogan'] )) ? str_replace( '\\', '', $_POST['site_slogan'] ) : $LANG_INSTALL[30];
@@ -1304,14 +1305,14 @@ switch ($mode) {
                 $mssql_selected = '';
                 if (isset( $_POST['db_type'] )) {
                     switch ($_POST['db_type']) {
-                        case 'mysql-innodb': 
+                        case 'mysql-innodb':
                             $msyql_innodb_selected = ' selected="selected"';
                             break;
-                        case 'mssql': 
-                            $mssql_selected = ' selected="selected"'; 
+                        case 'mssql':
+                            $mssql_selected = ' selected="selected"';
                             break;
-                        default: 
-                            $mysql_selected = ' selected="selected"'; 
+                        default:
+                            $mysql_selected = ' selected="selected"';
                             break;
                     }
                 } else {
@@ -1332,7 +1333,7 @@ switch ($mode) {
                     <input type="hidden" name="mode" value="install">
                     <input type="hidden" name="step" value="2">
                     <input type="hidden" name="config_path" value="' . $config_path . '">
-                   
+
                     <p><label>' . $LANG_INSTALL[32] . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="25"></p>
                     <p><label>' . $LANG_INSTALL[33] . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="25"></p><br />
                     <p><label>' . $LANG_INSTALL[34] . '</label> <select name="db_type">
@@ -1411,7 +1412,7 @@ switch ($mode) {
                             (($myv[0] == 3) && ($myv[1] == 23) && ($myv[2] < 2))) {
                                 $outdated_mysql = true;
                     }
-                } 
+                }
                 if ($outdated_mysql === true) { // If MySQL is out of date
                     $display .= '<h1>' . $LANG_INSTALL[51] . '</h1>' . LB;
                     $display .= '<p>' . $LANG_INSTALL[52] . $myv[0] . '.' . $myv[1] . '.' . $myv[2] . $LANG_INSTALL[53] . '</p>' . LB;
@@ -1426,12 +1427,12 @@ switch ($mode) {
                         case 'mysql':
                             if (@mysql_select_db( $db_name, $db_handle )) {
                                 $db_exists = true;
-                            } 
+                            }
                             break;
                         case 'mssql':
                             if (@mssql_select_db( $db_name, $db_handle )) {
                                 $db_exists = true;
-                            } 
+                            }
                             break;
                     }
                     if ($db_exists === false) { // If database doesn't exist
@@ -1528,7 +1529,7 @@ switch ($mode) {
                 $use_innodb = false;
                 if ((isset( $_POST['innodb'] ) && $_POST['innodb'] == 'true') || (isset($_GET['innodb']) && $_GET['innodb'] == 'true')) {
                     $use_innodb = true;
-                } 
+                }
 
                 // Let's do this
                 require_once( $config_path );
@@ -1571,7 +1572,7 @@ switch ($mode) {
                     } else {
                         $display .= "<h2>" . $LANG_INSTALL[67] . "</h2><p>" . $LANG_INSTALL[68] . "</p>"; // Yeah, this isn't a very helpful error...
                     }
-    
+
                 }
                 break;
 
@@ -1609,7 +1610,7 @@ switch ($mode) {
             case 1:
 
                 // Set all the form values either with their defaults or with received POST data.
-                // The only instance where you'd get POST data would be if the user has to 
+                // The only instance where you'd get POST data would be if the user has to
                 // go back because they entered incorrect database information.
                 require_once( $config_path );
 
@@ -1618,11 +1619,11 @@ switch ($mode) {
                 $mysql_selected = '';
                 $mssql_selected = '';
                 switch ($_DB_dbms) {
-                    case 'mysql': 
+                    case 'mysql':
                         $mysql_selected = ' selected="selected"';
                         break;
-                    case 'mssql': 
-                        $mssql_selected = ' selected="selected"'; 
+                    case 'mssql':
+                        $mssql_selected = ' selected="selected"';
                         break;
                 }
 
@@ -1748,12 +1749,12 @@ switch ($mode) {
                         case 'mysql':
                             if (@mysql_select_db( $db_name, $db_handle )) {
                                 $db_exists = true;
-                            } 
+                            }
                             break;
                         case 'mssql':
                             if (@mssql_select_db( $db_name, $db_handle )) {
                                 $db_exists = true;
-                            } 
+                            }
                             break;
                     }
 
@@ -1796,7 +1797,7 @@ switch ($mode) {
                         require_once($config_path);
                         require_once($_CONF['path_system'] . 'lib-database.php');
                         $curv = INST_identifyGeeklogVersion ();
-                        if ($curv == VERSION) { 
+                        if ($curv == VERSION) {
                             // If current version is the newest version
                             // then there's no need to update.
                             $display .= '<h2>' . $LANG_INSTALL[74] . '</h2>' . LB
@@ -1804,7 +1805,7 @@ switch ($mode) {
                         } else {
 
                             $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1');
-                            if (empty( $curv )) { 
+                            if (empty( $curv )) {
                                 // If we were unable to determine the current GL
                                 // version is then ask the user what it is
                                 $display .= '<h2>' . $LANG_INSTALL[76] . '</h2>
@@ -1880,14 +1881,14 @@ switch ($mode) {
                     $display .= '<h2>' . $LANG_INSTALL[78] . '</h2>
                         <p>' . $LANG_INSTALL[79] . '</p>' . LB;
                 }
-                
-                break;            
+
+                break;
 
         } // End switch (Upgrade steps)
 
         break;
 
-} // end switch (fresh install or upgrade)  
+} // end switch (fresh install or upgrade)
 
 $display .= '
     <br /><br />
