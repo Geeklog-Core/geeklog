@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.645 2007/08/09 06:59:11 dhaun Exp $
+// $Id: lib-common.php,v 1.646 2007/08/09 07:13:39 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5213,7 +5213,7 @@ function COM_applyBasicFilter( $parameter, $isnumeric = false )
 {
     $log_manipulation = false; // set to true to log when the filter applied
 
-    $p = strip_tags( $p );
+    $p = strip_tags( $parameter );
     $p = COM_killJS( $p ); // doesn't help a lot right now, but still ...
 
     if( $isnumeric )
