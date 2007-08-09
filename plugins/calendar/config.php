@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.10 2007/03/19 18:42:43 tony Exp $
+// $Id: config.php,v 1.11 2007/08/09 07:09:29 ospiess Exp $
 
 $_CA_CONF['version']            = '1.0.2'; // Plugin Version
 
@@ -72,6 +72,15 @@ $_CA_CONF['notification'] = 0;
 // be transfered to a user in the Root group (= 0) or the events can be
 // deleted (= 1).
 $_CA_CONF['delete_event'] = 0;
+
+/** What to show after a event has been saved? Possible choices:
+ * 'item' -> forward to the event
+ * 'list' -> display the admin-list of the calendar
+ * 'plugin' -> display the public homepage of the calendar plugin
+ * 'home' -> display the site homepage
+ * 'admin' -> display the site admin homepage
+ */
+$_CA_CONF['aftersave'] = 'item';
 
 // Define default permissions for new events created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that

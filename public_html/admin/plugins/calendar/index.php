@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.27 2007/02/05 09:40:51 ospiess Exp $
+// $Id: index.php,v 1.28 2007/08/09 07:09:46 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -358,7 +358,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                              $group_id, $perm_owner, $perm_group, $perm_members,
                              $perm_anon, $hour_mode)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_CAL_ADMIN, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG_CAL_ADMIN, $MESSAGE, $_CA_CONF;
 
     $retval = '';
 
@@ -541,8 +541,12 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
         }
         COM_rdfUpToDateCheck ('geeklog', 'calendar', $eid);
 
-        return COM_refresh ($_CONF['site_admin_url']
-                           .'/plugins/calendar/index.php?msg=17');
+        return PLG_afterSaveSwitch (
+            $_CA_CONF['aftersave'],
+            COM_buildURL ("{$_CONF['site_url']}/calendar/event.php?eid=$eid"),
+            'calendar',
+            17
+        );
     } else {
         $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[2]);
         $retval .= COM_startBlock ($LANG_CAL_ADMIN[2], '',
