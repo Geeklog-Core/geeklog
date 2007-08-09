@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.127 2007/04/22 14:19:19 ospiess Exp $
+// $Id: lib-plugins.php,v 1.128 2007/08/09 06:10:15 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -56,6 +56,37 @@ $_PLUGINS = array();
 while ($A = DB_fetchArray($result)) {
     $_PLUGINS[] = $A['pi_name'];
 }
+
+/**
+* Forward the user depending on config.php-setting after saving something
+*
+* @param  string  $item_url   the url of the item saved
+* @param  string  $plugin     the name of the plugin that saved the item
+* @return the url where the user will be forwarded to
+*
+*/
+function PLG_afterSaveSwtich($item_url, $plugin) {
+    global $_CONF;
+    switch ($_CONF['aftersave']) {
+        case 'item':
+            $url = $item_url;
+        break;
+        case 'list':
+            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
+        break;
+        case 'home':
+            $url = $_CONF['site_url'];
+        break;
+        case 'admin':
+            $url = $_CONF['site_admin_url'] . '/moderation.php';
+        break;
+        case 'plugin':
+            $url = $_CONF['site_url'] . "/$plugin/index.php";
+        break;
+    }
+    return COM_refresh ($url);
+}
+
 
 /**
 * Calls a function for all enabled plugins
@@ -485,7 +516,7 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
             }
         }
     }
-    
+
     $function = 'custom_commentPreSave';
     if (function_exists($function)) {
         $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postmode);
@@ -526,7 +557,7 @@ function PLG_itemPreSave($type, $content)
             }
         }
     }
-    
+
     $function = 'custom_itemPreSave';
     if (function_exists ($function)) {
         $msgError = $function ($type, $content);
@@ -606,7 +637,7 @@ function PLG_getPluginStats ($showsitestats)
             }
         }
     }
-    
+
     if ($showsitestats == 3) {
         $function = 'custom_statssummary';
         if (function_exists ($function)) {
@@ -657,7 +688,7 @@ function PLG_getSearchTypes()
             }
         } // no else because this is not a required API function
     }
-    
+
     $function = 'custom_searchtypes';
     if (function_exists ($function)) {
         $cur_types = $function ();
@@ -665,7 +696,7 @@ function PLG_getSearchTypes()
             $types = array_merge ($types, $cur_types);
         }
     }
-    
+
     asort($types);
     return $types;
 }
@@ -730,7 +761,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
             $search_results[] = $plugin_result;
         } // no else because implementation of this API function not required
     }
-    
+
     $function = 'custom_dopluginsearch';
     if (function_exists($function)) {
         $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
@@ -1084,7 +1115,7 @@ function PLG_createUser ($uid)
             $function ($uid);
         }
     }
-    
+
     $function = 'custom_user_create';
     if (function_exists($function)) {
         $function($uid);
@@ -1107,7 +1138,7 @@ function PLG_deleteUser ($uid)
             $function($uid);
         }
     }
-    
+
     $function = 'custom_user_delete';
     if (function_exists($function)) {
         $function($uid);
@@ -1134,7 +1165,7 @@ function PLG_loginUser ($uid)
             $function($uid);
         }
     }
-    
+
     $function = 'custom_user_login';
     if (function_exists($function)) {
         $function($uid);
@@ -1159,7 +1190,7 @@ function PLG_logoutUser ($uid)
             $function($uid);
         }
     }
-    
+
     $function = 'custom_user_logout';
     if (function_exists($function)) {
         $function($uid);
@@ -1183,7 +1214,7 @@ function PLG_userInfoChanged ($uid)
             $function($uid);
         }
     }
-    
+
     $function = 'custom_user_changed';
     if (function_exists($function)) {
         $function($uid);
@@ -1208,7 +1239,7 @@ function PLG_groupChanged ($grp_id, $mode)
             $function($grp_id, $mode);
         }
     }
-    
+
     $function = 'custom_group_changed';
     if (function_exists($function)) {
         $function($uid);
@@ -1233,7 +1264,7 @@ function PLG_profileVariablesEdit ($uid, &$template)
             $function ($uid, $template);
         }
     }
-    
+
     $function = 'custom_profilevariablesedit';
     if (function_exists($function)) {
         $function($uid, $template);
@@ -1260,12 +1291,12 @@ function PLG_profileBlocksEdit ($uid)
             $retval .= $function ($uid);
         }
     }
-    
+
     $function = 'custom_profileblocksedit';
     if (function_exists($function)) {
         $retval .= $function($uid);
     }
-    
+
     return $retval;
 }
 
@@ -1287,7 +1318,7 @@ function PLG_profileVariablesDisplay ($uid, &$template)
             $function ($uid, $template);
         }
     }
-    
+
     $function = 'custom_profilevariablesdisplay';
     if (function_exists($function)) {
         $function($uid, $template);
@@ -1314,7 +1345,7 @@ function PLG_profileBlocksDisplay ($uid)
             $retval .= $function ($uid);
         }
     }
-    
+
     $function = 'custom_profileblocksdisplay';
     if (function_exists($function)) {
         $retval .= $function($uid);
@@ -1388,12 +1419,12 @@ function PLG_getHeaderCode()
             $headercode .= $function();
         }
     }
-    
+
     $function = 'custom_getheadercode';
     if (function_exists($function)) {
         $headercode .= $function();
     }
-    
+
     return $headercode;
 }
 
@@ -1573,7 +1604,7 @@ function PLG_supportingFeeds()
             }
         }
     }
-    
+
     $function = 'custom_getfeednames';
     if (function_exists($function)) {
         $feeds = $function();
@@ -1599,7 +1630,7 @@ function PLG_getFeedNames($plugin)
     global $_PLUGINS;
 
     $feeds = array ();
-    
+
     if ($plugin == 'custom')
     {
         $function = 'custom_getfeednames';
@@ -1611,10 +1642,10 @@ function PLG_getFeedNames($plugin)
             $function = 'plugin_getfeednames_' . $plugin;
             if (function_exists($function)) {
                 $feeds = $function();
-            }   
+            }
         }
     }
-    
+
 
 
     return $feeds;
@@ -1684,13 +1715,13 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
             $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
         }
     }
-    
+
     $function = 'custom_feedElementExtensions';
     if (function_exists($function))
     {
         $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
     }
-    
+
     return $extensions;
 }
 
@@ -1717,7 +1748,7 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, 
             $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
     }
-    
+
     $function = 'custom_feedNSExtensions';
     if (function_exists($function))
     {
@@ -1749,7 +1780,7 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
             $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion, $topic, $fid));
         }
     }
-    
+
     $function = 'custom_feedExtensionTags';
     if (function_exists($function))
     {
@@ -1834,7 +1865,7 @@ function PLG_getWhatsNew()
             }
         }
     }
-    
+
     $fn_head = 'custom_whatsnewsupported';
     if (function_exists($fn_head)) {
         $supported = $fn_head();
@@ -1896,7 +1927,7 @@ function PLG_checkforSpam($content, $action = -1)
             }
         }
     }
-    
+
     $function = 'custom_checkforSpam';
     if (function_exists($function)) {
         $result = $function($content, $action);
@@ -1937,7 +1968,7 @@ function PLG_spamAction($content, $action = -1)
             $result = max($result, $res);
         }
     }
-    
+
     $function = 'custom_spamaction';
     if (function_exists($function)) {
         $res = $function($content, $action);
@@ -2113,7 +2144,7 @@ function PLG_itemDisplay($id, $type)
             }
         }
     }
-    
+
     $function = 'custom_itemdisplay';
     if (function_exists ($function)) {
         $result = $function ($id, $type);
