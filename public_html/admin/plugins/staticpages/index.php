@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.82 2007/08/05 08:05:08 dhaun Exp $
+// $Id: index.php,v 1.83 2007/08/09 08:02:53 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -60,7 +60,7 @@ if (!SEC_hasRights ('staticpages.edit')) {
 function form ($A, $error = false)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
-           $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24,
+           $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24, $LANG25,
            $LANG_postmodes, $MESSAGE;
 
     $template_path = staticpages_templatePath ('admin');
@@ -132,6 +132,13 @@ function form ($A, $error = false)
             $sp_template->set_file ('form', 'editor.thtml');
         }
         $sp_template->set_var('layout_url', $_CONF['layout_url']);
+        $sp_template->set_var('lang_mode', $LANG25[1]);
+        $sp_template->set_var(
+            'comment_options',
+            COM_optionList($_TABLES['commentcodes'],
+            'code,name',
+            $A['commentcode'])
+        );
 
         $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
         $sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -467,6 +474,7 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 * @param sp_format       string  HTML or plain text
 * @param sp_onmenu       string  Flag to place entry on menu
 * @param sp_label        string  Menu Entry
+* @param commentcode     int     Comment Code
 * @param owner_id        int     Permission bits
 * @param group_id        int
 * @param perm_owner      int
@@ -483,7 +491,7 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 *
 */
 function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
-                           $sp_format, $sp_onmenu, $sp_label, $owner_id,
+                           $sp_format, $sp_onmenu, $sp_label, $commentcode, $owner_id,
                            $group_id, $perm_owner, $perm_group, $perm_members,
                            $perm_anon, $sp_php, $sp_nf, $sp_old_id,
                            $sp_centerblock, $sp_help, $sp_tid, $sp_where,
@@ -571,16 +579,20 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
         }
 
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,'
+        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,"
+                "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$commentcode,$owner_id,$group_id,"
                 ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                 ."'$sp_inblock','$postmode'");
         if ($delete_old_page && !empty ($sp_old_id)) {
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
-        echo COM_refresh ($_CONF['site_admin_url']
-                          . '/plugins/staticpages/index.php');
+
+        echo PLG_afterSaveSwitch (
+            $_SP_CONF['aftersave'],
+            COM_buildURL ("{$_CONF['site_url']}/staticpages/index.php?page=$sp_id"),
+            'staticpages'
+        );
     } else {
         $retval .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
         $retval .= COM_errorLog ($LANG_STATIC['no_title_or_content'], 2);
@@ -653,7 +665,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         submitstaticpage ($sp_id, $sp_uid, $_POST['sp_title'],
             $_POST['sp_content'], COM_applyFilter ($_POST['sp_hits'], true),
             COM_applyFilter ($_POST['sp_format']), $_POST['sp_onmenu'],
-            $_POST['sp_label'], COM_applyFilter ($_POST['owner_id'], true),
+            $_POST['sp_label'], COM_applyFilter ($_POST['commentcode'], true),
+            COM_applyFilter ($_POST['owner_id'], true),
             COM_applyFilter ($_POST['group_id'], true), $_POST['perm_owner'],
             $_POST['perm_group'], $_POST['perm_members'], $_POST['perm_anon'],
             $_POST['sp_php'], $_POST['sp_nf'],

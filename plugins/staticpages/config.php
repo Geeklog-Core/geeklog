@@ -8,7 +8,7 @@ $_SP_CONF['version'] = '1.4.4';
 $_SP_CONF['allow_php'] = 1;
 
 
-// If you have more than one static page that is to be displayed in Geeklog's 
+// If you have more than one static page that is to be displayed in Geeklog's
 // center area, you can specify how to sort them:
 
 $_SP_CONF['sort_by'] = 'id'; // can be 'id', 'title', 'date'
@@ -25,6 +25,13 @@ $_SP_CONF['sort_menu_by'] = 'label'; // can be 'id', 'label', 'title', 'date'
 // deleted (= 1).
 $_SP_CONF['delete_pages'] = 0;
 
+/** What to show after a page has been saved? Possible choices:
+ * 'item' -> forward to the static page
+ * 'list' -> display the admin-list of the static pages
+ * 'home' -> display the site homepage
+ * 'admin' -> display the site admin homepage
+ */
+$_SP_CONF['aftersave'] = 'item';
 
 // Static pages can optionally be wrapped in a block. This setting defines
 // the default for that option (1 = wrap in a block, 0 = don't).

@@ -33,7 +33,15 @@
                   </select>
               </td>
           </tr>
-         <tr>
+        <tr>
+            <td align="right">{lang_mode}:</td>
+            <td>
+                <select name="commentcode">
+                    {comment_options}
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td align="right">{lang_postmode}:</td>
             <td><select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
         </tr>

@@ -13,6 +13,6 @@
     <p>{site_name}<br>
         <a href="{sp_url}">{sp_url}</a>
     </p>
-
+({comments_text})
 </body>
 </html>

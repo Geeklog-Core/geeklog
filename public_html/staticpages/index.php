@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.44 2007/04/28 18:54:03 dhaun Exp $
+// $Id: index.php,v 1.45 2007/08/09 08:03:04 ospiess Exp $
 
 require_once '../lib-common.php';
 
@@ -39,12 +39,23 @@ require_once '../lib-common.php';
 
 COM_setArgNames(array('page', 'mode'));
 $page = COM_applyFilter(COM_getArgument('page'));
-$mode = COM_applyFilter(COM_getArgument('mode'));
+$display_mode = COM_applyFilter(COM_getArgument('disp_mode'));
+
+// from comments display refresh:
+if (isset ($_POST['order'])) {
+    $comment_order = COM_applyFilter ($_POST['order']);
+    $comment_mode = COM_applyFilter ($_POST['mode']);
+    $page = COM_applyFilter($_POST['id']);
+    if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
+        $order = '';
+    }
+}
+
 if ($mode != 'print') {
     $mode = '';
 }
 
-$retval = SP_returnStaticpage($page, $mode);
+$retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode);
 
 echo $retval;
 

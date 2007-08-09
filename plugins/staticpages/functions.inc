@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.96 2007/06/09 17:48:21 dhaun Exp $
+// $Id: functions.inc,v 1.97 2007/08/09 08:02:42 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -103,7 +103,122 @@ function plugin_getmenuitems_staticpages()
 function plugin_commentsupport_staticpages()
 {
     // Static Pages will not use comments
-    return false;
+    return true;
+}
+
+/**
+* Plugin should display [a] comment[s]
+*
+* @param   string  $id     Unique idenifier for item comment belongs to
+* @param   int     $cid    Comment id to display (possibly including sub-comments)
+* @param   string  $title  Page/comment title
+* @param   string  $order  'ASC' or 'DSC' or blank
+* @param   string  $format 'threaded', 'nested', or 'flat'
+* @param   int     $page   Page number of comments to display
+* @param   boolean $view   True to view comment (by cid), false to display (by $pid)
+* @return  mixed   results of calling the plugin_displaycomment_ function
+*/
+function plugin_displaycomment_staticpages ($id, $cid, $title, $order, $format, $page, $view)
+{
+    global $_TABLES, $LANG_ACCESS;
+
+    $retval = '';
+
+    $sql = "SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, "
+        . "perm_group, perm_members, perm_anon "
+        . "FROM {$_TABLES['staticpage']} "
+        . "WHERE (sp_id = '$id')" . COM_getPermSQL('AND')
+        . ' GROUP BY sp_id';
+    $result = DB_query ($sql);
+    $A = DB_fetchArray ($result);
+    $allowed = $A['count'];
+
+    if ($allowed == 1) {
+        $delete_option = (SEC_hasRights ('staticpages.edit') &&
+                (SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon']) == 3));
+        $retval .= CMT_userComments ($id, $title, 'staticpages', $order, $format,
+                                     $cid, $page, $view, $delete_option,
+                                     $A['commentcode']);
+    } else {
+        $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                        COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG_ACCESS['storydenialmsg']
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+
+    return $retval;
+}
+
+/**
+ * Static Page saves a comment
+ *
+ * @param   string  $type   Plugin to save comment
+ * @param   string  $title  comment title
+ * @param   string  $comment comment text
+ * @param   string  $id     Item id to which $cid belongs
+ * @param   int     $pid    comment parent
+ * @param   string  $postmode 'html' or 'text'
+ * @return  mixed   false for failure, HTML string (redirect?) for success
+ */
+function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
+{
+    global $_CONF, $_TABLES, $LANG03, $_USER;
+
+    $retval = '';
+
+    $commentcode = DB_getItem ($_TABLES['staticpage'], 'commentcode',
+                               "sp_id = '$id'");
+    if ($commentcode != 0) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    $ret = CMT_saveComment ($title, $comment, $id, $pid, 'staticpages', $postmode);
+    if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
+        $retval .= COM_siteHeader('menu', $LANG03[1])
+                . CMT_commentForm ($title, $comment, $id, $pid, 'staticpages',
+                                   $LANG03[14], $postmode)
+                . COM_siteFooter();
+    } else { // success
+        $retval = COM_refresh ($_CONF['site_url']
+                                . "/staticpages/index.php?page=$id");
+    }
+
+    return $retval;
+}
+
+/**
+ * staticpages: delete a comment
+ *
+ * @param   int     $cid    Comment to be deleted
+ * @param   string  $id     Item id to which $cid belongs
+ * @return  mixed   false for failure, HTML string (redirect?) for success
+ */
+function plugin_deletecomment_staticpages($cid, $id)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    $retval = '';
+
+    $has_editPermissions = SEC_hasRights ('staticpages.edit');
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
+        . "FROM {$_TABLES['staticpage']} WHERE sp_id = '{$id}'");
+    $A = DB_fetchArray ($result);
+
+    if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
+            $A['group_id'], $A['perm_owner'], $A['perm_group'],
+            $A['perm_members'], $A['perm_anon']) == 3) {
+        CMT_deleteComment($cid, $id, 'staticpages');
+        $retval .= COM_refresh ($_CONF['site_url']
+                                 . "/staticpages/index.php?page=$id");
+    } else {
+        COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+                    . "tried to illegally delete comment $cid from staticpage $id");
+        $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    return $retval;
 }
 
 /**
@@ -131,10 +246,12 @@ function SP_countVisiblePages ()
 *
 * @param    string  $page       static page id
 * @param    array   $A          static page data
+* @param    string  comment_order sorting of comments
+* @param    string  comment_mode
 * @return   string              HTML for the static page
 *
 */
-function SP_displayPage ($page, $A)
+function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nested')
 {
     global $_CONF, $_TABLES, $_USER,
            $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
@@ -154,7 +271,8 @@ function SP_displayPage ($page, $A)
     }
 
     $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
-    $spage -> set_file( array('page'=>'staticpage.thtml'));
+    $spage -> set_file( array('page'=>'staticpage.thtml',
+        'comments' => 'spcomments.thtml'));
 
     if ($A['sp_format'] <> 'blankpage') {
         $icons = '';
@@ -163,7 +281,7 @@ function SP_displayPage ($page, $A)
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
                 . $LANG_STATIC['printable_format'] . '">';
             $print_url = COM_buildURL ($_CONF['site_url']
-                . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
+                . '/staticpages/index.php?page=' . $page . '&amp;disp_mode=print');
             $icon = COM_createLink($printicon, $print_url);
             $spage->set_var('print_icon', $icon);
         }
@@ -186,6 +304,18 @@ function SP_displayPage ($page, $A)
         }
     }
 
+    if($A['commentcode'] >= 0 ) {
+        $delete_option = (SEC_hasRights('staticpages.edit') &&
+            SEC_hasAccess($A['owner_id'], $A['group_id'],
+            $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+            $A['perm_anon']) == 3 ? true : false);
+        require_once $_CONF['path_system'] . 'lib-comment.php';
+        $spage->set_var ('commentbar', CMT_userComments($page, $A['sp_title'], 'staticpages',
+                                    $comment_order, $comment_mode, 0, 1, false,
+                                    $delete_option, $A['commentcode']));
+    }
+
+
     $content = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
     $spage->set_var('content', $content );
 
@@ -203,8 +333,10 @@ function SP_displayPage ($page, $A)
             $hits = COM_numberFormat ($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
             $spage->set_var('hits', $hits);
         }
-
     }
+
+
+
     $retval .= $spage->finish($spage->parse('output', 'page'));
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_block',
@@ -243,7 +375,7 @@ function SP_displayPage ($page, $A)
 */
 function SP_printPage ($page, $A)
 {
-    global $_CONF;
+    global $_CONF, $LANG01, $_TABLES;
 
     $template_path = staticpages_templatePath ();
     $print = new Template ($template_path);
@@ -254,12 +386,30 @@ function SP_printPage ($page, $A)
 
     $print->set_var ('page_title', $_CONF['site_name'] . ' - '
                                    . stripslashes ($A['sp_title']));
-    $print->set_var ('sp_url', COM_buildUrl ($_CONF['site_url']
-                               . '/staticpages/index.php?page=' . $page));
+    $sp_url = COM_buildUrl ($_CONF['site_url']
+                               . '/staticpages/index.php?page=' . $page);
+    $print->set_var ('sp_url', $sp_url);
     $print->set_var ('sp_title', stripslashes ($A['sp_title']));
     $print->set_var ('sp_content',
             SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']));
     $print->set_var ('sp_hits', COM_numberFormat ($A['sp_hits']));
+    if ($A['commentcode'] >= 0) {
+        $commentsUrl = $sp_url . '#comments';
+        $comments = DB_count($_TABLES['comments'],
+                            array('sid', 'type'), array($A['sp_id'], 'staticpages'));
+        $numComments = COM_numberFormat ($comments);
+        $print->set_var ('story_comments', $numComments);
+        $print->set_var ('comments_url', $commentsUrl);
+        $print->set_var ('comments_text', $numComments . ' ' . $LANG01[3]);
+        $print->set_var ('comments_count', $numComments);
+        $print->set_var ('lang_comments', $LANG01[3]);
+        $comments_with_count = sprintf ($LANG01[121], $numComments);
+
+        if ($comments > 0) {
+            $comments_with_count = COM_createLink($comments_with_count, $commentsUrl);
+        }
+        $print->set_var ('comments_with_count', $comments_with_count);
+    }
     $print->parse ('output', 'print');
 
     return $print->finish ($print->get_var ('output'));
@@ -270,10 +420,12 @@ function SP_printPage ($page, $A)
 *
 * @param    string  $page       static page id
 * @param    string  $mode       type of display to return ('', 'print', 'autotag'
+* @param    string  comment_order sorting of comments
+* @param    string  comment_mode
 * @return   string              HTML for the static page
 *
 */
-function SP_returnStaticpage($page='', $mode='')
+function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode ='nested')
 {
     global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
 
@@ -287,11 +439,11 @@ function SP_returnStaticpage($page='', $mode='')
         $perms = ' AND ' . $perms;
     }
     $sql = array();
-    $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,"
+    $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,commentcode,owner_id,"
         ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,"
         ."sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
-    $sql['mssql'] = "SELECT sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
-        ."sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,"
+    $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
+        ."sp_date,sp_format,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,"
         ."perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} "
         ."WHERE (sp_id = '$page')" . $perms;
     $result = DB_query ($sql);
@@ -310,7 +462,7 @@ function SP_returnStaticpage($page='', $mode='')
         } else if ($mode =='autotag') {
             $retval = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
         } else {
-            $retval = SP_displayPage ($page, $A);
+            $retval = SP_displayPage ($page, $A, $comment_order, $comment_mode);
         }
 
         // increment hit counter for page
