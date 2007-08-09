@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.84 2007/08/09 14:47:14 ospiess Exp $
+// $Id: index.php,v 1.85 2007/08/09 15:28:16 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -60,7 +60,7 @@ if (!SEC_hasRights ('staticpages.edit')) {
 function form ($A, $error = false)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
-           $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24, $LANG25,
+           $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24,
            $LANG_postmodes, $MESSAGE;
 
     $template_path = staticpages_templatePath ('admin');
@@ -132,7 +132,7 @@ function form ($A, $error = false)
             $sp_template->set_file ('form', 'editor.thtml');
         }
         $sp_template->set_var('layout_url', $_CONF['layout_url']);
-        $sp_template->set_var('lang_mode', $LANG25[1]);
+        $sp_template->set_var('lang_mode', $LANG24[3]);
         $sp_template->set_var(
             'comment_options',
             COM_optionList($_TABLES['commentcodes'],
