@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.128 2007/08/09 06:10:15 ospiess Exp $
+// $Id: lib-plugins.php,v 1.129 2007/08/09 06:43:07 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -65,23 +65,30 @@ while ($A = DB_fetchArray($result)) {
 * @return the url where the user will be forwarded to
 *
 */
-function PLG_afterSaveSwtich($item_url, $plugin) {
+function PLG_afterSaveSwtich($target, $item_url, $plugin, $message = '') {
     global $_CONF;
-    switch ($_CONF['aftersave']) {
+    if (isset($message)) {
+        $msg = "msg=$message";
+    } else {
+        $msg = '';
+    }
+    switch ($target) {
         case 'item':
-            $url = $item_url;
+            $url = $item_url . '&' . $msg;
         break;
         case 'list':
             $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
         break;
         case 'home':
-            $url = $_CONF['site_url'];
+            // the plugins messages are not available, use generic
+            $url = $_CONF['site_url'] . "/index.php?msg=15";
         break;
         case 'admin':
-            $url = $_CONF['site_admin_url'] . '/moderation.php';
+            // the plugins messages are not available, use generic
+            $url = $_CONF['site_admin_url'] . "/moderation.php?msg=15";
         break;
         case 'plugin':
-            $url = $_CONF['site_url'] . "/$plugin/index.php";
+            $url = $_CONF['site_url'] . "/$plugin/index.php?$msg";
         break;
     }
     return COM_refresh ($url);
