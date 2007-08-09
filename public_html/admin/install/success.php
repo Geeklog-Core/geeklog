@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once ('../../lib-common.php');
 
@@ -22,14 +22,14 @@ if ($type == 'install') {
 $display .= '<h2>' . $LANG_INSTALL[90] . '</h2>
 <p>' . $LANG_INSTALL[91] . ' <strong>' . (($type == 'upgrade') ? '2' : '3') . ' ' . $LANG_INSTALL[92] . '</strong>:
 <ul>
-<li>' . $LANG_INSTALL[93] . '<tt>' . $_CONF['path_html'] . 'admin/install</tt>.</li>';
+<li>' . $LANG_INSTALL[93] . ' <tt>' . $_CONF['path_html'] . 'admin/install</tt>.</li>';
 
 
 if ($type == 'install') {
-    $display .= '<li>' . $LANG_INSTALL[94] . ' <strong>' . $LANG_INSTALL[87] . '</strong> ' . $LANG_INSTALL[95] . '</li>';
+    $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php?mode=edit\">" . $LANG_INSTALL[94] . ' <strong>' . $LANG_INSTALL[87] . '</strong> ' . $LANG_INSTALL[95] . '</a></li>';
 }
 
-$display .= '<li>' . $LANG_INSTALL[96] . '<tt>' . $_CONF['path'] . 'config.php</tt> ' . $LANG_INSTALL[97] . '<tt>' . $_CONF['path_html'] . 'lib-common.php</tt> ' . $LANG_INSTALL[98] . ' 755.</li>
+$display .= '<li>' . $LANG_INSTALL[96] . ' <tt>' . $_CONF['path'] . 'config.php</tt> ' . $LANG_INSTALL[97] . '<tt>' . $_CONF['path_html'] . 'lib-common.php</tt> ' . $LANG_INSTALL[98] . ' 755.</li>
 </ul>
 </p>';
 
