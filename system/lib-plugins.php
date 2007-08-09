@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.129 2007/08/09 06:43:07 ospiess Exp $
+// $Id: lib-plugins.php,v 1.130 2007/08/09 06:44:31 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -65,7 +65,7 @@ while ($A = DB_fetchArray($result)) {
 * @return the url where the user will be forwarded to
 *
 */
-function PLG_afterSaveSwtich($target, $item_url, $plugin, $message = '') {
+function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '') {
     global $_CONF;
     if (isset($message)) {
         $msg = "msg=$message";
