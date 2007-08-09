@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2007/08/09 08:09:34 ospiess Exp $
+// $Id: index.php,v 1.4 2007/08/09 18:04:02 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -1536,7 +1536,7 @@ switch ($mode) {
                 require_once( $_CONF['path_system'] . 'lib-database.php' );
 
                 // Check if GL is already installed
-                if (INST_checkTableExists( $_DB_table_prefix . 'vars' )) {
+                if (INST_checkTableExists( 'vars' )) {
 
                     $display .= '<p>' . $LANG_INSTALL[63] . '</p>
                         <ol>
