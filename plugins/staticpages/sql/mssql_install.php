@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.3 2006/10/11 01:36:11 blaine Exp $
+// $Id: mssql_install.php,v 1.4 2007/08/09 18:29:34 dhaun Exp $
 
 
 
@@ -45,6 +45,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [sp_onmenu] [tinyint] NOT NULL ,
     [sp_label] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [commentcode] [numeric](4, 0) NOT NULL,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,
     [perm_owner] [tinyint] NOT NULL ,
