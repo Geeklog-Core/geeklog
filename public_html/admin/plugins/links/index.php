@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.44 2007/08/09 06:48:05 ospiess Exp $
+// $Id: index.php,v 1.45 2007/08/09 06:56:57 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -301,13 +301,13 @@ function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $
         DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "'$lid','$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         COM_rdfUpToDateCheck ('links', $category, $lid);
 
-        // return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=2');
         return PLG_afterSaveSwitch (
             $_LI_CONF['aftersave'],
             COM_buildURL ("{$_CONF['site_url']}/links/portal.php?what=link&item=$lid"),
             'links',
             2
         );
+
     } else { // missing fields
         $retval .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[1]);
         $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
