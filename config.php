@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.255 2007/08/09 06:12:51 ospiess Exp $
+// $Id: config.php,v 1.256 2007/08/09 06:30:28 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -468,14 +468,6 @@ $_CONF['usersubmission']  = 0; // 1 = new users must be approved
 // When set to 1, this will display an additional block on the submissions page
 // that lists all stories that have the 'draft' flag set.
 $_CONF['listdraftstories'] = 0;
-
-// What to show after an item has been saved? Possible choices:
-// 'item' -> display the edited item
-// 'list' -> display the list of items
-// 'plugin' -> display the public homepage of the plugin, not possible for all plugins!
-// 'home' -> display the homepage
-// 'admin' -> display the admin homepage
-$_CONF['aftersave'] = 'admin';
 
 // Send an email notification when a new submission has been made. The contents
 // of the array can be any combination of 'story', 'comment', 'trackback',
