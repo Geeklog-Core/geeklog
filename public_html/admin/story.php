@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.258 2007/08/09 07:44:28 ospiess Exp $
+// $Id: story.php,v 1.259 2007/08/09 07:48:20 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -868,7 +868,6 @@ function submitstory($type='')
                 'story',
                 9
             );
-            echo COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=9');
         }
         exit;
     }

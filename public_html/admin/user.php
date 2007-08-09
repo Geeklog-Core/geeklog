@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.188 2007/08/09 07:44:28 ospiess Exp $
+// $Id: user.php,v 1.189 2007/08/09 07:48:20 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -611,7 +611,6 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 
         $errors = DB_error();
         if (empty($errors)) {
-            // echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
             echo PLG_afterSaveSwitch (
                 $_CONF['aftersave_user'],
                 "{$_CONF['site_url']}/users.php?mode=profile&uid=$uid",
