@@ -61,4 +61,7 @@ $_SP_CONF['censor'] = 1;
 // (a value of 1, ie. write-only, does not make sense and is not allowed)
 $_SP_CONF['default_permissions'] = array (3, 2, 2, 2);
 
+// The maximum number of items displayed when an Atom feed is requested
+$_SP_CONF['atom_max_items'] = 10;
+
 ?>

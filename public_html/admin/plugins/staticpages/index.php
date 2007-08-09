@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.85 2007/08/09 15:28:16 dhaun Exp $
+// $Id: index.php,v 1.86 2007/08/09 19:32:20 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -493,115 +493,46 @@ function staticpageeditor ($sp_id, $mode = '', $editor = '')
 *
 */
 function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
-                           $sp_format, $sp_onmenu, $sp_label, $commentcode, $owner_id,
-                           $group_id, $perm_owner, $perm_group, $perm_members,
-                           $perm_anon, $sp_php, $sp_nf, $sp_old_id,
-                           $sp_centerblock, $sp_help, $sp_tid, $sp_where,
-                           $sp_inblock, $postmode)
+                           $sp_format, $sp_onmenu, $sp_label, $commentcode,
+                           $owner_id, $group_id, $perm_owner, $perm_group,
+                           $perm_members, $perm_anon, $sp_php, $sp_nf,
+                           $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
+                           $sp_where, $sp_inblock, $postmode)
 {
     global $_CONF, $_TABLES, $LANG12, $LANG_STATIC, $_SP_CONF;
 
     $retval = '';
 
-    $sp_id = COM_sanitizeID ($sp_id);
+    $args = array(
+                'sp_id' => $sp_id,
+                'sp_uid' => $sp_uid,
+                'sp_title' => $sp_title,
+                'sp_content' => $sp_content,
+                'sp_hits' => $sp_hits,
+                'sp_format' => $sp_format,
+                'sp_onmenu' => $sp_onmenu,
+                'sp_label' => $sp_label,
+                'commentcode' => $commentcode,
+                'owner_id' => $owner_id,
+                'group_id' => $group_id,
+                'perm_owner' => $perm_owner,
+                'perm_group' => $perm_group,
+                'perm_members' => $perm_members,
+                'perm_anon' => $perm_anon,
+                'sp_php' => $sp_php,
+                'sp_nf' => $sp_nf,
+                'sp_old_id' => $sp_old_id,
+                'sp_centerblock' => $sp_centerblock,
+                'sp_help' => $sp_help,
+                'sp_tid' => $sp_tid,
+                'sp_where' => $sp_where,
+                'sp_inblock' => $sp_inblock,
+                'postmode' => $postmode
+                 );
 
-    // Check for unique page ID
-    $duplicate_id = false;
-    $delete_old_page = false;
-    if (DB_count ($_TABLES['staticpage'], 'sp_id', $sp_id) > 0) {
-        if ($sp_id != $sp_old_id) {
-            $duplicate_id = true;
-        }
-    } elseif (!empty ($sp_old_id)) {
-        if ($sp_id != $sp_old_id) {
-            $delete_old_page = true;
-        }
-    }
+    PLG_invokeService('staticpages', 'submit', $args, $retval, $svc_msg);
 
-    if ($duplicate_id) {
-        $retval .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
-        $retval .= COM_errorLog ($LANG_STATIC['duplicate_id'], 2);
-        $retval .= staticpageeditor ($sp_id);
-        $retval .= COM_siteFooter ();
-        echo $retval;
-    } elseif (!empty ($sp_title) && !empty ($sp_content)) {
-        if (empty ($sp_hits)) {
-            $sp_hits = 0;
-        }
-
-        if ($sp_onmenu == 'on') {
-            $sp_onmenu = 1;
-        } else {
-            $sp_onmenu = 0;
-        }
-        if ($sp_nf == 'on') {
-            $sp_nf = 1;
-        } else {
-            $sp_nf = 0;
-        }
-        if ($sp_centerblock == 'on') {
-            $sp_centerblock = 1;
-        } else {
-            $sp_centerblock = 0;
-        }
-        if ($sp_inblock == 'on') {
-            $sp_inblock = 1;
-        } else {
-            $sp_inblock = 0;
-        }
-
-        // Clean up the text
-        if ($_SP_CONF['censor'] == 1) {
-            $sp_content = COM_checkWords ($sp_content);
-            $sp_title = COM_checkWords ($sp_title);
-        }
-        if ($_SP_CONF['filter_html'] == 1) {
-            $sp_content = COM_checkHTML ($sp_content);
-        }
-        $sp_title = strip_tags ($sp_title);
-        $sp_label = strip_tags ($sp_label);
-
-        $sp_content = addslashes ($sp_content);
-        $sp_title = addslashes ($sp_title);
-        $sp_label = addslashes ($sp_label);
-
-        // If user does not have php edit perms, then set php flag to 0.
-        if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights ('staticpages.PHP')) {
-            $sp_php = 0;
-        }
-
-        // make sure there's only one "entire page" static page per topic
-        if (($sp_centerblock == 1) && ($sp_where == 0)) {
-            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE sp_centerblock = 1 AND sp_where = 0 AND sp_tid = '$sp_tid'" . COM_getLangSQL ('sp_id', 'AND'));
-        }
-
-        $formats = array ('allblocks', 'blankpage', 'leftblocks', 'noblocks');
-        if (!in_array ($sp_format, $formats)) {
-            $sp_format = 'allblocks';
-        }
-
-        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,owner_id,group_id,'
-                .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$commentcode,$owner_id,$group_id,"
-                ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
-                ."'$sp_inblock','$postmode'");
-        if ($delete_old_page && !empty ($sp_old_id)) {
-            DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
-        }
-
-        echo PLG_afterSaveSwitch (
-            $_SP_CONF['aftersave'],
-            COM_buildURL ("{$_CONF['site_url']}/staticpages/index.php?page=$sp_id"),
-            'staticpages'
-        );
-    } else {
-        $retval .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
-        $retval .= COM_errorLog ($LANG_STATIC['no_title_or_content'], 2);
-        $retval .= staticpageeditor ($sp_id);
-        $retval .= COM_siteFooter ();
-        echo $retval;
-    }
+    return $retval;
 }
 
 
@@ -615,13 +546,16 @@ if (isset($_REQUEST['sp_id'])) {
     $sp_id = COM_applyFilter ($_REQUEST['sp_id']);
 }
 
+$display = '';
 
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
         COM_errorLog ('Attempted to delete static page sp_id=' . $sp_id);
     } else {
-        DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_id,
-                $_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+        $args = array(
+                    'sp_id' => $sp_id
+                     );
+        PLG_invokeService('staticpages', 'delete', $args, $display, $svc_msg);
     }
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
@@ -664,7 +598,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         if (!isset ($_POST['postmode'])) {
             $_POST['postmode'] = '';
         }
-        submitstaticpage ($sp_id, $sp_uid, $_POST['sp_title'],
+        $display .= submitstaticpage ($sp_id, $sp_uid, $_POST['sp_title'],
             $_POST['sp_content'], COM_applyFilter ($_POST['sp_hits'], true),
             COM_applyFilter ($_POST['sp_format']), $_POST['sp_onmenu'],
             $_POST['sp_label'], COM_applyFilter ($_POST['commentcode'], true),

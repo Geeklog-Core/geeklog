@@ -34,22 +34,28 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.98 2007/08/09 08:14:21 ospiess Exp $
+// $Id: functions.inc,v 1.99 2007/08/09 19:32:20 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
-    die ('This file can not be used on its own.');
+if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+    die('This file can not be used on its own.');
 }
 
-$langfile = $_CONF['path'] . 'plugins/staticpages/language/'
-          . $_CONF['language'] . '.php';
+$plugin_path = $_CONF['path'] . 'plugins/staticpages/';
+$langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
-if (file_exists ($langfile)) {
-    include ($langfile);
+if (file_exists($langfile)) {
+    include $langfile;
 } else {
-    include ($_CONF['path'] . 'plugins/staticpages/language/english.php');
+    include $plugin_path . 'language/english.php';
 }
 
-include ($_CONF['path'] . 'plugins/staticpages/config.php');
+include $plugin_path . 'config.php';
+
+// +---------------------------------------------------------------------------+
+// | Plugin API - Services                                                     |
+// +---------------------------------------------------------------------------+
+
+include_once $plugin_path . 'services.inc.php';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -429,82 +435,27 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
 {
     global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
 
-    $error = 0;
+    $retval = '';
 
-    if ($page == '') {
-        $error = 1;
-    }
-    $perms = SP_getPerms ();
-    if (!empty ($perms)) {
-        $perms = ' AND ' . $perms;
-    }
-    $sql = array();
-    $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,commentcode,owner_id,"
-        ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_help,sp_php,"
-        ."sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms;
-    $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
-        ."sp_date,sp_format,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,"
-        ."perm_anon,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']} "
-        ."WHERE (sp_id = '$page')" . $perms;
-    $result = DB_query ($sql);
-    $count = DB_numRows ($result);
+    $args = array(
+                'sp_id' => $page,
+                'mode'  => $mode
+                 );
+    $svc_msg = array();
 
-    if ($count == 0 || $count > 1) {
-        $error = 1;
-    }
+    if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
 
-    if (!($error)) {
-        $A = DB_fetchArray ($result);
-        $_CONF['pagetitle'] = stripslashes ($A['sp_title']);
-
-        if (!empty ($mode) && ($mode == 'print')) {
-            $retval = SP_printPage ($page, $A);
-        } else if ($mode =='autotag') {
-            $retval = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
+        if ($mode == 'print') {
+            $retval = SP_printPage($page, $retval);
+        } elseif ($mode =='autotag') {
+            $retval = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
         } else {
-            $retval = SP_displayPage ($page, $A, $comment_order, $comment_mode);
+            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode);
         }
 
         // increment hit counter for page
-        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'");
+        DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'");
 
-    } else { // an error occured (page not found, access denied, ...)
-
-        if (empty ($page)) {
-            $failflg = 0;
-        } else {
-            $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
-        }
-        if ($failflg) {
-            if ($mode !== 'autotag') {
-                $retval = COM_siteHeader ('menu');
-            }
-            $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-            $login = new Template ($_CONF['path_layout'] . 'submit');
-            $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-            $login->set_var ('login_message', $LANG_LOGIN[2]);
-            $login->set_var ('site_url', $_CONF['site_url']);
-            $login->set_var ('lang_login', $LANG_LOGIN[3]);
-            $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-            $login->parse ('output', 'login');
-            $retval .= $login->finish ($login->get_var ('output'));
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            if ($mode !== 'autotag') {
-                $retval .= COM_siteFooter (true);
-            }
-        } else {
-            if ($mode !== 'autotag') {
-                $retval = COM_siteHeader ('menu');
-            }
-            $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG_STATIC['deny_msg'];
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            if ($mode !== 'autotag') {
-                $retval .= COM_siteFooter (true);
-            }
-        }
     }
 
     return $retval;
