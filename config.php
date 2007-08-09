@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.256 2007/08/09 06:30:28 ospiess Exp $
+// $Id: config.php,v 1.257 2007/08/09 07:44:28 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -630,6 +630,21 @@ $_CONF['hide_main_page_navigation'] = 0;   // hide "google paging" on index.php
 // When set to 1, only root users will be able to feature a story
 $_CONF['onlyrootfeatures'] = 0;
 
+/** What to show after a story has been saved? Possible choices:
+ * 'item' -> forward to the story
+ * 'list' -> display the admin-list of stories
+ * 'home' -> display the site homepage
+ * 'admin' -> display the site admin homepage
+ */
+$_CONF['aftersave_story'] = 'item';
+
+/** What to show after a user has been saved? Possible choices:
+ * 'item' -> forward to the user profile
+ * 'list' -> display the admin-list of users
+ * 'home' -> display the site homepage
+ * 'admin' -> display the site admin homepage
+ */
+$_CONF['aftersave_user'] = 'item';
 
 // Advanced theme settings
 

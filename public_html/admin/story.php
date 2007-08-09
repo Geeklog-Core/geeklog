@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.257 2007/03/17 09:20:46 mjervis Exp $
+// $Id: story.php,v 1.258 2007/08/09 07:44:28 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -324,7 +324,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     if ($story->hasContent()) {
         $previewContent = STORY_renderArticle($story, 'p');
-        if ($advanced_editormode AND $previewContent != '' ) { 
+        if ($advanced_editormode AND $previewContent != '' ) {
             $story_templates->set_var('preview_content', $previewContent);
         } elseif ($previewContent != '') {
             $display = COM_startBlock ($LANG24[26], '',
@@ -862,6 +862,12 @@ function submitstory($type='')
         if ($story->type == 'submission') {
             echo COM_refresh ($_CONF['site_admin_url'] . '/moderation.php?msg=9');
         } else {
+            echo PLG_afterSaveSwitch (
+                $_CONF['aftersave_story'],
+                COM_buildURL ("{$_CONF['site_url']}/article.php?story=$sid"),
+                'story',
+                9
+            );
             echo COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=9');
         }
         exit;
