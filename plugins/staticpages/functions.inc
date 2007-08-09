@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.97 2007/08/09 08:02:42 ospiess Exp $
+// $Id: functions.inc,v 1.98 2007/08/09 08:14:21 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -102,7 +102,7 @@ function plugin_getmenuitems_staticpages()
 */
 function plugin_commentsupport_staticpages()
 {
-    // Static Pages will not use comments
+    // Static Pages will use comments
     return true;
 }
 
