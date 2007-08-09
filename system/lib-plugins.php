@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.130 2007/08/09 06:44:31 ospiess Exp $
+// $Id: lib-plugins.php,v 1.131 2007/08/09 07:41:28 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -77,7 +77,13 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '') {
             $url = $item_url . '&' . $msg;
         break;
         case 'list':
-            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
+            if ($plugin == 'story') {
+                $url = $_CONF['site_admin_url'] . "/$plugin.php?$msg";
+            } else if ($plugin == 'user') {
+                $url = $_CONF['site_admin_url'] . "/user.php?$msg";
+            } else {
+                $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php?$msg";
+            }
         break;
         case 'home':
             // the plugins messages are not available, use generic
