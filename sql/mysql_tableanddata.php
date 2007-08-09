@@ -648,7 +648,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_format varchar(20) NOT NULL default '',
   sp_onmenu tinyint(1) unsigned NOT NULL default '0',
   sp_label varchar(64) default NULL,
-  commentcode tinyint(4) unsigned NOT NULL default '0',
+  commentcode tinyint(4) NOT NULL default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
