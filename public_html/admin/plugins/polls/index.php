@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.42 2007/08/05 08:05:08 dhaun Exp $
+// $Id: index.php,v 1.43 2007/08/09 07:03:12 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -130,9 +130,8 @@ function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults
                    $perm_group, $perm_members, $perm_anon)
 
 {
-    global $_CONF, $_TABLES, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE;
+    global $_CONF, $_TABLES, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE, $_PO_CONF;
     $retval = '';
-
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
@@ -250,6 +249,14 @@ function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults
         COM_errorLog ('**** Leaving savepoll() in '
                       . $_CONF['site_admin_url'] . '/plugins/polls/index.php ***');
     }
+
+    return PLG_afterSaveSwitch (
+        $_PO_CONF['aftersave'],
+        COM_buildURL ("{$_CONF['site_url']}/polls/index.php?pid=$pid"),
+        'polls',
+        19
+    );
+
     return COM_refresh($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=19');
 }
 

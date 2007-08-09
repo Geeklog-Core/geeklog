@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.11 2007/03/19 18:44:12 tony Exp $
+// $Id: config.php,v 1.12 2007/08/09 07:03:34 ospiess Exp $
 
 $_PO_CONF['version']            = '2.0.1'; // Plugin Version
 
@@ -66,6 +66,15 @@ $_PO_CONF['polladdresstime']    = 604800; // seconds (= 7 days)
 // be transfered to a user in the Root group (= 0) or the polls can be
 // deleted (= 1).
 $_PO_CONF['delete_polls'] = 0;
+
+/** What to show after a poll has been saved? Possible choices:
+ * 'item' -> forward to the poll
+ * 'list' -> display the admin-list of poll
+ * 'plugin' -> display the public homepage of the poll plugin
+ * 'home' -> display the site homepage
+ * 'admin' -> display the site admin homepage
+ */
+$_PO_CONF['aftersave'] = 'plugin';
 
 // Define default permissions for new polls created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
