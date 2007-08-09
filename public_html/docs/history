@@ -30,7 +30,7 @@ Geeklog History/Changes:
 - Fixed numerous HTML errors in admin pages [Oliver]
 - Added a missing blank between the day's name and the date in the Older Stories
   block (reported by Jeruvy's girlfriend, via IRC) [Dirk]
-- fixed bug [#648] sending new password email returns "Ok" message although 
+- fixed bug [#648] sending new password email returns "Ok" message although
   it fails when SMTP Server cannot be reached [Oliver]
 - Need to include parameters in the URL when sending Pingbacks, e.g. to
   Serendipity [Dirk]
@@ -54,7 +54,7 @@ Geeklog History/Changes:
   avoid code duplication). It should be save to simply use $LANG_CHARSET in
   most cases, though [Dirk]
 - Added optional Wikitext postmode for stories [Oliver]
-- Addded optional noreply-email address option to config.php to prevent 
+- Addded optional noreply-email address option to config.php to prevent
   spammers retrieving the admin's email address from registering online [Oliver]
 - Added support for "Microsummaries" to index.php.
   See (http://wiki.mozilla.org/Microsummaries) [Mike]
@@ -64,7 +64,7 @@ Geeklog History/Changes:
   edit layout\theme\submit\submitstory.thtml and submitstory_advanced.thtml
     [Mike]
 - fixing the dimension-resizing of uploaded images. If an image would be within
-  the max width after resizing, the max height might still be off. This is 
+  the max width after resizing, the max height might still be off. This is
   solved with the new code. [Oliver]
 - Removed tzcode table and started using PEAR::Date instead since all timezone
   information is stored in there. [Oliver]
@@ -78,6 +78,9 @@ Geeklog History/Changes:
   Again") now asked for a "new password" (reported by Laugh) [Dirk]
 - Remove the "Are you secure?" (getBent) block from the database as its
   functionality has been moved to admin/sectest.php (reported by LWC) [Dirk]
+- Added config option what should be displayed after user saving [Oliver]
+- Added config option what should be displayed after story saving [Oliver]
+- Images in articles (inc. topic icon) aligned with float [Oliver]
 
 - New Czech language file for the Calendar and Links plugins, provided
   by Ondrej Rusek
@@ -99,14 +102,16 @@ Calendar plugin (1.0.2)
 - Highlight search queries [Dirk]
 - Autouninstall implemented [Oliver]
 - Added Batch-Delete functionality [Oliver]
+- Added config option what should be displayed after event saving [Oliver]
 
 Links plugin (1.1.1)
 ------------
-- Added owner_id field to submissions to record submitter and align with 
+- Added owner_id field to submissions to record submitter and align with
   stories behavior [Oliver]
 - Autouninstall implemented [Oliver]
 - Added "Report Broken Link" function [Oliver]
 - Added Link Verification to Link Admin [Oliver]
+- Added config option what should be displayed after link saving [Oliver]
 
 Polls plugin (2.0.1)
 ------------
@@ -114,6 +119,7 @@ Polls plugin (2.0.1)
 - Added Support for multiple questions grouped into a survey [Oliver]
 - Added Support for closing polls [Oliver]
 - Added Support for hiding poll results of open polls [Oliver]
+- Added config option what should be displayed after event poll [Oliver]
 
 Spam-X plugin (1.1.1)
 -------------
@@ -130,13 +136,15 @@ Static Pages plugin (1.4.4)
 -------------------
 - Bugfix: Allow the static pages "page format" setting to override
   $_CONF['show_right_blocks'] (reported by Simon Lord) [Dirk]
-- New Static pages Autotag: staticpage_content to return the contents of a 
+- New Static pages Autotag: staticpage_content to return the contents of a
   static page instead of a link to a static page [Oliver]
 - Now using a template to display static pages [Oliver]
 - Autouninstall implemented [Oliver]
 - The static pages editor was looking for the advanced editor template in the
   wrong place, due to an uninitialized variable (reported by k74) [Dirk]
 - Allow static pages to replace tags also on PHP-generated content [Oliver]
+- Added config option what should be displayed after page saving [Oliver]
+- Added comments feature [Oliver]
 
 
 Dec 31, 2006 (1.4.1)
