@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.4 2007/08/09 18:04:02 dhaun Exp $
+// $Id: index.php,v 1.5 2007/08/10 06:16:26 mwest Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -176,8 +176,8 @@ function INST_identifyGeeklogVersion ()
 /**
  * Check if a table exists
  *
- * @param  string $table Table name
- * @return bool          True if table exists, false if it does not
+ * @param  string $table    Table name
+ * @return bool             True if table exists, false if it does not
  */
 function INST_checkTableExists ($table)
 {
@@ -284,9 +284,9 @@ function INST_checkInnodbUpgrade($_SQL)
 /**
  * Perform database upgrades
  *
- * @param    string $current_gl_version Current Geeklog version
- * @param    bool   $use_innodb         Whether or not to use InnoDB support with MySQL
- * @return   bool                       True if successful
+ * @param    string $current_gl_version     Current Geeklog version
+ * @param    bool   $use_innodb             Whether or not to use InnoDB support with MySQL
+ * @return   bool                           True if successful
  *
  */
 function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
@@ -718,10 +718,11 @@ function innodb_supported()
  * Check to see if config.php and lib-common.php are writeable by the web
  * server. If they aren't display a warning message.
  *
- * @param  string $config_path    Path to config.php
- * @param  string $libcommon_path Path to lib-common.php
- * @return bool                  true if both files are writeable
- * @author Matt West             matt AT mattdanger DOT net
+ * @param  string $config_path      Path to config.php
+ * @param  string $libcommon_path   Path to lib-common.php
+ * @return bool                     true if both files are writeable
+ *
+ * @author Matt West                matt AT mattdanger DOT net
  *
  */
 function INST_checkRequiredPerms($config_path, $libcommon_path)
@@ -744,8 +745,9 @@ function INST_checkRequiredPerms($config_path, $libcommon_path)
 /**
  * Returns the permission warning for config.php and lib-common.php
  *
- * @return   string   HTML and permission warning message.
- * @author   Matt West   matt AT mattdanger DOT net
+ * @return string       HTML and permission warning message.
+ *
+ * @author Matt West    matt AT mattdanger DOT net
  *
  */
 function INST_permissionWarning($config_path, $libcommon_path)
@@ -795,7 +797,7 @@ function INST_permissionWarning($config_path, $libcommon_path)
  * Returns the HTML form to return the user's inputted data to the
  * previous page.
  *
- * @return   string   HTML form code.
+ * @return string   HTML form code.
  *
  */
 function INST_showReturnFormData()
