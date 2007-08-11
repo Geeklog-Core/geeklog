@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.1 2007/08/09 19:32:20 dhaun Exp $
+// $Id: services.inc.php,v 1.2 2007/08/11 17:28:11 dhaun Exp $
 
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
@@ -604,7 +604,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
  */
 function service_getTopicList_staticpages($args, &$output, &$svc_msg)
 {
-    $output = COM_topicArray('tid');
+    //$output = COM_topicArray('tid');
     $output[] = 'all';
     $output[] = 'none';
 
