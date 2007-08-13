@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.58 2007/08/13 01:21:16 ospiess Exp $
+// $Id: lib-comment.php,v 1.59 2007/08/13 01:27:34 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -318,6 +318,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         } else {
             $template->set_var( 'author', $A['username'] );
             $template->set_var( 'author_fullname', $A['username'] );
+            $template->set_var( 'author_link', $A['username'] );
             $template->set_var( 'author_photo', '' );
             $template->set_var( 'camera_icon', '' );
             $template->set_var( 'start_author_anchortag', '' );
