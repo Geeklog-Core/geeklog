@@ -187,7 +187,7 @@ function WS_get()
 
     if ($WS_INTROSPECTION) {
 
-        header('Content-type: ' . 'application/atomserv+xml' . '; charset=UTF-8');
+        header('Content-type: application/atomsvc+xml; charset=UTF-8');
 
         $atom_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/webservices/atom/';
 
