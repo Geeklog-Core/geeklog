@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.57 2007/04/22 04:49:10 ospiess Exp $
+// $Id: lib-comment.php,v 1.58 2007/08/13 01:21:16 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -97,13 +97,16 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
         $commentbar->set_var( 'article_url', $articleUrl );
 
         if( $page == 'comment.php' ) {
-            $commentbar->set_var( 'start_storylink_anchortag',
+            $commentbar->set_var('story_link',
                 COM_createLink(
                     stripslashes( $title ),
                     $articleUrl,
                     array('class'=>'non-ul b')
                 )
             );
+            $commentbar->set_var( 'start_storylink_anchortag', '<a·href="'
+                . $articleUrl . '"·class="non-ul">' );
+            $commentbar->set_var( 'end_storylink_anchortag', '</a>' );
         }
     } else { // for a plugin
         // Link to plugin defined link or lacking that a generic link that the plugin should support (hopefully)
