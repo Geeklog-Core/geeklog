@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.646 2007/08/09 07:13:39 dhaun Exp $
+// $Id: lib-common.php,v 1.647 2007/08/18 18:11:14 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4788,39 +4788,37 @@ function COM_getAmPmFormSelection( $name, $selected = '' )
 * It formats one list item per array element, using the list.thtml
 * and listitem.thtml templates.
 *
-* @param        array       $listofitems        Items to list out
-* @return   string  HTML unordered list of array items
+* @param    array   $listofitems    Items to list out
+* @return   string                  HTML unordered list of array items
 */
-
-function COM_makeList( $listofitems, $classname = '' )
+function COM_makeList($listofitems, $classname = '')
 {
     global $_CONF;
 
-    $list = new Template( $_CONF['path_layout'] );
-    $list->set_file( array( 'list'     => 'list.thtml',
-                            'listitem' => 'listitem.thtml' ));
-    $list->set_var( 'site_url', $_CONF['site_url'] );
-    $list->set_var( 'layout_url', $_CONF['layout_url'] );
-    if( empty( $classname ))
-    {
-        $list->set_var( 'list_class', '' );
-        $list->set_var( 'list_class_name', '' );
-    }
-    else
-    {
-        $list->set_var( 'list_class', 'class="' . $classname . '"' );
-        $list->set_var( 'list_class_name', $classname );
+    $list = new Template($_CONF['path_layout']);
+    $list->set_file(array('list'     => 'list.thtml',
+                          'listitem' => 'listitem.thtml'));
+    $list->set_var('site_url', $_CONF['site_url']);
+    $list->set_var('layout_url', $_CONF['layout_url']);
+
+    if (empty($classname)) {
+        $list->set_var('list_class',      '');
+        $list->set_var('list_class_name', '');
+    } else {
+        $list->set_var('list_class',      'class="' . $classname . '"');
+        $list->set_var('list_class_name', $classname);
     }
 
-    foreach( $listofitems as $oneitem )
-    {
-        $list->set_var( 'list_item', $oneitem );
-        $list->parse( 'list_items', 'listitem', true );
+    if (is_array($listofitems)) {
+        foreach ($listofitems as $oneitem) {
+            $list->set_var('list_item', $oneitem);
+            $list->parse('list_items', 'listitem', true);
+        }
     }
 
-    $list->parse( 'newlist', 'list', true );
+    $list->parse('newlist', 'list', true);
 
-    return $list->finish( $list->get_var( 'newlist' ));
+    return $list->finish($list->get_var('newlist'));
 }
 
 /**
