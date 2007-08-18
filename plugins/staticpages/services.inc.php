@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.2 2007/08/11 17:28:11 dhaun Exp $
+// $Id: services.inc.php,v 1.3 2007/08/18 20:19:41 dhaun Exp $
 
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
@@ -382,17 +382,18 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
 
     $sp_id = $args['sp_id'];
 
-    if (!SEC_hasRights ('staticpages.edit')) {
+    if (!SEC_hasRights ('staticpages.delete')) {
         $output = COM_siteHeader ('menu', $LANG_STATIC['access_denied']);
         $output .= COM_startBlock ($LANG_STATIC['access_denied'], '',
                                     COM_getBlockTemplate ('_msg_block', 'header'));
         $output .= $LANG_STATIC['access_denied_msg'];
         $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $output .= COM_siteFooter ();
-        if ($_USER['uid'] > 1)
+        if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
-        else
+        } else {
             return PLG_RET_AUTH_FAILED;
+        }
     }
 
     DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_id);
