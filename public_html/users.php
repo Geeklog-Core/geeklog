@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.156 2007/05/26 19:31:59 dhaun Exp $
+// $Id: users.php,v 1.157 2007/08/18 20:45:49 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -972,7 +972,7 @@ default:
 
     // prevent dictionary attacks on passwords
     COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
-    if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
+    if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
         if ($_CONF['custom_registration'] AND function_exists('CUSTOM_loginErrorHandler')) {
             // Typically this will be used if you have a custom main site page and need to control the login process
             $msg=82;
@@ -1022,6 +1022,7 @@ default:
             $identity_url = $query['identity_url'];
             $ret = $consumer->find_identity_info($identity_url);
             if (!$ret) {
+                COM_updateSpeedlimit('login');
                 COM_errorLog('Unable to find an OpenID server for the identity URL ' . $identity_url);
                 echo COM_refresh($_CONF['site_url'] . '/users.php?msg=89');
                 exit;
@@ -1048,6 +1049,7 @@ default:
                 $openid_mode = $query['openid_mode'];
             }
             if ($openid_mode == 'cancel') {
+                COM_updateSpeedlimit('login');
                 echo COM_refresh($_CONF['site_url'] . '/users.php?msg=90');
                 exit;
             } else {
@@ -1057,6 +1059,7 @@ default:
                $response->doAction($handler);
             }
         } else {
+            COM_updateSpeedlimit('login');
             echo COM_refresh($_CONF['site_url'] . '/users.php?msg=91');
             exit;
         }
