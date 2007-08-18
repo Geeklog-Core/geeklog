@@ -1159,8 +1159,8 @@ $MESSAGE = array(
     87 => 'OpenID login operation cancelled by user.',
     88 => 'The OpenID server returned an error.',
     89 => 'Unable to find an OpenID server for the given identity URL.',
-    90 => 'OpenID indentification cancelled.',
-    91 => 'You specified an invalid indentity URL.'
+    90 => 'OpenID identification cancelled.',
+    91 => 'You specified an invalid identity URL.'
 );
 
 ###############################################################################
