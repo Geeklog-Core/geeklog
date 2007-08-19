@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.647 2007/08/18 18:11:14 dhaun Exp $
+// $Id: lib-common.php,v 1.648 2007/08/19 15:56:02 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1499,53 +1499,75 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where=''
 * @param        string      $selection  Comma delimited string of fields to pull The first field is the value of the option and the second is the label to be displayed.  This is used in a SQL statement and can include DISTINCT to start.
 * @param        string      $selected   Value (from $selection) to set to SELECTED or default
 * @param        int         $sortcol    Which field to sort option list by 0 (value) or 1 (label)
+* @param        boolean     $ignorelang Whether to return all topics (true) or only the ones for the current language (false)
 * @see function COM_optionList
 * @return   string  Formated HTML of option values
 *
 */
-
 function COM_topicList( $selection, $selected = '', $sortcol = 1, $ignorelang = false )
 {
     global $_TABLES;
 
     $retval = '';
 
-    $tmp = str_replace( 'DISTINCT ', '', $selection );
-    $select_set = explode( ',', $tmp );
+    $topics = COM_topicArray($selection, $sortcol, $ignorelang);
+    foreach ($topics as $tid => $topic) {
+        $retval .= '<option value="' . $tid . '"';
+        if ($tid == $selected) {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>' . $topic . '</option>' . LB;
+    }
+
+    return $retval;
+}
+
+/**
+* Return a list of topics in an array
+* (derived from COM_topicList - API may change)
+*
+* @param    string  $selection  Comma delimited string of fields to pull The first field is the value of the option and the second is the label to be displayed.  This is used in a SQL statement and can include DISTINCT to start.
+* @param    int     $sortcol    Which field to sort option list by 0 (value) or 1 (label)
+* @param    boolean $ignorelang Whether to return all topics (true) or only the ones for the current language (false)
+* @return   array               Array of topics
+* @see function COM_topicList
+*
+*/
+function COM_topicArray($selection, $sortcol = 0, $ignorelang = false)
+{
+    global $_TABLES;
+
+    $retval = array();
+
+    $tmp = str_replace('DISTINCT ', '', $selection);
+    $select_set = explode(',', $tmp);
 
     $sql = "SELECT $selection FROM {$_TABLES['topics']}";
-    if( $ignorelang )
-    {
+    if ($ignorelang) {
         $sql .= COM_getPermSQL();
-    }
-    else
-    {
+    } else {
         $permsql = COM_getPermSQL();
-        if( empty( $permsql ))
-        {
-            $sql .= COM_getLangSQL( 'tid' );
-        }
-        else
-        {
-            $sql .= $permsql . COM_getLangSQL( 'tid', 'AND' );
+        if (empty($permsql)) {
+            $sql .= COM_getLangSQL('tid');
+        } else {
+            $sql .= $permsql . COM_getLangSQL('tid', 'AND');
         }
     }
     $sql .=  " ORDER BY $select_set[$sortcol]";
 
-    $result = DB_query( $sql );
-    $nrows = DB_numRows( $result );
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
 
-    for( $i = 0; $i < $nrows; $i++ )
-    {
-        $A = DB_fetchArray( $result, true );
-        $retval .= '<option value="' . $A[0] . '"';
-
-        if( $A[0] == $selected )
-        {
-            $retval .= ' selected="selected"';
+    if (count($select_set) > 1) {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result, true);
+            $retval[$A[0]] = stripslashes($A[1]);
         }
-
-        $retval .= '>' . stripslashes( $A[1] ) . '</option>' . LB;
+    } else {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result, true);
+            $retval[] = $A[0];
+        }
     }
 
     return $retval;
