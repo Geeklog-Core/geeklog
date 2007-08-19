@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.133 2007/08/19 11:51:44 dhaun Exp $
+// $Id: lib-plugins.php,v 1.134 2007/08/19 16:40:50 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2294,7 +2294,12 @@ function PLG_getIcon($type)
  */
 function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 {
+    global $_CONF;
+
     $retval = PLG_RET_ERROR;
+
+    // ensure we can see the service_XXX_story functions
+    require_once $_CONF['path_system'] . 'lib-story.php';
 
     $output = '';
     $svc_msg = '';
