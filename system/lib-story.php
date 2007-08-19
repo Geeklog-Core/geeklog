@@ -33,12 +33,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.100 2007/08/09 07:58:21 ospiess Exp $
-require_once ($_CONF['path_system'] . '/classes/story.class.php');
+// $Id: lib-story.php,v 1.101 2007/08/19 08:35:54 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
 }
+
+require_once $_CONF['path_system'] . '/classes/story.class.php';
 
 if( $_CONF['allow_user_photo'] )
 {
