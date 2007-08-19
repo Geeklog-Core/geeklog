@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.132 2007/08/09 13:39:12 dhaun Exp $
+// $Id: lib-plugins.php,v 1.133 2007/08/19 11:51:44 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -71,39 +71,47 @@ while ($A = DB_fetchArray($result)) {
 * @return the url where the user will be forwarded to
 *
 */
-function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '') {
+function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
+{
     global $_CONF;
+
     if (isset($message)) {
         $msg = "msg=$message";
     } else {
         $msg = '';
     }
+
     switch ($target) {
-        case 'item':
-            $url = $item_url . '&' . $msg;
+    case 'item':
+        $url = $item_url . '&' . $msg;
         break;
-        case 'list':
-            if ($plugin == 'story') {
-                $url = $_CONF['site_admin_url'] . "/$plugin.php?$msg";
-            } else if ($plugin == 'user') {
-                $url = $_CONF['site_admin_url'] . "/user.php?$msg";
-            } else {
-                $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php?$msg";
-            }
+
+    case 'list':
+        if ($plugin == 'story') {
+            $url = $_CONF['site_admin_url'] . "/$plugin.php?$msg";
+        } elseif ($plugin == 'user') {
+            $url = $_CONF['site_admin_url'] . "/user.php?$msg";
+        } else {
+            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php?$msg";
+        }
         break;
-        case 'home':
-            // the plugins messages are not available, use generic
-            $url = $_CONF['site_url'] . "/index.php?msg=15";
+
+    case 'home':
+        // the plugins messages are not available, use generic
+        $url = $_CONF['site_url'] . "/index.php?msg=15";
         break;
-        case 'admin':
-            // the plugins messages are not available, use generic
-            $url = $_CONF['site_admin_url'] . "/moderation.php?msg=15";
+
+    case 'admin':
+        // the plugins messages are not available, use generic
+        $url = $_CONF['site_admin_url'] . "/moderation.php?msg=15";
         break;
-        case 'plugin':
-            $url = $_CONF['site_url'] . "/$plugin/index.php?$msg";
+
+    case 'plugin':
+        $url = $_CONF['site_url'] . "/$plugin/index.php?$msg";
         break;
     }
-    return COM_refresh ($url);
+
+    return COM_refresh($url);
 }
 
 
