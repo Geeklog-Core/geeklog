@@ -37,7 +37,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
 // Set the default content type
 header('Content-type: ' . 'application/atom+xml' . '; charset=UTF-8');
 
-$WS_PLUGIN    = 'staticpages'; // -- dhaun 2008-08-11
+$WS_PLUGIN    = '';
 $WS_INTROSPECTION = false;
 $WS_TEXT = '';
 $WS_ATOM_NS = 'http://www.w3.org/2005/Atom';
@@ -83,7 +83,7 @@ function WS_dissectURI(&$args)
 {
     global $WS_PLUGIN, $WS_INTROSPECTION;
 
-    $WS_PLUGIN = 'staticpages'; // -- dhaun 2008-08-11
+    $WS_PLUGIN = '';
     $args = array();
 
     $uri_parts = explode('&', $_SERVER['QUERY_STRING']);
@@ -96,9 +96,9 @@ function WS_dissectURI(&$args)
         case 'introspection':
                 $WS_INTROSPECTION = true;
         case 'plugin':
-            /*if (!empty($param_val)) {
+            if (!empty($param_val)) {
                 $WS_PLUGIN = $param_val;
-            }*/
+            }
             break;
         default:
             if (!empty($param_val)) {
@@ -193,7 +193,7 @@ function WS_get()
 
         /* 'story' is the default plugin */
         if (empty($WS_PLUGIN)) {
-            $WS_PLUGIN = 'staticpages'; // for now --dhaun 2008-08-11
+            $WS_PLUGIN = 'story';
         }
 
         $atom_uri .= '?plugin=' . $WS_PLUGIN;
