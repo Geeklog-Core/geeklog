@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.259 2007/08/09 07:48:20 ospiess Exp $
+// $Id: story.php,v 1.260 2007/08/19 16:28:02 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -43,7 +43,7 @@
 */
 
 /**
-* Geeklog commong function library
+* Geeklog common function library
 */
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -251,7 +251,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story = new Story();
     if($mode == 'preview')
     {
-        $result = $story->loadFromRequest(true);
+        $result = $story->loadFromArgsArray($_POST);
     } else {
         $result = $story->loadFromDatabase($sid, $mode);
     }
@@ -426,9 +426,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('publish_year_options', $year_options);
 
     if ($_CONF['hour_mode'] == 24) {
-        $hour_options = COM_getHourFormOptions ($publish_hour, 24);
+        $hour_options = COM_getHourFormOptions ($story->EditElements('publish_hour'), 24);
     } else {
-        $hour_options = COM_getHourFormOptions ($story->EditElements('publish_hour'));
+        $hour_options = COM_getHourFormOptions ($publish_hour);
     }
     $story_templates->set_var('publish_hour_options', $hour_options);
 
@@ -467,9 +467,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('expire_year_options', $year_options);
 
     if ($_CONF['hour_mode'] == 24) {
-        $hour_options = COM_getHourFormOptions ($expire_hour, 24);
+        $hour_options = COM_getHourFormOptions ($story->EditElements('expire_hour'), 24);
     } else {
-        $hour_options = COM_getHourFormOptions ($story->EditElements('expire_hour'));
+        $hour_options = COM_getHourFormOptions ($expire_hour);
     }
     $story_templates->set_var('expire_hour_options', $hour_options);
 
@@ -662,215 +662,26 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 */
 function submitstory($type='')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE;
+    $output = '';
 
-    $story = new Story();
-    $result = $story->loadFromRequest();
-    $sid = $story->getSid();
-    $display = '';
-    switch ($result)
-    {
-        case STORY_DUPLICATE_SID:
-            $display .= COM_siteHeader ('menu', $LANG24[5]);
-            $display .= COM_errorLog ($LANG24[24], 2);
-            $display .= storyeditor ($sid);
-            $display .= COM_siteFooter ();
-            echo $display;
-            exit;
-            break;
-        case STORY_EXISTING_NO_EDIT_PERMISSION:
-            $display .= COM_siteHeader ('menu', $MESSAGE[30]);
-            $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-            $display .= $MESSAGE[31];
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $display .= COM_siteFooter ();
-            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
-            echo $display;
-            exit;
-            break;
-        case STORY_NO_ACCESS_PARAMS:
-            $display .= COM_siteHeader ('menu', $MESSAGE[30]);
-            $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-            $display .= $MESSAGE[31];
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $display .= COM_siteFooter ();
-            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
-            echo $display;
-            exit;
-            break;
-        case STORY_EMPTY_REQUIRED_FIELDS:
-            $display .= COM_siteHeader('menu');
-            $display .= COM_errorLog($LANG24[31],2);
-            $display .= storyeditor($sid);
-            $display .= COM_siteFooter();
-            echo $display;
-            exit;
-            break;
-        default:
-            break;
-    }
+    $args = &$_POST;
 
-    // Delete any images if needed
-    if (array_key_exists('delete', $_POST)) {
-        $delete = count($_POST['delete']);
-        for ($i = 1; $i <= $delete; $i++) {
-            $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename', "ai_sid = '{$sid}' AND ai_img_num = " . key($_POST['delete']));
-        STORY_deleteImage ($ai_filename);
-
-            DB_query ("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key($_POST['delete']));
-            next($_POST['delete']);
-        }
-    }
-
-    // OK, let's upload any pictures with the article
-    if (DB_count($_TABLES['article_images'], 'ai_sid', $sid) > 0) {
-        $index_start = DB_getItem($_TABLES['article_images'],'max(ai_img_num)',"ai_sid = '$sid'") + 1;
-    } else {
-        $index_start = 1;
-    }
-
-    if (count($_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
-        require_once($_CONF['path_system'] . 'classes/upload.class.php');
-        $upload = new upload();
-
-        if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
-            $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
-            $upload->setDebug (true);
-        }
-        $upload->setMaxFileUploads ($_CONF['maximagesperarticle']);
-        if (!empty($_CONF['image_lib'])) {
-            if ($_CONF['image_lib'] == 'imagemagick') {
-                // Using imagemagick
-                $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
-            } elseif ($_CONF['image_lib'] == 'netpbm') {
-                // using netPBM
-                $upload->setNetPBM ($_CONF['path_to_netpbm']);
-            } elseif ($_CONF['image_lib'] == 'gdlib') {
-                // using the GD library
-                $upload->setGDLib ();
-            }
-            $upload->setAutomaticResize(true);
-            if ($_CONF['keep_unscaled_image'] == 1) {
-                $upload->keepOriginalImage (true);
-            } else {
-                $upload->keepOriginalImage (false);
-            }
-        }
-        $upload->setAllowedMimeTypes (array (
-                'image/gif'   => '.gif',
-                'image/jpeg'  => '.jpg,.jpeg',
-                'image/pjpeg' => '.jpg,.jpeg',
-                'image/x-png' => '.png',
-                'image/png'   => '.png'
-                ));
-        if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
-            $display = COM_siteHeader ('menu', $LANG24[30]);
-            $display .= COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
-            $display .= $upload->printErrors (false);
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $display .= COM_siteFooter ();
-            echo $display;
-            exit;
-        }
-
-        // NOTE: if $_CONF['path_to_mogrify'] is set, the call below will
-        // force any images bigger than the passed dimensions to be resized.
-        // If mogrify is not set, any images larger than these dimensions
-        // will get validation errors
-        $upload->setMaxDimensions($_CONF['max_image_width'], $_CONF['max_image_height']);
-        $upload->setMaxFileSize($_CONF['max_image_size']); // size in bytes, 1048576 = 1MB
-
-        // Set file permissions on file after it gets uploaded (number is in octal)
-        $upload->setPerms('0644');
-        $filenames = array();
-        $end_index = $index_start + $upload->numFiles() - 1;
-        for ($z = $index_start; $z <= $end_index; $z++) {
-            $curfile = current($_FILES);
-            if (!empty($curfile['name'])) {
-                $pos = strrpos($curfile['name'],'.') + 1;
-                $fextension = substr($curfile['name'], $pos);
-                $filenames[] = $sid . '_' . $z . '.' . $fextension;
-            }
-            next($_FILES);
-        }
-        $upload->setFileNames($filenames);
-        reset($_FILES);
-        $upload->uploadFiles();
-
-        if ($upload->areErrors()) {
-            $retval = COM_siteHeader('menu', $LANG24[30]);
-            $retval .= COM_startBlock ($LANG24[30], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $upload->printErrors(false);
-            $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-            $retval .= COM_siteFooter();
-            echo $retval;
-            exit;
-        }
-
-        reset($filenames);
-        for ($z = $index_start; $z <= $end_index; $z++) {
-            DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $z, '" . current($filenames) . "')");
-            next($filenames);
-        }
-    }
-
-    if ($_CONF['maximagesperarticle'] > 0) {
-        $errors = $story->insertImages();
-        if (count($errors) > 0) {
-            $display = COM_siteHeader ('menu', $LANG24[54]);
-            $display .= COM_startBlock ($LANG24[54], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-            $display .= $LANG24[55] . '<p>';
-            for ($i = 1; $i <= count($errors); $i++) {
-                $display .= current($errors) . '<br>';
-                next($errors);
-            }
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $display .= storyeditor($sid);
-            $display .= COM_siteFooter();
-            echo $display;
-            exit;
-        }
-    }
-
-    $result = $story->saveToDatabase();
-
-    if( $result == STORY_SAVED )
-    {
-        // see if any plugins want to act on that story
-        $plugin_error = PLG_itemSaved ($sid, 'article');
-
-        // always clear 'in_transit' flag
-        DB_change ($_TABLES['stories'], 'in_transit', 0, 'sid', $sid);
-
-        // in case of an error go back to the story editor
-        if ($plugin_error !== false) {
-            $display .= COM_siteHeader ('menu', $LANG24[5]);
-            $display .= storyeditor ($sid, 'retry', $plugin_error);
-            $display .= COM_siteFooter ();
-            echo $display;
-            exit;
-        }
-
-        // update feed(s) and Older Stories block
-        COM_rdfUpToDateCheck ('geeklog', $story->DisplayElements('tid'), $sid);
-        COM_olderStuff ();
-
-        if ($story->type == 'submission') {
-            echo COM_refresh ($_CONF['site_admin_url'] . '/moderation.php?msg=9');
+    // Handle Magic GPC Garbage:
+    while (list($key, $value) = each($args)) {
+        if (!is_array($value)) {
+            $args[$key] = COM_stripslashes($value);
         } else {
-            echo PLG_afterSaveSwitch (
-                $_CONF['aftersave_story'],
-                COM_buildURL ("{$_CONF['site_url']}/article.php?story=$sid"),
-                'story',
-                9
-            );
+            while (list($subkey, $subvalue) = each($value)) {
+                $value[$subkey] = COM_stripslashes($subvalue);
+            }
         }
-        exit;
     }
+
+    /* ANY FURTHER PROCESSING on POST variables - COM_stripslashes etc.
+     * Do it HERE on $args */
+
+    PLG_invokeService('story', 'submit', $args, $output, $svc_msg);
+    echo $output;
 }
 
 // MAIN

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.92 2007/02/28 02:43:02 ospiess Exp $
+// $Id: article.php,v 1.93 2007/08/19 16:28:02 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -104,21 +104,41 @@ $A = DB_fetchArray($result);
 if ($A['count'] > 0) {
 
     $story = new Story();
-    $result = $story->loadFromDatabase($sid, 'view');
+
+    $args = array (
+                    'sid' => $sid,
+                    'mode' => 'view'
+                  );
+
+    $output = STORY_LOADED_OK;
+    $result = PLG_invokeService('story', 'get', $args, $output, $svc_msg);
+
+    if($result == PLG_RET_OK) {
+        /* loadFromArray cannot be used, since it overwrites the timestamp */
+        reset($story->_dbFields);
+
+        while (list($fieldname,$save) = each($story->_dbFields)) {
+            $varname = '_' . $fieldname;
+
+            if (array_key_exists($fieldname, $output)) {
+                $story->{$varname} = $output[$fieldname];
+            }
+        }
+    }
 
     /*$access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
             $A['perm_owner'], $A['perm_group'], $A['perm_members'],
             $A['perm_anon']);
     if (($access == 0) OR !SEC_hasTopicAccess ($A['tid']) OR
         (($A['draft_flag'] == 1) AND !SEC_hasRights ('story.edit'))) {*/
-    if( $result == STORY_PERMISSION_DENIED ) {
+    if ($output == STORY_PERMISSION_DENIED) {
         $display .= COM_siteHeader ('menu', $LANG_ACCESS['accessdenied'])
                  . COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG_ACCESS['storydenialmsg']
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                  . COM_siteFooter ();
-    } elseif ( $result == STORY_INVALID_SID ) {
+    } elseif ( $output == STORY_INVALID_SID ) {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
         $story_template = new Template ($_CONF['path_layout'] . 'article');

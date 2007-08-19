@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Story Abstraction.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2006 by the following authors:                              |
+// | Copyright (C) 2006-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Michael Jervis, mike AT fuckingbrit DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.12 2007/08/09 07:58:21 ospiess Exp $
+// $Id: story.class.php,v 1.13 2007/08/19 16:28:02 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -200,7 +200,8 @@ class Story
            'perm_members' => 1,
            'perm_anon' => 1,
            'imageurl' => 0,
-           'topic' => 0
+           'topic' => 0,
+           'access' => 0
          );
     /**
      * Magic array used for loading basic data from posted form. Of form:
@@ -464,7 +465,7 @@ class Story
             $this->_perm_anon = $array['perm_anon'];
             $this->_perm_members = $array['perm_members'];
         } else {
-            $this->loadFromRequest();
+            $this->loadFromArgsArray($_POST);
         }
 
         /* if we have SQL, load from it */
@@ -472,7 +473,10 @@ class Story
             $result = DB_query($sql);
 
             if ($result) {
-                $story = DB_fetchArray($result);
+                $story = DB_fetchArray($result, false);
+                if ($story == null) {
+                    return STORY_INVALID_SID;
+                }
                 $this->loadFromArray($story);
                 $access
                 = SEC_hasAccess($story['owner_id'], $story['group_id'], $story['perm_owner'], $story['perm_group'],
@@ -654,29 +658,13 @@ class Story
      * crap. Then it'll do all Geeklog's funky security stuff, anti XSS, anti
      * SQL Injection. Yay.
      */
-    function loadFromRequest($post = true)
+    function loadFromArgsArray(&$array)
     {
         global $_TABLES;
 
-        // Acquire source of post:
-        if ($post) {
-            $array = $_POST;
-        } else {
-            $array = $_GET;
-        }
-
-        // Handle Magic GPC Garbage:
-        while (list($key, $value) = each($array)) {
-            if (!is_array($value))
-            {
-                $array[$key] = COM_stripslashes($value);
-            } else {
-                while (list($subkey, $subvalue) = each($value))
-                {
-                    $value[$subkey] = COM_stripslashes($subvalue);
-                }
-            }
-        }
+        /* magic_quotes_gpc cleanup routine now in submitstory() in
+         * /public_html/admin/story.php
+         */
 
         /* Load the trivial stuff: */
         $this->_loadBasics($array);
@@ -687,7 +675,7 @@ class Story
         $sql
         = 'SELECT owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ' . ' FROM ' . $_TABLES['stories']
             . ' WHERE sid=\'' . $this->_sid . '\'';
-        $result = DB_Query($sql);
+        $result = DB_query($sql);
 
         if ($result && (DB_numRows($result) > 0)) {
             /* Sid exists! Is it our article? */
@@ -711,7 +699,7 @@ class Story
         }
 
         /* Load up the topic name and icon */
-        $topic = DB_Query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid='{$this->_tid}'");
+        $topic = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid='{$this->_tid}'");
         $topic = DB_fetchArray($topic);
         $this->_topic = $topic['topic'];
         $this->_imageurl = $topic['imageurl'];
@@ -1650,12 +1638,20 @@ class Story
         $this->_expire = $expiredate;
 
         /* Then grab the permissions */
+
         // Convert array values to numeric permission values
-        list($this->_perm_owner, $this->_perm_group, $this->_perm_members, $this->_perm_anon) = SEC_getPermissionValues(
-                                                                                                    $array['perm_owner'],
-                                                                                                        $array['perm_group'],
-                                                                                                        $array['perm_members'],
-                                                                                                        $array['perm_anon']);
+        if (is_array($array['perm_owner']) || is_array($array['perm_group']) ||
+                is_array($array['perm_members']) ||
+                is_array($array['perm_anon'])) {
+
+            list($this->_perm_owner, $this->_perm_group, $this->_perm_members, $this->_perm_anon) = SEC_getPermissionValues($array['perm_owner'], $array['perm_group'], $array['perm_members'], $array['perm_anon']);
+
+        } else {
+            $this->_perm_owner   = $array['perm_owner'];
+            $this->_perm_group   = $array['perm_group'];
+            $this->_perm_members = $array['perm_members'];
+            $this->_perm_anon    = $array['perm_anon'];
+        }
     }
 
     /**

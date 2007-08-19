@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.257 2007/08/09 07:44:28 ospiess Exp $
+// $Id: config.php,v 1.258 2007/08/19 16:28:02 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -626,6 +626,10 @@ $_CONF['draft_flag']            = 0;       // default for new stories
 $_CONF['frontpage']             = 1;       // default for new stories
 $_CONF['hide_no_news_msg']      = 0;       // If 1, hide No News To Display msg
 $_CONF['hide_main_page_navigation'] = 0;   // hide "google paging" on index.php
+
+// The maximum number of stories returned when an Atom feed is requested
+// through the webservices API
+$_CONF['atom_max_stories'] = 10;
 
 // When set to 1, only root users will be able to feature a story
 $_CONF['onlyrootfeatures'] = 0;

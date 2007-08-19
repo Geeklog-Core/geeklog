@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.101 2007/08/19 08:35:54 dhaun Exp $
+// $Id: lib-story.php,v 1.102 2007/08/19 16:28:02 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -41,10 +41,9 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
 
 require_once $_CONF['path_system'] . '/classes/story.class.php';
 
-if( $_CONF['allow_user_photo'] )
-{
+if ($_CONF['allow_user_photo']) {
     // only needed for the USER_getPhoto function
-    require_once ($_CONF['path_system'] . 'lib-user.php');
+    require_once $_CONF['path_system'] . 'lib-user.php';
 }
 
 /**
@@ -67,7 +66,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
            $_IMAGE_TYPE, $mode;
 
-        static $storycounter = 0;
+    static $storycounter = 0;
 
     if( empty( $storytpl ))
     {
@@ -970,16 +969,412 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
 */
 function STORY_deleteStory($sid)
 {
+    $args = array (
+                    'sid' => $sid
+                  );
+
+    $output = '';
+
+    PLG_invokeService('story', 'delete', $args, $output, $svc_msg);
+
+    return $output;
+}
+
+
+/*
+ * START SERVICES SECTION
+ * This section implements the various services offered by the story module
+ */
+
+
+/**
+ * Submit a new or updated story. The story is updated if it exists, or a new one is created
+ *
+ * @param   array   args    Contains all the data provided by the client
+ * @param   string  &output OUTPUT parameter containing the returned text
+ * @return  int		    Response code as defined in lib-plugins.php
+ */
+function service_submit_story($args, &$output, &$svc_msg)
+{
+    global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $_GROUPS;
+
+    $gl_edit = $args['gl_edit'];
+    if ($gl_edit) {
+        /* This is EDIT mode, so there should be an old sid */
+        if (empty($args['old_sid'])) {
+            if (!empty($args['id'])) {
+                $args['old_sid'] = $args['id'];
+            } else
+                return PLG_RET_ERROR;
+
+            if (empty($args['sid'])) {
+                $args['sid'] = $args['old_sid'];
+            }
+        }
+    } else {
+        if (empty($args['sid']) && !empty($args['id'])) {
+            $args['sid'] = $args['id'];
+        }
+    }
+
+    /* Store the first CATEGORY as the Topic ID */
+    if (!empty($args['category'][0])) {
+        $args['tid'] = $args['category'][0];
+    }
+
+    /* Store the summary as introtext */
+    if (!empty($args['summary'])) {
+        $args['introtext'] = $args['summary'];
+    }
+
+    /* Store the content as bodytext */
+    if (!empty($args['content'])) {
+        $args['bodytext'] = $args['content'];
+    }
+
+    /* Apply filters to the parameters passed by the webservice */
+
+    if ($args['gl_svc']) {
+        $args['mode'] = COM_applyBasicFilter($args['mode']);
+        $args['editopt'] = COM_applyBasicFilter($args['editopt']);
+    }
+
+    /* - START: Set all the defaults - */
+
+    /* Default topic is the first one */
+    if (empty($args['tid'])) {
+        $o = array();
+        $s = array();
+        if (service_getTopicList_story(array('gl_svc' => true), $o, $s) == PLG_RET_OK) {
+            $args['tid'] = $o[0];
+        } else {
+            $svc_msg['error_desc'] = 'No topics available';
+            return PLG_RET_ERROR;
+        }
+    }
+
+    $args['owner_id'] = $_USER['uid'];
+
+    if (empty($args['group_id'])) {
+        $args['group_id'] = SEC_getFeatureGroup('story.edit', $_USER['uid']);;
+    }
+
+    if (empty($args['postmode'])) {
+        $args['postmode'] = $_CONF['postmode'];
+    }
+
+    if ($args['gl_svc']) {
+
+        /* Permissions */
+        if (!isset($args['perm_owner'])) {
+            $args['perm_owner'] = $_CONF['default_permissions_story'][0];
+        } else {
+            $args['perm_owner'] = COM_applyBasicFilter($args['perm_owner'], true);
+        }
+        if (!isset($args['perm_group'])) {
+            $args['perm_group'] = $_CONF['default_permissions_story'][1];
+        } else {
+            $args['perm_group'] = COM_applyBasicFilter($args['perm_group'], true);
+        }
+        if (!isset($args['perm_members'])) {
+            $args['perm_members'] = $_CONF['default_permissions_story'][2];
+        } else {
+            $args['perm_members'] = COM_applyBasicFilter($args['perm_members'], true);
+        }
+        if (!isset($args['perm_anon'])) {
+            $args['perm_anon'] = $_CONF['default_permissions_story'][3];
+        } else {
+            $args['perm_anon'] = COM_applyBasicFilter($args['perm_anon'], true);
+        }
+
+        if (empty($args['draft_flag'])) {
+            $args['draft_flag'] = $_CONF['draft_flag'];
+        }
+
+        if (empty($args['frontpage'])) {
+            $args['frontpage'] = $_CONF['frontpage'];
+        }
+
+        if (empty($args['show_topic_icon'])) {
+            $args['show_topic_icon'] = $_CONF['show_topic_icon'];
+        }
+    }
+
+    /* - END: Set all the defaults - */
+
+    // TEST CODE
+    /* foreach ($args as $k => $v) {
+        if (!is_array($v)) {
+            echo "$k => $v\r\n";
+        } else {
+            echo "$k => $v\r\n";
+            foreach ($v as $k1 => $v1) {
+                echo "        $k1 => $v1\r\n";
+            }
+        }
+    }*/
+    // exit ();
+    // END TEST CODE
+
+    $story = new Story();
+
+    if ($args['gl_edit'] && !empty($args['gl_etag'])) {
+        /* First load the original story to check if it has been modified */
+        $result = $story->loadFromDatabase($args['sid']);
+        if ($result == STORY_LOADED_OK) {
+            if ($args['gl_etag'] != date('c', $story->_date)) {
+                $svc_msg['error_desc'] = 'A more recent version of the story is available';
+                return PLG_RET_PRECONDITION_FAILED;
+            }
+        } else {
+            $svc_msg['error_desc'] = 'Error loading story';
+            return PLG_RET_ERROR;
+        }
+    }
+
+    /* This function is also doing the security checks */
+    $result = $story->loadFromArgsArray($args);
+
+    $sid = $story->getSid();
+    $output = '';
+
+    switch ($result) {
+    case STORY_DUPLICATE_SID:
+        $output .= COM_siteHeader ('menu', $LANG24[5]);
+        $output .= COM_errorLog ($LANG24[24], 2);
+        if (!$args['gl_svc']) {
+            $output .= storyeditor ($sid);
+        }
+        $output .= COM_siteFooter ();
+        return PLG_RET_ERROR;
+    case STORY_EXISTING_NO_EDIT_PERMISSION:
+        $output .= COM_siteHeader ('menu', $MESSAGE[30]);
+        $output .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $output .= $MESSAGE[31];
+        $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $output .= COM_siteFooter ();
+        COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
+        return PLG_RET_PERMISSION_DENIED;
+    case STORY_NO_ACCESS_PARAMS:
+        $output .= COM_siteHeader ('menu', $MESSAGE[30]);
+        $output .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $output .= $MESSAGE[31];
+        $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $output .= COM_siteFooter ();
+        COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
+        return PLG_RET_PERMISSION_DENIED;
+    case STORY_EMPTY_REQUIRED_FIELDS:
+        $output .= COM_siteHeader('menu');
+        $output .= COM_errorLog($LANG24[31],2);
+        if (!$args['gl_svc']) {
+            $output .= storyeditor($sid);
+        }
+        $output .= COM_siteFooter();
+        return PLG_RET_ERROR;
+    default:
+        break;
+    }
+
+    /* STARTOFTESTCODE */
+
+    /* Image upload is not supported by the web-service at present */
+    if (!$args['gl_svc']) {
+        // Delete any images if needed
+        if (array_key_exists('delete', $args)) {
+            $delete = count($args['delete']);
+            for ($i = 1; $i <= $delete; $i++) {
+                $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename', "ai_sid = '{$sid}' AND ai_img_num = " . key($args['delete']));
+            STORY_deleteImage ($ai_filename);
+
+                DB_query ("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key($args['delete']));
+                next($args['delete']);
+            }
+        }
+
+        // OK, let's upload any pictures with the article
+        if (DB_count($_TABLES['article_images'], 'ai_sid', $sid) > 0) {
+            $index_start = DB_getItem($_TABLES['article_images'],'max(ai_img_num)',"ai_sid = '$sid'") + 1;
+        } else {
+            $index_start = 1;
+        }
+
+        if (count($_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
+            require_once($_CONF['path_system'] . 'classes/upload.class.php');
+            $upload = new upload();
+
+            if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
+                $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
+                $upload->setDebug (true);
+            }
+            $upload->setMaxFileUploads ($_CONF['maximagesperarticle']);
+            if (!empty($_CONF['image_lib'])) {
+                if ($_CONF['image_lib'] == 'imagemagick') {
+                    // Using imagemagick
+                    $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
+                } elseif ($_CONF['image_lib'] == 'netpbm') {
+                    // using netPBM
+                    $upload->setNetPBM ($_CONF['path_to_netpbm']);
+                } elseif ($_CONF['image_lib'] == 'gdlib') {
+                    // using the GD library
+                    $upload->setGDLib ();
+                }
+                $upload->setAutomaticResize(true);
+                if ($_CONF['keep_unscaled_image'] == 1) {
+                    $upload->keepOriginalImage (true);
+                } else {
+                    $upload->keepOriginalImage (false);
+                }
+            }
+            $upload->setAllowedMimeTypes (array (
+                    'image/gif'   => '.gif',
+                    'image/jpeg'  => '.jpg,.jpeg',
+                    'image/pjpeg' => '.jpg,.jpeg',
+                    'image/x-png' => '.png',
+                    'image/png'   => '.png'
+                    ));
+            if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
+                $output = COM_siteHeader ('menu', $LANG24[30]);
+                $output .= COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
+                $output .= $upload->printErrors (false);
+                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $output .= COM_siteFooter ();
+                echo $output;
+                exit;
+            }
+
+            // NOTE: if $_CONF['path_to_mogrify'] is set, the call below will
+            // force any images bigger than the passed dimensions to be resized.
+            // If mogrify is not set, any images larger than these dimensions
+            // will get validation errors
+            $upload->setMaxDimensions($_CONF['max_image_width'], $_CONF['max_image_height']);
+            $upload->setMaxFileSize($_CONF['max_image_size']); // size in bytes, 1048576 = 1MB
+
+            // Set file permissions on file after it gets uploaded (number is in octal)
+            $upload->setPerms('0644');
+            $filenames = array();
+            $end_index = $index_start + $upload->numFiles() - 1;
+            for ($z = $index_start; $z <= $end_index; $z++) {
+                $curfile = current($_FILES);
+                if (!empty($curfile['name'])) {
+                    $pos = strrpos($curfile['name'],'.') + 1;
+                    $fextension = substr($curfile['name'], $pos);
+                    $filenames[] = $sid . '_' . $z . '.' . $fextension;
+                }
+                next($_FILES);
+            }
+            $upload->setFileNames($filenames);
+            reset($_FILES);
+            $upload->uploadFiles();
+
+            if ($upload->areErrors()) {
+                $retval = COM_siteHeader('menu', $LANG24[30]);
+                $retval .= COM_startBlock ($LANG24[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+                $retval .= $upload->printErrors(false);
+                $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+                $retval .= COM_siteFooter();
+                echo $retval;
+                exit;
+            }
+
+            reset($filenames);
+            for ($z = $index_start; $z <= $end_index; $z++) {
+                DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $z, '" . current($filenames) . "')");
+                next($filenames);
+            }
+        }
+
+        if ($_CONF['maximagesperarticle'] > 0) {
+            $errors = $story->insertImages();
+            if (count($errors) > 0) {
+                $output = COM_siteHeader ('menu', $LANG24[54]);
+                $output .= COM_startBlock ($LANG24[54], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+                $output .= $LANG24[55] . '<p>';
+                for ($i = 1; $i <= count($errors); $i++) {
+                    $output .= current($errors) . '<br>';
+                    next($errors);
+                }
+                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $output .= storyeditor($sid);
+                $output .= COM_siteFooter();
+                echo $output;
+                exit;
+            }
+        }
+    }
+    /* ENDOFTESTCODE */
+
+    $result = $story->saveToDatabase();
+
+    if ($result == STORY_SAVED) {
+        // see if any plugins want to act on that story
+        $plugin_error = PLG_itemSaved ($sid, 'article');
+
+        // always clear 'in_transit' flag
+        DB_change ($_TABLES['stories'], 'in_transit', 0, 'sid', $sid);
+
+        // in case of an error go back to the story editor
+        if ($plugin_error !== false) {
+            $output .= COM_siteHeader ('menu', $LANG24[5]);
+            $output .= storyeditor ($sid, 'retry', $plugin_error);
+            $output .= COM_siteFooter ();
+            return PLG_RET_ERROR;
+        }
+
+        // update feed(s) and Older Stories block
+        COM_rdfUpToDateCheck ('geeklog', $story->DisplayElements('tid'), $sid);
+        COM_olderStuff ();
+
+        if ($story->type == 'submission') {
+            $output = COM_refresh ($_CONF['site_admin_url'] . '/moderation.php?msg=9');
+        } else {
+            $output = PLG_afterSaveSwitch($_CONF['aftersave_story'],
+                    COM_buildURL("{$_CONF['site_url']}/article.php?story=$sid"),
+                        'story', 9);
+        }
+
+        /* @TODO Set the object id here */
+        $svc_msg['id'] = $sid;
+
+        return PLG_RET_OK;
+    }
+}
+
+/**
+ * Delete an existing story
+ *
+ * @param   array   args    Contains all the data provided by the client
+ * @param   string  &output OUTPUT parameter containing the returned text
+ * @return  int		    Response code as defined in lib-plugins.php
+ */
+function service_delete_story($args, &$output, &$svc_msg)
+{
     global $_CONF, $_TABLES, $_USER;
+
+    if (empty($args['sid']) && !empty($args['id']))
+        $args['sid'] = $args['id'];
+
+    if ($args['gl_svc']) {
+        $args['sid'] = COM_applyBasicFilter($args['sid']);
+    }
+
+    $sid = $args['sid'];
 
     $result = DB_query ("SELECT tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
     $A = DB_fetchArray ($result);
     $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-            $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+                             $A['perm_group'], $A['perm_members'], $A['perm_anon']);
     $access = min ($access, SEC_hasTopicAccess ($A['tid']));
     if ($access < 3) {
         COM_accessLog ("User {$_USER['username']} tried to illegally delete story $sid.");
-        return COM_refresh ($_CONF['site_admin_url'] . '/story.php');
+        $output = COM_refresh ($_CONF['site_admin_url'] . '/story.php');
+        if ($_USER['uid'] > 1)
+            return PLG_RET_PERMISSION_DENIED;
+        else
+            return PLG_RET_AUTH_FAILED;
     }
 
     STORY_deleteImages ($sid);
@@ -993,8 +1388,200 @@ function STORY_deleteStory($sid)
     COM_rdfUpToDateCheck ();
     COM_olderStuff ();
 
-    return COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=10');
+    $output = COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=10');
+
+    return PLG_RET_OK;
 }
 
+/**
+ * Get an existing story
+ *
+ * @param   array   args    Contains all the data provided by the client
+ * @param   string  &output OUTPUT parameter containing the returned text
+ * @return  int		    Response code as defined in lib-plugins.php
+ */
+function service_get_story($args, &$output, &$svc_msg)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    $output = array();
+    $retval = '';
+
+    if (!isset($_CONF['atom_max_stories'])) {
+        $_CONF['atom_max_stories'] = 10; // set a resonable default
+    }
+
+    $svc_msg['output_fields'] = array(
+                                    'draft_flag',
+                                    'hits',
+                                    'numemails',
+                                    'comments',
+                                    'trackbacks',
+                                    'featured',
+                                    'commentcode',
+                                    'statuscode',
+                                    'expire_date',
+                                    'postmode',
+                                    'advanced_editor_mode',
+                                    'frontpage',
+                                    'in_transit',
+                                    'owner_id',
+                                    'group_id',
+                                    'perm_owner',
+                                    'perm_group',
+                                    'perm_members',
+                                    'perm_anon',
+                                    'access'
+                                     );
+
+    if (empty($args['sid']) && !empty($args['id'])) {
+        $args['sid'] = $args['id'];
+    }
+
+    if ($args['gl_svc']) {
+        $args['mode'] = COM_applyBasicFilter($args['mode']);
+        $args['sid'] = COM_applyBasicFilter($args['sid']);
+
+        if (empty($args['sid'])) {
+            $svc_msg['gl_feed'] = true;
+        } else {
+            $svc_msg['gl_feed'] = false;
+        }
+    }
+
+    if (empty($args['mode'])) {
+        $args['mode'] = 'view';
+    }
+
+    if (!$svc_msg['gl_feed']) {
+        $sid = $args['sid'];
+        $mode = $args['mode'];
+
+        $story = new Story();
+
+        $retval = $story->loadFromDatabase($sid, $mode);
+
+        if ($retval != STORY_LOADED_OK) {
+            $output = $retval;
+            return PLG_RET_ERROR;
+        }
+
+        reset($story->_dbFields);
+
+        while (list($fieldname,$save) = each($story->_dbFields)) {
+            $varname = '_' . $fieldname;
+            $output[$fieldname] = $story->{$varname};
+        }
+
+        if($args['gl_svc']) {
+            /* This date format is PHP 5 only, but only the web-service uses the value */
+            $output['expire_date']  = date('c', $output['expire']);
+            $output['id']           = $output['sid'];
+            $output['category']     = array($output['tid']);
+            $output['updated']      = date('c', $output['date']);
+            $output['summary']      = $output['introtext'];
+            $output['content']      = $output['bodytext'];
+            $output['content_type'] = ($output['postmode'] == 'html')?'html':'text';
+
+            $owner_data = SESS_getUserDataFromId($output['owner_id']);
+
+            $output['author_name']  = $owner_data['username'];
+
+            $output['link_edit'] = $sid;
+        }
+    } else {
+        $output = array();
+
+        $mode = $args['mode'];
+
+        $sql = array();
+
+        $offset = COM_applyBasicFilter($args['offset'], true);
+        $max_items = $_CONF['atom_max_stories'] + 1;
+
+        $limit = " LIMIT $offset, $max_items";
+        $order = " ORDER BY unixdate DESC";
+
+        $sql['mysql']
+        = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, "
+            . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid)" . COM_getPermSQL('AND', $_USER['uid'], 2, 's') . $order . $limit;
+
+        $sql['mssql'] =
+            "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.in_transit, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid)" . COM_getPermSQL('AND', $_USER['uid'], 2, 's') . $order . $limit;
+
+        $result = DB_query($sql);
+
+        $count = 0;
+
+        while (($story_array = DB_fetchArray($result, false)) !== false) {
+
+            $count += 1;
+            if ($count == $max_items) {
+                $svc_msg['offset'] = $offset + $_CONF['atom_max_stories'];
+                break;
+            }
+
+            $story = new Story();
+
+            $story->loadFromArray($story_array);
+
+            // This access check is not strictly necessary
+            $access = SEC_hasAccess($story_array['owner_id'], $story_array['group_id'], $story_array['perm_owner'], $story_array['perm_group'],
+                                $story_array['perm_members'], $story_array['perm_anon']);
+            $story->_access = min($access, SEC_hasTopicAccess($story->_tid));
+
+            if ($story->_access == 0) {
+                continue;
+            }
+
+            $story->_sanitizeData();
+
+            reset($story->_dbFields);
+
+            $output_item = array ();
+
+            while (list($fieldname,$save) = each($story->_dbFields)) {
+                $varname = '_' . $fieldname;
+                $output_item[$fieldname] = $story->{$varname};
+            }
+
+            if($args['gl_svc']) {
+                /* This date format is PHP 5 only, but only the web-service uses the value */
+                $output_item['expire_date']  = date('c', $output_item['expire']);
+                $output_item['id']           = $output_item['sid'];
+                $output_item['category']     = array($output_item['tid']);
+                $output_item['updated']      = date('c', $output_item['date']);
+                $output_item['summary']      = $output_item['introtext'];
+                $output_item['content']      = $output_item['bodytext'];
+                $output_item['content_type'] = ($output_item['postmode'] == 'html')?'html':'text';
+
+                $owner_data = SESS_getUserDataFromId($output_item['owner_id']);
+
+                $output_item['author_name']  = $owner_data['username'];
+            }
+            $output[] = $output_item;
+        }
+    }
+
+    return PLG_RET_OK;
+}
+
+/**
+ * Get all the topics available
+ *
+ * @param   array   args    Contains all the data provided by the client
+ * @param   string  &output OUTPUT parameter containing the returned text
+ * @return  int         Response code as defined in lib-plugins.php
+ */
+function service_getTopicList_story($args, &$output, &$svc_msg)
+{
+    $output = COM_topicArray('tid');
+
+    return PLG_RET_OK;
+}
+
+/*
+ * END SERVICES SECTION
+ */
 
 ?>
