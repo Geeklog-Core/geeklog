@@ -43,10 +43,10 @@ function upgrade_PollsPlugin()
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $P_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
-              qid mediumint(9) NOT NULL auto_increment,
+              qid mediumint(9) NOT NULL DEFAULT '0',
               pid varchar(20) NOT NULL,
               question varchar(255) NOT NULL,
-              PRIMARY KEY (qid)
+              KEY `qid` (`qid`)
             ) TYPE=MyISAM
             ";
         $P_SQL = INST_checkInnodbUpgrade($P_SQL);
@@ -81,7 +81,6 @@ function upgrade_StaticpagesPlugin()
     if (DB_numRows($check_rst) == 1) {
         $P_SQL = array();
         $P_SQL[] = "ALTER TABLE `{$_TABLES['staticpage']}` ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
-
         $P_SQL = INST_checkInnodbUpgrade($P_SQL);
         for ($i = 0; $i < count ($P_SQL); $i++) {
             DB_query (current ($P_SQL));
