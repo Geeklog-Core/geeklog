@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.43 2007/08/09 07:03:12 ospiess Exp $
+// $Id: index.php,v 1.44 2007/08/20 09:25:12 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -211,8 +211,10 @@ function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults
                     }
                     $A[$i][$j] = addslashes ($A[$i][$j]);
                     $R[$i][$j] = addslashes ($R[$i][$j]);
-                    DB_save ($_TABLES['pollanswers'], 'pid, qid, aid, answer, votes, remark',
-                             "'$pid', '$k', $j+1, '{$A[$i][$j]}', {$V[$i][$j]}, '{$R[$i][$j]}'");
+                    $sql = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES "
+                        . "('$pid', '$k', " . ($j+1) . ", '{$A[$i][$j]}', {$V[$i][$j]}, '{$R[$i][$j]}');";
+                    echo $sql;
+                    DB_query($sql);
                     $v = $v + $V[$i][$j];
                 }
             }

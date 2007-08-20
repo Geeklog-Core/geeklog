@@ -300,7 +300,9 @@ CREATE TABLE {$_TABLES['pollanswers']} (
   answer varchar(255) default NULL,
   votes mediumint(8) unsigned default NULL,
   remark varchar(255) NULL,
-  PRIMARY KEY  (qid,aid)
+  KEY `pid` (`pid`),
+  KEY `qid` (`qid`),
+  KEY `aid` (`aid`)
 ) TYPE=MyISAM
 ";
 
