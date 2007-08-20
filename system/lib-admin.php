@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.111 2007/07/11 01:33:58 ospiess Exp $
+// $Id: lib-admin.php,v 1.112 2007/08/20 06:06:54 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -102,15 +102,14 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('formfields_bottom', $form_arr['bottom']);
     }
     if (isset($text_arr['has_menu']) && $text_arr['has_menu']) {
-        for ($i = 0; $i < count($menu_arr); $i++) {
-            $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
-            $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
+        $menu_fields = '';
+        for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
+            $menu_fields .= COM_createLink($menu_arr[$i]['text'], $menu_arr[$i]['url']);
             if ($i < (count($menu_arr) -1)) {
-                $admin_templates->set_var('line', '|' );
+                $menu_fields .= ' | '; # add separator
             }
-            $admin_templates->parse('menu_fields', 'menufields', true);
-            $admin_templates->clear_var('line');
         }
+        $admin_templates->set_var('menu_fields', $menu_fields);
         $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
         $admin_templates->parse('top_menu', 'topmenu', true);
     }
@@ -284,15 +283,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $title = $text_arr['title'];
     }
 
-    # get all template fields. Maybe menufields can be only loaded if used?
+    # get all template fields.
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array (
         'topmenu' => 'topmenu.thtml',
         'list' => 'list.thtml',
         'header' => 'header.thtml',
         'row' => 'listitem.thtml',
-        'field' => 'field.thtml',
-        'menufields' => 'menufields.thtml'
+        'field' => 'field.thtml'
     ));
 
     # insert std. values into the template
@@ -336,15 +334,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     );
     // the user can disable the menu. if used, create it.
     if ($text_arr['has_menu']) {
+        $menu_fields = '';
         for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
-            $admin_templates->set_var('menu_url', $menu_arr[$i]['url'] );
-            $admin_templates->set_var('menu_text', $menu_arr[$i]['text'] );
+            $menu_fields .= COM_createLink($menu_arr[$i]['text'], $menu_arr[$i]['url']);
             if ($i < (count($menu_arr) -1)) {
-                $admin_templates->set_var('line', '|' ); # add separator
+                $menu_fields .= ' | '; # add separator
             }
-            $admin_templates->parse('menu_fields', 'menufields', true);
-            $admin_templates->clear_var('line'); # clear separator after use
         }
+        $admin_templates->set_var('menu_fields', $menu_fields);
         # add text strings to template
         $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
         $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
