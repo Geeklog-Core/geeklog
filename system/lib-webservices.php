@@ -29,6 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: lib-webservices.php,v 1.4 2007/08/24 11:17:07 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -90,7 +91,9 @@ function WS_dissectURI(&$args)
     foreach ($uri_parts as $param) {
         $uri_parts = explode('=', $param);
         $param_key = COM_applyFilter($uri_parts[0]);
-        $param_val = COM_applyFilter($uri_parts[1]);
+        if (count($uri_parts) > 1) {
+            $param_val = COM_applyFilter($uri_parts[1]);
+        }
 
         switch ($param_key) {
         case 'introspection':
