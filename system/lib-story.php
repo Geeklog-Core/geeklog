@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.102 2007/08/19 16:28:02 dhaun Exp $
+// $Id: lib-story.php,v 1.103 2007/08/24 11:40:31 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1439,8 +1439,12 @@ function service_get_story($args, &$output, &$svc_msg)
     }
 
     if ($args['gl_svc']) {
-        $args['mode'] = COM_applyBasicFilter($args['mode']);
-        $args['sid'] = COM_applyBasicFilter($args['sid']);
+        if (isset($args['mode'])) {
+            $args['mode'] = COM_applyBasicFilter($args['mode']);
+        }
+        if (isset($args['sid'])) {
+            $args['sid'] = COM_applyBasicFilter($args['sid']);
+        }
 
         if (empty($args['sid'])) {
             $svc_msg['gl_feed'] = true;
@@ -1496,7 +1500,11 @@ function service_get_story($args, &$output, &$svc_msg)
 
         $sql = array();
 
-        $offset = COM_applyBasicFilter($args['offset'], true);
+        if (isset($args['offset'])) {
+            $offset = COM_applyBasicFilter($args['offset'], true);
+        } else {
+            $offset = 0;
+        }
         $max_items = $_CONF['atom_max_stories'] + 1;
 
         $limit = " LIMIT $offset, $max_items";
