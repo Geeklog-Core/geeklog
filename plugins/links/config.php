@@ -27,13 +27,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.18 2007/08/28 07:33:30 ospiess Exp $
+// $Id: config.php,v 1.19 2007/08/28 10:02:21 ospiess Exp $
 /**
  * Links plugin configuration file
  *
  * @package Links
  * @filesource
- * @version 1.1
+ * @version 1.2
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -165,6 +165,29 @@ $_LI_CONF['show_category_descriptions'] = true;
 $_LI_CONF['enable_multilingual_links'] = false;
 
 
+
+/**
+ * show category descriptions
+ * Whether to show subcategory descriptions when viewing a category or not.
+ *
+ * @global array $_LI_CONF['show_category_descriptions']
+ */
+$_LI_CONF['show_category_descriptions'] = true;
+
+/**
+ * enable multilingual features
+ * Whether to enable simple multilingual behaviour or not.
+ *
+ * @global array $_LI_CONF['enable_multilingual_links']
+ */
+$_LI_CONF['enable_multilingual_links'] = false;
+
+/**
+ * Links root category id
+ *
+ * @global array $_LI_CONF['root']
+ */
+$_LI_CONF['root'] = 'site';
 
 /**
  * Define default permissions for new links created from the Admin panel.
