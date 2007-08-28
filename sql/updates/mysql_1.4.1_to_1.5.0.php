@@ -15,7 +15,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Commen
 $_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
 
 // update plugin version numbers
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
+$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
 
 // Increase block function size to accept arguments:
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR(128)";
