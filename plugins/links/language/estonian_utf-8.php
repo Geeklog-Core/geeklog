@@ -26,7 +26,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: estonian_utf-8.php,v 1.1 2006/10/15 07:54:35 dhaun Exp $
+# $Id: estonian_utf-8.php,v 1.2 2007/08/28 07:33:30 ospiess Exp $
 
 /** 
  * This is the estonian language page for the Geeklog links Plug-in! 
@@ -47,9 +47,9 @@
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#              XX - file id number
+#            YY - phrase id number
 ###############################################################################
 /**
 * the link plugin's lang array

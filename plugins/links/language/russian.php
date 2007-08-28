@@ -25,9 +25,9 @@
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#              XX - file id number
+#            YY - phrase id number
 ###############################################################################
 
 

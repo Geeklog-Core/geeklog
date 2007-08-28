@@ -50,12 +50,12 @@
 
 
 
-// $Id: mysql_install.php,v 1.2 2007/02/13 03:18:34 ospiess Exp $
+// $Id: mysql_install.php,v 1.3 2007/08/28 07:33:30 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['links']} (
   lid varchar(20) NOT NULL default '',
-  category varchar(32) default NULL,
+  cid varchar(20) default NULL,
   url varchar(255) default NULL,
   description text,
   title varchar(96) default NULL,
@@ -67,25 +67,48 @@ CREATE TABLE {$_TABLES['links']} (
   perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX links_lid(lid),
-  INDEX links_category(category),
-  INDEX links_date(date),
-  PRIMARY KEY  (lid)
+  INDEX links_cid (cid),
+  INDEX links_date (date),
+  PRIMARY KEY (lid)
 ) TYPE=MyISAM
 ";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['linksubmission']} (
   lid varchar(20) NOT NULL default '',
-  category varchar(32) default NULL,
+  cid varchar(20) default NULL,
   url varchar(255) default NULL,
   description text,
   title varchar(96) default NULL,
   hits int(11) default NULL,
   date datetime default NULL,
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  PRIMARY KEY  (lid)
+  PRIMARY KEY (lid)
 ) TYPE=MyISAM
 ";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['linkcategories']} (
+  cid varchar(20) NOT NULL,
+  pid varchar(20) NOT NULL,
+  category varchar(32) NOT NULL,
+  description text DEFAULT NULL,
+  tid varchar(20) DEFAULT NULL,
+  created datetime DEFAULT NULL,
+  modified datetime DEFAULT NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '2',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  PRIMARY KEY (cid),
+  KEY links_pid (pid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', '20070828065220743', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 0, '2007-08-28 14:52:13', 1, 5, 3, 2, 2, 2);";
+$_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20070828065220743', 'site', 'Geeklog Sites', NULL, NULL, '2007-08-28 14:52:20', '2007-08-28 14:52:20', 2, 5, 3, 2, 2, 2);";
+$_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('site', 'root', 'Root', 'Website root', '', '2007-08-28 14:52:21', '2007-08-28 14:52:21', 2, 5, 3, 3, 2, 2);";
+
 
 ?>

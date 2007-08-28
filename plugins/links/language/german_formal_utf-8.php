@@ -24,13 +24,13 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german_formal_utf-8.php,v 1.2 2006/05/13 17:13:08 dhaun Exp $
+# $Id: german_formal_utf-8.php,v 1.3 2007/08/28 07:33:30 ospiess Exp $
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#              XX - file id number
+#            YY - phrase id number
 ###############################################################################
 
 

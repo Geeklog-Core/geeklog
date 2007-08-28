@@ -1,0 +1,77 @@
+<h2>{lang_pagetitle}</h2>
+<div class="admin-list-icon">
+    <img src="{site_url}/links/images/links.png" alt="">
+</div>
+<a href="{site_admin_url}/plugins/links/index.php">{lang_link_list}</a> |
+<a href="{site_admin_url}/plugins/links/index.php?mode=edit">{lang_new_link}</a> |
+<a href="{site_admin_url}/plugins/links/category.php">{lang_list_categories}</a> |
+<a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a> |
+<a href="{site_admin_url}/moderation.php">{lang_admin_home}</a>
+<br>
+<p>{instructions}</p>
+<br clear="both">
+    <form action="{site_admin_url}/plugins/links/category.php" method="post">
+        <table border="0" cellspacing="0" cellpadding="2" width="100%">
+            <tr>
+                <td align="right" width="150">{lang_parent}</td>
+                <td><select name="pid">{category_options}</select></td>
+            </tr>
+            <tr>
+                <td align="right">{lang_category}</td>
+                <td><input type="text" name="category" size="50" maxlength="32" VALUE="{category_value}"></td>
+            </tr>
+            <tr>
+                <td align="right">{lang_cid}</td>
+                <td><input type="text" name="cid" size="50" maxlength="32" VALUE="{cid_value}"></td>
+            </tr>
+            <tr>
+                <td align="right">{lang_description}</td>
+                <td><input type="text" name="description" size="50" maxlength="255" VALUE="{description_value}"></td>
+            </tr>
+            <tr>
+                <td align="right">{lang_topic}</td>
+                <td><select name="tid">{topic_list}</select></td>
+            </tr>
+            <tr>
+                <td colspan="2"><hr><td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>{lang_accessrights}</b></td>
+            </tr>
+            <tr>
+                <td align="right">{lang_owner}:</td>
+                <td>{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"></td>
+            </tr>
+            <tr>
+                <td align="right">{lang_group}:</td>
+                <td>
+                    {group_dropdown}
+                </td>
+            <tr>
+            <tr>
+                <td colspan="2"><b>{lang_permissions}</b>:</td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2">{lang_permissionskey}</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    {permissions_editor}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">{lang_lockmsg}<td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><br><br>
+                    <input type="hidden" value="{old_cid_value}" name="old_cid">
+                    <input type="submit" value="{lang_save}" name="mode">
+                    <input type="submit" value="{lang_cancel}" name="mode">
+                    {delete_button}
+                </td>
+            </tr>
+        </table>
+    </form>

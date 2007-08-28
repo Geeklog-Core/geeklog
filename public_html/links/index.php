@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Links Plugin                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2006 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -34,42 +34,89 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-/**
- * This is the links page
- *
+/** 
+ * This is the links page   
+ * 
  * @package Links
  * @subpackage public_html
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
  * @author Jason Whittenburg <jwhitten AT securitygeeks DOT com>
  * @author Tom Willett <tomw AT pigstye DOT net>
  * @author Trinity Bays <trinity AT steubentech DOT com>
  * @author Dirk Haun <dirk AT haun-online DOT de>
- *
+ * 
  */
-// $Id: index.php,v 1.21 2007/04/28 18:55:47 dhaun Exp $
+// $Id: index.php,v 1.22 2007/08/28 07:34:25 ospiess Exp $
 
 require_once ('../lib-common.php');
 
 /**
-* create the links list depending on the category given
+* Prepare a link item for rendering
 *
-*  return       string      the links page
+* @param    array   $A          link details
+* @param    ref     $template   reference of the links template
+*
 */
-function links_list($message)
+function prepare_link_item ($A, &$template)
 {
-    global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN, $LANG_LINKS,
-           $LANG_LINKS_STATS;
+    global $_CONF, $LANG_ADMIN, $_IMAGE_TYPE;
 
-    $category = '';
-    $display = '';
-    if (isset ($_GET['category'])) {
-        $category = strip_tags (COM_stripslashes ($_GET['category']));
+    $url = COM_buildUrl ($_CONF['site_url']
+                 . '/links/portal.php?what=link&amp;item=' . $A['lid']);
+    $template->set_var ('link_url', $url);
+    $template->set_var ('link_actual_url', $A['url']);
+    $template->set_var ('link_name', stripslashes ($A['title']));
+    $template->set_var ('link_hits', COM_numberFormat ($A['hits']));
+    $template->set_var ('link_description',
+                        nl2br (stripslashes ($A['description'])));
+
+    if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+            $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+            SEC_hasRights ('links.edit')) {
+        $editurl = $_CONF['site_admin_url']
+                 . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
+        $template->set_var ('link_edit', '<a href="' . $editurl . '">'
+                 . $LANG_ADMIN['edit'] . '</a>');
+        $template->set_var ('edit_icon', '<a href="' . $editurl . '"><img src="'
+                 . $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE
+                 . '" alt="' . $LANG_ADMIN['edit'] . '" title="'
+                 . $LANG_ADMIN['edit'] . '" border="0"></a>');
+    } else {
+        $template->set_var ('link_edit', '');
+        $template->set_var ('edit_icon', '');
+    }
+}
+
+
+// MAIN
+
+$display = '';
+$root = 'site';
+
+if (empty ($_USER['username']) &&
+    (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
+    $display .= COM_siteHeader ('menu', $LANG_LINKS[114]);
+    $display .= COM_startBlock ($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+    $login = new Template ($_CONF['path_layout'] . 'submit');
+    $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('lang_login', $LANG_LOGIN[3]);
+    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+    $login->parse ('output', 'login');
+    $display .= $login->finish ($login->get_var ('output'));
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+} else {
+    $cid = '';
+    if (isset ($_REQUEST['cid'])) {
+        $cid = strip_tags (COM_stripslashes ($_REQUEST['cid']));
     }
     $page = 0;
     if (isset ($_GET['page'])) {
@@ -79,7 +126,9 @@ function links_list($message)
         $page = 1;
     }
 
-    if (empty ($category)) {
+    if (empty ($cid)) {
+        // No category so set to root
+        $cid = $root;
         if ($page > 1) {
             $page_title = sprintf ($LANG_LINKS[114] . ' (%d)', $page);
         } else {
@@ -87,20 +136,29 @@ function links_list($message)
         }
     } else {
         if ($page > 1) {
-            $page_title = sprintf ($LANG_LINKS[114] . ': %s (%d)', $category,
-                                                                   $page);
+            $page_title = sprintf ($LANG_LINKS[114] . ': %s (%d)', $cid, $page);
         } else {
-            $page_title = sprintf ($LANG_LINKS[114] . ': %s', $category);
+            $page_title = sprintf ($LANG_LINKS[114] . ': %s', $cid);
         }
     }
+
+    // Check has access to this category
+    if ($cid <> $root) {
+        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$cid}'");
+        $A = DB_fetchArray($result);
+        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) < 2) {
+            $display .= COM_siteHeader ('menu', $page_title);
+            $display .= COM_showMessage (5, 'links');
+            $display .= COM_siteFooter ();
+            echo $display;
+            exit;
+        }
+    }
+
+
+
     $display .= COM_siteHeader ('menu', $page_title);
 
-    if (is_array($message) && !empty($message[0])) {
-        $display .= COM_startBlock ($message[0], '',
-                COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $message[1];
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    }
 
     $linklist = new Template ($_CONF['path'] . 'plugins/links/templates/');
     $linklist->set_file (array ('linklist' => 'links.thtml',
@@ -114,27 +172,65 @@ function links_list($message)
     $linklist->set_var ('blockheader',COM_startBlock($LANG_LINKS[114]));
     $linklist->set_var ('layout_url',$_CONF['layout_url']);
 
+    // Create breadcrumb trail
+    $linklist->set_var('breadcrumbs', links_breadcrumbs ($root,$cid));
+
+    // Set dropdown for category jump
+    $linklist->set_var ('lang_go', $LANG_LINKS[117]);
+    $linklist->set_var('link_dropdown', links_select_box(2));
+
     if ($_LI_CONF['linkcols'] > 0) {
-        $result = DB_query ("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category");
+
+        // Show categories
+        $sql = "SELECT cid,pid,category,description FROM {$_TABLES['linkcategories']} WHERE pid='{$cid}'";
+        // check if we are using the multilanguage hack
+        if ($_LI_CONF['enable_multilingual_links']) {
+            $sql .= COM_getLangSQL('cid','AND');
+        }
+        $sql .= COM_getPermSQL('AND') . " ORDER BY category";
+        $result = DB_query($sql);
         $nrows  = DB_numRows ($result);
         if ($nrows > 0) {
-            $linklist->set_var ('lang_categories', $LANG_LINKS_ADMIN[14]);
+            $linklist->set_var ('lang_categories', $LANG_LINKS[118]);
             for ($i = 1; $i <= $nrows; $i++) {
                 $C = DB_fetchArray ($result);
-                $cat = addslashes ($C['category']);
-                $result1 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}'" . COM_getPermSQL ('AND'));
+
+                // Get number of child links user can see in this category
+                $result1 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE cid='{$C['cid']}'" . COM_getPermSQL ('AND'));
                 $D = DB_fetchArray ($result1);
-                if (empty ($C['category'])) {
-                    $linklist->set_var ('category_name', $LANG_LINKS_ADMIN[7]);
+
+                // Get number of child categories user can see in this category
+                $result2 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['linkcategories']} WHERE pid='{$C['cid']}'" . COM_getPermSQL ('AND'));
+                $E = DB_fetchArray($result2);
+
+                // Format numbers for display
+                $display_count = '';
+                // don't show zeroes
+                if ($E['count']>0) {
+                    $display_count = COM_numberFormat ($E['count']);
+                }
+                if (($E['count']>0) && ($D['count']>0)) {
+                    $display_count .= ', ';
+                }
+                if ($D['count']>0) {
+                    $display_count .= COM_numberFormat ($D['count']);
+                }
+                // add brackets if child items exist
+                if ($display_count<>'') {
+                    $display_count = '('.$display_count.')';
+                }
+
+                $linklist->set_var ('category_name', $C['category']);
+                if ($_LI_CONF['show_category_descriptions']) {
+                    $linklist->set_var ('category_description', $C['description']);
                 } else {
-                    $linklist->set_var ('category_name', $C['category']);
+                    $linklist->set_var ('category_description', '');
                 }
                 $linklist->set_var ('category_link', $_CONF['site_url'] .
-                    '/links/index.php?category=' . urlencode ($C['category']));
-                $linklist->set_var ('category_count',
-                                    COM_numberFormat ($D['count']));
+                    '/links/index.php?cid=' . urlencode ($C['cid']));
+                $linklist->set_var ('category_count', $display_count);
                 $linklist->set_var ('width', floor (100 / $_LI_CONF['linkcols']));
-                if (!empty ($category) && ($category == $C['category'])) {
+                if (!empty ($cid) && ($cid == $C['cid'])) {
                     $linklist->parse ('category_col', 'actcol', true);
                 } else {
                     $linklist->parse ('category_col', 'catcol', true);
@@ -156,21 +252,23 @@ function links_list($message)
     }
 
     $linklist->set_var ('site_url', $_CONF['site_url']);
+    $linklist->set_var ('cid', $cid);
     $linklist->set_var ('lang_addalink', $LANG_LINKS[116]);
 
-    $sql = 'SELECT lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon';
+    // Build SQL for links
+    $sql = 'SELECT lid,cid,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon';
     $from_where = " FROM {$_TABLES['links']}";
     if ($_LI_CONF['linkcols'] > 0) {
-        if (!empty ($category)) {
-            $from_where .= " WHERE category = '" . addslashes ($category) . "'";
+        if (!empty ($cid)) {
+            $from_where .= " WHERE cid='" . addslashes ($cid) . "'";
         } else {
-            $from_where .= " WHERE category = ''";
+            $from_where .= " WHERE cid=''";
         }
         $from_where .= COM_getPermSQL ('AND');
     } else {
         $from_where .= COM_getPermSQL ();
     }
-    $order = ' ORDER BY category ASC,title';
+    $order = ' ORDER BY cid ASC,title';
     $limit = '';
     if ($_LI_CONF['linksperpage'] > 0) {
         if ($page < 1) {
@@ -182,14 +280,15 @@ function links_list($message)
     }
     $result = DB_query ($sql . $from_where . $order . $limit);
     $nrows = DB_numRows ($result);
+
+    // No links
     if ($nrows == 0) {
-        if (empty ($category) && ($page <= 1) && $_LI_CONF['show_top10']) {
+        if (($page <= 1) && $_LI_CONF['show_top10']) {
             $result = DB_query ("SELECT lid,url,title,description,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
             $nrows  = DB_numRows ($result);
             if ($nrows > 0) {
                 $linklist->set_var ('link_details', '');
-                $linklist->set_var ('link_category',
-                                    $LANG_LINKS_STATS['stats_headline']);
+                $linklist->set_var ('link_category', $LANG_LINKS_STATS['stats_headline']);
                 for ($i = 0; $i < $nrows; $i++) {
                     $A = DB_fetchArray ($result);
                     prepare_link_item ($A, $linklist);
@@ -199,25 +298,21 @@ function links_list($message)
             }
         }
         $linklist->set_var ('page_navigation', '');
+    // Have links, so build the page
     } else {
-        $currentcategory = '';
+        // Get current category name
+        $currentcategory=DB_GetItem($_TABLES['linkcategories'], "category","cid='{$cid}'");
+        $linklist->set_var ('link_category', $currentcategory);
+        $linklist->set_var ('link_details', '');
+
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
-            if (strcasecmp ($A['category'], $currentcategory) != 0) {
-                // print the category and link
-                if ($i > 0) {
-                    $linklist->parse ('category_links', 'catlinks', true);
-                    $linklist->set_var ('link_details', '');
-                }
-                $currentcategory = $A['category'];
-                $linklist->set_var ('link_category', $currentcategory);
-            }
-
             prepare_link_item ($A, $linklist);
             $linklist->parse ('link_details', 'link', true);
         }
         $linklist->parse ('category_links', 'catlinks', true);
 
+        // Google paging
         $result = DB_query ('SELECT COUNT(*) AS count ' . $from_where);
         list($numlinks) = DB_fetchArray ($result);
         $pages = 0;
@@ -243,110 +338,8 @@ function links_list($message)
     $linklist->set_var ('blockfooter',COM_endBlock());
     $linklist->parse ('output', 'linklist');
     $display .= $linklist->finish ($linklist->get_var ('output'));
-    return $display;
 }
 
-
-/**
-* Prepare a link item for rendering
-*
-* @param    array   $A          link details
-* @param    ref     $template   reference of the links template
-*
-*/
-function prepare_link_item ($A, &$template)
-{
-    global $_CONF, $_USER, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE;
-
-    $url = COM_buildUrl ($_CONF['site_url']
-                 . '/links/portal.php?what=link&amp;item=' . $A['lid']);
-    $template->set_var ('link_url', $url);
-    $template->set_var ('link_actual_url', $A['url']);
-    $template->set_var ('link_name', stripslashes ($A['title']));
-    $template->set_var ('link_hits', COM_numberFormat ($A['hits']));
-    $template->set_var ('link_description',
-                        nl2br (stripslashes ($A['description'])));
-    $content = stripslashes ($A['title']);
-    $attr = array(
-        'title' => stripslashes ($A['title']),
-        'class' => 'ext-link');
-    $html = COM_createLink($content, $url, $attr);
-    $template->set_var ('link_html', $html);
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-        $reporturl = $_CONF['site_url']
-                 . '/links/index.php?mode=report&amp;lid=' . $A['lid'];
-        $template->set_var ('link_broken',
-                COM_createLink($LANG_LINKS[117], $reporturl,
-                               array('class' => 'pluginSmallText',
-                                     'rel'   => 'nofollow'))
-        );
-    } else {
-        $template->set_var ('link_broken', '');
-    }
-
-    if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-            $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
-            SEC_hasRights ('links.edit')) {
-        $editurl = $_CONF['site_admin_url']
-                 . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
-        $template->set_var ('link_edit', COM_createLink($LANG_ADMIN['edit'],$editurl));
-        $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit.$_IMAGE_TYPE\" "
-            . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\">";
-        $template->set_var ('edit_icon', COM_createLink($edit_icon, $editurl));
-    } else {
-        $template->set_var ('link_edit', '');
-        $template->set_var ('edit_icon', '');
-    }
-}
-
-
-// MAIN
-
-$display = '';
-$mode = '';
-if (isset ($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
-}
-
-$message = array();
-if (($mode == 'report') && (isset($_USER['uid']) && ($_USER['uid'] > 1))) {
-    if (isset ($_GET['lid'])) {
-        $lid = COM_applyFilter($_GET['lid']);
-    }
-    if (!empty($lid)) {
-        $lidsl = addslashes($lid);
-        $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lidsl'");
-        list($url, $title) = DB_fetchArray($result);
-
-        $editurl = $_CONF['site_admin_url']
-                 . '/plugins/links/index.php?mode=edit&lid=' . $lid;
-        $msg = $LANG_LINKS[119] . LB . LB . "$title, <$url>". LB . LB
-             .  $LANG_LINKS[120] . LB . '<' . $editurl . '>' . LB . LB
-             .  $LANG_LINKS[121] . $_USER['username'] . ', IP: '
-             . $_SERVER['REMOTE_ADDR'];
-        COM_mail($_CONF['site_mail'], $LANG_LINKS[118], $msg);
-        $message = array($LANG_LINKS[123], $LANG_LINKS[122]);
-    }
-}
-
-if (empty ($_USER['username']) &&
-    (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
-    $display .= COM_siteHeader ('menu', $LANG_LINKS[114]);
-    $display .= COM_startBlock ($LANG_LOGIN[1], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $login = new Template ($_CONF['path_layout'] . 'submit');
-    $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-    $login->set_var ('login_message', $LANG_LOGIN[2]);
-    $login->set_var ('site_url', $_CONF['site_url']);
-    $login->set_var ('lang_login', $LANG_LOGIN[3]);
-    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-    $login->parse ('output', 'login');
-    $display .= $login->finish ($login->get_var ('output'));
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-} else {
-    $display .= links_list($message);
-
-}
 
 $display .= COM_siteFooter ();
 

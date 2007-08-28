@@ -1,4 +1,4 @@
 <li>
-  <strong>{link_html}</strong> ({link_hits}) {edit_icon} {link_broken}<br>
+  <strong><a href="{link_url}" title="{link_actual_url}">{link_name}</a></strong> ({link_hits}) {link_edit}<br>
   {link_description}
 </li>

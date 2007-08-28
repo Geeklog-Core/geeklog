@@ -14,7 +14,6 @@
                                             <select name="categorydd">
                                                 {link_category_options}
                                             </select> 
-                                            <b>{lang_ifother}:</b> <input type="text" name="category" size="12" maxlength="32">
                                         </td>
                                     </tr>
                                     <tr>

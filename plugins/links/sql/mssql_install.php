@@ -66,7 +66,7 @@ CREATE TABLE [dbo].[{$_TABLES['links']}] (
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY]
+) ON [PRIMARY] 
 ";
 
 
@@ -78,9 +78,8 @@ CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
     [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [hits] [int] NULL ,
-    [date] [datetime] NULL,
-    [owner_id] [numeric](8, 0) NOT NULL
-) ON [PRIMARY]
+    [date] [datetime] NULL
+) ON [PRIMARY] 
 ";
 
 

@@ -8,7 +8,7 @@
 # tony@tonybibbs.com
 # Copyright (C) 2005 Trinity Bays
 # trinity93@gmail.com
-# Tranlated by Geeklog Japanese group SaY and Ivy
+# Tranlated by Geeklog Japanese group
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,21 +25,21 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: japanese_utf-8.php,v 1.7 2007/04/21 19:19:23 dhaun Exp $
-# Last Update 2007/01/30 by Ivy (Geeklog Japanese)
+# $Id: japanese_utf-8.php,v 1.8 2007/08/28 07:33:30 ospiess Exp $
+# Last Update 2006/12/12 by Ivy (Geeklog Japanese)
 
 ###############################################################################
 # Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#              XX - file id number
+#            YY - phrase id number
 ###############################################################################
 
 $LANG_LINKS= array(
     10 => '投稿',
     14 => 'リンク',
     84 => 'リンク',
-    88 => '-',
+    88 => '新しいリンクはありません',
     114 => 'リンク',
     116 => 'リンクの追加'
 );
@@ -52,7 +52,7 @@ $LANG_LINKS_STATS = array(
     'stats_headline' => 'リンク(上位10件)',
     'stats_page_title' => 'リンク',
     'stats_hits' => 'ヒット',
-    'stats_no_hits' => 'このサイトにはリンクがないか，クリックした人がいないかのどちらかのようです。',
+    'stats_no_hits' => 'このサイトにはリンクがないか、クリックした人がいないかのどちらかのようです。',
 ); 
  
 ###############################################################################
@@ -79,7 +79,7 @@ $LANG_LINKS_SUBMIT = array(
     8 => 'タイトル',
     9 => 'URL',
     10 => 'カテゴリ',
-    11 => 'リンクの登録申請'
+    11 => 'リンクを登録する'
 );
 
 ###############################################################################
@@ -106,9 +106,9 @@ $LANG_LINKS_ADMIN = array(
     7 => 'その他',
     8 => 'リンクの参照',
     9 => '説明',
-    10 => 'タイトル，URL，説明が必要です',
+    10 => 'タイトル、URL、説明が必要です',
     11 => 'リンクの管理',
-    12 => 'リンクを修正，削除する場合は各リンクの「編集」アイコンをクリックしてください。新規作成は上の「新規」をクリックしてください。',
+    12 => 'リンクを修正、削除する場合は各リンクの「編集」アイコンをクリックしてください。新規作成は上の「新規」をクリックしてください。',
     14 => 'カテゴリ',
     16 => 'アクセスが拒否されました',
     17 => "権限のないリンクにアクセスしようとしましたのでログに記録しました。<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">リンクの管理画面に戻って</a>ください。",

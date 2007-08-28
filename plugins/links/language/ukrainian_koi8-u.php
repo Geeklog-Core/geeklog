@@ -22,13 +22,13 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: ukrainian_koi8-u.php,v 1.1 2006/12/16 21:11:15 dhaun Exp $
+# $Id: ukrainian_koi8-u.php,v 1.2 2007/08/28 07:33:30 ospiess Exp $
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#              XX - file id number
+#            YY - phrase id number
 ###############################################################################
 
 

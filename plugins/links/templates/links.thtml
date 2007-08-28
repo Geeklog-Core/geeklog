@@ -1,8 +1,25 @@
 {blockheader}
 
+<form action="{site_url}/links/index.php" method="post">
+<table width="100%">
+  <tr>
+    <td class="alignleft">{breadcrumbs}</td>
+    <td style="float:right;">
+        <select name="cid">{link_dropdown}</select><input type="submit" value="{lang_go}" name="mode">
+    </td>
+  </tr>
+</table>
+</form>
+
+
 {category_navigation}
-<div class="aligncenter" style="padding-bottom:10px;">[ <a href="{site_url}/submit.php?type=links">{lang_addalink}</a> ]</div>
+<br>
+<br>
+
+<div class="aligncenter" style="padding-bottom:10px;">[ <a href="{site_url}/submit.php?type=links&amp;cid={cid}">{lang_addalink}</a> ]</div>
+
 {category_links}
+
 {page_navigation}
 
 {blockfooter}

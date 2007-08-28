@@ -14,9 +14,6 @@ $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Commen
 // add owner-field to links-submission
 $_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
 
-// update plugin version numbers
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
-
 // Increase block function size to accept arguments:
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR(128)";
 
@@ -93,4 +90,13 @@ function upgrade_StaticpagesPlugin()
     }
 }
 
+function upgrade_LinksPlugin() {
+    global $_TABLES, $_CONF;
+    $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'links';";
+    $check_rst = DB_query ($check_sql);
+    if (DB_numRows($check_rst) == 1) {
+        include_once($_CONF['path'] . "/plugins/links/functions.inc");
+        plugin_upgrade_links();
+    }
+}
 ?>

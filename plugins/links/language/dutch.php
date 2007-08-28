@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: dutch.php,v 1.2 2006/05/13 17:13:08 dhaun Exp $
+# $Id: dutch.php,v 1.3 2007/08/28 07:33:30 ospiess Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -47,9 +47,9 @@
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#              XX - file id number
+#            YY - phrase id number
 ###############################################################################
 /**
 * the link plugin's lang array

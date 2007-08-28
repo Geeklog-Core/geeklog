@@ -2,7 +2,6 @@
 
 ###############################################################################
 # english.php
-#
 # This is the english language file for the Geeklog Links Plugin
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -25,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.18 2007/04/22 13:24:33 dhaun Exp $
+# $Id: english.php,v 1.19 2007/08/28 07:33:30 ospiess Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -46,9 +45,9 @@
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#              XX - file id number
+#            YY - phrase id number
 ###############################################################################
 /**
 * the link plugin's lang array
@@ -58,17 +57,13 @@
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
-    84 => 'Links',
+    84 => 'LINKS',
     88 => 'No recent new links',
     114 => 'Links',
     116 => 'Add A Link',
-    117 => 'Report Broken Link',
-    118 => 'Broken Link Report',
-    119 => 'The following link has been reported to be broken: ',
-    120 => 'To edit the link, click here: ',
-    121 => 'The broken Link was reported by: ',
-    122 => 'Thank you for reporting this broken link. The administrator will correct the problem as soon as possible',
-    123 => 'Thank you'
+    117 => 'Go',
+    118 => 'Categories',
+    'root' => 'Root' // this is the title used for the root (top level) category
 );
 
 ###############################################################################
@@ -129,6 +124,7 @@ $PLG_links_MESSAGE1 = "Thank-you for submitting a link to {$_CONF['site_name']}.
 $PLG_links_MESSAGE2 = 'Your link has been successfully saved.';
 $PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
 $PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
+$PLG_links_MESSAGE5 = "You do not have sufficient access rights to view this category.";
 
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3002 = $LANG32[9];
@@ -152,18 +148,36 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Link Description',
     10 => 'You need to provide a link Title, URL and Description.',
     11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link, click on "Create New" above.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "Edit categories" above.',
     14 => 'Link Category',
     16 => 'Access Denied',
     17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">go back to the link administration screen</a>.",
     20 => 'If other, specify',
-    21 => 'save',
-    22 => 'cancel',
-    23 => 'delete',
-    24 => 'Link not found',
-    25 => 'The link you selected for editing could not be found.',
-    26 => 'Verify Links',
-    27 => 'HTML Status'
+    24 => 'List categories',
+    25 => 'New link',
+    26 => 'New category',
+    27 => 'List links',
+    28 => 'Edit category',
+    29 => 'Enter or edit the details below.',
+    30 => 'Category',
+    31 => 'Description',
+    32 => 'Category ID',
+    33 => 'Topic',
+    34 => 'Parent',
+    35 => 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.',
+    37 => 'Category deleted',
+    38 => 'Category contains links and/or categories. Please remove these first.',
+    39 => 'Category was saved successfully',
+    40 => 'Edit this category',
+    41 => 'Create child category',
+    42 => 'Delete this category',
+    43 => 'Site categories',
+    44 => 'Add&nbsp;child',
+    45 => 'You do not have sufficient rights to delete this category',
+    46 => 'User %s tried to delete a category to which they do not have access rights',
+    47 => 'No such category exists',
+    48 => 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.',
+    49 => 'Validate Links'
 );
 
 $LANG_LINKS_STATUS = array(

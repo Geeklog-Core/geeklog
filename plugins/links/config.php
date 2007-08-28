@@ -27,13 +27,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.17 2007/08/28 05:33:56 ospiess Exp $
+// $Id: config.php,v 1.18 2007/08/28 07:33:30 ospiess Exp $
 /**
  * Links plugin configuration file
  *
  * @package Links
  * @filesource
- * @version 1.0.1
+ * @version 1.1
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -57,7 +57,7 @@ $_LI_CONF = array();
 *
 * @global array $_LI_CONF['version']
 */
-$_LI_CONF['version'] = '1.0.1';          // Plugin Version
+$_LI_CONF['version'] = '2.0';          // Plugin Version
 
 /**
  * this lets you select which functions are available for registered users only
@@ -140,14 +140,31 @@ $_LI_CONF['notification'] = 0;
  */
 $_LI_CONF['delete_links'] = 0;
 
-/** What to show after a link has been saved? Possible choices:
- * 'item' -> forward to the target of the link
- * 'list' -> display the admin-list of links
- * 'plugin' -> display the public homepage of the links plugin
- * 'home' -> display the site homepage
- * 'admin' -> display the site admin homepage
+/**
+ * indent used in category edit page
+ * What characters to use for the indent when listing categories for editing in the admin section.
+ *
+ * @global array $_LI_CONF['show_top10']
  */
-$_LI_CONF['aftersave'] = 'list';
+$_LI_CONF['indent'] = "--";
+
+/**
+ * show category descriptions
+ * Whether to show subcategory descriptions when viewing a category or not.
+ *
+ * @global array $_LI_CONF['show_top10']
+ */
+$_LI_CONF['show_category_descriptions'] = true;
+
+/**
+ * enable multilingual features
+ * Whether to enable simple multilingual behaviour or not.
+ *
+ * @global array $_LI_CONF['show_top10']
+ */
+$_LI_CONF['enable_multilingual_links'] = false;
+
+
 
 /**
  * Define default permissions for new links created from the Admin panel.
@@ -165,5 +182,6 @@ $_LI_CONF['default_permissions'] = array (3, 2, 2, 2);
 // database table names - don't change
 $_TABLES['links']               = $_DB_table_prefix . 'links';
 $_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
+$_TABLES['linkcategories']      = $_DB_table_prefix . 'linkcategories';
 
 ?>
