@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.81 2007/08/28 07:33:30 ospiess Exp $
+// $Id: functions.inc,v 1.82 2007/08/28 07:52:25 ospiess Exp $
 
 
 /**
@@ -788,10 +788,16 @@ function plugin_upgrade_links ()
         COM_errorLog("Success - inserted categories into linkcategories table",1);
 
         // update the links and linksubmission table structures
-        COM_errorLog ("Updating linksubmission table for the links plugin", 1);
-        DB_Query($LINKS_SQL['linksubmission'],1);
+        COM_errorLog ("Updating linksubmission table for the links plugin (a)", 1);
+        DB_Query($LINKS_SQL['linksubmission1'],1);
         if (DB_error ()) {
-            COM_errorLog ("There was an error updating the linksubmission table of the links plugin", 1);
+            COM_errorLog ("There was an error updating the linksubmission table of the links plugin (a)", 1);
+            return false;
+        }
+        COM_errorLog ("Updating linksubmission table for the links plugin (b)", 1);
+        DB_Query($LINKS_SQL['linksubmission2'],1);
+        if (DB_error ()) {
+            COM_errorLog ("There was an error updating the linksubmission table of the links plugin (b)", 1);
             return false;
         }
         COM_errorLog("Success - updated linksubmission table for the links plugin",1);

@@ -50,7 +50,7 @@
 
 
 
-// $Id: mysql_install.php,v 1.3 2007/08/28 07:33:30 ospiess Exp $
+// $Id: mysql_install.php,v 1.4 2007/08/28 07:52:26 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['links']} (
@@ -82,6 +82,7 @@ CREATE TABLE {$_TABLES['linksubmission']} (
   title varchar(96) default NULL,
   hits int(11) default NULL,
   date datetime default NULL,
+  owner_id mediumint(8) NOT NULL default '1',
   PRIMARY KEY (lid)
 ) TYPE=MyISAM
 ";
