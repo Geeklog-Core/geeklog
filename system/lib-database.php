@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.45 2007/01/16 04:18:57 ospiess Exp $
+// $Id: lib-database.php,v 1.46 2007/08/28 07:42:27 ospiess Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -63,6 +63,7 @@ $_TABLES['group_assignments']   = $_DB_table_prefix . 'group_assignments';
 $_TABLES['groups']              = $_DB_table_prefix . 'groups';
 $_TABLES['links']               = $_DB_table_prefix . 'links';
 $_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
+$_TABLES['linkcategories']      = $_DB_table_prefix . 'linkcategories';
 $_TABLES['maillist']            = $_DB_table_prefix . 'maillist';
 $_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
 $_TABLES['pingservice']         = $_DB_table_prefix . 'pingservice';
