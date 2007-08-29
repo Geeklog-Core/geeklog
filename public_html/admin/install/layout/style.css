@@ -48,12 +48,10 @@ a:link {
 }
 a:visited {
   background:transparent;
-//  color:#800080
   color: #0000FF;
 }
 a:hover {
   background:transparent;
-//  color:#008000
   color: #0000FF;
 }
 a:active {
@@ -336,7 +334,6 @@ code {
 .file-permission-list {
   padding: 0px;
   width: 30em;
-//  width: 300px;
   text-align: left;
   margin-top: 0px;
   display: block
@@ -366,7 +363,6 @@ code {
   margin: 5px 0px 5px 5px;
   padding:5px;
   border: 1px dashed black;
-//  font-size: 9pt;
 }
 .code {
   font-family: "Monaco";

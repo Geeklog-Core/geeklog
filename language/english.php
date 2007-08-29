@@ -169,7 +169,8 @@ $LANG01 = array(
     125 => 'Are you sure you want to Delete all checked items?',
     126 => 'Select or de-select all items',
     127 => 'Permalink',
-    128 => 'Login with OpenID:'
+    128 => 'Login with OpenID:',
+    129 => 'Configuration'
 );
 
 ###############################################################################

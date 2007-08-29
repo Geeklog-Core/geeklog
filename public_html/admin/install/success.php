@@ -29,7 +29,7 @@ if ($type == 'install') {
     $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php?mode=edit\">" . $LANG_INSTALL[94] . ' <strong>' . $LANG_INSTALL[87] . '</strong> ' . $LANG_INSTALL[95] . '</a></li>';
 }
 
-$display .= '<li>' . $LANG_INSTALL[96] . ' <tt>' . $_CONF['path'] . 'config.php</tt> ' . $LANG_INSTALL[97] . '<tt>' . $_CONF['path_html'] . 'lib-common.php</tt> ' . $LANG_INSTALL[98] . ' 755.</li>
+$display .= '<li>' . $LANG_INSTALL[96] . ' <tt>' . $_CONF['path'] . 'db-config.php</tt> ' . $LANG_INSTALL[97] . ' <tt>' . $_CONF['path_html'] . 'siteconfig.php</tt> ' . $LANG_INSTALL[98] . ' 755.</li>
 </ul>
 </p>';
 

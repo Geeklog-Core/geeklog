@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.648 2007/08/19 15:56:02 dhaun Exp $
+// $Id: lib-common.php,v 1.649 2007/08/29 02:11:34 ablankstein Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -90,7 +90,12 @@ if( function_exists('set_error_handler') )
 * Make sure to include the name of the config file,
 * i.e. the path should end in .../config.php
 */
-require_once( '/path/to/geeklog/config.php' );
+require_once('siteconfig.php');
+require_once( $_CONF['path_system'] . 'classes/config.class.php'); 
+$config = config::create();
+$config->set_configfile($_CONF['path'] . 'db-config.php');
+$config->load_baseconfig();
+$_CONF =& $config->initConfig();
 
 // Before we do anything else, check to ensure site is enabled
 
@@ -2366,6 +2371,19 @@ function COM_adminMenu( $help = '', $title = '' )
                 }
             }
         }
+
+        if (SEC_inGroup( 'Root' )) {
+            $url = $_CONF['site_admin_url'] . '/configuration.php';
+            $adminmenu->set_var( 'option_url', $url);
+            $adminmenu->set_var( 'option_label', $LANG01[129] );
+            $adminmenu->set_var( 'option_count', 'N/A');
+            $menu_item = $adminmenu->parse( 'item',
+                                            ( $thisUrl == $url ) ? 'current' :
+                                            'option' );
+            $link_array[$LANG01[129]] = $menu_item;
+
+        }
+
 
         // now handle submissions for plugins
         $modnum += PLG_getSubmissionCount();

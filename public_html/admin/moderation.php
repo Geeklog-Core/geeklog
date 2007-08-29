@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.107 2007/03/08 14:00:52 ospiess Exp $
+// $Id: moderation.php,v 1.108 2007/08/29 02:11:35 ablankstein Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -151,8 +151,11 @@ function commandcontrol()
                         'lang' => $LANG01[113], 'image' => '/images/icons/docs.'),
                   array('condition' => (SEC_inGroup ('Root')),
                         'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
-                        'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.')
-    );
+                        'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.'),
+		  array('condition' => (SEC_inGroup ('Root')),
+			'url'=>$_CONF['site_admin_url'] . '/configuration.php',
+			'lang' => $LANG01[129], 'image' => '/images/icons/configuration.')
+		  );
 
     for ($i = 0; $i < count ($cc_arr); $i++) {
         if ($cc_arr[$i]['condition']) {
