@@ -1,6 +1,6 @@
 <?php
 
-// Reminder: always indent with 4 spaces (no tabs). 
+// Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
 // | Links plugin 1.0 for Geeklog                                              |
 // +---------------------------------------------------------------------------+
@@ -37,25 +37,25 @@
 // +---------------------------------------------------------------------------+
 //
 
-/** 
- * This file installs and removes the data structures for the    
- * Links plugin for Geeklog.  
- * 
+/**
+ * This file installs and removes the data structures for the
+ * Links plugin for Geeklog.
+ *
  * @package Links
  * @subpackage admin
  * @filesource
  * @version 1.0.1
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
- * 
+ *
  */
-// $Id: install.php,v 1.19 2007/08/28 07:34:12 ospiess Exp $
+// $Id: install.php,v 1.20 2007/08/29 04:27:22 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/links/config.php');
@@ -96,14 +96,14 @@ $pi_admin        = $pi_display_name . ' Admin';
 /**
  * the plugin's groups - assumes first group to be the Admin group
  * @global array $GROUPS
- * 
+ *
  */
 $GROUPS = array();
 $GROUPS[$pi_admin] = 'Has full access to ' . $pi_name . ' features';
 
 /**
 * @global array $FEATURES
-* 
+*
 */
 $FEATURES = array();
 $FEATURES['links.edit']         = 'Access to links editor';
@@ -112,7 +112,7 @@ $FEATURES['links.submit']       = 'May skip the links submission queue';
 
 /**
  * @global array $MAPPINGS
- * 
+ *
  */
 $MAPPINGS = array();
 $MAPPINGS['links.edit']         = array ($pi_admin);
@@ -130,9 +130,9 @@ $DEFVALUES = array();
 
 $blockadmin_id = DB_GetItem ($_TABLES['groups'], 'grp_id', "grp_name='Block Admin'");
 
-$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('site', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$_LI_CONF['root']}', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
 
-$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20070122143647631', 'site', 'Geeklog sites', 'Sites using or related to the Geeklog CMS', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20070122143647631', '{$_LI_CONF['root']}', 'Geeklog sites', 'Sites using or related to the Geeklog CMS', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', '20070122143647631', 'http://www.geeklog.net/', 'Visit the homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 43, NOW(), 1, 5, 3, 3, 2, 2)";
 
@@ -187,7 +187,7 @@ if (!SEC_inGroup ('Root')) {
     echo $display;
     exit;
 }
- 
+
 
 /**
 * Puts the datastructures for this plugin into the Geeklog database
@@ -214,8 +214,6 @@ function plugin_install_now()
 
     COM_errorLog ("Attempting to install the $pi_display_name plugin", 1);
 
-    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
-
     // create the plugin's groups
     $admin_group_id = 0;
     foreach ($GROUPS as $name => $desc) {
@@ -225,7 +223,7 @@ function plugin_install_now()
         $grp_desc = addslashes ($desc);
         DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
         if (DB_error ()) {
-            $uninstall_plugin ();
+            PLG_uninstall ($pi_name);
 
             return false;
         }
@@ -240,6 +238,7 @@ function plugin_install_now()
     }
 
     // Create the plugin's table(s)
+    COM_errorLog ('Creating plugin tables...', 1);
     $_SQL = array ();
     if (file_exists ($base_path . 'sql/' . $_DB_dbms . '_install.php')) {
         require_once ($base_path . 'sql/' . $_DB_dbms . '_install.php');
@@ -258,9 +257,10 @@ function plugin_install_now()
                 $sql = str_replace ('MyISAM', 'InnoDB', $sql);
             }
             DB_query ($sql);
+            COM_errorLog ('...table', 1);
             if (DB_error ()) {
                 COM_errorLog ('Error creating table', 1);
-                $uninstall_plugin ();
+                PLG_uninstall ($pi_name);
 
                 return false;
             }
@@ -276,7 +276,7 @@ function plugin_install_now()
         DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
                   . "VALUES ('$ft_name', '$ft_desc')", 1);
         if (DB_error ()) {
-            $uninstall_plugin ();
+            PLG_uninstall ($pi_name);
 
             return false;
         }
@@ -288,7 +288,7 @@ function plugin_install_now()
                 COM_errorLog ("Adding $feature feature to the $group group", 1);
                 DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$GROUPS[$group]})");
                 if (DB_error ()) {
-                    $uninstall_plugin ();
+                    PLG_uninstall ($pi_name);
 
                     return false;
                 }
@@ -303,7 +303,7 @@ function plugin_install_now()
     DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES "
               . "($admin_group_id, NULL, 1)");
     if (DB_error ()) {
-        $uninstall_plugin ();
+        PLG_uninstall ($pi_name);
 
         return false;
     }
@@ -314,7 +314,7 @@ function plugin_install_now()
         $sql = str_replace ('#group#', $admin_group_id, $sql);
         DB_query ($sql, 1);
         if (DB_error ()) {
-            $uninstall_plugin ();
+            PLG_uninstall ($pi_name);
 
             return false;
         }
@@ -330,7 +330,7 @@ function plugin_install_now()
         . "('$pi_name', '$pi_version', '$gl_version', '$pi_url', 1)");
 
     if (DB_error ()) {
-        $uninstall_plugin ();
+        PLG_uninstall ($pi_name);
 
         return false;
     }
@@ -338,7 +338,7 @@ function plugin_install_now()
     // give the plugin a chance to perform any post-install operations
     if (function_exists ('plugin_postinstall')) {
         if (!plugin_postinstall ()) {
-            $uninstall_plugin ();
+            PLG_uninstall ($pi_name);
 
             return false;
         }

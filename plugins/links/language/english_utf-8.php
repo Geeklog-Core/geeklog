@@ -2,12 +2,13 @@
 
 ###############################################################################
 # english_utf-8.php
-# This is the english language page for the Geeklog links Plug-in!
+#
+# This is the english language file for the Geeklog Links Plugin
 #
 # Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
+# tony AT tonybibbs DOT com
 # Copyright (C) 2005 Trinity Bays
-# trinity93@gmail.com
+# trinity93 AT gmail DOT com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,55 +25,60 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english_utf-8.php,v 1.6 2007/08/28 07:33:30 ospiess Exp $
+# $Id: english_utf-8.php,v 1.7 2007/08/29 04:26:59 ospiess Exp $
 
-/** 
- * This is the english language page for the Geeklog links Plug-in! 
- * 
+/**
+ * This is the english language page for the Geeklog links Plug-in!
+ *
  * @package Links
  * @subpackage Language
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93@steubentech.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * @author Blaine Lang <langmail@sympatico.ca>
- * @author Dirk Haun <dirk@haun-online.de>
- * 
+ * @copyright Copyright &copy; 2005-2006
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @author Trinity Bays <trinity93 AT steubentech DOT com>
+ * @author Tony Bibbs <tony AT tonybibbs DOT com>
+ * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
+ *
  */
 
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:    $LANG - variable name
-#              XX - file id number
-#            YY - phrase id number
+# $LANGXX[YY]:	$LANG - variable name
+#		  	XX - file id number
+#			YY - phrase id number
 ###############################################################################
 /**
 * the link plugin's lang array
-* 
-* @global array $LANG_LINKS 
+*
+* @global array $LANG_LINKS
 */
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
-    84 => 'LINKS',
+    84 => 'Links',
     88 => 'No recent new links',
     114 => 'Links',
     116 => 'Add A Link',
-    117 => 'Go',
-    118 => 'Categories',
-    'root' => 'Root' // this is the title used for the root (top level) category
+    117 => 'Report Broken Link',
+    118 => 'Broken Link Report',
+    119 => 'The following link has been reported to be broken: ',
+    120 => 'To edit the link, click here: ',
+    121 => 'The broken Link was reported by: ',
+    122 => 'Thank you for reporting this broken link. The administrator will correct the problem as soon as possible',
+    123 => 'Thank you',
+    124 => 'Go',
+    125 => 'Categories',
+    'root' => 'Root' // title used for top level category
 );
 
 ###############################################################################
 # for stats
 /**
 * the link plugin's lang stats array
-* 
+*
 * @global array $LANG_LINKS_STATS
 */
 $LANG_LINKS_STATS = array(
@@ -87,8 +93,8 @@ $LANG_LINKS_STATS = array(
 # for the search
 /**
 * the link plugin's lang search array
-* 
-* @global array $LANG_LINKS_SEARCH 
+*
+* @global array $LANG_LINKS_SEARCH
 */
 $LANG_LINKS_SEARCH = array(
  'results' => 'Link Results',
@@ -102,8 +108,8 @@ $LANG_LINKS_SEARCH = array(
 # for the submission form
 /**
 * the link plugin's lang submit form array
-* 
-* @global array $LANG_LINKS_SUBMIT 
+*
+* @global array $LANG_LINKS_SUBMIT
 */
 $LANG_LINKS_SUBMIT = array(
     1 => 'Submit a Link',
@@ -135,8 +141,8 @@ $PLG_links_MESSAGE3002 = $LANG32[9];
 # admin/link.php
 /**
 * the link plugin's lang admin array
-* 
-* @global array $LANG_LINKS_ADMIN 
+*
+* @global array $LANG_LINKS_ADMIN
 */
 $LANG_LINKS_ADMIN = array(
     1 => 'Link Editor',
@@ -155,10 +161,13 @@ $LANG_LINKS_ADMIN = array(
     16 => 'Access Denied',
     17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">go back to the link administration screen</a>.",
     20 => 'If other, specify',
-    24 => 'Edit categories',
-    25 => 'New link',
-    26 => 'New category',
-    27 => 'Edit links',
+    21 => 'save',
+    22 => 'cancel',
+    23 => 'delete',
+    24 => 'Link not found',
+    25 => 'The link you selected for editing could not be found.',
+    26 => 'Verify Links',
+    27 => 'HTML Status',
     28 => 'Edit category',
     29 => 'Enter or edit the details below.',
     30 => 'Category',
@@ -178,7 +187,58 @@ $LANG_LINKS_ADMIN = array(
     45 => 'You do not have sufficient rights to delete this category',
     46 => 'User %s tried to delete a category to which they do not have access rights',
     47 => 'No such category exists',
-    48 => 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.'
+    48 => 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.',
+    50 => 'Edit categories',
+    51 => 'New link',
+    52 => 'New category',
+    53 => 'Edit links',
+    54 => 'Category Manager',
+    55 => 'Edit categories below. Note that you cannot delete a category that contains other categories or links - you should delete these first, or move them to another category.',
+    56 => 'Category Editor'
+
 );
+
+$LANG_LINKS_STATUS = array(
+    100 => "Continue",
+    101 => "Switching Protocols",
+    200 => "OK",
+    201 => "Created",
+    202 => "Accepted",
+    203 => "Non-Authoritative Information",
+    204 => "No Content",
+    205 => "Reset Content",
+    206 => "Partial Content",
+    300 => "Multiple Choices",
+    301 => "Moved Permanently",
+    302 => "Found",
+    303 => "See Other",
+    304 => "Not Modified",
+    305 => "Use Proxy",
+    307 => "Temporary Redirect",
+    400 => "Bad Request",
+    401 => "Unauthorized",
+    402 => "Payment Required",
+    403 => "Forbidden",
+    404 => "Not Found",
+    405 => "Method Not Allowed",
+    406 => "Not Acceptable",
+    407 => "Proxy Authentication Required",
+    408 => "Request Timeout",
+    409 => "Conflict",
+    410 => "Gone",
+    411 => "Length Required",
+    412 => "Precondition Failed",
+    413 => "Request Entity Too Large",
+    414 => "Request-URI Too Long",
+    415 => "Unsupported Media Type",
+    416 => "Requested Range Not Satisfiable",
+    417 => "Expectation Failed",
+    500 => "Internal Server Error",
+    501 => "Not Implemented",
+    502 => "Bad Gateway",
+    503 => "Service Unavailable",
+    504 => "Gateway Timeout",
+    505 => "HTTP Version Not Supported",
+    999 => "Connection Timed out");
 
 ?>

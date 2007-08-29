@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.82 2007/08/28 07:52:25 ospiess Exp $
+// $Id: functions.inc,v 1.83 2007/08/29 04:26:59 ospiess Exp $
 
 
 /**
@@ -140,19 +140,17 @@ function plugin_getwhatsnew_links()
 
             $title = COM_truncate( $A['title'], $_CONF['title_trim_length'],
                                    '...' );
+            $link_title = array();
             if( $title != $A['title'] )
             {
-                $newlinks[] = '<a href="' . $lcount . '" title="'
-                            . $A['title'] . '">' . $title . '</a>' . LB;
+                $link_title = array('title'=>$A['title']);
             }
-            else
-            {
-                $newlinks[] = '<a href="' . $lcount . '">' . $A['title']
-                            . '</a>' . LB;
-            }
+
+            $newlinks[] = COM_createLink(
+                $title, $lcount, $link_title) . LB;
         }
 
-        $retval .= COM_makeList( $newlinks, 'list-new-links' );
+        $retval .= COM_makeList( $newlinks, 'list-new-plugins' );
     }
     else
     {
@@ -179,33 +177,39 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
         return array('link','category');
     } else if ($op == 'parse') {
         switch( $autotag['tag'] ) {
-            case 'link':
-                $lid = COM_applyFilter ($autotag['parm1']);
-                $url = COM_buildUrl ($_CONF['site_url']
-                                     . '/links/portal.php?what=link&item=' . $lid);
-                if (empty ($autotag['parm2'])) {
-                    $linktext = stripslashes (DB_getItem ($_TABLES['links'],
-                                              'title', "lid = '$lid'"));
-                } else {
-                    $linktext = $autotag['parm2'];
-                }
-                $link = '<a href="' . $url . '">' . $linktext . '</a>';
-                $content = str_replace ($autotag['tagstr'], $link, $content);
-                break;
-            case 'category':
-                $cid = COM_applyFilter ($autotag['parm1']);
-                $url = COM_buildUrl ($_CONF['site_url']
-                                     . '/links/index.php?cid=' . $cid);
-                if (empty ($autotag['parm2'])) {
-                    $linktext = stripslashes (DB_getItem ($_TABLES['linkcategories'],
-                                              'category', "cid = '$cid'"));
-                } else {
-                    $linktext = $autotag['parm2'];
-                }
-                $link = '<a href="' . $url . '">' . $linktext . '</a>';
-                $content = str_replace ($autotag['tagstr'], $link, $content);
-                break;
+        case 'link':
+            $lid = COM_applyFilter ($autotag['parm1']);
+            $url = COM_buildUrl ($_CONF['site_url']
+                                 . '/links/portal.php?what=link&item=' . $lid);
+            if (empty ($autotag['parm2'])) {
+                $linktext = stripslashes (DB_getItem ($_TABLES['links'],
+                                          'title', "lid = '$lid'"));
+            } else {
+                $linktext = $autotag['parm2'];
             }
+            $attr = array(
+                'title' => $linktext,
+                'class' => 'ext-link');
+            $link = COM_createLink($linktext, $url, $attr);
+            $content = str_replace ($autotag['tagstr'], $link, $content);
+            break;
+        case 'category':
+            $cid = COM_applyFilter ($autotag['parm1']);
+            $url = COM_buildUrl ($_CONF['site_url']
+                                 . '/links/index.php?cid=' . $cid);
+            if (empty ($autotag['parm2'])) {
+                $linktext = stripslashes (DB_getItem ($_TABLES['linkcategories'],
+                                          'category', "cid = '$cid'"));
+            } else {
+                $linktext = $autotag['parm2'];
+            }
+            $attr = array(
+                'title' => $linktext,
+                'class' => 'ext-link');
+            $link = COM_createLink($linktext, $url, $attr);
+            $content = str_replace ($autotag['tagstr'], $link, $content);
+            break;
+        }
         return $content;
     }
 }
@@ -373,6 +377,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
         return $plugin_results;
     }
 
+    // link search
     $select = 'SELECT lid,title,url,owner_id,hits,UNIX_TIMESTAMP(date) AS day';
     $sql = " FROM {$_TABLES['links']} WHERE date <> 1 ";
 
@@ -460,17 +465,17 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
         $A['title'] = stripslashes ($A['title']);
         $submitter = COM_getDisplayName ($A['owner_id']);
         if ($A['owner_id'] > 1) {
-            $profile = '<a href="' . $_CONF['site_url']
-                     . '/users.php?mode=profile&amp;uid=' . $A['owner_id']
-                     . '">' . $submitter . '</a>';
+            $profile_url = $_CONF['site_url']
+                     . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+            $profile = COM_createLink($submitter, $profile_url);
         } else {
             $profile = $submitter;
         }
         $linkUrl = COM_buildURL ($_CONF['site_url']
                                  . '/links/portal.php?what=link&amp;item='
                                  . $A['lid']);
-        $anchor = '<a href="' . $linkUrl . '" title="' . $A['url'] . '">';
-        $row = array ($anchor . $A['title'] . '</a>', $thetime[0], $profile,
+        $anchor = COM_createLink($A['title'], $linkUrl, array('title'=> $A['url']));
+        $row = array ($anchor, $thetime[0], $profile,
                       COM_NumberFormat ($A['hits']));
         $plugin_results->addSearchResult ($row);
         $plugin_results->num_searchresults++;
@@ -519,8 +524,6 @@ function plugin_getadminoption_links()
                       $total_links);
     }
 }
-
-
 
 /**
 * A user is about to be deleted. Update ownership of any links owned
@@ -724,7 +727,7 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 */
 function plugin_upgrade_links ()
 {
-    global $_CONF, $_TABLES, $_LI_CONF, $_DB_dbms;
+    global $_TABLES, $_LI_CONF, $_DB_dbms, $_CONF;
 
     // the plugin needs these functions so complain when they doesn't exist
     if (!function_exists ('COM_truncate') ||
@@ -766,7 +769,7 @@ function plugin_upgrade_links ()
             return false;
         }
         COM_errorLog("Success - selected categories from links table",1);
-
+    
         // get Links admin group number
         $group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Links Admin'");
 
@@ -777,7 +780,7 @@ function plugin_upgrade_links ()
                 $A = DB_fetchArray($result);
                 $category = $A['category'];
                 $cid = COM_makeSID ();
-                DB_query ("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,owner_id,group_id,created,modified) VALUES ('{$cid}','site','{$category}','2','{$group_id}',NOW(),NOW())",1);
+                DB_query ("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,owner_id,group_id,created,modified) VALUES ('{$cid}','{$_LI_CONF['root']}','{$category}','2','{$group_id}',NOW(),NOW())",1);
                 DB_query ("UPDATE {$_TABLES['links']} SET category='{$cid}' WHERE category='{$category}'",1);
                 if (DB_error()) {
                     COM_errorLog("Error inserting categories into linkcategories table",1);
@@ -834,8 +837,13 @@ function plugin_upgrade_links ()
         }
         COM_errorLog("Success - added phpcategoriesblock to the links plugin",1);
 
+        // add owner field to submission table
+        $sql = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
+        $result = DB_query ($sql);
+
         // update the version numbers
         DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version='" . VERSION . "' WHERE pi_name='links'");
+        break;
 
     default :
     // do nothing
@@ -860,145 +868,6 @@ function plugin_enablestatechange_links ($enable)
 
     // toggle links feeds
     DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = $is_enabled WHERE type = 'links'");
-}
-
-/**
-* Removes the datastructures for this plugin from the Geeklog database
-*
-* This may get called by the install routine to undo anything done to this
-* point.
-*
-* @return   boolean     true: uninstalled successfully
-*
-*/
-function plugin_uninstall_links ()
-{
-    global $_CONF, $_TABLES;
-
-    // Uninstalls the links plugin
-
-    // Remove the linksubmisssion table
-    COM_errorLog ('Dropping linksubmission table', 1);
-    DB_query ("DROP TABLE {$_TABLES['linksubmission']}");
-    COM_errorLog ('...success', 1);
-
-    // Remove the links table
-    COM_errorLog ('Dropping links table', 1);
-    DB_query ("DROP TABLE {$_TABLES['links']}");
-    COM_errorLog ('...success', 1);
-
-    // Remove the categories table
-    COM_errorLog ('Dropping categories table', 1);
-    DB_query ("DROP TABLE {$_TABLES['linkcategories']}");
-    COM_errorLog ('...success', 1);
-
-    // Remove feed files
-    COM_errorLog ('removing links feed files', 1);
-    $sql = "SELECT filename FROM {$_TABLES['syndication']} WHERE type = 'links';";
-    $result = DB_query( $sql );
-    $nrows = DB_numRows( $result );
-    COM_errorLog ($nrows. ' files stored in table.', 1);
-    if ( $nrows > 0 ) {
-        for ( $i = 0; $i < $nrows; $i++ ) {
-            $fcount = $i + 1;
-            $A = DB_fetchArray( $result );
-            $fullpath = SYND_getFeedPath( $A[0] );
-            if ( file_exists( $fullpath ) ) {
-                unlink ($fullpath);
-                COM_errorLog ("removed file $fcount of $nrows: $fullpath", 1);
-            } else {
-                COM_errorLog ("cannot remove file $fcount of $nrows, it does not exist! ($fullpath)", 1);
-            }
-        }
-    }
-    COM_errorLog ('...success', 1);
-
-    // Remove Links Feeds from syndication table
-    COM_errorLog ('removing links feeds from table', 1);
-    DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE type = 'links'");
-    COM_errorLog ('...success', 1);
-
-    // Remove Links phpblocks from the blocks table
-    COM_errorLog ('removing links phpblock from table', 1);
-    DB_query ("DELETE FROM {$_TABLES['blocks']} WHERE name = 'links_topic_links'");
-    DB_query ("DELETE FROM {$_TABLES['blocks']} WHERE name = 'links_topic_categories'");
-    COM_errorLog ('...success', 1);
-
-    // Remove security for this plugin
-
-    // Remove the links admin group
-    $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                          "grp_name = 'Links Admin'");
-
-    if (!empty ($grp_id)) {
-        COM_errorLog ('Attempting to remove the Links Admin group', 1);
-        DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // Remove related features
-    $edit_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                           "ft_name = 'links.edit'");
-    $moderate_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                               "ft_name = 'links.moderate'");
-    $submit_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                             "ft_name = 'links.submit'");
-
-    // Remove access to those features
-    if (!empty ($edit_id)) {
-        COM_errorLog ('Attempting to remove links.edit rights from all groups' ,1);
-        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($moderate_id)) {
-        COM_errorLog ('Attempting to remove links.moderate rights from all groups', 1);
-        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $moderate_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($submit_id)) {
-        COM_errorLog ('Attempting to remove links.submit rights from all groups', 1);
-        DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $submit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // Remove Links Admin group from all other groups
-    if (!empty ($grp_id)) {
-        COM_errorLog ('Attempting to Links Admin group from all groups.', 1);
-        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // remove features
-    if (!empty ($edit_id)) {
-        COM_errorLog ('Attempting to remove the links.edit feature', 1);
-        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($moderate_id)) {
-        COM_errorLog ('Attempting to remove the links.moderate feature', 1);
-        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $moderate_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    if (!empty ($submit_id)) {
-        COM_errorLog ('Attempting to remove the links.submit feature', 1);
-        DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $submit_id");
-        COM_errorLog ('...success', 1);
-    }
-
-    // Unregister the plugin with Geeklog
-    // Always attempt to remove these entries or lib-common.php would still
-    // try and read our functions.inc file ...
-    COM_errorLog ('Attempting to unregister the plugin from Geeklog', 1);
-    DB_query ("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'links'");
-    COM_errorLog ('...success',1);
-
-    COM_errorLog ('Finished uninstalling the Links plugin.', 1);
-
-    return true;
 }
 
 /**
@@ -1220,7 +1089,7 @@ function plugin_save_submit_links ($A)
     }
 
     // pseudo-formatted link description for the spam check
-    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a> ('
+    $spamcheck = '<p>'. COM_createLink($A['title'], $A['url']) .' ('
                . $A['cid'] . ', ' . $A['categorydd'] . ')<br>'
                . $A['description'] . '</p>';
     $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
@@ -1235,11 +1104,15 @@ function plugin_save_submit_links ($A)
     $A['url'] = addslashes (COM_sanitizeUrl ($A['url']));
     $A['lid'] = addslashes (COM_makeSid ());
     COM_updateSpeedlimit ('submit');
-
+    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        $owner_id = $_USER['uid'];
+    } else {
+        $owner_id = 1; // anonymous user
+    }
     if (($_LI_CONF['linksubmission'] == 1) && !SEC_hasRights ('links.submit')) {
         $result = DB_save ($_TABLES['linksubmission'],
-                    'lid,cid,url,description,title,date',
-                    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW()");
+                    'lid,cid,url,description,title,date,owner_id',
+                    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
 
         if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
             LINKS_sendNotification ($_TABLES['linksubmission'], $A);
@@ -1247,11 +1120,7 @@ function plugin_save_submit_links ($A)
 
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=1&plugin=links');
     } else { // add link directly
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $owner_id = $_USER['uid'];
-        } else {
-            $owner_id = 1; // anonymous user
-        }
+
         $result = DB_save ($_TABLES['links'], 'lid,cid,url,description,title,date,owner_id', "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
         if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
             LINKS_sendNotification ($_TABLES['links'], $A);
@@ -1320,7 +1189,10 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
         switch($fieldname) {
             case 'edit':
                 if ($access == 3) {
-                    $retval = "<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}\">{$icon_arr['edit']}</a>";
+                    $retval = COM_createLink(
+                        $icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/plugins/links/index.php?mode=edit&amp;lid={$A['lid']}"
+                    );
                 }
                 break;
             case 'access':
@@ -1330,12 +1202,14 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                    $retval = $LANG_ACCESS['readonly'];
                 }
                 break;
+            case 'title':
+                $retval = COM_createLink(stripslashes($A['title']), $A['url']);
+                break;
             case 'htmlcode';
                 $retval = links_validateUrl($A['url']);
                 break;
-            case 'title':
-                $title = stripslashes($A['title']);
-                $retval = "<a href=\"{$A['url']}\">$title</a>";
+            case 'category';
+                $retval = $A['category'];
                 break;
             default:
                 $retval = $fieldvalue;
@@ -1345,6 +1219,63 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
 
     return $retval;
 }
+
+function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $LANG_ACCESS;
+
+    $retval = '';
+
+    $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+    if ($access > 0) {
+        switch($fieldname) {
+            case 'edit':
+                if ($access == 3) {
+                    $retval = COM_createLink(
+                        $icon_arr['edit'],
+                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;cid={$A['cid']}"
+                    );
+                }
+                break;
+            case 'access':
+                if ($access == 3) {
+                   $retval = $LANG_ACCESS['edit'];
+                } else {
+                   $retval = $LANG_ACCESS['readonly'];
+                }
+                break;
+            case 'category':
+            $indent = ($A['indent']-1) * 20;
+                $retval = '<span style="padding-left:' . $indent . 'px;">' . $A['category'] . '</span>';
+                break;
+            case 'delete';
+                if ($access == 3) {
+                    $retval = COM_createLink(
+                        $icon_arr['delete'],
+                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=delete&amp;cid={$A['cid']}"
+                    );
+                }
+                break;
+            case 'addchild';
+                if ($access == 3) {
+                    $retval = COM_createLink(
+                        $icon_arr['addchild'],
+                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;pid={$A['cid']}"
+                    );
+                }
+                break;
+            case 'topic';
+                $retval = $A['tid'];
+                break;
+            default:
+                $retval = $fieldvalue;
+                break;
+        }
+    }
+
+    return $retval;
+}
+
 
 /**
 * Return a list of all link categories
@@ -1356,8 +1287,8 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
 *       current list of categories and left untouched when it's a new category,
 *       i.e. the user selected "Other". This is needed for moderating link
 *       submissions.
-
-
+*
+*/
 function links_getCategoryList (&$current_category)
 {
     global $_TABLES, $LANG_LINKS_ADMIN;
@@ -1382,7 +1313,38 @@ function links_getCategoryList (&$current_category)
 
     return $retval;
 }
-*/
+
+function links_validateUrl($url) {
+    global $LANG_LINKS_STATUS;
+    $header_str = '';
+    $url_arr = parse_url($url);
+    $socket = @fsockopen($url_arr['host'], 80, $err_no, $err_txt, 10);
+    if ($socket) {
+        if (empty($url_arr['path'])) {
+            $url_arr['path'] = "/";
+        }
+        $query = '';
+        if (isset($url_arr['query'])) {
+            $query = "?{$url_arr['query']}";
+        }
+        $send_header = "HEAD {$url_arr['path']} HTTP/1.1\r\n"
+            . "User-Agent: Geeklog Link Checker\r\n"
+            . "Host: {$url_arr['host']}\r\n"
+            . "Connection: close\r\n\r\n";
+        fputs($socket, $send_header);
+        while($str = fgets($socket, 1024)) {
+            if (eregi("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", $str)) {
+                $status_code = trim(eregi_replace("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", "\\1", $str));
+            }
+        }
+        fclose($socket);
+        $status_code = $status_code . ": " . $LANG_LINKS_STATUS[$status_code];
+    }
+    if (!isset($status_code)) {
+        $status_code = $LANG_LINKS_STATUS[999];
+    }
+    return $status_code;
+}
 
 /**
 * Set template variables
@@ -1407,8 +1369,34 @@ function plugin_templatesetvars_links ($templatename, &$template)
     }
 }
 
-
-
+/**
+* Automatic uninstall function for plugins
+*
+* @return   array
+*
+* This code is automatically uninstalling the plugin.
+* It passes an array to the core code function that removes
+* tables, groups, features and php blocks from the tables.
+* Additionally, this code can perform special actions that cannot be
+* foreseen by the core code (interactions with other plugins for example)
+*
+*/
+function plugin_autouninstall_links ()
+{
+    $out = array (
+        /* give the name of the tables, without $_TABLES[] */
+        'tables' => array('links','linksubmission','linkcategories'),
+        /* give the full name of the group, as in the db */
+        'groups' => array('Links Admin'),
+        /* give the full name of the feature, as in the db */
+        'features' => array('links.edit', 'links.moderate', 'links.submit'),
+        /* give the full name of the block, including 'phpblock_', etc */
+        'php_blocks' => array('links_topic_categories', 'links_topic_links'),
+        /* give all vars with their name */
+        'vars'=> array()
+    );
+    return $out;
+}
 
 // +-----------------------------------------------------------------------------------------------+
 // | Category HTML functions                                                                       |
@@ -1419,13 +1407,11 @@ function plugin_templatesetvars_links ($templatename, &$template)
 * Build selection list
 */
 function links_select_box ($access, $sel = '') {
-    global $_CONF, $LANG_LINKS;
-    // root category is 'site' in database
-    $root = 'site';
+    global $_CONF, $LANG_LINKS, $_LI_CONF;
     // set root value
-    $menu = '<option value="'.$root.'">'.$LANG_LINKS['root'].'</option>';
+    $menu = '<option value="' . $_LI_CONF['root'] . '">' . $LANG_LINKS['root'] . '</option>';
     // get option values
-    $list = links_select_box_recursive($menu,$root,$sel,'&nbsp;&nbsp;',$access);
+    $list = links_select_box_recursive($menu, $_LI_CONF['root'], $sel, '&nbsp;&nbsp;', $access);
     // return list of options
     return $list;
 }
@@ -1466,7 +1452,7 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access) {
 * Breadcrumb trail does not use the "root" category in the database: the top level category is
 * set from the language file using $LANG_LINKS['root']
 */
-function links_breadcrumbs ($root,$cid) {
+function links_breadcrumbs ($root, $cid) {
     global $_CONF, $_TABLES, $LANG_LINKS;
     $breadcrumb = '';
     $c = $cid;
@@ -1476,8 +1462,9 @@ function links_breadcrumbs ($root,$cid) {
                                 WHERE cid='{$c}'");
             $A = DB_fetchArray($parent);
             if ($cid<>$c) {
-                $breadcrumb = '<a href="' . $_CONF['site_url'] . '/links/index.php?cid='
-                       . $A['cid'] . '">' . $A['category'] . '</a> : ' . $breadcrumb;
+                $content = stripslashes ($A['category']);
+                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
+                $breadcrumb = COM_createLink ($content, $url) . ' : ' . $breadcrumb;
             } else {
                 $breadcrumb = $A['category'] . $breadcrumb;
             }
@@ -1485,399 +1472,18 @@ function links_breadcrumbs ($root,$cid) {
             $c = $A['pid'];
         }
     }
-    $breadcrumb = '<a href="' . $_CONF['site_url'] . '/links/index.php">' . $LANG_LINKS['root']
-                . '</a> : ' . $breadcrumb;
-
+    $url = $_CONF['site_url'] . '/links/index.php';
+    $breadcrumb = COM_createLink ($LANG_LINKS['root'], $url) . ' : ' . $breadcrumb;
     return $breadcrumb;
 }
 
 
 
+
 // +-----------------------------------------------------------------------------------------------+
-// | Category administration functions                                                             |
-// | Located here so that in the future, users can also have their own link collections with       |
-// | categories over which they have edit access.                                                  |
+// | PHP Block functions                                                                           |
+// | Functions for building php blocks                                                             |
 // +-----------------------------------------------------------------------------------------------+
-
-
-
-// Returns a category tree of categories in the database to which
-// the user has edit access
-
-function links_list_categories ($root) {
-
-    global $_TABLES, $LANG_LINKS, $LANG_LINKS_ADMIN, $LANG_ADMIN, $_CONF, $_USER, $_LI_CONF;
-
-    $retval = COM_startBlock ($LANG_LINKS[24], '',
-                COM_getBlockTemplate ('_admin_block', 'header'));
-
-    // set template vars
-    $T = new Template($_CONF['path'] . 'plugins/links/templates/admin');
-    $T->set_file('page','categorylist.thtml');
-    $T->set_var('site_url', $_CONF['site_url']);
-    $T->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $T->set_var('layout_url', $_CONF['layout_url']);
-    $T->set_var('lang_pagetitle', $LANG_LINKS_ADMIN[24]);
-    $T->set_var('lang_link_list', $LANG_LINKS_ADMIN[27]);
-    $T->set_var('lang_new_link', $LANG_LINKS_ADMIN[25]);
-    $T->set_var('lang_list_categories', $LANG_LINKS_ADMIN[24]);
-    $T->set_var('lang_new_category', $LANG_LINKS_ADMIN[26]);
-    $T->set_var('lang_admin_home', $LANG_ADMIN['admin_home']);
-    $T->set_var('lang_sitecategories', $LANG_LINKS_ADMIN[43]);
-    $T->set_var('lang_category', $LANG_LINKS_ADMIN[30]);
-    $T->set_var('lang_topic', $LANG_LINKS_ADMIN[33]);
-    $T->set_var('edit_text', $LANG_ADMIN['edit']);
-    $T->set_var('add_text', $LANG_LINKS_ADMIN[44]);
-    $T->set_var('delete_text', $LANG_ADMIN['delete']);
-    $T->set_var('lang_root', $LANG_LINKS['root']);
-    $T->set_var('root_cid', $root);
-
-    // get list of categories
-    $list = links_list_categories_recursive($root, $indent);
-    if (strlen($list) == 0) {
-        $list = '<br><a href="' . $_CONF['site_admin_url'] .
-                 '/plugins/links/category.php?mode=edit">' . $LANG_LINKS_ADMIN[26] . '</a>';
-    }
-    $T->set_var('sitelist', $list);
-    $T->parse('output','page');
-    $retval .= $T->finish($T->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-}
-
-
-//
-// Build recursive list for function links_list_categories above
-//
-
-function links_list_categories_recursive ($cid,$indent='',$colour='') {
-
-    global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN;
-
-    // get all children of present category
-    $sql = "SELECT cid,category,tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']}
-            WHERE (pid='{$cid}')" . COM_getPermSQL('AND',0,2) . "ORDER BY pid,category";
-    $query = DB_QUERY($sql);
-    $indent .= $_LI_CONF['indent'];
-    $colour1 = ' class="pluginRow1" onMouseOver="className=\'pluginRollOver\';" onMouseOut="className=\'pluginRow1\';"';
-    $colour2 = ' class="pluginRow2" onMouseOver="className=\'pluginRollOver\';" onMouseOut="className=\'pluginRow2\';"';
-
-    // loop through results, setting to template, and calling self if children exist
-    while ( list($cid,$category,$tid,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) = DB_fetchARRAY($query) ) {
-        if ($colour==$colour2) {
-            $colour = $colour1;
-        } else {
-            $colour = $colour2;
-        }
-        $topic = DB_getItem($_TABLES['topics'], 'topic', "tid='{$tid}'");
-        $L = new Template($_CONF['path'] . 'plugins/links/templates/admin');
-        $L->set_file( array( 'item' => 'catitem.thtml' ) );
-        $L->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $L->set_var('site_url', $_CONF['site_url']);
-        $L->set_var('layout_url', $_CONF['layout_url']);
-        $L->set_var('rowcolor', $colour);
-        $L->set_var('category', $category);
-        $L->set_var('topic_text', $topic);
-        $L->set_var('cid', $cid);
-        $L->set_var('indent', $indent);
-
-        $access = SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
-        if ($access==3) {
-            $editlink = '<a href="' . $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit&amp;cid=' . $cid . '" title="' . $LANG_LINKS_ADMIN[40] . '"><img src="' . $_CONF['layout_url'] . '/images/edit.png" alt="' . $LANG_LINKS_ADMIN[40] . '"></a>';
-            $childlink = '<a href="'.$_CONF['site_admin_url'].'/plugins/links/category.php?mode=edit&amp;pid='.$cid.'" title="'.$LANG_LINKS_ADMIN[41].'"><img src="'.$_CONF['layout_url'].'/images/addchild.png" alt="'.$LANG_LINKS_ADMIN[41].'"></a>';
-            $deletelink = '<a href="'.$_CONF['site_admin_url'].'/plugins/links/category.php?mode=delete&amp;cid='.$cid.'" title="'.$LANG_LINKS_ADMIN[42].'"><img src="'.$_CONF['layout_url'].'/images/deleteitem.png" alt="'.$LANG_LINKS_ADMIN[42].'"></a>';
-        } else {
-            $editlink = '-';
-            $childlink = '-';
-            $deletelink = '-';
-        }
-        $L->set_var('edit_text', $editlink);
-        $L->set_var('add_text', $childlink);
-        $L->set_var('delete_text', $deletelink);
-        $L->parse('output','item');
-        $list .= $L->finish($L->get_var('output'));
-        if (DB_COUNT($_TABLES['linkcategories'], 'pid', $cid) > 0) {
-            $list .= links_list_categories_recursive($cid, $indent, $colour);
-        }
-    }
-    return $list;
-}
-
-
-// Returns form to create a new category or edit an existing one
-
-function links_edit_category ($cid,$pid) {
-
-    global $_TABLES, $LANG_LINKS_ADMIN, $LANG_ADMIN, $LANG_ACCESS, $_CONF, $_USER;
-
-    if ($pid <> '') {
-        // have parent id, so making a new subcategory
-        // get parent access rights
-        $result = DB_Query("SELECT group_id,perm_owner,perm_group, perm_members,perm_anon
-                            FROM {$_TABLES['linkcategories']} WHERE cid='{$pid}'");
-        $A = DB_fetchArray($result);
-        $A['username'] = DB_getItem ($_TABLES['users'], 'username', "uid={$_USER['uid']}");
-        $A['owner_id'] = $_USER['uid'];
-        $A['pid'] = $pid;
-    } elseif ($cid <> '') {
-        // have category id, so editing a category
-        $sql = "SELECT * FROM {$_TABLES['linkcategories']}
-                WHERE cid='{$cid}'" . COM_getPermSQL('AND');
-        $result = DB_Query($sql);
-        $A = DB_fetchArray($result);
-        $A['username'] = DB_getItem ($_TABLES['users'], 'username', "uid={$A['owner_id']}");
-    } else {
-        // nothing, so making a new top-level category
-        // get default access rights
-        $A['group_id']     = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name='Links Admin'");
-        SEC_setDefaultPermissions ($A, $_LI_CONF['default_permissions']);
-        $A['username']     = DB_getItem ($_TABLES['users'], 'username', "uid={$_USER['uid']}");
-        $A['owner_id']     = $_USER['uid'];
-        $A['pid']          = 'site';
-
-    }
-
-    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                             $A['perm_group'], $A['perm_members'], $A['perm_anon']);
-
-    if ($access < 3) {
-        return $LANG_LINKS[47];
-    }
-
-    $retval = COM_startBlock ($LANG_LINKS[24], '', COM_getBlockTemplate ('_admin_block', 'header'));
-
-    $T = new Template($_CONF['path'] . 'plugins/links/templates/admin');
-    $T->set_file(array('page'=>'categoryeditor.thtml'));
-
-    $T->set_var('site_url', $_CONF['site_url']);
-    $T->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $T->set_var('layout_url', $_CONF['layout_url']);
-    $T->set_var('lang_pagetitle', $LANG_LINKS_ADMIN[28]);
-    $T->set_var('lang_link_list', $LANG_LINKS_ADMIN[27]);
-    $T->set_var('lang_new_link', $LANG_LINKS_ADMIN[25]);
-    $T->set_var('lang_list_categories', $LANG_LINKS_ADMIN[24]);
-    $T->set_var('lang_new_category', $LANG_LINKS_ADMIN[26]);
-    $T->set_var('lang_admin_home', $LANG_ADMIN['admin_home']);
-    $T->set_var('instructions', $LANG_LINKS_ADMIN[29]);
-    $T->set_var('lang_category', $LANG_LINKS_ADMIN[30]);
-    $T->set_var('lang_cid', $LANG_LINKS_ADMIN[32]);
-    $T->set_var('lang_description', $LANG_LINKS_ADMIN[31]);
-    $T->set_var('lang_topic', $LANG_LINKS_ADMIN[33]);
-    $T->set_var('lang_parent', $LANG_LINKS_ADMIN[34]);
-    $T->set_var('lang_save', $LANG_ADMIN['save']);
-    $T->set_var('lang_delete', $LANG_ADMIN['delete']);
-    $T->set_var('lang_cancel', $LANG_ADMIN['cancel']);
-
-    if ($cid <> '') {
-        $T->set_var('cid_value', $A['cid']);
-        $T->set_var('old_cid_value', $A['cid']);
-        $T->set_var('title_id', $A['title_id']);
-        $T->set_var('desc_id', $A['desc_id']);
-        $T->set_var('category_options', links_select_box (3,$A['pid']));
-        $T->set_var('category_value', $A['category']);
-        $T->set_var('description_value', $A['description']);
-        $T->set_var('icon_value', $A['icon']);
-        $T->set_var('topic_list', COM_topicList ('tid,topic', $A['tid'],1,true));
-        $T->set_var('delete_button', "<input type=\"submit\" value=\"{$LANG_ADMIN['delete']}\" name=\"mode\">");
-    } else {
-        $A['cid'] = COM_makeSID ();
-        $T->set_var('cid_value', $A['cid']);
-        $T->set_var('category_options', links_select_box (3,$A['pid']));
-        $T->set_var('category_value', '');
-        $T->set_var('description_value', '');
-        $T->set_var('icon_value', '');
-        $T->set_var('topic_list', COM_topicList ('tid,topic','',1,true));
-        $T->set_var('delete_button', '');
-    }
-
-    // user access info
-    $T->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
-    $T->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $T->set_var('owner_name', COM_getDisplayName ($A['owner_id']));
-    $T->set_var('cat_ownerid', $A['owner_id']);
-    $T->set_var('lang_group', $LANG_ACCESS['group']);
-    $T->set_var('group_dropdown', SEC_getGroupDropdown ($A['group_id'], $access));
-    $T->set_var('lang_permissions', $LANG_ACCESS['permissions']);
-    $T->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
-    $T->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
-    $T->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
-
-    $T->parse('output','page');
-    $retval .= $T->finish($T->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-
-}
-
-
-
-/*
-* Save changes to category information
-* input     array       values from form (unvalidated, unsafe)
-* output    string      message giving outcome status of requested operation
-*/
-
-function links_save_category ($cid, $old_cid, $pid, $category, $description, $tid, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon) {
-    global $_TABLES, $_CONF, $_USER, $LANG_LINKS, $LANG_LINKS_ADMIN;
-
-    // Convert array values to numeric permission values
-    if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
-        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-    }
-
-    // clean 'em up
-    $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
-    $category = addslashes (COM_checkHTML (COM_checkWords ($category)));
-
-    // Check cid to make sure not illegal
-    if (($cid=='site') || ($cid=='user')) {
-        $result = $LANG_LINKS_ADMIN[35];
-        return $result;
-    }
-    // check that they didn't delete the cid. If so, get the hidden one
-    if ($cid=='' && $old_cid<>'') {
-        $cid = $old_cid;
-    }
-    // Make sure they aren't making a parent category child of one of it's own children
-    // This would create orphans
-    if ($cid==DB_getItem($_TABLES['linkcategories'], 'pid',"cid='{$pid}'")) {
-        return $LANG_LINKS_ADMIN['48'];
-    }
-
-    $access = 0;
-    if (DB_count ($_TABLES['linkcategories'], 'cid', $old_cid) > 0) {
-        // update existing item, but new cid so get access from database with old cid
-        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,
-            perm_members,perm_anon FROM {$_TABLES['linkcategories']}
-            WHERE cid='{$old_cid}'");
-        $A = DB_fetchArray ($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],
-            $A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        // set flag
-        $update = "existing";
-    } else if (DB_count ($_TABLES['linkcategories'], 'cid', $cid) > 0) {
-        // update existing item, same cid, so get access from database with existing cid
-        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,
-            perm_members,perm_anon FROM {$_TABLES['linkcategories']}
-            WHERE cid='{$cid}'");
-        $A = DB_fetchArray ($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],
-            $A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        // set flag
-        $update = "same";
-    } else {
-        // new item, so use passed values
-        $access = SEC_hasAccess($owner_id,$group_id,$perm_owner,
-            $perm_group,$perm_members,$perm_anon);
-        // set flag
-        $update = "new";
-    }
-
-    if ($access < 3) {
-        // no access rights: user should not be here
-        $display .= COM_siteHeader ('menu');
-        $display .= COM_startBlock ($LANG_LINKS[41], '',
-            COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $LANG_LINKS[44];
-        $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= COM_siteFooter ();
-        COM_accessLog(sprintf($LANG_LINKS[45], $_USER['username']));
-        echo $display;
-        exit;
-    } else {
-        // save item
-        if ($update=="existing") {
-            // update an existing item but new cid
-            $sql = "UPDATE {$_TABLES['linkcategories']}
-                    SET cid='{$cid}',
-                        pid='{$pid}',
-                        tid='{$tid}',category='{$category}',
-                        description='{$description}',
-                        modified=NOW(),
-                        owner_id='{$owner_id}',group_id='{$group_id}',
-                        perm_owner='{$perm_owner}',perm_group='{$perm_group}',
-                        perm_members='{$perm_members}',perm_anon='{$perm_anon}'
-                    WHERE cid = '{$old_cid}'";
-            $result = DB_query($sql);
-            // Also need to update links for this category
-            $sql = "UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$old_cid}'";
-            $result = DB_query($sql);
-        } else if ($update=="same") {
-            // update an existing item
-            $sql = "UPDATE {$_TABLES['linkcategories']}
-                    SET pid='{$pid}',
-                        tid='{$tid}',category='{$category}',
-                        description='{$description}',
-                        modified=NOW(),
-                        owner_id='{$owner_id}',group_id='{$group_id}',
-                        perm_owner='{$perm_owner}',perm_group='{$perm_group}',
-                        perm_members='{$perm_members}',perm_anon='{$perm_anon}'
-                    WHERE cid = '{$cid}'";
-            $result = DB_query($sql);
-        } else {
-            // insert a new item
-            $cid = COM_makesid();
-            $sql = "INSERT INTO {$_TABLES['linkcategories']}
-                    (cid, pid, category, description, tid,
-                    created,modified,
-                    owner_id, group_id, perm_owner, perm_group,
-                    perm_members, perm_anon)
-                    VALUES
-                    ('{$cid}','{$pid}','{$category}',
-                    '{$description}','{$tid}',
-                    NOW(),NOW(),
-                    '{$owner_id}','{$group_id}','{$perm_owner}',
-                    '{$perm_group}','{$perm_members}','{$perm_anon}')";
-            $result = DB_query($sql);
-        }
-    }
-    return $result;
-}
-
-
-/*
-* Delete a category
-* input     $cid    string      category id number
-* output            string      message about success of requested operation
-*/
-
-function links_delete_category ($cid)
-{
-    global $_TABLES, $LANG_LINKS_ADMIN;
-
-    if (DB_count ($_TABLES['linkcategories'], 'cid', $cid) > 0) {
-        // item exists so check access rights
-        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,
-            perm_members,perm_anon FROM {$_TABLES['linkcategories']}
-            WHERE cid='{$cid}'");
-        $A = DB_fetchArray ($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],
-            $A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access>2) {
-            // has edit rights
-            // Check for subfolders and sublinks
-            $sf = DB_count ($_TABLES['linkcategories'], 'pid', $cid);
-            $sl = DB_count ($_TABLES['links'], 'cid', $cid);
-            if (($sf=='0') && ($sl=='0')) {
-                // No subfolder/links so OK to delete
-                DB_delete ( $_TABLES['linkcategories'], 'cid', $cid);
-                return $LANG_LINKS_ADMIN[37];
-            } else {
-                // Subfolders and/or sublinks exist so return a message
-                return $LANG_LINKS_ADMIN[38];
-            }
-        } else {
-            // no access
-            return $LANG_LINKS_ADMIN[45];
-            COM_accessLog(sprintf($LANG_LINKS_ADMIN[46], $_USER['username']));
-        }
-    } else {
-        // no such category
-        return $LANG_LINKS_ADMIN[47];
-    }
-}
 
 /**
  * returns a list of links that belong to categories associated with the current topic
@@ -1895,8 +1501,9 @@ function phpblock_topic_links ()
     if ($nrows>0) {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
-            $retval .= '<a href="'.$_CONF['site_url'].'/links/portal.php?what=link&item='.$A['lid'];
-            $retval .= '">'.$A['title'].'</a><br>';
+            $content = stripslashes ($A['title']);
+            $url = $_CONF['site_url'] . '/links/portal.php?what=link&amp;item=' . $A['lid'];
+            $retval .= COM_createLink ($content, $url) . '<br>';
         }
     }
     return $retval;
@@ -1913,13 +1520,14 @@ function phpblock_topic_categories ()
     $tid = links_get_tid();
     if (isset($tid)) {
         $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']}
-                            WHERE tid='{$tid}'" . COM_getPermSQL('AND'));
-        $nrows = DB_numRows($result);
+                            WHERE tid='{$tid}'" . COM_getPermSQL ('AND'));
+        $nrows = DB_numRows ($result);
         if ($nrows>0) {
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray ($result);
-                $retval .= '<a href="'.$_CONF['site_url'].'/links/index.php?cid='.$A['cid'];
-                $retval .= '">'.$A['category'].'</a><br>';
+                $content = stripslashes ($A['category']);
+                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
+                $retval .= COM_createLink ($content, $url) . '<br>';
             }
         }
     }
@@ -1933,8 +1541,8 @@ function phpblock_topic_categories ()
 function links_get_tid ()
 {
     global $_TABLES;
-    if (isset($_REQUEST['tid'])) {
-        return $_REQUEST['tid'];
+    if (isset($_REQUEST['topic'])) {
+        return $_REQUEST['topic'];
     } elseif (isset($_REQUEST['topic'])) {
         return DB_getItem($_TABLES['topics'], 'tid',  "topic='{$_REQUEST['topic']}'");
     } elseif (isset($_REQUEST['story'])) {
@@ -1942,38 +1550,6 @@ function links_get_tid ()
     } else {
         return;
     }
-}
-
-function links_validateUrl($url) {
-    global $LANG_LINKS_STATUS;
-    $header_str = '';
-    $url_arr = parse_url($url);
-    $socket = @fsockopen($url_arr['host'], 80, $err_no, $err_txt, 10);
-    if ($socket) {
-        if (empty($url_arr['path'])) {
-            $url_arr['path'] = "/";
-        }
-        $query = '';
-        if (isset($url_arr['query'])) {
-            $query = "?{$url_arr['query']}";
-        }
-        $send_header = "HEAD {$url_arr['path']} HTTP/1.1\r\n"
-            . "User-Agent: Geeklog Link Checker\r\n"
-            . "Host: {$url_arr['host']}\r\n"
-            . "Connection: close\r\n\r\n";
-        fputs($socket, $send_header);
-        while($str = fgets($socket, 1024)) {
-            if (eregi("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", $str)) {
-                $status_code = trim(eregi_replace("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", "\\1", $str));
-            }
-        }
-        fclose($socket);
-        $status_code = $status_code . ": " . $LANG_LINKS_STATUS[$status_code];
-    }
-    if (!isset($status_code)) {
-        $status_code = $LANG_LINKS_STATUS[999];
-    }
-    return $status_code;
 }
 
 ?>

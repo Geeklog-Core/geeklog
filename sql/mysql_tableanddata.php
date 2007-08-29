@@ -223,8 +223,8 @@ CREATE TABLE {$_TABLES['groups']} (
 
 $_SQL[16] = "
 CREATE TABLE {$_TABLES['links']} (
-  lid varchar(40) NOT NULL default '',
-  category varchar(32) default NULL,
+  lid varchar(20) NOT NULL default '',
+  cid varchar(32) default NULL,
   url varchar(255) default NULL,
   description text,
   title varchar(96) default NULL,
@@ -236,24 +236,23 @@ CREATE TABLE {$_TABLES['links']} (
   perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX links_lid(lid),
-  INDEX links_category(category),
+  INDEX links_category(cid),
   INDEX links_date(date),
-  PRIMARY KEY  (lid)
+  PRIMARY KEY (lid)
 ) TYPE=MyISAM
 ";
 
 $_SQL[17] = "
 CREATE TABLE {$_TABLES['linksubmission']} (
-  lid varchar(40) NOT NULL default '',
-  category varchar(32) default NULL,
+  lid varchar(20) NOT NULL default '',
+  cid varchar(32) default NULL,
   url varchar(255) default NULL,
   description text,
   title varchar(96) default NULL,
   hits int(11) default NULL,
   date datetime default NULL,
   owner_id mediumint(8) unsigned NOT NULL default '1',
-  PRIMARY KEY  (lid)
+  PRIMARY KEY (lid)
 ) TYPE=MyISAM
 ";
 
@@ -704,6 +703,26 @@ CREATE TABLE {$_TABLES['trackbackcodes']} (
 ) TYPE=MyISAM
 ";
 
+$_SQL[46] = "
+CREATE TABLE {$_TABLES['linkcategories']} (
+  cid varchar(20) NOT NULL,
+  pid varchar(20) NOT NULL,
+  category varchar(32) NOT NULL,
+  description text DEFAULT NULL,
+  tid varchar(20) DEFAULT NULL,
+  created datetime DEFAULT NULL,
+  modified datetime DEFAULT NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '2',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  PRIMARY KEY (cid),
+  KEY links_pid (pid)
+) TYPE=MyISAM
+";
+
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (2,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (3,5) ";
@@ -1051,7 +1070,9 @@ $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_g
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (16,'Remote Users', 'Users in this group can have authenticated against a remote server.',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (17,'Syndication Admin', 'Can create and modify web feeds for the site',1) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, date, owner_id, group_id) VALUES ('geeklog.net','Geeklog Sites','http://www.geeklog.net/','Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.','Geeklog Project Homepage',NOW(),1,5)";
+$_DATA[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', '20070828065220743', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 0, '2007-08-28 14:52:13', 1, 5, 3, 2, 2, 2);";
+$_DATA[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20070828065220743', 'site', 'Geeklog Sites', NULL, NULL, '2007-08-28 14:52:20', '2007-08-28 14:52:20', 2, 5, 3, 2, 2, 2);";
+$_DATA[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('site', 'root', 'Root', 'Website root', '', '2007-08-28 14:52:21', '2007-08-28 14:52:21', 2, 5, 3, 3, 2, 2);";
 
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";
@@ -1060,7 +1081,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url
 
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('staticpages', '1.4.4','1.4.1',1,'http://www.geeklog.net/') ";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.1.1','1.4.1',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.1.1', '1.4.1', 1, 'http://www.geeklog.net/')";
+$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '2.0', '1.4.1', 1, 'http://www.geeklog.net/')";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('polls', '2.0.1', '1.4.1', '1', 'http://www.geeklog.net/')";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.2', '1.4.1', '1', 'http://www.geeklog.net/')";
 

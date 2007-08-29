@@ -2,6 +2,7 @@
 
 ###############################################################################
 # english.php
+#
 # This is the english language file for the Geeklog Links Plugin
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -24,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.19 2007/08/28 07:33:30 ospiess Exp $
+# $Id: english.php,v 1.20 2007/08/29 04:26:59 ospiess Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -46,8 +47,8 @@
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:    $LANG - variable name
-#              XX - file id number
-#            YY - phrase id number
+#                 XX - file id number
+#                 YY - phrase id number
 ###############################################################################
 /**
 * the link plugin's lang array
@@ -57,13 +58,20 @@
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
-    84 => 'LINKS',
+    84 => 'Links',
     88 => 'No recent new links',
     114 => 'Links',
     116 => 'Add A Link',
-    117 => 'Go',
-    118 => 'Categories',
-    'root' => 'Root' // this is the title used for the root (top level) category
+    117 => 'Report Broken Link',
+    118 => 'Broken Link Report',
+    119 => 'The following link has been reported to be broken: ',
+    120 => 'To edit the link, click here: ',
+    121 => 'The broken Link was reported by: ',
+    122 => 'Thank you for reporting this broken link. The administrator will correct the problem as soon as possible',
+    123 => 'Thank you',
+    124 => 'Go',
+    125 => 'Categories',
+    'root' => 'Root' // title used for top level category
 );
 
 ###############################################################################
@@ -153,10 +161,13 @@ $LANG_LINKS_ADMIN = array(
     16 => 'Access Denied',
     17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">go back to the link administration screen</a>.",
     20 => 'If other, specify',
-    24 => 'List categories',
-    25 => 'New link',
-    26 => 'New category',
-    27 => 'List links',
+    21 => 'save',
+    22 => 'cancel',
+    23 => 'delete',
+    24 => 'Link not found',
+    25 => 'The link you selected for editing could not be found.',
+    26 => 'Verify Links',
+    27 => 'HTML Status',
     28 => 'Edit category',
     29 => 'Enter or edit the details below.',
     30 => 'Category',
@@ -177,7 +188,15 @@ $LANG_LINKS_ADMIN = array(
     46 => 'User %s tried to delete a category to which they do not have access rights',
     47 => 'No such category exists',
     48 => 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.',
-    49 => 'Validate Links'
+    50 => 'Edit categories',
+    51 => 'New link',
+    52 => 'New category',
+    53 => 'Edit links',
+    54 => 'Category Manager',
+    55 => 'Edit categories below. Note that you cannot delete a category that contains other categories or links - you should delete these first, or move them to another category.',
+    56 => 'Category Editor'
+    
+
 );
 
 $LANG_LINKS_STATUS = array(

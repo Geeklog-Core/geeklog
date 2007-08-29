@@ -1,14 +1,3 @@
-
-<div class="admin-list-icon">
-    <img src="http://localhost/dev/public_html/links/images/links.png" alt="">
-</div>
-
-<a href="{site_admin_url}/plugins/links/index.php">{lang_link_list}</a> |
-<a href="{site_admin_url}/plugins/links/index.php?mode=edit">{lang_new_link}</a> |
-<a href="{site_admin_url}/plugins/links/category.php">{lang_list_categories}</a> |
-<a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a> |
-<a href="{site_admin_url}/moderation.php">{lang_admin_home}</a> 
-<br>
 <p>{instructions}</p>
 
 <br clear="both">
@@ -90,7 +79,7 @@
                                         <tr><td>&nbsp;</td></tr>
                                         <tr>
                                             <td colspan="2">
-                                                <input type="submit" value="{lang_save}" name="mode"> 
+                                                <input type="submit" value="{lang_save}" name="mode">
                                                 <input type="submit" value="{lang_cancel}" name="mode">
                                                 <input type="hidden" value="{link_id}" name="old_lid">
                                                 {delete_option}
@@ -98,6 +87,4 @@
                                         </tr>
                                     </table>
                                 </form>
-<script language="JavaScript1.2" defer>
-editor_generate('description');
-</script>
+                                <script language="JavaScript1.2" defer>editor_generate('description');</script>

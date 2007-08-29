@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.46 2007/08/28 07:34:12 ospiess Exp $
+// $Id: index.php,v 1.47 2007/08/29 04:27:22 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -104,15 +104,23 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('layout_url',$_CONF['layout_url']);
 
     $link_templates->set_var('lang_pagetitle', $LANG_LINKS_ADMIN[28]);
-    $link_templates->set_var('lang_link_list', $LANG_LINKS_ADMIN[27]);
-    $link_templates->set_var('lang_new_link', $LANG_LINKS_ADMIN[25]);
-    $link_templates->set_var('lang_list_categories', $LANG_LINKS_ADMIN[24]);
-    $link_templates->set_var('lang_new_category', $LANG_LINKS_ADMIN[26]);
+    $link_templates->set_var('lang_link_list', $LANG_LINKS_ADMIN[53]);
+    $link_templates->set_var('lang_new_link', $LANG_LINKS_ADMIN[51]);
+    $link_templates->set_var('lang_validate_links', $LANG_LINKS_ADMIN[26]);
+    $link_templates->set_var('lang_list_categories', $LANG_LINKS_ADMIN[50]);
+    $link_templates->set_var('lang_new_category', $LANG_LINKS_ADMIN[52]);
     $link_templates->set_var('lang_admin_home', $LANG_ADMIN['admin_home']);
     $link_templates->set_var('instructions', $LANG_LINKS_ADMIN[29]);
 
     if ($mode <> 'editsubmission' AND !empty($lid)) {
         $result = DB_query("SELECT * FROM {$_TABLES['links']} WHERE lid ='$lid'");
+        if (DB_numRows($result) !== 1) {
+            $msg = COM_startBlock ($LANG_LINKS_ADMIN[24], '',
+                COM_getBlockTemplate ('_msg_block', 'header'));
+            $msg .= $LANG_LINKS_ADMIN[25];
+            $msg .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            return $msg;
+        }
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
@@ -133,9 +141,9 @@ function editlink ($mode, $lid = '')
             $A['url'] = '';
             $A['description'] = '';
             $A['title']= '';
+            $A['owner_id'] = $_USER['uid'];
         }
         $A['hits'] = 0;
-        $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Links Admin'])) {
             $A['group_id'] = $_GROUPS['Links Admin'];
         } else {
@@ -229,7 +237,7 @@ function editlink ($mode, $lid = '')
 */
 function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title, $hits, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $MESSAGE, $LANG_LINKS_ADMIN;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $MESSAGE, $LANG_LINKS_ADMIN, $_LI_CONF;
 
     $retval = '';
 
@@ -304,7 +312,13 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         $category = DB_getItem ($_TABLES['linkcategories'],"category","cid='{$cid}'");
         COM_rdfUpToDateCheck ('links', $category, $lid);
 
-        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=2');
+        return PLG_afterSaveSwitch (
+            $_LI_CONF['aftersave'],
+            COM_buildURL ("{$_CONF['site_url']}/links/portal.php?what=link&item=$lid"),
+            'links',
+            2
+        );
+
     } else { // missing fields
         $retval .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[1]);
         $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
@@ -353,20 +367,20 @@ function listlinks ()
     //                array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
     //                      'text' => $LANG_LINKS_ADMIN[27]),
                     array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
-                          'text' => $LANG_LINKS_ADMIN[25]),
+                          'text' => $LANG_LINKS_ADMIN[51]),
                     array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
-                          'text' => $LANG_LINKS_ADMIN[49]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
-                          'text' => $LANG_LINKS_ADMIN[24]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
                           'text' => $LANG_LINKS_ADMIN[26]),
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
+                          'text' => $LANG_LINKS_ADMIN[50]),
+                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
+                          'text' => $LANG_LINKS_ADMIN[52]),
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras'   => true,
                       'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
-                      'icon' => $_CONF['site_url'] . '/links/images/links.png',
+                      'icon' => plugin_geticon_links(),
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php$validate");
 
     $query_arr = array('table' => 'links',

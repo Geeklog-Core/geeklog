@@ -27,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.19 2007/08/28 10:02:21 ospiess Exp $
+// $Id: config.php,v 1.20 2007/08/29 04:26:59 ospiess Exp $
 /**
  * Links plugin configuration file
  *
@@ -140,11 +140,18 @@ $_LI_CONF['notification'] = 0;
  */
 $_LI_CONF['delete_links'] = 0;
 
+/** What to show after a link has been saved? Possible choices:
+ * 'item' -> forward to the target of the link
+ * 'list' -> display the admin-list of links
+ * 'plugin' -> display the public homepage of the links plugin
+ * 'home' -> display the site homepage
+ * 'admin' -> display the site admin homepage
+ */
+$_LI_CONF['aftersave'] = 'list';
+
 /**
  * indent used in category edit page
  * What characters to use for the indent when listing categories for editing in the admin section.
- *
- * @global array $_LI_CONF['show_top10']
  */
 $_LI_CONF['indent'] = "--";
 
@@ -152,7 +159,6 @@ $_LI_CONF['indent'] = "--";
  * show category descriptions
  * Whether to show subcategory descriptions when viewing a category or not.
  *
- * @global array $_LI_CONF['show_top10']
  */
 $_LI_CONF['show_category_descriptions'] = true;
 
@@ -160,11 +166,8 @@ $_LI_CONF['show_category_descriptions'] = true;
  * enable multilingual features
  * Whether to enable simple multilingual behaviour or not.
  *
- * @global array $_LI_CONF['show_top10']
  */
 $_LI_CONF['enable_multilingual_links'] = false;
-
-
 
 /**
  * show category descriptions

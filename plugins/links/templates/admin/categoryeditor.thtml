@@ -1,13 +1,3 @@
-<h2>{lang_pagetitle}</h2>
-<div class="admin-list-icon">
-    <img src="{site_url}/links/images/links.png" alt="">
-</div>
-<a href="{site_admin_url}/plugins/links/index.php">{lang_link_list}</a> |
-<a href="{site_admin_url}/plugins/links/index.php?mode=edit">{lang_new_link}</a> |
-<a href="{site_admin_url}/plugins/links/category.php">{lang_list_categories}</a> |
-<a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a> |
-<a href="{site_admin_url}/moderation.php">{lang_admin_home}</a>
-<br>
 <p>{instructions}</p>
 <br clear="both">
     <form action="{site_admin_url}/plugins/links/category.php" method="post">
@@ -65,12 +55,13 @@
             <tr>
                 <td colspan="2">{lang_lockmsg}<td>
             </tr>
+            <tr><td>&nbsp;</td></tr>
             <tr>
-                <td colspan="2" align="center"><br><br>
-                    <input type="hidden" value="{old_cid_value}" name="old_cid">
-                    <input type="submit" value="{lang_save}" name="mode">
+                <td colspan="2">
+                    <input type="hidden" value="{old_cid_value}" name="old_cid"> 
+                    <input type="submit" value="{lang_save}" name="mode"> 
                     <input type="submit" value="{lang_cancel}" name="mode">
-                    {delete_button}
+                    {delete_option}
                 </td>
             </tr>
         </table>

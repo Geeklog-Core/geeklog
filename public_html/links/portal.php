@@ -51,7 +51,7 @@
  * 
  */
 
-// $Id: portal.php,v 1.3 2006/05/15 04:10:38 vinny Exp $
+// $Id: portal.php,v 1.4 2007/08/29 04:27:34 ospiess Exp $
 
 require_once('../lib-common.php');
 
@@ -72,12 +72,18 @@ if ($what == 'link') {
             DB_change ($_TABLES['links'], 'hits','hits + 1', 'lid',$item, '', true);
         }
     }
+} elseif ($what == 'category') {
+
+    $item = COM_applyFilter (COM_getArgument ('item'));
+
+    if (!empty ($item)) {
+        $url = COM_buildURL("{$_CONF['site_url']}/links/index.php?cid={$item}");
+    }
 }
 
 if (empty ($url)) {
     $url = $_CONF['site_url'];
 }
-
 header ('HTTP/1.1 301 Moved');
 header ('Location: ' . $url);
 header ('Connection: close');
