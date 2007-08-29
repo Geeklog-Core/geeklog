@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.261 2007/08/29 06:55:04 ospiess Exp $
+// $Id: story.php,v 1.262 2007/08/29 09:33:54 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -183,7 +183,7 @@ function liststories()
 
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']);
-    $menu = ADMIN_createMenu(
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG24[23],
         $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE
@@ -202,13 +202,15 @@ function liststories()
     if (!empty ($excludetopics)) {
         $excludetopics = 'AND ' . $excludetopics;
     }
-    $query_arr = array('table' => 'stories',
-                       'sql' => $sql,
-                       'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
-                       'default_filter' => $excludetopics . COM_getPermSQL ('AND'),);
+    $query_arr = array(
+        'table' => 'stories',
+        'sql' => $sql,
+        'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
+        'default_filter' => $excludetopics . COM_getPermSQL ('AND')
+    );
 
     $retval .= ADMIN_list ("story", "ADMIN_getListField_stories", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, $menu, $filter);
+                            $query_arr, $defsort_arr, $filter);
     return $retval;
 }
 

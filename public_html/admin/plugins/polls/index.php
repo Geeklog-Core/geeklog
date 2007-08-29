@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.46 2007/08/29 06:55:04 ospiess Exp $
+// $Id: index.php,v 1.47 2007/08/29 09:33:54 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -69,40 +69,49 @@ function listpolls()
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
     $retval = '';
-
-    $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG25[9], 'field' => 'topic', 'sort' => true),
-                    array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
-                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
-                    array('text' => $LANG25[8], 'field' => 'display', 'sort' => true));
-
-    $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
-
+    // writing the menu on top
     $menu_arr = array (
         array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php?mode=edit',
               'text' => $LANG_ADMIN['create_new']),
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
-    $menu = ADMIN_createMenu(
+
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG25[19],
         plugin_geticon_polls()
     );
 
-    $text_arr = array('has_extras' => true,
-                      'title' => $LANG25[18], 'instructions' => $LANG25[19],
-                      'icon' => plugin_geticon_polls(),
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php");
+    // writing the actual list
+    $header_arr = array(      # dislay 'text' and use table field 'field'
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG25[9], 'field' => 'topic', 'sort' => true),
+        array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
+        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+        array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
+        array('text' => $LANG25[8], 'field' => 'display', 'sort' => true)
+    );
 
-    $query_arr = array('table' => 'polltopics',
-                       'sql' => "SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['polltopics']} WHERE 1=1",
-                       'query_fields' => array('topic'),
-                       'default_filter' => COM_getPermSql ('AND'));
+    $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
-    $retval = ADMIN_list ('polls', 'plugin_getListField_polls', $header_arr,
-                          $text_arr, $query_arr, $defsort_arr, $menu);
+    $text_arr = array(
+        'has_extras' => true,
+        'title' => $LANG25[18], 'instructions' => $LANG25[19],
+        'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php"
+    );
+
+    $query_arr = array(
+        'table' => 'polltopics',
+        'sql' => "SELECT *,UNIX_TIMESTAMP(date) AS unixdate "
+            . "FROM {$_TABLES['polltopics']} WHERE 1=1",
+        'query_fields' => array('topic'),
+        'default_filter' => COM_getPermSql ('AND')
+    );
+
+    $retval .= ADMIN_list (
+        'polls', 'plugin_getListField_polls', $header_arr,
+        $text_arr, $query_arr, $defsort_arr
+    );
 
     return $retval;
 }

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.51 2007/08/29 06:55:04 ospiess Exp $
+// $Id: syndication.php,v 1.52 2007/08/29 09:33:54 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -150,7 +150,7 @@ function listfeeds()
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
-    $menu = ADMIN_createMenu(
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG33[13],
         $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE
@@ -171,7 +171,7 @@ function listfeeds()
     $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true">');
 
     $retval .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, $menu,  '', '', '', $form_arr);
+                            $query_arr, $defsort_arr, '', '', '', $form_arr);
     return $retval;
 }
 

@@ -100,7 +100,7 @@ function links_list_categories ($root)
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
-    $menu = ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
+    $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
 
     $text_arr = array(
         'has_extras'   => true,
@@ -112,7 +112,7 @@ function links_list_categories ($root)
     $data_arr = links_list_categories_recursive ($dummy, $_LI_CONF['root'], 0);
 
     $retval .= ADMIN_simpleList ("plugin_getListField_categories", $header_arr, $text_arr,
-                            $data_arr, $menu);
+                            $data_arr);
 
     return $retval;
 }

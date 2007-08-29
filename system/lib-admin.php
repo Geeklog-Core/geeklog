@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.114 2007/08/29 06:55:40 ospiess Exp $
+// $Id: lib-admin.php,v 1.115 2007/08/29 09:34:53 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -52,7 +52,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
 *
 */
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
-                           $data_arr, $menu = '', $options = '', $form_arr='')
+                           $data_arr, $options = '', $form_arr='')
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
@@ -74,12 +74,14 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     }
 
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
-    $admin_templates->set_file (array ('top_menu' => 'topmenu.thtml',
-                                       'list' => 'list.thtml',
-                                       'header' => 'header.thtml',
-                                       'row' => 'listitem.thtml',
-                                       'field' => 'field.thtml'
-                                      ));
+    $admin_templates->set_file (
+        array (
+            'list' => 'list.thtml',
+            'header' => 'header.thtml',
+            'row' => 'listitem.thtml',
+            'field' => 'field.thtml'
+        )
+    );
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
@@ -95,9 +97,6 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     }
     if (isset($form_arr['bottom'])) {
         $admin_templates->set_var('formfields_bottom', $form_arr['bottom']);
-    }
-    if (!empty ($menu)) {
-        $admin_templates->set_var('top_menu', $menu);
     }
 
     $icon_arr = array(
@@ -193,7 +192,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 }
 
 /**
-* Creates a list of data with a menu, search, filter, clickable headers etc.
+* Creates a list of data with a search, filter, clickable headers etc.
 *
 * @param    string  $component      name of the list
 * @param    string  $fieldfunction  name of the function that handles special entries
@@ -201,14 +200,13 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 * @param    array   $text_arr       array with different text strings
 * @param    array   $query_arr      array with sql-options
 * @param    array   $defsort_arr    default sorting values
-* @param    string  $menu           string menu-entries
 * @param    string  $filter         additional drop-down filters
 * @param    string  $extra          additional values passed to fieldfunction
 * @return   string                  HTML output of function
 *
 */
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
-            $query_arr, $defsort_arr, $menu = '', $filter = '', $extra = '',
+            $query_arr, $defsort_arr, $filter = '', $extra = '',
             $options = '', $form_arr='')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $LANG01, $_IMAGE_TYPE, $MESSAGE;
@@ -324,10 +322,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('last_query', COM_applyFilter($query));
         $admin_templates->set_var('filter', $filter);
         $admin_templates->parse('search_menu', 'search_menu', true);
-    }
-
-    if (!empty ($menu)) {
-        $admin_templates->set_var('top_menu', $menu);
     }
 
     $sql_query = addslashes ($query); # replace quotes etc for security
@@ -575,14 +569,16 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '') {
     );
 
     $menu_fields = '';
+    $attr = array('class' => 'admin-menu-item');
     for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
-        $menu_fields .= COM_createLink($menu_arr[$i]['text'], $menu_arr[$i]['url']);
+        $menu_fields .= COM_createLink($menu_arr[$i]['text'], $menu_arr[$i]['url'], $attr);
         if ($i < (count($menu_arr) -1)) {
             $menu_fields .= ' | '; # add separator
         }
     }
     if (!empty ($icon)) {
-        $icon = COM_createImage($icon);
+        $attr = array('class' => 'admin-menu-icon');
+        $icon = COM_createImage($icon, '', $attr);
         $admin_templates->set_var('icon', $icon);
     }
     $admin_templates->set_var('menu_fields', $menu_fields);

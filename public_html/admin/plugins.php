@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.74 2007/08/29 06:55:04 ospiess Exp $
+// $Id: plugins.php,v 1.75 2007/08/29 09:33:54 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -396,12 +396,13 @@ function listplugins ()
     global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
+    $retval = '';
     $header_arr = array(      # display 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
-                    array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
-                    array('text' => $LANG32[18], 'field' => 'pi_gl_version', 'sort' => true),
-                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'enabled', 'sort' => false)
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
+        array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
+        array('text' => $LANG32[18], 'field' => 'pi_gl_version', 'sort' => true),
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'enabled', 'sort' => false)
     );
 
     $defsort_arr = array('field' => 'pi_name', 'direction' => 'asc');
@@ -409,31 +410,34 @@ function listplugins ()
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
-    $menu = ADMIN_createMenu(
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG32[11],
         $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE
     );
 
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras' => true,
-                      'title' => $LANG32[5],
-                      'instructions' => $LANG32[11],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/plugins.'
-                                . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . '/plugins.php');
+    $text_arr = array(
+        'has_extras' => true,
+        'title' => $LANG32[5],
+        'instructions' => $LANG32[11],
+        'form_url' => $_CONF['site_admin_url'] . '/plugins.php'
+    );
 
-    $query_arr = array('table' => 'plugins',
-                       'sql' => "SELECT pi_name, pi_version, pi_gl_version, "
-                               ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1=1",
-                       'query_fields' => array('pi_name'),
-                       'default_filter' => '');
+    $query_arr = array(
+        'table' => 'plugins',
+        'sql' => "SELECT pi_name, pi_version, pi_gl_version, "
+                ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1=1",
+        'query_fields' => array('pi_name'),
+        'default_filter' => ''
+    );
     // this is a dummy-variable so we know the form has been used if all plugins should be disabled
     // in order to disable the last one.
     $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true">');
 
-    return ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
+    $retval .= ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
                        $text_arr, $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
+
+    return $retval;
 
 }
 

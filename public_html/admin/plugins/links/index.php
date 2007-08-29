@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.50 2007/08/29 06:55:04 ospiess Exp $
+// $Id: index.php,v 1.51 2007/08/29 09:33:54 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -376,7 +376,7 @@ function listlinks ()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
-    $menu = ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
+    $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
 
     $text_arr = array(
         'has_extras'   => true,
@@ -396,7 +396,7 @@ function listlinks ()
     );
 
     $retval .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, $menu);
+                            $query_arr, $defsort_arr);
 
     return $retval;
 }

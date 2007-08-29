@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.114 2007/08/29 06:55:04 ospiess Exp $
+// $Id: block.php,v 1.115 2007/08/29 09:33:54 ospiess Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -364,34 +364,34 @@ function listblocks()
 
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
-    $retval = '';
-
-    reorderblocks();
-
-    $header_arr = array(      # display 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
-                    array('text' => $LANG21[46], 'field' => 'move', 'sort' => false),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
-                    array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
-                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
-
-    );
-
-    $defsort_arr = array('field' => 'blockorder', 'direction' => 'asc');
-
+    // writing the menu on top
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/block.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
+        array('url' => $_CONF['site_admin_url'] . '/block.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
     );
-    $menu = ADMIN_createMenu(
+
+    $retval = ADMIN_createMenu(
         $menu_arr,
         $LANG21[25],
         $_CONF['layout_url'] . '/images/icons/block.'. $_IMAGE_TYPE
     );
+
+    reorderblocks();
+    
+    // writing the list
+    $header_arr = array(      # display 'text' and use table field 'field'
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
+        array('text' => $LANG21[46], 'field' => 'move', 'sort' => false),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
+        array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
+    );
+
+    $defsort_arr = array('field' => 'blockorder', 'direction' => 'asc');
 
     $text_arr = array(
         'has_extras'   => true,
@@ -399,33 +399,43 @@ function listblocks()
         'form_url' => $_CONF['site_admin_url'] . "/block.php"
     );
 
-    $query_arr = array('table' => 'blocks',
-                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 1",
-                       'query_fields' => array('title', 'content'),
-                       'default_filter' => COM_getPermSql ('AND'));
+    $query_arr = array(
+        'table' => 'blocks',
+        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 1",
+        'query_fields' => array('title', 'content'),
+        'default_filter' => COM_getPermSql ('AND')
+    );
+
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled
     // on one side in order to disable the last one. The value is the onleft var
     $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1">');
 
-    $retval .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
+    $retval .= ADMIN_list (
+        "blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
+        $query_arr, $defsort_arr, '', '', '', $form_arr
+    );
 
-    $query_arr = array('table' => 'blocks',
-                       'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 0",
-                       'query_fields' => array('title', 'content'),
-                       'default_filter' => COM_getPermSql ('AND'));
+    $query_arr = array(
+        'table' => 'blocks',
+        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 0",
+        'query_fields' => array('title', 'content'),
+        'default_filter' => COM_getPermSql ('AND')
+    );
 
     $text_arr = array(
         'has_extras'   => true,
         'title' => "$LANG21[19] ($LANG21[41])",
-        'form_url' => $_CONF['site_admin_url'] . '/block.php');
+        'form_url' => $_CONF['site_admin_url'] . '/block.php'
+    );
 
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled
     // on one side in order to disable the last one. The value is the onleft var
     $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="0">');
 
-    $retval .= ADMIN_list ('blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, '', '', '', '', $form_arr);
+    $retval .= ADMIN_list (
+        'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
+        $query_arr, $defsort_arr, '', '', '', $form_arr
+    );
 
     return $retval;
 }

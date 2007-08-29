@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.190 2007/08/29 06:55:04 ospiess Exp $
+// $Id: user.php,v 1.191 2007/08/29 09:33:54 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -359,7 +359,7 @@ function listusers()
 
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
 
-    $display = '';
+    $retval = '';
 
     if ($_CONF['lastlogin']) {
         $login_text = $LANG28[41];
@@ -392,7 +392,7 @@ function listusers()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
-    $menu = ADMIN_createMenu(
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG28[12],
         $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE
@@ -417,9 +417,9 @@ function listusers()
                        'query_fields' => array('username', 'email', 'fullname'),
                        'default_filter' => "AND {$_TABLES['users']}.uid > 1");
 
-    $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, $menu);
-    return $display;
+    $retval .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
+                            $query_arr, $defsort_arr);
+    return $retval;
 }
 
 /**

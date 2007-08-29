@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.72 2007/08/29 06:54:32 ospiess Exp $
+// $Id: functions.inc,v 1.73 2007/08/29 09:33:13 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -896,13 +896,13 @@ function CALENDAR_listevents()
     $retval = '';
 
     $header_arr = array(      # dislay 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true),
-                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG_CAL_ADMIN[14], 'field' => 'datestart', 'sort' => true),
-                    array('text' => $LANG_CAL_ADMIN[15], 'field' => 'dateend', 'sort' => true)
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true),
+        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+        array('text' => $LANG_CAL_ADMIN[14], 'field' => 'datestart', 'sort' => true),
+        array('text' => $LANG_CAL_ADMIN[15], 'field' => 'dateend', 'sort' => true)
     );
 
     $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
@@ -915,7 +915,7 @@ function CALENDAR_listevents()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
-    $menu = ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[12], plugin_geticon_calendar());
+    $retval .= ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[12], plugin_geticon_calendar());
 
     $text_arr = array(
         'has_extras'   => true,
@@ -929,10 +929,12 @@ function CALENDAR_listevents()
           ."ON {$_TABLES['events']}.owner_id={$_TABLES['users']}.uid "
           ."WHERE 1=1 ";
 
-    $query_arr = array('table' => 'events',
-                       'sql' => $sql,
-                       'query_fields' => array('title', 'datestart', 'dateend'),
-                       'default_filter' => COM_getPermSQL('AND'));
+    $query_arr = array(
+        'table' => 'events',
+        'sql' => $sql,
+        'query_fields' => array('title', 'datestart', 'dateend'),
+        'default_filter' => COM_getPermSQL('AND')
+    );
 
     $retval .= ADMIN_list ('calendar', 'plugin_getListField_calendar',
                            $header_arr, $text_arr, $query_arr,

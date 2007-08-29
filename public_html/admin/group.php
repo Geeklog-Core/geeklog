@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.94 2007/08/29 06:55:04 ospiess Exp $
+// $Id: group.php,v 1.95 2007/08/29 09:33:54 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -655,7 +655,7 @@ function listusers ($grp_id)
                           'text' => $LANG28[38]),
                     array('url'  => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
-    $menu = ADMIN_createMenu(
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         '&nbsp;',
         $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE
@@ -691,7 +691,7 @@ function listusers ($grp_id)
     );
 
     $retval .= ADMIN_list ( 'user', 'ADMIN_getListField_users',
-        $header_arr, $text_arr, $query_arr, $defsort_arr, $menu);
+        $header_arr, $text_arr, $query_arr, $defsort_arr);
 
     return $retval;
 }
@@ -705,11 +705,11 @@ function listgroups()
     $retval = '';
 
     $header_arr = array(      // display 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
-                    array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true),
-                    array('text' => $LANG_ACCESS['coregroup'], 'field' => 'grp_gl_core', 'sort' => true),
-                    array('text' => $LANG_ACCESS['listusers'], 'field' => 'list', 'sort' => false)
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
+        array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true),
+        array('text' => $LANG_ACCESS['coregroup'], 'field' => 'grp_gl_core', 'sort' => true),
+        array('text' => $LANG_ACCESS['listusers'], 'field' => 'list', 'sort' => false)
     );
 
     $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
@@ -725,7 +725,7 @@ function listgroups()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
-    $menu = ADMIN_createMenu(
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG_ACCESS['newgroupmsg'],
         $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE
@@ -759,21 +759,23 @@ function listgroups()
 
     if ($show_all_groups) {
         $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked">';
-        $query_arr = array('table' => 'groups',
-                           'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
-                           'query_fields' => array('grp_name', 'grp_descr'),
-                           'default_filter' => $grpFilter);
+        $query_arr = array(
+            'table' => 'groups',
+            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
+            'query_fields' => array('grp_name', 'grp_descr'),
+            'default_filter' => $grpFilter);
     } else {
         $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1">';
-        $query_arr = array('table' => 'groups',
-                           'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id in (2,13))",
-                           'query_fields' => array('grp_name', 'grp_descr'),
-                           'default_filter' => $grpFilter);
+        $query_arr = array(
+            'table' => 'groups',
+            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id in (2,13))",
+            'query_fields' => array('grp_name', 'grp_descr'),
+            'default_filter' => $grpFilter);
     }
     $filter .= $LANG28[48] . '</label></span>';
 
     $retval .= ADMIN_list ('groups', 'ADMIN_getListField_groups', $header_arr,
-                    $text_arr, $query_arr, $defsort_arr, $menu, $filter);
+                    $text_arr, $query_arr, $defsort_arr, $filter);
 
     return $retval;
 }

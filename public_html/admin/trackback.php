@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.46 2007/08/29 06:55:04 ospiess Exp $
+// $Id: trackback.php,v 1.47 2007/08/29 09:33:54 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -475,11 +475,12 @@ function listServices ()
     $retval = '';
 
     $header_arr = array(      # display 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_TRB['service'], 'field' => 'name', 'sort' => true),
-                    array('text' => $LANG_TRB['ping_method'], 'field' => 'method', 'sort' => true),
-                    array('text' => $LANG_TRB['service_ping_url'], 'field' => 'ping_url', 'sort' => true),
-                    array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => false));
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG_TRB['service'], 'field' => 'name', 'sort' => true),
+        array('text' => $LANG_TRB['ping_method'], 'field' => 'method', 'sort' => true),
+        array('text' => $LANG_TRB['service_ping_url'], 'field' => 'ping_url', 'sort' => true),
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => false)
+    );
 
     $defsort_arr = array('field' => 'name', 'direction' => 'asc');
 
@@ -488,7 +489,7 @@ function listServices ()
               'text' => $LANG_ADMIN['create_new']),
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
-    $menu = ADMIN_createMenu(
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG_TRB['service_explain'],
         $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE
@@ -501,11 +502,13 @@ function listServices ()
         'help_url' => $_CONF['site_url'] . '/docs/trackback.html#ping'
     );
 
-    $query_arr = array('table' => 'pingservice',
-                       'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1=1",
-                       'query_fields' => array('name', 'ping_url'),
-                       'default_filter' => "",
-                       'no_data' => $LANG_TRB['no_services']);
+    $query_arr = array(
+        'table' => 'pingservice',
+        'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1=1",
+        'query_fields' => array('name', 'ping_url'),
+        'default_filter' => "",
+        'no_data' => $LANG_TRB['no_services']
+    );
 
     // this is a dummy-variable so we know the form has been used if all services should be disabled
     // in order to disable the last one.

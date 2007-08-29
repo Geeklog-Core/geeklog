@@ -179,9 +179,19 @@ select {
 /* CLASSES ********************************************************************/
 
 /* Admin lists ****************************************************************/
-.admin-list-icon {
+.admin-menu-icon {
   float:left;
   padding:5px;
+}
+.admin-menu { /* the box around the menu */
+  padding:5px;
+  border:1px solid #EEEEEE;
+}
+.admin-menu-text{ /* the text below the links */
+  padding:5px;
+}
+.admin-menu-item { /* a single ling */
+  padding: 0px 5px 0px 5px;
 }
 .admin-list-table {
   width:100%;
