@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english_utf-8.php,v 1.7 2007/08/29 04:26:59 ospiess Exp $
+# $Id: english_utf-8.php,v 1.8 2007/08/29 05:25:31 ospiess Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -188,10 +188,10 @@ $LANG_LINKS_ADMIN = array(
     46 => 'User %s tried to delete a category to which they do not have access rights',
     47 => 'No such category exists',
     48 => 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.',
-    50 => 'Edit categories',
+    50 => 'List categories',
     51 => 'New link',
     52 => 'New category',
-    53 => 'Edit links',
+    53 => 'List links',
     54 => 'Category Manager',
     55 => 'Edit categories below. Note that you cannot delete a category that contains other categories or links - you should delete these first, or move them to another category.',
     56 => 'Category Editor'
