@@ -1,0 +1,80 @@
+<?php
+global $_CONF;
+
+$_CONF['path'] = '/path/to/geeklog/';
+$_CONF['path_system'] = $_CONF['path'] . 'system/';
+
+$_CONF['default_charset'] = 'iso-8859-1';
+
+$_CONF['mysqldump_options'] = '-Q';
+$_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
+$_CONF_FCK['imagelibrary'] = '/images/library';
+
+// Useful Stuff
+global $LB, $VERSION, $_STATES;
+
+
+if (!defined ('LB')) {
+  define('LB',"\n");
+}
+if (!defined ('VERSION')) {
+  define('VERSION', '1.4.1');
+}
+
+$_STATES = array(
+		 '--'=>'',
+		 'AL'=>'Alabama',
+		 'AK'=>'Alaska',
+		 'AZ'=>'Arizona',
+		 'AR'=>'Arkansas',
+		 'CA'=>'California',
+		 'CO'=>'Colorado',
+		 'CT'=>'Connecticut',
+		 'DE'=>'Delaware',
+		 'DC'=>'District of Columbia',
+		 'FL'=>'Florida',
+		 'GA'=>'Georgia',
+		 'HI'=>'Hawaii',
+		 'ID'=>'Idaho',
+		 'IL'=>'Illinois',
+		 'IN'=>'Indiana',
+		 'IA'=>'Iowa',
+		 'KS'=>'Kansas',
+		 'KY'=>'Kentucky',
+		 'LA'=>'Louisiana',
+		 'ME'=>'Maine',
+		 'MD'=>'Maryland',
+		 'MA'=>'Massachusetts',
+		 'MI'=>'Michigan',
+		 'MN'=>'Minnesota',
+		 'MS'=>'Mississippi',
+		 'MO'=>'Missouri',
+		 'MT'=>'Montana',
+		 'NE'=>'Nebraska',
+		 'NV'=>'Nevada',
+		 'NH'=>'New Hampshire',
+		 'NJ'=>'New Jersey',
+		 'NM'=>'New Mexico',
+		 'NY'=>'New York',
+		 'NC'=>'North Carolina',
+		 'ND'=>'North Dakota',
+		 'OH'=>'Ohio',
+		 'OK'=>'Oklahoma',
+		 'OR'=>'Oregon',
+		 'PA'=>'Pennsylvania',
+		 'RI'=>'Rhode Island',
+		 'SC'=>'South Carolina',
+		 'SD'=>'South Dakota',
+		 'TN'=>'Tennessee',
+		 'TX'=>'Texas',
+		 'UT'=>'Utah',
+		 'VT'=>'Vermont',
+		 'VA'=>'Virginia',
+		 'WA'=>'Washington',
+		 'WV'=>'West Virginia',
+		 'WI'=>'Wisconsin',
+		 'WY'=>'Wyoming'
+		 );
+
+
+?>
