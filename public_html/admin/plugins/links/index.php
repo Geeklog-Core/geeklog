@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.48 2007/08/29 05:53:55 ospiess Exp $
+// $Id: index.php,v 1.49 2007/08/29 06:00:28 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -349,11 +349,12 @@ function listlinks ()
     $retval = '';
 
     $header_arr = array(      # display 'text' and use table field 'field'
-                    array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-                    array('text' => $LANG_LINKS_ADMIN[2], 'field' => 'lid', 'sort' => true),
-                    array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-                    array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG_LINKS_ADMIN[14], 'field' => 'category', 'sort' => true));
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG_LINKS_ADMIN[2], 'field' => 'lid', 'sort' => true),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+        array('text' => $LANG_LINKS_ADMIN[14], 'field' => 'category', 'sort' => true)
+        );
 
     $validate = '';
     if (isset($_GET['checkhtml'])) {
@@ -364,25 +365,30 @@ function listlinks ()
     $defsort_arr = array('field' => 'title', 'direction' => 'asc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
-                          'text' => $LANG_LINKS_ADMIN[51]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
-                          'text' => $LANG_LINKS_ADMIN[26]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
-                          'text' => $LANG_LINKS_ADMIN[50]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
-                          'text' => $LANG_LINKS_ADMIN[52]),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']));
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
+              'text' => $LANG_LINKS_ADMIN[51]),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
+              'text' => $LANG_LINKS_ADMIN[26]),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
+              'text' => $LANG_LINKS_ADMIN[50]),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
+              'text' => $LANG_LINKS_ADMIN[52]),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
 
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
-                      'icon' => plugin_geticon_links(),
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php$validate");
+    $text_arr = array(
+        'has_menu' =>  true,
+        'has_extras'   => true,
+        'title' => $LANG_LINKS_ADMIN[11], 'instructions' => $LANG_LINKS_ADMIN[12],
+        'icon' => plugin_geticon_links(),
+        'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php$validate"
+    );
 
     $query_arr = array('table' => 'links',
-        'sql' => "SELECT l.lid AS lid, l.cid as cid, l.title AS title, c.category AS category, l.url AS url, l.description AS description, l.owner_id, l.group_id, l.perm_owner, l.perm_group, l.perm_members, l.perm_anon "
+        'sql' => "SELECT l.lid AS lid, l.cid as cid, l.title AS title, "
+            . "c.category AS category, l.url AS url, l.description AS description, "
+            . "l.owner_id, l.group_id, l.perm_owner, l.perm_group, l.perm_members, l.perm_anon "
             . "FROM {$_TABLES['links']} AS l "
             . "LEFT JOIN {$_TABLES['linkcategories']} AS c "
             . "ON l.cid=c.cid WHERE 1=1",
