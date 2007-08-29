@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.115 2007/08/29 09:34:53 ospiess Exp $
+// $Id: lib-admin.php,v 1.116 2007/08/29 09:57:52 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -270,7 +270,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # get all template fields.
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array (
-        'searchmenu' => 'searchmenu.thtml',
+        'search' => 'searchmenu.thtml',
         'list' => 'list.thtml',
         'header' => 'header.thtml',
         'row' => 'listitem.thtml',
@@ -313,15 +313,17 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
-
-    // the user can disable the search. if used, create it.
-    if ($text_arr['has_search']) {
+    $has_extras = '';
+    if (isset($text_arr['has_extras'])) { # does this one use extras? (search, google paging)
+        $has_extras = $text_arr['has_extras'];
+    }
+    if ($has_extras) { // show search
         $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
         $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
         $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
         $admin_templates->set_var('last_query', COM_applyFilter($query));
         $admin_templates->set_var('filter', $filter);
-        $admin_templates->parse('search_menu', 'search_menu', true);
+        $admin_templates->parse('search_menu', 'search', true);
     }
 
     $sql_query = addslashes ($query); # replace quotes etc for security
@@ -421,10 +423,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->clear_var('header_text');
     }
 
-    $has_extras = '';
-    if (isset($text_arr['has_extras'])) { # does this one use extras? (google paging)
-        $has_extras = $text_arr['has_extras'];
-    }
     if ($has_extras) {
         $limit = 50; # default query limit if not other chosen.
                      # maybe this could be a setting from the list?
