@@ -190,7 +190,7 @@ select {
 .admin-menu-text{ /* the text below the links */
   padding:5px;
 }
-.admin-menu-item { /* a single ling */
+.admin-menu-item { /* a single link in the menu */
   padding: 0px 5px 0px 5px;
 }
 .admin-list-table {
