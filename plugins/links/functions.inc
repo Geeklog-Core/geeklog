@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.83 2007/08/29 04:26:59 ospiess Exp $
+// $Id: functions.inc,v 1.84 2007/08/29 04:58:59 ospiess Exp $
 
 
 /**
@@ -769,7 +769,7 @@ function plugin_upgrade_links ()
             return false;
         }
         COM_errorLog("Success - selected categories from links table",1);
-    
+
         // get Links admin group number
         $group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Links Admin'");
 
@@ -836,10 +836,6 @@ function plugin_upgrade_links ()
             return false;
         }
         COM_errorLog("Success - added phpcategoriesblock to the links plugin",1);
-
-        // add owner field to submission table
-        $sql = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
-        $result = DB_query ($sql);
 
         // update the version numbers
         DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version='" . VERSION . "' WHERE pi_name='links'");
