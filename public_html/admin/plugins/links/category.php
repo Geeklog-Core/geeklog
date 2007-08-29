@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: 
+// $Id:
 
 require_once ('../../../lib-common.php');
 require_once($_CONF['path'] . 'plugins/links/config.php');
@@ -115,18 +115,19 @@ function links_list_categories ($root)
     return $retval;
 }
 
-function links_list_categories_recursive (&$data_arr, $cid, $indent) {
+function links_list_categories_recursive ($data_arr, $cid, $indent) {
 
     global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN;
 
     $indent = $indent+1;
 
     // get all children of present category
-    $sql = "SELECT cid,category,tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']}
-            WHERE (pid='{$cid}')" . COM_getPermSQL('AND',0,3) . "ORDER BY pid,category";
+    $sql = "SELECT cid,category,tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
+        . "FROM {$_TABLES['linkcategories']} "
+        . "WHERE (pid='{$cid}')" . COM_getPermSQL('AND',0,3) . "ORDER BY pid,category";
     $result = DB_QUERY($sql);
     $nrows = DB_numRows($result);
-    
+
     if ($nrows>0) {
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
@@ -135,7 +136,7 @@ function links_list_categories_recursive (&$data_arr, $cid, $indent) {
             $A['indent'] = $indent;
             $data_arr[] = $A;
             if (DB_COUNT($_TABLES['linkcategories'], 'pid', $A['cid']) > 0) {
-                $dummy = links_list_categories_recursive(&$data_arr, $A['cid'], $indent);
+                $data_arr = links_list_categories_recursive($data_arr, $A['cid'], $indent);
             }
         }
     }
@@ -271,7 +272,7 @@ function links_save_category ($cid, $old_cid, $pid, $category, $description, $ti
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
     }
 
-    // clean 'em up 
+    // clean 'em up
     $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
     $category = addslashes (COM_checkHTML (COM_checkWords ($category)));
 
@@ -377,14 +378,14 @@ function links_save_category ($cid, $old_cid, $pid, $category, $description, $ti
             $result = DB_query($sql);
         }
     }
-    
+
     return PLG_afterSaveSwitch (
         $_LI_CONF['aftersave'],
         COM_buildURL ("{$_CONF['site_url']}/links/portal.php?what=category&item={$cid}"),
         'links',
         2
     );
-    
+
 //    return $result;
 }
 
@@ -462,8 +463,8 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
 // save category
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
-    $result = links_save_category (COM_applyFilter ($_POST['cid']), 
-            COM_applyFilter ($_POST['old_cid']), 
+    $result = links_save_category (COM_applyFilter ($_POST['cid']),
+            COM_applyFilter ($_POST['old_cid']),
             COM_applyFilter ($_POST['pid']), $_POST['category'], $_POST['description'],
             COM_applyFilter ($_POST['tid']),
             COM_applyFilter ($_POST['owner_id'], true),
