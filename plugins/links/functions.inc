@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.84 2007/08/29 04:58:59 ospiess Exp $
+// $Id: functions.inc,v 1.85 2007/08/29 05:53:44 ospiess Exp $
 
 
 /**
@@ -1204,8 +1204,14 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
             case 'htmlcode';
                 $retval = links_validateUrl($A['url']);
                 break;
-            case 'category';
-                $retval = $A['category'];
+            case 'category':
+                $indent = ($A['indent']-1) * 20;
+                $cat = COM_createLink(
+                    $A['category'],
+                    "{$_CONF['site_url']}/links/index.php?cid={$A['cid']}"
+                );
+                $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
+                break;
                 break;
             default:
                 $retval = $fieldvalue;
@@ -1241,8 +1247,12 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 break;
             case 'category':
-            $indent = ($A['indent']-1) * 20;
-                $retval = '<span style="padding-left:' . $indent . 'px;">' . $A['category'] . '</span>';
+                $indent = ($A['indent']-1) * 20;
+                $cat = COM_createLink(
+                    $A['category'],
+                    "{$_CONF['site_url']}/links/index.php?cid={$A['cid']}"
+                );
+                $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
                 break;
             case 'delete';
                 if ($access == 3) {

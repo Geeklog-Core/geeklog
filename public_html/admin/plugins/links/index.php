@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.47 2007/08/29 04:27:22 ospiess Exp $
+// $Id: index.php,v 1.48 2007/08/29 05:53:55 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -364,8 +364,6 @@ function listlinks ()
     $defsort_arr = array('field' => 'title', 'direction' => 'asc');
 
     $menu_arr = array (
-    //                array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
-    //                      'text' => $LANG_LINKS_ADMIN[27]),
                     array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
                           'text' => $LANG_LINKS_ADMIN[51]),
                     array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
@@ -384,9 +382,13 @@ function listlinks ()
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php$validate");
 
     $query_arr = array('table' => 'links',
-                       'sql' => "SELECT l.lid AS lid, l.title AS title, c.category AS category, l.url AS url, l.description AS description, l.owner_id, l.group_id, l.perm_owner, l.perm_group, l.perm_members, l.perm_anon FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE 1=1",
-                       'query_fields' => array('title', 'category', 'url', 'description'),
-                       'default_filter' => COM_getPermSql ('AND', 0, 3, 'l'));
+        'sql' => "SELECT l.lid AS lid, l.cid as cid, l.title AS title, c.category AS category, l.url AS url, l.description AS description, l.owner_id, l.group_id, l.perm_owner, l.perm_group, l.perm_members, l.perm_anon "
+            . "FROM {$_TABLES['links']} AS l "
+            . "LEFT JOIN {$_TABLES['linkcategories']} AS c "
+            . "ON l.cid=c.cid WHERE 1=1",
+        'query_fields' => array('title', 'category', 'url', 'description'),
+        'default_filter' => COM_getPermSql ('AND', 0, 3, 'l')
+    );
 
     $retval .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
                             $query_arr, $menu_arr, $defsort_arr);
