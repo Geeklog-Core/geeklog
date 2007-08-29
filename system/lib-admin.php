@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.116 2007/08/29 09:57:52 ospiess Exp $
+// $Id: lib-admin.php,v 1.117 2007/08/29 10:01:48 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -46,7 +46,6 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
 * @param    array   $header_arr     array of header fields with sortables and table fields
 * @param    array   $text_arr       array with different text strings
 * @param    array   $data_arr       array with sql query data - array of list records
-* @param    array   $menu_arr       menu-entries
 * @param    array   $options        array of options - intially just used for the Check-All feature
 * @return   string                  HTML output of function
 *
@@ -559,6 +558,16 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     return $retval;
 }
 
+/**
+* Creates a menu with an optional icon and optional text below
+* this is used in the admin screens but may be used elsewhere also.
+*
+* @param    array   $menu_arr       array of text & URL of the menu entries
+* @param    string  $text           instructions to be displayed
+* @param    string  icon            url of an icon that will be displayed
+* @return   string                  HTML output of function
+*
+*/
 function ADMIN_createMenu($menu_arr, $text, $icon = '') {
     global $_CONF;
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
