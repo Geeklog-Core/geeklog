@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.45 2007/08/20 09:29:06 ospiess Exp $
+// $Id: index.php,v 1.46 2007/08/29 06:55:04 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -81,13 +81,17 @@ function listpolls()
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']));
+        array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home']));
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG25[19],
+        plugin_geticon_polls()
+    );
 
-    $text_arr = array('has_menu' => true,
-                      'has_extras' => true,
+    $text_arr = array('has_extras' => true,
                       'title' => $LANG25[18], 'instructions' => $LANG25[19],
                       'icon' => plugin_geticon_polls(),
                       'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php");
@@ -98,7 +102,7 @@ function listpolls()
                        'default_filter' => COM_getPermSql ('AND'));
 
     $retval = ADMIN_list ('polls', 'plugin_getListField_polls', $header_arr,
-                          $text_arr, $query_arr, $menu_arr, $defsort_arr);
+                          $text_arr, $query_arr, $defsort_arr, $menu);
 
     return $retval;
 }

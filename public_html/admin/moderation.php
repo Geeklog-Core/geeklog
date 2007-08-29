@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.108 2007/08/29 02:11:35 ablankstein Exp $
+// $Id: moderation.php,v 1.109 2007/08/29 06:55:04 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -143,19 +143,19 @@ function commandcontrol()
 
     // and finally, add the remaining admin items
     $cc_arr = array(
-                  array('condition' => ($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms == 'mysql') && SEC_inGroup ('Root'),
-                        'url' => $_CONF['site_admin_url'] . '/database.php',
-                        'lang' => $LANG01[103], 'image' => '/images/icons/database.'),
-                  array('condition' => ($_CONF['link_documentation'] == 1),
-                        'url' => $_CONF['site_url'] . '/docs/',
-                        'lang' => $LANG01[113], 'image' => '/images/icons/docs.'),
-                  array('condition' => (SEC_inGroup ('Root')),
-                        'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
-                        'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.'),
-		  array('condition' => (SEC_inGroup ('Root')),
-			'url'=>$_CONF['site_admin_url'] . '/configuration.php',
-			'lang' => $LANG01[129], 'image' => '/images/icons/configuration.')
-		  );
+        array('condition' => ($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms == 'mysql') && SEC_inGroup ('Root'),
+            'url' => $_CONF['site_admin_url'] . '/database.php',
+            'lang' => $LANG01[103], 'image' => '/images/icons/database.'),
+        array('condition' => ($_CONF['link_documentation'] == 1),
+            'url' => $_CONF['site_url'] . '/docs/',
+            'lang' => $LANG01[113], 'image' => '/images/icons/docs.'),
+        array('condition' => (SEC_inGroup ('Root')),
+            'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
+            'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.'),
+        array('condition' => (SEC_inGroup ('Root')),
+            'url'=>$_CONF['site_admin_url'] . '/configuration.php',
+            'lang' => $LANG01[129], 'image' => '/images/icons/configuration.')
+    );
 
     for ($i = 0; $i < count ($cc_arr); $i++) {
         if ($cc_arr[$i]['condition']) {

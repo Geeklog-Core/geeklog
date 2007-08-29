@@ -87,30 +87,32 @@ function links_list_categories ($root)
     $defsort_arr = array('field' => 'category', 'direction' => 'asc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
-                          'text' => $LANG_LINKS_ADMIN[53]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
-                          'text' => $LANG_LINKS_ADMIN[51]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
-                          'text' => $LANG_LINKS_ADMIN[26]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
-                          'text' => $LANG_LINKS_ADMIN[50]),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
-                          'text' => $LANG_LINKS_ADMIN[52]),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']));
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
+              'text' => $LANG_LINKS_ADMIN[53]),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
+              'text' => $LANG_LINKS_ADMIN[51]),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
+              'text' => $LANG_LINKS_ADMIN[26]),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
+              'text' => $LANG_LINKS_ADMIN[50]),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
+              'text' => $LANG_LINKS_ADMIN[52]),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
+    $menu = ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
 
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_LINKS_ADMIN[54], 'instructions' => $LANG_LINKS_ADMIN[55],
-                      'icon' => plugin_geticon_links(),
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/links/category.php");
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => $LANG_LINKS_ADMIN[54],
+        'form_url' => $_CONF['site_admin_url'] . "/plugins/links/category.php"
+    );
 
     $dummy = array();
     $data_arr = links_list_categories_recursive ($dummy, $_LI_CONF['root'], 0);
 
     $retval .= ADMIN_simpleList ("plugin_getListField_categories", $header_arr, $text_arr,
-                            $data_arr, $menu_arr);
+                            $data_arr, $menu);
 
     return $retval;
 }

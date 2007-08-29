@@ -1,4 +1,5 @@
                             {top_menu}
+                            {search_menu}
                             <form action="{form_url}" method="post">
                                 {formfields_top}
                                 <table class="admin-list-table">

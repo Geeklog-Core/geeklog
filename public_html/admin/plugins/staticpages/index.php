@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.86 2007/08/09 19:32:20 dhaun Exp $
+// $Id: index.php,v 1.87 2007/08/29 06:55:04 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -393,18 +393,18 @@ function liststaticpages()
     $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
+        array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
     );
+    $menu = ADMIN_createMenu($menu_arr, $LANG_STATIC['instructions'], plugin_geticon_staticpages());
 
-     $text_arr = array('has_menu' =>  true,
-                       'has_extras'   => true,
-                       'title' => $LANG_STATIC['staticpagelist'],
-                       'instructions' => $LANG_STATIC['instructions'],
-                       'icon' => plugin_geticon_staticpages(),
-                       'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php");
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => $LANG_STATIC['staticpagelist'],
+        'form_url' => $_CONF['site_admin_url'] . "/plugins/staticpages/index.php"
+    );
 
     $query_arr = array('table' => 'staticpage',
                        'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate "
@@ -413,7 +413,7 @@ function liststaticpages()
                        'default_filter' => COM_getPermSQL ('AND', 0, 3));
 
     $retval = ADMIN_list ("static_pages", "plugin_getListField_staticpages", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+                            $query_arr, $defsort_arr, $menu);
     return $retval;
 
 }

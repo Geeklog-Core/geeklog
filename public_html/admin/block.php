@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.113 2007/07/23 01:36:11 blaine Exp $
+// $Id: block.php,v 1.114 2007/08/29 06:55:04 ospiess Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -189,11 +189,11 @@ function editblock ($bid = '')
 
     if (!empty($bid)) {
         $sql['mysql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
-        
+
         $sql['mssql'] = "SELECT bid, is_enabled, name, type, title, tid, blockorder, cast(content as text) as content, rdfurl, ";
         $sql['mssql'] .= "rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id,group_id, ";
         $sql['mssql'] .= "perm_owner, perm_group, perm_members, perm_anon, allow_autotags FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
-        
+
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -387,13 +387,17 @@ function listblocks()
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG21[25],
+        $_CONF['layout_url'] . '/images/icons/block.'. $_IMAGE_TYPE
+    );
 
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG21[19], 'instructions' => $LANG21[25],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/block.'
-                                . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/block.php");
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => $LANG21[19],
+        'form_url' => $_CONF['site_admin_url'] . "/block.php"
+    );
 
     $query_arr = array('table' => 'blocks',
                        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 1",
@@ -404,25 +408,24 @@ function listblocks()
     $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1">');
 
     $retval .= ADMIN_list ("blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
+                            $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
 
     $query_arr = array('table' => 'blocks',
                        'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 0",
                        'query_fields' => array('title', 'content'),
                        'default_filter' => COM_getPermSql ('AND'));
 
-    $text_arr = array('has_menu' =>  false,
-                      'has_extras'   => true,
-                      'title' => "$LANG21[19] ($LANG21[41])", 'instructions' => $LANG21[25],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/block.'
-                                . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . '/block.php');
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => "$LANG21[19] ($LANG21[41])",
+        'form_url' => $_CONF['site_admin_url'] . '/block.php');
+
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled
     // on one side in order to disable the last one. The value is the onleft var
     $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="0">');
 
     $retval .= ADMIN_list ('blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
+                            $query_arr, $defsort_arr, '', '', '', '', $form_arr);
 
     return $retval;
 }

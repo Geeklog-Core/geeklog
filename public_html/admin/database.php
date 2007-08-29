@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.40 2007/05/06 17:37:46 dhaun Exp $
+// $Id: database.php,v 1.41 2007/08/29 06:55:04 ospiess Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -116,18 +116,20 @@ function listbackups()
                         array('url' => $_CONF['site_admin_url'],
                               'text' => $LANG_ADMIN['admin_home'])
         );
+        $menu = ADMIN_createMenu(
+            $menu_arr,
+            "<p>{$LANG_DB_BACKUP['db_explanation']}</p><p>" . sprintf($LANG_DB_BACKUP['total_number'], $index) . '</p>',
+            $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
+        );
 
         $header_arr = array(      // display 'text' and use table field 'field'
             array('text' => $LANG_DB_BACKUP['backup_file'], 'field' => 'file'),
             array('text' => $LANG_DB_BACKUP['size'],        'field' => 'size')
         );
 
-        $text_arr = array('has_menu' => true,
-                          'instructions' => '<p>' . $LANG_DB_BACKUP['db_explanation'] . '</p><p>' . sprintf($LANG_DB_BACKUP['total_number'], $index) . '</p>',
-                          'icon' => $_CONF['layout_url']
-                                    . '/images/icons/database.' . $_IMAGE_TYPE,
-                          'title' => $LANG_DB_BACKUP['last_ten_backups'],
-                          'form_url' => $thisUrl
+        $text_arr = array(
+            'title' => $LANG_DB_BACKUP['last_ten_backups'],
+            'form_url' => $thisUrl
         );
         $form_arr = array('bottom' => '', 'top' => '');
         if ($num_backups > 0) {
@@ -135,7 +137,7 @@ function listbackups()
         }
         $listoptions = array('chkdelete' => true, 'chkminimum' => 0,
                              'chkfield' => 'filename');
-        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr, $menu_arr, $listoptions, $form_arr);
+        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr, $menu, $listoptions, $form_arr);
     } else {
         $retval .= COM_startBlock($LANG08[06], '',
                             COM_getBlockTemplate('_msg_block', 'header'));

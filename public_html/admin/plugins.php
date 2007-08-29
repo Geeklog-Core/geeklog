@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.73 2007/08/04 18:31:08 dhaun Exp $
+// $Id: plugins.php,v 1.74 2007/08/29 06:55:04 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -409,6 +409,11 @@ function listplugins ()
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG32[11],
+        $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE
+    );
 
     $text_arr = array('has_menu' =>  true,
                       'has_extras' => true,
@@ -428,7 +433,7 @@ function listplugins ()
     $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true">');
 
     return ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
-                       $text_arr, $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
+                       $text_arr, $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
 
 }
 

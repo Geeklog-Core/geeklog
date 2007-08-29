@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.71 2007/08/05 07:51:40 dhaun Exp $
+// $Id: functions.inc,v 1.72 2007/08/29 06:54:32 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -908,20 +908,20 @@ function CALENDAR_listevents()
     $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=batchdelete',
-                          'text' => $LANG_CAL_ADMIN[26]),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
+        array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'] . '/plugins/calendar/index.php?mode=batchdelete',
+              'text' => $LANG_CAL_ADMIN[26]),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
     );
+    $menu = ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[12], plugin_geticon_calendar());
 
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_CAL_ADMIN[11],
-                      'instructions' => $LANG_CAL_ADMIN[12],
-                      'icon' => plugin_geticon_calendar(),
-                      'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php");
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => $LANG_CAL_ADMIN[11],
+        'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php"
+    );
 
     $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
           ."FROM {$_TABLES['events']} "
@@ -935,8 +935,8 @@ function CALENDAR_listevents()
                        'default_filter' => COM_getPermSQL('AND'));
 
     $retval .= ADMIN_list ('calendar', 'plugin_getListField_calendar',
-                           $header_arr, $text_arr, $query_arr, $menu_arr,
-                           $defsort_arr);
+                           $header_arr, $text_arr, $query_arr,
+                           $defsort_arr, $menu);
 
     return $retval;
 }

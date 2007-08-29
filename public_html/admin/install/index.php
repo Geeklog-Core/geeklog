@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2007/08/29 02:11:35 ablankstein Exp $
+// $Id: index.php,v 1.8 2007/08/29 06:55:04 ospiess Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -121,7 +121,7 @@ function INST_installEngine($install_type, $install_step)
          */
         case 1:
             require_once($dbconfig_path); // Get the current DB info
-            
+
             // Set all the form values either with their defaults or with received POST data.
             // The only instance where you'd get POST data would be if the user has to
             // go back because they entered incorrect database information.
@@ -316,7 +316,7 @@ function INST_installEngine($install_type, $install_step)
                                         <input type="hidden" name="site_admin_url" value="' . urlencode($site_admin_url) . '" />
                                         <input type="hidden" name="site_mail" value="' . urlencode($site_mail) . '" />
                                         <input type="hidden" name="noreply_mail" value="' . urlencode($noreply_mail) . '" />';
-        
+
                             // If using MySQL check to see if InnoDB is supported
                             if ($innodb && !INST_innodbSupported()) {
                                 // Warn that InnoDB tables are not supported
@@ -385,7 +385,7 @@ function INST_installEngine($install_type, $install_step)
                                         <br />
                                         <input type="submit" name="submit" class="submit" value="Upgrade &gt;&gt;" />
                                         </form>' . LB;
-    
+
                                     $curv = $old_versions[count($old_versions) - 1];
                                 } else {
                                     // Continue on to step 3 where the upgrade will happen
@@ -409,13 +409,13 @@ function INST_installEngine($install_type, $install_step)
                     if ($_POST['submit'] == '<< ' . $LANG_INSTALL[61]) {
                         header('Location: index.php?mode=install');
                     }
-        
+
                     // Check whether to use InnoDB tables
                     $use_innodb = false;
                     if ((isset($_POST['innodb']) && $_POST['innodb'] == 'true') || (isset($_GET['innodb']) && $_GET['innodb'] == 'true')) {
                         $use_innodb = true;
                     }
-        
+
                     // We need all this just to do one DB query
                     require_once($dbconfig_path);
                     require_once($siteconfig_path);
@@ -423,13 +423,13 @@ function INST_installEngine($install_type, $install_step)
 
                     // Check if GL is already installed
                     if (INST_checkTableExists('vars')) {
-        
+
                         $display .= '<p>' . $LANG_INSTALL[63] . '</p>
                             <ol>
                                 <li>' . $LANG_INSTALL[64] . '</li>
                                 <li>' . $LANG_INSTALL[65] . '</li>
                             </ol>
-        
+
                             <div style="margin-left: auto; margin-right: auto; width: 125px">
                                 <div style="position: absolute">
                                     <form action="index.php" method="post">
@@ -441,7 +441,7 @@ function INST_installEngine($install_type, $install_step)
                                     <input type="submit" value="' . $LANG_INSTALL[66] . '" />
                                     </form>
                                 </div>
-        
+
                                 <div style="position: relative; left: 55px; top: 5px">
                                     <form action="index.php" method="post">
                                     <input type="hidden" name="mode" value="upgrade" />
@@ -451,7 +451,7 @@ function INST_installEngine($install_type, $install_step)
                                 </div>
                             </div>
                             ' . LB;
-        
+
                     } else {
 
                         if (INST_createDatabaseStructures($use_innodb)) {
@@ -461,9 +461,10 @@ function INST_installEngine($install_type, $install_step)
                             $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : (isset($_GET['site_admin_url']) ? $_GET['site_admin_url'] : '') ;
                             $site_mail      = isset($_POST['site_mail']) ? $_POST['site_mail'] : (isset($_GET['site_mail']) ? $_GET['site_mail'] : '') ;
                             $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
-        
+
                             // Insert the form data into the conf_values table
-                            require_once($_CONF['path_system'] . 'classes/config.class.php'); 
+
+                            require_once($_CONF['path_system'] . 'classes/config.class.php');
                             $config = config::create();
                             $config->set('site_name', urldecode($site_name));
                             $config->set('site_slogan', urldecode($site_slogan));
@@ -480,14 +481,15 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('path_themes', $html_path . 'layout/');
                             $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
                             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
+
                             $config->set('default_photo', urldecode($site_url) . '/default.jpg');
-        
+
                             // Now we're done with the installation so redirect the user to success.php
                             header('Location: success.php?type=install&language=' . $language);
                         } else {
-                            $display .= "<h2>" . $LANG_INSTALL[67] . "</h2><p>" . $LANG_INSTALL[68] . "</p>"; 
+                            $display .= "<h2>" . $LANG_INSTALL[67] . "</h2><p>" . $LANG_INSTALL[68] . "</p>";
                         }
-        
+
                     }
                     break;
 
@@ -528,7 +530,7 @@ function INST_installEngine($install_type, $install_step)
                         $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : (isset($_GET['site_admin_url']) ? $_GET['site_admin_url'] : '') ;
                         $site_mail      = isset($_POST['site_mail']) ? $_POST['site_mail'] : (isset($_GET['site_mail']) ? $_GET['site_mail'] : '') ;
                         $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
-                        require_once($_CONF['path_system'] . 'classes/config.class.php'); 
+                        require_once($_CONF['path_system'] . 'classes/config.class.php');
                         $config = config::create();
                         $config->set('site_name', urldecode($site_name));
                         $config->set('site_slogan', urldecode($site_slogan));
@@ -536,7 +538,9 @@ function INST_installEngine($install_type, $install_step)
                         $config->set('site_admin_url', urldecode($site_admin_url));
                         $config->set('site_mail', urldecode($site_mail));
                         $config->set('noreply_mail', urldecode($noreply_mail));
+
                         $config->set('default_photo', urldecode($site_url) . '/default.jpg');
+
 
                         // Great, installation is complete, redirect to success page
                         header('Location: success.php?type=upgrade&language=' . $language);
@@ -576,10 +580,10 @@ function INST_checkIfWritable($files)
 
 
 /**
- * Returns an HTML formatted string containing a list of which files 
+ * Returns an HTML formatted string containing a list of which files
  * have incorrect permissions.
  *
- * @param   array   $files  List of files to check 
+ * @param   array   $files  List of files to check
  * @return  string          HTML and permission warning message.
  *
  */
@@ -673,7 +677,9 @@ function INST_identifyGeeklogVersion ()
     // Should always include a test for the current version so that we can
     // warn the user if they try to run the update again.
 
+
     switch ($_DB_dbms) {
+
         case 'mysql':
             $test = array(
                 '1.4.2'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
@@ -686,19 +692,25 @@ function INST_identifyGeeklogVersion ()
                 // It's hard to (reliably) test for 1.3.7 - let's just hope nobody uses
                 // such an old version any more ...
             );
+
             break;
+
         case 'mssql':
+
 	    $test = array(
                 '1.4.2'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
                 '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
-            );        
+            );
+
             break;
+
     }
 
     $version = '';
     foreach ($test as $v => $qarray) {
         $result = DB_query ($qarray[0], 1);
         if ($result === false) {
+
             // error - continue with next test
         } else if (DB_numRows ($result) > 0) {
             $A = DB_fetchArray ($result);
@@ -1185,13 +1197,13 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             INST_updateDB($_SQL);
 
             create_ConfValues();
-            require_once( $_CONF['path_system'] . 'classes/config.class.php'); 
+            require_once( $_CONF['path_system'] . 'classes/config.class.php');
             $config = config::create();
 
             if (file_exists($_CONF['path'] . 'config.php')) {
                 // Read the values from config.php and use them to populate conf_values
 
-                $tmp_path = $_CONF['path']; // We'll need this to remember what the correct path is. 
+                $tmp_path = $_CONF['path']; // We'll need this to remember what the correct path is.
                                             // Including config.php will overwrite all our $_CONF values.
                 require($tmp_path . 'config.php');
                 // Load some important values from config.php into conf_values
@@ -1213,14 +1225,14 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
 
             if (INST_pluginExists('polls')) {
-//                upgrade_PollsPlugin();
+                upgrade_PollsPlugin();
             }
             if (INST_pluginExists('staticpages')) {
                 upgrade_StaticpagesPlugin();
             }
-            upgrade_PollsPlugin();
-            upgrade_StaticpagesPlugin();
-            upgrade_LinksPlugin();
+            if (INST_pluginExists('links')) {
+                upgrade_LinksPlugin();
+            }
             $current_gl_version = '1.4.2';
             $_SQL = '';
             break;
@@ -1244,16 +1256,16 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
  * @param   string $plugin  Name of plugin to check
  *
  */
-function INST_pluginExists($plugin) 
+function INST_pluginExists($plugin)
 {
     global $_DB, $_TABLES;
     $result = DB_query("SELECT `pi_name` FROM {$_TABLES['plugins']} WHERE `pi_name` = '$plugin'");
     if (DB_numRows($result) > 0) {
-        return true; 
+        return true;
     } else {
-        return false;    
+        return false;
     }
-}  
+}
 
 
 /**
@@ -1390,13 +1402,13 @@ switch ($mode) {
             if (!file_exists($gl_path . $dbconfig_file) && !file_exists($gl_path . 'public_html/' . $dbconfig_file)) {
                 // If the file/directory is not located in the default location
                 // or in public_html have the user enter its location.
-                $form_fields .= '<p><label>db-config.php</label> <input type="text" name="dbconfig_path" value="/path/to/' 
+                $form_fields .= '<p><label>db-config.php</label> <input type="text" name="dbconfig_path" value="/path/to/'
                             . $dbconfig_file . '" size="25" /></p>'  . LB;
                 $num_errors++;
             } else {
                 // See whether the file/directory is located in the default place or in public_html
-                $dbconfig_path = file_exists($gl_path . $dbconfig_file) 
-                                    ? $gl_path . $dbconfig_file 
+                $dbconfig_path = file_exists($gl_path . $dbconfig_file)
+                                    ? $gl_path . $dbconfig_file
                                     : $gl_path . 'public_html' . $dbconfig_file;
             }
 
@@ -1453,39 +1465,39 @@ switch ($mode) {
 
             require_once($_PATH['db-config.php']);  // We need db-config.php the current DB information
             require_once($siteconfig_path);         // We need siteconfig.php for core $_CONF values.
-    
+
             $gl_path                = str_replace('db-config.php', '', $_PATH['db-config.php']);
             $log_path               = $gl_path . 'logs/';
             $_CONF['rdf_file']      = $_PATH['public_html/'] . 'backend/geeklog.rss';
             $_CONF['path_images']   = $_PATH['public_html/'] . 'images/';
             $data_path              = $gl_path . (file_exists($gl_path . 'data') ? 'data/' : 'public_html/data/');
             $failed                 = 0; // number of failed tests
-            $display_permissions    = '<br /><p><label class="file-permission-list"><b>' . $LANG_INSTALL[10] 
+            $display_permissions    = '<br /><p><label class="file-permission-list"><b>' . $LANG_INSTALL[10]
                                     . '</b></label> <b>' . $LANG_INSTALL[11] . '</b></p>' . LB;
-            $_PERMS                 = array('db-config.php', 'siteconfig.php', 'error.log', 'access.log', 
+            $_PERMS                 = array('db-config.php', 'siteconfig.php', 'error.log', 'access.log',
                                             'rdf', 'userphotos', 'articles', 'topics', 'backups', 'data');
 
             // backend directory & geeklog.rss
             if (!$file = @fopen($_CONF['rdf_file'], 'w')) {
                 // Permissions are incorrect
                 $_PERMS['rdf']          = sprintf("%3o", @fileperms($_CONF['rdf_file']) & 0777);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['rdf_file'] 
-                                        . '</code></label><span class="error">' . $LANG_INSTALL[12] . ' 777</span> (' . $LANG_INSTALL[13] . ' ' 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['rdf_file']
+                                        . '</code></label><span class="error">' . $LANG_INSTALL[12] . ' 777</span> (' . $LANG_INSTALL[13] . ' '
                                         . $_PERMS['rdf'] . ') </p>' . LB;
                 $failed++;
             } else {
                 // Permissions are correct
                 fclose ($file);
             }
-    
+
             // backups directory
             if ($_CONF['allow_mysqldump'] == 1) {
                 // If backups are enabled
                 if (!$file = @fopen($gl_path . 'backups/test.txt', 'w')) {
                     // Permissions are incorrect
                     $_PERMS['backups']      = sprintf("%3o", @fileperms($gl_path . 'backups/') & 0777);
-                    $display_permissions    .= '<p><label class="file-permission-list"><code>' . $gl_path 
-                                            . 'backups/</code></label><span class="error">' . $LANG_INSTALL[14] 
+                    $display_permissions    .= '<p><label class="file-permission-list"><code>' . $gl_path
+                                            . 'backups/</code></label><span class="error">' . $LANG_INSTALL[14]
                                             . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['backups'] . ') </p>' . LB;
                     $failed++;
                 } else {
@@ -1493,13 +1505,13 @@ switch ($mode) {
                     fclose($file);
                 }
             }
-    
+
             // data directory
             if (!$file = @fopen($data_path . 'test.txt', 'w')) {
                 // Permissions are incorrect
                 $_PERMS['data']         = sprintf("%3o", @fileperms($data_path) & 0777);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $data_path 
-                                        . '</code></label><span class="error">' . $LANG_INSTALL[14] 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $data_path
+                                        . '</code></label><span class="error">' . $LANG_INSTALL[14]
                                         . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['data'] . ') </p>' . LB;
                 $failed++;
             } else {
@@ -1511,20 +1523,20 @@ switch ($mode) {
             // db-config.php
             if (!$dbconfig_file = @fopen($_PATH['db-config.php'], 'a')) {
                 $_PERMS['db-config.php'] = sprintf("%3o", @fileperms($_PATH['db-config.php']) & 0777);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_PATH['db-config.php'] 
-                                        . '</code></label><span class="error">' . $LANG_INSTALL[12] . ' 777</span> (' 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_PATH['db-config.php']
+                                        . '</code></label><span class="error">' . $LANG_INSTALL[12] . ' 777</span> ('
                                         . $LANG_INSTALL[13] . ' ' . $_PERMS['db-config.php'] . ')</p>' . LB ;
                 $failed++;
             } else {
                 fclose($dbconfig_file);
             }
-    
+
             // articles directory
             if (!$file = @fopen($_CONF['path_images'] . 'articles/test.gif', 'w')) {
                 // Permissions are incorrect
                 $_PERMS['articles']     = sprintf("%3o", @fileperms($_CONF['path_images'] . 'articles/') & 0777);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] 
-                                        . 'articles/</code></label><span class="error">' . $LANG_INSTALL[14] 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images']
+                                        . 'articles/</code></label><span class="error">' . $LANG_INSTALL[14]
                                         . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['articles'] . ') </p>' . LB;
                 $failed++;
             } else {
@@ -1532,13 +1544,13 @@ switch ($mode) {
                 fclose($file);
                 unlink($_CONF['path_images'] . 'articles/test.gif');
             }
-    
+
             // topics directory
             if (!$file = @fopen($_CONF['path_images'] . 'topics/test.gif', 'w')) {
                 // Permissions are incorrect
                 $_PERMS['topics']       = sprintf("%3o", @fileperms($_CONF['path_images'] . 'topics/') & 0777);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] 
-                                        . 'topics/</code></label><span class="error">' . $LANG_INSTALL[14] 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images']
+                                        . 'topics/</code></label><span class="error">' . $LANG_INSTALL[14]
                                         . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['topics'] . ') </p>' . LB;
                 $failed++;
             } else {
@@ -1546,26 +1558,26 @@ switch ($mode) {
                 fclose($file);
                 unlink($_CONF['path_images'] . 'topics/test.gif');
             }
-    
+
             // userphotos directory
             if (!$file = @fopen($_CONF['path_images'] . 'userphotos/test.gif', 'w')) {
                 // Permissions are incorrect
                 $_PERMS['userphoto']    = sprintf("%3o", @fileperms($_CONF['path_images'] . 'userphotos/') & 0777);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images'] 
-                                        . 'userphotos/</code></label><span class="error">' . $LANG_INSTALL[14] 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_CONF['path_images']
+                                        . 'userphotos/</code></label><span class="error">' . $LANG_INSTALL[14]
                                         . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['userphoto'] . ') </p>' . LB;
             } else {
                 // Permissions are correct
                 fclose($file);
                 unlink($_CONF['path_images'] . 'userphotos/test.gif');
             }
-    
+
             // logs
             if (!$err_file = @fopen($log_path . 'error.log', 'a')) {
                 // Permissions are incorrect
                 $_PERMS['error.log']    = sprintf("%3o", @fileperms($log_path) & 0775);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $log_path . '</code></label><span class="error">' 
-                                        . $LANG_INSTALL[14] . ' 775</span> (' . $LANG_INSTALL[13] . ' ' 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $log_path . '</code></label><span class="error">'
+                                        . $LANG_INSTALL[14] . ' 775</span> (' . $LANG_INSTALL[13] . ' '
                                         . ($_PERMS['error.log'] == 0 ? $LANG_INSTALL[22] : $_PERMS['error.log']) . ')</p>' . LB ;
                 $failed++;
             } else {
@@ -1576,33 +1588,33 @@ switch ($mode) {
             // siteconfig.php
             if (!$siteconfig_file = @fopen($_PATH['public_html/'] . 'siteconfig.php', 'a')) {
                 $_PERMS['siteconfig.php'] = sprintf("%3o", @fileperms($_PATH['public_html/'] . 'siteconfig.php') & 0777);
-                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_PATH['public_html/'] 
-                                        . 'siteconfig.php</code></label><span class="error">' . $LANG_INSTALL[12] 
+                $display_permissions    .= '<p><label class="file-permission-list"><code>' . $_PATH['public_html/']
+                                        . 'siteconfig.php</code></label><span class="error">' . $LANG_INSTALL[12]
                                         . ' 777</span> (' . $LANG_INSTALL[13] . ' ' . $_PERMS['siteconfig.php'] . ')</p>' . LB ;
                 $failed++;
             } else {
                 fclose($siteconfig_file);
             }
-    
-    
+
+
             $display .= $LANG_INSTALL[9] . '<br /><br />' . LB;
-    
+
             if ($failed) {
-    
+
                 $display .= '
                 <p>' . $LANG_INSTALL[19] . '</p>
                 ' . $display_permissions . '<br /><p><strong><span class="error">' . $LANG_INSTALL[20] . '</span></strong>
                 ' . $LANG_INSTALL[21] . '</p>
                 <br /><br />' . LB;
-    
+
             }
-    
+
             // Set up the request string
             $req_string = 'index.php?mode=write_paths'
                         . '&dbconfig_path=' . urlencode($_PATH['db-config.php'])
                         . '&public_html_path=' . urlencode($_PATH['public_html/'])
                         . '&language=' . $language;
-    
+
             $display .= '
             <div class="install-type-container-outer">
                <div class="install-type-container-inner">
@@ -1622,18 +1634,18 @@ switch ($mode) {
     case 'write_paths':
 
         // Get the paths from the previous page
-        $_PATH = array('db-config.php' => urldecode(isset($_GET['dbconfig_path']) 
-                                                    ? $_GET['dbconfig_path'] 
+        $_PATH = array('db-config.php' => urldecode(isset($_GET['dbconfig_path'])
+                                                    ? $_GET['dbconfig_path']
                                                     : $_POST['dbconfig_path']),
-                        'public_html/' => urldecode(isset($_GET['public_html_path']) 
-                                                    ? $_GET['public_html_path'] 
+                        'public_html/' => urldecode(isset($_GET['public_html_path'])
+                                                    ? $_GET['public_html_path']
                                                     : $_POST['public_html_path']));
         $dbconfig_path = str_replace('db-config.php', '', $_PATH['db-config.php'] );
 
-        if (!INST_checkIfWritable(array($_PATH['db-config.php'], 
+        if (!INST_checkIfWritable(array($_PATH['db-config.php'],
                                             $_PATH['public_html/'] . 'siteconfig.php'))) { // Can't write to db-config.php or siteconfig.php
 
-            $display .= INST_permissionWarning(array($_PATH['db-config.php'], 
+            $display .= INST_permissionWarning(array($_PATH['db-config.php'],
                                                       $_PATH['public_html/'] . 'siteconfig.php'));
 
         } else { // Permissions are ok
@@ -1646,8 +1658,8 @@ switch ($mode) {
 
             // $_CONF['path']
             require_once($siteconfig_path);
-            $siteconfig_data = str_replace("\$_CONF['path'] = '{$_CONF['path']}';", 
-                                "\$_CONF['path'] = '" . str_replace('db-config.php', '', $_PATH['db-config.php']) . "';", 
+            $siteconfig_data = str_replace("\$_CONF['path'] = '{$_CONF['path']}';",
+                                "\$_CONF['path'] = '" . str_replace('db-config.php', '', $_PATH['db-config.php']) . "';",
                                 $siteconfig_data);
 
             $siteconfig_file = fopen($siteconfig_path, 'w');

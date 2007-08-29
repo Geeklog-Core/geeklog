@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.74 2007/04/28 19:41:29 dhaun Exp $
+// $Id: topic.php,v 1.75 2007/08/29 06:55:04 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -329,6 +329,18 @@ function listtopics()
     $result = DB_query("SELECT * FROM {$_TABLES['topics']}");
     $nrows = DB_numRows($result);
     $counter = 1;
+
+    $menu_arr = array (
+        array('url' => $_CONF['site_admin_url'] . '/topic.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home']));
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG27[9],
+        $_CONF['layout_url'] . "/images/icons/topic.png"
+    );
+    $topic_templates->set_var('top_menu', $menu);
 
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);

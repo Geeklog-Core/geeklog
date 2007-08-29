@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.189 2007/08/09 07:48:20 ospiess Exp $
+// $Id: user.php,v 1.190 2007/08/29 06:55:04 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -383,23 +383,26 @@ function listusers()
                          'direction' => 'ASC');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
-                          'text' => $LANG28[23]),
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=batchdelete',
-                          'text' => $LANG28[54]),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
+        array('url' => $_CONF['site_admin_url'] . '/user.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
+              'text' => $LANG28[23]),
+        array('url' => $_CONF['site_admin_url'] . '/user.php?mode=batchdelete',
+              'text' => $LANG28[54]),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG28[12],
+        $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE
     );
 
-    $text_arr = array('has_menu'     => true,
-                      'has_extras'   => true,
-                      'title'        => $LANG28[11],
-                      'instructions' => $LANG28[12],
-                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
-                      'form_url'     => $_CONF['site_admin_url'] . "/user.php",
-                      'help_url'     => ''
+    $text_arr = array(
+        'has_extras'   => true,
+        'title'        => $LANG28[11],
+        'form_url'     => $_CONF['site_admin_url'] . "/user.php",
+        'help_url'     => ''
     );
 
     if ($_CONF['lastlogin']) {
@@ -415,7 +418,7 @@ function listusers()
                        'default_filter' => "AND {$_TABLES['users']}.uid > 1");
 
     $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr);
+                            $query_arr, $defsort_arr, $menu);
     return $display;
 }
 

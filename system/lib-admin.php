@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.113 2007/08/20 06:14:16 ospiess Exp $
+// $Id: lib-admin.php,v 1.114 2007/08/29 06:55:40 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -52,7 +52,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
 *
 */
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
-                           $data_arr, $menu_arr = '', $options = '', $form_arr='')
+                           $data_arr, $menu = '', $options = '', $form_arr='')
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
 
@@ -73,12 +73,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $form_url = $text_arr['form_url'];
     }
 
-    $icon = '';
-    if (isset($text_arr['icon'])) {
-        $icon = $text_arr['icon'];
-    }
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
-    $admin_templates->set_file (array ('topmenu' => 'topmenu_nosearch.thtml',
+    $admin_templates->set_file (array ('top_menu' => 'topmenu.thtml',
                                        'list' => 'list.thtml',
                                        'header' => 'header.thtml',
                                        'row' => 'listitem.thtml',
@@ -100,17 +96,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     if (isset($form_arr['bottom'])) {
         $admin_templates->set_var('formfields_bottom', $form_arr['bottom']);
     }
-    if (isset($text_arr['has_menu']) && $text_arr['has_menu']) {
-        $menu_fields = '';
-        for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
-            $menu_fields .= COM_createLink($menu_arr[$i]['text'], $menu_arr[$i]['url']);
-            if ($i < (count($menu_arr) -1)) {
-                $menu_fields .= ' | '; # add separator
-            }
-        }
-        $admin_templates->set_var('menu_fields', $menu_fields);
-        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
-        $admin_templates->parse('top_menu', 'topmenu', true);
+    if (!empty ($menu)) {
+        $admin_templates->set_var('top_menu', $menu);
     }
 
     $icon_arr = array(
@@ -213,15 +200,15 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 * @param    array   $header_arr     array of header fields with sortables and table fields
 * @param    array   $text_arr       array with different text strings
 * @param    array   $query_arr      array with sql-options
-* @param    array   $menu_arr       menu-entries
 * @param    array   $defsort_arr    default sorting values
+* @param    string  $menu           string menu-entries
 * @param    string  $filter         additional drop-down filters
 * @param    string  $extra          additional values passed to fieldfunction
 * @return   string                  HTML output of function
 *
 */
 function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
-            $query_arr, $menu_arr, $defsort_arr, $filter = '', $extra = '',
+            $query_arr, $defsort_arr, $menu = '', $filter = '', $extra = '',
             $options = '', $form_arr='')
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $LANG01, $_IMAGE_TYPE, $MESSAGE;
@@ -285,7 +272,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # get all template fields.
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array (
-        'topmenu' => 'topmenu.thtml',
+        'searchmenu' => 'searchmenu.thtml',
         'list' => 'list.thtml',
         'header' => 'header.thtml',
         'row' => 'listitem.thtml',
@@ -296,9 +283,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
-    if ($text_arr['icon'] !== false or $text_arr['icon']='') {
-        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
-    }
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('lang_deleteall', $LANG01[124]);
     $admin_templates->set_var('lang_delconfirm', $LANG01[125]);
@@ -331,24 +315,19 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
             . '" title="' . $LANG_ACCESS['listthem'] . '">'
     );
-    // the user can disable the menu. if used, create it.
-    if ($text_arr['has_menu']) {
-        $menu_fields = '';
-        for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
-            $menu_fields .= COM_createLink($menu_arr[$i]['text'], $menu_arr[$i]['url']);
-            if ($i < (count($menu_arr) -1)) {
-                $menu_fields .= ' | '; # add separator
-            }
-        }
-        $admin_templates->set_var('menu_fields', $menu_fields);
-        # add text strings to template
-        $admin_templates->set_var('lang_instructions', $text_arr['instructions']);
+
+    // the user can disable the search. if used, create it.
+    if ($text_arr['has_search']) {
         $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
         $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
         $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
         $admin_templates->set_var('last_query', COM_applyFilter($query));
         $admin_templates->set_var('filter', $filter);
-        $admin_templates->parse('top_menu', 'topmenu', true);
+        $admin_templates->parse('search_menu', 'search_menu', true);
+    }
+
+    if (!empty ($menu)) {
+        $admin_templates->set_var('top_menu', $menu);
     }
 
     $sql_query = addslashes ($query); # replace quotes etc for security
@@ -588,6 +567,30 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     return $retval;
 }
 
+function ADMIN_createMenu($menu_arr, $text, $icon = '') {
+    global $_CONF;
+    $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates->set_file (
+        array ('top_menu' => 'topmenu.thtml')
+    );
+
+    $menu_fields = '';
+    for ($i = 0; $i < count($menu_arr); $i++) { # iterate through menu
+        $menu_fields .= COM_createLink($menu_arr[$i]['text'], $menu_arr[$i]['url']);
+        if ($i < (count($menu_arr) -1)) {
+            $menu_fields .= ' | '; # add separator
+        }
+    }
+    if (!empty ($icon)) {
+        $icon = COM_createImage($icon);
+        $admin_templates->set_var('icon', $icon);
+    }
+    $admin_templates->set_var('menu_fields', $menu_fields);
+    $admin_templates->set_var('lang_instructions', $text);
+    $admin_templates->parse('top_menu', 'top_menu');
+    $retval = $admin_templates->finish($admin_templates->get_var('top_menu'));
+    return $retval;
+}
 
 
 function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)

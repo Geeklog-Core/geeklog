@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.45 2007/03/09 04:15:57 ospiess Exp $
+// $Id: trackback.php,v 1.46 2007/08/29 06:55:04 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -484,19 +484,22 @@ function listServices ()
     $defsort_arr = array('field' => 'name', 'direction' => 'asc');
 
     $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/trackback.php?mode=editservice',
-                          'text' => $LANG_ADMIN['create_new']),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']));
+        array('url' => $_CONF['site_admin_url'] . '/trackback.php?mode=editservice',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home']));
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG_TRB['service_explain'],
+        $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE
+    );
 
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG_TRB['services_headline'],
-                      'instructions' =>  $LANG_TRB['service_explain'],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/trackback.'
-                                . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/trackback.php",
-                      'help_url' => $_CONF['site_url'] . '/docs/trackback.html#ping');
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => $LANG_TRB['services_headline'],
+        'form_url' => $_CONF['site_admin_url'] . "/trackback.php",
+        'help_url' => $_CONF['site_url'] . '/docs/trackback.html#ping'
+    );
 
     $query_arr = array('table' => 'pingservice',
                        'sql' => "SELECT * FROM {$_TABLES['pingservice']} WHERE 1=1",
@@ -509,7 +512,7 @@ function listServices ()
     $form_arr = array('bottom' => '<input type="hidden" name="serviceChanger" value="true">');
 
     $retval .= ADMIN_list ("pingservice", "ADMIN_getListField_trackback", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
+                            $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
 
     if ($_CONF['trackback_enabled']) {
         $retval .= freshTrackback ();

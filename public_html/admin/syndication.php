@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.50 2007/03/09 02:40:19 ospiess Exp $
+// $Id: syndication.php,v 1.51 2007/08/29 06:55:04 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -150,12 +150,17 @@ function listfeeds()
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG33[13],
+        $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE
+    );
 
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG33[10], 'instructions' => $LANG33[13],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/syndication.php");
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => $LANG33[10],
+        'form_url' => $_CONF['site_admin_url'] . "/syndication.php"
+    );
 
     $query_arr = array('table' => 'syndication',
                        'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
@@ -166,7 +171,7 @@ function listfeeds()
     $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true">');
 
     $retval .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr, '', '', '', $form_arr);
+                            $query_arr, $defsort_arr, $menu,  '', '', '', $form_arr);
     return $retval;
 }
 

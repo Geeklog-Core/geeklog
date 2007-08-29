@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.260 2007/08/19 16:28:02 dhaun Exp $
+// $Id: story.php,v 1.261 2007/08/29 06:55:04 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -183,12 +183,16 @@ function liststories()
 
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']);
-
-    $text_arr = array('has_menu' =>  true,
-                      'has_extras'   => true,
-                      'title' => $LANG24[22], 'instructions' => $LANG24[23],
-                      'icon' => $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE,
-                      'form_url' => $_CONF['site_admin_url'] . "/story.php");
+    $menu = ADMIN_createMenu(
+        $menu_arr,
+        $LANG24[23],
+        $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE
+    );
+    $text_arr = array(
+        'has_extras'   => true,
+        'title' => $LANG24[22],
+        'form_url' => $_CONF['site_admin_url'] . "/story.php"
+    );
 
     $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
           ."UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} "
@@ -204,7 +208,7 @@ function liststories()
                        'default_filter' => $excludetopics . COM_getPermSQL ('AND'),);
 
     $retval .= ADMIN_list ("story", "ADMIN_getListField_stories", $header_arr, $text_arr,
-                            $query_arr, $menu_arr, $defsort_arr, $filter);
+                            $query_arr, $defsort_arr, $menu, $filter);
     return $retval;
 }
 
