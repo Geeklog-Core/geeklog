@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.95 2007/08/29 09:33:54 ospiess Exp $
+// $Id: group.php,v 1.96 2007/08/31 04:08:07 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -742,12 +742,15 @@ function listgroups()
     // Extra test required to handle that different ways this option is passed and need to be able to
     // over-ride the option using the posted form when the URL contains the variable as well
     $show_all_groups = false;
+    $checked ='';
     if (isset($_POST['q'])) {   // Form has been posted - test actual option in this form
         if ($_POST['chk_showall'] == 1) {
             $show_all_groups = true;
+            $checked = 'checked';
         }
-    } else if (isset ($_GET['showall']) && ($_GET['showall'] == 1)) {
+    } else if (isset ($_GET['chk_showall']) && ($_GET['chk_showall'] == 1)) {
         $show_all_groups = true;
+        $checked = 'checked';
     }
 
     if (SEC_inGroup('Root')) {
@@ -765,7 +768,7 @@ function listgroups()
             'query_fields' => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     } else {
-        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1">';
+        $filter .= "<label for=\"chk_showall\"><input id=\"chk_showall\" type=\"checkbox\" name=\"chk_showall\" value=\"1\"$checked>";
         $query_arr = array(
             'table' => 'groups',
             'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id in (2,13))",
