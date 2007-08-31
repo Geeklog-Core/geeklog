@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.96 2007/08/31 04:08:07 ospiess Exp $
+// $Id: group.php,v 1.97 2007/08/31 04:14:34 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -746,11 +746,11 @@ function listgroups()
     if (isset($_POST['q'])) {   // Form has been posted - test actual option in this form
         if ($_POST['chk_showall'] == 1) {
             $show_all_groups = true;
-            $checked = 'checked';
+            $checked = ' checked';
         }
     } else if (isset ($_GET['chk_showall']) && ($_GET['chk_showall'] == 1)) {
         $show_all_groups = true;
-        $checked = 'checked';
+        $checked = ' checked';
     }
 
     if (SEC_inGroup('Root')) {
