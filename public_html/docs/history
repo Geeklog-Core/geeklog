@@ -2,6 +2,10 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Fixed checking of "Show Admin lists" in Group Admin when going to 2nd page of
+  results [Oliver]
+- Created new function for Admin-Menu display and removed that functionality from
+  ADMIN_list-functions. [Oliver]
 - Fixed missing N/A display when no plugin version number was available
   (reported by Machinari) [Dirk]
 - Avoid division by zero error when $_CONF['limitnews'] == 0
