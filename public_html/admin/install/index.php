@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.9 2007/09/01 18:08:30 dhaun Exp $
+// $Id: index.php,v 1.10 2007/09/01 19:41:49 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -858,11 +858,14 @@ function INST_innodbSupported()
 function INST_checkInnodbUpgrade($_SQL)
 {
     global $use_innodb;
-    for ($i=0; $i<sizeof($_SQL); $i++) {
-        if ($use_innodb) {
+
+    if ($use_innodb) {
+        $statements = count($_SQL);
+        for ($i = 0; $i < $statements; $i++) {
             $_SQL[$i] = str_replace('MyISAM', 'InnoDB', $_SQL[$i]);
         }
     }
+
     return $_SQL;
 }
 
