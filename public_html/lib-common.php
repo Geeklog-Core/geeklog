@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.650 2007/09/01 15:26:04 dhaun Exp $
+// $Id: lib-common.php,v 1.651 2007/09/01 20:23:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -352,7 +352,7 @@ else if( !empty( $_USER['language'] ))
         $_CONF['language'] = $_USER['language'];
     }
 }
-else if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+else if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
 {
     $_CONF['language'] = COM_getLanguage();
 }
@@ -976,7 +976,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     }
 
     $langAttr = '';
-    if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+    if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
     {
         $langId = COM_getLanguageId();
     }
@@ -6026,7 +6026,7 @@ function COM_getLangSQL( $field, $type = 'WHERE', $table = '' )
 
     $sql = '';
 
-    if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+    if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
     {
         if( !empty( $table ))
         {
@@ -6058,7 +6058,7 @@ function phpblock_switch_language()
 
     $retval = '';
 
-    if( !isset( $_CONF['languages'] ) || !isset( $_CONF['language_files'] ) ||
+    if( empty( $_CONF['languages'] ) || empty( $_CONF['language_files'] ) ||
           ( count( $_CONF['languages'] ) != count( $_CONF['language_files'] )))
     {
         return $retval;
@@ -6123,7 +6123,7 @@ function COM_switchLocaleSettings()
 {
     global $_CONF;
 
-    if( isset( $_CONF['languages'] ) && isset( $_CONF['language_files'] ))
+    if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
     {
         $overridables = array
         (
