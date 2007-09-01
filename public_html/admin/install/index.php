@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2007/08/29 06:55:04 ospiess Exp $
+// $Id: index.php,v 1.9 2007/09/01 18:08:30 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -1503,6 +1503,7 @@ switch ($mode) {
                 } else {
                     // Permissions are correct
                     fclose($file);
+                    unlink($gl_path . 'backups/test.txt');
                 }
             }
 
