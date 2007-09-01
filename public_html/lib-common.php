@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.649 2007/08/29 02:11:34 ablankstein Exp $
+// $Id: lib-common.php,v 1.650 2007/09/01 15:26:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -83,15 +83,12 @@ if( function_exists('set_error_handler') )
     }
 }
 
-/**
-* Configuration Include: You should ONLY have to modify this line.
-* Leave the rest of this file intact!
-*
-* Make sure to include the name of the config file,
-* i.e. the path should end in .../config.php
+/*
+* Configuration Include:
+* You do NOT need to modify anything here any more!
 */
-require_once('siteconfig.php');
-require_once( $_CONF['path_system'] . 'classes/config.class.php'); 
+require_once 'siteconfig.php' ;
+require_once $_CONF['path_system'] . 'classes/config.class.php';
 $config = config::create();
 $config->set_configfile($_CONF['path'] . 'db-config.php');
 $config->load_baseconfig();
