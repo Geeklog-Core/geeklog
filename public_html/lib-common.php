@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.651 2007/09/01 20:23:45 dhaun Exp $
+// $Id: lib-common.php,v 1.652 2007/09/02 02:18:41 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1357,6 +1357,26 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     $block->set_var( 'site_url', $_CONF['site_url'] );
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->set_var( 'block_title', stripslashes( $title ));
+
+    // Set a blockid
+    if (!isset($GLOBALS['siteblocks'])) $GLOBALS['siteblocks'] = array();
+    $blockid = stripslashes ($title);
+    $blockid = strtr($blockid, "!@#$%^&*()'\"\\/?~`.,;: ", "________________________");
+    // Check if there is already a block of the same name
+    if (in_array($blockid,$GLOBALS['siteblocks'])) {
+        // Now, in the unlikely chance there are multiple matching blocks
+        for ($i=2; $i <= 5; $i++) {   // there can't be more then 5 blocks of the same name
+            $nblockid = "{$blockid}{$i}";
+            if (!in_array($nblockid,$GLOBALS['siteblocks'])) {
+                $blockid = $nblockid;
+                $GLOBALS['siteblocks'][] = $blockid;
+                break;
+            }
+        }
+    } else {
+        $GLOBALS['siteblocks'][] = $blockid;
+    }
+    $block->set_var( 'blockid', $blockid);
 
     if( !empty( $helpfile ))
     {

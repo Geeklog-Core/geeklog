@@ -2,6 +2,7 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Updated COM_startBlock to set a unique {blockid} template variable [Blaine]
 - Fixed checking of "Show Admin lists" in Group Admin when going to 2nd page of
   results [Oliver]
 - Created new function for Admin-Menu display and removed that functionality from
