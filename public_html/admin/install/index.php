@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2007/09/02 08:39:20 dhaun Exp $
+// $Id: index.php,v 1.12 2007/09/02 11:07:24 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -640,7 +640,7 @@ function INST_permissionWarning($files)
  */
 function INST_showReturnFormData($post_data)
 {
-    global $mode, $dbconfig_path, $language;
+    global $mode, $dbconfig_path, $language, $LANG_INSTALL;
 
     $display = '
         <form action="index.php" method="post">
@@ -659,8 +659,9 @@ function INST_showReturnFormData($post_data)
         <input type="hidden" name="site_admin_url" value="' . $post_data['site_admin_url'] . '" />
         <input type="hidden" name="site_mail" value="' . $post_data['site_mail'] . '" />
         <input type="hidden" name="noreply_mail" value="' . $post_data['noreply_mail'] . '" />
-        <p align="center"><input type="submit" value="&lt;&lt; Back" /></p>
+        <p align="center"><input type="submit" value="&lt;&lt; ' . $LANG_INSTALL[61] . '" /></p>
         </form>';
+
     return $display;
 }
 
@@ -1286,19 +1287,19 @@ function INST_pluginExists($plugin)
  * @param   array $_SQL   Array of queries
  *
  */
-function INST_updateDB($_SQL) {
+function INST_updateDB($_SQL)
+{
     global $progress, $_DB, $_DB_dbms;
-    $_SQL = INST_checkInnodbUpgrade($_SQL);
-    for ($i = 1; $i <= count($_SQL); $i++) {
-        $progress .= "executing " . current($_SQL) . "<br />\n";
-        if ($_DB_dbms == 'mssql') {
-            $_DB->dbQuery(current($_SQL), 0, 1);
-        } else {
-            DB_query(current($_SQL));
-        }
-        next($_SQL);
-    }
 
+    $_SQL = INST_checkInnodbUpgrade($_SQL);
+    foreach ($_SQL as $sql) {
+        $progress .= "executing " . $sql . "<br />\n";
+        if ($_DB_dbms == 'mssql') {
+            $_DB->dbQuery($sql, 0, 1);
+        } else {
+            DB_query($sql);
+        }
+    }
 }
 
 
@@ -1329,7 +1330,7 @@ require_once 'language/' . $language . '.php';
 $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '" />
 <link rel="stylesheet" type="text/css" href="layout/style.css" />
 <meta name="robots" content="noindex,nofollow" />
 <title>' . $LANG_INSTALL[0] . '</title>
