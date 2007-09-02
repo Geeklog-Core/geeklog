@@ -50,7 +50,7 @@
 
 
 
-// $Id: mysql_install.php,v 1.5 2007/08/29 04:26:59 ospiess Exp $
+// $Id: mysql_install.php,v 1.6 2007/09/02 02:44:55 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['linkcategories']} (
@@ -106,10 +106,5 @@ CREATE TABLE {$_TABLES['linksubmission']} (
   PRIMARY KEY (lid)
 ) TYPE=MyISAM
 ";
-
-$_SQL[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', '20070828065220743', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 0, '2007-08-28 14:52:13', 1, 5, 3, 2, 2, 2);";
-$_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20070828065220743', 'site', 'Geeklog Sites', NULL, NULL, '2007-08-28 14:52:20', '2007-08-28 14:52:20', 2, 5, 3, 2, 2, 2);";
-$_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('site', 'root', 'Root', 'Website root', '', '2007-08-28 14:52:21', '2007-08-28 14:52:21', 2, 5, 3, 3, 2, 2);";
-
 
 ?>

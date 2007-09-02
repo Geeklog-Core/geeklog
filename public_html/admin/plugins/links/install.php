@@ -55,7 +55,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  *
  */
-// $Id: install.php,v 1.20 2007/08/29 04:27:22 ospiess Exp $
+// $Id: install.php,v 1.21 2007/09/02 02:44:32 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/links/config.php');
@@ -130,15 +130,21 @@ $DEFVALUES = array();
 
 $blockadmin_id = DB_GetItem ($_TABLES['groups'], 'grp_id', "grp_name='Block Admin'");
 
-$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$_LI_CONF['root']}', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
-
-$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20070122143647631', '{$_LI_CONF['root']}', 'Geeklog sites', 'Sites using or related to the Geeklog CMS', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
-
-$DEFVALUES[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', '20070122143647631', 'http://www.geeklog.net/', 'Visit the homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 43, NOW(), 1, 5, 3, 3, 2, 2)";
-
-$DEFVALUES[] = "INSERT INTO gl_blocks (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
-
-$DEFVALUES[] = "INSERT INTO gl_blocks (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} "
+    . "(cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) "
+    . "VALUES ('{$_LI_CONF['root']}', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} "
+    . "(cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) "
+    . "VALUES ('20070122143647631', '{$_LI_CONF['root']}', 'Geeklog sites', 'Sites using or related to the Geeklog CMS', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['links']} "
+    . "(lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
+    . "VALUES ('geeklog.net', '20070828065220743', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 0, NOW(), 1, 5, 3, 2, 2, 2);";
+$DEFVALUES[] = "INSERT INTO gl_blocks "
+    . "(is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
+    . "VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+$DEFVALUES[] = "INSERT INTO gl_blocks "
+    . "(is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
+    . "VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
 
 
 /**
@@ -224,7 +230,6 @@ function plugin_install_now()
         DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
         if (DB_error ()) {
             PLG_uninstall ($pi_name);
-
             return false;
         }
 
