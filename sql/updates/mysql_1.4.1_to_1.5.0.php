@@ -246,9 +246,7 @@ function upgrade_PollsPlugin()
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` DROP PRIMARY KEY;";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX ( `qid` );";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX ( `aid` );";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX ( `pid` );";
+        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX (pid, qid, aid);";
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $P_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
               qid mediumint(9) NOT NULL DEFAULT '0',
