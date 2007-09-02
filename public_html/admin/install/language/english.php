@@ -146,7 +146,9 @@ $LANG_INSTALL = array(
     102 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
     103 => 'Installation Error',
     104 => 'The path "',
-    105 => '" does not appear to be correct. Please go back and try again.'
+    105 => '" does not appear to be correct. Please go back and try again.',
+    106 => 'Language',
+    107 => 'http://www.geeklog.net/forum/index.php?forum=1'
 );
 
 ###############################################################################

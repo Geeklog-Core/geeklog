@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.10 2007/09/01 19:41:49 dhaun Exp $
+// $Id: index.php,v 1.11 2007/09/02 08:39:20 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -120,7 +120,7 @@ function INST_installEngine($install_type, $install_step)
          * Page 1 - Enter Geeklog config information
          */
         case 1:
-            require_once($dbconfig_path); // Get the current DB info
+            require_once $dbconfig_path; // Get the current DB info
 
             // Set all the form values either with their defaults or with received POST data.
             // The only instance where you'd get POST data would be if the user has to
@@ -163,6 +163,14 @@ function INST_installEngine($install_type, $install_step)
             $site_mail = isset($_POST['site_mail']) ? $_POST['site_mail'] : ($_CONF['site_mail'] == 'admin@example.com' ? $_CONF['site_mail'] : 'admin@' . $_SERVER['HTTP_HOST']);
             $noreply_mail = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : ($_CONF['noreply_mail'] == 'noreply@example.com' ? $_CONF['noreply_mail'] : 'noreply@' . $_SERVER['HTTP_HOST']);
 
+            if ($install_type == 'install') {
+                $buttontext = $LANG_INSTALL[50];
+                $innodbnote = '<small>' . $LANG_INSTALL[38] . '</small>';
+            } else {
+                $buttontext = $LANG_INSTALL[25];
+                $innodbnote = '';
+            }
+
             $display .= '
                 <h2>' . $LANG_INSTALL[31] . '</h2>
                 <form action="index.php" method="post">
@@ -176,7 +184,7 @@ function INST_installEngine($install_type, $install_step)
                 <p><label>' . $LANG_INSTALL[34] . '</label> <select name="db_type">
                     <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
                     ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $msyql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
-                    <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> <small>' . $LANG_INSTALL[38] . '</small></p>
+                    <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . $innodbnote . '</p>
                 <p><label>' . $LANG_INSTALL[39] . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="10" /></p>
                 <p><label>' . $LANG_INSTALL[40] . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="10" /></p>
                 <p><label>' . $LANG_INSTALL[41] . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="10" /></p>
@@ -191,7 +199,7 @@ function INST_installEngine($install_type, $install_step)
                 <p><label>' . $LANG_INSTALL[49] . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="30" /></p>
 
                 <br />
-                <input type="submit" name="submit" class="submit" value="' . $LANG_INSTALL[50] . ' &gt;&gt;" />
+                <input type="submit" name="submit" class="submit" value="' . $buttontext . ' &gt;&gt;" />
                 </form>' . LB;
             break;
 
@@ -270,7 +278,7 @@ function INST_installEngine($install_type, $install_step)
                     <p>' . $LANG_INSTALL[57] . '</p>' . INST_showReturnFormData($_POST) . LB;
                 } else { // If database does exist
 
-                    require_once($dbconfig_path); // Grab the current DB values
+                    require_once $dbconfig_path; // Grab the current DB values
 
                     // Read in db-config.php so we can insert the DB information
                     $dbconfig_file = fopen($dbconfig_path, 'r');
@@ -292,9 +300,9 @@ function INST_installEngine($install_type, $install_step)
                     }
                     fclose($dbconfig_file);
 
-                    require($dbconfig_path);
-                    require_once($siteconfig_path);
-                    require_once($_CONF['path_system'] . 'lib-database.php');
+                    require $dbconfig_path;
+                    require_once $siteconfig_path;
+                    require_once $_CONF['path_system'] . 'lib-database.php';
                     $req_string = 'index.php?mode=' . $install_type . '&step=3&dbconfig_path=' . $dbconfig_path
                                     . '&language=' . $language
                                     . '&site_name=' . urlencode($site_name)
@@ -417,9 +425,9 @@ function INST_installEngine($install_type, $install_step)
                     }
 
                     // We need all this just to do one DB query
-                    require_once($dbconfig_path);
-                    require_once($siteconfig_path);
-                    require_once($_CONF['path_system'] . 'lib-database.php');
+                    require_once $dbconfig_path;
+                    require_once $siteconfig_path;
+                    require_once $_CONF['path_system'] . 'lib-database.php';
 
                     // Check if GL is already installed
                     if (INST_checkTableExists('vars')) {
@@ -464,7 +472,7 @@ function INST_installEngine($install_type, $install_step)
 
                             // Insert the form data into the conf_values table
 
-                            require_once($_CONF['path_system'] . 'classes/config.class.php');
+                            require_once $_CONF['path_system'] . 'classes/config.class.php';
                             $config = config::create();
                             $config->set('site_name', urldecode($site_name));
                             $config->set('site_slogan', urldecode($site_slogan));
@@ -505,9 +513,9 @@ function INST_installEngine($install_type, $install_step)
                     }
 
                     // Let's do this
-                    require_once($dbconfig_path);
-                    require_once($siteconfig_path);
-                    require_once($_CONF['path_system'] . 'lib-database.php');
+                    require_once $dbconfig_path;
+                    require_once $siteconfig_path;
+                    require_once $_CONF['path_system'] . 'lib-database.php';
 
                     // If this is a MySQL database check to see if it was
                     // installed with InnoDB support
@@ -530,7 +538,8 @@ function INST_installEngine($install_type, $install_step)
                         $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : (isset($_GET['site_admin_url']) ? $_GET['site_admin_url'] : '') ;
                         $site_mail      = isset($_POST['site_mail']) ? $_POST['site_mail'] : (isset($_GET['site_mail']) ? $_GET['site_mail'] : '') ;
                         $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
-                        require_once($_CONF['path_system'] . 'classes/config.class.php');
+
+                        require_once $_CONF['path_system'] . 'classes/config.class.php';
                         $config = config::create();
                         $config->set('site_name', urldecode($site_name));
                         $config->set('site_slogan', urldecode($site_slogan));
@@ -758,7 +767,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
     // postgresql.class.php, etc)
 
     // Get DBMS-specific create table array and data array
-    require_once ($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
+    require_once $_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php';
 
     $progress = '';
 
@@ -1196,11 +1205,11 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             break;
 
         case '1.4.1':
-            require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.1_to_1.4.2.php');
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.1_to_1.4.2.php';
             INST_updateDB($_SQL);
 
             create_ConfValues();
-            require_once( $_CONF['path_system'] . 'classes/config.class.php');
+            require_once $_CONF['path_system'] . 'classes/config.class.php';
             $config = config::create();
 
             if (file_exists($_CONF['path'] . 'config.php')) {
@@ -1314,7 +1323,7 @@ $dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path']
 $language           = isset($_POST['language']) ? $_POST['language'] : (isset($_GET['language']) ? $_GET['language'] : 'english') ;
 $step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 $mode               = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : '');
-require_once('language/' . $language . '.php');
+require_once 'language/' . $language . '.php';
 
 // $display holds all the outputted HTML and content
 $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -1322,13 +1331,14 @@ $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="layout/style.css" />
+<meta name="robots" content="noindex,nofollow" />
 <title>' . $LANG_INSTALL[0] . '</title>
 </head>
 
 <body dir="ltr">
     <div class="header-navigation-container">
         <div class="header-navigation-line">
-            <a href="http://www.geeklog.net/forum/index.php?forum=1" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
+            <a href="' . $LANG_INSTALL[107] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
         </div>
     </div>
     <div class="header-logobg-container-outer">
@@ -1356,7 +1366,7 @@ if ($mode == 'check_permissions') {
         }
     }
 
-    $display .= 'Language:  <select name="language">' . LB;
+    $display .= $LANG_INSTALL[106] . ':  <select name="language">' . LB;
 
     foreach (glob('language/*.php') as $filename) {
         $filename = preg_replace('/.php/', '', preg_replace('/language\//', '', $filename));
@@ -1466,8 +1476,8 @@ switch ($mode) {
                       </div>';
         } else {
 
-            require_once($_PATH['db-config.php']);  // We need db-config.php the current DB information
-            require_once($siteconfig_path);         // We need siteconfig.php for core $_CONF values.
+            require_once $_PATH['db-config.php'];  // We need db-config.php the current DB information
+            require_once $siteconfig_path;         // We need siteconfig.php for core $_CONF values.
 
             $gl_path                = str_replace('db-config.php', '', $_PATH['db-config.php']);
             $log_path               = $gl_path . 'logs/';
@@ -1661,7 +1671,7 @@ switch ($mode) {
             fclose($siteconfig_file);
 
             // $_CONF['path']
-            require_once($siteconfig_path);
+            require_once $siteconfig_path;
             $siteconfig_data = str_replace("\$_CONF['path'] = '{$_CONF['path']}';",
                                 "\$_CONF['path'] = '" . str_replace('db-config.php', '', $_PATH['db-config.php']) . "';",
                                 $siteconfig_data);
