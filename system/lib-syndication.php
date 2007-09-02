@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.38 2006/11/22 04:44:57 blaine Exp $
+// $Id: lib-syndication.php,v 1.39 2007/09/02 07:50:56 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -490,7 +490,7 @@ function SYND_updateFeed( $fid )
             $feed->copyright = 'Copyright ' . strftime( '%Y' ) . ' '
                              . $_CONF['site_name'];
             $feed->sitecontact = $_CONF['site_mail'];
-            $feed->system = 'GeekLog';
+            $feed->system = 'Geeklog';
 
             /* Gather any other stuff */
             $feed->namespaces = PLG_getFeedNSExtensions($A['type'], $format[0], $format[1], $A['topic'], $fid);

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-trackback.php,v 1.48 2007/05/01 07:35:26 dhaun Exp $
+// $Id: lib-trackback.php,v 1.49 2007/09/02 07:50:56 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -503,7 +503,7 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
     }
 
     $req = new HTTP_Request ($urlToGet);
-    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
+    $req->addHeader ('User-Agent', 'Geeklog/' . VERSION);
     $response = $req->sendRequest ();
     if (PEAR::isError ($response)) {
         COM_errorLog ("Trackback verification: " . $response->getMessage()
@@ -776,7 +776,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
     fputs ($sock, 'Content-type: application/x-www-form-urlencoded; charset='
                   . $charset . "\r\n");
     fputs ($sock, 'Content-length: ' . MBYTE_strlen ($toSend) . "\r\n");
-    fputs ($sock, 'User-Agent: GeekLog/' . VERSION . "\r\n");
+    fputs ($sock, 'User-Agent: Geeklog/' . VERSION . "\r\n");
     fputs ($sock, "Connection: close\r\n\r\n");
     fputs ($sock, $toSend);
 
@@ -829,7 +829,7 @@ function TRB_detectTrackbackUrl ($url)
 
     $req = new HTTP_Request ($url);
     $req->setMethod (HTTP_REQUEST_METHOD_GET);
-    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
+    $req->addHeader ('User-Agent', 'Geeklog/' . VERSION);
 
     $response = $req->sendRequest ();
     if (PEAR::isError ($response)) {

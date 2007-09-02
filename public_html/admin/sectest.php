@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.9 2007/04/22 17:04:43 dhaun Exp $
+// $Id: sectest.php,v 1.10 2007/09/02 07:50:56 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -63,7 +63,7 @@ function doHeadRequest ($url, &$errmsg)
 
     $req = new HTTP_Request ($url);
     $req->setMethod (HTTP_REQUEST_METHOD_HEAD);
-    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
+    $req->addHeader ('User-Agent', 'Geeklog/' . VERSION);
     $response = $req->sendRequest ();
     if (PEAR::isError ($response)) {
         $errmsg = $response->getMessage();

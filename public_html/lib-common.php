@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.652 2007/09/02 02:18:41 blaine Exp $
+// $Id: lib-common.php,v 1.653 2007/09/02 07:50:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3071,7 +3071,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     {
         $headers['X-Priority'] = $priority;
     }
-    $headers['X-Mailer'] = 'GeekLog ' . VERSION;
+    $headers['X-Mailer'] = 'Geeklog ' . VERSION;
 
     $retval = $mailobj->send( $to, $headers, $message );
     if( $retval !== true )
@@ -3495,7 +3495,7 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
     // Load the actual feed handlers:
     $factory = new FeedParserFactory($_CONF['path_system']
                                      . '/classes/syndication/');
-    $factory->userAgent = 'GeekLog/' . VERSION;
+    $factory->userAgent = 'Geeklog/' . VERSION;
     if (!empty($last_modified) && !empty($etag)) {
         $factory->lastModified = $last_modified;
         $factory->eTag = $etag;

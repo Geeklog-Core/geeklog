@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.18 2007/05/01 07:48:41 dhaun Exp $
+// $Id: pingback.php,v 1.19 2007/09/02 07:50:56 dhaun Exp $
 
 require_once 'lib-common.php';
 
@@ -126,7 +126,7 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
     $title = '';
     $excerpt = '';
     $req = new HTTP_Request ($url);
-    $req->addHeader ('User-Agent', 'GeekLog/' . VERSION);
+    $req->addHeader ('User-Agent', 'Geeklog/' . VERSION);
     $response = $req->sendRequest ();
     if (PEAR::isError ($response)) {
         if ($_CONF['check_trackback_link'] & 3) {
