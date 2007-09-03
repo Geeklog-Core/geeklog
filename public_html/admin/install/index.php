@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2007/09/02 11:07:24 dhaun Exp $
+// $Id: index.php,v 1.13 2007/09/03 02:25:19 ablankstein Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -472,7 +472,10 @@ function INST_installEngine($install_type, $install_step)
 
                             // Insert the form data into the conf_values table
 
-                            require_once $_CONF['path_system'] . 'classes/config.class.php';
+                            require_once($_CONF['path_system'] . 'classes/config.class.php');
+                            require_once('config-install.php');
+                            install_config();
+                            
                             $config = config::create();
                             $config->set('site_name', urldecode($site_name));
                             $config->set('site_slogan', urldecode($site_slogan));
@@ -797,6 +800,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
 
         DB_query ($data);
     }
+
 
     if ($_DB_dbms == 'mysql' || $_DB_dbms == 'mssql') {
 

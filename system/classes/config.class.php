@@ -184,25 +184,23 @@ class config{
      * 
      * @param boolean $set              whether or not this parameter is set
      */
-    function add($param_name, $default_value, $display_name,
-                        $type, $subgroup, $fieldset, $selection_array=null,
-                        $sort=0, $set=true)
+    function add($param_name, $default_value, $type, $subgroup, $fieldset, 
+		 $selection_array=null, $sort=0, $set=true)
     {
         global $_TABLES, $_DB, $_DB_dbms;
-        $format = 'INSERT INTO %1$s (name, value, display_name, type, ' .
-            'default_value, subgroup, group_name, selectionArray, sort_order,'.
-            ' fieldset) ' .
-            'VALUES ("%2$s","%3$s","%4$s","%5$s","%11$s","%6$s","%7$s",'. 
-            '"%8$s",%9$s, "%10$s")';
+        $format = 'INSERT INTO %1$s (name, value, type, ' .
+            'subgroup, group_name, selectionArray, sort_order,'.
+            ' fieldset, default_value) ' .
+            'VALUES ("%2$s","%3$s","%4$s",%5$s,"%6$s",%7$s,'. 
+            '%8$s,%9$s, "%10$s")';
         $Qargs = array($_TABLES['conf_values'], 
                        $param_name,
                        $set ? serialize($default_value) : 'unset', 
-                       $display_name, 
                        $type, 
                        $subgroup,
                        $this->ref, 
                        ($selection_array === null ? 
-                        null : serialize($selection_array)),
+                        -1 : $selection_array),
                        $sort, 
                        $fieldset,
                        serialize($default_value));
@@ -236,8 +234,8 @@ class config{
 	 */
     function _get_extended($subgroup)
     {
-        global $_TABLES;
-        $q_string = "SELECT name, display_name, type, selectionArray, " 
+        global $_TABLES, $LANG_coreconfignames, $LANG_coreconfigselects;
+        $q_string = "SELECT name, type, selectionArray, " 
             . "fieldset, value FROM {$_TABLES['conf_values']}" . 
             " WHERE group_name='{$this->ref}' and subgroup='{$subgroup}' " . 
             " ORDER BY sort_order ASC";
@@ -245,18 +243,21 @@ class config{
         $res = array();
         while ($row = DB_fetchArray($Qresult)) {
             $cur = $row;
-            $res[$cur[4]][$cur[0]] = 
-                array('display_name' => $cur[1],
+            $res[$cur[3]][$cur[0]] = 
+                array('display_name' => 
+                      (array_key_exists($cur[0], $LANG_coreconfignames) ?
+                       $LANG_coreconfignames[$cur[0]]
+                       : $cur[0]),
                       'type' => 
-                      (($cur[5] == 'unset') ?
-                       'unset' : $cur[2]),
+                      (($cur[4] == 'unset') ?
+                       'unset' : $cur[1]),
                       'selectionArray' => 
-		      (($cur[3] != null) ?
-		       unserialize($cur[3]) : null),
+                      (($cur[2] != -1) ?
+                       $LANG_coreconfigselects[$cur[2]] : null),
                       'value' => 
-                      (($cur[5] == 'unset') ?
-                       'unset' : unserialize($cur[5])));
-	}
+                      (($cur[4] == 'unset') ?
+                       'unset' : unserialize($cur[4])));
+        }
         return $res;
     }
     /* Changes any config settings that depend on other configuration settings. */
@@ -280,7 +281,7 @@ class config{
         $res = DB_query($q_string);
         $return = array();
         while ($row = DB_fetchArray($res))
-            $return[] = stripslashes($row[0]);
+            $return[] = $row[0];
         return $return;
     }
 
@@ -296,8 +297,9 @@ class config{
 	 *						the "Changes" message box.						
 	 */
 	
-    function get_ui($sg=null, $change_result=null)
+    function get_ui($sg=0, $change_result=null)
     {
+        global $LANG_coreconfigsubgroups;
         if (!SEC_inGroup('Root'))
             return config::_UI_perm_denied();
         $t = new Template($GLOBALS['_CONF']['path_layout'] . 'admin/config');
@@ -315,11 +317,10 @@ class config{
         $subgroups = $this->get_sgroups();
         $t->set_block('main','subgroup-selector','navbar');
         foreach ($subgroups as $sgroup) {
-            if ($sg == null)
-                $sg = $sgroup;
             $t->set_var('select_id', ($sg === $sgroup ? 'id="current"' : ''));
             $t->set_var('subgroup_name', $sgroup);
-            $t->set_var("subgroup_display_name", str_replace("_", " ", $sgroup));
+            $t->set_var("subgroup_display_name", 
+                        $LANG_coreconfigsubgroups[$sgroup]);
             $t->parse("navbar", "subgroup-selector", true);
         }
         $t->set_var('open_sg', $sg);
@@ -362,10 +363,11 @@ class config{
         }
     }
 
-    function _UI_get_fs($contents, $name, &$t)
+    function _UI_get_fs($contents, $fs_id, &$t)
     {
+        global $LANG_fs;
         $t->set_var('fs_contents', $contents);
-        $t->set_var('fs_display', str_replace('_', ' ', $name));
+        $t->set_var('fs_display', $LANG_fs[$fs_id]);
         $t->set_var('fs_notes', '');
         $t->parse('sg_contents', 'fieldset', true);
     }
