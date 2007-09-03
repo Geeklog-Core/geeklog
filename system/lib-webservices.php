@@ -29,14 +29,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.4 2007/08/24 11:17:07 dhaun Exp $
+// $Id: lib-webservices.php,v 1.5 2007/09/03 00:39:12 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
 }
-
-// Set the default content type
-header('Content-type: ' . 'application/atom+xml' . '; charset=UTF-8');
 
 $WS_PLUGIN    = '';
 $WS_INTROSPECTION = false;
@@ -44,6 +41,15 @@ $WS_TEXT = '';
 $WS_ATOM_NS = 'http://www.w3.org/2005/Atom';
 $WS_APP_NS  = 'http://www.w3.org/2007/app';
 $WS_EXTN_NS = 'http://www.geeklog.net';
+
+if (!isset($WS_DISABLED)) {
+    $WS_DISABLED = false;
+}
+
+/* Check for PHP5 */
+if (PHP_VERSION < 5) {
+    $WS_DISABLED = true;
+}
 
 /**
  * Displays an error message with the appropriate HTTP error-code

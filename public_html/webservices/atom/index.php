@@ -33,6 +33,16 @@
 require_once '../../lib-common.php';
 require_once $_CONF['path_system'] . '/lib-webservices.php';
 
+/* Check if WS component is enabled */
+if ($WS_DISABLED) {
+    /* Pretend the WS doesn't exist */
+    header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
+    exit();
+}
+
+// Set the default content type
+header('Content-type: ' . 'application/atom+xml' . '; charset=UTF-8');
+
 /* Authenticate the user IF credentials are present */
 WS_authenticate();
 
