@@ -1,45 +1,54 @@
 <?php
 
-###############################################################################
-# english.php
-#
-# This is the english language page for GeekLog!
-# Special thanks to Mischa Polivanov for his work on this project
-#
-# Copyright (C) 2007 Matt West
-# matt AT mattdanger DOT net
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-###############################################################################
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.5                                                               |
+// +---------------------------------------------------------------------------+
+// | english.php                                                               |
+// |                                                                           |
+// | English language file for the Geeklog installation script                 |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000-2007 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Randy Kolenko     - randy AT nextide DOT ca
+// |          Matt West         - matt AT mattdanger DOT net                   |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: english.php,v 1.5 2007/09/06 06:52:12 mwest Exp $
+
+// +---------------------------------------------------------------------------+
 
 $LANG_CHARSET = 'iso-8859-1';
 
-###############################################################################
-# Array Format:
-# $LANG_NAME[XX]:  $LANG - variable name
-#                  NAME  - where array is used
-#                  XX    - phrase id number
-###############################################################################
+// +---------------------------------------------------------------------------+
+// | Array Format:                                                             |
+// | $LANG_NAME[XX]: $LANG - variable name                                    |
+// |                 NAME  - where array is used                               |
+// |                 XX    - phrase id number                                  |
+// +---------------------------------------------------------------------------+
 
-###############################################################################
-# USER PHRASES - These are file phrases used in end user scripts
-###############################################################################
-
-###############################################################################
-# install.php
+// +---------------------------------------------------------------------------+
+// install.php
 
 $LANG_INSTALL = array(
     0 => 'Geeklog - The Ultimate Weblog System',
@@ -121,37 +130,60 @@ $LANG_INSTALL = array(
     77 => 'The installer was unable to determine your current version of Geeklog, please select it from the list below:',
     78 => 'Upgrade Error',
     79 => 'An error occured while upgrading your Geeklog installation.',
-    80 => 'Installation complete',
-    81 => 'Installation of Geeklog ',
-    82 => ' complete!',
-    83 => 'Congratulations, you have successfully ',
-    84 => ' Geeklog. Please take a minute to read the information displayed below.',
-    85 => 'To log into your new Geeklog site, please use this account:',
-    86 => 'Username:',
-    87 => 'Admin',
-    88 => 'Password:',
-    89 => 'password',
-    90 => 'Security Warning',
-    91 => 'Don\'t forget to do',
-    92 => 'things',
-    93 => 'Remove or rename the install directory,',
-    94 => 'Change the',
-    95 => 'account password.',
-    96 => 'Set permissions on',
-    97 => 'and',
-    98 => 'back to',
-    99 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
-    100 => 'Change',
-    101 => 'Stop!',
-    102 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
-    103 => 'Installation Error',
-    104 => 'The path "',
-    105 => '" does not appear to be correct. Please go back and try again.',
-    106 => 'Language',
-    107 => 'http://www.geeklog.net/forum/index.php?forum=1'
+    80 => 'Change',
+    81 => 'Stop!',
+    82 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
+    83 => 'Installation Error',
+    84 => 'The path "',
+    85 => '" does not appear to be correct. Please go back and try again.',
+    86 => 'Language',
+    87 => 'http://www.geeklog.net/forum/index.php?forum=1',
+    88 => 'Change directory and containing files to'
 );
 
-###############################################################################
-# success.php
+// +---------------------------------------------------------------------------+
+// success.php
+
+$LANG_SUCCESS = array(
+    0 => 'Installation complete',
+    1 => 'Installation of Geeklog ',
+    2 => ' complete!',
+    3 => 'Congratulations, you have successfully ',
+    4 => ' Geeklog. Please take a minute to read the information displayed below.',
+    5 => 'To log into your new Geeklog site, please use this account:',
+    6 => 'Username:',
+    7 => 'Admin',
+    8 => 'Password:',
+    9 => 'password',
+    10 => 'Security Warning',
+    11 => 'Don\'t forget to do',
+    12 => 'things',
+    13 => 'Remove or rename the install directory,',
+    14 => 'Change the',
+    15 => 'account password.',
+    16 => 'Set permissions on',
+    17 => 'and',
+    18 => 'back to',
+    19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',    
+);
+
+// +---------------------------------------------------------------------------+
+// help.php (TBD)
+
+$LANG_HELP = array(
+    0 => 'Geeklog Installation Support',
+    1 => 'Site name',
+    2 => 'Slogan',
+    3 => 'Database type',
+    4 => 'Hostname',
+    5 => 'Name',
+    6 => 'Username',
+    7 => 'Password',
+    8 => 'Prefix',
+    9 => 'Site URL',
+    10 => 'Admin Directory Url',
+    11 => 'Site Email',
+    12 => 'Site No-Reply'
+);
 
 ?>

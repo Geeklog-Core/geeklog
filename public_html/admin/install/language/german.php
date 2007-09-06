@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.1 2007/09/02 11:09:42 dhaun Exp $
+// $Id: german.php,v 1.2 2007/09/06 06:52:24 mwest Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -130,37 +130,59 @@ $LANG_INSTALL = array(
     77 => 'The installer was unable to determine your current version of Geeklog, please select it from the list below:',
     78 => 'Upgrade Error',
     79 => 'An error occured while upgrading your Geeklog installation.',
-    80 => 'Installation complete',
-    81 => 'Installation of Geeklog ',
-    82 => ' complete!',
-    83 => 'Congratulations, you have successfully ',
-    84 => ' Geeklog. Please take a minute to read the information displayed below.',
-    85 => 'To log into your new Geeklog site, please use this account:',
-    86 => 'Username:',
-    87 => 'Admin',
-    88 => 'Password:',
-    89 => 'password',
-    90 => 'Security Warning',
-    91 => 'Don\'t forget to do',
-    92 => 'things',
-    93 => 'Remove or rename the install directory,',
-    94 => 'Change the',
-    95 => 'account password.',
-    96 => 'Set permissions on',
-    97 => 'and',
-    98 => 'back to',
-    99 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
-    100 => 'Ändern',
-    101 => 'Stop!',
-    102 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
-    103 => 'Installation Error',
-    104 => 'The path "',
-    105 => '" does not appear to be correct. Please go back and try again.',
-    106 => 'Sprache',
-    107 => 'http://geeklog.info/forum/index.php?forum=1'
+    80 => 'Ändern',
+    81 => 'Stop!',
+    82 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
+    83 => 'Installation Error',
+    84 => 'The path "',
+    85 => '" does not appear to be correct. Please go back and try again.',
+    86 => 'Sprache',
+    87 => 'http://geeklog.info/forum/index.php?forum=1'
 );
 
 // +---------------------------------------------------------------------------+
 // success.php (TBD)
+
+$LANG_SUCCESS = array(
+    0 => 'Installation complete',
+    1 => 'Installation of Geeklog ',
+    2 => ' complete!',
+    3 => 'Congratulations, you have successfully ',
+    4 => ' Geeklog. Please take a minute to read the information displayed below.',
+    5 => 'To log into your new Geeklog site, please use this account:',
+    6 => 'Username:',
+    7 => 'Admin',
+    8 => 'Password:',
+    9 => 'password',
+    10 => 'Security Warning',
+    11 => 'Don\'t forget to do',
+    12 => 'things',
+    13 => 'Remove or rename the install directory,',
+    14 => 'Change the',
+    15 => 'account password.',
+    16 => 'Set permissions on',
+    17 => 'and',
+    18 => 'back to',
+    19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',    
+);
+
+// +---------------------------------------------------------------------------+
+// help.php (TBD)
+
+$LANG_HELP = array(
+    0 => 'Geeklog Installation Support',
+    1 => 'Site name',
+    2 => 'Slogan',
+    3 => 'Database type',
+    4 => 'Hostname',
+    5 => 'Name',
+    6 => 'Username',
+    7 => 'Password',
+    8 => 'Prefix',
+    9 => 'Site URL',
+    10 => 'Admin Directory Url',
+    11 => 'Site Email',
+    12 => 'Site No-Reply'
+);
 
 ?>
