@@ -1,41 +1,77 @@
 <?php
 
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.4                                                               |
+// +---------------------------------------------------------------------------+
+// | success.php                                                               |
+// |                                                                           |
+// | Page that is displayed upon a successful Geeklog installation or upgrade  |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000-2007 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Randy Kolenko     - randy AT nextide DOT ca
+// |          Matt West         - matt AT mattdanger DOT net                   |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: success.php,v 1.16 2007/09/06 06:50:22 mwest Exp $
+
 require_once ('../../lib-common.php');
 
 $type = (isset( $_GET['type'] ) && !empty( $_GET['type'] )) ? $_GET['type'] : 'install';
 $language = (isset( $_GET['language'] ) && !empty( $_GET['language'] )) ? $_GET['language'] : 'english';
 require_once( 'language/' . $language . '.php' );
+
 // enable detailed error reporting
 $_CONF['rootdebug'] = true;
 
-$display = COM_siteHeader( 'menu', $LANG_INSTALL[80] );
-$display .= COM_startBlock( $LANG_INSTALL[81] . VERSION . $LANG_INSTALL[82] );
+$display = COM_siteHeader( 'menu', $LANG_SUCCESS[0] );
+$display .= COM_startBlock( $LANG_SUCCESS[1] . VERSION . $LANG_SUCCESS[2] );
 
-$display .= '<p>' . $LANG_INSTALL[83] . (($type == 'install') ? 'installed' : 'upgraded') . $LANG_INSTALL[84] . '</p>' ;
+$display .= '<p>' . $LANG_SUCCESS[3] . (($type == 'install') ? 'installed' : 'upgraded') . $LANG_SUCCESS[4] . '</p>' ;
 
 if ($type == 'install') {
-	$display .= '<p>' . $LANG_INSTALL[85] . '</p>
-    <p>' . $LANG_INSTALL[86] . ' <strong>' . $LANG_INSTALL[87] . '</strong><br />
-    ' . $LANG_INSTALL[88] . ' <strong>' . $LANG_INSTALL[89] . '</strong></p> <br />';
+	$display .= '<p>' . $LANG_SUCCESS[5] . '</p>
+    <p>' . $LANG_SUCCESS[6] . ' <strong>' . $LANG_SUCCESS[7] . '</strong><br />
+    ' . $LANG_SUCCESS[8] . ' <strong>' . $LANG_SUCCESS[9] . '</strong></p> <br />';
 }
 
-$display .= '<h2>' . $LANG_INSTALL[90] . '</h2>
-<p>' . $LANG_INSTALL[91] . ' <strong>' . (($type == 'upgrade') ? '2' : '3') . ' ' . $LANG_INSTALL[92] . '</strong>:
+$display .= '<h2>' . $LANG_SUCCESS[10] . '</h2>
+<p>' . $LANG_SUCCESS[11] . ' <strong>' . (($type == 'upgrade') ? '2' : '3') . ' ' . $LANG_SUCCESS[12] . '</strong>:
 <ul>
-<li>' . $LANG_INSTALL[93] . ' <tt>' . $_CONF['path_html'] . 'admin/install</tt>.</li>';
-
+<li>' . $LANG_SUCCESS[13] . ' <tt>' . $_CONF['path_html'] . 'admin/install</tt>.</li>';
 
 if ($type == 'install') {
-    $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php?mode=edit\">" . $LANG_INSTALL[94] . ' <strong>' . $LANG_INSTALL[87] . '</strong> ' . $LANG_INSTALL[95] . '</a></li>';
+    $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php?mode=edit\">" . $LANG_SUCCESS[14] . ' <strong>' . $LANG_SUCCESS[7] . '</strong> ' . $LANG_SUCCESS[15] . '</a></li>';
 }
 
-$display .= '<li>' . $LANG_INSTALL[96] . ' <tt>' . $_CONF['path'] . 'db-config.php</tt> ' . $LANG_INSTALL[97] . ' <tt>' . $_CONF['path_html'] . 'siteconfig.php</tt> ' . $LANG_INSTALL[98] . ' 755.</li>
+$display .= '<li>' . $LANG_SUCCESS[16] . ' <tt>' . $_CONF['path'] . 'db-config.php</tt> ' . $LANG_SUCCESS[17] . ' <tt>' . $_CONF['path_html'] . 'siteconfig.php</tt> ' . $LANG_SUCCESS[18] . ' 755.</li>
 </ul>
 </p>';
 
 // note for those upgrading from Geeklog 1.2.5-1 or older
 if (DB_count ($_TABLES['users'], 'username', 'NewAdmin') > 0) {
-    $display .= '<p>' . $LANG_INSTALL[99] . '</p>.';
+    $display .= '<p>' . $LANG_SUCCESS[19] . '</p>.';
 }
 
 $display .= COM_endBlock ();
