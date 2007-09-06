@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
-// | install.php                                                               |
+// | index.php                                                                 |
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2007/09/03 02:25:19 ablankstein Exp $
+// $Id: index.php,v 1.14 2007/09/06 06:48:52 mwest Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -179,24 +179,24 @@ function INST_installEngine($install_type, $install_step)
                 <input type="hidden" name="language" value="' . $language . '" />
                 <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '" />
 
-                <p><label>' . $LANG_INSTALL[32] . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="25" /></p>
-                <p><label>' . $LANG_INSTALL[33] . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="25" /></p><br />
-                <p><label>' . $LANG_INSTALL[34] . '</label> <select name="db_type">
+                <p><label>' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="25" /></p>
+                <p><label>' . $LANG_INSTALL[33] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="25" /></p><br />
+                <p><label>' . $LANG_INSTALL[34] . ' ' . INST_helpLink('') . '</label> <select name="db_type">
                     <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
                     ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $msyql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
                     <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . $innodbnote . '</p>
-                <p><label>' . $LANG_INSTALL[39] . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[40] . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[41] . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[42] . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[43] . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="10" /></p>
+                <p><label>' . $LANG_INSTALL[39] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="10" /></p>
+                <p><label>' . $LANG_INSTALL[40] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="10" /></p>
+                <p><label>' . $LANG_INSTALL[41] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="10" /></p>
+                <p><label>' . $LANG_INSTALL[42] . ' ' . INST_helpLink('') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="10" /></p>
+                <p><label>' . $LANG_INSTALL[43] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="10" /></p>
 
                 <br />
                 <h2>' . $LANG_INSTALL[44] . '</h2>
-                <p><label>' . $LANG_INSTALL[45] . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="30" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[47] . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="30" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[48] . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="30" /></p>
-                <p><label>' . $LANG_INSTALL[49] . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="30" /></p>
+                <p><label>' . $LANG_INSTALL[45] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="30" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label>' . $LANG_INSTALL[47] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="30" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label>' . $LANG_INSTALL[48] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="30" /></p>
+                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="30" /></p>
 
                 <br />
                 <input type="submit" name="submit" class="submit" value="' . $buttontext . ' &gt;&gt;" />
@@ -492,7 +492,6 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('path_themes', $html_path . 'layout/');
                             $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
                             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
-
                             $config->set('default_photo', urldecode($site_url) . '/default.jpg');
 
                             // Now we're done with the installation so redirect the user to success.php
@@ -550,9 +549,7 @@ function INST_installEngine($install_type, $install_step)
                         $config->set('site_admin_url', urldecode($site_admin_url));
                         $config->set('site_mail', urldecode($site_mail));
                         $config->set('noreply_mail', urldecode($noreply_mail));
-
                         $config->set('default_photo', urldecode($site_url) . '/default.jpg');
-
 
                         // Great, installation is complete, redirect to success page
                         header('Location: success.php?type=upgrade&language=' . $language);
@@ -605,9 +602,9 @@ function INST_permissionWarning($files)
     $display .= '
         <div class="install-path-container-outer">
             <div class="install-path-container-inner">
-                <h2>' . $LANG_INSTALL[101] . '</h2>
+                <h2>' . $LANG_INSTALL[81] . '</h2>
 
-                <p>' . $LANG_INSTALL[102] . '</p>
+                <p>' . $LANG_INSTALL[82] . '</p>
 
                 <br />
                 <p><label class="file-permission-list"><b>' . $LANG_INSTALL[10] . '</b></label> <b>' . $LANG_INSTALL[11] . '</b></p>
@@ -666,6 +663,20 @@ function INST_showReturnFormData($post_data)
         </form>';
 
     return $display;
+}
+
+
+/**
+ * Returns the HTML form to return the user's inputted data to the
+ * previous page.
+ *
+ * @return  string  HTML form code.
+ *
+ */
+function INST_helpLink($var)
+{
+    global $language;
+    return '(<a href="help.php?language=' . $language . '#' . $var . '" target="_blank">?</a>)';
 }
 
 
@@ -1343,7 +1354,7 @@ $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 <body dir="ltr">
     <div class="header-navigation-container">
         <div class="header-navigation-line">
-            <a href="' . $LANG_INSTALL[107] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
+            <a href="' . $LANG_INSTALL[87] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
         </div>
     </div>
     <div class="header-logobg-container-outer">
@@ -1359,7 +1370,7 @@ $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 if ($mode == 'check_permissions') {
     $display .='<form action="index.php" method="post">' . LB;
 
-    $_PATH = array('db-config', 'public_html');
+    $_PATH = array('dbconfig', 'public_html');
     if (isset($_GET['mode']) || isset($_POST['mode'])) {
         $value = (isset($_POST['mode'])) ? $_POST['mode'] : $_GET['mode'];
         $display .= '<input type="hidden" name="mode" value="' . $value . '" />' . LB;
@@ -1371,7 +1382,7 @@ if ($mode == 'check_permissions') {
         }
     }
 
-    $display .= $LANG_INSTALL[106] . ':  <select name="language">' . LB;
+    $display .= $LANG_INSTALL[86] . ':  <select name="language">' . LB;
 
     foreach (glob('language/*.php') as $filename) {
         $filename = preg_replace('/.php/', '', preg_replace('/language\//', '', $filename));
@@ -1379,7 +1390,7 @@ if ($mode == 'check_permissions') {
     }
 
     $display .= '</select>
-                    <input type="submit" value="' . $LANG_INSTALL[100] . '" />';
+                    <input type="submit" value="' . $LANG_INSTALL[80] . '" />';
 }
 $display .= '
                     </form></div>
@@ -1471,8 +1482,8 @@ switch ($mode) {
         // The path to db-config.php is what we'll use to generate our /path/to/geeklog so
         // we want to make sure it's valid and exists before we continue and create problems.
         if (!file_exists($_PATH['db-config.php'])) {
-            $display .= '<h2>' . $LANG_INSTALL[103] . '</h2>'
-                    . $LANG_INSTALL[104] . $_PATH['db-config.php'] . $LANG_INSTALL[105]
+            $display .= '<h2>' . $LANG_INSTALL[83] . '</h2>'
+                    . $LANG_INSTALL[84] . $_PATH['db-config.php'] . $LANG_INSTALL[85]
                     . '<br /><br />
                       <div style="margin-left: auto; margin-right: auto; width: 1px">
                         <form action="index.php" method="post">
@@ -1596,7 +1607,7 @@ switch ($mode) {
                 // Permissions are incorrect
                 $_PERMS['error.log']    = sprintf("%3o", @fileperms($log_path) & 0775);
                 $display_permissions    .= '<p><label class="file-permission-list"><code>' . $log_path . '</code></label><span class="error">'
-                                        . $LANG_INSTALL[14] . ' 775</span> (' . $LANG_INSTALL[13] . ' '
+                                        . $LANG_INSTALL[88] . ' 777</span> (' . $LANG_INSTALL[13] . ' '
                                         . ($_PERMS['error.log'] == 0 ? $LANG_INSTALL[22] : $_PERMS['error.log']) . ')</p>' . LB ;
                 $failed++;
             } else {
