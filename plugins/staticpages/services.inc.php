@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.3 2007/08/18 20:19:41 dhaun Exp $
+// $Id: services.inc.php,v 1.4 2007/09/08 21:19:43 dhaun Exp $
 
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
@@ -221,7 +221,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         if ($r == PLG_RET_OK) {
             if ($args['gl_etag'] != $o['updated']) {
-                $svc_msg['error_desc'] = 'A more recent version of the story is available';
+                $svc_msg['error_desc'] = 'A more recent version of the staticpage is available';
                 return PLG_RET_PRECONDITION_FAILED;
             }
         } else {
