@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2007/09/06 06:48:52 mwest Exp $
+// $Id: index.php,v 1.15 2007/09/09 07:59:43 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -676,6 +676,7 @@ function INST_showReturnFormData($post_data)
 function INST_helpLink($var)
 {
     global $language;
+
     return '(<a href="help.php?language=' . $language . '#' . $var . '" target="_blank">?</a>)';
 }
 
@@ -1336,9 +1337,25 @@ for ($i = 0; $i < 4; $i++) {
 $html_path          = str_replace('admin/install/index.php', '', str_replace('admin\install\index.php', '', str_replace('\\', '/', __FILE__)));
 $siteconfig_path    = '../../siteconfig.php';
 $dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path'] : ((isset($_GET['dbconfig_path'])) ? $_GET['dbconfig_path'] : '');
-$language           = isset($_POST['language']) ? $_POST['language'] : (isset($_GET['language']) ? $_GET['language'] : 'english') ;
 $step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 $mode               = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : '');
+
+$language = 'english';
+if (isset($_REQUEST['language'])) {
+    $lng = $_REQUEST['language'];
+} else if (isset($_COOKIE['language'])) {
+    // Okay, so the name of the language cookie is configurable, so it may not
+    // be named 'language' after all. Still worth a try ...
+    $lng = $_COOKIE['language'];
+    $lng = str_replace('_utf-8', '', $lng); // for now
+} else {
+    $lng = $language;
+}
+// sanitize value and check for file
+$lng = preg_replace('/[^a-z0-9\-_]/', '', $lng);
+if (!empty($lng) && is_file('language/' . $lng . '.php')) {
+    $language = $lng;
+}
 require_once 'language/' . $language . '.php';
 
 // $display holds all the outputted HTML and content
