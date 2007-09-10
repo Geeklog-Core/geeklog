@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.5 2007/09/03 00:39:12 riyer Exp $
+// $Id: lib-webservices.php,v 1.6 2007/09/10 17:04:30 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -410,6 +410,9 @@ function WS_xmlToArgs(&$args)
             case 'updated':
                 $args['updated'] = (string)$node->firstChild->nodeValue;
                 break;
+            case 'content':
+                $args['content'] = (string)$atom_doc->saveXML($node);
+                break;
             default:
                 if ($node->nodeType == XML_ELEMENT_NODE) {
                     $is_array = 1;
@@ -538,11 +541,11 @@ function WS_authenticate()
     global $_USER;
 
     $uid = '';
-
+    
     if (isset($_SERVER['PHP_AUTH_USER'])) {
         $username = $_SERVER['PHP_AUTH_USER'];
         $password = $_SERVER['PHP_AUTH_PW'];
-
+        
         $status = SEC_authenticate($username, $password, $uid);
     } elseif (!empty($_REQUEST['gl_auth_header'])) {
         /* PHP installed as CGI may not have access to authorization headers of Apache
