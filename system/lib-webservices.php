@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.6 2007/09/10 17:04:30 riyer Exp $
+// $Id: lib-webservices.php,v 1.7 2007/09/10 19:04:13 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -411,7 +411,7 @@ function WS_xmlToArgs(&$args)
                 $args['updated'] = (string)$node->firstChild->nodeValue;
                 break;
             case 'content':
-                $args['content'] = (string)$atom_doc->saveXML($node);
+                $args['content'] = (string)$atom_doc->saveXML($node->firstChild);
                 break;
             default:
                 if ($node->nodeType == XML_ELEMENT_NODE) {
