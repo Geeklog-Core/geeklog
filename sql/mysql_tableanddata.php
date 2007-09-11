@@ -319,7 +319,7 @@ CREATE TABLE {$_TABLES['pollanswers']} (
 
 $_SQL[22] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
-  qid mediumint(9) NOT NULL,
+  qid mediumint(9) NOT NULL DEFAULT '0',
   pid varchar(20) NOT NULL,
   question varchar(255) NOT NULL,
   PRIMARY KEY (qid, pid)

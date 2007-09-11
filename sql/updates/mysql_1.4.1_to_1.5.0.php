@@ -225,81 +225,168 @@ function create_ConfValues()
 
 }
 
-
+// Polls plugin updates
 function upgrade_PollsPlugin()
 {
     global $_TABLES;
-
-    // Polls plugin updates
-    $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'polls';";
-    $check_rst = DB_query ($check_sql);
-    if (DB_numRows($check_rst) == 1) {
-        $P_SQL = array();
-        $P_SQL[] = "RENAME TABLE `{$_TABLES['pollquestions']}` TO `{$_TABLES['polltopics']}`;";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `question` `topic` VARCHAR( 255 )  NULL DEFAULT NULL";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD questions int(11) default '0' NOT NULL AFTER voters";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(4) NOT NULL default '1' AFTER display";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '1' AFTER open";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` DROP PRIMARY KEY;";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX (pid, qid, aid);";
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
-        $P_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
-              qid mediumint(9) NOT NULL,
-              pid varchar(20) NOT NULL,
-              question varchar(255) NOT NULL,
-              PRIMARY KEY (qid, pid)
-            ) TYPE=MyISAM
-            ";
-        $P_SQL = INST_checkInnodbUpgrade($P_SQL);
-        for ($i = 0; $i < count ($P_SQL); $i++) {
-            DB_query (current ($P_SQL));
-            next ($P_SQL);
+    $P_SQL = array();
+    $P_SQL[] = "RENAME TABLE `{$_TABLES['pollquestions']}` TO `{$_TABLES['polltopics']}`;";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `question` `topic` VARCHAR( 255 )  NULL DEFAULT NULL";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD questions int(11) default '0' NOT NULL AFTER voters";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(4) NOT NULL default '1' AFTER display";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '1' AFTER open";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` DROP PRIMARY KEY;";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX (pid, qid, aid);";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
+    $P_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
+          qid mediumint(9) NOT NULL DEFAULT '0',
+          pid varchar(20) NOT NULL,
+          question varchar(255) NOT NULL,
+          PRIMARY KEY (qid, pid)
+        ) TYPE=MyISAM";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.1', pi_gl_version = '1.5.0' WHERE pi_name = 'polls'";
+    $P_SQL = INST_checkInnodbUpgrade($P_SQL);
+    for ($i = 0; $i < count ($P_SQL); $i++) {
+        $sql = current ($P_SQL);
+        $rst = DB_query ($sql);
+        if (DB_error ()) {
+            echo "There was an error upgrading the polls, SQL: $sql<br>";
+            return false;
         }
-        $P_SQL = array();
-        $move_sql = "SELECT pid, topic FROM {$_TABLES['polltopics']}";
-        $move_rst = DB_query ($move_sql);
-        $count_move = DB_numRows($move_rst);
-        for ($i=0; $i<$count_move; $i++) {
-            $A = DB_fetchArray($move_rst);
-            $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
-        }
-        $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0', pi_gl_version = '1.4.1' WHERE pi_name = 'polls'";
-        //var_dump($P_SQL);
-        for ($i = 0; $i < count ($P_SQL); $i++) {
-            DB_query (current ($P_SQL));
-            next ($P_SQL);
-        }
+        next ($P_SQL);
     }
+    $P_SQL = array();
+    $move_sql = "SELECT pid, topic FROM {$_TABLES['polltopics']}";
+    $move_rst = DB_query ($move_sql);
+    $count_move = DB_numRows($move_rst);
+    for ($i=0; $i<$count_move; $i++) {
+        $A = DB_fetchArray($move_rst);
+        $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
+    }
+    for ($i = 0; $i < count ($P_SQL); $i++) {
+        $sql = current ($P_SQL);
+        $rst = DB_query ($sql);
+        if (DB_error ()) {
+            echo "There was an error upgrading the polls, SQL: $sql<br>";
+            return false;
+        }
+        next ($P_SQL);
+    }
+    return true;
 }
 
+// Staticpages plugin updates
 function upgrade_StaticpagesPlugin()
 {
     global $_TABLES;
-
-    // Polls plugin updates
-    $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'staticpages';";
-    $check_rst = DB_query ($check_sql);
-    if (DB_numRows($check_rst) == 1) {
-        $P_SQL = array();
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['staticpage']}` ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
-        $P_SQL = INST_checkInnodbUpgrade($P_SQL);
-        for ($i = 0; $i < count ($P_SQL); $i++) {
-            DB_query (current ($P_SQL));
-            next ($P_SQL);
+    $P_SQL = array();
+    $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.5', pi_gl_version = '1.5.0' WHERE pi_name = 'staticpages'";
+    for ($i = 0; $i < count ($P_SQL); $i++) {
+        $sql = current ($P_SQL);
+        $rst = DB_query ($sql);
+        if (DB_error ()) {
+            echo "There was an error upgrading the staticpages, SQL: $sql<br>";
+            return false;
         }
+        next ($P_SQL);
     }
+    return true;
+}
+
+// Calendar plugin updates
+function upgrade_CalendarPlugin() {
+    global $_TABLES;
+    $sql = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.2', pi_gl_version = '1.5.0' WHERE pi_name = 'calendar'";
+    $rst = DB_query ($sql);
+    if (DB_error ()) {
+        echo "There was an error upgrading the calendar";
+        return false;
+    }
+    return true;
+}
+
+// spamx plugin updates
+function upgrade_SpamXPlugin() {
+    global $_TABLES;
+    $sql = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.1', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'";
+    $rst = DB_query ($sql);
+    if (DB_error ()) {
+        echo "There was an error upgrading the spamx";
+        return false;
+    }
+    return true;
 }
 
 function upgrade_LinksPlugin() {
-    global $_TABLES, $_CONF;
-    $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'links';";
-    $check_rst = DB_query ($check_sql);
-    if (DB_numRows($check_rst) == 1) {
-        include_once($_CONF['path'] . "/plugins/links/functions.inc");
-        plugin_upgrade_links();
+    global $_TABLES;
+
+    $P_SQL = array();
+    $P_SQL[] = "
+    CREATE TABLE {$_TABLES['linkcategories']} (
+      cid varchar(20) NOT NULL,
+      pid varchar(20) NOT NULL,
+      category varchar(32) NOT NULL,
+      description text DEFAULT NULL,
+      tid varchar(20) DEFAULT NULL,
+      created datetime DEFAULT NULL,
+      modified datetime DEFAULT NULL,
+      owner_id mediumint(8) unsigned NOT NULL default '1',
+      group_id mediumint(8) unsigned NOT NULL default '1',
+      perm_owner tinyint(1) unsigned NOT NULL default '3',
+      perm_group tinyint(1) unsigned NOT NULL default '2',
+      perm_members tinyint(1) unsigned NOT NULL default '2',
+      perm_anon tinyint(1) unsigned NOT NULL default '2',
+      PRIMARY KEY (cid),
+      KEY links_pid (pid)
+    ) TYPE=MyISAM
+    ";
+    $blockadmin_id = DB_GetItem ($_TABLES['groups'], 'grp_id', "grp_name='Block Admin'");
+    $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(20) NOT NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(20) NOT NULL";
+    $P_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) "
+        . "VALUES ('site', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
+    $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
+        . "VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+    $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
+        . "VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0', pi_gl_version='1.5.0' WHERE pi_name='links'";
+    $P_SQL = INST_checkInnodbUpgrade($P_SQL);
+    for ($i = 0; $i < count ($P_SQL); $i++) {
+        $sql = current ($P_SQL);
+        $rst = DB_query ($sql);
+        if (DB_error ()) {
+            echo "There was an error upgrading the polls, SQL: $sql<br>";
+            return false;
+        }
+        next ($P_SQL);
     }
+
+    // get Links admin group number
+    $group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Links Admin'");
+
+    // loop through adding to category table, then update links table with cids
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $category = $A['category'];
+            $cid = COM_makeSID ();
+            DB_query ("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,owner_id,group_id,created,modified) "
+                . "VALUES ('{$cid}','{$_LI_CONF['root']}','{$category}','2','{$group_id}',NOW(),NOW())",1);
+            DB_query ("UPDATE {$_TABLES['links']} SET category='{$cid}' WHERE category='{$category}'",1);
+            if (DB_error()) {
+                echo "Error inserting categories into linkcategories table";
+                return false;
+            }
+        }
+    }
+
+        return true;
 }
+
 ?>

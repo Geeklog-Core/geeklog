@@ -137,7 +137,7 @@ Spam-X plugin (1.1.1)
 - Added support for blocking entire IP ranges, using either CIDR notation or
   simple x.x.x.x-y.y.y.y ranges [Dirk]
 
-Static Pages plugin (1.4.4)
+Static Pages plugin (1.5)
 -------------------
 - Bugfix: Allow the static pages "page format" setting to override
   $_CONF['show_right_blocks'] (reported by Simon Lord) [Dirk]

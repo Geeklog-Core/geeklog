@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2007/09/09 07:59:43 dhaun Exp $
+// $Id: index.php,v 1.16 2007/09/11 05:28:24 ospiess Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -475,7 +475,7 @@ function INST_installEngine($install_type, $install_step)
                             require_once($_CONF['path_system'] . 'classes/config.class.php');
                             require_once('config-install.php');
                             install_config();
-                            
+
                             $config = config::create();
                             $config->set('site_name', urldecode($site_name));
                             $config->set('site_slogan', urldecode($site_slogan));
@@ -895,7 +895,6 @@ function INST_checkInnodbUpgrade($_SQL)
     return $_SQL;
 }
 
-
 /**
  * Perform database upgrades
  *
@@ -1253,15 +1252,44 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
 
+
+            if (INST_pluginExists('calendar')) {
+                $check = upgrade_CalendarPlugin();
+                if (!$check) {
+                    echo "Error updating the calendar";
+                    return false;
+                }
+            }
             if (INST_pluginExists('polls')) {
-                upgrade_PollsPlugin();
+                $check = upgrade_PollsPlugin();
+                if (!$check) {
+                    echo "Error updating the polls";
+                    return false;
+                }
             }
             if (INST_pluginExists('staticpages')) {
-                upgrade_StaticpagesPlugin();
+                $check = upgrade_StaticpagesPlugin();
+                if (!$check) {
+                    echo "Error updating the staticpages";
+                    return false;
+                }
             }
             if (INST_pluginExists('links')) {
-                upgrade_LinksPlugin();
+                $check = upgrade_LinksPlugin();
+                if (!$check) {
+                    echo "Error updating the links";
+                    return false;
+                }
             }
+            if (INST_pluginExists('spamx')) {
+                $check = upgrade_SpamXPlugin();
+                if (!$check) {
+                    echo "Error updating the spamx";
+                    return false;
+                }
+            }
+
+
             $current_gl_version = '1.4.2';
             $_SQL = '';
             break;

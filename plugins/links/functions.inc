@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.85 2007/08/29 05:53:44 ospiess Exp $
+// $Id: functions.inc,v 1.86 2007/09/11 05:28:01 ospiess Exp $
 
 
 /**
@@ -727,14 +727,11 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 */
 function plugin_upgrade_links ()
 {
-    global $_TABLES, $_LI_CONF, $_DB_dbms, $_CONF;
-
+    global $_CONF, $_TABLES, $_LI_CONF, $_DB_dbms;
     // the plugin needs these functions so complain when they doesn't exist
-    if (!function_exists ('COM_truncate') ||
-        !function_exists ('MBYTE_strpos')) {
+    if (!function_exists ('COM_truncate') || !function_exists ('MBYTE_strpos')) {
         return 3002;
     }
-
     // include SQL required for upgrade
     $blockadmin_id = DB_GetItem ($_TABLES['groups'], 'grp_id', "grp_name='Block Admin'");
     include ($_CONF['path'] . 'plugins/links/sql/upgrade_1.0.1_2.'.$_DB_dbms.'.php');
@@ -742,12 +739,11 @@ function plugin_upgrade_links ()
 
     // get current version
     $currentVersion = DB_getItem($_TABLES['plugins'],'pi_version',"pi_name='links'");
-
+    echo $currentVersion;
     switch( $currentVersion ) {
 
         case "1.0" :
         case "1.0.1" :
-
         // do DB changes:
 
         // create categories table
@@ -838,7 +834,7 @@ function plugin_upgrade_links ()
         COM_errorLog("Success - added phpcategoriesblock to the links plugin",1);
 
         // update the version numbers
-        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version='" . VERSION . "' WHERE pi_name='links'");
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version='1.5.0' WHERE pi_name='links'");
         break;
 
     default :
