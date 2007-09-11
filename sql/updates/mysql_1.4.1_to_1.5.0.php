@@ -33,11 +33,11 @@ function create_ConfValues()
       sort_order int(11) default NULL,
       fieldset int(11) default NULL
     ) TYPE=MyISAM");
-    
+
     require_once($_CONF['path_system'] . 'classes/config.class.php');
-    
+
     $c = config::create();
-    
+
     $c->add('path_html','','text',0,1,NULL,10,TRUE);
     $c->add('site_url','','text',0,0,NULL,20,TRUE);
     $c->add('site_admin_url','','text',0,0,NULL,30,TRUE);
@@ -247,10 +247,10 @@ function upgrade_PollsPlugin()
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX (pid, qid, aid);";
         $P_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $P_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
-              qid mediumint(9) NOT NULL DEFAULT '0',
+              qid mediumint(9) NOT NULL,
               pid varchar(20) NOT NULL,
               question varchar(255) NOT NULL,
-              KEY `qid` (`qid`)
+              PRIMARY KEY (qid, pid)
             ) TYPE=MyISAM
             ";
         $P_SQL = INST_checkInnodbUpgrade($P_SQL);

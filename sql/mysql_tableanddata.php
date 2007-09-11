@@ -319,10 +319,10 @@ CREATE TABLE {$_TABLES['pollanswers']} (
 
 $_SQL[22] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
-  qid mediumint(9) NOT NULL auto_increment,
+  qid mediumint(9) NOT NULL,
   pid varchar(20) NOT NULL,
   question varchar(255) NOT NULL,
-  PRIMARY KEY (qid)
+  PRIMARY KEY (qid, pid)
 ) TYPE=MyISAM
 ";
 

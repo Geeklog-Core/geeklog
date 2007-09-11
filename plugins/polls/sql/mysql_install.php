@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.6 2007/09/02 02:51:27 ospiess Exp $
+// $Id: mysql_install.php,v 1.7 2007/09/11 01:41:20 ospiess Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
@@ -46,10 +46,10 @@ CREATE TABLE {$_TABLES['pollanswers']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
-  qid mediumint(9) NOT NULL DEFAULT 0,
-  pid varchar(20) NOT NULL,
-  question varchar(255) NOT NULL,
-  PRIMARY KEY (qid)
+    qid mediumint(9) NOT NULL,
+    pid varchar(20) NOT NULL,
+    question varchar(255) NOT NULL,
+    PRIMARY KEY (qid, pid)
 ) TYPE=MyISAM
 ";
 
