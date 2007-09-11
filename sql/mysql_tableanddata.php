@@ -911,8 +911,8 @@ $_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answe
 $_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 3, 'The Support', 0, '');";
 $_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 4, 'Plugin Availability', 0, '');";
 
-$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `question`) VALUES ('geeklogfeaturepoll', 'What is the best new feature of Geeklog?');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `question`) VALUES ('geeklogfeaturepoll', 'What is the all-time best feature of Geeklog?');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `qid`, `question`) VALUES ('geeklogfeaturepoll', 0, 'What is the best new feature of Geeklog?');";
+$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `qid`, `question`) VALUES ('geeklogfeaturepoll', 1, 'What is the all-time best feature of Geeklog?');";
 
 $_DATA[] = "INSERT INTO `{$_TABLES['polltopics']}` (`pid`, `topic`, `voters`, `questions`, `date`, `display`, `open`, `hideresults`, `commentcode`, `statuscode`, `owner_id`, `group_id`, `perm_owner`, `perm_group`, `perm_members`, `perm_anon`) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 0, 2, '2007-01-16 12:24:22', 1, 1, 1, 0, 0, 2, 8, 3, 2, 2, 2);";
 
