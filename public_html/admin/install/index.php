@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2007/09/11 05:28:24 ospiess Exp $
+// $Id: index.php,v 1.17 2007/09/11 06:11:13 ospiess Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -218,7 +218,7 @@ function INST_installEngine($install_type, $install_step)
             $db_user = $_POST['db_user'];
             $db_pass = $_POST['db_pass'];
             $db_prefix = $_POST['db_prefix'];
-	    $site_url = $_POST['site_url'];
+            $site_url = $_POST['site_url'];
             $site_admin_url = $_POST['site_admin_url'];
             $site_mail = $_POST['site_mail'];
             $noreply_mail = $_POST['noreply_mail'];
@@ -378,7 +378,7 @@ function INST_installEngine($install_type, $install_step)
                                         <form action="index.php" method="post">
                                         <input type="hidden" name="mode" value="upgrade" />
                                         <input type="hidden" name="step" value="3" />
-                                        <input type="hidden" name="config_path" value="' . $dbconfig_path . '" />
+                                        <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '" />
                                         <p><label>Current Version:</label> <select name="version">';
                                     $tmp_counter = 0;
                                     $ver_selected = '';
