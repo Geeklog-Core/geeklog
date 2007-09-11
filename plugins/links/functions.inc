@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.86 2007/09/11 05:28:01 ospiess Exp $
+// $Id: functions.inc,v 1.87 2007/09/11 05:31:11 ospiess Exp $
 
 
 /**
@@ -739,7 +739,6 @@ function plugin_upgrade_links ()
 
     // get current version
     $currentVersion = DB_getItem($_TABLES['plugins'],'pi_version',"pi_name='links'");
-    echo $currentVersion;
     switch( $currentVersion ) {
 
         case "1.0" :
