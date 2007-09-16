@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.7 2007/09/10 19:04:13 riyer Exp $
+// $Id: lib-webservices.php,v 1.8 2007/09/16 16:48:15 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -225,7 +225,7 @@ function WS_get()
         $collection->setAttribute('href', $atom_uri);
         $workspace->appendChild($collection);
 
-        $title = $atom_doc->createElement('atom:title', 'Entries');
+        $title = $atom_doc->createElement('atom:title', $WS_PLUGIN);
         $collection->appendChild($title);
 
         $entry = $atom_doc->createElement('app:accept', 'entry');
@@ -355,6 +355,49 @@ function WS_delete()
 }
 
 /**
+ * Get 'content', depending on the type
+ *
+ * @param   array      &$args       the array to which the content is to be appended
+ * @param   object      $atom_doc   current DOMDocument
+ * @param   object      $node       the 'content' node
+ * @bugs    I guess we could at least support 'text/plain', 'text/html', etc.
+ */
+function WS_getContent(&$args, $atom_doc, $node)
+{
+    $type = (string) $node->getAttribute('type');
+    if (empty($type)) {
+        $type = 'text';
+    }
+
+    switch ($type) {
+    case 'text':
+        $args['content'] = (string) $node->nodeValue;
+        $args['content_type'] = 'text';
+        break;
+
+    case 'html':
+        $args['content'] = (string) $node->nodeValue;
+        $args['content_type'] = 'html';
+        break;
+
+    case 'xhtml':
+        /* The XHTML div element itself MUST NOT be considered part of the
+         * content. -- RFC 4287, 3.1.1.3. XHTML
+         */
+        $div = $node->firstChild;
+        if (($div->nodeName == 'div') || ($div->nodeName == 'xhtml:div')) {
+            $args['content'] = (string) $atom_doc->saveXML($div->firstChild);
+            $args['content_type'] = 'html'; // it's all the same to us ...
+        }
+        break;
+
+    default:
+        // we can't handle any other types yet
+        break;
+    }
+}
+
+/**
  * Converts the input XML into an argument array
  *
  * @param   array      &$args       the array to which the arguments are to be appended
@@ -411,7 +454,7 @@ function WS_xmlToArgs(&$args)
                 $args['updated'] = (string)$node->firstChild->nodeValue;
                 break;
             case 'content':
-                $args['content'] = (string)$atom_doc->saveXML($node->firstChild);
+                WS_getContent($args, $atom_doc, $node);
                 break;
             default:
                 if ($node->nodeType == XML_ELEMENT_NODE) {
@@ -548,9 +591,9 @@ function WS_authenticate()
         
         $status = SEC_authenticate($username, $password, $uid);
     } elseif (!empty($_REQUEST['gl_auth_header'])) {
-        /* PHP installed as CGI may not have access to authorization headers of Apache
-         * In that case, use .htaccess to store the auth header as a request variable
-         * called gl_auth_digest
+        /* PHP installed as CGI may not have access to authorization headers of
+         * Apache. In that case, use .htaccess to store the auth header as a
+         * request variable called gl_auth_digest
          */
 
         list($auth_type, $auth_data) = explode(' ', $_REQUEST['gl_auth_digest']);
