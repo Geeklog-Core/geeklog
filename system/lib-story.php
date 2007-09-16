@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.103 2007/08/24 11:40:31 dhaun Exp $
+// $Id: lib-story.php,v 1.104 2007/09/16 16:50:00 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1004,8 +1004,9 @@ function service_submit_story($args, &$output, &$svc_msg)
         if (empty($args['old_sid'])) {
             if (!empty($args['id'])) {
                 $args['old_sid'] = $args['id'];
-            } else
+            } else {
                 return PLG_RET_ERROR;
+            }
 
             if (empty($args['sid'])) {
                 $args['sid'] = $args['old_sid'];
@@ -1371,10 +1372,11 @@ function service_delete_story($args, &$output, &$svc_msg)
     if ($access < 3) {
         COM_accessLog ("User {$_USER['username']} tried to illegally delete story $sid.");
         $output = COM_refresh ($_CONF['site_admin_url'] . '/story.php');
-        if ($_USER['uid'] > 1)
+        if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
-        else
+        } else {
             return PLG_RET_AUTH_FAILED;
+        }
     }
 
     STORY_deleteImages ($sid);
