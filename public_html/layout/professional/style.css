@@ -639,12 +639,20 @@ select {
   text-align:center;
   clear:both;
 }
+.story-footer p{
+  padding:0px;
+  margin:0px;
+}
 .story-information {
   /* the author, views and date of a story */
   padding:3px;
   font-size:0.85em;
   background:transparent;
   color:#000000;
+}
+.story-information p {
+  padding:0px;
+  margin:0px;
 }
 /******************************************************************************/
 .topicoption,
