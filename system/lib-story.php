@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.104 2007/09/16 16:50:00 dhaun Exp $
+// $Id: lib-story.php,v 1.105 2007/09/17 18:13:48 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -998,6 +998,17 @@ function service_submit_story($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $_GROUPS;
 
+    if (!SEC_hasRights('story.edit')) {
+        $output .= COM_siteHeader('menu', $MESSAGE[30]);
+        $output .= COM_startBlock($MESSAGE[30], '',
+                                  COM_getBlockTemplate('_msg_block', 'header'));
+        $output .= $MESSAGE[31];
+        $output .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $output .= COM_siteFooter();
+
+        return PLG_RET_AUTH_FAILED;
+    }
+
     $gl_edit = $args['gl_edit'];
     if ($gl_edit) {
         /* This is EDIT mode, so there should be an old sid */
@@ -1117,6 +1128,7 @@ function service_submit_story($args, &$output, &$svc_msg)
     // exit ();
     // END TEST CODE
 
+    $args['sid'] = COM_sanitizeID($args['sid']);
     $story = new Story();
 
     if ($args['gl_edit'] && !empty($args['gl_etag'])) {
@@ -1137,7 +1149,6 @@ function service_submit_story($args, &$output, &$svc_msg)
     $result = $story->loadFromArgsArray($args);
 
     $sid = $story->getSid();
-    $output = '';
 
     switch ($result) {
     case STORY_DUPLICATE_SID:
