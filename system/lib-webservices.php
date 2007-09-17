@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.10 2007/09/17 20:00:33 dhaun Exp $
+// $Id: lib-webservices.php,v 1.11 2007/09/17 20:11:52 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -473,7 +473,7 @@ function WS_xmlToArgs(&$args)
                             continue;
                         } elseif ($child_node->nodeType == XML_ELEMENT_NODE) {
                             if ($child_node->firstChild->nodeType == XML_TEXT_NODE) {
-                                $args[$node->localName][] = $child_node->firstChild->nodeValue;
+                                $args[$node->localName][$node->firstChild->localName] = $child_node->firstChild->nodeValue;
                             }
                         }
                     }
