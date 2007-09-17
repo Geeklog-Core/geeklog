@@ -1,1 +1,1 @@
-{option_label} {option_count}<br>
+<li>{option_label} {option_count}</li>

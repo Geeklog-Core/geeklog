@@ -1,1 +1,1 @@
-<div class="topicoption-off">{option_label} {option_count}</div>
+<li class="topicoption-off">{option_label} {option_count}</li>

@@ -217,6 +217,12 @@ select {
   padding-right:5px;
   font-size:larger;
 }
+/* Menus in blocks *****************************************************************/
+#Admins_Only ul, #User_Functions ul, #Topics ul {
+  list-style:none;
+  padding:0px;
+  margin:0px;
+}
 /* general alignment classes **************************************************/
 .alignleft {
   text-align:left;

@@ -1,1 +1,1 @@
-<div class="topicoption"><a href="{option_url}">{option_label}</a> {option_count}</div>
+<li class="topicoption"><a href="{option_url}">{option_label}</a> {option_count}</li>

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.653 2007/09/02 07:50:56 dhaun Exp $
+// $Id: lib-common.php,v 1.654 2007/09/17 04:37:22 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1980,6 +1980,7 @@ function COM_showTopics( $topic='' )
         $sections->set_file( array( 'option'   => 'topicoption.thtml',
                                     'inactive' => 'topicoption_off.thtml' ));
     }
+    $retval = '<ul>';
     $sections->set_var( 'site_url', $_CONF['site_url'] );
     $sections->set_var( 'layout_url', $_CONF['layout_url'] );
     $sections->set_var( 'block_name', str_replace( '_', '-', 'section_block' ));
@@ -2094,7 +2095,7 @@ function COM_showTopics( $topic='' )
             $retval .= $sections->parse( 'item', 'option' );
         }
     }
-
+    $retval .= '</ul>';
     return $retval;
 }
 
@@ -2144,6 +2145,7 @@ function COM_userMenu( $help='', $title='' )
 
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'user_block', 'header' ));
+        $retval .= '<ul>';
 
         // This function will show the user options for all installed plugins
         // (if any)
@@ -2195,14 +2197,14 @@ function COM_userMenu( $help='', $title='' )
         $usermenu->set_var( 'option_count', '' );
         $usermenu->set_var( 'option_url', $url );
         $retval .= $usermenu->parse( 'item', 'option' );
-
+        $retval .= '</ul>';
         $retval .=  COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
     else
     {
         $retval .= COM_startBlock( $LANG01[47], $help,
                            COM_getBlockTemplate( 'user_block', 'header' ));
-
+        $retval .= '<ul>';
         $login = new Template( $_CONF['path_layout'] );
         $login->set_file( 'form', 'loginform.thtml' );
         $login->set_var( 'site_url', $_CONF['site_url'] );
@@ -2265,7 +2267,7 @@ function COM_userMenu( $help='', $title='' )
         }
 
         $retval .= $login->parse( 'output', 'form' );
-
+        $retval .= '</ul>';
         $retval .= COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
 
@@ -2328,6 +2330,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'admin_block', 'header' ));
+        $retval .= "<ul>";
 
         $topicsql = '';
         if( SEC_isModerator() || SEC_hasRights( 'story.edit' ))
@@ -2641,7 +2644,7 @@ function COM_adminMenu( $help = '', $title = '' )
         {
             $retval .= $link;
         }
-
+        $retval .= "</ul>";
         $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
     }
 
@@ -3253,7 +3256,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
     $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
-    
+
     $commonsql = "FROM {$_TABLES['blocks']} WHERE is_enabled = 1";
 
     if( $side == 'left' )
@@ -6325,7 +6328,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
 function COM_isAnonUser($uid = '')
 {
     global $_USER;
-    
+
     /* If no user was specified, fail over to the current user if there is one */
     if( empty( $uid ) )
     {
@@ -6333,8 +6336,8 @@ function COM_isAnonUser($uid = '')
         {
             $uid = $_USER['uid'];
         }
-    }   
-    
+    }
+
     if( !empty( $uid ) )
     {
         return ($uid == 1);
