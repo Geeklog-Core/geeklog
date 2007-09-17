@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.8 2007/09/16 16:48:15 dhaun Exp $
+// $Id: lib-webservices.php,v 1.9 2007/09/17 18:51:51 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -147,7 +147,7 @@ function WS_post()
 
     if ($ret == PLG_RET_OK) {
         header($_SERVER['SERVER_PROTOCOL'] . ' 201 Created');
-        header('Location: ' . 'http://' . $_SERVER['HTTP_HOST'] . '/webservices/atom/?plugin=' . $WS_PLUGIN . '&id' . '=' . $svc_msg['id']);
+        header('Location: ' . $_CONF['site_url'] . '/webservices/atom/?plugin=' . $WS_PLUGIN . '&id' . '=' . $svc_msg['id']);
         // Output the actual object here
         return;
     }
@@ -198,7 +198,7 @@ function WS_get()
 
         header('Content-type: application/atomsvc+xml; charset=UTF-8');
 
-        $atom_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/webservices/atom/';
+        $atom_uri = $_CONF['site_url'] . '/webservices/atom/';
 
         /* 'story' is the default plugin */
         if (empty($WS_PLUGIN)) {
@@ -302,14 +302,14 @@ function WS_get()
                 $feed_link = $atom_doc->createElement('atom:link');
                 $feed_link->setAttribute('rel', 'self');
                 $feed_link->setAttribute('type', 'application/atom+xml');
-                $feed_link->setAttribute('href', 'http://' . $_SERVER['HTTP_HOST'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN));
+                $feed_link->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN));
                 $feed_elem->appendChild($feed_link);
 
                 if (!empty($svc_msg['offset'])) {
                     $next_link = $atom_doc->createElement('atom:link');
                     $next_link->setAttribute('rel', 'next');
                     $next_link->setAttribute('type', 'application/atom+xml');
-                    $next_link->setAttribute('href', 'http://' . $_SERVER['HTTP_HOST'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&offset=' . $svc_msg['offset']);
+                    $next_link->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&offset=' . $svc_msg['offset']);
                     $feed_elem->appendChild($next_link);
                 }
 
@@ -533,7 +533,7 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
         $link_self = $atom_doc->createElement('atom:link');
         $link_self->setAttribute('rel', 'edit');
         $link_self->setAttribute('type', 'application/atom+xml');
-        $link_self->setAttribute('href', 'http://' . $_SERVER['HTTP_HOST'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&id=' . htmlentities($arr['id']));
+        $link_self->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&id=' . htmlentities($arr['id']));
         $entry_elem->appendChild($link_self);
     }
 
