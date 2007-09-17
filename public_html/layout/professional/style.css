@@ -352,6 +352,8 @@ select {
 }
 .block-outerborder-left {
   border-left:1px solid #E7E7E7;
+  padding:0px;
+  margin:0px;
 }
 .block-outerborder-right {
   border-right:1px solid #CCCCCC;
@@ -495,10 +497,16 @@ select {
 }
 .header-navigation-container li{
   float:right;
-  padding-right:18px;
-  padding-top:4px;
+  padding-right:9px;
+  padding-left:9px;
+  margin-top:4px;
   background:transparent;
   font-size:.9em;
+  border-left: 1px dotted #FFFFFF;
+}
+
+.header-navigation-container li.last {
+  border:none;
 }
 
 .header-navigation-container a:link {
