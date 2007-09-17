@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.106 2007/09/17 19:29:07 dhaun Exp $
+// $Id: lib-story.php,v 1.107 2007/09/17 20:28:44 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1109,8 +1109,17 @@ function service_submit_story($args, &$output, &$svc_msg)
             $args['perm_anon'] = COM_applyBasicFilter($args['perm_anon'], true);
         }
 
-        if (empty($args['draft_flag'])) {
-            $args['draft_flag'] = $_CONF['draft_flag'];
+        if (isset($args['control'])) {
+            foreach ($args['control'] as $key => $value) {
+                if ($key == 'draft') {
+                    $args['draft'] = ($value == 'yes' ? 1 : 0);
+                    break;
+                }
+            }
+        }
+
+        if (!isset($args['draft'])) {
+            $args['draft'] = $_CONF['draft_flag'];
         }
 
         if (empty($args['frontpage'])) {
