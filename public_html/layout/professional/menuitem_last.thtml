@@ -1,1 +1,1 @@
-<a href="{menuitem_url}" class="header-navigation">{menuitem_text}</a>&nbsp;&nbsp;
+<li class="last"><a href="{menuitem_url}">{menuitem_text}</a></li>

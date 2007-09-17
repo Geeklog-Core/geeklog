@@ -14,10 +14,10 @@
 <script type="text/javascript" src="{site_url}/javascript/common.js"></script>
 </head>
 <body dir="{direction}">
-    <div class="header-navigation-container">
-        <div class="header-navigation-line">
+    <div class="header-navigation-container clearfix">
+        <ul>
             {menu_elements}
-        </div>
+        </ul>
     </div>
     <div class="header-logobg-container-inner">
         <a class="header-logo" href="{site_url}/">

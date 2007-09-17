@@ -245,6 +245,22 @@ select {
 .clearboth {
   clear:both;
 }
+/* clear floats by applying the clearfix class to float-encasing block !*******/
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {
+  display: inline-block;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
 /* general formatting classes **************************************************/
 .b {
   font-weight:bold;
@@ -467,37 +483,35 @@ select {
 .header-navigation-container {
   border-bottom:1px solid #FFFFFF;
 }
-.header-navigation-line {
+.header-navigation-container ul{
+  list-style: none;
+  padding:0px;
+  margin:0px;
   background:#E7E7E7;
   border-bottom:1px solid #CCCCCC;
   color:#FFFFFF;
-  padding-bottom:3px;
-  padding-top:4px;
   text-align:right;
+  height:24px;
 }
-.header-navigation-line a:link {
+.header-navigation-container li{
+  float:right;
+  padding-right:18px;
+  padding-top:4px;
   background:transparent;
-  border-bottom:0px solid #CCCCCC;
-  color:#0000FF;
   font-size:.9em;
 }
-.header-navigation-line a:visited {
-  background:transparent;
-  border-bottom:0px solid #CCCCCC;
+
+.header-navigation-container a:link {
+  color:#0000FF;
+}
+.header-navigation-container a:visited {
   color:#800080;
-  font-size:0.9em;
 }
-.header-navigation-line a:hover {
-  background:transparent;
-  border-bottom:0px solid #CCCCCC;
+.header-navigation-container a:hover {
   color:#008000;
-  font-size:0.9em;
 }
-.header-navigation-line a:active {
-  background:transparent;
-  border-bottom:0px solid #CCCCCC;
+.header-navigation-container a:active {
   color:#FF0000;
-  font-size:0.9em;
 }
 .header-welcomeanddate-text {
   padding-top:12px;
