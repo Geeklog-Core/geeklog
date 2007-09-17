@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.9 2007/09/17 18:51:51 dhaun Exp $
+// $Id: lib-webservices.php,v 1.10 2007/09/17 20:00:33 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -432,7 +432,9 @@ function WS_xmlToArgs(&$args)
         for ($index = 0; $index < $nodes->length; $index++) {
             $node = $nodes->item($index);
 
-            if (($node->namespaceURI != $WS_ATOM_NS) && ($node->namespaceURI != $WS_EXTN_NS)) {
+            if (($node->namespaceURI != $WS_ATOM_NS) &&
+                ($node->namespaceURI != $WS_APP_NS ) &&
+                ($node->namespaceURI != $WS_EXTN_NS)) {
                 continue;
             }
 
