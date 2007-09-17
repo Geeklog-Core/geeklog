@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.4 2007/09/08 21:19:43 dhaun Exp $
+// $Id: services.inc.php,v 1.5 2007/09/17 18:12:28 dhaun Exp $
 
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
@@ -49,6 +49,17 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
            $LANG_LOGIN, $_GROUPS, $_SP_CONF;
 
     $output = '';
+
+    if (!SEC_hasRights('staticpages.edit')) {
+        $output = COM_siteHeader('menu', $LANG_STATIC['access_denied']);
+        $output .= COM_startBlock($LANG_STATIC['access_denied'], '',
+                                  COM_getBlockTemplate('_msg_block', 'header'));
+        $output .= $LANG_STATIC['access_denied_msg'];
+        $output .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $output .= COM_siteFooter();
+
+        return PLG_RET_AUTH_FAILED;
+    }
 
     // TEST CODE
     /*
@@ -228,19 +239,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $svc_msg['error_desc'] = 'The requested staticpage no longer exists';
             return PLG_RET_ERROR;
         }
-    }
-
-    if (!SEC_hasRights ('staticpages.edit')) {
-        $output = COM_siteHeader ('menu', $LANG_STATIC['access_denied']);
-        $output .= COM_startBlock ($LANG_STATIC['access_denied'], '',
-                                   COM_getBlockTemplate ('_msg_block', 'header'));
-        $output .= $LANG_STATIC['access_denied_msg'];
-        $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $output .= COM_siteFooter ();
-        if ($_USER['uid'] > 1)
-            return PLG_RET_PERMISSION_DENIED;
-        else
-            return PLG_RET_AUTH_FAILED;
     }
 
     $sp_id = COM_sanitizeID ($sp_id);
