@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.105 2007/09/17 18:13:48 dhaun Exp $
+// $Id: lib-story.php,v 1.106 2007/09/17 19:29:07 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1034,14 +1034,15 @@ function service_submit_story($args, &$output, &$svc_msg)
         $args['tid'] = $args['category'][0];
     }
 
-    /* Store the summary as introtext */
-    if (!empty($args['summary'])) {
+    if (!empty($args['summary']) && !empty($args['content'])) {
         $args['introtext'] = $args['summary'];
-    }
-
-    /* Store the content as bodytext */
-    if (!empty($args['content'])) {
-        $args['bodytext'] = $args['content'];
+        $args['bodytext']  = $args['content'];
+    } else if (!empty($args['content'])) {
+        $args['introtext'] = $args['content'];
+        $args['bodytext']  = '';
+    } else if (!empty($args['summary'])) {
+        $args['introtext'] = $args['summary'];
+        $args['bodytext']  = '';
     }
 
     /* Apply filters to the parameters passed by the webservice */
@@ -1068,11 +1069,20 @@ function service_submit_story($args, &$output, &$svc_msg)
     $args['owner_id'] = $_USER['uid'];
 
     if (empty($args['group_id'])) {
-        $args['group_id'] = SEC_getFeatureGroup('story.edit', $_USER['uid']);;
+        $args['group_id'] = SEC_getFeatureGroup('story.edit', $_USER['uid']);
     }
 
     if (empty($args['postmode'])) {
         $args['postmode'] = $_CONF['postmode'];
+
+        if (!empty($args['content_type'])) {
+            if ($args['content_type'] == 'text') {
+                $args['postmode'] = 'text';
+            } else if (($args['content_type'] == 'html')
+                    || ($args['content_type'] == 'xhtml')) {
+                $args['postmode'] = 'html';
+            }
+        }
     }
 
     if ($args['gl_svc']) {
@@ -1496,8 +1506,12 @@ function service_get_story($args, &$output, &$svc_msg)
             $output['id']           = $output['sid'];
             $output['category']     = array($output['tid']);
             $output['updated']      = date('c', $output['date']);
-            $output['summary']      = $output['introtext'];
-            $output['content']      = $output['bodytext'];
+            if (empty($output['bodytext'])) {
+                $output['content']  = $output['introtext'];
+            } else {
+                $output['summary']  = $output['introtext'];
+                $output['content']  = $output['bodytext'];
+            }
             $output['content_type'] = ($output['postmode'] == 'html')?'html':'text';
 
             $owner_data = SESS_getUserDataFromId($output['owner_id']);
@@ -1572,8 +1586,12 @@ function service_get_story($args, &$output, &$svc_msg)
                 $output_item['id']           = $output_item['sid'];
                 $output_item['category']     = array($output_item['tid']);
                 $output_item['updated']      = date('c', $output_item['date']);
-                $output_item['summary']      = $output_item['introtext'];
-                $output_item['content']      = $output_item['bodytext'];
+                if (empty($output_item['bodytext'])) {
+                    $output_item['content']  = $output_item['introtext'];
+                } else {
+                    $output_item['summary']  = $output_item['introtext'];
+                    $output_item['content']  = $output_item['bodytext'];
+                }
                 $output_item['content_type'] = ($output_item['postmode'] == 'html')?'html':'text';
 
                 $owner_data = SESS_getUserDataFromId($output_item['owner_id']);
