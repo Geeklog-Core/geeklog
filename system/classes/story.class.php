@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.13 2007/08/19 16:28:02 dhaun Exp $
+// $Id: story.class.php,v 1.14 2007/09/22 13:10:21 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -494,8 +494,8 @@ class Story
         }
 
         if ($mode == 'editsubmission') {
-            if (isset($_CONF['draftflag'])) {
-                $this->_draft = $_CONF['draftflag'];
+            if (isset($_CONF['draft_flag'])) {
+                $this->_draft = $_CONF['draft_flag'];
             } else {
                 $this->_draft = 1;
             }
@@ -628,7 +628,7 @@ class Story
             if ($save === 1) {
                 $varname = '_' . $fieldname;
                 $sql .= $fieldname . ', ';
-            $values .= '\'' . addslashes($this->{$varname}) . '\', ';
+                $values .= '\'' . addslashes($this->{$varname}) . '\', ';
             }
         }
 
