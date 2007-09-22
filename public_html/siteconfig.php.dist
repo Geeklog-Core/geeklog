@@ -11,7 +11,7 @@ $_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
 $_CONF_FCK['imagelibrary'] = '/images/library';
 
 // Useful Stuff
-global $LB, $VERSION, $_STATES;
+global $_STATES;
 
 
 if (!defined ('LB')) {
