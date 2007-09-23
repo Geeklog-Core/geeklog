@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | configuration.php                                                         |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2007 by the following authors:                              |
 // |                                                                           |
-// | Authors: Aaron Blankstein                  kantai@gmail.com               |
+// | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,28 +29,33 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: configuration.php,v 1.2 2007/09/23 08:28:39 dhaun Exp $
 
-require_once('../lib-common.php');
+require_once '../lib-common.php';
+require_once 'auth.inc.php';
 
 $config = config::create(array_key_exists('conf_group', $_POST) ? 
-			 $_POST['conf_group'] : 'Core');
+                         $_POST['conf_group'] : 'Core');
 
-if(array_key_exists('set_action', $_POST)){
+if (array_key_exists('set_action', $_POST)){
     if (SEC_inGroup('Root')) {
-        if($_POST['set_action'] == 'restore')
+        if ($_POST['set_action'] == 'restore') {
             $config->restore_param($_POST['name']);
-        else if($_POST['set_action'] == 'unset')
+        } elseif ($_POST['set_action'] == 'unset') {
             $config->unset_param($_POST['name']);
+        }
     }
 }
 
-if(array_key_exists('form_submit', $_POST)){
-  $result = null;
-  if(! array_key_exists('form_reset', $_POST))
-    $result = $config->updateConfig($_POST);
-  print $config->get_ui($_POST['sub_group'], $result );
-}else{
-  print $config->get_ui(array_key_exists('subgroup', $_POST) ?
-                        $_POST['subgroup'] : null);
+if (array_key_exists('form_submit', $_POST)) {
+    $result = null;
+    if (! array_key_exists('form_reset', $_POST)) {
+        $result = $config->updateConfig($_POST);
+    }
+    echo $config->get_ui($_POST['sub_group'], $result);
+} else {
+    echo $config->get_ui(array_key_exists('subgroup', $_POST) ?
+                         $_POST['subgroup'] : null);
 }
+
 ?>
