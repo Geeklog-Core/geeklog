@@ -1725,7 +1725,8 @@ array(
       'url_rewrite' => "URL Rewrite",
       'default_permissions_block' => "Block Default Permissions",
       'default_permissions_story' => "Story Default Permissions",
-      'default_permissions_topic' => "Topic Default Permissions"
+      'default_permissions_topic' => "Topic Default Permissions",
+      'atom_max_stories' => "Max. Stories in Webservices Feed"
 );
 
 $LANG_coreconfigsubgroups =
