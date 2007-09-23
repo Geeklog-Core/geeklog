@@ -1,4 +1,5 @@
 <?php
+
 global $_CONF;
 
 $_CONF['path'] = '/path/to/geeklog/';
@@ -6,8 +7,6 @@ $_CONF['path_system'] = $_CONF['path'] . 'system/';
 
 $_CONF['default_charset'] = 'iso-8859-1';
 
-$_CONF['mysqldump_options'] = '-Q';
-$_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
 $_CONF_FCK['imagelibrary'] = '/images/library';
 
 // Useful Stuff
@@ -75,6 +74,5 @@ $_STATES = array(
 		 'WI'=>'Wisconsin',
 		 'WY'=>'Wyoming'
 		 );
-
 
 ?>
