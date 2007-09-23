@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | sectest.php                                                               |
 // |                                                                           |
@@ -30,10 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.10 2007/09/02 07:50:56 dhaun Exp $
+// $Id: sectest.php,v 1.11 2007/09/23 18:30:31 dhaun Exp $
 
-require_once ('../lib-common.php');
-require_once ('auth.inc.php');
+require_once '../lib-common.php';
+require_once 'auth.inc.php';
 
 if (!SEC_inGroup ('Root')) {
     $display .= COM_startBlock ($MESSAGE[30], '',
@@ -292,7 +292,7 @@ if (!empty ($url)) {
 
     $urls = array
         (
-        array ('config.php',                        'config.php' ),
+        array ('db-config.php',                     'db-config.php'),
         array ('logs/error.log',                    'logs directory'),
         array ('plugins/staticpages/functions.inc', 'plugins directory'),
         array ('system/lib-security.php',           'system directory')
