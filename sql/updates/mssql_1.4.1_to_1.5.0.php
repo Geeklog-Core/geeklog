@@ -92,7 +92,7 @@ function create_ConfValues()
     $c->add('shortdate','%x','text',6,10,NULL,390,TRUE);
     $c->add('dateonly','%d-%b','text',6,10,NULL,400,TRUE);
     $c->add('timeonly','%I:%M%p','text',6,10,NULL,410,TRUE);
-    $c->add('week_start','Sun','text',6,10,NULL,420,TRUE);
+    $c->add('week_start','Sun','text',6,10,14,420,TRUE);
     $c->add('hour_mode',12,'select',6,10,6,430,TRUE);
     $c->add('thousand_separator',",",'text',6,10,NULL,440,TRUE);
     $c->add('decimal_separator',".",'text',6,10,NULL,450,TRUE);
@@ -163,7 +163,7 @@ function create_ConfValues()
     $c->add('multiple_trackbacks',0,'select',1,22,2,1100,TRUE);
     $c->add('trackbackspeedlimit',300,'text',1,22,NULL,1110,TRUE);
     $c->add('check_trackback_link',2,'select',1,22,4,1120,TRUE);
-    $c->add('pingback_self',0,'select',1,23,0,1130,TRUE);
+    $c->add('pingback_self',0,'select',1,23,13,1130,TRUE);
     $c->add('pingback_excerpt',TRUE,'select',1,23,1,1140,TRUE);
     $c->add('link_documentation',1,'select',7,9,0,1150,TRUE);
     $c->add('link_versionchecker',1,'select',7,9,0,1160,TRUE);
