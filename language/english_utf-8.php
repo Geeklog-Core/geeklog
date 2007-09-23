@@ -1784,7 +1784,6 @@ array(
 );
 
 $LANG_coreconfigselects = 
-
 array(
       0 => array('True'=>1,'False'=>0),
       1 => array('True'=>TRUE,'False'=>FALSE),
@@ -1805,6 +1804,8 @@ array(
       9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
       10 => array('None'=>'', 'Netpbm'=>'netpbm', 'ImageMagick'=>'imagemagick', 'gdLib' =>'gdlib'),
       11 => array_flip($LANG_commentmodes),
-      12 => array('No access'=>0, 'Read-Only'=>2,'Read-Write'=>3)
+      12 => array('No access'=>0, 'Read-Only'=>2,'Read-Write'=>3),
+      13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2)
 );
+
 ?>
