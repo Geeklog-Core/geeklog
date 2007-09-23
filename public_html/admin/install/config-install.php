@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.2 2007/09/23 08:54:06 dhaun Exp $
+// $Id: config-install.php,v 1.3 2007/09/23 18:51:16 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -82,7 +82,7 @@ function install_config()
     $c->add('shortdate','%x','text',6,10,NULL,390,TRUE);
     $c->add('dateonly','%d-%b','text',6,10,NULL,400,TRUE);
     $c->add('timeonly','%I:%M%p','text',6,10,NULL,410,TRUE);
-    $c->add('week_start','Sun','text',6,10,NULL,420,TRUE);
+    $c->add('week_start','Sun','select',6,10,14,420,TRUE);
     $c->add('hour_mode',12,'select',6,10,6,430,TRUE);
     $c->add('thousand_separator',",",'text',6,10,NULL,440,TRUE);
     $c->add('decimal_separator',".",'text',6,10,NULL,450,TRUE);

@@ -1806,7 +1806,8 @@ array(
       10 => array('None'=>'', 'Netpbm'=>'netpbm', 'ImageMagick'=>'imagemagick', 'gdLib' =>'gdlib'),
       11 => array_flip($LANG_commentmodes),
       12 => array('No access'=>0, 'Read-Only'=>2,'Read-Write'=>3),
-      13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2)
+      13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2),
+      14 => array('Sunday' => 'Sun', 'Monday' => 'Mon')
 );
 
 ?>
