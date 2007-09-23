@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | users.php                                                                 |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.157 2007/08/18 20:45:49 dhaun Exp $
+// $Id: users.php,v 1.158 2007/09/23 19:20:40 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -614,7 +614,7 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     $user_templates->set_var('end_block', COM_endBlock());
 
     // 3rd party remote authentification.
-    if ($_CONF['user_logging_method']['3rdparty'] && !$_CONF['usersubmission']) {
+    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
         /* Build select */
         $select = '<select name="service"><option value="">' .
                         $_CONF['site_name'] . '</option>';
@@ -641,7 +641,7 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     }
 
     // OpenID remote authentification.
-    if ($_CONF['user_logging_method']['openid'] && !$_CONF['usersubmission']) {
+    if ($_CONF['user_login_method']['openid'] && !$_CONF['usersubmission']) {
         $user_templates->set_file('openid_login', '../loginform_openid.thtml');
         $user_templates->set_var('lang_openid_login', $LANG01[128]);
         $app_url = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
@@ -1004,12 +1004,12 @@ default:
     if (!empty($loginname) && !empty($passwd) && empty($service)) {
         $status = SEC_authenticate($loginname, $passwd, $uid);
 
-    } elseif (( $_CONF['usersubmission'] == 0) && $_CONF['user_logging_method']['3rdparty'] && ($service != '')) {
+    } elseif (( $_CONF['usersubmission'] == 0) && $_CONF['user_login_method']['3rdparty'] && ($service != '')) {
         /* Distributed Authentication */
         //pass $loginname by ref so we can change it ;-)
         $status = SEC_remoteAuthentication($loginname, $passwd, $service, $uid);
 
-    } elseif (($_CONF['usersubmission'] == 0) && $_CONF['user_logging_method']['openid'] && (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))) {
+    } elseif (($_CONF['usersubmission'] == 0) && $_CONF['user_login_method']['openid'] && (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))) {
         // Here we go with the handling of OpenID authentification.
 
         require_once $_CONF['path_system'] . 'classes/openidhelper.class.php';

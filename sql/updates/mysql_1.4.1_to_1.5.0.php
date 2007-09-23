@@ -69,7 +69,7 @@ function create_ConfValues()
     $c->add('show_fullname',0,'select',4,6,0,290,TRUE);
     $c->add('show_servicename',TRUE,'select',4,6,1,300,TRUE);
     $c->add('custom_registration',FALSE,'select',4,6,1,310,TRUE);
-    $c->add('user_logging_method',array('standard' => true, 'openid' => false, '3rdparty' => false),'@select',4,6,1,320,TRUE);
+    $c->add('user_login_method',array('standard' => true, 'openid' => false, '3rdparty' => false),'@select',4,6,1,320,TRUE);
     $c->add('spamx',128,'text',4,8,NULL,330,TRUE);
     $c->add('sort_admin',TRUE,'select',7,9,1,340,TRUE);
     $c->add('language','english','text',6,11,NULL,350,TRUE);

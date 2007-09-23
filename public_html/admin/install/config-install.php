@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.3 2007/09/23 18:51:16 dhaun Exp $
+// $Id: config-install.php,v 1.4 2007/09/23 19:20:40 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -72,7 +72,7 @@ function install_config()
     $c->add('show_fullname',0,'select',4,6,0,290,TRUE);
     $c->add('show_servicename',TRUE,'select',4,6,1,300,TRUE);
     $c->add('custom_registration',FALSE,'select',4,6,1,310,TRUE);
-    $c->add('user_logging_method',array('standard' => true, 'openid' => false, '3rdparty' => false),'@select',4,6,1,320,TRUE);
+    $c->add('user_login_method',array('standard' => true, 'openid' => false, '3rdparty' => false),'@select',4,6,1,320,TRUE);
     $c->add('spamx',128,'text',4,8,NULL,330,TRUE);
     $c->add('sort_admin',TRUE,'select',7,9,1,340,TRUE);
     $c->add('language','english','text',6,11,NULL,350,TRUE);

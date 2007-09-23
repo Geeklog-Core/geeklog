@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.258 2007/08/19 16:28:02 dhaun Exp $
+// $Id: config.php,v 1.259 2007/09/23 19:20:40 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -261,7 +261,7 @@ $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 // | Support for various remote methods to create users and log in,            |
 // | in addition to the classic Geeklog-only internal account.                 |
 // +---------------------------------------------------------------------------+
-$_CONF['user_logging_method'] = array(
+$_CONF['user_login_method'] = array(
     'standard' => true,  // Geeklog's built-in login method
                          // Note: can not be disabled yet
     'openid'   => false, // Set to true to enable OpenID remote login support.

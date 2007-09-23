@@ -1574,7 +1574,7 @@ array(
       'show_fullname' => "Show Fullname",
       'show_servicename' => "Show Service Name",
       'custom_registration' => "Custom Registration",
-      'user_logging_method' => "User Logging Method",
+      'user_login_method' => "User Login Method",
       'spamx' => "Spam-X",
       'sort_admin' => "Sort Links",
       'language' => "Language",

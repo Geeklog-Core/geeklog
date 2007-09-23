@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-common.php                                                            |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.654 2007/09/17 04:37:22 ospiess Exp $
+// $Id: lib-common.php,v 1.655 2007/09/23 19:20:40 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2223,7 +2223,7 @@ function COM_userMenu( $help='', $title='' )
         }
 
         // 3rd party remote authentification.
-        if( $_CONF['user_logging_method']['3rdparty'] && !$_CONF['usersubmission'] )
+        if( $_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission'] )
         {
             // Build select
             $select = '<select name="service" id="service"><option value="">' .
@@ -2255,7 +2255,7 @@ function COM_userMenu( $help='', $title='' )
         }
 
         // OpenID remote authentification.
-        if ($_CONF['user_logging_method']['openid'] && !$_CONF['usersubmission']) {
+        if ($_CONF['user_login_method']['openid'] && !$_CONF['usersubmission']) {
             $login->set_file('openid_login', 'loginform_openid.thtml');
             $login->set_var('lang_openid_login', $LANG01[128]);
             $login->set_var('app_url', $_CONF['site_url']."/users.php");
@@ -3732,7 +3732,7 @@ function COM_getDisplayName( $uid = '', $username='', $fullname='', $remoteusern
     {
         return $fullname;
     }
-    else if(( $_CONF['user_logging_method']['3rdparty'] || $_CONF['user_logging_method']['openid'] ) && !empty( $remoteusername ))
+    else if(( $_CONF['user_login_method']['3rdparty'] || $_CONF['user_login_method']['openid'] ) && !empty( $remoteusername ))
     {
         if( !empty( $username ))
         {
@@ -4478,7 +4478,7 @@ function phpblock_whosonline()
     {
         $byname .= ',fullname';
     }
-    if( $_CONF['user_logging_method']['openid'] || $_CONF['user_logging_method']['3rdparty'] )
+    if( $_CONF['user_login_method']['openid'] || $_CONF['user_login_method']['3rdparty'] )
     {
         $byname .= ',remoteusername,remoteservice';
     }
@@ -4500,7 +4500,7 @@ function phpblock_whosonline()
             {
                 $fullname = $A['fullname'];
             }
-            if( $_CONF['user_logging_method']['openid'] || $_CONF['user_logging_method']['3rdparty'] )
+            if( $_CONF['user_login_method']['openid'] || $_CONF['user_login_method']['3rdparty'] )
             {
                 $username = COM_getDisplayName( $A['uid'], $A['username'],
                         $fullname, $A['remoteusername'], $A['remoteservice'] );
