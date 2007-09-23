@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | config.class.php                                                          |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2007 by the following authors:                              |
 // |                                                                           |
-// | Authors: Aaron Blankstein          kantai@gmail.com                       |
+// | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,13 +29,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: config.class.php,v 1.3 2007/09/23 16:51:33 dhaun Exp $
 
-class config{
+class config {
     var $ref;
     var $dbconfig_file;
     var $config_array;
 	
-    /* This function will return an instance of the config class. If an 
+    /**
+     * This function will return an instance of the config class. If an 
      * instance with the given group/reference name does not exist, then it 
      * will create a new one. This function insures	that there is only one 
      * instance for a given group name.
@@ -46,7 +48,8 @@ class config{
      *	
      *	@return config 			   The newly created or referenced config object
      */
-    function &get_instance(){
+    function &get_instance()
+    {
         static $instance;
         return $instance;
     }
@@ -54,8 +57,9 @@ class config{
     function create($ref = 'Core', $obj = null)
     {
         $instance =& config::get_instance();
-        if ($instance[$ref] === null)
-	  $instance[$ref] = ($obj === null ? new config($ref) : $obj);
+        if ($instance[$ref] === null) {
+            $instance[$ref] = ($obj === null ? new config($ref) : $obj);
+        }
         return $instance[$ref];
     }
 
@@ -64,7 +68,8 @@ class config{
         $this->ref = $ref;
     }
     
-    /* This function sets the secure configuration file (database related 
+    /**
+     * This function sets the secure configuration file (database related 
      * settings) for the configuration class to read. This should only need to
      * be called for the 'Core' group. It also must be called before 
      * load_baseconfig()
@@ -77,7 +82,8 @@ class config{
         $this->dbconfig_file = $sf; 
     }
     
-    /* This function reads the secure configuration file and loads 
+    /**
+     * This function reads the secure configuration file and loads 
      * lib-database.php. This needs to be called in the 'Core' group before 
      * &init_config() can be used. It only needs to be called once
      */
@@ -91,7 +97,9 @@ class config{
             include_once($_CONF['path_system'] . 'lib-database.php' );
         }
     }
-    /* This function initializes the configuration array (i.e. $_CONF) and 
+
+    /**
+     * This function initializes the configuration array (i.e. $_CONF) and 
      * will return a reference to the newly created array. The class keeps
      * track of this reference, and the set function will mutate it.
      * 
@@ -112,7 +120,9 @@ class config{
             $this->_post_configuration();
         return $this->config_array;
     }
-    /* This function sets a configuration variable to a value in the database 
+
+    /**
+     * This function sets a configuration variable to a value in the database 
      * and in the current array. If the variable does not already exist, 
      * nothing will happen.
      * 
@@ -127,25 +137,29 @@ class config{
         $sql_query = "UPDATE {$_TABLES['conf_values']} " .
             "SET value = '{$escaped_val}' WHERE " .
             "name = '{$escaped_name}' AND group_name = '{$this->ref}'";
-        if($_DB_dbms == 'mssql'){
+        if ($_DB_dbms == 'mssql') {
             $sql_query = str_replace("\\'","''",$sql_query);
             $sql_query = str_replace('\\"','"',$sql_query);
             $_DB->dbQuery($sql_query, 0, 1);
-        }else{
+        } else {
             DB_query($sql_query);
         }
         $this->config_array[$name] = $value;
         if ($this->ref == 'Core')
             $this->_post_configuration();
     }
-    function restore_param($name){
+
+    function restore_param($name)
+    {
         global $_TABLES;
         $escaped_name = addslashes($name);
         $sql = "UPDATE {$_TABLES['conf_values']} SET value = default_value " .
             "WHERE name = '{$escaped_name}' AND group_name = '{$this->ref}'";
         DB_query($sql);
     }
-    function unset_param($name){
+
+    function unset_param($name)
+    {
         global $_TABLES;
         $escaped_name = addslashes($name);
         $sql = "UPDATE {$_TABLES['conf_values']} SET value = 'unset' " .
@@ -207,17 +221,19 @@ class config{
         $Qargs = array_map('addslashes', $Qargs);
         $sql_query = vsprintf($format, $Qargs);
 
-        if($_DB_dbms == 'mssql'){
+        if ($_DB_dbms == 'mssql') {
             $sql_query = str_replace("\\'","''",$sql_query);
             $sql_query = str_replace('\\"','"',$sql_query);
             $_DB->dbQuery($sql_query, 0, 1);
-        }else{
+        } else {
             DB_query($sql_query);
         }
 
         $this->config_array[$param_name] = $default_value;
     }
-    /* Permanently deletes a parameter
+
+    /**
+     * Permanently deletes a parameter
      * @param string  $param_name   This is the name of the parameter to delete
      */
     function del($param_name)
@@ -227,7 +243,9 @@ class config{
                   array(addslashes($param_name), addslashes($this->ref)));
         unset($this->config_array[$param_name]);
     }
-	/* Gets extended (GUI related) information from the database
+
+	/**
+     * Gets extended (GUI related) information from the database
 	 * @param string subgroup			filters by subgroup
 	 * @return array(string => string => array(string => mixed))
 	 *    Array keys are fieldset => parameter named => information array
@@ -260,8 +278,10 @@ class config{
         }
         return $res;
     }
+
     /* Changes any config settings that depend on other configuration settings. */
-    function _post_configuration(){
+    function _post_configuration()
+    {
         $this->config_array['path_layout'] = $this->config_array['path_themes'] 
             . $this->config_array['theme'] . '/';
         $this->config_array['layout_url'] = $this->config_array['site_url'] 
@@ -272,6 +292,7 @@ class config{
     {
         return array_keys(config::get_instance());
     }
+
     function get_sgroups()
     {
         global $_TABLES;
@@ -285,7 +306,8 @@ class config{
         return $return;
     }
 
-	/* This function is responsible for creating the configuration GUI
+	/**
+     * This function is responsible for creating the configuration GUI
 	 *
 	 * @param string sg		This is the subgroup name to load the gui for. 
 	 *						If nothing is passed, it will display the first 
@@ -296,7 +318,6 @@ class config{
 	 *						configuration - if it is passed, it will display
 	 *						the "Changes" message box.						
 	 */
-	
     function get_ui($sg=0, $change_result=null)
     {
         global $LANG_coreconfigsubgroups;
@@ -349,6 +370,7 @@ class config{
         $display .= COM_siteFooter(false);
         return $display;
     }
+
     function _UI_get_change_block($changes)
     {
         if ($changes != null AND $changes !== array()) {
@@ -403,25 +425,32 @@ class config{
         $t->set_var('value', $val);
         if ($deletable)
             $t->set_var('delete', $t->parse('output', 'delete-button'));
-        else if ($this->ref == 'Core' ){
+        elseif ($this->ref == 'Core' ) {
             $t->set_var('unset_link', 
                         "<a href='#' onClick='unset(\"{$name}\");'>(X)</a>");
-            if(($a = strrchr($name, '[')) !== FALSE)
+            if (($a = strrchr($name, '[')) !== FALSE) {
                 $o = substr($a, 1, -1);
-            else
+            } else {
                 $o = $name;
-            if (! is_numeric($o) )
+            }
+            if (! is_numeric($o)) {
+                if (!empty($GLOBALS['_CONF']['site_url'])) {
+                    $baseUrl = $GLOBALS['_CONF']['site_url'];
+                } else {
+                    $baseUrl = 'http://www.geeklog.net';
+                }
                 $t->set_var('doc_link', 
-                            "(<a target='help' href='http://www.geeklog.net" .
-                            "/docs/config.html#desc_{$o}'>?</a>)");
+                            '(<a href="' . $baseUrl . '/docs/config.html#desc_'
+                            . $o . '" target="help">?</a>)');
+            }
         }
         if ($type == "unset") {
             return $t->finish($t->parse('output', 'unset-param'));
-        } else if ($type == "text") {
+        } elseif ($type == "text") {
             return $t->finish($t->parse('output', 'text-element'));
-        } else if ($type == "placeholder") {
+        } elseif ($type == "placeholder") {
             return $t->finish($t->parse('output', 'placeholder-element'));
-        } else if ($type == "select") {
+        } elseif ($type == "select") {
             if (! is_array($selectionArray))
                 return $t->finish($t->parse('output', 'text-element'));
             $t->set_block('select-element', 'select-options', 'myoptions');
@@ -436,7 +465,7 @@ class config{
                 $t->parse('myoptions', 'select-options', true);
             }
             return $t->parse('output', 'select-element');
-        }else if (strpos($type, "@") === 0){
+        } elseif (strpos($type, "@") === 0) {
             $result = "";
             foreach ($val as $valkey => $valval) {
                 $result .= config::_UI_get_conf_element($name . '[' . $valkey . ']',
@@ -444,7 +473,7 @@ class config{
                                                       substr($type, 1), $valval, $selectionArray);
             }
             return $result;
-        }else if (strpos($type, "*") === 0 || strpos($type, "%") === 0){
+        } elseif (strpos($type, "*") === 0 || strpos($type, "%") === 0) {
             $t->set_var('arr_name', $name);
             $t->set_var('array_type', $type);
             $button = $t->parse('output', (strpos($type, "*") === 0 ?
@@ -460,7 +489,9 @@ class config{
             return $t->parse('output', 'list-element'); 
         }
     }
-	/* This function takes $_POST input and evaluates it
+
+	/**
+     * This function takes $_POST input and evaluates it
 	 *
 	 * param array(string=>mixed) $change_array		this is the $_POST array
 	 * return array(string=>boolean)				this is the change_array
@@ -485,12 +516,12 @@ class config{
 
     function _validate_input(&$input_val)
     {
-        if (is_array($input_val)){
+        if (is_array($input_val)) {
             $r = array();
             foreach ($input_val as $key => $val)
                 if ($key !== 'placeholder')
                     $r[$key] = $this->_validate_input($val);
-        }else{
+        } else {
             $r = COM_stripSlashes( $input_val );
             if ($r == 'b:0' OR $r == 'b:1')
                 $r = ($r == 'b:1');
