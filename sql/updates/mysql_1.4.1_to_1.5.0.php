@@ -175,7 +175,7 @@ function create_ConfValues()
     $c->add('aftersave_user','item','select',1,24,9,1340,TRUE);
     $c->add('show_right_blocks',FALSE,'select',2,25,1,1350,TRUE);
     $c->add('showfirstasfeatured',0,'select',2,25,0,1360,TRUE);
-    $c->add('left_blocks_in_foot',0,'select',2,25,0,1370,TRUE);
+    $c->add('left_blocks_in_footer',0,'select',2,25,0,1370,TRUE);
     $c->add('backend',1,'select',0,26,0,1380,TRUE);
     $c->add('rdf_file','','text',0,26,NULL,1390,TRUE);
     $c->add('rdf_limit',10,'text',0,26,NULL,1400,TRUE);
