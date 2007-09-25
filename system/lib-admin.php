@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.117 2007/08/29 10:01:48 ospiess Exp $
+// $Id: lib-admin.php,v 1.118 2007/09/25 04:49:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -107,7 +107,10 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
              . $LANG_ADMIN['copy'] . '">',
         'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
             . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
-            . '" title="' . $LANG_ACCESS['listthem'] . '">'
+            . '" title="' . $LANG_ACCESS['listthem'] . '">',
+        'addchild' => '<img src="' . $_CONF['layout_url'] . '/images/addchild.'
+            . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['add_child']
+            . '" title="' . $LANG_ADMIN['add_child'] . '">'
     );
 
     $retval .= COM_startBlock ($title, $help_url,
@@ -310,7 +313,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
              . '" title="' . $LANG_ADMIN['copy'] . '">',
         'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
             . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
-            . '" title="' . $LANG_ACCESS['listthem'] . '">'
+            . '" title="' . $LANG_ACCESS['listthem'] . '">',
+        'addchild' => '<img src="' . $_CONF['layout_url'] . '/images/addchild.'
+            . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['add_child']
+            . '" title="' . $LANG_ADMIN['add_child'] . '">'
     );
     $has_extras = '';
     if (isset($text_arr['has_extras'])) { # does this one use extras? (search, google paging)

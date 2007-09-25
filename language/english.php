@@ -1478,7 +1478,8 @@ $LANG_ADMIN = array (
     'no_results'    => '- No entries found -',
     'data_error'    => 'There was an error processing the subscription data. Please check the data source.',
     'preview'       => 'Preview',
-    'records_found' => 'Records found'
+    'records_found' => 'Records found',
+    'add_child'     => 'Add child'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1541,7 +1542,7 @@ $LANG_trackbackcodes = array(
 ################################################################################
 # Localization of the Admin Configuration UI                                   #
 
-$LANG_coreconfignames = 
+$LANG_coreconfignames =
 array(
       'path_html' => "HTML Path",
       'site_url' => "Site URL",
@@ -1781,22 +1782,22 @@ array(
       35 => 'Censoring',
       36 => 'IP Lookup',
       37 => 'Default Permission'
-      
+
 );
 
-$LANG_coreconfigselects = 
+$LANG_coreconfigselects =
 array(
       0 => array('True'=>1,'False'=>0),
       1 => array('True'=>TRUE,'False'=>FALSE),
       2 => array('Reject'=>0,'Only Keep Latest'=>1, 'Allow Multiple Posts'=>2),
       3 => array_flip($LANG_trackbackcodes),
-      4 => array("Don't Check Anything" => 0, 
-		 "Check against Site URL" => 1, 
-		 "Check full URL" => 2, 
-		 "Check against Site URL and full URL" => 3, 
-		 "Check IP against Site IP" => 4, 
-		 "Check IP and Site URL" => 5, 
-		 "Check IP and Full URL" => 6, 
+      4 => array("Don't Check Anything" => 0,
+		 "Check against Site URL" => 1,
+		 "Check full URL" => 2,
+		 "Check against Site URL and full URL" => 3,
+		 "Check IP against Site IP" => 4,
+		 "Check IP and Site URL" => 5,
+		 "Check IP and Full URL" => 6,
 		 "Check IP, Full URL, and Site URL" => 7),
       5 => array_flip($LANG_postmodes),
       6 => array('12'=>'12','24'=>'24'),
