@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.656 2007/09/28 00:21:29 ospiess Exp $
+// $Id: lib-common.php,v 1.657 2007/09/28 01:24:29 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -233,8 +233,8 @@ require_once( $_CONF['path_system'] . 'lib-syndication.php' );
  *overridden by setting them to a different value than here in the theme's
  *function.php or in lib-custom.php. Therefore they are NOT TO BE CHANGED HERE.
  */
-$_CONF['left_blocks_in_footer'] = 0;
-$_CONF['right_blocks_in_footer'] = 1;
+$_CONF['left_blocks_in_footer'] = 0;  // use left blocks in header
+$_CONF['right_blocks_in_footer'] = 1;  // use right blocks in footer
 
 /**
 * This is the custom library.
@@ -853,7 +853,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         'menuitem'      => 'menuitem.thtml',
         'menuitem_last' => 'menuitem_last.thtml',
         'menuitem_none' => 'menuitem_none.thtml',
-        'leftblocks'    => 'leftblocks.thtml'
+        'leftblocks'    => 'leftblocks.thtml',
+        'rightblocks'   => 'rightblocks.thtml'
         ));
 
     // get topic if not on home page
@@ -1111,7 +1112,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
     if( $_CONF['left_blocks_in_footer'] == 1 )
     {
-        $header->set_var( 'geeklog_blocks', '' );
         $header->set_var( 'left_blocks', '' );
     }
     else
@@ -1142,13 +1142,57 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
         if( empty( $lblocks ))
         {
-            $header->set_var( 'geeklog_blocks', '' );
             $header->set_var( 'left_blocks', '' );
+            $header->set_var( 'geeklog_blocks', '' );
         }
         else
         {
             $header->set_var( 'geeklog_blocks', $lblocks );
             $header->parse( 'left_blocks', 'leftblocks', true );
+            $header->set_var( 'geeklog_blocks', '');
+        }
+    }
+
+    if( $_CONF['right_blocks_in_footer'] == 1 )
+    {
+        $header->set_var( 'right_blocks', '' );
+        $header->set_var( 'geeklog_blocks', '' );
+    }
+    else
+    {
+        $rblocks = '';
+
+        /* Check if an array has been passed that includes the name of a plugin
+         * function or custom function
+         * This can be used to take control over what blocks are then displayed
+         */
+        if( is_array( $what ))
+        {
+            $function = $what[0];
+            if( function_exists( $function ))
+            {
+                $rblocks = $function( $what[1], 'right' );
+            }
+            else
+            {
+                $rblocks = COM_showBlocks( 'right', $topic );
+            }
+        }
+        else if( $what <> 'none' )
+        {
+            // Now show any blocks -- need to get the topic if not on home page
+            $rblocks = COM_showBlocks( 'right', $topic );
+        }
+
+        if( empty( $rblocks ))
+        {
+            $header->set_var( 'right_blocks', '' );
+            $header->set_var( 'geeklog_blocks', '' );
+        }
+        else
+        {
+            $header->set_var( 'geeklog_blocks', $rblocks, true );
+            $header->parse( 'right_blocks', 'rightblocks', true );
         }
     }
 
@@ -1189,17 +1233,21 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 */
 function COM_siteFooter( $rightblock = -1, $custom = '' )
 {
-    global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic;
+    global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS;
 
-    if( $rightblock < 0 )
+    // use the right blocks here only if not in header already
+    if ($_CONF['right_blocks_in_footer'] == 1)
     {
-        if( isset( $_CONF['show_right_blocks'] ))
+        if( $rightblock < 0)
         {
-            $rightblock = $_CONF['show_right_blocks'];
-        }
-        else
-        {
-            $rightblock = false;
+            if( isset( $_CONF['show_right_blocks'] ))
+            {
+                $rightblock = $_CONF['show_right_blocks'];
+            }
+            else
+            {
+                $rightblock = false;
+            }
         }
     }
 
@@ -1252,6 +1300,15 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     $footer->set_var( 'powered_by', $LANG01[95] );
     $footer->set_var( 'geeklog_url', 'http://www.geeklog.net/' );
     $footer->set_var( 'geeklog_version', VERSION );
+    // Now add variables for buttons like e.g. those used by the Yahoo theme
+    $footer->set_var( 'button_home', $LANG_BUTTONS[1] );
+    $footer->set_var( 'button_contact', $LANG_BUTTONS[2] );
+    $footer->set_var( 'button_contribute', $LANG_BUTTONS[3] );
+    $footer->set_var( 'button_sitestats', $LANG_BUTTONS[7] );
+    $footer->set_var( 'button_personalize', $LANG_BUTTONS[8] );
+    $footer->set_var( 'button_search', $LANG_BUTTONS[9] );
+    $footer->set_var( 'button_advsearch', $LANG_BUTTONS[10] );
+    $footer->set_var( 'button_directory', $LANG_BUTTONS[11] );
 
     /* Check if an array has been passed that includes the name of a plugin
      * function or custom function.
@@ -1268,16 +1325,6 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     elseif( $rightblock )
     {
         $rblocks = COM_showBlocks( 'right', $topic );
-    }
-    if( $rightblock && !empty( $rblocks ))
-    {
-        $footer->set_var( 'geeklog_blocks', $rblocks );
-        $footer->parse( 'right_blocks', 'rightblocks', true );
-    }
-    else
-    {
-        $footer->set_var( 'geeklog_blocks', '' );
-        $footer->set_var( 'right_blocks', '' );
     }
 
     if( $_CONF['left_blocks_in_footer'] == 1 )
@@ -1303,13 +1350,53 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 
         if( empty( $lblocks ))
         {
-            $footer->set_var( 'geeklog_blocks', '' );
             $footer->set_var( 'left_blocks', '' );
+            $footer->set_var( 'geeklog_blocks', '');
         }
         else
         {
-            $footer->set_var( 'geeklog_blocks', $lblocks );
+            $footer->set_var( 'geeklog_blocks', $lblocks);
             $footer->parse( 'left_blocks', 'leftblocks', true );
+            $footer->set_var( 'geeklog_blocks', '');
+        }
+    }
+
+    if( $_CONF['right_blocks_in_footer'] == 1 && $rightblock)
+    {
+        $rblocks = '';
+
+        /* Check if an array has been passed that includes the name of a plugin
+         * function or custom function
+         * This can be used to take control over what blocks are then displayed
+         */
+        if( is_array( $what ))
+        {
+            $function = $what[0];
+            if( function_exists( $function ))
+            {
+                $rblocks = $function( $what[1], 'right' );
+            }
+            else
+            {
+                $rblocks = COM_showBlocks( 'right', $topic );
+            }
+        }
+        else if( $what <> 'none' )
+        {
+            // Now show any blocks -- need to get the topic if not on home page
+            $rblocks = COM_showBlocks( 'right', $topic );
+        }
+
+        if( empty( $rblocks ))
+        {
+            $footer->set_var( 'geeklog_blocks', '');
+            $footer->set_var( 'right_blocks', '' );
+        }
+        else
+        {
+            $footer->set_var( 'geeklog_blocks', $rblocks);
+            $footer->parse( 'right_blocks', 'rightblocks', true );
+            $footer->set_var( 'geeklog_blocks', '');
         }
     }
 
