@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.655 2007/09/23 19:20:40 dhaun Exp $
+// $Id: lib-common.php,v 1.656 2007/09/28 00:21:29 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -226,6 +226,15 @@ require_once( $_CONF['path_system'] . 'lib-security.php' );
 */
 
 require_once( $_CONF['path_system'] . 'lib-syndication.php' );
+
+/**
+ *These variables were taken out of the configuration and placed here since they
+ *are necessary to change with the themes, not whole sites. They should now be
+ *overridden by setting them to a different value than here in the theme's
+ *function.php or in lib-custom.php. Therefore they are NOT TO BE CHANGED HERE.
+ */
+$_CONF['left_blocks_in_footer'] = 0;
+$_CONF['right_blocks_in_footer'] = 1;
 
 /**
 * This is the custom library.

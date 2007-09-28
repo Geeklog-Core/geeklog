@@ -1680,7 +1680,6 @@ array(
       'aftersave_user' => "After Saving User",
       'show_right_blocks' => "Show Right Blocks?",
       'showfirstasfeatured' => "Show First as Featured?",
-      'left_blocks_in_footer' => "Left Blocks in Footer?",
       'backend' => "Backend?",
       'rdf_file' => "RDF File",
       'rdf_limit' => "RDF Limit",

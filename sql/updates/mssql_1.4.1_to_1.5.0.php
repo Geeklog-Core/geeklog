@@ -1,7 +1,9 @@
 <?php
 
-/* These queries were copied from the mysql 1.4.2 upgrade and 
+/* These queries were copied from the mysql 1.4.2 upgrade and
+
  * probably need to be rewritten for MS SQL
+
 
 // remove time zone table since its included into PEAR now
 $_SQL[] = "DROP TABLE " . $_DB_table_prefix . 'tzcodes';
@@ -48,9 +50,9 @@ function create_ConfValues()
         ON [PRIMARY]
         ");
         require_once($_CONF['path_system'] . 'classes/config.class.php');
-    
+
     $c = config::create();
-    
+
     $c->add('path_html','','text',0,1,NULL,10,TRUE);
     $c->add('site_url','','text',0,0,NULL,20,TRUE);
     $c->add('site_admin_url','','text',0,0,NULL,30,TRUE);
@@ -188,7 +190,6 @@ function create_ConfValues()
     $c->add('aftersave_user','item','select',1,24,9,1340,TRUE);
     $c->add('show_right_blocks',FALSE,'select',2,25,1,1350,TRUE);
     $c->add('showfirstasfeatured',0,'select',2,25,0,1360,TRUE);
-    $c->add('left_blocks_in_footer',0,'select',2,25,0,1370,TRUE);
     $c->add('backend',1,'select',0,26,0,1380,TRUE);
     $c->add('rdf_file','','text',0,26,NULL,1390,TRUE);
     $c->add('rdf_limit',10,'text',0,26,NULL,1400,TRUE);
