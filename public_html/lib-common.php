@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.657 2007/09/28 01:24:29 ospiess Exp $
+// $Id: lib-common.php,v 1.658 2007/09/28 01:33:06 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1113,6 +1113,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     if( $_CONF['left_blocks_in_footer'] == 1 )
     {
         $header->set_var( 'left_blocks', '' );
+        $header->set_var( 'geeklog_blocks', '' );
     }
     else
     {
