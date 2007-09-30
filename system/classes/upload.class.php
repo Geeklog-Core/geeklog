@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.48 2007/01/11 04:47:27 ospiess Exp $
+// $Id: upload.class.php,v 1.49 2007/09/30 04:43:36 blaine Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -1051,6 +1051,7 @@ class upload
                 $extensions = explode (',', $extList);
                 $fileName = $this->_currentFile['name'];
                 foreach ($extensions as $ext) {
+                    $ext = trim($ext);
                     if (strcasecmp (substr ($fileName, -strlen ($ext)), $ext) == 0) {
                         return true;
                     }
