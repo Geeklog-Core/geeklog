@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-webservices.php                                                       |
 // |                                                                           |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.11 2007/09/17 20:11:52 dhaun Exp $
+// $Id: lib-webservices.php,v 1.12 2007/09/30 15:59:41 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -481,15 +481,24 @@ function WS_xmlToArgs(&$args)
             }
         }
 
-	if (empty($args['updated'])) {
-		$args['updated'] = date('c');
-	}
-	$args['publish_month'] = date('m', strtotime($args['updated']));
-	$args['publish_year'] = date('Y', strtotime($args['updated']));
-	$args['publish_day'] = date('d', strtotime($args['updated']));
-	$args['publish_hour'] = date('H', strtotime($args['updated']));
-	$args['publish_minute'] = date('i', strtotime($args['updated']));
-	$args['publish_second'] = date('s', strtotime($args['updated']));
+        if (empty($args['updated'])) {
+            $args['updated'] = date('c');
+        }
+        $args['publish_month'] = date('m', strtotime($args['updated']));
+        $args['publish_year'] = date('Y', strtotime($args['updated']));
+        $args['publish_day'] = date('d', strtotime($args['updated']));
+        $args['publish_hour'] = date('H', strtotime($args['updated']));
+        $args['publish_minute'] = date('i', strtotime($args['updated']));
+        $args['publish_second'] = date('s', strtotime($args['updated']));
+
+        if (isset($args['control'])) {
+            foreach ($args['control'] as $key => $value) {
+                if ($key == 'draft') {
+                    $args['draft_flag'] = ($value == 'yes' ? 1 : 0);
+                    break;
+                }
+            }
+        }
 
         if (empty($args['uid'])) {
             $args['uid'] = $_USER['uid'];
@@ -548,7 +557,19 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
     $author->appendChild($author_name);
     $entry_elem->appendChild($author);
 
-    /* Geeklog-specific elements */
+    // if there's a draft flag and it's == 1, export it as <app:draft>
+    $draft = 0;
+    if (isset($arr['draft_flag']) && ($arr['draft_flag'] == 1)) {
+        $draft = 1;
+    }
+    if ($draft == 1) {
+        $control = $atom_doc->createElement('app:control');
+        $draft = $atom_doc->createElement('app:draft', 'yes');
+        $control->appendChild($draft);
+        $entry_elem->appendChild($control);
+    }
+
+    // Geeklog-specific elements
 
     foreach ($extn_elements as $elem) {
         if (is_array($arr[$elem])) {

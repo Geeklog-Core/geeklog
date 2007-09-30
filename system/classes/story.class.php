@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.15 2007/09/30 13:32:09 dhaun Exp $
+// $Id: story.class.php,v 1.16 2007/09/30 15:59:41 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1536,26 +1536,28 @@ class Story
         /* For the really, really basic stuff, we can very easily load them
          * based on an array that defines how to COM_applyFilter them.
          */
-        while (list($key, $value) = each($this->_postFields)) {
+        foreach ($this->_postFields as $key => $value) {
+            $vartype = $value[0];
             $varname = $value[1];
 
             // If we have a value
             if (array_key_exists($key, $array)) {
                 // And it's alphanumeric or numeric, filter it and use it.
-                if (($value[0] == STORY_AL_ALPHANUM) || ($value[0] == STORY_AL_NUMERIC)) {
-                    $this->{$varname} = COM_applyFilter($array[$key], $value[0]);
-                } elseif ($array[$key] === 'on') {
+                if (($vartype == STORY_AL_ALPHANUM) || ($vartype == STORY_AL_NUMERIC)) {
+                    $this->{$varname} = COM_applyFilter($array[$key], $vartype);
+                } elseif (($array[$key] === 'on') || ($array[$key] === 1)) {
                     // If it's a checkbox that is on
                     $this->{$varname} = 1;
                 } else {
                     // Otherwise, it must be a checkbox that is off:
                     $this->{$varname} = 0;
                 }
-            } elseif (($value[0] == STORY_AL_NUMERIC) || ($value[0] == STORY_AL_CHECKBOX)) {
+            } elseif (($vartype == STORY_AL_NUMERIC) || ($vartype == STORY_AL_CHECKBOX)) {
                 // If we don't have a value, and have a numeric or text box, default to 0
                 $this->{$varname} = 0;
             }
         }
+
         // SID's are a special case:
         $sid = COM_sanitizeID($array['sid']);
         $oldsid = COM_sanitizeID($array['old_sid']);

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.108 2007/09/30 13:32:08 dhaun Exp $
+// $Id: lib-story.php,v 1.109 2007/09/30 15:59:41 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1108,16 +1108,6 @@ function service_submit_story($args, &$output, &$svc_msg)
             $args['perm_anon'] = COM_applyBasicFilter($args['perm_anon'], true);
         }
 
-        // FIXME: move this to lib-webservices.php
-        if (isset($args['control'])) {
-            foreach ($args['control'] as $key => $value) {
-                if ($key == 'draft') { // == 'app:draft'
-                    $args['draft_flag'] = ($value == 'yes' ? 1 : 0);
-                    break;
-                }
-            }
-        }
-
         if (!isset($args['draft_flag'])) {
             $args['draft_flag'] = $_CONF['draft_flag'];
         }
@@ -1130,7 +1120,6 @@ function service_submit_story($args, &$output, &$svc_msg)
             $args['show_topic_icon'] = $_CONF['show_topic_icon'];
         }
     }
-
     /* - END: Set all the defaults - */
 
     // TEST CODE
@@ -1207,8 +1196,6 @@ function service_submit_story($args, &$output, &$svc_msg)
     default:
         break;
     }
-
-    /* STARTOFTESTCODE */
 
     /* Image upload is not supported by the web-service at present */
     if (!$args['gl_svc']) {
@@ -1336,7 +1323,6 @@ function service_submit_story($args, &$output, &$svc_msg)
             }
         }
     }
-    /* ENDOFTESTCODE */
 
     $result = $story->saveToDatabase();
 
