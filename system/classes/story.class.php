@@ -2,9 +2,9 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
-// | Story.class.php                                                           |
+// | story.class.php                                                           |
 // |                                                                           |
 // | Geeklog Story Abstraction.                                                |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.14 2007/09/22 13:10:21 dhaun Exp $
+// $Id: story.class.php,v 1.15 2007/09/30 13:32:09 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -110,7 +110,7 @@ class Story
     var $_bodytext;
     var $_postmode;
     var $_uid;
-    var $_draft;
+    var $_draft_flag;
     var $_tid;
     var $_date;
     var $_hits;
@@ -165,7 +165,7 @@ class Story
      * a save value of 0 will just be loaded.
      *
      * This allows us to automate the loading of story, user and topic from a
-     * datbase result array, and generate saving of a story, from the same
+     * database result array, and generate saving of a story, from the same
      * magic array.
      */
     var $_dbFields = array
@@ -215,11 +215,6 @@ class Story
                 STORY_AL_NUMERIC,
                 '_uid'
               ),
-           'draft' => array
-              (
-                STORY_AL_NUMERIC,
-                '_draft_flag'
-              ),
            'tid' => array
               (
                 STORY_AL_ALPHANUM,
@@ -233,7 +228,7 @@ class Story
            'draft_flag' => array
               (
                 STORY_AL_CHECKBOX,
-                '_draft'
+                '_draft_flag'
               ),
            'statuscode' => array
               (
@@ -401,17 +396,17 @@ class Story
 
             $sql['mssql'] =
                 "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.in_transit, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
-        } else if (!empty($sid) && ($mode == 'editsubmission')) {
+        } elseif (!empty($sid) && ($mode == 'editsubmission')) {
             $sql = 'SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
-        } else if ($mode == 'edit') {
+        } elseif ($mode == 'edit') {
             $this->_sid = COM_makesid();
             $this->_old_sid = $this->_sid;
 
             if (isset($_CONF['draft_flag'])) {
-                $this->_draft = $_CONF['draft_flag'];
+                $this->_draft_flag = $_CONF['draft_flag'];
             } else {
-                $this->_draft = 0;
+                $this->_draft_flag = 0;
             }
 
             if (isset($_CONF['show_topic_icon'])) {
@@ -485,7 +480,7 @@ class Story
 
                 if ($this->_access == 0) {
                     return STORY_PERMISSION_DENIED;
-                } else if ($this->_access == 2 && $mode != 'view') {
+                } elseif ($this->_access == 2 && $mode != 'view') {
                     return STORY_EDIT_DENIED;
                 }
             } else {
@@ -495,9 +490,9 @@ class Story
 
         if ($mode == 'editsubmission') {
             if (isset($_CONF['draft_flag'])) {
-                $this->_draft = $_CONF['draft_flag'];
+                $this->_draft_flag = $_CONF['draft_flag'];
             } else {
-                $this->_draft = 1;
+                $this->_draft_flag = 1;
             }
 
             if (isset($_CONF['show_topic_icon'])) {
@@ -514,7 +509,7 @@ class Story
 
             if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$this->_tid}'") == 1) {
                 $this->_frontpage = 0;
-            } else if (isset($_CONF['frontpage'])) {
+            } elseif (isset($_CONF['frontpage'])) {
                 $this->_frontpage = $_CONF['frontpage'];
             } else {
                 $this->_frontpage = 1;
@@ -709,8 +704,7 @@ class Story
         //$body = COM_stripSlashes( $array['bodytext'] );
 
         /* Then load the title, intro and body */
-        if (($array['postmode'] == 'html') || ($array['postmode'] == 'adveditor') || ($array['postmode'] == 'wikitext'))
-            {
+        if (($array['postmode'] == 'html') || ($array['postmode'] == 'adveditor') || ($array['postmode'] == 'wikitext')) {
             $this->_htmlLoadStory($array['title'], $array['introtext'], $array['bodytext']);
 
             if ($this->_postmode == 'adveditor') {
@@ -877,7 +871,7 @@ class Story
 
             if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$tmptid}'") == 1) {
                 $this->_frontpage = 0;
-            } else if (isset($_CONF['frontpage'])) {
+            } elseif (isset($_CONF['frontpage'])) {
                 $this->_frontpage = $_CONF['frontpage'];
             } else {
                 $this->_frontpage = 1;
@@ -1170,8 +1164,7 @@ class Story
      */
     function getSid($fordb = false)
     {
-        if ($fordb)
-        {
+        if ($fordb) {
             return addslashes($this->_sid);
         } else {
             return $this->_sid;
@@ -1194,7 +1187,7 @@ class Story
      * rather be able to assign getters and setters to actual
      * properties to mask controlled access to private member
      * variables. But, you get what you get with PHP. So here it
-     * is in all it's nastyness.
+     * is in all its nastiness.
      *
      * @param   string  $item   Item to fetch.
      * @return  mixed   The clean and ready to use (in edit mode) value requested.
@@ -1283,8 +1276,8 @@ class Story
 
             break;
 
-        case 'draft':
-            if (isset($this->_draft) && ($this->_draft == 1)) {
+        case 'draft_flag':
+            if (isset($this->_draft_flag) && ($this->_draft_flag == 1)) {
                 $return = true;
             } else {
                 $return = false;
@@ -1342,8 +1335,9 @@ class Story
         case 'introtext':
             if ($this->_postmode == 'plaintext') {
                 $return = nl2br($this->_introtext);
-            } else if ($this->_postmode == 'wikitext') {
+            } elseif ($this->_postmode == 'wikitext') {
                 require_once 'Text/Wiki.php';
+
                 $wiki = &new Text_Wiki();
                 $wiki->disableRule('wikilink');
                 $wiki->disableRule('freelink');
@@ -1360,15 +1354,16 @@ class Story
         case 'bodytext':
             if (($this->_postmode == 'plaintext') && !(empty($this->_bodytext))) {
                 $return = nl2br($this->_bodytext);
-            } else if (($this->_postmode == 'wikitext') && !(empty($this->_bodytext))) {
+            } elseif (($this->_postmode == 'wikitext') && !(empty($this->_bodytext))) {
                 require_once 'Text/Wiki.php';
+
                 $wiki = &new Text_Wiki();
                 $wiki->disableRule('wikilink');
                 $wiki->disableRule('freelink');
                 $wiki->disableRule('interwiki');
                 $return = $this->_editUnescape($this->_bodytext);
                 $return = $wiki->transform($return, 'Xhtml');
-            } else if (!empty($this->_bodytext)) {
+            } elseif (!empty($this->_bodytext)) {
                 $return = $this->_displayEscape($this->_bodytext);
             }
 
@@ -1450,7 +1445,9 @@ class Story
     function checkAccess()
     {
         global $_CONF;
-        require_once($_CONF['path_system'] . 'lib-security.php');
+
+        require_once $_CONF['path_system'] . 'lib-security.php';
+
         return SEC_hasAccess($this->_owner_id, $this->_group_id, $this->_perm_owner, $this->_perm_group,
                                  $this->_perm_members, $this->_perm_anon);
     }
@@ -1484,8 +1481,7 @@ class Story
      */
     function _editUnescape($in)
     {
-        if (($this->_postmode == 'html') || ($this->_postmode == 'wikitext'))
-        {
+        if (($this->_postmode == 'html') || ($this->_postmode == 'wikitext')) {
             // Standard named items, plus the three we do in _displayEscape and
             // others I know off-hand.
             //$replacefrom = array('&lt;', '&gt;', '&amp;', '&#36;', '&#123;', '&#125', '&#92;');
@@ -1515,7 +1511,7 @@ class Story
         if ($this->_postmode == 'plaintext') {
             $out = COM_undoClickableLinks($out);
             $out = $this->_displayEscape($out);
-        } else if ($this->_postmode == 'wikitext') {
+        } elseif ($this->_postmode == 'wikitext') {
             $out = $this->_editUnescape($in);
         } else {
             // html
@@ -1546,22 +1542,21 @@ class Story
             // If we have a value
             if (array_key_exists($key, $array)) {
                 // And it's alphanumeric or numeric, filter it and use it.
-                if (($value[0] == STORY_AL_ALPHANUM) || ($value[0] == STORY_AL_NUMERIC))
-                {
-                    $this->{$varname}= COM_applyFilter($array[$key], $value[0]);
-                } else if ($array[$key] == 'on') {
+                if (($value[0] == STORY_AL_ALPHANUM) || ($value[0] == STORY_AL_NUMERIC)) {
+                    $this->{$varname} = COM_applyFilter($array[$key], $value[0]);
+                } elseif ($array[$key] === 'on') {
                     // If it's a checkbox that is on
-                    $this->{$varname}= 1;
+                    $this->{$varname} = 1;
                 } else {
                     // Otherwise, it must be a checkbox that is off:
-                    $this->{$varname}= 0;
+                    $this->{$varname} = 0;
                 }
-            } else if (($value[0] == STORY_AL_NUMERIC) || ($value[0] == STORY_AL_CHECKBOX)) {
+            } elseif (($value[0] == STORY_AL_NUMERIC) || ($value[0] == STORY_AL_CHECKBOX)) {
                 // If we don't have a value, and have a numeric or text box, default to 0
-                $this->{$varname}= 0;
+                $this->{$varname} = 0;
             }
         }
-        /* SID's are a specialcase: */
+        // SID's are a special case:
         $sid = COM_sanitizeID($array['sid']);
         $oldsid = COM_sanitizeID($array['old_sid']);
 
@@ -1583,8 +1578,7 @@ class Story
         $publish_second = COM_applyFilter($array['publish_second'], true);
 
         if ($publish_ampm == 'pm') {
-            if ($publish_hour < 12)
-            {
+            if ($publish_hour < 12) {
                 $publish_hour = $publish_hour + 12;
             }
         }
@@ -1619,8 +1613,7 @@ class Story
             $expire_day = COM_applyFilter($array['expire_day'], true);
 
             if ($expire_ampm == 'pm') {
-                if ($expire_hour < 12)
-                {
+                if ($expire_hour < 12) {
                     $expire_hour = $expire_hour + 12;
                 }
             }
@@ -1730,15 +1723,15 @@ class Story
             $this->_trackbacks = 0;
         }
 
-        if ($this->_draft == 'on') {
-            $this->_draft = 1;
-        } else if (empty($this->_draft)) {
-            $this->_draft = 0;
+        if ($this->_draft_flag === 'on') {
+            $this->_draft_flag = 1;
+        } elseif ($this->_draft_flag != 1) {
+            $this->_draft_flag = 0;
         }
 
-        if ($this->_show_topic_icon == 'on') {
+        if ($this->_show_topic_icon === 'on') {
             $this->_show_topic_icon = 1;
-        } elseif (empty($this->_show_topic_icon)) {
+        } elseif ($this->_show_topic_icon != 1) {
             $this->_show_topic_icon = 0;
         }
     }

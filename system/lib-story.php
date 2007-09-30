@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-story.php                                                             |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.107 2007/09/17 20:28:44 dhaun Exp $
+// $Id: lib-story.php,v 1.108 2007/09/30 13:32:08 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -961,8 +961,7 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
 /**
 * Delete a story.
 *
-* This is used to delete a story from the list of stories with the 'draft' flag
-* set (see function draftlist() above).
+* This is used to delete a story from the list of stories.
 *
 * @sid      string      ID of the story to delete
 *
@@ -1109,17 +1108,18 @@ function service_submit_story($args, &$output, &$svc_msg)
             $args['perm_anon'] = COM_applyBasicFilter($args['perm_anon'], true);
         }
 
+        // FIXME: move this to lib-webservices.php
         if (isset($args['control'])) {
             foreach ($args['control'] as $key => $value) {
-                if ($key == 'draft') {
-                    $args['draft'] = ($value == 'yes' ? 1 : 0);
+                if ($key == 'draft') { // == 'app:draft'
+                    $args['draft_flag'] = ($value == 'yes' ? 1 : 0);
                     break;
                 }
             }
         }
 
-        if (!isset($args['draft'])) {
-            $args['draft'] = $_CONF['draft_flag'];
+        if (!isset($args['draft_flag'])) {
+            $args['draft_flag'] = $_CONF['draft_flag'];
         }
 
         if (empty($args['frontpage'])) {

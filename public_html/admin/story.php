@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | story.php                                                                 |
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.262 2007/08/29 09:33:54 ospiess Exp $
+// $Id: story.php,v 1.263 2007/09/30 13:32:08 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -527,7 +527,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_var('show_topic_icon_checked', '');
     }
     $story_templates->set_var('lang_draft', $LANG24[34]);
-    if ($story->EditElements('draft')) {
+    if ($story->EditElements('draft_flag')) {
         $story_templates->set_var('is_checked', 'checked="checked"');
     }
     $story_templates->set_var ('lang_mode', $LANG24[3]);
