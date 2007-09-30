@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.16 2007/09/30 15:59:41 dhaun Exp $
+// $Id: story.class.php,v 1.17 2007/09/30 16:45:44 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1444,12 +1444,9 @@ class Story
      */
     function checkAccess()
     {
-        global $_CONF;
-
-        require_once $_CONF['path_system'] . 'lib-security.php';
-
-        return SEC_hasAccess($this->_owner_id, $this->_group_id, $this->_perm_owner, $this->_perm_group,
-                                 $this->_perm_members, $this->_perm_anon);
+        return SEC_hasAccess($this->_owner_id, $this->_group_id,
+                             $this->_perm_owner, $this->_perm_group,
+                             $this->_perm_members, $this->_perm_anon);
     }
 
 
