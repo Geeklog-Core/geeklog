@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.119 2007/10/09 05:27:17 ospiess Exp $
+// $Id: lib-admin.php,v 1.120 2007/10/09 05:28:34 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -376,7 +376,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $arrow = 'bararrowup';
     }
     # make actual order arrow image
-    $img_arrow_url = "{$_CONF['layout_url']}'/images/$_IMAGE_TYPE";
+    $img_arrow_url = "{$_CONF['layout_url']}/images/$arrow.$_IMAGE_TYPE";
     $img_arrow = '&nbsp;' . COM_createImage($img_arrow_url, $arrow);
 
     if (!empty ($order_for_query)) { # concat order string
