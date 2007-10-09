@@ -1,4 +1,4 @@
-<div class="poll-topic">{poll_topic}</div><span class="floatright">{edit_icon}</span>
+<span class="floatright">{edit_icon}</span><div class="poll-topic">{poll_topic}&nbsp;</div>
 <form action="{poll_vote_url}" name="Vote" method="POST">
     <div>
     <input type="hidden" name="pid" value="{poll_id}">
