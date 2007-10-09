@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.42 2007/08/29 09:33:54 ospiess Exp $
+// $Id: database.php,v 1.43 2007/10/09 08:32:28 ospiess Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -184,14 +184,17 @@ function dobackup()
             if (file_exists($backupfile) && filesize($backupfile) > 0) {
                 @chmod($backupfile, 0644);
                 $timestamp = strftime($_CONF['daytime']);
-                $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp,
-                              '', COM_getBlockTemplate('_msg_block', 'header'))
-                        . '<p style="padding:5px"><img src="'
-                        . $_CONF['layout_url'] . '/images/sysmessage.'
-                        . $_IMAGE_TYPE . '" border="0" align="left" alt=""'
-                        . ' style="padding-right:5px; padding-bottom:3px">'
-                        . $LANG_DB_BACKUP['backup_successful'] . '</p>'
-                        . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+                $icon_url = "{$_CONF['layout_url']}/images/sysmessage.$_IMAGE_TYPE";
+                $icon_attr = array(
+                    'style' => "padding-right:5px;",
+                    'align'=> 'left'
+                );
+                $msg_icon = COM_createImage($icon_url, '', $icon_attr);
+                $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp, '',
+                    COM_getBlockTemplate('_msg_block', 'header'))
+                    . '<p style="padding:5px">' . $msg_icon
+                    . $LANG_DB_BACKUP['backup_successful'] . '</p>'
+                    . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
             } else {
                 $retval .= COM_startBlock($LANG08[06], '',
                                 COM_getBlockTemplate('_msg_block', 'header'));
