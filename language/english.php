@@ -1161,7 +1161,8 @@ $MESSAGE = array(
     88 => 'The OpenID server returned an error.',
     89 => 'Unable to find an OpenID server for the given identity URL.',
     90 => 'OpenID identification cancelled.',
-    91 => 'You specified an invalid identity URL.'
+    91 => 'You specified an invalid identity URL.',
+    92 => 'Please ' . COM_createLink('check the security of your site', $_CONF['site_admin_url'] . '/sectest.php') . ' before using it!'
 );
 
 ###############################################################################

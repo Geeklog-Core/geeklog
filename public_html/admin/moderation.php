@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.110 2007/10/09 10:16:06 ospiess Exp $
+// $Id: moderation.php,v 1.111 2007/10/09 10:24:17 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -630,17 +630,7 @@ function security_check_reminder ()
 
     $done = DB_getItem ($_TABLES['vars'], 'value', "name = 'security_check'");
     if ($done != 1) {
-        $message = 'Please '
-            . COM_createLink('check the security of your site',
-                $_CONF['site_admin_url'] . '/sectest.php') . ' before using it!';
-        $url = $_CONF['layout_url'] . '/images/sysmessage.' . $_IMAGE_TYPE;
-        $attr = array('class' => 'floatleft',
-            'style' => 'padding-right:5px;');
-        $icon = COM_createImage($url, '', $attr);
-        $retval .= COM_startBlock ($MESSAGE[40], '',
-            COM_getBlockTemplate ('_msg_block', 'header'))
-            . '<p style="padding:5px;">'. $icon . $message . '</p>'
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessage(92);
     }
 
     return $retval;
