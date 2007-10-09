@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.120 2007/10/09 05:28:34 ospiess Exp $
+// $Id: lib-admin.php,v 1.121 2007/10/09 05:37:20 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -304,20 +304,13 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
     # define icon paths. Those will be transmitted to $fieldfunction.
-    $icon_arr = array(
-        'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
-             . '" title="' . $LANG_ADMIN['edit'] . '">',
-        'copy' => '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['copy']
-             . '" title="' . $LANG_ADMIN['copy'] . '">',
-        'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
-            . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
-            . '" title="' . $LANG_ACCESS['listthem'] . '">',
-        'addchild' => '<img src="' . $_CONF['layout_url'] . '/images/addchild.'
-            . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['add_child']
-            . '" title="' . $LANG_ADMIN['add_child'] . '">'
-    );
+    $icons_type_arr = array('edit', 'copy', 'list', 'addchild');
+    $icon_arr = array();
+    foreach ($icons_type_arr as $icon_type) {
+        $icon_url = "{$_CONF['layout_url']}/images/$icon_type.$_IMAGE_TYPE";
+        $icon_arr[$icon_type] = COM_createImage($icon_url, $LANG_ADMIN[$icon_type]);
+    }
+
     $has_extras = '';
     if (isset($text_arr['has_extras'])) { # does this one use extras? (search, google paging)
         $has_extras = $text_arr['has_extras'];

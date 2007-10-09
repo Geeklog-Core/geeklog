@@ -1479,7 +1479,8 @@ $LANG_ADMIN = array (
     'data_error'    => 'There was an error processing the subscription data. Please check the data source.',
     'preview'       => 'Preview',
     'records_found' => 'Records found',
-    'add_child'     => 'Add child'
+    'add_child'     => 'Add child',
+    'list'          => 'list'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
