@@ -8,7 +8,15 @@
 }
 .poll-topic {
   font-size:larger;
-  font-weight:bold;
+}
+.poll-questions ul {
+  list-style:none;
+  padding:0px;
+  margin:0px;
+}
+.poll-question {
+  padding:0px;
+  margin:0px;
 }
 .poll-questions {
   padding:3px;

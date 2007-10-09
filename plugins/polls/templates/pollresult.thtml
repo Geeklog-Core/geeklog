@@ -1,4 +1,4 @@
-<span class="floatright">{edit_icon}</span><div class="poll_topic">{poll_topic}</div>
+<span class="floatright">{edit_icon}</span><div class="poll-topic">{poll_topic}</div>
 {poll_questions}
 <div style="clear:both"></div>
 <div class="pluginTinyText">

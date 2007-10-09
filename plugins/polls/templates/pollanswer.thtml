@@ -1,1 +1,1 @@
-  <input type="radio" name="aid[{question_id}]" value="{answer_id}"{selected}>&nbsp;{answer_text}<br>
+  <li><input type="radio" name="aid[{question_id}]" value="{answer_id}"{selected}>&nbsp;{answer_text}</li>

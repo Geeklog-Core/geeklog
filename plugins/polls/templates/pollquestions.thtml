@@ -1,4 +1,6 @@
 <div class="poll-questions">
-    <span class="poll-question">{lang_question}{lang_question_number}{poll_question}</span><br>
+    <p class="poll-question">{lang_question}{lang_question_number}{poll_question}</p>
+    <ul>
     {poll_answers}
+    </ul>
 </div>
