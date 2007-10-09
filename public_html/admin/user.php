@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.192 2007/10/09 07:22:44 ospiess Exp $
+// $Id: user.php,v 1.193 2007/10/09 07:27:04 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -944,6 +944,8 @@ function importusers ($file)
                     $successes++;
                 } else {
                     // user creation failed
+                    $retval .= "<br>ERROR: There was a problem creating the account for <b>$u_name</b>.<br>\n";
+                    COM_errorLog("ERROR: here was a problem creating the account for $u_name.",1);
                 }
             } else {
                 if ($verbose_import) {
