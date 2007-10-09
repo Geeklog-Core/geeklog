@@ -12,4 +12,3 @@
 <span class="pluginTinyText">
     <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_votes} {poll_comments}
 </span>
-<br>

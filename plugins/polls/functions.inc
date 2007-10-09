@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.78 2007/10/09 09:14:02 ospiess Exp $
+// $Id: functions.inc,v 1.79 2007/10/09 10:01:03 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -629,10 +629,6 @@ function POLLS_showPoll($size, $pid='', $showall=false )
                 $Q = DB_fetchArray($result);
                 $pid = $Q['pid'];
                 if ($size < 120) {// assume we're in the poll block
-                    /*if($i > 1) {
-                        $retval .= COM_startBlock($title, '',
-                             COM_getBlockTemplate('poll_block', 'header'));
-                    }*/
                     $showall = false;
                 } else { // assume we're in polls/index.php
                     $retval .= COM_startBlock($title);
@@ -646,11 +642,8 @@ function POLLS_showPoll($size, $pid='', $showall=false )
                 }
 
                 if ($size < 120) {
-                    if ($i == $nrows) {
-                        $retval .= COM_endBlock(COM_getBlockTemplate(
-                             'poll_block', 'footer'));
-                    } else {
-                        $retval .= "<br>";
+                    if ($i < $nrows){
+                        $retval .= "<div class=\"poll-divider\"></div>";
                     }
                 } else {
                     $retval .= COM_endBlock();

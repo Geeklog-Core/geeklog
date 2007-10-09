@@ -1,8 +1,6 @@
-    <table class="poll-question-table">
-        <tr>
-            <th colspan="2">
-                {poll_question}
-            </th>
-        </tr>
-    {poll_votes}
+<div class="poll-questions">
+    <p class="poll-question">{lang_question}{lang_question_number}{poll_question}</p>
+    <table>
+        {poll_votes}
     </table>
+</div>

@@ -1,11 +1,16 @@
-.poll-question-table {
-  float:left;
-  margin:5px;
+.poll-divider {
+  border-bottom:1px solid #CCCCCC;
+  margin-bottom:10px;
+  margin-top:10px;
+  margin-left:30px;
+  margin-right:30px;
 }
-.poll-question-table td,
-.poll-question-table th{
-  padding:2px;
+
+.poll-block-last {
+  margin-bottom:5px;
+  padding-bottom:5px;
 }
+
 .poll-topic {
   font-size:larger;
 }
@@ -14,21 +19,23 @@
   padding:0px;
   margin:0px;
 }
+.poll-questions ul,
+.poll-questions td {
+  font-size:0.85em;
+}
 .poll-question {
   padding:0px;
   margin:0px;
 }
 .poll-questions {
-  padding:3px;
-  border:1px solid #CCCCCC;
+  padding:2px;
   background-color: #DDDDDD;
-  margin:5px;
+  margin:2px;
 }
-.block-box-right .poll-question-table,
-.block-box-left .poll-question-table{
+.block-box-right table,
+.block-box-left table{
   padding:0px;
   margin:0px;
-  font-size:0.85em;
   vertical-align:top;
 }
 .block-box-right .poll-question-table th,
@@ -42,13 +49,12 @@
   font-weight:bold;
 }
 
-.block-box-right .poll-question-table .poll_answer_text,
-.block-box-left .poll-question-table .poll_answer_text{
-  text-align:right;
+.block-box-right .poll_answer_text,
+.block-box-left  .poll_answer_text{
+  text-align:left;
 }
 
-
-.block-box-right .poll-question-table .poll_answer_percent,
-.block-box-left .poll-question-table .poll_answer_percent{
-  text-align:left;
+.block-box-right .poll_answer_percent,
+.block-box-left .poll_answer_percent{
+  text-align:right;
 }
