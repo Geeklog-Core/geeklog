@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.87 2007/09/11 05:31:11 ospiess Exp $
+// $Id: functions.inc,v 1.88 2007/10/09 05:39:36 ospiess Exp $
 
 
 /**
@@ -58,6 +58,7 @@ if (file_exists ($langfile)) {
 }
 
 require_once ($_CONF['path'] . 'plugins/links/config.php');
+
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementation                                         |
@@ -1171,7 +1172,7 @@ function plugin_geticon_links ()
 
 function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $LANG_ACCESS;
+    global $_CONF, $LANG_ACCESS, $LANG_LINKS_ADMIN;
 
     $retval = '';
 
@@ -1196,8 +1197,11 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
             case 'title':
                 $retval = COM_createLink(stripslashes($A['title']), $A['url']);
                 break;
-            case 'htmlcode';
+            case 'dovalidate';
                 $retval = links_validateUrl($A['url']);
+                break;
+            case 'beforevalidate';
+                $retval = $LANG_LINKS_ADMIN[57];
                 break;
             case 'category':
                 $indent = ($A['indent']-1) * 20;

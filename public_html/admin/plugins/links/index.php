@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.51 2007/08/29 09:33:54 ospiess Exp $
+// $Id: index.php,v 1.52 2007/10/09 05:39:49 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -354,29 +354,44 @@ function listlinks ()
         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
         array('text' => $LANG_LINKS_ADMIN[14], 'field' => 'category', 'sort' => true)
-        );
+    );
+
+    $menu_arr = array (
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
+              'text' => $LANG_LINKS_ADMIN[51])
+    );
 
     $validate = '';
-    if (isset($_GET['checkhtml'])) {
-        $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'htmlcode', 'sort' => false);
-        $validate = '?checkhtml=true';
+    if (isset($_GET['validate'])) {
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
+            'text' => $LANG_LINKS_ADMIN[53]);
+        $dovalidate_url = $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=validate';
+        $dovalidate_text = $LANG_LINKS_ADMIN[58];
+        $form_arr['top'] = COM_createLink($dovalidate_text, $dovalidate_url);
+        if ($_GET['validate'] == 'enabled') {
+            $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'beforevalidate', 'sort' => false);
+            $validate = '?validate=enabled';
+        } else if ($_GET['validate'] == 'validate'){
+            $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'dovalidate', 'sort' => false);
+            $validate = '?validate=validate';
+        }
+        $validate_help = $LANG_LINKS_ADMIN[59];
+    } else {
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled',
+              'text' => $LANG_LINKS_ADMIN[26]);
+        $validate_help = '';
     }
 
     $defsort_arr = array('field' => 'title', 'direction' => 'asc');
 
-    $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
-              'text' => $LANG_LINKS_ADMIN[51]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
-              'text' => $LANG_LINKS_ADMIN[26]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
-              'text' => $LANG_LINKS_ADMIN[50]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
-              'text' => $LANG_LINKS_ADMIN[52]),
-        array('url' => $_CONF['site_admin_url'],
-              'text' => $LANG_ADMIN['admin_home'])
-    );
-    $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
+              'text' => $LANG_LINKS_ADMIN[50]);
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
+              'text' => $LANG_LINKS_ADMIN[52]);
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home']);
+
+    $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12] . $validate_help, plugin_geticon_links());
 
     $text_arr = array(
         'has_extras'   => true,
@@ -396,7 +411,7 @@ function listlinks ()
     );
 
     $retval .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr);
+                            $query_arr, $defsort_arr, '', '', '', $form_arr);
 
     return $retval;
 }
