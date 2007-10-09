@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.658 2007/09/28 01:33:06 ospiess Exp $
+// $Id: lib-common.php,v 1.659 2007/10/09 06:28:40 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -6389,6 +6389,9 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             }
         }
     }
+
+    // if we do not throw the error back to an admin, still log it in the error.log
+    COM_errorLog("$errno - $errstr @ $errfile line $errline", 1);
 
     /* Does the theme implement an error message html file? */
     if(file_exists($_CONF['path_layout'].'errormessage.html'))
