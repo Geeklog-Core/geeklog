@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.77 2007/10/09 08:44:08 ospiess Exp $
+// $Id: functions.inc,v 1.78 2007/10/09 09:14:02 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -478,6 +478,7 @@ function POLLS_pollVote($pid, $showall=true)
                 $poll->set_var('site_url', $_CONF['site_url']);
                 $poll->set_var('layout_url', $_CONF['layout_url']);
                 $poll->set_var('poll_id', $pid );
+                $poll->set_var('poll_topic', $P['topic'] );
                 $poll->set_var('num_votes', COM_numberFormat($P['voters']));
                 $poll->set_var('poll_vote_url', $_CONF['site_url']
                         . '/polls/index.php');
@@ -499,6 +500,9 @@ function POLLS_pollVote($pid, $showall=true)
                 $access = SEC_hasAccess($topic['owner_id'],$topic['group_id'],$topic['perm_owner'],
                     $topic['perm_group'],$topic['perm_members'],$topic['perm_anon']);
                 if ($access == 3) {
+                    $editlink = COM_createLink($LANG25[27], $_CONF['site_admin_url']
+                        . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
+                    $poll->set_var('edit_link', $editlink);
                     $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
                     $icon_attr = array('title' => $LANG25[27]);
                     $editiconhtml = COM_createImage($editicon, $LANG25[27], $icon_attr);
@@ -625,10 +629,10 @@ function POLLS_showPoll($size, $pid='', $showall=false )
                 $Q = DB_fetchArray($result);
                 $pid = $Q['pid'];
                 if ($size < 120) {// assume we're in the poll block
-                    if($i > 1) {
+                    /*if($i > 1) {
                         $retval .= COM_startBlock($title, '',
                              COM_getBlockTemplate('poll_block', 'header'));
-                    }
+                    }*/
                     $showall = false;
                 } else { // assume we're in polls/index.php
                     $retval .= COM_startBlock($title);
@@ -642,9 +646,11 @@ function POLLS_showPoll($size, $pid='', $showall=false )
                 }
 
                 if ($size < 120) {
-                    if ($i < $nrows) {
+                    if ($i == $nrows) {
                         $retval .= COM_endBlock(COM_getBlockTemplate(
                              'poll_block', 'footer'));
+                    } else {
+                        $retval .= "<br>";
                     }
                 } else {
                     $retval .= COM_endBlock();
@@ -720,7 +726,7 @@ function POLLS_pollsave($pid, $qid, $aid)
 */
 function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
 {
-    global $_CONF, $_TABLES, $_USER,
+    global $_CONF, $_TABLES, $_USER, $_IMAGE_TYPE,
            $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE, $LANG25;
 
     $retval = '';
@@ -778,9 +784,15 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
             $access = SEC_hasAccess($P['owner_id'],$P['group_id'],$P['perm_owner'],
                 $P['perm_group'],$P['perm_members'],$P['perm_anon']);
             if ($access == 3) {
-                $editlink .= COM_createLink($LANG25[27], $_CONF['site_admin_url']
-                    . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid);
-                $poll->set_var('poll_edit', $editlink);
+                $editlink = COM_createLink($LANG25[27], $_CONF['site_admin_url']
+                    . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
+                $poll->set_var('edit_link', $editlink);
+                $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+                $icon_attr = array('title' => $LANG25[27]);
+                $editiconhtml = COM_createImage($editicon, $LANG25[27], $icon_attr);
+                $editlink = COM_createLink($editiconhtml, $_CONF['site_admin_url']
+                    . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
+                $poll->set_var('edit_icon', $editlink);
             }
             if ($_PO_CONF['answerorder'] == 'voteorder'){
                 $order = "votes DESC";
