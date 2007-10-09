@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.99 2007/08/09 19:32:20 dhaun Exp $
+// $Id: functions.inc,v 1.100 2007/10/09 08:56:29 ospiess Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -283,9 +283,9 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
     if ($A['sp_format'] <> 'blankpage') {
         $icons = '';
         if ($_CONF['hideprintericon'] == 0) {
-            $printicon = '<img src="' . $_CONF['layout_url'] . '/images/print.'
-                . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
-                . $LANG_STATIC['printable_format'] . '">';
+            $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
+            $attr = array('title' => $LANG_STATIC['printable_format']);
+            $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
             $print_url = COM_buildURL ($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $page . '&amp;disp_mode=print');
             $icon = COM_createLink($printicon, $print_url);
@@ -294,12 +294,12 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
         if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
                 SEC_hasRights ('staticpages.edit')) {
+            $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+            $attr = array('title' => $LANG_STATIC['edit']);
+            $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'], $attr);
+            $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
             $url = $_CONF['site_admin_url']
                 . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page;
-            $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
-            $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
-            $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG_STATIC['edit']
-                . '" title="' . $LANG_STATIC['edit'] . '">';
             $icon =
                 '&nbsp;' . COM_createLink(
                 $editiconhtml, //display
@@ -447,7 +447,7 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
 
         if ($mode == 'print') {
             $retval = SP_printPage($page, $retval);
-        } elseif ($mode =='autotag') {
+        } else if ($mode =='autotag') {
             $retval = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
         } else {
             $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode);
@@ -857,9 +857,9 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 
             $icons = '';
             if ($_CONF['hideprintericon'] == 0) {
-                $printicon = '<img src="' . $_CONF['layout_url'] . '/images/print.'
-                    . $_IMAGE_TYPE . '" alt="' . $LANG01[65] . '" title="'
-                    . $LANG_STATIC['printable_format'] . '">';
+                $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
+                $attr = array('title' => $LANG_STATIC['printable_format']);
+                $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
                 $print_url = COM_buildURL ($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $S['sp_id'] . '&amp;mode=print');
                 $icon = COM_createLink($printicon, $print_url);
@@ -868,12 +868,12 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             if ((SEC_hasAccess ($S['owner_id'], $S['group_id'], $S['perm_owner'],
                     $S['perm_group'], $S['perm_members'], $S['perm_anon']) == 3) &&
                     SEC_hasRights ('staticpages.edit')) {
+                $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+                $attr = array('title' => $LANG_STATIC['edit']);
+                $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'], $attr);
                 $url = $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $S['sp_id'];
                 $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
-                $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
-                $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG_STATIC['edit']
-                    . '" title="' . $LANG_STATIC['edit'] . '">';
                 $icon =
                     '&nbsp;' . COM_createLink(
                     $editiconhtml, //display
