@@ -1,6 +1,6 @@
 <?php
 
-global $_DB_host, $_DB_user, $_DB_pass, $_DB_table_prefix, $_DB_dbms, $_DB_mysqldump_path;
+global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix, $_DB_dbms, $_DB_mysqldump_path;
 
 $_DB_host = 'localhost';
 $_DB_name = 'geeklog';
