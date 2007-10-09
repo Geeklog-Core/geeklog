@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.191 2007/08/29 09:33:54 ospiess Exp $
+// $Id: user.php,v 1.192 2007/10/09 07:22:44 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -847,6 +847,12 @@ function batchdeleteexec()
 /**
 * This function allows the administrator to import batches of users
 *
+* TODO: This function should first display the users that are to be imported,
+* together with the invalid users and the reason of invalidity. Each valid line
+* should have a checkbox that allows selection of final to be imported users.
+* After clicking an extra button, the actual import should take place. This will
+* prevent problems in case the list formatting is incorrect.
+*
 * @param    string  $file   file to import
 * @return   string          HTML with success or error message
 *
@@ -929,13 +935,16 @@ function importusers ($file)
                 $uid = USER_createAccount ($userName, $emailAddr, '',
                                            $fullName);
 
-                USER_createAndSendPassword ($userName, $emailAddr, $uid);
+                $result = USER_createAndSendPassword ($userName, $emailAddr, $uid);
 
-                if ($verbose_import) {
+                if ($result && $verbose_import) {
                     $retval .= "<br> Account for <b>$u_name</b> created successfully.<br>\n";
                     COM_errorLog("Account for $u_name created successfully",1);
+                } else if ($result) {
+                    $successes++;
+                } else {
+                    // user creation failed
                 }
-                $successes++;
             } else {
                 if ($verbose_import) {
                     $retval .= "<br><b>$u_name</b> or <b>$email</b> already exists, account not created.<br>\n"; // user already exists
