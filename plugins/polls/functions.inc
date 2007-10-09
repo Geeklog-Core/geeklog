@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.76 2007/05/26 16:54:11 dhaun Exp $
+// $Id: functions.inc,v 1.77 2007/10/09 08:44:08 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -500,19 +500,19 @@ function POLLS_pollVote($pid, $showall=true)
                     $topic['perm_group'],$topic['perm_members'],$topic['perm_anon']);
                 if ($access == 3) {
                     $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
-                    $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG25[27]
-                        . '" title="' . $LANG25[27] . '">';
+                    $icon_attr = array('title' => $LANG25[27]);
+                    $editiconhtml = COM_createImage($editicon, $LANG25[27], $icon_attr);
                     $editlink = COM_createLink($editiconhtml, $_CONF['site_admin_url']
                         . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
-                    $poll->set_var('poll_edit', $editlink);
+                    $poll->set_var('edit_icon', $editlink);
                 }
-                
+
                 if (array_key_exists('aid', $_POST)) {
                     $aid = $_POST['aid'];
                 } else {
                     $aid = array();
                 }
-                
+
                 for($j=0; $j<$nquestions; $j++) {
                     $Q = DB_fetchArray($questions);
                     $poll->set_var('poll_question', " ".$Q['question']);
