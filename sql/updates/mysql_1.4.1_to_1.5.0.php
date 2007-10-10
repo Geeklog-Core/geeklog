@@ -263,6 +263,7 @@ function upgrade_PollsPlugin()
     $count_move = DB_numRows($move_rst);
     for ($i=0; $i<$count_move; $i++) {
         $A = DB_fetchArray($move_rst);
+        $A[1] = mysql_real_escape_string($A[1]);
         $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
     }
     for ($i = 0; $i < count ($P_SQL); $i++) {
