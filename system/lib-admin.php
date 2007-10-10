@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.122 2007/10/10 02:28:57 ospiess Exp $
+// $Id: lib-admin.php,v 1.123 2007/10/10 02:32:49 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -84,10 +84,6 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
-    if (isset ($text_arr['icon']) && ($text_arr['icon'] !== false)) {
-        $admin_templates->set_var('icon', "<img src=\"{$text_arr['icon']}\" alt=\"\">");
-    }
-
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('lang_deleteall', $LANG01[124]);
     $admin_templates->set_var('lang_delconfirm', $LANG01[125]);
