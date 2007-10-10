@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2007/09/23 07:59:29 dhaun Exp $
+// $Id: index.php,v 1.19 2007/10/10 04:38:39 ospiess Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -159,7 +159,7 @@ function INST_installEngine($install_type, $install_step)
             $db_prefix = isset($_POST['db_prefix']) ? $_POST['db_prefix'] : $_DB_table_prefix;
 
             $site_url = isset($_POST['site_url']) ? $_POST['site_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/admin.*/', '', $_SERVER['PHP_SELF']) ;
-            $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : preg_replace('/\/install.*/', '', $_SERVER['PHP_SELF']);
+            $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : $site_url . preg_replace('/\/install.*/', '', $_SERVER['PHP_SELF']);
             $site_mail = isset($_POST['site_mail']) ? $_POST['site_mail'] : ($_CONF['site_mail'] == 'admin@example.com' ? $_CONF['site_mail'] : 'admin@' . $_SERVER['HTTP_HOST']);
             $noreply_mail = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : ($_CONF['noreply_mail'] == 'noreply@example.com' ? $_CONF['noreply_mail'] : 'noreply@' . $_SERVER['HTTP_HOST']);
 
@@ -179,24 +179,24 @@ function INST_installEngine($install_type, $install_step)
                 <input type="hidden" name="language" value="' . $language . '" />
                 <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '" />
 
-                <p><label>' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="25" /></p>
-                <p><label>' . $LANG_INSTALL[33] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="25" /></p><br />
+                <p><label>' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="40" /></p>
+                <p><label>' . $LANG_INSTALL[33] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40" /></p><br />
                 <p><label>' . $LANG_INSTALL[34] . ' ' . INST_helpLink('') . '</label> <select name="db_type">
                     <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
                     ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $msyql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
                     <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . $innodbnote . '</p>
-                <p><label>' . $LANG_INSTALL[39] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[40] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[41] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[42] . ' ' . INST_helpLink('') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="10" /></p>
-                <p><label>' . $LANG_INSTALL[43] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="10" /></p>
+                <p><label>' . $LANG_INSTALL[39] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20" /></p>
+                <p><label>' . $LANG_INSTALL[40] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20" /></p>
+                <p><label>' . $LANG_INSTALL[41] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="20" /></p>
+                <p><label>' . $LANG_INSTALL[42] . ' ' . INST_helpLink('') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="20" /></p>
+                <p><label>' . $LANG_INSTALL[43] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="20" /></p>
 
                 <br />
                 <h2>' . $LANG_INSTALL[44] . '</h2>
-                <p><label>' . $LANG_INSTALL[45] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="30" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[47] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="30" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[48] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="30" /></p>
-                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="30" /></p>
+                <p><label>' . $LANG_INSTALL[45] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label>' . $LANG_INSTALL[47] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50" />  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label>' . $LANG_INSTALL[48] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="50" /></p>
+                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50" /></p>
 
                 <br />
                 <input type="submit" name="submit" class="submit" value="' . $buttontext . ' &gt;&gt;" />
@@ -481,7 +481,6 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('site_slogan', urldecode($site_slogan));
                             $config->set('site_url', urldecode($site_url));
                             // FIXME: Check that directory exists
-                            $site_admin_url = $site_url . $site_admin_url;
                             $config->set('site_admin_url', urldecode($site_admin_url));
                             $config->set('site_mail', urldecode($site_mail));
                             $config->set('noreply_mail', urldecode($noreply_mail));
