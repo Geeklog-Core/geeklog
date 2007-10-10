@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.76 2007/10/10 01:09:29 ospiess Exp $
+// $Id: plugins.php,v 1.77 2007/10/10 01:14:15 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -330,7 +330,7 @@ function do_update ($pi_name)
                     . $pi_name);
         }
     } else {  // Plugin function returned a false
-        $retval .= COM_showMessage(40);
+        $retval .= COM_showMessage(95);
     }
 
     return $retval;
@@ -367,7 +367,7 @@ function do_uninstall ($pi_name)
     if (PLG_uninstall ($pi_name)) {
         $retval .= COM_showMessage (45);
     } else {
-        $retval .= COM_showMessage (40);
+        $retval .= COM_showMessage (95);
     }
 
     return $retval;
