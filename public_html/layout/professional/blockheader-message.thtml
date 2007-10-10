@@ -1,8 +1,7 @@
-<table cellpadding="0" cellspacing="0" style="width:95%;margin:10px;border:1px solid black;">
-    <tr>
-        <td class="blocktitle" style="width:5%;border:0px;background:url({layout_url}/images/header-bg.png) #1A3955;">{showhide}</td>
-        <td class="blocktitle" style="width:85%;text-align:left;border:0px;color:white;background:url({layout_url}/images/header-bg.png) #1A3955;padding:6px 3px 3px 3px;font-weight: bold;">{block_title}</td>
-        <td class="blocktitle nowrap" style="width:10%;vertical-align:middle;border:0px;text-align:right;background:url({layout_url}/images/header-bg.png) #1A3955;">{block_help}&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="width:100%;padding:5px 15px 5px 15px;border-top:3px solid black;padding-bottom:5px;background:#E7E7E7;font-weight:bold;">
+<div style="font-weight:bold;width:95%;margin:10px;border:1px solid black;">
+    <div style="padding:5px;color:#FFFFFF;background:url({layout_url}/images/header-bg.png) #1A3955;">
+        <span class="floatright">{block_help}</span>
+        {showhide}
+        {block_title}
+    </div>
+    <div style="padding:5px 15px 5px 15px;border-top:3px solid black;background:#E7E7E7;">
