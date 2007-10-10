@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.75 2007/08/29 09:33:54 ospiess Exp $
+// $Id: plugins.php,v 1.76 2007/10/10 01:09:29 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -330,13 +330,7 @@ function do_update ($pi_name)
                     . $pi_name);
         }
     } else {  // Plugin function returned a false
-        $timestamp = strftime ($_CONF['daytime']);
-        $retval .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-                . '<img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.' . $_IMAGE_TYPE
-                . '" align="top" alt="">' . $LANG08[6] . '<br><br>'
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessage(40);
     }
 
     return $retval;
@@ -373,13 +367,7 @@ function do_uninstall ($pi_name)
     if (PLG_uninstall ($pi_name)) {
         $retval .= COM_showMessage (45);
     } else {
-        $timestamp = strftime ($_CONF['daytime']);
-        $retval .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-                . '<img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.' . $_IMAGE_TYPE
-                . '" align="top" alt="">' . $LANG08[6] . '<br><br>'
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessage (40);
     }
 
     return $retval;
