@@ -1162,7 +1162,9 @@ $MESSAGE = array(
     89 => 'Unable to find an OpenID server for the given identity URL.',
     90 => 'OpenID identification cancelled.',
     91 => 'You specified an invalid identity URL.',
-    92 => 'Please ' . COM_createLink('check the security of your site', $_CONF['site_admin_url'] . '/sectest.php') . ' before using it!'
+    92 => 'Please ' . COM_createLink('check the security of your site', $_CONF['site_admin_url'] . '/sectest.php') . ' before using it!',
+    93 => 'Database back up was successful.',
+    94 => 'Backup Failed: Filesize less than 1kb'
 );
 
 ###############################################################################
