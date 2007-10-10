@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.659 2007/10/09 06:28:40 ospiess Exp $
+// $Id: lib-common.php,v 1.660 2007/10/10 01:24:31 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4313,38 +4313,30 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 /**
 * Displays a message on the webpage
 *
-* Pulls $msg off the URL string and gets the corresponding message and returns
-* it for display on the calling page
+* Receives either a message number and gets the according message from the
+* language file or gets a message in cleartext and displays it then to the user
 *
 * @param      int     $msg        ID of message to show
 * @param      string  $plugin     Optional Name of plugin to lookup plugin defined message
 * @return     string  HTML block with message
 */
 
-function COM_showMessage( $msg, $plugin='' )
-{
+function COM_showMessage($msg, $plugin='') {
     global $_CONF, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
 
-    if( $msg > 0 )
-    {
-        if( !empty( $plugin ))
-        {
+    if($msg > 0) {
+        if(!empty($plugin)) {
             $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
             global $$var;
-            if( isset( $$var ))
-            {
+            if(isset($$var)) {
                 $message = $$var;
-            }
-            else
-            {
+            } else {
                 $message = sprintf( $MESSAGE[61], $plugin );
                 COM_errorLog ($MESSAGE[61]. ": " . $var,1);
             }
-        }
-        else
-        {
+        } else {
             $message = $MESSAGE[$msg];
         }
 
@@ -4355,6 +4347,14 @@ function COM_showMessage( $msg, $plugin='' )
             . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
             . ' alt="" style="padding-right:5px; padding-bottom:3px">'
             . $message . '</p>'
+            . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
+    } else if (strlen($msg) > 0) {
+        $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
+                           COM_getBlockTemplate( '_msg_block', 'header' ))
+            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
+            . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
+            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
+            . $msg . '</p>'
             . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     }
 
