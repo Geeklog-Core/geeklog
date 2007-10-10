@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.73 2007/08/29 09:33:13 ospiess Exp $
+// $Id: functions.inc,v 1.74 2007/10/10 01:57:15 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -818,9 +818,8 @@ function CALENDAR_listOld()
     $text_arr = array(
         'has_menu' =>  true,
         'has_extras'   => true,
-        'title' => $LANG_CAL_ADMIN[11],
+        'title'=> $LANG_CAL_ADMIN[11],
         'instructions' => $LANG_CAL_ADMIN[27] . $usr_time . "$desc",
-        'icon' => plugin_geticon_calendar(),
         'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php?mode=batchdelete"
     );
 
@@ -840,11 +839,11 @@ function CALENDAR_listOld()
     );
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'eid');
-
+    $retval .= ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[27] . $usr_time . "$desc", plugin_geticon_calendar());
     $retval .= ADMIN_list (
         'calendar', 'plugin_getListField_calendar',
         $header_arr, $text_arr, $query_arr, $menu_arr,
-        $defsort_arr, '', '', $listoptions
+        $defsort_arr, '', $listoptions
     );
 
     return $retval;
@@ -880,7 +879,7 @@ function CALENDAR_deleteOld() {
         }
     }
     // Since this function is used for deletion only, its necessary to say that
-    // zero where deleted instead of just leaving this message away.
+    // zero were deleted instead of just leaving this message away.
     COM_numberFormat($c); // just in case we have more than 999)..
     $msg .= "{$LANG_CAL_ADMIN[36]}: $c<br>\n";
     return $msg;
@@ -1508,7 +1507,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         $sql .= "(location LIKE '%$mysearchterm%'  ";
         $sql .= "OR description LIKE '%$mysearchterm%' ";
         $sql .= "OR title LIKE '%$mysearchterm%') ";
-    } elseif ($keyType == 'all') {
+    } else if ($keyType == 'all') {
         //must contain ALL of the keywords
         $mywords = explode(' ', $query);
         $tmp = '';
@@ -1520,7 +1519,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
         }
         $tmp = substr($tmp, 0, strlen($tmp) - 4);
         $sql .= $tmp;
-    } elseif ($keyType == 'any') {
+    } else if ($keyType == 'any') {
         //must contain ANY of the keywords
         $mywords = explode(' ', $query);
         $tmp = '';

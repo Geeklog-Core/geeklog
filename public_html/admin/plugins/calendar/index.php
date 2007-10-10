@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.28 2007/08/09 07:09:46 ospiess Exp $
+// $Id: index.php,v 1.29 2007/10/10 01:57:30 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -649,24 +649,19 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     // list_old
     $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11]);
     if (isset ($_REQUEST['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
-                                                      true), 'calendar');
+        $display .= COM_showMessage (
+            COM_applyFilter ($_REQUEST['msg'], true),
+            'calendar'
+        );
     }
     $display .= CALENDAR_listOld();
     $display .= COM_siteFooter ();
 } else if ($mode == 'batchdeleteexec') {
     $msg = CALENDAR_deleteOld();
-    $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11]);
-    $timestamp = strftime( $_CONF['daytime'] );
-    $display .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
-                           COM_getBlockTemplate( '_msg_block', 'header' ))
-            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.' . $_IMAGE_TYPE . '" align="left"'
-            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
-            . $msg . '</p>'
-            . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
-    $display .= CALENDAR_listOld();
-    $display .= COM_siteFooter();
+    $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11])
+        . COM_showMessage($msg)
+        . CALENDAR_listOld()
+        . COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[11]);
     if (isset ($_REQUEST['msg'])) {

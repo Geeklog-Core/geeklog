@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.23 2007/05/05 14:45:55 dhaun Exp $
+// $Id: event.php,v 1.24 2007/10/10 01:57:44 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -576,7 +576,7 @@ default:
                                                         . ' ' . $A['timeend']);
                     }
                     $cal_templates->set_var ('event_end', $thedatetime[0]);
-                } elseif ($A['allday'] == 1 AND $A['datestart'] <> $A['dateend']) {
+                } else if ($A['allday'] == 1 AND $A['datestart'] <> $A['dateend']) {
                     $thedatetime1 = strftime ('%A, ' . $_CONF['shortdate'],
                                              strtotime ($A['datestart']));
                     $cal_templates->set_var ('event_start', $thedatetime1);
