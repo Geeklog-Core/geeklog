@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.121 2007/10/09 05:37:20 ospiess Exp $
+// $Id: lib-admin.php,v 1.122 2007/10/10 02:28:57 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -98,23 +98,13 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('formfields_bottom', $form_arr['bottom']);
     }
 
-    $icon_arr = array(
-        'edit' => '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit'] . '" title="'
-             . $LANG_ADMIN['edit'] . '">',
-        'copy' => '<img src="' . $_CONF['layout_url'] . '/images/copy.'
-             . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['copy'] . '" title="'
-             . $LANG_ADMIN['copy'] . '">',
-        'list' => '<img src="' . $_CONF['layout_url'] . '/images/list.'
-            . $_IMAGE_TYPE . '" alt="' . $LANG_ACCESS['listthem']
-            . '" title="' . $LANG_ACCESS['listthem'] . '">',
-        'addchild' => '<img src="' . $_CONF['layout_url'] . '/images/addchild.'
-            . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['add_child']
-            . '" title="' . $LANG_ADMIN['add_child'] . '">'
-    );
-
-    $retval .= COM_startBlock ($title, $help_url,
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    # define icon paths. Those will be transmitted to $fieldfunction.
+    $icons_type_arr = array('edit', 'copy', 'list', 'addchild');
+    $icon_arr = array();
+    foreach ($icons_type_arr as $icon_type) {
+        $icon_url = "{$_CONF['layout_url']}/images/$icon_type.$_IMAGE_TYPE";
+        $icon_arr[$icon_type] = COM_createImage($icon_url, $LANG_ADMIN[$icon_type]);
+    }
 
     // Check if the delete checkbox and support for the delete all feature should be displayed
     $min_data = 1;
@@ -187,6 +177,9 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     }
 
     $admin_templates->parse('output', 'list');
+
+    $retval .= COM_startBlock ($title, $help_url,
+                               COM_getBlockTemplate ('_admin_block', 'header'));
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
@@ -548,9 +541,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # Do the actual output
     $retval .= COM_startBlock ($title, $help_url,
                                COM_getBlockTemplate ('_admin_block', 'header'));
-    if (!$has_extras) {
-        $retval .= $text_arr['instructions'];
-    }
     $retval .= $admin_templates->finish($admin_templates->get_var('output'))
              . COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
