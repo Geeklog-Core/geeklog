@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.111 2007/10/09 10:24:17 ospiess Exp $
+// $Id: moderation.php,v 1.112 2007/10/10 02:46:55 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -73,6 +73,9 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 
 /**
 * Prints the command & control block at the top
+*
+* TODO: The moderation items should be displayed with the help of <ul><li>
+* instead of div's. 
 *
 */
 function commandcontrol()
