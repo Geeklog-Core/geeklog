@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.661 2007/10/10 01:56:00 ospiess Exp $
+// $Id: lib-common.php,v 1.662 2007/10/10 01:58:14 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4347,7 +4347,7 @@ function COM_showMessage($msg, $plugin='') {
         . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
         . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
         . ' alt="" style="padding-right:5px; padding-bottom:3px">'
-        . $msg . '</p>'
+        . $message . '</p>'
         . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     return $retval;
 }
