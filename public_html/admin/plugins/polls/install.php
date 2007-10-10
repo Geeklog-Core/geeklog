@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.18 2007/02/11 01:13:21 ospiess Exp $
+// $Id: install.php,v 1.19 2007/10/10 02:00:21 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ($_CONF['path'] . 'plugins/polls/config.php');
@@ -349,12 +349,7 @@ if ($_REQUEST['action'] == 'uninstall') {
         }
     } else {  // Plugin function returned a false
         $timestamp = strftime ($_CONF['daytime']);
-        $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-                . '<img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.' . $_IMAGE_TYPE
-                . '" align="top" alt="">' . $LANG08[6] . '<br><br>'
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display .= COM_showMessage($LANG08[6]);
     }
 } else if (DB_getItem($_TABLES['plugins'],'pi_version','pi_name="polls"') !== $_PO_CONF['version']) {
     $display .= $LANG_POLLS['upgrade1']
