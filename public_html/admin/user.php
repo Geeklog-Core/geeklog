@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.193 2007/10/09 07:27:04 ospiess Exp $
+// $Id: user.php,v 1.194 2007/10/10 02:35:54 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -1098,17 +1098,10 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_siteFooter();
 } else if ($mode == 'batchdeleteexec') {
     $msg = batchdeleteexec();
-    $display .= COM_siteHeader ('menu', $LANG28[11]);
-    $timestamp = strftime( $_CONF['daytime'] );
-    $display .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
-                           COM_getBlockTemplate( '_msg_block', 'header' ))
-            . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.' . $_IMAGE_TYPE . '" align="left"'
-            . ' alt="" style="padding-right:5px; padding-bottom:3px">'
-            . $msg . '</p>'
-            . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
-    $display .= batchdelete();
-    $display .= COM_siteFooter();
+    $display .= COM_siteHeader ('menu', $LANG28[11])
+        . COM_showMessage($msg)
+        . batchdelete()
+        . COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG28[11]);
     if (isset ($_REQUEST['msg'])) {
