@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.263 2007/09/30 13:32:08 dhaun Exp $
+// $Id: story.php,v 1.264 2007/10/11 09:48:57 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -772,8 +772,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $msg = "";
         if (isset($_GET['msg'])) {
             $msg = COM_applyFilter($_GET['msg'], true);
+            $display .= COM_showMessage($msg);
         }
-        $display .= COM_showMessage ($msg);
         $display .= liststories();
         $display .= COM_siteFooter();
     }
