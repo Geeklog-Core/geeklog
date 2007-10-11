@@ -42,5 +42,5 @@
                                     {lang_permissionskey}
                                     <p>{permissions_editor}</p>
                                     <p>{lang_permissions_msg}</p>
-                                    <input type="submit" name="mode" value="{lang_save}"><input type="submit" name="mode" value="{lang_cancel}">{delete_option}
+                                    <input type="submit" name="mode" value="{lang_save}"> <input type="submit" name="mode" value="{lang_cancel}">{delete_option}
                                 </form>

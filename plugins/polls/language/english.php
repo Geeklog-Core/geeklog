@@ -46,9 +46,8 @@ $LANG_POLLS = array(
     'answer_all'        => 'Please answer all remaining questions',
     'not_saved'         => 'Result not saved',
     'upgrade1'          => 'You installed a new version of the Polls plugin. Please',
-    'upgrade2'          => 'upgrade'
-
-
+    'upgrade2'          => 'upgrade',
+    'editinstructions'  => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################

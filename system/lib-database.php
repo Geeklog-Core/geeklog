@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.48 2007/09/11 03:26:50 ospiess Exp $
+// $Id: lib-database.php,v 1.49 2007/10/11 01:52:37 ospiess Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -183,8 +183,8 @@ function DB_query ($sql, $ignore_errors = 0)
             foreach ($sql as $db => $request) {
                 $errmsg .= LB . $db . ': ' . $request;
             }
-            COM_errorLog ($errmsg);
-            die ('An SQL error has occurred. Please see error.log for details.');
+            $result = COM_errorLog ($errmsg, 3);
+            die ($result);
         }
     }
 

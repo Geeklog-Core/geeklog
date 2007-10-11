@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.47 2007/08/29 09:33:54 ospiess Exp $
+// $Id: index.php,v 1.48 2007/10/11 01:53:09 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -286,9 +286,24 @@ function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults
 function editpoll ($pid = '')
 {
     global $_CONF, $_PO_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS,
-           $LANG_ADMIN, $MESSAGE;
+           $LANG_ADMIN, $MESSAGE, $LANG_POLLS;
 
     $retval = '';
+
+
+    // writing the menu on top
+    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    $menu_arr = array (
+        array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php',
+              'text' => $LANG_ADMIN['list_all']),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home']));
+
+    $retval .= ADMIN_createMenu(
+        $menu_arr,
+        $LANG_POLLS['editinstructions'],
+        plugin_geticon_polls()
+    );
 
     $poll_templates = new Template ($_CONF['path']
                                     . 'plugins/polls/templates/admin/');
