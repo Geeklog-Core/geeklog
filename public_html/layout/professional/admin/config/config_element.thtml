@@ -28,7 +28,7 @@
 <!-- END select-element -->
 
 <!-- BEGIN unset-param -->
-<tr><td class="alignright">{display_name}{doc_link}</td>
+<tr><td class="alignright">{display_name} {doc_link}</td>
 <td><a href="#" onClick="restore('{name}');">Restore</a></td>
 </tr>
 <!-- END unset-param -->
