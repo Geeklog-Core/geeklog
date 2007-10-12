@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.4 2007/10/11 01:40:06 ospiess Exp $
+// $Id: config.class.php,v 1.5 2007/10/12 03:33:08 ospiess Exp $
 
 class config {
     var $ref;
@@ -427,7 +427,7 @@ class config {
             $t->set_var('delete', $t->parse('output', 'delete-button'));
         elseif ($this->ref == 'Core' ) {
             $t->set_var('unset_link',
-                        "<a href='#' onClick='unset(\"{$name}\");'>(X)</a>");
+                        "(<a href='#' onClick='unset(\"{$name}\");'>X</a>)");
             if (($a = strrchr($name, '[')) !== FALSE) {
                 $o = substr($a, 1, -1);
             } else {
