@@ -34,10 +34,10 @@ function add_element(tbl, arr_name, index, disp_type, def_val, deletable){
   deleteButton = document.createElement("input");
   deleteButton.type = "button";
   deleteButton.value = "x";
-  deleteButton.onclick = 
-	function(){
-		remove(this)
-	};
+  deleteButton.onclick =
+    function(){
+        remove(this)
+    };
   paramCell.appendChild(deleteButton);
  }
 }
@@ -57,9 +57,9 @@ function add_array(tbl, arr_name, arr_index, key_names, arr_type, deletable){
 
   arrLink = document.createElement("input");
   arrLink.type = "button";
-  arrLink.onclick = 
-     function(){ 
-      hide_show_tbl(selectChildByID(this.parentNode, 'arr_table'), this); 
+  arrLink.onclick =
+     function(){
+      hide_show_tbl(selectChildByID(this.parentNode, 'arr_table'), this);
      };
   arrLink.value = "+";
   arrayCell.appendChild(arrLink);
@@ -77,15 +77,15 @@ function add_array(tbl, arr_name, arr_index, key_names, arr_type, deletable){
    deleteButton.type = "button";
    deleteButton.value = "x";
    deleteButton.onclick = function(){
-	remove(this);
-	};
-   arrayCell.appendChild(deleteButton);   
+    remove(this);
+    };
+   arrayCell.appendChild(deleteButton);
   }
 
   arrTable = document.createElement("table");
   arrTable.style.display = "none";
   arrTable.id = "arr_table";
- 
+
 
   add_ele_cell = arrTable.insertRow(0).insertCell(0);
   add_ele_cell.colspan = 2;
@@ -125,7 +125,7 @@ function open_group(group_var){
 
 function open_subgroup(sg_var){
  document.group.subgroup.value = sg_var;
- document.group.submit(); 
+ document.group.submit();
 }
 
 function selectChildByID(parent, ID){
@@ -171,8 +171,8 @@ function unset(param){
 </script>
 
 <form method="post" action="configuration.php" name="group">
-<input type="hidden" value="{open_group}" name="conf_group"/>
-<input type="hidden" value="" name="subgroup"/>
+<input type="hidden" value="{open_group}" name="conf_group">
+<input type="hidden" value="" name="subgroup">
 </form>
 <div id="pe_navbar"><table width="100%" cellpadding="0" cellspacing="0" border="0">
  <tr><td>
@@ -206,8 +206,8 @@ function unset(param){
 </table></div>
 
 <form action="configuration.php" method="post" name="subgroup">
-<input type="hidden" name="conf_group" value="{open_group}" />
-<input type="hidden" name="sub_group" value="{open_sg}" />
+<input type="hidden" name="conf_group" value="{open_group}" >
+<input type="hidden" name="sub_group" value="{open_sg}" >
 
 <div id="ce_{subgroup_name}">
 
@@ -222,7 +222,7 @@ function unset(param){
 </div>
 <!-- END notes -->
 
-<table class="inputTable"> 
+<table class="inputTable">
 <col width="200px">
 <col>
 {fs_contents}
@@ -233,9 +233,9 @@ function unset(param){
 </div>
 
 
-<input type="hidden" name="form_submit" value="true" />
+<input type="hidden" name="form_submit" value="true" >
 <div id="bottom_buttons" class="aligncenter">
-<input type="submit" value="Save Changes" />
-<input type="submit" name="form_reset" value="Reset Form" />
+<input type="submit" value="Save Changes" >
+<input type="submit" name="form_reset" value="Reset Form" >
 </div>
 </form>
