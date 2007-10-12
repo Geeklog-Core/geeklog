@@ -109,7 +109,7 @@ Calendar plugin (1.0.2)
 - Added Batch-Delete functionality [Oliver]
 - Added config option what should be displayed after event saving [Oliver]
 
-Links plugin (1.1.1)
+Links plugin (2.0)
 ------------
 - Added owner_id field to submissions to record submitter and align with
   stories behavior [Oliver]
@@ -117,6 +117,7 @@ Links plugin (1.1.1)
 - Added "Report Broken Link" function [Oliver]
 - Added Link Verification to Link Admin [Oliver]
 - Added config option what should be displayed after link saving [Oliver]
+- Added Link sub-category options [Euan]
 
 Polls plugin (2.0.1)
 ------------
