@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.12 2007/09/30 15:59:41 dhaun Exp $
+// $Id: lib-webservices.php,v 1.13 2007/10/21 11:46:02 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -228,7 +228,8 @@ function WS_get()
         $title = $atom_doc->createElement('atom:title', $WS_PLUGIN);
         $collection->appendChild($title);
 
-        $entry = $atom_doc->createElement('app:accept', 'entry');
+        $entry = $atom_doc->createElement('app:accept',
+                                          'application/atom+xml;type=entry');
         $collection->appendChild($entry);
 
         $categories = $atom_doc->createElement('app:categories');
