@@ -45,3 +45,29 @@
 
        }
    }
+
+
+
+
+// Basic function to show/hide (toggle) an element - pass in the elment id
+    function elementToggle(id) {
+        var obj = document.getElementById(id);
+        if (obj.style.display == 'none') {
+            obj.style.display = '';
+        } else {
+            obj.style.display = 'none';
+        }
+    }
+
+// Basic function to show/hide an element - pass in the elment id and option.
+// Where option can be: show or hide or toggle
+    function elementShowHide(id,option) {
+        var obj = document.getElementById(id);
+        if (option == 'hide') {
+            obj.style.display = 'none';
+        } else if (option == 'show') {
+            obj.style.display = '';
+        } else if (option == 'toggle') {
+            elementToggle(id);
+        }
+    }
