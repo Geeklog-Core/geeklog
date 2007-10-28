@@ -2,18 +2,18 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
 // | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.113 2007/01/28 10:15:03 dhaun Exp $
+// $Id: comment.php,v 1.114 2007/10/28 16:48:42 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -79,8 +79,8 @@ function handleSubmit()
         case 'article':
             $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
                                        "sid = '$sid'" . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
-            if (!isset($commentcode) || $commentcode < 0) {
-                return COM_refresh ($_CONF['site_url'] . '/index.php');
+            if (!isset($commentcode) || ($commentcode != 0)) {
+                return COM_refresh($_CONF['site_url'] . '/index.php');
             }
 
             $ret = CMT_saveComment ( strip_tags ($_POST['title']), 
