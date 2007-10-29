@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.112 2007/10/10 02:46:55 ospiess Exp $
+// $Id: moderation.php,v 1.113 2007/10/29 14:10:51 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -315,8 +315,7 @@ function itemlist($type)
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(), $listoptions,
-                              $form_arr);
+                              $text_arr, $data_arr, $listoptions, $form_arr);
     $retval .= $table;
 
     return $retval;
@@ -377,8 +376,7 @@ function userlist ()
     }
 
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(), $listoptions,
-                              $form_arr);
+                              $text_arr, $data_arr, $listoptions, $form_arr);
     $retval .= $table;
 
 
@@ -440,9 +438,7 @@ function draftlist ()
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, array(), $listoptions,
-                              $form_arr);
-
+                              $text_arr, $data_arr, $listoptions, $form_arr);
     $retval .= $table;
     return $retval;
 }
