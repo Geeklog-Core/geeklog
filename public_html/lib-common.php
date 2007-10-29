@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.662 2007/10/10 01:58:14 ospiess Exp $
+// $Id: lib-common.php,v 1.663 2007/10/29 13:42:31 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1710,8 +1710,6 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
 {
     global $_TABLES, $_COM_VERBOSE;
 
-    $retval = '';
-
     $sql = "SELECT $selection FROM $table";
 
     if( !empty( $where ))
@@ -1740,7 +1738,7 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
 
         $S = array();
     }
-
+    $retval = '<ul class="checkboxes-list">' . LB;
     for( $i = 0; $i < $nrows; $i++ )
     {
         $access = true;
@@ -1753,7 +1751,7 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
 
         if( $access )
         {
-            $retval .= '<input type="checkbox" name="' . $table . '[]" value="' . $A[0] . '"';
+            $retval .= '<li><input type="checkbox" name="' . $table . '[]" value="' . $A[0] . '"';
 
             $sizeS = sizeof( $S );
             for( $x = 0; $x < $sizeS; $x++ )
@@ -1767,14 +1765,15 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
 
             if(( $table == $_TABLES['blocks'] ) && isset( $A[2] ) && ( $A[2] == 'gldefault' ))
             {
-                $retval .= '><b>' . stripslashes( $A[1] ) . '</b><br>' . LB;
+                $retval .= '><span class="gldefault">' . stripslashes( $A[1] ) . '</span></li>' . LB;
             }
             else
             {
-                $retval .= '>' . stripslashes( $A[1] ) . '<br>' . LB;
+                $retval .= '><span>' . stripslashes( $A[1] ) . '</span></li>' . LB;
             }
         }
     }
+    $retval .= '</ul>' . LB;
 
     return $retval;
 }
