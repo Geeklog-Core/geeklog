@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.77 2007/10/10 01:14:15 ospiess Exp $
+// $Id: plugins.php,v 1.78 2007/10/29 14:14:48 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -423,7 +423,7 @@ function listplugins ()
     $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true">');
 
     $retval .= ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
-                       $text_arr, $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
+                       $text_arr, $query_arr, $defsort_arr, '', '', '', $form_arr);
 
     return $retval;
 
