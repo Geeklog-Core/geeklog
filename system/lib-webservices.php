@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.13 2007/10/21 11:46:02 dhaun Exp $
+// $Id: lib-webservices.php,v 1.14 2007/11/01 15:55:06 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -387,7 +387,10 @@ function WS_getContent(&$args, $atom_doc, $node)
          */
         $div = $node->firstChild;
         if (($div->nodeName == 'div') || ($div->nodeName == 'xhtml:div')) {
-            $args['content'] = (string) $atom_doc->saveXML($div->firstChild);
+            $args['content'] = '';
+            foreach ($div->childNodes as $item) {
+                $args['content'] .= $atom_doc->saveXML($item);
+            }
             $args['content_type'] = 'html'; // it's all the same to us ...
         }
         break;
