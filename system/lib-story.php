@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.109 2007/09/30 15:59:41 dhaun Exp $
+// $Id: lib-story.php,v 1.110 2007/11/02 16:19:05 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1371,8 +1371,9 @@ function service_delete_story($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if (empty($args['sid']) && !empty($args['id']))
+    if (empty($args['sid']) && !empty($args['id'])) {
         $args['sid'] = $args['id'];
+    }
 
     if ($args['gl_svc']) {
         $args['sid'] = COM_applyBasicFilter($args['sid']);
