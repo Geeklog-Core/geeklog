@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.14 2007/11/01 15:55:06 dhaun Exp $
+// $Id: lib-webservices.php,v 1.15 2007/11/04 19:00:17 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -260,70 +260,70 @@ function WS_get()
     $ret = PLG_invokeService($WS_PLUGIN, 'get', $args, $out, $svc_msg);
 
     if ($ret == PLG_RET_OK) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
-            header('Content-type: application/atom+xml; charset=UTF-8');
-            // Output the actual object/objects here
+        header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+        header('Content-type: application/atom+xml; charset=UTF-8');
+        // Output the actual object/objects here
 
-            if (!$svc_msg['gl_feed']) {
-                /* This is an entry, not a feed */
-                $etag = trim($_SERVER['HTTP_IF_NONE_MATCH'], '"');
-                if (!empty($etag) && ($out['updated'] == $etag)) {
-                    header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
-                    exit();
-                } else {
-                    header('Etag: "' . $out['updated'] . '"');
-                }
-                $atom_doc = new DOMDocument('1.0', 'utf-8');
-
-                $entry_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:entry');
-                $atom_doc->appendChild($entry_elem);
-                $atom_doc->createAttributeNS($WS_APP_NS, 'app:entry');
-                $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:entry');
-
-                WS_arrayToEntryXML($out, $svc_msg['output_fields'], $entry_elem, $atom_doc);
-                WS_write($atom_doc->saveXML());
+        if (!$svc_msg['gl_feed']) {
+            /* This is an entry, not a feed */
+            $etag = trim($_SERVER['HTTP_IF_NONE_MATCH'], '"');
+            if (!empty($etag) && ($out['updated'] == $etag)) {
+                header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
+                exit();
             } else {
-                /* Output the feed here */
-                $atom_doc = new DOMDocument('1.0', 'utf-8');
+                header('Etag: "' . $out['updated'] . '"');
+            }
+            $atom_doc = new DOMDocument('1.0', 'utf-8');
 
-                $feed_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:feed');
-                $atom_doc->appendChild($feed_elem);
-                $atom_doc->createAttributeNS($WS_APP_NS, 'app:feed');
-                $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:feed');
+            $entry_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:entry');
+            $atom_doc->appendChild($entry_elem);
+            $atom_doc->createAttributeNS($WS_APP_NS, 'app:entry');
+            $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:entry');
 
-                $feed_id = $atom_doc->createElement('atom:id', $_CONF['site_name']);
-                $feed_elem->appendChild($feed_id);
+            WS_arrayToEntryXML($out, $svc_msg['output_fields'], $entry_elem, $atom_doc);
+            WS_write($atom_doc->saveXML());
+        } else {
+            /* Output the feed here */
+            $atom_doc = new DOMDocument('1.0', 'utf-8');
 
-                $feed_title = $atom_doc->createElement('atom:title', $_CONF['site_name']);
-                $feed_elem->appendChild($feed_title);
+            $feed_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:feed');
+            $atom_doc->appendChild($feed_elem);
+            $atom_doc->createAttributeNS($WS_APP_NS, 'app:feed');
+            $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:feed');
 
-                $feed_updated = $atom_doc->createElement('atom:updated', date('c'));
-                $feed_elem->appendChild($feed_updated);
+            $feed_id = $atom_doc->createElement('atom:id', $_CONF['site_name']);
+            $feed_elem->appendChild($feed_id);
 
-                $feed_link = $atom_doc->createElement('atom:link');
-                $feed_link->setAttribute('rel', 'self');
-                $feed_link->setAttribute('type', 'application/atom+xml');
-                $feed_link->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN));
-                $feed_elem->appendChild($feed_link);
+            $feed_title = $atom_doc->createElement('atom:title', $_CONF['site_name']);
+            $feed_elem->appendChild($feed_title);
 
-                if (!empty($svc_msg['offset'])) {
-                    $next_link = $atom_doc->createElement('atom:link');
-                    $next_link->setAttribute('rel', 'next');
-                    $next_link->setAttribute('type', 'application/atom+xml');
-                    $next_link->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&offset=' . $svc_msg['offset']);
-                    $feed_elem->appendChild($next_link);
-                }
+            $feed_updated = $atom_doc->createElement('atom:updated', date('c'));
+            $feed_elem->appendChild($feed_updated);
 
-                foreach ($out as $entry_array) {
-                    $entry_elem = $atom_doc->createElement('atom:entry');
-                    WS_arrayToEntryXML($entry_array, $svc_msg['output_fields'], $entry_elem, $atom_doc);
-                    $feed_elem->appendChild($entry_elem);
-                }
+            $feed_link = $atom_doc->createElement('atom:link');
+            $feed_link->setAttribute('rel', 'self');
+            $feed_link->setAttribute('type', 'application/atom+xml');
+            $feed_link->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN));
+            $feed_elem->appendChild($feed_link);
 
-                WS_write($atom_doc->saveXML());
+            if (!empty($svc_msg['offset'])) {
+                $next_link = $atom_doc->createElement('atom:link');
+                $next_link->setAttribute('rel', 'next');
+                $next_link->setAttribute('type', 'application/atom+xml');
+                $next_link->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&offset=' . $svc_msg['offset']);
+                $feed_elem->appendChild($next_link);
             }
 
-            return;
+            foreach ($out as $entry_array) {
+                $entry_elem = $atom_doc->createElement('atom:entry');
+                WS_arrayToEntryXML($entry_array, $svc_msg['output_fields'], $entry_elem, $atom_doc);
+                $feed_elem->appendChild($entry_elem);
+            }
+
+            WS_write($atom_doc->saveXML());
+        }
+
+        return;
     }
 
     WS_error($ret, $svc_msg['error_desc']);
