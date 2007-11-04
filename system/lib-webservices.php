@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.15 2007/11/04 19:00:17 dhaun Exp $
+// $Id: lib-webservices.php,v 1.16 2007/11/04 19:37:07 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -527,6 +527,14 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
 
     $updated = $atom_doc->createElement('atom:updated', $arr['updated']);
     $entry_elem->appendChild($updated);
+
+    if (!isset($arr['edited'])) {
+        $lasted = $arr['updated'];
+    } else {
+        $lasted = $arr['edited'];
+    }
+    $edited = $atom_doc->createElement('app:edited', $lasted);
+    $entry_elem->appendChild($edited);
 
     $title = $atom_doc->createElement('atom:title', $arr['title']);
     $title->setAttribute('type', 'text');
