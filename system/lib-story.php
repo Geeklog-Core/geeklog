@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.110 2007/11/02 16:19:05 dhaun Exp $
+// $Id: lib-story.php,v 1.111 2007/11/04 20:19:31 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1443,14 +1443,12 @@ function service_get_story($args, &$output, &$svc_msg)
                                     'postmode',
                                     'advanced_editor_mode',
                                     'frontpage',
-                                    'in_transit',
                                     'owner_id',
                                     'group_id',
                                     'perm_owner',
                                     'perm_group',
                                     'perm_members',
-                                    'perm_anon',
-                                    'access'
+                                    'perm_anon'
                                      );
 
     if (empty($args['sid']) && !empty($args['id'])) {
@@ -1496,9 +1494,13 @@ function service_get_story($args, &$output, &$svc_msg)
             $output[$fieldname] = $story->{$varname};
         }
 
-        if($args['gl_svc']) {
-            /* This date format is PHP 5 only, but only the web-service uses the value */
-            $output['expire_date']  = date('c', $output['expire']);
+        if ($args['gl_svc']) {
+            if (($output['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) ||
+                ($output['statuscode'] == STORY_DELETE_ON_EXPIRE)) {
+                // This date format is PHP 5 only,
+                // but only the web-service uses the value
+                $output['expire_date']  = date('c', $output['expire']);
+            }
             $output['id']           = $output['sid'];
             $output['category']     = array($output['tid']);
             $output['updated']      = date('c', $output['date']);
@@ -1576,9 +1578,13 @@ function service_get_story($args, &$output, &$svc_msg)
                 $output_item[$fieldname] = $story->{$varname};
             }
 
-            if($args['gl_svc']) {
-                /* This date format is PHP 5 only, but only the web-service uses the value */
-                $output_item['expire_date']  = date('c', $output_item['expire']);
+            if ($args['gl_svc']) {
+                if (($output_item['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) ||
+                    ($output_item['statuscode'] == STORY_DELETE_ON_EXPIRE)) {
+                    // This date format is PHP 5 only,
+                    // but only the web-service uses the value
+                    $output_item['expire_date']  = date('c', $output_item['expire']);
+                }
                 $output_item['id']           = $output_item['sid'];
                 $output_item['category']     = array($output_item['tid']);
                 $output_item['updated']      = date('c', $output_item['date']);
