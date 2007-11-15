@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2007/01/16 06:10:19 ospiess Exp $
+// $Id: index.php,v 1.23 2007/11/15 17:04:56 blaine Exp $
 
 require_once ('../lib-common.php');
 
@@ -126,6 +126,8 @@ if (isset ($_REQUEST['pid'])) {
     } else if (isset ($_POST['aid'])) {
         $aid = $_POST['aid'];
     }
+} elseif (isset($_POST['id'])) {       // Refresh from comment tool bar
+    $qid = COM_applyFilter ($_POST['id']);
 }
 $order = '';
 if (isset ($_REQUEST['order'])) {
