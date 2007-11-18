@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.16 2007/11/04 19:37:07 dhaun Exp $
+// $Id: lib-webservices.php,v 1.17 2007/11/18 09:28:31 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -41,6 +41,9 @@ $WS_TEXT = '';
 $WS_ATOM_NS = 'http://www.w3.org/2005/Atom';
 $WS_APP_NS  = 'http://www.w3.org/2007/app';
 $WS_EXTN_NS = 'http://www.geeklog.net';
+
+// Set = true to enable verbose logging (in error.log)
+$WS_VERBOSE = false;
 
 if (!isset($WS_DISABLED)) {
     $WS_DISABLED = false;
@@ -59,6 +62,8 @@ if (PHP_VERSION < 5) {
  */
 function WS_error($error_code, $error_desc = '')
 {
+    global $WS_VERBOSE;
+
     header('Content-type: ' . 'text/html' . '; charset=UTF-8');
     switch ($error_code) {
     case PLG_RET_PRECONDITION_FAILED:
@@ -76,6 +81,10 @@ function WS_error($error_code, $error_desc = '')
         break;
     }
 
+    if ($WS_VERBOSE) {
+        COM_errorLog("WS: Error $error_code ('$error_desc')");
+    }
+
     // Output exact error message here
     echo trim($error_desc);
     exit();
@@ -88,10 +97,14 @@ function WS_error($error_code, $error_desc = '')
  */
 function WS_dissectURI(&$args)
 {
-    global $WS_PLUGIN, $WS_INTROSPECTION;
+    global $WS_PLUGIN, $WS_INTROSPECTION, $WS_VERBOSE;
 
     $WS_PLUGIN = '';
     $args = array();
+
+    if ($WS_VERBOSE) {
+        COM_errorLog("WS: Dissecting URI '" . $_SERVER['QUERY_STRING'] . "'");
+    }
 
     $uri_parts = explode('&', $_SERVER['QUERY_STRING']);
     foreach ($uri_parts as $param) {
@@ -123,7 +136,12 @@ function WS_dissectURI(&$args)
  */
 function WS_post()
 {
-    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $_CONF;
+    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $WS_VERBOSE,
+           $_CONF;
+
+    if ($WS_VERBOSE) {
+        COM_errorLog("WS: POST request received");
+    }
 
     WS_dissectURI($args);
 
@@ -160,7 +178,12 @@ function WS_post()
  */
 function WS_put()
 {
-    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $_CONF;
+    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $WS_VERBOSE,
+           $_CONF;
+
+    if ($WS_VERBOSE) {
+        COM_errorLog("WS: PUT request received");
+    }
 
     WS_dissectURI($args);
 
@@ -182,7 +205,6 @@ function WS_put()
     }
 
     WS_error($ret, $svc_msg['error_desc']);
-
 }
 
 /**
@@ -190,7 +212,12 @@ function WS_put()
  */
 function WS_get()
 {
-    global $WS_PLUGIN, $WS_INTROSPECTION, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $_CONF;
+    global $WS_PLUGIN, $WS_INTROSPECTION, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS,
+           $WS_VERBOSE, $_CONF;
+
+    if ($WS_VERBOSE) {
+        COM_errorLog("WS: GET request received");
+    }
 
     WS_dissectURI($args);
 
@@ -334,7 +361,12 @@ function WS_get()
  */
 function WS_delete()
 {
-    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $_CONF;
+    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $WS_VERBOSE,
+           $_CONF;
+
+    if ($WS_VERBOSE) {
+        COM_errorLog("WS: DELETE request received");
+    }
 
     WS_dissectURI($args);
 
@@ -352,7 +384,6 @@ function WS_delete()
     }
 
     WS_error($ret, $svc_msg['error_desc']);
-
 }
 
 /**
@@ -616,14 +647,19 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
  */
 function WS_authenticate()
 {
-    global $_USER;
+    global $_USER, $_GROUPS, $_RIGHTS, $WS_VERBOSE;
 
     $uid = '';
     
+    $status = -1;
     if (isset($_SERVER['PHP_AUTH_USER'])) {
         $username = $_SERVER['PHP_AUTH_USER'];
         $password = $_SERVER['PHP_AUTH_PW'];
-        
+
+        if ($WS_VERBOSE) {
+            COM_errorLog("WS: Attempting to log in user '$username'");
+        }
+
         $status = SEC_authenticate($username, $password, $uid);
     } elseif (!empty($_REQUEST['gl_auth_header'])) {
         /* PHP installed as CGI may not have access to authorization headers of
@@ -634,16 +670,28 @@ function WS_authenticate()
         list($auth_type, $auth_data) = explode(' ', $_REQUEST['gl_auth_digest']);
         list($username, $password) = explode(':', base64_decode($auth_data));
 
+        if ($WS_VERBOSE) {
+            COM_errorLog("WS: Attempting to log in user '$username' (via gl_auth_header)");
+        }
+
         $status = SEC_authenticate($username, $password, $uid);
     } else {
+        if ($WS_VERBOSE) {
+            COM_errorLog("WS: No login given");
+        }
+
         return;
     }
 
-    if ($status == -1) {
+    if ($status == USER_ACCOUNT_ACTIVE) {
+        $_USER = SESS_getUserDataFromId($uid);
+        PLG_loginUser($_USER['uid']);
+
+        if ($WS_VERBOSE) {
+            COM_errorLog("WS: User '{$_USER['username']}' ({$_USER['uid']}) successfully logged in");
+        }
+    } else {
         WS_error(PLG_RET_AUTH_FAILED);
-    } elseif ($status == 3) {
-        $_USER = SESS_getUserDataFromId ($uid);
-        PLG_loginUser ($_USER['uid']);
     }
 
     /**
@@ -660,7 +708,7 @@ function WS_authenticate()
     * Global array of current user permissions [read,edit]
     */
 
-    $_RIGHTS = explode( ',', SEC_getUserPermissions() );
+    $_RIGHTS = explode(',', SEC_getUserPermissions());
 }
 
 /**
