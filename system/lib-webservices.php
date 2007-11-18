@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.17 2007/11/18 09:28:31 dhaun Exp $
+// $Id: lib-webservices.php,v 1.18 2007/11/18 18:48:03 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -647,11 +647,14 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
  */
 function WS_authenticate()
 {
-    global $_USER, $_GROUPS, $_RIGHTS, $WS_VERBOSE;
+    global $_CONF, $_USER, $_GROUPS, $_RIGHTS, $WS_VERBOSE;
 
     $uid = '';
-    
+    $username = '';
+    $password = '';
+
     $status = -1;
+
     if (isset($_SERVER['PHP_AUTH_USER'])) {
         $username = $_SERVER['PHP_AUTH_USER'];
         $password = $_SERVER['PHP_AUTH_PW'];
@@ -659,8 +662,6 @@ function WS_authenticate()
         if ($WS_VERBOSE) {
             COM_errorLog("WS: Attempting to log in user '$username'");
         }
-
-        $status = SEC_authenticate($username, $password, $uid);
     } elseif (!empty($_REQUEST['gl_auth_header'])) {
         /* PHP installed as CGI may not have access to authorization headers of
          * Apache. In that case, use .htaccess to store the auth header as a
@@ -673,8 +674,6 @@ function WS_authenticate()
         if ($WS_VERBOSE) {
             COM_errorLog("WS: Attempting to log in user '$username' (via gl_auth_header)");
         }
-
-        $status = SEC_authenticate($username, $password, $uid);
     } else {
         if ($WS_VERBOSE) {
             COM_errorLog("WS: No login given");
@@ -682,6 +681,13 @@ function WS_authenticate()
 
         return;
     }
+
+    COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
+    if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+        WS_error(PLG_RET_PERMISSION_DENIED, 'Speed Limit exceeded');
+    }
+
+    $status = SEC_authenticate($username, $password, $uid);
 
     if ($status == USER_ACCOUNT_ACTIVE) {
         $_USER = SESS_getUserDataFromId($uid);
@@ -691,6 +697,7 @@ function WS_authenticate()
             COM_errorLog("WS: User '{$_USER['username']}' ({$_USER['uid']}) successfully logged in");
         }
     } else {
+        COM_updateSpeedlimit('login');
         WS_error(PLG_RET_AUTH_FAILED);
     }
 
