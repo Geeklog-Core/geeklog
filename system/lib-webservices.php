@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.18 2007/11/18 18:48:03 dhaun Exp $
+// $Id: lib-webservices.php,v 1.19 2007/11/18 20:59:22 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -166,7 +166,28 @@ function WS_post()
     if ($ret == PLG_RET_OK) {
         header($_SERVER['SERVER_PROTOCOL'] . ' 201 Created');
         header('Location: ' . $_CONF['site_url'] . '/webservices/atom/?plugin=' . $WS_PLUGIN . '&id' . '=' . $svc_msg['id']);
-        // Output the actual object here
+
+        /* While RFC 5023 only states that the server SHOULD return the created
+         * entry, some clients (e.g. Tim Bray's APE) seem to insist on it.
+         * So let's see what we can do ...
+         */
+        $getargs = array();
+        $getargs['gl_svc'] = true;
+        $getargs['sid'] = $svc_msg['id'];
+
+        $ret = PLG_invokeService($WS_PLUGIN, 'get', $getargs, $out, $svc_msg);
+        if ($ret == PLG_RET_OK) {
+            $atom_doc = new DOMDocument('1.0', 'utf-8');
+
+            $entry_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:entry');
+            $atom_doc->appendChild($entry_elem);
+            $atom_doc->createAttributeNS($WS_APP_NS, 'app:entry');
+            $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:entry');
+
+            WS_arrayToEntryXML($out, $svc_msg['output_fields'], $entry_elem, $atom_doc);
+            WS_write($atom_doc->saveXML());
+        }
+
         return;
     }
 
