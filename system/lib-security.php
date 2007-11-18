@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.57 2007/05/26 19:29:44 dhaun Exp $
+// $Id: lib-security.php,v 1.58 2007/11/18 09:32:58 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -60,7 +60,7 @@
 *
 */
 
-// Turn this on go get various debug messages from the code in this library
+// Turn this on to get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-security.php') !== false) {
