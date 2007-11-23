@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.194 2007/10/10 02:35:54 ospiess Exp $
+// $Id: user.php,v 1.195 2007/11/23 12:40:49 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -762,22 +762,13 @@ function batchdelete()
 
     $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
 
-    $menu_arr = array (
-                    array('url' => $_CONF['site_admin_url'] . '/user.php',
-                          'text' => $LANG28[11]),
-                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
-                          'text' => $LANG28[23]),
-                    array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home'])
-    );
-
-    $text_arr = array('has_menu'     => true,
-                      'has_extras'   => true,
-                      'title'        => $LANG28[54],
-                      'instructions' => "$desc",
-                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
-                      'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
-                      'help_url'     => ''
+    $text_arr = array(
+        'has_menu'     => true,
+        'has_extras'   => true,
+        'title'        => $LANG28[54],
+        'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
+        'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
+        'help_url'     => ''
     );
 
     $defsort_arr = array('field'     => $sort,
@@ -796,9 +787,24 @@ function batchdelete()
         'default_filter' => "AND $filter_sql {$_TABLES['users']}.uid > 1"
     );
     $listoptions = array('chkdelete' => true, 'chkfield' => 'uid');
+    
+    $menu_arr = array (
+        array('url' => $_CONF['site_admin_url'] . '/user.php',
+              'text' => $LANG28[11]),
+        array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
+              'text' => $LANG28[23]),
+        array('url' => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $display .= ADMIN_createMenu(
+        $menu_arr,
+        $desc,
+        $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE
+    );
 
     $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-        $query_arr, $menu_arr, $defsort_arr, '', '', $listoptions);
+        $query_arr, $defsort_arr, '', '', $listoptions);
 
     // $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"></form>" . LB;
     return $display;
