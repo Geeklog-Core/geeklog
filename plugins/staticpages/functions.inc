@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.100 2007/10/09 08:56:29 ospiess Exp $
+// $Id: functions.inc,v 1.101 2007/11/23 08:40:52 riyer Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1159,6 +1159,15 @@ function SP_render_content ($sp_content, $sp_php)
     }
 
     return $retval;
+}
+
+/**
+ * Return true since this plugin supports webservices
+ *
+ * @return  bool	True, of webservices are supported
+ */
+function plugin_ws_enabled_staticpages() {
+    return true;
 }
 
 ?>

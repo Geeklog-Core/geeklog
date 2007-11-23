@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.134 2007/08/19 16:40:50 dhaun Exp $
+// $Id: lib-plugins.php,v 1.135 2007/11/23 08:40:52 riyer Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2306,11 +2306,31 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 
     // Check if the plugin type and action are valid
     $function = 'service_' . $action . '_' . $type;
-    if (function_exists($function)) {
+
+    if (function_exists($function) && PLG_servicesEnabled($type)) {
         $retval = $function($args, $output, $svc_msg);
     }
 
     return $retval;
+}
+
+/**
+ * Returns true if the plugin supports webservices
+ * 
+ * @param   string  type    The plugin type that is to be checked
+ */
+function PLG_servicesEnabled($type) {
+    global $_CONF;
+
+    // ensure we can see the service_XXX_story functions
+    require_once $_CONF['path_system'] . 'lib-story.php';
+
+    $function = 'plugin_ws_enabled_' . $type;
+    if (function_exists($function)) {
+        return $function();
+    } else {
+        return false;
+    }
 }
 
 ?>

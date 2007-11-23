@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.19 2007/11/18 20:59:22 dhaun Exp $
+// $Id: lib-webservices.php,v 1.20 2007/11/23 08:40:52 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -234,7 +234,7 @@ function WS_put()
 function WS_get()
 {
     global $WS_PLUGIN, $WS_INTROSPECTION, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS,
-           $WS_VERBOSE, $_CONF;
+           $WS_VERBOSE, $_CONF, $_PLUGINS;
 
     if ($WS_VERBOSE) {
         COM_errorLog("WS: GET request received");
@@ -248,12 +248,21 @@ function WS_get()
 
         $atom_uri = $_CONF['site_url'] . '/webservices/atom/';
 
-        /* 'story' is the default plugin */
-        if (empty($WS_PLUGIN)) {
-            $WS_PLUGIN = 'story';
+        /* Determine which plugins have webservices enabled */
+        $_ws_plugins = array();
+
+        /* Handle the story 'plugin' separately */
+        if (PLG_servicesEnabled('story')) {
+            $_ws_plugins[] = 'story';
         }
 
-        $atom_uri .= '?plugin=' . $WS_PLUGIN;
+	if (is_array($_PLUGINS)) {
+            foreach ($_PLUGINS as $pi) {
+                if (PLG_servicesEnabled($pi)) {
+                    $_ws_plugins[] = $pi;
+                }
+            }
+	}
 
         /* It might be simpler to do this part directly :-/ */
 
@@ -269,29 +278,32 @@ function WS_get()
         $title = $atom_doc->createElement('atom:title', $_CONF['site_name']);
         $workspace->appendChild($title);
 
-        $collection = $atom_doc->createElement('app:collection');
-        $collection->setAttribute('href', $atom_uri);
-        $workspace->appendChild($collection);
+        foreach ($_ws_plugins as $ws_plugin) {
+            $atom_uri_for_plugin = $atom_uri . '?plugin=' . $ws_plugin;
 
-        $title = $atom_doc->createElement('atom:title', $WS_PLUGIN);
-        $collection->appendChild($title);
+            $collection = $atom_doc->createElement('app:collection');
+            $collection->setAttribute('href', $atom_uri_for_plugin);
+            $workspace->appendChild($collection);
 
-        $entry = $atom_doc->createElement('app:accept',
-                                          'application/atom+xml;type=entry');
-        $collection->appendChild($entry);
+            $title = $atom_doc->createElement('atom:title', $ws_plugin);
+            $collection->appendChild($title);
 
-        $categories = $atom_doc->createElement('app:categories');
-        $categories->setAttribute('fixed', 'yes');
-        $collection->appendChild($categories);
+            $entry = $atom_doc->createElement('app:accept', 'application/atom+xml;type=entry');
+            $collection->appendChild($entry);
 
-        $topics = array();
-        $msg = array();
-        $ret = PLG_invokeService($WS_PLUGIN, 'getTopicList', null, $topics, $msg);
-        if ($ret == PLG_RET_OK) {
-            foreach ($topics as $t) {
-                $topic = $atom_doc->createElement('atom:category');
-                $topic->setAttribute('term', htmlentities($t));
-                $categories->appendChild($topic);
+            $categories = $atom_doc->createElement('app:categories');
+            $categories->setAttribute('fixed', 'yes');
+            $collection->appendChild($categories);
+
+            $topics = array();
+            $msg = array();
+            $ret = PLG_invokeService($ws_plugin, 'getTopicList', null, $topics, $msg);
+            if ($ret == PLG_RET_OK) {
+                foreach ($topics as $t) {
+                    $topic = $atom_doc->createElement('atom:category');
+                    $topic->setAttribute('term', htmlentities($t));
+                    $categories->appendChild($topic);
+                }
             }
         }
 
