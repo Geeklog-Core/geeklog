@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.20 2007/11/23 08:40:52 riyer Exp $
+// $Id: lib-webservices.php,v 1.21 2007/11/24 12:42:57 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -252,13 +252,13 @@ function WS_get()
         $_ws_plugins = array();
 
         /* Handle the story 'plugin' separately */
-        if (PLG_servicesEnabled('story')) {
+        if (PLG_wsEnabled('story')) {
             $_ws_plugins[] = 'story';
         }
 
 	if (is_array($_PLUGINS)) {
             foreach ($_PLUGINS as $pi) {
-                if (PLG_servicesEnabled($pi)) {
+                if (PLG_wsEnabled($pi)) {
                     $_ws_plugins[] = $pi;
                 }
             }

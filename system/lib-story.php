@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.112 2007/11/23 08:40:52 riyer Exp $
+// $Id: lib-story.php,v 1.113 2007/11/24 12:42:57 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -984,7 +984,7 @@ function STORY_deleteStory($sid)
  *
  * @return  bool	True, if webservices are supported
  */
-function plugin_ws_enabled_story() {
+function plugin_wsEnabled_story() {
     return true;
 }
 
