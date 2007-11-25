@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.21 2007/11/25 06:58:55 ospiess Exp $
+// $Id: index.php,v 1.22 2007/11/25 08:08:18 ospiess Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -1445,7 +1445,7 @@ if ($mode == 'check_permissions') {
 
     $display .= '</select>
                     <input type="submit" value="' . $LANG_INSTALL[80] . '"' . XHTML . '>
-				</form>';
+            </form>';
 }
 $display .= '
                     </div>

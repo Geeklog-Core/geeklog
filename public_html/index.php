@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.96 2007/11/25 06:55:07 ospiess Exp $
+// $Id: index.php,v 1.97 2007/11/25 08:11:08 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -161,7 +161,7 @@ if (!empty ($displayBlock)) {
     if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
             $topspan = new Template($_CONF['path_layout']);
             $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
-			$topspan->set_var( 'xhtml', XHTML );
+            $topspan->set_var( 'xhtml', XHTML );
             $topspan->parse ('output', 'topspan');
             $display .= $topspan->finish ($topspan->get_var('output'));
             $GLOBALS['centerspan'] = true;
