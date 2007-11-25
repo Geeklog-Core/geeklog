@@ -67,9 +67,6 @@ $T->set_var ('plugin_name', $LANG_SX00['plugin_name']);
 $T->set_var ('plugin', 'spamx');
 $T->parse ('output', 'admin');
 $display .= $T->finish ($T->get_var ('output'));
-// @@@@ 2007/09/16 uncommented by dengen ------>>
-//$display .= '<p>';
-// @@@@ 2007/09/16 uncommented by dengen ------<<
 
 $files = array ();
 if ($dir = @opendir ($_CONF['path'] . 'plugins/spamx/')) {
