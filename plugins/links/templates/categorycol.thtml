@@ -1,2 +1,2 @@
-<td width="{width}%"><a h<td width="{width}%"><a href="{category_link}">{category_name}</a> {category_count}<br>
+<td width="{width}%"><a href="{category_link}">{category_name}</a> {category_count}<br{xhtml}>
 {category_description}</td>

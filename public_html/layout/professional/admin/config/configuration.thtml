@@ -1,5 +1,5 @@
 <script type="text/javascript">
-
+//<![CDATA[
 function handleAdd(self, array_type, array_name){
  if(array_type.charAt(0) == "*"){
    handleAddWithName(self, array_type, array_name, self.nextSibling.value);
@@ -167,12 +167,12 @@ function unset(param){
  document.group.submit();
 }
 
-
+//]]>
 </script>
 
 <form method="post" action="configuration.php" name="group">
-<input type="hidden" value="{open_group}" name="conf_group">
-<input type="hidden" value="" name="subgroup">
+<input type="hidden" value="{open_group}" name="conf_group"{xhtml}>
+<input type="hidden" value="" name="subgroup"{xhtml}>
 </form>
 <div id="pe_navbar"><table width="100%" cellpadding="0" cellspacing="0" border="0">
  <tr><td>
@@ -180,7 +180,7 @@ function unset(param){
    <ul id="navlist" style="padding-left:15px;">
 <!-- BEGIN group-selector -->
    <li>
-     <a  href="#" {select_id} onClick='open_group("{group_select_value}")'><span style="padding-top:5px;">{group_display}</span>
+     <a  href="#" {select_id} onclick='open_group("{group_select_value}")'><span style="padding-top:5px;">{group_display}</span>
      </a>
    </li>
 <!-- END group-selector -->
@@ -196,7 +196,7 @@ function unset(param){
    <ul id="navlist" style="padding-left:15px;">
 <!-- BEGIN subgroup-selector -->
    <li>
-     <a  href="#" {select_id} onClick='open_subgroup("{subgroup_name}")'><span style="padding-top:5px;">{subgroup_display_name}</span>
+     <a  href="#" {select_id} onclick='open_subgroup("{subgroup_name}")'><span style="padding-top:5px;">{subgroup_display_name}</span>
      </a>
    </li>
 <!-- END subgroup-selector -->
@@ -206,8 +206,8 @@ function unset(param){
 </table></div>
 
 <form action="configuration.php" method="post" name="subgroup">
-<input type="hidden" name="conf_group" value="{open_group}" >
-<input type="hidden" name="sub_group" value="{open_sg}" >
+<input type="hidden" name="conf_group" value="{open_group}"{xhtml}>
+<input type="hidden" name="sub_group" value="{open_sg}"{xhtml}>
 
 <div id="ce_{subgroup_name}">
 
@@ -233,9 +233,9 @@ function unset(param){
 </div>
 
 
-<input type="hidden" name="form_submit" value="true" >
+<input type="hidden" name="form_submit" value="true"{xhtml}>
 <div id="bottom_buttons" class="aligncenter">
-<input type="submit" value="Save Changes" >
-<input type="submit" name="form_reset" value="Reset Form" >
+<input type="submit" value="Save Changes"{xhtml}>
+<input type="submit" name="form_reset" value="Reset Form"{xhtml}>
 </div>
 </form>

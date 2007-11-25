@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.59 2007/08/13 01:27:34 ospiess Exp $
+// $Id: lib-comment.php,v 1.60 2007/11/25 06:55:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -72,6 +72,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
 
     $commentbar = new Template( $_CONF['path_layout'] . 'comment' );
     $commentbar->set_file( array( 'commentbar' => 'commentbar.thtml' ));
+    $commentbar->set_var( 'xhtml', XHTML );
     $commentbar->set_var( 'site_url', $_CONF['site_url'] );
     $commentbar->set_var( 'layout_url', $_CONF['layout_url'] );
 
@@ -104,8 +105,8 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
                     array('class'=>'non-ul b')
                 )
             );
-            $commentbar->set_var( 'start_storylink_anchortag', '<a·href="'
-                . $articleUrl . '"·class="non-ul">' );
+            $commentbar->set_var( 'start_storylink_anchortag', '<a href="'
+                . $articleUrl . '" class="non-ul">' );
             $commentbar->set_var( 'end_storylink_anchortag', '</a>' );
         }
     } else { // for a plugin
@@ -148,25 +149,25 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
                               $_CONF['site_url'] . '/comment.php' );
         $hidden = '';
         if( $_REQUEST['mode'] == 'view' ) {
-            $hidden .= '<input type="hidden" name="cid" value="' . $_REQUEST['cid'] . '">';
-            $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['cid'] . '">';
+            $hidden .= '<input type="hidden" name="cid" value="' . $_REQUEST['cid'] . '"' . XHTML . '>';
+            $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['cid'] . '"' . XHTML . '>';
         }
         else if( $_REQUEST['mode'] == 'display' ) {
-            $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '">';
+            $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '"' . XHTML . '>';
         }
         $commentbar->set_var( 'hidden_field', $hidden .
-                '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '">' );
+                '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '"' . XHTML . '>' );
     } else if( $type == 'article' ) {
         $commentbar->set_var( 'parent_url',
                               $_CONF['site_url'] . '/article.php' );
         $commentbar->set_var( 'hidden_field',
-                '<input type="hidden" name="story" value="' . $sid . '">' );
+                '<input type="hidden" name="story" value="' . $sid . '"' . XHTML . '>' );
     } else { // plugin
         // Link to plugin defined link or lacking that a generic link that the plugin should support (hopefully)
         list($plgurl, $plgid) = PLG_getCommentUrlId($type);
         $commentbar->set_var( 'parent_url', $plgurl );
         $commentbar->set_var( 'hidden_field',
-                '<input type="hidden" name="' . $plgid . '" value="' . $sid . '">' );
+                '<input type="hidden" name="' . $plgid . '" value="' . $sid . '"' . XHTML . '>' );
     }
 
     // Order
@@ -217,6 +218,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                                 'thread'  => 'thread.thtml'  ));
 
     // generic template variables
+    $template->set_var( 'xhtml', XHTML );
     $template->set_var( 'site_url', $_CONF['site_url'] );
     $template->set_var( 'layout_url', $_CONF['layout_url'] );
     $template->set_var( 'lang_authoredby', $LANG01[42] );
@@ -292,7 +294,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             if( !empty( $photo )) {
                 $template->set_var( 'author_photo', $photo );
                 $camera_icon = '<img src="' . $_CONF['layout_url']
-                    . '/images/smallcamera.' . $_IMAGE_TYPE . '" alt="">';
+                    . '/images/smallcamera.' . $_IMAGE_TYPE . '" alt=""' . XHTML . '>';
                 $template->set_var( 'camera_icon',
                     COM_createLink(
                         $camera_icon,
@@ -497,6 +499,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
     $template = new Template( $_CONF['path_layout'] . 'comment' );
     $template->set_file( array( 'commentarea' => 'startcomment.thtml' ));
+    $template->set_var( 'xhtml', XHTML );
     $template->set_var( 'site_url', $_CONF['site_url'] );
     $template->set_var( 'layout_url', $_CONF['layout_url'] );
     $template->set_var( 'commentbar',
@@ -636,6 +639,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template($_CONF['path_layout'] . 'submit');
         $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+        $loginreq->set_var( 'xhtml', XHTML );
         $loginreq->set_var('login_message', $LANG_LOGIN[2]);
         $loginreq->set_var('site_url', $_CONF['site_url']);
         $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
@@ -700,7 +704,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $newcomment = $comment;
             if (!empty ($sig)) {
                 if (($postmode == 'html') || ($fakepostmode == 'html')) {
-                    $newcomment .= '<p>---<br>' . nl2br ($sig);
+                    $newcomment .= '<p>---<br' . XHTML . '>' . nl2br ($sig);
                 } else {
                     $newcomment .= LB . LB . '---' . LB . $sig;
                 }
@@ -711,6 +715,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 $start = new Template( $_CONF['path_layout'] . 'comment' );
                 $start->set_file( array( 'comment' => 'startcomment.thtml' ));
+                $start->set_var( 'xhtml', XHTML );
                 $start->set_var( 'site_url', $_CONF['site_url'] );
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
                 $start->set_var( 'hide_if_preview', 'style="display:none"' );
@@ -753,6 +758,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             } else {
                 $comment_template->set_file('form','commentform.thtml');
             }
+            $comment_template->set_var( 'xhtml', XHTML );
             $comment_template->set_var('site_url', $_CONF['site_url']);
             $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
             $comment_template->set_var('lang_username', $LANG03[5]);
@@ -797,7 +803,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             if (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
                 PLG_templateSetVars ('comment', $comment_template);
-                $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '">');
+                $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '"' . XHTML . '>');
             }
 
             $comment_template->set_var('end_block', COM_endBlock());
@@ -896,7 +902,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
     }
     if (!empty ($sig)) {
         if ($postmode == 'html') {
-            $comment .= '<p>---<br>' . nl2br($sig);
+            $comment .= '<p>---<br' . XHTML . '>' . nl2br($sig);
         } else {
             $comment .= LB . LB . '---' . LB . $sig;
         }
@@ -1003,7 +1009,7 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
     }
 
     $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-              . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
+              . '/comment.php?mode=view&amp;cid=' . $cid . ">\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
@@ -1089,6 +1095,7 @@ function CMT_reportAbusiveComment ($cid, $type)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template ($_CONF['path_layout'] . 'submit');
         $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
+        $loginreq->set_var ( 'xhtml', XHTML );
         $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
         $loginreq->set_var ('site_url', $_CONF['site_url']);
         $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -1113,6 +1120,7 @@ function CMT_reportAbusiveComment ($cid, $type)
 
     $start = new Template ($_CONF['path_layout'] . 'comment');
     $start->set_file (array ('report' => 'reportcomment.thtml'));
+    $start->set_var ( 'xhtml', XHTML );
     $start->set_var ('site_url', $_CONF['site_url']);
     $start->set_var ('layout_url', $_CONF['layout_url']);
     $start->set_var ('lang_report_this', $LANG03[25]);
@@ -1162,6 +1170,7 @@ function CMT_sendReport ($cid, $type)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template ($_CONF['path_layout'] . 'submit');
         $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
+        $loginreq->set_var ( 'xhtml', XHTML );
         $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
         $loginreq->set_var ('site_url', $_CONF['site_url']);
         $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -1216,7 +1225,7 @@ function CMT_sendReport ($cid, $type)
     }
 
     $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-              . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
+              . '/comment.php?mode=view&amp;cid=' . $cid . ">\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";

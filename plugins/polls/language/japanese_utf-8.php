@@ -27,25 +27,28 @@
 ###############################################################################
 # Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
-###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
-###############################################################################
-
-
 $LANG_POLLS = array(
-    'polls'          => 'アンケート',
-    'results'        => '結果',
-    'pollresults'    => '投票結果',
-    'votes'          => '投票',
-    'vote'           => '投票する',
-    'pastpolls'      => 'アンケートの一覧',
-    'savedvotetitle' => '投票が登録されました',
-    'savedvotemsg'   => '今の投票が登録されました',
-    'pollstitle'     => '募集中のアンケート',
-    'pollquestions'  => '他のアンケートを見る'
+    'polls'             => 'アンケート',
+    'results'           => '結果',
+    'pollresults'       => '投票結果',
+    'votes'             => '投票',
+    'vote'              => '投票する',
+    'pastpolls'         => 'アンケートの一覧',
+    'savedvotetitle'    => '投票が登録されました',
+    'savedvotemsg'      => '今の投票が登録されました',
+    'pollstitle'        => '募集中のアンケート',
+    'polltopics'        => 'Other polls',
+    'stats_top10'       => 'Top Ten Polls',
+    'stats_topics'      => 'Poll Topic',
+    'stats_votes'       => 'Votes',
+    'stats_none'        => 'It appears that there are no polls on this site or no one has ever voted.',
+    'stats_summary'     => 'Polls (Answers) in the system',
+    'open_poll'         => 'Open for Voting',
+    'answer_all'        => 'Please answer all remaining questions',
+    'not_saved'         => 'Result not saved',
+    'upgrade1'          => 'You installed a new version of the Polls plugin. Please',
+    'upgrade2'          => 'upgrade',
+    'editinstructions'  => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################
@@ -81,8 +84,17 @@ $LANG25 = array(
     27 => '編集',
     28 => '検索',
     29 => '検索条件',
-    30 => '表示件数'
-
+    30 => '表示件数',
+    31 => 'Question',
+    32 => 'To remove this question from the poll, remove its question text',
+    33 => 'Open for voting',
+    34 => 'Poll Topic:',
+    35 => 'This poll has',
+    36 => 'more questions.',
+    37 => 'Hide results while poll is open',
+    38 => 'While the poll is open, only the owner &amp; root can see the results',
+    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE19 = 'アンケートが登録されました。';

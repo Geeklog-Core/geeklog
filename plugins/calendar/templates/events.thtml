@@ -1,3 +1,3 @@
-                            [ <a href="{site_url}/submit.php?type=calendar{calendar_mode}">{lang_addevent}</a> ][ <a href="{site_url}/calendar/index.php">{lang_backtocalendar}</a> ]<br><br>
+                            [ <a href="{site_url}/submit.php?type=calendar{calendar_mode}">{lang_addevent}</a> ][ <a href="{site_url}/calendar/index.php">{lang_backtocalendar}</a> ]<br{xhtml}><br{xhtml}>
                             <h1>{lang_month} {event_year}</h1>
                             {event_details}

@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIPofURL.Admin.class.php,v 1.9 2007/05/06 08:21:11 dhaun Exp $
+* $Id: EditIPofURL.Admin.class.php,v 1.10 2007/11/25 06:56:05 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditIPofURL.Admin.class.php') !== false) {
@@ -55,7 +55,7 @@ class EditIPofUrl extends BaseAdmin {
             }
         }
 
-        $display = '<hr>' . LB . '<p><b>';
+        $display = '<hr' . XHTML . '>' . LB . '<p><b>';
         $display .= $LANG_SX00['ipofurlblack'];
         $display .= '</b></p>' . LB . '<ul>' . LB;
         $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'IPofUrl'");
@@ -68,9 +68,9 @@ class EditIPofUrl extends BaseAdmin {
         }
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
-        $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIPofUrl">';
-        $display .= '<div><input type="text" size ="30" name="pentry">&nbsp;&nbsp;&nbsp;';
-        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">' . LB;
+        $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIPofUrl">';
+        $display .= '<div><input type="text" size ="30" name="pentry"' . XHTML . '>&nbsp;&nbsp;&nbsp;';
+        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '"' . XHTML . '>' . LB;
         $display .= '</div></form>' . LB;
 
         return $display;

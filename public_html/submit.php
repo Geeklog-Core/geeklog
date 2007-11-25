@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.118 2007/09/22 18:37:46 dhaun Exp $
+// $Id: submit.php,v 1.119 2007/11/25 06:55:07 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -79,6 +79,7 @@ function submissionform($type='story', $mode = '', $topic = '')
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $loginreq = new Template($_CONF['path_layout'] . 'submit');
             $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+            $loginreq->set_var( 'xhtml', XHTML );
             $loginreq->set_var('login_message', $LANG_LOGIN[2]);
             $loginreq->set_var('site_url', $_CONF['site_url']);
             $loginreq->set_var('layout_url', $_CONF['layout_url']);
@@ -139,7 +140,7 @@ function submitstory($topic = '')
     if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) &&
         file_exists ($_CONF['path_layout'] . 'submit/submitstory_advanced.thtml')) {
         $storyform->set_file('storyform','submitstory_advanced.thtml');
-        $storyform->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+        $storyform->set_var ('change_editormode', 'onchange="change_editmode(this);"');
         $storyform->set_var ('lang_expandhelp', $LANG24[67]);
         $storyform->set_var ('lang_reducehelp', $LANG24[68]);
         if ($story->EditElements('postmode') == 'html') {
@@ -159,6 +160,7 @@ function submitstory($topic = '')
             $storyform->set_var ('show_htmleditor', 'none');
         }
     }
+    $storyform->set_var ( 'xhtml', XHTML );
     $storyform->set_var ('site_url', $_CONF['site_url']);
     $storyform->set_var ('layout_url', $_CONF['layout_url']);
     $storyform->set_var ('lang_username', $LANG12[27]);
@@ -205,7 +207,7 @@ function submitstory($topic = '')
 
     if (($_CONF['skip_preview'] == 1) || ($_POST['mode'] == $LANG12[32])) {
         PLG_templateSetVars ('story', $storyform);
-        $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '">');
+        $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '"' . XHTML . '>');
     }
 
     $storyform->set_var('lang_preview', $LANG12[32]);

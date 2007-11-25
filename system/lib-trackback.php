@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-trackback.php,v 1.49 2007/09/02 07:50:56 dhaun Exp $
+// $Id: lib-trackback.php,v 1.50 2007/11/25 06:55:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
     die ('This file can not be used on its own!');
@@ -363,6 +363,7 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
 
     $template = new Template ($_CONF['path_layout'] . 'trackback');
     $template->set_file (array ('comment' => 'formattedcomment.thtml'));
+    $template->set_var ( 'xhtml', XHTML );
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
 
@@ -396,7 +397,7 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
         $template->set_var ('trackback_excerpt', $excerpt);
         $template->set_var ('trackback_excerpt_readmore',
                             $excerpt . ' ' . $readmore);
-        $template->set_var ('excerpt_br', '<br>');
+        $template->set_var ('excerpt_br', '<br' . XHTML . '>');
     }
 
     $deloption = '';
@@ -683,6 +684,7 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
     $template = new Template ($_CONF['path_layout'] . 'trackback');
     $template->set_file (array ('trackback' => 'trackback.thtml',
                                 'comment'   => 'trackbackcomment.thtml'));
+    $template->set_var ( 'xhtml', XHTML );
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
 
@@ -766,8 +768,8 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
         return $LANG_TRB['error_socket'];
     }
 
-    $toSend = 'url=' . rawurlencode ($url) . '&title=' . rawurlencode ($title)
-            . '&blog_name=' . rawurlencode ($blog) . '&excerpt='
+    $toSend = 'url=' . rawurlencode ($url) . '&amp;title=' . rawurlencode ($title)
+            . '&amp;blog_name=' . rawurlencode ($blog) . '&amp;excerpt='
             . rawurlencode ($excerpt);
     $charset = COM_getCharset ();
 
@@ -930,7 +932,7 @@ function TRB_sendNotificationEmail ($cid, $what = 'trackback')
         $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['pingback'];
     } else {
         $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['trackback'];
-        $mailbody .= "\n" . $LANG_TRB['delete_trackback'] . "<" . $_CONF['site_admin_url'] . '/trackback.php?mode=delete&cid=' . $cid . ">\n";
+        $mailbody .= "\n" . $LANG_TRB['delete_trackback'] . "<" . $_CONF['site_admin_url'] . '/trackback.php?mode=delete&amp;cid=' . $cid . ">\n";
     }
 
     COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);

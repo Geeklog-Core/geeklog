@@ -2,19 +2,19 @@
                                 <table cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
                                         <td class="alignright">{lang_blocktitle}:</td>
-                                        <td><input type="text" name="title" value="{block_title}" size="48"></td>
+                                        <td><input type="text" name="title" value="{block_title}" size="48"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_enabled}:</td>
-                                        <td><input type="checkbox" name="is_enabled" {is_enabled}></td>
+                                        <td><input type="checkbox" name="is_enabled" {is_enabled}{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright" style="vertical-align:top;">{lang_blockhelpurl}:</td>
-                                        <td><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"> {lang_includehttp}<br>{lang_explanation}</td>
+                                        <td><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"{xhtml}> {lang_includehttp}<br{xhtml}>{lang_explanation}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_blockname}:</td>
-                                        <td>{block_name}<input type="hidden" name="name" value="{block_name}"></td>
+                                        <td>{block_name}<input type="hidden" name="name" value="{block_name}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_topic}:</td>
@@ -37,21 +37,21 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_blockorder}:</td>
-                                        <td><input type="text" size="4" name="blockorder" value="{block_order}"> 0 - 9999</td>
+                                        <td><input type="text" size="4" name="blockorder" value="{block_order}"{xhtml}> 0 - 9999</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_blocktype}:</td>
-                                        <td>gldefault<input type="hidden" name="type" value="gldefault"></td>
+                                        <td>gldefault<input type="hidden" name="type" value="gldefault"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><hr></td>
+                                        <td colspan="2"><hr{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><b>{lang_accessrights}</b></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_owner}:</td>
-                                        <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+                                        <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_group}:</td>
@@ -76,10 +76,10 @@
                                     </tr>
                                     <tr><td>&nbsp;</td></tr>
                                     <tr>
-                                            <td colspan="2">
-                                            <input type="submit" value="{lang_save}" name="mode">
-                                            <input type="submit" value="{lang_cancel}" name="mode">
-                                            <input type="hidden" name="bid" value="{block_id}">
+                                        <td colspan="2">
+                                            <input type="submit" value="{lang_save}" name="mode"{xhtml}>
+                                            <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
+                                            <input type="hidden" name="bid" value="{block_id}"{xhtml}>
                                         </td>
                                     </tr>
                                 </table>

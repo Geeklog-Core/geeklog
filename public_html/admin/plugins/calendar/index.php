@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.29 2007/10/10 01:57:30 ospiess Exp $
+// $Id: index.php,v 1.30 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -89,6 +89,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
 
     $event_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/admin');
     $event_templates->set_file('editor','eventeditor.thtml');
+    $event_templates->set_var( 'xhtml', XHTML );
     $event_templates->set_var('site_url', $_CONF['site_url']);
     $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
@@ -132,7 +133,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
 
     if (!empty($A['eid'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $event_templates->set_var ('delete_option',
                                    sprintf ($delbutton, $jsconfirm));

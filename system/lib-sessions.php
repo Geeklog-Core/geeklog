@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.43 2006/10/24 08:09:50 ospiess Exp $
+// $Id: lib-sessions.php,v 1.44 2007/11/25 06:55:07 ospiess Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -282,7 +282,7 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
             return $sessid;
         }
     } else {
-        echo DB_error().": ".DB_error()."<BR>";
+        echo DB_error().": ".DB_error()."<br" . XHTML . ">";
         die("Insert failed in new_session()");
     }
     if ($_SESS_VERBOSE) COM_errorLog("*************leaving SESS_newSession*****************",1);
@@ -351,7 +351,7 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
     }
 
     if ($_SESS_VERBOSE) {
-        COM_errorLog("SQL in SESS_getUserIdFromSession is:\n<BR> $sql <BR>\n");
+        COM_errorLog("SQL in SESS_getUserIdFromSession is:\n<br" . XHTML . "> $sql <br" . XHTML . ">\n");
     }
 
     $result = DB_query($sql);

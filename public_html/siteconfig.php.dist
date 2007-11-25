@@ -2,7 +2,7 @@
 
 global $_CONF;
 
-$_CONF['path'] = '/path/to/geeklog/';
+$_CONF['path'] = 'W:/path/to/Geeklog/';
 $_CONF['path_system'] = $_CONF['path'] . 'system/';
 
 $_CONF['default_charset'] = 'iso-8859-1';

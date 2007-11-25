@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.74 2007/10/10 01:57:15 ospiess Exp $
+// $Id: functions.inc,v 1.75 2007/11/25 06:56:04 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -167,11 +167,11 @@ function phpblock_calendar( $help='', $title='' )
                     if( !$headline ) {
                         if($z == 2) {
                             if( $numRows > 0 ) {
-                                $retval .= '<p><b>' . $LANG_CAL_1[23] . '</b><br>';
+                                $retval .= '<p><b>' . $LANG_CAL_1[23] . '</b><br' . XHTML . '>';
                             }
                         } else {
                             if( $totalrows > 0 ) {
-                                $retval .= '<b>' . $LANG_CAL_1[24] . '</b><br>';
+                                $retval .= '<b>' . $LANG_CAL_1[24] . '</b><br' . XHTML . '>';
                             }
                         }
                         $headline = true;
@@ -212,7 +212,7 @@ function phpblock_calendar( $help='', $title='' )
                             if( $skipFirstBreak ) {
                                 $skipFirstBreak = false;
                             } else {
-                                $retval .= '<br>';
+                                $retval .= '<br' . XHTML . '>';
                             }
                             if( $todaysEvent ) {
                                 $retval .= '<span class="' . $todaysClassName . '">';
@@ -222,7 +222,7 @@ function phpblock_calendar( $help='', $title='' )
 
                             // If different start and end dates, then display end date:
                             if( $abbrDate1 != $abbrDate2 ) {
-                                $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
+                                $retval .= ' - <br' . XHTML . '><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
                             }
                             if( $todaysEvent ) {
                                 $retval .= '</span>';
@@ -435,10 +435,10 @@ function plugin_savesubmission_calendar($A)
     }
 
     // pseudo-formatted event description for the spam check
-    $spamcheck = COM_createLink($A['title'], $A['url']) . '<br>'
-               . $A['location'] . '<br>' . $A['address1'] . '<br>'
-               . $A['address2'] . '<br>' . $A['city'] . ', ' . $A['zipcode']
-               . '<br>' . $A['description'] . '</p>';
+    $spamcheck = COM_createLink($A['title'], $A['url']) . '<br' . XHTML . '>'
+               . $A['location'] . '<br' . XHTML . '>' . $A['address1'] . '<br' . XHTML . '>'
+               . $A['address2'] . '<br' . XHTML . '>' . $A['city'] . ', ' . $A['zipcode']
+               . '<br' . XHTML . '>' . $A['description'] . '</p>';
     $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
     if ($result > 0) {
         COM_updateSpeedlimit ('submit');
@@ -561,7 +561,7 @@ function plugin_savesubmission_calendar($A)
                      'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
                      "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
             $retval = COM_refresh ($_CONF['site_url']
-                                   . '/calendar/index.php?mode=personal&msg=17');
+                                   . '/calendar/index.php?mode=personal&amp;msg=17');
         } else {
             // anonymous users don't have personal calendars - bail
             COM_accessLog ("Attempt to write to the personal calendar of user '{$A['uid']}'.");
@@ -585,7 +585,7 @@ function plugin_getheadercode_calendar()
     // use the CSS only if we are on the plugin's pages
     if (substr_count ($_SERVER['PHP_SELF'], '/calendar/') > 0) {
         $str = '<link rel="stylesheet" type="text/css" href="'
-             . $_CONF['site_url'] . '/calendar/style.css">';
+             . $_CONF['site_url'] . '/calendar/style.css"' . XHTML . '>';
     }
 
     return $str;
@@ -631,10 +631,10 @@ function plugin_submit_calendar($mode = 'master')
         }
         $startat = '';
         if ($year > 0) {
-            $startat = '&datestart='
+            $startat = '&amp;datestart='
                      . urlencode (sprintf ('%04d-%02d-%02d', $year,
                                            $month, $day))
-                     . '&timestart=' . urlencode (sprintf ('%02d:00:00',
+                     . '&amp;timestart=' . urlencode (sprintf ('%02d:00:00',
                                                            $hour));
         }
 
@@ -735,6 +735,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_htmnotallowed', $LANG_CAL_1[44]);
     $eventform->set_var('lang_submit', $LANG_CAL_1[45]);
     $eventform->set_var('mode', $mode);
+    $eventform->set_var('xhtml', XHTML);
     $eventform->parse('theform', 'eventform');
     $retval .= $eventform->finish($eventform->get_var('theform'));
     $retval .= COM_endBlock();
@@ -812,13 +813,14 @@ function CALENDAR_listOld()
     $cal_templates->set_var ('lang_updatelist', $LANG_CAL_ADMIN[30]);
     $cal_templates->set_var ('lang_delete_sel', $LANG_ADMIN['delete_sel']);
     $cal_templates->set_var ('lang_delconfirm', $LANG_CAL_ADMIN[31]);
+    $cal_templates->set_var('xhtml', XHTML);
     $cal_templates->parse('form', 'form');
     $desc = $cal_templates->finish($cal_templates->get_var('form'));
 
     $text_arr = array(
         'has_menu' =>  true,
-        'has_extras'   => true,
-        'title'=> $LANG_CAL_ADMIN[11],
+        'has_extras' => true,
+        'title' => $LANG_CAL_ADMIN[11],
         'instructions' => $LANG_CAL_ADMIN[27] . $usr_time . "$desc",
         'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php?mode=batchdelete"
     );
@@ -865,14 +867,14 @@ function CALENDAR_deleteOld() {
     }
 
     if (count($event_list) == 0) {
-        $msg = $LANG_CAL_ADMIN[33] . "<br>";
+        $msg = $LANG_CAL_ADMIN[33] . "<br" . XHTML . ">";
     }
     $c = 0;
     if (isset($event_list) AND is_array($event_list)) {
         foreach($event_list as $delitem) {
             $delitem = COM_applyFilter($delitem);
             if (!CALENDAR_deleteEvent ($delitem)) {
-                $msg .= "<strong>{$LANG_CAL_ADMIN[34]} $delitem $LANG_CAL_ADMIN[35]}</strong><br>\n";
+                $msg .= "<strong>{$LANG_CAL_ADMIN[34]} $delitem $LANG_CAL_ADMIN[35]}</strong><br" . XHTML . ">\n";
             } else {
                 $c++; // count the deleted users
             }
@@ -881,7 +883,7 @@ function CALENDAR_deleteOld() {
     // Since this function is used for deletion only, its necessary to say that
     // zero were deleted instead of just leaving this message away.
     COM_numberFormat($c); // just in case we have more than 999)..
-    $msg .= "{$LANG_CAL_ADMIN[36]}: $c<br>\n";
+    $msg .= "{$LANG_CAL_ADMIN[36]}: $c<br" . XHTML . ">\n";
     return $msg;
 }
 
@@ -1645,7 +1647,7 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
 
     switch($fieldname) {
         case "delete":
-            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['eid']}]\" checked=\"checked\">";
+            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['eid']}]\" checked=\"checked\"" . XHTML . ">";
             break;
         case "edit":
             if ($access == 3) {

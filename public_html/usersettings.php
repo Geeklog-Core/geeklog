@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.164 2007/07/29 21:40:00 blaine Exp $
+// $Id: usersettings.php,v 1.165 2007/11/25 06:55:07 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -71,6 +71,7 @@ function edituser()
         $cnt++;
     }
     $navbar->set_selected($LANG_MYACCOUNT['pe_namepass']);
+    $preferences->set_var ( 'xhtml', XHTML );
     $preferences->set_var ('navbar', $navbar->generate());
 
     $preferences->set_var ('site_url', $_CONF['site_url']);
@@ -166,7 +167,11 @@ function edituser()
         $preferences->set_var ('username_option', '');
     }
 
-    $selection = '<select name="cooktime">' . LB;
+// @@@@ 2007/09/16 changed by dengen ----->>
+//  $selection = '<select name="cooktime">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----||
+    $selection = '<select id="cooktime" name="cooktime">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----<<
     $selection .= COM_optionList ($_TABLES['cookiecodes'], 'cc_value,cc_descr',
                                   $A['cookietimeout'], 0);
     $selection .= '</select>';
@@ -185,10 +190,10 @@ function edituser()
             $preferences->set_var ('display_photo', '');
         } else {
             if (empty ($A['photo'])) { // external avatar
-                $photo = '<br>' . $photo;
+                $photo = '<br' . XHTML . '>' . $photo;
             } else { // uploaded photo - add delete option
-                $photo = '<br>' . $photo . '<br>' . $LANG04[79]
-                       . '&nbsp;<input type="checkbox" name="delete_photo">'
+                $photo = '<br' . XHTML . '>' . $photo . '<br' . XHTML . '>' . $LANG04[79]
+                       . '&nbsp;<input type="checkbox" name="delete_photo"' . XHTML . '>'
                        . LB;
             }
             $preferences->set_var ('display_photo', $photo);
@@ -260,7 +265,7 @@ function confirmAccountDelete ($form_reqid)
     if (empty ($_POST['old_passwd']) ||
             (md5 ($_POST['old_passwd']) != $_USER['passwd'])) {
          return COM_refresh ($_CONF['site_url']
-                            . '/usersettings.php?mode=edit&msg=84');
+                            . '/usersettings.php?mode=edit&amp;msg=84');
     }
 
     $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
@@ -274,12 +279,12 @@ function confirmAccountDelete ($form_reqid)
                                COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= '<p>' . $LANG04[98] . '</p>' . LB;
     $retval .= '<form action="' . $_CONF['site_url']
-            . '/usersettings.php" method="POST"><div>' . LB;
+            . '/usersettings.php" method="post"><div>' . LB;
     $retval .= '<p align="center"><input type="submit" name="btnsubmit" value="'
-            . $LANG04[96] . '"></p>' . LB;
-    $retval .= '<input type="hidden" name="mode" value="deleteconfirmed">' . LB;
+            . $LANG04[96] . '"' . XHTML . '></p>' . LB;
+    $retval .= '<input type="hidden" name="mode" value="deleteconfirmed"' . XHTML . '>' . LB;
     $retval .= '<input type="hidden" name="account_id" value="' . $reqid
-            . '">' . LB;
+            . '"' . XHTML . '>' . LB;
     $retval .= '</div></form>' . LB;
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $retval .= COM_siteFooter ();
@@ -371,6 +376,7 @@ function editpreferences()
                                    'theme' => 'theme.thtml',
                                    'privacy' => 'privacyblock.thtml'
                                   ));
+    $preferences->set_var ( 'xhtml', XHTML );
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
 
@@ -476,7 +482,12 @@ function editpreferences()
             $similarLang = $tmp[0];
         }
 
-        $selection = '<select name="language">' . LB;
+// @@@@ 2007/09/16 changed by dengen ----->>
+//      $selection = '<select name="language">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----||
+        $selection = '<select id="language" name="language">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----<<
+
         foreach ($language as $langFile => $langName) {
             $selection .= '<option value="' . $langFile . '"';
             if (($langFile == $userlang) || (($has_valid_language == 0) &&
@@ -497,7 +508,11 @@ function editpreferences()
     }
 
     if ($_CONF['allow_user_themes'] == 1) {
-        $selection = '<select name="theme">' . LB;
+// @@@@ 2007/09/16 changed by dengen ----->>
+//      $selection = '<select name="theme">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----||
+        $selection = '<select id="theme" name="theme">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----<<
 
         if (empty ($_USER['theme'])) {
             $usertheme = $_CONF['theme'];
@@ -543,12 +558,20 @@ function editpreferences()
         $tz_obj = Date_TimeZone::getDefault();
         $timezone = $tz_obj->id;
     }
-    $selection = '<select name="tzid">' . LB;
+// @@@@ 2007/09/16 changed by dengen ----->>
+//  $selection = '<select name="tzid">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----||
+    $selection = '<select id="tzid" name="tzid">' . LB;
+// @@@@ 2007/09/16 changed by dengen -----<<
 
     $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
 
     while ($tDetails = current($T)) {
-        $tzcode = key($T);
+// @@@@ 2007/09/16 changed by dengen ----->>
+//      $tzcode = key($T);
+// @@@@ 2007/09/16 changed by dengen -----||
+        $tzcode = htmlspecialchars(key($T));
+// @@@@ 2007/09/16 changed by dengen -----<<
         $selection .= '<option value="' . $tzcode . '"';
         if ($timezone == $tzcode) {
                 $selection .= ' selected="selected"';
@@ -579,7 +602,11 @@ function editpreferences()
     }
 
     $preferences->set_var ('maxstories_value', $A['maxstories']);
-    $selection = '<select name="dfid">' . LB
+// @@@@ 2007/09/16 changed by dengen
+//  $selection = '<select name="dfid">' . LB
+// @@@@ 2007/09/16 changed by dengen
+    $selection = '<select id="dfid" name="dfid">' . LB
+// @@@@ 2007/09/16 changed by dengen
                . COM_optionList ($_TABLES['dateformats'], 'dfid,description',
                                  $A['dfid']) . '</select>';
     $preferences->set_var ('dateformat_selector', $selection);
@@ -639,7 +666,7 @@ function editpreferences()
         } else {
             $Selboxsize = 15;
         }
-        $preferences->set_var ('exclude_author_checklist', '<select name="selauthors[]" multiple size='. $Selboxsize. '>' . $selauthors . '</select>');
+        $preferences->set_var ('exclude_author_checklist', '<select name="selauthors[]" multiple="multiple" size="'. $Selboxsize. '">' . $selauthors . '</select>');
     } else {
         $preferences->set_var ('lang_authors', '');
         $preferences->set_var ('exclude_author_checklist', '');
@@ -697,13 +724,21 @@ function editpreferences()
     if (empty ($A['commentorder'])) $A['commentorder'] = 0;
     if (empty ($A['commentlimit'])) $A['commentlimit'] = 100;
 
-    $selection = '<select name="commentmode">';
+// @@@@ 2007/09/16 changed by dengen ----->>
+//  $selection = '<select name="commentmode">';
+// @@@@ 2007/09/16 changed by dengen -----||
+    $selection = '<select id="commentmode" name="commentmode">';
+// @@@@ 2007/09/16 changed by dengen -----<<
     $selection .= COM_optionList ($_TABLES['commentmodes'], 'mode,name',
                                   $A['commentmode']);
     $selection .= '</select>';
     $preferences->set_var ('displaymode_selector', $selection);
 
-    $selection = '<select name="commentorder">';
+// @@@@ 2007/09/16 changed by dengen ----->>
+//  $selection = '<select name="commentorder">';
+// @@@@ 2007/09/16 changed by dengen -----||
+    $selection = '<select id="commentorder" name="commentorder">';
+// @@@@ 2007/09/16 changed by dengen -----<<
     $selection .= COM_optionList ($_TABLES['sortcodes'], 'code,name',
                                   $A['commentorder']);
     $selection .= '</select>';
@@ -895,7 +930,7 @@ function saveuser($A)
                 (md5 ($A['old_passwd']) != $_USER['passwd'])) {
 
             return COM_refresh ($_CONF['site_url']
-                                . '/usersettings.php?mode=edit&msg=83');
+                                . '/usersettings.php?mode=edit&amp;msg=83');
         }
     }
 
@@ -930,7 +965,7 @@ function saveuser($A)
                            "uid", $_USER['uid']);
             } else {
                 return COM_refresh ($_CONF['site_url']
-                        . '/usersettings.php?mode=edit&msg=51');
+                        . '/usersettings.php?mode=edit&amp;msg=51');
             }
         }
     }
@@ -952,19 +987,19 @@ function saveuser($A)
         }
         elseif (md5 ($A['old_passwd']) != $_USER['passwd']) {
                 return COM_refresh ($_CONF['site_url']
-                        . '/usersettings.php?mode=edit&msg=68');
+                        . '/usersettings.php?mode=edit&amp;msg=68');
         }
         elseif ($A['passwd'] != $A['passwd_conf']) {
                 return COM_refresh ($_CONF['site_url']
-                        . '/usersettings.php?mode=edit&msg=67');
+                        . '/usersettings.php?mode=edit&amp;msg=67');
         }
     }
 
     // a quick spam check with the unfiltered field contents
     $profile = '<h1>' . $LANG04[1] . ' ' . $_USER['username'] . '</h1>'
              . '<p>'. COM_createLink($A['homepage'], $A['homepage'])
-             . '<br>' . $A['location'] . '<br>' . $A['sig'] . '<br>'
-             . $A['about'] . '<br>' . $A['pgpkey'] . '</p>';
+             . '<br' . XHTML . '>' . $A['location'] . '<br' . XHTML . '>' . $A['sig'] . '<br' . XHTML . '>'
+             . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
     if ($result > 0) {
         COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
@@ -983,13 +1018,13 @@ function saveuser($A)
 
     if (!COM_isEmail ($A['email'])) {
         return COM_refresh ($_CONF['site_url']
-                . '/usersettings.php?mode=edit&msg=52');
+                . '/usersettings.php?mode=edit&amp;msg=52');
     } else if ($A['email'] !== $A['email_conf']) {
         return COM_refresh ($_CONF['site_url']
-                . '/usersettings.php?mode=edit&msg=78');
+                . '/usersettings.php?mode=edit&amp;msg=78');
     } else if (emailAddressExists ($A['email'], $_USER['uid'])) {
         return COM_refresh ($_CONF['site_url']
-                . '/usersettings.php?mode=edit&msg=56');
+                . '/usersettings.php?mode=edit&amp;msg=56');
     } else {
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
@@ -1055,8 +1090,8 @@ function saveuser($A)
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
 
-        return COM_refresh ($_CONF['site_url'] . '/users.php?mode=profile&uid='
-                            . $_USER['uid'] . '&msg=5');
+        return COM_refresh ($_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+                            . $_USER['uid'] . '&amp;msg=5');
     }
 }
 
@@ -1083,6 +1118,7 @@ function userprofile ($user, $msg = 0)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -1112,6 +1148,7 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_file (array ('profile' => 'profile.thtml',
                                       'row'     => 'commentrow.thtml',
                                       'strow'   => 'storyrow.thtml'));
+    $user_templates->set_var ( 'xhtml', XHTML );
     $user_templates->set_var ('site_url', $_CONF['site_url']);
     $user_templates->set_var ('start_block_userprofile',
             COM_startBlock ($LANG04[1] . ' ' . $display_name));
@@ -1129,7 +1166,7 @@ function userprofile ($user, $msg = 0)
         global $_IMAGE_TYPE, $LANG_ADMIN;
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
-             . '" title="' . $LANG_ADMIN['edit'] . '">';
+             . '" title="' . $LANG_ADMIN['edit'] . '"' . XHTML . '>';
         $edit_link_url = COM_createLink(
             $edit_icon,
             "{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}"
@@ -1486,7 +1523,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     case 'savepreferences':
         savepreferences ($_POST);
         $display .= COM_refresh ($_CONF['site_url']
-                                 . '/usersettings.php?mode=preferences&msg=6');
+                                 . '/usersettings.php?mode=preferences&amp;msg=6');
         break;
 
     case 'confirmdelete':
@@ -1518,7 +1555,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     case 'plugin':
         PLG_profileExtrasSave ($_POST['plugin']);
         $display = COM_refresh ($_CONF['site_url']
-                                . '/usersettings.php?mode=edit&msg=5');
+                                . '/usersettings.php?mode=edit&amp;msg=5');
         break;
     default: // also if $mode == 'preferences' or 'comments'
         $display .= COM_siteHeader ('menu', $LANG01[49]);
@@ -1536,7 +1573,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
 } else {
     $display .= COM_siteHeader ('menu');
     $display .= COM_startBlock ($LANG04[70] . '!');
-    $display .= '<br>' . $LANG04[71] . '<br><br>';
+    $display .= '<br' . XHTML . '>' . $LANG04[71] . '<br' . XHTML . '><br' . XHTML . '>';
     $display .= COM_endBlock ();
     $display .= COM_siteFooter ();
 }

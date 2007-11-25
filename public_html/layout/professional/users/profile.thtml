@@ -2,7 +2,7 @@
     <table cellspacing="0" cellpadding="3">
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_username}:</b></td>
-            <td style="vertical-align:top;">{username} ({user_fullname}) {edit_link}<br> {user_photo}</td>
+            <td style="vertical-align:top;">{username} ({user_fullname}) {edit_link}<br{xhtml}> {user_photo}</td>
         </tr>
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_membersince}:</b></td>

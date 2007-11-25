@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:{lang_attribute} {lang_attribute}>
 <head>
     <title>{page_title}</title>
 </head>
@@ -14,9 +14,9 @@
 
     <p>{comments_with_count}</p>
 
-    <hr>
+    <hr{xhtml}>
 
-    <p>{site_name}<br>
+    <p>{site_name}<br{xhtml}>
         <a href="{article_url}">{article_url}</a>
     </p>
 

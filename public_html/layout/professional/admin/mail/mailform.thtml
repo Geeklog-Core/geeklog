@@ -1,8 +1,8 @@
-<form action="{php_self}" method="POST">
+<form action="{php_self}" method="post">
     {startblock_email}
     <table cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
         <tr>
-            <td><img src="{layout_url}/images/icons/mail.png" alt=""></td>
+            <td><img src="{layout_url}/images/icons/mail.png" alt=""{xhtml}></td>
             <td>{lang_note}</td>
         </tr>
     </table>
@@ -18,15 +18,15 @@
         </tr>
         <tr>
             <td class="alignright">{lang_from}:</td>
-            <td><input type="text" name="fra" value="{site_name}" size="40"></td>
+            <td><input type="text" name="fra" value="{site_name}" size="40"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright">{lang_replyto}:</td>
-            <td><input type="text" name="fraepost" value="{site_mail}" size="40"></td>
+            <td><input type="text" name="fraepost" value="{site_mail}" size="40"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright">{lang_subject}:</td>
-            <td><input type="text" name="subject" size="40"></td>
+            <td><input type="text" name="subject" size="40"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright" style="vertical-align:top;">{lang_body}:</td>
@@ -37,20 +37,20 @@
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td><input type="checkbox" name="html"> {lang_HTML}</td>
+            <td><input type="checkbox" name="html"{xhtml}> {lang_HTML}</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td><input type="checkbox" name="priority"> {lang_urgent}</td>
+            <td><input type="checkbox" name="priority"{xhtml}> {lang_urgent}</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td><input type="checkbox" name="overstyr"> {lang_ignoreusersettings}</td>
+            <td><input type="checkbox" name="overstyr"{xhtml}> {lang_ignoreusersettings}</td>
         </tr>
         <tr>
             <td colspan="2" class="aligncenter">
-                <input type="submit" value="{lang_send}">
-                <input type="hidden" name="mail" value="mail">
+                <input type="submit" value="{lang_send}"{xhtml}>
+                <input type="hidden" name="mail" value="mail"{xhtml}>
             </td>
         </tr>
     </table>

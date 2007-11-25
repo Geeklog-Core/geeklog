@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.8 2006/01/28 17:48:49 dhaun Exp $
+// $Id: check.php,v 1.9 2007/11/25 06:58:55 ospiess Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
@@ -54,7 +54,7 @@ echo '</head>' . LB;
 echo '<body text="#000000" bgcolor="#ffffff">' . LB;
 echo '<h2>Testing your Geeklog installation ...</h2>' . LB;
 
-echo '<p>Testing <b>logs</b> directory ' . $_CONF['path_log'] . ' ...<br>' . LB;
+echo '<p>Testing <b>logs</b> directory ' . $_CONF['path_log'] . ' ...<br' . XHTML . '>' . LB;
 $errfile = @fopen ($_CONF['path_log'] . 'error.log', 'a');
 if ($errfile) fclose ($errfile);
 $accfile = @fopen ($_CONF['path_log'] . 'access.log', 'a');
@@ -71,7 +71,7 @@ if (!$errfile || !$accfile) {
     if (!$accfile) {
         echo '<b>access.log</b> ';
     }
-    echo 'for writing.</font><br>Please check that you have set the <b>logs</b> directory <em>and</em> the files <b>error.log</b> and <b>access.log</b> in that directory to <b>chmod 775</b>.' . LB;
+    echo 'for writing.</font><br' . XHTML . '>Please check that you have set the <b>logs</b> directory <em>and</em> the files <b>error.log</b> and <b>access.log</b> in that directory to <b>chmod 775</b>.' . LB;
     $logPerms = sprintf ("%3o", @fileperms ($_CONF['path_log']) & 0777);
     $errPerms = sprintf ("%3o", @fileperms ($_CONF['path_log'] . 'error.log') & 0777);
     $accPerms = sprintf ("%3o", @fileperms ($_CONF['path_log'] . 'access.log') & 0777);
@@ -86,10 +86,10 @@ if (!$errfile || !$accfile) {
     $successful++;
 }
 
-echo '<p>Testing <b>backend</b> directory ' . SYND_getFeedPath() . ' ...<br>' . LB;
+echo '<p>Testing <b>backend</b> directory ' . SYND_getFeedPath() . ' ...<br' . XHTML . '>' . LB;
 if ($_CONF['backend'] > 0) {
     if (!$file = @fopen ($_CONF['rdf_file'], 'w')) {
-        echo '<font color="#ff0000">Could not open the RSS file ' . $_CONF['rdf_file'] . ' for writing.</font><br>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rss</b> file in that directory to <b>chmod 775</b>.' . LB;
+        echo '<font color="#ff0000">Could not open the RSS file ' . $_CONF['rdf_file'] . ' for writing.</font><br' . XHTML . '>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rss</b> file in that directory to <b>chmod 775</b>.' . LB;
         $endPerms = sprintf ("%3o", @fileperms (SYND_getFeedPath()) & 0777);
         $rdfPerms = sprintf ("%3o", @fileperms ($_CONF['rdf_file']) & 0777);
         echo '<table cellspacing="0" cellpadding="0" border="0">' . LB;
@@ -108,9 +108,9 @@ if ($_CONF['backend'] > 0) {
 }
 
 if ($_CONF['allow_user_photo'] > 0) {
-    echo '<p>Testing <b>userphotos</b> directory ' . $_CONF['path_images'] . 'userphotos/ ...<br>' . LB;
+    echo '<p>Testing <b>userphotos</b> directory ' . $_CONF['path_images'] . 'userphotos/ ...<br' . XHTML . '>' . LB;
     if (!$file = @fopen ($_CONF['path_images'] . 'userphotos/test.gif', 'w')) {
-        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'userphotos/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'userphotos/</b>.</font><br' . XHTML . '>Please make sure this directory exists and is set to <b>chmod 775</b>.<br' . XHTML . '>' . LB; 
         echo 'Current permissions for <b>userphotos</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_images'] . 'userphotos/') & 0777);
         $failed++;
     } else {
@@ -125,9 +125,9 @@ if ($_CONF['allow_user_photo'] > 0) {
 }
 
 if ($_CONF['maximagesperarticle'] > 0) {
-    echo '<p>Testing <b>articles</b> directory ' . $_CONF['path_images'] . 'articles/ ...<br>' . LB;
+    echo '<p>Testing <b>articles</b> directory ' . $_CONF['path_images'] . 'articles/ ...<br' . XHTML . '>' . LB;
     if (!$file = @fopen ($_CONF['path_images'] . 'articles/test.gif', 'w')) {
-        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'articles/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'articles/</b>.</font><br' . XHTML . '>Please make sure this directory exists and is set to <b>chmod 775</b>.<br' . XHTML . '>' . LB; 
         echo 'Current permissions for <b>articles</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_images'] . 'articles/') & 0777);
         $failed++;
     } else {
@@ -141,9 +141,9 @@ if ($_CONF['maximagesperarticle'] > 0) {
     $notTested++;
 }
 
-echo '<p>Testing <b>topics</b> directory ' . $_CONF['path_images'] . 'topics/ ...<br>' . LB;
+echo '<p>Testing <b>topics</b> directory ' . $_CONF['path_images'] . 'topics/ ...<br' . XHTML . '>' . LB;
 if (!$file = @fopen ($_CONF['path_images'] . 'topics/test.gif', 'w')) {
-    echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'topics/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+    echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_images'] . 'topics/</b>.</font><br' . XHTML . '>Please make sure this directory exists and is set to <b>chmod 775</b>.<br' . XHTML . '>' . LB; 
     echo 'Current permissions for <b>topics</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_images'] . 'articles/') & 0777);
     $failed++;
 } else {
@@ -156,9 +156,9 @@ if (!$file = @fopen ($_CONF['path_images'] . 'topics/test.gif', 'w')) {
 /*
 
 if ($_CONF['pdf_enabled'] != 0) {
-    echo '<p>Testing <b>pdfs</b> directory ' . $_CONF['path_pdf'] . ' ...<br>' . LB;
+    echo '<p>Testing <b>pdfs</b> directory ' . $_CONF['path_pdf'] . ' ...<br' . XHTML . '>' . LB;
     if (!$file = @fopen ($_CONF['path_pdf'] . 'test.pdf', 'w')) {
-        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_pdf'] . '</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_pdf'] . '</b>.</font><br' . XHTML . '>Please make sure this directory exists and is set to <b>chmod 775</b>.<br' . XHTML . '>' . LB; 
         echo 'Current permissions for <b>pdfs</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_pdf']) & 0777);
         $failed++;
     } else {
@@ -175,9 +175,9 @@ if ($_CONF['pdf_enabled'] != 0) {
 */
 
 if ($_CONF['allow_mysqldump'] == 1) {
-    echo '<p>Testing <b>backups</b> directory ' . $_CONF['backup_path'] . ' ...<br>' . LB;
+    echo '<p>Testing <b>backups</b> directory ' . $_CONF['backup_path'] . ' ...<br' . XHTML . '>' . LB;
     if (!$file = @fopen ($_CONF['backup_path'] . 'test.txt', 'w')) {
-        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['backup_path'] . '</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['backup_path'] . '</b>.</font><br' . XHTML . '>Please make sure this directory exists and is set to <b>chmod 775</b>.<br' . XHTML . '>' . LB; 
         echo 'Current permissions for <b>backups</b>: ' . sprintf ("%3o", @fileperms ($_CONF['backup_path']) & 0777);
         $failed++;
     } else {
@@ -191,9 +191,9 @@ if ($_CONF['allow_mysqldump'] == 1) {
     $notTested++;
 }
 
-echo '<p>Testing <b>data</b> directory ' . $_CONF['path_data'] . ' ...<br>' . LB;
+echo '<p>Testing <b>data</b> directory ' . $_CONF['path_data'] . ' ...<br' . XHTML . '>' . LB;
 if (!$file = @fopen ($_CONF['path_data'] . 'test.txt', 'w')) {
-    echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_data'] . '</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+    echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_data'] . '</b>.</font><br' . XHTML . '>Please make sure this directory exists and is set to <b>chmod 775</b>.<br' . XHTML . '>' . LB; 
     echo 'Current permissions for <b>data</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_data']) & 0777);
     $failed++;
 } else {

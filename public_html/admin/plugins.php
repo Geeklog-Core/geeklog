@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.78 2007/10/29 14:14:48 ospiess Exp $
+// $Id: plugins.php,v 1.79 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -101,6 +101,7 @@ function plugineditor ($pi_name, $confirmed = 0)
 
     $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file('editor', 'editor.thtml');
+    $plg_templates->set_var( 'xhtml', XHTML );
     $plg_templates->set_var('site_url', $_CONF['site_url']);
     $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $plg_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -112,7 +113,7 @@ function plugineditor ($pi_name, $confirmed = 0)
     $plg_templates->set_var ('pi_icon', PLG_getIcon ($pi_name));
     if (!empty($pi_name)) {
         $plg_templates->set_var ('delete_option', '<input type="submit" value="'
-                                 . $LANG_ADMIN['delete'] . '" name="mode">');
+                                 . $LANG_ADMIN['delete'] . '" name="mode"' . XHTML . '>');
     }
     $plugin_code_version = PLG_chkVersion($pi_name);
     if (empty ($plugin_code_version)) {
@@ -126,7 +127,7 @@ function plugineditor ($pi_name, $confirmed = 0)
         $plg_templates->set_var ('update_option', '');
     } else {
         $plg_templates->set_var ('update_option', '<input type="submit" value="'
-                                 . $LANG32[34] . '" name="mode">');
+                                 . $LANG32[34] . '" name="mode"' . XHTML . '>');
     }
     $plg_templates->set_var('confirmed', $confirmed);
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
@@ -420,7 +421,7 @@ function listplugins ()
     );
     // this is a dummy-variable so we know the form has been used if all plugins should be disabled
     // in order to disable the last one.
-    $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true">');
+    $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true"' . XHTML . '>');
 
     $retval .= ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
                        $text_arr, $query_arr, $defsort_arr, '', '', '', $form_arr);

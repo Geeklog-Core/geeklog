@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php.dist,v 1.1 2007/03/16 14:22:52 tony Exp $
+// $Id: lib-custom.php.dist,v 1.2 2007/11/25 06:55:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -107,7 +107,7 @@ function CUSTOM_loginErrorHandler($msg='') {
     } elseif ($msg == '') {
         $msg = 81;
     }
-    $retval = COM_refresh($_CONF['site_url'] .'/index.php?mode=loginfail&msg='.$msg);
+    $retval = COM_refresh($_CONF['site_url'] .'/index.php?mode=loginfail&amp;msg='.$msg);
     echo $retval;
     exit;
 }
@@ -232,9 +232,9 @@ function CUSTOM_userEdit($uid)
      </tr>';
     $retval .= '<tr>
         <td align="right"><b>Custom Fields:</b></td>
-        <td><input type="text" name="custom1" size="50" value="' . $var .'"></td>
+        <td><input type="text" name="custom1" size="50" value="' . $var .'"' . XHTML . '></td>
      </tr>';
-    $retval .= '<tr><td colspan="2"><hr></td></tr>';
+    $retval .= '<tr><td colspan="2"><hr' . XHTML . '></td></tr>';
 
     return $retval;
 }
@@ -277,11 +277,12 @@ function CUSTOM_userForm ($msg = '')
 
     $post_url = $_CONF['site_url'] . '/users.php';
     $postmode = 'create';
-    $submitbutton = '<input type="submit" value="Register Now!">';
+    $submitbutton = '<input type="submit" value="Register Now!"' . XHTML . '>';
     $message = "<blockquote style=\"padding-top:10px;\"><b>Please complete the application below. Once you have completed the application, click the Register Now! button and the application will be processed immediately.</b></blockquote>";
 
     $user_templates = new Template ($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');
+    $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('post_url', $post_url);

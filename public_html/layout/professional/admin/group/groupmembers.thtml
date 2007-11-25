@@ -2,7 +2,7 @@
 <table cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
     <tr>
         <td rowspan="2">
-            <img src="{layout_url}/images/icons/group.png" alt="">
+            <img src="{layout_url}/images/icons/group.png" alt=""{xhtml}>
         </td>
         <td><a href="{group_listing_url}">{lang_grouplist}</a> | <a href="{site_admin_url}">{lang_adminhome}</a>
         </td>
@@ -21,26 +21,26 @@
             </tr>
             <tr>
                 <td class="alignright" width="40%" style="padding-right:5px;">
-                    <select multiple size="10" name="fieldFrom" style="width: 15em; height: 20em; padding: 2px;" onDblClick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">{sitemembers}</select>
+                    <select multiple="multiple" size="10" name="fieldFrom" style="width: 15em; height: 20em; padding: 2px;" ondblclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">{sitemembers}</select>
                 </td>
                 <td class="aligncenter">
-                    <input type="button" name="right" value="{LANG_add}" onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">
-                    <br><br>
-                    <input type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">
-                    <br><br>
+                    <input type="button" name="right" value="{LANG_add}" onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)"{xhtml}>
+                    <br{xhtml}><br{xhtml}>
+                    <input type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)"{xhtml}>
+                    <br{xhtml}><br{xhtml}>
                 </td>
                 <td width="40%" class="alignleft" style="padding-left:5px;">
-                    <select multiple size="10" name="fieldTo" style="width: 15em; height: 20em; padding: 2px;" onDblClick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">{group_list}</select>
+                    <select multiple="multiple" size="10" name="fieldTo" style="width: 15em; height: 20em; padding: 2px;" ondblclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">{group_list}</select>
                 </td>
             </tr>
             <tr>
-                <td class="aligncenter" colspan="3"><br>
-                    <input type="hidden" name="mode" value="savegroupusers">
-                    <input type="hidden" name="groupmembers">
-                    <input type="hidden" name="grp_id" value="{group_id}">
-                    <input type="hidden" name="chk_showall" value="{show_all}">
-                    <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)">&nbsp;&nbsp;
-                    <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)">
+                <td class="aligncenter" colspan="3"><br{xhtml}>
+                    <input type="hidden" name="mode" value="savegroupusers"{xhtml}>
+                    <input type="hidden" name="groupmembers"{xhtml}>
+                    <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
+                    <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+                    <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)"{xhtml}>&nbsp;&nbsp;
+                    <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)"{xhtml}>
                 </td>
             </tr>
         </table>

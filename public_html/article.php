@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.93 2007/08/19 16:28:02 dhaun Exp $
+// $Id: article.php,v 1.94 2007/11/25 06:55:07 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -143,6 +143,7 @@ if ($A['count'] > 0) {
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
         $story_template = new Template ($_CONF['path_layout'] . 'article');
         $story_template->set_file ('article', 'printable.thtml');
+        $story_template->set_var ( 'xhtml', XHTML );
         $story_template->set_var ('page_title',
                 $_CONF['site_name'] . ': ' . $story->displayElements('title'));
         $story_template->set_var ( 'story_title', $story->DisplayElements( 'title' ) );
@@ -188,6 +189,46 @@ if ($A['count'] > 0) {
         }
         $story_template->set_var ('lang_full_article', $LANG08[33]);
         $story_template->set_var ('article_url', $articleUrl);
+
+        $langAttr = '';
+        if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
+        {
+            $langId = COM_getLanguageId();
+        }
+        else
+        {
+            // try to derive the language id from the locale
+            $l = explode( '.', $_CONF['locale'] );
+            $langId = $l[0];
+        }
+        if( !empty( $langId ))
+        {
+            $l = explode( '-', str_replace( '_', '-', $langId ));
+            if(( count( $l ) == 1 ) && ( strlen( $langId ) == 2 ))
+            {
+                $langAttr = 'lang="' . $langId . '"';
+            }
+            else if( count( $l ) == 2 )
+            {
+                if(( $l[0] == 'i' ) || ( $l[0] == 'x' ))
+                {
+                    $langId = implode( '-', $l );
+                    $langAttr = 'lang="' . $langId . '"';
+                }
+                else if( strlen( $l[0] ) == 2 )
+                {
+                    $langId = implode( '-', $l );
+                    $langAttr = 'lang="' . $langId . '"';
+                }
+                else
+                {
+                    $langId = $l[0];
+                }
+            }
+        }
+        $story_template->set_var( 'lang_id', $langId );
+        $story_template->set_var( 'lang_attribute', $langAttr );
+
         $story_template->parse ('output', 'article');
         $display = $story_template->finish ($story_template->get_var('output'));
     } else {
@@ -221,6 +262,7 @@ if ($A['count'] > 0) {
         $story_template = new Template($_CONF['path_layout'] . 'article');
         $story_template->set_file('article','article.thtml');
 
+        $story_template->set_var( 'xhtml', XHTML );
         $story_template->set_var('site_url', $_CONF['site_url']);
         $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_template->set_var('story_id', $story->getSid());

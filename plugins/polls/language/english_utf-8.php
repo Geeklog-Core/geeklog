@@ -46,9 +46,8 @@ $LANG_POLLS = array(
     'answer_all'        => 'Please answer all remaining questions',
     'not_saved'         => 'Result not saved',
     'upgrade1'          => 'You installed a new version of the Polls plugin. Please',
-    'upgrade2'          => 'upgrade'
-
-
+    'upgrade2'          => 'upgrade',
+    'editinstructions'  => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################
@@ -92,7 +91,7 @@ $LANG25 = array(
     35 => 'This poll has',
     36 => 'more questions.',
     37 => 'Hide results while poll is open',
-    38 => 'While the poll is open, only the owner & root can see the results',
+    38 => 'While the poll is open, only the owner &amp; root can see the results',
     39 => 'The topic will be only displayed if there are more than 1 questions.',
     40 => 'See all answers to this poll'
 );

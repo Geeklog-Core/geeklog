@@ -11,7 +11,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.8 2007/05/06 08:21:11 dhaun Exp $
+* $Id: EditHeader.Admin.class.php,v 1.9 2007/11/25 06:56:05 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
@@ -62,7 +62,7 @@ class EditHeader extends BaseAdmin {
             }
         }
 
-        $display = '<hr><p><b>';
+        $display = '<hr' . XHTML . '><p><b>';
         $display .= $LANG_SX00['headerblack'];
         $display .= '</b></p><ul>';
         $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' ORDER BY value");
@@ -77,14 +77,14 @@ class EditHeader extends BaseAdmin {
         $display .= '</ul><p>' . $LANG_SX00['e1'] . '</p>';
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>';
 
-        $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditHeader">';
+        $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditHeader">';
         $display .= '<table border="0" width="100%">' . LB;
         $display .= '<tr><td align="right"><b>Header:</b></td>' . LB;
-        $display .= '<td><input type="text" size="40" name="header-name"> e.g. <tt>User-Agent</tt></td></tr>' . LB;
+        $display .= '<td><input type="text" size="40" name="header-name"' . XHTML . '> e.g. <tt>User-Agent</tt></td></tr>' . LB;
         $display .= '<tr><td align="right"><b>Content:</b></td>' . LB;
-        $display .= '<td><input type="text" size="40" name="header-value"> e.g. <tt>Mozilla</tt></td></tr>' . LB;
+        $display .= '<td><input type="text" size="40" name="header-value"' . XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB;
         $display .= '</table>' . LB;
-        $display .= '<p><input type="Submit" name="paction" value="' . $LANG_SX00['addentry'] . '"></p>';
+        $display .= '<p><input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '"' . XHTML . '></p>';
         $display .= '</form>';
         return $display;
     }

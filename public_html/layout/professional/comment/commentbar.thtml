@@ -1,24 +1,24 @@
 <div class="block-divider"> </div>
-<a name="comments"></a>
+<a id="comments" name="comments"></a>
 <div class="commentbar-line1">
     {story_title} | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" rel="nofollow" class="commentbar1">{lang_login_logout}</a>
 </div>
 <div class="commentbar-line2">
-    <form style="display: inline" action="{parent_url}" method="POST">
+    <form style="display: inline" action="{parent_url}" method="post">
         <div>
             {hidden_field}
             {order_selector}
             {mode_selector}
-            <input type="submit" value="{lang_refresh}">
-            <input type="hidden" name="type" value="{comment_type}">
+            <input type="submit" value="{lang_refresh}"{xhtml}>
+            <input type="hidden" name="type" value="{comment_type}"{xhtml}>
         </div>
     </form>
-    <form style="display: inline" action="{site_url}/comment.php" method="POST">
+    <form style="display: inline" action="{site_url}/comment.php" method="post">
         <div>
-            <input type="hidden" name="sid" value="{sid}">
-            <input type="hidden" name="pid" value="0">
-            <input type="hidden" name="type" value="{comment_type}">
-            <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}">
+            <input type="hidden" name="sid" value="{sid}"{xhtml}>
+            <input type="hidden" name="pid" value="0"{xhtml}>
+            <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+            <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}"{xhtml}>
         </div>
     </form>
 </div>

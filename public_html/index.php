@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.95 2007/07/29 07:50:07 dhaun Exp $
+// $Id: index.php,v 1.96 2007/11/25 06:55:07 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -136,10 +136,10 @@ if($topic)
 {
     $header = '<link rel="microsummary" href="' . $_CONF['site_url']
             . '/index.php?display=microsummary&amp;topic=' . urlencode($topic)
-            . '" title="Microsummary">';
+            . '" title="Microsummary"' . XHTML . '>';
 } else {
     $header = '<link rel="microsummary" href="' . $_CONF['site_url']
-            . '/index.php?display=microsummary" title="Microsummary">';
+            . '/index.php?display=microsummary" title="Microsummary"' . XHTML . '>';
 }
 $display .= COM_siteHeader('menu', '', $header);
 if (isset ($_GET['msg'])) {
@@ -161,6 +161,7 @@ if (!empty ($displayBlock)) {
     if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
             $topspan = new Template($_CONF['path_layout']);
             $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
+			$topspan->set_var( 'xhtml', XHTML );
             $topspan->parse ('output', 'topspan');
             $display .= $topspan->finish ($topspan->get_var('output'));
             $GLOBALS['centerspan'] = true;

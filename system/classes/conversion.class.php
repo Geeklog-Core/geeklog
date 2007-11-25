@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: conversion.class.php,v 1.2 2006/09/06 05:31:01 ospiess Exp $
+// $Id: conversion.class.php,v 1.3 2007/11/25 06:59:56 ospiess Exp $
 
 class conversion
 {
@@ -93,11 +93,11 @@ class conversion
             $file=str_replace("1!ZYOUNK!1","=\"",$file);
 
             $formvert['optsel'][1]='/<input(.*)type=\"radio\"(.*)value=\"(.*)\"(.*)(SELECTED|CHECKED)(.*)>(.*)<\/input>/i';
-            $formvert['optsel'][2]='<input\\1 type="hidden"\\2 value="\\3"><img src="'.$_CONF['host'].$_CONF['urlpath'].'../images/rchecked.gif"><B>\\7</B>';
+            $formvert['optsel'][2]='<input\\1 type="hidden"\\2 value="\\3"><img src="'.$_CONF['host'].$_CONF['urlpath'].'../images/rchecked.gif"><b>\\7</b>';
             $file = preg_replace($formvert['optsel'][1],$formvert['optsel'][2],$file);
 
             $formvert['optsel'][1]='/<input(.*)type=\"checkbox\"(.*)value=\"(.*)\"(.*)(SELECTED|CHECKED)(.*)>(.*)<\/input>/i';
-            $formvert['optsel'][2]='<input\\1 type="hidden"\\2 value="\\3"><img src="'.$_CONF['host'].$_CONF['urlpath'].'../images/checked.gif"><B>\\7</B>';
+            $formvert['optsel'][2]='<input\\1 type="hidden"\\2 value="\\3"><img src="'.$_CONF['host'].$_CONF['urlpath'].'../images/checked.gif"><b>\\7</b>';
             $file = preg_replace($formvert['optsel'][1],$formvert['optsel'][2],$file);
 
             $formvert['optnonsel'][1]='/<input(.*)type="radio"(.*)value="(.*)"(.*)>(.*)<\/input>/i';
@@ -139,8 +139,8 @@ class conversion
             $file=preg_replace('/<input(.*?)type="submit"(.*?)>/i','',$file);
         } else {
             $formvert['textbox'][1]='/<input(.*?)type="submit"(.*?)value="(.*?)"(.*?)>/i';
-            $formvert['textbox'][2]='<table bgcolor="#555555" border=1 class="borderon" cellpadding="1"\\4><tr><td>';
-            $formvert['textbox'][2].='<table bgcolor="#eeeeee" border=0 class="borderon" cellpadding="0"\\4><tr><td>\\3</td></tr></table>';
+            $formvert['textbox'][2]='<table bgcolor="#555555" border="1" class="borderon" cellpadding="1"\\4><tr><td>';
+            $formvert['textbox'][2].='<table bgcolor="#eeeeee" border="0" class="borderon" cellpadding="0"\\4><tr><td>\\3</td></tr></table>';
             $formvert['textbox'][2].='</td></tr></table>';
             $file = preg_replace($formvert['textbox'][1],$formvert['textbox'][2],$file);
         }

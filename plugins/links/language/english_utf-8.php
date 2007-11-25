@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english_utf-8.php,v 1.8 2007/08/29 05:25:31 ospiess Exp $
+# $Id: english_utf-8.php,v 1.9 2007/11/25 06:56:34 ospiess Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -46,9 +46,9 @@
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#                 XX - file id number
+#                 YY - phrase id number
 ###############################################################################
 /**
 * the link plugin's lang array
@@ -194,8 +194,10 @@ $LANG_LINKS_ADMIN = array(
     53 => 'List links',
     54 => 'Category Manager',
     55 => 'Edit categories below. Note that you cannot delete a category that contains other categories or links - you should delete these first, or move them to another category.',
-    56 => 'Category Editor'
-
+    56 => 'Category Editor',
+    57 => 'Not validated yet',
+    58 => 'Validate now',
+    59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>'
 );
 
 $LANG_LINKS_STATUS = array(

@@ -156,7 +156,18 @@ $LANG_CAL_ADMIN = array(
     22 => '削除',
     23 => '開始日時をただしく入力してください。',
     24 => '終了日時をただしく入力してください。',
-    25 => '終了日時をただしく入力してください。'
+    25 => '終了日時をただしく入力してください。',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(

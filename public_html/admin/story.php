@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.264 2007/10/11 09:48:57 ospiess Exp $
+// $Id: story.php,v 1.265 2007/11/25 06:58:55 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -297,7 +297,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
-        $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+        $story_templates->set_var ( 'xhtml', XHTML );
+        $story_templates->set_var ('change_editormode', 'onchange="change_editmode(this);"');
 
         require_once ($_CONF['path_system'] . 'classes/navbar.class.php');
 
@@ -368,7 +369,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $oldsid = $story->EditElements('originalSid');
     if (!empty ($oldsid)) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $story_templates->set_var ('delete_option',
                                    sprintf ($delbutton, $jsconfirm));
@@ -377,7 +378,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
     if ($mode == 'editsubmission') {
         $story_templates->set_var ('submission_option',
-                '<input type="hidden" name="type" value="submission">');
+                '<input type="hidden" name="type" value="submission"' . XHTML . '>');
     }
     $story_templates->set_var ('lang_author', $LANG24[7]);
     $storyauthor = COM_getDisplayName ($story->EditElements('uid'));
@@ -459,7 +460,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $ampm_select = COM_getAmPmFormSelection ('expire_ampm', $ampm);
     if (empty ($ampm_select)) {
         // have a hidden field to 24 hour mode to prevent JavaScript errors
-        $ampm_select = '<input type="hidden" name="expire_ampm" value="">';
+        $ampm_select = '<input type="hidden" name="expire_ampm" value=""' . XHTML . '>';
     }
     $story_templates->set_var ('expireampm_selection', $ampm_select);
 
@@ -547,7 +548,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
                           . COM_optionList ($_TABLES['featurecodes'], 'code,name', $story->EditElements('featured'))
                           . "</select>" . LB;
     } else {
-        $featured_options = "<input type=\"hidden\" name=\"featured\" value=\"0\">";
+        $featured_options = "<input type=\"hidden\" name=\"featured\" value=\"0\"" . XHTML . ">";
     }
     $story_templates->set_var ('featured_options',$featured_options);
     $story_templates->set_var ('frontpage_options',
@@ -596,22 +597,22 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
                         $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'])
                     . '&nbsp;&nbsp;&nbsp;' . $LANG_ADMIN['delete']
                     . ': <input type="checkbox" name="delete[' .$I['ai_img_num']
-                    . ']"><br>';
+                    . ']"' . XHTML . '><br' . XHTML . '>';
             }
         }
 
         $newallowed = $_CONF['maximagesperarticle'] - $icount;
         for ($z = $icount + 1; $z <= $_CONF['maximagesperarticle']; $z++) {
-            $fileinputs .= $z . ') <input type="file" name="file' . $z . '">';
+            $fileinputs .= $z . ') <input type="file" name="file' . $z . '"' . XHTML . '>';
             if ($z < $_CONF['maximagesperarticle']) {
-                $fileinputs .= '<br>';
+                $fileinputs .= '<br' . XHTML . '>';
             }
         }
-        $fileinputs .= '<br>' . $LANG24[51];
+        $fileinputs .= '<br' . XHTML . '>' . $LANG24[51];
         if ($_CONF['allow_user_scaling'] == 1) {
             $fileinputs .= $LANG24[27];
         }
-        $fileinputs .= $LANG24[28] . '<br>';
+        $fileinputs .= $LANG24[28] . '<br' . XHTML . '>';
     }
     $story_templates->set_var('saved_images', $saved_images);
     $story_templates->set_var('image_form_elements', $fileinputs);

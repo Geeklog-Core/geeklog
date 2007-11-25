@@ -1,1 +1,1 @@
-<th class="{class} nowrap"{th_subtags}>{header_text}</th>
+<th class="{class}" nowrap="nowrap"{th_subtags}>{header_text}</th>

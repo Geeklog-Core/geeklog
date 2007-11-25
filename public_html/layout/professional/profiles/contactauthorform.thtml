@@ -3,19 +3,19 @@
     <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
             <td class="alignright"><b>{lang_fromname}:</b></td>
-            <td><input type="text" name="from" size="40" maxlength="96" value="{name}"></td>
+            <td><input type="text" name="from" size="40" maxlength="96" value="{name}"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright"><b>{lang_fromemailaddress}:</b></td>
-            <td><input type="text" name="fromemail" size="40" maxlength="96" value="{email}"></td>
+            <td><input type="text" name="fromemail" size="40" maxlength="96" value="{email}"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright"><b>{lang_toname}:</b></td>
-            <td><input type="text" name="to" size="40" maxlength="96" value="{toname}"></td>
+            <td><input type="text" name="to" size="40" maxlength="96" value="{toname}"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright"><b>{lang_toemailaddress}:</b></td>
-            <td><input type="text" name="toemail" size="40" maxlength="96" value="{toemail}"></td>
+            <td><input type="text" name="toemail" size="40" maxlength="96" value="{toemail}"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_shortmessage}:</b></td>
@@ -23,10 +23,10 @@
         </tr>
         {captcha}
         <tr>
-            <td colspan="2" class="warning aligncenter"><br>{lang_warning}<br><br>
-                <input type="hidden" name="sid" value="{story_id}">
-                <input type="hidden" name="what" value="sendstory">
-                <input type="submit" value="{lang_sendmessage}">
+            <td colspan="2" class="warning aligncenter"><br{xhtml}>{lang_warning}<br{xhtml}><br{xhtml}>
+                <input type="hidden" name="sid" value="{story_id}"{xhtml}>
+                <input type="hidden" name="what" value="sendstory"{xhtml}>
+                <input type="submit" value="{lang_sendmessage}"{xhtml}>
             </td>
         </tr>
     </table>

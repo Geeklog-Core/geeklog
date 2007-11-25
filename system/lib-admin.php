@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.123 2007/10/10 02:32:49 ospiess Exp $
+// $Id: lib-admin.php,v 1.124 2007/11/25 06:55:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -81,6 +81,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
             'field' => 'field.thtml'
         )
     );
+    $admin_templates->set_var( 'xhtml', XHTML );
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
@@ -108,7 +109,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $min_data = $options['chkminimum'];
     }
     if (count($data_arr) > $min_data AND is_array($options) AND $options['chkdelete']) {
-        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
+        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);"' . XHTML . '>');
         $admin_templates->set_var('class', "admin-list-field");
         $admin_templates->set_var('show_deleteimage', '');
         $admin_templates->parse('header_row', 'header', true);
@@ -141,7 +142,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('show_message', 'display:none;');
         for ($i = 0; $i < count($data_arr); $i++) {
             if (count($data_arr) > $min_data AND is_array($options) AND $options['chkdelete']) {
-                $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'">');
+                $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $data_arr[$i][$options['chkfield']].'"' . XHTML . '>');
                 $admin_templates->set_var('class', "admin-list-field");
                 $admin_templates->parse('item_field', 'field', true);
             }
@@ -269,6 +270,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     ));
 
     # insert std. values into the template
+    $admin_templates->set_var( 'xhtml', XHTML );
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
@@ -283,7 +285,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
     // Check if the delete checkbox and support for the delete all feature should be displayed
     if (is_array($options) AND $options['chkdelete']) {
-        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);">');
+        $admin_templates->set_var('header_text', '<input type="checkbox" name="chk_selectall" title="'.$LANG01[126].'" onclick="caItems(this.form);"' . XHTML . '>');
         $admin_templates->set_var('class', "admin-list-field");
         $admin_templates->set_var('show_deleteimage', '');
         $admin_templates->parse('header_row', 'header', true);
@@ -376,7 +378,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                 $header_text .= $img_arrow;
             }
             # make the mouseover effect is sortable
-            $th_subtags = " OnMouseOver=\"this.style.cursor='pointer';\"";
+            $th_subtags = " onmouseover=\"this.style.cursor='pointer';\"";
             $order_var = $i; # assign number to field so we know what to sort
             if (strpos ($form_url, '?') > 0) {
                 $separator = '&amp;';
@@ -466,7 +468,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $this_row = false; # as long as no fields are returned, dont print row
         if (is_array($options) AND $options['chkdelete']) {
             $admin_templates->set_var('class', "admin-list-field");
-            $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $A[$options['chkfield']].'">');
+            $admin_templates->set_var('itemtext', '<input type="checkbox" name="delitem[]" value="' . $A[$options['chkfield']].'"' . XHTML . '>');
             $admin_templates->parse('item_field', 'field', true);
         }
         for ($j = 0; $j < count($header_arr); $j++) {
@@ -575,6 +577,7 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '') {
     }
     $admin_templates->set_var('menu_fields', $menu_fields);
     $admin_templates->set_var('lang_instructions', $text);
+    $admin_templates->set_var( 'xhtml', XHTML );
     $admin_templates->parse('top_menu', 'top_menu');
     $retval = $admin_templates->finish($admin_templates->get_var('top_menu'));
     return $retval;
@@ -613,7 +616,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
                         $switch = '';
                     }
                     $retval = "<input type=\"checkbox\" name=\"enabledblocks[{$A['bid']}]\" "
-                        . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch>";
+                        . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch" . XHTML . ">";
                 }
                 break;
             case 'move':
@@ -628,11 +631,11 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr)
                         $moveTitleMsg = $LANG21[60];
                         $switchside = '0';
                     }
-                    $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\">"
-                            ."<map name=\"arrow{$A['bid']}\">"
-                            ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up\" alt=\"{$LANG21[58]}\">"
-                            ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside\" alt=\"$moveTitleMsg\">"
-                            ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn\" alt=\"{$LANG21[57]}\">"
+                    $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\"" . XHTML . ">"
+                            ."<map id=\"arrow{$A['bid']}\" name=\"arrow{$A['bid']}\">"
+                            ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
+                            ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside\" alt=\"$moveTitleMsg\"" . XHTML . ">"
+                            ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
                             ."</map>";
                 }
                 break;
@@ -717,7 +720,7 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
 
     switch ($fieldname) {
         case 'delete':
-            $retval = '<input type="checkbox" name="delitem[]" checked="checked">';
+            $retval = '<input type="checkbox" name="delitem[]" checked="checked"' . XHTML . '>';
             break;
         case 'edit':
             $retval = COM_createLink($icon_arr['edit'],
@@ -727,7 +730,7 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             $photoico = '';
             if (!empty ($A['photo'])) {
                 $photoico = "&nbsp;<img src=\"{$_CONF['layout_url']}/images/smallcamera."
-                          . $_IMAGE_TYPE . '" alt="{$LANG04[77]}">';
+                          . $_IMAGE_TYPE . '" alt="{$LANG04[77]}"' . XHTML . '>';
             } else {
                 $photoico = '';
             }
@@ -854,7 +857,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         case "ping":
             $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
                      . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
-                     . $LANG24[21] . '">';
+                     . $LANG24[21] . '"' . XHTML . '>';
             if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
                 $url = $_CONF['site_admin_url']
                      . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
@@ -907,7 +910,7 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
                 $switch = '';
             }
             $retval = "<input type=\"checkbox\" name=\"enabledfeeds[]\" "
-                . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch>";
+                . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch" . XHTML . ">";
             break;
         case 'header_tid':
             if ($A['header_tid'] == 'all') {
@@ -964,7 +967,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
                 $switch = '';
             }
             $retval = "<input type=\"checkbox\" name=\"enabledplugins[{$A['pi_name']}]\" "
-                . "onclick=\"submit()\" value=\"1\"$switch>";
+                . "onclick=\"submit()\" value=\"1\"$switch" . XHTML . ">";
             break;
         default:
             $retval = $fieldvalue;
@@ -988,11 +991,11 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = COM_createLink($icon_arr['edit'], $A['edit']);
             break;
         case 'delete':
-            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\">";
+            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\"" . XHTML . ">";
             break;
         case 'approve':
-            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\">"
-                     ."<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\">";
+            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\"" . XHTML . ">"
+                     ."<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\"" . XHTML . ">";
             break;
         case 'day':
             $retval = strftime ($_CONF['daytime'], $A['day']);
@@ -1044,7 +1047,7 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
                 $switch = '';
             }
             $retval = "<input type=\"checkbox\" name=\"changedservices[]\" "
-                . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch>";
+                . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch" . XHTML . ">";
             break;
         default:
             $retval = $fieldvalue;

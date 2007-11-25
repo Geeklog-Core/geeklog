@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.23 2007/08/29 04:27:34 ospiess Exp $
+// $Id: index.php,v 1.24 2007/11/25 06:58:56 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -129,6 +129,7 @@ function links_list($message)
                                 'catcol'   => 'categorycol.thtml',
                                 'actcol'   => 'categoryactivecol.thtml',
                                 'pagenav'  => 'pagenavigation.thtml'));
+    $linklist->set_var ( 'xhtml', XHTML );
     $linklist->set_var ('blockheader',COM_startBlock($LANG_LINKS[114]));
     $linklist->set_var ('layout_url',$_CONF['layout_url']);
     
@@ -342,7 +343,7 @@ function prepare_link_item ($A, &$template)
                  . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
         $template->set_var ('link_edit', COM_createLink($LANG_ADMIN['edit'],$editurl));
         $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit.$_IMAGE_TYPE\" "
-            . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\">";
+            . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\"" . XHTML . ">";
         $template->set_var ('edit_icon', COM_createLink($edit_icon, $editurl));
     } else {
         $template->set_var ('link_edit', '');
@@ -388,6 +389,7 @@ if (empty ($_USER['username']) &&
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template ($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+    $login->set_var ( 'xhtml', XHTML );
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('site_url', $_CONF['site_url']);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);

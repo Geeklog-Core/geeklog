@@ -5,7 +5,7 @@
     <td width="33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}">{lang_month}</a></td>
   </tr>
 </table>
-<br>
+<br{xhtml}>
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="cal-dayx-body">
                                 <tr>
                                     <td colspan="2" class="cal-dayx-cur"><table width="100%" border="0">
@@ -18,9 +18,9 @@
                                         <td>&nbsp;</td>
                                       </tr>
                                     </table></td>
-
+                                </tr>
                                 <tr>
-                                    <td width="1%" class="cal-dayx-weekevent nowrap"><div align="right">{lang_week} {week_num}</div></td>
+                                    <td width="1%" class="cal-dayx-weekevent" nowrap="nowrap"><div align="right">{lang_week} {week_num}</div></td>
                                     <td>{allday_events}</td>
                                 </tr>
                                 <tr>
@@ -121,5 +121,5 @@
                                     {23_cols}
                                 </tr>
 </table>
-<br>
+<br{xhtml}>
                             {quickadd_form}

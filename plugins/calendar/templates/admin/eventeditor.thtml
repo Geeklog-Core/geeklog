@@ -1,9 +1,9 @@
-                            <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="POST">
+                            <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="post">
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td align="right"><b>{lang_eventtitle}:</b></td>
                                         <td>
-                                            <input type="text" size="48" maxlength="128" name="title" value="{event_title}">
+                                            <input type="text" size="48" maxlength="128" name="title" value="{event_title}"{xhtml}>
                                         </td>
                                     </tr>
                                     <tr>
@@ -67,7 +67,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_alldayevent}:</b></td>
-                                        <td><input type="checkbox" name="allday" {allday_checked}></td>
+                                        <td><input type="checkbox" name="allday" {allday_checked}{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_location}:</b></td>
@@ -77,15 +77,15 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_addressline1}:</b></td>
-                                        <td><input type="text" name="address1" size="40" value="{event_address1}"></td>
+                                        <td><input type="text" name="address1" size="40" value="{event_address1}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_addressline2}:</b></td>
-                                        <td><input type="text" name="address2" size="40" value="{event_address2}"></td>
+                                        <td><input type="text" name="address2" size="40" value="{event_address2}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_city}:</b></td>
-                                        <td><input type="text" name="city" size="40" maxlength="60" value="{event_city}"></td>
+                                        <td><input type="text" name="city" size="40" maxlength="60" value="{event_city}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_state}:</b></td>
@@ -97,11 +97,11 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_zipcode}:</b></td>
-                                        <td><input type="text" name="zipcode" size="5" maxlength="5" value="{event_zipcode}"></td>
+                                        <td><input type="text" name="zipcode" size="5" maxlength="5" value="{event_zipcode}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_eventurl}:</b></td>
-                                        <td><input type="text" size="48"  maxlength="{max_url_length}" name="url" value="{event_url}"> {lang_includehttp}</td>
+                                        <td><input type="text" size="48"  maxlength="{max_url_length}" name="url" value="{event_url}"{xhtml}> {lang_includehttp}</td>
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_eventdescription}:</b></td>
@@ -113,7 +113,7 @@
                                             <select name="postmode">
                                                 {post_options}
                                             </select>
-                                            <br>
+                                            <br{xhtml}>
                                             {lang_allowed_html}
                                         </td>
                                     </tr>
@@ -122,21 +122,21 @@
                                         <td>{hits}</td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><hr></td>
+                                        <td colspan="2"><hr{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2"><b>{lang_accessrights}</b></td>
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_owner}:</td>
-                                        <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+                                        <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_group}:</td>
                                         <td>
                                             {group_dropdown}
                                         </td>
-                                    <tr>
+                                    </tr>
                                     <tr>
                                         <td colspan="2"><b>{lang_permissions}</b>:</td>
                                     </tr>
@@ -154,10 +154,10 @@
                                     <tr><td>&nbsp;</td></tr>
                                     <tr>
                                         <td colspan="2">
-                                            <input type="submit" value="{lang_save}" name="mode"> 
-                                            <input type="submit" value="{lang_cancel}" name="mode"> 
-                                            <input type="hidden" name="eid" value="{event_id}">
-                                            <input type="hidden" name="hour_mode" value="{hour_mode}">
+                                            <input type="submit" value="{lang_save}" name="mode"{xhtml}> 
+                                            <input type="submit" value="{lang_cancel}" name="mode"{xhtml}> 
+                                            <input type="hidden" name="eid" value="{event_id}"{xhtml}>
+                                            <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
                                             {delete_option}
                                         </td>
                                     </tr>

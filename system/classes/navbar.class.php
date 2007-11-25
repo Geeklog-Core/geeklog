@@ -150,6 +150,7 @@ class navbar  {
             'navbar'       => 'navbar.thtml',
             'menuitem'     => 'menuitem.thtml'));
 
+        $navtemplate->set_var( 'xhtml', XHTML );
         if ($this->_parms != '') {
             $navtemplate->set_var( 'parms',  $this->_parms);
         }
@@ -158,7 +159,7 @@ class navbar  {
             $label = key($this->_menuitems);
             $linkurl = current($this->_menuitems);
             if ( is_array($this->_onclick) AND array_key_exists($label,$this->_onclick) ) {
-                $onclick = " onClick='{$this->_onclick[$label]}'";
+                $onclick = " onclick='{$this->_onclick[$label]}'";
                 $navtemplate->set_var( 'onclick', $onclick);
                 $navtemplate->set_var( 'link', ($linkurl == '') ? '#' : $linkurl);
             } else {
@@ -187,6 +188,7 @@ class navbar  {
         $this->_bctemplate->set_file (array (
             'breadcrumbs'   => 'breadcrumbs.thtml',
             'link'          => 'breadcrumb_link.thtml'));
+        $this->_bctemplate->set_var( 'xhtml', XHTML );
     }
     
     function add_breadcrumbs($url,$label,$title='') {

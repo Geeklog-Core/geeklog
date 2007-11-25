@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.113 2007/11/24 12:42:57 riyer Exp $
+// $Id: lib-story.php,v 1.114 2007/11/25 06:55:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -93,6 +93,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             'archivebodytext'  => 'archivestorybodytext.thtml'
             ));
 
+    $article->set_var( 'xhtml', XHTML );
     $article->set_var( 'layout_url', $_CONF['layout_url'] );
     $article->set_var( 'site_url', $_CONF['site_url'] );
     $article->set_var( 'site_name', $_CONF['site_name'] );
@@ -137,7 +138,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $article->set_var( 'contributedby_photo', $photo );
             $camera_icon = '<img src="' . $_CONF['layout_url']
-                .'/images/smallcamera.' . $_IMAGE_TYPE . '" alt="">';
+                .'/images/smallcamera.' . $_IMAGE_TYPE . '" alt=""' . XHTML . '>';
             $article->set_var( 'camera_icon', COM_createLink($camera_icon, $profileUrl));
         }
         else
@@ -162,7 +163,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'story_topic_image_url', $imageurl );
             $topicimage = '<img src="' . $imageurl . '" class="float'
                         . $_CONF['article_image_align'] . '" alt="'
-                        . $topicname . '" title="' . $topicname . '">';
+                        . $topicname . '" title="' . $topicname . '"' . XHTML . '>';
             $article->set_var( 'story_anchortag_and_image',
                 COM_createLink(
                     $topicimage,
@@ -172,7 +173,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             );
             $article->set_var( 'story_topic_image', $topicimage );
             $topicimage_noalign = '<img src="' . $imageurl . '" alt="'
-                        . $topicname . '" title="' . $topicname . '">';
+                        . $topicname . '" title="' . $topicname . '"' . XHTML . '>';
             $article->set_var( 'story_anchortag_and_image_no_align',
                 COM_createLink(
                     $topicimage_noalign,
@@ -246,7 +247,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var( 'story_page', $story_page );
             }
 
-            $article->set_var( 'story_introtext', $introtext . '<br><br>'
+            $article->set_var( 'story_introtext', $introtext . '<br' . XHTML . '><br' . XHTML . '>'
                                . $bodytext );
             $article->set_var( 'story_text_no_br', $introtext . $bodytext );
         }
@@ -263,7 +264,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             );
             $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
-                . '" title="' . $LANG_TRB['send_trackback'] . '">';
+                . '" title="' . $LANG_TRB['send_trackback'] . '"' . XHTML . '>';
             $article->set_var( 'send_trackback_icon',
                 COM_createLink($pingico, $url)
             );
@@ -382,7 +383,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
                 $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
                     . $_IMAGE_TYPE . '" alt="' . $LANG_TRB['send_trackback']
-                    . '" title="' . $LANG_TRB['send_trackback'] . '">';
+                    . '" title="' . $LANG_TRB['send_trackback'] . '"' . XHTML . '>';
                 $article->set_var( 'send_trackback_icon',
                     COM_createLink($pingico, $pingurl)
                 );
@@ -418,7 +419,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                       . '&amp;what=emailstory';
             $emailicon = '<img src="' . $_CONF['layout_url'] . '/images/mail.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[64] . '" title="'
-                . $LANG11[2] . '">';
+                . $LANG11[2] . '"' . XHTML . '>';
             $article->set_var( 'email_icon',
                 COM_createLink($emailicon, $emailUrl)
             );
@@ -436,7 +437,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $printicon = '<img src="' . $_CONF['layout_url']
                 . '/images/print.' . $_IMAGE_TYPE . '" alt="' . $LANG01[65]
-                . '" title="' . $LANG11[3] . '">';
+                . '" title="' . $LANG11[3] . '"' . XHTML . '>';
             $article->set_var( 'print_icon',
                 COM_createLink($printicon, $printUrl, array('rel' => 'nofollow'))
             );
@@ -450,7 +451,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     . 'pageData=' . urlencode( $printUrl );
             $pdficon = '<img src="'. $_CONF['layout_url'] . '/images/pdf.'
                          . $_IMAGE_TYPE . '" alt="'. $LANG01[111]
-                         .'" title="'. $LANG11[5] .'">';
+                         .'" title="'. $LANG11[5] .'"' . XHTML . '>';
             $article->set_var( 'pdf_icon',
                 COM_createLink($pdficon, $pdfUrl)
             );
@@ -480,7 +481,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 . '/story.php?mode=edit&amp;sid=' . $story->getSid() );
         $article->set_var( 'lang_edit_text',  $LANG01[4] );
         $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
-        $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4] . '">';
+        $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4] . '"' . XHTML . '>';
         $article->set_var( 'edit_icon',
             COM_createLink(
                 $editiconhtml,
@@ -815,9 +816,9 @@ function STORY_replace_images($sid, $intro, $body)
             $imgSrc = $_CONF['site_url']
                 . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
         }
-        $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
-        $left = $lLinkPrefix . '<img ' . $sizeattributes . 'class="alignleft" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
-        $right = $lLinkPrefix . '<img ' . $sizeattributes . 'class="alignright" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
+        $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix;
+        $left = $lLinkPrefix . '<img ' . $sizeattributes . 'class="alignleft" src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix;
+        $right = $lLinkPrefix . '<img ' . $sizeattributes . 'class="alignright" src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix;
 
         $fulltext = $intro . ' ' . $body;
         $intro = str_replace ($norm,  $imageX,       $intro);
@@ -836,9 +837,9 @@ function STORY_replace_images($sid, $intro, $body)
 
             if (file_exists ($lFilename_large_complete)) {
                     $sizeattributes = COM_getImgSizeAttributes($lFilename_large_complete);
-                    $norm = '<img ' . $sizeattributes . 'src="' . $lFilename_large_URL . '" alt="">';
-                    $left = '<img ' . $sizeattributes . 'align="left" src="' . $lFilename_large_URL . '" alt="">';
-                    $right = '<img ' . $sizeattributes . 'align="right" src="' . $lFilename_large_URL . '" alt="">';
+                    $norm = '<img ' . $sizeattributes . 'src="' . $lFilename_large_URL . '" alt=""' . XHTML . '>';
+                    $left = '<img ' . $sizeattributes . 'align="left" src="' . $lFilename_large_URL . '" alt=""' . XHTML . '>';
+                    $right = '<img ' . $sizeattributes . 'align="right" src="' . $lFilename_large_URL . '" alt=""' . XHTML . '>';
                 }
             $intro = str_replace ($norm,  $unscaledX,       $intro);
             $body  = str_replace ($norm,  $unscaledX,       $body);
@@ -929,12 +930,12 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
                 } else {
                     $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
                 }
-                $intro = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
-                $body = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
-                $intro = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
-                $body = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
-                $intro = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
-                $body = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
+                $intro = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix, $intro);
+                $body = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix, $body);
+                $intro = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix, $intro);
+                $body = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix, $body);
+                $intro = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix, $intro);
+                $body = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix, $body);
 
                 if (($_CONF['allow_user_scaling'] == 1) and
                     ($_CONF['keep_unscaled_image'] == 1)) {
@@ -943,12 +944,12 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
                         $imgSrc = $lFilename_large_URL;
                         $sizeattributes = COM_getImgSizeAttributes ($lFilename_large_complete);
                     }
-                    $intro = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">', $intro);
-                    $body = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">', $body);
-                    $intro = str_replace($unscaledleft, '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">', $intro);
-                    $body = str_replace($unscaledleft, '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">', $body);
-                    $intro = str_replace($unscaledright, '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">', $intro);
-                    $body = str_replace($unscaledright, '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">', $body);
+                    $intro = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>', $intro);
+                    $body = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>', $body);
+                    $intro = str_replace($unscaledleft, '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>', $intro);
+                    $body = str_replace($unscaledleft, '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>', $body);
+                    $intro = str_replace($unscaledright, '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>', $intro);
+                    $body = str_replace($unscaledright, '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>', $body);
                 }
 
             }
@@ -1320,7 +1321,7 @@ function service_submit_story($args, &$output, &$svc_msg)
                                 COM_getBlockTemplate ('_msg_block', 'header'));
                 $output .= $LANG24[55] . '<p>';
                 for ($i = 1; $i <= count($errors); $i++) {
-                    $output .= current($errors) . '<br>';
+                    $output .= current($errors) . '<br' . XHTML . '>';
                     next($errors);
                 }
                 $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));

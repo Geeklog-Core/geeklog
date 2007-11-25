@@ -1,6 +1,6 @@
 {lang_ping_explain}
 {ping_results}
-<form action="{php_self}" method="POST">
+<form action="{php_self}" method="post">
     <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
             <td class="aligncenter">{pingback_button}</td>

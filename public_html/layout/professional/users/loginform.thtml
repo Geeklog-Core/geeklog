@@ -9,19 +9,19 @@
                         </tr>
                         <tr>
                             <td class="alignright"><b><label for="loginname">{lang_username}</label>:</b></td>
-                            <td><input type="text" size="16" name="loginname"></td>
+                            <td><input type="text" size="16" name="loginname"{xhtml}></td>
                         </tr>
                         {services}
                         <tr>
                             <td class="alignright"><b><label for="passwd">{lang_password}</label>:</b></td>
-                            <td><input type="password" name="passwd" size="16">
+                            <td><input type="password" name="passwd" size="16"{xhtml}>
                                 &nbsp;<a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a>
                             </td>
                         </tr>
                         <tr>
                             <td class="alignright">&nbsp;</td>
                             <td class="alignleft">
-                                <input type="submit" value="{lang_login}">
+                                <input type="submit" value="{lang_login}"{xhtml}>
                             </td>
                         </tr>
                     </table>

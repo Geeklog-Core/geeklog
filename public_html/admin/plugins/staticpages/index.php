@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.88 2007/08/29 09:33:54 ospiess Exp $
+// $Id: index.php,v 1.89 2007/11/25 06:58:56 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -95,7 +95,7 @@ function form ($A, $error = false)
     }
 
     if ($error) {
-        $retval .= $error . '<br><br>';
+        $retval .= $error . '<br' . XHTML . '><br' . XHTML . '>';
     } else {
         $sp_template = new Template ($template_path);
         if (isset ($_CONF['advanced_editor']) &&
@@ -127,7 +127,7 @@ function form ($A, $error = false)
                 $post_options .= '<option value="adveditor">'.$LANG24[86].'</option>';
             }
             $sp_template->set_var('post_options',$post_options );
-            $sp_template->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+            $sp_template->set_var ('change_editormode', 'onchange="change_editmode(this);"');
         } else {
             $sp_template->set_file ('form', 'editor.thtml');
         }
@@ -166,7 +166,7 @@ function form ($A, $error = false)
         if (SEC_hasRights ('staticpages.delete') && ($mode != 'clone') &&
                 !empty ($A['sp_old_id'])) {
             $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                       . '" name="mode"%s>';
+                       . '" name="mode"%s' . XHTML . '>';
             $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
             $sp_template->set_var ('delete_option',
                                    sprintf ($delbutton, $jsconfirm));
@@ -369,6 +369,7 @@ function form ($A, $error = false)
         }
         $sp_template->set_var('end_block',
                 COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
+        $sp_template->set_var( 'xhtml', XHTML );
         $retval .= $sp_template->parse('output','form');
     }
 

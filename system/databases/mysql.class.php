@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.26 2006/10/03 19:44:40 dhaun Exp $
+// $Id: mysql.class.php,v 1.27 2007/11/25 06:59:56 ospiess Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -219,8 +219,8 @@ class database {
     function isVerbose()
     {
         if ($this->_verbose && (empty($this->_errorlog_fn) || !function_exists($this->_errorlog_fn))) {
-            print "\n<br><b>Can't run mysql.class.php verbosely because the errorlog "
-                . "function wasn't set or doesn't exist</b><br>\n";
+            print "\n<br" . XHTML . "><b>Can't run mysql.class.php verbosely because the errorlog "
+                . "function wasn't set or doesn't exist</b><br" . XHTML . ">\n";
             return false;
         }
 

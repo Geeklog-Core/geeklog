@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.136 2007/11/24 12:42:57 riyer Exp $
+// $Id: lib-plugins.php,v 1.137 2007/11/25 06:55:07 ospiess Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1703,7 +1703,7 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
     if ($plugin == 'custom') {
         $function = 'custom_getfeedcontent';
         if (function_exists($function)) {
-            $content = $function($feed, $link, $update_date, $feedType, $feedVersion);
+            $content = $function($feed, $link, $update_data, $feedType, $feedVersion);
         }
     } else {
         if (in_array ($plugin, $_PLUGINS)) {

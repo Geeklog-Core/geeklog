@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.11 2004/10/11 01:37:08 vinny Exp $
+// $Id: pdfgenerator.php,v 1.12 2007/11/25 06:55:07 ospiess Exp $
 
 require_once 'lib-common.php';
 
@@ -198,6 +198,7 @@ function PDF_generatePDF()
             'pdf'         => 'pdf.thtml'
             ));
 
+            $pdf->set_var( 'xhtml', XHTML );
             $pdf->set_var('layout_url', $_CONF['layout_url']);
             $pdf->set_var('site_url', $_CONF['site_url']);
             $pdf->set_var('lang_loading_document', $LANG_PDF[5]);
@@ -209,9 +210,9 @@ function PDF_generatePDF()
                 if ($waitTime > 30 OR $waitTime < 5 OR !$waitTime) {
                     $waitTime=10;
                 }
-                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"$waitTime; URL=$urlpath\">");
+                $pdf->set_var('meta_tag', "<meta http-equiv=\"refresh\" content=\"$waitTime; url=$urlpath\"" . XHTML . ">");
             } else {
-                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"0; URL=$urlpath\">");
+                $pdf->set_var('meta_tag', "<meta http-equiv=\"refresh\" content=\"0; url=$urlpath\"" . XHTML . ">");
             }
             $pdf->parse('page', 'pdf' );
             echo $pdf->finish($pdf->get_var('page'));
@@ -223,6 +224,7 @@ function PDF_generatePDF()
             'pdf'         => 'pdf_form.thtml'
             ));
 
+            $pdf->set_var( 'xhtml', XHTML );
             $pdf->set_var('layout_url', $_CONF['layout_url']);
             $pdf->set_var('site_url', $_CONF['site_url']);
             $pdf->set_var('lang_error_msg', $LANG_PDF[4]);

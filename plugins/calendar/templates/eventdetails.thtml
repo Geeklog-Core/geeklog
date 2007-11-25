@@ -26,4 +26,4 @@
                                     <td width="100%">{event_description}</td>
                                 </tr>
                                 <tr><td colspan="2">{addremove_event} {edit_icon}</td></tr>
-                            </table><br><br>
+                            </table><br{xhtml}><br{xhtml}>

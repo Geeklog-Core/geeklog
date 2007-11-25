@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.663 2007/10/29 13:42:31 ospiess Exp $
+// $Id: lib-common.php,v 1.664 2007/11/25 06:55:07 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -856,6 +856,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         'leftblocks'    => 'leftblocks.thtml',
         'rightblocks'   => 'rightblocks.thtml'
         ));
+    $header->set_var( 'xhtml', XHTML );
 
     // get topic if not on home page
     if( !isset( $_GET['topic'] ))
@@ -913,7 +914,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
                 $feed_url[] = '<link rel="alternate" type="application/'
                           . $format_type . '+xml" hreflang="' . $A['language']
                           . '" href="' . $baseurl . $A['filename'] . '" title="'
-                          . $format_name . ' Feed: ' . $A['title'] . '">';
+                          . $format_name . ' Feed: ' . $A['title'] . '"' . XHTML . '>';
             }
         }
     }
@@ -923,7 +924,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     if( !COM_onFrontpage() )
     {
         $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url']
-                          . '/" title="' . $LANG01[90] . '">';
+                          . '/" title="' . $LANG01[90] . '"' . XHTML . '>';
     }
     $loggedInUser = !COM_isAnonUser();
     if( $loggedInUser || (( $_CONF['loginrequired'] == 0 ) &&
@@ -934,7 +935,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         {
             $relLinks['search'] = '<link rel="search" href="'
                                 . $_CONF['site_url'] . '/search.php" title="'
-                                . $LANG01[75] . '">';
+                                . $LANG01[75] . '"' . XHTML . '>';
         }
     }
     if( $loggedInUser || (( $_CONF['loginrequired'] == 0 ) &&
@@ -943,7 +944,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         if( strpos( $_SERVER['PHP_SELF'], '/article.php' ) !== false ) {
             $relLinks['contents'] = '<link rel="contents" href="'
                         . $_CONF['site_url'] . '/directory.php" title="'
-                        . $LANG01[117] . '">';
+                        . $LANG01[117] . '"' . XHTML . '>';
         }
     }
     // TBD: add a plugin API and a lib-custom.php function
@@ -1211,9 +1212,19 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
     $tmp = $header->parse( 'index_header', 'header' );
 
+    $xml_declaration = '';
+    if ( get_cfg_var('short_open_tag') == '1' )
+    {
+        if ( preg_match( '/(<\?xml[^>]*>)(.*)/s', $tmp, $match ) )
+        {
+            $xml_declaration = $match[1] . LB;
+            $tmp = $match[2];
+        }
+    }
+
     ob_start();
     eval( '?>' . $tmp );
-    $retval = ob_get_contents();
+    $retval = $xml_declaration . ob_get_contents();
     ob_end_clean();
 
     return $retval;
@@ -1274,6 +1285,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     // Do variable assignments
     DB_change( $_TABLES['vars'], 'value', 'value + 1', 'name', 'totalhits', '', true );
 
+    $footer->set_var( 'xhtml', XHTML );
     $footer->set_var( 'site_url', $_CONF['site_url']);
     $footer->set_var( 'layout_url',$_CONF['layout_url']);
     $footer->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
@@ -1291,7 +1303,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
         $copyrightyear = $_CONF['copyrightyear'];
     }
     $footer->set_var( 'copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; '
-            . $copyrightyear . ' ' . $_CONF['site_name'] . '<br>&nbsp;'
+            . $copyrightyear . ' ' . $_CONF['site_name'] . '<br' . XHTML . '>&nbsp;'
             . $LANG01[94] );
     $footer->set_var( 'copyright_msg', $LANG01[93] . ' &copy; '
             . $copyrightyear . ' ' . $_CONF['site_name'] );
@@ -1451,6 +1463,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
 
+    $block->set_var( 'xhtml', XHTML );
     $block->set_var( 'site_url', $_CONF['site_url'] );
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->set_var( 'block_title', stripslashes( $title ));
@@ -1478,7 +1491,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     if( !empty( $helpfile ))
     {
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
-        $help_content = '<img src="' . $helpimg. '" alt="?">';
+        $help_content = '<img src="' . $helpimg. '" alt="?"' . XHTML . '>';
         $help_attr = array('class'=>'blocktitle');
         if( !stristr( $helpfile, 'http://' ))
         {
@@ -1512,6 +1525,7 @@ function COM_endBlock( $template='blockfooter.thtml' )
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
 
+    $block->set_var( 'xhtml', XHTML );
     $block->set_var( 'site_url', $_CONF['site_url'] );
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->parse( 'endHTML', 'block' );
@@ -1765,11 +1779,11 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
 
             if(( $table == $_TABLES['blocks'] ) && isset( $A[2] ) && ( $A[2] == 'gldefault' ))
             {
-                $retval .= '><span class="gldefault">' . stripslashes( $A[1] ) . '</span></li>' . LB;
+                $retval .= XHTML . '><span class="gldefault">' . stripslashes( $A[1] ) . '</span></li>' . LB;
             }
             else
             {
-                $retval .= '><span>' . stripslashes( $A[1] ) . '</span></li>' . LB;
+                $retval .= XHTML . '><span>' . stripslashes( $A[1] ) . '</span></li>' . LB;
             }
         }
     }
@@ -1925,7 +1939,7 @@ function COM_errorLog( $logentry, $actionid = '' )
 
                 if( !$file = fopen( $logfile, 'a' ))
                 {
-                    $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
+                    $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 }
                 else
                 {
@@ -1946,7 +1960,7 @@ function COM_errorLog( $logentry, $actionid = '' )
 
                 if( !$file = fopen( $logfile, 'a' ))
                 {
-                    $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
+                    $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
                 }
                 else
                 {
@@ -1991,7 +2005,7 @@ function COM_accessLog( $logentry )
 
         if( !$file = fopen( $logfile, 'a' ))
         {
-            return $LANG01[33] . $logfile . ' (' . $timestamp . ')<br>' . LB;
+            return $LANG01[33] . $logfile . ' (' . $timestamp . ')<br' . XHTML . '>' . LB;
         }
 
         if( isset( $_USER['uid'] ))
@@ -2077,6 +2091,7 @@ function COM_showTopics( $topic='' )
                                     'inactive' => 'topicoption_off.thtml' ));
     }
     $retval = '<ul>';
+    $sections->set_var( 'xhtml', XHTML );
     $sections->set_var( 'site_url', $_CONF['site_url'] );
     $sections->set_var( 'layout_url', $_CONF['layout_url'] );
     $sections->set_var( 'block_name', str_replace( '_', '-', 'section_block' ));
@@ -2178,7 +2193,7 @@ function COM_showTopics( $topic='' )
         {
             $imageurl = COM_getTopicImageUrl( $A['imageurl'] );
             $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
-                        . '" title="' . $topicname . '" border="0">';
+                        . '" title="' . $topicname . '" border="0"' . XHTML . '>';
         }
         $sections->set_var( 'topic_image', $topicimage );
 
@@ -2226,6 +2241,7 @@ function COM_userMenu( $help='', $title='' )
            $usermenu->set_file( array( 'option' => 'useroption.thtml',
                                        'current' => 'useroption_off.thtml' ));
         }
+        $usermenu->set_var( 'xhtml', XHTML );
         $usermenu->set_var( 'site_url', $_CONF['site_url'] );
         $usermenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $usermenu->set_var( 'block_name', str_replace( '_', '-', 'user_block' ));
@@ -2300,9 +2316,10 @@ function COM_userMenu( $help='', $title='' )
     {
         $retval .= COM_startBlock( $LANG01[47], $help,
                            COM_getBlockTemplate( 'user_block', 'header' ));
-        $retval .= '<ul>';
+//      $retval .= '<ul>';
         $login = new Template( $_CONF['path_layout'] );
         $login->set_file( 'form', 'loginform.thtml' );
+        $login->set_var( 'xhtml', XHTML );
         $login->set_var( 'site_url', $_CONF['site_url'] );
         $login->set_var( 'layout_url', $_CONF['layout_url'] );
         $login->set_var( 'lang_username', $LANG01[21] );
@@ -2363,7 +2380,7 @@ function COM_userMenu( $help='', $title='' )
         }
 
         $retval .= $login->parse( 'output', 'form' );
-        $retval .= '</ul>';
+//      $retval .= '</ul>';
         $retval .= COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
 
@@ -2414,6 +2431,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_file( array( 'option' => 'adminoption.thtml',
                                          'current' => 'adminoption_off.thtml' ));
         }
+        $adminmenu->set_var( 'xhtml', XHTML );
         $adminmenu->set_var( 'site_url', $_CONF['site_url'] );
         $adminmenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $adminmenu->set_var( 'block_name', str_replace( '_', '-', 'admin_block' ));
@@ -2760,7 +2778,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
 function COM_refresh( $url )
 {
-    return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+    return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"" . XHTML . "></head></html>\n";
 }
 
 /**
@@ -3221,7 +3239,7 @@ function COM_olderStuff()
                     $daylist = COM_makeList( $oldnews, 'list-older-stories' );
                     $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
                                              '', $daylist );
-                    $string .= $daylist . '<br>';
+                    $string .= $daylist . '<br' . XHTML . '>';
                 }
 
                 $day2 = strftime( $dateonly, $A['day'] );
@@ -4066,24 +4084,24 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
             if( $newstories && ( $page < 2 ))
             {
-                $retval .= $newmsg . '<br>';
+                $retval .= $newmsg . '<br' . XHTML . '>';
             }
             else
             {
                 $retval .= COM_createLink($newmsg, $_CONF['site_url']
-                    . '/index.php?display=new') . '<br>';
+                    . '/index.php?display=new') . '<br' . XHTML . '>';
             }
         }
         else
         {
-            $retval .= $LANG01[100] . '<br>';
+            $retval .= $LANG01[100] . '<br' . XHTML . '>';
         }
 
         if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 ))
                 || ( $_CONF['hidenewplugins'] == 0 ))
         {
-            $retval .= '<br>';
+            $retval .= '<br' . XHTML . '>';
         }
     }
 
@@ -4153,13 +4171,13 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         }
         else
         {
-            $retval .= $LANG01[86] . '<br>' . LB;
+            $retval .= $LANG01[86] . '<br' . XHTML . '>' . LB;
         }
         if(( $_CONF['hidenewplugins'] == 0 )
                 || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )))
         {
-            $retval .= '<br>';
+            $retval .= '<br' . XHTML . '>';
         }
     }
 
@@ -4212,11 +4230,11 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         }
         else
         {
-            $retval .= $LANG01[115] . '<br>' . LB;
+            $retval .= $LANG01[115] . '<br' . XHTML . '>' . LB;
         }
         if( $_CONF['hidenewplugins'] == 0 )
         {
-            $retval .= '<br>';
+            $retval .= '<br' . XHTML . '>';
         }
     }
 
@@ -4241,7 +4259,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
                 if( $i + 1 < $plugins )
                 {
-                    $retval .= '<br>';
+                    $retval .= '<br' . XHTML . '>';
                 }
             }
         }
@@ -4345,7 +4363,7 @@ function COM_showMessage($msg, $plugin='') {
                        COM_getBlockTemplate( '_msg_block', 'header' ))
         . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
         . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
-        . ' alt="" style="padding-right:5px; padding-bottom:3px">'
+        . ' alt="" style="padding-right:5px; padding-bottom:3px"' . XHTML . '>'
         . $message . '</p>'
         . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     return $retval;
@@ -4603,10 +4621,10 @@ function phpblock_whosonline()
             if( !empty( $A['photo'] ) AND $_CONF['allow_user_photo'] == 1)
             {
                 $usrimg = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
-                    . $_IMAGE_TYPE . '" border="0" alt="">';
+                    . $_IMAGE_TYPE . '" border="0" alt=""' . XHTML . '>';
                 $retval .= '&nbsp;' . COM_createLink($usrimg, $url);
             }
-            $retval .= '<br>';
+            $retval .= '<br' . XHTML . '>';
             $num_reg++;
         }
         else
@@ -4624,7 +4642,7 @@ function phpblock_whosonline()
         // note that we're overwriting the contents of $retval here
         if( $num_reg > 0 )
         {
-            $retval = $LANG01[112] . ': ' . $num_reg . '<br>';
+            $retval = $LANG01[112] . ': ' . $num_reg . '<br' . XHTML . '>';
         }
         else
         {
@@ -4634,7 +4652,7 @@ function phpblock_whosonline()
 
     if( $num_anon > 0 )
     {
-        $retval .= $LANG01[41] . ': ' . $num_anon . '<br>';
+        $retval .= $LANG01[41] . ': ' . $num_anon . '<br' . XHTML . '>';
     }
 
     return $retval;
@@ -4945,6 +4963,7 @@ function COM_makeList($listofitems, $classname = '')
     $list = new Template($_CONF['path_layout']);
     $list->set_file(array('list'     => 'list.thtml',
                           'listitem' => 'listitem.thtml'));
+    $list->set_var( 'xhtml', XHTML );
     $list->set_var('site_url', $_CONF['site_url']);
     $list->set_var('layout_url', $_CONF['layout_url']);
 
@@ -6196,9 +6215,9 @@ function phpblock_switch_language()
     else
     {
         $retval .= '<form name="change" action="'. $_CONF['site_url']
-                . '/switchlang.php" method="GET">' . LB;
+                . '/switchlang.php" method="get">' . LB;
         $retval .= '<input type="hidden" name="oldlang" value="' . $langId
-                . '">' . LB;
+                . '"' . XHTML . '>' . LB;
 
         $retval .= '<select onchange="change.submit()" name="lang">';
         foreach( $_CONF['languages'] as $key => $value )
@@ -6350,8 +6369,8 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
         if($_CONF['rootdebug'] || SEC_inGroup('Root'))
         {
             echo("
-                An error has occurred:<br/>
-                $errno - $errstr @ $errfile line $errline<br/>
+                An error has occurred:<br" . XHTML . ">
+                $errno - $errstr @ $errfile line $errline<br" . XHTML . ">
             <pre>");
             ob_start();
             var_dump($errcontext);

@@ -7,7 +7,7 @@
                                         <td width="33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week">{lang_week}</a></td>
                                         <td width="33%" align="center"><b>{lang_month}</b></td>
                                     </tr>
-                                </table><br>
+                                </table><br{xhtml}>
                                 <table width="100%" cellpadding="5" cellspacing="1" border="0" class="cal-body">
                                     <tr align="center">
                                         <td colspan="8" class="cal-month">
@@ -22,8 +22,8 @@
                                                                 <td colspan="2" align="center">
                                                                     <form method="post" action="index.php">
                                                                         <div>
-                                                                            <input type="hidden" name="mode" value="{mode}">
-                                                                            <select name="month" onChange="this.form.submit()">
+                                                                            <input type="hidden" name="mode" value="{mode}"{xhtml}>
+                                                                            <select name="month" onchange="this.form.submit()">
                                                                                 <option value="1" {selected_jan}>{lang_january}</option>
                                                                                 <option value="2" {selected_feb}>{lang_february}</option>
                                                                                 <option value="3" {selected_mar}>{lang_march}</option>
@@ -37,11 +37,11 @@
                                                                                 <option value="11" {selected_nov}>{lang_november}</option>
                                                                                 <option value="12" {selected_dec}>{lang_december}</option>
                                                                             </select>&nbsp;
-                                                                            <select name="year" onChange="this.form.submit()">
+                                                                            <select name="year" onchange="this.form.submit()">
                                                                                 {year_options}
                                                                             </select>
                                                                         </div>
-                                                                    </form><br>
+                                                                    </form><br{xhtml}>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -58,6 +58,7 @@
                                                     <td class="cal-month" valign="top">
                                                         {next_months_calendar}
                                                     </td>
+                                                </tr>
                                             </table>
                                         </td>
                                     </tr>
@@ -78,10 +79,10 @@
                                         <td>
                                             <form method="post" action="index.php">
                                                 <div>
-                                                    <input type="submit" value="<<">
-                                                    <input type="hidden" name="month" value="{cal_prevmo_num}">
-                                                    <input type="hidden" name="year" value="{cal_prevyr_num}">
-                                                    <input type="hidden" name="mode" value="{mode}">
+                                                    <input type="submit" value="&lt;&lt;"{xhtml}>
+                                                    <input type="hidden" name="month" value="{cal_prevmo_num}"{xhtml}>
+                                                    <input type="hidden" name="year" value="{cal_prevyr_num}"{xhtml}>
+                                                    <input type="hidden" name="mode" value="{mode}"{xhtml}>
                                                 </div>
                                             </form>
                                         </td>
@@ -95,10 +96,10 @@
                                         <td>
                                             <form method="post" action="index.php">
                                                 <div>
-                                                    <input type="submit" value=">>">
-                                                    <input type="hidden" name="month" value="{cal_nextmo_num}">
-                                                    <input type="hidden" name="year" value="{cal_nextyr_num}">
-                                                    <input type="hidden" name="mode" value="{mode}">
+                                                    <input type="submit" value="&gt;&gt;"{xhtml}>
+                                                    <input type="hidden" name="month" value="{cal_nextmo_num}"{xhtml}>
+                                                    <input type="hidden" name="year" value="{cal_nextyr_num}"{xhtml}>
+                                                    <input type="hidden" name="mode" value="{mode}"{xhtml}>
                                                 </div>
                                             </form>
                                         </td>

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.58 2007/11/18 09:32:58 dhaun Exp $
+// $Id: lib-security.php,v 1.59 2007/11/25 06:55:07 ospiess Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -428,6 +428,7 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
     $perm_templates = new Template($_CONF['path_layout'] . 'admin/common');
     $perm_templates->set_file(array('editor'=>'edit_permissions.thtml'));
 
+    $perm_templates->set_var ( 'xhtml', XHTML );
     $perm_templates->set_var ('owner', $LANG_ACCESS['owner']);
     $perm_templates->set_var ('group', $LANG_ACCESS['group']);
     $perm_templates->set_var ('members', $LANG_ACCESS['members']);
@@ -1014,7 +1015,7 @@ function SEC_getGroupDropdown ($group_id, $access)
         $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
                                 "grp_id = '$group_id'")
                  . '<input type="hidden" name="group_id" value="' . $group_id
-                 . '">';
+                 . '"' . XHTML . '>';
     }
 
     return $groupdd;

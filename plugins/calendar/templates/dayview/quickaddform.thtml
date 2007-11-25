@@ -1,7 +1,7 @@
                             <form action="{site_url}/calendar/index.php" method="post">
-                                <input type="hidden" name="view" value="addentry">
-                                <input type="hidden" name="calendar_type" value="quickadd">
-                                <input type="hidden" name="hour_mode" value="{hour_mode}">
+                                <input type="hidden" name="view" value="addentry"{xhtml}>
+                                <input type="hidden" name="calendar_type" value="quickadd"{xhtml}>
+                                <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
                                 <table cellpadding="0" cellspacing="1" border="0" width="100%">
                                     <tr>
                                         <td>{lang_quickadd}</td>
@@ -15,7 +15,7 @@
                                                     <td><b>{lang_time}</b></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><input type="text" size="20" maxlength="96" name="title"></td>
+                                                    <td><input type="text" size="20" maxlength="96" name="title"{xhtml}></td>
                                                     <td>
                                                         <select name="start_month">
                                                             {month_options}
@@ -38,7 +38,7 @@
                                                             {minute_options}
                                                         </select>
                                                         {startampm_selection}
-                                                        <input type="submit" value="{lang_add}">
+                                                        <input type="submit" value="{lang_add}"{xhtml}>
                                                     </td>
                                                 </tr>
                                             </table>

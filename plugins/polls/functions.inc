@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.79 2007/10/09 10:01:03 ospiess Exp $
+// $Id: functions.inc,v 1.80 2007/11/25 06:56:05 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -123,7 +123,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
                 . COM_siteFooter();
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
-                                . "/polls/index.php?pid=$id&aid=-1");
+                                . "/polls/index.php?pid=$id&amp;aid=-1");
     }
 
     return $retval;
@@ -151,7 +151,7 @@ function plugin_deletecomment_polls($cid, $id)
             $A['perm_members'], $A['perm_anon']) == 3) {
         CMT_deleteComment($cid, $id, 'polls');
         $retval .= COM_refresh ($_CONF['site_url']
-                                 . "/polls/index.php?pid=$id&aid=-1");
+                                 . "/polls/index.php?pid=$id&amp;aid=-1");
     } else {
         COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
                     . "tried to illegally delete comment $cid from poll $id");
@@ -475,6 +475,7 @@ function POLLS_pollVote($pid, $showall=true)
                                         'block' => 'pollblock.thtml',
                                         'pquestions' => 'pollquestions.thtml',
                                         'comments' => 'pollcomments.thtml'));
+                $poll->set_var('xhtml', XHTML);
                 $poll->set_var('site_url', $_CONF['site_url']);
                 $poll->set_var('layout_url', $_CONF['layout_url']);
                 $poll->set_var('poll_id', $pid );
@@ -768,6 +769,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 'comments' => 'pollcomments.thtml',
                 'votes_bar' => 'pollvotes_bar.thtml',
                 'votes_num' => 'pollvotes_num.thtml' ));
+            $poll->set_var('xhtml', XHTML);
             $poll->set_var('site_url', $_CONF['site_url']);
             $poll->set_var('layout_url', $_CONF['layout_url']);
             $poll->set_var('poll_topic', $P['topic']);
@@ -845,7 +847,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 $poll->clear_var('poll_votes');
                 if (($scale < 100) && ($j < 1)) {
                     $url = $_CONF['site_url'] . "/polls/index.php?pid=$pid";
-                    $poll->set_var('notification', COM_createLink($LANG25[40], $url). "<br>");
+                    $poll->set_var('notification', COM_createLink($LANG25[40], $url). "<br" . XHTML . ">");
                     break;
                 }
             }
@@ -1073,7 +1075,7 @@ function plugin_getheadercode_polls()
 
     $str = null;
     $str = '<link rel="stylesheet" type="text/css" href="'
-        . $_CONF['site_url'] . '/polls/style.css">';
+        . $_CONF['site_url'] . '/polls/style.css"' . XHTML . '>';
 
     return $str;
 }

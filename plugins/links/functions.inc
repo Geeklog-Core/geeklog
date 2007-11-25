@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.88 2007/10/09 05:39:36 ospiess Exp $
+// $Id: functions.inc,v 1.89 2007/11/25 06:56:04 ospiess Exp $
 
 
 /**
@@ -155,7 +155,7 @@ function plugin_getwhatsnew_links()
     }
     else
     {
-        $retval .= $LANG_LINKS[88] . '<br>' . LB;
+        $retval .= $LANG_LINKS[88] . '<br' . XHTML . '>' . LB;
     }
 
     return $retval;
@@ -181,7 +181,7 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
         case 'link':
             $lid = COM_applyFilter ($autotag['parm1']);
             $url = COM_buildUrl ($_CONF['site_url']
-                                 . '/links/portal.php?what=link&item=' . $lid);
+                                 . '/links/portal.php?what=link&amp;item=' . $lid);
             if (empty ($autotag['parm2'])) {
                 $linktext = stripslashes (DB_getItem ($_TABLES['links'],
                                           'title', "lid = '$lid'"));
@@ -614,7 +614,7 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
         $linkdesc = stripslashes( $row['description'] );
 
         $linklink = COM_buildUrl( $_CONF['site_url']
-                  . '/links/portal.php?what=link&item=' . $row['lid'] );
+                  . '/links/portal.php?what=link&amp;item=' . $row['lid'] );
 
         $content[] = array( 'title'   => $linktitle,
                             'summary' => $linkdesc,
@@ -1045,6 +1045,7 @@ function plugin_submit_links()
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $linkform->set_var('lang_submit', $LANG12[8]);
     $linkform->set_var('max_url_length', 255);
+    $linkform->set_var('xhtml', XHTML);
     $linkform->parse('theform', 'linkform');
     $retval .= $linkform->finish($linkform->get_var('theform'));
     $retval .= COM_endBlock();
@@ -1082,7 +1083,7 @@ function plugin_save_submit_links ($A)
 
     // pseudo-formatted link description for the spam check
     $spamcheck = '<p>'. COM_createLink($A['title'], $A['url']) .' ('
-               . $A['cid'] . ', ' . $A['categorydd'] . ')<br>'
+               . $A['cid'] . ', ' . $A['categorydd'] . ')<br' . XHTML . '>'
                . $A['description'] . '</p>';
     $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
     if ($result > 0) {
@@ -1110,7 +1111,7 @@ function plugin_save_submit_links ($A)
             LINKS_sendNotification ($_TABLES['linksubmission'], $A);
         }
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=1&plugin=links');
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=1&amp;plugin=links');
     } else { // add link directly
 
         $result = DB_save ($_TABLES['links'], 'lid,cid,url,description,title,date,owner_id', "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
@@ -1119,7 +1120,7 @@ function plugin_save_submit_links ($A)
         }
         COM_rdfUpToDateCheck ();
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=4&plugin=links');
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=4&amp;plugin=links');
     }
 
     return $retval;
@@ -1436,7 +1437,7 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access) {
         // set selected item
         if ($cid==$sel) {
             // yes, selected
-            $menu .= '<option value="'.$cid.'" SELECTED="SELECTED">'.$indent.$category.'</option>';
+            $menu .= '<option value="'.$cid.'" selected="selected">'.$indent.$category.'</option>';
         } else {
             // no, not selected
             $menu .= '<option value="'.$cid.'">'.$indent.$category.'</option>';
@@ -1508,7 +1509,7 @@ function phpblock_topic_links ()
             $A = DB_fetchArray ($result);
             $content = stripslashes ($A['title']);
             $url = $_CONF['site_url'] . '/links/portal.php?what=link&amp;item=' . $A['lid'];
-            $retval .= COM_createLink ($content, $url) . '<br>';
+            $retval .= COM_createLink ($content, $url) . '<br' . XHTML . '>';
         }
     }
     return $retval;
@@ -1532,7 +1533,7 @@ function phpblock_topic_categories ()
                 $A = DB_fetchArray ($result);
                 $content = stripslashes ($A['category']);
                 $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
-                $retval .= COM_createLink ($content, $url) . '<br>';
+                $retval .= COM_createLink ($content, $url) . '<br' . XHTML . '>';
             }
         }
     }

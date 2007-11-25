@@ -260,7 +260,7 @@ function _oid_trustroot_test() {
         $tr = TrustRoot::parse($s);
         assert( '$tr == null' );
         if( $tr != null ) {
-            echo $tr->toString() . '<br/>';
+            echo $tr->toString() . '<br' . XHTML . '>';
             exit;
         }
     }
@@ -282,7 +282,7 @@ function _oid_trustroot_test() {
         $tr = TrustRoot::parse($s);
         assert( '$tr != null' );
         if( $tr == null ) {
-            echo $tr->toString() . '<br/>';
+            echo $tr->toString() . '<br' . XHTML . '>';
             exit;
         }
     }
@@ -305,7 +305,7 @@ function _oid_trustroot_test() {
         assert( '$isSane == $truth' );
         
         if( $isSane != $truth ) {
-            echo "$isSane, $truth<br/>";
+            echo "$isSane, $truth<br" . XHTML . ">";
             exit;
         }
     }

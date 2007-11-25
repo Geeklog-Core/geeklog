@@ -34,9 +34,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: success.php,v 1.16 2007/09/06 06:50:22 mwest Exp $
+// $Id: success.php,v 1.17 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../../lib-common.php');
+if ( !defined( 'XHTML' ) ) {
+	define( 'XHTML', ' /' );
+}
 
 $type = (isset( $_GET['type'] ) && !empty( $_GET['type'] )) ? $_GET['type'] : 'install';
 $language = (isset( $_GET['language'] ) && !empty( $_GET['language'] )) ? $_GET['language'] : 'english';
@@ -52,8 +55,8 @@ $display .= '<p>' . $LANG_SUCCESS[3] . (($type == 'install') ? 'installed' : 'up
 
 if ($type == 'install') {
 	$display .= '<p>' . $LANG_SUCCESS[5] . '</p>
-    <p>' . $LANG_SUCCESS[6] . ' <strong>' . $LANG_SUCCESS[7] . '</strong><br />
-    ' . $LANG_SUCCESS[8] . ' <strong>' . $LANG_SUCCESS[9] . '</strong></p> <br />';
+    <p>' . $LANG_SUCCESS[6] . ' <strong>' . $LANG_SUCCESS[7] . '</strong><br' . XHTML . '>
+    ' . $LANG_SUCCESS[8] . ' <strong>' . $LANG_SUCCESS[9] . '</strong></p> <br' . XHTML . '>';
 }
 
 $display .= '<h2>' . $LANG_SUCCESS[10] . '</h2>

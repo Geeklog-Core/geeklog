@@ -10,26 +10,26 @@
 </script>
 <script type="text/javascript" src="{site_url}/javascript/advanced_editor.js"></script>
 <script type="text/javascript" src="{site_url}/javascript/storyeditor_fckeditor.js"></script>
-<br>
+<br{xhtml}>
 <div id="advanced_editor" style="display:none;">
     <!-- Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it -->
     <script type="text/javascript">
         document.getElementById('advanced_editor').style.display=''
     </script>
     {navbar}
-    <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
+    <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit='set_postcontent();'>
         <table id='adveditor' cellspacing="0" cellpadding="3" style="width:100%; margin-top:10px; border:1px solid #ECE9D8;">
             <tr>
                 <td style="width:20%;" class="alignright">{lang_author}:</td>
-                <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
+                <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"{xhtml}></td>
             </tr>
             <tr>
                 <td class="alignright">{lang_title}:</td>
-                <td><input type="text" size="48" maxlength="128" name="title" value="{story_title}"></td>
+                <td><input type="text" size="48" maxlength="128" name="title" value="{story_title}"{xhtml}></td>
             </tr>
             <tr>
                 <td class="alignright" style="vertical-align:top;">{lang_sid}:</td>
-                <td><input type="text" size="48" maxlength="40" name="sid" value="{story_id}"></td>
+                <td><input type="text" size="48" maxlength="40" name="sid" value="{story_id}"{xhtml}></td>
             </tr>
             <tr>
                 <td class="alignright">{lang_topic}:</td>
@@ -40,45 +40,45 @@
                 </td>
             </tr>
             <tr>
-                <td class="alignright nowrap">{lang_story_stats}:</td>
+                <td class="alignright" nowrap="nowrap">{lang_story_stats}:</td>
                 <td>
                   <table cellspacing="0" cellpadding="3" style="width:50%;">
                     <tr>
                         <td class="alignright">{lang_hits}:</td>
-                        <td><input type="hidden" name="hits" value="{story_hits}">{story_hits}</td>
+                        <td><input type="hidden" name="hits" value="{story_hits}"{xhtml}>{story_hits}</td>
                         <td class="alignright">{lang_comments}:</td>
-                        <td><input type="hidden" name="comments" value="{story_comments}">{story_comments}</td>
+                        <td><input type="hidden" name="comments" value="{story_comments}"{xhtml}>{story_comments}</td>
                         <td class="alignright">{lang_emails}:</td>
-                        <td><input type="hidden" name="numemails" value="{story_emails}">{story_emails}</td>
+                        <td><input type="hidden" name="numemails" value="{story_emails}"{xhtml}>{story_emails}</td>
                     </tr>
                  </table>
                 </td>
             </tr>
             <tr>
-                <td class="alignright">{lang_show_topic_icon}:<input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}> </td>
-                <td style="padding-left:25px;">{lang_draft}:<input type="checkbox" name="draft_flag" {is_checked}><span style="padding-left:30px;">{lang_postmode}:</span>&nbsp;<select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
+                <td class="alignright">{lang_show_topic_icon}:<input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}{xhtml}> </td>
+                <td style="padding-left:25px;">{lang_draft}:<input type="checkbox" name="draft_flag" {is_checked}{xhtml}><span style="padding-left:30px;">{lang_postmode}:</span>&nbsp;<select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
             </tr>
         </table>
         <!-- Basic textarea field - no editor -->
         <div id="text_editor" style="width:100%; margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_texteditor};">
             {lang_introtext}:
-            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('introtext','larger');">
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('introtext','smaller');">
-            <textarea id="introtext"  style="width:100%; padding:5px 10px 5px 10px;" name="introtext" rows="14">
+            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('introtext','larger');"{xhtml}>
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('introtext','smaller');"{xhtml}>
+            <textarea id="introtext"  style="width:100%; padding:5px 10px 5px 10px;" name="introtext" cols="45" rows="14">
                 {story_introtext}
             </textarea>
             {lang_bodytext}:
-            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('bodytext','larger');">
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('bodytext','smaller');">
-            <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:100%;" name="bodytext" rows="14">
+            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('bodytext','larger');"{xhtml}>
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('bodytext','smaller');"{xhtml}>
+            <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:100%;" name="bodytext" cols="45" rows="14">
                 {story_bodytext}
             </textarea>
         </div>
         <!-- HTML Editor -->
         <div id="html_editor" style="margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_htmleditor};">
             {lang_introtext}:
-            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','larger');">
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','smaller');">
+            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','larger');"{xhtml}>
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','smaller');"{xhtml}>
             <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
                 <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
                      <option value="editor-toolbar1">{toolbar1}</option>
@@ -87,13 +87,13 @@
                      <option value="Default">{toolbar5}</option>
                 </select>
             </span>
-            <textarea id="introhtml" style="padding:5px 10px 5px 10px;" name="introhtml" cols="90" rows="12">
+            <textarea id="introhtml" style="padding:5px 10px 5px 10px;" name="introhtml" cols="45" rows="12">
                 {story_introtext}
             </textarea>
             {lang_bodytext}:
-            <img src="{layout_url}/images/expand.png" title="lang_expandhelp" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
-            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');">
-            <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="90" rows="20">
+            <img src="{layout_url}/images/expand.png" title="lang_expandhelp" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','larger');"{xhtml}>
+            <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"{xhtml}>
+            <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="45" rows="20">
                 {story_bodytext}
             </textarea>
         </div>
@@ -125,9 +125,9 @@
                                 <select name="publish_minute">
                                     {publish_minute_options}
                                 </select>
-                                {publishampm_selection}<br>
-                                <input type="hidden" name="publish_second" value="{publish_second}">
-                                <br>{publish_date_explanation}
+                                {publishampm_selection}<br{xhtml}>
+                                <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
+                                <br{xhtml}>{publish_date_explanation}
                             </td>
                         </tr>
                     </table>
@@ -171,14 +171,15 @@
                     <table cellspacing="0" cellpadding="3" style="width:100%;">
                         <tr>
                             <td class="alignright" style="width:20%; padding-right:5px;">{lang_option}:</td>
-                            <td style="width:20%;">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
+                            <td style="width:20%;">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"{xhtml}></td>
                             <td class="alignleft">
                                 <label for="storycode10">
-                                    <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}>{lang_optionarchive}
+                                    <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}>{lang_optionarchive}
                                 </label>&nbsp;
-                            <label for="storycode11">
-                                <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}>{lang_optiondelete}
-                            </label>
+                                <label for="storycode11">
+                                    <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}{xhtml}>{lang_optiondelete}
+                                </label>
+                            </td>
                         </tr>
                         <tr>
                             <td class="alignright" style="vertical-align:top;padding-right:5px;">{lang_date}:</td>
@@ -198,8 +199,8 @@
                                 <select name="expire_minute">
                                     {expire_minute_options}
                                 </select>
-                                {expireampm_selection}<br>
-                                <input type="hidden" name="expire_second" value="{expire_second}">
+                                {expireampm_selection}<br{xhtml}>
+                                <input type="hidden" name="expire_second" value="{expire_second}"{xhtml}>
                             </td>
                         </tr>
                     </table>
@@ -207,7 +208,7 @@
             </div>
             <fieldset id="se_perms" style="margin-top:10px; display:none;">
                 <legend>{lang_permissions}</legend>
-                <p><b>{lang_owner}:</b> {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></p>
+                <p><b>{lang_owner}:</b> {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></p>
                 <p><b>{lang_group}:</b> {group_dropdown}</p>
                 <p><b>{lang_permissions}:</b></p>
                 <p>{lang_perm_key}</p>
@@ -216,13 +217,13 @@
             </fieldset>
         </div>
         <div id="se_bottom" style="width:100%; paddin:3px; margin-top:20px;">
-            <input type="submit" value="{lang_save}" name="mode">
-            <span style="padding-right:10px;padding-left:10px;"><input type="submit" value="{lang_preview}" name="mode"></span>
-            <span style="padding-right:50px;"><input type="submit" value="{lang_cancel}" name="mode"></span>
+            <input type="submit" value="{lang_save}" name="mode"{xhtml}>
+            <span style="padding-right:10px;padding-left:10px;"><input type="submit" value="{lang_preview}" name="mode"{xhtml}></span>
+            <span style="padding-right:50px;"><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></span>
             {delete_option}
             {submission_option}
-            <input type="hidden" name="old_sid" value="{old_story_id}">
-            <input type="hidden" name="hour_mode" value="{hour_mode}">
+            <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>
+            <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
         </div>
     </form>
     <div id="preview" style="width:99%; border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">

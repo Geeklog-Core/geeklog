@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.52 2007/08/29 09:33:54 ospiess Exp $
+// $Id: syndication.php,v 1.53 2007/11/25 06:58:55 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -168,7 +168,7 @@ function listfeeds()
                        'default_filter' => '');
     // this is a dummy-variable so we know the form has been used if all feeds should be disabled
     // in order to disable the last one.
-    $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true">');
+    $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true"' . XHTML . '>');
 
     $retval .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
                             $query_arr, $defsort_arr, '', '', '', $form_arr);
@@ -221,6 +221,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template = new Template ($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file ('editor', 'feededitor.thtml');
 
+    $feed_template->set_var ( 'xhtml', XHTML );
     $feed_template->set_var ('site_url', $_CONF['site_url']);
     $feed_template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $feed_template->set_var ('layout_url', $_CONF['layout_url']);
@@ -261,7 +262,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     if ($A['fid'] > 0) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $feed_template->set_var ('delete_option',
                                  sprintf ($delbutton, $jsconfirm));
@@ -390,6 +391,7 @@ function newfeed ()
                                        . 'admin/syndication');
         $feed_template->set_file ('type', 'selecttype.thtml');
 
+        $feed_template->set_var ( 'xhtml', XHTML );
         $feed_template->set_var ('site_url', $_CONF['site_url']);
         $feed_template->set_var ('site_admin_url', $_CONF['site_admin_url']);
         $feed_template->set_var ('layout_url', $_CONF['layout_url']);

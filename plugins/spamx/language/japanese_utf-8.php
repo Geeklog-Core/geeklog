@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese_utf-8.php,v 1.3 2007/04/21 19:19:24 dhaun Exp $
+ * $Id: japanese_utf-8.php,v 1.4 2007/11/25 06:57:41 ospiess Exp $
  */
 # Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
@@ -56,7 +56,7 @@ $LANG_SX00 = array (
     'exmod' => 'Spam-X イグザミンモジュール',
     'actmod' => 'アクティブモジュール',
     'avmod' => 'アベイラブルモジュール',
-    'coninst' => '<hr>クリックしてアクティブモジュールを削除、クリックしてアベイラブルモジュールを追加。<br>モジュールは、示された順序で実行されます。 ',
+    'coninst' => '<hr' . XHTML . '>クリックしてアクティブモジュールを削除、クリックしてアベイラブルモジュールを追加。<br' . XHTML . '>モジュールは、示された順序で実行されます。 ',
     'fsc' => ' スパムポストマッチングが見つかりました。',
     'fsc1' => ' ユーザによる投稿',
     'fsc2' => ' IP から',
@@ -93,13 +93,13 @@ $LANG_SX00 = array (
 	'deletespam' => 'スパム削除',
 	'numtocheck' => 'コメント数チェック',
 	'note1'		=> '<p>Note: マスデリートで攻撃から守ります。',
-	'note2'		=> ' コメントスパムと Spam-X はキャッチしません。 <ul><li>最初のリンクとその他 ',
+	'note2'		=> ' コメントスパムと Spam-X はキャッチしません。 </p><ul><li>最初のリンクとその他 ',
 	'note3'		=> 'このスパムコメントをあなたのパーソナルブラックリストへ追加</li><li>',
 	'note4'		=> 'ここに戻り、最近のコメントを Spam-X チェック</li></ul><p>',
 	'note5'		=> '最新コメントを最後のコメントに追加チェック -- コメントチェック ',
 	'note6'		=> 'チェックをより多く要求します。</p>',
-	'masshead'	=> '<hr><h1 align="center">マスデリート～スパムコメント</h1>',
-	'masstb' => '<hr><h1 align="center">マスデリート～トラックバックスパム</h1>',
+	'masshead'	=> '<hr' . XHTML . '><h1 align="center">マスデリート～スパムコメント</h1>',
+	'masstb' => '<hr' . XHTML . '><h1 align="center">マスデリート～トラックバックスパム</h1>',
 	'comdel'	=> 'コメントが削除されました。',
     'initial_Pimport' => '<p>パーソナルブラックリスト インポート"',
     'initial_import' => '初期 MT-ブラックリスト インポート',

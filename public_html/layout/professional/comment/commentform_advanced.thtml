@@ -5,21 +5,21 @@
 <script type="text/JavaScript" src="{site_url}/javascript/submitcomment_fckeditor.js"></script>
 
                                 {start_block_postacomment}
-                                            <form action="{site_url}/comment.php" method="post" onSubmit='set_postcontent();'>
+                                            <form action="{site_url}/comment.php" method="post" onsubmit='set_postcontent();'>
                                                 <table cellspacing="0" cellpadding="3" width="100%">
                                                     <tr>
                                                         <td class="alignright"><b>{lang_username}:</b></td>
                                                         <td>
-                                                            <input type="hidden" name="sid" value="{sid}">
-                                                            <input type="hidden" name="pid" value="{pid}">
-                                                            <input type="hidden" name="type" value="{type}">
-                                                            <input type="hidden" name="comment" value="">
-                                                            <input type="hidden" name="uid" value="{uid}">{username} [ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]
+                                                            <input type="hidden" name="sid" value="{sid}"{xhtml}>
+                                                            <input type="hidden" name="pid" value="{pid}"{xhtml}>
+                                                            <input type="hidden" name="type" value="{type}"{xhtml}>
+                                                            <input type="hidden" name="comment" value=""{xhtml}>
+                                                            <input type="hidden" name="uid" value="{uid}"{xhtml}>{username} [ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="alignright"><b>{lang_title}:</b></td>
-                                                        <td><input type="text" name="title" size="32" value="{title}" maxlength="96"></td>
+                                                        <td><input type="text" name="title" size="32" value="{title}" maxlength="96"{xhtml}></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="alignright" style="vertical-align:top;"><b>{lang_comment}:</b></td>
@@ -35,15 +35,15 @@
                                                     <tr>
                                                         <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>
                                                         <td style="vertical-align:top;">
-                                                            <select id="sel_editmode" name="postmode" onChange="change_editmode(this);">
+                                                            <select id="sel_editmode" name="postmode" onchange="change_editmode(this);">
                                                                 {postmode_options}
-                                                            </select><br>
+                                                            </select><br{xhtml}>
                                                             <span class="warningsmall">{allowed_html}</span>
                                                         </td>
                                                     </tr>
                                                     {captcha}
                                                     <tr>
-                                                        <td colspan="2"><hr></td>
+                                                        <td colspan="2"><hr{xhtml}></td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="2"><b>{lang_importantstuff}</b><ul>
@@ -52,7 +52,7 @@
                                                             <li>{lang_instr_line3}</li>
                                                             <li>{lang_instr_line4}</li>
                                                             <li>{lang_instr_line5}</li></ul>
-                                                            <input type="submit" name="mode" value="{lang_preview}">
+                                                            <input type="submit" name="mode" value="{lang_preview}"{xhtml}>
                                                             {save_option}
                                                         </td>
                                                     </tr>

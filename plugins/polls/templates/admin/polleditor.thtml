@@ -4,11 +4,11 @@
                                     <table cellspacing="0" cellpadding="2" width="100%">
                                         <tr>
                                             <td align="right">{lang_pollid}:</td>
-                                            <td><input type="text" name="pid" value="{poll_id}" size="20"> {lang_donotusespaces}</td>
+                                            <td><input type="text" name="pid" value="{poll_id}" size="20"{xhtml}> {lang_donotusespaces}</td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_topic}:</td>
-                                            <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"> {poll_topic_info}</td>
+                                            <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"{xhtml}> {poll_topic_info}</td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_mode}:</td>
@@ -20,15 +20,15 @@
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_appearsonhomepage}:</td>
-                                            <td><input type="checkbox" name="mainpage" {poll_display}></td>
+                                            <td><input type="checkbox" name="mainpage" {poll_display}{xhtml}></td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_openforvoting}:</td>
-                                            <td><input type="checkbox" name="open" {poll_open}></td>
+                                            <td><input type="checkbox" name="open" {poll_open}{xhtml}></td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_hideresults}:</td>
-                                            <td><input type="checkbox" name="hideresults" {poll_hideresults}> {poll_hideresults_explain}</td>
+                                            <td><input type="checkbox" name="hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</td>
                                         </tr>
                                     </table>
                                     <div id="po_navbar" class="jsenabled_show">
@@ -36,11 +36,11 @@
                                     </div>
                                     {question_list}
                                     <h2>{lang_accessrights}</h2>
-                                    {lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"><br>
-                                    {lang_group}: {group_dropdown}<br>
+                                    {lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}><br{xhtml}>
+                                    {lang_group}: {group_dropdown}<br{xhtml}>
                                     <h2>{lang_permissions}</h2>
                                     {lang_permissionskey}
                                     <p>{permissions_editor}</p>
                                     <p>{lang_permissions_msg}</p>
-                                    <input type="submit" name="mode" value="{lang_save}"> <input type="submit" name="mode" value="{lang_cancel}">{delete_option}
+                                    <input type="submit" name="mode" value="{lang_save}"{xhtml}><input type="submit" name="mode" value="{lang_cancel}"{xhtml}>{delete_option}
                                 </form>

@@ -6,15 +6,15 @@
                                         </tr>
                                         <tr>
                                             <td class="alignright" width="50%"><b>{lang_username}:</b></td>
-                                            <td width="50%"><input type="text" size="16" maxlength="16" name="username" value="{username}"></td>
+                                            <td width="50%"><input type="text" size="16" maxlength="16" name="username" value="{username}"{xhtml}></td>
                                         </tr>
                                         <tr>
                                             <td class="alignright" width="50%"><b>{lang_email}:</b></td>
-                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email" value="{email}"></td>
+                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email" value="{email}"{xhtml}></td>
                                         </tr>
                                         <tr>
                                             <td class="alignright" width="50%"><b>{lang_email_conf}:</b></td>
-                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"></td>
+                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"{xhtml}></td>
                                         </tr>
                                         <tr>
                                             <td class="aligncenter warning" colspan="2" width="100%">{lang_warning}</td>
@@ -22,8 +22,8 @@
                                         {captcha}
                                         <tr>
                                             <td class="aligncenter" colspan="2" width="100%">
-                                                <input type="hidden" name="mode" value="create">
-                                                <input type="submit" value="{lang_register}">
+                                                <input type="hidden" name="mode" value="create"{xhtml}>
+                                                <input type="submit" value="{lang_register}"{xhtml}>
                                             </td>
                                         </tr>
                                     </table>

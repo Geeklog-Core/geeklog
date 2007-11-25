@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2007/11/15 17:04:56 blaine Exp $
+// $Id: index.php,v 1.24 2007/11/25 06:58:56 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -61,6 +61,7 @@ function polllist ()
                           COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template ($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+        $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);

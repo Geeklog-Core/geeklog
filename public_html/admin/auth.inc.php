@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.34 2006/10/01 19:16:13 dhaun Exp $
+// $Id: auth.inc.php,v 1.35 2007/11/25 06:58:55 ospiess Exp $
 
 // this file can't be used on its own
 if (strpos ($_SERVER['PHP_SELF'], 'auth.inc.php') !== false)
@@ -90,23 +90,23 @@ if ($status == 3) {
 
     if (!empty($warn)) {
         $display .= $LANG20[02]
-        .'<br><br>'
+        .'<br' . XHTML . '><br' . XHTML . '>'
         .COM_accessLog($LANG20[03] . ' ' . $_POST['loginname']);
     }
 
     $display .= '<form action="' . $_SERVER['PHP_SELF']
-             . '" method="POST">'
+             . '" method="post">'
         .'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
         .'<tr><td align="right">'.$LANG20[04].'&nbsp;</td>'.LB
-        .'<td><input type="text" name="loginname" size="16" maxlength="16"></td>'.LB
+        .'<td><input type="text" name="loginname" size="16" maxlength="16"' . XHTML . '></td>'.LB
         .'</tr>'.LB
         .'<tr>'.LB
         .'<td align="right">'.$LANG20[05].'&nbsp;</td>'.LB
-        .'<td><input type="password" name="passwd" size="16" maxlength="16"></td>'
+        .'<td><input type="password" name="passwd" size="16" maxlength="16"' . XHTML . '></td>'
         .'</tr>'.LB
         .'<tr>'.LB
-        .'<td colspan="2" align="center" class="warning">'.$LANG20[06].'<input type="hidden" name="warn" value="1">'
-        .'<br><input type="submit" name="mode" value="'.$LANG20[07].'"></td>'.LB
+        .'<td colspan="2" align="center" class="warning">'.$LANG20[06].'<input type="hidden" name="warn" value="1"' . XHTML . '>'
+        .'<br' . XHTML . '><input type="submit" name="mode" value="'.$LANG20[07].'"' . XHTML . '></td>'.LB
         .'</tr>'.LB
         .'</table></form>'
         .COM_endBlock()

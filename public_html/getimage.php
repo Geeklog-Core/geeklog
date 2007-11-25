@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: getimage.php,v 1.7 2006/05/26 13:35:39 dhaun Exp $
+// $Id: getimage.php,v 1.8 2007/11/25 06:55:07 ospiess Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
@@ -92,7 +92,7 @@ switch ($mode) {
 // Let's see if we don't have a legit file.  If not bail
 if (is_file($downloader->getPath() . $image)) {
     if ($mode == 'show') {
-        echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $image . '" alt=""></body></html>';
+        echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $image . '" alt=""' . XHTML . '></body></html>';
     } else {
         $downloader->downloadFile($image);
     }

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.17 2007/02/12 06:52:58 ospiess Exp $
+// $Id: directory.php,v 1.18 2007/11/25 06:55:07 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -50,6 +50,7 @@ if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template ($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+    $login->set_var ( 'xhtml', XHTML );
     $login->set_var ('site_url', $_CONF['site_url']);
     $login->set_var ('layout_url', $_CONF['layout_url']);
     $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -104,7 +105,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     $retval = '';
 
     $url = $_CONF['site_url'] . '/' . THIS_SCRIPT;
-    $retval .= '<form action="' . $url . '" method="POST"';
+    $retval .= '<form action="' . $url . '" method="post"';
     if (!$standalone) {
         $retval .= ' style="display:inline; float:right"' . LB;
     }
@@ -117,8 +118,8 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     $retval .= '>' . $LANG21[7] . '</option>' . LB;
     $retval .= COM_topicList ('tid,topic', $topic);
     $retval .= '</select>' . LB;
-    $retval .= '<input type="hidden" name="year" value="' . $year . '">';
-    $retval .= '<input type="hidden" name="month" value="' . $month . '">';
+    $retval .= '<input type="hidden" name="year" value="' . $year . '"' . XHTML . '>';
+    $retval .= '<input type="hidden" name="month" value="' . $month . '"' . XHTML . '>';
     $retval .= '</div></form>' . LB;
 
     return $retval;
@@ -425,7 +426,7 @@ function DIR_displayAll ($topic, $list_current_month = false)
 
         $retval .= DIR_displayMonth ($topic, $currentyear, $currentmonth);
 
-        $retval .= '<hr>' . LB;
+        $retval .= '<hr' . XHTML . '>' . LB;
     }
 
     $retval .= '<div><h1 style="display:inline">' . $LANG_DIR['title']

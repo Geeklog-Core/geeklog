@@ -8,9 +8,9 @@
 
     <p>{sp_content}</p>
 
-    <hr>
+    <hr{xhtml}>
 
-    <p>{site_name}<br>
+    <p>{site_name}<br{xhtml}>
         <a href="{sp_url}">{sp_url}</a>
     </p>
 ({comments_text})

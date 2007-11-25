@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.113 2007/10/29 14:10:51 ospiess Exp $
+// $Id: moderation.php,v 1.114 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -88,6 +88,7 @@ function commandcontrol()
     $admin_templates->set_file (array ('cc'     => 'moderation.thtml',
                                        'ccrow'  => 'ccrow.thtml',
                                        'ccitem' => 'ccitem.thtml'));
+    $admin_templates->set_var( 'xhtml', XHTML );
 
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -306,11 +307,11 @@ function itemlist($type)
     );
     $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
-        $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '">' . LB
-                . '<input type="hidden" name="mode" value="moderation">' . LB
-                . '<input type="hidden" name="count" value="' . $nrows . '">'
+        $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
+                . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
+                . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
                 . '<p class="aligncenter"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"></p>' . LB;
+                . $LANG_ADMIN['submit'] . '"' . XHTML . '></p>' . LB;
     }
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
@@ -368,11 +369,11 @@ function userlist ()
 
     $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
-        $form_arr['bottom'] = '<input type="hidden" name="type" value="user">' . LB
-                . '<input type="hidden" name="mode" value="moderation">' . LB
-                . '<input type="hidden" name="count" value="' . $nrows . '">'
+        $form_arr['bottom'] = '<input type="hidden" name="type" value="user"' . XHTML . '>' . LB
+                . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
+                . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
                 . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"></p>' . LB;
+                . $LANG_ADMIN['submit'] . '"' . XHTML . '></p>' . LB;
     }
 
     $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
@@ -429,11 +430,11 @@ function draftlist ()
 
     $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
-        $form_arr['bottom'] = '<input type="hidden" name="type" value="draft">' . LB
-                . '<input type="hidden" name="mode" value="moderation">' . LB
-                . '<input type="hidden" name="count" value="' . $nrows . '">'
+        $form_arr['bottom'] = '<input type="hidden" name="type" value="draft"' . XHTML . '>' . LB
+                . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
+                . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
                 . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"></p>' . LB;
+                . $LANG_ADMIN['submit'] . '"' . XHTML . '></p>' . LB;
     }
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');

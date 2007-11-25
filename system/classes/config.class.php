@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.5 2007/10/12 03:33:08 ospiess Exp $
+// $Id: config.class.php,v 1.6 2007/11/25 06:59:56 ospiess Exp $
 
 class config {
     var $ref;
@@ -325,6 +325,7 @@ class config {
             return config::_UI_perm_denied();
         $t = new Template($GLOBALS['_CONF']['path_layout'] . 'admin/config');
         $t->set_file('main','configuration.thtml');
+        $t->set_var( 'xhtml', XHTML );
         $t->set_var('site_url',$GLOBALS['_CONF']['site_url']);
         $t->set_var('open_group', $this->ref);
         $t->set_block('main','group-selector','groups');
@@ -420,6 +421,7 @@ class config {
         foreach ($blocks as $block)
             $t->set_block('element', $block);
 
+        $t->set_var( 'xhtml', XHTML );
         $t->set_var('name', $name);
         $t->set_var('display_name', $display_name);
         $t->set_var('value', $val);
@@ -461,7 +463,7 @@ class config {
                     $t->set_var('opt_value', $sVal);
                 }
                 $t->set_var('opt_name', $sName);
-                $t->set_var('selected', ($val == $sVal ? 'SELECTED' : ''));
+                $t->set_var('selected', ($val == $sVal ? 'selected="selected"' : ''));
                 $t->parse('myoptions', 'select-options', true);
             }
             return $t->parse('output', 'select-element');

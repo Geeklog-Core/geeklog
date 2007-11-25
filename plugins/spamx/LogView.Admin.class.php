@@ -9,7 +9,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: LogView.Admin.class.php,v 1.9 2007/02/12 06:52:15 ospiess Exp $
+ * $Id: LogView.Admin.class.php,v 1.10 2007/11/25 06:56:05 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'LogView.Admin.class.php') !== false) {
@@ -37,7 +37,7 @@ class LogView extends BaseAdmin {
               . '/plugins/spamx/index.php?command=LogView';
         $log = 'spamx.log';
         $display .= "<form method=\"post\" action=\"{$path}\"><div>";
-        $display .= "<input type=\"submit\" name=\"action\" value=\"{$LANG_SX00['clearlog']}\">";
+        $display .= "<input type=\"submit\" name=\"action\" value=\"{$LANG_SX00['clearlog']}\"" . XHTML . ">";
         $display .= "</div></form>";
         if ($action == $LANG_SX00['clearlog']) {
             $timestamp = strftime("%c");
@@ -57,7 +57,7 @@ class LogView extends BaseAdmin {
           fwrite($fd,$data);
           fclose($fd);
         }
-        $display .= "<hr><pre>";
+        $display .= "<hr" . XHTML . "><pre>";
         $display .= implode('', file($_CONF['path_log'] . $log));
         $display .= "</pre>";
         return $display;

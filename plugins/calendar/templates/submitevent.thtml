@@ -1,7 +1,7 @@
                             {explanation}
                             <form class="form-theme" action="{site_url}{submit_url}" method="post">
                                 <div class="form-description">{lang_title}:</div>
-                                <div class="form-field"><input type="text" size="48" maxlength="128" name="title"></div>
+                                <div class="form-field"><input type="text" size="48" maxlength="128" name="title"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_eventtype}:</div>
                                 <div class="form-field">
@@ -60,19 +60,19 @@
                                 </div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_alldayevent}:</div>
-                                <div class="form-field"><input type="checkbox" name="allday"></div>
+                                <div class="form-field"><input type="checkbox" name="allday"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_location}:</div>
                                 <div class="form-field"><textarea name="location" cols="45" rows="2"></textarea></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_addressline1}:</div>
-                                <div class="form-field"><input type="text" name="address1" size="40"></div>
+                                <div class="form-field"><input type="text" name="address1" size="40"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_addressline2}:</div>
-                                <div class="form-field"><input type="text" name="address2" size="40"></div>
+                                <div class="form-field"><input type="text" name="address2" size="40"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_city}:</div>
-                                <div class="form-field"><input type="text" name="city" size="40" maxlength="60"></div>
+                                <div class="form-field"><input type="text" name="city" size="40" maxlength="60"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_state}:</div>
                                 <div class="form-field">
@@ -82,21 +82,21 @@
                                 </div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_zipcode}:</div>
-                                <div class="form-field"><input type="text" name="zipcode" size="5" maxlength="5"></div>
+                                <div class="form-field"><input type="text" name="zipcode" size="5" maxlength="5"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_link}:</div>
-                                <div class="form-field"><input type="text" size="48" maxlength="{max_url_length}" name="url" value="http://"></div>
+                                <div class="form-field"><input type="text" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_description}:</div>
                                 <div class="form-field"><textarea name="description" style="width:100%" rows="8"></textarea></div>
                                 <div class="clear-left"></div>
                                 <div class="form-field">{lang_htmnotallowed}</div>
                                 <div class="form-field">
-                                    <input type="hidden" name="mode" value="{lang_submit}">
-                                    <input type="hidden" name="type" value="calendar">
-                                    <input type="hidden" name="calendar_type" value="{mode}">
-                                    <input type="hidden" name="hour_mode" value="{hour_mode}">
-                                    <input type="submit" value="{lang_submit}">
+                                    <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
+                                    <input type="hidden" name="type" value="calendar"{xhtml}>
+                                    <input type="hidden" name="calendar_type" value="{mode}"{xhtml}>
+                                    <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+                                    <input type="submit" value="{lang_submit}"{xhtml}>
                                 </div>
                                 <div class="clear-left"></div>
                             </form>

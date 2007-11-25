@@ -6,11 +6,11 @@
         <td class="edit-perm-up"><b>{anonymous}</b></td>
     </tr>
     <tr>
-        <td class="edit-perm-down"><b>R</b><br><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked}></td>
-        <td class="edit-perm-down"><b>E</b><br><input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked}></td>
-        <td class="edit-perm-down"><b>R</b><br><input type="checkbox" name="perm_group[]" value="2"{group_r_checked}></td>
-        <td class="edit-perm-down"><b>E</b><br><input type="checkbox" name="perm_group[]" value="1"{group_e_checked}></td>
-        <td class="edit-perm-down"><b>R</b><br><input type="checkbox" name="perm_members[]" value="2"{members_checked}></td>
-        <td class="edit-perm-down"><b>R</b><br><input type="checkbox" name="perm_anon[]" value="2"{anon_checked}></td>
+        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
+        <td class="edit-perm-down"><b>E</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
+        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
+        <td class="edit-perm-down"><b>E</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
+        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
+        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
     </tr>
 </table>

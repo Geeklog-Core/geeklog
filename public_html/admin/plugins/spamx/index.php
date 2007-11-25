@@ -59,6 +59,7 @@ if (!SEC_hasRights ('spamx.admin')) {
 $display = COM_siteHeader ('menu', $LANG_SX00['plugin_name']);
 $T = new Template ($_CONF['path'] . 'plugins/spamx/templates');
 $T->set_file ('admin', 'admin.thtml');
+$T->set_var ( 'xhtml', XHTML );
 $T->set_var ('site_url', $_CONF['site_url']);
 $T->set_var ('site_admin_url', $_CONF['site_admin_url']);
 $T->set_var ('header', $LANG_SX00['admin']);
@@ -66,7 +67,9 @@ $T->set_var ('plugin_name', $LANG_SX00['plugin_name']);
 $T->set_var ('plugin', 'spamx');
 $T->parse ('output', 'admin');
 $display .= $T->finish ($T->get_var ('output'));
-$display .= '<p>';
+// @@@@ 2007/09/16 uncommented by dengen ------>>
+//$display .= '<p>';
+// @@@@ 2007/09/16 uncommented by dengen ------<<
 
 $files = array ();
 if ($dir = @opendir ($_CONF['path'] . 'plugins/spamx/')) {

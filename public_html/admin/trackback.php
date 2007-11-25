@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.47 2007/08/29 09:33:54 ospiess Exp $
+// $Id: trackback.php,v 1.48 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -96,6 +96,7 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
         $preview = new Template ($_CONF['path_layout'] . 'trackback');
         $preview->set_file (array ('comment' => 'trackbackcomment.thtml'));
         $comment = TRB_formatComment ($url, $p_title, $p_blog, $p_excerpt);
+        $preview->set_var ( 'xhtml', XHTML );
         $preview->set_var ('formatted_comment', $comment);
         $preview->parse ('output', 'comment');
         $retval .= $preview->finish ($preview->get_var ('output'));
@@ -116,6 +117,7 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('editor' => 'trackbackeditor.thtml'));
 
+    $template->set_var ( 'xhtml', XHTML );
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
@@ -182,7 +184,7 @@ function deleteTrackbackComment ($id)
     if (strpos ($url, '?') === false) {
         $url .= '?msg=' . $msg;
     } else {
-        $url .= '&msg=' . $msg;
+        $url .= '&amp;msg=' . $msg;
     }
 
     return COM_refresh ($url);
@@ -239,6 +241,7 @@ function sendPingbacks ($type, $id)
         $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
         $template->set_file (array ('list' => 'pingbacklist.thtml',
                                     'item' => 'pingbackitem.thtml'));
+        $template->set_var ( 'xhtml', XHTML );
         $template->set_var ('site_url', $_CONF['site_url']);
         $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
         $template->set_var ('layout_url', $_CONF['layout_url']);
@@ -289,6 +292,7 @@ function pingbackForm ($targetUrl = '')
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('list' => 'pingbackform.thtml'));
+    $template->set_var ( 'xhtml', XHTML );
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
@@ -327,6 +331,7 @@ function sendPings ($type, $id)
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('list' => 'pinglist.thtml',
                                 'item' => 'pingitem.thtml'));
+    $template->set_var ( 'xhtml', XHTML );
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
@@ -392,7 +397,7 @@ function prepareAutodetect ($type, $id, $text)
     $retval = '';
 
     $baseurl = $_CONF['site_admin_url']
-             . '/trackback.php?mode=autodetect&id=' . $id;
+             . '/trackback.php?mode=autodetect&amp;id=' . $id;
     if ($type != 'article') {
         $baseurl .= '&type' . $type;
     }
@@ -404,7 +409,7 @@ function prepareAutodetect ($type, $id, $text)
     if ($numlinks == 1) {
         // skip the link selection when there's only one link in the story
         $url = urlencode ($matches[1][0]);
-        $link = $baseurl .= '&url=' . $url;
+        $link = $baseurl .= '&amp;url=' . $url;
 
         echo COM_refresh ($link);
         exit;
@@ -412,20 +417,21 @@ function prepareAutodetect ($type, $id, $text)
         $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
         $template->set_file (array ('list' => 'autodetectlist.thtml',
                                     'item' => 'autodetectitem.thtml'));
+        $template->set_var ( 'xhtml', XHTML );
         $template->set_var ('site_url', $_CONF['site_url']);
         $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
         $template->set_var ('layout_url', $_CONF['layout_url']);
 
-        $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&id=' . $id;
+        $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&amp;id=' . $id;
         if ($type != 'article') {
-            $url .= '&type=' . $type;
+            $url .= '&amp;type=' . $type;
         }
         $template->set_var ('lang_trackback_explain',
                             sprintf ($LANG_TRB['trackback_explain'], $url));
 
         for ($i = 0; $i < $numlinks; $i++) {
             $url = urlencode ($matches[1][$i]);
-            $link = $baseurl .= '&url=' . $url;
+            $link = $baseurl .= '&amp;url=' . $url;
 
             $template->set_var ('autodetect_link', $link);
             $template->set_var ('link_text', $matches[2][$i]);
@@ -512,7 +518,7 @@ function listServices ()
 
     // this is a dummy-variable so we know the form has been used if all services should be disabled
     // in order to disable the last one.
-    $form_arr = array('bottom' => '<input type="hidden" name="serviceChanger" value="true">');
+    $form_arr = array('bottom' => '<input type="hidden" name="serviceChanger" value="true"' . XHTML . '>');
 
     $retval .= ADMIN_list ("pingservice", "ADMIN_getListField_trackback", $header_arr, $text_arr,
                             $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
@@ -581,6 +587,7 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('editor' => 'serviceeditor.thtml'));
+    $template->set_var ( 'xhtml', XHTML );
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
@@ -600,7 +607,7 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
 
     if ($pid > 0) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="servicemode[2]"%s>';
+                   . '" name="servicemode[2]"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $template->set_var ('delete_option',
                             sprintf ($delbutton, $jsconfirm));
@@ -715,7 +722,7 @@ function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
     }
 
     return COM_refresh ($_CONF['site_admin_url']
-                        . '/trackback.php?mode=listservice&msg=65');
+                        . '/trackback.php?mode=listservice&amp;msg=65');
 }
 
 /**
@@ -890,7 +897,7 @@ if ($mode == 'delete') {
             $display .= COM_showMessage (64);
             $display .= trackback_editor ();
         } else {
-            $message = '<p>' . $LANG_TRB['send_error_details'] . '<br>'
+            $message = '<p>' . $LANG_TRB['send_error_details'] . '<br' . XHTML . '>'
                      . '<span class="warningsmall">'
                      . htmlspecialchars ($result) . '</span></p>';
             $display .= showTrackbackMessage ($LANG_TRB['send_error'], $message);
@@ -962,9 +969,9 @@ if ($mode == 'delete') {
             $ping_sent = true;
         } else if (isset ($what[2])) {  // Trackback
             $url = $_CONF['site_admin_url']
-                 . '/trackback.php?mode=pretrackback&id=' . $id;
+                 . '/trackback.php?mode=pretrackback&amp;id=' . $id;
             if ($type != 'article') {
-                $url .= '&type=' . $type;
+                $url .= '&amp;type=' . $type;
             }
             echo COM_refresh ($url);
             exit;
@@ -978,6 +985,7 @@ if ($mode == 'delete') {
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('form' => 'pingform.thtml'));
+    $template->set_var ( 'xhtml', XHTML );
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
@@ -995,7 +1003,7 @@ if ($mode == 'delete') {
             $template->set_var ('lang_pingback_short',
                                 $LANG_TRB['pingback_short']);
             $button = '<input type="submit" name="what[0]" value="'
-                    . $LANG_TRB['pingback_button'] . '">';
+                    . $LANG_TRB['pingback_button'] . '"' . XHTML . '>';
             $template->set_var ('pingback_button', $button);
         }
     } else {
@@ -1006,7 +1014,7 @@ if ($mode == 'delete') {
             $template->set_var ('lang_ping_button', $LANG_TRB['ping_button']);
             $template->set_var ('lang_ping_short', $LANG_TRB['ping_short']);
             $button = '<input type="submit" name="what[1]" value="'
-                    . $LANG_TRB['ping_button'] . '">';
+                    . $LANG_TRB['ping_button'] . '"' . XHTML . '>';
             $template->set_var ('ping_button', $button);
         }
     } else {
@@ -1019,7 +1027,7 @@ if ($mode == 'delete') {
             $template->set_var ('lang_trackback_short',
                                 $LANG_TRB['trackback_short']);
             $button = '<input type="submit" name="what[2]" value="'
-                    . $LANG_TRB['trackback_button'] . '">';
+                    . $LANG_TRB['trackback_button'] . '"' . XHTML . '>';
             $template->set_var ('trackback_button', $button);
         }
     } else {
@@ -1028,17 +1036,17 @@ if ($mode == 'delete') {
 
     $hidden = '';
     if ($pingback_sent) {
-        $hidden .= '<input type="hidden" name="pingback_sent" value="1">';
+        $hidden .= '<input type="hidden" name="pingback_sent" value="1"' . XHTML . '>';
     }
     if ($ping_sent) {
-        $hidden .= '<input type="hidden" name="ping_sent" value="1">';
+        $hidden .= '<input type="hidden" name="ping_sent" value="1"' . XHTML . '>';
     }
     if ($trackback_sent) {
-        $hidden .= '<input type="hidden" name="trackback_sent" value="1">';
+        $hidden .= '<input type="hidden" name="trackback_sent" value="1"' . XHTML . '>';
     }
-    $hidden .= '<input type="hidden" name="id" value="' . $id . '">';
-    $hidden .= '<input type="hidden" name="type" value="' . $type . '">';
-    $hidden .= '<input type="hidden" name="mode" value="sendall">';
+    $hidden .= '<input type="hidden" name="id" value="' . $id . '"' . XHTML . '>';
+    $hidden .= '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>';
+    $hidden .= '<input type="hidden" name="mode" value="sendall"' . XHTML . '>';
     $template->set_var ('hidden_input_fields', $hidden);
 
     $template->parse ('output', 'form');
@@ -1165,7 +1173,7 @@ if ($mode == 'delete') {
     if ($pid > 0) {
         DB_delete ($_TABLES['pingservice'], 'pid', $pid);
         $display = COM_refresh ($_CONF['site_admin_url']
-                 . '/trackback.php?mode=listservice&msg=66');
+                 . '/trackback.php?mode=listservice&amp;msg=66');
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
@@ -1206,7 +1214,7 @@ if ($mode == 'delete') {
             $display .= COM_showMessage (74);
             $target = '';
         } else {
-            $message = '<p>' . $LANG_TRB['pb_error_details'] . '<br>'
+            $message = '<p>' . $LANG_TRB['pb_error_details'] . '<br' . XHTML . '>'
                      . '<span class="warningsmall">'
                      . htmlspecialchars ($result) . '</span></p>';
             $display .= showTrackbackMessage ($LANG_TRB['send_error'], $message);

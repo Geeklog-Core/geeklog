@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.24 2007/10/10 01:57:44 ospiess Exp $
+// $Id: event.php,v 1.25 2007/11/25 06:58:56 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -62,6 +62,7 @@ function adduserevent ($eid)
         $A = DB_fetchArray($result);
         $cal_template = new Template($_CONF['path'] . 'plugins/calendar/templates/');
         $cal_template->set_file (array ('addevent' => 'addevent.thtml'));
+        $cal_template->set_var( 'xhtml', XHTML );
         $cal_template->set_var('site_url', $_CONF['site_url']);
         $cal_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $cal_template->set_var('layout_url', $_CONF['layout_url']);
@@ -90,9 +91,9 @@ function adduserevent ($eid)
         }
 
         $cal_template->set_var('lang_where',$LANG_CAL_1[4]);
-        $location = stripslashes($A['location']) . '<br>'
-                  . stripslashes ($A['address1']) . '<br>'
-                  . stripslashes ($A['address2']) . '<br>'
+        $location = stripslashes($A['location']) . '<br' . XHTML . '>'
+                  . stripslashes ($A['address1']) . '<br' . XHTML . '>'
+                  . stripslashes ($A['address2']) . '<br' . XHTML . '>'
                   . stripslashes ($A['city'])
                   . ', ' . $A['state'] . ' ' . $A['zipcode'];
         $cal_template->set_var('event_location', $location);
@@ -167,6 +168,7 @@ function editpersonalevent ($A)
 
     $cal_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/');
     $cal_templates->set_file('form','editpersonalevent.thtml');
+    $cal_templates->set_var( 'xhtml', XHTML );
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $cal_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -500,6 +502,7 @@ default:
             'addremove' => 'addremoveevent.thtml'
             ));
 
+    $cal_templates->set_var ( 'xhtml', XHTML );
     $cal_templates->set_var ('lang_addevent', $LANG_CAL_1[6]);
     $cal_templates->set_var ('lang_backtocalendar', $LANG_CAL_1[15]);
     if ($mode == 'personal') {
@@ -628,18 +631,18 @@ default:
                                     empty ($A['address2']) && !$hasCityEtc)) {
                         $cal_templates->set_var ('br0', '');
                     } else {
-                        $cal_templates->set_var ('br0', '<br>');
+                        $cal_templates->set_var ('br0', '<br' . XHTML . '>');
                     }
                     if (empty ($A['address1']) || (empty ($A['address2']) &&
                                                    !$hasCityEtc)) {
                         $cal_templates->set_var ('br1', '');
                     } else {
-                        $cal_templates->set_var ('br1', '<br>');
+                        $cal_templates->set_var ('br1', '<br' . XHTML . '>');
                     }
                     if (empty ($A['address2']) || !$hasCityEtc) {
                         $cal_templates->set_var ('br2', '');
                     } else {
-                        $cal_templates->set_var ('br2', '<br>');
+                        $cal_templates->set_var ('br2', '<br' . XHTML . '>');
                     }
                 }
 
@@ -665,7 +668,7 @@ default:
             $cal_templates->set_var ('event_edit', COM_createLink($LANG01[4], $editurl));
             $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
-                . $LANG01[4] . '">';
+                . $LANG01[4] . '"' . XHTML . '>';
             $cal_templates->set_var ('edit_icon', COM_createLink($img, $editurl));
         } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
@@ -675,7 +678,7 @@ default:
             $cal_templates->set_var ('event_edit', COM_createLink($LANG01[4], $editurl));
             $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
-                . $LANG01[4] . '">';
+                . $LANG01[4] . '"' . XHTML . '>';
             $cal_templates->set_var ('edit_icon', COM_createLink($img, $editurl));
             $cal_templates->set_var ('hits_admin',
                                      COM_numberFormat ($A['hits']));

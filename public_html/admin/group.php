@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.97 2007/08/31 04:14:34 ospiess Exp $
+// $Id: group.php,v 1.98 2007/11/25 06:58:55 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -113,6 +113,7 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $group_templates->set_var('lang_admingroup',$LANG28[49]);
     $group_templates->set_var('lang_admingrp_msg', $LANG28[50]);
+    $group_templates->set_var( 'xhtml', XHTML );
     $showall = 0;
     if (isset ($_GET['chk_showall'])) {
         $showall =  COM_applyFilter ($_GET['chk_showall'], true);
@@ -137,7 +138,7 @@ function editgroup($grp_id = '')
         // Groups tied to Geeklog's functionality shouldn't be deleted
         if ($A['grp_gl_core'] != 1) {
             $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                       . '" name="mode"%s>';
+                       . '" name="mode"%s' . XHTML . '>';
             $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
             $group_templates->set_var ('delete_option',
                                        sprintf ($delbutton, $jsconfirm));
@@ -208,7 +209,7 @@ function editgroup($grp_id = '')
             $groupoptions = '';
             for ($i = 1; $i <= $nrows; $i++) {
                 $GRPS = DB_fetchArray($result);
-                $groupoptions .= $GRPS['grp_name'] . '<input type="hidden" name="groups[]" value="' . $GRPS['grp_id'] . '"><br>' .LB;
+                $groupoptions .= $GRPS['grp_name'] . '<input type="hidden" name="groups[]" value="' . $GRPS['grp_id'] . '"' . XHTML . '><br' . XHTML . '>' .LB;
             }
             $group_templates->set_var('group_options', $groupoptions);
         }
@@ -384,7 +385,7 @@ function printrights ($grp_id = '', $core = 0)
                     $retval .= ' checked="checked"';
                 }
             }
-            $retval .= '><span title="' . $A['ft_descr'] . '">' . $A['ft_name']
+            $retval .= XHTML . '><span title="' . $A['ft_descr'] . '">' . $A['ft_name']
                     . '</span></td>';
         } else {
             // either this is an indirect right OR this is a core feature
@@ -761,14 +762,14 @@ function listgroups()
     }
 
     if ($show_all_groups) {
-        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked">';
+        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1" checked="checked"' . XHTML . '>';
         $query_arr = array(
             'table' => 'groups',
             'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE 1=1",
             'query_fields' => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     } else {
-        $filter .= "<label for=\"chk_showall\"><input id=\"chk_showall\" type=\"checkbox\" name=\"chk_showall\" value=\"1\"$checked>";
+        $filter .= "<label for=\"chk_showall\"><input id=\"chk_showall\" type=\"checkbox\" name=\"chk_showall\" value=\"1\"$checked" . XHTML . ">";
         $query_arr = array(
             'table' => 'groups',
             'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id in (2,13))",
@@ -879,6 +880,7 @@ function editusers ($group)
     $groupmembers->set_var ('lang_grouplist', $LANG28[38]);
     $groupmembers->set_var('show_all', COM_applyFilter($_GET['chk_showall'],true));
     $groupmembers->set_var ('group_id',$group);
+    $groupmembers->set_var ( 'xhtml',  XHTML );
     $groupmembers->parse ('output', 'groupmembers');
     $retval .= $groupmembers->finish($groupmembers->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));

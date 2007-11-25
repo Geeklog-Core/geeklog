@@ -37,21 +37,30 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: help.php,v 1.1 2007/09/06 07:01:59 mwest Exp $
+// $Id: help.php,v 1.2 2007/11/25 06:58:55 ospiess Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
 }
+if ( !defined( 'XHTML' ) ) {
+	define( 'XHTML', ' /' );
+}
+
 $language = (isset( $_GET['language'] ) && !empty( $_GET['language'] )) ? $_GET['language'] : 'english';
 require_once( 'language/' . $language . '.php' );
 
 // $display holds all the outputted HTML and content
-$display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '" />
-<link rel="stylesheet" type="text/css" href="layout/style.css" />
-<meta name="robots" content="noindex,nofollow" />
+if ( defined( 'XHTML' ) ) {
+	$display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">';
+} else {
+	$display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>';
+}
+$display .= '<head>
+<meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '"' . XHTML . '>
+<link rel="stylesheet" type="text/css" href="layout/style.css"' . XHTML . '>
+<meta name="robots" content="noindex,nofollow"' . XHTML . '>
 <title>' . $LANG_INSTALL[0] . '</title>
 </head>
 
@@ -65,10 +74,10 @@ $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="header-logobg-container-inner">
             <tr>
                 <td class="header-logobg-left">
-                    <a href="http://www.geeklog.net/"><img src="layout/logo.png" width="151" height="56" alt="Geeklog" border="0" /></a>
+                    <a href="http://www.geeklog.net/"><img src="layout/logo.png" width="151" height="56" alt="Geeklog" border="0"' . XHTML . '></a>
                 </td>
                 <td class="header-logobg-right">
-                    <div class="site-slogan">' . $LANG_INSTALL[2] . ' <br /><br />
+                    <div class="site-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '>
                 </td>
             </tr>
         </table>
@@ -77,40 +86,40 @@ $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
         <div class="installation-body-container">
             <h1 class="heading">' . $LANG_HELP[0] . '</h1>
             <h2><a name="site_name">' . $LANG_INSTALL[32] . '</a></h2>
-            <p>' . $LANG_HELP[1] . '</p><br />
+            <p>' . $LANG_HELP[1] . '</p><br' . XHTML . '>
 
             <h2><a name="site_slogan">' . $LANG_INSTALL[33] . '</a></h2>
-            <p>' . $LANG_HELP[2] . '</p><br />
+            <p>' . $LANG_HELP[2] . '</p><br' . XHTML . '>
 
             <h2><a name="db_type">' . $LANG_INSTALL[34] . '</a></h2>
-            <p>' . $LANG_HELP[3] . '</p><br />
+            <p>' . $LANG_HELP[3] . '</p><br' . XHTML . '>
 
             <h2><a name="db_host">' . $LANG_INSTALL[39] . '</a></h2>
-            <p>' . $LANG_HELP[4] . '</p><br />
+            <p>' . $LANG_HELP[4] . '</p><br' . XHTML . '>
 
             <h2><a name="db_name">' . $LANG_INSTALL[40] . '</a></h2>
-            <p>' . $LANG_HELP[5] . '</p><br />
+            <p>' . $LANG_HELP[5] . '</p><br' . XHTML . '>
 
             <h2><a name="db_user">' . $LANG_INSTALL[41] . '</a></h2>
-            <p>' . $LANG_HELP[6] . '</p><br />
+            <p>' . $LANG_HELP[6] . '</p><br' . XHTML . '>
 
             <h2><a name="db_pass">' . $LANG_INSTALL[42] . '</a></h2>
-            <p>' . $LANG_HELP[7] . '</p><br />
+            <p>' . $LANG_HELP[7] . '</p><br' . XHTML . '>
 
             <h2><a name="db_prefix">' . $LANG_INSTALL[43] . '</a></h2>
-            <p>' . $LANG_HELP[8] . '</p><br />
+            <p>' . $LANG_HELP[8] . '</p><br' . XHTML . '>
 
             <h2><a name="site_url">' . $LANG_INSTALL[45] . '</a></h2>
-            <p>' . $LANG_HELP[9] . '</p><br />
+            <p>' . $LANG_HELP[9] . '</p><br' . XHTML . '>
 
             <h2><a name="site_admin_url">' . $LANG_INSTALL[47] . '</a></h2>
-            <p>' . $LANG_HELP[10] . '</p><br />
+            <p>' . $LANG_HELP[10] . '</p><br' . XHTML . '>
 
             <h2><a name="site_mail">' . $LANG_INSTALL[48] . '</a></h2>
-            <p>' . $LANG_HELP[11] . '</p><br />
+            <p>' . $LANG_HELP[11] . '</p><br' . XHTML . '>
 
             <h2><a name="noreply_mail">' . $LANG_INSTALL[49] . '</a></h2>
-            <p>' . $LANG_HELP[12] . '</p><br />
+            <p>' . $LANG_HELP[12] . '</p><br' . XHTML . '>
 
         </div>
     </div>

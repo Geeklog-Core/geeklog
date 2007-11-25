@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.196 2007/11/25 05:19:03 blaine Exp $
+// $Id: user.php,v 1.197 2007/11/25 06:58:55 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -109,14 +109,14 @@ function GROUP_checkList ($table, $selection, $where='', $selected='', $orderby=
         }
 
         if ($readonly) {
-            $input .= ' disabled="disabled">'
+            $input .= ' disabled="disabled"' . XHTML . '>'
                    . '<input type="hidden" name="' . $table . '[]" value="'
-                   . $A[0] . '" checked="checked">';
+                   . $A[0] . '" checked="checked"' . XHTML . '>';
             $retval .= '<span title="' . $LANG_ACCESS['readonly'] . '">'
-                    . $input . stripslashes ($A[1]) . '</span><br>' . LB;
+                    . $input . stripslashes ($A[1]) . '</span><br' . XHTML . '>' . LB;
         } else {
             $input .= ' name="' . $table . '[]" value="' . $A[0] . '"';
-            $retval .= $input . '>' . stripslashes ($A[1]) . '<br>' . LB;
+            $retval .= $input . XHTML . '>' . stripslashes ($A[1]) . '<br' . XHTML . '>' . LB;
         }
     }
 
@@ -189,13 +189,14 @@ function edituser($uid = '', $msg = '')
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form' => 'edituser.thtml',
                                       'groupedit' => 'groupedit.thtml'));
+    $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $user_templates->set_var ('delete_option',
                                   sprintf ($delbutton, $jsconfirm));
@@ -235,7 +236,7 @@ function edituser($uid = '', $msg = '')
         } else {
             $user_templates->set_var ('lang_delete_photo', $LANG28[28]);
             $user_templates->set_var ('delete_photo_option',
-                    '<input type="checkbox" name="delete_photo">');
+                    '<input type="checkbox" name="delete_photo"' . XHTML . '>');
         }
     } else {
         $user_templates->set_var ('user_photo', '');
@@ -302,7 +303,7 @@ function edituser($uid = '', $msg = '')
         $statusselect .= '>' . $value . '</option>' . LB;
     }
     $statusselect .= '</select><input type="hidden" name="oldstatus" value="'
-                  . $A['status'] . '">';
+                  . $A['status'] . '"' . XHTML . '>';
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
 
@@ -344,7 +345,7 @@ function edituser($uid = '', $msg = '')
         // user doesn't have the rights to edit a user's groups so set to -1
         // so we know not to handle the groups array when we save
         $user_templates->set_var ('group_edit',
-                '<input type="hidden" name="groups" value="-1">');
+                '<input type="hidden" name="groups" value="-1"' . XHTML . '>');
     }
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
@@ -658,7 +659,7 @@ function batchdelete()
 
     $display = '';
     if (!$_CONF['lastlogin']) {
-        $retval = '<br>'. $_LANG28[55];
+        $retval = '<br' . XHTML . '>'. $_LANG28[55];
         return $retval;
     }
 
@@ -698,6 +699,8 @@ function batchdelete()
     $user_templates->set_file (array ('form' => 'batchdelete.thtml',
                                       'options' => 'batchdelete_options.thtml',
                                       'reminder' => 'reminder.thtml'));
+    $user_templates->set_var ( 'xhtml', XHTML );
+    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var ('usr_type', $usr_type);
     $user_templates->set_var ('usr_time', $usr_time);
@@ -821,7 +824,7 @@ function batchdelete()
     $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
         $query_arr, $defsort_arr, '', '', $listoptions,$form_arr);
 
-    // $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"></form>" . LB;
+    // $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"" . XHTML . "></form>" . LB;
     return $display;
 //
 
@@ -842,7 +845,7 @@ function batchdeleteexec()
     }
 
     if (count($user_list) == 0) {
-        $msg = $LANG28[72] . "<br>";
+        $msg = $LANG28[72] . '<br' . XHTML . '>';
     }
     $c = 0;
 
@@ -850,7 +853,7 @@ function batchdeleteexec()
         foreach($user_list as $delitem) {
             $delitem = COM_applyFilter($delitem);
             if (!USER_deleteAccount ($delitem)) {
-                $msg .= "<strong>{$LANG28[2]} $delitem {$LANG28[70]}</strong><br>\n";
+                $msg .= "<strong>{$LANG28[2]} $delitem {$LANG28[70]}</strong><br" . XHTML . ">\n";
             } else {
                 $c++; // count the deleted users
             }
@@ -860,7 +863,7 @@ function batchdeleteexec()
     // Since this function is used for deletion only, its necessary to say that
     // zero where deleted instead of just leaving this message away.
     COM_numberFormat($c); // just in case we have more than 999)..
-    $msg .= "{$LANG28[71]}: $c<br>\n";
+    $msg .= "{$LANG28[71]}: $c<br" . XHTML . ">\n";
     return $msg;
 }
 
@@ -1013,7 +1016,7 @@ function importusers ($file)
         $email = COM_applyFilter ($email);
 
         if ($verbose_import) {
-            $retval .="<br><b>Working on username=$u_name, fullname=$full_name, and email=$email</b><br>\n";
+            $retval .="<br" . XHTML . "><b>Working on username=$u_name, fullname=$full_name, and email=$email</b><br" . XHTML . ">\n";
             COM_errorLog ("Working on username=$u_name, fullname=$full_name, and email=$email",1);
         }
 
@@ -1037,25 +1040,25 @@ function importusers ($file)
                 $result = USER_createAndSendPassword ($userName, $emailAddr, $uid);
 
                 if ($result && $verbose_import) {
-                    $retval .= "<br> Account for <b>$u_name</b> created successfully.<br>\n";
+                    $retval .= "<br" . XHTML . "> Account for <b>$u_name</b> created successfully.<br" . XHTML . ">\n";
                     COM_errorLog("Account for $u_name created successfully",1);
                 } else if ($result) {
                     $successes++;
                 } else {
                     // user creation failed
-                    $retval .= "<br>ERROR: There was a problem creating the account for <b>$u_name</b>.<br>\n";
+                    $retval .= "<br" . XHTML . ">ERROR: There was a problem creating the account for <b>$u_name</b>.<br" . XHTML . ">\n";
                     COM_errorLog("ERROR: here was a problem creating the account for $u_name.",1);
                 }
             } else {
                 if ($verbose_import) {
-                    $retval .= "<br><b>$u_name</b> or <b>$email</b> already exists, account not created.<br>\n"; // user already exists
+                    $retval .= "<br" . XHTML . "><b>$u_name</b> or <b>$email</b> already exists, account not created.<br" . XHTML . ">\n"; // user already exists
                     COM_errorLog("$u_name,$email: username or email already exists, account not created",1);
                 }
                 $failures++;
             } // end if $ucount == 0 && ecount == 0
         } else {
             if ($verbose_import) {
-                $retval .= "<br><b>$email</b> is not a valid email address, account not created<br>\n"; // malformed email
+                $retval .= "<br" . XHTML . "><b>$email</b> is not a valid email address, account not created<br" . XHTML . ">\n"; // malformed email
                 COM_errorLog("$email is not a valid email address, account not created",1);
             }
             $failures++;
@@ -1084,10 +1087,10 @@ function display_form ()
 
     $retval = '<form action="' . $_CONF['site_admin_url']
             . '/user.php" method="post" enctype="multipart/form-data"><div>'
-            . $LANG28[29] . ': <input type="file" name="importfile" size="40">'
-            . '<input type="hidden" name="mode" value="import">'
+            . $LANG28[29] . ': <input type="file" name="importfile" size="40"' . XHTML . '>'
+            . '<input type="hidden" name="mode" value="import"' . XHTML . '>'
             . '<input type="submit" name="submit" value="' . $LANG28[30]
-            . '"></div></form>';
+            . '"' . XHTML . '></div></form>';
 
     return $retval;
 }
@@ -1134,7 +1137,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $uid = COM_applyFilter ($_POST['uid'], true);
     if ($uid > 1) {
         $display .= COM_refresh ($_CONF['site_admin_url']
-                                 . '/user.php?mode=edit&msg=67&uid=' . $uid);
+                                 . '/user.php?mode=edit&amp;msg=67&amp;uid=' . $uid);
     } else {
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=67');
     }
@@ -1187,7 +1190,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_siteHeader('menu', $LANG28[24]);
     $display .= COM_startBlock ($LANG28[24], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
-    $display .= $LANG28[25] . '<br><br>';
+    $display .= $LANG28[25] . '<br' . XHTML . '><br' . XHTML . '>';
     $display .= display_form();
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();

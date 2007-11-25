@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.62 2007/05/06 19:20:19 dhaun Exp $
+// $Id: search.class.php,v 1.63 2007/11/25 06:59:56 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -502,6 +502,7 @@ class Search {
 
         $searchmain = new Template ($_CONF['path_layout'] . 'search');
         $searchmain->set_file(array ('searchresults' => 'searchresults.thtml'));
+        $searchmain->set_var ( 'xhtml', XHTML );
         $searchmain->set_var ('num_matches', '');
 
         if ($this->_keyType == 'any') {
@@ -526,6 +527,7 @@ class Search {
         reset($result_plugins);
         $cur_plugin = new Plugin();
         $searchresults = new Template($_CONF['path_layout'] . 'search');
+        $searchresults->set_var( 'xhtml', XHTML );
 
         $maxdisplayed = 0;
         $totalfound = 0;
@@ -601,7 +603,7 @@ class Search {
                 }
                 if ($cur_plugin->num_searchresults == 0) {
                     $searchresults->set_var('results',
-                            '<tr><td colspan="4" align="center"><br>'
+                            '<tr><td colspan="4" align="center"><br' . XHTML . '>'
                             . $LANG09[31] . '</td></tr>');
                 }
                 $searchresults->set_var('end_block', COM_endBlock());
@@ -734,6 +736,7 @@ class Search {
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -830,6 +833,7 @@ class Search {
         $searchform = new Template($_CONF['path_layout'].'search');
         $searchform->set_file (array ('searchform' => 'searchform.thtml',
                                       'authors'    => 'searchauthors.thtml'));
+        $searchform->set_var( 'xhtml', XHTML );
         $searchform->set_var('search_intro', $LANG09[19]);
         $searchform->set_var('site_url', $_CONF['site_url']);
         $searchform->set_var('lang_keywords', $LANG09[2]);
@@ -941,11 +945,11 @@ class Search {
                 $searchform->set_var('author_option_list', $useroptions);
                 $searchform->parse('author_form_element', 'authors', true);
             } else {
-                $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
+                $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0"' . XHTML . '>');
             }
         } else {
             $searchform->set_var ('author_form_element',
-                    '<input type="hidden" name="author" value="0">');
+                    '<input type="hidden" name="author" value="0"' . XHTML . '>');
         }
         $searchform->set_var('lang_search', $LANG09[10]);
         $searchform->parse('output', 'searchform');

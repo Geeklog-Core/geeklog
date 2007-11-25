@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.33 2007/06/09 20:43:41 blaine Exp $
+// $Id: mail.php,v 1.34 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -104,6 +104,7 @@ function display_form ()
     $mail_templates->set_var ('lang_ignoreusersettings', $LANG31[14]);
     $mail_templates->set_var ('lang_send', $LANG31[12]);
     $mail_templates->set_var ('end_block', COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
+    $mail_templates->set_var ( 'xhtml', XHTML );
 
     $mail_templates->parse ('output', 'form');
     $retval = $mail_templates->finish ($mail_templates->get_var ('output'));
@@ -199,7 +200,7 @@ function send_messages ($vars)
 
     $retval .= '<h2>' . $LANG31[21] . '</h2>';
     for ($i = 0; $i < count ($failures); $i++) {
-        $retval .= current ($failures) . '<br>';
+        $retval .= current ($failures) . '<br' . XHTML . '>';
         next ($failures);
     }
     if (count ($failures) == 0) {
@@ -208,7 +209,7 @@ function send_messages ($vars)
 
     $retval .= '<h2>' . $LANG31[22] . '</h2>';
     for ($i = 0; $i < count ($successes); $i++) {
-        $retval .= current ($successes) . '<br>';
+        $retval .= current ($successes) . '<br' . XHTML . '>';
         next ($successes);
     }
     if (count ($successes) == 0) {

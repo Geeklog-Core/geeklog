@@ -1,4 +1,4 @@
            <tr>
-                <td width="100px"><label for="photo">{lang_userphoto}:</label></td>
-                <td><input type="file" id="photo" name="photo" size="30"><br>{display_photo}</td>
+                <td style="width:100px;"><label for="photo">{lang_userphoto}:</label></td>
+                <td><input type="file" id="photo" name="photo" size="30"{xhtml}><br{xhtml}>{display_photo}</td>
            </tr>

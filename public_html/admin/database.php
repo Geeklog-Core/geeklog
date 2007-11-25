@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.44 2007/10/10 01:07:33 ospiess Exp $
+// $Id: database.php,v 1.45 2007/11/25 06:58:55 ospiess Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -133,7 +133,7 @@ function listbackups()
         );
         $form_arr = array('bottom' => '', 'top' => '');
         if ($num_backups > 0) {
-            $form_arr['bottom'] = '<input type="hidden" name="mode" value="delete">' . LB;
+            $form_arr['bottom'] = '<input type="hidden" name="mode" value="delete"' . XHTML . '>' . LB;
         }
         $listoptions = array('chkdelete' => true, 'chkminimum' => 0,
                              'chkfield' => 'filename');

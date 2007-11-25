@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.17 2007/09/30 16:45:44 dhaun Exp $
+// $Id: story.class.php,v 1.18 2007/11/25 06:59:56 ospiess Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -972,9 +972,9 @@ class Story
                     }
 
                     // Build image tags for each flavour of the image:
-                    $img_noalign = '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">';
-                    $img_leftalgn = '<img ' . $sizeattributes . 'class="floatleft" src="' . $imgSrc . '" alt="">';
-                    $img_rightalgn = '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt="">';
+                    $img_noalign = '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>';
+                    $img_leftalgn = '<img ' . $sizeattributes . 'class="floatleft" src="' . $imgSrc . '" alt=""' . XHTML . '>';
+                    $img_rightalgn = '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt=""' . XHTML . '>';
 
 
                     // Are we keeping unscaled images?
@@ -1027,17 +1027,17 @@ class Story
                         }
 
                         $intro = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' .
-                                             $imgSrc . '" alt="">', $intro);
+                                             $imgSrc . '" alt=""' . XHTML . '>', $intro);
                         $body  = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' .
-                                             $imgSrc . '" alt="">', $body);
+                                             $imgSrc . '" alt=""' . XHTML . '>', $body);
                         $intro = str_replace($unscaledleft, '<img ' . $sizeattributes .
-                                             'align="left" src="' . $imgSrc . '" alt="">', $intro);
+                                             'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>', $intro);
                         $body  = str_replace($unscaledleft, '<img ' . $sizeattributes .
-                                             'align="left" src="' . $imgSrc . '" alt="">', $body);
+                                             'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>', $body);
                         $intro = str_replace($unscaledright, '<img ' . $sizeattributes .
-                                             'align="right" src="' . $imgSrc. '" alt="">', $intro);
+                                             'align="right" src="' . $imgSrc. '" alt=""' . XHTML . '>', $intro);
                         $body  = str_replace($unscaledright, '<img ' . $sizeattributes .
-                                             'align="right" src="' . $imgSrc . '" alt="">', $body);
+                                             'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>', $body);
                     }
                 }
             }
@@ -1126,10 +1126,10 @@ class Story
                 $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
             }
 
-            $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
-            $left = $lLinkPrefix . '<img ' . $sizeattributes . 'class="floatleft" src="' . $imgSrc . '" alt="">'
+            $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>' . $lLinkSuffix;
+            $left = $lLinkPrefix . '<img ' . $sizeattributes . 'class="floatleft" src="' . $imgSrc . '" alt=""' . XHTML . '>'
                     . $lLinkSuffix;
-            $right = $lLinkPrefix . '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt="">'
+            $right = $lLinkPrefix . '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt=""' . XHTML . '>'
                     . $lLinkSuffix;
 
             $text = str_replace($norm, $imageX, $text);
@@ -1143,9 +1143,9 @@ class Story
 
                 if (file_exists($lFilename_large_complete)) {
                     $sizeattributes = COM_getImgSizeAttributes($lFilename_large_complete);
-                    $norm = '<img ' . $sizeattributes . 'src="' . $lFilename_large_URL . '" alt="">';
-                    $left = '<img ' . $sizeattributes . 'align="left" src="' . $lFilename_large_URL . '" alt="">';
-                    $right = '<img ' . $sizeattributes . 'align="right" src="' . $lFilename_large_URL . '" alt="">';
+                    $norm = '<img ' . $sizeattributes . 'src="' . $lFilename_large_URL . '" alt=""' . XHTML . '>';
+                    $left = '<img ' . $sizeattributes . 'align="left" src="' . $lFilename_large_URL . '" alt=""' . XHTML . '>';
+                    $right = '<img ' . $sizeattributes . 'align="right" src="' . $lFilename_large_URL . '" alt=""' . XHTML . '>';
                 }
 
                 $text = str_replace($norm, $unscaledX, $text);
@@ -1667,7 +1667,7 @@ class Story
         global $_CONF;
 
         // fix for bug in advanced editor
-        if ($_CONF['advanced_editor'] && ($body == '<br>')) {
+        if ($_CONF['advanced_editor'] && ($body == '<br' . XHTML . '>')) {
             $body = '';
         }
 

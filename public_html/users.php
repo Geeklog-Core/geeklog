@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.158 2007/09/23 19:20:40 dhaun Exp $
+// $Id: users.php,v 1.159 2007/11/25 06:55:07 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -78,6 +78,7 @@ function userprofile ($user, $msg = 0)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -116,6 +117,7 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_file (array ('profile' => 'profile.thtml',
                                       'row'     => 'commentrow.thtml',
                                       'strow'   => 'storyrow.thtml'));
+    $user_templates->set_var ( 'xhtml', XHTML );
     $user_templates->set_var ('site_url', $_CONF['site_url']);
     $user_templates->set_var ('start_block_userprofile',
             COM_startBlock ($LANG04[1] . ' ' . $display_name));
@@ -150,7 +152,7 @@ function userprofile ($user, $msg = 0)
 
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
                    . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
-                   . '" title="' . $LANG_ADMIN['edit'] . '">';
+                   . '" title="' . $LANG_ADMIN['edit'] . '"' . XHTML . '>';
         $edit_link_url = COM_createLink($edit_icon,
             "{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}");
         $user_templates->set_var ('edit_icon', $edit_icon);
@@ -434,6 +436,7 @@ function newpasswordform ($uid, $requestid)
 
     $pwform = new Template ($_CONF['path_layout'] . 'users');
     $pwform->set_file (array ('newpw' => 'newpassword.thtml'));
+    $pwform->set_var ( 'xhtml', XHTML );
     $pwform->set_var ('site_url', $_CONF['site_url']);
     $pwform->set_var ('layout_url', $_CONF['layout_url']);
 
@@ -586,6 +589,7 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
 
     $user_templates = new Template ($_CONF['path_layout'] . 'users');
     $user_templates->set_file('login', 'loginform.thtml');
+    $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
     if ($statusmode == 0) {
         $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[114]));
@@ -681,6 +685,7 @@ function newuserform ($msg = '')
     }
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('regform', 'registrationform.thtml');
+    $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('start_block', COM_startBlock($LANG04[22]));
     $user_templates->set_var('lang_instructions', $LANG04[23]);
@@ -731,6 +736,7 @@ function getpasswordform()
 
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('form', 'getpasswordform.thtml');
+    $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('start_block_forgetpassword', COM_startBlock($LANG04[25]));
     $user_templates->set_var('lang_instructions', $LANG04[26]);
@@ -890,8 +896,8 @@ case 'setnewpwd':
     if ( (empty ($_POST['passwd']))
             or ($_POST['passwd'] != $_POST['passwd_conf']) ) {
         $display = COM_refresh ($_CONF['site_url']
-                 . '/users.php?mode=newpwd&uid=' . $_POST['uid']
-                 . '&rid=' . $_POST['rid']);
+                 . '/users.php?mode=newpwd&amp;uid=' . $_POST['uid']
+                 . '&amp;rid=' . $_POST['rid']);
     } else {
         $uid = COM_applyFilter ($_POST['uid'], true);
         $reqid = COM_applyFilter ($_POST['rid']);

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.52 2006/12/09 21:02:51 dhaun Exp $
+// $Id: profiles.php,v 1.53 2007/11/25 06:55:07 ospiess Exp $
 
 require_once ('lib-common.php');
 
@@ -166,6 +166,7 @@ function contactform ($uid, $subject = '', $message = '')
                           COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -189,6 +190,7 @@ function contactform ($uid, $subject = '', $message = '')
             $retval = COM_startBlock ($LANG08[10] . ' ' . $displayname);
             $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
             $mail_template->set_file ('form', 'contactuserform.thtml');
+            $mail_template->set_var ( 'xhtml', XHTML );
             $mail_template->set_var ('site_url', $_CONF['site_url']);
             $mail_template->set_var ('lang_description', $LANG08[26]);
             $mail_template->set_var ('lang_username', $LANG08[11]);
@@ -357,6 +359,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
                           COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -383,6 +386,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
 
     $mail_template = new Template($_CONF['path_layout'] . 'profiles');
     $mail_template->set_file('form', 'contactauthorform.thtml');
+    $mail_template->set_var( 'xhtml', XHTML );
     $mail_template->set_var('site_url', $_CONF['site_url']);
     $mail_template->set_var('start_block_mailstory2friend', COM_startBlock($LANG08[17]));
     $mail_template->set_var('lang_fromname', $LANG08[20]);

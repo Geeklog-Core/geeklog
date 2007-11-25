@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.51 2007/03/06 05:04:34 ospiess Exp $
+// $Id: stats.php,v 1.52 2007/11/25 06:55:07 ospiess Exp $
 
 require_once('lib-common.php');
 require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -46,6 +46,7 @@ if (empty ($_USER['username']) &&
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+    $login->set_var ( 'xhtml', XHTML );
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('site_url', $_CONF['site_url']);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);

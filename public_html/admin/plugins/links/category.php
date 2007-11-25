@@ -194,6 +194,7 @@ function links_edit_category ($cid,$pid) {
     $T = new Template($_CONF['path'] . 'plugins/links/templates/admin');
     $T->set_file(array('page'=>'categoryeditor.thtml'));
 
+    $T->set_var( 'xhtml', XHTML );
     $T->set_var('site_url', $_CONF['site_url']);
     $T->set_var('site_admin_url', $_CONF['site_admin_url']);
     $T->set_var('layout_url', $_CONF['layout_url']);
@@ -212,7 +213,7 @@ function links_edit_category ($cid,$pid) {
     $T->set_var('lang_parent', $LANG_LINKS_ADMIN[34]);
     $T->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($cid)) {
-        $T->set_var('delete_option', '<input type="submit" value="'.$LANG_ADMIN['delete'].'" name="mode">');
+        $T->set_var('delete_option', '<input type="submit" value="'.$LANG_ADMIN['delete'].'" name="mode"' . XHTML . '>');
     } else {
         $T->set_var('delete_option', '');
     }

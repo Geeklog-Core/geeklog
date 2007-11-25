@@ -5,16 +5,16 @@
        </div>
 <table class="inputTable">
   <tr>
-    <td width="100px"><label for="emailfromuser">{lang_emailfromuser}:</label></td>
-    <td><input type="checkbox" id="emailfromuser" name="emailfromuser" {emailfromuser_checked}></td>
+    <td style="width:100px;"><label for="emailfromuser">{lang_emailfromuser}:</label></td>
+    <td><input type="checkbox" id="emailfromuser" name="emailfromuser" {emailfromuser_checked}{xhtml}></td>
   </tr>
   <tr>
-    <td width="100px"><label for="emailfromadmin">{lang_emailfromadmin}:</label></td>
-    <td><input type="checkbox" id="emailfromadmin" name="emailfromadmin" {emailfromadmin_checked}></td>
+    <td style="width:100px;"><label for="emailfromadmin">{lang_emailfromadmin}:</label></td>
+    <td><input type="checkbox" id="emailfromadmin" name="emailfromadmin" {emailfromadmin_checked}{xhtml}></td>
   </tr>
   <tr>
-    <td width="100px"><label for="showonline">{lang_showonline}:</label></td>
-    <td><input type="checkbox" id="showonline" name="showonline" {showonline_checked}></td>
+    <td style="width:100px;"><label for="showonline">{lang_showonline}:</label></td>
+    <td><input type="checkbox" id="showonline" name="showonline" {showonline_checked}{xhtml}></td>
   </tr>
 </table>
 </fieldset>

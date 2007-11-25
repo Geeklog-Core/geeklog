@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: addindex.php,v 1.3 2005/06/26 08:38:32 mjervis Exp $
+// $Id: addindex.php,v 1.4 2007/11/25 06:58:55 ospiess Exp $
 
 
 // Add missing indexes to Geeklog tables
@@ -115,7 +115,7 @@ foreach ($index as $table=>$fields) {
     }
 
     if (sizeof ($newidx) > 0) {
-        echo "<p>Adding indexes ...<br>";
+        echo "<p>Adding indexes ...<br" . XHTML . ">";
         foreach ($newidx as $ne) {
             $idxname = $table . '_' . $ne;
             echo "Adding index \"$idxname\"";
@@ -129,14 +129,14 @@ foreach ($index as $table=>$fields) {
 
             $idxtime = $idxtimer->stopTimer ();
             $idxtimer->setPercision (4);
-            echo " in $idxtime seconds<br>";
+            echo " in $idxtime seconds<br" . XHTML . ">";
         }
         echo "Done!</p>";
     } else {
         echo "<p>No index to add for table {$_TABLES[$table]}</p>";
     }
 
-    echo "<hr>";
+    echo "<hr" . XHTML . ">";
 }
 
 echo COM_endBlock();

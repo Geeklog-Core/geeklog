@@ -1,11 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html {lang_attribute}>
 <head>
 <title>{page_title}{page_site_splitter}{site_name}</title>
+<meta http-equiv="Content-Script-Type" content="text/javascript"{xhtml}>
+<meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
 <!-- link rel="SHORTCUT ICON" href="{site_url}/favicon.ico" -->
-<!-- <meta http-equiv="Pragma" content="no-cache"> -->
-<meta http-equiv="Content-Type" content="text/html;charset={charset}">
-<link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}">
+<!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+<meta http-equiv="Content-Type" content="text/html; charset={charset}"{xhtml}>
+<link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}"{xhtml}>
 {feed_url}
 {rel_links}
 {plg_headercode}
@@ -21,7 +23,7 @@
     </div>
     <div class="header-logobg-container-inner">
         <a class="header-logo" href="{site_url}/">
-            <img src="{site_logo}" width="151" height="56" alt="{site_name}">
+            <img src="{site_logo}" width="151" height="56" alt="{site_name}"{xhtml}>
         </a>
         <span class="header-slogan">{site_slogan}</span>
     </div>
@@ -30,7 +32,7 @@
             {left_blocks}
             <td class="story-container">
                 <p class="header-welcomeanddate-text">
-                    <a href="{site_url}">{welcome_msg}</a><br>{datetime}
+                    <a href="{site_url}/">{welcome_msg}</a><br{xhtml}>{datetime}
                 </p>
 
                 <!-- START OF CONTENT AREA -->

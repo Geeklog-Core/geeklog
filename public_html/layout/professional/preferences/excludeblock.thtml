@@ -6,9 +6,9 @@
        </div>
     <table>
         <tr>
-            <td style="vertical-align:top;padding-right:45px"><b>{lang_topics}</b><br>
+            <td style="vertical-align:top;padding-right:45px"><b>{lang_topics}</b><br{xhtml}>
             {exclude_topic_checklist}</td>
-            <td style="vertical-align:top;"><b>{lang_authors}</b><br>
+            <td style="vertical-align:top;"><b>{lang_authors}</b><br{xhtml}>
             {exclude_author_checklist}</td>
         </tr>
     </table>

@@ -3,16 +3,16 @@
     <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
           <td class="alignright">{lang_feedtitle}:</td>
-          <td><input type="text" size="48" name="title" value="{feed_title}"></td>
+          <td><input type="text" size="48" name="title" value="{feed_title}"{xhtml}></td>
         </tr>
         <tr>
           <td class="alignright">{lang_enabled}:</td>
-          <td><input type="checkbox" name="is_enabled" {is_enabled}></td>
+          <td><input type="checkbox" name="is_enabled" {is_enabled}{xhtml}></td>
         </tr>
         <tr>
           <td class="alignright">{lang_type}:</td>
           <td>{feed_type_display}
-            <input type="hidden" name="type" value="{feed_type}"></td>
+            <input type="hidden" name="type" value="{feed_type}"{xhtml}></td>
         </tr>
         <tr>
           <td class="alignright">{lang_topic}:</td>
@@ -34,11 +34,11 @@
         </tr>
         <tr>
           <td class="alignright">{lang_limits}:</td>
-          <td><input type="text" size="4" name="limits" value="{feed_limits}"> {feed_limits_what}</td>
+          <td><input type="text" size="4" name="limits" value="{feed_limits}"{xhtml}> {feed_limits_what}</td>
         </tr>
         <tr>
           <td class="alignright">{lang_content_length}:</td>
-          <td><input type="text" size="4" name="content_length" value="{feed_content_length}"> <small>{lang_clen_explain}</small></td>
+          <td><input type="text" size="4" name="content_length" value="{feed_content_length}"{xhtml}> <small>{lang_clen_explain}</small></td>
         </tr>
         <tr>
           <td class="alignright" style="vertical-align:top;">{lang_description}:</td>
@@ -46,19 +46,19 @@
         </tr>
         <tr>
           <td class="alignright" style="vertical-align:top;">{lang_feedlogo}:</td>
-          <td><input type="text" maxlength="255" size="40" name="feedlogo" value="{feed_logo}"> <small>{lang_feedlogo_explain}</small></td>
+          <td><input type="text" maxlength="255" size="40" name="feedlogo" value="{feed_logo}"{xhtml}> <small>{lang_feedlogo_explain}</small></td>
         </tr>
         <tr>
           <td class="alignright">{lang_filename}:</td>
-          <td><input type="text" size="40" name="filename" value="{feed_filename}"></td>
+          <td><input type="text" size="40" name="filename" value="{feed_filename}"{xhtml}></td>
         </tr>
         <tr>
           <td class="alignright">{lang_charset}:</td>
-          <td><input type="text" size="20" name="charset" value="{feed_charset}"></td>
+          <td><input type="text" size="20" name="charset" value="{feed_charset}"{xhtml}></td>
         </tr>
         <tr>
           <td class="alignright">{lang_language}:</td>
-          <td><input type="text" size="20" name="language" value="{feed_language}"></td>
+          <td><input type="text" size="20" name="language" value="{feed_language}"{xhtml}></td>
         </tr>
         <tr>
           <td class="alignright">{lang_updated}:</td>
@@ -67,10 +67,10 @@
         <tr><td colspan="2">&nbsp;</td></tr>
         <tr>
           <td colspan="2">
-            <input type="submit" value="{lang_save}" name="mode">
-            <input type="submit" value="{lang_cancel}" name="mode">
+            <input type="submit" value="{lang_save}" name="mode"{xhtml}>
+            <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
             {delete_option}
-            <input type="hidden" name="fid" value="{feed_id}">
+            <input type="hidden" name="fid" value="{feed_id}"{xhtml}>
           </td>
         </tr>
     </table>

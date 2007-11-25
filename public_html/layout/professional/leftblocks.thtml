@@ -1,13 +1,13 @@
 <!-- Start of Left blocks -->
                 <td class="block-featured-left" style="vertical-align:top;">
                     <div class="searchform-box">
-                        <form class="searchform-elements" action="{site_url}/search.php" method="GET">
+                        <form class="searchform-elements" action="{site_url}/search.php" method="get">
                             <div>
-                                <input style="width:95%" type="text" name="query" maxlength="255"><br>
-                                <input type="hidden" name="type" value="all">
+                                <input style="width:95%" type="text" name="query" maxlength="255" value=""{xhtml}><br{xhtml}>
+                                <input type="hidden" name="type" value="all"{xhtml}>
                                 <a href="{site_url}/search.php" class="advancedsearch">{button_advsearch}</a>&nbsp;
-                                <input type="hidden" name="mode" value="search">
-                                <input type="submit" value="{button_search}">
+                                <input type="hidden" name="mode" value="search"{xhtml}>
+                                <input type="submit" value="{button_search}"{xhtml}>
                             </div>
                         </form>
                     </div>

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql.class.php,v 1.5 2006/11/25 13:58:37 dhaun Exp $
+// $Id: mssql.class.php,v 1.6 2007/11/25 06:59:56 ospiess Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -117,7 +117,7 @@ class database {
     function _connect()
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->_connect ***<br>");
+            $this->_errorlog("\n*** Inside database->_connect ***<br" . XHTML . ">");
         }
 
         // Connect to mssql server
@@ -136,7 +136,7 @@ class database {
         }
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n***leaving database->_connect***<br>");
+            $this->_errorlog("\n***leaving database->_connect***<br" . XHTML . ">");
         }
     }
 
@@ -207,8 +207,8 @@ class database {
     function isVerbose()
     {
         if ($this->_verbose && (empty($this->_errorlog_fn) || !function_exists($this->_errorlog_fn))) {
-            print "\n<BR><B>Can't run mssql.class.php verbosely because the errorlog "
-                . "function wasn't set or doesn't exist<BR>\n";
+            print "\n<br" . XHTML . "><b>Can't run mssql.class.php verbosely because the errorlog "
+                . "function wasn't set or doesn't exist</b><br" . XHTML . ">\n";
             return false;
         }
 
@@ -398,8 +398,8 @@ class database {
         
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n***inside database->dbQuery***<br>");
-            $this->_errorlog("\n*** sql to execute is $sql ***<br>");
+            $this->_errorlog("\n***inside database->dbQuery***<br" . XHTML . ">");
+            $this->_errorlog("\n*** sql to execute is $sql ***<br" . XHTML . ">");
         }
 
         if($mode==0){
@@ -442,7 +442,7 @@ class database {
             $isInsert=1;
             }
         
-        //echo "<xmp>" . $sql . "</xmp>";
+        //echo "<pre>" . $sql . "</pre>";
     
         // Run query
         if ($ignore_errors == 1) {
@@ -453,7 +453,7 @@ class database {
             $result = @mssql_query($sql,$this->_db) or die($this->dbError($sql) . ' - ' . $sql);
             if($result==FALSE){
                 echo "Query Failed: ";
-                echo "<xmp>".$this->dbError($sql) . "</xmp><HR>";
+                echo "<pre>".$this->dbError($sql) . "</pre><hr" . XHTML . ">";
                 }
             }
         $this->_totalRowCount=$this->dbNumRows($result);
@@ -535,7 +535,7 @@ class database {
     function dbSave($table,$fields,$values)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbSave ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbSave ***<br" . XHTML . ">");
         }
         $tempFields=$fields;
         $tempFields=str_replace(",","','",$tempFields);
@@ -569,12 +569,12 @@ class database {
         $values=str_replace("'",'"',$values);
         $sql="EXEC doIndexInsert '{$table}', '{$fields}', '{$values}'";
         //$sql=$this->cleanseSQL($sql);
-//        echo "<XMP>" . $sql . "</XMP><HR>";
+//        echo "<pre>" . $sql . "</pre><hr" . XHTML . ">";
 //        exit(0);
         $result=$this->dbQuery($sql,1);
         mssql_free_result($result);
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbSave ***<BR>");
+            $this->_errorlog("\n*** Leaving database->dbSave ***<br" . XHTML . ">");
         }
     }
 
@@ -598,7 +598,7 @@ class database {
     function dbDelete($table,$id,$value)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** inside database->dbDelete ***<BR>");
+            $this->_errorlog("\n*** inside database->dbDelete ***<br" . XHTML . ">");
         }
 
         $sql = "DELETE FROM $table";
@@ -631,7 +631,7 @@ class database {
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** inside database->dbDelete ***<BR>");
+            $this->_errorlog("\n*** inside database->dbDelete ***<br" . XHTML . ">");
         }
 
         return true;
@@ -690,7 +690,7 @@ class database {
         }
 
         if ($this->isVerbose()) {
-            $this->_errorlog("dbChange sql = $sql<BR>");
+            $this->_errorlog("dbChange sql = $sql<br" . XHTML . ">");
         }
 
         $this->dbQuery($sql);
@@ -716,7 +716,7 @@ class database {
     function dbCount($table,$id='',$value='')
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbCount ***<br>");
+            $this->_errorlog("\n*** Inside database->dbCount ***<br" . XHTML . ">");
         }
 
         $sql = "SELECT COUNT(*) FROM $table";
@@ -749,13 +749,13 @@ class database {
         
         
         if ($this->isVerbose()) {
-            print "\n*** sql = $sql ***<br>";
+            print "\n*** sql = $sql ***<br" . XHTML . ">";
         }
 
         $result = $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCount ***<BR>");
+            $this->_errorlog("\n*** Leaving database->dbCount ***<br" . XHTML . ">");
         }
 
         return ($this->dbResult($result,0));
@@ -780,7 +780,7 @@ class database {
     function dbCopy($table,$fields,$values,$tablefrom,$id,$value)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbCopy ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbCopy ***<br" . XHTML . ">");
         }
 
         $sql = "INSERT INTO $table ($fields) SELECT $values FROM $tablefrom";
@@ -813,7 +813,7 @@ class database {
         $this->dbDelete($tablefrom,$id,$value);
 
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCopy ***<BR>");
+            $this->_errorlog("\n*** Leaving database->dbCopy ***<br" . XHTML . ">");
         }
 
     }
@@ -830,14 +830,14 @@ class database {
     function dbNumRows($recordset)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbNumRows ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbNumRows ***<br" . XHTML . ">");
         }
 
         // return only if recordset exists, otherwise 0
         if ($recordset) {
             if ($this->isVerbose()) {
                 $this->_errorlog('got ' . @mssql_num_rows($recordset) . ' rows');
-                $this->_errorlog("\n*** Inside database->dbNumRows ***<BR>");
+                $this->_errorlog("\n*** Inside database->dbNumRows ***<br" . XHTML . ">");
             }
             if( (($this->_fastForwardRows["{$recordset}"]+$this->_limitRows["{$recordset}"])> @mssql_num_rows($recordset)) && $this->_fastForwardRows["{$recordset}"]!=0 ){
                 //only return num rows - fast forwarded rows
@@ -854,8 +854,8 @@ class database {
             
         } else {
             if ($this->isVerbose()) {
-                $this->_errorlog("got no rows<BR>");
-                $this->_errorlog("\n*** Inside database->dbNumRows ***<BR>");
+                $this->_errorlog("got no rows<br" . XHTML . ">");
+                $this->_errorlog("\n*** Inside database->dbNumRows ***<br" . XHTML . ">");
             }
             return 0;
         }
@@ -873,13 +873,13 @@ class database {
     function dbResult($recordset,$row,$field=0)
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbResult ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbResult ***<br" . XHTML . ">");
             if (empty($recordset)) {
-                $this->_errorlog("\n*** Passed recordset isn't valid ***<br>");
+                $this->_errorlog("\n*** Passed recordset isn't valid ***<br" . XHTML . ">");
             } else {
-                $this->_errorlog("\n*** Everything looks good ***<br>");
+                $this->_errorlog("\n*** Everything looks good ***<br" . XHTML . ">");
             }
-            $this->_errorlog("\n*** Leaving database->dbResult ***<br>");
+            $this->_errorlog("\n*** Leaving database->dbResult ***<br" . XHTML . ">");
         }
         return @mssql_result($recordset,$row,$field);
     }
@@ -942,7 +942,7 @@ class database {
     {
       $this->_numberOfRowsAskedFor["{$recordset}"] = $this->_numberOfRowsAskedFor["{$recordset}"] +1;
       if( ($this->_limitRows["{$recordset}"]) !=($this->_numberOfRowsAskedFor["{$recordset}"]-1)  || $this->_limitRows["{$recordset}"]=='' || $this->_limitRows["{$recordset}"]==0){
-          //echo $this->dbNumRows($recordset) ."-{$this->_numberOfRowsAskedFor["{$recordset}"]}-{$this->_limitRows["{$recordset}"]}<HR>";
+          //echo $this->dbNumRows($recordset) ."-{$this->_numberOfRowsAskedFor["{$recordset}"]}-{$this->_limitRows["{$recordset}"]}<hr" . XHTML . ">";
         return @mssql_fetch_array($recordset);//, $result_type);  
         }
       else{

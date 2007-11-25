@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.115 2007/08/29 09:33:54 ospiess Exp $
+// $Id: block.php,v 1.116 2007/11/25 06:58:55 ospiess Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -163,6 +163,7 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $block_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
+    $block_templates->set_var('max_url_length', 255); // @@@@ added by dengen 2007/09/08
     $block_templates->parse('output','editor');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -246,7 +247,7 @@ function editblock ($bid = '')
 
     if (!empty($bid) && SEC_hasrights('block.delete')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $block_templates->set_var ('delete_option',
                                    sprintf ($delbutton, $jsconfirm));
@@ -408,7 +409,7 @@ function listblocks()
 
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled
     // on one side in order to disable the last one. The value is the onleft var
-    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1">');
+    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1"' . XHTML . '>');
 
     $retval .= ADMIN_list (
         "blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
@@ -430,7 +431,7 @@ function listblocks()
 
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled
     // on one side in order to disable the last one. The value is the onleft var
-    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="0">');
+    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="0"' . XHTML . '>');
 
     $retval .= ADMIN_list (
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,

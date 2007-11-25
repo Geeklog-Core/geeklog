@@ -26,9 +26,9 @@
                                     <td colspan="2">
                                         <form name="userevent" method="post" action="{site_url}/calendar/event.php">
                                             <div>
-                                                <input type="hidden" name="action" value="saveuserevent">
-                                                <input type="hidden" name="eid" value="{event_id}">
-                                                <input type="submit" value="{lang_addtomycalendar}">
+                                                <input type="hidden" name="action" value="saveuserevent"{xhtml}>
+                                                <input type="hidden" name="eid" value="{event_id}"{xhtml}>
+                                                <input type="submit" value="{lang_addtomycalendar}"{xhtml}>
                                             </div>
                                         </form>
                                     </td>

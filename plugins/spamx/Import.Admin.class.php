@@ -15,7 +15,7 @@
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
- * $Id: Import.Admin.class.php,v 1.13 2007/07/29 08:06:31 dhaun Exp $
+ * $Id: Import.Admin.class.php,v 1.14 2007/11/25 06:56:05 ospiess Exp $
  */
 
 if (strpos($_SERVER['PHP_SELF'], 'Import.Admin.class.php') !== false) {
@@ -107,7 +107,7 @@ class Import extends BaseAdmin {
                 }
             }
         }
-        $display = '<hr><p><b>' . $LANG_SX00['entriesadded'] . '</b></p><ul>';
+        $display = '<hr' . XHTML . '><p><b>' . $LANG_SX00['entriesadded'] . '</b></p><ul>';
         foreach ($to_add as $e) {
             $display .= "<li>$e</li>";
         }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.75 2007/08/29 06:55:04 ospiess Exp $
+// $Id: topic.php,v 1.76 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -109,12 +109,13 @@ function edittopic ($tid = '')
     }
     $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file('editor','topiceditor.thtml');
+    $topic_templates->set_var( 'xhtml', XHTML );
     $topic_templates->set_var('site_url', $_CONF['site_url']);
     $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $topic_templates->set_var('layout_url', $_CONF['layout_url']);
     if (!empty($tid) && SEC_hasRights('topic.edit')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $topic_templates->set_var ('delete_option',
                                    sprintf ($delbutton, $jsconfirm));
@@ -147,7 +148,7 @@ function edittopic ($tid = '')
         if ($A['sortnum'] == 0) {
             $A['sortnum'] = '';
         }
-        $topic_templates->set_var('sort_order', '<input type="text" size="3" maxlength="3" name="sortnum" value="' . $A['sortnum'] . '">');
+        $topic_templates->set_var('sort_order', '<input type="text" size="3" maxlength="3" name="sortnum" value="' . $A['sortnum'] . '"' . XHTML . '>');
     } else {
         $topic_templates->set_var('lang_sortorder', $LANG27[14]);
         $topic_templates->set_var('sort_order', $LANG27[15]);
@@ -318,6 +319,7 @@ function listtopics()
 
     $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file(array('list'=>'topiclist.thtml', 'item'=>'listitem.thtml'));
+    $topic_templates->set_var( 'xhtml', XHTML );
     $topic_templates->set_var('site_url', $_CONF['site_url']);
     $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $topic_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -367,7 +369,7 @@ function listtopics()
             } else {
                 $imageurl = COM_getTopicImageUrl ($A['imageurl']);
                 $topic_templates->set_var ('image_tag', '<img src="' . $imageurl
-                                           . '" alt="">');
+                                           . '" alt=""' . XHTML . '>');
             }
             if ($counter == 5) {
                 $counter = 1;
@@ -375,14 +377,26 @@ function listtopics()
                 $topic_templates->parse('list_row','item',true);
                 $topic_templates->set_var('begin_row','<tr align="center" valign="bottom">');
             } else {
-                $topic_templates->set_var('end_row','');
+
+// @@@@ changed by dengen 2007/09/05 ---------->>
+//              $topic_templates->set_var('end_row','');
+// @@@@ changed by dengen 2007/09/05 ----------||
+                if ( $i == $nrows - 1 ) {
+                    $topic_templates->set_var('end_row','</tr>');
+                } else {
+                    $topic_templates->set_var('end_row','');
+                }
+// @@@@ changed by dengen 2007/09/05 ----------<<
+
                 $topic_templates->parse('list_row','item',true);
                 $topic_templates->set_var('begin_row','');
                 $counter = $counter + 1;
             }
         }
     }
-    $topic_templates->set_var('end_row','</tr>');
+// @@@@ uncommented by dengen 2007/09/05 ---------->>
+//  $topic_templates->set_var('end_row','</tr>');
+// @@@@ uncommented by dengen 2007/09/05 ----------<<
     $topic_templates->parse('output', 'list');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));

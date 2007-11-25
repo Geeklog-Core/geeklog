@@ -50,7 +50,7 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.52 2007/10/09 05:39:49 ospiess Exp $
+// $Id: index.php,v 1.53 2007/11/25 06:58:55 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -99,6 +99,7 @@ function editlink ($mode, $lid = '')
 
     $link_templates = new Template($_CONF['path'] . 'plugins/links/templates/admin/');
     $link_templates->set_file('editor','linkeditor.thtml');
+    $link_templates->set_var( 'xhtml', XHTML );
     $link_templates->set_var('site_url', $_CONF['site_url']);
     $link_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $link_templates->set_var('layout_url',$_CONF['layout_url']);
@@ -158,7 +159,7 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('link_id', $A['lid']);
     if (!empty($lid) && SEC_hasRights('links.edit')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $link_templates->set_var ('delete_option',
                                   sprintf ($delbutton, $jsconfirm));

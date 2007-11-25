@@ -8,7 +8,7 @@
                                     {item_row}
                                 </table>
                                 <div>
-                                    <input style="padding:5px 0px 0px 9px;{show_deleteimage}" name="delbutton" type="image" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');">
+                                    <input style="padding:5px 0px 0px 9px;{show_deleteimage}" name="delbutton" alt="delbutton" type="image" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}>
                                     {formfields_bottom}
                                 </div>
                             </form>

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.48 2007/10/11 01:53:09 ospiess Exp $
+// $Id: index.php,v 1.49 2007/11/25 06:58:55 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -310,6 +310,7 @@ function editpoll ($pid = '')
     $poll_templates->set_file (array ('editor' => 'polleditor.thtml',
                                       'question' => 'pollquestions.thtml',
                                       'answer' => 'pollansweroption.thtml'));
+    $poll_templates->set_var ( 'xhtml', XHTML );
     $poll_templates->set_var ('site_url', $_CONF['site_url']);
     $poll_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $poll_templates->set_var ('layout_url', $_CONF['layout_url']);
@@ -336,7 +337,7 @@ function editpoll ($pid = '')
 
     if (!empty ($pid) AND ($access == 3) AND !empty ($T['owner_id'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
-                   . '" name="mode"%s>';
+                   . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
         $poll_templates->set_var ('delete_option',
                                   sprintf ($delbutton, $jsconfirm));

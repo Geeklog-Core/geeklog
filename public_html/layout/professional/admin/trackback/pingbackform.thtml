@@ -1,10 +1,10 @@
-<form action="{site_admin_url}/trackback.php" method="POST">
+<form action="{site_admin_url}/trackback.php" method="post">
     <p>{lang_explain}</p>
     <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
             <td class="alignright"><b>{lang_pingback_url}:</b></td>
             <td>
-                <input type="text" size="50" maxlength="{max_url_length}" name="target" value="{target_url}">
+                <input type="text" size="50" maxlength="{max_url_length}" name="target" value="{target_url}"{xhtml}>
             </td>
         </tr>
         <tr>
@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" value="{lang_send}" name="mode[2]">
+                <input type="submit" value="{lang_send}" name="mode[2]"{xhtml}>
             </td>
         </tr>
     </table>

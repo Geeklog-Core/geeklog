@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.49 2007/09/30 04:43:36 blaine Exp $
+// $Id: upload.class.php,v 1.50 2007/11/25 06:59:56 ospiess Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -954,9 +954,9 @@ class upload
             $nerrors = count($this->_errors);
             for ($i = 1; $i <= $nerrors; $i++) {
                 if ($verbose) {
-                    print current($this->_errors) . "<BR>\n";
+                    print current($this->_errors) . "<br" . XHTML . ">\n";
                 } else {
-                    $retval .= current($this->_errors) . "<BR>\n";
+                    $retval .= current($this->_errors) . "<br" . XHTML . ">\n";
                 }
                 next($this->_errors);
             }
@@ -974,7 +974,7 @@ class upload
             reset($this->_warnings);
             $nwarnings = count($this->_warnings);
             for ($i = 1; $i <= $nwarnings; $i++) {
-                print current($this->_warnings) . "<BR>\n";
+                print current($this->_warnings) . "<br" . XHTML . ">\n";
                 next($this->_warnings);
             }
         }
@@ -990,7 +990,7 @@ class upload
             reset($this->_debugMessages);
             $nmsgs = count($this->_debugMessages);
             for ($i = 1; $i <= $nmsgs; $i++) {
-                print current($this->_debugMessages) . "<BR>\n";
+                print current($this->_debugMessages) . "<br" . XHTML . ">\n";
                 next($this->_debugMessages);
             }
         }

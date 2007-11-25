@@ -2,7 +2,7 @@
                                         <td colspan="2"><b>{lang_securitygroups}</b></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><P>{lang_groupinstructions}</P>
+                                        <td colspan="2"><p>{lang_groupinstructions}</p>
                                             {group_options}
                                         </td>
                                     </tr>

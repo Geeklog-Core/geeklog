@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: EditBlackList.Admin.class.php,v 1.11 2007/05/06 08:21:11 dhaun Exp $
+ * $Id: EditBlackList.Admin.class.php,v 1.12 2007/11/25 06:56:05 ospiess Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'EditBlackList.Admin.class.php') !== false) {
@@ -60,7 +60,7 @@ class EditBlackList extends BaseAdmin {
             }
         }
 
-        $display = '<hr>' . LB . '<p><b>';
+        $display = '<hr' . XHTML . '>' . LB . '<p><b>';
         $display .= $LANG_SX00['pblack'];
         $display .= '</b></p>' . LB . '<ul>' . LB;
         $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'Personal'");
@@ -75,11 +75,11 @@ class EditBlackList extends BaseAdmin {
         }
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
-        $display .= '<form method="POST" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditBlackList">' . LB;
-        $display .= '<div><input type="text" size="30" name="pentry">&nbsp;&nbsp;&nbsp;';
-        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">' . LB;
-        $display .= '<p>' . $LANG_SX00['e3'] . '&nbsp&nbsp&nbsp';
-        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addcen'] . '">' . LB;
+        $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditBlackList">' . LB;
+        $display .= '<div><input type="text" size="30" name="pentry"' . XHTML . '>&nbsp;&nbsp;&nbsp;';
+        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '"' . XHTML . '>' . LB;
+        $display .= '<p>' . $LANG_SX00['e3'] . '</p>&nbsp;&nbsp;&nbsp;';
+        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addcen'] . '"' . XHTML . '>' . LB;
         $display .= '</div></form>' . LB;
 
         return $display;

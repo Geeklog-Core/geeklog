@@ -2,7 +2,7 @@
                                             <tr>
                                                 <td align="right" valign="top">{lang_question}:</td>
                                                 <td>
-                                                    <input type="text" name="question[]" value="{question_text}" size="60" maxlength="255">
+                                                    <input type="text" name="question[]" value="{question_text}" size="60" maxlength="255"{xhtml}>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -12,6 +12,6 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><hr><td>
+                                                <td colspan="2"><hr{xhtml}></td>
                                             </tr>
                                         </table>

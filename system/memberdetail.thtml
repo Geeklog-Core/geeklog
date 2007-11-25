@@ -2,28 +2,28 @@
 <!-- To be located under theme/custom directory - Example XSilver/custom/memberdetail.thtml -->
 {startblock}
 {message}
-<form action="{post_url}" method="POST">
+<form action="{post_url}" method="post">
     <table cellspacing="0" cellpadding="2" width="100%">
         <tr>
-            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{USERNAME}</b><br><small style="color:#676767">{USERNAME_HELP}</small></td>
-            <td align="left" valign="middle"><input type="text" name="username" size="16" maxlength="16" value="{username}"></td>
+            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{USERNAME}</b><br{xhtml}><small style="color:#676767">{USERNAME_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="username" size="16" maxlength="16" value="{username}"{xhtml}></td>
         </tr>
         {passwd_input}
         <tr>
-            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{FULLNAME}</b><br><small style="color:#676767">{FULLNAME_HELP}</small></td>
-            <td align="left" valign="middle"><input type="text" name="fullname" size="32" maxlength="80" value="{fullname}"></td>
+            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{FULLNAME}</b><br{xhtml}><small style="color:#676767">{FULLNAME_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="fullname" size="32" maxlength="80" value="{fullname}"{xhtml}></td>
         </tr>
         <tr>
-            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{EMAIL}</b><br><small style="color:#676767">{EMAIL_HELP}</small></td>
-            <td align="left" valign="middle"><input type="text" name="email" size="32" maxlength="96" value="{email}"></td>
+            <td align="right" class="alignleft" style="vertical-align:middle;padding-left:10px;"><b>{EMAIL}</b><br{xhtml}><small style="color:#676767">{EMAIL_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="email" size="32" maxlength="96" value="{email}"{xhtml}></td>
         </tr>
         <tr>
-            <td align="right" class="alignleft"  style="vertical-align:middle;padding-left:10px;"><b>{EMAIL_CONF}</b><br><small style="color:#676767">{EMAIL_CONF_HELP}</small></td>
-            <td align="left" valign="middle"><input type="text" name="email_conf" size="32" maxlength="96" value="{email_conf}"></td>
+            <td align="right" class="alignleft"  style="vertical-align:middle;padding-left:10px;"><b>{EMAIL_CONF}</b><br{xhtml}><small style="color:#676767">{EMAIL_CONF_HELP}</small></td>
+            <td align="left" valign="middle"><input type="text" name="email_conf" size="32" maxlength="96" value="{email_conf}"{xhtml}></td>
         </tr>
         <tr>
-            <td align="center" colspan="3"><input type="hidden" name="uid" value="{user_id}"><hr><br>
-            <input type="hidden" name="mode" value="{postmode}">{submitbutton}</td>
+            <td align="center" colspan="3"><input type="hidden" name="uid" value="{user_id}"{xhtml}><hr{xhtml}><br{xhtml}>
+            <input type="hidden" name="mode" value="{postmode}"{xhtml}>{submitbutton}</td>
         </tr>
     </table>
 </form>

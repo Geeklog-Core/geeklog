@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.19 2007/02/12 06:52:15 ospiess Exp $
+* $Id: MassDelete.Admin.class.php,v 1.20 2007/11/25 06:56:05 ospiess Exp $
 */
 
 if (strpos ($_SERVER['PHP_SELF'], 'MassDelete.Admin.class.php') !== false) {
@@ -83,7 +83,7 @@ class MassDelete extends BaseAdmin {
             $display .= $numc . $LANG_SX00['comdel'];
         } else {
             $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=MassDelete"><div>';
-            $display .= $LANG_SX00['numtocheck'] . "&nbsp;&nbsp&nbsp" . ' <select name="limit">';
+            $display .= $LANG_SX00['numtocheck'] . "&nbsp;&nbsp;&nbsp;" . ' <select name="limit">';
             $display .= '<option value = "10">10</option><option value="50">50</option>';
             $display .= '<option value = "100" selected="selected">100</option><option value="200">200</option>';
             $display .= '<option value = "300">300</option><option value="400">400</option>';
@@ -94,7 +94,7 @@ class MassDelete extends BaseAdmin {
             $display .= $LANG_SX00['note4'];
             $display .= $LANG_SX00['note5'];
             $display .= $LANG_SX00['note6'];
-            $display .= '<input type = "Submit" name="action" value="' . $LANG_SX00['deletespam'] . '">';
+            $display .= '<input type="submit" name="action" value="' . $LANG_SX00['deletespam'] . '"' . XHTML . '>';
             $display .= '</div></form>';
         }
 

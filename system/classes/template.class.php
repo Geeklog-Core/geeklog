@@ -5,7 +5,7 @@
  * (C) Copyright 1999-2000 NetUSE GmbH
  *                    Kristian Koehntopp
  *
- * $Id: template.class.php,v 1.7 2007/02/25 20:36:58 dhaun Exp $
+ * $Id: template.class.php,v 1.8 2007/11/25 06:59:56 ospiess Exp $
  *
  */
 
@@ -355,7 +355,7 @@ class Template
     if (!is_array($varname)) {
       if (!empty($varname)) {
         if ($this->debug & 1) {
-          printf("<b>set_var:</b> (with scalar) <b>%s</b> = '%s'<br>\n", $varname, htmlentities($value));
+          printf("<b>set_var:</b> (with scalar) <b>%s</b> = '%s'<br" . XHTML . ">\n", $varname, htmlentities($value));
         }
         $this->varkeys[$varname] = "/".$this->varname($varname)."/";
         if ($append && isset($this->varvals[$varname])) {
@@ -368,7 +368,7 @@ class Template
       foreach ($varname as $k => $v) {
         if (!empty($k)) {
           if ($this->debug & 1) {
-            printf("<b>set_var:</b> (with array) <b>%s</b> = '%s'<br>\n", $k, htmlentities($v));
+            printf("<b>set_var:</b> (with array) <b>%s</b> = '%s'<br" . XHTML . ">\n", $k, htmlentities($v));
           }
           $this->varkeys[$k] = "/".$this->varname($k)."/";
           if ($append && isset($this->varvals[$k])) {
@@ -405,7 +405,7 @@ class Template
     if (!is_array($varname)) {
       if (!empty($varname)) {
         if ($this->debug & 1) {
-          printf("<b>clear_var:</b> (with scalar) <b>%s</b><br>\n", $varname);
+          printf("<b>clear_var:</b> (with scalar) <b>%s</b><br" . XHTML . ">\n", $varname);
         }
         $this->set_var($varname, "");
       }
@@ -413,7 +413,7 @@ class Template
       foreach ($varname as $v) {
         if (!empty($v)) {
           if ($this->debug & 1) {
-            printf("<b>clear_var:</b> (with array) <b>%s</b><br>\n", $v);
+            printf("<b>clear_var:</b> (with array) <b>%s</b><br" . XHTML . ">\n", $v);
           }
           $this->set_var($v, "");
         }
@@ -445,7 +445,7 @@ class Template
     if (!is_array($varname)) {
       if (!empty($varname)) {
         if ($this->debug & 1) {
-          printf("<b>unset_var:</b> (with scalar) <b>%s</b><br>\n", $varname);
+          printf("<b>unset_var:</b> (with scalar) <b>%s</b><br" . XHTML . ">\n", $varname);
         }
         unset($this->varkeys[$varname]);
         unset($this->varvals[$varname]);
@@ -454,7 +454,7 @@ class Template
       foreach ($varname as $v) {
         if (!empty($v)) {
           if ($this->debug & 1) {
-            printf("<b>unset_var:</b> (with array) <b>%s</b><br>\n", $v);
+            printf("<b>unset_var:</b> (with array) <b>%s</b><br" . XHTML . ">\n", $v);
           }
           unset($this->varkeys[$v]);
           unset($this->varvals[$v]);
@@ -673,7 +673,7 @@ class Template
         $str = "";
       }
       if ($this->debug & 2) {
-        printf ("<b>get_var</b> (with scalar) <b>%s</b> = '%s'<br>\n", $varname, htmlentities($str));
+        printf ("<b>get_var</b> (with scalar) <b>%s</b> = '%s'<br" . XHTML . ">\n", $varname, htmlentities($str));
       }
       return $str;
     } else {
@@ -684,7 +684,7 @@ class Template
           $str = "";
         }
         if ($this->debug & 2) {
-          printf ("<b>get_var:</b> (with array) <b>%s</b> = '%s'<br>\n", $v, htmlentities($str));
+          printf ("<b>get_var:</b> (with array) <b>%s</b> = '%s'<br" . XHTML . ">\n", $v, htmlentities($str));
         }
         $result[$v] = $str;
       }
@@ -902,7 +902,7 @@ class Template
     }
 
     if ($this->debug & 4) {
-      printf("<b>loadfile:</b> loaded $filename into $varname<br>\n");
+      printf("<b>loadfile:</b> loaded $filename into $varname<br" . XHTML . ">\n");
     }
     $this->set_var($varname, $str);
 
@@ -952,7 +952,7 @@ class Template
   * @see       halt
   */
   function haltmsg($msg) {
-    printf("<b>Template Error:</b> %s<br>\n", $msg);
+    printf("<b>Template Error:</b> %s<br" . XHTML . ">\n", $msg);
   }
 
 }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.21 2007/06/17 07:36:51 dhaun Exp $
+// $Id: index.php,v 1.22 2007/11/25 06:58:56 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -46,6 +46,7 @@ if (empty ($_USER['username']) &&
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+    $login->set_var ( 'xhtml', XHTML );
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('site_url', $_CONF['site_url']);
     $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
@@ -217,7 +218,7 @@ function getDeleteImageLink ($mode, $A)
     $img = '<img src="' . $_CONF['site_url']
         . '/calendar/images/delete_event.' . $_IMAGE_TYPE
         . '" alt="' . $LANG_CAL_2[30] . '" title="'
-        . $LANG_CAL_2[30] . '">';
+        . $LANG_CAL_2[30] . '"' . XHTML . '>';
     if ($mode == 'personal') {
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0) {
@@ -483,6 +484,7 @@ case 'day':
                                    'event'=>'singleevent.thtml',
                                    'dayview'=>'dayview.thtml',
                                    'quickadd'=>'quickaddform.thtml'));
+    $cal_templates->set_var ( 'xhtml', XHTML );
     $cal_templates->set_var ('site_url', $_CONF['site_url']);
     $cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
@@ -556,7 +558,7 @@ case 'day':
             $cal_templates->set_var('eid', $A['eid']);
             $cal_templates->set_var('event_title',stripslashes($A['title']));
             if ($i < count($alldaydata)) {
-                $cal_templates->set_var('br', '<br>');
+                $cal_templates->set_var('br', '<br' . XHTML . '>');
             } else {
                 $cal_templates->set_var('br', '');
             }
@@ -586,7 +588,7 @@ case 'day':
                 $cal_templates->set_var('eid', $A['eid']);
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
                 if ($j < $numevents) {
-                    $cal_templates->set_var('br', '<br>');
+                    $cal_templates->set_var('br', '<br' . XHTML . '>');
                 } else {
                     $cal_templates->set_var('br', '');
                 }
@@ -617,6 +619,7 @@ case 'week':
     $cal_templates->set_file(array('week'=>'weekview/weekview.thtml',
                                    'events'=>'weekview/events.thtml',
                                    'quickadd'=>'dayview/quickaddform.thtml'));
+    $cal_templates->set_var ( 'xhtml', XHTML );
     $cal_templates->set_var ('site_url', $_CONF['site_url']);
     $cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
@@ -709,7 +712,7 @@ case 'week':
         $cal_templates->set_var ('day' . $i, $dayname . ', '
             . COM_createLink( strftime ('%x', $thedate[1]),
             $_CONF['site_url'] . '/calendar/index.php?' . addMode ($mode)
-            . "view=day&amp;day$daynum &amp;month=$monthnum&amp;year=$yearnum")
+            . "view=day&amp;day$daynum&amp;month=$monthnum&amp;year=$yearnum")
         );
         if ($mode == 'personal') {
             $add_str =  $LANG_CAL_2[8];
@@ -799,6 +802,7 @@ $cal_templates->set_file (array (
         'addevent'    => 'addeventoption.thtml'
         ));
 
+$cal_templates->set_var ( 'xhtml', XHTML );
 $cal_templates->set_var ('site_url', $_CONF['site_url']);
 $cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
 $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
@@ -922,7 +926,7 @@ for ($i = 1; $i <= 6; $i++) {
                     . '/calendar/index.php?view=day&amp;' . addMode ($mode)
                     . 'day=' . $curday->daynumber . "&amp;month=$month&amp;year=$year",
                     array('class'=>'cal-date'))
-                . '<hr>'
+                . '<hr' . XHTML . '>'
             );
 
             if (strlen($month) == 1) {
@@ -960,11 +964,11 @@ for ($i = 1; $i <= 6; $i++) {
                                 $_CONF['site_url'] . '/calendar/event.php?' . addMode ($mode)
                                 . 'eid=' . $results['eid'],
                                 array('class'=>'cal-event'))
-                            . '<hr>';
+                            . '<hr' . XHTML . '>';
                     }
                 }
                 for ($z = $z; $z <= 4; $z++) {
-                    $entries .= '<br>';
+                    $entries .= '<br' . XHTML . '>';
                 }
 
                 $cal_templates->set_var('event_anchortags', $entries);
@@ -972,7 +976,7 @@ for ($i = 1; $i <= 6; $i++) {
             } else {
                 if ($q2_numrows < 4) {
                     for ($t=0; $t < (4 - $q2_numrows); $t++) {
-                        $cal_templates->set_var('cal_day_entries','<br><br><br><br>');
+                        $cal_templates->set_var('cal_day_entries','<br' . XHTML . '><br' . XHTML . '><br' . XHTML . '><br' . XHTML . '>');
                     }
                 }
             }

@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english.php,v 1.16 2006/09/02 15:35:46 dhaun Exp $
+ * $Id: english.php,v 1.17 2007/11/25 06:57:41 ospiess Exp $
  */
 
 $LANG_SX00 = array (
@@ -53,7 +53,7 @@ $LANG_SX00 = array (
     'exmod' => 'Spam-X Examine Modules',
     'actmod' => 'Active Modules',
     'avmod' => 'Available Modules',
-    'coninst' => '<hr>Click on an Active module to remove it, click on an Available module to add it.<br>Modules are executed in order presented.',
+    'coninst' => '<hr' . XHTML . '>Click on an Active module to remove it, click on an Available module to add it.<br' . XHTML . '>Modules are executed in order presented.',
     'fsc' => 'Found Spam Post matching ',
     'fsc1' => ' posted by user ',
     'fsc2' => ' from IP ',
@@ -90,13 +90,13 @@ $LANG_SX00 = array (
 	'deletespam' => 'Delete Spam',
 	'numtocheck' => 'Number of Comments to check',
 	'note1'		=> '<p>Note: Mass Delete is intended to help you when you are hit by',
-	'note2'		=> ' comment spam and Spam-X does not catch it.  <ul><li>First find the link(s) or other ',
+	'note2'		=> ' comment spam and Spam-X does not catch it.</p><ul><li>First find the link(s) or other ',
 	'note3'		=> 'identifiers of this spam comment and add it to your personal blacklist.</li><li>Then ',
 	'note4'		=> 'come back here and have Spam-X check the latest comments for spam.</li></ul><p>Comments ',
 	'note5'		=> 'are checked from newest comment to oldest -- checking more comments ',
 	'note6'		=> 'requires more time for the check.</p>',
-	'masshead'	=> '<hr><h1 align="center">Mass Delete Spam Comments</h1>',
-	'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
+	'masshead'	=> '<hr' . XHTML . '><h1 align="center">Mass Delete Spam Comments</h1>',
+	'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
 	'comdel'	=> ' comments deleted.',
     'initial_Pimport' => '<p>Personal Blacklist Import"',
     'initial_import' => 'Initial MT-Blacklist Import',

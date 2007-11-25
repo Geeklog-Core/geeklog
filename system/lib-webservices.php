@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.21 2007/11/24 12:42:57 riyer Exp $
+// $Id: lib-webservices.php,v 1.22 2007/11/25 06:55:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -620,7 +620,7 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
         $link_self = $atom_doc->createElement('atom:link');
         $link_self->setAttribute('rel', 'edit');
         $link_self->setAttribute('type', 'application/atom+xml');
-        $link_self->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&id=' . htmlentities($arr['id']));
+        $link_self->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&amp;id=' . htmlentities($arr['id']));
         $entry_elem->appendChild($link_self);
     }
 

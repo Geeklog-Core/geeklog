@@ -1,10 +1,10 @@
 <span class="floatright">{edit_icon}</span><div class="poll-topic">{poll_topic}</div>
-<form action="{poll_vote_url}" name="Vote" method="POST">
+<form action="{poll_vote_url}" name="Vote" method="post">
     <div>
-    <input type="hidden" name="pid" value="{poll_id}">
+    <input type="hidden" name="pid" value="{poll_id}"{xhtml}>
             {poll_questions}
-        <span class="pluginTinyText">{poll_notification}</span><br>
-        <input type="submit" value="{lang_vote}">
+        <span class="pluginTinyText">{poll_notification}</span><br{xhtml}>
+        <input type="submit" value="{lang_vote}"{xhtml}>
         {poll_results}
     </div>
 </form>

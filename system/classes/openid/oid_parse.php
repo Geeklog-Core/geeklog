@@ -68,7 +68,7 @@ class oidParse {
         foreach ($tags[0] as $tag) {
                $gotten = preg_match('/^<\s*link\s*(.*)>/i',$tag,$alist);
                if ($gotten) {
-                    // print "<b>$alist[1]</b><br>";
+                    // print "<b>$alist[1]</b><br" . XHTML . ">";
                     $cleaned = preg_replace('/\s+=\s+/','=',$alist[1]);
                     preg_match_all('/(?:^|\s)(\w+)="([^">]+)"/',$cleaned,$qatts);
                     preg_match_all('/(?:^|\s)(\w+)=([^"\s>]+)/',$cleaned,$patts);

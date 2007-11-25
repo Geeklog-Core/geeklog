@@ -10,7 +10,7 @@
                 {copyright_notice}
             </td>
             <td class="footerblock alignright" style="width:30%;">
-                {powered_by} <a href="{geeklog_url}">Geeklog</a>&nbsp;<br>{execution_textandtime}&nbsp;
+                {powered_by} <a href="{geeklog_url}">Geeklog</a>&nbsp;<br{xhtml}>{execution_textandtime}&nbsp;
             </td>
         </tr>
     </table>

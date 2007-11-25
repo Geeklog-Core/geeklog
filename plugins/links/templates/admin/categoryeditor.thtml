@@ -1,5 +1,5 @@
 <p>{instructions}</p>
-<br clear="both">
+<br style="clear:both"{xhtml}>
     <form action="{site_admin_url}/plugins/links/category.php" method="post">
         <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <tr>
@@ -8,29 +8,29 @@
             </tr>
             <tr>
                 <td align="right">{lang_category}</td>
-                <td><input type="text" name="category" size="50" maxlength="32" VALUE="{category_value}"></td>
+                <td><input type="text" name="category" size="50" maxlength="32" VALUE="{category_value}"{xhtml}></td>
             </tr>
             <tr>
                 <td align="right">{lang_cid}</td>
-                <td><input type="text" name="cid" size="50" maxlength="32" VALUE="{cid_value}"></td>
+                <td><input type="text" name="cid" size="50" maxlength="32" VALUE="{cid_value}"{xhtml}></td>
             </tr>
             <tr>
                 <td align="right">{lang_description}</td>
-                <td><input type="text" name="description" size="50" maxlength="255" VALUE="{description_value}"></td>
+                <td><input type="text" name="description" size="50" maxlength="255" VALUE="{description_value}"{xhtml}></td>
             </tr>
             <tr>
                 <td align="right">{lang_topic}</td>
                 <td><select name="tid">{topic_list}</select></td>
             </tr>
             <tr>
-                <td colspan="2"><hr><td>
+                <td colspan="2"><hr{xhtml}></td>
             </tr>
             <tr>
                 <td colspan="2"><b>{lang_accessrights}</b></td>
             </tr>
             <tr>
                 <td align="right">{lang_owner}:</td>
-                <td>{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"></td>
+                <td>{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"{xhtml}></td>
             </tr>
             <tr>
                 <td align="right">{lang_group}:</td>
@@ -58,9 +58,9 @@
             <tr><td>&nbsp;</td></tr>
             <tr>
                 <td colspan="2">
-                    <input type="hidden" value="{old_cid_value}" name="old_cid"> 
-                    <input type="submit" value="{lang_save}" name="mode"> 
-                    <input type="submit" value="{lang_cancel}" name="mode">
+                    <input type="hidden" value="{old_cid_value}" name="old_cid"{xhtml}> 
+                    <input type="submit" value="{lang_save}" name="mode"{xhtml}> 
+                    <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
                     {delete_option}
                 </td>
             </tr>

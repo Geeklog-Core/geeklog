@@ -1,7 +1,7 @@
 <form action="{form_url}" method="post">
     <div class="admin-list-search">
         {filter}
-        {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
+        {lang_search}: <input type="text" size="20" name="q" value="{last_query}"{xhtml}>
         &nbsp;&nbsp;{lang_limit_results}:
             <select name="query_limit">
                 <option value="10" {10_selected}>10</option>
@@ -12,7 +12,7 @@
                 <option value="200" {200_selected}>200</option>
                 <option value="500" {500_selected}>500</option>
             </select>
-        <input type="submit" value="{lang_submit}">
+        <input type="submit" value="{lang_submit}"{xhtml}>
         &nbsp;&nbsp;{lang_records_found}:&nbsp;{records_found}
     </div>
 </form>

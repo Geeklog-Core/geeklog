@@ -3,13 +3,13 @@
       <table border="0" cellspacing="0" cellpadding="3" width="100%">
           <tr>
               <td align="right">{lang_title}:</td>
-              <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"></td>
+              <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"{xhtml}></td>
           </tr>
           <tr>
               <td align="right">{lang_addtomenu}:</td>
               <td>
-                  <input type="checkbox" name="sp_onmenu" {onmenu_checked}>&nbsp;&nbsp;{lang_label}:
-                  <input type="text" name="sp_label" size="48" maxlength="64" value="{sp_label}">
+                  <input type="checkbox" name="sp_onmenu" {onmenu_checked}{xhtml}>&nbsp;&nbsp;{lang_label}:
+                  <input type="text" name="sp_label" size="48" maxlength="64" value="{sp_label}"{xhtml}>
               </td>
           </tr>
           <tr>
@@ -33,7 +33,7 @@
           </tr>
           <tr>
             <td align="right">{lang_id}:</td>
-            <td><input type="text" name="sp_id" size="40" maxlength="40" value="{sp_id}"></td>
+            <td><input type="text" name="sp_id" size="40" maxlength="40" value="{sp_id}"{xhtml}></td>
           </tr>
           <tr>
             <td align="right">{lang_url}:</td>
@@ -42,39 +42,39 @@
           <tr>
               <td valign="top" align="right">{lang_content}:</td>
               <td>
-                  <textarea name="sp_content" style="width:100%" rows="24">{sp_content}</textarea>
-                  <br><span class="warningsmall">{lang_allowedhtml}</span><br><br>
+                  <textarea name="sp_content" style="width:100%" cols="45" rows="24">{sp_content}</textarea>
+                  <br{xhtml}><span class="warningsmall">{lang_allowedhtml}</span><br{xhtml}><br{xhtml}>
               </td>
           </tr>
           <tr>
               <td align="right">{lang_writtenby}:</td>
-              <td>{name}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
+              <td>{name}<input type="hidden" name="sp_uid" value="{sp_uid}"{xhtml}></td>
           </tr>
           <tr>
               <td align="right">{lang_lastupdated}:</td>
               <td>{sp_formateddate}</td>
           </tr>
           <tr>
-              <td colspan="2"><hr></td>
+              <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
               <td align="right" valign="top">{lang_centerblock}</td>
-              <td valign="top"><input type="checkbox" name="sp_centerblock" {centerblock_checked}>&nbsp;&nbsp;{lang_centerblock_msg}</td>
+              <td valign="top"><input type="checkbox" name="sp_centerblock" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</td>
           </tr>
           <tr>
               <td align="right">{lang_position}</td>
               <td>{pos_selection}&nbsp;&nbsp;&nbsp;{lang_topic}&nbsp;&nbsp;{topic_selection}</td>
           </tr>
           <tr>
-              <td colspan="2"><hr></td>
+              <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
               <td align="right" valign="top">{inblock_msg}</td>
-              <td valign="top"><input type="checkbox" name="sp_inblock" {inblock_checked}>&nbsp;&nbsp;{inblock_info}</td>
+              <td valign="top"><input type="checkbox" name="sp_inblock" {inblock_checked}{xhtml}>&nbsp;&nbsp;{inblock_info}</td>
           </tr>
           <tr>
               <td align="right" valign="top">{lang_centerblock_help}</td>
-              <td valign="top"><input type="text" name="sp_help" value="{centerblock_help}" size="50">&nbsp;{lang_centerblock_include}<br>
+              <td valign="top"><input type="text" name="sp_help" value="{centerblock_help}" size="50"{xhtml}>&nbsp;{lang_centerblock_include}<br{xhtml}>
               {lang_centerblock_desc}</td>
           </tr>
           <tr>
@@ -83,17 +83,17 @@
           </tr>
           <tr>
               <td align="right" valign="top">{exit_msg}</td>
-              <td valign="top"><input type="checkbox" name="sp_nf" {exit_checked}>&nbsp;&nbsp;{exit_info}</td>
+              <td valign="top"><input type="checkbox" name="sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</td>
           </tr>
           <tr>
-              <td colspan="2"><hr></td>
+              <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
               <td colspan="2"><b>{lang_accessrights}</b></td>
           </tr>
           <tr>
               <td align="right">{lang_owner}:</td>
-              <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+              <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></td>
           </tr>
           <tr>
               <td align="right">{lang_group}:</td>
@@ -116,22 +116,22 @@
               </td>
           </tr>
           <tr>
-              <td colspan="2">{permissions_msg}<td>
+              <td colspan="2">{permissions_msg}</td>
           </tr>
           <tr>
-              <td colspan="2"><hr><td>
+              <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
               <td align="right">{lang_hits}:</td>
-              <td><input type="hidden" name="sp_hits" value="{sp_hits}">{sp_hits_formatted}</td>
+              <td><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</td>
           </tr>
           <tr><td>&nbsp;</td></tr>
           <tr>
               <td colspan="2">
-                  <input type="submit" value="{lang_save}" name="mode">
-                  <input type="submit" value="{lang_cancel}" name="mode">
+                  <input type="submit" value="{lang_save}" name="mode"{xhtml}>
+                  <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
                   {delete_option}
-                  <input type="hidden" name="sp_old_id" value="{sp_old_id}">
+                  <input type="hidden" name="sp_old_id" value="{sp_old_id}"{xhtml}>
               </td>
           </tr>
       </table>

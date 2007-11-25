@@ -1,4 +1,4 @@
    <tr>
-        <td width="100px"><label>{lang_language}:</label></td>
+        <td style="width:100px;"><label for="language">{lang_language}:</label></td>
         <td>{language_selector}</td>
    </tr>

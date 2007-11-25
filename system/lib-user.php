@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.43 2007/06/09 21:27:57 dhaun Exp $
+// $Id: lib-user.php,v 1.44 2007/11/25 06:55:07 ospiess Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -152,6 +152,7 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = new Template ($_CONF['path_data']);
         $template->set_file (array ('mail' => 'welcome_email.txt'));
+        $template->set_var ( 'xhtml', XHTML );
         $template->set_var ('auth_info',
                             "$LANG04[2]: $username\n$LANG04[4]: $passwd");
         $template->set_var ('site_url', $_CONF['site_url']);
@@ -201,6 +202,7 @@ function USER_sendActivationEmail ($username, $useremail)
     if (file_exists ($_CONF['path_data'] . 'activation_email.txt')) {
         $template = new Template ($_CONF['path_data']);
         $template->set_file (array ('mail' => 'activation_email.txt'));
+        $template->set_var ( 'xhtml', XHTML );
         $template->set_var ('site_url', $_CONF['site_url']);
         $template->set_var ('site_name', $_CONF['site_name']);
         $template->set_var ('site_slogan', $_CONF['site_slogan']);
@@ -361,7 +363,7 @@ function USER_sendNotification ($username, $email, $uid, $mode='inactive')
         $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
         // user has been created, or has activated themselves:
-        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\n\n";
+        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&amp;uid={$uid}>\n\n";
     }
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
@@ -456,7 +458,7 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
             if ($width > 0) {
                 $userphoto .= ' width="' . $width . '"';
             }
-            $userphoto .= ' alt="" class="userphoto">';
+            $userphoto .= ' alt="" class="userphoto"' . XHTML . '>';
         }
     }
 
