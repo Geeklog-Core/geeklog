@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-admin.php                                                             |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.124 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-admin.php,v 1.125 2007/11/25 15:09:09 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -312,7 +312,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
         $admin_templates->set_var('last_query', COM_applyFilter($query));
         $admin_templates->set_var('filter', $filter);
-        $admin_templates->parse('search_menu', 'search', true);
     }
 
     $sql_query = addslashes ($query); # replace quotes etc for security
@@ -455,6 +454,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
                                    $LANG_ADMIN['records_found']);
         $admin_templates->set_var ('records_found',
                                    COM_numberFormat ($num_rows));
+        $admin_templates->parse('search_menu', 'search', true);
     }
 
     # SQL

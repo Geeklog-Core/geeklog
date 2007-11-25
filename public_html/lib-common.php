@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.665 2007/11/25 09:11:11 dhaun Exp $
+// $Id: lib-common.php,v 1.666 2007/11/25 15:09:08 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -978,19 +978,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'page_title', $pagetitle );
     $header->set_var( 'site_name', $_CONF['site_name']);
 
-    if( isset( $_CONF['advanced_editor'] ) && ( $_CONF['advanced_editor'] == 1 )
-            && file_exists( $_CONF['path_layout']
-                            . 'advanced_editor_header.thtml' ))
-    {
-        $header->set_file( 'editor'  , 'advanced_editor_header.thtml');
-        $header->parse( 'advanced_editor', 'editor' );
-
-    }
-    else
-    {
-         $header->set_var( 'advanced_editor', '' );
-    }
-
     $langAttr = '';
     if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
     {
@@ -1201,6 +1188,19 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
             $header->set_var( 'geeklog_blocks', $rblocks, true );
             $header->parse( 'right_blocks', 'rightblocks', true );
         }
+    }
+
+    if( isset( $_CONF['advanced_editor'] ) && ( $_CONF['advanced_editor'] == 1 )
+            && file_exists( $_CONF['path_layout']
+                            . 'advanced_editor_header.thtml' ))
+    {
+        $header->set_file( 'editor'  , 'advanced_editor_header.thtml');
+        $header->parse( 'advanced_editor', 'editor' );
+
+    }
+    else
+    {
+         $header->set_var( 'advanced_editor', '' );
     }
 
     // Call any plugin that may want to include extra Meta tags

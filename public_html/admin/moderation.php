@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | moderation.php                                                            |
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.114 2007/11/25 06:58:55 ospiess Exp $
+// $Id: moderation.php,v 1.115 2007/11/25 15:09:08 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -125,6 +125,7 @@ function commandcontrol()
                         'url' => $_CONF['site_admin_url'] . '/plugins.php',
                         'lang' => $LANG01[98], 'image' => '/images/icons/plugins.')
     );
+    $admin_templates->set_var('cc_icon_width', floor(100/ICONS_PER_ROW));
 
     for ($i = 0; $i < count ($cc_arr); $i++) {
         if ($cc_arr[$i]['condition']) {
@@ -194,7 +195,6 @@ function commandcontrol()
         }
     }
 
-    $admin_templates->set_var('cc_icon_width', floor(100/ICONS_PER_ROW));
     if($cols > 0) {
         // "flush out" any unrendered entries
         $admin_templates->set_var('cc_main_options', $cc_main_options);
