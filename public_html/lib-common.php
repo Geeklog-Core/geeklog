@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.664 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-common.php,v 1.665 2007/11/25 09:11:11 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -947,6 +947,11 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
                         . $LANG01[117] . '"' . XHTML . '>';
         }
     }
+    // TBD: need to be able to disable webservices - don't add this link then
+    $relLinks['service'] = '<link rel="service" type="application/atomsvc+xml" '
+                         . 'href="' . $_CONF['site_url']
+                         . '/webservices/atom/?introspection" '
+                         . 'title="Webservices"' . XHTML . '>';
     // TBD: add a plugin API and a lib-custom.php function
     $header->set_var( 'rel_links', implode( LB, $relLinks ));
 
