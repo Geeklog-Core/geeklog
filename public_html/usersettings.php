@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | usersettings.php                                                          |
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.165 2007/11/25 06:55:07 ospiess Exp $
+// $Id: usersettings.php,v 1.166 2007/11/25 09:15:00 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -1501,19 +1501,6 @@ $display = '';
 
 if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     switch ($mode) {
-    case 'edit':
-        $display .= COM_siteHeader ('menu', $LANG04[16]);
-        $msg = 0;
-        if (isset ($_GET['msg'])) {
-            $msg = COM_applyFilter ($_GET['msg'], true);
-            if ($msg > 0) {
-                $display .= COM_showMessage ($msg);
-            }
-        }
-        $display .= edituser();
-        $display .= COM_siteFooter();
-        break;
-
     case 'saveuser':
         savepreferences ($_POST);
         $display .= saveuser($_POST);
@@ -1557,8 +1544,9 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         $display = COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?mode=edit&amp;msg=5');
         break;
-    default: // also if $mode == 'preferences' or 'comments'
-        $display .= COM_siteHeader ('menu', $LANG01[49]);
+
+    default: // also if $mode == 'edit', 'preferences', or 'comments'
+        $display .= COM_siteHeader ('menu', $LANG04[16]);
         $msg = 0;
         if (isset ($_GET['msg'])) {
             $msg = COM_applyFilter ($_GET['msg'], true);
@@ -1566,7 +1554,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
                 $display .= COM_showMessage ($msg);
             }
         }
-        $display .= editpreferences();
+        $display .= edituser();
         $display .= COM_siteFooter();
         break;
     }
