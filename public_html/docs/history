@@ -2,6 +2,7 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.4.x)
 ------------
+- Added batch admin feature to send out account reminders [Blaine]
 - Updated COM_startBlock to set a unique {blockid} template variable [Blaine]
 - Fixed checking of "Show Admin lists" in Group Admin when going to 2nd page of
   results [Oliver]
