@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.197 2007/11/25 06:58:55 ospiess Exp $
+// $Id: user.php,v 1.198 2007/11/25 07:55:22 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -700,7 +700,6 @@ function batchdelete()
                                       'options' => 'batchdelete_options.thtml',
                                       'reminder' => 'reminder.thtml'));
     $user_templates->set_var ( 'xhtml', XHTML );
-    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var ('usr_type', $usr_type);
     $user_templates->set_var ('usr_time', $usr_time);
