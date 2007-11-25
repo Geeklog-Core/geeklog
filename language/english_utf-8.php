@@ -887,7 +887,7 @@ $LANG28 = array(
     51 => 'Online Days',
     52 => '<br>Note: "Online Days" is the number of days between the first registration and the last login.',
     53 => 'registered',
-    54 => 'Batch Delete',
+    54 => 'Batch Admin',
     55 => "This only works if you have <code>\$_CONF['lastlogin'] = true;</code> in your config.php",
     56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
     57 => 'Phantom users',
@@ -909,7 +909,16 @@ $LANG28 = array(
     73 => 'Are You sure you want to permanently delete ALL selected users?',
     74 => 'Recent Users',
     75 => 'Users that registered in the last ',
-    76 => ' months'
+    76 => ' months',
+    77 => 'Email site login reminder to selected users',
+    78 => 'Send Reminder',
+    79 => 'No User selected for reminders',
+    80 => 'Successfully sent Reminders',
+    81 => 'Reminder to verify account for %s',
+    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
+    83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
+    84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
+    85 => 'If you have forgotten the password use the following link: %s'
 );
 
 ###############################################################################

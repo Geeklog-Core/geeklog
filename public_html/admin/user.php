@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.195 2007/11/23 12:40:49 ospiess Exp $
+// $Id: user.php,v 1.196 2007/11/25 05:19:03 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -696,7 +696,8 @@ function batchdelete()
 
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form' => 'batchdelete.thtml',
-                                      'options' => 'batchdelete_options.thtml'));
+                                      'options' => 'batchdelete_options.thtml',
+                                      'reminder' => 'reminder.thtml'));
     $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var ('usr_type', $usr_type);
     $user_templates->set_var ('usr_time', $usr_time);
@@ -761,14 +762,23 @@ function batchdelete()
     }
 
     $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
+    $header_arr[] = array('text' => 'Reminders', 'field' => 'num_reminders', 'sort' => true);
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'] . '/user.php',
+                          'text' => $LANG28[11]),
+                    array('url' => $_CONF['site_admin_url'] . '/user.php?mode=importform',
+                          'text' => $LANG28[23]),
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+    );
 
-    $text_arr = array(
-        'has_menu'     => true,
-        'has_extras'   => true,
-        'title'        => $LANG28[54],
-        'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
-        'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
-        'help_url'     => ''
+    $text_arr = array('has_menu'     => true,
+                      'has_extras'   => true,
+                      'title'        => $LANG28[54],
+                      'instructions' => "$desc",
+                      'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
+                      'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
+                      'help_url'     => ''
     );
 
     $defsort_arr = array('field'     => $sort,
@@ -777,7 +787,7 @@ function batchdelete()
     $join_userinfo = "LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
     $select_userinfo = ", lastlogin as lastlogin_short $list_sql ";
 
-    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate$select_userinfo "
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,status,regdate,num_reminders$select_userinfo "
          . "FROM {$_TABLES['users']} $join_userinfo WHERE 1=1";
 
     $query_arr = array (
@@ -803,8 +813,13 @@ function batchdelete()
         $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE
     );
 
+    $user_templates->set_var('lang_reminder',$LANG28[77]);
+    $user_templates->set_var('action_reminder',$LANG28[78]);
+    $user_templates->parse('test','reminder');
+
+    $form_arr['top'] = $user_templates->get_var('test');
     $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-        $query_arr, $defsort_arr, '', '', $listoptions);
+        $query_arr, $defsort_arr, '', '', $listoptions,$form_arr);
 
     // $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"></form>" . LB;
     return $display;
@@ -847,6 +862,84 @@ function batchdeleteexec()
     COM_numberFormat($c); // just in case we have more than 999)..
     $msg .= "{$LANG28[71]}: $c<br>\n";
     return $msg;
+}
+
+
+
+/**
+* This function used to send out reminders to users to access the site or account may be deleted
+*
+* @return   string          HTML with success or error message
+*
+*/
+function batchreminders()
+{
+    global $_CONF, $_TABLES, $LANG28;
+    $msg = '';
+    $user_list = array();
+    if (isset($_POST['delitem'])) {
+        $user_list = $_POST['delitem'];
+    }
+
+    if (count($user_list) == 0) {
+        $msg = $LANG28[79] . "<br>";
+    }
+    $c = 0;
+
+    if (isset($_POST['delitem']) AND is_array($_POST['delitem'])) {
+        foreach($_POST['delitem'] as $delitem) {
+            $userid = COM_applyFilter($delitem);
+            $useremail = DB_getItem ($_TABLES['users'], 'email', "uid = '$userid'");
+            $username = DB_getItem ($_TABLES['users'], 'username', "uid = '$userid'");
+            $lastlogin = DB_getItem ($_TABLES['userinfo'], 'lastlogin', "uid = '$userid'");
+            $lasttime = COM_getUserDateTimeFormat ($lastlogin);
+            if (file_exists ($_CONF['path_data'] . 'reminder_email.txt')) {
+                $template = new Template ($_CONF['path_data']);
+                $template->set_file (array ('mail' => 'reminder_email.txt'));
+                $template->set_var ('site_url', $_CONF['site_url']);
+                $template->set_var ('site_name', $_CONF['site_name']);
+                $template->set_var ('site_slogan', $_CONF['site_slogan']);
+                $template->set_var ('lang_username', $LANG04[2]);
+                $template->set_var ('username', $username);
+                $template->set_var ('name', COM_getDisplayName ($uid));
+                $template->set_var ('lastlogin',$lasttime[0]);
+
+                $template->parse ('output', 'mail');
+                $mailtext = $template->get_var ('output');
+            } else {
+                if ($lastlogin == 0) {
+                    $mailtext = $LANG28[83] . "\n\n";
+                } else {
+                    $mailtext = sprintf($LANG28[82],$lasttime[0]) . "\n\n";
+                }
+                $mailtext .= sprintf($LANG28[84],$username) . "\n";
+                $mailtext .= sprintf($LANG28[85],$_CONF['site_url'] . '/users.php?mode=getpassword') . "\n\n";
+
+            }
+            $subject = sprintf($LANG28[81],$_CONF['site_name']);
+            if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
+                $mailfrom = $_CONF['noreply_mail'];
+                global $LANG_LOGIN;
+                $mailtext .= LB . LB . $LANG04[159];
+            } else {
+                $mailfrom = $_CONF['site_mail'];
+            }
+
+            if (COM_mail ($useremail, $subject, $mailtext, $mailfrom)) {
+                DB_query("UPDATE {$_TABLES['users']} SET num_reminders=num_reminders+1 WHERE uid=$userid");
+                $c++;
+            } else {
+                COM_errorLog("Error attempting to send account reminder to use:$username ($userid)");
+            }
+        }
+    }
+
+    // Since this function is used for deletion only, its necessary to say that
+    // zero where deleted instead of just leaving this message away.
+    COM_numberFormat($c); // just in case we have more than 999)..
+    $msg .= "{$LANG28[80]}: $c<br>\n";
+    return $msg;
+
 }
 
 
@@ -1102,6 +1195,12 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_siteHeader ('menu', $LANG28[54]);
     $display .= batchdelete();
     $display .= COM_siteFooter();
+} elseif ($mode == 'Send Reminder') {
+    $msg = batchreminders();
+    $display .= COM_siteHeader ('menu', $LANG28[11])
+        . COM_showMessage($msg)
+        . batchdelete()
+        . COM_siteFooter();
 } else if ($mode == 'batchdeleteexec') {
     $msg = batchdeleteexec();
     $display .= COM_siteHeader ('menu', $LANG28[11])
