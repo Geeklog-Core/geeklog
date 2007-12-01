@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.6 2007/11/25 06:59:56 ospiess Exp $
+// $Id: config.class.php,v 1.7 2007/12/01 21:20:20 blaine Exp $
 
 class config {
     var $ref;
@@ -320,21 +320,25 @@ class config {
      */
     function get_ui($sg=0, $change_result=null)
     {
-        global $LANG_coreconfigsubgroups;
+        global $_CONF,$LANG_coreconfigsubgroups;
         if (!SEC_inGroup('Root'))
             return config::_UI_perm_denied();
-        $t = new Template($GLOBALS['_CONF']['path_layout'] . 'admin/config');
+        $t = new Template($_CONF['path_layout'] . 'admin/config');
         $t->set_file('main','configuration.thtml');
         $t->set_var( 'xhtml', XHTML );
-        $t->set_var('site_url',$GLOBALS['_CONF']['site_url']);
+        $t->set_var('site_url',$_CONF['site_url']);
         $t->set_var('open_group', $this->ref);
         $t->set_block('main','group-selector','groups');
         $groups = config::_get_groups();
-        foreach ($groups as $group) {
-            $t->set_var("select_id", ($group === $this->ref ? 'id="current"' : ''));
-            $t->set_var("group_select_value", $group);
-            $t->set_var("group_display", ucwords($group));
-            $t->parse("groups", "group-selector", true);
+        if (count($groups) > 1) {
+            foreach ($groups as $group) {
+                $t->set_var("select_id", ($group === $this->ref ? 'id="current"' : ''));
+                $t->set_var("group_select_value", $group);
+                $t->set_var("group_display", ucwords($group));
+                $t->parse("groups", "group-selector", true);
+            }
+        } else {
+            $t->set_var('hide_groupselection','none');
         }
         $subgroups = $this->get_sgroups();
         $t->set_block('main','subgroup-selector','navbar');
@@ -363,9 +367,13 @@ class config {
         }
 
         // Output the result.
-        $display  = COM_siteHeader('menu');
-        $display .= COM_startBlock('Configuration');
-        $display .= config::_UI_get_change_block($change_result);
+        $display  = COM_siteHeader('none');
+        $display .= COM_startBlock('Configuration Manager');
+        if ($change_result != null AND $change_result !== array() ) {
+            $t->set_var('change_block',config::_UI_get_change_block($change_result));
+        } else {
+            $t->set_var('show_changeblock','none');
+        }
         $display .= $t->finish($t->parse("OUTPUT", "main"));
         $display .= COM_endBlock();
         $display .= COM_siteFooter(false);
@@ -375,13 +383,10 @@ class config {
     function _UI_get_change_block($changes)
     {
         if ($changes != null AND $changes !== array()) {
-            $display = COM_startBlock ('Results', '',
-                                       COM_getBlockTemplate ('_msg_block', 'header'));
-            $display .= '<p padding="5px">Changes were successfully made to:<ul>';
+            $display .= '<ul style="margin-top:5px;">';
             foreach ($changes as $param_name => $success)
                 $display .= '<li>' . $param_name . '</li>';
-            $display .= '</ul></p>';
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $display .= '</ul>';
             return $display;
         }
     }
