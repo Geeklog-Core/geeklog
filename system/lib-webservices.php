@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.22 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-webservices.php,v 1.23 2007/12/01 19:17:32 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -695,17 +695,17 @@ function WS_authenticate()
         if ($WS_VERBOSE) {
             COM_errorLog("WS: Attempting to log in user '$username'");
         }
-    } elseif (!empty($_REQUEST['gl_auth_header'])) {
+    } elseif (!empty($_SERVER['REMOTE_USER'])) {
         /* PHP installed as CGI may not have access to authorization headers of
-         * Apache. In that case, use .htaccess to store the auth header as a
-         * request variable called gl_auth_digest
+         * Apache. In that case, use .htaccess to store the auth header as explained
+         * at http://wiki.geeklog.net/wiki/index.php/Webservices_API#Authentication
          */
 
-        list($auth_type, $auth_data) = explode(' ', $_REQUEST['gl_auth_digest']);
+        list($auth_type, $auth_data) = explode(' ', $_SERVER['REMOTE_USER']);
         list($username, $password) = explode(':', base64_decode($auth_data));
 
         if ($WS_VERBOSE) {
-            COM_errorLog("WS: Attempting to log in user '$username' (via gl_auth_header)");
+            COM_errorLog("WS: Attempting to log in user '$username' (via \$_SERVER['REMOTE_USER'])");
         }
     } else {
         if ($WS_VERBOSE) {
