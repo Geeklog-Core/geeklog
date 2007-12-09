@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.7 2007/12/01 21:20:20 blaine Exp $
+// $Id: config.class.php,v 1.8 2007/12/09 21:16:43 ablankstein Exp $
 
 class config {
     var $ref;
@@ -507,6 +507,9 @@ class config {
     {
         if (!SEC_inGroup('Root')) {
             return null;
+        }
+        if ($this->config_array == null) {
+            $this->initConfig();
         }
         $success_array = array();
         foreach ($this->config_array as $param_name => $param_value) {
