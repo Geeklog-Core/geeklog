@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.114 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-story.php,v 1.115 2007/12/09 17:21:31 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1042,15 +1042,20 @@ function service_submit_story($args, &$output, &$svc_msg)
         $args['tid'] = $args['category'][0];
     }
 
-    if (!empty($args['summary']) && !empty($args['content'])) {
-        $args['introtext'] = $args['summary'];
-        $args['bodytext']  = $args['content'];
-    } else if (!empty($args['content'])) {
-        $args['introtext'] = $args['content'];
-        $args['bodytext']  = '';
-    } else if (!empty($args['summary'])) {
-        $args['introtext'] = $args['summary'];
-        $args['bodytext']  = '';
+    if (!empty($args['content'])) {
+        $content = $args['content'];
+    } else {
+        $content = $args['summary'];
+    }   
+    if (!empty($content)) {
+        $parts = explode('[page_break]', $content);
+        if (count($parts) == 1) {
+            $args['introtext'] = $content;
+            $args['bodytext']  = '';
+        } else {
+            $args['introtext'] = array_shift($parts);
+            $args['bodytext']  = implode('[page_break]', $parts);
+        }
     }
 
     /* Apply filters to the parameters passed by the webservice */
@@ -1516,10 +1521,11 @@ function service_get_story($args, &$output, &$svc_msg)
             if (empty($output['bodytext'])) {
                 $output['content']  = $output['introtext'];
             } else {
-                $output['summary']  = $output['introtext'];
-                $output['content']  = $output['bodytext'];
+                $output['content']  = $output['introtext'] . LB
+                                    . '[page_break]' . LB . $output['bodytext'];
             }
-            $output['content_type'] = ($output['postmode'] == 'html')?'html':'text';
+            $output['content_type'] = ($output['postmode'] == 'html')
+                                    ? 'html' : 'text';
 
             $owner_data = SESS_getUserDataFromId($output['owner_id']);
 
@@ -1600,10 +1606,10 @@ function service_get_story($args, &$output, &$svc_msg)
                 if (empty($output_item['bodytext'])) {
                     $output_item['content']  = $output_item['introtext'];
                 } else {
-                    $output_item['summary']  = $output_item['introtext'];
-                    $output_item['content']  = $output_item['bodytext'];
+                    $output_item['content']  = $output_item['introtext'] . LB
+                            . '[page_break]' . LB . $output_item['bodytext'];
                 }
-                $output_item['content_type'] = ($output_item['postmode'] == 'html')?'html':'text';
+                $output_item['content_type'] = ($output_item['postmode'] == 'html') ? 'html' : 'text';
 
                 $owner_data = SESS_getUserDataFromId($output_item['owner_id']);
 
