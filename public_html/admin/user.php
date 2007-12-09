@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | user.php                                                                  |
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.198 2007/11/25 07:55:22 ospiess Exp $
+// $Id: user.php,v 1.199 2007/12/09 18:05:39 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -491,7 +491,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         }
 
         if (empty ($uid) || !empty ($passwd)) {
-            $passwd = md5 ($passwd);
+            $passwd = SEC_encryptPassword($passwd);
         } else {
             $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
         }
@@ -503,7 +503,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                 $passwd = rand ();
                 $passwd = md5 ($passwd);
                 $passwd = substr ($passwd, 1, 8);
-                $passwd = md5 ($passwd);
+                $passwd = SEC_encryptPassword($passwd);
             }
 
             $uid = USER_createAccount ($username, $email, $passwd, $fullname,

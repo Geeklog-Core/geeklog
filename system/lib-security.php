@@ -2,18 +2,18 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-security.php                                                          |
 // |                                                                           |
 // | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Vincent Furia    - vmf@abtech.org                                |
-// |          Michael Jervis   - mike@fuckingbrit.com                          |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
+// |          Vincent Furia    - vmf AT abtech DOT org                         |
+// |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.59 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-security.php,v 1.60 2007/12/09 18:05:39 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -701,7 +701,7 @@ function SEC_authenticate($username, $password, &$uid)
         if ($U['status'] == USER_ACCOUNT_DISABLED)
         {
             return USER_ACCOUNT_DISABLED; // banned, jump to here to save an md5 calc.
-        } elseif ($U['passwd'] != md5( $password )) {
+        } elseif ($U['passwd'] != SEC_encryptPassword( $password )) {
             return -1; // failed login
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_APPROVAL) {
             //awaiting approval, jump to msg.
@@ -802,7 +802,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
         $U = DB_fetchArray($result);
         $uid = $U['uid'];
         $mypass = $U['passwd']; // also used to see if the user existed later.
-        if ($mypass == md5($passwd))
+        if ($mypass == SEC_encryptPassword($passwd))
         {
             /* Valid password for cached user, return status */
             return $U['status'];
@@ -831,7 +831,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
                         $loginname = custom_uniqueRemoteUsername($loginname, $service);
                     }
                 }
-                USER_createAccount($loginname, $authmodule->email, md5($passwd), $authmodule->fullname, $authmodule->homepage, $remoteusername, $service);
+                USER_createAccount($loginname, $authmodule->email, SEC_encryptPassword($passwd), $authmodule->fullname, $authmodule->homepage, $remoteusername, $service);
                 $uid = DB_getItem ($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$service'");
                 // Store full remote account name:
                 $service = addslashes($service);
@@ -844,7 +844,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
                           // and integrates user activation, see?
             } else {
                 // user existed, update local password:
-                DB_Change($_TABLES['users'], 'passwd', md5($passwd), array('remoteusername','remoteservice'), array($remoteusername,$service));
+                DB_Change($_TABLES['users'], 'passwd', SEC_encryptPassword($passwd), array('remoteusername','remoteservice'), array($remoteusername,$service));
                 // and return their status
                 return DB_getItem($_TABLES['users'], 'status', "remoteusername='$remoteusername' AND remoteservice='$service'");
             }
@@ -1019,6 +1019,22 @@ function SEC_getGroupDropdown ($group_id, $access)
     }
 
     return $groupdd;
+}
+
+/**
+* Encrypt password
+*
+* For now, this is only a wrapper function to get all the direct calls to
+* md5() out of the core code so that we can switch to another method of
+* encoding / encrypting our passwords in some future release ...
+*
+* @param    string  $password   the password to encrypt, in clear text
+* @return   string              encrypted password
+*
+*/
+function SEC_encryptPassword($password)
+{
+    return md5($password);
 }
 
 ?>

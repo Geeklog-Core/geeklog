@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: sectest.php,v 1.12 2007/11/25 06:58:55 ospiess Exp $
+// $Id: sectest.php,v 1.13 2007/12/09 18:05:39 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -248,7 +248,7 @@ function checkDefaultPassword ()
     // check to see if any account still has 'password' as its password.
     $pwdRoot = 0;
     $pwdUser = 0;
-    $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE passwd='" . md5 ('password') . "'");
+    $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE passwd='" . SEC_encryptPassword('password') . "'");
     $numPwd = DB_numRows($result);
     if ($numPwd > 0) {
         for ($i = 0; $i < $numPwd; $i++) {

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.166 2007/11/25 09:15:00 dhaun Exp $
+// $Id: usersettings.php,v 1.167 2007/12/09 18:05:39 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -262,9 +262,9 @@ function confirmAccountDelete ($form_reqid)
 
     // to change the password, email address, or cookie timeout,
     // we need the user's current password
-    if (empty ($_POST['old_passwd']) ||
-            (md5 ($_POST['old_passwd']) != $_USER['passwd'])) {
-         return COM_refresh ($_CONF['site_url']
+    if (empty($_POST['old_passwd']) ||
+            (SEC_encryptPassword($_POST['old_passwd']) != $_USER['passwd'])) {
+         return COM_refresh($_CONF['site_url']
                             . '/usersettings.php?mode=edit&amp;msg=84');
     }
 
@@ -926,15 +926,15 @@ function saveuser($A)
     // we need the user's current password
     if (!empty ($A['passwd']) || ($A['email'] != $_USER['email']) ||
             ($A['cooktime'] != $_USER['cookietimeout'])) {
-        if (empty ($A['old_passwd']) ||
-                (md5 ($A['old_passwd']) != $_USER['passwd'])) {
+        if (empty($A['old_passwd']) ||
+                (SEC_encryptPassword($A['old_passwd']) != $_USER['passwd'])) {
 
             return COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?mode=edit&amp;msg=83');
         }
     }
 
-    // no need to filter the password as it's md5 encoded anyway
+    // no need to filter the password as it's encoded anyway
     if ($_CONF['allow_username_change'] == 1) {
         $A['new_username'] = COM_applyFilter ($A['new_username']);
         if (!empty ($A['new_username']) &&
@@ -970,28 +970,26 @@ function saveuser($A)
         }
     }
 
-    if (!empty ($A['passwd'])) {
-        if (($A['passwd'] == $A['passwd_conf'])
-                AND (md5 ($A['old_passwd']) == $_USER['passwd'])) {
-            $passwd = md5 ($A['passwd']);
-            DB_change($_TABLES['users'], 'passwd',
-                      "$passwd", "uid", $_USER['uid']);
+    if (!empty($A['passwd'])) {
+        if (($A['passwd'] == $A['passwd_conf']) &&
+                (SEC_encryptPassword($A['old_passwd']) == $_USER['passwd'])) {
+            $passwd = SEC_encryptPassword($A['passwd']);
+            DB_change($_TABLES['users'], 'passwd', "$passwd",
+                      "uid", $_USER['uid']);
             if ($A['cooktime'] > 0) {
                 $cooktime = $A['cooktime'];
             } else {
                 $cooktime = -1000;
             }
-            setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
-                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                       $_CONF['cookiesecure']);
-        }
-        elseif (md5 ($A['old_passwd']) != $_USER['passwd']) {
-                return COM_refresh ($_CONF['site_url']
-                        . '/usersettings.php?mode=edit&amp;msg=68');
-        }
-        elseif ($A['passwd'] != $A['passwd_conf']) {
-                return COM_refresh ($_CONF['site_url']
-                        . '/usersettings.php?mode=edit&amp;msg=67');
+            setcookie($_CONF['cookie_password'], $passwd, time() + $cooktime,
+                      $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                      $_CONF['cookiesecure']);
+        } elseif (SEC_encryptPassword($A['old_passwd']) != $_USER['passwd']) {
+            return COM_refresh ($_CONF['site_url']
+                                . '/usersettings.php?mode=edit&amp;msg=68');
+        } elseif ($A['passwd'] != $A['passwd_conf']) {
+            return COM_refresh ($_CONF['site_url']
+                                . '/usersettings.php?mode=edit&amp;msg=67');
         }
     }
 

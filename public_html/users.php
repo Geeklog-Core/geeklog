@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.159 2007/11/25 06:55:07 ospiess Exp $
+// $Id: users.php,v 1.160 2007/12/09 18:05:39 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -906,7 +906,7 @@ case 'setnewpwd':
             $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
                                array ($uid, $reqid));
             if ($valid == 1) {
-                $passwd = md5 ($_POST['passwd']);
+                $passwd = SEC_encryptPassword($_POST['passwd']);
                 DB_change ($_TABLES['users'], 'passwd', "$passwd",
                            "uid", $uid);
                 DB_delete ($_TABLES['sessions'], 'uid', $uid);
@@ -1096,9 +1096,10 @@ default:
                 setcookie ($_CONF['cookie_name'], $_USER['uid'],
                            time() + $cooktime, $_CONF['cookie_path'],
                            $_CONF['cookiedomain'], $_CONF['cookiesecure']);
-                setcookie ($_CONF['cookie_password'], md5 ($passwd),
-                           time() + $cooktime, $_CONF['cookie_path'],
-                           $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+                setcookie ($_CONF['cookie_password'],
+                           SEC_encryptPassword($passwd), time() + $cooktime,
+                           $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                           $_CONF['cookiesecure']);
             }
         } else {
             $userid = $_COOKIE[$_CONF['cookie_name']];

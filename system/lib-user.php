@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-user.php                                                              |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.44 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-user.php,v 1.45 2007/12/09 18:05:39 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -146,7 +146,7 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
     $passwd = rand ();
     $passwd = md5 ($passwd);
     $passwd = substr ($passwd, 1, 8);
-    $passwd2 = md5 ($passwd);
+    $passwd2 = SEC_encryptPassword($passwd);
     DB_change ($_TABLES['users'], 'passwd', "$passwd2", 'uid', $uid);
 
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {

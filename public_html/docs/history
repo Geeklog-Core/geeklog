@@ -2,6 +2,9 @@ Geeklog History/Changes:
 
 ??? ??, 2007 (1.5.0)
 ------------
+- New function SEC_encryptPassword() to be used when we have to encrypt a
+  password. This is only a wrapper for md5() for now but should it make easier
+  for us to use some other method in the future [Dirk]
 - Incorporated patches by Joe Mucchiello for places in the code where the
   template library was used incorrectly.
 - Added batch admin feature to send out account reminders [Blaine]
