@@ -149,6 +149,8 @@ Spam-X plugin (1.1.1)
 
 Static Pages plugin (1.5)
 -------------------
+- Bugfix: In a multi-language setup, we need to be able to see all topics for
+  the centerblock option [Dirk]
 - Bugfix: Allow the static pages "page format" setting to override
   $_CONF['show_right_blocks'] (reported by Simon Lord) [Dirk]
 - New Static pages Autotag: staticpage_content to return the contents of a

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Geeklog Plugin 1.4.3                                         |
+// | Static Pages Geeklog Plugin 1.5                                           |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Administration page.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Phill Gillespie  - phill AT mediaaustralia DOT com DOT au        |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.89 2007/11/25 06:58:56 ospiess Exp $
+// $Id: index.php,v 1.90 2007/12/20 21:03:04 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -209,7 +209,7 @@ function form ($A, $error = false)
         if (empty ($current_topic)) {
             $current_topic = 'none';
         }
-        $topics = COM_topicList ('tid,topic', $current_topic);
+        $topics = COM_topicList ('tid,topic', $current_topic, 1, true);
         $alltopics = '<option value="all"';
         if ($current_topic == 'all') {
             $alltopics .= ' selected="selected"';
