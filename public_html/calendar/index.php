@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2007/11/25 06:58:56 ospiess Exp $
+// $Id: index.php,v 1.23 2007/12/21 13:50:15 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -783,7 +783,9 @@ case 'week':
 
 case 'addentry':
     $display .= plugin_submit_calendar($mode);
+    $display .= COM_siteFooter();
     break;
+
 case 'savepersonal':
     $display = plugin_savesubmission_calendar($_POST);
     break;
