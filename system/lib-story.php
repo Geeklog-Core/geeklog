@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.115 2007/12/09 17:21:31 dhaun Exp $
+// $Id: lib-story.php,v 1.116 2007/12/22 14:38:29 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -129,22 +129,28 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $authorname = COM_createLink($authorname, $profileUrl, array('class' => 'storybyline'));
         }
         $article->set_var( 'contributedby_author', $authorname );
+
         $photo = '';
-        if( $_CONF['allow_user_photo'] )
-        {
-            $photo = USER_getPhoto( $story->DisplayElements('uid'), $story->DisplayElements('photo') );
+        if ($_CONF['allow_user_photo'] == 1) {
+            $authphoto = $story->DisplayElements('photo');
+            if (empty($authphoto)) {
+                $authphoto = '(none)'; // user does not have a photo
+            }
+            $photo = USER_getPhoto($story->DisplayElements('uid'), $authphoto,
+                                   $story->DisplayElements('email'));
         }
-        if( !empty( $photo ))
-        {
-            $article->set_var( 'contributedby_photo', $photo );
+        if (!empty($photo)) {
+            $article->set_var('contributedby_photo', $photo);
+            $article->set_var('author_photo', $photo);
             $camera_icon = '<img src="' . $_CONF['layout_url']
-                .'/images/smallcamera.' . $_IMAGE_TYPE . '" alt=""' . XHTML . '>';
-            $article->set_var( 'camera_icon', COM_createLink($camera_icon, $profileUrl));
-        }
-        else
-        {
-            $article->set_var( 'contributedby_photo', '' );
-            $article->set_var( 'camera_icon', '' );
+                         . '/images/smallcamera.' . $_IMAGE_TYPE . '" alt=""'
+                         . XHTML . '>';
+            $article->set_var('camera_icon',
+                              COM_createLink($camera_icon, $profileUrl));
+        } else {
+            $article->set_var ('contributedby_photo', '');
+            $article->set_var ('author_photo', '');
+            $article->set_var ('camera_icon', '');
         }
     }
 
