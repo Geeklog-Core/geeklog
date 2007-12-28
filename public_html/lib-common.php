@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.666 2007/11/25 15:09:08 dhaun Exp $
+// $Id: lib-common.php,v 1.667 2007/12/28 13:34:18 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1277,6 +1277,8 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
         return $function( $rightblock, $custom );
     }
 
+    COM_hit();
+
     // Set template directory
     $footer = new Template( $_CONF['path_layout'] );
 
@@ -1288,8 +1290,6 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
             ));
 
     // Do variable assignments
-    DB_change( $_TABLES['vars'], 'value', 'value + 1', 'name', 'totalhits', '', true );
-
     $footer->set_var( 'xhtml', XHTML );
     $footer->set_var( 'site_url', $_CONF['site_url']);
     $footer->set_var( 'layout_url',$_CONF['layout_url']);
@@ -3885,7 +3885,7 @@ function COM_hit()
 {
     global $_TABLES;
 
-    DB_query( "UPDATE {$_TABLES['vars']} SET value = value + 1 WHERE name = 'totalhits'" );
+    DB_change($_TABLES['vars'], 'value', 'value + 1', 'name', 'totalhits', '', true);
 }
 
 /**
