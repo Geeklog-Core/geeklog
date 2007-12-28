@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.89 2007/11/25 06:56:04 ospiess Exp $
+// $Id: functions.inc,v 1.90 2007/12/28 15:41:26 dhaun Exp $
 
 
 /**
@@ -33,7 +33,7 @@
  * @filesource
  * @version 1.0.1
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2006
+ * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93 AT steubentech DOT com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
@@ -1485,77 +1485,66 @@ function links_breadcrumbs ($root, $cid) {
 
 
 
-
-// +-----------------------------------------------------------------------------------------------+
-// | PHP Block functions                                                                           |
-// | Functions for building php blocks                                                             |
-// +-----------------------------------------------------------------------------------------------+
+// +--------------------------------------------------------------------------+
+// | PHP Block functions                                                      |
+// +--------------------------------------------------------------------------+
 
 /**
- * returns a list of links that belong to categories associated with the current topic
+ * Returns a list of links that belong to categories associated with
+ * the current topic
+ *
+ * Relies on the fact that $topic is set (and sanitized) in lib-common.php
  */
-function phpblock_topic_links ()
+function phpblock_topic_links()
 {
-    global $_TABLES, $LANG_LINKS, $_CONF;
-    $retval = '';
-    $tid = links_get_tid();
-    $result = DB_query("SELECT l.lid, l.title, c.cid FROM {$_TABLES['links']} AS l
-                        LEFT JOIN {$_TABLES['linkcategories']} AS c
-                        ON l.cid=c.cid
-                        WHERE c.tid='{$tid}'" . COM_getPermSQL('AND', 0, 2, 'c'));
-    $nrows = DB_numRows($result);
-    if ($nrows>0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray ($result);
-            $content = stripslashes ($A['title']);
-            $url = $_CONF['site_url'] . '/links/portal.php?what=link&amp;item=' . $A['lid'];
-            $retval .= COM_createLink ($content, $url) . '<br' . XHTML . '>';
-        }
-    }
-    return $retval;
-}
+    global $_CONF, $_TABLES, $LANG_LINKS, $topic;
 
-
-/**
- * returns a list of categories that are associated with the current topic
- */
-function phpblock_topic_categories ()
-{
-    global $_TABLES, $LANG_LINKS, $_CONF;
     $retval = '';
-    $tid = links_get_tid();
-    if (isset($tid)) {
-        $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']}
-                            WHERE tid='{$tid}'" . COM_getPermSQL ('AND'));
-        $nrows = DB_numRows ($result);
-        if ($nrows>0) {
+
+    if (!empty($topic)) {
+        $tid = addslashes($topic);
+        $result = DB_query("SELECT l.lid, l.title, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE c.tid='{$tid}'" . COM_getPermSQL('AND', 0, 2, 'c'));
+        $nrows = DB_numRows($result);
+        if ($nrows > 0) {
             for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray ($result);
-                $content = stripslashes ($A['category']);
-                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
-                $retval .= COM_createLink ($content, $url) . '<br' . XHTML . '>';
+                $A = DB_fetchArray($result);
+                $content = stripslashes($A['title']);
+                $url = $_CONF['site_url'] . '/links/portal.php?what=link&amp;item=' . $A['lid'];
+                $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
             }
         }
     }
+
     return $retval;
 }
 
 
 /**
- * tries to establish the current topic and return tid
+ * Returns a list of categories that are associated with the current topic
+ *
+ * Relies on the fact that $topic is set (and sanitized) in lib-common.php
  */
-function links_get_tid ()
+function phpblock_topic_categories()
 {
-    global $_TABLES;
-    if (isset($_REQUEST['topic'])) {
-        return $_REQUEST['topic'];
-    } elseif (isset($_REQUEST['topic'])) {
-        return DB_getItem($_TABLES['topics'], 'tid',  "topic='{$_REQUEST['topic']}'");
-    } elseif (isset($_REQUEST['story'])) {
-        return DB_getItem($_TABLES['stories'], 'tid',  "sid='{$_REQUEST['story']}'");
-    } else {
-        return;
+    global $_CONF, $_TABLES, $LANG_LINKS, $topic;
+
+    $retval = '';
+
+    if (!empty($topic)) {
+        $tid = addslashes($topic);
+        $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']} WHERE tid='{$tid}'" . COM_getPermSQL ('AND'));
+        $nrows = DB_numRows($result);
+        if ($nrows > 0) {
+            for ($i = 0; $i < $nrows; $i++) {
+                $A = DB_fetchArray($result);
+                $content = stripslashes($A['category']);
+                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
+                $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
+            }
+        }
     }
+
+    return $retval;
 }
 
 ?>
