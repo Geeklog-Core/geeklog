@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.5 2007/09/17 18:12:28 dhaun Exp $
+// $Id: services.inc.php,v 1.6 2007/12/29 15:05:50 dhaun Exp $
 
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
@@ -441,6 +441,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         } else {
             $svc_msg['gl_feed'] = false;
         }
+    } else {
+        $svc_msg['gl_feed'] = false;
     }
 
     if (!$svc_msg['gl_feed']) {

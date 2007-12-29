@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.116 2007/12/22 14:38:29 dhaun Exp $
+// $Id: lib-story.php,v 1.117 2007/12/29 15:05:50 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1488,6 +1488,8 @@ function service_get_story($args, &$output, &$svc_msg)
         } else {
             $svc_msg['gl_feed'] = false;
         }
+    } else {
+        $svc_msg['gl_feed'] = false;
     }
 
     if (empty($args['mode'])) {
