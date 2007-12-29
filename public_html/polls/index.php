@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 1.1                                                          |
+// | Polls Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Display poll results and past polls.                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,9 +32,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.24 2007/11/25 06:58:56 ospiess Exp $
+// $Id: index.php,v 1.25 2007/12/29 20:03:09 dhaun Exp $
 
-require_once ('../lib-common.php');
+require_once '../lib-common.php';
 
 // number of polls to list per page
 define ('POLLS_PER_PAGE', 50);
@@ -80,8 +80,6 @@ function polllist ()
 
         $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
-        $menu_arr = array ();
-
         $text_arr = array('has_menu' =>  false,
                           'title' => $LANG_POLLS['pollstitle'], 'instructions' => "",
                           'icon' => '', 'form_url' => '');
@@ -95,7 +93,7 @@ function polllist ()
                            'query_limit' => 0);
 
         $retval .= ADMIN_list ('polls', 'plugin_getListField_polls',
-                   $header_arr, $text_arr, $query_arr, $menu_arr, $defsort_arr);
+                   $header_arr, $text_arr, $query_arr, $defsort_arr);
     }
 
     return $retval;
@@ -148,11 +146,11 @@ if (isset($pid)) {
 if (empty($pid)) {
     $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle'])
              . polllist ();
-} else if ((count($_POST['aid']) == $nquestions) && !isset ($_COOKIE['poll-'.$pid])) {
+} else if ((isset($_POST['aid']) && (count($_POST['aid']) == $nquestions)) && !isset ($_COOKIE['poll-'.$pid])) {
     setcookie ('poll-'.$pid, implode('-',$aid), time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
-    $display .= COM_siteHeader() . POLLS_pollsave($pid, $qid, $aid);
+    $display .= COM_siteHeader() . POLLS_pollsave($pid, $aid);
 } else if (isset($pid)) {
     $display .= COM_siteHeader();
     if (isset($_POST['aid'])) {

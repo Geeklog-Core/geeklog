@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 1.1                                                          |
+// | Polls Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.80 2007/11/25 06:56:05 ospiess Exp $
+// $Id: functions.inc,v 1.81 2007/12/29 20:03:09 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -578,7 +578,11 @@ function POLLS_pollVote($pid, $showall=true)
                         SEC_hasAccess($P['owner_id'], $P['group_id'],
                         $P['perm_owner'], $P['perm_group'], $P['perm_members'],
                         $P['perm_anon']) == 3 ? true : false);
+
                     require_once $_CONF['path_system'] . 'lib-comment.php';
+
+                    $order = '';
+                    $mode  = '';
                     $retval .= CMT_userComments($pid, $P['topic'], 'polls',
                                                 $order, $mode, 0, 1, false,
                                                 $delete_option, $P['commentcode']);
@@ -586,7 +590,7 @@ function POLLS_pollVote($pid, $showall=true)
             }
         }
     } else {
-        $retval .= POLLS_pollResults($pid );
+        $retval .= POLLS_pollResults($pid);
     }
 
     return $retval;
@@ -662,12 +666,11 @@ function POLLS_showPoll($size, $pid='', $showall=false )
 * NOTE: all data comes from form post
 *
 * @param    string   $pid   poll id
-* @param    array    $pid   question ids
 * @param    array    $aid   selected answers
 * @return   string   HTML for poll results
 *
 */
-function POLLS_pollsave($pid, $qid, $aid)
+function POLLS_pollsave($pid, $aid)
 {
     global $_TABLES, $LANG_POLLS;
 
@@ -678,14 +681,15 @@ function POLLS_pollsave($pid, $qid, $aid)
     }
 
     DB_change($_TABLES['polltopics'],'voters',"voters + 1",'pid',$pid,'',true);
-    // This call to DB-change will properly supress the insertion of quoes around $value in the sql
-    for ($i=0; $i<count($aid); $i++) {
+    // This call to DB-change will properly supress the insertion of quotes around $value in the sql
+    $answers = count($aid);
+    for ($i = 0; $i < $answers; $i++) {
         DB_change(
             $_TABLES['pollanswers'],
             'votes',
             "votes + 1",
-            array('pid','qid','aid'),
-            array($pid,$i,COM_applyFilter($aid[$i], true)),
+            array('pid', 'qid', 'aid'),
+            array($pid,  $i,    COM_applyFilter($aid[$i], true)),
             '',
             true
         );
@@ -938,7 +942,7 @@ function plugin_geticon_polls ()
 * @param   string  $id     Unique idenifier for item comment belongs to
 * @param   int     $cid    Comment id to display (possibly including sub-comments)
 * @param   string  $title  Page/comment title
-* @param   string  $order  'ASC' or 'DSC' or blank
+* @param   string  $order  'ASC' or 'DESC' or blank
 * @param   string  $format 'threaded', 'nested', or 'flat'
 * @param   int     $page   Page number of comments to display
 * @param   boolean $view   True to view comment (by cid), false to display (by $pid)
@@ -998,10 +1002,10 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = strftime ($_CONF['daytime'], $A['unixdate']);
                 break;
             case 'topic':
-                if (($Q['open'] == 0) || (
-                        ($Q['hideresults'] == 1) && ($_USER['uid'] == $Q['owner_id'])
+                if (($A['open'] == 0) || (
+                        ($A['hideresults'] == 1) && ($_USER['uid'] == $A['owner_id'])
                     ) || (
-                        ($Q['hideresults'] == 1) && (SEC_inGroup('Root'))
+                        ($A['hideresults'] == 1) && (SEC_inGroup('Root'))
                     )
                 ) {
                     $retval = COM_createLink($fieldvalue,
