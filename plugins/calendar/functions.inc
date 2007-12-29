@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.75 2007/11/25 06:56:04 ospiess Exp $
+// $Id: functions.inc,v 1.76 2007/12/29 20:21:25 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -842,11 +842,9 @@ function CALENDAR_listOld()
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'eid');
     $retval .= ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[27] . $usr_time . "$desc", plugin_geticon_calendar());
-    $retval .= ADMIN_list (
-        'calendar', 'plugin_getListField_calendar',
-        $header_arr, $text_arr, $query_arr, $menu_arr,
-        $defsort_arr, '', $listoptions
-    );
+    $retval .= ADMIN_list('calendar', 'plugin_getListField_calendar',
+                          $header_arr, $text_arr, $query_arr,
+                          $defsort_arr, '', $listoptions);
 
     return $retval;
 }
@@ -939,7 +937,7 @@ function CALENDAR_listevents()
 
     $retval .= ADMIN_list ('calendar', 'plugin_getListField_calendar',
                            $header_arr, $text_arr, $query_arr,
-                           $defsort_arr, $menu);
+                           $defsort_arr);
 
     return $retval;
 }
