@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.22 2007/10/09 05:39:36 ospiess Exp $
+# $Id: english.php,v 1.23 2007/12/29 19:00:07 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -35,7 +35,7 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2006
+ * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93 AT steubentech DOT com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
@@ -58,6 +58,10 @@
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
+    41 => '(???)',
+    44 => '(???)',
+    45 => '(???)',
+    47 => '(???)',
     84 => 'Links',
     88 => 'No recent new links',
     114 => 'Links',
