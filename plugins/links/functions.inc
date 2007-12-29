@@ -2,7 +2,7 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0.1  functions.inc                                         |
+// | Links Plugin 2.0  functions.inc                                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.92 2007/12/29 16:12:49 dhaun Exp $
+// $Id: functions.inc,v 1.93 2007/12/29 19:04:35 dhaun Exp $
 
 
 /**
@@ -31,7 +31,7 @@
  *
  * @package Links
  * @filesource
- * @version 1.0.1
+ * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -1205,7 +1205,11 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = $LANG_LINKS_ADMIN[57];
                 break;
             case 'category':
-                $indent = ($A['indent']-1) * 20;
+                if (isset($A['indent'])) {
+                    $indent = ($A['indent'] - 1) * 20;
+                } else {
+                    $indent = 0;
+                }
                 $cat = COM_createLink(
                     $A['category'],
                     "{$_CONF['site_url']}/links/index.php?cid={$A['cid']}"
@@ -1253,14 +1257,6 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
                     "{$_CONF['site_url']}/links/index.php?cid={$A['cid']}"
                 );
                 $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
-                break;
-            case 'delete';
-                if ($access == 3) {
-                    $retval = COM_createLink(
-                        $icon_arr['delete'],
-                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=delete&amp;cid={$A['cid']}"
-                    );
-                }
                 break;
             case 'addchild';
                 if ($access == 3) {

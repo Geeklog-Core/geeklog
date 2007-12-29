@@ -2,13 +2,13 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0                                                          |
+// | Links Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog Links Plugin administration page.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -39,9 +39,9 @@
  * @package Links
  * @subpackage admin
  * @filesource
- * @version 1.0
+ * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2006
+ * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -50,10 +50,10 @@
  * @author Dirk Haun <dirk@haun-online.de>
  */
 
-// $Id: index.php,v 1.53 2007/11/25 06:58:55 ospiess Exp $
+// $Id: index.php,v 1.54 2007/12/29 19:04:34 dhaun Exp $
 
-require_once ('../../../lib-common.php');
-require_once ('../../auth.inc.php');
+require_once '../../../lib-common.php';
+require_once '../../auth.inc.php';
 
 // Uncomment the lines below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -345,8 +345,11 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
  */
 function listlinks ()
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_LINKS_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_LINKS_ADMIN, $LANG_ACCESS,
+           $_IMAGE_TYPE;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
     $retval = '';
 
     $header_arr = array(      # display 'text' and use table field 'field'
@@ -380,6 +383,7 @@ function listlinks ()
     } else {
         $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled',
               'text' => $LANG_LINKS_ADMIN[26]);
+        $form_arr = array();
         $validate_help = '';
     }
 
