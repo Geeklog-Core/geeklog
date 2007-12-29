@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.4                                                 |
+// | Static Pages Plugin 1.5                                                   |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.102 2007/11/24 12:42:57 riyer Exp $
+// $Id: functions.inc,v 1.103 2007/12/29 15:26:53 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -402,7 +402,7 @@ function SP_printPage ($page, $A)
     if ($A['commentcode'] >= 0) {
         $commentsUrl = $sp_url . '#comments';
         $comments = DB_count($_TABLES['comments'],
-                            array('sid', 'type'), array($A['sp_id'], 'staticpages'));
+                             array('sid', 'type'), array($page, 'staticpages'));
         $numComments = COM_numberFormat ($comments);
         $print->set_var ('story_comments', $numComments);
         $print->set_var ('comments_url', $commentsUrl);
