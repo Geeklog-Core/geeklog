@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.6 2007/09/28 00:21:50 ospiess Exp $
+// $Id: config-install.php,v 1.7 2007/12/29 20:49:57 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -98,6 +98,7 @@ function install_config()
     $c->add('cookie_password','password','text',7,13,NULL,550,TRUE);
     $c->add('cookie_theme','theme','text',7,13,NULL,560,TRUE);
     $c->add('cookie_language','language','text',7,13,NULL,570,TRUE);
+    $c->add('cookie_tzid','timezone','text',7,13,NULL,575,TRUE);
     $c->add('cookie_ip',0,'select',7,13,0,580,TRUE);
     $c->add('default_perm_cookie_timeout',28800,'text',7,13,NULL,590,TRUE);
     $c->add('session_cookie_timeout',7200,'text',7,13,NULL,600,TRUE);
