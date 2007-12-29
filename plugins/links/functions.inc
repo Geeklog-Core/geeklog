@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.90 2007/12/28 15:41:26 dhaun Exp $
+// $Id: functions.inc,v 1.91 2007/12/29 16:05:36 dhaun Exp $
 
 
 /**
@@ -1433,7 +1433,7 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access) {
             WHERE (pid='{$cid}') " . COM_getPermSQL('AND',0,$access) . "
             ORDER BY category";
     $query = DB_QUERY($sql);
-    while ( list($cid,$category) = DB_fetchARRAY($query) ) {
+    while ( list($cid,$category) = DB_fetchArray($query) ) {
         // set selected item
         if ($cid==$sel) {
             // yes, selected
@@ -1443,9 +1443,9 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access) {
             $menu .= '<option value="'.$cid.'">'.$indent.$category.'</option>';
         }
         // Check and see if this category has any sub categories
-        if (DB_COUNT($_TABLES['linkcategories'], 'pid', $cid) > 0) {
+        if (DB_count($_TABLES['linkcategories'], 'pid', $cid) > 0) {
             // yes, call self
-            $dum = links_select_box_recursive (&$menu,$cid,$sel,$indent.'&nbsp;&nbsp;',$access);
+            $dum = links_select_box_recursive ($menu,$cid,$sel,$indent.'&nbsp;&nbsp;',$access);
         }
    }
    return $menu;
