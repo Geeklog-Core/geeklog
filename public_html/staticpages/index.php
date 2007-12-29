@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Page Geeklog Plugin 1.4.4                                          |
+// | Geeklog Static Pages Plugin 1.5                                           |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
-// | This is the main page for the Geeklog Static Page Plugin                  |
+// | This is the main page for the Geeklog Static Pages Plugin                 |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.45 2007/08/09 08:03:04 ospiess Exp $
+// $Id: index.php,v 1.46 2007/12/29 15:28:12 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -42,17 +42,21 @@ $page = COM_applyFilter(COM_getArgument('page'));
 $display_mode = COM_applyFilter(COM_getArgument('disp_mode'));
 
 // from comments display refresh:
-if (isset ($_POST['order'])) {
-    $comment_order = COM_applyFilter ($_POST['order']);
-    $comment_mode = COM_applyFilter ($_POST['mode']);
+if (isset($_POST['order'])) {
+    $comment_order = COM_applyFilter($_POST['order']);
+    $comment_mode  = COM_applyFilter($_POST['mode']);
     $page = COM_applyFilter($_POST['id']);
-    if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
-        $order = '';
+    if ((strcasecmp($comment_order, 'ASC') != 0) &&
+            (strcasecmp($comment_order, 'DESC') != 0)) {
+        $comment_order = '';
     }
+} else {
+    $comment_order = '';
+    $comment_mode  = '';
 }
 
-if ($mode != 'print') {
-    $mode = '';
+if ($display_mode != 'print') {
+    $display_mode = '';
 }
 
 $retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode);
