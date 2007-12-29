@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.137 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-plugins.php,v 1.138 2007/12/29 15:04:27 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2301,13 +2301,16 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
     // ensure we can see the service_XXX_story functions
     require_once $_CONF['path_system'] . 'lib-story.php';
 
-    $output = '';
+    $output  = '';
     $svc_msg = '';
 
     // Check if the plugin type and action are valid
     $function = 'service_' . $action . '_' . $type;
 
     if (function_exists($function) && PLG_wsEnabled($type)) {
+        if (!isset($args['gl_svc'])) {
+            $args['gl_svc'] = false;
+        }
         $retval = $function($args, $output, $svc_msg);
     }
 
