@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | submit.php                                                                |
 // |                                                                           |
 // | Let users submit stories and plugin stuff.                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.119 2007/11/25 06:55:07 ospiess Exp $
+// $Id: submit.php,v 1.120 2007/12/29 15:47:42 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -205,7 +205,8 @@ function submitstory($topic = '')
     $storyform->set_var('story_sid', $story->EditElements('sid'));
     $storyform->set_var('story_date', $story->EditElements('unixdate'));
 
-    if (($_CONF['skip_preview'] == 1) || ($_POST['mode'] == $LANG12[32])) {
+    if (($_CONF['skip_preview'] == 1) ||
+            (isset($_POST['mode']) && ($_POST['mode'] == $LANG12[32]))) {
         PLG_templateSetVars ('story', $storyform);
         $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '"' . XHTML . '>');
     }
