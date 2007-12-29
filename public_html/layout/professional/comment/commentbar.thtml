@@ -1,7 +1,7 @@
 <div class="block-divider"> </div>
 <a id="comments" name="comments"></a>
 <div class="commentbar-line1">
-    {start_storylink_anchortag}{story_title}{end_storylink_anchortag} | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" rel="nofollow" class="commentbar1">{lang_login_logout}</a>
+    {story_title} | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" rel="nofollow" class="commentbar1">{lang_login_logout}</a>
 </div>
 <div class="commentbar-line2">
     <form style="display: inline" action="{parent_url}" method="post">
