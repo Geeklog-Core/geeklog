@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.49 2007/12/29 20:08:28 dhaun Exp $
+// $Id: trackback.php,v 1.50 2007/12/29 23:05:07 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -1179,11 +1179,14 @@ if ($mode == 'delete') {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
 } else if ($mode == 'saveservice') {
-    $display .= saveService (COM_applyFilter ($_POST['service_id'], true),
-                             $_POST['service_name'], $_POST['service_site_url'],
-                             $_POST['service_ping_url'], $_POST['method'],
-                             $_POST['is_enabled']);
-
+    $is_enabled = '';
+    if (isset($_POST['is_enabled'])) {
+        $is_enabled = $_POST['is_enabled'];
+    }
+    $display .= saveService(COM_applyFilter($_POST['service_id'], true),
+                            $_POST['service_name'], $_POST['service_site_url'],
+                            $_POST['service_ping_url'], $_POST['method'],
+                            $is_enabled);
 } else if ($mode == 'editservice') {
     $service_id = 0;
     if (isset ($_GET['service_id'])) {
