@@ -2,19 +2,19 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Links Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | category.php                                                              |
 // |                                                                           |
 // | Geeklog links category administration page.                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
-// |          Euan McKay        - info@heatherengineering.com                  |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users.sourceforge DOT net        |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Euan McKay        - info AT heatherengineering DOT com           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,10 +33,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id:
+// $Id: category.php,v 1.7 2007/12/29 19:06:23 dhaun Exp $
 
-require_once ('../../../lib-common.php');
-require_once($_CONF['path'] . 'plugins/links/config.php');
+require_once '../../../lib-common.php';
+require_once '../../auth.inc.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -58,22 +58,24 @@ if (!SEC_hasRights('links.edit')) {
 }
 
 
-// +-----------------------------------------------------------------------------------------------+
-// | Category administration functions                                                             |
-// | Located here so that in the future, users can also have their own link collections with       |
-// | categories over which they have edit access.                                                  |
-// +-----------------------------------------------------------------------------------------------+
+// +--------------------------------------------------------------------------+
+// | Category administration functions                                        |
+// | Located here so that in the future, users can also have their own link   |
+// | collections with categories over which they have edit access.            |
+// +--------------------------------------------------------------------------+
 
 
 
 // Returns a category tree of categories in the database to which
 // the user has edit access
 
-function links_list_categories ($root)
+function links_list_categories($root)
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_LINKS_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE;
-    global $LANG_LINKS, $_USER, $_LI_CONF;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    global $_CONF, $_TABLES, $_USER, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_ACCESS,
+           $LANG_LINKS_ADMIN, $LANG_LINKS, $_LI_CONF;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
     $retval = '';
 
     $header_arr = array(      # display 'text' and use table field 'field'
@@ -81,8 +83,7 @@ function links_list_categories ($root)
                     array('text' => $LANG_LINKS_ADMIN[44], 'field' => 'addchild', 'sort' => false),
                     array('text' => $LANG_LINKS_ADMIN[30], 'field' => 'category', 'sort' => true),
                     array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-                    array('text' => $LANG_LINKS_ADMIN[33], 'field' => 'tid', 'sort' => true),
-                    array('text' => $LANG_ADMIN['delete'], 'field' => 'delete', 'sort' => false));
+                    array('text' => $LANG_LINKS_ADMIN[33], 'field' => 'tid', 'sort' => true));
 
     $defsort_arr = array('field' => 'category', 'direction' => 'asc');
 
@@ -105,39 +106,40 @@ function links_list_categories ($root)
     $text_arr = array(
         'has_extras'   => true,
         'title' => $LANG_LINKS_ADMIN[54],
-        'form_url' => $_CONF['site_admin_url'] . "/plugins/links/category.php"
+        'form_url' => $_CONF['site_admin_url'] . '/plugins/links/category.php'
     );
 
     $dummy = array();
     $data_arr = links_list_categories_recursive ($dummy, $_LI_CONF['root'], 0);
 
-    $retval .= ADMIN_simpleList ("plugin_getListField_categories", $header_arr, $text_arr,
-                            $data_arr);
+    $retval .= ADMIN_simpleList('plugin_getListField_categories', $header_arr,
+                                $text_arr, $data_arr);
 
     return $retval;
 }
 
-function links_list_categories_recursive ($data_arr, $cid, $indent) {
-
+function links_list_categories_recursive($data_arr, $cid, $indent)
+{
     global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN;
 
-    $indent = $indent+1;
+    $indent = $indent + 1;
 
     // get all children of present category
     $sql = "SELECT cid,category,tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
         . "FROM {$_TABLES['linkcategories']} "
-        . "WHERE (pid='{$cid}')" . COM_getPermSQL('AND',0,3) . "ORDER BY pid,category";
-    $result = DB_QUERY($sql);
+        . "WHERE (pid='{$cid}')" . COM_getPermSQL('AND', 0, 3)
+        . "ORDER BY pid,category";
+    $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
-    if ($nrows>0) {
+    if ($nrows > 0) {
         for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray ($result);
-            $topic = DB_getItem ($_TABLES['topics'], 'topic', "tid='{$tid}'");
+            $A = DB_fetchArray($result);
+            $topic = DB_getItem($_TABLES['topics'], 'topic', "tid='{$A['tid']}'");
             $A['topic_text'] = $topic;
             $A['indent'] = $indent;
             $data_arr[] = $A;
-            if (DB_COUNT($_TABLES['linkcategories'], 'pid', $A['cid']) > 0) {
+            if (DB_count($_TABLES['linkcategories'], 'pid', $A['cid']) > 0) {
                 $data_arr = links_list_categories_recursive($data_arr, $A['cid'], $indent);
             }
         }
@@ -150,8 +152,8 @@ function links_list_categories_recursive ($data_arr, $cid, $indent) {
 
 // Returns form to create a new category or edit an existing one
 
-function links_edit_category ($cid,$pid) {
-
+function links_edit_category ($cid,$pid)
+{
     global $_TABLES, $LANG_LINKS_ADMIN, $LANG_ADMIN, $LANG_ACCESS, $_CONF, $_USER;
 
     $retval = '';
@@ -222,12 +224,12 @@ function links_edit_category ($cid,$pid) {
     if ($cid <> '') {
         $T->set_var('cid_value', $A['cid']);
         $T->set_var('old_cid_value', $A['cid']);
-        $T->set_var('title_id', $A['title_id']);
-        $T->set_var('desc_id', $A['desc_id']);
+        //$T->set_var('title_id', $A['title_id']);
+        //$T->set_var('desc_id', $A['desc_id']);
         $T->set_var('category_options', links_select_box (3,$A['pid']));
         $T->set_var('category_value', $A['category']);
         $T->set_var('description_value', $A['description']);
-        $T->set_var('icon_value', $A['icon']);
+        //$T->set_var('icon_value', $A['icon']);
         $T->set_var('topic_list', COM_topicList ('tid,topic', $A['tid'],1,true));
     } else {
         $A['cid'] = COM_makeSID ();
@@ -256,7 +258,6 @@ function links_edit_category ($cid,$pid) {
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
-
 }
 
 
@@ -267,8 +268,9 @@ function links_edit_category ($cid,$pid) {
 * output    string      message giving outcome status of requested operation
 */
 
-function links_save_category ($cid, $old_cid, $pid, $category, $description, $tid, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon) {
-    global $_TABLES, $_CONF, $_USER, $LANG_LINKS, $LANG_LINKS_ADMIN;
+function links_save_category($cid, $old_cid, $pid, $category, $description, $tid, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
+{
+    global $_TABLES, $_CONF, $_USER, $LANG_LINKS, $LANG_LINKS_ADMIN, $_LI_CONF;
 
     // Convert array values to numeric permission values
     if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
@@ -280,18 +282,18 @@ function links_save_category ($cid, $old_cid, $pid, $category, $description, $ti
     $category = addslashes (COM_checkHTML (COM_checkWords ($category)));
 
     // Check cid to make sure not illegal
-    if (($cid==$_LI_CONF['root']) || ($cid=='user')) {
+    if (($cid == $_LI_CONF['root']) || ($cid == 'user')) {
         $result = $LANG_LINKS_ADMIN[35];
         return $result;
     }
     // check that they didn't delete the cid. If so, get the hidden one
-    if ($cid=='' && $old_cid<>'') {
+    if (empty($cid) && !empty($old_cid)) {
         $cid = $old_cid;
     }
     // Make sure they aren't making a parent category child of one of it's own children
     // This would create orphans
     if ($cid==DB_getItem($_TABLES['linkcategories'], 'pid',"cid='{$pid}'")) {
-        return $LANG_LINKS_ADMIN['48'];
+        return $LANG_LINKS_ADMIN[48];
     }
 
     $access = 0;
@@ -317,10 +319,10 @@ function links_save_category ($cid, $old_cid, $pid, $category, $description, $ti
         $update = "same";
     } else {
         // new item, so use passed values
-        $access = SEC_hasAccess($owner_id,$group_id,$perm_owner,
-            $perm_group,$perm_members,$perm_anon);
+        $access = SEC_hasAccess($owner_id, $group_id, $perm_owner, $perm_group,
+                                $perm_members, $perm_anon);
         // set flag
-        $update = "new";
+        $update = 'new';
     }
 
     if ($access < 3) {
@@ -336,7 +338,7 @@ function links_save_category ($cid, $old_cid, $pid, $category, $description, $ti
         exit;
     } else {
         // save item
-        if ($update=="existing") {
+        if ($update == 'existing') {
             // update an existing item but new cid
             $sql = "UPDATE {$_TABLES['linkcategories']}
                     SET cid='{$cid}',
@@ -352,7 +354,7 @@ function links_save_category ($cid, $old_cid, $pid, $category, $description, $ti
             // Also need to update links for this category
             $sql = "UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$old_cid}'";
             $result = DB_query($sql);
-        } else if ($update=="same") {
+        } else if ($update == 'same') {
             // update an existing item
             $sql = "UPDATE {$_TABLES['linkcategories']}
                     SET pid='{$pid}',
@@ -366,7 +368,9 @@ function links_save_category ($cid, $old_cid, $pid, $category, $description, $ti
             $result = DB_query($sql);
         } else {
             // insert a new item
-            $cid = COM_makesid();
+            if (empty($cid)) {
+                $cid = COM_makesid();
+            }
             $sql = "INSERT INTO {$_TABLES['linkcategories']}
                     (cid, pid, category, description, tid,
                     created,modified,
@@ -486,11 +490,17 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
     $display .= COM_siteFooter();
 
 // edit category
-} else if ($mode == "edit") {
+} else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[56]);
-    $pid   = COM_applyFilter ($_GET['pid']);
-    $cid   = COM_applyFilter ($_GET['cid']);
-    $display .= links_edit_category ($cid,$pid);
+    $pid = '';
+    if (isset($_GET['pid'])) {
+        $pid = COM_applyFilter($_GET['pid']);
+    }
+    $cid = '';
+    if (isset($_GET['cid'])) {
+        $cid = COM_applyFilter($_GET['cid']);
+    }
+    $display .= links_edit_category($cid,$pid);
     $display .= COM_siteFooter();
 
 // nothing, so list categories
