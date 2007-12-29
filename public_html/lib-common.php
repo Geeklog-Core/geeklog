@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.667 2007/12/28 13:34:18 dhaun Exp $
+// $Id: lib-common.php,v 1.668 2007/12/29 12:26:49 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4343,10 +4343,12 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 * @return     string  HTML block with message
 */
 
-function COM_showMessage($msg, $plugin='') {
+function COM_showMessage($msg, $plugin = '')
+{
     global $_CONF, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
+
     $timestamp = strftime( $_CONF['daytime'] );
     if($msg > 0) {
         if(!empty($plugin)) {
@@ -4367,10 +4369,11 @@ function COM_showMessage($msg, $plugin='') {
     $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
                        COM_getBlockTemplate( '_msg_block', 'header' ))
         . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
-        . '/images/sysmessage.' . $_IMAGE_TYPE . '" border="0" align="left"'
-        . ' alt="" style="padding-right:5px; padding-bottom:3px"' . XHTML . '>'
+        . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" '
+        . 'style="padding-right:5px; padding-bottom:3px; border:none; float:left;"' . XHTML . '>'
         . $message . '</p>'
         . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
+
     return $retval;
 }
 
