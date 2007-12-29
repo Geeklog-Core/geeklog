@@ -369,6 +369,18 @@ $LANG04 = array(
 );
 
 ###############################################################################
+# Customize if need to modify the Tabbed navbar MyAccount panels used.
+# Array index key matches preference div id
+
+$LANG_MYACCOUNT = array(
+    'pe_preview'   => 'Preview',    'pe_namepass'  => 'Username &amp; Password',
+    'pe_userinfo'  => 'About You',
+    'pe_layout'    => 'Layout &amp; Language',
+    'pe_content'   => 'Content',
+    'pe_privacy'   => 'Privacy'
+);
+
+###############################################################################
 # index.php
 
 $LANG05 = array(
