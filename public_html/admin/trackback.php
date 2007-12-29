@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | trackback.php                                                             |
 // |                                                                           |
@@ -29,14 +29,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.48 2007/11/25 06:58:55 ospiess Exp $
+// $Id: trackback.php,v 1.49 2007/12/29 20:08:28 dhaun Exp $
 
-require_once ('../lib-common.php');
+require_once '../lib-common.php';
 
 /**
 * Security check to ensure user even belongs on this page
 */
-require_once ('auth.inc.php');
+require_once 'auth.inc.php';
 
 if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled'] &&
         !$_CONF['ping_enabled']) {
@@ -520,8 +520,9 @@ function listServices ()
     // in order to disable the last one.
     $form_arr = array('bottom' => '<input type="hidden" name="serviceChanger" value="true"' . XHTML . '>');
 
-    $retval .= ADMIN_list ("pingservice", "ADMIN_getListField_trackback", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, $menu, '', '', '', $form_arr);
+    $retval .= ADMIN_list('pingservice', 'ADMIN_getListField_trackback',
+                          $header_arr, $text_arr, $query_arr, $defsort_arr,
+                          '', '', '', $form_arr);
 
     if ($_CONF['trackback_enabled']) {
         $retval .= freshTrackback ();
