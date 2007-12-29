@@ -42,7 +42,7 @@
  * @filesource
  * @version 1.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2006
+ * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
@@ -52,9 +52,9 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.24 2007/11/25 06:58:56 ospiess Exp $
+// $Id: index.php,v 1.25 2007/12/29 16:14:03 dhaun Exp $
 
-require_once ('../lib-common.php');
+require_once '../lib-common.php';
 
 /**
 * create the links list depending on the category given
@@ -99,7 +99,7 @@ function links_list($message)
     }
     
     // Check has access to this category
-    if ($cid <> $root) {
+    if ($cid != $_LI_CONF['root']) {
         $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$cid}'");
         $A = DB_fetchArray($result);
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) < 2) {
