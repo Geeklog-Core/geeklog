@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.91 2007/12/29 16:05:36 dhaun Exp $
+// $Id: functions.inc,v 1.92 2007/12/29 16:12:49 dhaun Exp $
 
 
 /**
@@ -1458,19 +1458,21 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access) {
 * Breadcrumb trail does not use the "root" category in the database: the top level category is
 * set from the language file using $LANG_LINKS['root']
 */
-function links_breadcrumbs ($root, $cid) {
+function links_breadcrumbs($root, $cid)
+{
     global $_CONF, $_TABLES, $LANG_LINKS;
+
     $breadcrumb = '';
     $c = $cid;
-    if ($root <> $cid) {
-        while (!($pid == $root)) {
-            $parent = DB_query("SELECT cid,pid,category FROM {$_TABLES['linkcategories']}
-                                WHERE cid='{$c}'");
+    $pid = '';
+    if ($root != $cid) {
+        while ($pid != $root) {
+            $parent = DB_query("SELECT cid,pid,category FROM {$_TABLES['linkcategories']} WHERE cid='{$c}'");
             $A = DB_fetchArray($parent);
-            if ($cid<>$c) {
-                $content = stripslashes ($A['category']);
+            if ($cid != $c) {
+                $content = stripslashes($A['category']);
                 $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
-                $breadcrumb = COM_createLink ($content, $url) . ' : ' . $breadcrumb;
+                $breadcrumb = COM_createLink($content, $url) . ' : ' . $breadcrumb;
             } else {
                 $breadcrumb = $A['category'] . $breadcrumb;
             }
@@ -1478,8 +1480,10 @@ function links_breadcrumbs ($root, $cid) {
             $c = $A['pid'];
         }
     }
+
     $url = $_CONF['site_url'] . '/links/index.php';
-    $breadcrumb = COM_createLink ($LANG_LINKS['root'], $url) . ' : ' . $breadcrumb;
+    $breadcrumb = COM_createLink($LANG_LINKS['root'], $url) . ' : ' . $breadcrumb;
+
     return $breadcrumb;
 }
 
