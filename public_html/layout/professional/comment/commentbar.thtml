@@ -1,7 +1,7 @@
 <div class="block-divider"> </div>
 <a id="comments" name="comments"></a>
 <div class="commentbar-line1">
-    {story_title} | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" rel="nofollow" class="commentbar1">{lang_login_logout}</a>
+    {start_storylink_anchortag}{story_title}{end_storylink_anchortag} | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" rel="nofollow" class="commentbar1">{lang_login_logout}</a>
 </div>
 <div class="commentbar-line2">
     <form style="display: inline" action="{parent_url}" method="post">
@@ -18,6 +18,7 @@
             <input type="hidden" name="sid" value="{sid}"{xhtml}>
             <input type="hidden" name="pid" value="0"{xhtml}>
             <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+            <input type="hidden" name="title" value="{comment_title}"{xhtml}>
             <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}"{xhtml}>
         </div>
     </form>

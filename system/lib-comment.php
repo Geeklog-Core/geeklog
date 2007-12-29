@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-comment.php                                                           |
 // |                                                                           |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.60 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-comment.php,v 1.61 2007/12/29 12:18:02 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -86,10 +86,14 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
     } else {
         $commentbar->set_var( 'reply_hidden_or_submit', 'hidden' );
     }
-    $commentbar->set_var( 'story_title', stripslashes( $title ));
     $commentbar->set_var( 'num_comments', COM_numberFormat( $nrows ));
     $commentbar->set_var( 'comment_type', $type );
-    $commentbar->set_Var( 'sid', $sid );
+    $commentbar->set_var( 'sid', $sid );
+
+    $cmt_title = stripslashes($title);
+    $commentbar->set_var('story_title', $cmt_title);
+    $cmt_title = htmlspecialchars($cmt_title);
+    $commentbar->set_var('comment_title', $cmt_title);
 
     if( $type == 'article' ) {
         $articleUrl = COM_buildUrl( $_CONF['site_url']
