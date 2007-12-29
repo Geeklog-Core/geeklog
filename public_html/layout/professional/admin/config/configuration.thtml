@@ -8,39 +8,12 @@
   Changes were successfully made to:
     {change_block}
 </div>
-<div id="pe_navbar" style="display:{hide_groupselection};">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-         <tr>
-            <td>
-                <div id="navcontainer">
-                    <ul id="navlist" style="padding-left:15px;">
-                    <!-- BEGIN group-selector -->
-                       <li>
-                         <a  href="#" {select_id} onclick='open_group("{group_select_value}")'><span style="padding-top:5px;">{group_display}</span>
-                         </a>
-                       </li>
-                    <!-- END group-selector -->
-                    </ul>
-                </div>
-            </td>
-         </tr>
-    </table>
+<div class="pro_linedrop" style="margin-bottom:35px;">
+<ul class="select">
+<li><a href="{site_url}"><b>Home</b></a></li>
+    {menu_elements}
+</ul>
 </div>
-
-<div id="pe_navbar"><table width="100%" cellpadding="0" cellspacing="0" border="0">
- <tr><td>
-  <div id="navcontainer">
-   <ul id="navlist" style="padding-left:15px;">
-<!-- BEGIN subgroup-selector -->
-   <li>
-     <a  href="#" {select_id} onclick='open_subgroup("{subgroup_name}")'><span style="padding-top:5px;">{subgroup_display_name}</span>
-     </a>
-   </li>
-<!-- END subgroup-selector -->
-   </ul></div>
-  </td>
- </tr>
-</table></div>
 
 <form action="configuration.php" method="post" name="subgroup">
 <input type="hidden" name="conf_group" value="{open_group}"{xhtml}>

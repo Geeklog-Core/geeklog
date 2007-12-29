@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.8 2007/12/09 21:16:43 ablankstein Exp $
+// $Id: config.class.php,v 1.9 2007/12/29 20:49:39 blaine Exp $
 
 class config {
     var $ref;
@@ -318,37 +318,44 @@ class config {
      *                        configuration - if it is passed, it will display
      *                        the "Changes" message box.
      */
-    function get_ui($sg=0, $change_result=null)
+    function get_ui($sg='0', $change_result=null)
     {
         global $_CONF,$LANG_coreconfigsubgroups;
+
         if (!SEC_inGroup('Root'))
             return config::_UI_perm_denied();
+
+        if (!isset($sg)) $sg = '0';
         $t = new Template($_CONF['path_layout'] . 'admin/config');
-        $t->set_file('main','configuration.thtml');
+        $t->set_file(array('main' => 'configuration.thtml','menugroup' => 'menu_element.thtml'));
+
         $t->set_var( 'xhtml', XHTML );
         $t->set_var('site_url',$_CONF['site_url']);
         $t->set_var('open_group', $this->ref);
-        $t->set_block('main','group-selector','groups');
+
         $groups = config::_get_groups();
-        if (count($groups) > 1) {
+
+        if (count($groups) > 0) {
             foreach ($groups as $group) {
                 $t->set_var("select_id", ($group === $this->ref ? 'id="current"' : ''));
                 $t->set_var("group_select_value", $group);
                 $t->set_var("group_display", ucwords($group));
-                $t->parse("groups", "group-selector", true);
+                $subgroups = $this->get_sgroups();
+                $t->set_block('menugroup','subgroup-selector','subgroups');
+                foreach ($subgroups as $sgroup) {
+                    $t->set_var('select_id', ($sg === $sgroup ? 'id="current"' : ''));
+                    $t->set_var('subgroup_name', $sgroup);
+                    $t->set_var("subgroup_display_name",
+                                $LANG_coreconfigsubgroups[$sgroup]);
+                    $t->parse('subgroups', "subgroup-selector", true);
+                }
+                $t->parse("menu_elements", "menugroup", true);
+
             }
         } else {
             $t->set_var('hide_groupselection','none');
         }
-        $subgroups = $this->get_sgroups();
-        $t->set_block('main','subgroup-selector','navbar');
-        foreach ($subgroups as $sgroup) {
-            $t->set_var('select_id', ($sg === $sgroup ? 'id="current"' : ''));
-            $t->set_var('subgroup_name', $sgroup);
-            $t->set_var("subgroup_display_name",
-                        $LANG_coreconfigsubgroups[$sgroup]);
-            $t->parse("navbar", "subgroup-selector", true);
-        }
+
         $t->set_var('open_sg', $sg);
         $t->set_block('main','fieldset','sg_contents');
         $t->set_block('fieldset', 'notes', 'fs_notes');
@@ -366,16 +373,15 @@ class config {
             config::_UI_get_fs($fs_contents, $fset, $t);
         }
 
-        // Output the result.
-        $display  = COM_siteHeader('none');
-        $display .= COM_startBlock('Configuration Manager');
+        // Output the result and add the required CSS for the dropline menu
+        $cssfile = '<link rel="stylesheet" type="text/css" href="'.$_CONF['layout_url'] .'/droplinemenu.css" ' . XHTML .'>' . LB;
+        $display  = COM_siteHeader('none','Configuration Manager',$cssfile);
         if ($change_result != null AND $change_result !== array() ) {
             $t->set_var('change_block',config::_UI_get_change_block($change_result));
         } else {
             $t->set_var('show_changeblock','none');
         }
         $display .= $t->finish($t->parse("OUTPUT", "main"));
-        $display .= COM_endBlock();
         $display .= COM_siteFooter(false);
         return $display;
     }

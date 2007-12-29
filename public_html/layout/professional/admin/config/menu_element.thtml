@@ -1,0 +1,13 @@
+
+<li class="line"><a href="#" {select_id} onclick='open_group("{group_select_value}")'><b>{group_display}</b></a><!--[if IE 7]><!--></a><!--<![endif]-->
+<!--[if lte IE 6]><table><tr><td><![endif]-->
+    <ul class="sub">
+<!-- BEGIN subgroup-selector -->
+   <li>
+     <a  href="#" {select_id} onclick='open_subgroup("{subgroup_name}")'><span style="padding-top:5px;">{subgroup_display_name}</span>
+     </a>
+   </li>
+<!-- END subgroup-selector -->
+    </ul>
+<!--[if lte IE 6]></td></tr></table></a><![endif]-->
+</li>

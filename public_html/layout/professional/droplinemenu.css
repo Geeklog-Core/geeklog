@@ -1,0 +1,135 @@
+/* ================================================================
+This copyright notice must be untouched at all times.
+
+The original version of this stylesheet and the associated (x)html
+is available at http://www.cssplay.co.uk/menus/pro_dropline_dropdown.html
+Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
+This stylesheet and the associated (x)html may be modified in any
+way to fit your requirements.
+=================================================================== */
+
+
+.pro_linedrop {
+height:35px;
+width:100%;
+background:url(images/droplinemenu/black_0.gif);
+position:relative;
+font-family:arial, verdana, sans-serif;
+font-size:11px;
+z-index:500;
+}
+
+.pro_linedrop .select {
+margin:0;
+padding:0;
+list-style:none;
+white-space:nowrap;
+}
+
+.pro_linedrop li {
+float:left;
+background:url(images/droplinemenu/black_1.gif);
+}
+
+
+.pro_linedrop .select a {
+display:block;
+height:35px;
+float:left;
+background: url(images/droplinemenu/black_0.gif);
+padding:0 0 0 15px;
+text-decoration:none;
+line-height:33px;
+white-space:nowrap;
+color:#fc0;
+}
+
+
+.pro_linedrop .select a b {
+display:block;
+padding:0 30px 0 15px;
+background:url(images/droplinemenu/black_0.gif) right top;
+}
+
+.pro_linedrop .select li.line a b {
+background:url(images/droplinemenu/black_0a.gif) right top;
+}
+
+.pro_linedrop .select a:hover,
+.pro_linedrop .select li:hover a {
+background: url(images/droplinemenu/black_1.gif);
+padding:0 0 0 15px;
+cursor:pointer;
+color:#fff;
+}
+
+
+.pro_linedrop .select a:hover b,
+.pro_linedrop .select li:hover a b {
+display:block;
+padding:0 30px 0 15px;
+background:url(images/droplinemenu/black_1.gif) right top;
+cursor:pointer;
+}
+
+.pro_linedrop .select li.line a:hover b,
+.pro_linedrop .select li.line:hover a b {
+background:url(images/droplinemenu/black_1a.gif) right top;
+}
+
+
+.pro_linedrop .sub {
+display:none;
+}
+.pro_linedrop ul ul {display:none;}
+
+/* IE6 only */
+.pro_linedrop table {
+border-collapse:collapse;
+margin:-1px;
+font-size:1em;
+width:0;
+height:0;
+}
+
+.pro_linedrop .sub {
+margin:0;
+padding:0;
+list-style:none;
+}
+
+.pro_linedrop .sub li {background:transparent;}
+
+.pro_linedrop .select :hover .sub {
+height:25px;
+display:block;
+position:absolute;
+float:left;
+width:99.8%;
+top:35px;
+left:0;
+text-align:center;
+background:#fff url(images/droplinemenu/fade.gif);
+border:1px solid #aaa;
+}
+
+.sub li #current
+{
+    background: #666;
+    color: #FFF;
+}
+
+.sub li:hover #current
+{
+    background: #CCC;
+    color:#000;
+}
+
+.pro_linedrop .select :hover .sub li a
+{display:block; height:25px; line-height:22px; float:left; background:transparent url(line/transparent.gif); padding:0 16px; margin:0; white-space:nowrap; color:#333;font-size:10px;}
+
+.pro_linedrop .select :hover .sub li.subline a {color:#c00;}
+
+.pro_linedrop .select :hover .sub li a:hover,
+.pro_linedrop .select :hover .sub li:hover
+{color:#000; line-height:20px; position:relative; background:#fff url(images/droplinemenu/fade.gif) left bottom;}
