@@ -1502,7 +1502,7 @@ $LANG_ADMIN = array (
     'data_error'    => '送信データに問題があります。データをチェックしてください',
     'preview'       => 'プレビュー',
     'records_found' => '件数',
-    'add_child'     => 'Add child',
+    'addchild'      => 'Add child',
     'list'          => 'list',
     'list_all'      => 'List all'
 );

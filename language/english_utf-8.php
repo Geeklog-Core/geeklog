@@ -1492,7 +1492,7 @@ $LANG_ADMIN = array (
     'data_error'    => 'There was an error processing the subscription data. Please check the data source.',
     'preview'       => 'Preview',
     'records_found' => 'Records found',
-    'add_child'     => 'Add child',
+    'addchild'      => 'Add child',
     'list'          => 'list',
     'list_all'      => 'List all'
 );
