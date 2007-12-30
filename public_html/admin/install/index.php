@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2007/12/30 00:11:40 ablankstein Exp $
+// $Id: index.php,v 1.24 2007/12/30 17:46:39 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -50,7 +50,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.4.2');
+    define('VERSION', '1.5.0');
 }
 if ( !defined( 'XHTML' ) ) {
 	define( 'XHTML', ' /' );
@@ -711,7 +711,7 @@ function INST_identifyGeeklogVersion ()
 
         case 'mysql':
             $test = array(
-                '1.4.2'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
+                '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
                 '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
                 '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
                 '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
@@ -727,7 +727,7 @@ function INST_identifyGeeklogVersion ()
         case 'mssql':
 
 	    $test = array(
-                '1.4.2'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
+                '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
                 '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
             );
 
@@ -1225,7 +1225,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             break;
 
         case '1.4.1':
-            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.1_to_1.4.2.php';
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.1_to_1.5.0.php';
             INST_updateDB($_SQL);
 
             create_ConfValues();
@@ -1293,8 +1293,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
                 }
             }
 
-
-            $current_gl_version = '1.4.2';
+            $current_gl_version = '1.5.0';
             $_SQL = '';
             break;
 
