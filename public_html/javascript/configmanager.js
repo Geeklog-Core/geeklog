@@ -144,12 +144,12 @@ function hide_show_tbl(tbl, button){
 }
 
 function open_group(group_var){
- cgroup = group_var;
- document.group.conf_group.value = cgroup;
+ document.group.conf_group.value = group_var;
  document.group.submit();
 }
 
-function open_subgroup(sg_var){
+function open_subgroup(group_var,sg_var){
+ document.group.conf_group.value = group_var;
  document.group.subgroup.value = sg_var;
  document.group.submit();
 }

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.10 2007/12/30 00:11:40 ablankstein Exp $
+// $Id: config.class.php,v 1.11 2007/12/30 03:07:07 blaine Exp $
 
 class config {
     var $dbconfig_file;
@@ -106,7 +106,7 @@ class config {
                 $this->config_array[$row[2]][$row[0]] = unserialize($row[1]);
         }
         $this->_post_configuration();
-        
+
         return $this->config_array;
     }
 
@@ -346,21 +346,26 @@ class config {
         $groups = $this->_get_groups();
 
         if (count($groups) > 0) {
+            $t->set_block('menugroup','subgroup-selector','subgroups');
             foreach ($groups as $group) {
                 $t->set_var("select_id", ($group === $grp ? 'id="current"' : ''));
                 $t->set_var("group_select_value", $group);
                 $t->set_var("group_display", ucwords($group));
                 $subgroups = $this->get_sgroups($group);
-                $t->set_block('menugroup','subgroup-selector','subgroups');
+                $i=1;
                 foreach ($subgroups as $sgroup) {
                     $t->set_var('select_id', ($sg === $sgroup ? 'id="current"' : ''));
                     $t->set_var('subgroup_name', $sgroup);
                     $t->set_var("subgroup_display_name",
                                 $LANG_configsubgroups[$group][$sgroup]);
-                    $t->parse('subgroups', "subgroup-selector", true);
+                    if ($i == 1) {
+                        $t->parse('subgroups', "subgroup-selector");
+                    } else {
+                        $t->parse('subgroups', "subgroup-selector", true);
+                    }
+                    $i++;
                 }
                 $t->parse("menu_elements", "menugroup", true);
-
             }
         } else {
             $t->set_var('hide_groupselection','none');
@@ -368,6 +373,7 @@ class config {
         $t->set_var('open_sg', $sg);
         $t->set_block('main','fieldset','sg_contents');
         $t->set_block('fieldset', 'notes', 'fs_notes');
+
         $ext_info = $this->_get_extended($sg, $grp);
         foreach ($ext_info as $fset=>$params) {
             $fs_contents = '';
