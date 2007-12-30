@@ -32,7 +32,7 @@
             </div>
             <table class="inputTable" border="0">
                 <tr>
-                    <td style="width:150px;" nowrap="nowrap"><label for="passwd">{lang_password}:</label></td>
+                    <td style="width:150px;"><label for="passwd">{lang_password}:</label></td>
                     <td><input type="password" id="passwd" name="passwd" size="32" maxlength="32" value="{password_value}"{xhtml}></td>
                 </tr>
                 <tr>

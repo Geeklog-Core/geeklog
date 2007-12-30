@@ -7,7 +7,7 @@
     </div>
     <table class="inputTable">
         <tr>
-            <td width="120"><label for="commentmode">{lang_displaymode}:</label></td>
+            <td style="width:120"><label for="commentmode">{lang_displaymode}:</label></td>
             <td>{displaymode_selector}</td>
         </tr>
         <tr>

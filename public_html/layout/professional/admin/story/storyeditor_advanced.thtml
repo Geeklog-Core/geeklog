@@ -40,7 +40,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="alignright" nowrap="nowrap">{lang_story_stats}:</td>
+                <td class="alignright">{lang_story_stats}:</td>
                 <td>
                   <table cellspacing="0" cellpadding="3" style="width:50%;">
                     <tr>

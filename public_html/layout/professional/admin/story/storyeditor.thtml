@@ -78,8 +78,8 @@ function enablearchive(obj) {
                                                     <td colspan="3" style="padding-left:20px;">{lang_archivetitle}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td width="20%" class="alignright" style="padding-right:5px;">{lang_option}:</td>
-                                                    <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"{xhtml}></td>
+                                                    <td class="alignright" style="padding-right:5px; width:20%">{lang_option}:</td>
+                                                    <td style="width:20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"{xhtml}></td>
                                                     <td class="alignleft">
                                                         <label for="storycode10">
                                                             <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}>{lang_optionarchive}
