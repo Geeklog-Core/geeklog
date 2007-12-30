@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.265 2007/11/25 06:58:55 ospiess Exp $
+// $Id: story.php,v 1.266 2007/12/30 12:15:47 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -300,7 +300,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_var ( 'xhtml', XHTML );
         $story_templates->set_var ('change_editormode', 'onchange="change_editmode(this);"');
 
-        require_once ($_CONF['path_system'] . 'classes/navbar.class.php');
+        require_once $_CONF['path_system'] . 'classes/navbar.class.php';
 
         $story_templates->set_var ('show_preview', 'none');
         $story_templates->set_var ('lang_expandhelp', $LANG24[67]);
@@ -321,7 +321,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             $story_templates->set_var ('show_htmleditor', 'none');
         }
     } else {
-        $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
+        $story_templates->set_file(array('editor' => 'storyeditor.thtml'));
+        $story_templates->set_var('xhtml', XHTML);
         $advanced_editormode = false;
     }
     $story_templates->set_var ('site_url',       $_CONF['site_url']);
