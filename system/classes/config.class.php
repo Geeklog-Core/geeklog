@@ -29,10 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.9 2007/12/29 20:49:39 blaine Exp $
+// $Id: config.class.php,v 1.10 2007/12/30 00:11:40 ablankstein Exp $
 
 class config {
-    var $ref;
     var $dbconfig_file;
     var $config_array;
 
@@ -51,21 +50,14 @@ class config {
     function &get_instance()
     {
         static $instance;
+        if(!$instance)
+            $instance = new config();
         return $instance;
     }
 
-    function create($ref = 'Core', $obj = null)
+    function config()
     {
-        $instance =& config::get_instance();
-        if ($instance[$ref] === null) {
-            $instance[$ref] = ($obj === null ? new config($ref) : $obj);
-        }
-        return $instance[$ref];
-    }
-
-    function config($ref)
-    {
-        $this->ref = $ref;
+        $this->config_array = array();
     }
 
     /**
@@ -90,12 +82,10 @@ class config {
 
     function load_baseconfig()
     {
-        if ($this->ref == 'Core') {
-            global $_DB, $_TABLES, $_CONF;
-            include($this->dbconfig_file);
-            $this->config_array =& $_CONF;
-            include_once($_CONF['path_system'] . 'lib-database.php' );
-        }
+        global $_DB, $_TABLES, $_CONF;
+        include($this->dbconfig_file);
+        $this->config_array['Core'] =& $_CONF;
+        include_once($_CONF['path_system'] . 'lib-database.php' );
     }
 
     /**
@@ -109,16 +99,27 @@ class config {
     function &initConfig()
     {
         global $_TABLES;
-        $sql_query = "SELECT name, value FROM {$_TABLES['conf_values']} WHERE " .
-            "group_name = '{$this->ref}'";
+        $sql_query = "SELECT name, value, group_name FROM {$_TABLES['conf_values']}";
         $result = DB_query($sql_query);
         while ($row = DB_fetchArray($result)) {
             if ($row[1] !== 'unset')
-                $this->config_array[$row[0]] = unserialize($row[1]);
+                $this->config_array[$row[2]][$row[0]] = unserialize($row[1]);
         }
-        if ($this->ref == 'Core')
-            $this->_post_configuration();
+        $this->_post_configuration();
+        
         return $this->config_array;
+    }
+
+    function &get_config($group)
+    {
+        if(array_key_exists($group, $this->config_array))
+            return $this->config_array[$group];
+        return false;
+    }
+
+    function group_exists($group)
+    {
+        return array_key_exists($group, $this->config_array);
     }
 
     /**
@@ -129,14 +130,15 @@ class config {
      * @param string name        Name of the config parameter to set
      * @param mixed value        The value to set the config parameter to
      */
-    function set($name, $value)
+    function set($name, $value, $group='Core')
     {
         global $_TABLES, $_DB, $_DB_dbms;
         $escaped_val = addslashes(serialize($value));
         $escaped_name = addslashes($name);
+        $escaped_grp = addslashes($group);
         $sql_query = "UPDATE {$_TABLES['conf_values']} " .
             "SET value = '{$escaped_val}' WHERE " .
-            "name = '{$escaped_name}' AND group_name = '{$this->ref}'";
+            "name = '{$escaped_name}' AND group_name = '{$escaped_grp}'";
         if ($_DB_dbms == 'mssql') {
             $sql_query = str_replace("\\'","''",$sql_query);
             $sql_query = str_replace('\\"','"',$sql_query);
@@ -144,26 +146,27 @@ class config {
         } else {
             DB_query($sql_query);
         }
-        $this->config_array[$name] = $value;
-        if ($this->ref == 'Core')
-            $this->_post_configuration();
+        $this->config_array[$group][$name] = $value;
+        $this->_post_configuration();
     }
 
-    function restore_param($name)
+    function restore_param($name, $group)
     {
         global $_TABLES;
         $escaped_name = addslashes($name);
+        $escaped_grp = addslashes($group);
         $sql = "UPDATE {$_TABLES['conf_values']} SET value = default_value " .
-            "WHERE name = '{$escaped_name}' AND group_name = '{$this->ref}'";
+            "WHERE name = '{$escaped_name}' AND group_name = '{$escaped_grp}'";
         DB_query($sql);
     }
 
-    function unset_param($name)
+    function unset_param($name, $group)
     {
         global $_TABLES;
         $escaped_name = addslashes($name);
+        $escaped_grp = addslashes($group);
         $sql = "UPDATE {$_TABLES['conf_values']} SET value = 'unset' " .
-            "WHERE name = '{$escaped_name}' AND group_name = '{$this->ref}'";
+            "WHERE name = '{$escaped_name}' AND group_name = '{$escaped_grp}'";
         DB_query($sql);
     }
 
@@ -198,8 +201,8 @@ class config {
      *
      * @param boolean $set              whether or not this parameter is set
      */
-    function add($param_name, $default_value, $type, $subgroup, $fieldset,
-         $selection_array=null, $sort=0, $set=true)
+    function add( $param_name, $default_value, $type, $subgroup, $fieldset,
+         $selection_array=null, $sort=0, $set=true, $group='Core')
     {
         global $_TABLES, $_DB, $_DB_dbms;
         $format = 'INSERT INTO %1$s (name, value, type, ' .
@@ -212,7 +215,7 @@ class config {
                        $set ? serialize($default_value) : 'unset',
                        $type,
                        $subgroup,
-                       $this->ref,
+                       $group,
                        ($selection_array === null ?
                         -1 : $selection_array),
                        $sort,
@@ -229,19 +232,19 @@ class config {
             DB_query($sql_query);
         }
 
-        $this->config_array[$param_name] = $default_value;
+        $this->config_array[$group][$param_name] = $default_value;
     }
 
     /**
      * Permanently deletes a parameter
      * @param string  $param_name   This is the name of the parameter to delete
      */
-    function del($param_name)
+    function del($param_name, $group)
     {
         DB_delete($GLOBALS['_TABLES']['conf_values'],
                   array("name","group_name"),
-                  array(addslashes($param_name), addslashes($this->ref)));
-        unset($this->config_array[$param_name]);
+                  array(addslashes($param_name), addslashes($group)));
+        unset($this->config_array[$group][$param_name]);
     }
 
     /**
@@ -250,28 +253,32 @@ class config {
      * @return array(string => string => array(string => mixed))
      *    Array keys are fieldset => parameter named => information array
      */
-    function _get_extended($subgroup)
+    function _get_extended($subgroup, $group)
     {
-        global $_TABLES, $LANG_coreconfignames, $LANG_coreconfigselects;
+        global $_TABLES, $LANG_confignames, $LANG_configselects;
         $q_string = "SELECT name, type, selectionArray, "
             . "fieldset, value FROM {$_TABLES['conf_values']}" .
-            " WHERE group_name='{$this->ref}' and subgroup='{$subgroup}' " .
+            " WHERE group_name='{$group}' and subgroup='{$subgroup}' " .
             " ORDER BY sort_order ASC";
         $Qresult = DB_query($q_string);
         $res = array();
+        if(!array_key_exists($group, $LANG_configselects))
+            $LANG_configselects[$group] = array();
+        if(!array_key_exists($group, $LANG_confignames))
+            $LANG_confignames[$group] = array();
         while ($row = DB_fetchArray($Qresult)) {
             $cur = $row;
             $res[$cur[3]][$cur[0]] =
                 array('display_name' =>
-                      (array_key_exists($cur[0], $LANG_coreconfignames) ?
-                       $LANG_coreconfignames[$cur[0]]
+                      (array_key_exists($cur[0], $LANG_confignames[$group]) ?
+                       $LANG_confignames[$group][$cur[0]]
                        : $cur[0]),
                       'type' =>
                       (($cur[4] == 'unset') ?
                        'unset' : $cur[1]),
                       'selectionArray' =>
                       (($cur[2] != -1) ?
-                       $LANG_coreconfigselects[$cur[2]] : null),
+                       $LANG_configselects[$group][$cur[2]] : null),
                       'value' =>
                       (($cur[4] == 'unset') ?
                        'unset' : unserialize($cur[4])));
@@ -282,22 +289,22 @@ class config {
     /* Changes any config settings that depend on other configuration settings. */
     function _post_configuration()
     {
-        $this->config_array['path_layout'] = $this->config_array['path_themes']
-            . $this->config_array['theme'] . '/';
-        $this->config_array['layout_url'] = $this->config_array['site_url']
-            . '/layout/' . $this->config_array['theme'];
+        $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes']
+            . $this->config_array['Core']['theme'] . '/';
+        $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url']
+            . '/layout/' . $this->config_array['Core']['theme'];
     }
 
     function _get_groups()
     {
-        return array_keys(config::get_instance());
+        return array_keys($this->config_array);
     }
 
-    function get_sgroups()
+    function get_sgroups($group)
     {
         global $_TABLES;
         $q_string = "SELECT subgroup FROM {$_TABLES['conf_values']} WHERE " .
-            "group_name='{$this->ref}' " .
+            "group_name='{$group}' " .
             "GROUP BY subgroup";
         $res = DB_query($q_string);
         $return = array();
@@ -318,9 +325,11 @@ class config {
      *                        configuration - if it is passed, it will display
      *                        the "Changes" message box.
      */
-    function get_ui($sg='0', $change_result=null)
+    function get_ui($grp, $sg='0', $change_result=null)
     {
-        global $_CONF,$LANG_coreconfigsubgroups;
+        global $_CONF,$LANG_configsubgroups;
+        if(!array_key_exists($grp, $LANG_configsubgroups))
+            $LANG_configsubgroups[$grp] = array();
 
         if (!SEC_inGroup('Root'))
             return config::_UI_perm_denied();
@@ -331,22 +340,23 @@ class config {
 
         $t->set_var( 'xhtml', XHTML );
         $t->set_var('site_url',$_CONF['site_url']);
-        $t->set_var('open_group', $this->ref);
 
-        $groups = config::_get_groups();
+        $t->set_var('open_group', $grp);
+
+        $groups = $this->_get_groups();
 
         if (count($groups) > 0) {
             foreach ($groups as $group) {
-                $t->set_var("select_id", ($group === $this->ref ? 'id="current"' : ''));
+                $t->set_var("select_id", ($group === $grp ? 'id="current"' : ''));
                 $t->set_var("group_select_value", $group);
                 $t->set_var("group_display", ucwords($group));
-                $subgroups = $this->get_sgroups();
+                $subgroups = $this->get_sgroups($group);
                 $t->set_block('menugroup','subgroup-selector','subgroups');
                 foreach ($subgroups as $sgroup) {
                     $t->set_var('select_id', ($sg === $sgroup ? 'id="current"' : ''));
                     $t->set_var('subgroup_name', $sgroup);
                     $t->set_var("subgroup_display_name",
-                                $LANG_coreconfigsubgroups[$sgroup]);
+                                $LANG_configsubgroups[$group][$sgroup]);
                     $t->parse('subgroups', "subgroup-selector", true);
                 }
                 $t->parse("menu_elements", "menugroup", true);
@@ -355,29 +365,28 @@ class config {
         } else {
             $t->set_var('hide_groupselection','none');
         }
-
         $t->set_var('open_sg', $sg);
         $t->set_block('main','fieldset','sg_contents');
         $t->set_block('fieldset', 'notes', 'fs_notes');
-        $ext_info = $this->_get_extended($sg);
+        $ext_info = $this->_get_extended($sg, $grp);
         foreach ($ext_info as $fset=>$params) {
             $fs_contents = '';
             foreach ($params as $name=>$e) {
                 $fs_contents .=
-                    config::_UI_get_conf_element($name,
+                    $this->_UI_get_conf_element($name,
                                                $e['display_name'],
                                                $e['type'],
                                                $e['value'],
                                                $e['selectionArray']);
             }
-            config::_UI_get_fs($fs_contents, $fset, $t);
+            $this->_UI_get_fs($grp, $fs_contents, $fset, $t);
         }
 
         // Output the result and add the required CSS for the dropline menu
         $cssfile = '<link rel="stylesheet" type="text/css" href="'.$_CONF['layout_url'] .'/droplinemenu.css" ' . XHTML .'>' . LB;
         $display  = COM_siteHeader('none','Configuration Manager',$cssfile);
         if ($change_result != null AND $change_result !== array() ) {
-            $t->set_var('change_block',config::_UI_get_change_block($change_result));
+            $t->set_var('change_block',$this->_UI_get_change_block($change_result));
         } else {
             $t->set_var('show_changeblock','none');
         }
@@ -397,11 +406,13 @@ class config {
         }
     }
 
-    function _UI_get_fs($contents, $fs_id, &$t)
+    function _UI_get_fs($group, $contents, $fs_id, &$t)
     {
         global $LANG_fs;
+        if(!array_key_exists($group, $LANG_fs))
+            $LANG_fs[$group] = array();
         $t->set_var('fs_contents', $contents);
-        $t->set_var('fs_display', $LANG_fs[$fs_id]);
+        $t->set_var('fs_display', $LANG_fs[$group][$fs_id]);
         $t->set_var('fs_notes', '');
         $t->parse('sg_contents', 'fieldset', true);
     }
@@ -509,21 +520,18 @@ class config {
      * param array(string=>mixed)       $change_array this is the $_POST array
      * return array(string=>boolean)    this is the change_array
      */
-    function updateConfig($change_array)
+    function updateConfig($change_array, $group)
     {
         if (!SEC_inGroup('Root')) {
             return null;
         }
-        if ($this->config_array == null) {
-            $this->initConfig();
-        }
         $success_array = array();
-        foreach ($this->config_array as $param_name => $param_value) {
+        foreach ($this->config_array[$group] as $param_name => $param_value) {
             if (array_key_exists($param_name, $change_array)) {
                 $change_array[$param_name] =
                     $this->_validate_input($change_array[$param_name]);
                 if ($change_array[$param_name] != $param_value) {
-                    $this->set($param_name, $change_array[$param_name]);
+                    $this->set($param_name, $change_array[$param_name], $group);
                     $success_array[$param_name] = true;
                 }
             }

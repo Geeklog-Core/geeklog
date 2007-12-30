@@ -29,20 +29,21 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.2 2007/09/23 08:28:39 dhaun Exp $
+// $Id: configuration.php,v 1.3 2007/12/30 00:11:40 ablankstein Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
-$config = config::create(array_key_exists('conf_group', $_POST) ? 
-                         $_POST['conf_group'] : 'Core');
+$conf_group = array_key_exists('conf_group', $_POST) ? $_POST['conf_group'] : 'Core';
+
+$config =& config::get_instance();
 
 if (array_key_exists('set_action', $_POST)){
     if (SEC_inGroup('Root')) {
         if ($_POST['set_action'] == 'restore') {
-            $config->restore_param($_POST['name']);
+            $config->restore_param($_POST['name'], $conf_group);
         } elseif ($_POST['set_action'] == 'unset') {
-            $config->unset_param($_POST['name']);
+            $config->unset_param($_POST['name'], $conf_group);
         }
     }
 }
@@ -50,11 +51,11 @@ if (array_key_exists('set_action', $_POST)){
 if (array_key_exists('form_submit', $_POST)) {
     $result = null;
     if (! array_key_exists('form_reset', $_POST)) {
-        $result = $config->updateConfig($_POST);
+        $result = $config->updateConfig($_POST, $conf_group);
     }
-    echo $config->get_ui($_POST['sub_group'], $result);
+    echo $config->get_ui($conf_group, $_POST['sub_group'], $result);
 } else {
-    echo $config->get_ui(array_key_exists('subgroup', $_POST) ?
+    echo $config->get_ui($conf_group, array_key_exists('subgroup', $_POST) ?
                          $_POST['subgroup'] : null);
 }
 

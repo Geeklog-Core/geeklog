@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2007/11/25 08:08:18 ospiess Exp $
+// $Id: index.php,v 1.23 2007/12/30 00:11:40 ablankstein Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -479,7 +479,7 @@ function INST_installEngine($install_type, $install_step)
                             require_once('config-install.php');
                             install_config();
 
-                            $config = config::create();
+                            $config = config::get_instance();
                             $config->set('site_name', urldecode($site_name));
                             $config->set('site_slogan', urldecode($site_slogan));
                             $config->set('site_url', urldecode($site_url));
@@ -546,7 +546,7 @@ function INST_installEngine($install_type, $install_step)
                         $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
 
                         require_once $_CONF['path_system'] . 'classes/config.class.php';
-                        $config = config::create();
+                        $config = config::get_instance();
                         $config->set('site_name', urldecode($site_name));
                         $config->set('site_slogan', urldecode($site_slogan));
                         $config->set('site_url', urldecode($site_url));

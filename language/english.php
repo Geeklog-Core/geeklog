@@ -1557,7 +1557,7 @@ $LANG_trackbackcodes = array(
 ################################################################################
 # Localization of the Admin Configuration UI                                   #
 
-$LANG_coreconfignames =
+$LANG_confignames['Core'] =
 array(
       'path_html' => "HTML Path",
       'site_url' => "Site URL",
@@ -1744,7 +1744,7 @@ array(
       'atom_max_stories' => "Max. Stories in Webservices Feed"
 );
 
-$LANG_coreconfigsubgroups =
+$LANG_configsubgroups['Core'] =
 array(
       0 => 'Site',
       1 => 'Stories and Trackback',
@@ -1756,7 +1756,7 @@ array(
       7 => 'Miscellaneous'
 );
 
-$LANG_fs =
+$LANG_fs['Core'] =
 array(
       0 => 'Site',
       1 => 'Paths',
@@ -1799,7 +1799,7 @@ array(
 
 );
 
-$LANG_coreconfigselects =
+$LANG_configselects['Core'] =
 array(
       0 => array('True'=>1,'False'=>0),
       1 => array('True'=>TRUE,'False'=>FALSE),
@@ -1824,5 +1824,6 @@ array(
       13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2),
       14 => array('Sunday' => 'Sun', 'Monday' => 'Mon')
 );
+
 
 ?>

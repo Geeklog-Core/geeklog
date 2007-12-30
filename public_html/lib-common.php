@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.668 2007/12/29 12:26:49 dhaun Exp $
+// $Id: lib-common.php,v 1.669 2007/12/30 00:11:40 ablankstein Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -89,10 +89,13 @@ if( function_exists('set_error_handler') )
 */
 require_once 'siteconfig.php' ;
 require_once $_CONF['path_system'] . 'classes/config.class.php';
-$config = config::create();
+
+$config =& config::get_instance();
 $config->set_configfile($_CONF['path'] . 'db-config.php');
 $config->load_baseconfig();
-$_CONF =& $config->initConfig();
+$config->initConfig();
+
+$_CONF = $config->get_config('Core');
 
 // Before we do anything else, check to ensure site is enabled
 

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.7 2007/12/29 20:49:57 dhaun Exp $
+// $Id: config-install.php,v 1.8 2007/12/30 00:11:40 ablankstein Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -39,7 +39,7 @@ function install_config()
 {
     global $_TABLES;
 
-    $c = config::create();
+    $c = config::get_instance();
 
     $c->add('path_html','','text',0,1,NULL,10,TRUE);
     $c->add('site_url','','text',0,0,NULL,20,TRUE);
