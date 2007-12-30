@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.26 2007/12/30 20:24:46 dhaun Exp $
+// $Id: index.php,v 1.27 2007/12/30 21:01:52 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -307,8 +307,8 @@ function INST_installEngine($install_type, $install_step)
                         require $dbconfig_path;
                         require_once $siteconfig_path;
                         require_once $_CONF['path_system'] . 'lib-database.php';
-                        $req_string = 'index.php?mode=' . $install_type . '&amp;step=3&amp;dbconfig_path=' . $dbconfig_path
-                                    . '&amp;language=' . $language
+                        $req_string = 'index.php?mode=' . $install_type . '&step=3&dbconfig_path=' . $dbconfig_path
+                                    . '&language=' . $language
                                     . '&site_name=' . urlencode($site_name)
                                     . '&site_slogan=' . urlencode($site_slogan)
                                     . '&site_url=' . urlencode($site_url)
@@ -476,10 +476,12 @@ function INST_installEngine($install_type, $install_step)
                             $site_mail      = isset($_POST['site_mail']) ? $_POST['site_mail'] : (isset($_GET['site_mail']) ? $_GET['site_mail'] : '') ;
                             $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
 
+                            INST_personalizeAdminAccount($site_mail, $site_url);
+
                             // Insert the form data into the conf_values table
 
-                            require_once($_CONF['path_system'] . 'classes/config.class.php');
-                            require_once('config-install.php');
+                            require_once $_CONF['path_system'] . 'classes/config.class.php';
+                            require_once 'config-install.php';
                             install_config();
 
                             $config = config::get_instance();
@@ -820,20 +822,37 @@ function INST_createDatabaseStructures ($use_innodb = false)
         DB_query ($data);
     }
 
+    return true;
+}
 
-    if ($_DB_dbms == 'mysql' || $_DB_dbms == 'mssql') {
+
+/**
+ * On a fresh install, set the Admin's account email and homepage
+ *
+ * @param   string  $site_mail  email address, e.g. the site email
+ * @param   string  $site_url   the site's URL
+ * @return  void
+ *
+ */
+function INST_personalizeAdminAccount($site_mail, $site_url)
+{
+    global $_TABLES, $_DB_dbms;
+
+    if (($_DB_dbms == 'mysql') || ($_DB_dbms == 'mssql')) {
 
         // let's try and personalize the Admin account a bit ...
 
-        if (strpos ($_CONF['site_mail'], 'example.com') === false) {
-            DB_query ("UPDATE {$_TABLES['users']} SET email = '" . addslashes ($_CONF['site_mail']) . "' WHERE uid = 2");
+        if (!empty($site_mail)) {
+            if (strpos($site_mail, 'example.com') === false) {
+                DB_query("UPDATE {$_TABLES['users']} SET email = '" . addslashes($site_mail) . "' WHERE uid = 2");
+            }
         }
-        if (strpos ($_CONF['site_url'], 'example.com') === false) {
-            DB_query ("UPDATE {$_TABLES['users']} SET homepage = '" . addslashes ($_CONF['site_url']) . "' WHERE uid = 2");
+        if (!empty($site_url)) {
+            if (strpos($site_url, 'example.com') === false) {
+                DB_query("UPDATE {$_TABLES['users']} SET homepage = '" . addslashes($site_url) . "' WHERE uid = 2");
+            }
         }
     }
-
-    return true;
 }
 
 
@@ -1761,7 +1780,7 @@ switch ($mode) {
             fclose ($siteconfig_file);
 
             // Continue to the next step: Fresh install or Upgrade
-            header('Location: index.php?mode=' . $_GET['op'] . '&dbconfig_path=' . urlencode($_PATH['db-config.php']) . '&amp;language=' . $language);
+            header('Location: index.php?mode=' . $_GET['op'] . '&dbconfig_path=' . urlencode($_PATH['db-config.php']) . '&language=' . $language);
 
         }
         break;
