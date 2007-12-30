@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.7 2007/12/29 19:06:23 dhaun Exp $
+// $Id: category.php,v 1.8 2007/12/30 09:45:44 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -154,7 +154,8 @@ function links_list_categories_recursive($data_arr, $cid, $indent)
 
 function links_edit_category ($cid,$pid)
 {
-    global $_TABLES, $LANG_LINKS_ADMIN, $LANG_ADMIN, $LANG_ACCESS, $_CONF, $_USER;
+    global $_CONF, $_TABLES, $_USER,
+           $LANG_LINKS_ADMIN, $LANG_ADMIN, $LANG_ACCESS;
 
     $retval = '';
 
@@ -188,7 +189,7 @@ function links_edit_category ($cid,$pid)
                              $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 
     if ($access < 3) {
-        return $LANG_LINKS[47];
+        return $LANG_LINKS_ADMIN[60];
     }
 
     $retval .= COM_startBlock ($LANG_LINKS_ADMIN[56], '', COM_getBlockTemplate ('_admin_block', 'header'));
@@ -270,7 +271,7 @@ function links_edit_category ($cid,$pid)
 
 function links_save_category($cid, $old_cid, $pid, $category, $description, $tid, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
 {
-    global $_TABLES, $_CONF, $_USER, $LANG_LINKS, $LANG_LINKS_ADMIN, $_LI_CONF;
+    global $_CONF, $_TABLES, $_USER, $LANG_LINKS, $LANG_LINKS_ADMIN, $_LI_CONF;
 
     // Convert array values to numeric permission values
     if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
@@ -283,8 +284,7 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
 
     // Check cid to make sure not illegal
     if (($cid == $_LI_CONF['root']) || ($cid == 'user')) {
-        $result = $LANG_LINKS_ADMIN[35];
-        return $result;
+        return 11;
     }
     // check that they didn't delete the cid. If so, get the hidden one
     if (empty($cid) && !empty($old_cid)) {
@@ -293,7 +293,7 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
     // Make sure they aren't making a parent category child of one of it's own children
     // This would create orphans
     if ($cid==DB_getItem($_TABLES['linkcategories'], 'pid',"cid='{$pid}'")) {
-        return $LANG_LINKS_ADMIN[48];
+        return 12;
     }
 
     $access = 0;
@@ -328,12 +328,12 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
     if ($access < 3) {
         // no access rights: user should not be here
         $display .= COM_siteHeader ('menu');
-        $display .= COM_startBlock ($LANG_LINKS[41], '',
+        $display .= COM_startBlock ($LANG_LINKS[14], '',
             COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $LANG_LINKS[44];
+        $display .= $LANG_LINKS_ADMIN[60];
         $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter ();
-        COM_accessLog(sprintf($LANG_LINKS[45], $_USER['username']));
+        COM_accessLog(sprintf($LANG_LINKS_ADMIN[61], $_USER['username'], $cid));
         echo $display;
         exit;
     } else {
@@ -386,14 +386,7 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
         }
     }
 
-    return PLG_afterSaveSwitch (
-        $_LI_CONF['aftersave'],
-        COM_buildURL ("{$_CONF['site_url']}/links/portal.php?what=category&item={$cid}"),
-        'links',
-        2
-    );
-
-//    return $result;
+    return 10;
 }
 
 
@@ -415,27 +408,27 @@ function links_delete_category ($cid)
         $A = DB_fetchArray ($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],
             $A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access>2) {
+        if ($access > 2) {
             // has edit rights
             // Check for subfolders and sublinks
-            $sf = DB_count ($_TABLES['linkcategories'], 'pid', $cid);
-            $sl = DB_count ($_TABLES['links'], 'cid', $cid);
-            if (($sf=='0') && ($sl=='0')) {
+            $sf = DB_count($_TABLES['linkcategories'], 'pid', $cid);
+            $sl = DB_count($_TABLES['links'], 'cid', $cid);
+            if (($sf == 0) && ($sl == 0)) {
                 // No subfolder/links so OK to delete
-                DB_delete ( $_TABLES['linkcategories'], 'cid', $cid);
-                return $LANG_LINKS_ADMIN[37];
+                DB_delete($_TABLES['linkcategories'], 'cid', $cid);
+                return 13;
             } else {
                 // Subfolders and/or sublinks exist so return a message
-                return $LANG_LINKS_ADMIN[38];
+                return 14;
             }
         } else {
             // no access
-            return $LANG_LINKS_ADMIN[45];
+            return 15;
             COM_accessLog(sprintf($LANG_LINKS_ADMIN[46], $_USER['username']));
         }
     } else {
         // no such category
-        return $LANG_LINKS_ADMIN[47];
+        return 16;
     }
 }
 
@@ -451,41 +444,32 @@ $root = $_LI_CONF['root'];
 
 // delete category
 if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mode=="delete")) {
-    $cid = COM_applyFilter ($_REQUEST['cid']);
-    if (!isset ($cid) || empty ($cid)) {  // || ($cid == 0)
-        COM_errorLog ('Attempted to delete category cid=' . $cid );
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/category.php');
+    $cid = COM_applyFilter($_REQUEST['cid']);
+    if (!isset($cid) || empty($cid)) {
+        COM_errorLog('Attempted to delete category cid=' . $cid );
+        $display .= COM_refresh($_CONF['site_admin_url'] . '/plugins/links/category.php');
     } else {
-        $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
-        $result  = links_delete_category ($cid);
+        $msg = links_delete_category($cid);
 
-        $display .= COM_startBlock ($LANG_LINKS[41], '', COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $result;
-        $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[11]);
+        $display .= COM_showMessage($msg, 'links');
         $display .= links_list_categories($root);
         $display .= COM_siteFooter();
-
     }
 
 // save category
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
-    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
-    $result = links_save_category (COM_applyFilter ($_POST['cid']),
+    $msg = links_save_category (COM_applyFilter ($_POST['cid']),
             COM_applyFilter ($_POST['old_cid']),
-            COM_applyFilter ($_POST['pid']), $_POST['category'], $_POST['description'],
-            COM_applyFilter ($_POST['tid']),
+            COM_applyFilter ($_POST['pid']), $_POST['category'],
+            $_POST['description'], COM_applyFilter ($_POST['tid']),
             COM_applyFilter ($_POST['owner_id'], true),
             COM_applyFilter ($_POST['group_id'], true),
             $_POST['perm_owner'], $_POST['perm_group'],
             $_POST['perm_members'], $_POST['perm_anon']);
-    $display .= COM_startBlock ($LANG_LINKS[41], '', COM_getBlockTemplate ('_msg_block', 'header'));
-    if ($result==1) {
-        $display .= $LANG_LINKS_ADMIN[39];
-    } else {
-        $display .= $result;
-    }
-    $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
 
+    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
+    $display .= COM_showMessage ($msg, 'links');
     $display .= links_list_categories($root);
     $display .= COM_siteFooter();
 

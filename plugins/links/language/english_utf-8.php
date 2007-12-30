@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english_utf-8.php,v 1.10 2007/12/29 19:00:07 dhaun Exp $
+# $Id: english_utf-8.php,v 1.11 2007/12/30 09:45:44 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -33,7 +33,7 @@
  * @package Links
  * @subpackage Language
  * @filesource
- * @version 1.0
+ * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -58,10 +58,6 @@
 $LANG_LINKS= array(
     10 => 'Submissions',
     14 => 'Links',
-    41 => '(???)',
-    44 => '(???)',
-    45 => '(???)',
-    47 => '(???)',
     84 => 'Links',
     88 => 'No recent new links',
     114 => 'Links',
@@ -138,6 +134,14 @@ $PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
 $PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
 $PLG_links_MESSAGE5 = "You do not have sufficient access rights to view this category.";
 
+$PLG_links_MESSAGE10 = 'Your category has been successfully saved.';
+$PLG_links_MESSAGE11 = 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.';
+$PLG_links_MESSAGE12 = 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.';
+$PLG_links_MESSAGE13 = 'The category has been successfully deleted.';
+$PLG_links_MESSAGE14 = 'Category contains links and/or categories. Please remove these first.';
+$PLG_links_MESSAGE15 = 'You do not have sufficient rights to delete this category.';
+$PLG_links_MESSAGE16 = 'No such category exists.';
+
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
@@ -170,7 +174,7 @@ $LANG_LINKS_ADMIN = array(
     23 => 'delete',
     24 => 'Link not found',
     25 => 'The link you selected for editing could not be found.',
-    26 => 'Verify Links',
+    26 => 'Validate Links',
     27 => 'HTML Status',
     28 => 'Edit category',
     29 => 'Enter or edit the details below.',
@@ -179,19 +183,12 @@ $LANG_LINKS_ADMIN = array(
     32 => 'Category ID',
     33 => 'Topic',
     34 => 'Parent',
-    35 => 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.',
-    37 => 'Category deleted',
-    38 => 'Category contains links and/or categories. Please remove these first.',
-    39 => 'Category was saved successfully',
     40 => 'Edit this category',
     41 => 'Create child category',
     42 => 'Delete this category',
     43 => 'Site categories',
     44 => 'Add&nbsp;child',
-    45 => 'You do not have sufficient rights to delete this category',
     46 => 'User %s tried to delete a category to which they do not have access rights',
-    47 => 'No such category exists',
-    48 => 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.',
     50 => 'List categories',
     51 => 'New link',
     52 => 'New category',
@@ -201,7 +198,9 @@ $LANG_LINKS_ADMIN = array(
     56 => 'Category Editor',
     57 => 'Not validated yet',
     58 => 'Validate now',
-    59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>'
+    59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>',
+    60 => 'You do not have sufficient rights to edit this category',
+    61 => 'User %s tried illegally to edit category %s.'
 );
 
 $LANG_LINKS_STATUS = array(
