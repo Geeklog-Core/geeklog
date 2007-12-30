@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.24 2007/12/30 09:45:44 dhaun Exp $
+# $Id: english.php,v 1.25 2007/12/30 16:27:51 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -133,6 +133,8 @@ $PLG_links_MESSAGE2 = 'Your link has been successfully saved.';
 $PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
 $PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links/index.php>links</a> section.";
 $PLG_links_MESSAGE5 = "You do not have sufficient access rights to view this category.";
+$PLG_links_MESSAGE6 = 'You do not have sufficient rights to edit this category.';
+$PLG_links_MESSAGE7 = 'Please enter a Category Name and Description.';
 
 $PLG_links_MESSAGE10 = 'Your category has been successfully saved.';
 $PLG_links_MESSAGE11 = 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.';
@@ -199,8 +201,7 @@ $LANG_LINKS_ADMIN = array(
     57 => 'Not validated yet',
     58 => 'Validate now',
     59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>',
-    60 => 'You do not have sufficient rights to edit this category',
-    61 => 'User %s tried illegally to edit category %s.'
+    60 => 'User %s tried illegally to edit category %s.'
 );
 
 $LANG_LINKS_STATUS = array(
@@ -244,6 +245,7 @@ $LANG_LINKS_STATUS = array(
     503 => "Service Unavailable",
     504 => "Gateway Timeout",
     505 => "HTTP Version Not Supported",
-    999 => "Connection Timed out");
+    999 => "Connection Timed out"
+);
 
 ?>
