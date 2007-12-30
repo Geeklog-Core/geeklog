@@ -38,7 +38,7 @@ function create_ConfValues()
 
     require_once($_CONF['path_system'] . 'classes/config.class.php');
 
-    $c = config::create();
+    $c = config::get_instance();
 
     $c->add('path_html','','text',0,1,NULL,10,TRUE);
     $c->add('site_url','','text',0,0,NULL,20,TRUE);

@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.27 2007/12/30 21:01:52 dhaun Exp $
+// $Id: index.php,v 1.28 2007/12/30 21:11:32 ablankstein Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -1252,7 +1252,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
 
             create_ConfValues();
             require_once $_CONF['path_system'] . 'classes/config.class.php';
-            $config = config::create();
+            $config = config::get_instance();
 
             if (file_exists($_CONF['path'] . 'config.php')) {
                 // Read the values from config.php and use them to populate conf_values
