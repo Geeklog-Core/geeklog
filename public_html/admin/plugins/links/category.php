@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.9 2007/12/30 10:02:25 dhaun Exp $
+// $Id: category.php,v 1.10 2007/12/30 10:13:20 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -215,7 +215,6 @@ function links_edit_category ($cid,$pid)
     $T->set_var('lang_parent', $LANG_LINKS_ADMIN[34]);
     $T->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($cid)) {
-        $T->set_var('delete_option', '<input type="submit" value="'.$LANG_ADMIN['delete'].'" name="mode"' . XHTML . '>');
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
                    . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
