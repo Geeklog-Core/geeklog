@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2007/12/30 19:57:22 dhaun Exp $
+// $Id: index.php,v 1.26 2007/12/30 20:24:46 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -307,7 +307,7 @@ function INST_installEngine($install_type, $install_step)
                         require $dbconfig_path;
                         require_once $siteconfig_path;
                         require_once $_CONF['path_system'] . 'lib-database.php';
-                        $req_string = 'index.php?mode=' . $install_type . '&step=3&dbconfig_path=' . $dbconfig_path
+                        $req_string = 'index.php?mode=' . $install_type . '&amp;step=3&amp;dbconfig_path=' . $dbconfig_path
                                     . '&amp;language=' . $language
                                     . '&site_name=' . urlencode($site_name)
                                     . '&site_slogan=' . urlencode($site_slogan)
@@ -1703,7 +1703,7 @@ switch ($mode) {
 
             // Set up the request string
             $req_string = 'index.php?mode=write_paths'
-                        . '&dbconfig_path=' . urlencode($_PATH['db-config.php'])
+                        . '&amp;dbconfig_path=' . urlencode($_PATH['db-config.php'])
                         . '&amp;public_html_path=' . urlencode($_PATH['public_html/'])
                         . '&amp;language=' . $language;
 
@@ -1711,10 +1711,10 @@ switch ($mode) {
             <div class="install-type-container-outer">
                <div class="install-type-container-inner">
                    <h2>' . $LANG_INSTALL[23] . '</h2>
-                   <div class="install" onmouseover="this.style.background=\'#BBB\'" onmouseout="this.style.background=\'#CCC\'"><a class="install" href="'
-                   . $req_string . '&amp;op=install">' . $LANG_INSTALL[24] . '</a></div>
-                   <div class="upgrade" onmouseover="this.style.background=\'#BBB\'" onmouseout="this.style.background=\'#CCC\'"><a class="install" href="'
-                   . $req_string . '&amp;op=upgrade">' . $LANG_INSTALL[25] . '</a></div>
+                   <div class="install" onmouseover="this.style.background=\'#BBB\'" onmouseout="this.style.background=\'#CCC\'"><a href="' . $req_string
+                    . '&amp;op=install">' . $LANG_INSTALL[24] . '</a></div>
+                   <div class="upgrade" onmouseover="this.style.background=\'#BBB\'" onmouseout="this.style.background=\'#CCC\'"><a href="' . $req_string
+                    . '&amp;op=upgrade">' . $LANG_INSTALL[25] . '</a></div>
                </div>
             </div>' . LB;
         }
