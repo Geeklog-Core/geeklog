@@ -8,7 +8,7 @@
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_topic}:</td>
-                                            <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"{xhtml}> {poll_topic_info}</td>
+                                            <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"{xhtml}><br{xhtml}>{poll_topic_info}</td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_mode}:</td>
@@ -36,11 +36,11 @@
                                     </div>
                                     {question_list}
                                     <h2>{lang_accessrights}</h2>
-                                    {lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}><br{xhtml}>
-                                    {lang_group}: {group_dropdown}<br{xhtml}>
+                                    <p>{lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}><br{xhtml}></p>
+                                    <p>{lang_group}: {group_dropdown}<br{xhtml}></p>
                                     <h2>{lang_permissions}</h2>
-                                    {lang_permissionskey}
+                                    <p>{lang_permissionskey}</p>
                                     <p>{permissions_editor}</p>
                                     <p>{lang_permissions_msg}</p>
-                                    <input type="submit" name="mode" value="{lang_save}"{xhtml}><input type="submit" name="mode" value="{lang_cancel}"{xhtml}>{delete_option}
+                                    <p><input type="submit" name="mode" value="{lang_save}"{xhtml}><input type="submit" name="mode" value="{lang_cancel}"{xhtml}>{delete_option}</p>
                                 </form>

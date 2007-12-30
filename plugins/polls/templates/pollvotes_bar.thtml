@@ -1,7 +1,7 @@
         <tr class="pluginRow{cssidb}">
             <td class="poll_answer_text">{answer_text}</td>
             <td class="poll_answer_bar">
-                <img src="{layout_url}/images/bar.gif" width="{bar_width}" height="10" align="bottom" alt=""{xhtml}> {answer_num} ({answer_percent}%)
+                <img src="{layout_url}/images/bar.gif" width="{bar_width}" height="10" style="align:bottom;" alt=""{xhtml}> {answer_num} ({answer_percent}%)
             </td>
         </tr>
         <tr class="pluginRow{cssida}">
