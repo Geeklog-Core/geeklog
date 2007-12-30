@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.138 2007/12/29 15:04:27 dhaun Exp $
+// $Id: lib-plugins.php,v 1.139 2007/12/30 16:34:45 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -47,7 +47,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-plugins.php') !== false) {
 require_once $_CONF['path_system'] . 'classes/plugin.class.php';
 
 // Response codes for the service invocation PLG_invokeService()
-define('PLG_RET_OK',                 0); 
+define('PLG_RET_OK',                 0);
 define('PLG_RET_ERROR',             -1);
 define('PLG_RET_PERMISSION_DENIED', -2);
 define('PLG_RET_AUTH_FAILED',       -3);
@@ -330,6 +330,11 @@ function PLG_uninstall ($type)
             DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
                                            array ('phpblock', $remvars['php_blocks'][$i]));
         }
+
+        // remove config table data for this plugin
+        COM_errorLog ("Attempting to remove config table records for group_name: $type", 1);
+        DB_query ("DELETE FROM {$_TABLES['conf_values']} WHERE group_name = '$type'");
+        COM_errorLog ('...success', 1);
 
         // uninstall the plugin
         COM_errorLog ('Attempting to unregister the $type plugin from Geeklog', 1);
@@ -2319,7 +2324,7 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 
 /**
  * Returns true if the plugin supports webservices
- * 
+ *
  * @param   string  type    The plugin type that is to be checked
  */
 function PLG_wsEnabled($type) {

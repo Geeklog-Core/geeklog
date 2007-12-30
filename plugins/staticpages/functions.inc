@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.103 2007/12/29 15:26:53 dhaun Exp $
+// $Id: functions.inc,v 1.104 2007/12/30 16:34:37 blaine Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -49,7 +49,20 @@ if (file_exists($langfile)) {
     include $plugin_path . 'language/english.php';
 }
 
-include $plugin_path . 'config.php';
+if (file_exists("{$plugin_path}config.php")) {
+   include $plugin_path . 'config.php';
+   $_SP_CONF['version'] = '1.5';
+} else {
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    $sp_config = config::get_instance();
+    $sp_config->initConfig();
+
+    $LANG_configsubgroups['staticpages'][0] = 'Main Settings';
+    $LANG_fs['staticpages'][0] = 'Main Settings';
+
+    $_SP_CONF = $sp_config->get_config('staticpages');
+}
+
 
 // +---------------------------------------------------------------------------+
 // | Plugin API - Services                                                     |
@@ -1005,15 +1018,44 @@ function plugin_geticon_staticpages ()
 */
 function plugin_upgrade_staticpages ()
 {
-    global $_TABLES, $_SP_CONF;
+    global $_CONF,$_TABLES, $_SP_CONF, $plugin_path;
 
     // the plugin needs this function so complain when it doesn't exist
     if (!function_exists ('SEC_getGroupDropdown')) {
         return 3002;
     }
 
-    // no db changes - just update the version number
-    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SP_CONF['version']}' WHERE pi_name = 'staticpages'");
+    $pi_version = DB_getItem($_TABLES['plugins'],'pi_version',"pi_name='staticpages'");
+
+    if ($pi_version == '1.4.3') {  // Need to initialize the config table - GL 1.5+ feature
+        require_once $_CONF['path_system'] . 'classes/config.class.php';
+        $sp_config = config::get_instance();
+        $sp_config->initConfig();
+        if(! $sp_config->group_exists('staticpages')){
+            $sp_config->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
+
+            $sp_config->add('allow_php', $_SP_CONF['allow_php'], 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('sort_by', $_SP_CONF['sort_by'],  'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('sort_menu_by', $_SP_CONF['sort_menu_by'], 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('delete_pages', $_SP_CONF['delete_pages'] , 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('in_block', $_SP_CONF['in_block'], 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('show_hits', $_SP_CONF['show_hits'], 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('show_date', $_SP_CONF['show_date'], 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('filter_html', $_SP_CONF['filter_html'], 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('censor', $_SP_CONF['censor'], 'text', 0, 0, null, 0, true, 'staticpages');
+            $sp_config->add('default_permissions', $_SP_CONF['default_permissions'], '@text', 0, 0, null, 0, true, 'staticpages');
+
+            //$sp_config->add('aftersave', 'item', 'text', 0, 0, null, 0, true, 'staticpages');
+            //$sp_config->add('atom_max_items', 10, 'text', 0, 0, null, 0, true, 'staticpages');
+            if($sp_config->group_exists('staticpages')){
+                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.5' WHERE pi_name = 'staticpages'");
+            }
+
+            // Rename the existing config.php as it's not needed now
+            @rename ("{$plugin_path}config.php","{$plugin_path}config-pre1.4.3.php");
+        }
+
+    }
 
     return true;
 }
@@ -1043,8 +1085,11 @@ function plugin_autouninstall_staticpages ()
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_calendar'),
         /* give all vars with their name */
-        'vars'=> array()
+        'vars'=> array(),
+        /* give the full name of the plugins config data to be removed from the config table */
+        'config_data' => array('staticpages')
     );
+
     return $out;
 }
 
