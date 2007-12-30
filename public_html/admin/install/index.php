@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.24 2007/12/30 17:46:39 dhaun Exp $
+// $Id: index.php,v 1.25 2007/12/30 19:57:22 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -52,8 +52,8 @@ if (!defined ("LB")) {
 if (!defined ('VERSION')) {
     define('VERSION', '1.5.0');
 }
-if ( !defined( 'XHTML' ) ) {
-	define( 'XHTML', ' /' );
+if (!defined('XHTML')) {
+    define('XHTML', ' /');
 }
 
 /**
@@ -115,7 +115,7 @@ function mysql_v ($_DB_host, $_DB_user, $_DB_pass)
  */
 function INST_installEngine($install_type, $install_step)
 {
-    global $LANG_INSTALL, $_DB, $_TABLES, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language;
+    global $_CONF, $LANG_INSTALL, $_DB, $_TABLES, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language;
 
     switch ($install_step) {
 
@@ -136,7 +136,7 @@ function INST_installEngine($install_type, $install_step)
             if (isset($_POST['db_type'])) {
                 switch ($_POST['db_type']) {
                     case 'mysql-innodb':
-                        $msyql_innodb_selected = ' selected="selected"';
+                        $mysql_innodb_selected = ' selected="selected"';
                         break;
                     case 'mssql':
                         $mssql_selected = ' selected="selected"';
@@ -186,7 +186,7 @@ function INST_installEngine($install_type, $install_step)
                 <p><label>' . $LANG_INSTALL[33] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40"' . XHTML . '></p><br' . XHTML . '>
                 <p><label>' . $LANG_INSTALL[34] . ' ' . INST_helpLink('') . '</label> <select name="db_type">
                     <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
-                    ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $msyql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
+                    ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $mysql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
                     <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . $innodbnote . '</p>
                 <p><label>' . $LANG_INSTALL[39] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20"' . XHTML . '></p>
                 <p><label>' . $LANG_INSTALL[40] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20"' . XHTML . '></p>
@@ -226,14 +226,28 @@ function INST_installEngine($install_type, $install_step)
             $site_mail = $_POST['site_mail'];
             $noreply_mail = $_POST['noreply_mail'];
 
-            // Check if you can connect to database
-            $invalid_db_auth = false;
-            $db_handle = null;
-            $innodb = false;
-            switch ($db_type) {
+            // If using MySQL check to make sure the version is supported
+            $outdated_mysql = false;
+            if ($db_type == 'mysql' || $db_type == 'mysql-innodb') {
+                $myv = mysql_v($db_host, $db_user, $db_pass);
+                if (($myv[0] < 3) || (($myv[0] == 3) && ($myv[1] < 23)) ||
+                        (($myv[0] == 3) && ($myv[1] == 23) && ($myv[2] < 2))) {
+                            $outdated_mysql = true;
+                }
+            }
+            if ($outdated_mysql) { // If MySQL is out of date
+                $display .= '<h1>' . $LANG_INSTALL[51] . '</h1>' . LB;
+                $display .= '<p>' . $LANG_INSTALL[52] . $myv[0] . '.' . $myv[1] . '.' . $myv[2] . $LANG_INSTALL[53] . '</p>' . LB;
+            } else {
+                // Check if you can connect to database
+                $invalid_db_auth = false;
+                $db_handle = null;
+                $innodb = false;
+                switch ($db_type) {
                 case 'mysql-innodb':
                     $innodb = true;
                     $db_type = 'mysql';
+                    // deliberate fallthrough - no "break"
                 case 'mysql':
                     if (!$db_handle = @mysql_connect($db_host, $db_user, $db_pass)) {
                         $invalid_db_auth = true;
@@ -244,27 +258,14 @@ function INST_installEngine($install_type, $install_step)
                         $invalid_db_auth = true;
                     }
                     break;
-            }
-
-            if ($outdated_mysql) { // If MySQL is out of date
-                $display .= '<h1>' . $LANG_INSTALL[51] . '</h1>' . LB;
-                $display .= '<p>' . $LANG_INSTALL[52] . $myv[0] . '.' . $myv[1] . '.' . $myv[2] . $LANG_INSTALL[53] . '</p>' . LB;
-            } else if ($invalid_db_auth) { // If we can't connect to the database server
-                $display .= '<h2>' . $LANG_INSTALL['54'] . '</h2>
-                    <p>' . $LANG_INSTALL[55] . '</p>' . INST_showReturnFormData($_POST) . LB;
-            } else { // If we can connect
-                // If using MySQL check to make sure the version is supported
-                $outdated_mysql = false;
-                if ($db_type == 'mysql' || $db_type == 'mysql-innodb') {
-                    $myv = mysql_v($db_host, $db_name, $db_pass);
-                    if (($myv[0] < 3) || (($myv[0] == 3) && ($myv[1] < 23)) ||
-                            (($myv[0] == 3) && ($myv[1] == 23) && ($myv[2] < 2))) {
-                                $outdated_mysql = true;
-                    }
                 }
-                // Check if the database exists
-                $db_exists = false;
-                switch ($db_type) {
+                if ($invalid_db_auth) { // If we can't connect to the database server
+                    $display .= '<h2>' . $LANG_INSTALL['54'] . '</h2>
+                        <p>' . $LANG_INSTALL[55] . '</p>' . INST_showReturnFormData($_POST) . LB;
+                } else { // If we can connect
+                    // Check if the database exists
+                    $db_exists = false;
+                    switch ($db_type) {
                     case 'mysql':
                         if (@mysql_select_db($db_name, $db_handle)) {
                             $db_exists = true;
@@ -275,38 +276,38 @@ function INST_installEngine($install_type, $install_step)
                             $db_exists = true;
                         }
                         break;
-                }
-                if (!$db_exists) { // If database doesn't exist
-                    $display .= '<h2>' . $LANG_INSTALL[56] . '</h2>
-                    <p>' . $LANG_INSTALL[57] . '</p>' . INST_showReturnFormData($_POST) . LB;
-                } else { // If database does exist
-
-                    require_once $dbconfig_path; // Grab the current DB values
-
-                    // Read in db-config.php so we can insert the DB information
-                    $dbconfig_file = fopen($dbconfig_path, 'r');
-                    $dbconfig_data = fread($dbconfig_file, filesize($dbconfig_path));
-                    fclose($dbconfig_file);
-
-                    // Replace the values with the new ones
-                    $dbconfig_data = str_replace("\$_DB_host = '" . $_DB_host . "';", "\$_DB_host = '" . $db_host . "';", $dbconfig_data); // Host
-                    $dbconfig_data = str_replace("\$_DB_name = '" . $_DB_name . "';", "\$_DB_name = '" . $db_name . "';", $dbconfig_data); // Database
-                    $dbconfig_data = str_replace("\$_DB_user = '" . $_DB_user . "';", "\$_DB_user = '" . $db_user . "';", $dbconfig_data); // Username
-                    $dbconfig_data = str_replace("\$_DB_pass = '" . $_DB_pass . "';", "\$_DB_pass = '" . $db_pass . "';", $dbconfig_data); // Password
-                    $dbconfig_data = str_replace("\$_DB_table_prefix = '" . $_DB_table_prefix . "';", "\$_DB_table_prefix = '" . $db_prefix . "';", $dbconfig_data); // Table prefix
-                    $dbconfig_data = str_replace("\$_DB_dbms = '" . $_DB_dbms . "';", "\$_DB_dbms = '" . $db_type . "';", $dbconfig_data); // Database type ('mysql' or 'mssql')
-
-                    // Write our changes to db-config.php
-                    $dbconfig_file = fopen($dbconfig_path, 'w');
-                    if (!fwrite($dbconfig_file, $dbconfig_data)) {
-                        exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
                     }
-                    fclose($dbconfig_file);
+                    if (!$db_exists) { // If database doesn't exist
+                        $display .= '<h2>' . $LANG_INSTALL[56] . '</h2>
+                            <p>' . $LANG_INSTALL[57] . '</p>' . INST_showReturnFormData($_POST) . LB;
+                    } else { // If database does exist
 
-                    require $dbconfig_path;
-                    require_once $siteconfig_path;
-                    require_once $_CONF['path_system'] . 'lib-database.php';
-                    $req_string = 'index.php?mode=' . $install_type . '&step=3&dbconfig_path=' . $dbconfig_path
+                        require_once $dbconfig_path; // Grab the current DB values
+
+                        // Read in db-config.php so we can insert the DB information
+                        $dbconfig_file = fopen($dbconfig_path, 'r');
+                        $dbconfig_data = fread($dbconfig_file, filesize($dbconfig_path));
+                        fclose($dbconfig_file);
+
+                        // Replace the values with the new ones
+                        $dbconfig_data = str_replace("\$_DB_host = '" . $_DB_host . "';", "\$_DB_host = '" . $db_host . "';", $dbconfig_data); // Host
+                        $dbconfig_data = str_replace("\$_DB_name = '" . $_DB_name . "';", "\$_DB_name = '" . $db_name . "';", $dbconfig_data); // Database
+                        $dbconfig_data = str_replace("\$_DB_user = '" . $_DB_user . "';", "\$_DB_user = '" . $db_user . "';", $dbconfig_data); // Username
+                        $dbconfig_data = str_replace("\$_DB_pass = '" . $_DB_pass . "';", "\$_DB_pass = '" . $db_pass . "';", $dbconfig_data); // Password
+                        $dbconfig_data = str_replace("\$_DB_table_prefix = '" . $_DB_table_prefix . "';", "\$_DB_table_prefix = '" . $db_prefix . "';", $dbconfig_data); // Table prefix
+                        $dbconfig_data = str_replace("\$_DB_dbms = '" . $_DB_dbms . "';", "\$_DB_dbms = '" . $db_type . "';", $dbconfig_data); // Database type ('mysql' or 'mssql')
+
+                        // Write our changes to db-config.php
+                        $dbconfig_file = fopen($dbconfig_path, 'w');
+                        if (!fwrite($dbconfig_file, $dbconfig_data)) {
+                            exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
+                        }
+                        fclose($dbconfig_file);
+
+                        require $dbconfig_path;
+                        require_once $siteconfig_path;
+                        require_once $_CONF['path_system'] . 'lib-database.php';
+                        $req_string = 'index.php?mode=' . $install_type . '&step=3&dbconfig_path=' . $dbconfig_path
                                     . '&amp;language=' . $language
                                     . '&site_name=' . urlencode($site_name)
                                     . '&site_slogan=' . urlencode($site_slogan)
@@ -315,7 +316,7 @@ function INST_installEngine($install_type, $install_step)
                                     . '&site_mail=' . urlencode($site_mail)
                                     . '&noreply_mail=' . urlencode($noreply_mail);
 
-                    switch ($install_type) {
+                        switch ($install_type) {
 
                         case 'install':
                             $hidden_fields = '<input type="hidden" name="mode" value="' . $install_type . '"' . XHTML . '>
@@ -404,8 +405,8 @@ function INST_installEngine($install_type, $install_step)
                                 }
                             }
                             break;
+                        }
                     }
-
                 }
             }
             break;
@@ -417,7 +418,8 @@ function INST_installEngine($install_type, $install_step)
             $gl_path = str_replace('db-config.php', '', $dbconfig_path);
             switch ($install_type) {
                 case 'install':
-                    if ($_POST['submit'] == '<< ' . $LANG_INSTALL[61]) {
+                    if (isset($_POST['submit']) &&
+                            ($_POST['submit'] == '<< ' . $LANG_INSTALL[61])) {
                         header('Location: index.php?mode=install');
                     }
 
@@ -457,6 +459,7 @@ function INST_installEngine($install_type, $install_step)
                                     <form action="index.php" method="post">
                                     <input type="hidden" name="mode" value="upgrade"' . XHTML . '>
                                     <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
+                                    <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
                                     <input type="submit" value="' . $LANG_INSTALL[25] . '"' . XHTML . '>
                                     </form>
                                 </div>
@@ -1554,6 +1557,11 @@ switch ($mode) {
             $_CONF['rdf_file']      = $_PATH['public_html/'] . 'backend/geeklog.rss';
             $_CONF['path_images']   = $_PATH['public_html/'] . 'images/';
             $data_path              = $gl_path . (file_exists($gl_path . 'data') ? 'data/' : 'public_html/data/');
+            if (!isset($_CONF['allow_mysqldump'])) {
+                if ($_DB_dbms == 'mysql') {
+                    $_CONF['allow_mysqldump'] = 1;
+                }
+            }
             $failed                 = 0; // number of failed tests
             $display_permissions    = '<br' . XHTML . '><p><label class="file-permission-list"><b>' . $LANG_INSTALL[10]
                                     . '</b></label> <b>' . $LANG_INSTALL[11] . '</b></p>' . LB;
