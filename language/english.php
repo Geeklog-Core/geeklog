@@ -1616,6 +1616,7 @@ array(
       'cookie_password' => "Cookie Password",
       'cookie_theme' => "Cookie Theme",
       'cookie_language' => "Cookie Language",
+      'cookie_tzid' => "Cookie Timezone",
       'cookie_ip' => "Cookies embed IP?",
       'default_perm_cookie_timeout' => "Permanent Timeout",
       'session_cookie_timeout' => "Session Timeout",
