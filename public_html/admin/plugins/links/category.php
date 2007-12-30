@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.8 2007/12/30 09:45:44 dhaun Exp $
+// $Id: category.php,v 1.9 2007/12/30 10:02:25 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -154,25 +154,24 @@ function links_list_categories_recursive($data_arr, $cid, $indent)
 
 function links_edit_category ($cid,$pid)
 {
-    global $_CONF, $_TABLES, $_USER,
-           $LANG_LINKS_ADMIN, $LANG_ADMIN, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $_USER, $MESSAGE,
+           $LANG_LINKS_ADMIN, $LANG_ADMIN, $LANG_ACCESS, $_LI_CONF;
 
     $retval = '';
 
     if ($pid <> '') {
         // have parent id, so making a new subcategory
         // get parent access rights
-        $result = DB_Query("SELECT group_id,perm_owner,perm_group, perm_members,perm_anon
-                            FROM {$_TABLES['linkcategories']} WHERE cid='{$pid}'");
+        $result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$pid}'");
         $A = DB_fetchArray($result);
         $A['username'] = DB_getItem ($_TABLES['users'], 'username', "uid={$_USER['uid']}");
         $A['owner_id'] = $_USER['uid'];
         $A['pid'] = $pid;
     } elseif ($cid <> '') {
         // have category id, so editing a category
-        $sql = "SELECT * FROM {$_TABLES['linkcategories']}
-                WHERE cid='{$cid}'" . COM_getPermSQL('AND');
-        $result = DB_Query($sql);
+        $sql = "SELECT * FROM {$_TABLES['linkcategories']} WHERE cid='{$cid}'"
+             . COM_getPermSQL('AND');
+        $result = DB_query($sql);
         $A = DB_fetchArray($result);
         $A['username'] = DB_getItem ($_TABLES['users'], 'username', "uid={$A['owner_id']}");
     } else {
@@ -217,6 +216,11 @@ function links_edit_category ($cid,$pid)
     $T->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($cid)) {
         $T->set_var('delete_option', '<input type="submit" value="'.$LANG_ADMIN['delete'].'" name="mode"' . XHTML . '>');
+        $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
+                   . '" name="mode"%s' . XHTML . '>';
+        $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
+        $T->set_var('delete_option', sprintf($delbutton, $jsconfirm));
+        $T->set_var('delete_option_no_confirmation', sprintf($delbutton, ''));
     } else {
         $T->set_var('delete_option', '');
     }
