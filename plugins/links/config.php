@@ -27,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.21 2007/12/31 12:48:46 dhaun Exp $
+// $Id: config.php,v 1.22 2007/12/31 13:25:48 dhaun Exp $
 
 /**
  * Links plugin configuration file
@@ -149,12 +149,6 @@ $_LI_CONF['delete_links'] = 0;
  * 'admin' -> display the site admin homepage
  */
 $_LI_CONF['aftersave'] = 'list';
-
-/**
- * indent used in category edit page
- * What characters to use for the indent when listing categories for editing in the admin section.
- */
-$_LI_CONF['indent'] = "--";
 
 /**
  * show category descriptions
