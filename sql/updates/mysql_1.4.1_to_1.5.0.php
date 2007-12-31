@@ -371,7 +371,7 @@ function upgrade_LinksPlugin()
         . "VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
     $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
         . "VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
-    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0', pi_gl_version='1.5.0' WHERE pi_name='links'";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.0', pi_gl_version='1.5.0' WHERE pi_name='links'";
 
     $P_SQL = INST_checkInnodbUpgrade($P_SQL);
     foreach ($P_SQL as $sql) {
@@ -397,8 +397,8 @@ function upgrade_LinksPlugin()
         $A = DB_fetchArray($result);
         $category = addslashes($A['category']);
         $cid = $category;
-        DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,owner_id,group_id,created,modified) "
-            . "VALUES ('{$cid}','{$root}','{$category}','{$category}',2,'{$group_id}',NOW(),NOW())",1);
+        DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified) "
+            . "VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW())",1);
         if ($cid != $category) { // still experimenting ...
             DB_query("UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$category}'",1);
         }

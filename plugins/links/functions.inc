@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.94 2007/12/31 10:41:47 dhaun Exp $
+// $Id: functions.inc,v 1.95 2007/12/31 12:27:09 dhaun Exp $
 
 
 /**
@@ -1229,7 +1229,7 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
 
 function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_LINKS_ADMIN;
 
     $retval = '';
 
@@ -1266,8 +1266,16 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
                     );
                 }
                 break;
-            case 'topic';
-                $retval = $A['tid'];
+            case 'tid';
+                if ($A['tid'] == 'all') {
+                    $retval = $LANG_LINKS_ADMIN[35];
+                } else {
+                    $retval = DB_getItem($_TABLES['topics'], 'topic',
+                                         "tid = '{$A['tid']}'");
+                }
+                if (empty($retval)) {
+                    $retval = $A['tid'];
+                }
                 break;
             default:
                 $retval = $fieldvalue;
@@ -1512,7 +1520,7 @@ function phpblock_topic_links()
 
     if (!empty($topic)) {
         $tid = addslashes($topic);
-        $result = DB_query("SELECT l.lid, l.title, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE c.tid='{$tid}'" . COM_getPermSQL('AND', 0, 2, 'c'));
+        $result = DB_query("SELECT l.lid, l.title, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE c.tid='{$tid}' OR c.tid='all'" . COM_getPermSQL('AND', 0, 2, 'c'));
         $nrows = DB_numRows($result);
         if ($nrows > 0) {
             for ($i = 0; $i < $nrows; $i++) {
@@ -1541,7 +1549,7 @@ function phpblock_topic_categories()
 
     if (!empty($topic)) {
         $tid = addslashes($topic);
-        $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']} WHERE tid='{$tid}'" . COM_getPermSQL ('AND'));
+        $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']} WHERE tid='{$tid}' OR tid='all'" . COM_getPermSQL ('AND'));
         $nrows = DB_numRows($result);
         if ($nrows > 0) {
             for ($i = 0; $i < $nrows; $i++) {

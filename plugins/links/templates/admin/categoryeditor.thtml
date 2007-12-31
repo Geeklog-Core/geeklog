@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td align="right">{lang_topic}</td>
-                <td><select name="tid">{topic_list}</select></td>
+                <td>{topic_selection}<td>
             </tr>
             <tr>
                 <td colspan="2"><hr{xhtml}></td>

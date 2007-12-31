@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.11 2007/12/30 16:27:51 dhaun Exp $
+// $Id: category.php,v 1.12 2007/12/31 12:27:09 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -230,8 +230,6 @@ function links_edit_category($cid, $pid)
         $T->set_var('category_options', links_select_box(3, $A['pid']));
         $T->set_var('category_value', $A['category']);
         $T->set_var('description_value', $A['description']);
-        $T->set_var('topic_list',
-                    COM_topicList('tid,topic', $A['tid'], 1, true));
     } else {
         $A['cid'] = COM_makeSid();
         $T->set_var('cid_value', $A['cid']);
@@ -239,8 +237,20 @@ function links_edit_category($cid, $pid)
         $T->set_var('category_options', links_select_box(3, $A['pid']));
         $T->set_var('category_value', '');
         $T->set_var('description_value', '');
-        $T->set_var('topic_list', COM_topicList('tid,topic', '', 1, true));
     }
+
+    if (!isset($A['tid'])) {
+        $A['tid'] = 'all';
+    }
+    $topics = COM_topicList('tid,topic', $A['tid'], 1, true);
+    $T->set_var('topic_list', $topics);
+    $alltopics = '<option value="all"';
+    if ($A['tid'] == 'all') {
+        $alltopics .= ' selected="selected"';
+    }
+    $alltopics .= '>' . $LANG_LINKS_ADMIN[35] . '</option>' . LB;
+    $T->set_var('topic_selection', '<select name="tid">' . $alltopics
+                                   . $topics . '</select>');
 
     // user access info
     $T->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
