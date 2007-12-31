@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.105 2007/12/30 16:43:42 blaine Exp $
+// $Id: functions.inc,v 1.106 2007/12/31 12:48:46 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -51,7 +51,6 @@ if (file_exists($langfile)) {
 
 if (file_exists("{$plugin_path}config.php")) {
    include $plugin_path . 'config.php';
-   $_SP_CONF['version'] = '1.5';
 } else {
     require_once $_CONF['path_system'] . 'classes/config.class.php';
     $sp_config = config::get_instance();

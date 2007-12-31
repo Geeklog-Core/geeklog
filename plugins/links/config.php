@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | config.php   Links plugin configuration file                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users.sourceforge DOT net        |
@@ -27,15 +27,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.20 2007/08/29 04:26:59 ospiess Exp $
+// $Id: config.php,v 1.21 2007/12/31 12:48:46 dhaun Exp $
+
 /**
  * Links plugin configuration file
  *
  * @package Links
  * @filesource
- * @version 1.2
+ * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2006
+ * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -46,7 +47,7 @@
  */
 
 /**
-* the link plugin's config aray
+* the link plugin's config array
 *
 * @global array $_LI_CONF
 */
@@ -57,7 +58,7 @@ $_LI_CONF = array();
 *
 * @global array $_LI_CONF['version']
 */
-$_LI_CONF['version'] = '2.0';          // Plugin Version
+$_LI_CONF['version'] = '2.0.0';          // Plugin Version
 
 /**
  * this lets you select which functions are available for registered users only
@@ -89,7 +90,7 @@ $_LI_CONF['newlinksinterval']    = 1209600; // = 14 days
 $_LI_CONF['hidenewlinks']    = 0;
 
 /**
- * Set to 1 to hide the "Web Resources" entry from the top menu:
+ * Set to 1 to hide the "Links" entry from the top menu:
  *
  * @global array $_LI_CONF['hidelinksmenu']
  */
