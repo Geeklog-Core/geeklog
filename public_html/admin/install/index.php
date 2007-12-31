@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.28 2007/12/30 21:11:32 ablankstein Exp $
+// $Id: index.php,v 1.29 2007/12/31 15:24:15 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -371,6 +371,9 @@ function INST_installEngine($install_type, $install_step)
                                 // then there's no need to update.
                                 $display .= '<h2>' . $LANG_INSTALL[74] . '</h2>' . LB
                                           . '<p>' . $LANG_INSTALL[75] . '</p>';
+                            } elseif ($curv == 'empty') {
+                                $display .= '<h2>' . $LANG_INSTALL[90] . '</h2>' . LB
+                                          . '<p>' . $LANG_INSTALL[91] . '</p>';
                             } else {
 
                                 $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1');
@@ -383,7 +386,7 @@ function INST_installEngine($install_type, $install_step)
                                         <input type="hidden" name="mode" value="upgrade"' . XHTML . '>
                                         <input type="hidden" name="step" value="3"' . XHTML . '>
                                         <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
-                                        <p><label>Current Version:</label> <select name="version">';
+                                        <p><label>' . $LANG_INSTALL[89] . '</label> <select name="version">';
                                     $tmp_counter = 0;
                                     $ver_selected = '';
                                     foreach ($old_versions as $version) {
@@ -700,7 +703,7 @@ function INST_identifyGeeklogVersion ()
 {
     global $_TABLES, $_DB, $_DB_dbms, $dbconfig_path, $siteconfig_path;
 
-    $_DB->setDisplayError (true);
+    $_DB->setDisplayError(true);
 
     // simple tests for the version of the database:
     // "DESCRIBE sometable somefield", ''
@@ -714,54 +717,64 @@ function INST_identifyGeeklogVersion ()
 
     switch ($_DB_dbms) {
 
-        case 'mysql':
-            $test = array(
-                '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
-                '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
-                '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
-                '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
-                '1.3.10' => array("DESCRIBE {$_TABLES['comments']} lft",''),
-                '1.3.9'  => array("DESCRIBE {$_TABLES['syndication']} fid",''),
-                '1.3.8'  => array("DESCRIBE {$_TABLES['userprefs']} showonline",'')
-                // It's hard to (reliably) test for 1.3.7 - let's just hope nobody uses
-                // such an old version any more ...
+    case 'mysql':
+        $test = array(
+            '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
+            '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
+            '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
+            '1.3.11' => array("DESCRIBE {$_TABLES['comments']} sid", 'sid,varchar(40)'),
+            '1.3.10' => array("DESCRIBE {$_TABLES['comments']} lft",''),
+            '1.3.9'  => array("DESCRIBE {$_TABLES['syndication']} fid",''),
+            '1.3.8'  => array("DESCRIBE {$_TABLES['userprefs']} showonline",'')
+            // It's hard to (reliably) test for 1.3.7 - let's just hope
+            // nobody uses such an old version any more ...
             );
 
-            break;
+        break;
 
-        case 'mssql':
-
+    case 'mssql':
 	    $test = array(
-                '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
-                '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
+            '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
+            '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit')
+            // 1.4.1 was the first version with MS SQL support
             );
 
-            break;
+        break;
 
     }
 
     $version = '';
+
+    $result = DB_query("DESCRIBE {$_TABLES['access']} acc_ft_id", 1);
+    if ($result === false) {
+        // A check for the first field in the first table failed?
+        // Sounds suspiciously like an empty table ...
+
+        return 'empty';
+    }
+
     foreach ($test as $v => $qarray) {
-        $result = DB_query ($qarray[0], 1);
+        $result = DB_query($qarray[0], 1);
         if ($result === false) {
 
             // error - continue with next test
-        } else if (DB_numRows ($result) > 0) {
-            $A = DB_fetchArray ($result);
-            if (empty ($qarray[1])) {
+
+        } else if (DB_numRows($result) > 0) {
+            $A = DB_fetchArray($result);
+            if (empty($qarray[1])) {
                 // test only for existence of field - succeeded
                 $version = $v;
                 break;
             } else {
-                if (substr ($qarray[0], 0, 6) == 'SELECT') {
+                if (substr($qarray[0], 0, 6) == 'SELECT') {
                     // text for a certain value
-                    if($A[0] == $qarray[1]) {
+                    if ($A[0] == $qarray[1]) {
                         $version = $v;
                         break;
                     }
                 } else {
                     // test for certain type of field
-                    $tst = explode (',', $qarray[1]);
+                    $tst = explode(',', $qarray[1]);
                     if (($A['Field'] == $tst[0]) && ($A['Type'] == $tst[1])) {
                         $version = $v;
                         break;
@@ -770,6 +783,7 @@ function INST_identifyGeeklogVersion ()
             }
         }
     }
+
     return $version;
 }
 
@@ -1394,8 +1408,10 @@ $step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step
 $mode               = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : '');
 
 $language = 'english';
-if (isset($_REQUEST['language'])) {
-    $lng = $_REQUEST['language'];
+if (isset($_POST['language'])) {
+    $lng = $_POST['language'];
+} elseif (isset($_GET['language'])) {
+    $lng = $_GET['language'];
 } else if (isset($_COOKIE['language'])) {
     // Okay, so the name of the language cookie is configurable, so it may not
     // be named 'language' after all. Still worth a try ...
@@ -1412,7 +1428,7 @@ if (!empty($lng) && is_file('language/' . $lng . '.php')) {
 require_once 'language/' . $language . '.php';
 
 // $display holds all the outputted HTML and content
-if ( defined( 'XHTML' ) ) {
+if (defined('XHTML')) {
 	$display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">';
 } else {

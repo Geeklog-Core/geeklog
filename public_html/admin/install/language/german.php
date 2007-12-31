@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.2 2007/09/06 06:52:24 mwest Exp $
+// $Id: german.php,v 1.3 2007/12/31 15:24:16 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -137,7 +137,11 @@ $LANG_INSTALL = array(
     84 => 'The path "',
     85 => '" does not appear to be correct. Please go back and try again.',
     86 => 'Sprache',
-    87 => 'http://geeklog.info/forum/index.php?forum=1'
+    87 => 'http://geeklog.info/forum/index.php?forum=1',
+    88 => 'Change directory and containing files to',
+    89 => 'Aktuelle Version:',
+    90 => 'Empty database?',
+    91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.'
 );
 
 // +---------------------------------------------------------------------------+

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: english.php,v 1.5 2007/09/06 06:52:12 mwest Exp $
+// $Id: english.php,v 1.6 2007/12/31 15:24:16 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -138,7 +138,10 @@ $LANG_INSTALL = array(
     85 => '" does not appear to be correct. Please go back and try again.',
     86 => 'Language',
     87 => 'http://www.geeklog.net/forum/index.php?forum=1',
-    88 => 'Change directory and containing files to'
+    88 => 'Change directory and containing files to',
+    89 => 'Current Version:',
+    90 => 'Empty database?',
+    91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.'
 );
 
 // +---------------------------------------------------------------------------+
