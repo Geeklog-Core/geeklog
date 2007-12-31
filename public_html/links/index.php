@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.26 2007/12/31 10:41:47 dhaun Exp $
+// $Id: index.php,v 1.27 2007/12/31 13:23:55 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -241,8 +241,9 @@ function links_list($message)
     }
     $result = DB_query ($sql . $from_where . $order . $limit);
     $nrows = DB_numRows ($result);
+COM_errorLog("$nrows, $category, $cid, $page");
     if ($nrows == 0) {
-        if (empty ($category) && ($page <= 1) && $_LI_CONF['show_top10']) {
+        if (($cid == $_LI_CONF['root']) && ($page <= 1) && $_LI_CONF['show_top10']) {
             $result = DB_query ("SELECT lid,url,title,description,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
             $nrows  = DB_numRows ($result);
             if ($nrows > 0) {
