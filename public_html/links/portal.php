@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | portal.php                                                                |
 // |                                                                           |
 // | Geeklog portal page that tracks link click throughs.                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2007 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -51,7 +51,7 @@
  * 
  */
 
-// $Id: portal.php,v 1.4 2007/08/29 04:27:34 ospiess Exp $
+// $Id: portal.php,v 1.5 2007/12/31 10:41:47 dhaun Exp $
 
 require_once('../lib-common.php');
 
@@ -77,7 +77,7 @@ if ($what == 'link') {
     $item = COM_applyFilter (COM_getArgument ('item'));
 
     if (!empty ($item)) {
-        $url = COM_buildURL("{$_CONF['site_url']}/links/index.php?cid={$item}");
+        $url = COM_buildURL("{$_CONF['site_url']}/links/index.php?category=" . urlencode($item));
     }
 }
 

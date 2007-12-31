@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.93 2007/12/29 19:04:35 dhaun Exp $
+// $Id: functions.inc,v 1.94 2007/12/31 10:41:47 dhaun Exp $
 
 
 /**
@@ -197,10 +197,10 @@ function plugin_autotags_links ($op, $content = '', $autotag = '')
         case 'category':
             $cid = COM_applyFilter ($autotag['parm1']);
             $url = COM_buildUrl ($_CONF['site_url']
-                                 . '/links/index.php?cid=' . $cid);
+                    . '/links/index.php?category=' . urlencode($cid));
             if (empty ($autotag['parm2'])) {
-                $linktext = stripslashes (DB_getItem ($_TABLES['linkcategories'],
-                                          'category', "cid = '$cid'"));
+                $linktext = stripslashes(DB_getItem($_TABLES['linkcategories'],
+                                         'category', "cid = '$cid'"));
             } else {
                 $linktext = $autotag['parm2'];
             }
@@ -1038,9 +1038,11 @@ function plugin_submit_links()
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
     $linkform->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
-    $dummycategory = '';
-    $linkform->set_var('link_category_options',
-                       links_select_box (2,$dummycategory));
+    $category = '';
+    if (isset($_REQUEST['cid'])) {
+        $category = $_REQUEST['cid'];
+    }
+    $linkform->set_var('link_category_options', links_select_box(2, $category));
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $linkform->set_var('lang_submit', $LANG12[8]);
@@ -1210,10 +1212,9 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                 } else {
                     $indent = 0;
                 }
-                $cat = COM_createLink(
-                    $A['category'],
-                    "{$_CONF['site_url']}/links/index.php?cid={$A['cid']}"
-                );
+                $cat = COM_createLink($A['category'],
+                        "{$_CONF['site_url']}/links/index.php?category="
+                        . urlencode($A['cid']));
                 $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
                 break;
                 break;
@@ -1239,7 +1240,7 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
                 if ($access == 3) {
                     $retval = COM_createLink(
                         $icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;cid={$A['cid']}"
+                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;cid=" . urlencode($A['cid'])
                     );
                 }
                 break;
@@ -1251,18 +1252,17 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 break;
             case 'category':
-                $indent = ($A['indent']-1) * 20;
-                $cat = COM_createLink(
-                    $A['category'],
-                    "{$_CONF['site_url']}/links/index.php?cid={$A['cid']}"
-                );
+                $indent = ($A['indent'] - 1) * 20;
+                $cat = COM_createLink($A['category'],
+                        "{$_CONF['site_url']}/links/index.php?category="
+                        . urlencode($A['cid']));
                 $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
                 break;
             case 'addchild';
                 if ($access == 3) {
                     $retval = COM_createLink(
                         $icon_arr['addchild'],
-                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;pid={$A['cid']}"
+                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;pid=" . urlencode($A['cid'])
                     );
                 }
                 break;
@@ -1400,16 +1400,18 @@ function plugin_autouninstall_links ()
     return $out;
 }
 
-// +-----------------------------------------------------------------------------------------------+
-// | Category HTML functions                                                                       |
-// | Functions for building select boxes and breadcrumb trails etc.                                |
-// +-----------------------------------------------------------------------------------------------+
+// +--------------------------------------------------------------------------+
+// | Category HTML functions                                                  |
+// | Functions for building select boxes and breadcrumb trails etc.           |
+// +--------------------------------------------------------------------------+
 
 /*
 * Build selection list
 */
-function links_select_box ($access, $sel = '') {
+function links_select_box ($access, $sel = '')
+{
     global $_CONF, $LANG_LINKS, $_LI_CONF;
+
     // set root value
     $menu = '<option value="' . $_LI_CONF['root'] . '">' . $LANG_LINKS['root'] . '</option>';
     // get option values
@@ -1422,7 +1424,8 @@ function links_select_box ($access, $sel = '') {
 /*
 * Build recursive tree
 */
-function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access) {
+function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access)
+{
     global $_CONF, $_TABLES;
     $sql = "SELECT cid,category
             FROM {$_TABLES['linkcategories']}
@@ -1431,7 +1434,7 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access) {
     $query = DB_QUERY($sql);
     while ( list($cid,$category) = DB_fetchArray($query) ) {
         // set selected item
-        if ($cid==$sel) {
+        if ($cid == $sel) {
             // yes, selected
             $menu .= '<option value="'.$cid.'" selected="selected">'.$indent.$category.'</option>';
         } else {
@@ -1459,6 +1462,8 @@ function links_breadcrumbs($root, $cid)
     global $_CONF, $_TABLES, $LANG_LINKS;
 
     $breadcrumb = '';
+    $separator  = ' : ';
+
     $c = $cid;
     $pid = '';
     if ($root != $cid) {
@@ -1467,8 +1472,8 @@ function links_breadcrumbs($root, $cid)
             $A = DB_fetchArray($parent);
             if ($cid != $c) {
                 $content = stripslashes($A['category']);
-                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
-                $breadcrumb = COM_createLink($content, $url) . ' : ' . $breadcrumb;
+                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . urlencode($A['cid']);
+                $breadcrumb = COM_createLink($content, $url) . $separator . $breadcrumb;
             } else {
                 $breadcrumb = $A['category'] . $breadcrumb;
             }
@@ -1478,7 +1483,11 @@ function links_breadcrumbs($root, $cid)
     }
 
     $url = $_CONF['site_url'] . '/links/index.php';
-    $breadcrumb = COM_createLink($LANG_LINKS['root'], $url) . ' : ' . $breadcrumb;
+    if (empty($breadcrumb)) {
+        $breadcrumb = $LANG_LINKS['root'];
+    } else {
+        $breadcrumb = COM_createLink($LANG_LINKS['root'], $url) . $separator . $breadcrumb;
+    }
 
     return $breadcrumb;
 }
@@ -1538,7 +1547,7 @@ function phpblock_topic_categories()
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
                 $content = stripslashes($A['category']);
-                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . $A['cid'];
+                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . urlencode($A['cid']);
                 $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
             }
         }

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0                                                          |
+// | Links Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -40,7 +40,7 @@
  * @package Links
  * @subpackage public_html
  * @filesource
- * @version 1.0
+ * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.25 2007/12/29 16:14:03 dhaun Exp $
+// $Id: index.php,v 1.26 2007/12/31 10:41:47 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -68,10 +68,10 @@ function links_list($message)
 
     $cid = $_LI_CONF['root'];
     $display = '';
-    if (isset ($_GET['cid'])) {
-        $cid = strip_tags (COM_stripslashes ($_GET['cid']));
-    } elseif (isset ($_POST['cid'])) {
-        $cid = strip_tags (COM_stripslashes ($_POST['cid']));
+    if (isset($_GET['category'])) {
+        $cid = strip_tags (COM_stripslashes ($_GET['category']));
+    } elseif (isset($_POST['category'])) {
+        $cid = strip_tags (COM_stripslashes ($_POST['category']));
     }
     $page = 0;
     if (isset ($_GET['page'])) {
@@ -129,17 +129,16 @@ function links_list($message)
                                 'catcol'   => 'categorycol.thtml',
                                 'actcol'   => 'categoryactivecol.thtml',
                                 'pagenav'  => 'pagenavigation.thtml'));
-    $linklist->set_var ( 'xhtml', XHTML );
-    $linklist->set_var ('blockheader',COM_startBlock($LANG_LINKS[114]));
-    $linklist->set_var ('layout_url',$_CONF['layout_url']);
-    
+    $linklist->set_var('xhtml', XHTML);
+    $linklist->set_var('blockheader', COM_startBlock($LANG_LINKS[114]));
+    $linklist->set_var('layout_url', $_CONF['layout_url']);
+
     // Create breadcrumb trail
     $linklist->set_var('breadcrumbs', links_breadcrumbs ($_LI_CONF['root'], $cid));
 
     // Set dropdown for category jump
-    $linklist->set_var ('lang_go', $LANG_LINKS[124]);
+    $linklist->set_var('lang_go', $LANG_LINKS[124]);
     $linklist->set_var('link_dropdown', links_select_box(2, $cid));
-
 
     if ($_LI_CONF['linkcols'] > 0) {
         // Show categories
@@ -187,7 +186,7 @@ function links_list($message)
                     $linklist->set_var ('category_description', '');
                 }
                 $linklist->set_var ('category_link', $_CONF['site_url'] .
-                    '/links/index.php?cid=' . urlencode ($C['cid']));
+                    '/links/index.php?category=' . urlencode ($C['cid']));
                 $linklist->set_var ('category_count', $display_count);
                 $linklist->set_var ('width', floor (100 / $_LI_CONF['linkcols']));
                 if (!empty ($cid) && ($cid == $C['cid'])) {
@@ -211,9 +210,11 @@ function links_list($message)
         $linklist->set_var ('category_navigation', '');
     }
 
-    $linklist->set_var ('site_url', $_CONF['site_url']);
-    $linklist->set_var ('cid', $cid);
-    $linklist->set_var ('lang_addalink', $LANG_LINKS[116]);
+    $linklist->set_var('site_url', $_CONF['site_url']);
+    $linklist->set_var('cid', $cid);
+    $linklist->set_var('cid_plain', $cid);
+    $linklist->set_var('cid_encoded', urlencode($cid));
+    $linklist->set_var('lang_addalink', $LANG_LINKS[116]);
 
     // Build SQL for links
     $sql = 'SELECT lid,cid,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon';
@@ -259,7 +260,8 @@ function links_list($message)
         $linklist->set_var ('page_navigation', '');
     } else {
         // Get current category name
-        $currentcategory=DB_GetItem($_TABLES['linkcategories'], "category","cid='{$cid}'");
+        $currentcategory = DB_getItem($_TABLES['linkcategories'], 'category',
+                                      "cid='{$cid}'");
         $linklist->set_var ('link_category', $currentcategory);
         $linklist->set_var ('link_details', '');
 
@@ -399,7 +401,6 @@ if (empty ($_USER['username']) &&
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 } else {
     $display .= links_list($message);
-
 }
 
 $display .= COM_siteFooter ();
