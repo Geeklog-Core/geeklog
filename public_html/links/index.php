@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.27 2007/12/31 13:23:55 dhaun Exp $
+// $Id: index.php,v 1.28 2007/12/31 17:56:53 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -69,10 +69,11 @@ function links_list($message)
     $cid = $_LI_CONF['root'];
     $display = '';
     if (isset($_GET['category'])) {
-        $cid = strip_tags (COM_stripslashes ($_GET['category']));
+        $cid = strip_tags(COM_stripslashes($_GET['category']));
     } elseif (isset($_POST['category'])) {
-        $cid = strip_tags (COM_stripslashes ($_POST['category']));
+        $cid = strip_tags(COM_stripslashes($_POST['category']));
     }
+    $cat = addslashes($cid);
     $page = 0;
     if (isset ($_GET['page'])) {
         $page = COM_applyFilter ($_GET['page'], true);
@@ -81,15 +82,15 @@ function links_list($message)
         $page = 1;
     }
 
-    if (empty ($cid)) {
+    if (empty($cid)) {
         if ($page > 1) {
             $page_title = sprintf ($LANG_LINKS[114] . ' (%d)', $page);
         } else {
             $page_title = $LANG_LINKS[114];
         }
     } else {
-        $category = DB_getItem ($_TABLES['linkcategories'], 'category',
-                                                            "cid='{$cid}'");
+        $category = DB_getItem($_TABLES['linkcategories'], 'category',
+                               "cid = '{$cat}'");
         if ($page > 1) {
             $page_title = sprintf ($LANG_LINKS[114] . ': %s (%d)', $category,
                                                                    $page);
@@ -100,7 +101,7 @@ function links_list($message)
     
     // Check has access to this category
     if ($cid != $_LI_CONF['root']) {
-        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$cid}'");
+        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$cat}'");
         $A = DB_fetchArray($result);
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) < 2) {
             $display .= COM_siteHeader ('menu', $page_title);
@@ -134,7 +135,7 @@ function links_list($message)
     $linklist->set_var('layout_url', $_CONF['layout_url']);
 
     // Create breadcrumb trail
-    $linklist->set_var('breadcrumbs', links_breadcrumbs ($_LI_CONF['root'], $cid));
+    $linklist->set_var('breadcrumbs', links_breadcrumbs($_LI_CONF['root'], $cid));
 
     // Set dropdown for category jump
     $linklist->set_var('lang_go', $LANG_LINKS[124]);
@@ -142,10 +143,10 @@ function links_list($message)
 
     if ($_LI_CONF['linkcols'] > 0) {
         // Show categories
-        $sql = "SELECT cid,pid,category,description FROM {$_TABLES['linkcategories']} WHERE pid='{$cid}'";
+        $sql = "SELECT cid,pid,category,description FROM {$_TABLES['linkcategories']} WHERE pid='{$cat}'";
         // check if we are using the multilanguage hack
         if ($_LI_CONF['enable_multilingual_links']) {
-            $sql .= COM_getLangSQL('cid','AND');
+            $sql .= COM_getLangSQL('cid', 'AND');
         }
         $sql .= COM_getPermSQL('AND') . " ORDER BY category";
         $result = DB_query($sql);
@@ -153,13 +154,14 @@ function links_list($message)
         if ($nrows > 0) {
             $linklist->set_var ('lang_categories', $LANG_LINKS_ADMIN[14]);
             for ($i = 1; $i <= $nrows; $i++) {
-                $C = DB_fetchArray ($result);
+                $C = DB_fetchArray($result);
                 // Get number of child links user can see in this category
-                $result1 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE cid='{$C['cid']}'" . COM_getPermSQL ('AND'));
-                $D = DB_fetchArray ($result1);
+                $ccid = addslashes($C['cid']);
+                $result1 = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE cid='{$ccid}'" . COM_getPermSQL('AND'));
+                $D = DB_fetchArray($result1);
 
                 // Get number of child categories user can see in this category
-                $result2 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['linkcategories']} WHERE pid='{$C['cid']}'" . COM_getPermSQL ('AND'));
+                $result2 = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['linkcategories']} WHERE pid='{$ccid}'" . COM_getPermSQL('AND'));
                 $E = DB_fetchArray($result2);
 
                 // Format numbers for display
@@ -189,7 +191,7 @@ function links_list($message)
                     '/links/index.php?category=' . urlencode ($C['cid']));
                 $linklist->set_var ('category_count', $display_count);
                 $linklist->set_var ('width', floor (100 / $_LI_CONF['linkcols']));
-                if (!empty ($cid) && ($cid == $C['cid'])) {
+                if (!empty($cid) && ($cid == $C['cid'])) {
                     $linklist->parse ('category_col', 'actcol', true);
                 } else {
                     $linklist->parse ('category_col', 'catcol', true);
@@ -220,8 +222,8 @@ function links_list($message)
     $sql = 'SELECT lid,cid,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon';
     $from_where = " FROM {$_TABLES['links']}";
     if ($_LI_CONF['linkcols'] > 0) {
-        if (!empty ($cid)) {
-            $from_where .= " WHERE cid='" . addslashes ($cid) . "'";
+        if (!empty($cid)) {
+            $from_where .= " WHERE cid='" . addslashes($cid) . "'";
         } else {
             $from_where .= " WHERE cid=''";
         }
@@ -241,7 +243,7 @@ function links_list($message)
     }
     $result = DB_query ($sql . $from_where . $order . $limit);
     $nrows = DB_numRows ($result);
-COM_errorLog("$nrows, $category, $cid, $page");
+
     if ($nrows == 0) {
         if (($cid == $_LI_CONF['root']) && ($page <= 1) && $_LI_CONF['show_top10']) {
             $result = DB_query ("SELECT lid,url,title,description,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
@@ -262,16 +264,16 @@ COM_errorLog("$nrows, $category, $cid, $page");
     } else {
         // Get current category name
         $currentcategory = DB_getItem($_TABLES['linkcategories'], 'category',
-                                      "cid='{$cid}'");
-        $linklist->set_var ('link_category', $currentcategory);
-        $linklist->set_var ('link_details', '');
+                                      "cid = '{$cat}'");
+        $linklist->set_var('link_category', $currentcategory);
+        $linklist->set_var('link_details', '');
 
         for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray ($result);
-            prepare_link_item ($A, $linklist);
-            $linklist->parse ('link_details', 'link', true);
+            $A = DB_fetchArray($result);
+            prepare_link_item($A, $linklist);
+            $linklist->parse('link_details', 'link', true);
         }
-        $linklist->parse ('category_links', 'catlinks', true);
+        $linklist->parse('category_links', 'catlinks', true);
 
         $result = DB_query ('SELECT COUNT(*) AS count ' . $from_where);
         list($numlinks) = DB_fetchArray ($result);
@@ -283,7 +285,7 @@ COM_errorLog("$nrows, $category, $cid, $page");
             }
         }
         if ($pages > 0) {
-            if (($_LI_CONF['linkcols'] > 0) && isset ($currentcategory)) {
+            if (($_LI_CONF['linkcols'] > 0) && isset($currentcategory)) {
                 $catlink = '?category=' . urlencode ($currentcategory);
             } else {
                 $catlink = '';

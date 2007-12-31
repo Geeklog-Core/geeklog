@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.95 2007/12/31 12:27:09 dhaun Exp $
+// $Id: functions.inc,v 1.96 2007/12/31 17:56:52 dhaun Exp $
 
 
 /**
@@ -640,11 +640,11 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
 * @return   string              part of an SQL request
 *
 */
-function links_buildSql ($cid, $limits)
+function links_buildSql($cid, $limits)
 {
     $where = '';
     if ($cid != 'all') {
-        $where = "cid='" . $cid . "'";
+        $where = "cid='" . addslashes($cid) . "'";
     }
 
     $limitsql = '';
@@ -774,8 +774,8 @@ function plugin_upgrade_links ()
         if ($nrows > 0) {
             for ($i = 1; $i <= $nrows; $i++) {
                 $A = DB_fetchArray($result);
-                $category = $A['category'];
-                $cid = COM_makeSID ();
+                $category = addslashes($A['category']);
+                $cid = addslashes(COM_makeSid());
                 DB_query ("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,owner_id,group_id,created,modified) VALUES ('{$cid}','{$_LI_CONF['root']}','{$category}','2','{$group_id}',NOW(),NOW())",1);
                 DB_query ("UPDATE {$_TABLES['links']} SET category='{$cid}' WHERE category='{$category}'",1);
                 if (DB_error()) {
@@ -1435,26 +1435,32 @@ function links_select_box ($access, $sel = '')
 function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access)
 {
     global $_CONF, $_TABLES;
+
+    $cat = addslashes($cid);
     $sql = "SELECT cid,category
             FROM {$_TABLES['linkcategories']}
-            WHERE (pid='{$cid}') " . COM_getPermSQL('AND',0,$access) . "
+            WHERE (pid='{$cat}') " . COM_getPermSQL('AND', 0, $access) . "
             ORDER BY category";
-    $query = DB_QUERY($sql);
-    while ( list($cid,$category) = DB_fetchArray($query) ) {
+    $query = DB_query($sql);
+    while (list($cid, $category) = DB_fetchArray($query)) {
         // set selected item
         if ($cid == $sel) {
             // yes, selected
-            $menu .= '<option value="'.$cid.'" selected="selected">'.$indent.$category.'</option>';
+            $menu .= '<option value="' . $cid . '" selected="selected">'
+                  . $indent . $category . '</option>';
         } else {
             // no, not selected
-            $menu .= '<option value="'.$cid.'">'.$indent.$category.'</option>';
+            $menu .= '<option value="' . $cid. '">' . $indent . $category
+                  . '</option>';
         }
         // Check and see if this category has any sub categories
-        if (DB_count($_TABLES['linkcategories'], 'pid', $cid) > 0) {
+        if (DB_count($_TABLES['linkcategories'], 'pid', addslashes($cid)) > 0) {
             // yes, call self
-            $dum = links_select_box_recursive ($menu,$cid,$sel,$indent.'&nbsp;&nbsp;',$access);
+            $dum = links_select_box_recursive ($menu, $cid, $sel,
+                        $indent . '&nbsp;&nbsp;', $access);
         }
    }
+
    return $menu;
 }
 
@@ -1472,11 +1478,12 @@ function links_breadcrumbs($root, $cid)
     $breadcrumb = '';
     $separator  = ' : ';
 
+    $cat = addslashes($cid);
     $c = $cid;
     $pid = '';
     if ($root != $cid) {
         while ($pid != $root) {
-            $parent = DB_query("SELECT cid,pid,category FROM {$_TABLES['linkcategories']} WHERE cid='{$c}'");
+            $parent = DB_query("SELECT cid,pid,category FROM {$_TABLES['linkcategories']} WHERE cid='{$cat}'");
             $A = DB_fetchArray($parent);
             if ($cid != $c) {
                 $content = stripslashes($A['category']);
@@ -1487,6 +1494,7 @@ function links_breadcrumbs($root, $cid)
             }
             $pid = $A['pid'];
             $c = $A['pid'];
+            $cat = addslashes($c);
         }
     }
 

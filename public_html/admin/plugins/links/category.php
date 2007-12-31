@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.12 2007/12/31 12:27:09 dhaun Exp $
+// $Id: category.php,v 1.13 2007/12/31 17:56:53 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -123,6 +123,7 @@ function links_list_categories_recursive($data_arr, $cid, $indent)
     global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN;
 
     $indent = $indent + 1;
+    $cid = addslashes($cid);
 
     // get all children of present category
     $sql = "SELECT cid,category,tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
@@ -139,7 +140,7 @@ function links_list_categories_recursive($data_arr, $cid, $indent)
             $A['topic_text'] = $topic;
             $A['indent'] = $indent;
             $data_arr[] = $A;
-            if (DB_count($_TABLES['linkcategories'], 'pid', $A['cid']) > 0) {
+            if (DB_count($_TABLES['linkcategories'], 'pid', addslashes($A['cid'])) > 0) {
                 $data_arr = links_list_categories_recursive($data_arr, $A['cid'], $indent);
             }
         }
@@ -147,7 +148,6 @@ function links_list_categories_recursive($data_arr, $cid, $indent)
 
     return $data_arr;
 }
-
 
 
 // Returns form to create a new category or edit an existing one
@@ -158,6 +158,9 @@ function links_edit_category($cid, $pid)
            $LANG_LINKS_ADMIN, $LANG_ADMIN, $LANG_ACCESS, $_LI_CONF;
 
     $retval = '';
+
+    $cid = addslashes($cid);
+    $pid = addslashes($pid);
 
     if (!empty($pid)) {
         // have parent id, so making a new subcategory
@@ -273,7 +276,6 @@ function links_edit_category($cid, $pid)
 }
 
 
-
 /*
 * Save changes to category information
 * input     array       values from form (unvalidated, unsafe)
@@ -289,17 +291,20 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
     }
 
-    // clean 'em up
-    $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
-    $category = addslashes (COM_checkHTML (COM_checkWords ($category)));
-
-    if (empty($category) || empty($description)) {
-        return 7;
-    }
-
     // Check cid to make sure not illegal
     if (($cid == $_LI_CONF['root']) || ($cid == 'user')) {
         return 11;
+    }
+
+    // clean 'em up
+    $description = addslashes (COM_checkHTML(COM_checkWords($description)));
+    $category    = addslashes (COM_checkHTML(COM_checkWords($category)));
+    $pid     = addslashes(strip_tags($pid));
+    $cid     = addslashes(strip_tags($cid));
+    $old_cid = addslashes(strip_tags($old_cid));
+
+    if (empty($category) || empty($description)) {
+        return 7;
     }
 
     // Check that they didn't delete the cid. If so, get the hidden one
@@ -402,10 +407,11 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
 * output            string      message about success of requested operation
 */
 
-function links_delete_category ($cid)
+function links_delete_category($cid)
 {
     global $_TABLES, $LANG_LINKS_ADMIN;
 
+    $cid = addslashes($cid);
     if (DB_count ($_TABLES['linkcategories'], 'cid', $cid) > 0) {
         // item exists so check access rights
         $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,
@@ -450,10 +456,14 @@ $root = $_LI_CONF['root'];
 
 // delete category
 if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mode=="delete")) {
-    $cid = COM_applyFilter($_REQUEST['cid']);
-    if (!isset($cid) || empty($cid)) {
-        COM_errorLog('Attempted to delete category cid=' . $cid );
-        $display .= COM_refresh($_CONF['site_admin_url'] . '/plugins/links/category.php');
+    $cid = '';
+    if (isset($_REQUEST['cid'])) {
+        $cid = strip_tags($_REQUEST['cid']);
+    }
+    if (empty($cid)) {
+        COM_errorLog('Attempted to delete empty category');
+        $display .= COM_refresh($_CONF['site_admin_url']
+                                . '/plugins/links/category.php');
     } else {
         $msg = links_delete_category($cid);
 
@@ -465,14 +475,13 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
 
 // save category
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
-    $msg = links_save_category (COM_applyFilter ($_POST['cid']),
-            COM_applyFilter ($_POST['old_cid']),
-            COM_applyFilter ($_POST['pid']), $_POST['category'],
-            $_POST['description'], COM_applyFilter ($_POST['tid']),
-            COM_applyFilter ($_POST['owner_id'], true),
-            COM_applyFilter ($_POST['group_id'], true),
-            $_POST['perm_owner'], $_POST['perm_group'],
-            $_POST['perm_members'], $_POST['perm_anon']);
+    $msg = links_save_category($_POST['cid'], $_POST['old_cid'],
+                $_POST['pid'], $_POST['category'],
+                $_POST['description'], COM_applyFilter($_POST['tid']),
+                COM_applyFilter($_POST['owner_id'], true),
+                COM_applyFilter($_POST['group_id'], true),
+                $_POST['perm_owner'], $_POST['perm_group'],
+                $_POST['perm_members'], $_POST['perm_anon']);
 
     $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
     $display .= COM_showMessage ($msg, 'links');
@@ -481,16 +490,16 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
 
 // edit category
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[56]);
+    $display .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[56]);
     $pid = '';
     if (isset($_GET['pid'])) {
-        $pid = COM_applyFilter($_GET['pid']);
+        $pid = strip_tags(COM_stripslashes($_GET['pid']));
     }
     $cid = '';
     if (isset($_GET['cid'])) {
-        $cid = COM_applyFilter($_GET['cid']);
+        $cid = strip_tags(COM_stripslashes($_GET['cid']));
     }
-    $display .= links_edit_category($cid,$pid);
+    $display .= links_edit_category($cid, $pid);
     $display .= COM_siteFooter();
 
 // nothing, so list categories
