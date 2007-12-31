@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.23 2007/12/01 19:17:32 riyer Exp $
+// $Id: lib-webservices.php,v 1.24 2007/12/31 16:49:03 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -40,7 +40,7 @@ $WS_INTROSPECTION = false;
 $WS_TEXT = '';
 $WS_ATOM_NS = 'http://www.w3.org/2005/Atom';
 $WS_APP_NS  = 'http://www.w3.org/2007/app';
-$WS_EXTN_NS = 'http://www.geeklog.net';
+$WS_EXTN_NS = 'http://www.geeklog.net/xmlns/app/gl';
 
 // Set = true to enable verbose logging (in error.log)
 $WS_VERBOSE = false;
