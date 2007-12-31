@@ -10,7 +10,7 @@ $LANG_fs['staticpages'][0] = 'Main Settings';
 
 if(! $sp_config->group_exists('staticpages')){
 
-    $sp_config->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
+    $sp_config->add('version', '1.5.0', 'text', 0, 0, null, 0, true, 'staticpages');
     $sp_config->add('allow_php', 1, 'text', 0, 0, null, 0, true, 'staticpages');
     $sp_config->add('sort_by', 'id',  'text', 0, 0, null, 0, true, 'staticpages');
     $sp_config->add('sort_menu_by', 'label', 'text', 0, 0, null, 0, true, 'staticpages');
@@ -27,7 +27,6 @@ if(! $sp_config->group_exists('staticpages')){
 
 }
 
-$_SP_CONF &= $sp_config->get_config('staticpages');
-
+$_SP_CONF = $sp_config->get_config('staticpages');
 
 ?>
