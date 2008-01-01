@@ -169,7 +169,10 @@ $LANG01 = array(
     123 => 'Alle HTML-Tags sind erlaubt',
     124 => 'Alle angekreuzten Einträge löschen',
     125 => 'Willst Du wirklich alle angekreuzten Einträge löschen?',
-    126 => 'Alle Einträge ankreuzen oder deselektieren'
+    126 => 'Alle Einträge ankreuzen oder deselektieren',
+    127 => 'Permalink',
+    128 => 'Login with OpenID:',
+    129 => 'Configuration'
 );
 
 ###############################################################################
@@ -364,7 +367,10 @@ $LANG04 = array(
     153 => 'Darstellung &amp; Sprache',
     154 => 'Filter',
     155 => 'Privatsphäre',
-    156 => 'Account löschen'
+    156 => 'Account löschen',
+    157 => 'Delete Option',
+    158 => 'Time Zone',
+    159 => 'This email was generated automatically. Please do not reply to this email.'
 );
 
 ###############################################################################
