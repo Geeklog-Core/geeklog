@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog portal page that tracks link click throughs.                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users.sourceforge DOT net        |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,6 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: portal.php,v 1.6 2008/01/01 12:33:48 dhaun Exp $
 
 /** 
  * Geeklog portal page that tracks link click throughs. 
@@ -39,53 +40,45 @@
  * @package Links
  * @subpackage public_html
  * @filesource
- * @version 1.0
+ * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93@steubentech.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * @author Blaine Lang <langmail@sympatico.ca>
- * @author Dirk Haun <dirk@haun-online.de>
+ * @author Trinity Bays <trinity93 AT steubentech.com>
+ * @author Tony Bibbs <tony AT tonybibbs DOT com>
+ * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
+ * @author Blaine Lang <langmail AT sympatico DOT ca>
+ * @author Dirk Haun <dirk AT haun-online DOT de>
  * 
  */
 
-// $Id: portal.php,v 1.5 2007/12/31 10:41:47 dhaun Exp $
-
-require_once('../lib-common.php');
+require_once '../lib-common.php';
 
 // MAIN
 
 $url = '';
 
-COM_setArgNames (array ('what', 'item'));
-$what = COM_getArgument ('what');
+COM_setArgNames(array('what', 'item'));
+$what = COM_getArgument('what');
 
 if ($what == 'link') {
 
-    $item = COM_applyFilter (COM_getArgument ('item'));
+    $item = COM_applyFilter(COM_getArgument('item'));
 
-    if (!empty ($item)) {
-        $url = DB_getItem ($_TABLES['links'], 'url', "lid = '{$item}'");
-        if (!empty ($url)) {
-            DB_change ($_TABLES['links'], 'hits','hits + 1', 'lid',$item, '', true);
+    if (!empty($item)) {
+        $url = DB_getItem($_TABLES['links'], 'url', "lid = '{$item}'");
+        if (!empty($url)) {
+            DB_change($_TABLES['links'], 'hits','hits + 1', 'lid',$item, '', true);
         }
     }
-} elseif ($what == 'category') {
 
-    $item = COM_applyFilter (COM_getArgument ('item'));
-
-    if (!empty ($item)) {
-        $url = COM_buildURL("{$_CONF['site_url']}/links/index.php?category=" . urlencode($item));
-    }
 }
 
-if (empty ($url)) {
+if (empty($url)) {
     $url = $_CONF['site_url'];
 }
-header ('HTTP/1.1 301 Moved');
-header ('Location: ' . $url);
-header ('Connection: close');
+header('HTTP/1.1 301 Moved');
+header('Location: ' . $url);
+header('Connection: close');
 
 ?>

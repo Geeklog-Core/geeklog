@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.96 2007/12/31 17:56:52 dhaun Exp $
+// $Id: functions.inc,v 1.97 2008/01/01 12:33:48 dhaun Exp $
 
 
 /**
@@ -33,7 +33,7 @@
  * @filesource
  * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2007
+ * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93 AT steubentech DOT com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
@@ -1487,8 +1487,10 @@ function links_breadcrumbs($root, $cid)
             $A = DB_fetchArray($parent);
             if ($cid != $c) {
                 $content = stripslashes($A['category']);
-                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . urlencode($A['cid']);
-                $breadcrumb = COM_createLink($content, $url) . $separator . $breadcrumb;
+                $url = $_CONF['site_url'] . '/links/index.php?category='
+                                          . urlencode($A['cid']);
+                $breadcrumb = COM_createLink($content, $url) . $separator
+                            . $breadcrumb;
             } else {
                 $breadcrumb = $A['category'] . $breadcrumb;
             }
@@ -1563,7 +1565,8 @@ function phpblock_topic_categories()
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
                 $content = stripslashes($A['category']);
-                $url = $_CONF['site_url'] . '/links/portal.php?what=category&amp;item=' . urlencode($A['cid']);
+                $url = $_CONF['site_url'] . '/links/index.php?category='
+                                          . urlencode($A['cid']);
                 $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
             }
         }
