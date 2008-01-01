@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog links category administration page.                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users.sourceforge DOT net        |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.13 2007/12/31 17:56:53 dhaun Exp $
+// $Id: category.php,v 1.14 2008/01/01 12:25:22 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -160,12 +160,11 @@ function links_edit_category($cid, $pid)
     $retval = '';
 
     $cid = addslashes($cid);
-    $pid = addslashes($pid);
 
     if (!empty($pid)) {
         // have parent id, so making a new subcategory
         // get parent access rights
-        $result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$pid}'");
+        $result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='" . addslashes($pid) . "'");
         $A = DB_fetchArray($result);
         $A['owner_id'] = $_USER['uid'];
         $A['pid'] = $pid;
