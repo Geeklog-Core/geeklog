@@ -52,7 +52,7 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.28 2007/12/31 17:56:53 dhaun Exp $
+// $Id: index.php,v 1.29 2008/01/01 12:44:57 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -329,7 +329,7 @@ function prepare_link_item ($A, &$template)
         'class' => 'ext-link');
     $html = COM_createLink($content, $url, $attr);
     $template->set_var ('link_html', $html);
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+    if (!COM_isAnonUser() && !SEC_hasRights('links.edit')) {
         $reporturl = $_CONF['site_url']
                  . '/links/index.php?mode=report&amp;lid=' . $A['lid'];
         $template->set_var ('link_broken',
