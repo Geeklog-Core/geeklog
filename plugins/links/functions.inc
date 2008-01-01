@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.97 2008/01/01 12:33:48 dhaun Exp $
+// $Id: functions.inc,v 1.98 2008/01/01 12:59:17 dhaun Exp $
 
 
 /**
@@ -932,7 +932,7 @@ function plugin_moderationvalues_links()
 
     return array ('lid',
                   $_TABLES['links'],
-                  'lid,cid,url,description,title,date',
+                  'lid,cid,url,description,title,date,owner_id',
                   $_TABLES['linksubmission']);
 }
 
@@ -948,22 +948,23 @@ function plugin_moderationvalues_links()
 * @return   string          Any wanted HTML output
 *
 */
-function plugin_moderationapprove_links ($id)
+function plugin_moderationapprove_links($id)
 {
     global $_TABLES, $_USER, $_GROUPS, $_LI_CONF;
 
-    $A = array ();
-    SEC_setDefaultPermissions ($A, $_LI_CONF['default_permissions']);
+    // The linksubmission only keeps track of the submitter's uid, but not
+    // of grous and permissions. So set those to sensible defaults.
 
-    // Since the linksubmission table does not contain fields for the owner
-    // and group, we set those to the current user. Also set the default
-    // permissions as specified in the plugin's config.php
-    if (isset ($_GROUPS['Links Admin'])) {
+    if (isset($_GROUPS['Links Admin'])) {
         $group_id = $_GROUPS['Links Admin'];
     } else {
-        $group_id = SEC_getFeatureGroup ('links.moderate');
+        $group_id = SEC_getFeatureGroup('links.moderate');
     }
-    DB_query ("UPDATE {$_TABLES['links']} SET owner_id = '{$_USER['uid']}', group_id = '$group_id', perm_owner = '{$A['perm_owner']}', perm_group = '{$A['perm_group']}', perm_members = '{$A['perm_members']}', perm_anon = '{$A['perm_anon']}' WHERE lid = '$id'");
+
+    $A = array();
+    SEC_setDefaultPermissions($A, $_LI_CONF['default_permissions']);
+
+    DB_query("UPDATE {$_TABLES['links']} SET group_id = '$group_id', perm_owner = '{$A['perm_owner']}', perm_group = '{$A['perm_group']}', perm_members = '{$A['perm_members']}', perm_anon = '{$A['perm_anon']}' WHERE lid = '$id'");
 
     return '';
 }
