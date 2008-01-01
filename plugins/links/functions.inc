@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.98 2008/01/01 12:59:17 dhaun Exp $
+// $Id: functions.inc,v 1.99 2008/01/01 14:10:45 dhaun Exp $
 
 
 /**
@@ -170,47 +170,29 @@ function plugin_getwhatsnew_links()
 * @param    mixed               tag names (for $op='tagname') or formatted content
 *
 */
-function plugin_autotags_links ($op, $content = '', $autotag = '')
+function plugin_autotags_links($op, $content = '', $autotag = '')
 {
     global $_CONF, $_TABLES;
 
     if ($op == 'tagname' ) {
-        return array('link','category');
+        return 'link';
     } else if ($op == 'parse') {
-        switch( $autotag['tag'] ) {
-        case 'link':
-            $lid = COM_applyFilter ($autotag['parm1']);
-            $url = COM_buildUrl ($_CONF['site_url']
-                                 . '/links/portal.php?what=link&amp;item=' . $lid);
-            if (empty ($autotag['parm2'])) {
-                $linktext = stripslashes (DB_getItem ($_TABLES['links'],
-                                          'title', "lid = '$lid'"));
-            } else {
-                $linktext = $autotag['parm2'];
-            }
-            $attr = array(
-                'title' => $linktext,
-                'class' => 'ext-link');
-            $link = COM_createLink($linktext, $url, $attr);
-            $content = str_replace ($autotag['tagstr'], $link, $content);
-            break;
-        case 'category':
-            $cid = COM_applyFilter ($autotag['parm1']);
-            $url = COM_buildUrl ($_CONF['site_url']
-                    . '/links/index.php?category=' . urlencode($cid));
-            if (empty ($autotag['parm2'])) {
-                $linktext = stripslashes(DB_getItem($_TABLES['linkcategories'],
-                                         'category', "cid = '$cid'"));
-            } else {
-                $linktext = $autotag['parm2'];
-            }
-            $attr = array(
-                'title' => $linktext,
-                'class' => 'ext-link');
-            $link = COM_createLink($linktext, $url, $attr);
-            $content = str_replace ($autotag['tagstr'], $link, $content);
-            break;
+        $lid = COM_applyFilter($autotag['parm1']);
+        $url = COM_buildUrl($_CONF['site_url']
+                            . '/links/portal.php?what=link&amp;item=' . $lid);
+        if (empty($autotag['parm2'])) {
+            $linktext = stripslashes(DB_getItem($_TABLES['links'],
+                                     'title', "lid = '$lid'"));
+        } else {
+            $linktext = $autotag['parm2'];
         }
+        $attr = array(
+                    'title' => $linktext,
+                    'class' => 'ext-link'
+                     );
+        $link = COM_createLink($linktext, $url, $attr);
+        $content = str_replace($autotag['tagstr'], $link, $content);
+
         return $content;
     }
 }
