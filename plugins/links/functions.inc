@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.100 2008/01/01 16:01:39 dhaun Exp $
+// $Id: functions.inc,v 1.101 2008/01/01 16:18:12 dhaun Exp $
 
 
 /**
@@ -1274,34 +1274,27 @@ function links_validateUrl($url)
 {
     global $LANG_LINKS_STATUS;
 
-    $header_str = '';
-    $url_arr = parse_url($url);
-    $socket = @fsockopen($url_arr['host'], 80, $err_no, $err_txt, 10);
-    if ($socket) {
-        if (empty($url_arr['path'])) {
-            $url_arr['path'] = "/";
+    require_once 'HTTP/Request.php';
+
+    $retval = '';
+
+    $req = new HTTP_Request($url);
+    $req->setMethod(HTTP_REQUEST_METHOD_HEAD);
+    $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+
+    $response = $req->sendRequest();
+    if (PEAR::isError($response)) {
+        $retval = $response->getMessage();
+    } else {
+        $status_code = $req->getResponseCode();
+        if (isset($LANG_LINKS_STATUS[$status_code])) {
+            $retval = $status_code . ": " . $LANG_LINKS_STATUS[$status_code];
+        } else {
+            $retval = $LANG_LINKS_STATUS[999];
         }
-        $query = '';
-        if (isset($url_arr['query'])) {
-            $query = "?{$url_arr['query']}";
-        }
-        $send_header = "HEAD {$url_arr['path']} HTTP/1.1\r\n"
-            . "User-Agent: Geeklog Link Checker\r\n"
-            . "Host: {$url_arr['host']}\r\n"
-            . "Connection: close\r\n\r\n";
-        fputs($socket, $send_header);
-        while($str = fgets($socket, 1024)) {
-            if (eregi("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", $str)) {
-                $status_code = trim(eregi_replace("^http/[0-9]+.[0-9]+ ([0-9]{3}) [a-z ]*", "\\1", $str));
-            }
-        }
-        fclose($socket);
-        $status_code = $status_code . ": " . $LANG_LINKS_STATUS[$status_code];
     }
-    if (!isset($status_code)) {
-        $status_code = $LANG_LINKS_STATUS[999];
-    }
-    return $status_code;
+
+    return $retval;
 }
 
 /**
