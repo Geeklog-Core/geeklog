@@ -27,7 +27,7 @@ $LINKS_SQL['getcategories'] = "SELECT DISTINCT category FROM {$_TABLES['links']}
 
 // add owner-field to links-submission
 $LINKS_SQL['linksubmission1'] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
-$LINKS_SQL['linksubmission2'] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(20) NOT NULL";
+$LINKS_SQL['linksubmission2'] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(32) NOT NULL";
 
 $LINKS_SQL['links'] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(32) NOT NULL";
 
