@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.99 2008/01/01 14:10:45 dhaun Exp $
+// $Id: functions.inc,v 1.100 2008/01/01 16:01:39 dhaun Exp $
 
 
 /**
@@ -1270,45 +1270,10 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
 }
 
 
-/**
-* Return a list of all link categories
-*
-* @param    ref     $current_category   currently selected category
-* @return   string                      <option> list containing all categories
-*
-* Note: $current_category will be returned as an empty string when found in the
-*       current list of categories and left untouched when it's a new category,
-*       i.e. the user selected "Other". This is needed for moderating link
-*       submissions.
-*
-*/
-function links_getCategoryList (&$current_category)
+function links_validateUrl($url)
 {
-    global $_TABLES, $LANG_LINKS_ADMIN;
-
-    $retval = '';
-
-    $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " GROUP BY category");
-    $nrows = DB_numRows($result);
-
-    $retval = '<option value="' . $LANG_LINKS_ADMIN[7] . '">'
-            . $LANG_LINKS_ADMIN[7] . '</option>';
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $category = $A['category'];
-        $retval .= '<option value="' . $category . '"';
-        if ($category == $current_category) {
-            $retval .= ' selected="selected"';
-            $current_category = '';
-        }
-        $retval .= '>' . $category . '</option>';
-    }
-
-    return $retval;
-}
-
-function links_validateUrl($url) {
     global $LANG_LINKS_STATUS;
+
     $header_str = '';
     $url_arr = parse_url($url);
     $socket = @fsockopen($url_arr['host'], 80, $err_no, $err_txt, 10);
@@ -1429,12 +1394,13 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access)
         // set selected item
         if ($cid == $sel) {
             // yes, selected
-            $menu .= '<option value="' . $cid . '" selected="selected">'
-                  . $indent . $category . '</option>';
+            $menu .= '<option value="' . htmlspecialchars($cid)
+                  . '" selected="selected">' . $indent . $category
+                  . '</option>';
         } else {
             // no, not selected
-            $menu .= '<option value="' . $cid. '">' . $indent . $category
-                  . '</option>';
+            $menu .= '<option value="' . htmlspecialchars($cid) . '">'
+                  . $indent . $category . '</option>';
         }
         // Check and see if this category has any sub categories
         if (DB_count($_TABLES['linkcategories'], 'pid', addslashes($cid)) > 0) {
