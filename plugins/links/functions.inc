@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.101 2008/01/01 16:18:12 dhaun Exp $
+// $Id: functions.inc,v 1.102 2008/01/01 20:03:22 dhaun Exp $
 
 
 /**
@@ -1410,15 +1410,15 @@ function links_select_box_recursive (&$menu, $cid, $sel, $indent, $access)
 /*
 * Build breadcrumb trail
 *
-* Breadcrumb trail does not use the "root" category in the database: the top level category is
-* set from the language file using $LANG_LINKS['root']
+* Breadcrumb trail does not use the "root" category in the database: the top
+* level category is set from the language file using $LANG_LINKS['root']
 */
 function links_breadcrumbs($root, $cid)
 {
     global $_CONF, $_TABLES, $LANG_LINKS;
 
     $breadcrumb = '';
-    $separator  = ' : ';
+    $separator  = ' &gt; ';
 
     $cat = addslashes($cid);
     $c = $cid;
@@ -1434,7 +1434,7 @@ function links_breadcrumbs($root, $cid)
                 $breadcrumb = COM_createLink($content, $url) . $separator
                             . $breadcrumb;
             } else {
-                $breadcrumb = $A['category'] . $breadcrumb;
+                $breadcrumb = '<b>' . $A['category'] . '</b>' . $breadcrumb;
             }
             $pid = $A['pid'];
             $c = $A['pid'];
@@ -1444,10 +1444,13 @@ function links_breadcrumbs($root, $cid)
 
     $url = $_CONF['site_url'] . '/links/index.php';
     if (empty($breadcrumb)) {
-        $breadcrumb = $LANG_LINKS['root'];
+        $breadcrumb = '<b>' . $LANG_LINKS['root'] . '</b>';
     } else {
         $breadcrumb = COM_createLink($LANG_LINKS['root'], $url) . $separator . $breadcrumb;
     }
+
+    $breadcrumb = '<span class="links-breadcrumb">' . $LANG_LINKS[126] . ' '
+                . $breadcrumb . '</span>';
 
     return $breadcrumb;
 }
