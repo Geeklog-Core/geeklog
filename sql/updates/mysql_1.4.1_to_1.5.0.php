@@ -342,8 +342,8 @@ function upgrade_LinksPlugin()
     $P_SQL = array();
     $P_SQL[] = "
     CREATE TABLE {$_TABLES['linkcategories']} (
-      cid varchar(20) NOT NULL,
-      pid varchar(20) NOT NULL,
+      cid varchar(32) NOT NULL,
+      pid varchar(32) NOT NULL,
       category varchar(32) NOT NULL,
       description text DEFAULT NULL,
       tid varchar(20) DEFAULT NULL,
@@ -365,7 +365,7 @@ function upgrade_LinksPlugin()
 
     $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1' AFTER date";
     $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(20) NOT NULL";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(20) NOT NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(32) NOT NULL";
     $P_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) "
         . "VALUES ('site', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
     $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "

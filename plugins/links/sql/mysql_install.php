@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0                                                          |
+// | Links Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -30,15 +30,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: mysql_install.php,v 1.7 2008/01/01 17:51:54 dhaun Exp $
 
 /**
  * Links plugin Installation SQL
  *
  * @package Links
  * @filesource
- * @version 1.0
+ * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005
+ * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -49,13 +50,10 @@
  */
 
 
-
-// $Id: mysql_install.php,v 1.6 2007/09/02 02:44:55 ospiess Exp $
-
 $_SQL[] = "
 CREATE TABLE {$_TABLES['linkcategories']} (
-  cid varchar(20) NOT NULL,
-  pid varchar(20) NOT NULL,
+  cid varchar(32) NOT NULL,
+  pid varchar(32) NOT NULL,
   category varchar(32) NOT NULL,
   description text DEFAULT NULL,
   tid varchar(20) DEFAULT NULL,

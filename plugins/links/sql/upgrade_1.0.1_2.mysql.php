@@ -5,8 +5,8 @@
 
 $LINKS_SQL['linkcategories'] = "
 CREATE TABLE {$_TABLES['linkcategories']} (
-  cid varchar(20) NOT NULL,
-  pid varchar(20) NOT NULL,
+  cid varchar(32) NOT NULL,
+  pid varchar(32) NOT NULL,
   category varchar(32) NOT NULL,
   description text DEFAULT NULL,
   tid varchar(20) DEFAULT NULL,
@@ -29,7 +29,7 @@ $LINKS_SQL['getcategories'] = "SELECT DISTINCT category FROM {$_TABLES['links']}
 $LINKS_SQL['linksubmission1'] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
 $LINKS_SQL['linksubmission2'] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(20) NOT NULL";
 
-$LINKS_SQL['links'] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(20) NOT NULL";
+$LINKS_SQL['links'] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(32) NOT NULL";
 
 $LINKS_SQL['root'] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('site', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
 

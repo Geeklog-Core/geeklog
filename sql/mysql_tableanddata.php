@@ -705,8 +705,8 @@ CREATE TABLE {$_TABLES['trackbackcodes']} (
 
 $_SQL[46] = "
 CREATE TABLE {$_TABLES['linkcategories']} (
-  cid varchar(20) NOT NULL,
-  pid varchar(20) NOT NULL,
+  cid varchar(32) NOT NULL,
+  pid varchar(32) NOT NULL,
   category varchar(32) NOT NULL,
   description text DEFAULT NULL,
   tid varchar(20) DEFAULT NULL,

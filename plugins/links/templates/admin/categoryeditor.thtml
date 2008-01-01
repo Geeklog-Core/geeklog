@@ -8,15 +8,15 @@
             </tr>
             <tr>
                 <td align="right">{lang_category}</td>
-                <td><input type="text" name="category" size="50" maxlength="32" VALUE="{category_value}"{xhtml}></td>
+                <td><input type="text" name="category" size="32" maxlength="32" value="{category_value}"{xhtml}></td>
             </tr>
             <tr>
                 <td align="right">{lang_cid}</td>
-                <td><input type="text" name="cid" size="50" maxlength="32" VALUE="{cid_value}"{xhtml}></td>
+                <td><input type="text" name="cid" size="32" maxlength="32" value="{cid_value}"{xhtml}></td>
             </tr>
             <tr>
                 <td align="right">{lang_description}</td>
-                <td><input type="text" name="description" size="50" maxlength="255" VALUE="{description_value}"{xhtml}></td>
+                <td><input type="text" name="description" size="50" maxlength="255" value="{description_value}"{xhtml}></td>
             </tr>
             <tr>
                 <td align="right">{lang_topic}</td>
