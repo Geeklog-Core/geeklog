@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | config.php   Links plugin configuration file                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users.sourceforge DOT net        |
@@ -27,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.22 2007/12/31 13:25:48 dhaun Exp $
+// $Id: config.php,v 1.23 2008/01/01 21:10:24 dhaun Exp $
 
 /**
  * Links plugin configuration file
@@ -36,7 +36,7 @@
  * @filesource
  * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2007
+ * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Trinity Bays <trinity93@steubentech.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -161,22 +161,6 @@ $_LI_CONF['show_category_descriptions'] = true;
  * enable multilingual features
  * Whether to enable simple multilingual behaviour or not.
  *
- */
-$_LI_CONF['enable_multilingual_links'] = false;
-
-/**
- * show category descriptions
- * Whether to show subcategory descriptions when viewing a category or not.
- *
- * @global array $_LI_CONF['show_category_descriptions']
- */
-$_LI_CONF['show_category_descriptions'] = true;
-
-/**
- * enable multilingual features
- * Whether to enable simple multilingual behaviour or not.
- *
- * @global array $_LI_CONF['enable_multilingual_links']
  */
 $_LI_CONF['enable_multilingual_links'] = false;
 
