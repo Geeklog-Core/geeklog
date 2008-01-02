@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.26 2008/01/02 14:40:21 dhaun Exp $
+// $Id: lib-webservices.php,v 1.27 2008/01/02 19:39:00 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -424,8 +424,8 @@ function WS_delete()
     $ret = PLG_invokeService($WS_PLUGIN, 'delete', $args, $out, $svc_msg);
 
     if ($ret == PLG_RET_OK) {
-            header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
-            return;
+        header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
+        return;
     }
 
     WS_error($ret, $svc_msg['error_desc']);
@@ -632,7 +632,7 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
         $link_self = $atom_doc->createElement('atom:link');
         $link_self->setAttribute('rel', 'edit');
         $link_self->setAttribute('type', 'application/atom+xml');
-        $link_self->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&amp;id=' . htmlentities($arr['id']));
+        $link_self->setAttribute('href', $_CONF['site_url'] . '/webservices/atom/?plugin=' . htmlentities($WS_PLUGIN) . '&id=' . htmlentities($arr['id']));
         $entry_elem->appendChild($link_self);
     }
 
