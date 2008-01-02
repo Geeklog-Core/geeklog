@@ -271,6 +271,9 @@ select {
   background-attachment: scroll;
   padding-right: 13px;
 }
+.strike {
+  text-decoration: line-through;
+}
 /* Blocks *********************************************************************/
 .block-box-left {
   margin:10px;

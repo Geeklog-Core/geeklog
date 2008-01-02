@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.125 2007/11/25 15:09:09 dhaun Exp $
+// $Id: lib-admin.php,v 1.126 2008/01/02 12:35:58 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -783,7 +783,8 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
 
     if (isset($A['status']) && ($A['status'] == USER_ACCOUNT_DISABLED)) {
         if (($fieldname != 'edit') && ($fieldname != 'username')) {
-            $retval = sprintf ('<s title="%s">%s</s>', $LANG28[42], $retval);
+            $retval = sprintf ('<span class="strike" title="%s">%s</span>',
+                               $LANG28[42], $retval);
         }
     }
 
