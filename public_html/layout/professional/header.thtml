@@ -6,7 +6,6 @@
 <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
 <!-- link rel="SHORTCUT ICON" href="{site_url}/favicon.ico" -->
 <!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
-<meta http-equiv="Content-Type" content="text/html; charset={charset}"{xhtml}>
 <link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}"{xhtml}>
 {feed_url}
 {rel_links}
@@ -32,7 +31,7 @@
             {left_blocks}
             <td class="story-container">
                 <p class="header-welcomeanddate-text">
-                    <a href="{site_url}/">{welcome_msg}</a><br{xhtml}>{datetime}
+                    <b>{welcome_msg}</b><br{xhtml}>{datetime}
                 </p>
 
                 <!-- START OF CONTENT AREA -->
