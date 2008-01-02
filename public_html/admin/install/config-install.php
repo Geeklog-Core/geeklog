@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.8 2007/12/30 00:11:40 ablankstein Exp $
+// $Id: config-install.php,v 1.9 2008/01/02 14:40:22 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -217,6 +217,7 @@ function install_config()
     $c->add('skip_html_filter_for_root',0,'select',7,34,0,1730,TRUE);
     $c->add('allowed_protocols',array('http','ftp','https'),'%text',0,0,NULL,1740,TRUE);
     $c->add('disable_autolinks',0,'select',7,7,0,1750,TRUE);
+    $c->add('disable_webservices',0,'select',7,7,0,1755,TRUE);
     $c->add('censormode',1,'select',7,35,0,1760,TRUE);
     $c->add('censorreplace','*censormode*','text',7,35,NULL,1770,TRUE);
     $c->add('censorlist', array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker'),'%text',7,35,NULL,1780,TRUE);

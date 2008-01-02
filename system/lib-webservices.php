@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.25 2008/01/02 11:44:09 dhaun Exp $
+// $Id: lib-webservices.php,v 1.26 2008/01/02 14:40:21 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -45,13 +45,9 @@ $WS_EXTN_NS = 'http://www.geeklog.net/xmlns/app/gl';
 // Set = true to enable verbose logging (in error.log)
 $WS_VERBOSE = false;
 
-if (!isset($WS_DISABLED)) {
-    $WS_DISABLED = false;
-}
-
 /* Check for PHP5 */
 if (PHP_VERSION < 5) {
-    $WS_DISABLED = true;
+    $_CONF['disable_webservices'] = true;
 }
 
 /**

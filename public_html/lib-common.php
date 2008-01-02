@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.669 2007/12/30 00:11:40 ablankstein Exp $
+// $Id: lib-common.php,v 1.670 2008/01/02 14:40:21 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -950,11 +950,12 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
                         . $LANG01[117] . '"' . XHTML . '>';
         }
     }
-    // TBD: need to be able to disable webservices - don't add this link then
-    $relLinks['service'] = '<link rel="service" type="application/atomsvc+xml" '
-                         . 'href="' . $_CONF['site_url']
-                         . '/webservices/atom/?introspection" '
-                         . 'title="Webservices"' . XHTML . '>';
+    if (!$_CONF['disable_webservices']) {
+        $relLinks['service'] = '<link rel="service" '
+                    . 'type="application/atomsvc+xml" ' . 'href="'
+                    . $_CONF['site_url'] . '/webservices/atom/?introspection" '
+                    . 'title="' . $LANG01[130] . '"' . XHTML . '>';
+    }
     // TBD: add a plugin API and a lib-custom.php function
     $header->set_var( 'rel_links', implode( LB, $relLinks ));
 
@@ -4371,7 +4372,7 @@ function COM_showMessage($msg, $plugin = '')
     }
     $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
                        COM_getBlockTemplate( '_msg_block', 'header' ))
-        . '<p style="padding:5px"><img src="' . $_CONF['layout_url']
+        . '<p><img src="' . $_CONF['layout_url']
         . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" '
         . 'style="padding-right:5px; padding-bottom:3px; border:none; float:left;"' . XHTML . '>'
         . $message . '</p>'

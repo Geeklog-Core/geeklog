@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file acts as a gateway to the Atom webservices.                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007 by the following authors:                              |
+// | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Ramnath R Iyer   - rri AT silentyak DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -29,15 +29,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: index.php,v 1.3 2008/01/02 14:40:22 dhaun Exp $
 
 require_once '../../lib-common.php';
 require_once $_CONF['path_system'] . '/lib-webservices.php';
 
 /* Check if WS component is enabled */
-if ($WS_DISABLED) {
+if ($_CONF['disable_webservices']) {
     /* Pretend the WS doesn't exist */
-    header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
-    exit();
+    COM_displayMessageAndAbort($LANG_404[3], '', 404, 'Not Found');
 }
 
 // Set the default content type
