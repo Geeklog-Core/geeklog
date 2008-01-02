@@ -21,7 +21,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.102 2008/01/01 20:03:22 dhaun Exp $
+// $Id: functions.inc,v 1.103 2008/01/02 09:42:07 dhaun Exp $
 
 
 /**
@@ -124,37 +124,31 @@ function plugin_getwhatsnew_links()
 
     // Get newest links
     $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (DATE_SUB(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
-    $result = DB_query( $sql );
-    $nrows = DB_numRows( $result );
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
 
-    if( $nrows > 0 )
-    {
+    if ($nrows > 0) {
         $newlinks = array();
-        for( $x = 0; $x < $nrows; $x++ )
-        {
-            $A = DB_fetchArray( $result );
-            $A['title'] = stripslashes( $A['title'] );
+        for ($x = 0; $x < $nrows; $x++) {
+            $A = DB_fetchArray($result);
+            $A['title'] = stripslashes($A['title']);
 
             // redirect link via portal.php so we can count the clicks
-            $lcount = COM_buildUrl( $_CONF['site_url']
-                    . '/links/portal.php?what=link&amp;item=' . $A['lid'] );
+            $lcount = COM_buildUrl($_CONF['site_url']
+                    . '/links/portal.php?what=link&amp;item=' . $A['lid']);
 
-            $title = COM_truncate( $A['title'], $_CONF['title_trim_length'],
-                                   '...' );
+            $title = COM_truncate($A['title'], $_CONF['title_trim_length'],
+                                  '...');
             $link_title = array();
-            if( $title != $A['title'] )
-            {
-                $link_title = array('title'=>$A['title']);
+            if ($title != $A['title']) {
+                $link_title = array('title' => $A['title']);
             }
 
-            $newlinks[] = COM_createLink(
-                $title, $lcount, $link_title) . LB;
+            $newlinks[] = COM_createLink($title, $lcount, $link_title) . LB;
         }
 
-        $retval .= COM_makeList( $newlinks, 'list-new-plugins' );
-    }
-    else
-    {
+        $retval .= COM_makeList($newlinks, 'list-new-plugins');
+    } else {
         $retval .= $LANG_LINKS[88] . '<br' . XHTML . '>' . LB;
     }
 
@@ -181,13 +175,14 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
         $url = COM_buildUrl($_CONF['site_url']
                             . '/links/portal.php?what=link&amp;item=' . $lid);
         if (empty($autotag['parm2'])) {
-            $linktext = stripslashes(DB_getItem($_TABLES['links'],
-                                     'title', "lid = '$lid'"));
+            $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
+            list($siteurl, $linktext) = DB_fetchArray($result);
         } else {
             $linktext = $autotag['parm2'];
+            $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
         }
         $attr = array(
-                    'title' => $linktext,
+                    'title' => $siteurl,
                     'class' => 'ext-link'
                      );
         $link = COM_createLink($linktext, $url, $attr);
@@ -273,8 +268,7 @@ function plugin_showstats_links ($showsitestats)
             $title = stripslashes (str_replace ('$', '&#36;', $A['title']));
             $url = COM_buildUrl ($_CONF['site_url']
                         . '/links/portal.php?what=link&amp;item=' . $A['lid']);
-            $sid = '<a href="' . $url . '" title="' . $A['url'] . '">' . $title
-                 . '</a>';
+            $sid = COM_createLink($title, $url, array('title' => $A['url']));
             $hits = COM_numberFormat ($A['hits']);
             $data_arr[] = array('title' => $title,
                                 'sid' => $sid,
@@ -454,10 +448,11 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
         } else {
             $profile = $submitter;
         }
-        $linkUrl = COM_buildURL ($_CONF['site_url']
-                                 . '/links/portal.php?what=link&amp;item='
-                                 . $A['lid']);
-        $anchor = COM_createLink($A['title'], $linkUrl, array('title'=> $A['url']));
+        $linkUrl = COM_buildUrl($_CONF['site_url']
+                                . '/links/portal.php?what=link&amp;item='
+                                . $A['lid']);
+        $anchor = COM_createLink($A['title'], $linkUrl,
+                                 array('title' => $A['url']));
         $row = array ($anchor, $thetime[0], $profile,
                       COM_NumberFormat ($A['hits']));
         $plugin_results->addSearchResult ($row);
@@ -1475,14 +1470,17 @@ function phpblock_topic_links()
 
     if (!empty($topic)) {
         $tid = addslashes($topic);
-        $result = DB_query("SELECT l.lid, l.title, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE c.tid='{$tid}' OR c.tid='all'" . COM_getPermSQL('AND', 0, 2, 'c'));
+        $result = DB_query("SELECT l.lid, l.title, l.url, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE c.tid='{$tid}' OR c.tid='all'" . COM_getPermSQL('AND', 0, 2, 'c'));
         $nrows = DB_numRows($result);
         if ($nrows > 0) {
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
                 $content = stripslashes($A['title']);
-                $url = $_CONF['site_url'] . '/links/portal.php?what=link&amp;item=' . $A['lid'];
-                $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
+                $url = COM_buildUrl($_CONF['site_url']
+                     . '/links/portal.php?what=link&amp;item=' . $A['lid']);
+                $retval .= COM_createLink($content, $url,
+                                          array('title' => $A['url']))
+                        . '<br' . XHTML . '>';
             }
         }
     }

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Links Plugin                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -34,6 +34,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: index.php,v 1.30 2008/01/02 09:42:07 dhaun Exp $
+
 /**
  * This is the links page
  *
@@ -42,7 +44,7 @@
  * @filesource
  * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2007
+ * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
@@ -52,7 +54,6 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-// $Id: index.php,v 1.29 2008/01/01 12:44:57 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -325,7 +326,7 @@ function prepare_link_item ($A, &$template)
                         nl2br (stripslashes ($A['description'])));
     $content = stripslashes ($A['title']);
     $attr = array(
-        'title' => stripslashes ($A['title']),
+        'title' => stripslashes ($A['url']),
         'class' => 'ext-link');
     $html = COM_createLink($content, $url, $attr);
     $template->set_var ('link_html', $html);
