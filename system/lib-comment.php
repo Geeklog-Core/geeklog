@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog comment library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.61 2007/12/29 12:18:02 dhaun Exp $
+// $Id: lib-comment.php,v 1.62 2008/01/02 13:00:46 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -360,9 +360,10 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                        . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;cid='
                        . $A['pid'] . '&amp;format=threaded';
             }
-            $template->set_var( 'parent_link', COM_createLink($LANG01[44], $plink));
+            $parent_link = COM_createLink($LANG01[44], $plink) . ' | ';
+            $template->set_var('parent_link', $parent_link);
         } else {
-            $template->set_var( 'parent_link', '');
+            $template->set_var('parent_link', '');
         }
 
         $template->set_var( 'date', strftime( $_CONF['date'], $A['nice_date'] ));
