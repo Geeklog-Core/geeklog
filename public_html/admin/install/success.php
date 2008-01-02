@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Page that is displayed upon a successful Geeklog installation or upgrade  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: success.php,v 1.18 2007/12/30 21:05:56 dhaun Exp $
+// $Id: success.php,v 1.19 2008/01/02 13:29:02 dhaun Exp $
 
 require_once '../../lib-common.php';
 if (!defined('XHTML')) {
@@ -51,7 +51,7 @@ $_CONF['rootdebug'] = true;
 $display = COM_siteHeader( 'menu', $LANG_SUCCESS[0] );
 $display .= COM_startBlock( $LANG_SUCCESS[1] . VERSION . $LANG_SUCCESS[2] );
 
-$display .= '<p>' . $LANG_SUCCESS[3] . (($type == 'install') ? 'installed' : 'upgraded') . $LANG_SUCCESS[4] . '</p>' ;
+$display .= '<p>' . $LANG_SUCCESS[3] . (($type == 'install') ? $LANG_SUCCESS[20] : $LANG_SUCCESS[21]) . $LANG_SUCCESS[4] . '</p>' ;
 
 if ($type == 'install') {
 	$display .= '<p>' . $LANG_SUCCESS[5] . '</p>
@@ -60,7 +60,7 @@ if ($type == 'install') {
 }
 
 $display .= '<h2>' . $LANG_SUCCESS[10] . '</h2>
-<p>' . $LANG_SUCCESS[11] . ' <strong>' . (($type == 'upgrade') ? '2' : '3') . ' ' . $LANG_SUCCESS[12] . '</strong>:</p>
+<p>' . $LANG_SUCCESS[11] . ' <strong>' . (($type == 'upgrade') ? '2' : '3') . '</strong> ' . $LANG_SUCCESS[12] . ':</p>
 <ul>
 <li>' . $LANG_SUCCESS[13] . ' <tt>' . $_CONF['path_html'] . 'admin/install</tt>.</li>';
 

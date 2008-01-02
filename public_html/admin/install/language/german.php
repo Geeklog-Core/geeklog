@@ -8,7 +8,7 @@
 // |                                                                           |
 // | German language file for the Geeklog installation script                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.3 2007/12/31 15:24:16 dhaun Exp $
+// $Id: german.php,v 1.4 2008/01/02 13:29:02 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -81,27 +81,27 @@ $LANG_INSTALL = array(
     28 => 'siteconfig.php. Did you make sure the file is write-able by the web server?',
     29 => 'Geeklog Site',
     30 => 'Another Nifty Geeklog Site',
-    31 => 'Required Configuration Information',
-    32 => 'Site Name',
-    33 => 'Site Slogan',
-    34 => 'Database Type',
+    31 => 'Erforderliche Informationen zum Setup',
+    32 => 'Name der Website',
+    33 => 'Site-Slogan',
+    34 => 'Art der Datenbank',
     35 => 'MySQL',
-    36 => 'MySQL with InnoDB Table support',
+    36 => 'MySQL mit Support für InnoDB-Tabellen',
     37 => 'Microsoft SQL',
-    38 => 'InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
-    39 => 'Database Hostname',
-    40 => 'Database Name',
-    41 => 'Database Username',
-    42 => 'Database Password',
-    43 => 'Database Prefix',
-    44 => 'Optional Configurations',
-    45 => 'Site URL',
-    46 => '(No trailing slash)',
-    47 => 'Admin Directory Path',
-    48 => 'Site Email',
-    49 => 'Site No-Reply Email',
-    50 => 'Install',
-    51 => 'MySQL 3.23.2 required',
+    38 => 'InnoDB-Tabellen können zu besserer Performance auf (sehr) großen Websites führen, machen den Backup-Prozess aber komplizierter.',
+    39 => 'Datenbank-Server',
+    40 => 'Name der Datenbank',
+    41 => 'Datenbank-Username',
+    42 => 'Datenbank-Passwort',
+    43 => 'Präfix für Tabellen',
+    44 => 'Optionale Einstellungen',
+    45 => 'URL der Website',
+    46 => '(ohne Slash am Ende)',
+    47 => 'Pfad für das "admin"-Verzeichnis',
+    48 => 'Website-Email-Adresse',
+    49 => '"No Reply"-Email-Adresse',
+    50 => 'Installieren',
+    51 => 'MySQL 3.23.2 benötigt',
     52 => 'Sorry, but Geeklog requires at least MySQL 3.23.2 to run (you have version ',
     53 => '). Please <a href="http://dev.mysql.com/downloads/mysql/">upgrade your MySQL</a> install or ask your hosting service to do it for you.',
     54 => 'Incorrect database information',
@@ -148,26 +148,28 @@ $LANG_INSTALL = array(
 // success.php (TBD)
 
 $LANG_SUCCESS = array(
-    0 => 'Installation complete',
-    1 => 'Installation of Geeklog ',
-    2 => ' complete!',
-    3 => 'Congratulations, you have successfully ',
-    4 => ' Geeklog. Please take a minute to read the information displayed below.',
-    5 => 'To log into your new Geeklog site, please use this account:',
+    0 => 'Installation erfolgreich',
+    1 => 'Installation von Geeklog ',
+    2 => ' abgeschlossen!',
+    3 => 'Glückwunsch, Du hast Geeklog erfolgreich ',
+    4 => '. Bitte nimm Dir einen Moment Zeit, um die unten stehenden Informationen zu lesen.',
+    5 => 'Um Dich in Deine neue Geeklog-Site einzuloggen, benutze bitte diesen Account:',
     6 => 'Username:',
     7 => 'Admin',
-    8 => 'Password:',
+    8 => 'Passwort:',
     9 => 'password',
-    10 => 'Security Warning',
-    11 => 'Don\'t forget to do',
-    12 => 'things',
-    13 => 'Remove or rename the install directory,',
-    14 => 'Change the',
-    15 => 'account password.',
-    16 => 'Set permissions on',
-    17 => 'and',
-    18 => 'back to',
-    19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',    
+    10 => 'Sicherheitshinweis',
+    11 => 'Bitte vergiss nicht, die folgenden ',
+    12 => ' Dinge zu tun',
+    13 => 'Das Installationsverzeichnis löschen oder umbenennen:',
+    14 => 'Das Passwort für den Account ',
+    15 => 'ändern.',
+    16 => 'Die Zugriffsrechte für',
+    17 => 'und',
+    18 => 'zurücksetzen auf',
+    19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
+    20 => 'installiert',
+    21 => 'aktualisiert'
 );
 
 // +---------------------------------------------------------------------------+

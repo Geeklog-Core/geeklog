@@ -8,7 +8,7 @@
 // |                                                                           |
 // | English language file for the Geeklog installation script                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: english.php,v 1.6 2007/12/31 15:24:16 dhaun Exp $
+// $Id: english.php,v 1.7 2008/01/02 13:29:02 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -167,7 +167,9 @@ $LANG_SUCCESS = array(
     16 => 'Set permissions on',
     17 => 'and',
     18 => 'back to',
-    19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',    
+    19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
+    20 => 'installed',
+    21 => 'upgraded'
 );
 
 // +---------------------------------------------------------------------------+
