@@ -8,7 +8,7 @@
 // |                                                                           |
 // | WS-related functions needed in more than one place.                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007 by the following authors:                              |
+// | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Ramnath R Iyer        - rri AT silentyak DOT com                 |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.24 2007/12/31 16:49:03 dhaun Exp $
+// $Id: lib-webservices.php,v 1.25 2008/01/02 11:44:09 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -64,21 +64,37 @@ function WS_error($error_code, $error_desc = '')
 {
     global $WS_VERBOSE;
 
-    header('Content-type: ' . 'text/html' . '; charset=UTF-8');
+    header('Content-type: text/plain');
     switch ($error_code) {
     case PLG_RET_PRECONDITION_FAILED:
         header($_SERVER['SERVER_PROTOCOL'] . ' 412 Precondition Failed');
+        if (empty($error_desc)) {
+            $error_desc = 'Precondition Failed';
+        }
         break;
     case PLG_RET_PERMISSION_DENIED:
         header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+        if (empty($error_desc)) {
+            $error_desc = 'Forbidden';
+        }
         break;
     case PLG_RET_AUTH_FAILED:
         header($_SERVER['SERVER_PROTOCOL'] . ' 401 Unauthorized');
         header('WWW-Authenticate: Basic realm="www.geeklog.net"');
+        if (empty($error_desc)) {
+            $error_desc = 'Unauthorized';
+        }
         break;
     case PLG_RET_ERROR:
         header($_SERVER['SERVER_PROTOCOL'] . ' 400 Bad Request');
+        if (empty($error_desc)) {
+            $error_desc = 'Bad Request';
+        }
         break;
+    }
+
+    if (empty($error_desc)) {
+        $error_desc = 'Error';
     }
 
     if ($WS_VERBOSE) {
