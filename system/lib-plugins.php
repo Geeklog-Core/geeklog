@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.139 2007/12/30 16:34:45 blaine Exp $
+// $Id: lib-plugins.php,v 1.140 2008/01/02 21:06:02 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -47,10 +47,11 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-plugins.php') !== false) {
 require_once $_CONF['path_system'] . 'classes/plugin.class.php';
 
 // Response codes for the service invocation PLG_invokeService()
-define('PLG_RET_OK',                 0);
-define('PLG_RET_ERROR',             -1);
-define('PLG_RET_PERMISSION_DENIED', -2);
-define('PLG_RET_AUTH_FAILED',       -3);
+define('PLG_RET_OK',                   0);
+define('PLG_RET_ERROR',               -1);
+define('PLG_RET_PERMISSION_DENIED',   -2);
+define('PLG_RET_AUTH_FAILED',         -3);
+define('PLG_RET_PRECONDITION_FAILED', -4);
 
 // buffer for function names for the center block API
 $PLG_bufferCenterAPI = array ();
