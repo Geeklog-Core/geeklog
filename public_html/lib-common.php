@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.670 2008/01/02 14:40:21 dhaun Exp $
+// $Id: lib-common.php,v 1.671 2008/01/03 14:02:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5068,6 +5068,25 @@ function COM_clearSpeedlimit( $speedlimit = 60, $type = '' )
     }
     $sql .= "(date < unix_timestamp() - $speedlimit)";
     DB_query( $sql );
+}
+
+/**
+* Reset the speedlimit for an IP address
+*
+* @param    string  $type   type of speed limit to reset, e.g. 'submit'
+* @param    string  $ip     IP address (use current IP address if empty)
+*
+*/
+function COM_resetSpeedlimit($type = 'submit', $ip = '')
+{
+    global $_TABLES;
+
+    if (empty($ip)) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    $ip = addslashes($ip);
+
+    DB_query("DELETE FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$ip')");
 }
 
 /**
