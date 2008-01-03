@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.28 2008/01/03 14:04:42 dhaun Exp $
+// $Id: lib-webservices.php,v 1.29 2008/01/03 16:22:00 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -185,7 +185,7 @@ function WS_post()
          */
         $getargs = array();
         $getargs['gl_svc'] = true;
-        $getargs['sid'] = $svc_msg['id'];
+        $getargs['id'] = $svc_msg['id'];
 
         $ret = PLG_invokeService($WS_PLUGIN, 'get', $getargs, $out, $svc_msg);
         if ($ret == PLG_RET_OK) {
