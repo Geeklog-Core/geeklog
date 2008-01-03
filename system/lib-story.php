@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.118 2008/01/03 14:41:33 dhaun Exp $
+// $Id: lib-story.php,v 1.119 2008/01/03 20:01:57 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -45,6 +45,9 @@ if ($_CONF['allow_user_photo']) {
     // only needed for the USER_getPhoto function
     require_once $_CONF['path_system'] . 'lib-user.php';
 }
+
+// this must be kept in sync with the actual size of 'sid' in the db ...
+define('STORY_MAX_ID_LENGTH', 40);
 
 /**
  * Takes an article class and renders HTML in the specified template and style.
@@ -991,7 +994,8 @@ function STORY_deleteStory($sid)
  *
  * @return  bool	True, if webservices are supported
  */
-function plugin_wsEnabled_story() {
+function plugin_wsEnabled_story()
+{
     return true;
 }
 
@@ -1164,6 +1168,11 @@ function service_submit_story($args, &$output, &$svc_msg)
     // END TEST CODE
 
     $args['sid'] = COM_sanitizeID($args['sid']);
+    if (!$gl_edit) {
+        if (strlen($args['sid']) > STORY_MAX_ID_LENGTH) {
+            $args['sid'] = COM_makeSid();
+        }
+    }
     $story = new Story();
 
     if ($args['gl_edit'] && !empty($args['gl_etag'])) {
