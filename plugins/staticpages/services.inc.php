@@ -33,7 +33,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.7 2008/01/03 16:23:01 dhaun Exp $
+// $Id: services.inc.php,v 1.8 2008/01/03 20:01:18 dhaun Exp $
+
+// this must be kept in synch with the actual size of 'sp_id' in the db ...
+define('STATICPAGE_MAX_ID_LENGTH', 40);
 
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
@@ -116,6 +119,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
 
     $args['sp_id'] = COM_sanitizeID($args['sp_id']);
+    if (!$gl_edit) {
+        if (strlen($args['sp_id']) > STATICPAGE_MAX_ID_LENGTH) {
+            $args['sp_id'] = COM_makeSid();
+        }
+    }
 
     // Apply filters to the parameters passed by the webservice 
     if ($args['gl_svc']) {
