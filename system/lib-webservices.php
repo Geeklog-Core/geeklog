@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.27 2008/01/02 19:39:00 dhaun Exp $
+// $Id: lib-webservices.php,v 1.28 2008/01/03 14:04:42 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -689,6 +689,23 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
 
 /**
  * Authenticates the user if authentication headers are present
+ *
+ * Our handling of the speedlimit here requires some explanation ...
+ * Atompub clients will usually try to do everything without logging in first.
+ * Since that would mean that we can't provide feeds for drafts, items with
+ * special permissions, etc. we ask them to log in (PLG_RET_AUTH_FAILED).
+ * That, however, means that every request from an Atompub client will count
+ * as one failed login attempt. So doing a couple of requests in quick
+ * succession will surely get the client blocked. Therefore
+ * - a request without any login credentials counts as one failed login attempt
+ * - a request with wrong login credentials counts as two failed login attempts
+ * - if, after a successful login, we have only one failed attempt on record,
+ *   we reset the speedlimit
+ * This still ensures that
+ * - repeated failed logins (without or with invalid credentials) will cause the
+ *   client to be blocked eventually
+ * - this can not be used for dictionary attacks
+ *
  */
 function WS_authenticate()
 {
@@ -709,8 +726,9 @@ function WS_authenticate()
         }
     } elseif (!empty($_SERVER['REMOTE_USER'])) {
         /* PHP installed as CGI may not have access to authorization headers of
-         * Apache. In that case, use .htaccess to store the auth header as explained
-         * at http://wiki.geeklog.net/wiki/index.php/Webservices_API#Authentication
+         * Apache. In that case, use .htaccess to store the auth header as
+         * explained at
+         * http://wiki.geeklog.net/wiki/index.php/Webservices_API#Authentication
          */
 
         list($auth_type, $auth_data) = explode(' ', $_SERVER['REMOTE_USER']);
@@ -724,7 +742,7 @@ function WS_authenticate()
             COM_errorLog("WS: No login given");
         }
 
-        return;
+        // fallthrough (see below)
     }
 
     COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
@@ -732,7 +750,9 @@ function WS_authenticate()
         WS_error(PLG_RET_PERMISSION_DENIED, 'Speed Limit exceeded');
     }
 
-    $status = SEC_authenticate($username, $password, $uid);
+    if (!empty($username) && !empty($password)) {
+        $status = SEC_authenticate($username, $password, $uid);
+    }
 
     if ($status == USER_ACCOUNT_ACTIVE) {
         $_USER = SESS_getUserDataFromId($uid);
@@ -741,8 +761,25 @@ function WS_authenticate()
         if ($WS_VERBOSE) {
             COM_errorLog("WS: User '{$_USER['username']}' ({$_USER['uid']}) successfully logged in");
         }
+
+        // if there were less than 2 failed login attempts, reset speedlimit
+        if (COM_checkSpeedlimit('login', 2) == 0) {
+            if ($WS_VERBOSE) {
+                COM_errorLog("WS: Successful login - resetting speedlimit");
+            }
+            COM_resetSpeedlimit('login');
+        }
     } else {
         COM_updateSpeedlimit('login');
+        if (!empty($username) && !empty($password)) {
+            COM_updateSpeedlimit('login');
+
+            if ($WS_VERBOSE) {
+                COM_errorLog("WS: Wrong login credentials - counting as 2 failed attempts");
+            }
+        } elseif ($WS_VERBOSE) { 
+            COM_errorLog("WS: Empty login credentials - counting as 1 failed attempt");
+        }
         WS_error(PLG_RET_AUTH_FAILED);
     }
 
