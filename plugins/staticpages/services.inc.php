@@ -2,13 +2,13 @@
 
 // Reminder: always indent with 4 spaces (no tabs). 
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.4                                                 |
+// | Static Pages Plugin 1.5                                                   |
 // +---------------------------------------------------------------------------+
 // | services.inc.php                                                          |
 // |                                                                           |
 // | This file implements the services provided by the 'Static Pages' plugin.  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.6 2007/12/29 15:05:50 dhaun Exp $
+// $Id: services.inc.php,v 1.7 2008/01/03 16:23:01 dhaun Exp $
 
 /**
  * Submit static page. The page is updated if it exists, or a new one is created
@@ -114,6 +114,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     if (empty($args['group_id'])) {
         $args['group_id'] = SEC_getFeatureGroup('staticpages.edit', $_USER['uid']);
     }
+
+    $args['sp_id'] = COM_sanitizeID($args['sp_id']);
 
     // Apply filters to the parameters passed by the webservice 
     if ($args['gl_svc']) {
@@ -240,8 +242,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             return PLG_RET_ERROR;
         }
     }
-
-    $sp_id = COM_sanitizeID ($sp_id);
 
     // Check for unique page ID
     $duplicate_id = false;
@@ -523,7 +523,6 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
             return PLG_RET_ERROR;
         }
-
 
         if ($args['gl_svc']) {
             // This date format is PHP 5 only,
