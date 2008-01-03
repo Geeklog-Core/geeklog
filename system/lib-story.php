@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.117 2007/12/29 15:05:50 dhaun Exp $
+// $Id: lib-story.php,v 1.118 2008/01/03 14:41:33 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1073,15 +1073,22 @@ function service_submit_story($args, &$output, &$svc_msg)
 
     /* - START: Set all the defaults - */
 
-    /* Default topic is the first one */
     if (empty($args['tid'])) {
-        $o = array();
-        $s = array();
-        if (service_getTopicList_story(array('gl_svc' => true), $o, $s) == PLG_RET_OK) {
-            $args['tid'] = $o[0];
+        // see if we have a default topic
+        $topic = DB_getItem($_TABLES['topics'], 'tid',
+                            'is_default = 1' . COM_getPermSQL('AND'));
+        if (!empty($topic)) {
+            $args['tid'] = $topic;
         } else {
-            $svc_msg['error_desc'] = 'No topics available';
-            return PLG_RET_ERROR;
+            // otherwise, just use the first one
+            $o = array();
+            $s = array();
+            if (service_getTopicList_story(array('gl_svc' => true), $o, $s) == PLG_RET_OK) {
+                $args['tid'] = $o[0];
+            } else {
+                $svc_msg['error_desc'] = 'No topics available';
+                return PLG_RET_ERROR;
+            }
         }
     }
 
