@@ -111,6 +111,8 @@ $LANG_STATIC= array(
 );
 
 // Messages for the plugin upgrade
+$PLG_staticpages_MESSAGE3001 = 'Plugin upgrade failed';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+$PLG_staticpages_MESSAGE3003 = 'Upgrade failed - unable to rename plugins config.php file.';
 
 ?>
