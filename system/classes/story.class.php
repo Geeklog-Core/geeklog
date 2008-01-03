@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Story Abstraction.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2006-2007 by the following authors:                         |
+// | Copyright (C) 2006-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Michael Jervis, mike AT fuckingbrit DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.19 2007/12/22 14:38:30 dhaun Exp $
+// $Id: story.class.php,v 1.20 2008/01/03 18:55:45 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -683,8 +683,9 @@ class Story
 
             $article = DB_fetchArray($result);
             /* Check Security */
-            if (SEC_hasAccess($result['owner_id'], $result['group_id'], $result['perm_owner'], $result['perm_group'],
-                                  $result['perm_members'], $result['perm_anon']) < 3) {
+            if (SEC_hasAccess($article['owner_id'], $article['group_id'],
+                    $article['perm_owner'], $article['perm_group'],
+                    $article['perm_members'], $article['perm_anon']) < 3) {
                 return STORY_EXISTING_NO_EDIT_PERMISSION;
             }
         }
