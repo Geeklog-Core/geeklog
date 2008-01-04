@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.29 2008/01/03 16:22:00 dhaun Exp $
+// $Id: lib-webservices.php,v 1.30 2008/01/04 18:36:31 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -171,6 +171,13 @@ function WS_post()
 
     /* Indicates that the method are being called by the webservice */
     $args['gl_svc'] = true;
+
+    // provide convenient access to the 'Slug:' header, if available
+    if (isset($_SERVER['HTTP_SLUG'])) {
+        $args['slug'] = $_SERVER['HTTP_SLUG'];
+    } else {
+        $args['slug'] = '';
+    }
 
     // Call PLG_invokeService here
     $ret = PLG_invokeService($WS_PLUGIN, $action, $args, $out, $svc_msg);
@@ -822,6 +829,44 @@ function WS_writeSync()
 
     echo $WS_TEXT;
 
+}
+
+/*
+* Create a new ID, preferrably from a provided 'Slug:' header
+*
+* @param    string  $slug           Content of the 'Slug:' header
+* @param    int     $max_length     max. length of the created ID
+* @return   string                  new ID
+* 
+* For more information on the 'Slug:' header, see RFC 5023, section 9.7
+*
+*/
+function WS_makeId($slug = '', $max_length = 40)
+{
+    $sid = COM_makeSid();
+
+    if (strpos($slug, '%') !== false) {
+        // we'll end up removing most of the %-encoded characters anyway ...
+        $slug = '';
+    }
+
+    $slug = trim($slug);
+    if (!empty($slug)) {
+        // make it more ID-like
+        $slug = str_replace(' ', '-', $slug);
+        $slug = strtolower($slug);
+
+        $id = COM_sanitizeID($slug . '-' . $sid);
+        if (strlen($id) > $max_length) {
+            // 'slug-sid' would make for nicer IDs but if we have to shorten
+            // them, they're probably not unique any more. So swap order.
+            $id = $sid . '-' . $slug;
+        }
+    } else {
+        $id = $sid;
+    }
+
+    return substr(COM_sanitizeID($id), 0, $max_length);
 }
 
 ?>

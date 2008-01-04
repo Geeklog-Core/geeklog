@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.8 2008/01/03 20:01:18 dhaun Exp $
+// $Id: services.inc.php,v 1.9 2008/01/04 18:36:31 dhaun Exp $
 
 // this must be kept in synch with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
@@ -121,7 +121,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $args['sp_id'] = COM_sanitizeID($args['sp_id']);
     if (!$gl_edit) {
         if (strlen($args['sp_id']) > STATICPAGE_MAX_ID_LENGTH) {
-            $args['sp_id'] = COM_makeSid();
+            $args['sp_id'] = WS_makeId($args['slug'], STATICPAGE_MAX_ID_LENGTH);
         }
     }
 

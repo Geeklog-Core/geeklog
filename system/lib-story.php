@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.119 2008/01/03 20:01:57 dhaun Exp $
+// $Id: lib-story.php,v 1.120 2008/01/04 18:36:31 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1170,7 +1170,7 @@ function service_submit_story($args, &$output, &$svc_msg)
     $args['sid'] = COM_sanitizeID($args['sid']);
     if (!$gl_edit) {
         if (strlen($args['sid']) > STORY_MAX_ID_LENGTH) {
-            $args['sid'] = COM_makeSid();
+            $args['sid'] = WS_makeId($args['slug'], STORY_MAX_ID_LENGTH);
         }
     }
     $story = new Story();
