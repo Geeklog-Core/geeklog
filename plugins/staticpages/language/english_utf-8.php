@@ -107,12 +107,15 @@ $LANG_STATIC= array(
     'copy' => 'Copy',
     'limit_results' => 'Limit Results',
     'search' => 'Search',
-    'submit' => 'Submit'
+    'submit' => 'Submit',
+    'config_menubar'   => 'Static Pages Main Settings',
+    'config_menu1'  => 'Static Pages Main Settings'
 );
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade failed';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 $PLG_staticpages_MESSAGE3003 = 'Upgrade failed - unable to rename plugins config.php file.';
+$PLG_staticpages_MESSAGE3004 = 'Plugin upgrade failed - missing the plugins config.php';
 
 ?>
