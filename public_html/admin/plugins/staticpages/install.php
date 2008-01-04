@@ -10,6 +10,7 @@
 // | Static pages plugin for Geeklog.                                          |
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
+// | Upgraded for GL version 1.5 online config manager                         |
 // |                                                                           |
 // | Copyright (C) 2002-2006 by the following authors:                         |
 // |                                                                           |
@@ -36,10 +37,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.27 2007/02/11 01:45:08 ospiess Exp $
+// $Id: install.php,v 1.28 2008/01/04 03:21:12 blaine Exp $
 
 require_once ('../../../lib-common.php');
-require_once ($_CONF['path'] . 'plugins/staticpages/config.php');
 
 // Plugin information
 //
@@ -47,9 +47,14 @@ require_once ($_CONF['path'] . 'plugins/staticpages/config.php');
 //
 $pi_display_name = 'Static Page';
 $pi_name         = 'staticpages';
-$pi_version      = $_SP_CONF['version'];
+$pi_version      = '1.5';
 $gl_version      = '1.4.1';
 $pi_url          = 'http://www.geeklog.net/';
+
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
+
+// Load the configuration defaults
+require_once ("{$base_path}install_defaults.php");
 
 // name of the Admin group
 $pi_admin        = $pi_display_name . ' Admin';
@@ -89,20 +94,53 @@ function plugin_compatible_with_this_geeklog_version ()
 
     return true;
 }
+
+
+
+/**
+* Loads the configuration records for the GL Online Config Manager
+*
+* @return   boolean     true = proceed with install, false = not compatible
+*
+*/
+function plugin_load_configuration ()
+{
+    global $_CONF,$pi_version,$_SP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    $sp_config = config::get_instance();
+    $sp_config->initConfig();
+    if(! $sp_config->group_exists('staticpages')){
+        $sp_config->add('version', $pi_version, 'text', 0, 0, null, 0, true, 'staticpages');
+        $sp_config->add('allow_php', $_SP_DEFAULT['allow_php'], 'text', 0, 0, null, 10, true, 'staticpages');
+        $sp_config->add('sort_by', $_SP_DEFAULT['sort_by'],  'text', 0, 0, null, 20, true, 'staticpages');
+        $sp_config->add('sort_menu_by', $_SP_DEFAULT['sort_menu_by'], 'text', 0, 0, null, 30, true, 'staticpages');
+        $sp_config->add('delete_pages', $_SP_DEFAULT['delete_pages'] , 'text', 0, 0, null, 40, true, 'staticpages');
+        $sp_config->add('in_block', $_SP_DEFAULT['in_block'], 'text', 0, 0, null, 50, true, 'staticpages');
+        $sp_config->add('show_hits', $_SP_DEFAULT['show_hits'], 'text', 0, 0, null, 60, true, 'staticpages');
+        $sp_config->add('show_date', $_SP_DEFAULT['show_date'], 'text', 0, 0, null, 70, true, 'staticpages');
+        $sp_config->add('filter_html', $_SP_DEFAULT['filter_html'], 'text', 0, 0, null, 80, true, 'staticpages');
+        $sp_config->add('censor', $_SP_DEFAULT['censor'], 'text', 0, 0, null, 90, true, 'staticpages');
+        $sp_config->add('default_permissions', $_SP_DEFAULT['default_permissions'], '@text', 0, 0, null, 100, true, 'staticpages');
+        $sp_config->add('aftersave', $_SP_DEFAULT['aftersave'], 'text', 0, 0, null, 110, true, 'staticpages');
+        $sp_config->add('atom_max_items', $_SP_DEFAULT['atom_max_items'], 'text', 0, 0, null, 120, true, 'staticpages');
+    }
+    return true;
+}
+
+
 //
 // ----------------------------------------------------------------------------
 //
 // The code below should be the same for most plugins and usually won't
 // require modifications.
 
-$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 $langfile = $base_path . $_CONF['language'] . '.php';
 if (file_exists ($langfile)) {
     require_once ($langfile);
 } else {
     require_once ($base_path . 'language/english.php');
 }
-require_once ($base_path . 'config.php');
 require_once ($base_path . 'functions.inc');
 
 
@@ -245,6 +283,14 @@ function plugin_install_now()
     if (DB_error ()) {
         PLG_uninstall ($pi_name);
         return false;
+    }
+
+    // Load the online configuration records
+    if (function_exists ('plugin_load_configuration')) {
+        if (!plugin_load_configuration ()) {
+            PLG_uninstall ($pi_name);
+            return false;
+        }
     }
 
     // give the plugin a chance to perform any post-install operations
