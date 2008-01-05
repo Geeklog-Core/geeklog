@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.109 2008/01/05 15:54:55 blaine Exp $
+// $Id: functions.inc,v 1.110 2008/01/05 20:02:55 blaine Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -57,11 +57,11 @@ if (file_exists("{$plugin_path}config.php")) {
 // Check and see if we need to load the plugin configuration
 if (!isset($_SP_CONF['allow_php'])) {
     require_once $_CONF['path_system'] . 'classes/config.class.php';
+
     $sp_config = config::get_instance();
 
     $LANG_configsubgroups['staticpages'][0] = $LANG_STATIC['config_menubar'];
     $LANG_fs['staticpages'][0] = $LANG_STATIC['config_menu1'];
-
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
 
@@ -341,6 +341,7 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
     $spage->set_var('content', $content );
 
     if ($A['sp_format'] <> 'blankpage') {
+        $spage->set_var('info_separator','hidden');
         $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
         if ($_SP_CONF['show_date'] == 1) {
             $lastupdate = $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
@@ -349,7 +350,7 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
 
         if ($_SP_CONF['show_hits'] == 1) {
             if ($_SP_CONF['show_date'] == 1) {
-                $hits = "| ";
+                $spage->set_var('info_separator','visible');
             }
             $hits = COM_numberFormat ($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
             $spage->set_var('hits', $hits);
