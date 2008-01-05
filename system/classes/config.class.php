@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.11 2007/12/30 03:07:07 blaine Exp $
+// $Id: config.class.php,v 1.12 2008/01/05 23:41:13 blaine Exp $
 
 class config {
     var $dbconfig_file;
@@ -334,7 +334,7 @@ class config {
         if (!SEC_inGroup('Root'))
             return config::_UI_perm_denied();
 
-        if (!isset($sg)) $sg = '0';
+        if (!isset($sg) OR empty($sg)) $sg = '0';
         $t = new Template($_CONF['path_layout'] . 'admin/config');
         $t->set_file(array('main' => 'configuration.thtml','menugroup' => 'menu_element.thtml'));
 
@@ -344,7 +344,7 @@ class config {
         $t->set_var('open_group', $grp);
 
         $groups = $this->_get_groups();
-
+        $outerloopcntr = 1;
         if (count($groups) > 0) {
             $t->set_block('menugroup','subgroup-selector','subgroups');
             foreach ($groups as $group) {
@@ -352,24 +352,33 @@ class config {
                 $t->set_var("group_select_value", $group);
                 $t->set_var("group_display", ucwords($group));
                 $subgroups = $this->get_sgroups($group);
-                $i=1;
+                $innerloopcntr=1;
                 foreach ($subgroups as $sgroup) {
-                    $t->set_var('select_id', ($sg === $sgroup ? 'id="current"' : ''));
+                    if ($grp == $group AND $sg == $sgroup) {
+                        $t->set_var('group_active_name',ucwords($group));
+                        $t->set_var('subgroup_active_name',$LANG_configsubgroups[$group][$sgroup]);
+                        $t->set_var('select_id', 'id="current"');
+                    } else {
+                        $t->set_var('select_id', '');
+                    }
                     $t->set_var('subgroup_name', $sgroup);
                     $t->set_var("subgroup_display_name",
                                 $LANG_configsubgroups[$group][$sgroup]);
-                    if ($i == 1) {
+                    if ($innerloopcntr == 1) {
                         $t->parse('subgroups', "subgroup-selector");
                     } else {
                         $t->parse('subgroups', "subgroup-selector", true);
                     }
-                    $i++;
+                    $innerloopcntr++;
                 }
+                $t->set_var('cntr',$outerloopcntr);
                 $t->parse("menu_elements", "menugroup", true);
+                $outerloopcntr++;
             }
         } else {
             $t->set_var('hide_groupselection','none');
         }
+
         $t->set_var('open_sg', $sg);
         $t->set_block('main','fieldset','sg_contents');
         $t->set_block('fieldset', 'notes', 'fs_notes');
