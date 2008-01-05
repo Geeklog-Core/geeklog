@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.31 2008/01/05 20:05:58 dhaun Exp $
+// $Id: index.php,v 1.32 2008/01/05 20:47:45 dhaun Exp $
 
 /**
  * This is the links page
@@ -270,14 +270,21 @@ function links_list($message)
         }
         $linklist->set_var ('page_navigation', '');
     } else {
-        // Get current category name
-        $currentcategory = DB_getItem($_TABLES['linkcategories'], 'category',
-                                      "cid = '{$cat}'");
-        $linklist->set_var('link_category', $currentcategory);
-        $linklist->set_var('link_details', '');
-
+        $currentcid = '';
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
+            if (strcasecmp ($A['cid'], $currentcid) != 0) {
+                // print the category and link
+                if ($i > 0) {
+                    $linklist->parse('category_links', 'catlinks', true);
+                    $linklist->set_var('link_details', '');
+                }
+                $currentcid = $A['cid'];
+                $currentcategory = DB_getItem($_TABLES['linkcategories'],
+                        'category', "cid = '" . addslashes($currentcid) . "'");
+                $linklist->set_var('link_category', $currentcategory);
+            }
+
             prepare_link_item($A, $linklist);
             $linklist->parse('link_details', 'link', true);
         }
@@ -308,6 +315,7 @@ function links_list($message)
     $linklist->set_var ('blockfooter',COM_endBlock());
     $linklist->parse ('output', 'linklist');
     $display .= $linklist->finish ($linklist->get_var ('output'));
+
     return $display;
 }
 
