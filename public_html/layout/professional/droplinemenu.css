@@ -1,135 +1,195 @@
-/* ================================================================
-This copyright notice must be untouched at all times.
 
-The original version of this stylesheet and the associated (x)html
-is available at http://www.cssplay.co.uk/menus/pro_dropline_dropdown.html
-Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
-This stylesheet and the associated (x)html may be modified in any
-way to fit your requirements.
-=================================================================== */
-
-
-.pro_linedrop {
-height:35px;
-width:100%;
-background:url(images/droplinemenu/black_0.gif);
-position:relative;
-font-family:arial, verdana, sans-serif;
-font-size:11px;
-z-index:500;
+#dropline_menu_container {
+    height: 58px;
+    width: 100%;
+    margin: 0px auto;
+    position: relative;
+    background-color: #5E6D73;
+    padding-left:1px;
 }
 
-.pro_linedrop .select {
-margin:0;
-padding:0;
-list-style:none;
-white-space:nowrap;
+/* The Menu */
+
+#dropline_menu {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    height: 58px;
+    width: 100%;
+    font: bold 11px "Lucida Sans", Lucida, Verdana, sans-serif;
 }
 
-.pro_linedrop li {
-float:left;
-background:url(images/droplinemenu/black_1.gif);
+/* All lists must float */
+
+#dropline_menu ul {
+    margin: 0;
+    padding: 0;
+    float: left;
 }
 
-
-.pro_linedrop .select a {
-display:block;
-height:35px;
-float:left;
-background: url(images/droplinemenu/black_0.gif);
-padding:0 0 0 15px;
-text-decoration:none;
-line-height:33px;
-white-space:nowrap;
-color:#fc0;
+/* Hide 3rd Level */
+#dropline_menu ul ul ul {
+    left: -20000px;
 }
 
+/* All list-items must obey parent selector */
 
-.pro_linedrop .select a b {
-display:block;
-padding:0 30px 0 15px;
-background:url(images/droplinemenu/black_0.gif) right top;
-}
-
-.pro_linedrop .select li.line a b {
-background:url(images/droplinemenu/black_0a.gif) right top;
-}
-
-.pro_linedrop .select a:hover,
-.pro_linedrop .select li:hover a {
-background: url(images/droplinemenu/black_1.gif);
-padding:0 0 0 15px;
-cursor:pointer;
-color:#fff;
+#dropline_menu li {
+    padding: 0;
+    margin: 0;
+    float: left;
+    display: block;
 }
 
 
-.pro_linedrop .select a:hover b,
-.pro_linedrop .select li:hover a b {
-display:block;
-padding:0 30px 0 15px;
-background:url(images/droplinemenu/black_1.gif) right top;
-cursor:pointer;
+/* Second level lists hide by default */
+
+#dropline_menu li ul {
+    display: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top:29px;
+    height: 28px;
+    overflow:hidden;
+    left: 0;
+    width:100%;
 }
 
-.pro_linedrop .select li.line a:hover b,
-.pro_linedrop .select li.line:hover a b {
-background:url(images/droplinemenu/black_1a.gif) right top;
+/* IE needs to know we are on a computer */
+
+#dropline_menu a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Underline all sublevel hover a.links */
+
+#dropline_menu li ul a:hover,
+#dropline_menu li.active ul a:hover {
+    text-decoration: underline;
+}
+
+/* Underline all sublevel active a.links */
+
+#dropline_menu li li.active a,
+#dropline_menu li li.active:hover a,
+#dropline_menu li li.sfhover.active a {
+     text-decoration: underline;
 }
 
 
-.pro_linedrop .sub {
-display:none;
-}
-.pro_linedrop ul ul {display:none;}
+/* Keeps sublevel persistant */
 
-/* IE6 only */
-.pro_linedrop table {
-border-collapse:collapse;
-margin:-1px;
-font-size:1em;
-width:0;
-height:0;
+#dropline_menu li.active ul {
+    display: block;
 }
 
-.pro_linedrop .sub {
-margin:0;
-padding:0;
-list-style:none;
+/* Makes sure sublevels stay on top */
+
+#dropline_menu li:hover ul, #dropline_menu li.sfhover ul {
+    display: block;
+    z-index: 6000;
 }
 
-.pro_linedrop .sub li {background:transparent;}
+/* Top level a.links (sizes only) */
 
-.pro_linedrop .select :hover .sub {
-height:25px;
-display:block;
-position:absolute;
-float:left;
-width:99.8%;
-top:35px;
-left:0;
-text-align:center;
-background:#fff url(images/droplinemenu/fade.gif);
-border:1px solid #aaa;
+#dropline_menu li a {
+    display: block;
+    float: left;
+    padding: 0 15px;
+    height: 29px;
+    line-height: 29px;
+    /*_line-height: 27px;*/
 }
 
-.sub li #current
+/* Second level a.links */
+
+#dropline_menu li ul a, #dropline_menu li.active ul a {
+    display: block;
+    float: left;
+    font-weight: normal;
+    padding: 0 10px;
+    background: none;
+    height: 24px;
+    line-height: 24px;
+}
+
+/* First level list-items */
+
+#dropline_menu ul li {
+    background: url(images/droplinemenu/menu_normal.png) no-repeat left top;
+    margin-right: 1px;
+    border-right: 1px solid #869A9F;
+}
+/* First level list-items (hover) */
+
+#dropline_menu ul li:hover,
+#dropline_menu ul li.sfhover
+ {
+    background: url(images/droplinemenu/menu_over.png) no-repeat left top;
+}
+
+/* First level normal a.link */
+
+#dropline_menu ul li a {
+    color: #fff;
+}
+
+/* Second level normal a.link */
+
+
+#dropline_menu ul li:hover ul,
+#dropline_menu li:hover a:link,
+#dropline_menu li:hover a:visited,
+#dropline_menu li.sfhover a:link,
+#dropline_menu li.sfhover a:visited {
+    color: #3d3d3d;
+}
+
+#dropline_menu ul li ul,
+#dropline_menu ul li.active a:link,
+#dropline_menu ul li.active a:visited,
+#dropline_menu ul li.active ul:hover,
+#dropline_menu ul li.active:hover ul,
+#dropline_menu ul li.active ul.sfhover,
+#dropline_menu ul li.active.sfhover ul {
+    background:#C9CFD3;
+    color: #fff;
+}
+
+#dropline_menu ul li.active a:link,
+#dropline_menu ul li.active a:visited,
+#dropline_menu ul li.active ul.sfhover
+ {
+    background-color: #3d3d3d;
+    background: url(images/droplinemenu/menu_active.png) no-repeat left top;
+    color: #3d3d3d;
+}
+#dropline_menu li.active li a:link,
+#dropline_menu li.active li a:visited,
+#dropline_menu li.active li a:hover,
+#dropline_menu li:hover ul li a:link,
+#dropline_menu li:hover ul li a:visited,
+#dropline_menu li:hover ul li a:hover,
+#dropline_menu li.sfhover ul li a:link,
+#dropline_menu li.sfhover ul li a:visited,
+#dropline_menu li.sfhover ul li a:hover,
+#dropline_menu li li a:link,
+#dropline_menu li li a:visited,
+#dropline_menu li li a:hover
 {
-    background: #666;
-    color: #FFF;
-}
+    background: #C9CFD3 url(images/droplinemenu/sublevel_divider.png) no-repeat 100% 60%;
+    border: none;
+    background-color: #C9CFD3;
+    padding: 1px 5px;
+    color: #333;
 
-.sub li:hover #current
+}
+#dropline_menu ul li.active ul li,
+#dropline_menu ul li ul li
 {
-    background: #CCC;
-    color:#000;
+    border: none;
 }
 
-.pro_linedrop .select :hover .sub li a
-{display:block; height:25px; line-height:22px; float:left; background:transparent url(line/transparent.gif); padding:0 16px; margin:0; white-space:nowrap; color:#333;font-size:10px;}
-
-.pro_linedrop .select :hover .sub li.subline a {color:#c00;}
-
-.pro_linedrop .select :hover .sub li a:hover,
-.pro_linedrop .select :hover .sub li:hover
-{color:#000; line-height:20px; position:relative; background:#fff url(images/droplinemenu/fade.gif) left bottom;}
