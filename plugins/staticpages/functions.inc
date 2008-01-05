@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.108 2008/01/04 02:15:28 blaine Exp $
+// $Id: functions.inc,v 1.109 2008/01/05 15:54:55 blaine Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -58,7 +58,6 @@ if (file_exists("{$plugin_path}config.php")) {
 if (!isset($_SP_CONF['allow_php'])) {
     require_once $_CONF['path_system'] . 'classes/config.class.php';
     $sp_config = config::get_instance();
-    $sp_config->initConfig();
 
     $LANG_configsubgroups['staticpages'][0] = $LANG_STATIC['config_menubar'];
     $LANG_fs['staticpages'][0] = $LANG_STATIC['config_menu1'];
