@@ -287,7 +287,7 @@ function upgrade_PollsPlugin()
 // Staticpages plugin updates
 function upgrade_StaticpagesPlugin()
 {
-    global $_TABLES;
+    global $_CONF,$_TABLES;
 
     require_once($_CONF['path_system'] . 'classes/config.class.php');
 
