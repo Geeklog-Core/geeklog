@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.671 2008/01/03 14:02:45 dhaun Exp $
+// $Id: lib-common.php,v 1.672 2008/01/05 18:50:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -978,6 +978,10 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     if( !empty( $pagetitle ))
     {
         $header->set_var( 'page_site_splitter', ' - ');
+    }
+    else
+    {
+        $header->set_var( 'page_site_splitter', '');
     }
     $header->set_var( 'page_title', $pagetitle );
     $header->set_var( 'site_name', $_CONF['site_name']);
