@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.30 2008/01/02 09:42:07 dhaun Exp $
+// $Id: index.php,v 1.31 2008/01/05 20:05:58 dhaun Exp $
 
 /**
  * This is the links page
@@ -130,19 +130,21 @@ function links_list($message)
                                 'catrow'   => 'categoryrow.thtml',
                                 'catcol'   => 'categorycol.thtml',
                                 'actcol'   => 'categoryactivecol.thtml',
-                                'pagenav'  => 'pagenavigation.thtml'));
+                                'pagenav'  => 'pagenavigation.thtml',
+                                'catdrop'  => 'categorydropdown.thtml'));
     $linklist->set_var('xhtml', XHTML);
     $linklist->set_var('blockheader', COM_startBlock($LANG_LINKS[114]));
     $linklist->set_var('layout_url', $_CONF['layout_url']);
 
-    // Create breadcrumb trail
-    $linklist->set_var('breadcrumbs', links_breadcrumbs($_LI_CONF['root'], $cid));
-
-    // Set dropdown for category jump
-    $linklist->set_var('lang_go', $LANG_LINKS[124]);
-    $linklist->set_var('link_dropdown', links_select_box(2, $cid));
-
     if ($_LI_CONF['linkcols'] > 0) {
+        // Create breadcrumb trail
+        $linklist->set_var('breadcrumbs',
+                           links_breadcrumbs($_LI_CONF['root'], $cid));
+
+        // Set dropdown for category jump
+        $linklist->set_var('lang_go', $LANG_LINKS[124]);
+        $linklist->set_var('link_dropdown', links_select_box(2, $cid));
+
         // Show categories
         $sql = "SELECT cid,pid,category,description FROM {$_TABLES['linkcategories']} WHERE pid='{$cat}'";
         // check if we are using the multilanguage hack
@@ -211,6 +213,11 @@ function links_list($message)
         }
     } else {
         $linklist->set_var ('category_navigation', '');
+    }
+    if ($_LI_CONF['linkcols'] == 0) {
+        $linklist->set_var('category_dropdown', '');
+    } else {
+        $linklist->parse('category_dropdown', 'catdrop', true);
     }
 
     $linklist->set_var('site_url', $_CONF['site_url']);
