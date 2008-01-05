@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.120 2008/01/04 18:36:31 dhaun Exp $
+// $Id: lib-story.php,v 1.121 2008/01/05 16:00:59 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -345,6 +345,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                                                 $C['username'], $C['fullname'])
                         . '</span>';
                 $article->set_var( 'comments_with_count', COM_createLink($comments_with_count, $commentsUrl));
+                $article->set_var( 'start_comments_anchortag', '<a href="'
+                        . $commentsUrl . '">' );
+                $article->set_var( 'end_comments_anchortag', '</a>' );
             }
             else
             {
