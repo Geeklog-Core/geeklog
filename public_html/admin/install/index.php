@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.29 2007/12/31 15:24:15 dhaun Exp $
+// $Id: index.php,v 1.30 2008/01/05 12:01:24 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -163,8 +163,10 @@ function INST_installEngine($install_type, $install_step)
 
             $site_url = isset($_POST['site_url']) ? $_POST['site_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/admin.*/', '', $_SERVER['PHP_SELF']) ;
             $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/install.*/', '', $_SERVER['PHP_SELF']) ; 
-            $site_mail = isset($_POST['site_mail']) ? $_POST['site_mail'] : ($_CONF['site_mail'] == 'admin@example.com' ? $_CONF['site_mail'] : 'admin@' . $_SERVER['HTTP_HOST']);
-            $noreply_mail = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : ($_CONF['noreply_mail'] == 'noreply@example.com' ? $_CONF['noreply_mail'] : 'noreply@' . $_SERVER['HTTP_HOST']);
+            $host_name = explode(':', $_SERVER['HTTP_HOST']);
+            $host_name = $host_name[0];
+            $site_mail = isset($_POST['site_mail']) ? $_POST['site_mail'] : ($_CONF['site_mail'] == 'admin@example.com' ? $_CONF['site_mail'] : 'admin@' . $host_name);
+            $noreply_mail = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : ($_CONF['noreply_mail'] == 'noreply@example.com' ? $_CONF['noreply_mail'] : 'noreply@' . $host_name);
 
             if ($install_type == 'install') {
                 $buttontext = $LANG_INSTALL[50];
