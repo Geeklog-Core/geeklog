@@ -291,7 +291,7 @@ function upgrade_StaticpagesPlugin()
 
     require_once($_CONF['path_system'] . 'classes/config.class.php');
 
-    $c = config::create();
+    $c = config::get_instance();
     $c->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
     $c->add('allow_php', 1, 'text', 0, 0, null, 10, true, 'staticpages');
     $c->add('sort_by', 'id',  'text', 0, 0, null, 20, true, 'staticpages');
