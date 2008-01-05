@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.9 2008/01/02 14:40:22 dhaun Exp $
+// $Id: config-install.php,v 1.10 2008/01/05 15:56:06 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -226,6 +226,22 @@ function install_config()
     $c->add('default_permissions_block',array(3, 2, 2, 2),'@select',7,37,12,1810,TRUE);
     $c->add('default_permissions_story',array(3, 2, 2, 2),'@select',7,37,12,1820,TRUE);
     $c->add('default_permissions_topic',array(3, 2, 2, 2),'@select',7,37,12,1830,TRUE);
+
+
+    // Add the configuration records for the default installed plugins
+    $c->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
+    $c->add('allow_php', 1, 'text', 0, 0, null, 10, true, 'staticpages');
+    $c->add('sort_by', 'id',  'text', 0, 0, null, 20, true, 'staticpages');
+    $c->add('sort_menu_by', 'label', 'text', 0, 0, null, 30, true, 'staticpages');
+    $c->add('delete_pages', 0 , 'text', 0, 0, null, 40, true, 'staticpages');
+    $c->add('in_block', 1, 'text', 0, 0, null, 50, true, 'staticpages');
+    $c->add('show_hits', 1, 'text', 0, 0, null, 60, true, 'staticpages');
+    $c->add('show_date', 1, 'text', 0, 0, null, 70, true, 'staticpages');
+    $c->add('filter_html', 0, 'text', 0, 0, null, 80, true, 'staticpages');
+    $c->add('censor', 1, 'text', 0, 0, null, 90, true, 'staticpages');
+    $c->add('default_permissions', array(3,2,2,2), '@text', 0, 0, null, 100, true, 'staticpages');
+    $c->add('aftersave', 'item', 'text', 0, 0, null, 110, true, 'staticpages');
+    $c->add('atom_max_items', 10, 'text', 0, 0, null, 120, true, 'staticpages');
 }
 
 ?>

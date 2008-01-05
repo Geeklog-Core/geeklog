@@ -289,6 +289,23 @@ function upgrade_StaticpagesPlugin()
 {
     global $_TABLES;
 
+    require_once($_CONF['path_system'] . 'classes/config.class.php');
+
+    $c = config::create();
+    $c->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
+    $c->add('allow_php', 1, 'text', 0, 0, null, 10, true, 'staticpages');
+    $c->add('sort_by', 'id',  'text', 0, 0, null, 20, true, 'staticpages');
+    $c->add('sort_menu_by', 'label', 'text', 0, 0, null, 30, true, 'staticpages');
+    $c->add('delete_pages', 0 , 'text', 0, 0, null, 40, true, 'staticpages');
+    $c->add('in_block', 1, 'text', 0, 0, null, 50, true, 'staticpages');
+    $c->add('show_hits', 1, 'text', 0, 0, null, 60, true, 'staticpages');
+    $c->add('show_date', 1, 'text', 0, 0, null, 70, true, 'staticpages');
+    $c->add('filter_html', 0, 'text', 0, 0, null, 80, true, 'staticpages');
+    $c->add('censor', 1, 'text', 0, 0, null, 90, true, 'staticpages');
+    $c->add('default_permissions', array(3,2,2,2), '@text', 0, 0, null, 100, true, 'staticpages');
+    $c->add('aftersave', 'item', 'text', 0, 0, null, 110, true, 'staticpages');
+    $c->add('atom_max_items', 10, 'text', 0, 0, null, 120, true, 'staticpages');
+
     $P_SQL = array();
     $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
     // disable comments on all existing static pages
