@@ -33,7 +33,7 @@
 <!-- END notes -->
 
 <table class="inputTable">
-<col width="200px">
+<col width="200">
 <col>
 {fs_contents}
 </table>
