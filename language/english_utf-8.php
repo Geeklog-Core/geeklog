@@ -1743,7 +1743,8 @@ $LANG_confignames['Core'] = array(
     'default_permissions_story' => "Story Default Permissions",
     'default_permissions_topic' => "Topic Default Permissions",
     'atom_max_stories' => "Max. Stories in Webservices Feed",
-    'disable_webservices' => 'Disable Webservices?'
+    'disable_webservices' => 'Disable Webservices?',
+    'restrict_webservices' => 'Restrict Webservices?'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1795,7 +1796,8 @@ $LANG_fs['Core'] = array(
     34 => 'HTML Filtering',
     35 => 'Censoring',
     36 => 'IP Lookup',
-    37 => 'Default Permission'
+    37 => 'Default Permission',
+    38 => 'Webservices'
 );
 
 $LANG_configselects['Core'] = array(

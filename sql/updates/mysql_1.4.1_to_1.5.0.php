@@ -173,7 +173,6 @@ function create_ConfValues()
     $c->add('frontpage',1,'select',1,24,0,1290,TRUE);
     $c->add('hide_no_news_msg',0,'select',1,24,0,1300,TRUE);
     $c->add('hide_main_page_navigation',0,'select',1,24,0,1310,TRUE);
-    $c->add('atom_max_stories', 10, 'text', 1, 24, 0, 1315, TRUE);
     $c->add('onlyrootfeatures',0,'select',1,24,0,1320,TRUE);
     $c->add('aftersave_story','item','select',1,24,9,1330,TRUE);
     $c->add('aftersave_user','item','select',1,24,9,1340,TRUE);
@@ -217,7 +216,6 @@ function create_ConfValues()
     $c->add('skip_html_filter_for_root',0,'select',7,34,0,1730,TRUE);
     $c->add('allowed_protocols',array('http','ftp','https'),'%text',0,0,NULL,1740,TRUE);
     $c->add('disable_autolinks',0,'select',7,7,0,1750,TRUE);
-    $c->add('disable_webservices',0,'select',7,7,0,1755,TRUE);
     $c->add('censormode',1,'select',7,35,0,1760,TRUE);
     $c->add('censorreplace','*censormode*','text',7,35,NULL,1770,TRUE);
     $c->add('censorlist', array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker'),'%text',7,35,NULL,1780,TRUE);
@@ -226,7 +224,9 @@ function create_ConfValues()
     $c->add('default_permissions_block',array(3, 2, 2, 2),'@select',7,37,12,1810,TRUE);
     $c->add('default_permissions_story',array(3, 2, 2, 2),'@select',7,37,12,1820,TRUE);
     $c->add('default_permissions_topic',array(3, 2, 2, 2),'@select',7,37,12,1830,TRUE);
-
+    $c->add('disable_webservices',   0, 'select', 7, 38, 0, 1840, TRUE);
+    $c->add('restrict_webservices',  0, 'select', 7, 38, 0, 1850, TRUE);
+    $c->add('atom_max_stories',     10, 'text',   7, 38, 0, 1860, TRUE);
 }
 
 // Polls plugin updates
