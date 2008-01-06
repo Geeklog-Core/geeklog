@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.13 2008/01/06 08:55:57 dhaun Exp $
+// $Id: config.class.php,v 1.14 2008/01/06 09:56:37 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -117,8 +117,18 @@ class config {
 
     function &get_config($group)
     {
-        if(array_key_exists($group, $this->config_array))
+        if (array_key_exists($group, $this->config_array)) {
+
+            // an ugly little hack to ensure backward compatibility ...
+            if ($group == 'Core') {
+                global $_DB_mysqldump_path;
+
+                $_DB_mysqldump_path = $this->config_array[$group]['mysqldump_path'];
+            }
+
             return $this->config_array[$group];
+        }
+
         return false;
     }
 

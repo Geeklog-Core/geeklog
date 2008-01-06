@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.11 2008/01/06 08:55:57 dhaun Exp $
+// $Id: config-install.php,v 1.12 2008/01/06 09:56:38 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -58,6 +58,7 @@ function install_config()
     $c->add('path_pear','','text',0,4,NULL,140,TRUE);
     $c->add('mail_settings',array ('backend' => 'mail', 'sendmail_path' => '/usr/bin/sendmail', 'sendmail_args' => '', 'host' => 'smtp.example.com','port' => '25', 'auth' => false, 'username' => 'smtp-username','password' => 'smtp-password'),'@text',0,3,NULL,160,TRUE);
     $c->add('allow_mysqldump',1,'select',0,5,0,170,TRUE);
+    $c->add('mysqldump_path','/usr/bin/mysqldump','text',0,5,NULL,175,TRUE);
     $c->add('mysqldump_options','-Q','text',0,5,NULL,180,TRUE);
     $c->add('theme','professional','text',2,2,NULL,190,TRUE);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%text',2,2,NULL,200,TRUE);

@@ -58,6 +58,7 @@ function create_ConfValues()
     $c->add('path_pear','','text',0,4,NULL,140,TRUE);
     $c->add('mail_settings',array ('backend' => 'mail', 'sendmail_path' => '/usr/bin/sendmail', 'sendmail_args' => '', 'host' => 'smtp.example.com','port' => '25', 'auth' => false, 'username' => 'smtp-username','password' => 'smtp-password'),'@text',0,3,NULL,160,TRUE);
     $c->add('allow_mysqldump',1,'select',0,5,0,170,TRUE);
+    $c->add('mysqldump_path','/usr/bin/mysqldump','text',0,5,NULL,175,TRUE);
     $c->add('mysqldump_options','-Q','text',0,5,NULL,180,TRUE);
     $c->add('theme','professional','text',2,2,NULL,190,TRUE);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%text',2,2,NULL,200,TRUE);
