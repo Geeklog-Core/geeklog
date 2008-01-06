@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.30 2008/01/04 18:36:31 dhaun Exp $
+// $Id: lib-webservices.php,v 1.31 2008/01/06 08:32:53 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -752,8 +752,8 @@ function WS_authenticate()
         // fallthrough (see below)
     }
 
-    COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
-    if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+    COM_clearSpeedlimit($_CONF['login_speedlimit'], 'wsauth');
+    if (COM_checkSpeedlimit('wsauth', $_CONF['login_attempts']) > 0) {
         WS_error(PLG_RET_PERMISSION_DENIED, 'Speed Limit exceeded');
     }
 
@@ -770,16 +770,16 @@ function WS_authenticate()
         }
 
         // if there were less than 2 failed login attempts, reset speedlimit
-        if (COM_checkSpeedlimit('login', 2) == 0) {
+        if (COM_checkSpeedlimit('wsauth', 2) == 0) {
             if ($WS_VERBOSE) {
                 COM_errorLog("WS: Successful login - resetting speedlimit");
             }
-            COM_resetSpeedlimit('login');
+            COM_resetSpeedlimit('wsauth');
         }
     } else {
-        COM_updateSpeedlimit('login');
+        COM_updateSpeedlimit('wsauth');
         if (!empty($username) && !empty($password)) {
-            COM_updateSpeedlimit('login');
+            COM_updateSpeedlimit('wsauth');
 
             if ($WS_VERBOSE) {
                 COM_errorLog("WS: Wrong login credentials - counting as 2 failed attempts");
