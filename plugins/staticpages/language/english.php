@@ -108,8 +108,8 @@ $LANG_STATIC= array(
     'limit_results' => 'Limit Results',
     'search' => 'Search',
     'submit' => 'Submit',
-    'config_menubar'   => 'Static Pages Main Settings',
-    'config_menu1'  => 'Static Pages Main Settings'
+    'config_menubar'   => 'Main Settings',
+    'config_menu1'  => 'Main Settings'
 );
 
 // Messages for the plugin upgrade
