@@ -1604,7 +1604,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => "Cookie Domain",
     'cookiesecure' => "Cookie Secure",
     'lastlogin' => "Store Last Login?",
-    'ostype' => "OS Type",
     'pdf_enabled' => "PDF Enabled?",
     'num_search_results' => "Number of Search Results",
     'loginrequired' => "Login Required?",

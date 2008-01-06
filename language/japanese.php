@@ -1633,7 +1633,6 @@ array(
       'cookiedomain' => "Cookieドメイン",
       'cookiesecure' => "Cookieセキュア",
       'lastlogin' => "Store Last Login?",
-      'ostype' => "OSタイプ",
       'pdf_enabled' => "PDF有効?",
       'num_search_results' => "検索結果数",
       'loginrequired' => "ログインを要求する?",

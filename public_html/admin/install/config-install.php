@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.10 2008/01/05 15:56:06 blaine Exp $
+// $Id: config-install.php,v 1.11 2008/01/06 08:55:57 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -106,7 +106,6 @@ function install_config()
     $c->add('cookiedomain','','text',7,13,NULL,620,TRUE);
     $c->add('cookiesecure',0,'text',7,13,NULL,630,TRUE);
     $c->add('lastlogin',TRUE,'select',4,14,1,640,TRUE);
-    $c->add('ostype',PHP_OS,'text',7,7,NULL,650,TRUE);
     $c->add('pdf_enabled',0,'select',7,7,0,660,TRUE);
     $c->add('num_search_results',10,'text',0,15,NULL,670,TRUE);
     $c->add('loginrequired',0,'select',4,14,0,680,TRUE);

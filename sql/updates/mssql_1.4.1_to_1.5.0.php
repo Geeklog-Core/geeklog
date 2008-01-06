@@ -117,7 +117,6 @@ function create_ConfValues()
     $c->add('cookiedomain','','text',7,13,NULL,620,TRUE);
     $c->add('cookiesecure',0,'text',7,13,NULL,630,TRUE);
     $c->add('lastlogin',TRUE,'select',4,14,1,640,TRUE);
-    $c->add('ostype',PHP_OS,'text',7,7,NULL,650,TRUE);
     $c->add('pdf_enabled',0,'select',7,7,0,660,TRUE);
     $c->add('num_search_results',10,'text',0,15,NULL,670,TRUE);
     $c->add('loginrequired',0,'select',4,14,0,680,TRUE);

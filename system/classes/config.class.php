@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Controls the UI and database for configuration settings                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007 by the following authors:                              |
+// | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.12 2008/01/05 23:41:13 blaine Exp $
+// $Id: config.class.php,v 1.13 2008/01/06 08:55:57 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -83,9 +83,14 @@ class config {
     function load_baseconfig()
     {
         global $_DB, $_TABLES, $_CONF;
-        include($this->dbconfig_file);
+
+        include $this->dbconfig_file;
         $this->config_array['Core'] =& $_CONF;
-        include_once($_CONF['path_system'] . 'lib-database.php' );
+
+        include_once $_CONF['path_system'] . 'lib-database.php';
+
+        // for backward compatibility
+        $_CONF['ostype'] = PHP_OS;
     }
 
     /**
