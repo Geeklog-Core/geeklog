@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.30 2008/01/05 12:01:24 dhaun Exp $
+// $Id: index.php,v 1.31 2008/01/06 20:44:10 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -1265,6 +1265,8 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
         case '1.4.1':
             require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.4.1_to_1.5.0.php';
             INST_updateDB($_SQL);
+
+            upgrade_addWebservicesFeature();
 
             create_ConfValues();
             require_once $_CONF['path_system'] . 'classes/config.class.php';

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.31 2008/01/06 08:32:53 dhaun Exp $
+// $Id: lib-webservices.php,v 1.32 2008/01/06 20:44:10 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -762,8 +762,32 @@ function WS_authenticate()
     }
 
     if ($status == USER_ACCOUNT_ACTIVE) {
+
         $_USER = SESS_getUserDataFromId($uid);
         PLG_loginUser($_USER['uid']);
+
+        // Global array of groups current user belongs to
+        $_GROUPS = SEC_getUserGroups($_USER['uid']);
+
+        // Global array of current user permissions [read,edit]
+        $_RIGHTS = explode(',', SEC_getUserPermissions());
+
+        if ($_CONF['restrict_webservices']) {
+            if (!SEC_hasRights('webservices.atompub')) {
+                COM_updateSpeedlimit('wsauth');
+
+                if ($WS_VERBOSE) {
+                    COM_errorLog("WS: User '{$_USER['username']}' ({$_USER['uid']}) does not have permission to use the webservices");
+                }
+
+                // reset user, groups, and rights, just in case ...
+                $_USER   = array();
+                $_GROUPS = array();
+                $_RIGHTS = array();
+
+                WS_error(PLG_RET_AUTH_FAILED);
+            }
+        }
 
         if ($WS_VERBOSE) {
             COM_errorLog("WS: User '{$_USER['username']}' ({$_USER['uid']}) successfully logged in");
@@ -789,22 +813,6 @@ function WS_authenticate()
         }
         WS_error(PLG_RET_AUTH_FAILED);
     }
-
-    /**
-    * Global array of groups current user belongs to
-    */
-
-    if (!COM_isAnonUser()) {
-        $_GROUPS = SEC_getUserGroups($_USER['uid']);
-    } else {
-        $_GROUPS = SEC_getUserGroups(1);
-    }
-
-    /**
-    * Global array of current user permissions [read,edit]
-    */
-
-    $_RIGHTS = explode(',', SEC_getUserPermissions());
 }
 
 /**

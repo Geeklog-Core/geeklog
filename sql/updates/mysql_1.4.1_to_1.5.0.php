@@ -20,6 +20,13 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DEFAULT NULL AFTER rdfupdated";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL AFTER rdf_last_modified";
 
+// new 'webservices.atompub' feature
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('webservices.atompub', 'May use Atompub Webservices (if restricted)', 1)";
+
+// add the 'Webservices Users' group
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Webservices Users', 'Can use the Webservices API (if restricted)', 0)";
+
+
 function create_ConfValues()
 {
     global $_TABLES, $_CONF;
@@ -428,6 +435,28 @@ function upgrade_LinksPlugin()
     }
 
     return true;
+}
+
+// add the new 'webservices.atompub' feature and the 'Webservices Users' group
+function upgrade_addWebservicesFeature()
+{
+    global $_TABLES;
+
+    $ft_id = DB_getItem($_TABLES['features'], 'ft_id',
+                        "ft_name = 'webservices.atompub'");
+    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                          "grp_name = 'Webservices Users'");
+    $rootgrp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+
+    if (($grp_id > 0) && ($ft_id > 0)) {
+        // add 'webservices.atompub' feature to 'Webservices Users' group
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $grp_id)");
+
+        // make 'Root' members a member of 'Webservices Users'
+        if ($rootgrp > 0) {
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($grp_id, NULL, $rootgrp)");
+        }
+    }
 }
 
 ?>
