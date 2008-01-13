@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Links Plugin administration page.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,6 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: index.php,v 1.55 2008/01/13 11:56:09 dhaun Exp $
 
 /**
  * Geeklog links administration page.
@@ -49,8 +50,6 @@
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
  */
-
-// $Id: index.php,v 1.54 2007/12/29 19:04:34 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -411,7 +410,7 @@ function listlinks ()
             . "FROM {$_TABLES['links']} AS l "
             . "LEFT JOIN {$_TABLES['linkcategories']} AS c "
             . "ON l.cid=c.cid WHERE 1=1",
-        'query_fields' => array('title', 'category', 'url', 'description'),
+        'query_fields' => array('title', 'category', 'url', 'l.description'),
         'default_filter' => COM_getPermSql ('AND', 0, 3, 'l')
     );
 
