@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.3 2007/12/30 00:11:40 ablankstein Exp $
+// $Id: configuration.php,v 1.4 2008/01/13 21:47:15 blaine Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -37,6 +37,37 @@ require_once 'auth.inc.php';
 $conf_group = array_key_exists('conf_group', $_POST) ? $_POST['conf_group'] : 'Core';
 
 $config =& config::get_instance();
+
+
+function configmanager_menu() {
+    global $config,$conf_group,$LANG_configsubgroups;
+
+    $retval = COM_startBlock( 'Config Sections', '', 'blockheader.thtml');
+
+    $groups = $config->_get_groups();
+    if (count($groups) > 0) {
+        foreach ($groups as $group) {
+            $group_display = ucwords($group);
+            $retval .= "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+        }
+    }
+    $retval .= COM_endBlock('blockfooter.thtml');
+
+    $subgroup_title = ucwords($conf_group);
+    $retval .= COM_startBlock( $subgroup_title, '', 'blockheader.thtml');
+
+    $groups = $config->get_sgroups($conf_group);
+    if (count($groups) > 0) {
+        foreach ($groups as $group) {
+            $group_display =  $LANG_configsubgroups[$conf_group][$group];
+            $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$group\")'>$group_display</a></div>";
+        }
+    }
+    $retval .= COM_endBlock('blockfooter.thtml');
+
+    return $retval;
+
+}
 
 if (array_key_exists('set_action', $_POST)){
     if (SEC_inGroup('Root')) {

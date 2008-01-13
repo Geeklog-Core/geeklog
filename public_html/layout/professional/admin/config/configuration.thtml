@@ -8,16 +8,6 @@
   Changes were successfully made to:
     {change_block}
 </div>
-<div id="dropline_menu_container">
-    <div id="dropline_menu">
-        <ul>
-            <li><a href="{site_url}"><b>Home</b></a></li>
-                {menu_elements}
-        </ul>
-    </div>
-</div>
-<div id="teaser-bottom-module-dropline"></div>
-<div class="clearboth" style="margin-top:10px;padding-left:5px;"><b>{group_active_name}&nbsp;:&nbsp;{subgroup_active_name}</b></div>
 
 <form action="configuration.php" method="post" name="subgroup">
 <input type="hidden" name="conf_group" value="{open_group}"{xhtml}>

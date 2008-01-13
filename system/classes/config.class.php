@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.14 2008/01/06 09:56:37 dhaun Exp $
+// $Id: config.class.php,v 1.15 2008/01/13 21:47:31 blaine Exp $
 
 class config {
     var $dbconfig_file;
@@ -414,7 +414,7 @@ class config {
 
         // Output the result and add the required CSS for the dropline menu
         $cssfile = '<link rel="stylesheet" type="text/css" href="'.$_CONF['layout_url'] .'/droplinemenu.css" ' . XHTML .'>' . LB;
-        $display  = COM_siteHeader('none','Configuration Manager',$cssfile);
+        $display  = COM_siteHeader(array('configmanager_menu'),'Configuration Manager',$cssfile);
         if ($change_result != null AND $change_result !== array() ) {
             $t->set_var('change_block',$this->_UI_get_change_block($change_result));
         } else {

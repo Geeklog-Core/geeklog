@@ -109,7 +109,7 @@ $LANG_STATIC= array(
     'search' => 'Search',
     'submit' => 'Submit',
     'config_menubar'   => 'Main Settings',
-    'config_menu1'  => 'Main Settings'
+    'config_menu1'  => 'Plugin Main Settings'
 );
 
 // Messages for the plugin upgrade
