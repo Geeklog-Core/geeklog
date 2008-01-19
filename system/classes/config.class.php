@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.15 2008/01/13 21:47:31 blaine Exp $
+// $Id: config.class.php,v 1.16 2008/01/19 19:36:46 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -505,9 +505,12 @@ class config {
         } elseif ($type == "placeholder") {
             return $t->finish($t->parse('output', 'placeholder-element'));
         } elseif ($type == "select") {
-            if (! is_array($selectionArray))
+            if (! is_array($selectionArray)) {
                 return $t->finish($t->parse('output', 'text-element'));
+            }
+
             $t->set_block('select-element', 'select-options', 'myoptions');
+            uksort($selectionArray, 'strcasecmp');
             foreach ($selectionArray as $sName => $sVal) {
                 if (is_bool($sVal)) {
                     $t->set_var('opt_value', $sVal ? 'b:1' : 'b:0');
