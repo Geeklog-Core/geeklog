@@ -112,6 +112,21 @@ $LANG_STATIC= array(
     'config_menu1'  => 'Plugin Main Settings'
 );
 
+$LANG_confignames['staticpages'] = array(
+    'allow_php' => 'Allow PHP?',
+    'sort_by' => 'Sort Centerblocks by',
+    'sort_menu_by' => 'Sort Menu Entries by',
+    'delete_pages' => 'Delete Pages with Owner?',
+    'in_block' => 'Wrap Pages in Block?',
+    'show_hits' => 'Show Hits?',
+    'show_date' => 'Show Date?',
+    'filter_html' => 'Filter HTML?',
+    'censor' => 'Censor Content?',
+    'default_permissions' => 'Page Default Permissions',
+    'aftersave' => 'After Saving Page',
+    'atom_max_items' => 'Max. Pages in Webservices Feed'
+);
+
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('True' => 1, 'False' => 0),
