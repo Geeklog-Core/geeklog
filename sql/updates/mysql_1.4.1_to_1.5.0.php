@@ -90,7 +90,7 @@ function create_ConfValues()
     $c->add('shortdate','%x','text',6,10,NULL,390,TRUE);
     $c->add('dateonly','%d-%b','text',6,10,NULL,400,TRUE);
     $c->add('timeonly','%I:%M%p','text',6,10,NULL,410,TRUE);
-    $c->add('week_start','Sun','text',6,10,14,420,TRUE);
+    $c->add('week_start','Sun','select',6,10,14,420,TRUE);
     $c->add('hour_mode',12,'select',6,10,6,430,TRUE);
     $c->add('thousand_separator',",",'text',6,10,NULL,440,TRUE);
     $c->add('decimal_separator',".",'text',6,10,NULL,450,TRUE);
