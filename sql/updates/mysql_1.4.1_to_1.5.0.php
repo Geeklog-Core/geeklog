@@ -302,17 +302,17 @@ function upgrade_StaticpagesPlugin()
 
     $c = config::get_instance();
     $c->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
-    $c->add('allow_php', 1, 'text', 0, 0, null, 10, true, 'staticpages');
-    $c->add('sort_by', 'id',  'text', 0, 0, null, 20, true, 'staticpages');
-    $c->add('sort_menu_by', 'label', 'text', 0, 0, null, 30, true, 'staticpages');
-    $c->add('delete_pages', 0 , 'text', 0, 0, null, 40, true, 'staticpages');
-    $c->add('in_block', 1, 'text', 0, 0, null, 50, true, 'staticpages');
-    $c->add('show_hits', 1, 'text', 0, 0, null, 60, true, 'staticpages');
-    $c->add('show_date', 1, 'text', 0, 0, null, 70, true, 'staticpages');
-    $c->add('filter_html', 0, 'text', 0, 0, null, 80, true, 'staticpages');
-    $c->add('censor', 1, 'text', 0, 0, null, 90, true, 'staticpages');
-    $c->add('default_permissions', array(3,2,2,2), '@text', 0, 0, null, 100, true, 'staticpages');
-    $c->add('aftersave', 'item', 'text', 0, 0, null, 110, true, 'staticpages');
+    $c->add('allow_php', 1, 'select', 0, 0, 0, 10, true, 'staticpages');
+    $c->add('sort_by', 'id', 'select', 0, 0, 2, 20, true, 'staticpages');
+    $c->add('sort_menu_by', 'label', 'select', 0, 0, 3, 30, true, 'staticpages');
+    $c->add('delete_pages', 0, 'select', 0, 0, 0, 40, true, 'staticpages');
+    $c->add('in_block', 1, 'select', 0, 0, 0, 50, true, 'staticpages');
+    $c->add('show_hits', 1, 'select', 0, 0, 0, 60, true, 'staticpages');
+    $c->add('show_date', 1, 'select', 0, 0, 0, 70, true, 'staticpages');
+    $c->add('filter_html', 0, 'select', 0, 0, 0, 80, true, 'staticpages');
+    $c->add('censor', 1, 'select', 0, 0, 0, 90, true, 'staticpages');
+    $c->add('default_permissions', array(3,2,2,2), '@select', 0, 0, 12, 100, true, 'staticpages');
+    $c->add('aftersave', 'item', 'select', 0, 0, 9, 110, true, 'staticpages');
     $c->add('atom_max_items', 10, 'text', 0, 0, null, 120, true, 'staticpages');
 
     $P_SQL = array();

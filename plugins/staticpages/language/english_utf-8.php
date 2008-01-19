@@ -2,7 +2,7 @@
 
 ###############################################################################
 # english_utf-8.php
-# This is the english language page for the Geeklog Static Page Plug-in!
+# This is the english language file for the Geeklog Static Page plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -110,6 +110,16 @@ $LANG_STATIC= array(
     'submit' => 'Submit',
     'config_menubar'   => 'Main Settings',
     'config_menu1'  => 'Plugin Main Settings'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['staticpages'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => TRUE, 'False' => FALSE),
+    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
+    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );
 
 // Messages for the plugin upgrade

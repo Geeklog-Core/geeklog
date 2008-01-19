@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.110 2008/01/05 20:02:55 blaine Exp $
+// $Id: functions.inc,v 1.111 2008/01/19 19:36:11 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1037,18 +1037,18 @@ function plugin_upgrade_staticpages ()
             $sp_config->initConfig();
             if(! $sp_config->group_exists('staticpages')){
                 $sp_config->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
-                $sp_config->add('allow_php', $_SP_CONF['allow_php'], 'text', 0, 0, null, 10, true, 'staticpages');
-                $sp_config->add('sort_by', $_SP_CONF['sort_by'],  'text', 0, 0, null, 20, true, 'staticpages');
-                $sp_config->add('sort_menu_by', $_SP_CONF['sort_menu_by'], 'text', 0, 0, null, 30, true, 'staticpages');
-                $sp_config->add('delete_pages', $_SP_CONF['delete_pages'] , 'text', 0, 0, null, 40, true, 'staticpages');
-                $sp_config->add('in_block', $_SP_CONF['in_block'], 'text', 0, 0, null, 50, true, 'staticpages');
-                $sp_config->add('show_hits', $_SP_CONF['show_hits'], 'text', 0, 0, null, 60, true, 'staticpages');
-                $sp_config->add('show_date', $_SP_CONF['show_date'], 'text', 0, 0, null, 70, true, 'staticpages');
-                $sp_config->add('filter_html', $_SP_CONF['filter_html'], 'text', 0, 0, null, 80, true, 'staticpages');
-                $sp_config->add('censor', $_SP_CONF['censor'], 'text', 0, 0, null, 90, true, 'staticpages');
-                $sp_config->add('default_permissions', $_SP_CONF['default_permissions'], '@text', 0, 0, null, 100, true, 'staticpages');
+                $sp_config->add('allow_php', $_SP_CONF['allow_php'], 'select', 0, 0, 0, 10, true, 'staticpages');
+                $sp_config->add('sort_by', $_SP_CONF['sort_by'], 'select', 0, 0, 2, 20, true, 'staticpages');
+                $sp_config->add('sort_menu_by', $_SP_CONF['sort_menu_by'], 'select', 0, 0, 3, 30, true, 'staticpages');
+                $sp_config->add('delete_pages', $_SP_CONF['delete_pages'], 'select', 0, 0, 0, 40, true, 'staticpages');
+                $sp_config->add('in_block', $_SP_CONF['in_block'], 'select', 0, 0, 0, 50, true, 'staticpages');
+                $sp_config->add('show_hits', $_SP_CONF['show_hits'], 'select', 0, 0, 0, 60, true, 'staticpages');
+                $sp_config->add('show_date', $_SP_CONF['show_date'], 'select', 0, 0, 0, 70, true, 'staticpages');
+                $sp_config->add('filter_html', $_SP_CONF['filter_html'], 'select', 0, 0, 0, 80, true, 'staticpages');
+                $sp_config->add('censor', $_SP_CONF['censor'], 'select', 0, 0, 0, 90, true, 'staticpages');
+                $sp_config->add('default_permissions', $_SP_CONF['default_permissions'], '@select', 0, 0, 12, 100, true, 'staticpages');
 
-                $sp_config->add('aftersave', $_SP_CONF['aftersave'], 'text', 0, 0, null, 110, true, 'staticpages');
+                $sp_config->add('aftersave', $_SP_CONF['aftersave'], 'select', 0, 0, 9, 110, true, 'staticpages');
                 $sp_config->add('atom_max_items', $_SP_CONF['atom_max_items'], 'text', 0, 0, null, 120, true, 'staticpages');
 
                 // Rename the existing config.php as it's not needed now
