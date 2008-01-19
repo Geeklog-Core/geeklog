@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Polls      |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.81 2007/12/29 20:03:09 dhaun Exp $
+// $Id: functions.inc,v 1.82 2008/01/19 14:53:12 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -740,12 +740,12 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
     }
 
     if ((
-            $P['hideresults'] == 1
+            $P['hideresults'] == 0
         ) || (
-            ($P['hideresults'] == 0) && (isset($_USER['uid']) &&
+            ($P['hideresults'] == 1) && (isset($_USER['uid']) &&
                                          ($_USER['uid'] == $P['owner_id']))
         ) || (
-            ($P['hideresults'] == 0) && (SEC_inGroup('Root'))
+            ($P['hideresults'] == 1) && (SEC_inGroup('Root'))
         )
     ) {
         $retval = '';
@@ -1002,12 +1002,8 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
                 $retval = strftime ($_CONF['daytime'], $A['unixdate']);
                 break;
             case 'topic':
-                if (($A['open'] == 0) || (
-                        ($A['hideresults'] == 1) && ($_USER['uid'] == $A['owner_id'])
-                    ) || (
-                        ($A['hideresults'] == 1) && (SEC_inGroup('Root'))
-                    )
-                ) {
+                if (($A['hideresults'] == 0) ||
+                    (isset($_USER['uid']) && ($_USER['uid'] == $A['owner_id'])) || SEC_inGroup('Root')) {
                     $retval = COM_createLink($fieldvalue,
                         "{$_CONF['site_url']}/polls/index.php?pid={$A['pid']}");
                 } else {
@@ -1109,8 +1105,8 @@ function plugin_upgrade_polls ()
         $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `question` `topic` VARCHAR( 255 )  NULL DEFAULT NULL";
         $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD questions int(11) NOT NULL AFTER voters";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(4) NOT NULL AFTER display";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL AFTER open";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(1) NOT NULL default '1' AFTER display";
+        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '0' AFTER open";
         $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
         $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
         $_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";

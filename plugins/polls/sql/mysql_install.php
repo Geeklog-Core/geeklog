@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 1.0                                                          |
+// | Polls Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.8 2007/09/11 05:28:11 ospiess Exp $
+// $Id: mysql_install.php,v 1.9 2008/01/19 14:53:12 dhaun Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
@@ -61,8 +61,8 @@ CREATE TABLE {$_TABLES['polltopics']} (
   questions int(11) NOT NULL default '0',
   date datetime default NULL,
   display tinyint(4) NOT NULL default '0',
-  open tinyint(4) NOT NULL default '1',
-  hideresults tinyint(1) NOT NULL default '1',
+  open tinyint(1) NOT NULL default '1',
+  hideresults tinyint(1) NOT NULL default '0',
   commentcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',

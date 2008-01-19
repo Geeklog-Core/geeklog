@@ -246,8 +246,8 @@ function upgrade_PollsPlugin()
     $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `question` `topic` VARCHAR( 255 )  NULL DEFAULT NULL";
     $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
     $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD questions int(11) default '0' NOT NULL AFTER voters";
-    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(4) NOT NULL default '1' AFTER display";
-    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '1' AFTER open";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(1) NOT NULL default '1' AFTER display";
+    $P_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '0' AFTER open";
     $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
     $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
     $P_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` DROP PRIMARY KEY;";
@@ -259,6 +259,8 @@ function upgrade_PollsPlugin()
           question varchar(255) NOT NULL,
           PRIMARY KEY (qid, pid)
         ) TYPE=MyISAM";
+    // in 1.4.1, "don't display poll" was equivalent to "closed"
+    $P_SQL[] = "UPDATE {$_TABLES['polltopics']} SET open = 0 WHERE display = 0";
     $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.1', pi_gl_version = '1.5.0' WHERE pi_name = 'polls'";
 
     $P_SQL = INST_checkInnodbUpgrade($P_SQL);

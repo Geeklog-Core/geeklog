@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Polls Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog poll administration page                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,16 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.49 2007/11/25 06:58:55 ospiess Exp $
+// $Id: index.php,v 1.50 2008/01/19 14:53:12 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
 
-require_once ('../../../lib-common.php');
-require_once ('../../auth.inc.php');
+require_once '../../../lib-common.php';
+require_once '../../auth.inc.php';
 
-// number of polls to list per page
-define ('POLLS_PER_PAGE', 50);
 
 $display = '';
 

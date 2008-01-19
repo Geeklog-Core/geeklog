@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Display poll results and past polls.                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,12 +32,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2007/12/29 20:03:09 dhaun Exp $
+// $Id: index.php,v 1.26 2008/01/19 14:53:12 dhaun Exp $
 
 require_once '../lib-common.php';
-
-// number of polls to list per page
-define ('POLLS_PER_PAGE', 50);
 
 
 /**
@@ -160,6 +157,9 @@ if (empty($pid)) {
             . $LANG_POLLS['answer_all'] . ' "'
             . DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'") . '"'
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+    if (DB_getItem($_TABLES['polltopics'], 'open', "pid = '$pid'") != 1) {
+        $aid = -1; // poll closed - show result
     }
     if (!isset ($_COOKIE['poll-'.$pid])
         && !POLLS_ipAlreadyVoted ($pid)
