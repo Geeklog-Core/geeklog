@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.160 2007/12/09 18:05:39 dhaun Exp $
+// $Id: users.php,v 1.161 2008/01/20 10:20:23 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -46,8 +46,8 @@
 /**
 * Geeklog common function library
 */
-require_once ('lib-common.php');
-require_once ($_CONF['path_system'] . 'lib-user.php');
+require_once 'lib-common.php';
+require_once $_CONF['path_system'] . 'lib-user.php';
 $VERBOSE = false;
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -780,6 +780,41 @@ function defaultform ($msg)
     return $retval;
 }
 
+/**
+* Display message after a login error
+*
+* @param    int     $msg            message number for custom handler
+* @param    string  $message_title  title for the message box
+* @param    string  $message_text   text of the message box
+* @return   void                    function does not return!
+*
+*/
+function displayLoginErrorAndAbort($msg, $message_title, $message_text)
+{
+    global $_CONF;
+
+    if ($_CONF['custom_registration'] &&
+            function_exists('CUSTOM_loginErrorHandler')) {
+        // Typically this will be used if you have a custom main site page
+        // and need to control the login process
+        $display .= CUSTOM_loginErrorHandler($msg);
+    } else {
+        $retval .= COM_siteHeader('menu', $message_title)
+                . COM_startBlock($message_title, '',
+                                 COM_getBlockTemplate('_msg_block', 'header'))
+                . $message_text
+                . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'))
+                . COM_siteFooter();
+
+        header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+        header('Status: 403 Forbidden');
+        echo $retval;
+    }
+
+    // don't return
+    exit();
+}
+
 
 // MAIN
 if (isset ($_REQUEST['mode'])) {
@@ -979,19 +1014,7 @@ default:
     // prevent dictionary attacks on passwords
     COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
     if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
-        if ($_CONF['custom_registration'] AND function_exists('CUSTOM_loginErrorHandler')) {
-            // Typically this will be used if you have a custom main site page and need to control the login process
-            $msg=82;
-            $display .= CUSTOM_loginErrorHandler($msg);
-        } else {
-            $retval .= COM_siteHeader('menu', $LANG12[26])
-                . COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG04[112]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . COM_siteFooter ();
-            echo $retval;
-            exit();
-        }
+        displayLoginErrorAndAbort(82, $LANG12[26], $LANG04[112]);
     }
 
     $loginname = '';
@@ -1018,9 +1041,20 @@ default:
     } elseif (($_CONF['usersubmission'] == 0) && $_CONF['user_login_method']['openid'] && (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))) {
         // Here we go with the handling of OpenID authentification.
 
+        $query = array_merge($_GET, $_POST);
+
+        if (isset($query['identity_url']) &&
+                ($query['identity_url'] != 'http://')) {
+            $property = sprintf('%x', crc32($query['identity_url']));
+            COM_clearSpeedlimit($_CONF['login_speedlimit'], 'openid');
+            if (COM_checkSpeedlimit('openid', $_CONF['login_attempts'],
+                                    $property) > 0) {
+                displayLoginErrorAndAbort(82, $LANG12[26], $LANG04[112]);
+            }
+        }
+
         require_once $_CONF['path_system'] . 'classes/openidhelper.class.php';
 
-        $query = array_merge($_GET, $_POST);
         $consumer = new SimpleConsumer();
         $handler = new SimpleActionHandler($query, $consumer);
 
@@ -1029,6 +1063,8 @@ default:
             $ret = $consumer->find_identity_info($identity_url);
             if (!$ret) {
                 COM_updateSpeedlimit('login');
+                $property = sprintf('%x', crc32($query['identity_url']));
+                COM_updateSpeedlimit('openid', $property);
                 COM_errorLog('Unable to find an OpenID server for the identity URL ' . $identity_url);
                 echo COM_refresh($_CONF['site_url'] . '/users.php?msg=89');
                 exit;
@@ -1173,23 +1209,10 @@ default:
             break;
         default:
             // check to see if this was the last allowed attempt
-            if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
-                if ($_CONF['custom_registration'] AND function_exists('CUSTOM_loginErrorHandler')) {
-                    // Typically this will be used if you have a custom main site page and need to control the login process
-                    $msg = 82;
-                    $display .= CUSTOM_loginErrorHandler($msg);
-                } else {
-                    $retval .= COM_siteHeader('menu', $LANG04[113])
-                             . COM_startBlock ($LANG04[113], '',
-                                               COM_getBlockTemplate ('_msg_block', 'header'))
-                             . $LANG04[112]
-                             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                             . COM_siteFooter ();
-                    echo $retval;
-                    exit();
-                }
+            if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+                displayLoginErrorAndAbort(82, $LANG04[113], $LANG04[112]);
             } else { // Show login form
-                if( ($msg != 69) && ($msg != 70) ) {
+                if(($msg != 69) && ($msg != 70)) {
                     if ($_CONF['custom_registration'] AND function_exists('CUSTOM_loginErrorHandler')) {
                         // Typically this will be used if you have a custom main site page and need to control the login process
                         $display .= CUSTOM_loginErrorHandler($msg);
