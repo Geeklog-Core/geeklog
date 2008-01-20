@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.16 2008/01/19 19:36:46 dhaun Exp $
+// $Id: config.class.php,v 1.17 2008/01/20 20:55:17 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -511,6 +511,24 @@ class config {
 
             $t->set_block('select-element', 'select-options', 'myoptions');
             uksort($selectionArray, 'strcasecmp');
+            foreach ($selectionArray as $sName => $sVal) {
+                if (is_bool($sVal)) {
+                    $t->set_var('opt_value', $sVal ? 'b:1' : 'b:0');
+                } else {
+                    $t->set_var('opt_value', $sVal);
+                }
+                $t->set_var('opt_name', $sName);
+                $t->set_var('selected', ($val == $sVal ? 'selected="selected"' : ''));
+                $t->parse('myoptions', 'select-options', true);
+            }
+            return $t->parse('output', 'select-element');
+        } elseif (substr($type, 0, 3) == 'fn:') {
+            $fn = 'configmanager_' . substr($type, 3);
+            if (!function_exists($fn)) {
+                return $t->finish($t->parse('output', 'text-element'));
+            }
+            $selectionArray = $fn();
+            $t->set_block('select-element', 'select-options', 'myoptions');
             foreach ($selectionArray as $sName => $sVal) {
                 if (is_bool($sVal)) {
                     $t->set_var('opt_value', $sVal ? 'b:1' : 'b:0');

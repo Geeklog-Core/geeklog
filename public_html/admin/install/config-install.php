@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Initial configuration setup.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007 by the following authors:                              |
+// | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.16 2008/01/20 18:09:16 dhaun Exp $
+// $Id: config-install.php,v 1.17 2008/01/20 20:55:17 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -60,7 +60,7 @@ function install_config()
     $c->add('allow_mysqldump',1,'select',0,5,0,170,TRUE);
     $c->add('mysqldump_path','/usr/bin/mysqldump','text',0,5,NULL,175,TRUE);
     $c->add('mysqldump_options','-Q','text',0,5,NULL,180,TRUE);
-    $c->add('theme','professional','text',2,2,NULL,190,TRUE);
+    $c->add('theme','professional','fn:themeList',2,2,NULL,190,TRUE);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%text',2,2,NULL,200,TRUE);
     $c->add('path_themes','','text',2,2,NULL,210,TRUE);
     $c->add('disable_new_user_registration',FALSE,'select',4,6,0,220,TRUE);
@@ -76,7 +76,7 @@ function install_config()
     $c->add('user_login_method',array('standard' => true, 'openid' => false, '3rdparty' => false),'@select',4,6,1,320,TRUE);
     $c->add('spamx',128,'text',4,8,NULL,330,TRUE);
     $c->add('sort_admin',TRUE,'select',3,9,1,340,TRUE);
-    $c->add('language','english','text',6,11,NULL,350,TRUE);
+    $c->add('language','english','fn:languageList',6,11,NULL,350,TRUE);
     $c->add('locale','en_GB','text',6,10,NULL,360,TRUE);
     $c->add('date','%A, %B %d %Y @ %I:%M %p %Z','text',6,10,NULL,370,TRUE);
     $c->add('daytime','%m/%d %I:%M%p','text',6,10,NULL,380,TRUE);

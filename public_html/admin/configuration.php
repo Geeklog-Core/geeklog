@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Loads the administration UI and sends input to config.class               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007 by the following authors:                              |
+// | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.4 2008/01/13 21:47:15 blaine Exp $
+// $Id: configuration.php,v 1.5 2008/01/20 20:55:17 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -39,8 +39,9 @@ $conf_group = array_key_exists('conf_group', $_POST) ? $_POST['conf_group'] : 'C
 $config =& config::get_instance();
 
 
-function configmanager_menu() {
-    global $config,$conf_group,$LANG_configsubgroups;
+function configmanager_menu()
+{
+    global $config, $conf_group, $LANG_configsubgroups;
 
     $retval = COM_startBlock( 'Config Sections', '', 'blockheader.thtml');
 
@@ -69,6 +70,57 @@ function configmanager_menu() {
 
 }
 
+/**
+* Helper function: Provide language dropdown
+*
+* @return   Array   Array of (filename, displayname) pairs
+*
+* @note     Note that key/value are being swapped!
+*
+*/
+function configmanager_languageList()
+{
+    global $_CONF;
+
+    return array_flip(MBYTE_languageList($_CONF['default_charset']));
+}
+
+/**
+* Helper function: Provide themes dropdown
+*
+* @return   Array   Array of (filename, displayname) pairs
+*
+* @note     Beautifying code duplicated from usersettings.php
+*
+*/
+function configmanager_themeList()
+{
+    $themes = array();
+
+    $themeFiles = COM_getThemes(true);
+    usort($themeFiles,
+          create_function('$a,$b', 'return strcasecmp($a,$b);'));
+
+    foreach ($themeFiles as $theme) {
+        $words = explode ('_', $theme);
+        $bwords = array ();
+        foreach ($words as $th) {
+            if ((strtolower ($th{0}) == $th{0}) &&
+                (strtolower ($th{1}) == $th{1})) {
+                $bwords[] = strtoupper ($th{0}) . substr ($th, 1);
+            } else {
+                $bwords[] = $th;
+            }
+        }
+
+        $themes[implode(' ', $bwords)] = $theme;
+    }
+
+    return $themes;
+}
+
+
+// MAIN
 if (array_key_exists('set_action', $_POST)){
     if (SEC_inGroup('Root')) {
         if ($_POST['set_action'] == 'restore') {
