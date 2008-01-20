@@ -64,15 +64,11 @@
             {lang_introtext}:
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('introtext','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('introtext','smaller');"{xhtml}>
-            <textarea id="introtext"  style="width:100%; padding:5px 10px 5px 10px;" name="introtext" cols="45" rows="14">
-                {story_introtext}
-            </textarea>
+            <textarea id="introtext"  style="width:100%; padding:5px 10px 5px 10px;" name="introtext" cols="45" rows="14">{story_introtext}</textarea>
             {lang_bodytext}:
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('bodytext','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('bodytext','smaller');"{xhtml}>
-            <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:100%;" name="bodytext" cols="45" rows="14">
-                {story_bodytext}
-            </textarea>
+            <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:100%;" name="bodytext" cols="45" rows="14">{story_bodytext}</textarea>
         </div>
         <!-- HTML Editor -->
         <div id="html_editor" style="margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_htmleditor};">
@@ -87,15 +83,11 @@
                      <option value="Default">{toolbar5}</option>
                 </select>
             </span>
-            <textarea id="introhtml" style="padding:5px 10px 5px 10px;" name="introhtml" cols="45" rows="12">
-                {story_introtext}
-            </textarea>
+            <textarea id="introhtml" style="padding:5px 10px 5px 10px;" name="introhtml" cols="45" rows="12">{story_introtext}</textarea>
             {lang_bodytext}:
             <img src="{layout_url}/images/expand.png" title="lang_expandhelp" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"{xhtml}>
-            <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="45" rows="20">
-                {story_bodytext}
-            </textarea>
+            <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="45" rows="20">{story_bodytext}</textarea>
         </div>
         <div id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
             {lang_allowed_html}
