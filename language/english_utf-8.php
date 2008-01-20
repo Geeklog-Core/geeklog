@@ -1592,7 +1592,7 @@ $LANG_confignames['Core'] = array(
     'show_servicename' => "Show Service Name",
     'custom_registration' => "Enable Custom Registration",
     'user_login_method' => "User Login Method",
-    'spamx' => "Spam-X",
+    'spamx' => "Spam-X Actions",
     'sort_admin' => "Sort Links",
     'language' => "Language",
     'locale' => "Locale",
@@ -1646,7 +1646,7 @@ $LANG_confignames['Core'] = array(
     'advanced_editor' => "Advanced Editor?",
     'wikitext_editor' => "Wikitext Editor?",
     'cron_schedule_interval' => "Cron Schedule Interval",
-    'sortmethod' => "Topic Sort Method",
+    'sortmethod' => "Sort Topics",
     'showstorycount' => "Show Story Count?",
     'showsubmissioncount' => "Show Submission Count?",
     'hide_home_link' => "Hide Home Link?",
@@ -1725,7 +1725,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => "Comment Speed Limit",
     'comment_limit' => "Comment Limit",
     'comment_mode' => "Comment Mode",
-    'comment_code' => "Comment Code",
+    'comment_code' => "Comment Default",
     'passwordspeedlimit' => "Password Speed Limit",
     'login_attempts' => "Max. Login Attempts",
     'login_speedlimit' => "Login Speed Limit",
@@ -1822,7 +1822,10 @@ $LANG_configselects['Core'] = array(
     11 => array_flip($LANG_commentmodes),
     12 => array('No access'=>0, 'Read-Only'=>2,'Read-Write'=>3),
     13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2),
-    14 => array('Sunday' => 'Sun', 'Monday' => 'Mon')
+    14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
+    15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
+    16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

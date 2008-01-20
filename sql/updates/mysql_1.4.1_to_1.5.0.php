@@ -112,7 +112,7 @@ function create_ConfValues()
     $c->add('session_cookie_timeout',7200,'text',7,13,NULL,600,TRUE);
     $c->add('cookie_path','/','text',7,13,NULL,610,TRUE);
     $c->add('cookiedomain','','text',7,13,NULL,620,TRUE);
-    $c->add('cookiesecure',0,'text',7,13,NULL,630,TRUE);
+    $c->add('cookiesecure',FALSE,'select',7,13,1,630,TRUE);
     $c->add('lastlogin',TRUE,'select',4,14,1,640,TRUE);
     $c->add('pdf_enabled',0,'select',7,7,0,660,TRUE);
     $c->add('num_search_results',10,'text',0,15,NULL,670,TRUE);
@@ -120,7 +120,7 @@ function create_ConfValues()
     $c->add('submitloginrequired',0,'select',4,14,0,690,TRUE);
     $c->add('commentsloginrequired',0,'select',4,14,0,700,TRUE);
     $c->add('statsloginrequired',0,'select',4,14,0,710,TRUE);
-    $c->add('searchloginrequired',0,'select',4,14,0,720,TRUE);
+    $c->add('searchloginrequired',0,'select',4,14,16,720,TRUE);
     $c->add('profileloginrequired',0,'select',4,14,0,730,TRUE);
     $c->add('emailuserloginrequired',0,'select',4,14,0,740,TRUE);
     $c->add('emailstoryloginrequired',0,'select',4,14,0,750,TRUE);
@@ -131,11 +131,11 @@ function create_ConfValues()
     $c->add('notification',array(),'%text',7,7,NULL,800,TRUE);
     $c->add('postmode','plaintext','select',4,17,5,810,TRUE);
     $c->add('speedlimit',45,'text',4,17,NULL,820,TRUE);
-    $c->add('skip_preview',0,'text',4,17,NULL,830,TRUE);
+    $c->add('skip_preview',0,'select',4,17,0,830,TRUE);
     $c->add('advanced_editor',FALSE,'select',4,17,1,840,TRUE);
     $c->add('wikitext_editor',FALSE,'select',4,17,1,850,TRUE);
     $c->add('cron_schedule_interval',86400,'text',7,7,NULL,860,TRUE);
-    $c->add('sortmethod','sortnum','text',3,18,NULL,870,TRUE);
+    $c->add('sortmethod','sortnum','select',3,18,15,870,TRUE);
     $c->add('showstorycount',1,'select',3,18,0,880,TRUE);
     $c->add('showsubmissioncount',1,'select',3,18,0,890,TRUE);
     $c->add('hide_home_link',0,'select',3,18,0,900,TRUE);
@@ -195,9 +195,9 @@ function create_ConfValues()
     $c->add('image_lib','','select',5,27,10,1450,TRUE);
     $c->add('path_to_mogrify','','text',5,27,NULL,1460,FALSE);
     $c->add('path_to_netpbm','','text',5,27,NULL,1470,FALSE);
-    $c->add('debug_image_upload',TRUE,'select',5,28,1,1480,FALSE);
-    $c->add('keep_unscaled_image',0,'select',5,28,0,1490,TRUE);
-    $c->add('allow_user_scaling',1,'select',5,28,0,1500,TRUE);
+    $c->add('keep_unscaled_image',0,'select',5,28,0,1480,TRUE);
+    $c->add('allow_user_scaling',1,'select',5,28,0,1490,TRUE);
+    $c->add('debug_image_upload',TRUE,'select',5,28,1,1500,TRUE);
     $c->add('max_image_width',160,'text',5,29,NULL,1510,TRUE);
     $c->add('max_image_height',160,'text',5,29,NULL,1520,TRUE);
     $c->add('max_image_size',1048576,'text',5,29,NULL,1530,TRUE);
@@ -214,7 +214,7 @@ function create_ConfValues()
     $c->add('commentspeedlimit',45,'text',4,33,NULL,1640,TRUE);
     $c->add('comment_limit',100,'text',4,33,NULL,1650,TRUE);
     $c->add('comment_mode','threaded','select',4,33,11,1660,TRUE);
-    $c->add('comment_code',0,'select',4,33,0,1670,TRUE);
+    $c->add('comment_code',0,'select',4,33,17,1670,TRUE);
     $c->add('passwordspeedlimit',300,'text',4,14,NULL,1680,TRUE);
     $c->add('login_attempts',3,'text',4,14,NULL,1690,TRUE);
     $c->add('login_speedlimit',300,'text',4,14,NULL,1700,TRUE);
