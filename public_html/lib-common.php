@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.672 2008/01/05 18:50:41 dhaun Exp $
+// $Id: lib-common.php,v 1.673 2008/01/20 09:35:59 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5004,34 +5004,37 @@ function COM_makeList($listofitems, $classname = '')
 }
 
 /**
-* Check if speed limit applies for current IP address.
+* Check if speed limit applies
 *
-* @param type   string   type of speed limit to check, e.g. 'submit', 'comment'
-* @param max    int      max number of allowed tries within speed limit
-* @return       int      0 = does not apply, else: seconds since last post
+* @param    string  $type       type of speed limit, e.g. 'submit', 'comment'
+* @param    int     $max        max number of allowed tries within speed limit
+* @param    string  $property   IP address or other identifiable property
+* @return   int                 0: does not apply, else: seconds since last post
 */
-function COM_checkSpeedlimit( $type = 'submit', $max = 1 )
+function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
 {
     global $_TABLES;
 
     $last = 0;
 
-    $res  = DB_query( "SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}') ORDER BY date ASC" );
+    if (empty($property)) {
+        $property = $_SERVER['REMOTE_ADDR'];
+    }
+    $property = addslashes($property);
+
+    $res  = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$property') ORDER BY date ASC");
 
     // If the number of allowed tries has not been reached,
     // return 0 (didn't hit limit)
-    if( DB_numRows( $res ) < $max )
-    {
+    if (DB_numRows($res) < $max) {
         return $last;
     }
 
-    list( $date ) = DB_fetchArray( $res );
+    list($date) = DB_fetchArray($res);
 
-    if( !empty( $date ))
-    {
+    if (!empty($date)) {
         $last = time() - $date;
-        if( $last == 0 )
-        {
+        if ($last == 0) {
             // just in case someone manages to submit something in < 1 sec.
             $last = 1;
         }
@@ -5041,17 +5044,23 @@ function COM_checkSpeedlimit( $type = 'submit', $max = 1 )
 }
 
 /**
-* Store post info for current IP address.
+* Store post info for speed limit
 *
-* @param type   string   type of speed limit, e.g. 'submit', 'comment'
+* @param    string  $type       type of speed limit, e.g. 'submit', 'comment'
+* @param    string  $property   IP address or other identifiable property
 *
 */
-function COM_updateSpeedlimit( $type = 'submit' )
+function COM_updateSpeedlimit($type = 'submit', $property = '')
 {
     global $_TABLES;
 
-    DB_save( $_TABLES['speedlimit'], 'ipaddress,date,type',
-             "'{$_SERVER['REMOTE_ADDR']}',unix_timestamp(),'$type'" );
+    if (empty($property)) {
+        $property = $_SERVER['REMOTE_ADDR'];
+    }
+    $property = addslashes($property);
+
+    DB_save($_TABLES['speedlimit'], 'ipaddress,date,type',
+            "'$property',UNIX_TIMESTAMP(),'$type'");
 }
 
 /**
@@ -5061,36 +5070,35 @@ function COM_updateSpeedlimit( $type = 'submit' )
 * @param type         string   type of speed limit, e.g. 'submit', 'comment'
 *
 */
-function COM_clearSpeedlimit( $speedlimit = 60, $type = '' )
+function COM_clearSpeedlimit($speedlimit = 60, $type = '')
 {
     global $_TABLES;
 
     $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE ";
-    if( !empty( $type ))
-    {
+    if (!empty($type)) {
         $sql .= "(type = '$type') AND ";
     }
-    $sql .= "(date < unix_timestamp() - $speedlimit)";
-    DB_query( $sql );
+    $sql .= "(date < UNIX_TIMESTAMP() - $speedlimit)";
+    DB_query($sql);
 }
 
 /**
-* Reset the speedlimit for an IP address
+* Reset the speedlimit
 *
-* @param    string  $type   type of speed limit to reset, e.g. 'submit'
-* @param    string  $ip     IP address (use current IP address if empty)
+* @param    string  $type       type of speed limit to reset, e.g. 'submit'
+* @param    string  $property   IP address or other identifiable property
 *
 */
-function COM_resetSpeedlimit($type = 'submit', $ip = '')
+function COM_resetSpeedlimit($type = 'submit', $property = '')
 {
     global $_TABLES;
 
-    if (empty($ip)) {
-        $ip = $_SERVER['REMOTE_ADDR'];
+    if (empty($property)) {
+        $property = $_SERVER['REMOTE_ADDR'];
     }
-    $ip = addslashes($ip);
+    $property = addslashes($property);
 
-    DB_query("DELETE FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$ip')");
+    DB_query("DELETE FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$property')");
 }
 
 /**
@@ -5099,8 +5107,8 @@ function COM_resetSpeedlimit($type = 'submit', $ip = '')
 *
 * This function returns a crawler friendly URL (if possible)
 *
-* @param        string      $url        URL to try to build crawler friendly URL for
-* @return   string      Rewritten URL
+* @param    string      $url    URL to try to build crawler friendly URL for
+* @return   string              Rewritten URL
 */
 
 function COM_buildURL( $url )
