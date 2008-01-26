@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.112 2008/01/26 11:47:22 dhaun Exp $
+// $Id: functions.inc,v 1.113 2008/01/26 13:14:46 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -60,8 +60,6 @@ if (!isset($_SP_CONF['allow_php'])) {
 
     $sp_config = config::get_instance();
 
-    $LANG_configsubgroups['staticpages'][0] = $LANG_STATIC['config_menubar'];
-    $LANG_fs['staticpages'][0] = $LANG_STATIC['config_menu1'];
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
 
@@ -1047,10 +1045,9 @@ function plugin_upgrade_staticpages ()
                 $sp_config->add('show_date', $_SP_CONF['show_date'], 'select', 0, 0, 0, 70, true, 'staticpages');
                 $sp_config->add('filter_html', $_SP_CONF['filter_html'], 'select', 0, 0, 0, 80, true, 'staticpages');
                 $sp_config->add('censor', $_SP_CONF['censor'], 'select', 0, 0, 0, 90, true, 'staticpages');
-                $sp_config->add('default_permissions', $_SP_CONF['default_permissions'], '@select', 0, 0, 12, 100, true, 'staticpages');
-
-                $sp_config->add('aftersave', $_SP_CONF['aftersave'], 'select', 0, 0, 9, 110, true, 'staticpages');
-                $sp_config->add('atom_max_items', $_SP_CONF['atom_max_items'], 'text', 0, 0, null, 120, true, 'staticpages');
+                $sp_config->add('aftersave', $_SP_CONF['aftersave'], 'select', 0, 0, 9, 100, true, 'staticpages');
+                $sp_config->add('atom_max_items', $_SP_CONF['atom_max_items'], 'text', 0, 0, null, 110, true, 'staticpages');
+                $sp_config->add('default_permissions', $_SP_CONF['default_permissions'], '@select', 0, 1, 12, 120, true, 'staticpages');
 
                 // Rename the existing config.php as it's not needed now
                 $ret = @rename ("{$plugin_path}config.php","{$plugin_path}config-pre1.4.3.php");

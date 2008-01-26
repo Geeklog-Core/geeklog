@@ -30,7 +30,7 @@
 #			YY - phrase id number
 ###############################################################################
 
-$LANG_STATIC= array(
+$LANG_STATIC = array(
     'newpage' => 'New Page',
     'adminhome' => 'Admin Home',
     'staticpages' => 'Static Pages',
@@ -106,9 +106,7 @@ $LANG_STATIC= array(
     'copy' => 'Copy',
     'limit_results' => 'Limit Results',
     'search' => 'Search',
-    'submit' => 'Submit',
-    'config_menubar' => 'Main Settings',
-    'config_menu1' => 'Static Pages Main Settings'
+    'submit' => 'Submit'
 );
 
 
@@ -138,6 +136,15 @@ $LANG_confignames['staticpages'] = array(
     'default_permissions' => 'Page Default Permissions',
     'aftersave' => 'After Saving Page',
     'atom_max_items' => 'Max. Pages in Webservices Feed'
+);
+
+$LANG_configsubgroups['staticpages'] = array(
+    0 => 'Main Settings'
+);
+
+$LANG_fs['staticpages'] = array(
+    0 => 'Static Pages Main Settings',
+    1 => 'Default Permissions'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

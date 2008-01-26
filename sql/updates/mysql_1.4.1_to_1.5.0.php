@@ -310,9 +310,9 @@ function upgrade_StaticpagesPlugin()
     $c->add('show_date', 1, 'select', 0, 0, 0, 70, true, 'staticpages');
     $c->add('filter_html', 0, 'select', 0, 0, 0, 80, true, 'staticpages');
     $c->add('censor', 1, 'select', 0, 0, 0, 90, true, 'staticpages');
-    $c->add('default_permissions', array(3,2,2,2), '@select', 0, 0, 12, 100, true, 'staticpages');
-    $c->add('aftersave', 'item', 'select', 0, 0, 9, 110, true, 'staticpages');
-    $c->add('atom_max_items', 10, 'text', 0, 0, null, 120, true, 'staticpages');
+    $c->add('aftersave', 'item', 'select', 0, 0, 9, 100, true, 'staticpages');
+    $c->add('atom_max_items', 10, 'text', 0, 0, null, 110, true, 'staticpages');
+    $c->add('default_permissions', array(3,2,2,2), '@select', 0, 1, 12, 120, true, 'staticpages');
 
     $P_SQL = array();
     $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
