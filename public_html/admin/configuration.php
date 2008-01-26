@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.5 2008/01/20 20:55:17 dhaun Exp $
+// $Id: configuration.php,v 1.6 2008/01/26 10:51:08 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -41,21 +41,29 @@ $config =& config::get_instance();
 
 function configmanager_menu()
 {
-    global $config, $conf_group, $LANG_configsubgroups;
+    global $config, $conf_group, $LANG01, $LANG_config, $LANG_configsubgroups;
 
-    $retval = COM_startBlock( 'Config Sections', '', 'blockheader.thtml');
+    $retval = COM_startBlock($LANG01[131], '', 'blockheader.thtml');
 
     $groups = $config->_get_groups();
     if (count($groups) > 0) {
         foreach ($groups as $group) {
-            $group_display = ucwords($group);
+            if (empty($LANG_config[$group]['label'])) {
+                $group_display = ucwords($group);
+            } else {
+                $group_display = $LANG_config[$group]['label'];
+            }
             $retval .= "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
         }
     }
     $retval .= COM_endBlock('blockfooter.thtml');
 
-    $subgroup_title = ucwords($conf_group);
-    $retval .= COM_startBlock( $subgroup_title, '', 'blockheader.thtml');
+    if (empty($LANG_config[$conf_group]['title'])) {
+        $subgroup_title = ucwords($conf_group);
+    } else {
+        $subgroup_title = $LANG_config[$conf_group]['title'];
+    }
+    $retval .= COM_startBlock($subgroup_title, '', 'blockheader.thtml');
 
     $groups = $config->get_sgroups($conf_group);
     if (count($groups) > 0) {
@@ -67,7 +75,6 @@ function configmanager_menu()
     $retval .= COM_endBlock('blockfooter.thtml');
 
     return $retval;
-
 }
 
 /**

@@ -30,7 +30,6 @@
 #			YY - phrase id number
 ###############################################################################
 
-
 $LANG_STATIC= array(
     'newpage' => 'New Page',
     'adminhome' => 'Admin Home',
@@ -108,8 +107,22 @@ $LANG_STATIC= array(
     'limit_results' => 'Limit Results',
     'search' => 'Search',
     'submit' => 'Submit',
-    'config_menubar'   => 'Main Settings',
-    'config_menu1'  => 'Plugin Main Settings'
+    'config_menubar' => 'Main Settings',
+    'config_menu1' => 'Static Pages Main Settings'
+);
+
+
+// Messages for the plugin upgrade
+$PLG_staticpages_MESSAGE3001 = 'Plugin upgrade failed';
+$PLG_staticpages_MESSAGE3002 = $LANG32[9];
+$PLG_staticpages_MESSAGE3003 = 'Upgrade failed - unable to rename plugins config.php file.';
+$PLG_staticpages_MESSAGE3004 = 'Plugin upgrade failed - missing the plugins config.php';
+
+
+// Localization of the Admin Configuration UI
+$LANG_config['staticpages'] = array(
+    'label' => 'Static Pages',
+    'title' => 'Static Pages Configuration'
 );
 
 $LANG_confignames['staticpages'] = array(
@@ -136,11 +149,5 @@ $LANG_configselects['staticpages'] = array(
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );
-
-// Messages for the plugin upgrade
-$PLG_staticpages_MESSAGE3001 = 'Plugin upgrade failed';
-$PLG_staticpages_MESSAGE3002 = $LANG32[9];
-$PLG_staticpages_MESSAGE3003 = 'Upgrade failed - unable to rename plugins config.php file.';
-$PLG_staticpages_MESSAGE3004 = 'Plugin upgrade failed - missing the plugins config.php';
 
 ?>
