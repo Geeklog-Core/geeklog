@@ -4,12 +4,12 @@
  * File: english.php
  * This is the English language file for the Geeklog Spam-X plugin
  * 
- * Copyright (C) 2004-2006 by the following authors:
+ * Copyright (C) 2004-2008 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english.php,v 1.17 2007/11/25 06:57:41 ospiess Exp $
+ * $Id: english.php,v 1.18 2008/01/26 17:17:42 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -133,5 +133,33 @@ $PLG_spamx_MESSAGE8   = 'Spam detected. Email sent to admin.';
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'Spam-X plugin upgraded successfully.';
 $PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
+
+
+// Localization of the Admin Configuration UI
+$LANG_config['spamx'] = array(
+    'label' => 'Spam-X',
+    'title' => 'Spam-X Configuration'
+);
+
+$LANG_confignames['spamx'] = array(
+    'action' => 'Spam-X Actions',
+    'notification_email' => 'Notification Email',
+    'admin_override' => "Don't Filter Admin Posts",
+    'logging' => 'Enable Logging',
+    'timeout' => 'Timeout'
+);
+
+$LANG_configsubgroups['spamx'] = array(
+    0 => 'Main Settings'
+);
+
+$LANG_fs['spamx'] = array(
+    0 => 'Spam-X Main Settings'
+);
+
+$LANG_configselects['spamx'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => TRUE, 'False' => FALSE)
+);
 
 ?>

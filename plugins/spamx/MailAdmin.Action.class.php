@@ -4,12 +4,12 @@
  * File: MailAdmin.Action.class.php
  * This is the Mail Admin Action for the Geeklog Spam-X plugin
  * 
- * Copyright (C) 2004-2006 by the following authors:
+ * Copyright (C) 2004-2008 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: MailAdmin.Action.class.php,v 1.13 2006/08/12 14:22:48 dhaun Exp $
+ * $Id: MailAdmin.Action.class.php,v 1.14 2008/01/26 17:17:41 dhaun Exp $
  */
 
 if (strpos ($_SERVER['PHP_SELF'], 'MailAdmin.Action.class.php') !== false) {
@@ -71,10 +71,16 @@ class MailAdmin extends BaseCommand {
             }
         }
 
-        $subject = sprintf ($LANG_SX00['emailsubject'], $_CONF['site_name']);
-        COM_mail ($_SPX_CONF['notification_email'], $subject, $msg);
+        $subject = sprintf($LANG_SX00['emailsubject'], $_CONF['site_name']);
+        if (empty($_SPX_CONF['notification_email'])) {
+            $email_address = $_CONF['site_mail'];
+        } else {
+            $email_address = $_SPX_CONF['notification_email'];
+        }
+        COM_mail($email_address, $subject, $msg);
         $result = 8;
-        SPAMX_log ('Mail Sent to Admin');
+        SPAMX_log('Mail Sent to Admin');
+
         return 0;
     }
 }

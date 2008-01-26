@@ -296,9 +296,9 @@ function upgrade_PollsPlugin()
 // Staticpages plugin updates
 function upgrade_StaticpagesPlugin()
 {
-    global $_CONF,$_TABLES;
+    global $_CONF, $_TABLES;
 
-    require_once($_CONF['path_system'] . 'classes/config.class.php');
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
     $c->add('allow_php', 1, 'select', 0, 0, 0, 10, true, 'staticpages');
@@ -349,11 +349,20 @@ function upgrade_CalendarPlugin()
 // spamx plugin updates
 function upgrade_SpamXPlugin()
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+    $c->add('logging', true, 'select', 0, 0, 1, 10, true, 'spamx');
+    $c->add('admin_override', false, 'select', 0, 0, 1, 20, true, 'spamx');
+    $c->add('timeout', 5, 'text', 0, 0, null, 30, true, 'spamx');
+    $c->add('notification_email', '', 'text', 0, 0, null, 40, false, 'spamx');
+    $c->add('action', 128, 'text', 0, 0, null, 50, false, 'spamx');
 
     $sql = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.1', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'";
     $rst = DB_query($sql);
-    if (DB_error ()) {
+    if (DB_error()) {
         echo "There was an error upgrading the Spam-X plugin";
         return false;
     }

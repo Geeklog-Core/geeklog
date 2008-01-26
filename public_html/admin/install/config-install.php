@@ -29,9 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.19 2008/01/26 13:14:46 dhaun Exp $
+// $Id: config-install.php,v 1.20 2008/01/26 17:17:42 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
+if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
 }
 
@@ -242,6 +242,12 @@ function install_config()
     $c->add('aftersave', 'item', 'select', 0, 0, 9, 100, true, 'staticpages');
     $c->add('atom_max_items', 10, 'text', 0, 0, null, 110, true, 'staticpages');
     $c->add('default_permissions', array(3,2,2,2), '@select', 0, 1, 12, 120, true, 'staticpages');
+
+    $c->add('logging', true, 'select', 0, 0, 1, 10, true, 'spamx');
+    $c->add('admin_override', false, 'select', 0, 0, 1, 20, true, 'spamx');
+    $c->add('timeout', 5, 'text', 0, 0, null, 30, true, 'spamx');
+    $c->add('notification_email', '', 'text', 0, 0, null, 40, false, 'spamx');
+    $c->add('action', 128, 'text', 0, 0, null, 50, false, 'spamx');
 }
 
 ?>

@@ -4,35 +4,50 @@
  * File: functions.inc
  * This is the functions.inc for the Geeklog Spam-X plugin
  *
- * Copyright (C) 2004-2006 by the following authors:
+ * Copyright (C) 2004-2008 by the following authors:
  * Authors      Tom Willett     tomw AT pigstye DOT net
  *              Dirk Haun       dirk AT haun-online DOT de
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.30 2007/02/11 02:06:28 ospiess Exp $
+ * $Id: functions.inc,v 1.31 2008/01/26 17:17:41 dhaun Exp $
  */
 
-if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
 }
 
 /**
  * Language file include
  */
-$langfile = $_CONF['path'] . 'plugins/spamx/language/'
-          . $_CONF['language'] . '.php';
+$plugin_path = $_CONF['path'] . 'plugins/spamx/';
+$langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
-if (file_exists ($langfile)) {
-    include_once ($langfile);
+if (file_exists($langfile)) {
+    include_once $langfile;
 } else {
-    include_once ($_CONF['path'] . 'plugins/spamx/language/english.php');
+    include_once $plugin_path . 'language/english.php';
 }
 
 /*
-* Include spamx config files
+* As of Geeklog 1.5, the plugin's config.php is not needed any more and
+* should be removed after upgrading.
 */
-require_once ($_CONF['path'] . 'plugins/spamx/config.php');
+if (file_exists($plugin_path . 'config.php')) {
+    include_once $plugin_path . 'config.php';
+}
+
+/*
+* Check and see if we need to load the plugin configuration
+*/
+if (!isset($_SPX_CONF['timeout'])) {
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $sp_config = config::get_instance();
+    $_SPX_CONF = $sp_config->get_config('spamx');
+}
+
+$_SPX_CONF['version'] = '1.1.1';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -152,29 +167,66 @@ function plugin_chkVersion_spamx ()
 * @return   int     Number of message to display
 *
 */
-function plugin_upgrade_spamx ()
+function plugin_upgrade_spamx()
 {
-    global $_TABLES, $_SPX_CONF;
+    global $_CONF, $_TABLES, $_SPX_CONF, $plugin_path;
 
-    if (!function_exists ('PLG_spamAction')) {
+    if (!function_exists('PLG_spamAction')) {
         return 3002; // plugin not compatible with this Geeklog version
     }
 
-    $v = DB_getItem ($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
+    $v = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
 
     if ($v != $_SPX_CONF['version']) {
         switch ($v) {
-            case '1.0.1':
-                // Add the counter
-                DB_query ("INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')");
-                break;
+        case '1.0.1':
+            // Add the counter
+            DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')");
+            DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'spamx'");
+            break;
+
+        case '1.1.0':
+            if (file_exists($plugin_path . 'config.php')) {
+                require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+                $spx_config = config::get_instance();
+                $spx_config->initConfig();
+                if (!$spx_config->group_exists('spamx')) {
+                    $enable_email = true;
+                    if (empty($_SPX_CONF['notification_email']) || ($_SPX_CONF['notification_email'] == $_CONF['site_mail'])) {
+                        $enable_email = false;
+                    }
+
+                    $spx_config->add('logging', $_SPX_CONF['logging'], 'select', 0, 0, 1, 10, true, 'spamx');
+                    $spx_config->add('admin_override', $_SPX_CONF['admin_override'], 'select', 0, 0, 1, 20, true, 'spamx');
+                    $spx_config->add('timeout', $_SPX_CONF['timeout'], 'text', 0, 0, null, 30, true, 'spamx');
+                    $spx_config->add('notification_email', $_SPX_CONF['notification_email'], 'text', 0, 0, null, 40, $enable_email, 'spamx');
+                    $spx_config->add('action', $_SPX_CONF['action'], 'text', 0, 0, null, 50, false, 'spamx');
+
+                    // rename plugin's config.php as it's not needed any more
+                    $ret = @rename($plugin_path . 'config.php',
+                                   $plugin_path . 'config-pre1.1.1.php');
+                    if (!ret) {
+                        COM_errorLog("Spam-X upgrade failed - unable to rename plugin's config.php to complete upgrade");
+                        return 3002;
+                    } elseif ($spx_config->group_exists('spamx')) {
+                        DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SPX_CONF['version']}', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'");
+                    } else {
+                        COM_errorLog("Spam-X upgrade failed.");
+                        return 3002;
+                    }
+                }
+            } else {
+                COM_errorLog("Spam-X upgrade failed - did not find plugin's config.php");
+                return 3002;
+            }
+            break;
         }
 
         // update version numbers
-        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SPX_CONF['version']}', pi_gl_version = '1.4.1' WHERE pi_name = 'spamx'");
 
         // check if version number was updated successfully
-        $v = DB_getItem ($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
+        $v = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
     }
 
     if ($v == $_SPX_CONF['version']) {
@@ -349,10 +401,10 @@ function plugin_autouninstall_spamx ()
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array(),
         /* give all vars with their name */
-        'vars'=> array("{$pi_name}_gid", 'spamx.counter')
+        'vars' => array('spamx_gid', 'spamx.counter')
     );
+
     return $out;
 }
-
 
 ?>
