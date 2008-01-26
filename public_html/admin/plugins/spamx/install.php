@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X plugin 1.1.0                                                       |
+// | Spam-X plugin 1.1                                                         |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -11,7 +11,7 @@
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Tom Willett       - tom AT pigstye DOT net                       |
@@ -36,10 +36,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.20 2007/02/11 01:55:38 ospiess Exp $
+// $Id: install.php,v 1.21 2008/01/26 18:31:31 dhaun Exp $
 
-require_once ('../../../lib-common.php');
-require_once ($_CONF['path'] . 'plugins/spamx/config.php');
+require_once '../../../lib-common.php';
 
 // Plugin information
 //
@@ -47,8 +46,8 @@ require_once ($_CONF['path'] . 'plugins/spamx/config.php');
 //
 $pi_display_name = 'Spam-X';
 $pi_name         = 'spamx';
-$pi_version      = $_SPX_CONF['version'];
-$gl_version      = '1.4.1';
+$pi_version      = '1.1.1';
+$gl_version      = '1.5.0';
 $pi_url          = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';
 
 // name of the Admin group
@@ -77,14 +76,36 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')";
 * @return   boolean     true = proceed with install, false = not compatible
 *
 */
-function plugin_compatible_with_this_geeklog_version ()
+function plugin_compatible_with_this_geeklog_version()
 {
-    if (function_exists ('PLG_spamAction')) {
+    if (function_exists('PLG_spamAction')) {
         return true;
     }
 
     return false;
 }
+
+/**
+* Add plugin configuration
+*
+*/
+function plugin_config()
+{
+    global $_CONF, $pi_name;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+    $c->initConfig();
+    if (!$c->group_exists($pi_name)) {
+        $c->add('logging', true, 'select', 0, 0, 1, 10, true, 'spamx');
+        $c->add('admin_override', false, 'select', 0, 0, 1, 20, true, 'spamx');
+        $c->add('timeout', 5, 'text', 0, 0, null, 30, true, 'spamx');
+        $c->add('notification_email', '', 'text', 0, 0, null, 40, false, 'spamx');
+        $c->add('action', 128, 'text', 0, 0, null, 50, false, 'spamx');
+    }
+}
+
 //
 // ----------------------------------------------------------------------------
 //
@@ -93,13 +114,12 @@ function plugin_compatible_with_this_geeklog_version ()
 
 $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 $langfile = $base_path . $_CONF['language'] . '.php';
-if (file_exists ($langfile)) {
-    require_once ($langfile);
+if (file_exists($langfile)) {
+    require_once $langfile;
 } else {
-    require_once ($base_path . 'language/english.php');
+    require_once $base_path . 'language/english.php';
 }
-require_once ($base_path . 'config.php');
-require_once ($base_path . 'functions.inc');
+require_once $base_path . 'functions.inc';
 
 
 // Only let Root users access this page
@@ -226,6 +246,10 @@ function plugin_install_now()
             PLG_uninstall ($pi_name);
             return false;
         }
+    }
+
+    if (function_exists('plugin_config')) {
+        plugin_config();
     }
 
     // Finally, register the plugin with Geeklog
