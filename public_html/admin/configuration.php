@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.6 2008/01/26 10:51:08 dhaun Exp $
+// $Id: configuration.php,v 1.7 2008/01/26 11:59:36 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -41,9 +41,12 @@ $config =& config::get_instance();
 
 function configmanager_menu()
 {
-    global $config, $conf_group, $LANG01, $LANG_config, $LANG_configsubgroups;
+    global $_CONF, $config, $conf_group,
+           $LANG01, $LANG_ADMIN, $LANG_config, $LANG_configsubgroups;
 
     $retval = COM_startBlock($LANG01[131], '', 'blockheader.thtml');
+    $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
+            . $LANG_ADMIN['admin_home'] . '</a></div>';
 
     $groups = $config->_get_groups();
     if (count($groups) > 0) {
