@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.673 2008/01/20 09:35:59 dhaun Exp $
+// $Id: lib-common.php,v 1.674 2008/01/26 14:23:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2415,7 +2415,7 @@ function COM_userMenu( $help='', $title='' )
 function COM_adminMenu( $help = '', $title = '' )
 {
     global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF,
-           $_DB_dbms;
+           $_DB_dbms, $config;
 
     $retval = '';
 
@@ -2519,16 +2519,15 @@ function COM_adminMenu( $help = '', $title = '' )
             }
         }
 
-        if (SEC_inGroup( 'Root' )) {
+        if (SEC_inGroup('Root')) {
             $url = $_CONF['site_admin_url'] . '/configuration.php';
-            $adminmenu->set_var( 'option_url', $url);
-            $adminmenu->set_var( 'option_label', $LANG01[129] );
-            $adminmenu->set_var( 'option_count', 'N/A');
-            $menu_item = $adminmenu->parse( 'item',
-                                            ( $thisUrl == $url ) ? 'current' :
-                                            'option' );
+            $adminmenu->set_var('option_url', $url);
+            $adminmenu->set_var('option_label', $LANG01[129]);
+            $adminmenu->set_var('option_count', count($config->_get_groups()));
+            $menu_item = $adminmenu->parse('item',
+                                           ($thisUrl == $url) ? 'current' :
+                                                                'option');
             $link_array[$LANG01[129]] = $menu_item;
-
         }
 
 
