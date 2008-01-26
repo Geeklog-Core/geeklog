@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.50 2008/01/19 14:53:12 dhaun Exp $
+// $Id: index.php,v 1.51 2008/01/26 20:43:15 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -87,7 +87,7 @@ function listpolls()
         array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
         array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
-        array('text' => $LANG25[8], 'field' => 'display', 'sort' => true)
+        array('text' => $LANG25[33], 'field' => 'open', 'sort' => true)
     );
 
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
