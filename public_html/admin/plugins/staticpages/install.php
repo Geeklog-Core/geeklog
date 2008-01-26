@@ -12,7 +12,7 @@
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // | Upgraded for GL version 1.5 online config manager                         |
 // |                                                                           |
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Tom Willett       - tom AT pigstye DOT net                       |
@@ -37,9 +37,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.28 2008/01/04 03:21:12 blaine Exp $
+// $Id: install.php,v 1.29 2008/01/26 20:05:44 dhaun Exp $
 
-require_once ('../../../lib-common.php');
+require_once '../../../lib-common.php';
 
 // Plugin information
 //
@@ -47,14 +47,14 @@ require_once ('../../../lib-common.php');
 //
 $pi_display_name = 'Static Page';
 $pi_name         = 'staticpages';
-$pi_version      = '1.5';
-$gl_version      = '1.4.1';
+$pi_version      = '1.5.0';
+$gl_version      = '1.5.0';
 $pi_url          = 'http://www.geeklog.net/';
 
 $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 
 // Load the configuration defaults
-require_once ("{$base_path}install_defaults.php");
+require_once $base_path . 'install_defaults.php';
 
 // name of the Admin group
 $pi_admin        = $pi_display_name . ' Admin';
@@ -96,35 +96,35 @@ function plugin_compatible_with_this_geeklog_version ()
 }
 
 
-
 /**
 * Loads the configuration records for the GL Online Config Manager
 *
 * @return   boolean     true = proceed with install, false = not compatible
 *
 */
-function plugin_load_configuration ()
+function plugin_load_configuration()
 {
-    global $_CONF,$pi_version,$_SP_DEFAULT;
+    global $_CONF, $pi_name, $_SP_DEFAULT;
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
+
     $sp_config = config::get_instance();
     $sp_config->initConfig();
-    if(! $sp_config->group_exists('staticpages')){
-        $sp_config->add('version', $pi_version, 'text', 0, 0, null, 0, true, 'staticpages');
-        $sp_config->add('allow_php', $_SP_DEFAULT['allow_php'], 'text', 0, 0, null, 10, true, 'staticpages');
-        $sp_config->add('sort_by', $_SP_DEFAULT['sort_by'],  'text', 0, 0, null, 20, true, 'staticpages');
-        $sp_config->add('sort_menu_by', $_SP_DEFAULT['sort_menu_by'], 'text', 0, 0, null, 30, true, 'staticpages');
-        $sp_config->add('delete_pages', $_SP_DEFAULT['delete_pages'] , 'text', 0, 0, null, 40, true, 'staticpages');
-        $sp_config->add('in_block', $_SP_DEFAULT['in_block'], 'text', 0, 0, null, 50, true, 'staticpages');
-        $sp_config->add('show_hits', $_SP_DEFAULT['show_hits'], 'text', 0, 0, null, 60, true, 'staticpages');
-        $sp_config->add('show_date', $_SP_DEFAULT['show_date'], 'text', 0, 0, null, 70, true, 'staticpages');
-        $sp_config->add('filter_html', $_SP_DEFAULT['filter_html'], 'text', 0, 0, null, 80, true, 'staticpages');
-        $sp_config->add('censor', $_SP_DEFAULT['censor'], 'text', 0, 0, null, 90, true, 'staticpages');
-        $sp_config->add('default_permissions', $_SP_DEFAULT['default_permissions'], '@text', 0, 0, null, 100, true, 'staticpages');
-        $sp_config->add('aftersave', $_SP_DEFAULT['aftersave'], 'text', 0, 0, null, 110, true, 'staticpages');
-        $sp_config->add('atom_max_items', $_SP_DEFAULT['atom_max_items'], 'text', 0, 0, null, 120, true, 'staticpages');
+    if (! $sp_config->group_exists($pi_name)) {
+        $sp_config->add('allow_php', $_SP_DEFAULT['allow_php'], 'select', 0, 0, 0, 10, true, 'staticpages');
+        $sp_config->add('sort_by', $_SP_DEFAULT['sort_by'], 'select', 0, 0, 2, 20, true, 'staticpages');
+        $sp_config->add('sort_menu_by', $_SP_DEFAULT['sort_menu_by'], 'select', 0, 0, 3, 30, true, 'staticpages');
+        $sp_config->add('delete_pages', $_SP_DEFAULT['delete_pages'], 'select', 0, 0, 0, 40, true, 'staticpages');
+        $sp_config->add('in_block', $_SP_DEFAULT['in_block'], 'select', 0, 0, 0, 50, true, 'staticpages');
+        $sp_config->add('show_hits', $_SP_DEFAULT['show_hits'], 'select', 0, 0, 0, 60, true, 'staticpages');
+        $sp_config->add('show_date', $_SP_DEFAULT['show_date'], 'select', 0, 0, 0, 70, true, 'staticpages');
+        $sp_config->add('filter_html', $_SP_DEFAULT['filter_html'], 'select', 0, 0, 0, 80, true, 'staticpages');
+        $sp_config->add('censor', $_SP_DEFAULT['censor'], 'select', 0, 0, 0, 90, true, 'staticpages');
+        $sp_config->add('aftersave', $_SP_DEFAULT['aftersave'], 'select', 0, 0, 9, 100, true, 'staticpages');
+        $sp_config->add('atom_max_items', $_SP_DEFAULT['atom_max_items'], 'text', 0, 0, null, 110, true, 'staticpages');
+        $sp_config->add('default_permissions', $_SP_DEFAULT['default_permissions'], '@select', 0, 1, 12, 120, true, 'staticpages');
     }
+
     return true;
 }
 
@@ -271,6 +271,14 @@ function plugin_install_now()
         }
     }
 
+    // Load the online configuration records
+    if (function_exists('plugin_load_configuration')) {
+        if (!plugin_load_configuration()) {
+            PLG_uninstall($pi_name);
+            return false;
+        }
+    }
+
     // Finally, register the plugin with Geeklog
     COM_errorLog ("Registering $pi_display_name plugin with Geeklog", 1);
 
@@ -283,14 +291,6 @@ function plugin_install_now()
     if (DB_error ()) {
         PLG_uninstall ($pi_name);
         return false;
-    }
-
-    // Load the online configuration records
-    if (function_exists ('plugin_load_configuration')) {
-        if (!plugin_load_configuration ()) {
-            PLG_uninstall ($pi_name);
-            return false;
-        }
     }
 
     // give the plugin a chance to perform any post-install operations
