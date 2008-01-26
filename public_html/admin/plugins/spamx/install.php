@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.21 2008/01/26 18:31:31 dhaun Exp $
+// $Id: install.php,v 1.22 2008/01/26 20:06:07 dhaun Exp $
 
 require_once '../../../lib-common.php';
 
@@ -89,7 +89,7 @@ function plugin_compatible_with_this_geeklog_version()
 * Add plugin configuration
 *
 */
-function plugin_config()
+function plugin_load_configuration()
 {
     global $_CONF, $pi_name;
 
@@ -104,6 +104,8 @@ function plugin_config()
         $c->add('notification_email', '', 'text', 0, 0, null, 40, false, 'spamx');
         $c->add('action', 128, 'text', 0, 0, null, 50, false, 'spamx');
     }
+
+    return true;
 }
 
 //
@@ -248,8 +250,12 @@ function plugin_install_now()
         }
     }
 
-    if (function_exists('plugin_config')) {
-        plugin_config();
+    // Load the online configuration records
+    if (function_exists('plugin_load_configuration')) {
+        if (!plugin_load_configuration()) {
+            PLG_uninstall($pi_name);
+            return false;
+        }
     }
 
     // Finally, register the plugin with Geeklog
