@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.7 2008/01/26 11:59:36 dhaun Exp $
+// $Id: configuration.php,v 1.8 2008/01/26 17:30:13 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -45,8 +45,7 @@ function configmanager_menu()
            $LANG01, $LANG_ADMIN, $LANG_config, $LANG_configsubgroups;
 
     $retval = COM_startBlock($LANG01[131], '', 'blockheader.thtml');
-    $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
-            . $LANG_ADMIN['admin_home'] . '</a></div>';
+    $link_array = array();
 
     $groups = $config->_get_groups();
     if (count($groups) > 0) {
@@ -56,9 +55,23 @@ function configmanager_menu()
             } else {
                 $group_display = $LANG_config[$group]['label'];
             }
-            $retval .= "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+            $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+
+            if ($group == 'Core') {
+                $retval .= $link;
+            } else {
+                $link_array[$group_display] = $link;
+            }
         }
     }
+
+    uksort($link_array, 'strcasecmp');
+    foreach ($link_array as $link) {
+        $retval .= $link;
+    }
+
+    $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
+            . $LANG_ADMIN['admin_home'] . '</a></div>';
     $retval .= COM_endBlock('blockfooter.thtml');
 
     if (empty($LANG_config[$conf_group]['title'])) {
