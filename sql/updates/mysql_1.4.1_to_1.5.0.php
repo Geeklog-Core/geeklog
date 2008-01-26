@@ -301,7 +301,6 @@ function upgrade_StaticpagesPlugin()
     require_once($_CONF['path_system'] . 'classes/config.class.php');
 
     $c = config::get_instance();
-    $c->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
     $c->add('allow_php', 1, 'select', 0, 0, 0, 10, true, 'staticpages');
     $c->add('sort_by', 'id', 'select', 0, 0, 2, 20, true, 'staticpages');
     $c->add('sort_menu_by', 'label', 'select', 0, 0, 3, 30, true, 'staticpages');

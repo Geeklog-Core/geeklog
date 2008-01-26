@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.111 2008/01/19 19:36:11 dhaun Exp $
+// $Id: functions.inc,v 1.112 2008/01/26 11:47:22 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -65,6 +65,7 @@ if (!isset($_SP_CONF['allow_php'])) {
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
 
+$_SP_CONF['version'] = '1.5.0';
 
 // +---------------------------------------------------------------------------+
 // | Plugin API - Services                                                     |
@@ -1024,19 +1025,19 @@ function plugin_upgrade_staticpages ()
     global $_CONF,$_TABLES, $_SP_CONF, $plugin_path;
 
     // the plugin needs this function so complain when it doesn't exist
-    if (!function_exists ('SEC_getGroupDropdown')) {
+    if (!function_exists('SEC_getGroupDropdown')) {
         return 3002;
     }
 
-    $pi_version = DB_getItem($_TABLES['plugins'],'pi_version',"pi_name='staticpages'");
+    $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                             "pi_name = 'staticpages'");
 
     if ($pi_version == '1.4.3') {  // Need to initialize the config table - GL 1.5+ feature
         if (file_exists("{$plugin_path}config.php")) {
             require_once $_CONF['path_system'] . 'classes/config.class.php';
             $sp_config = config::get_instance();
             $sp_config->initConfig();
-            if(! $sp_config->group_exists('staticpages')){
-                $sp_config->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
+            if (! $sp_config->group_exists('staticpages')) {
                 $sp_config->add('allow_php', $_SP_CONF['allow_php'], 'select', 0, 0, 0, 10, true, 'staticpages');
                 $sp_config->add('sort_by', $_SP_CONF['sort_by'], 'select', 0, 0, 2, 20, true, 'staticpages');
                 $sp_config->add('sort_menu_by', $_SP_CONF['sort_menu_by'], 'select', 0, 0, 3, 30, true, 'staticpages');
@@ -1055,17 +1056,17 @@ function plugin_upgrade_staticpages ()
                 $ret = @rename ("{$plugin_path}config.php","{$plugin_path}config-pre1.4.3.php");
                 if (!$ret) {
                     COM_errorLog("Staticpages upgrade to 1.5 error - unable to rename plugins config.php to complete upgrade");
-                    return '3003';
-                } elseif($sp_config->group_exists('staticpages')){
-                    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.5' WHERE pi_name = 'staticpages'");
+                    return 3003;
+                } elseif ($sp_config->group_exists('staticpages')) {
+                    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.5.0' WHERE pi_name = 'staticpages'");
                 } else {
                     COM_errorLog("Staticpages upgrade to 1.5 failed");
-                    return '3001';
+                    return 3001;
                 }
             }
         } else {
             COM_errorLog("Staticpages upgrade to 1.5 failed - missing plugins config.php");
-            return '3004';
+            return 3004;
         }
 
     }

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.17 2008/01/20 20:55:17 dhaun Exp $
+// $Id: config-install.php,v 1.18 2008/01/26 11:47:22 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -230,7 +230,6 @@ function install_config()
 
 
     // Add the configuration records for the default installed plugins
-    $c->add('version', '1.5', 'text', 0, 0, null, 0, true, 'staticpages');
     $c->add('allow_php', 1, 'select', 0, 0, 0, 10, true, 'staticpages');
     $c->add('sort_by', 'id', 'select', 0, 0, 2, 20, true, 'staticpages');
     $c->add('sort_menu_by', 'label', 'select', 0, 0, 3, 30, true, 'staticpages');
