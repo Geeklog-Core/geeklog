@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Calendar Plugin administration page.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.30 2007/11/25 06:58:55 ospiess Exp $
+// $Id: index.php,v 1.31 2008/01/27 15:23:33 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -296,7 +296,8 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('lang_city',$LANG12[46]);
     $event_templates->set_var('event_city', stripslashes ($A['city']));
     $event_templates->set_var('lang_state',$LANG12[47]);
-    $event_templates->set_var('state_options', CALENDAR_stateList($A['state']));
+    $event_templates->set_var('state_options', '');
+    $event_templates->set_var('event_state', stripslashes ($A['state']));
     $event_templates->set_var('lang_zipcode',$LANG12[48]);
     $event_templates->set_var('event_zipcode', $A['zipcode']);
     $event_templates->set_var('lang_eventlocation', $LANG_CAL_ADMIN[7]);

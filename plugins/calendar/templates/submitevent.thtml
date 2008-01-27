@@ -75,11 +75,7 @@
                                 <div class="form-field"><input type="text" name="city" size="40" maxlength="60"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_state}:</div>
-                                <div class="form-field">
-                                            <select name="state">
-                                                {state_options}
-                                            </select>
-                                </div>
+                                <div class="form-field"><input type="text" name="state" size="40"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_zipcode}:</div>
                                 <div class="form-field"><input type="text" name="zipcode" size="5" maxlength="5"{xhtml}></div>

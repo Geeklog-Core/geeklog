@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the CAlendar   |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.76 2007/12/29 20:21:25 dhaun Exp $
+// $Id: functions.inc,v 1.77 2008/01/27 15:23:32 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -728,7 +728,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_addressline2',$LANG_CAL_1[33]);
     $eventform->set_var('lang_city',$LANG_CAL_1[34]);
     $eventform->set_var('lang_state',$LANG_CAL_1[35]);
-    $eventform->set_var('state_options', CALENDAR_stateList ());
+    $eventform->set_var('state_options', '');
     $eventform->set_var('lang_zipcode',$LANG_CAL_1[36]);
     $eventform->set_var('lang_location', $LANG_CAL_1[39]);
     $eventform->set_var('lang_description', $LANG_CAL_1[5]);
@@ -1343,15 +1343,35 @@ function plugin_chkVersion_calendar()
 */
 function plugin_upgrade_calendar()
 {
-    global $_TABLES, $_CA_CONF;
+    global $_TABLES, $_CA_CONF, $_STATES;
 
     // the plugin needs this function so complain when it doesn't exist
     if (!function_exists ('MBYTE_strpos')) {
         return 3002;
     }
 
-    // no db changes - just update the version numbers
-    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_CA_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'calendar'");
+    $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                             "$pi_name = 'calendar'");
+
+    if (($pi_version == '1.0.0') || ($pi_version == '1.0.1')) {
+        DB_query("ALTER TABLE {$_TABLES['events']} CHANGE state state varchar(40) default NULL");
+        DB_query("ALTER TABLE {$_TABLES['eventsubmission']} CHANGE state state varchar(40) default NULL");
+        DB_query("ALTER TABLE {$_TABLES['personal_events']} CHANGE state state varchar(40) default NULL");
+
+        if (isset($_STATES) && is_array($_STATES)) {
+            $tables = array($_TABLES['events'], $_TABLES['eventsubmission'],
+                            $_TABLES['personal_events']);
+
+            foreach ($_STATES as $key => $state) {
+                foreach ($tables as $table) {
+                    DB_change($table, 'state', addslashes($state),
+                                      'state', addslashes($key));
+                }
+            }
+        }
+    }
+
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_CA_CONF['version']}', pi_gl_version = '1.5.0' WHERE pi_name = 'calendar'");
 
     return true;
 }
@@ -1651,7 +1671,7 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
             if ($access == 3) {
                 $retval = COM_createLink(
                     $icon_arr['edit'],
-                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php "
+                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php"
                     . "?mode=edit&amp;eid={$A['eid']}");
             }
             break;
@@ -1659,7 +1679,7 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
             if ($access == 3) {
                 $retval = COM_createLink(
                     $icon_arr['copy'],
-                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php "
+                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php"
                     . "?mode=clone&amp;eid={$A['eid']}");
             }
             break;
@@ -1683,30 +1703,6 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = $fieldvalue;
             break;
     }
-    return $retval;
-}
-
-/**
-* Creates a dropdown list of all the states
-*
-* @param    string  $currstate  current state (to preselect in the list)
-* @return   string              <option> list of states
-*
-*/
-function CALENDAR_stateList ($currstate = '')
-{
-    global $_STATES;
-
-    $retval = '';
-
-    foreach ($_STATES as $statekey => $state) {
-        $retval .= '<option value="' . $statekey . '"';
-        if ($statekey == $currstate) {
-            $retval .= ' selected="selected"';
-        }
-        $retval .= '>' . $state . '</option>';
-    }
-
     return $retval;
 }
 

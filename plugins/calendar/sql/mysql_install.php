@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.1 2006/08/19 18:51:48 dhaun Exp $
+// $Id: mysql_install.php,v 1.2 2008/01/27 15:23:33 dhaun Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['events']} (
@@ -51,7 +51,7 @@ CREATE TABLE {$_TABLES['events']} (
   address1 varchar(40) default NULL,
   address2 varchar(40) default NULL,
   city varchar(60) default NULL,
-  state char(2) default NULL,
+  state varchar(40) default NULL,
   zipcode varchar(5) default NULL,
   allday tinyint(1) NOT NULL default '0',
   event_type varchar(40) NOT NULL default '',
@@ -77,7 +77,7 @@ CREATE TABLE {$_TABLES['eventsubmission']} (
   url varchar(255) default NULL,
   allday tinyint(1) NOT NULL default '0',
   zipcode varchar(5) default NULL,
-  state char(2) default NULL,
+  state varchar(40) default NULL,
   city varchar(60) default NULL,
   address2 varchar(40) default NULL,
   address1 varchar(40) default NULL,
@@ -98,7 +98,7 @@ CREATE TABLE {$_TABLES['personal_events']} (
   address1 varchar(40) default NULL,
   address2 varchar(40) default NULL,
   city varchar(60) default NULL,
-  state char(2) default NULL,
+  state varchar(40) default NULL,
   zipcode varchar(5) default NULL,
   allday tinyint(1) NOT NULL default '0',
   url varchar(255) default NULL,

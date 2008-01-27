@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Shows details of an event or events                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.25 2007/11/25 06:58:56 ospiess Exp $
+// $Id: event.php,v 1.26 2008/01/27 15:23:33 dhaun Exp $
 
-require_once ('../lib-common.php');
-require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
+require_once '../lib-common.php';
+require_once $_CONF['path_system'] . 'classes/calendar.class.php';
 
 /**
 * Adds an event to the user's calendar
@@ -95,7 +95,7 @@ function adduserevent ($eid)
                   . stripslashes ($A['address1']) . '<br' . XHTML . '>'
                   . stripslashes ($A['address2']) . '<br' . XHTML . '>'
                   . stripslashes ($A['city'])
-                  . ', ' . $A['state'] . ' ' . $A['zipcode'];
+                  . ', ' . stripslashes($A['state']) . ' ' . $A['zipcode'];
         $cal_template->set_var('event_location', $location);
         $cal_template->set_var('lang_description', $LANG_CAL_1[5]);
         $description = stripslashes ($A['description']);
@@ -281,7 +281,8 @@ function editpersonalevent ($A)
     $cal_templates->set_var('event_city', stripslashes ($A['city']));
 
     $cal_templates->set_var('lang_state', $LANG_CAL_1[35]);
-    $cal_templates->set_var('state_options', CALENDAR_stateList ($A['state']));
+    $cal_templates->set_var('state_options', '');
+    $cal_templates->set_var('event_state', stripslashes ($A['state']));
 
     $cal_templates->set_var('lang_zipcode', $LANG_CAL_1[36]);
     $cal_templates->set_var('event_zipcode', $A['zipcode']);
@@ -612,10 +613,9 @@ default:
                     $cal_templates->set_var ('event_state_name_only', '');
                 } else {
                     $cal_templates->set_var ('event_state', ', ' . $A['state']);
-                    $cal_templates->set_var ('event_state_name',
-                            ', ' . $_STATES[$A['state']]);
+                    $cal_templates->set_var ('event_state_name', $A['state']);
                     $cal_templates->set_var ('event_state_name_only',
-                            $_STATES[$A['state']]);
+                                             $A['state']);
                 }
 
                 // now figure out which of the {brX} variables to set ...

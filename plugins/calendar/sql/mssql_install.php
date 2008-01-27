@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.3 2006/10/11 01:36:11 blaine Exp $
+// $Id: mssql_install.php,v 1.4 2008/01/27 15:23:33 dhaun Exp $
 
 
 $_SQL[] = "
@@ -53,7 +53,7 @@ CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [state] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [allday] [smallint] NULL ,
     [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -74,7 +74,7 @@ CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [allday] [smallint] NOT NULL ,
     [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [state] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -94,7 +94,7 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
     [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [state] [char] (2) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [state] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [allday] [smallint] NOT NULL ,
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,

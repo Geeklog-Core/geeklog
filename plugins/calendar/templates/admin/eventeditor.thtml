@@ -89,11 +89,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_state}:</b></td>
-                                        <td>
-                                            <select name="state">
-                                                {state_options}
-                                            </select>
-                                        </td>
+                                        <td><input type="text" name="state" size="40" value="{event_state}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_zipcode}:</b></td>

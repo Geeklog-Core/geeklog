@@ -333,13 +333,31 @@ function upgrade_StaticpagesPlugin()
 // Calendar plugin updates
 function upgrade_CalendarPlugin()
 {
-    global $_TABLES;
+    global $_TABLES, $_STATES;
 
-    $sql = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.2', pi_gl_version = '1.5.0' WHERE pi_name = 'calendar'";
-    $rst = DB_query($sql);
-    if (DB_error()) {
-        echo "There was an error upgrading the calendar";
-        return false;
+    $P_SQL[] = "ALTER TABLE {$_TABLES['events']} CHANGE state state varchar(40) default NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['eventsubmission']} CHANGE state state varchar(40) default NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['personal_events']} CHANGE state state varchar(40) default NULL";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.2', pi_gl_version = '1.5.0' WHERE pi_name = 'calendar'";
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the calendar";
+            return false;
+        }
+    }
+
+    if (isset($_STATES) && is_array($_STATES)) {
+        $tables = array($_TABLES['events'], $_TABLES['eventsubmission'],
+                        $_TABLES['personal_events']);
+
+        foreach ($_STATES as $key => $state) {
+            foreach ($tables as $table) {
+                DB_change($table, 'state', addslashes($state),
+                                  'state', addslashes($key));
+            }
+        }
     }
 
     return true;
