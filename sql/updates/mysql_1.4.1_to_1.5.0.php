@@ -299,19 +299,27 @@ function upgrade_StaticpagesPlugin()
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
+    $plugin_path = $_CONF['path'] . 'plugins/staticpages/';
+    if (file_exists($plugin_path . 'config.php')) {
+        require_once $plugin_path . 'config.php';
+        $_SP_DEFAULT = $_SP_CONF;
+    } else {
+        require_once $plugin_path . 'install_defaults.php';
+    }
+
     $c = config::get_instance();
-    $c->add('allow_php', 1, 'select', 0, 0, 0, 10, true, 'staticpages');
-    $c->add('sort_by', 'id', 'select', 0, 0, 2, 20, true, 'staticpages');
-    $c->add('sort_menu_by', 'label', 'select', 0, 0, 3, 30, true, 'staticpages');
-    $c->add('delete_pages', 0, 'select', 0, 0, 0, 40, true, 'staticpages');
-    $c->add('in_block', 1, 'select', 0, 0, 0, 50, true, 'staticpages');
-    $c->add('show_hits', 1, 'select', 0, 0, 0, 60, true, 'staticpages');
-    $c->add('show_date', 1, 'select', 0, 0, 0, 70, true, 'staticpages');
-    $c->add('filter_html', 0, 'select', 0, 0, 0, 80, true, 'staticpages');
-    $c->add('censor', 1, 'select', 0, 0, 0, 90, true, 'staticpages');
-    $c->add('aftersave', 'item', 'select', 0, 0, 9, 100, true, 'staticpages');
-    $c->add('atom_max_items', 10, 'text', 0, 0, null, 110, true, 'staticpages');
-    $c->add('default_permissions', array(3,2,2,2), '@select', 0, 1, 12, 120, true, 'staticpages');
+    $c->add('allow_php', $_SP_DEFAULT['allow_php'], 'select', 0, 0, 0, 10, true, 'staticpages');
+    $c->add('sort_by', $_SP_DEFAULT['sort_by'], 'select', 0, 0, 2, 20, true, 'staticpages');
+    $c->add('sort_menu_by', $_SP_DEFAULT['sort_menu_by'], 'select', 0, 0, 3, 30, true, 'staticpages');
+    $c->add('delete_pages', $_SP_DEFAULT['delete_pages'], 'select', 0, 0, 0, 40, true, 'staticpages');
+    $c->add('in_block', $_SP_DEFAULT['in_block'], 'select', 0, 0, 0, 50, true, 'staticpages');
+    $c->add('show_hits', $_SP_DEFAULT['show_hits'], 'select', 0, 0, 0, 60, true, 'staticpages');
+    $c->add('show_date', $_SP_DEFAULT['show_date'], 'select', 0, 0, 0, 70, true, 'staticpages');
+    $c->add('filter_html', $_SP_DEFAULT['filter_html'], 'select', 0, 0, 0, 80, true, 'staticpages');
+    $c->add('censor', $_SP_DEFAULT['censor'], 'select', 0, 0, 0, 90, true, 'staticpages');
+    $c->add('aftersave', $_SP_DEFAULT['aftersave'], 'select', 0, 0, 9, 100, true, 'staticpages');
+    $c->add('atom_max_items', $_SP_DEFAULT['atom_max_items'], 'text', 0, 0, null, 110, true, 'staticpages');
+    $c->add('default_permissions', $_SP_DEFAULT['default_permissions'], '@select', 0, 1, 12, 120, true, 'staticpages');
 
     $P_SQL = array();
     $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
@@ -323,6 +331,15 @@ function upgrade_StaticpagesPlugin()
         $rst = DB_query($sql);
         if (DB_error()) {
             echo "There was an error upgrading the staticpages, SQL: $sql<br>";
+            return false;
+        }
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        $ret = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.4.3.php');
+        if (!ret) {
+            echo "There was an error upgrading the Static Pages plugin: Could not rename config.php";
             return false;
         }
     }
