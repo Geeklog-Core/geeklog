@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english_utf-8.php,v 1.6 2008/01/26 17:17:42 dhaun Exp $
+ * $Id: english_utf-8.php,v 1.7 2008/01/27 08:24:51 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -136,7 +136,7 @@ $PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
 
 
 // Localization of the Admin Configuration UI
-$LANG_config['spamx'] = array(
+$LANG_configsection['spamx'] = array(
     'label' => 'Spam-X',
     'title' => 'Spam-X Configuration'
 );

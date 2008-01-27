@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.8 2008/01/26 17:30:13 dhaun Exp $
+// $Id: configuration.php,v 1.9 2008/01/27 08:24:51 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -41,19 +41,19 @@ $config =& config::get_instance();
 
 function configmanager_menu()
 {
-    global $_CONF, $config, $conf_group,
-           $LANG01, $LANG_ADMIN, $LANG_config, $LANG_configsubgroups;
+    global $_CONF, $config, $conf_group, $LANG01, $LANG_ADMIN, $LANG_CONFIG,
+           $LANG_configsection, $LANG_configsubgroups;
 
-    $retval = COM_startBlock($LANG01[131], '', 'blockheader.thtml');
+    $retval = COM_startBlock($LANG_CONFIG[1], '', 'blockheader.thtml');
     $link_array = array();
 
     $groups = $config->_get_groups();
     if (count($groups) > 0) {
         foreach ($groups as $group) {
-            if (empty($LANG_config[$group]['label'])) {
+            if (empty($LANG_configsection[$group]['label'])) {
                 $group_display = ucwords($group);
             } else {
-                $group_display = $LANG_config[$group]['label'];
+                $group_display = $LANG_configsection[$group]['label'];
             }
             $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
 
@@ -74,10 +74,10 @@ function configmanager_menu()
             . $LANG_ADMIN['admin_home'] . '</a></div>';
     $retval .= COM_endBlock('blockfooter.thtml');
 
-    if (empty($LANG_config[$conf_group]['title'])) {
+    if (empty($LANG_configsection[$conf_group]['title'])) {
         $subgroup_title = ucwords($conf_group);
     } else {
-        $subgroup_title = $LANG_config[$conf_group]['title'];
+        $subgroup_title = $LANG_configsection[$conf_group]['title'];
     }
     $retval .= COM_startBlock($subgroup_title, '', 'blockheader.thtml');
 

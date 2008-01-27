@@ -118,7 +118,7 @@ $PLG_staticpages_MESSAGE3004 = 'Plugin upgrade failed - missing the plugins conf
 
 
 // Localization of the Admin Configuration UI
-$LANG_config['staticpages'] = array(
+$LANG_configsection['staticpages'] = array(
     'label' => 'Static Pages',
     'title' => 'Static Pages Configuration'
 );
