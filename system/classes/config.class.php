@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.17 2008/01/20 20:55:17 dhaun Exp $
+// $Id: config.class.php,v 1.18 2008/01/27 09:02:15 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -50,8 +50,11 @@ class config {
     function &get_instance()
     {
         static $instance;
-        if(!$instance)
+
+        if (!$instance) {
             $instance = new config();
+        }
+
         return $instance;
     }
 
@@ -104,11 +107,13 @@ class config {
     function &initConfig()
     {
         global $_TABLES;
+
         $sql_query = "SELECT name, value, group_name FROM {$_TABLES['conf_values']}";
         $result = DB_query($sql_query);
         while ($row = DB_fetchArray($result)) {
-            if ($row[1] !== 'unset')
+            if ($row[1] !== 'unset') {
                 $this->config_array[$row[2]][$row[0]] = unserialize($row[1]);
+            }
         }
         $this->_post_configuration();
 
@@ -148,6 +153,7 @@ class config {
     function set($name, $value, $group='Core')
     {
         global $_TABLES, $_DB, $_DB_dbms;
+
         $escaped_val = addslashes(serialize($value));
         $escaped_name = addslashes($name);
         $escaped_grp = addslashes($group);
@@ -168,6 +174,7 @@ class config {
     function restore_param($name, $group)
     {
         global $_TABLES;
+
         $escaped_name = addslashes($name);
         $escaped_grp = addslashes($group);
         $sql = "UPDATE {$_TABLES['conf_values']} SET value = default_value " .
@@ -178,6 +185,7 @@ class config {
     function unset_param($name, $group)
     {
         global $_TABLES;
+
         $escaped_name = addslashes($name);
         $escaped_grp = addslashes($group);
         $sql = "UPDATE {$_TABLES['conf_values']} SET value = 'unset' " .
@@ -220,6 +228,7 @@ class config {
          $selection_array=null, $sort=0, $set=true, $group='Core')
     {
         global $_TABLES, $_DB, $_DB_dbms;
+
         $format = 'INSERT INTO %1$s (name, value, type, ' .
             'subgroup, group_name, selectionArray, sort_order,'.
             ' fieldset, default_value) ' .
@@ -271,16 +280,19 @@ class config {
     function _get_extended($subgroup, $group)
     {
         global $_TABLES, $LANG_confignames, $LANG_configselects;
+
         $q_string = "SELECT name, type, selectionArray, "
             . "fieldset, value FROM {$_TABLES['conf_values']}" .
             " WHERE group_name='{$group}' and subgroup='{$subgroup}' " .
             " ORDER BY sort_order ASC";
         $Qresult = DB_query($q_string);
         $res = array();
-        if(!array_key_exists($group, $LANG_configselects))
+        if (!array_key_exists($group, $LANG_configselects)) {
             $LANG_configselects[$group] = array();
-        if(!array_key_exists($group, $LANG_confignames))
+        }
+        if (!array_key_exists($group, $LANG_confignames)) {
             $LANG_confignames[$group] = array();
+        }
         while ($row = DB_fetchArray($Qresult)) {
             $cur = $row;
             $res[$cur[3]][$cur[0]] =
@@ -298,6 +310,7 @@ class config {
                       (($cur[4] == 'unset') ?
                        'unset' : unserialize($cur[4])));
         }
+
         return $res;
     }
 
@@ -318,13 +331,16 @@ class config {
     function get_sgroups($group)
     {
         global $_TABLES;
+
         $q_string = "SELECT subgroup FROM {$_TABLES['conf_values']} WHERE " .
             "group_name='{$group}' " .
             "GROUP BY subgroup";
         $res = DB_query($q_string);
         $return = array();
-        while ($row = DB_fetchArray($res))
+        while ($row = DB_fetchArray($res)) {
             $return[] = $row[0];
+        }
+
         return $return;
     }
 
@@ -342,20 +358,27 @@ class config {
      */
     function get_ui($grp, $sg='0', $change_result=null)
     {
-        global $_CONF,$LANG_configsubgroups;
-        if(!array_key_exists($grp, $LANG_configsubgroups))
+        global $_CONF, $LANG_CONFIG, $LANG_configsubgroups;
+
+        if(!array_key_exists($grp, $LANG_configsubgroups)) {
             $LANG_configsubgroups[$grp] = array();
-
-        if (!SEC_inGroup('Root'))
+        }
+        if (!SEC_inGroup('Root')) {
             return config::_UI_perm_denied();
+        }
 
-        if (!isset($sg) OR empty($sg)) $sg = '0';
+        if (!isset($sg) OR empty($sg)) {
+            $sg = '0';
+        }
         $t = new Template($_CONF['path_layout'] . 'admin/config');
         $t->set_file(array('main' => 'configuration.thtml','menugroup' => 'menu_element.thtml'));
 
-        $t->set_var( 'xhtml', XHTML );
-        $t->set_var('site_url',$_CONF['site_url']);
+        $t->set_var('lang_save_changes', $LANG_CONFIG['save_changes']);
+        $t->set_var('lang_reset_form', $LANG_CONFIG['reset_form']);
+        $t->set_var('lang_changes_made', $LANG_CONFIG['changes_made']);
 
+        $t->set_var('xhtml', XHTML);
+        $t->set_var('site_url', $_CONF['site_url']);
         $t->set_var('open_group', $grp);
 
         $groups = $this->_get_groups();
@@ -415,13 +438,14 @@ class config {
         // Output the result and add the required CSS for the dropline menu
         $cssfile = '<link rel="stylesheet" type="text/css" href="'.$_CONF['layout_url'] .'/droplinemenu.css" ' . XHTML .'>' . LB;
         $display  = COM_siteHeader(array('configmanager_menu'),'Configuration Manager',$cssfile);
-        if ($change_result != null AND $change_result !== array() ) {
+        if ($change_result != null AND $change_result !== array()) {
             $t->set_var('change_block',$this->_UI_get_change_block($change_result));
         } else {
             $t->set_var('show_changeblock','none');
         }
         $display .= $t->finish($t->parse("OUTPUT", "main"));
         $display .= COM_siteFooter(false);
+
         return $display;
     }
 
@@ -432,6 +456,7 @@ class config {
             foreach ($changes as $param_name => $success)
                 $display .= '<li>' . $param_name . '</li>';
             $display .= '</ul>';
+
             return $display;
         }
     }
@@ -439,8 +464,10 @@ class config {
     function _UI_get_fs($group, $contents, $fs_id, &$t)
     {
         global $LANG_fs;
-        if(!array_key_exists($group, $LANG_fs))
+
+        if (!array_key_exists($group, $LANG_fs)) {
             $LANG_fs[$group] = array();
+        }
         $t->set_var('fs_contents', $contents);
         $t->set_var('fs_display', $LANG_fs[$group][$fs_id]);
         $t->set_var('fs_notes', '');
@@ -449,37 +476,44 @@ class config {
 
     function _UI_perm_denied()
     {
-        $display = COM_siteHeader ('menu');
-        $display .= COM_startBlock ('Permission denied.', '',
-                                    COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= '<p padding="5px">You do not have the necessary permissions'
-            . ' to access this page.</p>';
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= COM_siteFooter ();
-        COM_accessLog("User {$_USER['username']} tried to illegally" .
-                      " access the config administration screen.");
+        global $MESSAGE;
+
+        $display = COM_siteHeader('menu', $MESSAGE[30])
+            . COM_startBlock($MESSAGE[30], '',
+                             COM_getBlockTemplate ('_msg_block', 'header'))
+            . $MESSAGE[96]
+            . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'))
+            . COM_siteFooter();
+        COM_accessLog("User {$_USER['username']} tried to illegally access the config administration screen.");
+
         return $display;
     }
 
     function _UI_get_conf_element($name, $display_name, $type, $val,
                                           $selectionArray = null , $deletable=0)
     {
+        global $LANG_CONFIG;
+
         $t = new Template($GLOBALS['_CONF']['path_layout'] . 'admin/config');
         $t -> set_file('element', 'config_element.thtml');
 
         $blocks = array('delete-button', 'text-element', 'placeholder-element',
                         'select-element', 'list-element', 'unset-param',
                         'keyed-add-button', 'unkeyed-add-button');
-        foreach ($blocks as $block)
+        foreach ($blocks as $block) {
             $t->set_block('element', $block);
+        }
 
-        $t->set_var( 'xhtml', XHTML );
+        $t->set_var('lang_restore', $LANG_CONFIG['restore']);
+        $t->set_var('lang_add_element', $LANG_CONFIG['add_element']);
+
+        $t->set_var('xhtml', XHTML);
         $t->set_var('name', $name);
         $t->set_var('display_name', $display_name);
         $t->set_var('value', $val);
-        if ($deletable)
+        if ($deletable) {
             $t->set_var('delete', $t->parse('output', 'delete-button'));
-        elseif ($this->ref == 'Core' ) {
+        } elseif ($this->ref == 'Core' ) {
             $t->set_var('unset_link',
                         "(<a href='#' onClick='unset(\"{$name}\");'>X</a>)");
             if (($a = strrchr($name, '[')) !== FALSE) {
@@ -576,6 +610,7 @@ class config {
         if (!SEC_inGroup('Root')) {
             return null;
         }
+
         $success_array = array();
         foreach ($this->config_array[$group] as $param_name => $param_value) {
             if (array_key_exists($param_name, $change_array)) {
@@ -587,6 +622,7 @@ class config {
                 }
             }
         }
+
         return $success_array;
     }
 
@@ -600,7 +636,7 @@ class config {
                 }
             }
         } else {
-            $r = COM_stripSlashes( $input_val );
+            $r = COM_stripslashes($input_val);
             if ($r == 'b:0' OR $r == 'b:1') {
                 $r = ($r == 'b:1');
             }
@@ -608,6 +644,7 @@ class config {
                 $r = $r + 0;
             }
         }
+
         return $r;
     }
 }

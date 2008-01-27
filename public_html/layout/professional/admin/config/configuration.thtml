@@ -5,7 +5,7 @@
 <input type="hidden" value="" name="subgroup"{xhtml}>
 </form>
 <div class="pluginInfo" style="display:{show_changeblock};margin-top:5px;margin-bottom:5px;padding-left:20px;border:1px solid #CCC; height: 120px;overflow: auto; min-height: 50px; max-height: 100px;">
-  Changes were successfully made to:
+  {lang_changes_made}:
     {change_block}
 </div>
 
@@ -39,7 +39,7 @@
 
 <input type="hidden" name="form_submit" value="true"{xhtml}>
 <div id="bottom_buttons" class="aligncenter">
-<input type="submit" value="Save Changes"{xhtml}>
-<input type="submit" name="form_reset" value="Reset Form"{xhtml}>
+<input type="submit" value="{lang_save_changes}"{xhtml}>
+<input type="submit" name="form_reset" value="{lang_reset_form}"{xhtml}>
 </div>
 </form>

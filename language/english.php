@@ -1175,7 +1175,8 @@ $MESSAGE = array(
     92 => 'Please ' . COM_createLink('check the security of your site', $_CONF['site_admin_url'] . '/sectest.php') . ' before using it!',
     93 => 'Database back up was successful.',
     94 => 'Backup Failed: Filesize less than 1kb',
-    95 => 'There was an error.'
+    95 => 'There was an error.',
+    96 => 'Sorry, you do not have access to the configuration administration page.  Please note that all attempts to access unauthorized features are logged.'
 );
 
 ###############################################################################
@@ -1559,10 +1560,15 @@ $LANG_trackbackcodes = array(
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
-    1 => 'Configuration Sections'
+    'sections' => 'Configuration Sections',
+    'restore' => 'Restore',
+    'add_element' => 'Add Element',
+    'save_changes' => 'Save Changes',
+    'reset_form' => 'Reset Form',
+    'changes_made' => 'Changes were successfully made to'
 );
 
-$LANG_configsection['Core'] = array(
+$LANG_configsections['Core'] = array(
     'label' => 'Geeklog',
     'title' => 'Geeklog Configuration'
 );

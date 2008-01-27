@@ -29,7 +29,7 @@
 
 <!-- BEGIN unset-param -->
 <tr><td class="alignright">{display_name} {doc_link}</td>
-<td><a href="#" onclick="restore('{name}');">Restore</a></td>
+<td><a href="#" onclick="restore('{name}');">{lang_restore}</a></td>
 </tr>
 <!-- END unset-param -->
 
@@ -50,12 +50,12 @@
 
 <!-- BEGIN keyed-add-button -->
 <tr><td colspan="2">
-<input type="button" value="Add Element" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}><input style="width: 65px"{xhtml}>
+<input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}><input style="width: 65px"{xhtml}>
 </td></tr>
 <!-- END keyed-add-button -->
 
 <!-- BEGIN unkeyed-add-button -->
 <tr><td colspan="2">
-<input type="button" value="Add Element" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
+<input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
 </td></tr>
 <!-- END unkeyed-add-button -->
