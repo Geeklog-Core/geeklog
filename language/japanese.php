@@ -1618,7 +1618,6 @@ array(
       'language_files' => "言語ファイル",
       'languages' => "言語",
       'timezone' => "タイムゾーン",
-      'site_enabled' => "サイト有効化",
       'site_disabled_msg' => "サイト閉鎖メッセージ",
       'rootdebug' => "Rootデバッグ",
       'cookie_session' => "Cookieセッション",

@@ -102,7 +102,6 @@ function create_ConfValues()
     $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8'),'*text',6,11,NULL,470,FALSE);
     $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,11,NULL,480,FALSE);
     $c->add('timezone','Etc/GMT-6','text',6,10,NULL,490,FALSE);
-    $c->add('site_enabled',TRUE,'select',0,0,1,500,TRUE);
     $c->add('site_disabled_msg','Geeklog Site is down. Please come back soon.','text',0,0,NULL,510,TRUE);
     $c->add('rootdebug',FALSE,'select',7,12,1,520,TRUE);
     $c->add('cookie_session','gl_session','text',7,13,NULL,530,TRUE);
