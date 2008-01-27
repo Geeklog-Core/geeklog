@@ -1,27 +1,29 @@
 <?php
-/* Intial Installation Defaults used when loading the online configuration records
-*  These settings are only used during the initial installation and not referenced
-*  once the plugin is installed
-*/
 
+/*
+ * Static Pages default settings
+ *
+ * Initial Installation Defaults used when loading the online configuration
+ * records. These settings are only used during the initial installation
+ * and not referenced any more once the plugin is installed
+ *
+ */
+
+if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
+    die('This file can not be used on its own!');
+}
 
 // If you don't plan on using PHP code in static pages, you should set this
 // to 0, thus disabling the execution of PHP.
-
 $_SP_DEFAULT['allow_php'] = 1;
-
 
 // If you have more than one static page that is to be displayed in Geeklog's
 // center area, you can specify how to sort them:
-
 $_SP_DEFAULT['sort_by'] = 'id'; // can be 'id', 'title', 'date'
-
 
 // sort the static pages that are listed in the site's menu
 // (assuming you're using a theme that uses the {plg_menu_elements} variable)
-
 $_SP_DEFAULT['sort_menu_by'] = 'label'; // can be 'id', 'label', 'title', 'date'
-
 
 // When a user is deleted, ownership of static pages created by that user can
 // be transfered to a user in the Root group (= 0) or the pages can be
@@ -62,7 +64,7 @@ $_SP_DEFAULT['censor'] = 1;
 // 2 = read-only
 // 0 = neither read nor write permissions
 // (a value of 1, ie. write-only, does not make sense and is not allowed)
-$_SP_DEFAULT['default_permissions'] = array (3, 2, 2, 2);
+$_SP_DEFAULT['default_permissions'] = array(3, 2, 2, 2);
 
 // The maximum number of items displayed when an Atom feed is requested
 $_SP_DEFAULT['atom_max_items'] = 10;
