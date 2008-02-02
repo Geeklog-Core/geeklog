@@ -1,7 +1,9 @@
 Geeklog History/Changes:
 
-??? ??, 2007 (1.5.0)
+??? ??, 2008 (1.5.0)
 ------------
+- COM_hit() is now called from COM_siteFooter() instead of doing the UPDATE SQL
+  directly (reported by Joe Mucchiello) [Dirk]
 - New function SEC_encryptPassword() to be used when we have to encrypt a
   password. This is only a wrapper for md5() for now but should it make easier
   for us to use some other method in the future [Dirk]
@@ -111,6 +113,8 @@ Geeklog History/Changes:
 
 Calendar plugin (1.0.2)
 ---------------
+- The global $_STATES has been removed from Geeklog. The state in an event's
+  details is now a simple text entry field.
 - The form to add an event to the personal calendar was missing the site footer
   (reported by Mark Evans) [Dirk]
 - Fixed Calendar feeds: The first parameter to the getFeedContent function is
@@ -120,7 +124,7 @@ Calendar plugin (1.0.2)
 - Added Batch-Delete functionality [Oliver]
 - Added config option what should be displayed after event saving [Oliver]
 
-Links plugin (2.0)
+Links plugin (2.0.0)
 ------------
 - Added owner_id field to submissions to record submitter and align with
   stories behavior [Oliver]
@@ -149,7 +153,7 @@ Spam-X plugin (1.1.1)
 - Added support for blocking entire IP ranges, using either CIDR notation or
   simple x.x.x.x-y.y.y.y ranges [Dirk]
 
-Static Pages plugin (1.5)
+Static Pages plugin (1.5.0)
 -------------------
 - Bugfix: In a multi-language setup, we need to be able to see all topics for
   the centerblock option [Dirk]
