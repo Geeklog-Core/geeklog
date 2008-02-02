@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.113 2008/01/26 13:14:46 dhaun Exp $
+// $Id: functions.inc,v 1.114 2008/02/02 16:36:33 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1020,7 +1020,7 @@ function plugin_geticon_staticpages ()
 */
 function plugin_upgrade_staticpages ()
 {
-    global $_CONF,$_TABLES, $_SP_CONF, $plugin_path;
+    global $_CONF, $_TABLES, $_SP_CONF, $plugin_path;
 
     // the plugin needs this function so complain when it doesn't exist
     if (!function_exists('SEC_getGroupDropdown')) {
@@ -1030,40 +1030,31 @@ function plugin_upgrade_staticpages ()
     $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                              "pi_name = 'staticpages'");
 
-    if ($pi_version == '1.4.3') {  // Need to initialize the config table - GL 1.5+ feature
-        if (file_exists("{$plugin_path}config.php")) {
-            require_once $_CONF['path_system'] . 'classes/config.class.php';
-            $sp_config = config::get_instance();
-            $sp_config->initConfig();
-            if (! $sp_config->group_exists('staticpages')) {
-                $sp_config->add('allow_php', $_SP_CONF['allow_php'], 'select', 0, 0, 0, 10, true, 'staticpages');
-                $sp_config->add('sort_by', $_SP_CONF['sort_by'], 'select', 0, 0, 2, 20, true, 'staticpages');
-                $sp_config->add('sort_menu_by', $_SP_CONF['sort_menu_by'], 'select', 0, 0, 3, 30, true, 'staticpages');
-                $sp_config->add('delete_pages', $_SP_CONF['delete_pages'], 'select', 0, 0, 0, 40, true, 'staticpages');
-                $sp_config->add('in_block', $_SP_CONF['in_block'], 'select', 0, 0, 0, 50, true, 'staticpages');
-                $sp_config->add('show_hits', $_SP_CONF['show_hits'], 'select', 0, 0, 0, 60, true, 'staticpages');
-                $sp_config->add('show_date', $_SP_CONF['show_date'], 'select', 0, 0, 0, 70, true, 'staticpages');
-                $sp_config->add('filter_html', $_SP_CONF['filter_html'], 'select', 0, 0, 0, 80, true, 'staticpages');
-                $sp_config->add('censor', $_SP_CONF['censor'], 'select', 0, 0, 0, 90, true, 'staticpages');
-                $sp_config->add('aftersave', $_SP_CONF['aftersave'], 'select', 0, 0, 9, 100, true, 'staticpages');
-                $sp_config->add('atom_max_items', $_SP_CONF['atom_max_items'], 'text', 0, 0, null, 110, true, 'staticpages');
-                $sp_config->add('default_permissions', $_SP_CONF['default_permissions'], '@select', 0, 1, 12, 120, true, 'staticpages');
+    if ($pi_version == '1.4.3') { // Need to initialize the config table
 
-                // Rename the existing config.php as it's not needed now
-                $ret = @rename ("{$plugin_path}config.php","{$plugin_path}config-pre1.4.3.php");
-                if (!$ret) {
-                    COM_errorLog("Staticpages upgrade to 1.5 error - unable to rename plugins config.php to complete upgrade");
-                    return 3003;
-                } elseif ($sp_config->group_exists('staticpages')) {
-                    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.5.0' WHERE pi_name = 'staticpages'");
-                } else {
-                    COM_errorLog("Staticpages upgrade to 1.5 failed");
-                    return 3001;
-                }
+        require_once $_CONF['path_system'] . 'classes/config.class.php';
+        require_once $plugin_path . 'install_defaults.php';
+
+        if (!plugin_initconfig_staticpages()) {
+            COM_errorLog("Staticpages upgrade to 1.5.0 failed");
+            return 3001;
+        }
+
+        if (file_exists($plugin_path . 'config.php')) {
+            // Rename the existing config.php as it's not needed any more
+            $ren = @rename($plugin_path . 'config.php',
+                           $plugin_path . 'config-pre1.4.3.php');
+            if (!$ren) {
+                COM_errorLog("Could not rename the Static Pages plugin's config.php file. Please remove if manually, as it is not needed any more.");
             }
+        }
+
+        $sp_config = config::get_instance();
+        if ($sp_config->group_exists('staticpages')) {
+            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.5.0', pi_gl_version = '1.5.0' WHERE pi_name = 'staticpages'");
         } else {
-            COM_errorLog("Staticpages upgrade to 1.5 failed - missing plugins config.php");
-            return 3004;
+            COM_errorLog("Staticpages upgrade to 1.5.0 failed");
+            return 3001;
         }
 
     }

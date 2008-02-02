@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.21 2008/01/27 10:53:03 dhaun Exp $
+// $Id: config-install.php,v 1.22 2008/02/02 16:36:34 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -37,7 +37,7 @@ if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
 
 function install_config()
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
 
     $c = config::get_instance();
 
@@ -229,18 +229,12 @@ function install_config()
 
 
     // Add the configuration records for the default installed plugins
-    $c->add('allow_php', 1, 'select', 0, 0, 0, 10, true, 'staticpages');
-    $c->add('sort_by', 'id', 'select', 0, 0, 2, 20, true, 'staticpages');
-    $c->add('sort_menu_by', 'label', 'select', 0, 0, 3, 30, true, 'staticpages');
-    $c->add('delete_pages', 0, 'select', 0, 0, 0, 40, true, 'staticpages');
-    $c->add('in_block', 1, 'select', 0, 0, 0, 50, true, 'staticpages');
-    $c->add('show_hits', 1, 'select', 0, 0, 0, 60, true, 'staticpages');
-    $c->add('show_date', 1, 'select', 0, 0, 0, 70, true, 'staticpages');
-    $c->add('filter_html', 0, 'select', 0, 0, 0, 80, true, 'staticpages');
-    $c->add('censor', 1, 'select', 0, 0, 0, 90, true, 'staticpages');
-    $c->add('aftersave', 'item', 'select', 0, 0, 9, 100, true, 'staticpages');
-    $c->add('atom_max_items', 10, 'text', 0, 0, null, 110, true, 'staticpages');
-    $c->add('default_permissions', array(3,2,2,2), '@select', 0, 1, 12, 120, true, 'staticpages');
+    $plugin_path = $_CONF['path'] . 'plugins/';
+
+    require_once $plugin_path . 'staticpages/install_defaults.php';
+
+    plugin_initconfig_staticpages();
+
 
     $c->add('logging', true, 'select', 0, 0, 1, 10, true, 'spamx');
     $c->add('admin_override', false, 'select', 0, 0, 1, 20, true, 'spamx');
