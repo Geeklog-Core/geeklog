@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: ProjectHoneyPot.Examine.class.php,v 1.2 2007/05/07 19:40:45 dhaun Exp $
+// $Id: ProjectHoneyPot.Examine.class.php,v 1.3 2008/02/02 20:03:06 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'ProjectHoneyPot.Examine.class.php') !== false) {
     die ('This file can not be used on its own!');
@@ -53,6 +53,26 @@ define('HTTP_BL_COMMENT_SPAMMER',      4);
 define('HTTP_BL_SUSPICIOUS_COMMENT',   5);
 define('HTTP_BL_HARVESTER_COMMENT',    6);
 define('HTTP_BL_ALL',                  7);
+
+/*
+ * The following settings all relate to the ProjectHoneyPot.org http:BL
+ * examine module. In order to use this, you *MUST* register with
+ * ProjectHoneyPot. You *MUST* install a Honey Pot. You *MUST* accept the
+ * terms of use of the http:BL and acquire your own http:BL access key.
+ */
+$_SPX_CONF['http_bl_enable'] = true; // Whether or not to use the http:BL, true or false.
+// You can get your access key from: http://www.projecthoneypot.org/httpbl_configure.php
+// regardless of http_bl_enable, if you don't have a key, this won't work.
+$_SPX_CONF['http_bl_access_key'] = 'NOT.CONFIGURED.RIGHT';
+// Whether or not to use TCP (Virtual Circuits) instead of UDP. If set to false,
+// UDP will be used unless TCP is required. TCP is required for questions or
+// responses greater than 512 bytes.
+$_SPX_CONF['http_bl_use_tcp'] = true; 
+// DNS Servers to use, in my development environment, I found that the examine
+// failed without configuring this. Must be an array of IP addresses, or false:
+$_SPX_CONF['http_bl_dns_servers'] = false;
+// example of array with dummy values: $_SPX_CONF['http_bl_dns_servers'] = array('ip1','ip2');
+
 
 /*
  * Debug settings:

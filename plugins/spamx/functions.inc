@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.31 2008/01/26 17:17:41 dhaun Exp $
+ * $Id: functions.inc,v 1.32 2008/02/02 20:03:06 dhaun Exp $
  */
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -176,8 +176,8 @@ function plugin_upgrade_spamx()
     }
 
     $v = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
-
     if ($v != $_SPX_CONF['version']) {
+
         switch ($v) {
         case '1.0.1':
             // Add the counter
@@ -186,54 +186,35 @@ function plugin_upgrade_spamx()
             break;
 
         case '1.1.0':
+            require_once $_CONF['path_system'] . 'classes/config.class.php';
+            require_once $plugin_path . 'install_defaults.php';
+
+            if (!plugin_initconfig_spamx()) {
+                COM_errorLog("Spam-X upgrade to 1.1.1 failed");
+                return 3002;
+            }
+
             if (file_exists($plugin_path . 'config.php')) {
-                require_once $_CONF['path_system'] . 'classes/config.class.php';
-
-                $spx_config = config::get_instance();
-                $spx_config->initConfig();
-                if (!$spx_config->group_exists('spamx')) {
-                    $enable_email = true;
-                    if (empty($_SPX_CONF['notification_email']) || ($_SPX_CONF['notification_email'] == $_CONF['site_mail'])) {
-                        $enable_email = false;
-                    }
-
-                    $spx_config->add('logging', $_SPX_CONF['logging'], 'select', 0, 0, 1, 10, true, 'spamx');
-                    $spx_config->add('admin_override', $_SPX_CONF['admin_override'], 'select', 0, 0, 1, 20, true, 'spamx');
-                    $spx_config->add('timeout', $_SPX_CONF['timeout'], 'text', 0, 0, null, 30, true, 'spamx');
-                    $spx_config->add('notification_email', $_SPX_CONF['notification_email'], 'text', 0, 0, null, 40, $enable_email, 'spamx');
-                    $spx_config->add('action', $_SPX_CONF['action'], 'text', 0, 0, null, 50, false, 'spamx');
-
-                    // rename plugin's config.php as it's not needed any more
-                    $ret = @rename($plugin_path . 'config.php',
-                                   $plugin_path . 'config-pre1.1.1.php');
-                    if (!ret) {
-                        COM_errorLog("Spam-X upgrade failed - unable to rename plugin's config.php to complete upgrade");
-                        return 3002;
-                    } elseif ($spx_config->group_exists('spamx')) {
-                        DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SPX_CONF['version']}', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'");
-                    } else {
-                        COM_errorLog("Spam-X upgrade failed.");
-                        return 3002;
-                    }
+                // Rename the existing config.php as it's not needed any more
+                $ren = @rename($plugin_path . 'config.php',
+                               $plugin_path . 'config-pre1.1.1.php');
+                if (!$ren) {
+                    COM_errorLog("Could not rename the ages Spam-X plugin's config.php file. Please remove if manually, as it is not needed any more.");
                 }
+            }
+
+            $spx_config = config::get_instance();
+            if ($spx_config->group_exists('spamx')) {
+                DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.1', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'");
             } else {
-                COM_errorLog("Spam-X upgrade failed - did not find plugin's config.php");
+                COM_errorLog("Spam-X upgrade to 1.1.1 failed");
                 return 3002;
             }
             break;
         }
-
-        // update version numbers
-
-        // check if version number was updated successfully
-        $v = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
     }
 
-    if ($v == $_SPX_CONF['version']) {
-        return 3001;
-    }
-
-    return 3002;
+    return 3001; // success msg
 }
 
 /**

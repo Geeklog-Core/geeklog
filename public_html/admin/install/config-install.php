@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.22 2008/02/02 16:36:34 dhaun Exp $
+// $Id: config-install.php,v 1.23 2008/02/02 20:03:06 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -232,15 +232,10 @@ function install_config()
     $plugin_path = $_CONF['path'] . 'plugins/';
 
     require_once $plugin_path . 'staticpages/install_defaults.php';
-
     plugin_initconfig_staticpages();
 
-
-    $c->add('logging', true, 'select', 0, 0, 1, 10, true, 'spamx');
-    $c->add('admin_override', false, 'select', 0, 0, 1, 20, true, 'spamx');
-    $c->add('timeout', 5, 'text', 0, 0, null, 30, true, 'spamx');
-    $c->add('notification_email', '', 'text', 0, 0, null, 40, false, 'spamx');
-    $c->add('action', 128, 'text', 0, 0, null, 50, false, 'spamx');
+    require_once $plugin_path . 'spamx/install_defaults.php';
+    plugin_initconfig_spamx();
 }
 
 ?>

@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.22 2008/01/26 20:06:07 dhaun Exp $
+// $Id: install.php,v 1.23 2008/02/02 20:03:06 dhaun Exp $
 
 require_once '../../../lib-common.php';
 
@@ -49,6 +49,8 @@ $pi_name         = 'spamx';
 $pi_version      = '1.1.1';
 $gl_version      = '1.5.0';
 $pi_url          = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';
+
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 
 // name of the Admin group
 $pi_admin        = $pi_name . ' Admin';
@@ -91,21 +93,12 @@ function plugin_compatible_with_this_geeklog_version()
 */
 function plugin_load_configuration()
 {
-    global $_CONF, $pi_name;
+    global $_CONF, $base_path;
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
+    require_once $base_path . 'install_defaults.php';
 
-    $c = config::get_instance();
-    $c->initConfig();
-    if (!$c->group_exists($pi_name)) {
-        $c->add('logging', true, 'select', 0, 0, 1, 10, true, 'spamx');
-        $c->add('admin_override', false, 'select', 0, 0, 1, 20, true, 'spamx');
-        $c->add('timeout', 5, 'text', 0, 0, null, 30, true, 'spamx');
-        $c->add('notification_email', '', 'text', 0, 0, null, 40, false, 'spamx');
-        $c->add('action', 128, 'text', 0, 0, null, 50, false, 'spamx');
-    }
-
-    return true;
+    return plugin_initconfig_spamx();
 }
 
 //

@@ -376,12 +376,19 @@ function upgrade_SpamXPlugin()
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
-    $c = config::get_instance();
-    $c->add('logging', true, 'select', 0, 0, 1, 10, true, 'spamx');
-    $c->add('admin_override', false, 'select', 0, 0, 1, 20, true, 'spamx');
-    $c->add('timeout', 5, 'text', 0, 0, null, 30, true, 'spamx');
-    $c->add('notification_email', '', 'text', 0, 0, null, 40, false, 'spamx');
-    $c->add('action', 128, 'text', 0, 0, null, 50, false, 'spamx');
+    $plugin_path = $_CONF['path'] . 'plugins/spamx/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_SPX_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_spamx()) {
+        echo 'There was an error upgrading the Spam-X plugin';
+        return false;
+    }
 
     $sql = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.1', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'";
     $rst = DB_query($sql);
