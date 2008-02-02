@@ -1560,12 +1560,14 @@ $LANG_trackbackcodes = array(
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
-    'sections' => 'Configuration Sections',
-    'restore' => 'Restore',
-    'add_element' => 'Add Element',
-    'save_changes' => 'Save Changes',
-    'reset_form' => 'Reset Form',
-    'changes_made' => 'Changes were successfully made to'
+    'home'          => 'Home',
+    'admin_home'    => 'Site Administration',
+    'sections'      => 'Configuration Sections',
+    'restore'       => 'Restore',
+    'add_element'   => 'Add Element',
+    'save_changes'  => 'Save Changes',
+    'reset_form'    => 'Reset Form',
+    'changes_made'  => 'Changes were successfully made to'
 );
 
 $LANG_configsections['Core'] = array(

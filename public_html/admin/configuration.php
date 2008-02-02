@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.10 2008/01/27 09:02:15 dhaun Exp $
+// $Id: configuration.php,v 1.11 2008/02/02 21:56:27 blaine Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -37,61 +37,6 @@ require_once 'auth.inc.php';
 $conf_group = array_key_exists('conf_group', $_POST) ? $_POST['conf_group'] : 'Core';
 
 $config =& config::get_instance();
-
-
-function configmanager_menu()
-{
-    global $_CONF, $config, $conf_group, $LANG01, $LANG_ADMIN, $LANG_CONFIG,
-           $LANG_configsections, $LANG_configsubgroups;
-
-    $retval = COM_startBlock($LANG_CONFIG['sections'], '', 'blockheader.thtml');
-    $link_array = array();
-
-    $groups = $config->_get_groups();
-    if (count($groups) > 0) {
-        foreach ($groups as $group) {
-            if (empty($LANG_configsections[$group]['label'])) {
-                $group_display = ucwords($group);
-            } else {
-                $group_display = $LANG_configsections[$group]['label'];
-            }
-            $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
-
-            if ($group == 'Core') {
-                $retval .= $link;
-            } else {
-                $link_array[$group_display] = $link;
-            }
-        }
-    }
-
-    uksort($link_array, 'strcasecmp');
-    foreach ($link_array as $link) {
-        $retval .= $link;
-    }
-
-    $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
-            . $LANG_ADMIN['admin_home'] . '</a></div>';
-    $retval .= COM_endBlock('blockfooter.thtml');
-
-    if (empty($LANG_configsections[$conf_group]['title'])) {
-        $subgroup_title = ucwords($conf_group);
-    } else {
-        $subgroup_title = $LANG_configsections[$conf_group]['title'];
-    }
-    $retval .= COM_startBlock($subgroup_title, '', 'blockheader.thtml');
-
-    $groups = $config->get_sgroups($conf_group);
-    if (count($groups) > 0) {
-        foreach ($groups as $group) {
-            $group_display =  $LANG_configsubgroups[$conf_group][$group];
-            $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$group\")'>$group_display</a></div>";
-        }
-    }
-    $retval .= COM_endBlock('blockfooter.thtml');
-
-    return $retval;
-}
 
 /**
 * Helper function: Provide language dropdown

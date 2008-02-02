@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.18 2008/01/27 09:02:15 dhaun Exp $
+// $Id: config.class.php,v 1.19 2008/02/02 21:56:43 blaine Exp $
 
 class config {
     var $dbconfig_file;
@@ -437,7 +437,8 @@ class config {
 
         // Output the result and add the required CSS for the dropline menu
         $cssfile = '<link rel="stylesheet" type="text/css" href="'.$_CONF['layout_url'] .'/droplinemenu.css" ' . XHTML .'>' . LB;
-        $display  = COM_siteHeader(array('configmanager_menu'),'Configuration Manager',$cssfile);
+        $display  = COM_siteHeader('none','Configuration Manager',$cssfile);
+        $t->set_var('config_menu',$this->_UI_configmanager_menu($grp));
         if ($change_result != null AND $change_result !== array()) {
             $t->set_var('change_block',$this->_UI_get_change_block($change_result));
         } else {
@@ -646,6 +647,38 @@ class config {
         }
 
         return $r;
+    }
+
+
+    function _UI_configmanager_menu($conf_group) {
+        global $_CONF,$LANG_configsubgroups,$LANG_CONFIG;
+
+        $retval = COM_startBlock( 'Config Sections', '', COM_getBlockTemplate( 'configmanager_block', 'header' ));
+        $retval .= "<div><a href=\"{$_CONF['site_url']}\">{$LANG_CONFIG['home']}</a></div>";
+        $retval .= "<div><a href=\"{$_CONF['site_admin_url']}\">{$LANG_CONFIG['admin_home']}</a></div>";
+        $groups = $this->_get_groups();
+        if (count($groups) > 0) {
+            foreach ($groups as $group) {
+                $group_display = ucwords($group);
+                $retval .= "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+            }
+        }
+        $retval .= COM_endBlock(COM_getBlockTemplate( 'configmanager_block', 'footer' ));
+
+        $subgroup_title = ucwords($conf_group);
+        $retval .= COM_startBlock( $subgroup_title, '',COM_getBlockTemplate( 'configmanager_block', 'header' ) );
+
+        $groups = $this->get_sgroups($conf_group);
+        if (count($groups) > 0) {
+            foreach ($groups as $group) {
+                $group_display =  $LANG_configsubgroups[$conf_group][$group];
+                $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$group\")'>$group_display</a></div>";
+            }
+        }
+        $retval .= COM_endBlock(COM_getBlockTemplate( 'configmanager_block', 'footer' ));
+
+        return $retval;
+
     }
 }
 
