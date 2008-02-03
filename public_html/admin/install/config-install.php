@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.24 2008/02/03 19:11:50 dhaun Exp $
+// $Id: config-install.php,v 1.25 2008/02/03 20:52:55 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -173,7 +173,7 @@ function install_config()
     $c->add('hide_no_news_msg',0,'select',1,24,0,1300,TRUE);
     $c->add('hide_main_page_navigation',0,'select',1,24,0,1310,TRUE);
     $c->add('onlyrootfeatures',0,'select',1,24,0,1320,TRUE);
-    $c->add('aftersave_story','item','select',1,24,9,1330,TRUE);
+    $c->add('aftersave_story','list','select',1,24,9,1330,TRUE);
     $c->add('aftersave_user','item','select',1,24,9,1340,TRUE);
     $c->add('show_right_blocks',FALSE,'select',2,25,1,1350,TRUE);
     $c->add('showfirstasfeatured',0,'select',2,25,0,1360,TRUE);
