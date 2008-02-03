@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.19 2008/02/02 21:56:43 blaine Exp $
+// $Id: config.class.php,v 1.20 2008/02/03 08:36:20 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -650,23 +650,50 @@ class config {
     }
 
 
-    function _UI_configmanager_menu($conf_group) {
-        global $_CONF,$LANG_configsubgroups,$LANG_CONFIG;
+    function _UI_configmanager_menu($conf_group)
+    {
+        global $_CONF, $LANG_ADMIN, $LANG_CONFIG,
+               $LANG_configsections, $LANG_configsubgroups;
 
-        $retval = COM_startBlock( 'Config Sections', '', COM_getBlockTemplate( 'configmanager_block', 'header' ));
-        $retval .= "<div><a href=\"{$_CONF['site_url']}\">{$LANG_CONFIG['home']}</a></div>";
-        $retval .= "<div><a href=\"{$_CONF['site_admin_url']}\">{$LANG_CONFIG['admin_home']}</a></div>";
+        $retval = COM_startBlock($LANG_CONFIG['sections'], '',
+                        COM_getBlockTemplate('configmanager_block', 'header'));
+        $link_array = array();
+
         $groups = $this->_get_groups();
         if (count($groups) > 0) {
             foreach ($groups as $group) {
-                $group_display = ucwords($group);
-                $retval .= "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+                if (empty($LANG_configsections[$group]['label'])) {
+                    $group_display = ucwords($group);
+                } else {
+                    $group_display = $LANG_configsections[$group]['label'];
+                }
+                $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+
+                if ($group == 'Core') {
+                    $retval .= $link;
+                } else {
+                    $link_array[$group_display] = $link;
+                }
             }
         }
-        $retval .= COM_endBlock(COM_getBlockTemplate( 'configmanager_block', 'footer' ));
 
-        $subgroup_title = ucwords($conf_group);
-        $retval .= COM_startBlock( $subgroup_title, '',COM_getBlockTemplate( 'configmanager_block', 'header' ) );
+        uksort($link_array, 'strcasecmp');
+        foreach ($link_array as $link) {
+            $retval .= $link;
+        }
+
+        $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
+                . $LANG_ADMIN['admin_home'] . '</a></div>';
+        $retval .= COM_endBlock(COM_getBlockTemplate('configmanager_block',
+                                                     'footer'));
+
+        if (empty($LANG_configsections[$conf_group]['title'])) {
+            $subgroup_title = ucwords($conf_group);
+        } else {
+            $subgroup_title = $LANG_configsections[$conf_group]['title'];
+        }
+        $retval .= COM_startBlock($subgroup_title, '',
+                        COM_getBlockTemplate('configmanager_block', 'header'));
 
         $groups = $this->get_sgroups($conf_group);
         if (count($groups) > 0) {
@@ -675,10 +702,10 @@ class config {
                 $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$group\")'>$group_display</a></div>";
             }
         }
-        $retval .= COM_endBlock(COM_getBlockTemplate( 'configmanager_block', 'footer' ));
+        $retval .= COM_endBlock(COM_getBlockTemplate('configmanager_block',
+                                                     'footer'));
 
         return $retval;
-
     }
 }
 
