@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.20 2008/02/03 08:36:20 dhaun Exp $
+// $Id: config.class.php,v 1.21 2008/02/03 09:53:49 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -169,6 +169,34 @@ class config {
         }
         $this->config_array[$group][$name] = $value;
         $this->_post_configuration();
+    }
+
+    /**
+     * This function sets the default of a configuration variable to a value in
+     * the database but not in the current array.
+     * If the variable does not already exist, nothing will happen.
+     *
+     * @param string name        Name of the config parameter to set
+     * @param mixed  value       The value to set the config parameter to
+     * @param string group       Config group name ('Core' or plugin name)
+     */
+    function set_default($name, $value, $group = 'Core')
+    {
+        global $_TABLES, $_DB, $_DB_dbms;
+
+        $escaped_val = addslashes(serialize($value));
+        $escaped_name = addslashes($name);
+        $escaped_grp = addslashes($group);
+        $sql_query = "UPDATE {$_TABLES['conf_values']} " .
+            "SET default_value = '{$escaped_val}' WHERE " .
+            "name = '{$escaped_name}' AND group_name = '{$escaped_grp}'";
+        if ($_DB_dbms == 'mssql') {
+            $sql_query = str_replace("\\'", "''", $sql_query);
+            $sql_query = str_replace('\\"', '"', $sql_query);
+            $_DB->dbQuery($sql_query, 0, 1);
+        } else {
+            DB_query($sql_query);
+        }
     }
 
     function restore_param($name, $group)
