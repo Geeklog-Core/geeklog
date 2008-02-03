@@ -2,7 +2,7 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Links plugin 1.0 for Geeklog                                              |
+// | Links plugin 2.0 for Geeklog                                              |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -11,13 +11,15 @@
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
-// |          Tom Willett       - tom AT pigstye DOT net                       |
-// |          Blaine Lang       - blaine AT portalparts DOT com                |
-// |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
+// | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
+// |          Tom Willett        - tom AT pigstye DOT net                      |
+// |          Blaine Lang        - blaine AT portalparts DOT com               |
+// |          Dirk Haun          - dirk AT haun-online DOT de                  |
+// |          Vincent Furia      - vinny01 AT users DOT sourceforge DOT net    |
+// |          Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
+// |          Euan McKay         - info AT heatherengineering DOT com          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -36,115 +38,43 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: install.php,v 1.22 2008/02/03 19:11:50 dhaun Exp $
 
-/**
- * This file installs and removes the data structures for the
- * Links plugin for Geeklog.
- *
- * @package Links
- * @subpackage admin
- * @filesource
- * @version 1.0.1
- * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93@steubentech.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * @author Blaine Lang <langmail@sympatico.ca>
- * @author Dirk Haun <dirk@haun-online.de>
- *
- */
-// $Id: install.php,v 1.21 2007/09/02 02:44:32 ospiess Exp $
-
-require_once ('../../../lib-common.php');
-require_once ($_CONF['path'] . 'plugins/links/config.php');
+require_once '../../../lib-common.php';
 
 // Plugin information
-/**
- * plugin display name
- * @global string $pi_display_name
- */
+//
+// ----------------------------------------------------------------------------
+//
 $pi_display_name = 'Links';
-/**
- * plugin name
- * @global string $pi_name
- */
 $pi_name         = 'links';
-/**
- * plugin version
- * @global string $pi_version
- */
-$pi_version      = $_LI_CONF['version'];
-/**
- * plugin suported GL version
- * @global string $gl_version
- */
-$gl_version      = '1.4.1';
-/**
- * plugin suport website url
- * @global string $pi_url
- */
+$pi_version      = '2.0.0';
+$gl_version      = '1.5.0';
 $pi_url          = 'http://www.geeklog.net/';
-/**
- * name of the Admin group
- * @global string $pi_admin
- */
+
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
+
+// name of the Admin group
 $pi_admin        = $pi_display_name . ' Admin';
 
-
-/**
- * the plugin's groups - assumes first group to be the Admin group
- * @global array $GROUPS
- *
- */
+// the plugin's groups - assumes first group to be the Admin group
 $GROUPS = array();
 $GROUPS[$pi_admin] = 'Has full access to ' . $pi_name . ' features';
 
-/**
-* @global array $FEATURES
-*
-*/
 $FEATURES = array();
 $FEATURES['links.edit']         = 'Access to links editor';
 $FEATURES['links.moderate']     = 'Ability to moderate pending links';
 $FEATURES['links.submit']       = 'May skip the links submission queue';
 
-/**
- * @global array $MAPPINGS
- *
- */
 $MAPPINGS = array();
 $MAPPINGS['links.edit']         = array ($pi_admin);
 $MAPPINGS['links.moderate']     = array ($pi_admin);
 $MAPPINGS['links.submit']       = array ($pi_admin);
 
-/**
- * (optional) data to pre-populate tables with
- * Insert table name and sql to insert default data for your plugin.
- * Note: '#group#' will be replaced with the id of the plugin's admin group.
- * @global array $DEFVALUES
- * @name $DEFVALUES
- */
-$DEFVALUES = array();
-
-$blockadmin_id = DB_GetItem ($_TABLES['groups'], 'grp_id', "grp_name='Block Admin'");
-
-$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} "
-    . "(cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) "
-    . "VALUES ('{$_LI_CONF['root']}', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
-$DEFVALUES[] = "INSERT INTO {$_TABLES['linkcategories']} "
-    . "(cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) "
-    . "VALUES ('20070122143647631', '{$_LI_CONF['root']}', 'Geeklog sites', 'Sites using or related to the Geeklog CMS', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
-$DEFVALUES[] = "INSERT INTO {$_TABLES['links']} "
-    . "(lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
-    . "VALUES ('geeklog.net', '20070828065220743', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 0, NOW(), 1, 5, 3, 2, 2, 2);";
-$DEFVALUES[] = "INSERT INTO gl_blocks "
-    . "(is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
-    . "VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
-$DEFVALUES[] = "INSERT INTO gl_blocks "
-    . "(is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
-    . "VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+// (optional) data to pre-populate tables with
+// Insert table name and sql to insert default data for your plugin.
+// Note: '#group#' will be replaced with the id of the plugin's admin group.
+$DEFVALUES = array(); // not used here - see plugin_postinstall
 
 
 /**
@@ -154,29 +84,91 @@ $DEFVALUES[] = "INSERT INTO gl_blocks "
  * @return   boolean     true = proceed with install, false = not compatible
  *
  */
-function plugin_compatible_with_this_geeklog_version ()
+function plugin_compatible_with_this_geeklog_version()
 {
-    if (!function_exists ('COM_truncate') || !function_exists ('MBYTE_strpos')) {
+    if (!function_exists('COM_truncate') || !function_exists('MBYTE_strpos')) {
         return false;
     }
 
     return true;
 }
+
+/**
+* Loads the configuration records for the GL Online Config Manager
+*
+* @return   boolean     true = proceed with install, false = an error occured
+*
+*/
+function plugin_load_configuration()
+{
+    global $_CONF, $base_path;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    require_once $base_path . 'install_defaults.php';
+
+    return plugin_initconfig_links();
+}
+
+/**
+* Plugin postinstall
+*
+* We're inserting our default here since it depends on other stuff that has
+* to happen first ...
+*
+* @return   boolean     true = proceed with install, false = an error occured
+*
+*/
+function plugin_postinstall()
+{
+    global $_CONF, $_TABLES, $pi_admin;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $li_config = config::get_instance(); 
+    $_LI_CONF = $li_config->get_config('links');
+
+    $admin_group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                 "grp_name = '{$pi_admin}'");
+    $blockadmin_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                "grp_name = 'Block Admin'");
+
+    $L_SQL = array();
+    $L_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$_LI_CONF['root']}', 'root', 'Root', 'Website root', '', NOW(), NOW(), #group#, 2, 3, 3, 2, 2)";
+
+    $L_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog-sites', '{$_LI_CONF['root']}', 'Geeklog Sites', 'Sites using or related to the Geeklog CMS', NULL, NOW(), NOW(), #group#, 2, 3, 3, 2, 2)";
+
+    $L_SQL[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', 'geeklog-sites', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 123, NOW(), 1, #group#, 3, 3, 2, 2);";
+
+    $L_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+
+    $L_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+
+    foreach ($L_SQL as $sql) {
+        $sql = str_replace('#group#', $admin_group_id, $sql);
+        DB_query($sql, 1);
+        if (DB_error()) {
+            COM_error("SQL error in Links plugin postinstall, SQL: " . $sql);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 //
 // ----------------------------------------------------------------------------
 //
 // The code below should be the same for most plugins and usually won't
 // require modifications.
 
-$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 $langfile = $base_path . $_CONF['language'] . '.php';
-if (file_exists ($langfile)) {
-    require_once ($langfile);
+if (file_exists($langfile)) {
+    require_once $langfile;
 } else {
-    require_once ($base_path . 'language/english.php');
+    require_once $base_path . 'language/english.php';
 }
-require_once ($base_path . 'config.php');
-require_once ($base_path . 'functions.inc');
+require_once $base_path . 'functions.inc';
 
 
 // Only let Root users access this page
@@ -197,20 +189,8 @@ if (!SEC_inGroup ('Root')) {
 
 /**
 * Puts the datastructures for this plugin into the Geeklog database
-* @global array core config vars
-* @global array core table data
-* @global array core user data
-* @global array plugin group data
-* @global array plugin feature data
-* @global array plugin feature mapping data
-* @global array data to preopulate db
-* @global string path data
-* @global string plugin name
-* @global string plugin display name
-* @global string plugin version
-* @global string geeklog supported version
-* @global string plugin support url
-* @return boolean true if compleated false if failed
+* @return boolean true if completed false if failed
+*
 */
 function plugin_install_now()
 {
@@ -262,7 +242,6 @@ function plugin_install_now()
                 $sql = str_replace ('MyISAM', 'InnoDB', $sql);
             }
             DB_query ($sql);
-            COM_errorLog ('...table', 1);
             if (DB_error ()) {
                 COM_errorLog ('Error creating table', 1);
                 PLG_uninstall ($pi_name);
@@ -325,6 +304,14 @@ function plugin_install_now()
         }
     }
 
+    // Load the online configuration records
+    if (function_exists('plugin_load_configuration')) {
+        if (!plugin_load_configuration()) {
+            PLG_uninstall($pi_name);
+            return false;
+        }
+    }
+
     // Finally, register the plugin with Geeklog
     COM_errorLog ("Registering $pi_display_name plugin with Geeklog", 1);
 
@@ -341,9 +328,9 @@ function plugin_install_now()
     }
 
     // give the plugin a chance to perform any post-install operations
-    if (function_exists ('plugin_postinstall')) {
-        if (!plugin_postinstall ()) {
-            PLG_uninstall ($pi_name);
+    if (function_exists('plugin_postinstall')) {
+        if (!plugin_postinstall()) {
+            PLG_uninstall($pi_name);
 
             return false;
         }

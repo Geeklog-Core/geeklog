@@ -330,7 +330,7 @@ function upgrade_StaticpagesPlugin()
     if (file_exists($plugin_path . 'config.php')) {
         // Rename the existing config.php as it's not needed any more
         $ren = @rename($plugin_path . 'config.php',
-                       $plugin_path . 'config-pre1.4.3.php');
+                       $plugin_path . 'config-pre1.5.0.php');
     }
 
     return true;
@@ -369,7 +369,7 @@ function upgrade_CalendarPlugin()
     return true;
 }
 
-// spamx plugin updates
+// Spam-X plugin updates
 function upgrade_SpamXPlugin()
 {
     global $_CONF, $_TABLES;
@@ -397,12 +397,37 @@ function upgrade_SpamXPlugin()
         return false;
     }
 
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
+    }
+
     return true;
 }
 
+// Links plugin updates
 function upgrade_LinksPlugin()
 {
-    global $_TABLES, $_LI_CONF;
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/links/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (!plugin_initconfig_links()) {
+        echo 'There was an error upgrading the Links plugin';
+        return false;
+    }
+
+    $li_config = config::get_instance();
+    $_LI_CONF = $li_config->get_config('links');
+
+    if (empty($_LI_CONF['root'])) {
+        $_LI_CONF['root'] = 'site';
+    }
+    $root = addslashes($_LI_CONF['root']);
 
     $P_SQL = array();
     $P_SQL[] = "
@@ -431,12 +456,9 @@ function upgrade_LinksPlugin()
     $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1' AFTER date";
     $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(32) NOT NULL";
     $P_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(32) NOT NULL";
-    $P_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) "
-        . "VALUES ('site', 'root', 'Root', 'Website root', '', NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
-    $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
-        . "VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
-    $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
-        . "VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+    $P_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$root}', 'root', 'Root', 'Website root', NULL, NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
+    $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1, 'links_topic_links', 'phpblock', 'Topic Links', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_links', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
+    $P_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, allow_autotags, rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1, 'links_topic_categories', 'phpblock', 'Topic Categories', 'all', 0, '', 0, '', '0000-00-00 00:00:00', 0, 0, 'phpblock_topic_categories', '', 2, {$blockadmin_id}, 3, 3, 2, 2)";
     $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.0', pi_gl_version='1.5.0' WHERE pi_name='links'";
 
     $P_SQL = INST_checkInnodbUpgrade($P_SQL);
@@ -451,20 +473,16 @@ function upgrade_LinksPlugin()
     // get Links admin group number
     $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                            "grp_name = 'Links Admin'");
-    if (empty($_LI_CONF['root'])) {
-        $_LI_CONF['root'] = 'site';
-    }
-    $root = addslashes($_LI_CONF['root']);
 
     // loop through adding to category table, then update links table with cids
     $result = DB_query("SELECT DISTINCT cid AS category FROM {$_TABLES['links']}");
     $nrows = DB_numRows($result);
     for ($i = 0; $i < $nrows; $i++) {
+
         $A = DB_fetchArray($result);
         $category = addslashes($A['category']);
         $cid = $category;
-        DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified) "
-            . "VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW())",1);
+        DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified) VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW())",1);
         if ($cid != $category) { // still experimenting ...
             DB_query("UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$category}'",1);
         }
@@ -472,6 +490,12 @@ function upgrade_LinksPlugin()
             echo "Error inserting categories into linkcategories table";
             return false;
         }
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
     }
 
     return true;

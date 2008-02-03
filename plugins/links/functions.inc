@@ -2,18 +2,33 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Links Plugin 2.0  functions.inc                                           |
+// | Links Plugin 2.0                                                          |
+// +---------------------------------------------------------------------------+
+// | functions.inc                                                             |
+// |                                                                           |
+// | This file does two things: 1) it implements the necessary Geeklog Plugin  |
+// | API method and 2) implements all the common code needed by the Links      |
+// | Plugins' PHP files.                                                       |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000-2008 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
+// |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
+// |          Jason Whittenburg  - jwhitten AT securitygeeks DOT com           |
+// |          Dirk Haun          - dirk AT haun-online DOT de                  |
+// |          Trinity Bays       - trinity93 AT steubentech DOT com            |
+// |          Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
+// |          Euan McKay         - info AT heatherengineering DOT com          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
-// | This program is free software; you can redistribute it and/or             |
-// | modify it under the terms of the GNU General Public License               |
+// | This program is licensed under the terms of the GNU General Public License|
 // | as published by the Free Software Foundation; either version 2            |
 // | of the License, or (at your option) any later version.                    |
 // |                                                                           |
 // | This program is distributed in the hope that it will be useful,           |
 // | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
-// | GNU General Public License for more details.                              |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                      |
+// | See the GNU General Public License for more details.                      |
 // |                                                                           |
 // | You should have received a copy of the GNU General Public License         |
 // | along with this program; if not, write to the Free Software Foundation,   |
@@ -21,44 +36,40 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.103 2008/01/02 09:42:07 dhaun Exp $
+// $Id: functions.inc,v 1.104 2008/02/03 19:11:50 dhaun Exp $
 
-
-/**
- * This file does two things: 1) it implements the necessary Geeklog Plugin
- * API method and 2) implements all the common code needed by the links
- * Plugins' PHP files.
- *
- * @package Links
- * @filesource
- * @version 2.0
- * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2008
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93 AT steubentech DOT com>
- * @author Tony Bibbs <tony AT tonybibbs DOT com>
- * @author Tom Willett <tom AT pigstye DOT net>
- * @author Blaine Lang <langmail AT sympatico DOT ca>
- * @author Dirk Haun <dirk AT haun-online DOT de>
- *
- */
-
-
-if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
-    die ('This file can not be used on its own.');
+if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+    die('This file can not be used on its own.');
 }
 
-$langfile = $_CONF['path'] . 'plugins/links/language/'
-          . $_CONF['language'] . '.php';
+$plugin_path = $_CONF['path'] . 'plugins/links/';
+$langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
-if (file_exists ($langfile)) {
-    require_once ($langfile);
+if (file_exists($langfile)) {
+    require_once $langfile;
 } else {
-    require_once ($_CONF['path'] . 'plugins/links/language/english.php');
+    require_once $plugin_path . 'language/english.php';
 }
 
-require_once ($_CONF['path'] . 'plugins/links/config.php');
+/*
+* As of Geeklog 1.5, the plugin's config.php is not needed any more and
+* should be removed after upgrading.
+*/
+if (file_exists($plugin_path . 'config.php')) {
+    include_once $plugin_path . 'config.php';
+}
 
+/*
+* Check and see if we need to load the plugin configuration
+*/
+if (!isset($_LI_CONF['linksloginrequired'])) {
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $li_config = config::get_instance();
+    $_LI_CONF = $li_config->get_config('links');
+}
+
+$_LI_CONF['version'] = '2.0.0';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementation                                         |
@@ -706,29 +717,32 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 function plugin_upgrade_links ()
 {
     global $_CONF, $_TABLES, $_LI_CONF, $_DB_dbms;
+
     // the plugin needs these functions so complain when they doesn't exist
-    if (!function_exists ('COM_truncate') || !function_exists ('MBYTE_strpos')) {
+    if (!function_exists('COM_truncate') || !function_exists('MBYTE_strpos')) {
         return 3002;
     }
-    // include SQL required for upgrade
-    $blockadmin_id = DB_GetItem ($_TABLES['groups'], 'grp_id', "grp_name='Block Admin'");
-    include ($_CONF['path'] . 'plugins/links/sql/upgrade_1.0.1_2.'.$_DB_dbms.'.php');
 
+    // include SQL required for upgrade
+    $blockadmin_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                "grp_name = 'Block Admin'");
+    include $_CONF['path'] . 'plugins/links/sql/upgrade_1.0.1_2.'.$_DB_dbms.'.php';
 
     // get current version
-    $currentVersion = DB_getItem($_TABLES['plugins'],'pi_version',"pi_name='links'");
-    switch( $currentVersion ) {
+    $currentVersion = DB_getItem($_TABLES['plugins'], 'pi_version',
+                                 "pi_name = 'links'");
+    switch ($currentVersion) {
 
-        case "1.0" :
-        case "1.0.1" :
+        case "1.0":
+        case "1.0.1":
         // do DB changes:
 
         // create categories table
 
-        COM_errorLog ("Adding categories table to the links plugin", 1);
-        DB_Query($LINKS_SQL['linkcategories'],1);
-        if (DB_error ()) {
-            COM_errorLog ("There was an error adding categories table to the links plugin", 1);
+        COM_errorLog("Adding categories table to the links plugin", 1);
+        DB_query($LINKS_SQL['linkcategories'], 1);
+        if (DB_error()) {
+            COM_errorLog("There was an error adding categories table to the links plugin", 1);
             return false;
         }
 
@@ -744,7 +758,8 @@ function plugin_upgrade_links ()
         COM_errorLog("Success - selected categories from links table",1);
 
         // get Links admin group number
-        $group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Links Admin'");
+        $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                               "grp_name = 'Links Admin'");
 
         // loop through adding to category table, then update links table with cids
         $nrows = DB_numRows($result);
@@ -753,8 +768,8 @@ function plugin_upgrade_links ()
                 $A = DB_fetchArray($result);
                 $category = addslashes($A['category']);
                 $cid = addslashes(COM_makeSid());
-                DB_query ("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,owner_id,group_id,created,modified) VALUES ('{$cid}','{$_LI_CONF['root']}','{$category}','2','{$group_id}',NOW(),NOW())",1);
-                DB_query ("UPDATE {$_TABLES['links']} SET category='{$cid}' WHERE category='{$category}'",1);
+                DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,owner_id,group_id,created,modified) VALUES ('{$cid}','{$_LI_CONF['root']}','{$category}','2','{$group_id}',NOW(),NOW())",1);
+                DB_query("UPDATE {$_TABLES['links']} SET category='{$cid}' WHERE category='{$category}'",1);
                 if (DB_error()) {
                     COM_errorLog("Error inserting categories into linkcategories table",1);
                     return false;
@@ -764,54 +779,54 @@ function plugin_upgrade_links ()
         COM_errorLog("Success - inserted categories into linkcategories table",1);
 
         // update the links and linksubmission table structures
-        COM_errorLog ("Updating linksubmission table for the links plugin (a)", 1);
-        DB_Query($LINKS_SQL['linksubmission1'],1);
-        if (DB_error ()) {
-            COM_errorLog ("There was an error updating the linksubmission table of the links plugin (a)", 1);
+        COM_errorLog("Updating linksubmission table for the links plugin (a)", 1);
+        DB_query($LINKS_SQL['linksubmission1'],1);
+        if (DB_error()) {
+            COM_errorLog("There was an error updating the linksubmission table of the links plugin (a)", 1);
             return false;
         }
-        COM_errorLog ("Updating linksubmission table for the links plugin (b)", 1);
-        DB_Query($LINKS_SQL['linksubmission2'],1);
-        if (DB_error ()) {
-            COM_errorLog ("There was an error updating the linksubmission table of the links plugin (b)", 1);
+        COM_errorLog("Updating linksubmission table for the links plugin (b)", 1);
+        DB_query($LINKS_SQL['linksubmission2'],1);
+        if (DB_error()) {
+            COM_errorLog("There was an error updating the linksubmission table of the links plugin (b)", 1);
             return false;
         }
         COM_errorLog("Success - updated linksubmission table for the links plugin",1);
 
-        COM_errorLog ("Updating links table for the links plugin", 1);
-        DB_Query($LINKS_SQL['links'],1);
-        if (DB_error ()) {
-            COM_errorLog ("There was an error updating the links table of the links plugin", 1);
+        COM_errorLog("Updating links table for the links plugin", 1);
+        DB_query($LINKS_SQL['links'],1);
+        if (DB_error()) {
+            COM_errorLog("There was an error updating the links table of the links plugin", 1);
             return false;
         }
         COM_errorLog("Success - updated links table for the links plugin",1);
 
         // add root category
-        DB_Query($LINKS_SQL['root'],1);
-        if (DB_error ()) {
-            COM_errorLog ("There was an error adding the root category to the links plugin", 1);
+        DB_query($LINKS_SQL['root'],1);
+        if (DB_error()) {
+            COM_errorLog("There was an error adding the root category to the links plugin", 1);
             return false;
         }
         COM_errorLog("Success - added root category to the links plugin",1);
 
         // add php links block
-        DB_Query($LINKS_SQL['linksblock'],1);
-        if (DB_error ()) {
-            COM_errorLog ("There was an error adding the phplinksblock to the links plugin", 1);
+        DB_query($LINKS_SQL['linksblock'],1);
+        if (DB_error()) {
+            COM_errorLog("There was an error adding the phplinksblock to the links plugin", 1);
             return false;
         }
         COM_errorLog("Success - added phplinksblock to the links plugin",1);
 
         // add php categories block
-        DB_Query($LINKS_SQL['categoriesblock'],1);
-        if (DB_error ()) {
-            COM_errorLog ("There was an error adding the phpcategoriesblock to the links plugin", 1);
+        DB_query($LINKS_SQL['categoriesblock'],1);
+        if (DB_error()) {
+            COM_errorLog("There was an error adding the phpcategoriesblock to the links plugin", 1);
             return false;
         }
         COM_errorLog("Success - added phpcategoriesblock to the links plugin",1);
 
         // update the version numbers
-        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version='1.5.0' WHERE pi_name='links'");
+        DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version='1.5.0' WHERE pi_name='links'");
         break;
 
     default :

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.23 2008/02/02 20:03:06 dhaun Exp $
+// $Id: config-install.php,v 1.24 2008/02/03 19:11:50 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -230,6 +230,9 @@ function install_config()
 
     // Add the configuration records for the default installed plugins
     $plugin_path = $_CONF['path'] . 'plugins/';
+
+    require_once $plugin_path . 'links/install_defaults.php';
+    plugin_initconfig_links();
 
     require_once $plugin_path . 'staticpages/install_defaults.php';
     plugin_initconfig_staticpages();

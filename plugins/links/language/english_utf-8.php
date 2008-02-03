@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english_utf-8.php,v 1.14 2008/01/01 20:03:22 dhaun Exp $
+# $Id: english_utf-8.php,v 1.15 2008/02/03 19:11:50 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -248,6 +248,48 @@ $LANG_LINKS_STATUS = array(
     504 => "Gateway Timeout",
     505 => "HTTP Version Not Supported",
     999 => "Connection Timed out"
+);
+
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['links'] = array(
+    'label' => 'Links',
+    'title' => 'Links Configuration'
+);
+
+$LANG_confignames['links'] = array(
+    'linksloginrequired' => 'Links Login Required?',
+    'linksubmission' => 'Enable Submission Queue?',
+    'newlinksinterval' => 'New Links Interval',
+    'hidenewlinks' => 'Hide New Links?',
+    'hidelinksmenu' => 'Hide Links Menu Entry?',
+    'linkcols' => 'Categories per Column',
+    'linksperpage' => 'Links per Page',
+    'show_top10' => 'Show Top 10 Links?',
+    'notification' => 'Notification Email?',
+    'delete_links' => 'Delete Links with Owner?',
+    'aftersave' => 'After Saving Link',
+    'show_category_descriptions' => 'Show Category Description?',
+    'root' => 'ID of Root Category',
+    'default_permissions' => 'Link Default Permissions'
+);
+
+$LANG_configsubgroups['links'] = array(
+    0 => 'Main Settings'
+);
+
+$LANG_fs['links'] = array(
+    0 => 'Public Links List Settings',
+    1 => 'Links Admin Settings',
+    2 => 'Default Permissions'
+);
+
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['links'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => TRUE, 'False' => FALSE),
+    9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );
 
 ?>
