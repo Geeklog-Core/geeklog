@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.674 2008/01/26 14:23:29 dhaun Exp $
+// $Id: lib-common.php,v 1.675 2008/02/03 20:21:23 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -41,10 +41,9 @@ error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
 /**
 * This is the common library for Geeklog.  Through our code, you will see
 * functions with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions
-* can be found in this file.  This file provides all configuration variables
-* needed by Geeklog with a series of includes (see futher down).
+* can be found in this file.
 *
-* --- You only need to modify one line in this file! ---
+* --- You don't need to modify anything in this file! ---
 *
 * WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
 * modified frequently by the Geeklog development team.  If you put your hacks in
