@@ -27,7 +27,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.23 2008/01/01 21:10:24 dhaun Exp $
+// $Id: config.php,v 1.24 2008/02/03 09:12:30 dhaun Exp $
 
 /**
  * Links plugin configuration file
@@ -156,13 +156,6 @@ $_LI_CONF['aftersave'] = 'list';
  *
  */
 $_LI_CONF['show_category_descriptions'] = true;
-
-/**
- * enable multilingual features
- * Whether to enable simple multilingual behaviour or not.
- *
- */
-$_LI_CONF['enable_multilingual_links'] = false;
 
 /**
  * Links root category id

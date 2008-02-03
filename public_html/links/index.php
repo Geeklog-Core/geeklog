@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.32 2008/01/05 20:47:45 dhaun Exp $
+// $Id: index.php,v 1.33 2008/02/03 09:12:30 dhaun Exp $
 
 /**
  * This is the links page
@@ -147,10 +147,7 @@ function links_list($message)
 
         // Show categories
         $sql = "SELECT cid,pid,category,description FROM {$_TABLES['linkcategories']} WHERE pid='{$cat}'";
-        // check if we are using the multilanguage hack
-        if ($_LI_CONF['enable_multilingual_links']) {
-            $sql .= COM_getLangSQL('cid', 'AND');
-        }
+        $sql .= COM_getLangSQL('cid', 'AND');
         $sql .= COM_getPermSQL('AND') . " ORDER BY category";
         $result = DB_query($sql);
         $nrows  = DB_numRows ($result);
