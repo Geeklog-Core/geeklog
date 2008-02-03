@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.31 2008/01/06 20:44:10 dhaun Exp $
+// $Id: index.php,v 1.32 2008/02/03 09:54:50 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -506,7 +506,7 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('path_themes', $html_path . 'layout/');
                             $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
                             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
-                            $config->set('default_photo', urldecode($site_url) . '/default.jpg');
+                            $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
 
                             // Now we're done with the installation so redirect the user to success.php
                             header('Location: success.php?type=install&language=' . $language);
@@ -563,7 +563,7 @@ function INST_installEngine($install_type, $install_step)
                         $config->set('site_admin_url', urldecode($site_admin_url));
                         $config->set('site_mail', urldecode($site_mail));
                         $config->set('noreply_mail', urldecode($noreply_mail));
-                        $config->set('default_photo', urldecode($site_url) . '/default.jpg');
+                        $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
 
                         // Great, installation is complete, redirect to success page
                         header('Location: success.php?type=upgrade&language=' . $language);
