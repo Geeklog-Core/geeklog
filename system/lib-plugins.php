@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.140 2008/01/02 21:06:02 dhaun Exp $
+// $Id: lib-plugins.php,v 1.141 2008/02/03 20:47:27 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -63,58 +63,6 @@ $_PLUGINS = array();
 while ($A = DB_fetchArray($result)) {
     $_PLUGINS[] = $A['pi_name'];
 }
-
-/**
-* Forward the user depending on config.php-setting after saving something
-*
-* @param  string  $item_url   the url of the item saved
-* @param  string  $plugin     the name of the plugin that saved the item
-* @return the url where the user will be forwarded to
-*
-*/
-function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
-{
-    global $_CONF;
-
-    if (isset($message)) {
-        $msg = "msg=$message";
-    } else {
-        $msg = '';
-    }
-
-    switch ($target) {
-    case 'item':
-        $url = $item_url . '&' . $msg;
-        break;
-
-    case 'list':
-        if ($plugin == 'story') {
-            $url = $_CONF['site_admin_url'] . "/$plugin.php?$msg";
-        } elseif ($plugin == 'user') {
-            $url = $_CONF['site_admin_url'] . "/user.php?$msg";
-        } else {
-            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php?$msg";
-        }
-        break;
-
-    case 'home':
-        // the plugins messages are not available, use generic
-        $url = $_CONF['site_url'] . "/index.php?msg=15";
-        break;
-
-    case 'admin':
-        // the plugins messages are not available, use generic
-        $url = $_CONF['site_admin_url'] . "/moderation.php?msg=15";
-        break;
-
-    case 'plugin':
-        $url = $_CONF['site_url'] . "/$plugin/index.php?$msg";
-        break;
-    }
-
-    return COM_refresh($url);
-}
-
 
 /**
 * Calls a function for all enabled plugins
@@ -2304,8 +2252,10 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
 
     $retval = PLG_RET_ERROR;
 
-    // ensure we can see the service_XXX_story functions
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    if ($type == 'story') {
+        // ensure we can see the service_XXX_story functions
+        require_once $_CONF['path_system'] . 'lib-story.php';
+    }
 
     $output  = '';
     $svc_msg = '';
@@ -2328,11 +2278,14 @@ function PLG_invokeService($type, $action, $args, &$output, &$svc_msg)
  *
  * @param   string  type    The plugin type that is to be checked
  */
-function PLG_wsEnabled($type) {
+function PLG_wsEnabled($type)
+{
     global $_CONF;
 
-    // ensure we can see the service_XXX_story functions
-    require_once $_CONF['path_system'] . 'lib-story.php';
+    if ($type == 'story') {
+        // ensure we can see the service_XXX_story functions
+        require_once $_CONF['path_system'] . 'lib-story.php';
+    }
 
     $function = 'plugin_wsEnabled_' . $type;
     if (function_exists($function)) {
@@ -2340,6 +2293,66 @@ function PLG_wsEnabled($type) {
     } else {
         return false;
     }
+}
+
+/**
+* Forward the user depending on config.php-setting after saving something
+*
+* @param  string  $item_url   the url of the item saved
+* @param  string  $plugin     the name of the plugin that saved the item
+* @return the url where the user will be forwarded to
+*
+*/
+function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
+{
+    global $_CONF;
+
+    if (isset($message)) {
+        $msg = "msg=$message";
+    } else {
+        $msg = '';
+    }
+
+    switch ($target) {
+    case 'item':
+        $url = $item_url;
+        if (!empty($msg)) {
+            $url .= '&' . $msg;
+        }
+        break;
+
+    case 'list':
+        if ($plugin == 'story') {
+            $url = $_CONF['site_admin_url'] . "/$plugin.php";
+        } elseif ($plugin == 'user') {
+            $url = $_CONF['site_admin_url'] . "/user.php";
+        } else {
+            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
+        }
+        if (!empty($msg)) {
+            $url .= '?' . $msg;
+        }
+        break;
+
+    case 'home':
+        // the plugins messages are not available, use generic
+        $url = $_CONF['site_url'] . '/index.php?msg=15';
+        break;
+
+    case 'admin':
+        // the plugins messages are not available, use generic
+        $url = $_CONF['site_admin_url'] . '/moderation.php?msg=15';
+        break;
+
+    case 'plugin':
+        $url = $_CONF['site_url'] . "/$plugin/index.php";
+        if (!empty($msg)) {
+            $url .= '?' . $msg;
+        }
+        break;
+    }
+
+    return COM_refresh($url);
 }
 
 ?>
