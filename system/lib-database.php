@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-database.php                                                          |
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.49 2007/10/11 01:52:37 ospiess Exp $
+// $Id: lib-database.php,v 1.50 2008/02/03 09:22:05 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -37,6 +37,10 @@
 *
 * NOTE: As of Geeklog 1.3.5 you should not have to edit this file any more.
 */
+
+if (strpos ($_SERVER['PHP_SELF'], 'lib-database.php') !== false) {
+    die ('This file can not be used on its own!');
+}
 
 // +---------------------------------------------------------------------------+
 // | Table definitions, these are used by the install program to create the    |
@@ -54,24 +58,14 @@ $_TABLES['commentmodes']        = $_DB_table_prefix . 'commentmodes';
 $_TABLES['comments']            = $_DB_table_prefix . 'comments';
 $_TABLES['cookiecodes']         = $_DB_table_prefix . 'cookiecodes';
 $_TABLES['dateformats']         = $_DB_table_prefix . 'dateformats';
-$_TABLES['events']              = $_DB_table_prefix . 'events';
-$_TABLES['eventsubmission']     = $_DB_table_prefix . 'eventsubmission';
 $_TABLES['featurecodes']        = $_DB_table_prefix . 'featurecodes';
 $_TABLES['features']            = $_DB_table_prefix . 'features';
 $_TABLES['frontpagecodes']      = $_DB_table_prefix . 'frontpagecodes';
 $_TABLES['group_assignments']   = $_DB_table_prefix . 'group_assignments';
 $_TABLES['groups']              = $_DB_table_prefix . 'groups';
-$_TABLES['links']               = $_DB_table_prefix . 'links';
-$_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
-$_TABLES['linkcategories']      = $_DB_table_prefix . 'linkcategories';
 $_TABLES['maillist']            = $_DB_table_prefix . 'maillist';
-$_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
 $_TABLES['pingservice']         = $_DB_table_prefix . 'pingservice';
 $_TABLES['plugins']             = $_DB_table_prefix . 'plugins';
-$_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
-$_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';
-$_TABLES['polltopics']          = $_DB_table_prefix . 'polltopics';
-$_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
 $_TABLES['postmodes']           = $_DB_table_prefix . 'postmodes';
 $_TABLES['sessions']            = $_DB_table_prefix . 'sessions';
 $_TABLES['sortcodes']           = $_DB_table_prefix . 'sortcodes';
@@ -90,16 +84,38 @@ $_TABLES['userprefs']           = $_DB_table_prefix . 'userprefs';
 $_TABLES['users']               = $_DB_table_prefix . 'users';
 $_TABLES['vars']                = $_DB_table_prefix . 'vars';
 $_TABLES['conf_values']         = $_DB_table_prefix . 'conf_values';
-// the static pages plugin has become an integral part of Geeklog anyway ...
-$_TABLES['staticpage']          = $_DB_table_prefix . 'staticpage';
 
-// ditto for spamx
+
+// Tables used by the bundled plugins
+
+// Calendar plugin
+$_TABLES['events']              = $_DB_table_prefix . 'events';
+$_TABLES['eventsubmission']     = $_DB_table_prefix . 'eventsubmission';
+$_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
+
+// Links plugin
+$_TABLES['links']               = $_DB_table_prefix . 'links';
+$_TABLES['linkcategories']      = $_DB_table_prefix . 'linkcategories';
+$_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
+
+// Polls plugin
+$_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
+$_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';
+$_TABLES['polltopics']          = $_DB_table_prefix . 'polltopics';
+$_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
+
+// Spam-X plugin
 $_TABLES['spamx']               = $_DB_table_prefix . 'spamx';
 
-// these tables aren't used by Geeklog any more, but the table names are needed
-// when upgrading from old versions
+// Static Pages plugin
+$_TABLES['staticpage']          = $_DB_table_prefix . 'staticpage';
+
+
+// These tables aren't used by Geeklog any more, but the table names are still
+// needed when upgrading from old versions
 $_TABLES['commentspeedlimit']   = $_DB_table_prefix . 'commentspeedlimit';
 $_TABLES['submitspeedlimit']    = $_DB_table_prefix . 'submitspeedlimit';
+$_TABLES['tzcodes']             = $_DB_table_prefix . 'tzcodes';
 $_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
 
 
@@ -107,15 +123,11 @@ $_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-database.php') !== false) {
-    die ('This file can not be used on its own!');
-}
-
 /**
 * Include appropriate DBMS object
 *
 */
-require_once($_CONF['path_system'] . 'databases/'. $_DB_dbms . '.class.php');
+require_once $_CONF['path_system'] . 'databases/'. $_DB_dbms . '.class.php';
 
 // Instantiate the database object
 $_DB = new database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
