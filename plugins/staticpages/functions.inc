@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.114 2008/02/02 16:36:33 dhaun Exp $
+// $Id: functions.inc,v 1.115 2008/02/03 19:23:24 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1043,7 +1043,7 @@ function plugin_upgrade_staticpages ()
         if (file_exists($plugin_path . 'config.php')) {
             // Rename the existing config.php as it's not needed any more
             $ren = @rename($plugin_path . 'config.php',
-                           $plugin_path . 'config-pre1.4.3.php');
+                           $plugin_path . 'config-pre1.5.0.php');
             if (!$ren) {
                 COM_errorLog("Could not rename the Static Pages plugin's config.php file. Please remove if manually, as it is not needed any more.");
             }

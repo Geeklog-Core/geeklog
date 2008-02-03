@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.32 2008/02/02 20:03:06 dhaun Exp $
+ * $Id: functions.inc,v 1.33 2008/02/03 19:23:24 dhaun Exp $
  */
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -197,7 +197,7 @@ function plugin_upgrade_spamx()
             if (file_exists($plugin_path . 'config.php')) {
                 // Rename the existing config.php as it's not needed any more
                 $ren = @rename($plugin_path . 'config.php',
-                               $plugin_path . 'config-pre1.1.1.php');
+                               $plugin_path . 'config-pre1.5.0.php');
                 if (!$ren) {
                     COM_errorLog("Could not rename the ages Spam-X plugin's config.php file. Please remove if manually, as it is not needed any more.");
                 }
