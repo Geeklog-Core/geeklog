@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.22 2008/02/09 12:01:06 blaine Exp $
+// $Id: config.class.php,v 1.23 2008/02/09 12:22:28 blaine Exp $
 
 class config {
     var $dbconfig_file;
@@ -695,7 +695,12 @@ class config {
                 } else {
                     $group_display = $LANG_configsections[$group]['label'];
                 }
-                $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+                // Create a menu item for each config group - disable the link for the current selected one
+                if ($conf_group == $group) {
+                    $link = "<div>$group_display</div>";
+                } else {
+                    $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+                }
 
                 if ($group == 'Core') {
                     $retval .= $link;
