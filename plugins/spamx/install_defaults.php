@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.1 2008/02/02 20:03:06 dhaun Exp $
+// $Id: install_defaults.php,v 1.2 2008/02/10 17:09:37 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -91,6 +91,8 @@ function plugin_initconfig_spamx()
             $enable_email = false;
         }
 
+        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'spamx');
+        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx');
         $c->add('logging', $_SPX_DEFAULT['logging'], 'select',
                 0, 0, 1, 10, true, 'spamx');
         $c->add('admin_override', $_SPX_DEFAULT['admin_override'], 'select',

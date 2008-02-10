@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.3 2008/02/02 16:36:33 dhaun Exp $
+// $Id: install_defaults.php,v 1.4 2008/02/10 17:09:38 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -127,6 +127,10 @@ function plugin_initconfig_staticpages()
     $c = config::get_instance();
     if (!$c->group_exists('staticpages')) {
 
+        $c->add('sg_main', NULL, 'subgroup',
+                0, 0, NULL, 0, true, 'staticpages');
+        $c->add('fs_main', NULL, 'fieldset',
+                0, 0, NULL, 0, true, 'staticpages');
         $c->add('allow_php', $_SP_DEFAULT['allow_php'], 'select',
                 0, 0, 0, 10, true, 'staticpages');
         $c->add('sort_by', $_SP_DEFAULT['sort_by'], 'select',
@@ -149,6 +153,9 @@ function plugin_initconfig_staticpages()
                 0, 0, 9, 100, true, 'staticpages');
         $c->add('atom_max_items', $_SP_DEFAULT['atom_max_items'], 'text',
                 0, 0, null, 110, true, 'staticpages');
+
+        $c->add('fs_permissions', NULL, 'fieldset',
+                0, 1, NULL, 0, true, 'staticpages');
         $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],
                 '@select', 0, 1, 12, 120, true, 'staticpages');
 

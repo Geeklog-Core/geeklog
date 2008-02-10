@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.28 2008/02/03 19:11:50 dhaun Exp $
+# $Id: english.php,v 1.29 2008/02/10 17:09:37 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -275,13 +275,13 @@ $LANG_confignames['links'] = array(
 );
 
 $LANG_configsubgroups['links'] = array(
-    0 => 'Main Settings'
+    'sg_main' => 'Main Settings'
 );
 
 $LANG_fs['links'] = array(
-    0 => 'Public Links List Settings',
-    1 => 'Links Admin Settings',
-    2 => 'Default Permissions'
+    'fs_public' => 'Public Links List Settings',
+    'fs_admin' => 'Links Admin Settings',
+    'fs_permissions' => 'Default Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

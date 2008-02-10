@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.23 2008/02/09 12:22:28 blaine Exp $
+// $Id: config.class.php,v 1.24 2008/02/10 17:09:37 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -311,8 +311,9 @@ class config {
 
         $q_string = "SELECT name, type, selectionArray, "
             . "fieldset, value FROM {$_TABLES['conf_values']}" .
-            " WHERE group_name='{$group}' and subgroup='{$subgroup}' " .
-            " ORDER BY sort_order ASC";
+            " WHERE group_name='{$group}' AND subgroup='{$subgroup}' " .
+            " AND (type <> 'fieldset' AND type <> 'subgroup') " .
+            " ORDER BY fieldset,sort_order ASC";
         $Qresult = DB_query($q_string);
         $res = array();
         if (!array_key_exists($group, $LANG_configselects)) {
@@ -356,20 +357,20 @@ class config {
         return array_keys($this->config_array);
     }
 
-    function get_sgroups($group)
+    function _get_sgroups($group)
     {
         global $_TABLES;
 
-        $q_string = "SELECT subgroup FROM {$_TABLES['conf_values']} WHERE " .
-            "group_name='{$group}' " .
-            "GROUP BY subgroup";
+        $q_string = "SELECT name,subgroup FROM {$_TABLES['conf_values']} WHERE "
+                  . "type = 'subgroup' AND group_name = '$group' "
+                  . "ORDER BY subgroup";
+        $retval = array();
         $res = DB_query($q_string);
-        $return = array();
         while ($row = DB_fetchArray($res)) {
-            $return[] = $row[0];
+            $retval[$row['name']] = $row['subgroup'];
         }
 
-        return $return;
+        return $retval;
     }
 
     /**
@@ -417,12 +418,18 @@ class config {
                 $t->set_var("select_id", ($group === $grp ? 'id="current"' : ''));
                 $t->set_var("group_select_value", $group);
                 $t->set_var("group_display", ucwords($group));
-                $subgroups = $this->get_sgroups($group);
-                $innerloopcntr=1;
-                foreach ($subgroups as $sgroup) {
+                $subgroups = $this->_get_sgroups($group);
+                $innerloopcntr = 1;
+                foreach ($subgroups as $sgname => $sgroup) {
                     if ($grp == $group AND $sg == $sgroup) {
-                        $t->set_var('group_active_name',ucwords($group));
-                        $t->set_var('subgroup_active_name',$LANG_configsubgroups[$group][$sgroup]);
+                        $t->set_var('group_active_name', ucwords($group));
+                        if (isset($LANG_configsubgroups[$group][$sgname])) {
+                            $t->set_var('subgroup_active_name',
+                                    $LANG_configsubgroups[$group][$sgname]);
+                        } else {
+                            $t->set_var('subgroup_active_name',
+                                    $LANG_configsubgroups[$group][$sgroup]);
+                        }
                         $t->set_var('select_id', 'id="current"');
                     } else {
                         $t->set_var('select_id', '');
@@ -450,9 +457,9 @@ class config {
         $t->set_block('fieldset', 'notes', 'fs_notes');
 
         $ext_info = $this->_get_extended($sg, $grp);
-        foreach ($ext_info as $fset=>$params) {
+        foreach ($ext_info as $fset => $params) {
             $fs_contents = '';
-            foreach ($params as $name=>$e) {
+            foreach ($params as $name => $e) {
                 $fs_contents .=
                     $this->_UI_get_conf_element($name,
                                                $e['display_name'],
@@ -492,13 +499,19 @@ class config {
 
     function _UI_get_fs($group, $contents, $fs_id, &$t)
     {
-        global $LANG_fs;
+        global $_TABLES, $LANG_fs;
 
         if (!array_key_exists($group, $LANG_fs)) {
             $LANG_fs[$group] = array();
         }
         $t->set_var('fs_contents', $contents);
-        $t->set_var('fs_display', $LANG_fs[$group][$fs_id]);
+        $fs_index = DB_getItem($_TABLES['conf_values'], 'name',
+                        "type = 'fieldset' AND fieldset = $fs_id AND group_name = '$group'");
+        if (empty($fs_index)) {
+            $t->set_var('fs_display', $LANG_fs[$group][$fs_id]);
+        } else {
+            $t->set_var('fs_display', $LANG_fs[$group][$fs_index]);
+        }
         $t->set_var('fs_notes', '');
         $t->parse('sg_contents', 'fieldset', true);
     }
@@ -542,7 +555,7 @@ class config {
         $t->set_var('value', $val);
         if ($deletable) {
             $t->set_var('delete', $t->parse('output', 'delete-button'));
-        } elseif ($this->ref == 'Core' ) {
+        } elseif (false) { // ??? } elseif ($this->ref == 'Core' ) {
             $t->set_var('unset_link',
                         "(<a href='#' onClick='unset(\"{$name}\");'>X</a>)");
             if (($a = strrchr($name, '[')) !== FALSE) {
@@ -728,13 +741,17 @@ class config {
             $subgroup_title = $LANG_configsections[$conf_group]['title'];
         }
         $retval .= COM_startBlock($subgroup_title, '',
-                        COM_getBlockTemplate('configmanager_subblock', 'header'));
+                    COM_getBlockTemplate('configmanager_subblock', 'header'));
 
-        $sgroups = $this->get_sgroups($conf_group);
+        $sgroups = $this->_get_sgroups($conf_group);
         if (count($sgroups) > 0) {
-            $i =0;
-            foreach ($sgroups as $sgroup) {
-                $group_display =  $LANG_configsubgroups[$conf_group][$sgroup];
+            $i = 0;
+            foreach ($sgroups as $sgname => $sgroup) {
+                if (isset($LANG_configsubgroups[$conf_group][$sgname])) {
+                    $group_display = $LANG_configsubgroups[$conf_group][$sgname];
+                } else {
+                    $group_display = $LANG_configsubgroups[$conf_group][$sgroup];
+                }
                 // Create a menu item for each sub config group - disable the link for the current selected one
                 if ($i == $sg) {
                     $retval .= "<div>$group_display</div>";

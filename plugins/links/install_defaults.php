@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.1 2008/02/03 19:11:50 dhaun Exp $
+// $Id: install_defaults.php,v 1.2 2008/02/10 17:09:37 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -172,6 +172,8 @@ function plugin_initconfig_links()
     $c = config::get_instance();
     if (!$c->group_exists('links')) {
 
+        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'links');
+        $c->add('fs_public', NULL, 'fieldset', 0, 0, NULL, 0, true, 'links');
         $c->add('linksloginrequired', $_LI_DEFAULT['linksloginrequired'],
                 'select', 0, 0, 0, 10, true, 'links');
         $c->add('linkcols', $_LI_DEFAULT['linkcols'], 'text',
@@ -182,6 +184,7 @@ function plugin_initconfig_links()
                 0, 0, 1, 40, true, 'links');
         $c->add('show_category_descriptions', $_LI_DEFAULT['show_category_descriptions'], 'select', 0, 0, 1, 50, true, 'links');
 
+        $c->add('fs_admin', NULL, 'fieldset', 0, 1, NULL, 0, true, 'links');
         $c->add('hidenewlinks', $_LI_DEFAULT['hidenewlinks'], 'select',
                 0, 1, 0, 60, true, 'links');
         $c->add('newlinksinterval', $_LI_DEFAULT['newlinksinterval'], 'text',
@@ -199,6 +202,7 @@ function plugin_initconfig_links()
         $c->add('root', $_LI_DEFAULT['root'], 'text',
                 0, 1, 0, 130, true, 'links');
 
+        $c->add('fs_permissions', NULL, 'fieldset', 0, 2, NULL, 0, true, 'links');
         $c->add('default_permissions', $_LI_DEFAULT['default_permissions'],
                 '@select', 0, 2, 12, 140, true, 'links');
 

@@ -139,12 +139,12 @@ $LANG_confignames['staticpages'] = array(
 );
 
 $LANG_configsubgroups['staticpages'] = array(
-    0 => 'Main Settings'
+    'sg_main' => 'Main Settings'
 );
 
 $LANG_fs['staticpages'] = array(
-    0 => 'Static Pages Main Settings',
-    1 => 'Default Permissions'
+    'fs_main' => 'Static Pages Main Settings',
+    'fs_permissions' => 'Default Permissions'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
