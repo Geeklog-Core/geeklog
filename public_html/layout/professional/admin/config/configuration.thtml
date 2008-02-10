@@ -7,7 +7,7 @@
 <table>
     <tr>
         <td class="block-featured-left" style="vertical-align:top;">
-            <div class="block-bg-left"> {config_menu}
+            <div class="block-bg-left"> {config_menu} </div>
         </td>
         <td>
             <div class="pluginInfo" style="display:{show_changeblock};margin-top:5px;margin-bottom:5px;padding-left:20px;border:1px solid #CCC; height: 120px;overflow: auto; min-height: 50px; max-height: 100px;">
