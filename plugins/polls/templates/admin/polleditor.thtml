@@ -40,7 +40,7 @@
                                     <p>{lang_group}: {group_dropdown}<br{xhtml}></p>
                                     <h2>{lang_permissions}</h2>
                                     <p>{lang_permissionskey}</p>
-                                    <p>{permissions_editor}</p>
+                                    <div>{permissions_editor}</div>
                                     <p>{lang_permissions_msg}</p>
                                     <p><input type="submit" name="mode" value="{lang_save}"{xhtml}><input type="submit" name="mode" value="{lang_cancel}"{xhtml}>{delete_option}</p>
                                 </form>
