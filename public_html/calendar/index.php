@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2007/12/21 13:50:15 dhaun Exp $
+// $Id: index.php,v 1.24 2008/02/13 11:29:09 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -140,7 +140,7 @@ function setCalendarLanguage (&$aCalendar)
 * Returns an abbreviated day's name
 *
 * @param    int     $day    1 = Sunday, 2 = Monday, ...
-* @return   string          abbreviated day's name (3 characters)
+* @return   string          abbreviated day's name (2 characters)
 *
 *
 */
