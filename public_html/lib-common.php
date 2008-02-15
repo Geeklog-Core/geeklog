@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.675 2008/02/03 20:21:23 dhaun Exp $
+// $Id: lib-common.php,v 1.676 2008/02/15 19:10:28 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3596,7 +3596,7 @@ function COM_rdfCheck( $bid, $rdfurl, $date, $maxheadlines = 0 )
 /**
 * Syndication import function. Imports headline data to a portal block.
 *
-* Rewritten December 19th 2004 by Michael Jervis (mike@fuckingbrit.com). Now
+* Rewritten December 19th 2004 by Michael Jervis (mike@*censored*ingbrit.com). Now
 * utilises a Factory Pattern to open a URL and automaticaly retreive a feed
 * object populated with feed data. Then import it into the portal block.
 *
@@ -3675,13 +3675,23 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
             } else {
                 $title = utf8_decode($feed->articles[$i]['title']);
             }
-            $content = COM_createLink($title, $feed->articles[$i]['link']);
+            if ($feed->articles[$i]['link'] != '') {
+                $content = COM_createLink($title, $feed->articles[$i]['link']);
+            } elseif ($feed->articles[$i]['enclosureurl'] != '') {
+                $content = COM_createLink($title, $feed->articles[$i]['enclosureurl']);
+            } else {
+                $content = $title;
+            }
             $articles[] = $content;
         }
 
         // build a list
         $content = COM_makeList($articles, 'list-feed');
         $content = preg_replace("/(\015\012)|(\015)|(\012)/", '', $content);
+       
+        if (strlen($content) > 65000) {
+            $content = $LANG21[68];
+        }
 
         // Standard theme based function to put it in the block
         $result = DB_change($_TABLES['blocks'], 'content',

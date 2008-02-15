@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.167 2007/12/09 18:05:39 dhaun Exp $
+// $Id: usersettings.php,v 1.168 2008/02/15 19:10:28 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -167,11 +167,7 @@ function edituser()
         $preferences->set_var ('username_option', '');
     }
 
-// @@@@ 2007/09/16 changed by dengen ----->>
-//  $selection = '<select name="cooktime">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----||
     $selection = '<select id="cooktime" name="cooktime">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----<<
     $selection .= COM_optionList ($_TABLES['cookiecodes'], 'cc_value,cc_descr',
                                   $A['cookietimeout'], 0);
     $selection .= '</select>';

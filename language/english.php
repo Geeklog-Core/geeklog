@@ -698,7 +698,8 @@ $LANG21 = array(
     64 => 'Your Title must not be empty and cannot contain HTML!',
     65 => 'Order',
     66 => 'Autotags',
-    67 => 'Check to allow autotags'
+    67 => 'Check to allow autotags',
+    68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.'
 );
 
 ###############################################################################

@@ -433,6 +433,9 @@
         } else {
           $this->_permaLink = false;
         }
+      } else if( ($name == 'ENCLOSURE') && array_key_exists('URL', $attributes) ) {
+        /* If we have an enclosure with a URL, remember it because this is a podcast */
+        $this->_currentItem['enclosureurl'] = $attributes['URL'];
       } else {
         $this->_permaLink = false;
       }
