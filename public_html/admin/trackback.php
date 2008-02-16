@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin functions handle Trackback, Pingback, and Ping                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2007 by the following authors:                         |
+// | Copyright (C) 2005-2008 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.50 2007/12/29 23:05:07 dhaun Exp $
+// $Id: trackback.php,v 1.51 2008/02/16 22:58:28 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -292,7 +292,7 @@ function pingbackForm ($targetUrl = '')
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('list' => 'pingbackform.thtml'));
-    $template->set_var ( 'xhtml', XHTML );
+    $template->set_var ('xhtml', XHTML);
     $template->set_var ('site_url', $_CONF['site_url']);
     $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
@@ -301,6 +301,7 @@ function pingbackForm ($targetUrl = '')
     $template->set_var ('lang_pingback_url', $LANG_TRB['pingback_url']);
     $template->set_var ('lang_site_url', $LANG_TRB['site_url']);
     $template->set_var ('lang_send', $LANG_TRB['button_send']);
+    $template->set_var ('max_url_length', 255);
 
     $template->set_var ('target_url', $targetUrl);
 
