@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | topic.php                                                                 |
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.76 2007/11/25 06:58:55 ospiess Exp $
+// $Id: topic.php,v 1.77 2008/02/16 12:03:16 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -377,16 +377,11 @@ function listtopics()
                 $topic_templates->parse('list_row','item',true);
                 $topic_templates->set_var('begin_row','<tr align="center" valign="bottom">');
             } else {
-
-// @@@@ changed by dengen 2007/09/05 ---------->>
-//              $topic_templates->set_var('end_row','');
-// @@@@ changed by dengen 2007/09/05 ----------||
-                if ( $i == $nrows - 1 ) {
+                if ($i == $nrows - 1) {
                     $topic_templates->set_var('end_row','</tr>');
                 } else {
                     $topic_templates->set_var('end_row','');
                 }
-// @@@@ changed by dengen 2007/09/05 ----------<<
 
                 $topic_templates->parse('list_row','item',true);
                 $topic_templates->set_var('begin_row','');
@@ -394,9 +389,6 @@ function listtopics()
             }
         }
     }
-// @@@@ uncommented by dengen 2007/09/05 ---------->>
-//  $topic_templates->set_var('end_row','</tr>');
-// @@@@ uncommented by dengen 2007/09/05 ----------<<
     $topic_templates->parse('output', 'list');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
