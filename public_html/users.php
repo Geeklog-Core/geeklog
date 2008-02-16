@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.161 2008/01/20 10:20:23 dhaun Exp $
+// $Id: users.php,v 1.162 2008/02/16 21:24:28 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -102,7 +102,8 @@ function userprofile ($user, $msg = 0)
         COM_displayMessageAndAbort (30, '', 403, 'Forbidden');
     }
 
-    $display_name = COM_getDisplayName ($user, $A['username'], $A['fullname']);
+    $display_name = htmlspecialchars(COM_getDisplayName($user, $A['username'],
+                                                        $A['fullname']));
 
     $retval .= COM_siteHeader ('menu', $LANG04[1] . ' ' . $display_name);
     if ($msg > 0) {
@@ -117,7 +118,7 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_file (array ('profile' => 'profile.thtml',
                                       'row'     => 'commentrow.thtml',
                                       'strow'   => 'storyrow.thtml'));
-    $user_templates->set_var ( 'xhtml', XHTML );
+    $user_templates->set_var ('xhtml', XHTML);
     $user_templates->set_var ('site_url', $_CONF['site_url']);
     $user_templates->set_var ('start_block_userprofile',
             COM_startBlock ($LANG04[1] . ' ' . $display_name));
@@ -136,6 +137,8 @@ function userprofile ($user, $msg = 0)
         $username = $A['username'];
         $fullname = $A['fullname'];
     }
+    $username = htmlspecialchars($username);
+    $fullname = htmlspecialchars($fullname);
 
     if ($A['status'] == USER_ACCOUNT_DISABLED) {
         $username = sprintf ('<s title="%s">%s</s>', $LANG28[42], $username);

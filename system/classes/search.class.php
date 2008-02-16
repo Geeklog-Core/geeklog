@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | search.php                                                                |
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.63 2007/11/25 06:59:56 ospiess Exp $
+// $Id: search.class.php,v 1.64 2008/02/16 21:24:28 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -310,7 +310,8 @@ class Search {
                     $articleUrl = $_CONF['site_url'] . '/article.php?story='
                         . $A['sid'] . '&amp;query=' . urlencode($this->_query);
                 }
-                $author = $this->_displayName ($A['username'], $A['fullname']);
+                $author = htmlspecialchars($this->_displayName($A['username'],
+                                                               $A['fullname']));
                 if ($A['uid'] == 1) {
                     $profile = $author;
                 } else {
@@ -462,7 +463,7 @@ class Search {
                 if (empty ($names[$A['uid']])) {
                     $names[$A['uid']] = COM_getDisplayName ($A['uid']);
                 }
-                $author = $names[$A['uid']];
+                $author = htmlspecialchars($names[$A['uid']]);
                 if ($A['uid'] == 1) {
                     $profile = $author;
                 } else {
@@ -505,15 +506,16 @@ class Search {
         $searchmain->set_var ( 'xhtml', XHTML );
         $searchmain->set_var ('num_matches', '');
 
+        $escquery = htmlspecialchars($this->_query);
         if ($this->_keyType == 'any') {
-            $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>",$this->_query);
+            $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>", $escquery);
             $searchQuery = "<b>'$searchQuery'</b>";
         } else {
             if ($this->_keyType == 'all') {
-                $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>",$this->_query);
+                $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>", $escquery);
                 $searchQuery = "<b>'$searchQuery'</b>";
             } else {
-                $searchQuery = $LANG09[55] . " '<b>$this->_query</b>'";
+                $searchQuery = $LANG09[55] . " '<b>$escquery</b>'";
             }
         }
         $searchmain->set_var('lang_matchesfor', $LANG09[25] . " $searchQuery.");
@@ -939,8 +941,7 @@ class Search {
                     if ($A['uid'] == $this->_author) {
                         $useroptions .= ' selected="selected"';
                     }
-                    $useroptions .= '>' . $this->_displayName ($A['username'],
-                                            $A['fullname']) . '</option>';
+                    $useroptions .= '>' . htmlspecialchars($this->_displayName($A['username'], $A['fullname'])) . '</option>';
                 }
                 $searchform->set_var('author_option_list', $useroptions);
                 $searchform->parse('author_form_element', 'authors', true);
