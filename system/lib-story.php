@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.121 2008/01/05 16:00:59 dhaun Exp $
+// $Id: lib-story.php,v 1.122 2008/02/16 22:18:14 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -199,13 +199,26 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $recent_post_anchortag = '';
     $articleUrl = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                                 . $story->getSid());
-    $article->set_var('story_title_link', $story->DisplayElements('title'));
     $article->set_var('story_title', $story->DisplayElements('title'));
     $article->set_var('lang_permalink', $LANG01[127]);
 
     $show_comments = true;
 
     // n = 'Compact display' for list of stories. p = 'Preview' mode.
+
+    if ((($index != 'n') && ($index != 'p')) || !empty($query)) {
+        $article->set_var( 'start_storylink_anchortag', '<a href="'
+                . $articleUrl . '" class="non-ul">' );
+        $article->set_var( 'end_storylink_anchortag', '</a>' );
+        $article->set_var( 'story_title_link',
+            COM_createLink(
+                    $story->DisplayElements('title'),
+                    $articleUrl,
+                    array('class'=>'non-ul')
+            )
+        );
+    }
+
     if(( $index == 'n' ) || ( $index == 'p' ))
     {
         if( empty( $bodytext ))
@@ -309,17 +322,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var('end_readmore_anchortag', '</a>');
             $article->set_var('read_more_class', 'class="story-read-more-link"');
         }
-
-        $article->set_var( 'start_storylink_anchortag', '<a href="'
-                . $articleUrl . '" class="non-ul">' );
-        $article->set_var( 'end_storylink_anchortag', '</a>' );
-        $article->set_var( 'story_title_link',
-            COM_createLink(
-                    $story->DisplayElements('title'),
-                    $articleUrl,
-                    array('class'=>'non-ul')
-            )
-        );
 
         if(( $story->DisplayElements('commentcode') >= 0 ) and ( $show_comments ))
         {
