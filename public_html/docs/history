@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.0)
 ------------
+- Only use the multi-byte string functions when the current character set is
+  UTF-8 (reported by Rick78) [Dirk]
 - COM_hit() is now called from COM_siteFooter() instead of doing the UPDATE SQL
   directly (reported by Joe Mucchiello) [Dirk]
 - New function SEC_encryptPassword() to be used when we have to encrypt a

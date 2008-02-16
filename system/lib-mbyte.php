@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-mbyte.php                                                             |
 // |                                                                           |
 // | function collection to handle mutli-byte related issues                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // +---------------------------------------------------------------------------+
@@ -29,10 +29,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.19 2007/01/15 07:13:43 ospiess Exp $
+// $Id: lib-mbyte.php,v 1.20 2008/02/16 16:45:03 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 // This function is supposed to display only language files in selection drop-
@@ -84,19 +84,29 @@ function MBYTE_languageList ($charset = 'utf-8')
 }
 
 // replacement functions for UTF-8 functions
-function MBYTE_checkEnabled() {
+function MBYTE_checkEnabled()
+{
+    global $LANG_CHARSET;
+
     static $mb_enabled;
-    if (function_exists( 'mb_eregi_replace' )) {
-        $mb_enabled = mb_internal_encoding("UTF-8");
-    } else {
+
+    if (!isset($mb_enabled)) {
         $mb_enabled = false;
+        if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {
+            if (function_exists('mb_eregi_replace')) {
+                $mb_enabled = mb_internal_encoding('UTF-8');
+            }
+        }
     }
+
     return $mb_enabled;
 }
 
 
-function MBYTE_strlen($str) {
+function MBYTE_strlen($str)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -105,11 +115,14 @@ function MBYTE_strlen($str) {
     } else {
         $result = strlen($str);
     }
+
     return $result;
 }
 
-function MBYTE_substr($str, $start, $length = NULL) {
+function MBYTE_substr($str, $start, $length = NULL)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -128,11 +141,14 @@ function MBYTE_substr($str, $start, $length = NULL) {
             $result = substr($str, $start, $length);
         }
     }
+
     return $result;
 }
 
-function MBYTE_strpos($hay, $needle, $offset = NULL) {
+function MBYTE_strpos($hay, $needle, $offset = NULL)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -141,11 +157,14 @@ function MBYTE_strpos($hay, $needle, $offset = NULL) {
     } else {
         $result = strpos($hay, $needle, $offset);
     }
+
     return $result;
 }
 
-function MBYTE_strtolower($str) {
+function MBYTE_strtolower($str)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -154,11 +173,14 @@ function MBYTE_strtolower($str) {
     } else {
         $result = strtolower($str);
     }
+
     return $result;
 }
 
-function MBYTE_eregi($pattern, $str, $regs = NULL) {
+function MBYTE_eregi($pattern, $str, $regs = NULL)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -167,11 +189,14 @@ function MBYTE_eregi($pattern, $str, $regs = NULL) {
     } else {
         $result = eregi($pattern, $str, $regs);
     }
+
     return $result;
 }
 
-function MBYTE_eregi_replace($pattern, $replace, $str) {
+function MBYTE_eregi_replace($pattern, $replace, $str)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -180,12 +205,16 @@ function MBYTE_eregi_replace($pattern, $replace, $str) {
     } else {
         $result = eregi_replace($pattern, $replace, $str);
     }
+
     return $result;
 }
 
 /** those are currently not needed in GL, left here if needed later
-function MBYTE_substr_count($hay, $needle) {
+
+function MBYTE_substr_count($hay, $needle)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -194,11 +223,14 @@ function MBYTE_substr_count($hay, $needle) {
     } else {
         $result = substr_count($hay, $needle);
     }
+
     return $result;
 }
 
-function MBYTE_strtoupper($str) {
+function MBYTE_strtoupper($str)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -207,11 +239,14 @@ function MBYTE_strtoupper($str) {
     } else {
         $result = strtoupper($str);
     }
+
     return $result;
 }
 
-function MBYTE_strrpos($hay, $needle, $offset='') {
+function MBYTE_strrpos($hay, $needle, $offset='')
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -220,11 +255,14 @@ function MBYTE_strrpos($hay, $needle, $offset='') {
     } else {
         $result = strrpos($hay, $needle, $offset);
     }
+
     return $result;
 }
 
-function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL) {
+function MBYTE_mail($to, $subj, $mess, $header = NULL, $param = NULL)
+{
     static $mb_enabled;
+
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -265,7 +303,5 @@ mb_strwidth -- Return width of string
 mb_substitute_character -- Set/Get substitution character
 mb_substr_count -- Count the number of substring occurrences
 */
-
-
 
 ?>
