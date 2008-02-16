@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.115 2007/11/25 15:09:08 dhaun Exp $
+// $Id: moderation.php,v 1.116 2008/02/16 16:57:51 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -154,7 +154,8 @@ function commandcontrol()
         array('condition' => ($_CONF['link_documentation'] == 1),
             'url' => $_CONF['site_url'] . '/docs/',
             'lang' => $LANG01[113], 'image' => '/images/icons/docs.'),
-        array('condition' => (SEC_inGroup ('Root')),
+        array('condition' => (SEC_inGroup ('Root') &&
+                              ($_CONF['link_versionchecker'] == 1)),
             'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
             'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.'),
         array('condition' => (SEC_inGroup ('Root')),
