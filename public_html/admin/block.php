@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | block.php                                                                 |
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.116 2007/11/25 06:58:55 ospiess Exp $
+// $Id: block.php,v 1.117 2008/02/16 23:00:35 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -163,7 +163,7 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $block_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
-    $block_templates->set_var('max_url_length', 255); // @@@@ added by dengen 2007/09/08
+    $block_templates->set_var('max_url_length', 255);
     $block_templates->parse('output','editor');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
