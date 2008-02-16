@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.168 2008/02/15 19:10:28 mjervis Exp $
+// $Id: usersettings.php,v 1.169 2008/02/16 11:40:04 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -478,11 +478,7 @@ function editpreferences()
             $similarLang = $tmp[0];
         }
 
-// @@@@ 2007/09/16 changed by dengen ----->>
-//      $selection = '<select name="language">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----||
         $selection = '<select id="language" name="language">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----<<
 
         foreach ($language as $langFile => $langName) {
             $selection .= '<option value="' . $langFile . '"';
@@ -504,11 +500,7 @@ function editpreferences()
     }
 
     if ($_CONF['allow_user_themes'] == 1) {
-// @@@@ 2007/09/16 changed by dengen ----->>
-//      $selection = '<select name="theme">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----||
         $selection = '<select id="theme" name="theme">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----<<
 
         if (empty ($_USER['theme'])) {
             $usertheme = $_CONF['theme'];
@@ -554,20 +546,12 @@ function editpreferences()
         $tz_obj = Date_TimeZone::getDefault();
         $timezone = $tz_obj->id;
     }
-// @@@@ 2007/09/16 changed by dengen ----->>
-//  $selection = '<select name="tzid">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----||
     $selection = '<select id="tzid" name="tzid">' . LB;
-// @@@@ 2007/09/16 changed by dengen -----<<
 
     $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
 
     while ($tDetails = current($T)) {
-// @@@@ 2007/09/16 changed by dengen ----->>
-//      $tzcode = key($T);
-// @@@@ 2007/09/16 changed by dengen -----||
         $tzcode = htmlspecialchars(key($T));
-// @@@@ 2007/09/16 changed by dengen -----<<
         $selection .= '<option value="' . $tzcode . '"';
         if ($timezone == $tzcode) {
                 $selection .= ' selected="selected"';
@@ -598,11 +582,7 @@ function editpreferences()
     }
 
     $preferences->set_var ('maxstories_value', $A['maxstories']);
-// @@@@ 2007/09/16 changed by dengen
-//  $selection = '<select name="dfid">' . LB
-// @@@@ 2007/09/16 changed by dengen
     $selection = '<select id="dfid" name="dfid">' . LB
-// @@@@ 2007/09/16 changed by dengen
                . COM_optionList ($_TABLES['dateformats'], 'dfid,description',
                                  $A['dfid']) . '</select>';
     $preferences->set_var ('dateformat_selector', $selection);
@@ -720,21 +700,13 @@ function editpreferences()
     if (empty ($A['commentorder'])) $A['commentorder'] = 0;
     if (empty ($A['commentlimit'])) $A['commentlimit'] = 100;
 
-// @@@@ 2007/09/16 changed by dengen ----->>
-//  $selection = '<select name="commentmode">';
-// @@@@ 2007/09/16 changed by dengen -----||
     $selection = '<select id="commentmode" name="commentmode">';
-// @@@@ 2007/09/16 changed by dengen -----<<
     $selection .= COM_optionList ($_TABLES['commentmodes'], 'mode,name',
                                   $A['commentmode']);
     $selection .= '</select>';
     $preferences->set_var ('displaymode_selector', $selection);
 
-// @@@@ 2007/09/16 changed by dengen ----->>
-//  $selection = '<select name="commentorder">';
-// @@@@ 2007/09/16 changed by dengen -----||
     $selection = '<select id="commentorder" name="commentorder">';
-// @@@@ 2007/09/16 changed by dengen -----<<
     $selection .= COM_optionList ($_TABLES['sortcodes'], 'code,name',
                                   $A['commentorder']);
     $selection .= '</select>';
