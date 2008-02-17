@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.116 2008/02/16 16:57:51 dhaun Exp $
+// $Id: moderation.php,v 1.117 2008/02/17 10:29:36 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -268,6 +268,7 @@ function itemlist($type)
 
     // run SQL but this time ignore any errors
     if (!empty ($sql)) {
+        $sql .= ' LIMIT 50'; // quick'n'dirty workaround to prevent timeouts
         $result = DB_query($sql, 1);
     }
     if (empty ($sql) || DB_error()) {
