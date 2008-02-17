@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.60 2007/12/09 18:05:39 dhaun Exp $
+// $Id: lib-security.php,v 1.61 2008/02/17 18:31:56 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -688,37 +688,33 @@ function SEC_getFeatureGroup ($feature, $uid = '')
 */
 function SEC_authenticate($username, $password, &$uid)
 {
-    global $_TABLES, $LANG01, $_CONF;
+    global $_CONF, $_TABLES, $LANG01;
 
-    $result = DB_query( "SELECT status, passwd, email, uid FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))" );
+    $result = DB_query("SELECT status, passwd, email, uid FROM {$_TABLES['users']} WHERE username='$username' AND ((remoteservice is null) or (remoteservice = ''))");
     $tmp = DB_error();
-    $nrows = DB_numRows( $result );
+    $nrows = DB_numRows($result);
 
-    if(( $tmp == 0 ) && ( $nrows == 1 ))
-    {
-        $U = DB_fetchArray( $result );
+    if (($tmp == 0) && ($nrows == 1)) {
+        $U = DB_fetchArray($result);
         $uid = $U['uid'];
-        if ($U['status'] == USER_ACCOUNT_DISABLED)
-        {
-            return USER_ACCOUNT_DISABLED; // banned, jump to here to save an md5 calc.
-        } elseif ($U['passwd'] != SEC_encryptPassword( $password )) {
+        if ($U['status'] == USER_ACCOUNT_DISABLED) {
+            // banned, jump to here to save an md5 calc.
+            return USER_ACCOUNT_DISABLED;
+        } elseif ($U['passwd'] != SEC_encryptPassword($password)) {
             return -1; // failed login
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_APPROVAL) {
-            //awaiting approval, jump to msg.
-            echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
-            exit;
+            return USER_ACCOUNT_AWAITING_APPROVAL;
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_ACTIVATION) {
             // Awaiting user activation, activate:
-            DB_change($_TABLES['users'],'status',USER_ACCOUNT_ACTIVE,'username',$username);
+            DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE,
+                      'username', $username);
             return USER_ACCOUNT_ACTIVE;
         } else {
             return $U['status']; // just return their status
         }
-    }
-    else
-    {
+    } else {
         $tmp = $LANG01[32] . ": '" . $username . "'";
-        COM_errorLog( $tmp, 1 );
+        COM_errorLog($tmp, 1);
         return -1;
     }
 }
