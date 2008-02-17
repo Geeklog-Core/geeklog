@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | auth.inc.php                                                              |
 // |                                                                           |
 // | Geeklog admin authentication module                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.35 2007/11/25 06:58:55 ospiess Exp $
+// $Id: auth.inc.php,v 1.36 2008/02/17 18:32:35 dhaun Exp $
 
 // this file can't be used on its own
 if (strpos ($_SERVER['PHP_SELF'], 'auth.inc.php') !== false)
@@ -49,7 +49,7 @@ if (!empty ($_POST['loginname']) && !empty ($_POST['passwd'])) {
 }
 $display = '';
 
-if ($status == 3) {
+if ($status == USER_ACCOUNT_ACTIVE) {
     DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
     $_USER = SESS_getUserDataFromId ($uid);
     $sessid = SESS_newSession ($_USER['uid'], $_SERVER['REMOTE_ADDR'],
