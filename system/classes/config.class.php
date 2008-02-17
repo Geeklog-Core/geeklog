@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.24 2008/02/10 17:09:37 dhaun Exp $
+// $Id: config.class.php,v 1.25 2008/02/17 08:31:36 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -400,14 +400,18 @@ class config {
             $sg = '0';
         }
         $t = new Template($_CONF['path_layout'] . 'admin/config');
-        $t->set_file(array('main' => 'configuration.thtml','menugroup' => 'menu_element.thtml'));
+        $t->set_file(array('main' => 'configuration.thtml',
+                           'menugroup' => 'menu_element.thtml'));
+
+        $t->set_var('site_url', $_CONF['site_url']);
+        $t->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $t->set_var('layout_url', $_CONF['layout_url']);
+        $t->set_var('xhtml', XHTML);
 
         $t->set_var('lang_save_changes', $LANG_CONFIG['save_changes']);
         $t->set_var('lang_reset_form', $LANG_CONFIG['reset_form']);
         $t->set_var('lang_changes_made', $LANG_CONFIG['changes_made']);
 
-        $t->set_var('xhtml', XHTML);
-        $t->set_var('site_url', $_CONF['site_url']);
         $t->set_var('open_group', $grp);
 
         $groups = $this->_get_groups();
@@ -546,10 +550,14 @@ class config {
             $t->set_block('element', $block);
         }
 
+        $t->set_var('site_url', $_CONF['site_url']);
+        $t->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $t->set_var('layout_url', $_CONF['layout_url']);
+        $t->set_var('xhtml', XHTML);
+
         $t->set_var('lang_restore', $LANG_CONFIG['restore']);
         $t->set_var('lang_add_element', $LANG_CONFIG['add_element']);
 
-        $t->set_var('xhtml', XHTML);
         $t->set_var('name', $name);
         $t->set_var('display_name', $display_name);
         $t->set_var('value', $val);
