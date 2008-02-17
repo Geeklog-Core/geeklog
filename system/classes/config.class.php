@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.26 2008/02/17 08:50:17 dhaun Exp $
+// $Id: config.class.php,v 1.27 2008/02/17 08:52:40 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -474,7 +474,7 @@ class config {
             $this->_UI_get_fs($grp, $fs_contents, $fset, $t);
         }
 
-        $display  = COM_siteHeader('none', 'Configuration Manager');
+        $display  = COM_siteHeader('none', $LANG_CONF['title']);
         $t->set_var('config_menu',$this->_UI_configmanager_menu($grp,$sg));
         if ($change_result != null AND $change_result !== array()) {
             $t->set_var('change_block',$this->_UI_get_change_block($change_result));
