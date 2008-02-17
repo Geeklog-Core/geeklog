@@ -23,8 +23,8 @@ for ($i = 0; $i < $nrows; $i++) {
 }
 
 $_BLOCK_TEMPLATE['_msg_block'] = 'blockheader-message.thtml,blockfooter-message.thtml';
-$_BLOCK_TEMPLATE['configmanager_block'] = 'blockheader-notitle.thtml,blockfooter-notitle.thtml';
-$_BLOCK_TEMPLATE['configmanager_subblock'] = 'blockheader-notitle.thtml,blockfooter-notitle.thtml';
+$_BLOCK_TEMPLATE['configmanager_block'] = 'blockheader-config.thtml,blockfooter-config.thtml';
+$_BLOCK_TEMPLATE['configmanager_subblock'] = 'blockheader-config.thtml,blockfooter-config.thtml';
 $_BLOCK_TEMPLATE['whats_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
 $_BLOCK_TEMPLATE['story_options_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
 
