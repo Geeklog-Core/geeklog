@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-syndication.php                                                       |
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2006 by the following authors:                         |
+// | Copyright (C) 2003-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.39 2007/09/02 07:50:56 dhaun Exp $
+// $Id: lib-syndication.php,v 1.40 2008/02/17 15:02:36 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -435,7 +435,7 @@ function SYND_updateFeed( $fid )
                                           . '/classes/syndication/' );
         $format = explode( '-', $A['format'] );
         $feed = $factory->writer( $format[0], $format[1] );
-
+        
         if( $feed )
         {
             $feed->encoding = $A['charset'];
@@ -518,8 +518,15 @@ function SYND_updateFeed( $fid )
                     $feed->namespaces[] = 'xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"';
                 }
             }
-            $feed->extensions = PLG_getFeedExtensionTags($A['type'], $format[0], $format[1], $A['topic'], $fid);
-            $feed->articles = $content;
+
+            /* Inject the namespace for Atom into RSS feeds. Illogical?
+             * Well apparantly not:
+             * http://feedvalidator.org/docs/warning/MissingAtomSelfLink.html
+             */
+            if( $format[0] == 'RSS' )
+            {
+                $feed->namespaces[] = 'xmlns:atom="http://www.w3.org/2005/Atom"';
+            }
 
             if( !empty( $A['filename'] ))
             {
@@ -531,6 +538,19 @@ function SYND_updateFeed( $fid )
                 $filename = substr( $_CONF['rdf_file'], $pos + 1 );
             }
             $feed->url = SYND_getFeedUrl( $filename );
+            
+            $feed->extensions = PLG_getFeedExtensionTags($A['type'], $format[0], $format[1], $A['topic'], $fid, $feed);
+
+            /* Inject the self reference for Atom into RSS feeds. Illogical?
+             * Well apparantly not:
+             * http://feedvalidator.org/docs/warning/MissingAtomSelfLink.html
+             */
+            if( $format[0] == 'RSS' )
+            {
+                $feed->extensions[] = '<atom:link href="' . $feed->url .'" rel="self" type="application/rss+xml" />';
+            }
+            $feed->articles = $content;
+
             $feed->createFeed( SYND_getFeedPath( $filename ));
         }
         else

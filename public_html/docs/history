@@ -2,6 +2,10 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.0)
 ------------
+- Added an Atom self-link to RSS feeds. Sounds odd, but it is recommended by
+  <http://feedvalidator.org/docs/warning/MissingAtomSelfLink.html> [Mike]
+- Improved support for podcasts in portal blocks and fixed an error where REALLY
+  long syndication feeds could blow portal blocks up. [Mike]
 - Only use the multi-byte string functions when the current character set is
   UTF-8 (reported by Rick78) [Dirk]
 - COM_hit() is now called from COM_siteFooter() instead of doing the UPDATE SQL
