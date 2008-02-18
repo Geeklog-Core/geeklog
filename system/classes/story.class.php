@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.20 2008/01/03 18:55:45 dhaun Exp $
+// $Id: story.class.php,v 1.21 2008/02/18 19:42:13 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1518,6 +1518,8 @@ class Story
             // html
             $out = str_replace('<pre><code>', '[code]', $out);
             $out = str_replace('</code></pre>', '[/code]', $out);
+            $out = str_replace('<!--raw--><span class="raw">', '[raw]', $out);
+            $out = str_replace('</span><!--/raw-->', '[/raw]', $out);
             $out = $this->_editUnescape($out);
             $out = $this->_displayEscape(htmlspecialchars($out));
         }

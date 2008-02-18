@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.676 2008/02/15 19:10:28 mjervis Exp $
+// $Id: lib-common.php,v 1.677 2008/02/18 19:42:12 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2943,7 +2943,39 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
         }
     }
     while( $start_pos !== false );
-
+    
+    // handle [raw] ... [/raw]
+    do
+    {
+        $start_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[raw]' );
+        if( $start_pos !== false )
+        {
+            $end_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[/raw]' );
+            if( $end_pos !== false )
+            {
+                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6,
+                        $end_pos - ( $start_pos + 6 )));
+                // [raw2] to avoid infinite loop. Not HTML comment as we strip
+                // them later.
+                $encoded = '[raw2]' . $encoded . '[/raw2]';
+                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded
+                     . MBYTE_substr( $str, $end_pos + 7 );
+            }
+            else // missing [/raw]
+            {
+                // Treat the rest of the text as raw (so as not to lose any
+                // special characters). However, the calling entity should
+                // better be checking for missing [/raw] before calling this
+                // function ...
+                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6 ));
+                // [raw2] to avoid infinite loop. Not HTML comment as we strip
+                // them later.
+                $encoded = '[raw2]' . $encoded . '[/raw2]';
+                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded;
+            }
+        }
+    }
+    while( $start_pos !== false );
 
     if( isset( $_CONF['skip_html_filter_for_root'] ) &&
              ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
@@ -2980,7 +3012,13 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     {
         $filter->AddHTML( $tag, $attr );
     }
-    return $filter->Parse( $str );
+    /* Replace [raw][/raw] with <!--raw--><!--/raw-->, note done "late" because
+     * of the above noted // strip_tags() gets confused by HTML comments ...
+     */
+    $str = $filter->Parse( $str );
+    $str = str_replace('[raw2]','<!--raw--><span class="raw">', $str);
+    $str = str_replace('[/raw2]','</span><!--/raw-->', $str);
+    return $str;
 }
 
 /**
@@ -3688,7 +3726,7 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
         // build a list
         $content = COM_makeList($articles, 'list-feed');
         $content = preg_replace("/(\015\012)|(\015)|(\012)/", '', $content);
-       
+
         if (strlen($content) > 65000) {
             $content = $LANG21[68];
         }
