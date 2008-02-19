@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.677 2008/02/18 19:42:12 mjervis Exp $
+// $Id: lib-common.php,v 1.678 2008/02/19 07:23:24 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2953,13 +2953,13 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
             $end_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[/raw]' );
             if( $end_pos !== false )
             {
-                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6,
-                        $end_pos - ( $start_pos + 6 )));
+                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 5,
+                        $end_pos - ( $start_pos + 5 )));
                 // [raw2] to avoid infinite loop. Not HTML comment as we strip
                 // them later.
                 $encoded = '[raw2]' . $encoded . '[/raw2]';
                 $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded
-                     . MBYTE_substr( $str, $end_pos + 7 );
+                     . MBYTE_substr( $str, $end_pos + 6 );
             }
             else // missing [/raw]
             {
@@ -2967,7 +2967,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
                 // special characters). However, the calling entity should
                 // better be checking for missing [/raw] before calling this
                 // function ...
-                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6 ));
+                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 5 ));
                 // [raw2] to avoid infinite loop. Not HTML comment as we strip
                 // them later.
                 $encoded = '[raw2]' . $encoded . '[/raw2]';
