@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.21 2008/02/18 19:42:13 mjervis Exp $
+// $Id: story.class.php,v 1.22 2008/02/19 17:47:30 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1483,13 +1483,79 @@ class Story
     function _editUnescape($in)
     {
         if (($this->_postmode == 'html') || ($this->_postmode == 'wikitext')) {
-            // Standard named items, plus the three we do in _displayEscape and
-            // others I know off-hand.
-            //$replacefrom = array('&lt;', '&gt;', '&amp;', '&#36;', '&#123;', '&#125', '&#92;');
-            //$replaceto = array('<', '>', '&', '$', '{', '}', '\\');
-            //$return = str_replace($replacefrom, $replaceto, $in);
-            //return $return;
-            return html_entity_decode($in);
+            /* Raw and code blocks need entity decoding. Other areas do not.
+             * otherwise, annoyingly, &lt; will end up as < on preview 1, on
+             * preview 2 it'll be stripped by KSES. Can't beleive I missed that
+             * in rewrite phase 1.
+             *
+             * First, raw
+             */
+            $inlower = MBYTE_strtolower($in);
+            $buffer = $in;
+            $start_pos = MBYTE_strpos($inlower, '[raw]');
+            if( $start_pos !== false ) {
+                $out = '';
+                while( $start_pos !== false ) {
+                    /* Copy in to start to out */
+                    $out .= MBYTE_substr($in, 0, $start_pos);
+                    /* Find end */
+                    $end_pos = MBYTE_strpos($inlower, '[raw]');
+                    if( $end_pos !== false ) {
+                        /* Encode body and append to out */
+                        $encoded = html_entity_decode(MBYTE_substr($buffer, $start_pos, $end_pos - $start_pos));
+                        $out .= $encoded;
+                        /* Nibble in */
+                        $inlower = MBYTE_substr($inlower, $end_pos);
+                        $buffer = MBYTE_substr($buffer, $end_pos);
+                    } else { // missing [/raw]
+                        // Treat the remainder as code, but this should have been
+                        // checked prior to calling:
+                        $out .= html_entity_decode(MBYTE_substr($buffer, $start_pos + 5));
+                        $inlower = '';
+                    }
+                    $start_pos = MBYTE_strpos($linlower, '[raw]');
+                }
+                // Append remainder:
+                if( $buffer != '' ) {
+                    $out .= $buffer;
+                }
+                $in = $out;
+            }
+            /*
+             * Then, code
+             */
+            $inlower = MBYTE_strtolower($in);
+            $buffer = $in;
+            $start_pos = MBYTE_strpos($inlower, '[code]');
+            if( $start_pos !== false ) {
+                $out = '';
+                while( $start_pos !== false ) {
+                    /* Copy in to start to out */
+                    $out .= MBYTE_substr($in, 0, $start_pos);
+                    /* Find end */
+                    $end_pos = MBYTE_strpos($inlower, '[code]');
+                    if( $end_pos !== false ) {
+                        /* Encode body and append to out */
+                        $encoded = html_entity_decode(MBYTE_substr($buffer, $start_pos, $end_pos - $start_pos));
+                        $out .= $encoded;
+                        /* Nibble in */
+                        $inlower = MBYTE_substr($inlower, $end_pos);
+                        $buffer = MBYTE_substr($buffer, $end_pos);
+                    } else { // missing [/code]
+                        // Treat the remainder as code, but this should have been
+                        // checked prior to calling:
+                        $out .= html_entity_decode(MBYTE_substr($buffer, $start_pos + 6));
+                        $inlower = '';
+                    }
+                    $start_pos = MBYTE_strpos($linlower, '[code]');
+                }
+                // Append remainder:
+                if( $buffer != '' ) {
+                    $out .= $buffer;
+                }
+                $in = $out;
+            }
+            return $in;
         } else {
             // advanced editor or plaintext can handle themselves...
             return $in;
