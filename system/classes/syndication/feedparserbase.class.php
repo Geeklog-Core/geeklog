@@ -237,22 +237,33 @@
       $xml .= '<feed'.$this->_injectNamespaces().">\n";
 
       $xml .= "<title>{$this->title}</title>\n";
-      foreach( $this->extensions as $extendingTag )
+      $xml .= $this->_injectExtendingTags();
+      return $xml;
+    }
+    
+    /**
+      * Inject extending tags into the feed header, if needed.
+      */
+    function _injectExtendingTags()
+    {
+        $xml = '';
+        if( is_array( $this->extensions ) )
       {
-        $xml .= $extendingTag."\n";
+        $this->extensions = array_unique($this->extensions);
+            $xml .= implode("\n", $this->extensions);
       }
       return $xml;
     }
 
     /**
-      * Inject XMLNS items into the feed master element,
-      * if needed.
+      * Inject XMLNS items into the feed master element, if needed.
       */
     function _injectNamespaces()
     {
         $xml = ' ';
         if( is_array($this->namespaces) )
         {
+            $this->namespaces = array_unique($this->namespaces);
             $xml .= implode(' ', $this->namespaces);
         }
 

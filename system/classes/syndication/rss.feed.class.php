@@ -124,10 +124,7 @@
         $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
         $xml .= "</image>\n";
       }
-      foreach( $this->extensions as $extendingTag )
-      {
-        $xml .= $extendingTag."\n";
-      }
+      $xml .= $this->_injectExtendingTags();
       return $xml;
     }
 
@@ -391,10 +388,7 @@
         $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
         $xml .= "</image>\n";
       }
-      foreach( $this->extensions as $extendingTag )
-      {
-        $xml .= $extendingTag."\n";
-      }
+      $xml .= $this->_injectExtendingTags();
       return $xml;
     }
 

@@ -26,7 +26,7 @@
   /*  3. This notice may not be removed or altered from any source            */
   /*     distribution.                                                        */
   /****************************************************************************/
-  // $Id: atom.feed.class.php,v 1.12 2007/06/13 06:22:48 mjervis Exp $
+  // $Id: atom.feed.class.php,v 1.13 2008/02/19 06:49:02 mjervis Exp $
 
   /**
     * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -132,13 +132,7 @@
            . '<modified>'.$this->_RFC3339Date().'</modified>' . LB
            . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
            . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
-      if( is_array( $this->extensions ) )
-      {
-        foreach( $this->extensions as $extendingTag )
-        {
-            $xml .= "$extendingTag\n";
-        }
-      }
+      $xml .= $this->_injectExtendingTags();
       return $xml;
     }
 
@@ -352,13 +346,7 @@
            . '<updated>'.$this->_RFC3339Date().'</updated>' . LB
            . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
            . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
-      if( is_array( $this->extensions ) )
-      {
-        foreach( $this->extensions as $extendingTag )
-        {
-            $xml .= "$extendingTag\n";
-        }
-      }
+      $xml .= $this->_injectExtendingTags();
       return $xml;
     }
 

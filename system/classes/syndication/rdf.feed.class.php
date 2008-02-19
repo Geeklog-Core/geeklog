@@ -135,13 +135,7 @@
         $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
         $xml .= "</image>\n";
       }
-      if( is_array( $this->extensions ) )
-      {
-        foreach( $this->extensions as $extendingTag )
-        {
-            $xml .= "$extendingTag\n";
-        }
-      }
+      $xml .= $this->_injectExtendingTags();
       $xml .= "</channel>\n";
 
       return $xml;
