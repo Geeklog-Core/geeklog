@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.678 2008/02/19 07:23:24 mjervis Exp $
+// $Id: lib-common.php,v 1.679 2008/02/19 17:46:07 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3811,7 +3811,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
         }
     }
 
-    $retval .= '[code]';
+    $retval .= '[code], [raw]';
 
     if( $allow_page_break )
     {
