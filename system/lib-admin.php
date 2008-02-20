@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.126 2008/01/02 12:35:58 dhaun Exp $
+// $Id: lib-admin.php,v 1.127 2008/02/20 20:07:59 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -83,6 +83,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
     );
     $admin_templates->set_var( 'xhtml', XHTML );
     $admin_templates->set_var('site_url', $_CONF['site_url']);
+    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
@@ -272,6 +273,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # insert std. values into the template
     $admin_templates->set_var( 'xhtml', XHTML );
     $admin_templates->set_var('site_url', $_CONF['site_url']);
+    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
@@ -577,7 +579,10 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '') {
     }
     $admin_templates->set_var('menu_fields', $menu_fields);
     $admin_templates->set_var('lang_instructions', $text);
-    $admin_templates->set_var( 'xhtml', XHTML );
+    $admin_templates->set_var('xhtml', XHTML);
+    $admin_templates->set_var('site_url', $_CONF['site_url']);
+    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->parse('top_menu', 'top_menu');
     $retval = $admin_templates->finish($admin_templates->get_var('top_menu'));
     return $retval;

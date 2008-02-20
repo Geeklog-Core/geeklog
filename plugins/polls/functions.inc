@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.82 2008/01/19 14:53:12 dhaun Exp $
+// $Id: functions.inc,v 1.83 2008/02/20 20:07:58 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -478,6 +478,7 @@ function POLLS_pollVote($pid, $showall=true)
                 $poll->set_var('xhtml', XHTML);
                 $poll->set_var('site_url', $_CONF['site_url']);
                 $poll->set_var('layout_url', $_CONF['layout_url']);
+                $poll->set_var('site_admin_url', $_CONF['site_admin_url']);
                 $poll->set_var('poll_id', $pid );
                 $poll->set_var('poll_topic', $P['topic'] );
                 $poll->set_var('num_votes', COM_numberFormat($P['voters']));
@@ -775,6 +776,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 'votes_num' => 'pollvotes_num.thtml' ));
             $poll->set_var('xhtml', XHTML);
             $poll->set_var('site_url', $_CONF['site_url']);
+            $poll->set_var('site_admin_url', $_CONF['site_admin_url']);
             $poll->set_var('layout_url', $_CONF['layout_url']);
             $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_id', $pid);

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.97 2007/11/25 08:11:08 ospiess Exp $
+// $Id: index.php,v 1.98 2008/02/20 20:07:58 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -162,6 +162,9 @@ if (!empty ($displayBlock)) {
             $topspan = new Template($_CONF['path_layout']);
             $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
             $topspan->set_var( 'xhtml', XHTML );
+            $topspan->set_var( 'site_url', $_CONF['site_url'] );
+            $topspan->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
+            $topspan->set_var( 'layout_url', $_CONF['layout_url'] );
             $topspan->parse ('output', 'topspan');
             $display .= $topspan->finish ($topspan->get_var('output'));
             $GLOBALS['centerspan'] = true;

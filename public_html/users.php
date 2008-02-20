@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.162 2008/02/16 21:24:28 dhaun Exp $
+// $Id: users.php,v 1.163 2008/02/20 20:07:59 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -81,6 +81,8 @@ function userprofile ($user, $msg = 0)
         $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $login->set_var ('layout_url', $_CONF['layout_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
@@ -690,6 +692,8 @@ function newuserform ($msg = '')
     $user_templates->set_file('regform', 'registrationform.thtml');
     $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('start_block', COM_startBlock($LANG04[22]));
     $user_templates->set_var('lang_instructions', $LANG04[23]);
     $user_templates->set_var('lang_username', $LANG04[2]);
@@ -741,6 +745,8 @@ function getpasswordform()
     $user_templates->set_file('form', 'getpasswordform.thtml');
     $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('start_block_forgetpassword', COM_startBlock($LANG04[25]));
     $user_templates->set_var('lang_instructions', $LANG04[26]);
     $user_templates->set_var('lang_username', $LANG04[2]);

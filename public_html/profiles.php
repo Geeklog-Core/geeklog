@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.53 2007/11/25 06:55:07 ospiess Exp $
+// $Id: profiles.php,v 1.54 2008/02/20 20:07:58 mjervis Exp $
 
 require_once ('lib-common.php');
 
@@ -167,8 +167,10 @@ function contactform ($uid, $subject = '', $message = '')
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
         $login->set_var ( 'xhtml', XHTML );
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $login->set_var ('layout_url', $_CONF['layout_url']);
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
@@ -360,8 +362,10 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
         $login->set_var ( 'xhtml', XHTML );
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $login->set_var ('layout_url', $_CONF['layout_url']);
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
@@ -388,6 +392,8 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_file('form', 'contactauthorform.thtml');
     $mail_template->set_var( 'xhtml', XHTML );
     $mail_template->set_var('site_url', $_CONF['site_url']);
+    $mail_template->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $mail_template->set_var('layout_url', $_CONF['layout_url']);
     $mail_template->set_var('start_block_mailstory2friend', COM_startBlock($LANG08[17]));
     $mail_template->set_var('lang_fromname', $LANG08[20]);
     $mail_template->set_var('name', $from);

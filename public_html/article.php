@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.94 2007/11/25 06:55:07 ospiess Exp $
+// $Id: article.php,v 1.95 2008/02/20 20:07:58 mjervis Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -264,6 +264,7 @@ if ($A['count'] > 0) {
 
         $story_template->set_var( 'xhtml', XHTML );
         $story_template->set_var('site_url', $_CONF['site_url']);
+        $story_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_template->set_var('story_id', $story->getSid());
         $story_options = array ();

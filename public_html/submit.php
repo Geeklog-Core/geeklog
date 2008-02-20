@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.120 2007/12/29 15:47:42 dhaun Exp $
+// $Id: submit.php,v 1.121 2008/02/20 20:07:58 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -80,9 +80,10 @@ function submissionform($type='story', $mode = '', $topic = '')
             $loginreq = new Template($_CONF['path_layout'] . 'submit');
             $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
             $loginreq->set_var( 'xhtml', XHTML );
-            $loginreq->set_var('login_message', $LANG_LOGIN[2]);
             $loginreq->set_var('site_url', $_CONF['site_url']);
+            $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
             $loginreq->set_var('layout_url', $_CONF['layout_url']);
+            $loginreq->set_var('login_message', $LANG_LOGIN[2]);
             $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
             $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
             $loginreq->parse('errormsg', 'loginreq');
@@ -162,6 +163,7 @@ function submitstory($topic = '')
     }
     $storyform->set_var ( 'xhtml', XHTML );
     $storyform->set_var ('site_url', $_CONF['site_url']);
+    $storyform->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $storyform->set_var ('layout_url', $_CONF['layout_url']);
     $storyform->set_var ('lang_username', $LANG12[27]);
 

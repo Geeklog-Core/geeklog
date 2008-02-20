@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.169 2008/02/16 11:40:04 dhaun Exp $
+// $Id: usersettings.php,v 1.170 2008/02/20 20:07:59 mjervis Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -1087,6 +1087,8 @@ function userprofile ($user, $msg = 0)
         $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $login->set_var ('layout_url', $_CONF['layout_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');

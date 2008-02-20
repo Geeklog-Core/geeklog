@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.679 2008/02/19 17:46:07 mjervis Exp $
+// $Id: lib-common.php,v 1.680 2008/02/20 20:07:58 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1027,6 +1027,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'background_image', $_CONF['layout_url']
                                           . '/images/bg.' . $_IMAGE_TYPE );
     $header->set_var( 'site_url', $_CONF['site_url'] );
+    $header->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
     $header->set_var( 'layout_url', $_CONF['layout_url'] );
     $header->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $header->set_var( 'site_name', $_CONF['site_name'] );
@@ -1299,6 +1300,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     // Do variable assignments
     $footer->set_var( 'xhtml', XHTML );
     $footer->set_var( 'site_url', $_CONF['site_url']);
+    $footer->set_var( 'site_admin_url', $_CONF['site_admin_url']);
     $footer->set_var( 'layout_url',$_CONF['layout_url']);
     $footer->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $footer->set_var( 'site_name', $_CONF['site_name'] );
@@ -1477,6 +1479,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 
     $block->set_var( 'xhtml', XHTML );
     $block->set_var( 'site_url', $_CONF['site_url'] );
+    $block->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->set_var( 'block_title', stripslashes( $title ));
 
@@ -1539,6 +1542,7 @@ function COM_endBlock( $template='blockfooter.thtml' )
 
     $block->set_var( 'xhtml', XHTML );
     $block->set_var( 'site_url', $_CONF['site_url'] );
+    $block->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->parse( 'endHTML', 'block' );
 
@@ -2105,6 +2109,7 @@ function COM_showTopics( $topic='' )
     $retval = '<ul>';
     $sections->set_var( 'xhtml', XHTML );
     $sections->set_var( 'site_url', $_CONF['site_url'] );
+    $sections->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
     $sections->set_var( 'layout_url', $_CONF['layout_url'] );
     $sections->set_var( 'block_name', str_replace( '_', '-', 'section_block' ));
 
@@ -2255,6 +2260,7 @@ function COM_userMenu( $help='', $title='' )
         }
         $usermenu->set_var( 'xhtml', XHTML );
         $usermenu->set_var( 'site_url', $_CONF['site_url'] );
+        $usermenu->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
         $usermenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $usermenu->set_var( 'block_name', str_replace( '_', '-', 'user_block' ));
 
@@ -2333,6 +2339,7 @@ function COM_userMenu( $help='', $title='' )
         $login->set_file( 'form', 'loginform.thtml' );
         $login->set_var( 'xhtml', XHTML );
         $login->set_var( 'site_url', $_CONF['site_url'] );
+        $login->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
         $login->set_var( 'layout_url', $_CONF['layout_url'] );
         $login->set_var( 'lang_username', $LANG01[21] );
         $login->set_var( 'lang_password', $LANG01[57] );
@@ -2445,6 +2452,7 @@ function COM_adminMenu( $help = '', $title = '' )
         }
         $adminmenu->set_var( 'xhtml', XHTML );
         $adminmenu->set_var( 'site_url', $_CONF['site_url'] );
+        $adminmenu->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
         $adminmenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $adminmenu->set_var( 'block_name', str_replace( '_', '-', 'admin_block' ));
 
@@ -5027,6 +5035,7 @@ function COM_makeList($listofitems, $classname = '')
                           'listitem' => 'listitem.thtml'));
     $list->set_var( 'xhtml', XHTML );
     $list->set_var('site_url', $_CONF['site_url']);
+    $list->set_var('site_admin_url', $_CONF['site_admin_url']);
     $list->set_var('layout_url', $_CONF['layout_url']);
 
     if (empty($classname)) {

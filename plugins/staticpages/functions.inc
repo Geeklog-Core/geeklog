@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.115 2008/02/03 19:23:24 dhaun Exp $
+// $Id: functions.inc,v 1.116 2008/02/20 20:07:58 mjervis Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -291,6 +291,10 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
     }
 
     $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
+    $spage->set_var('xhtml', XHTML);
+    $spage->set_var('site_url', $_CONF['site_url']);
+    $spage->set_var('layout_url', $_CONF['layout_url']);
+    $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
     $spage -> set_file( array('page'=>'staticpage.thtml',
         'comments' => 'spcomments.thtml'));
 
@@ -869,6 +873,10 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 
             $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
             $spage->set_file( array('page'=>'centerblock.thtml'));
+            $spage->set_var('xhtml', XHTML);
+            $spage->set_var('site_url', $_CONF['site_url']);
+            $spage->set_var('layout_url', $_CONF['layout_url']);
+            $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
 
             $icons = '';
             if ($_CONF['hideprintericon'] == 0) {

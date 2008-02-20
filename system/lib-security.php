@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.61 2008/02/17 18:31:56 dhaun Exp $
+// $Id: lib-security.php,v 1.62 2008/02/20 20:07:59 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -429,6 +429,9 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
     $perm_templates->set_file(array('editor'=>'edit_permissions.thtml'));
 
     $perm_templates->set_var ( 'xhtml', XHTML );
+    $perm_templates->set_var ('site_url', $_CONF['site_url']);
+    $perm_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $perm_templates->set_var ('layout_url', $_CONF['layout_url']);
     $perm_templates->set_var ('owner', $LANG_ACCESS['owner']);
     $perm_templates->set_var ('group', $LANG_ACCESS['group']);
     $perm_templates->set_var ('members', $LANG_ACCESS['members']);

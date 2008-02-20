@@ -151,6 +151,9 @@ class navbar  {
             'menuitem'     => 'menuitem.thtml'));
 
         $navtemplate->set_var( 'xhtml', XHTML );
+        $navtemplate->set_var( 'site_url', $_CONF['site_url'] );
+        $navtemplate->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
+        $navtemplate->set_var( 'layout_url', $_CONF['layout_url'] );
         if ($this->_parms != '') {
             $navtemplate->set_var( 'parms',  $this->_parms);
         }
@@ -189,6 +192,9 @@ class navbar  {
             'breadcrumbs'   => 'breadcrumbs.thtml',
             'link'          => 'breadcrumb_link.thtml'));
         $this->_bctemplate->set_var( 'xhtml', XHTML );
+        $this->_bctemplate->set_var( 'site_url', $_CONF['site_url'] );
+        $this->_bctemplate->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
+        $this->_bctemplate->set_var( 'layout_url', $_CONF['layout_url'] );
     }
     
     function add_breadcrumbs($url,$label,$title='') {

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.64 2008/02/16 21:24:28 dhaun Exp $
+// $Id: search.class.php,v 1.65 2008/02/20 20:07:59 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -529,7 +529,10 @@ class Search {
         reset($result_plugins);
         $cur_plugin = new Plugin();
         $searchresults = new Template($_CONF['path_layout'] . 'search');
-        $searchresults->set_var( 'xhtml', XHTML );
+        $searchresults->set_var('xhtml', XHTML);
+        $searchresults->set_var('site_url', $_CONF['site_url']);
+        $searchresults->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $searchresults->set_var('layout_url', $_CONF['layout_url']);
 
         $maxdisplayed = 0;
         $totalfound = 0;
@@ -741,6 +744,8 @@ class Search {
         $login->set_var ( 'xhtml', XHTML );
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $login->set_var ('layout_url', $_CONF['layout_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
@@ -838,6 +843,8 @@ class Search {
         $searchform->set_var( 'xhtml', XHTML );
         $searchform->set_var('search_intro', $LANG09[19]);
         $searchform->set_var('site_url', $_CONF['site_url']);
+        $searchform->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $searchform->set_var('layout_url', $_CONF['layout_url']);
         $searchform->set_var('lang_keywords', $LANG09[2]);
         $searchform->set_var('lang_date', $LANG09[20]);
         $searchform->set_var('lang_to', $LANG09[21]);

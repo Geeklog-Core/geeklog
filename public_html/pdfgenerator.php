@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.12 2007/11/25 06:55:07 ospiess Exp $
+// $Id: pdfgenerator.php,v 1.13 2008/02/20 20:07:58 mjervis Exp $
 
 require_once 'lib-common.php';
 
@@ -201,6 +201,7 @@ function PDF_generatePDF()
             $pdf->set_var( 'xhtml', XHTML );
             $pdf->set_var('layout_url', $_CONF['layout_url']);
             $pdf->set_var('site_url', $_CONF['site_url']);
+            $pdf->set_var('site_admin_url', $_CONF['site_admin_url']);
             $pdf->set_var('lang_loading_document', $LANG_PDF[5]);
             $pdf->set_var('lang_please_wait', $LANG_PDF[6]);
             $pdf->set_var('lang_right_click', $LANG_PDF[7]);
@@ -227,6 +228,7 @@ function PDF_generatePDF()
             $pdf->set_var( 'xhtml', XHTML );
             $pdf->set_var('layout_url', $_CONF['layout_url']);
             $pdf->set_var('site_url', $_CONF['site_url']);
+            $pdf->set_var('site_admin_url', $_CONF['site_admin_url']);
             $pdf->set_var('lang_error_msg', $LANG_PDF[4]);
             $pdf->set_var('lang_pdf_generator', $LANG_PDF[9]);
             $pdf->set_var('lang_instructions', $LANG_PDF[10]);

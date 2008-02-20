@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.117 2008/02/17 10:29:36 dhaun Exp $
+// $Id: moderation.php,v 1.118 2008/02/20 20:07:58 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -88,7 +88,10 @@ function commandcontrol()
     $admin_templates->set_file (array ('cc'     => 'moderation.thtml',
                                        'ccrow'  => 'ccrow.thtml',
                                        'ccitem' => 'ccitem.thtml'));
-    $admin_templates->set_var( 'xhtml', XHTML );
+    $admin_templates->set_var('xhtml', XHTML);
+    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
+    $admin_templates->set_var('site_url', $_CONF['site_url']);
+    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
 
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));

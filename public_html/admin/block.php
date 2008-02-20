@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.117 2008/02/16 23:00:35 dhaun Exp $
+// $Id: block.php,v 1.118 2008/02/20 20:07:58 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -100,6 +100,7 @@ function editdefaultblock ($A, $access)
 
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','defaultblockeditor.thtml');
+    $block_templates->set_var('xhtml', XHTML);
     $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -240,6 +241,7 @@ function editblock ($bid = '')
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','blockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
+    $block_templates->set_var('xhtml', XHTML);
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('start_block_editor', COM_startBlock ($LANG21[3],
