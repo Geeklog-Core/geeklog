@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.54 2008/02/20 20:07:58 mjervis Exp $
+// $Id: profiles.php,v 1.55 2008/02/20 20:27:25 mjervis Exp $
 
 require_once ('lib-common.php');
 
@@ -130,12 +130,18 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
         } else {
+            $subject = strip_tags ($subject);
+            $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
+            $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
             $retval .= COM_siteHeader ('menu', $LANG04[81])
                     . COM_errorLog ($LANG08[3], 2)
                     . contactform ($uid, $subject, $message)
                     . COM_siteFooter ();
         }
     } else {
+        $subject = strip_tags ($subject);
+        $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
+        $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
         $retval .= COM_siteHeader ('menu', $LANG04[81])
                 . COM_errorLog ($LANG08[4], 2)
                 . contactform ($uid, $subject, $message)
