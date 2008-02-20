@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.22 2008/02/19 17:47:30 mjervis Exp $
+// $Id: story.class.php,v 1.23 2008/02/20 17:47:25 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1499,21 +1499,21 @@ class Story
                     /* Copy in to start to out */
                     $out .= MBYTE_substr($in, 0, $start_pos);
                     /* Find end */
-                    $end_pos = MBYTE_strpos($inlower, '[raw]');
+                    $end_pos = MBYTE_strpos($inlower, '[/raw]');
                     if( $end_pos !== false ) {
                         /* Encode body and append to out */
                         $encoded = html_entity_decode(MBYTE_substr($buffer, $start_pos, $end_pos - $start_pos));
-                        $out .= $encoded;
+                        $out .= $encoded . '[/raw]';
                         /* Nibble in */
-                        $inlower = MBYTE_substr($inlower, $end_pos);
-                        $buffer = MBYTE_substr($buffer, $end_pos);
+                        $inlower = MBYTE_substr($inlower, $end_pos + 6);
+                        $buffer = MBYTE_substr($buffer, $end_pos + 6);
                     } else { // missing [/raw]
                         // Treat the remainder as code, but this should have been
                         // checked prior to calling:
                         $out .= html_entity_decode(MBYTE_substr($buffer, $start_pos + 5));
                         $inlower = '';
                     }
-                    $start_pos = MBYTE_strpos($linlower, '[raw]');
+                    $start_pos = MBYTE_strpos($inlower, '[raw]');
                 }
                 // Append remainder:
                 if( $buffer != '' ) {
@@ -1533,21 +1533,21 @@ class Story
                     /* Copy in to start to out */
                     $out .= MBYTE_substr($in, 0, $start_pos);
                     /* Find end */
-                    $end_pos = MBYTE_strpos($inlower, '[code]');
+                    $end_pos = MBYTE_strpos($inlower, '[/code]');
                     if( $end_pos !== false ) {
                         /* Encode body and append to out */
                         $encoded = html_entity_decode(MBYTE_substr($buffer, $start_pos, $end_pos - $start_pos));
-                        $out .= $encoded;
+                        $out .= $encoded . '[/code]';
                         /* Nibble in */
-                        $inlower = MBYTE_substr($inlower, $end_pos);
-                        $buffer = MBYTE_substr($buffer, $end_pos);
+                        $inlower = MBYTE_substr($inlower, $end_pos + 7);
+                        $buffer = MBYTE_substr($buffer, $end_pos + 7);
                     } else { // missing [/code]
                         // Treat the remainder as code, but this should have been
                         // checked prior to calling:
                         $out .= html_entity_decode(MBYTE_substr($buffer, $start_pos + 6));
                         $inlower = '';
                     }
-                    $start_pos = MBYTE_strpos($linlower, '[code]');
+                    $start_pos = MBYTE_strpos($inlower, '[code]');
                 }
                 // Append remainder:
                 if( $buffer != '' ) {
