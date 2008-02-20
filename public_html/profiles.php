@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.55 2008/02/20 20:27:25 mjervis Exp $
+// $Id: profiles.php,v 1.56 2008/02/20 20:32:37 mjervis Exp $
 
 require_once ('lib-common.php');
 
@@ -471,14 +471,14 @@ switch ($what) {
                 $display .= COM_siteHeader ('menu', $LANG08[17])
                          . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
                                           COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
-                                          COM_applyFilter($_POST['shortmsg']), 52)
+                                          $_POST['shortmsg'], 52)
                          . COM_siteFooter ();
             } else if (empty ($_POST['to']) || empty ($_POST['from']) ||
                     empty ($_POST['shortmsg'])) {
                 $display .= COM_siteHeader ('menu', $LANG08[17])
                          . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
                                           COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
-                                          COM_applyFilter($_POST['shortmsg']))
+                                          $_POST['shortmsg'])
                          . COM_siteFooter ();
             } else {
                 $msg = PLG_itemPreSave ('emailstory', $message);
@@ -487,7 +487,7 @@ switch ($what) {
                              . COM_errorLog ($msg, 2)
                              . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
                                               COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
-                                              COM_applyFilter($_POST['shortmsg']))
+                                              $_POST['shortmsg'])
                              . COM_siteFooter ();
                 } else {
                     $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
