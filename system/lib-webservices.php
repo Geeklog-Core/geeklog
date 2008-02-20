@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.32 2008/01/06 20:44:10 dhaun Exp $
+// $Id: lib-webservices.php,v 1.33 2008/02/20 20:38:00 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -58,7 +58,7 @@ if (PHP_VERSION < 5) {
  */
 function WS_error($error_code, $error_desc = '')
 {
-    global $WS_VERBOSE;
+    global $_CONF, $WS_VERBOSE;
 
     header('Content-type: text/plain');
     switch ($error_code) {
@@ -75,8 +75,9 @@ function WS_error($error_code, $error_desc = '')
         }
         break;
     case PLG_RET_AUTH_FAILED:
+        $realm = preg_replace('/[^a-zA-Z0-9\-_\. ]/', '', $_CONF['site_name']);
         header($_SERVER['SERVER_PROTOCOL'] . ' 401 Unauthorized');
-        header('WWW-Authenticate: Basic realm="www.geeklog.net"');
+        header('WWW-Authenticate: Basic realm="' . $realm . '"');
         if (empty($error_desc)) {
             $error_desc = 'Unauthorized';
         }
