@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.123 2008/02/20 20:07:59 mjervis Exp $
+// $Id: lib-story.php,v 1.124 2008/02/20 20:23:00 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -218,6 +218,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     array('class'=>'non-ul')
             )
         );
+    } else {
+        $article->set_var('story_title_link', $story->DisplayElements('title'));
     }
 
     if(( $index == 'n' ) || ( $index == 'p' ))
