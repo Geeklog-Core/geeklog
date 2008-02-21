@@ -29,6 +29,23 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DE
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL AFTER rdf_last_modified";
 
  */
+ 
+ $_SQL[] = "
+CREATE TABLE {$_TABLES['tokens']} (
+    [token] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [created] [datetime] NOT NULL,
+    [owner_id] [numeric] (8,0) NOT NULL,
+    [urlfor] [varchar] (2000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [ttl] numeric(8,0) NOT NULL DEFAULT 1
+) ON [PRIMARY]
+";
+ 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tokens']}] ADD
+    CONSTRAINT [PK_gl_tokens] PRIMARY KEY  CLUSTERED
+    (
+        [toekn]
+    )  ON [PRIMARY]
+";
 
 
 function create_ConfValues()

@@ -516,6 +516,16 @@ CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
 ) ON [PRIMARY]
 ";
 
+$_SQL[] = "
+CREATE TABLE {$_TABLES['tokens']} (
+    [token] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [created] [datetime] NOT NULL,
+    [owner_id] [numeric] (8,0) NOT NULL,
+    [urlfor] [varchar] (2000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [ttl] numeric(8,0) NOT NULL DEFAULT 1
+) ON [PRIMARY]
+";
+
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['topics']}] (
@@ -909,6 +919,13 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['syndication']}] ADD
     CONSTRAINT [PK_gl_syndication] PRIMARY KEY  CLUSTERED
     (
         [fid]
+    )  ON [PRIMARY]
+";
+
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tokens']}] ADD
+    CONSTRAINT [PK_gl_tokens] PRIMARY KEY  CLUSTERED
+    (
+        [toekn]
     )  ON [PRIMARY]
 ";
 

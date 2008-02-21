@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.62 2008/02/20 20:07:59 mjervis Exp $
+// $Id: lib-security.php,v 1.63 2008/02/21 19:52:53 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -1034,6 +1034,111 @@ function SEC_getGroupDropdown ($group_id, $access)
 function SEC_encryptPassword($password)
 {
     return md5($password);
+}
+
+/**
+  * Generate a security token.
+  *
+  * This generates and stores a one time security token. Security tokens are
+  * added to forms and urls in the admin section as a non-cookie double-check
+  * that the admin user really wanted to do that...
+  *
+  * @return string  Generated token, it'll be an MD5 hash (32chars)
+  */
+function SEC_createToken()
+{
+    global $_USER, $_TABLES;
+    
+    /* Figure out the full url to the current page */
+    $pageURL = 'http';
+    if ($_SERVER["HTTPS"] == "on") {
+        $pageURL .= "s";
+    }
+    $pageURL .= "://";
+    if ($_SERVER["SERVER_PORT"] != "80") {
+        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+    } else {
+        $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+    }
+    
+    /* Generate the token */
+    $token = md5($_USER['uid'].$pageURL.uniqid (rand (), 1));
+    $pageURL = addslashes($pageURL);
+    
+    /* Destroy exired tokens: */
+    /* Note: TTL not yet implemented! So commented out */
+//    $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
+//           . " AND (ttl > 0)";
+//    DB_Query($sql);
+    
+    /* Destroy tokens for this user/url combination */
+    $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id={$_USER['uid']} AND urlfor='$pageURL'";
+    DB_Query($sql);
+    
+    /* Create a token for this user/url combination */
+    /* NOTE: TTL mapping for PageURL not yet implemented */
+    $sql = "INSERT INTO {$_TABLES['tokens']} (token, created, owner_id, urlfor, ttl) "
+           . "VALUES ('$token', NOW(), {$_USER['uid']}, '$pageURL', 0)";
+    DB_Query($sql);
+           
+    /* And return the token to the user */
+    return $token;
+}
+
+/**
+  * Check a security token.
+  *
+  * Checks the POST and GET data for a security token, if one exists, validates that it's for this
+  * user and URL.
+  *
+  * @return bool    true iff the token is valid and for this user.
+  */
+function SEC_checkToken()
+{
+    global $_USER, $_TABLES;
+    
+    $token = ''; // Default to no token.
+    $return = false; // Default to fail.
+    
+    if(array_key_exists('token', $_GET)) {
+        $token = COM_applyFilter($_GET['token']);
+    } else if(array_key_exists('token', $_POST)) {
+        $token = COM_applyFilter($_POST['token']);
+    }
+    
+    if(trim($token) != '') {
+        $sql = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
+               . "{$_TABLES['tokens']} WHERE token='$token'";
+        $tokens = DB_Query($sql);
+        $numberOfTokens = DB_numRows($tokens);
+        if($numberOfTokens != 1) {
+            $return = false; // none, or multiple tokens. Both are invalid. (token is unique key...)
+        } else {
+            $tokendata = DB_fetchArray($tokens);
+            /* Check that:
+             *  token's user is the current user.
+             *  token is not expired.
+             *  the http referer is the url for which the token was created.
+             */
+            if( $_USER['uid'] != $tokendata['owner_id'] ) {
+                $return = false;
+            } else if($tokendata['urlfor'] != $_SERVER['HTTP_REFERER']) {
+                $return = false;
+            } else if($tokendata['expired']) {
+                $return = false;
+            } else {
+                $return = true; // Everything is AOK in only one condition...
+            }
+           
+            // It's a one time token. So eat it.
+            $sql = "DELETE FROM {$_TABLES['tokens']} WHERE token='$token'";
+            DB_Query($sql);
+        }
+    } else {
+        $return = false; // no token.
+    }
+    
+    return $return;
 }
 
 ?>

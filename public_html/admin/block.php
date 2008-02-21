@@ -33,10 +33,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.118 2008/02/20 20:07:58 mjervis Exp $
+// $Id: block.php,v 1.119 2008/02/21 19:52:52 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
+require_once $_CONF['path_system'] . 'lib-security.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -366,6 +367,7 @@ function listblocks()
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
 
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    $token = SEC_createToken();
 
     // writing the menu on top
     $menu_arr = array (
@@ -415,7 +417,7 @@ function listblocks()
 
     $retval .= ADMIN_list (
         "blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
-        $query_arr, $defsort_arr, '', '', '', $form_arr
+        $query_arr, $defsort_arr, '', $token, '', $form_ar
     );
 
     $query_arr = array(
@@ -437,7 +439,7 @@ function listblocks()
 
     $retval .= ADMIN_list (
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
-        $query_arr, $defsort_arr, '', '', '', $form_arr
+        $query_arr, $defsort_arr, '', $token, '', $form_arr
     );
 
     return $retval;
@@ -821,7 +823,9 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
              . COM_siteFooter ();
 } else if ($mode == 'move') {
     $display .= COM_siteHeader('menu', $LANG21[19]);
+    if(SEC_checkToken()) {
     $display .= moveBlock();
+    }
     $display .= listblocks();
     $display .= COM_siteFooter();
 } else {  // 'cancel' or no mode at all

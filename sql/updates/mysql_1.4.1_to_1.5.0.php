@@ -26,6 +26,18 @@ $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VA
 // add the 'Webservices Users' group
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Webservices Users', 'Can use the Webservices API (if restricted)', 0)";
 
+// add the security tokens table:
+$_SQL[] = "
+CREATE TABLE {$_TABLES['tokens']} (
+    token varchar(32) NOT NULL,
+    created datetime NOT NULL,
+    owner_id mediumint(8) unsigned NOT NULL,
+    urlfor varchar(2000) NOT NULL,
+    ttl mediumint(8) unsigned NOT NULL default '1',
+    PRIMARY KEY (token)
+) TYPE=MyISAM
+";
+
 
 function create_ConfValues()
 {

@@ -723,6 +723,17 @@ CREATE TABLE {$_TABLES['linkcategories']} (
 ) TYPE=MyISAM
 ";
 
+$_SQL[47] = "
+CREATE TABLE {$_TABLES['tokens']} (
+    token varchar(32) NOT NULL,
+    created datetime NOT NULL,
+    owner_id mediumint(8) unsigned NOT NULL,
+    urlfor varchar(2000) NOT NULL,
+    ttl mediumint(8) unsigned NOT NULL default '1',
+    PRIMARY KEY (token)
+) TYPE=MyISAM
+";
+
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (2,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (3,5) ";
