@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.50 2008/02/03 09:22:05 dhaun Exp $
+// $Id: lib-database.php,v 1.51 2008/02/22 08:04:33 mjervis Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -74,6 +74,7 @@ $_TABLES['statuscodes']         = $_DB_table_prefix . 'statuscodes';
 $_TABLES['stories']             = $_DB_table_prefix . 'stories';
 $_TABLES['storysubmission']     = $_DB_table_prefix . 'storysubmission';
 $_TABLES['syndication']         = $_DB_table_prefix . 'syndication';
+$_TABLES['tokens']              = $_DB_table_prefix . 'tokens';
 $_TABLES['topics']              = $_DB_table_prefix . 'topics';
 $_TABLES['trackback']           = $_DB_table_prefix . 'trackback';
 $_TABLES['trackbackcodes']      = $_DB_table_prefix . 'trackbackcodes';
