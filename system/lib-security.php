@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.63 2008/02/21 19:52:53 mjervis Exp $
+// $Id: lib-security.php,v 1.64 2008/02/22 08:22:42 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -1050,16 +1050,7 @@ function SEC_createToken()
     global $_USER, $_TABLES;
     
     /* Figure out the full url to the current page */
-    $pageURL = 'http';
-    if ($_SERVER["HTTPS"] == "on") {
-        $pageURL .= "s";
-    }
-    $pageURL .= "://";
-    if ($_SERVER["SERVER_PORT"] != "80") {
-        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-    } else {
-        $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-    }
+    $pageURL = COM_getCurrentURL();
     
     /* Generate the token */
     $token = md5($_USER['uid'].$pageURL.uniqid (rand (), 1));
