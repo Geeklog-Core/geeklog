@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.200 2008/02/20 20:07:58 mjervis Exp $
+// $Id: user.php,v 1.201 2008/02/24 19:43:53 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -469,7 +469,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                             "username = '$uname' AND uid <> $uid AND remoteservice = '$uservice'");
             } else {
                 $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
-                                  "username = '$uname' AND uid <> $uid AND (remoteservice = '' OR remoteservice is null)");
+                                  "username = '$uname' AND uid <> $uid AND (remoteservice = '' OR remoteservice IS NULL)");
             }
         }
         if ($ucount > 0) {
@@ -477,17 +477,25 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             return edituser ($uid, 51);
         }
 
-        $emailaddr = addslashes ($email);
-        if (empty ($uid)) {
-            $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
-                                  "email = '$emailaddr'");
+        $emailaddr = addslashes($email);
+        $exclude_remote = " AND (remoteservice IS NULL OR remoteservice = '')";
+        if (empty($uid)) {
+            $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
+                                 "email = '$emailaddr'" . $exclude_remote);
         } else {
-            $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
-                                  "email = '$emailaddr' AND uid <> $uid");
+            $old_email = DB_getItem($_TABLES['users'], 'email', "uid = '$uid'");
+            if ($old_email == $email) {
+                // email address didn't change so don't care
+                $ucount = 0;
+            } else {
+                $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
+                                     "email = '$emailaddr' AND uid <> $uid"
+                                     . $exclude_remote);
+            }
         }
         if ($ucount > 0) {
             // Admin just changed a user's email to one that already exists
-            return edituser ($uid, 56);
+            return edituser($uid, 56);
         }
 
         if (empty ($uid) || !empty ($passwd)) {

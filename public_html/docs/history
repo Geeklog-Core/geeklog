@@ -2,10 +2,12 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.0)
 ------------
+- Ease restriction that email addresses have to be unique: Remote accounts can
+  have non-unique addresses, on-site accounts can't [Dirk]
 - Bug: Email user form doesn't display correctly with " in subject when sending
   is failed due to incomplete fields. [Mike]
-- Bugs: Ensure that site_url, site_admin_url, layout_url and xhtml available to all
-  templates. [Mike]
+- Bugs: Ensure that site_url, site_admin_url, layout_url and xhtml available to
+  all templates. [Mike]
 - Support for [raw][/raw] tag in HTML post mode. All the benefits of code and
   pre, with none of the ugly styling. [Mike]
 - Added an Atom self-link to RSS feeds. Sounds odd, but it is recommended by

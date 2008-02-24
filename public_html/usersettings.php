@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.170 2008/02/20 20:07:59 mjervis Exp $
+// $Id: usersettings.php,v 1.171 2008/02/24 19:43:53 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -723,20 +723,23 @@ function editpreferences()
 * @param   email   string   email address to check
 * @param   uid     int      user id of current user
 * @return          bool     true = exists, false = does not exist
-*
+* @note    Allows remote accounts to have duplicate email addresses
 */
 function emailAddressExists ($email, $uid)
 {
     global $_TABLES;
 
-    $result = DB_query ("SELECT uid FROM {$_TABLES['users']} WHERE email = '{$email}'");
-    $numrows = DB_numRows ($result);
-    for ($i = 0; $i < $numrows; $i++) {
-        $A = DB_fetchArray ($result);
-        if ($A['uid'] != $uid) {
-            // email address is already in use for another account
-            return true;
-        }
+    $old_email = DB_getItem($_TABLES['users'], 'email', "uid = '$uid'");
+    if ($email == $old_email) {
+        // email address didn't change so don't care
+        return false;
+    }
+
+    $email = addslashes($email);
+    $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE email = '$email' AND uid <> '$uid' AND (remoteservice IS NULL OR remoteservice = '')");
+    if (DB_numRows($result) > 0) {
+        // email address is already in use for another non-remote account
+        return true;
     }
 
     return false;
