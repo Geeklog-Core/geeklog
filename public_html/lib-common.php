@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.681 2008/02/24 08:54:51 dhaun Exp $
+// $Id: lib-common.php,v 1.682 2008/02/24 10:55:49 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2357,8 +2357,11 @@ function COM_userMenu( $help='', $title='' )
         if( $_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission'] )
         {
             // Build select
-            $select = '<select name="service" id="service"><option value="">' .
-                            $_CONF['site_name'] . '</option>';
+            $select = '<select name="service" id="service">';
+            if ($_CONF['user_login_method']['standard']) {
+                $select .= '<option value="">' . $_CONF['site_name']
+                        . '</option>';
+            }
             if( is_dir( $_CONF['path_system'] . 'classes/authentication/' ))
             {
                 $folder = opendir( $_CONF['path_system']

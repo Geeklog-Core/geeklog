@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.163 2008/02/20 20:07:59 mjervis Exp $
+// $Id: users.php,v 1.164 2008/02/24 10:55:49 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -625,8 +625,10 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     // 3rd party remote authentification.
     if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
         /* Build select */
-        $select = '<select name="service"><option value="">' .
-                        $_CONF['site_name'] . '</option>';
+        $select = '<select name="service">';
+        if ($_CONF['user_login_method']['standard']) {
+            $select .= '<option value="">' .  $_CONF['site_name'] . '</option>';
+        }
         if (is_dir($_CONF['path_system'].'classes/authentication/')) {
 
             $folder = opendir( $_CONF['path_system'].'classes/authentication/' );
@@ -1040,7 +1042,11 @@ default:
     }
     $uid = '';
     if (!empty($loginname) && !empty($passwd) && empty($service)) {
-        $status = SEC_authenticate($loginname, $passwd, $uid);
+        if (empty($service) && $_CONF['user_login_method']['standard']) {
+            $status = SEC_authenticate($loginname, $passwd, $uid);
+        } else {
+            $status = -1;
+        }
 
     } elseif (( $_CONF['usersubmission'] == 0) && $_CONF['user_login_method']['3rdparty'] && ($service != '')) {
         /* Distributed Authentication */
