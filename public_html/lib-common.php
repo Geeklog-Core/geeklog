@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.680 2008/02/20 20:07:58 mjervis Exp $
+// $Id: lib-common.php,v 1.681 2008/02/24 08:54:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1396,7 +1396,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
          * function or custom function
          * This can be used to take control over what blocks are then displayed
          */
-        if( is_array( $what ))
+        if( isset( $what) && is_array( $what ))
         {
             $function = $what[0];
             if( function_exists( $function ))
@@ -1408,7 +1408,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
                 $rblocks = COM_showBlocks( 'right', $topic );
             }
         }
-        else if( $what <> 'none' )
+        else if( !isset( $what ) || ( $what <> 'none' ))
         {
             // Now show any blocks -- need to get the topic if not on home page
             $rblocks = COM_showBlocks( 'right', $topic );
@@ -2334,7 +2334,6 @@ function COM_userMenu( $help='', $title='' )
     {
         $retval .= COM_startBlock( $LANG01[47], $help,
                            COM_getBlockTemplate( 'user_block', 'header' ));
-//      $retval .= '<ul>';
         $login = new Template( $_CONF['path_layout'] );
         $login->set_file( 'form', 'loginform.thtml' );
         $login->set_var( 'xhtml', XHTML );
@@ -2399,7 +2398,6 @@ function COM_userMenu( $help='', $title='' )
         }
 
         $retval .= $login->parse( 'output', 'form' );
-//      $retval .= '</ul>';
         $retval .= COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
 
