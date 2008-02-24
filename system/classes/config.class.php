@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.28 2008/02/17 08:54:33 dhaun Exp $
+// $Id: config.class.php,v 1.29 2008/02/24 17:07:08 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -465,7 +465,7 @@ class config {
             $fs_contents = '';
             foreach ($params as $name => $e) {
                 $fs_contents .=
-                    $this->_UI_get_conf_element($name,
+                    $this->_UI_get_conf_element($grp, $name,
                                                $e['display_name'],
                                                $e['type'],
                                                $e['value'],
@@ -533,8 +533,8 @@ class config {
         return $display;
     }
 
-    function _UI_get_conf_element($name, $display_name, $type, $val,
-                                          $selectionArray = null , $deletable=0)
+    function _UI_get_conf_element($group, $name, $display_name, $type, $val,
+                                  $selectionArray = null , $deletable = 0)
     {
         global $LANG_CONFIG;
 
@@ -561,9 +561,9 @@ class config {
         $t->set_var('value', $val);
         if ($deletable) {
             $t->set_var('delete', $t->parse('output', 'delete-button'));
-        } elseif (false) { // ??? } elseif ($this->ref == 'Core' ) {
-            $t->set_var('unset_link',
-                        "(<a href='#' onClick='unset(\"{$name}\");'>X</a>)");
+        } else {
+            //$t->set_var('unset_link',
+            //            "(<a href='#' onClick='unset(\"{$name}\");'>X</a>)");
             if (($a = strrchr($name, '[')) !== FALSE) {
                 $o = substr($a, 1, -1);
             } else {
@@ -575,9 +575,14 @@ class config {
                 } else {
                     $baseUrl = 'http://www.geeklog.net';
                 }
-                $t->set_var('doc_link',
-                            '(<a href="' . $baseUrl . '/docs/config.html#desc_'
-                            . $o . '" target="help">?</a>)');
+                if ($group == 'Core') {
+                    $descUrl = $baseUrl . '/docs/config.html#desc_' . $o;
+                    $t->set_var('doc_url', $descUrl);
+                    $t->set_var('doc_link',
+                            '(<a href="' . $descUrl . '" target="help">?</a>)');
+                } else {
+                    // TBD: link to description of plugin option
+                }
             }
         }
         if ($type == "unset") {
@@ -625,7 +630,7 @@ class config {
         } elseif (strpos($type, "@") === 0) {
             $result = "";
             foreach ($val as $valkey => $valval) {
-                $result .= config::_UI_get_conf_element($name . '[' . $valkey . ']',
+                $result .= config::_UI_get_conf_element($group, $name . '[' . $valkey . ']',
                                                       $display_name . '[' . $valkey . ']',
                                                       substr($type, 1), $valval, $selectionArray);
             }
@@ -639,7 +644,7 @@ class config {
             $t->set_var('my_add_element_button', $button);
             $result = "";
             foreach ($val as $valkey => $valval) {
-                $result .= config::_UI_get_conf_element($name . '[' . $valkey . ']', $valkey,
+                $result .= config::_UI_get_conf_element($group, $name . '[' . $valkey . ']', $valkey,
                                                       substr($type, 1), $valval, $selectionArray, true);
             }
             $t->set_var('my_elements', $result);
