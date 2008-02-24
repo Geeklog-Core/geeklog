@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | group.php                                                                 |
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.98 2007/11/25 06:58:55 ospiess Exp $
+// $Id: group.php,v 1.99 2008/02/24 21:22:42 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -472,6 +472,16 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $f
                      'grp_id,grp_name,grp_descr,grp_gl_core',
                      "$grp_id,'$grp_name','$grp_descr',$grp_gl_core");
             $new_group = false;
+        }
+
+        if (empty($grp_id) || ($grp_id < 1)) {
+            // "this shouldn't happen"
+            COM_errorLog("Internal error: invalid group id");
+            $retval .= COM_siteHeader('menu', $LANG_ACCESS['groupeditor']);
+            $retval .= COM_showMessage(95);
+            $retval .= COM_siteFooter();
+
+            return $retval;
         }
 
         // Use the field grp_gl_core to indicate if this is non-core GL Group is an Admin related group
