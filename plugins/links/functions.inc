@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.104 2008/02/03 19:11:50 dhaun Exp $
+// $Id: functions.inc,v 1.105 2008/02/24 15:41:51 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1352,7 +1352,7 @@ function plugin_autouninstall_links ()
         /* give the full name of the feature, as in the db */
         'features' => array('links.edit', 'links.moderate', 'links.submit'),
         /* give the full name of the block, including 'phpblock_', etc */
-        'php_blocks' => array('links_topic_categories', 'links_topic_links'),
+        'php_blocks' => array('phpblock_topic_categories', 'phpblock_topic_links'),
         /* give all vars with their name */
         'vars'=> array()
     );
