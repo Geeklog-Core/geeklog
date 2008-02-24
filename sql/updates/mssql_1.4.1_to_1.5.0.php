@@ -210,7 +210,7 @@ function create_ConfValues()
     $c->add('rdf_storytext',1,'text',0,26,NULL,1410,TRUE);
     $c->add('rdf_language','en-gb','text',0,26,NULL,1420,TRUE);
     $c->add('syndication_max_headlines',0,'text',0,26,NULL,1430,TRUE);
-    $c->add('copyright','2007','text',0,0,NULL,1440,FALSE);
+    $c->add('copyrightyear','2008','text',0,0,NULL,1440,FALSE);
     $c->add('image_lib','','select',5,27,10,1450,TRUE);
     $c->add('path_to_mogrify','','text',5,27,NULL,1460,FALSE);
     $c->add('path_to_netpbm','','text',5,27,NULL,1470,FALSE);

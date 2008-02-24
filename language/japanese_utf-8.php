@@ -1710,7 +1710,7 @@ array(
       'rdf_storytext' => "RSSテキスト",
       'rdf_language' => "RSS言語",
       'syndication_max_headlines' => "タイトル文字制限",
-      'copyright' => "コピーライトの年",
+      'copyrightyear' => "コピーライトの年",
       'image_lib' => "画像ライブラリ",
       'path_to_mogrify' => "Mogrifyパス",
       'path_to_netpbm' => "Netpbmパス",
