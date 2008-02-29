@@ -32,10 +32,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.45 2007/11/25 06:58:55 ospiess Exp $
+// $Id: database.php,v 1.46 2008/02/29 08:22:52 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
+require_once $_CONF['path_system'] . 'lib-security.php';
 
 /**
 * This page allows all Root admins to create a database backup.  This will not
@@ -111,7 +112,7 @@ function listbackups()
 
         $menu_arr = array(
             array('url' => $_CONF['site_admin_url']
-                           . '/database.php?mode=backup',
+                           . '/database.php?mode=backup&'.CSRF_TOKEN.'='.SEC_createToken(),
                   'text' => $LANG_ADMIN['create_new']),
             array('url' => $_CONF['site_admin_url'],
                   'text' => $LANG_ADMIN['admin_home'])
@@ -284,7 +285,9 @@ $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
 
 if ($mode == 'backup') {
     // Perform the backup if asked
+    if (SEC_checkToken()) {
     $display .= dobackup();
+    }
 } else if ($mode == 'delete') {
     foreach ($_POST['delitem'] as $delfile) {
         $file = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $delfile);

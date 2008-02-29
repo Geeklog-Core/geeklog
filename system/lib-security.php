@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.64 2008/02/22 08:22:42 mjervis Exp $
+// $Id: lib-security.php,v 1.65 2008/02/29 08:22:53 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -72,6 +72,11 @@ define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
 define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login.
 define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
 define('USER_ACCOUNT_ACTIVE', 3); // active account
+
+/* Constant for Security Token */
+if (!defined('CSRF_TOKEN')) {
+    define('CSRF_TOKEN', '_glsectoken');
+}
 
 /**
 * Returns the groups a user belongs to
@@ -1091,10 +1096,10 @@ function SEC_checkToken()
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
     
-    if(array_key_exists('token', $_GET)) {
-        $token = COM_applyFilter($_GET['token']);
-    } else if(array_key_exists('token', $_POST)) {
-        $token = COM_applyFilter($_POST['token']);
+    if(array_key_exists(CSRF_TOKEN, $_GET)) {
+        $token = COM_applyFilter($_GET[CSRF_TOKEN]);
+    } else if(array_key_exists(CSRF_TOKEN, $_POST)) {
+        $token = COM_applyFilter($_POST[CSRF_TOKEN]);
     }
     
     if(trim($token) != '') {

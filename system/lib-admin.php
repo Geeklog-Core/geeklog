@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.128 2008/02/21 19:52:53 mjervis Exp $
+// $Id: lib-admin.php,v 1.129 2008/02/29 08:22:53 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -638,9 +638,9 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
                     }
                     $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\"" . XHTML . ">"
                             ."<map id=\"arrow{$A['bid']}\" name=\"arrow{$A['bid']}\">"
-                            ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up&amp;token={$token}\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
-                            ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside&amp;token={$token}\" alt=\"$moveTitleMsg\"" . XHTML . ">"
-                            ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn&amp;token={$token}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
+                            ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up&amp;".CSRF_TOKEN."={$token}\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
+                            ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside&amp;".CSRF_TOKEN."={$token}\" alt=\"$moveTitleMsg\"" . XHTML . ">"
+                            ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn&amp;".CSRF_TOKEN."={$token}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
                             ."</map>";
                 }
                 break;

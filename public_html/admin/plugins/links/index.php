@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.55 2008/01/13 11:56:09 dhaun Exp $
+// $Id: index.php,v 1.56 2008/02/29 08:22:52 mjervis Exp $
 
 /**
  * Geeklog links administration page.
@@ -53,6 +53,7 @@
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
+require_once $_CONF['path_system'] . 'lib-security.php';
 
 // Uncomment the lines below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -365,22 +366,24 @@ function listlinks ()
     );
 
     $validate = '';
-    if (isset($_GET['validate'])) {
+    $token = SEC_createToken();
+    if (isset($_GET['validate']) && SEC_checkToken()) {
         $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
             'text' => $LANG_LINKS_ADMIN[53]);
-        $dovalidate_url = $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=validate';
+        $dovalidate_url = $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=validate'
+                          . '&amp;'.CSRF_TOKEN.'='.$token;
         $dovalidate_text = $LANG_LINKS_ADMIN[58];
         $form_arr['top'] = COM_createLink($dovalidate_text, $dovalidate_url);
         if ($_GET['validate'] == 'enabled') {
             $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'beforevalidate', 'sort' => false);
-            $validate = '?validate=enabled';
+            $validate = '?validate=enabled&amp;'.CSRF_TOKEN.'='.$token;
         } else if ($_GET['validate'] == 'validate'){
             $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'dovalidate', 'sort' => false);
-            $validate = '?validate=validate';
+            $validate = '?validate=validate&amp;'.CSRF_TOKEN.'='.$token;
         }
         $validate_help = $LANG_LINKS_ADMIN[59];
     } else {
-        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled',
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled&amp;'.CSRF_TOKEN.'='.$token,
               'text' => $LANG_LINKS_ADMIN[26]);
         $form_arr = array();
         $validate_help = '';
