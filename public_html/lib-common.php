@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.682 2008/02/24 10:55:49 dhaun Exp $
+// $Id: lib-common.php,v 1.683 2008/03/05 07:49:46 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2369,7 +2369,7 @@ function COM_userMenu( $help='', $title='' )
                 while(( $filename = @readdir( $folder )) !== false )
                 {
                     $strpos = strpos( $filename, '.auth.class.php' );
-                    if( $strpos )
+                    if( $strpos && (substr( $filename, strlen( $filename ) - 4) == '.php') )
                     {
                         $service = substr( $filename, 0, $strpos );
                         $select .= '<option value="' . $service . '">'
