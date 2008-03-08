@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.683 2008/03/05 07:49:46 mjervis Exp $
+// $Id: lib-common.php,v 1.684 2008/03/08 16:52:58 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3247,6 +3247,11 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
         $headers['X-Priority'] = $priority;
     }
     $headers['X-Mailer'] = 'Geeklog ' . VERSION;
+
+    if (!empty($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['SERVER_ADDR']) &&
+            ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])) {
+        $headers['X-Originating-IP'] = $_SERVER['REMOTE_ADDR'];
+    }
 
     $retval = $mailobj->send( $to, $headers, $message );
     if( $retval !== true )

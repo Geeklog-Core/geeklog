@@ -2,6 +2,10 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.0)
 ------------
+- Emails sent from Geeklog will now have an X-Originating-IP header to help
+  track spam / abuse [Dirk]
+- The topic editor allowed you to enter topic IDs with more than 20 characters
+  (reported by Markus Wollschläger) [Dirk]
 - Ease restriction that email addresses have to be unique: Remote accounts can
   have non-unique addresses, on-site accounts can't [Dirk]
 - Bug: Email user form doesn't display correctly with " in subject when sending
