@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.78 2008/02/20 20:07:58 mjervis Exp $
+// $Id: functions.inc,v 1.79 2008/03/08 15:12:29 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -242,6 +242,7 @@ function phpblock_calendar( $help='', $title='' )
                         }
 
                         $newevent_url .= 'eid=' . $theEvent['eid'] . '"';
+                        $attr = array();
                         if( $todaysEvent ) {
                             $attr = array('class' => $todaysClassName);
                         }
