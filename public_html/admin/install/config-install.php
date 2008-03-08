@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.27 2008/02/24 16:49:51 dhaun Exp $
+// $Id: config-install.php,v 1.28 2008/03/08 21:53:34 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -228,7 +228,7 @@ function install_config()
     $c->add('fs_upload', NULL, 'fieldset', 5, 23, NULL, 0, TRUE);
     $c->add('keep_unscaled_image',0,'select',5,23,0,1480,TRUE);
     $c->add('allow_user_scaling',1,'select',5,23,0,1490,TRUE);
-    $c->add('debug_image_upload',TRUE,'select',5,23,1,1500,TRUE);
+    $c->add('debug_image_upload',FALSE,'select',5,23,1,1500,TRUE);
 
     $c->add('fs_articleimg', NULL, 'fieldset', 5, 24, NULL, 0, TRUE);
     $c->add('max_image_width',160,'text',5,24,NULL,1510,TRUE);
