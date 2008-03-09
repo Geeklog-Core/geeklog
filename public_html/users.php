@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.164 2008/02/24 10:55:49 dhaun Exp $
+// $Id: users.php,v 1.165 2008/03/09 09:39:16 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -655,6 +655,7 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     if ($_CONF['user_login_method']['openid'] && !$_CONF['usersubmission']) {
         $user_templates->set_file('openid_login', '../loginform_openid.thtml');
         $user_templates->set_var('lang_openid_login', $LANG01[128]);
+        $user_templates->set_var('input_field_size', 40);
         $app_url = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
         $user_templates->set_var('app_url', $app_url);
         $user_templates->parse('output', 'openid_login');

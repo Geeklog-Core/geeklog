@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.684 2008/03/08 16:52:58 dhaun Exp $
+// $Id: lib-common.php,v 1.685 2008/03/09 09:39:16 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2392,7 +2392,8 @@ function COM_userMenu( $help='', $title='' )
         if ($_CONF['user_login_method']['openid'] && !$_CONF['usersubmission']) {
             $login->set_file('openid_login', 'loginform_openid.thtml');
             $login->set_var('lang_openid_login', $LANG01[128]);
-            $login->set_var('app_url', $_CONF['site_url']."/users.php");
+            $login->set_var('input_field_size', 18);
+            $login->set_var('app_url', $_CONF['site_url'] . '/users.php');
             $login->parse('output', 'openid_login');
             $login->set_var('openid_login',
                 $login->finish($login->get_var('output')));
