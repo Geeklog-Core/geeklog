@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.165 2008/03/09 09:39:16 dhaun Exp $
+// $Id: users.php,v 1.166 2008/03/09 10:23:13 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -624,29 +624,34 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
 
     // 3rd party remote authentification.
     if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
-        /* Build select */
-        $select = '<select name="service">';
-        if ($_CONF['user_login_method']['standard']) {
-            $select .= '<option value="">' .  $_CONF['site_name'] . '</option>';
-        }
-        if (is_dir($_CONF['path_system'].'classes/authentication/')) {
-
-            $folder = opendir( $_CONF['path_system'].'classes/authentication/' );
-            while (($filename = @readdir( $folder )) !== false) {
-                $strpos = strpos($filename, '.auth.class.php');
-                if ($strpos) {
-                    $service = substr($filename, 0, $strpos);
-                    $select .= '<option value="'.$service.'">'.$service.'</option>';
+        $modules = SEC_collectRemoteAuthenticationModules();
+        if (count($modules) == 0) {
+            $user_templates->set_var('services', '');
+        } else {
+            if (!$_CONF['user_login_method']['standard'] &&
+                    (count($modules) == 1)) {
+                $select = $modules[0];
+            } else {
+                // Build select
+                $select = '<select name="service">';
+                if ($_CONF['user_login_method']['standard']) {
+                    $select .= '<option value="">' .  $_CONF['site_name']
+                            . '</option>';
                 }
+                foreach ($modules as $service) {
+                    $select .= '<option value="' . $service . '">' . $service
+                            . '</option>';
+                }
+                $select .= '</select>';
             }
+
+            $user_templates->set_file('services', 'services.thtml');
+            $user_templates->set_var('lang_service', $LANG04[121]);
+            $user_templates->set_var('select_service', $select);
+            $user_templates->parse('output', 'services');
+            $user_templates->set_var('services',
+                   $user_templates->finish($user_templates->get_var('output')));
         }
-        $select .= '</select>';
-        $user_templates->set_file('services', 'services.thtml');
-        $user_templates->set_var('lang_service', $LANG04[121]);
-        $user_templates->set_var('select_service', $select);
-        $user_templates->parse('output', 'services');
-        $user_templates->set_var('services',
-               $user_templates->finish($user_templates->get_var('output')));
     } else {
         $user_templates->set_var('services', '');
     }

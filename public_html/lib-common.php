@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.685 2008/03/09 09:39:16 dhaun Exp $
+// $Id: lib-common.php,v 1.686 2008/03/09 10:23:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2354,36 +2354,35 @@ function COM_userMenu( $help='', $title='' )
         }
 
         // 3rd party remote authentification.
-        if( $_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission'] )
-        {
-            // Build select
-            $select = '<select name="service" id="service">';
-            if ($_CONF['user_login_method']['standard']) {
-                $select .= '<option value="">' . $_CONF['site_name']
-                        . '</option>';
-            }
-            if( is_dir( $_CONF['path_system'] . 'classes/authentication/' ))
-            {
-                $folder = opendir( $_CONF['path_system']
-                                   . 'classes/authentication/' );
-                while(( $filename = @readdir( $folder )) !== false )
-                {
-                    $strpos = strpos( $filename, '.auth.class.php' );
-                    if( $strpos && (substr( $filename, strlen( $filename ) - 4) == '.php') )
-                    {
-                        $service = substr( $filename, 0, $strpos );
+        if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
+            $modules = SEC_collectRemoteAuthenticationModules();
+            if (count($modules) == 0) {
+                $user_templates->set_var('services', '');
+            } else {
+                if (!$_CONF['user_login_method']['standard'] &&
+                        (count($modules) == 1)) {
+                    $select = $modules[0];
+                } else {
+                    // Build select
+                    $select = '<select name="service" id="service">';
+                    if ($_CONF['user_login_method']['standard']) {
+                        $select .= '<option value="">' . $_CONF['site_name']
+                                . '</option>';
+                    }
+                    foreach ($modules as $service) {
                         $select .= '<option value="' . $service . '">'
                                 . $service . '</option>';
                     }
+                    $select .= '</select>';
                 }
+
+                $login->set_file('services', 'blockservices.thtml');
+                $login->set_var('lang_service', $LANG04[121]);
+                $login->set_var('select_service', $select);
+                $login->parse('output', 'services');
+                $login->set_var('services',
+                                $login->finish($login->get_var('output')));
             }
-            $select .= '</select>';
-            $login->set_file( 'services', 'blockservices.thtml' );
-            $login->set_var( 'lang_service', $LANG04[121] );
-            $login->set_var( 'select_service', $select );
-            $login->parse( 'output', 'services' );
-            $login->set_var( 'services',
-                             $login->finish( $login->get_var( 'output' )));
         } else {
            $login->set_var('services', '');
         }

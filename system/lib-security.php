@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.66 2008/03/09 09:33:15 dhaun Exp $
+// $Id: lib-security.php,v 1.67 2008/03/09 10:23:13 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -855,6 +855,32 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
     } else {
         return -1;
     }
+}
+
+/**
+* Return available modules for Remote Authentication
+*
+* @return   array   Names of available remote authentication modules
+*
+*/
+function SEC_collectRemoteAuthenticationModules()
+{
+    global $_CONF;
+
+    $modules = array();
+
+    $modulespath = $_CONF['path_system'] . 'classes/authentication/';
+    if (is_dir($modulespath)) {
+        $folder = opendir($modulespath);
+        while (($filename = @readdir($folder)) !== false) {
+            $pos = strpos($filename, '.auth.class.php');
+            if ($pos && (substr($filename, strlen($filename) - 4) == '.php')) {
+                $modules[] = substr($filename, 0, $pos);
+            }
+        }
+    }
+
+    return $modules;
 }
 
 /**
