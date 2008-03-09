@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.33 2008/02/20 20:38:00 dhaun Exp $
+// $Id: lib-webservices.php,v 1.34 2008/03/09 16:19:45 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -759,7 +759,9 @@ function WS_authenticate()
     }
 
     if (!empty($username) && !empty($password)) {
-        $status = SEC_authenticate($username, $password, $uid);
+        if ($_CONF['user_login_method']['standard']) {
+            $status = SEC_authenticate($username, $password, $uid);
+        }
     }
 
     if ($status == USER_ACCOUNT_ACTIVE) {
