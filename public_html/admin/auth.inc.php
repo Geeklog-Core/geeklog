@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.37 2008/03/09 16:21:18 dhaun Exp $
+// $Id: auth.inc.php,v 1.38 2008/03/09 16:25:08 dhaun Exp $
 
 // this file can't be used on its own
 if (strpos($_SERVER['PHP_SELF'], 'auth.inc.php') !== false) {
@@ -46,7 +46,7 @@ if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
 
 $uid = '';
 if (!empty($_POST['loginname']) && !empty($_POST['passwd'])) {
-    if ($_CONF['user_login_method']['standard'])
+    if ($_CONF['user_login_method']['standard']) {
         $status = SEC_authenticate(COM_applyFilter($_POST['loginname']),
                                    $_POST['passwd'], $uid);
     } else {
