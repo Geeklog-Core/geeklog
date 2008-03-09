@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.65 2008/02/29 08:22:53 mjervis Exp $
+// $Id: lib-security.php,v 1.66 2008/03/09 09:33:15 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -794,63 +794,60 @@ function SEC_checkUserStatus($userid)
   */
 function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES;
 
     /* First try a local cached login */
     $remoteusername = addslashes($loginname);
-    $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername' AND remoteservice='$service'");
+    $remoteservice = addslashes($service);
+    $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername' AND remoteservice='$remoteservice'");
     $tmp = DB_error();
     $nrows = DB_numRows($result);
-    if (($tmp == 0) && ($nrows == 1))
-    {
+    if (($tmp == 0) && ($nrows == 1)) {
         $U = DB_fetchArray($result);
         $uid = $U['uid'];
         $mypass = $U['passwd']; // also used to see if the user existed later.
-        if ($mypass == SEC_encryptPassword($passwd))
-        {
+        if ($mypass == SEC_encryptPassword($passwd)) {
             /* Valid password for cached user, return status */
             return $U['status'];
         }
     }
 
+    $servicefile = $_CONF['path_system'] . 'classes/authentication/' . $service
+                 . '.auth.class.php';
+    if (file_exists($servicefile)) {
+        require_once $servicefile;
 
-    if (file_exists($_CONF['path_system'].'classes/authentication/'.$service.'.auth.class.php'))
-    {
-        require_once($_CONF['path_system'].'classes/authentication/'.$service.'.auth.class.php');
         $authmodule = new $service();
-        if ($authmodule->authenticate($loginname, $passwd))
-        {
+        if ($authmodule->authenticate($loginname, $passwd)) {
             /* check to see if they have logged in before: */
-            if (empty($mypass))
-            {
+            if (empty($mypass)) {
                 // no such user, create them
 
-                //Check to see if their remoteusername is unique locally
-                $checkName = DB_getItem($_TABLES['users'],'username',"username='$remoteusername'");
-                if ($checkName != '')
-                {
+                // Check to see if their remoteusername is unique locally
+                $checkName = DB_getItem($_TABLES['users'], 'username',
+                                        "username='$remoteusername'");
+                if (!empty($checkName)) {
                     // no, call custom function.
-                    if (function_exists(custom_uniqueRemoteUsername))
-                    {
-                        $loginname = custom_uniqueRemoteUsername($loginname, $service);
+                    if (function_exists('CUSTOM_uniqueRemoteUsername')) {
+                        $loginname = CUSTOM_uniqueRemoteUsername($loginname,
+                                                                 $service);
                     }
                 }
-                USER_createAccount($loginname, $authmodule->email, SEC_encryptPassword($passwd), $authmodule->fullname, $authmodule->homepage, $remoteusername, $service);
-                $uid = DB_getItem ($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$service'");
+                USER_createAccount($loginname, $authmodule->email, SEC_encryptPassword($passwd), $authmodule->fullname, $authmodule->homepage, $remoteusername, $remoteservice);
+                $uid = DB_getItem($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$remoteservice'");
                 // Store full remote account name:
-                $service = addslashes($service);
-                DB_Query("UPDATE {$_TABLES['users']} SET remoteusername='$remoteusername', remoteservice='$service', status=3 WHERE uid='$uid'");
+                DB_query("UPDATE {$_TABLES['users']} SET remoteusername='$remoteusername', remoteservice='$remoteservice', status=3 WHERE uid='$uid'");
                 // Add to remote users:
-                $remote_grp = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                              "grp_name='Remote Users'");
-                DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
+                $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id',
+                                         "grp_name='Remote Users'");
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($remote_grp, $uid)");
                 return 3; // Remote auth precludes usersubmission,
                           // and integrates user activation, see?
             } else {
                 // user existed, update local password:
-                DB_Change($_TABLES['users'], 'passwd', SEC_encryptPassword($passwd), array('remoteusername','remoteservice'), array($remoteusername,$service));
+                DB_change($_TABLES['users'], 'passwd', SEC_encryptPassword($passwd), array('remoteusername','remoteservice'), array($remoteusername,$remoteservice));
                 // and return their status
-                return DB_getItem($_TABLES['users'], 'status', "remoteusername='$remoteusername' AND remoteservice='$service'");
+                return DB_getItem($_TABLES['users'], 'status', "remoteusername='$remoteusername' AND remoteservice='$remoteservice'");
             }
         } else {
             return -1;
