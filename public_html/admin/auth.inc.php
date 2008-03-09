@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.38 2008/03/09 16:25:08 dhaun Exp $
+// $Id: auth.inc.php,v 1.39 2008/03/09 17:05:00 dhaun Exp $
 
 // this file can't be used on its own
 if (strpos($_SERVER['PHP_SELF'], 'auth.inc.php') !== false) {
@@ -101,7 +101,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
         $display .= '<p>' . $LANG_LOGIN[2] . '</p>';
     } else {
 
-        if (!empty($warn)) {
+        if (isset($_POST['warn'])) {
             $display .= $LANG20[2]
                      . '<br' . XHTML . '><br' . XHTML . '>'
                      . COM_accessLog($LANG20[3] . ' ' . $_POST['loginname']);
