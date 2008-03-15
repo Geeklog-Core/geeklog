@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.686 2008/03/09 10:23:13 dhaun Exp $
+// $Id: lib-common.php,v 1.687 2008/03/15 08:57:15 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2361,7 +2361,8 @@ function COM_userMenu( $help='', $title='' )
             } else {
                 if (!$_CONF['user_login_method']['standard'] &&
                         (count($modules) == 1)) {
-                    $select = $modules[0];
+                    $select = '<input type="hidden" name="service" value="'
+                            . $modules[0] . '"' . XHTML . '>' . $modules[0];
                 } else {
                     // Build select
                     $select = '<select name="service" id="service">';

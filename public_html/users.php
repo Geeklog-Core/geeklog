@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.166 2008/03/09 10:23:13 dhaun Exp $
+// $Id: users.php,v 1.167 2008/03/15 08:57:15 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -630,7 +630,8 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
         } else {
             if (!$_CONF['user_login_method']['standard'] &&
                     (count($modules) == 1)) {
-                $select = $modules[0];
+                $select = '<input type="hidden" name="service" value="'
+                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
             } else {
                 // Build select
                 $select = '<select name="service">';
