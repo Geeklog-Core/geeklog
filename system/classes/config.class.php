@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.30 2008/03/15 14:06:17 dhaun Exp $
+// $Id: config.class.php,v 1.31 2008/03/15 17:57:43 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -490,7 +490,7 @@ class config {
     function _UI_get_change_block($changes)
     {
         if ($changes != null AND $changes !== array()) {
-            $display .= '<ul style="margin-top:5px;">';
+            $display = '<ul style="margin-top:5px;">';
             foreach ($changes as $param_name => $success)
                 $display .= '<li>' . $param_name . '</li>';
             $display .= '</ul>';
