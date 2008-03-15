@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.31 2008/03/15 17:57:43 dhaun Exp $
+// $Id: config.class.php,v 1.32 2008/03/15 19:55:20 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -122,6 +122,8 @@ class config {
 
     function &get_config($group)
     {
+        $retval = false;
+
         if (array_key_exists($group, $this->config_array)) {
 
             // an ugly little hack to ensure backward compatibility ...
@@ -134,7 +136,7 @@ class config {
             return $this->config_array[$group];
         }
 
-        return false;
+        return $retval;
     }
 
     function group_exists($group)
@@ -558,7 +560,9 @@ class config {
 
         $t->set_var('name', $name);
         $t->set_var('display_name', $display_name);
-        $t->set_var('value', $val);
+        if (!is_array($val)) {
+            $t->set_var('value', $val);
+        }
         if ($deletable) {
             $t->set_var('delete', $t->parse('output', 'delete-button'));
         } else {
