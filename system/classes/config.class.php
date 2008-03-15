@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.29 2008/02/24 17:07:08 dhaun Exp $
+// $Id: config.class.php,v 1.30 2008/03/15 14:06:17 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -440,7 +440,7 @@ class config {
                     }
                     $t->set_var('subgroup_name', $sgroup);
                     $t->set_var("subgroup_display_name",
-                                $LANG_configsubgroups[$group][$sgroup]);
+                                $LANG_configsubgroups[$group][$sgname]);
                     if ($innerloopcntr == 1) {
                         $t->parse('subgroups', "subgroup-selector");
                     } else {
@@ -536,7 +536,7 @@ class config {
     function _UI_get_conf_element($group, $name, $display_name, $type, $val,
                                   $selectionArray = null , $deletable = 0)
     {
-        global $LANG_CONFIG;
+        global $_CONF, $LANG_CONFIG;
 
         $t = new Template($GLOBALS['_CONF']['path_layout'] . 'admin/config');
         $t -> set_file('element', 'config_element.thtml');
