@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.28 2008/03/08 21:53:34 dhaun Exp $
+// $Id: config-install.php,v 1.29 2008/03/15 18:11:42 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -339,11 +339,14 @@ function install_config()
     require_once $plugin_path . 'links/install_defaults.php';
     plugin_initconfig_links();
 
-    require_once $plugin_path . 'staticpages/install_defaults.php';
-    plugin_initconfig_staticpages();
+    require_once $plugin_path . 'polls/install_defaults.php';
+    plugin_initconfig_polls();
 
     require_once $plugin_path . 'spamx/install_defaults.php';
     plugin_initconfig_spamx();
+
+    require_once $plugin_path . 'staticpages/install_defaults.php';
+    plugin_initconfig_staticpages();
 }
 
 ?>

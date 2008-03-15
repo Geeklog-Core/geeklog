@@ -3,12 +3,12 @@
 ###############################################################################
 # english_utf-8.php
 #
-# This is the english language page for the Geeklog Polls Plug-in!
+# This is the English language file for the Geeklog Polls plugin
 #
 # Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
+# tony AT tonybibbs DOT com
 # Copyright (C) 2005 Trinity Bays
-# trinity93@gmail.com
+# trinity93 AT gmail DOT com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -101,5 +101,43 @@ $PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3002 = $LANG32[9];
+
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['polls'] = array(
+    'label' => 'Polls',
+    'title' => 'Polls Configuration'
+);  
+
+$LANG_confignames['polls'] = array(
+    'pollsloginrequired' => 'Polls Login Required?',
+    'hidepollsmenu' => 'Hide Polls Menu Entry?',
+    'maxquestions' => 'Max. Questions per Poll',
+    'maxanswers' => 'Max. Options per Question',
+    'answerorder' => 'Sort Results ...',
+    'pollcookietime' => 'Voter Cookie valid for',
+    'polladdresstime' => 'Voter IP Address valid for',
+    'delete_polls' => 'Delete Polls with Owner?',
+    'aftersave' => 'After Saving Poll',
+    'default_permissions' => 'Poll Default Permissions'
+);
+
+$LANG_configsubgroups['polls'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['polls'] = array(
+    'fs_main' => 'General Polls Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['polls'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => TRUE, 'False' => FALSE),
+    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
+    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

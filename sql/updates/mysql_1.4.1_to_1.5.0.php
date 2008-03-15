@@ -355,7 +355,23 @@ function create_ConfValues()
 // Polls plugin updates
 function upgrade_PollsPlugin()
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/polls/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_PO_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_polls()) {
+        echo 'There was an error upgrading the Polls plugin';
+        return false;
+    }
 
     $P_SQL = array();
     $P_SQL[] = "RENAME TABLE `{$_TABLES['pollquestions']}` TO `{$_TABLES['polltopics']}`;";
@@ -404,6 +420,12 @@ function upgrade_PollsPlugin()
             echo "There was an error upgrading the polls, SQL: $sql<br>";
             return false;
         }
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
     }
 
     return true;

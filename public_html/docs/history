@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.0)
 ------------
+- Removed Blogger remote authentication option. Blogger.com have changed their
+  authentication process, so this module no longer works.
 - Emails sent from Geeklog will now have an X-Originating-IP header to help
   track spam / abuse [Dirk]
 - The topic editor allowed you to enter topic IDs with more than 20 characters

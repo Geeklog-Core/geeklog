@@ -34,22 +34,40 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.83 2008/02/20 20:07:58 mjervis Exp $
+// $Id: functions.inc,v 1.84 2008/03/15 18:11:42 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
-    die ('This file can not be used on its own.');
+if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+    die('This file can not be used on its own.');
 }
 
-$langfile = $_CONF['path'] . 'plugins/polls/language/'
-          . $_CONF['language'] . '.php';
+$plugin_path = $_CONF['path'] . 'plugins/polls/';
+$langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
-if (file_exists ($langfile)) {
-    require_once ($langfile);
+if (file_exists($langfile)) {
+    require_once $langfile;
 } else {
-    require_once ($_CONF['path'] . 'plugins/polls/language/english.php');
+    require_once $plugin_path . 'language/english.php';
 }
 
-require_once ($_CONF['path'] . 'plugins/polls/config.php');
+/*
+* As of Geeklog 1.5, the plugin's config.php is not needed any more and
+* should be removed after upgrading.
+*/
+if (file_exists($plugin_path . 'config.php')) {
+    include_once $plugin_path . 'config.php';
+}
+
+/*
+* Check and see if we need to load the plugin configuration
+*/ 
+if (!isset($_PO_CONF['pollsloginrequired'])) {
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    
+    $li_config = config::get_instance();
+    $_PO_CONF = $li_config->get_config('polls');
+}
+
+$_PO_CONF['version'] = '2.0.1';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |

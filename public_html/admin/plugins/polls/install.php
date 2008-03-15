@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls plugin 1.1 for Geeklog                                              |
+// | Polls plugin 2.0 for Geeklog                                              |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
@@ -11,7 +11,7 @@
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Tom Willett       - tom AT pigstye DOT net                       |
@@ -36,10 +36,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.19 2007/10/10 02:00:21 ospiess Exp $
+// $Id: install.php,v 1.20 2008/03/15 18:11:42 dhaun Exp $
 
-require_once ('../../../lib-common.php');
-require_once ($_CONF['path'] . 'plugins/polls/config.php');
+require_once '../../../lib-common.php';
 
 // Plugin information
 //
@@ -47,9 +46,11 @@ require_once ($_CONF['path'] . 'plugins/polls/config.php');
 //
 $pi_display_name = 'Polls';
 $pi_name         = 'polls';
-$pi_version      = $_PO_CONF['version'];
-$gl_version      = '1.4.1';
+$pi_version      = '2.0.1';
+$gl_version      = '1.5.0';
 $pi_url          = 'http://www.geeklog.net/';
+
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 
 // name of the Admin group
 $pi_admin        = $pi_display_name . ' Admin';
@@ -95,6 +96,22 @@ function plugin_compatible_with_this_geeklog_version ()
 }
 
 /**
+* Loads the configuration records for the GL Online Config Manager
+*
+* @return   boolean     true = proceed with install, false = an error occured
+*
+*/
+function plugin_load_configuration()
+{
+    global $_CONF, $base_path;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    require_once $base_path . 'install_defaults.php';
+
+    return plugin_initconfig_polls();
+}
+
+/**
 * When the install went through, give the plugin a chance for any
 * plugin-specific post-install fixes
 *
@@ -126,21 +143,20 @@ function plugin_postinstall ()
     return false;
 }
 
+
 //
 // ----------------------------------------------------------------------------
 //
 // The code below should be the same for most plugins and usually won't
 // require modifications.
 
-$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 $langfile = $base_path . $_CONF['language'] . '.php';
-if (file_exists ($langfile)) {
-    require_once ($langfile);
+if (file_exists($langfile)) {
+    require_once $langfile;
 } else {
-    require_once ($base_path . 'language/english.php');
+    require_once $base_path . 'language/english.php';
 }
-require_once ($base_path . 'config.php');
-require_once ($base_path . 'functions.inc');
+require_once $base_path . 'functions.inc';
 
 
 // Only let Root users access this page
@@ -181,7 +197,6 @@ function plugin_install_now()
         DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
         if (DB_error ()) {
             PLG_uninstall ($pi_name);
-
             return false;
         }
 
@@ -201,7 +216,7 @@ function plugin_install_now()
     }
 
     if (count ($_SQL) > 0) {
-         $use_innodb = false;
+        $use_innodb = false;
         if (($_DB_dbms == 'mysql') &&
             (DB_getItem ($_TABLES['vars'], 'value', "name = 'database_engine'")
                 == 'InnoDB')) {
@@ -269,9 +284,16 @@ function plugin_install_now()
         $sql = str_replace ('#group#', $admin_group_id, $sql);
         DB_query ($sql, 1);
         if (DB_error ()) {
-            COM_errorLog ($sql, 1);
             PLG_uninstall ($pi_name);
 
+            return false;
+        }
+    }
+
+    // Load the online configuration records
+    if (function_exists('plugin_load_configuration')) {
+        if (!plugin_load_configuration()) {
+            PLG_uninstall($pi_name);
             return false;
         }
     }
@@ -310,7 +332,8 @@ function plugin_install_now()
 $display = '';
 
 if ($_REQUEST['action'] == 'uninstall') {
-    if (PLG_uninstall ($pi_name)) {
+    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
+    if ($uninstall_plugin ()) {
         $display = COM_refresh ($_CONF['site_admin_url']
                                 . '/plugins.php?msg=45');
     } else {
@@ -336,25 +359,6 @@ if ($_REQUEST['action'] == 'uninstall') {
                  . COM_endBlock ()
                  . COM_siteFooter ();
     }
-} else if ($_REQUEST['action'] == 'upgrade') {
-    $result = PLG_upgrade ($pi_name);
-    if ($result > 0 ) {
-        if ($result === TRUE) { // Catch returns that are just true/false
-            $display .= COM_refresh ($_CONF['site_admin_url']
-                    . '/plugins.php?msg=60');
-        } else {  // Plugin returned a message number
-            $display = COM_refresh ($_CONF['site_admin_url']
-                    . '/plugins.php?msg=' . $result . '&amp;plugin='
-                    . $pi_name);
-        }
-    } else {  // Plugin function returned a false
-        $timestamp = strftime ($_CONF['daytime']);
-        $display .= COM_showMessage($LANG08[6]);
-    }
-} else if (DB_getItem($_TABLES['plugins'],'pi_version','pi_name="polls"') !== $_PO_CONF['version']) {
-    $display .= $LANG_POLLS['upgrade1']
-        . COM_createLink($LANG_POLLS['upgrade2'], $_CONF['site_admin_url']
-        . '/plugins/polls/install.php?action=upgrade');
 } else {
     // plugin already installed
     $display .= COM_siteHeader ('menu', $LANG01[77])
