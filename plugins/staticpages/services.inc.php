@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.9 2008/01/04 18:36:31 dhaun Exp $
+// $Id: services.inc.php,v 1.10 2008/03/15 20:37:34 dhaun Exp $
 
 // this must be kept in synch with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
@@ -78,7 +78,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
     exit ();
     */
-    $gl_edit = $args['gl_edit'];
+    $gl_edit = false;
+    if (isset($args['gl_edit'])) {
+        $gl_edit = $args['gl_edit'];
+    }
     if ($gl_edit) {
         // This is EDIT mode, so there should be an sp_old_id 
         if (empty($args['sp_old_id'])) {
@@ -108,7 +111,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $args['sp_content'] = $args['content'];
     }
 
-    if (is_array($args['category']) && !empty($args['category'][0])) {
+    if (isset($args['category']) && is_array($args['category']) &&
+            !empty($args['category'][0])) {
         $args['sp_tid'] = $args['category'][0];
     }
 
@@ -234,7 +238,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_inblock = $args['sp_inblock'];
     $postmode = $args['postmode'];
 
-    if ($args['gl_edit'] && !empty($args['gl_etag'])) {
+    if ($gl_edit && !empty($args['gl_etag'])) {
         // First load the original staticpage to check if it has been modified 
         $o = array();
         $s = array();

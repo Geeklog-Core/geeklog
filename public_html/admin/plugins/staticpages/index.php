@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.90 2007/12/20 21:03:04 dhaun Exp $
+// $Id: index.php,v 1.91 2008/03/15 20:37:34 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -580,6 +580,9 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!empty ($sp_id)) {
         if (!isset ($_POST['sp_onmenu'])) {
             $_POST['sp_onmenu'] = '';
+        }
+        if (!isset ($_POST['sp_php'])) {
+            $_POST['sp_php'] = '';
         }
         if (!isset ($_POST['sp_nf'])) {
             $_POST['sp_nf'] = '';
