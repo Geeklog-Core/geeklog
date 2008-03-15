@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.119 2008/02/21 19:52:52 mjervis Exp $
+// $Id: block.php,v 1.120 2008/03/15 14:09:41 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -417,7 +417,7 @@ function listblocks()
 
     $retval .= ADMIN_list (
         "blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
-        $query_arr, $defsort_arr, '', $token, '', $form_ar
+        $query_arr, $defsort_arr, '', $token, '', $form_arr
     );
 
     $query_arr = array(
