@@ -363,7 +363,7 @@ function upgrade_PollsPlugin()
     require_once $plugin_path . 'install_defaults.php';
 
     if (file_exists($plugin_path . 'config.php')) {
-        global $_PO_CONF;
+        global $_DB_table_prefix, $_PO_CONF;
 
         require_once $plugin_path . 'config.php';
     }
@@ -442,7 +442,7 @@ function upgrade_StaticpagesPlugin()
     require_once $plugin_path . 'install_defaults.php';
 
     if (file_exists($plugin_path . 'config.php')) {
-        global $_SP_CONF;
+        global $_DB_table_prefix, $_SP_CONF;
 
         require_once $plugin_path . 'config.php';
     }
@@ -478,7 +478,23 @@ function upgrade_StaticpagesPlugin()
 // Calendar plugin updates
 function upgrade_CalendarPlugin()
 {
-    global $_TABLES, $_STATES;
+    global $_CONF, $_TABLES, $_STATES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/calendar/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_DB_table_prefix, $_CA_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_calendar()) {
+        echo 'There was an error upgrading the Polls plugin';
+        return false;
+    }
 
     $P_SQL[] = "ALTER TABLE {$_TABLES['events']} CHANGE state state varchar(40) default NULL";
     $P_SQL[] = "ALTER TABLE {$_TABLES['eventsubmission']} CHANGE state state varchar(40) default NULL";
@@ -505,6 +521,12 @@ function upgrade_CalendarPlugin()
         }
     }
 
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
+    }
+
     return true;
 }
 
@@ -519,7 +541,7 @@ function upgrade_SpamXPlugin()
     require_once $plugin_path . 'install_defaults.php';
 
     if (file_exists($plugin_path . 'config.php')) {
-        global $_SPX_CONF;
+        global $_DB_table_prefix, $_SPX_CONF;
 
         require_once $plugin_path . 'config.php';
     }
@@ -554,6 +576,12 @@ function upgrade_LinksPlugin()
 
     $plugin_path = $_CONF['path'] . 'plugins/links/';
     require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_DB_table_prefix, $_LI_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
 
     if (!plugin_initconfig_links()) {
         echo 'There was an error upgrading the Links plugin';

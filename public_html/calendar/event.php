@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.26 2008/01/27 15:23:33 dhaun Exp $
+// $Id: event.php,v 1.27 2008/03/16 12:22:01 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once $_CONF['path_system'] . 'classes/calendar.class.php';
@@ -181,16 +181,8 @@ function editpersonalevent ($A)
     $cal_templates->set_var ('event_title', $title);
 
     $cal_templates->set_var('lang_eventtype', $LANG_CAL_1[37]);
-    $etypes = explode (',', $_CA_CONF['event_types']);
-    $type_options = '';
-    foreach ($etypes as $evtype) {
-        $type_options .= '<option value="' . $evtype . '"';
-        if ($evtype == $A['event_type']) {
-            $type_options .= ' selected="selected"';
-        }
-        $type_options .= '>' . $evtype . '</option>';
-    }
-    $cal_templates->set_var ('type_options', $type_options);
+    $type_options = CALENDAR_eventTypeList($A['event_type']);
+    $cal_templates->set_var('type_options', $type_options);
 
     // Handle start date/time
     $cal_templates->set_var('lang_startdate', $LANG_CAL_1[21]);

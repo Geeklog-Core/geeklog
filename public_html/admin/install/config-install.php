@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.29 2008/03/15 18:11:42 dhaun Exp $
+// $Id: config-install.php,v 1.30 2008/03/16 12:22:01 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -335,6 +335,9 @@ function install_config()
 
     // Add the configuration records for the default installed plugins
     $plugin_path = $_CONF['path'] . 'plugins/';
+
+    require_once $plugin_path . 'calendar/install_defaults.php';
+    plugin_initconfig_calendar();
 
     require_once $plugin_path . 'links/install_defaults.php';
     plugin_initconfig_links();

@@ -36,10 +36,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.11 2007/02/11 01:33:10 ospiess Exp $
+// $Id: install.php,v 1.12 2008/03/16 12:22:01 dhaun Exp $
 
 require_once ('../../../lib-common.php');
-require_once ($_CONF['path'] . 'plugins/calendar/config.php');
 
 // Plugin information
 //
@@ -47,9 +46,11 @@ require_once ($_CONF['path'] . 'plugins/calendar/config.php');
 //
 $pi_display_name = 'Calendar';
 $pi_name         = 'calendar';
-$pi_version      = $_CA_CONF['version'];
+$pi_version      = '1.0.2';
 $gl_version      = '1.4.1';
 $pi_url          = 'http://www.geeklog.net/';
+
+$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 
 // name of the Admin group
 $pi_admin        = 'Calendar Admin';
@@ -97,6 +98,22 @@ function plugin_compatible_with_this_geeklog_version ()
 }
 
 /**
+* Loads the configuration records for the GL Online Config Manager
+* 
+* @return   boolean     true = proceed with install, false = an error occured
+* 
+*/
+function plugin_load_configuration()
+{
+    global $_CONF, $base_path;
+    
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    require_once $base_path . 'install_defaults.php'; 
+
+    return plugin_initconfig_calendar();
+}
+
+/**
 * When the install went through, give the plugin a chance for any
 * plugin-specific post-install fixes
 *
@@ -131,21 +148,20 @@ function plugin_postinstall ()
     return false;
 }
 
+
 //
 // ----------------------------------------------------------------------------
 //
 // The code below should be the same for most plugins and usually won't
 // require modifications.
 
-$base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 $langfile = $base_path . $_CONF['language'] . '.php';
-if (file_exists ($langfile)) {
-    require_once ($langfile);
+if (file_exists($langfile)) {
+    require_once $langfile;
 } else {
-    require_once ($base_path . 'language/english.php');
+    require_once $base_path . 'language/english.php';
 }
-require_once ($base_path . 'config.php');
-require_once ($base_path . 'functions.inc');
+require_once $base_path . 'functions.inc';
 
 
 // Only let Root users access this page
@@ -186,7 +202,6 @@ function plugin_install_now()
         DB_query ("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
         if (DB_error ()) {
             PLG_uninstall ($pi_name);
-
             return false;
         }
 
@@ -249,6 +264,7 @@ function plugin_install_now()
                 DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$GROUPS[$group]})");
                 if (DB_error ()) {
                     PLG_uninstall ($pi_name);
+
                     return false;
                 }
             }
@@ -263,6 +279,7 @@ function plugin_install_now()
               . "($admin_group_id, NULL, 1)");
     if (DB_error ()) {
         PLG_uninstall ($pi_name);
+
         return false;
     }
 
@@ -273,6 +290,15 @@ function plugin_install_now()
         DB_query ($sql, 1);
         if (DB_error ()) {
             PLG_uninstall ($pi_name);
+
+            return false;
+        }
+    }
+
+    // Load the online configuration records
+    if (function_exists('plugin_load_configuration')) {
+        if (!plugin_load_configuration()) {
+            PLG_uninstall($pi_name);
             return false;
         }
     }
@@ -288,6 +314,7 @@ function plugin_install_now()
 
     if (DB_error ()) {
         PLG_uninstall ($pi_name);
+
         return false;
     }
 
@@ -295,6 +322,7 @@ function plugin_install_now()
     if (function_exists ('plugin_postinstall')) {
         if (!plugin_postinstall ()) {
             PLG_uninstall ($pi_name);
+
             return false;
         }
     }

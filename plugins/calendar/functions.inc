@@ -34,23 +34,44 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.79 2008/03/08 15:12:29 dhaun Exp $
+// $Id: functions.inc,v 1.80 2008/03/16 12:22:01 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
 }
 
-$langfile = $_CONF['path'] . 'plugins/calendar/language/'
-          . $_CONF['language'] . '.php';
+$plugin_path = $_CONF['path'] . 'plugins/calendar/';
+$langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
-if (file_exists ($langfile)) {
-    require_once ($langfile);
+if (file_exists($langfile)) {
+    require_once $langfile;
 } else {
-    require_once ($_CONF['path'] . 'plugins/calendar/language/english.php');
+    require_once $plugin_path . 'language/english.php';
 }
 
-require_once ($_CONF['path'] . 'plugins/calendar/config.php');
+/*
+* As of Geeklog 1.5, the plugin's config.php is not needed any more and
+* should be removed after upgrading.
+*/
+if (file_exists($plugin_path . 'config.php')) {
+    include_once $plugin_path . 'config.php';
+}
 
+/*
+* Check and see if we need to load the plugin configuration
+*/
+if (!isset($_CA_CONF['calendarloginrequired'])) {
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $ca_config = config::get_instance();
+    $_CA_CONF = $ca_config->get_config('calendar');
+}
+
+$_CA_CONF['version'] = '1.0.2';
+
+// +---------------------------------------------------------------------------+
+// | Geeklog Plugin API Implementations                                        |
+// +---------------------------------------------------------------------------+
 
 /**
 * Returns the items for this plugin that should appear on the main menu
@@ -1722,8 +1743,8 @@ function CALENDAR_eventTypeList ($currtype = '')
 
     $retval = '';
 
-    $event_types = explode (',', $_CA_CONF['event_types']);
-    asort ($event_types);
+    $event_types = $_CA_CONF['event_types'];
+    asort($event_types);
 
     foreach ($event_types as $type) {
         $retval .= '<option value="' . $type . '"';
