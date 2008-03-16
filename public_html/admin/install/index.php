@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.32 2008/02/03 09:54:50 dhaun Exp $
+// $Id: index.php,v 1.33 2008/03/16 11:30:28 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -947,7 +947,8 @@ function INST_checkInnodbUpgrade($_SQL)
  */
 function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
 {
-    global $_TABLES, $_CONF, $_SP_CONF, $_DB, $_DB_dbms, $_DB_table_prefix, $siteconfig_path, $html_path;
+    global $_TABLES, $_CONF, $_SP_CONF, $_DB, $_DB_dbms, $_DB_table_prefix,
+           $dbconfig_path, $siteconfig_path, $html_path;
 
     $_DB->setDisplayError (true);
 
@@ -1282,7 +1283,8 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
                 foreach ($_CONF as $key => $val) {
                     $config->set($key, $val);
                 }
-                require($siteconfig_path);
+                require $siteconfig_path;
+                require $dbconfig_path;
             }
 
             // Update the GL configuration with the correct paths.
