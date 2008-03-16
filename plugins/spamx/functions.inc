@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.33 2008/02/03 19:23:24 dhaun Exp $
+ * $Id: functions.inc,v 1.34 2008/03/16 09:33:23 dhaun Exp $
  */
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -43,8 +43,8 @@ if (file_exists($plugin_path . 'config.php')) {
 if (!isset($_SPX_CONF['timeout'])) {
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
-    $sp_config = config::get_instance();
-    $_SPX_CONF = $sp_config->get_config('spamx');
+    $spx_config = config::get_instance();
+    $_SPX_CONF = $spx_config->get_config('spamx');
 }
 
 $_SPX_CONF['version'] = '1.1.1';

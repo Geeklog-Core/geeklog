@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.84 2008/03/15 18:11:42 dhaun Exp $
+// $Id: functions.inc,v 1.85 2008/03/16 09:33:23 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -63,8 +63,8 @@ if (file_exists($plugin_path . 'config.php')) {
 if (!isset($_PO_CONF['pollsloginrequired'])) {
     require_once $_CONF['path_system'] . 'classes/config.class.php';
     
-    $li_config = config::get_instance();
-    $_PO_CONF = $li_config->get_config('polls');
+    $po_config = config::get_instance();
+    $_PO_CONF = $po_config->get_config('polls');
 }
 
 $_PO_CONF['version'] = '2.0.1';

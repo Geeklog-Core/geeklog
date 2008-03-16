@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.116 2008/02/20 20:07:58 mjervis Exp $
+// $Id: functions.inc,v 1.117 2008/03/16 09:33:23 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -44,22 +44,26 @@ $plugin_path = $_CONF['path'] . 'plugins/staticpages/';
 $langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
 if (file_exists($langfile)) {
-    include $langfile;
+    require_once $langfile;
 } else {
-    include $plugin_path . 'language/english.php';
+    require_once $plugin_path . 'language/english.php';
 }
 
-/* As of version 1.5 - plugins config.php is not needed and should be removed after upgrading */
-if (file_exists("{$plugin_path}config.php")) {
-   include $plugin_path . 'config.php';
+/*
+* As of Geeklog 1.5, the plugin's config.php is not needed any more and
+* should be removed after upgrading.
+*/
+if (file_exists($plugin_path . 'config.php')) {
+    include_once $plugin_path . 'config.php';
 }
 
-// Check and see if we need to load the plugin configuration
+/*
+* Check and see if we need to load the plugin configuration
+*/
 if (!isset($_SP_CONF['allow_php'])) {
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $sp_config = config::get_instance();
-
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
 
