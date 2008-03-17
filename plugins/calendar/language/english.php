@@ -185,6 +185,9 @@ $PLG_calendar_MESSAGE18 = 'The event has been successfully deleted.';
 $PLG_calendar_MESSAGE24 = 'The event has been saved to your calendar.';
 $PLG_calendar_MESSAGE26 = 'The event has been successfully deleted.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(

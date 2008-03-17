@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: french_canada.php,v 1.8 2006/09/02 15:35:46 dhaun Exp $
+ * $Id: french_canada.php,v 1.9 2008/03/17 21:12:54 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -133,7 +133,7 @@ $PLG_spamx_MESSAGE128 = 'Commentaire indésirable détecté et Commentaire ou Messa
 $PLG_spamx_MESSAGE8   = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\Administrateur.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Spam-X plugin upgraded successfully.';
-$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english_utf-8.php,v 1.9 2008/02/10 17:09:38 dhaun Exp $
+ * $Id: english_utf-8.php,v 1.10 2008/03/17 21:12:54 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -131,8 +131,8 @@ $PLG_spamx_MESSAGE128 = 'Spam detected. Post was deleted.';
 $PLG_spamx_MESSAGE8   = 'Spam detected. Email sent to admin.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Spam-X plugin upgraded successfully.';
-$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 
 // Localization of the Admin Configuration UI

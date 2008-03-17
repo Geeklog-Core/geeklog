@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.29 2008/02/10 17:09:37 dhaun Exp $
+# $Id: english.php,v 1.30 2008/03/17 21:12:54 dhaun Exp $
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
@@ -146,6 +146,7 @@ $PLG_links_MESSAGE15 = 'You do not have sufficient rights to delete this categor
 $PLG_links_MESSAGE16 = 'No such category exists.';
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

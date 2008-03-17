@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish.php,v 1.6 2006/09/02 15:35:46 dhaun Exp $
+ * $Id: spanish.php,v 1.7 2008/03/17 21:12:54 dhaun Exp $
  */
 
 // +---------------------------------------------------------------------------+
@@ -138,7 +138,7 @@ $PLG_spamx_MESSAGE128 = 'Se ha detectado spam y se ha borrado el Comentario o el
 $PLG_spamx_MESSAGE8   = 'Se ha detectado spam. Se ha enviado un correo al administrador.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Spam-X plugin upgraded successfully.';
-$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

@@ -90,6 +90,7 @@ $PLG_polls_MESSAGE19 = 'Ваше опитування успішно збере�
 $PLG_polls_MESSAGE20 = 'Ваше опитування успішно вилучено.';
 
 // Messages for the plugin upgrade
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 ?>

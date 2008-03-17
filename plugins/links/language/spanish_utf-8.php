@@ -27,7 +27,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: spanish_utf-8.php,v 1.1 2007/12/15 17:56:07 dhaun Exp $
+# $Id: spanish_utf-8.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -126,6 +126,7 @@ $PLG_links_MESSAGE3 = 'El enlace ha sido borrado satisfactoriamente.';
 $PLG_links_MESSAGE4 = "Grac ias por enviar un enlace a {$_CONF['site_name']}.  Puedes verlo en la sección de <a href={$_CONF['site_url']}/links/index.php>enlaces</a>.";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

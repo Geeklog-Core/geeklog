@@ -1,8 +1,9 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for the Geeklog Calendar Plug-in!
+# french_canada.php
+#
+# This is the Canadian French language file for the Geeklog Calendar plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -172,5 +173,9 @@ $PLG_calendar_MESSAGE17 = 'Évènement sauvegardé avec succès.';
 $PLG_calendar_MESSAGE18 = 'Évènement effacé avec succès.';
 $PLG_calendar_MESSAGE24 = 'Évènement sauvegardé sur votre calendrier.';
 $PLG_calendar_MESSAGE26 = 'Évènement effacé avec succès.';
+
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 ?>

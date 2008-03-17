@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german.php,v 1.4 2007/08/28 07:33:30 ospiess Exp $
+# $Id: german.php,v 1.5 2008/03/17 21:12:54 dhaun Exp $
 
 ###############################################################################
 # Array Format:
@@ -90,6 +90,7 @@ $PLG_links_MESSAGE3 = 'Der Link wurde gelöscht.';
 $PLG_links_MESSAGE4 = "Danke für Deinen Link. Du findest ihn nun unter den <a href=\"{$_CONF['site_url']}/links/index.php\">Links</a>.";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

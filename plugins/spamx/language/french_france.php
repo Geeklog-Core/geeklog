@@ -131,7 +131,7 @@ $PLG_spamx_MESSAGE128 = 'Commentaire indésirable détecté et Commentaire ou Messa
 $PLG_spamx_MESSAGE8   = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\Administrateur.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Spam-X plugin upgraded successfully.';
-$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

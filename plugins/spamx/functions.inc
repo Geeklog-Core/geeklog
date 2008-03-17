@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.34 2008/03/16 09:33:23 dhaun Exp $
+ * $Id: functions.inc,v 1.35 2008/03/17 21:12:54 dhaun Exp $
  */
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -169,52 +169,15 @@ function plugin_chkVersion_spamx ()
 */
 function plugin_upgrade_spamx()
 {
-    global $_CONF, $_TABLES, $_SPX_CONF, $plugin_path;
-
-    if (!function_exists('PLG_spamAction')) {
-        return 3002; // plugin not compatible with this Geeklog version
+    // the plugin needs these function so complain when they don't exist
+    if (!function_exists('PLG_uninstall') ||
+            !function_exists('COM_createLink')) {
+        return 3002;
     }
 
-    $v = DB_getItem($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
-    if ($v != $_SPX_CONF['version']) {
-
-        switch ($v) {
-        case '1.0.1':
-            // Add the counter
-            DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')");
-            DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.0', pi_gl_version = '1.4.1' WHERE pi_name = 'spamx'");
-            break;
-
-        case '1.1.0':
-            require_once $_CONF['path_system'] . 'classes/config.class.php';
-            require_once $plugin_path . 'install_defaults.php';
-
-            if (!plugin_initconfig_spamx()) {
-                COM_errorLog("Spam-X upgrade to 1.1.1 failed");
-                return 3002;
-            }
-
-            if (file_exists($plugin_path . 'config.php')) {
-                // Rename the existing config.php as it's not needed any more
-                $ren = @rename($plugin_path . 'config.php',
-                               $plugin_path . 'config-pre1.5.0.php');
-                if (!$ren) {
-                    COM_errorLog("Could not rename the ages Spam-X plugin's config.php file. Please remove if manually, as it is not needed any more.");
-                }
-            }
-
-            $spx_config = config::get_instance();
-            if ($spx_config->group_exists('spamx')) {
-                DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.1', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'");
-            } else {
-                COM_errorLog("Spam-X upgrade to 1.1.1 failed");
-                return 3002;
-            }
-            break;
-        }
-    }
-
-    return 3001; // success msg
+    // upgrades are done by the install script - return a generic error
+    COM_errorLog("Plugin upgrade function not implemented");
+    return 3001;
 }
 
 /**

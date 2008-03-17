@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german_utf-8.php,v 1.5 2006/10/21 20:17:36 dhaun Exp $
+# $Id: german_utf-8.php,v 1.6 2008/03/17 21:12:54 dhaun Exp $
 
 ###############################################################################
 # Array Format: 
@@ -91,6 +91,7 @@ $PLG_polls_MESSAGE19 = 'Deine Umfrage wurde gespeichert.';
 $PLG_polls_MESSAGE20 = 'Deine Umfrage wurde gelöscht.';
 
 // Messages for the plugin upgrade
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 ?>

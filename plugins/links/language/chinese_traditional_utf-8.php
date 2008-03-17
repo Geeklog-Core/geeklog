@@ -106,6 +106,7 @@ $PLG_links_MESSAGE3 = '聯結已成功的刪除.';
 $PLG_links_MESSAGE4 = "謝謝你為本站提交一個聯結.  你的連接現在已顯現在<a href={$_CONF['site_url']}/links/index.php>聯結</a>處.";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: ukrainian_koi8-u.php,v 1.5 2006/12/16 21:11:15 dhaun Exp $
+ * $Id: ukrainian_koi8-u.php,v 1.6 2008/03/17 21:12:54 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -131,7 +131,7 @@ $PLG_spamx_MESSAGE128 = 'Знайдено спам, коментар чи пов╕домлення вилучено.';
 $PLG_spamx_MESSAGE8   = 'Знайдено спам. Адм╕н╕стратору над╕слано електронного листа.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Модуль Spam-X усп╕шно оновлено.';
-$PLG_spamx_MESSAGE3002 = 'Не вдалося оновити модуль Spam-X.';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

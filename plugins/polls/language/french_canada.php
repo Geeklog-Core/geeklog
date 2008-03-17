@@ -1,8 +1,9 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for the Geeklog Polls Plug-in!
+# french_canada.php
+#
+# This is the Canadian French language file for the Geeklog Polls plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -89,5 +90,9 @@ $LANG25 = array(
 );
 
 $PLG_polls_MESSAGE19 = 'Vos sondages ont été sauvegardés avec succès.';
+
+// Messages for the plugin upgrade
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_polls_MESSAGE3002 = $LANG32[9];
 
 ?>

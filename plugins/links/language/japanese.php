@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: japanese.php,v 1.10 2007/11/25 06:56:34 ospiess Exp $
+# $Id: japanese.php,v 1.11 2008/03/17 21:12:54 dhaun Exp $
 # Last Update 2006/12/12 by Ivy (Geeklog Japanese)
 
 /**
@@ -136,6 +136,7 @@ $PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンク登録ありがとうございます。<a
 $PLG_links_MESSAGE5 = "You do not have sufficient access rights to view this category.";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

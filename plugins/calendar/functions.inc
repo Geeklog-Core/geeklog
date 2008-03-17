@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.80 2008/03/16 12:22:01 dhaun Exp $
+// $Id: functions.inc,v 1.81 2008/03/17 21:12:54 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -370,7 +370,7 @@ function plugin_moderationapprove_calendar ($id)
 
     // Since the eventsubmission table does not contain fields for the owner
     // and group, we set those to the current user. Also set the default
-    // permissions as specified in the plugin's config.php
+    // permissions as specified in the plugin's configuration
     if (isset ($_GROUPS['Calendar Admin'])) {
         $group_id = $_GROUPS['Calendar Admin'];
     } else {
@@ -1367,37 +1367,15 @@ function plugin_chkVersion_calendar()
 */
 function plugin_upgrade_calendar()
 {
-    global $_TABLES, $_CA_CONF, $_STATES;
-
-    // the plugin needs this function so complain when it doesn't exist
-    if (!function_exists ('MBYTE_strpos')) {
+    // the plugin needs these function so complain when they don't exist
+    if (!function_exists('PLG_uninstall') ||
+            !function_exists('COM_createLink')) {
         return 3002;
     }
 
-    $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
-                             "$pi_name = 'calendar'");
-
-    if (($pi_version == '1.0.0') || ($pi_version == '1.0.1')) {
-        DB_query("ALTER TABLE {$_TABLES['events']} CHANGE state state varchar(40) default NULL");
-        DB_query("ALTER TABLE {$_TABLES['eventsubmission']} CHANGE state state varchar(40) default NULL");
-        DB_query("ALTER TABLE {$_TABLES['personal_events']} CHANGE state state varchar(40) default NULL");
-
-        if (isset($_STATES) && is_array($_STATES)) {
-            $tables = array($_TABLES['events'], $_TABLES['eventsubmission'],
-                            $_TABLES['personal_events']);
-
-            foreach ($_STATES as $key => $state) {
-                foreach ($tables as $table) {
-                    DB_change($table, 'state', addslashes($state),
-                                      'state', addslashes($key));
-                }
-            }
-        }
-    }
-
-    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_CA_CONF['version']}', pi_gl_version = '1.5.0' WHERE pi_name = 'calendar'");
-
-    return true;
+    // upgrades are done by the install script - return a generic error
+    COM_errorLog("Plugin upgrade function not implemented");
+    return 3001;
 }
 
 /**

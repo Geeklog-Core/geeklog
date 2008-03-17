@@ -175,4 +175,8 @@ $PLG_calendar_MESSAGE18 = 'Sinu sündmus on edukalt kustutatud.';
 $PLG_calendar_MESSAGE24 = 'Sündmus on salvestatud sinu kalendrisse.';
 $PLG_calendar_MESSAGE26 = 'Sündmus on edukalt kustutatud.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

@@ -94,6 +94,7 @@ $PLG_polls_MESSAGE19 = 'Tvoja anketa je uspešno shranjena.';
 $PLG_polls_MESSAGE20 = 'Tvoja anketa je uspešno izbrisana.';
 
 // Messages for the plugin upgrade
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 ?>

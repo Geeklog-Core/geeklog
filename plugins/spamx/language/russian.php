@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: russian.php,v 1.1 2006/11/01 20:38:55 dhaun Exp $
+ * $Id: russian.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -130,8 +130,8 @@ $LANG_SX00 = array (
 $PLG_spamx_MESSAGE128 = 'Обнаружен спам и сообщение или комментарий удалены.';
 $PLG_spamx_MESSAGE8   = 'Обнаружен спам. Администратору отправлено уведомление.';
 
-// Сообщения обновления модуля
-$PLG_spamx_MESSAGE3001 = 'Модуль Spam-X успешно обновлен.';
-$PLG_spamx_MESSAGE3002 = 'Не удалось обновить модуль Spam-X.';
+// Messages for the plugin upgrade
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

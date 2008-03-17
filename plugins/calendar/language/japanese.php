@@ -186,4 +186,8 @@ $PLG_calendar_MESSAGE18 = 'イベントが削除されました。';
 $PLG_calendar_MESSAGE24 = 'イベントが個人カレンダに保存されました。';
 $PLG_calendar_MESSAGE26 = 'イベントが削除されました。';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

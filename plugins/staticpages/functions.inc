@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.117 2008/03/16 09:33:23 dhaun Exp $
+// $Id: functions.inc,v 1.118 2008/03/17 21:12:54 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1030,48 +1030,17 @@ function plugin_geticon_staticpages ()
 * @return   int     Number of message to display (true = generic success msg)
 *
 */
-function plugin_upgrade_staticpages ()
+function plugin_upgrade_staticpages()
 {
-    global $_CONF, $_TABLES, $_SP_CONF, $plugin_path;
-
-    // the plugin needs this function so complain when it doesn't exist
-    if (!function_exists('SEC_getGroupDropdown')) {
+    // the plugin needs these function so complain when they don't exist
+    if (!function_exists('PLG_uninstall') ||
+            !function_exists('COM_createLink')) {
         return 3002;
     }
 
-    $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
-                             "pi_name = 'staticpages'");
-
-    if ($pi_version == '1.4.3') { // Need to initialize the config table
-
-        require_once $_CONF['path_system'] . 'classes/config.class.php';
-        require_once $plugin_path . 'install_defaults.php';
-
-        if (!plugin_initconfig_staticpages()) {
-            COM_errorLog("Staticpages upgrade to 1.5.0 failed");
-            return 3001;
-        }
-
-        if (file_exists($plugin_path . 'config.php')) {
-            // Rename the existing config.php as it's not needed any more
-            $ren = @rename($plugin_path . 'config.php',
-                           $plugin_path . 'config-pre1.5.0.php');
-            if (!$ren) {
-                COM_errorLog("Could not rename the Static Pages plugin's config.php file. Please remove if manually, as it is not needed any more.");
-            }
-        }
-
-        $sp_config = config::get_instance();
-        if ($sp_config->group_exists('staticpages')) {
-            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.5.0', pi_gl_version = '1.5.0' WHERE pi_name = 'staticpages'");
-        } else {
-            COM_errorLog("Staticpages upgrade to 1.5.0 failed");
-            return 3001;
-        }
-
-    }
-
-    return true;
+    // upgrades are done by the install script - return a generic error
+    COM_errorLog("Plugin upgrade function not implemented");
+    return 3001;
 }
 
 

@@ -171,4 +171,8 @@ $PLG_calendar_MESSAGE18 = 'Událost byla úspì¹nì vymazána.';
 $PLG_calendar_MESSAGE24 = 'Událost byla ulo¾ena do kalendáøe.';
 $PLG_calendar_MESSAGE26 = 'Událost byla vymazána.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

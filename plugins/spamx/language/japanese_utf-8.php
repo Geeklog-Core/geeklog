@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese_utf-8.php,v 1.4 2007/11/25 06:57:41 ospiess Exp $
+ * $Id: japanese_utf-8.php,v 1.5 2008/03/17 21:12:54 dhaun Exp $
  */
 # Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
@@ -134,7 +134,7 @@ $PLG_spamx_MESSAGE128 = 'Spam 削除。投稿は削除されました。';
 $PLG_spamx_MESSAGE8   = 'Spam 削除。メールが管理者に送られました。';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Spam-X プラグインがアップグレードしました。';
-$PLG_spamx_MESSAGE3002 = 'Spam-X プラグインのアップグレードに失敗しました。';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

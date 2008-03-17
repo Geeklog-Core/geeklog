@@ -92,6 +92,7 @@ $PLG_polls_MESSAGE19 = 'Your poll has been successfully saved.';
 $PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 
 // Messages for the plugin upgrade
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 ?>

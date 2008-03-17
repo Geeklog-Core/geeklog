@@ -176,4 +176,8 @@ $PLG_calendar_MESSAGE18 = 'El evento ha sido borrado correctamente.';
 $PLG_calendar_MESSAGE24 = 'El evento ha sido guardado en tu calendario.';
 $PLG_calendar_MESSAGE26 = 'El evento ha sido borrado correctamente.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

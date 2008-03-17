@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: farsi_utf-8.php,v 1.4 2006/09/02 15:35:46 dhaun Exp $
+ * $Id: farsi_utf-8.php,v 1.5 2008/03/17 21:12:54 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -133,7 +133,7 @@ $PLG_spamx_MESSAGE128 = 'Spam detected and Comment or Message was deleted.';
 $PLG_spamx_MESSAGE8   = 'Spam detected. Email sent to admin.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Spam-X plugin upgraded successfully.';
-$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

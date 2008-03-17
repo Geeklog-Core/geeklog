@@ -175,4 +175,8 @@ $PLG_calendar_MESSAGE18 = '이벤트가 삭제 되었습니다。';
 $PLG_calendar_MESSAGE24 = '이벤트가 개인스캐줄에 보존 되었습니다。';
 $PLG_calendar_MESSAGE26 = '이벤트가 삭제 되었습니다。';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

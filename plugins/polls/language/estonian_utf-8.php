@@ -95,6 +95,7 @@ Palun <a href=\"{$_CONF['site_admin_url']}/poll.php\"> mine tagasi küsitluste a
 $PLG_polls_MESSAGE20 = 'Sinu küsitlus on edukalt kustutatud.';
 
 // Messages for the plugin upgrade
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 ?>

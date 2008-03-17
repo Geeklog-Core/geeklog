@@ -170,4 +170,9 @@ $PLG_calendar_MESSAGE17 = 'Ваше событие успешно сохране
 $PLG_calendar_MESSAGE18 = 'Событие успешно удалено.';
 $PLG_calendar_MESSAGE24 = 'Событие успешно сохранено в Ваш календарь.';
 $PLG_calendar_MESSAGE26 = 'Событие успешно удалено.';
+
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

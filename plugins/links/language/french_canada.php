@@ -1,8 +1,9 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for the Geeklog links Plug-in!
+# french_canada.php
+#
+# This is the Canadian French language file for the Geeklog Links plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -24,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: french_canada.php,v 1.1 2007/07/29 08:07:41 dhaun Exp $
+# $Id: french_canada.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -122,6 +123,10 @@ $PLG_links_MESSAGE1 = "Merci de soumettre un lien vers {$_CONF['site_name']}.  V
 $PLG_links_MESSAGE2 = 'Lien sauvegardé avec succès.';
 $PLG_links_MESSAGE3 = 'Lien effacé avec succès.';
 $PLG_links_MESSAGE4 = "Merci de soumettre un lien vers {$_CONF['site_name']}. Il apparaît désormais à la <a href={$_CONF['site_url']}/links/index.php>section des liens</a>.";
+
+// Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
 # admin/link.php

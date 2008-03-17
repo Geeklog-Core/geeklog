@@ -172,4 +172,8 @@ $PLG_calendar_MESSAGE18 = 'Der Termin wurde gelöscht.';
 $PLG_calendar_MESSAGE24 = 'Der Termin wurde in Ihren Kalender eingetragen.';
 $PLG_calendar_MESSAGE26 = 'Der Termin wurde gelöscht.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

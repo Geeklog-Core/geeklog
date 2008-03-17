@@ -12,7 +12,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: slovenian_utf-8.php,v 1.1 2006/10/15 07:48:24 dhaun Exp $
+ * $Id: slovenian_utf-8.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -134,7 +134,7 @@ $PLG_spamx_MESSAGE128 = 'Spam detected. Post was deleted.';
 $PLG_spamx_MESSAGE8   = 'Spam detected. Email sent to admin.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Spam-X plugin upgraded successfully.';
-$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the Spam-X plugin.';
+$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 ?>

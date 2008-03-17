@@ -26,7 +26,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: estonian.php,v 1.2 2007/08/28 07:33:30 ospiess Exp $
+# $Id: estonian.php,v 1.3 2008/03/17 21:12:54 dhaun Exp $
 
 /** 
  * This is the estonian language page for the Geeklog links Plug-in! 
@@ -125,6 +125,7 @@ $PLG_links_MESSAGE3 = 'Link on edukalt kustutatud';
 $PLG_links_MESSAGE4 = "Täname sind {$_CONF['site_name']}  lehele lingi lisamise eest. Sa võid seda linki juba näha <a href=\"{$_CONF['site_url']}/links/\">linkide osas.</a>";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

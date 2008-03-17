@@ -87,6 +87,7 @@ $PLG_links_MESSAGE3 = '—сылка успешно удалена.';
 $PLG_links_MESSAGE4 = "—пасибо за присланную на {$_CONF['site_name']} ссылку!  —сылка добавлена в раздел <a href={$_CONF['site_url']}/links/index.php>—сылки</a>.";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

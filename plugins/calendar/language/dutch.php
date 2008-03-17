@@ -172,4 +172,8 @@ $PLG_calendar_MESSAGE18 = 'De gebeurtenis wordt verwijderd.';
 $PLG_calendar_MESSAGE24 = 'De gebeurtenis is in uw kalender opgenomen.';
 $PLG_calendar_MESSAGE26 = 'Deze gebeurtenis is reeds verwijderd.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

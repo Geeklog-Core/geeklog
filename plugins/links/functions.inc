@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.105 2008/02/24 15:41:51 dhaun Exp $
+// $Id: functions.inc,v 1.106 2008/03/17 21:12:54 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -714,127 +714,17 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 * @return   int     Number of message to display (true = generic success msg)
 *
 */
-function plugin_upgrade_links ()
+function plugin_upgrade_links()
 {
-    global $_CONF, $_TABLES, $_LI_CONF, $_DB_dbms;
-
-    // the plugin needs these functions so complain when they doesn't exist
-    if (!function_exists('COM_truncate') || !function_exists('MBYTE_strpos')) {
+    // the plugin needs these function so complain when they don't exist
+    if (!function_exists('PLG_uninstall') ||
+            !function_exists('COM_createLink')) {
         return 3002;
     }
 
-    // include SQL required for upgrade
-    $blockadmin_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                                "grp_name = 'Block Admin'");
-    include $_CONF['path'] . 'plugins/links/sql/upgrade_1.0.1_2.'.$_DB_dbms.'.php';
-
-    // get current version
-    $currentVersion = DB_getItem($_TABLES['plugins'], 'pi_version',
-                                 "pi_name = 'links'");
-    switch ($currentVersion) {
-
-        case "1.0":
-        case "1.0.1":
-        // do DB changes:
-
-        // create categories table
-
-        COM_errorLog("Adding categories table to the links plugin", 1);
-        DB_query($LINKS_SQL['linkcategories'], 1);
-        if (DB_error()) {
-            COM_errorLog("There was an error adding categories table to the links plugin", 1);
-            return false;
-        }
-
-        // move categories across:
-
-        // get category data
-        COM_errorLog("Selecting category data from links table",1);
-        $result = DB_query($LINKS_SQL['getcategories']);
-        if (DB_error()) {
-            COM_errorLog("Error selecting categories from links table",1);
-            return false;
-        }
-        COM_errorLog("Success - selected categories from links table",1);
-
-        // get Links admin group number
-        $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                               "grp_name = 'Links Admin'");
-
-        // loop through adding to category table, then update links table with cids
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
-            for ($i = 1; $i <= $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $category = addslashes($A['category']);
-                $cid = addslashes(COM_makeSid());
-                DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,owner_id,group_id,created,modified) VALUES ('{$cid}','{$_LI_CONF['root']}','{$category}','2','{$group_id}',NOW(),NOW())",1);
-                DB_query("UPDATE {$_TABLES['links']} SET category='{$cid}' WHERE category='{$category}'",1);
-                if (DB_error()) {
-                    COM_errorLog("Error inserting categories into linkcategories table",1);
-                    return false;
-                }
-            }
-        }
-        COM_errorLog("Success - inserted categories into linkcategories table",1);
-
-        // update the links and linksubmission table structures
-        COM_errorLog("Updating linksubmission table for the links plugin (a)", 1);
-        DB_query($LINKS_SQL['linksubmission1'],1);
-        if (DB_error()) {
-            COM_errorLog("There was an error updating the linksubmission table of the links plugin (a)", 1);
-            return false;
-        }
-        COM_errorLog("Updating linksubmission table for the links plugin (b)", 1);
-        DB_query($LINKS_SQL['linksubmission2'],1);
-        if (DB_error()) {
-            COM_errorLog("There was an error updating the linksubmission table of the links plugin (b)", 1);
-            return false;
-        }
-        COM_errorLog("Success - updated linksubmission table for the links plugin",1);
-
-        COM_errorLog("Updating links table for the links plugin", 1);
-        DB_query($LINKS_SQL['links'],1);
-        if (DB_error()) {
-            COM_errorLog("There was an error updating the links table of the links plugin", 1);
-            return false;
-        }
-        COM_errorLog("Success - updated links table for the links plugin",1);
-
-        // add root category
-        DB_query($LINKS_SQL['root'],1);
-        if (DB_error()) {
-            COM_errorLog("There was an error adding the root category to the links plugin", 1);
-            return false;
-        }
-        COM_errorLog("Success - added root category to the links plugin",1);
-
-        // add php links block
-        DB_query($LINKS_SQL['linksblock'],1);
-        if (DB_error()) {
-            COM_errorLog("There was an error adding the phplinksblock to the links plugin", 1);
-            return false;
-        }
-        COM_errorLog("Success - added phplinksblock to the links plugin",1);
-
-        // add php categories block
-        DB_query($LINKS_SQL['categoriesblock'],1);
-        if (DB_error()) {
-            COM_errorLog("There was an error adding the phpcategoriesblock to the links plugin", 1);
-            return false;
-        }
-        COM_errorLog("Success - added phpcategoriesblock to the links plugin",1);
-
-        // update the version numbers
-        DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_LI_CONF['version']}', pi_gl_version='1.5.0' WHERE pi_name='links'");
-        break;
-
-    default :
-    // do nothing
-    break;
-    }
-
-    return true;
+    // upgrades are done by the install script - return a generic error
+    COM_errorLog("Plugin upgrade function not implemented");
+    return 3001;
 }
 
 /**

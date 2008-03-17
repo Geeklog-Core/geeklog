@@ -177,4 +177,8 @@ $PLG_calendar_MESSAGE18 = 'Dogodek je uspešno izbrisan.';
 $PLG_calendar_MESSAGE24 = 'Dogodek je shranjen v tvoj koledar.';
 $PLG_calendar_MESSAGE26 = 'Dogodek je uspešno izbrisan.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

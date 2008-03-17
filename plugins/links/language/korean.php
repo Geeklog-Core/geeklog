@@ -25,7 +25,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: korean.php,v 1.1 2007/04/22 07:23:54 dhaun Exp $
+# $Id: korean.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
 # Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
 ###############################################################################
@@ -92,6 +92,7 @@ $PLG_links_MESSAGE3 = '링크의 삭제가 완료 되었습니다。';
 $PLG_links_MESSAGE4 = "{$_CONF['site_name']} 의 링크에 등록해 주셔서 감사합니다。<a href={$_CONF['site_url']}/links/index.php>링크</a>에서 확인 하시기 바랍니다。";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################

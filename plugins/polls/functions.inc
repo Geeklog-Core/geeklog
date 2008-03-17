@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.85 2008/03/16 09:33:23 dhaun Exp $
+// $Id: functions.inc,v 1.86 2008/03/17 21:12:54 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1106,49 +1106,17 @@ function plugin_getheadercode_polls()
 * @return   int     Number of message to display (true = generic success msg)
 *
 */
-function plugin_upgrade_polls ()
+function plugin_upgrade_polls()
 {
-    global $_TABLES, $_PO_CONF;
-
-    // the plugin needs this function so complain when it doesn't exist
-    if (!function_exists ('SEC_getGroupDropdown')) {
+    // the plugin needs these function so complain when they don't exist
+    if (!function_exists('PLG_uninstall') ||
+            !function_exists('COM_createLink')) {
         return 3002;
     }
 
-    $current_version = DB_getItem ($_TABLES['plugins'], 'pi_version',
-                                   "pi_name = 'polls'");
-    if ($current_version == '1.0') {
-        $sql = "ALTER TABLE {$_TABLES['pollanswers']} ADD remark VARCHAR(255) NULL AFTER votes;";
-        $result = DB_query ($sql);
-    } else if ($current_version == '1.1.0') {
-        $_SQL[] = "RENAME TABLE `{$_TABLES['pollquestions']}` TO `{$_TABLES['polltopics']}`;";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `question` `topic` VARCHAR( 255 )  NULL DEFAULT NULL";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD questions int(11) NOT NULL AFTER voters";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD open tinyint(1) NOT NULL default '1' AFTER display";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '0' AFTER open";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;";
-        $_SQL[] = "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL";
-        $_SQL[] = "CREATE TABLE {$_TABLES['pollquestions']} (
-              qid mediumint(9) NOT NULL DEFAULT '0',
-              pid varchar(20) NOT NULL,
-              question varchar(255) NOT NULL,
-              PRIMARY KEY (qid)
-            ) TYPE=MyISAM
-            ";
-
-        $_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) SELECT pid, topic FROM {$_TABLES['polltopics']}";
-
-        for ($i=0; $i<count($_SQL); $i++) {
-            $result = DB_query ($_SQL[$i]);
-        }
-
-    }
-
-    DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_PO_CONF['version']}', pi_gl_version = '" . VERSION . "' WHERE pi_name = 'polls'");
-
-    return true;
+    // upgrades are done by the install script - return a generic error
+    COM_errorLog("Plugin upgrade function not implemented");
+    return 3001;
 }
 
 ?>

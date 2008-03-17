@@ -95,6 +95,7 @@ $PLG_polls_MESSAGE19 = 'Tu encuesta se guardó satisfactoriamente.';
 $PLG_polls_MESSAGE20 = 'Tu encuesta se ha borrado satisfactoriamente.';
 
 // Messages for the plugin upgrade
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 ?>

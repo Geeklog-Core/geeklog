@@ -171,4 +171,8 @@ $PLG_calendar_MESSAGE18 = 'Под╕ю усп╕шно вилучено.';
 $PLG_calendar_MESSAGE24 = 'Под╕ю усп╕шно збережено до вашого календаря.';
 $PLG_calendar_MESSAGE26 = 'Под╕ю усп╕шно вилучено.';
 
+// Messages for the plugin upgrade
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3002 = $LANG32[9];
+
 ?>

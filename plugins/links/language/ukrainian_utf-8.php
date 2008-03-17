@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: ukrainian_utf-8.php,v 1.2 2007/08/28 07:33:30 ospiess Exp $
+# $Id: ukrainian_utf-8.php,v 1.3 2008/03/17 21:12:54 dhaun Exp $
 
 ###############################################################################
 # Array Format:
@@ -88,6 +88,7 @@ $PLG_links_MESSAGE3 = 'Посилання успішно вилучено.';
 $PLG_links_MESSAGE4 = "Дякуємо за надіслане на {$_CONF['site_name']} посилання.  Його додано до розділу <a href={$_CONF['site_url']}/links/index.php>Веб ресурси</a>.";
 
 // Messages for the plugin upgrade
+$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
