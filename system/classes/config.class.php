@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.32 2008/03/15 19:55:20 dhaun Exp $
+// $Id: config.class.php,v 1.33 2008/03/21 15:38:05 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -595,30 +595,23 @@ class config {
             return $t->finish($t->parse('output', 'text-element'));
         } elseif ($type == "placeholder") {
             return $t->finish($t->parse('output', 'placeholder-element'));
-        } elseif ($type == "select") {
+        } elseif ($type == 'select') {
+            $type_name = $type . '_' . $name;
+            if ($group == 'Core') {
+                $fn = 'configmanager_' . $type_name . '_helper';
+            } else {
+                $fn = 'plugin_configmanager_' . $type_name . '_' . $group;
+            }
+            if (function_exists($fn)) {
+                $selectionArray = $fn();
+            } else if (is_array($selectionArray)) {
+                // leave sorting to the function otherwise
+                uksort($selectionArray, 'strcasecmp');
+            }
             if (! is_array($selectionArray)) {
                 return $t->finish($t->parse('output', 'text-element'));
             }
 
-            $t->set_block('select-element', 'select-options', 'myoptions');
-            uksort($selectionArray, 'strcasecmp');
-            foreach ($selectionArray as $sName => $sVal) {
-                if (is_bool($sVal)) {
-                    $t->set_var('opt_value', $sVal ? 'b:1' : 'b:0');
-                } else {
-                    $t->set_var('opt_value', $sVal);
-                }
-                $t->set_var('opt_name', $sName);
-                $t->set_var('selected', ($val == $sVal ? 'selected="selected"' : ''));
-                $t->parse('myoptions', 'select-options', true);
-            }
-            return $t->parse('output', 'select-element');
-        } elseif (substr($type, 0, 3) == 'fn:') {
-            $fn = 'configmanager_' . substr($type, 3);
-            if (!function_exists($fn)) {
-                return $t->finish($t->parse('output', 'text-element'));
-            }
-            $selectionArray = $fn();
             $t->set_block('select-element', 'select-options', 'myoptions');
             foreach ($selectionArray as $sName => $sVal) {
                 if (is_bool($sVal)) {
@@ -634,9 +627,10 @@ class config {
         } elseif (strpos($type, "@") === 0) {
             $result = "";
             foreach ($val as $valkey => $valval) {
-                $result .= config::_UI_get_conf_element($group, $name . '[' . $valkey . ']',
-                                                      $display_name . '[' . $valkey . ']',
-                                                      substr($type, 1), $valval, $selectionArray);
+                $result .= config::_UI_get_conf_element($group,
+                                $name . '[' . $valkey . ']',
+                                $display_name . '[' . $valkey . ']',
+                                substr($type, 1), $valval, $selectionArray);
             }
             return $result;
         } elseif (strpos($type, "*") === 0 || strpos($type, "%") === 0) {
@@ -648,8 +642,10 @@ class config {
             $t->set_var('my_add_element_button', $button);
             $result = "";
             foreach ($val as $valkey => $valval) {
-                $result .= config::_UI_get_conf_element($group, $name . '[' . $valkey . ']', $valkey,
-                                                      substr($type, 1), $valval, $selectionArray, true);
+                $result .= config::_UI_get_conf_element($group,
+                                $name . '[' . $valkey . ']', $valkey,
+                                substr($type, 1), $valval, $selectionArray,
+                                true);
             }
             $t->set_var('my_elements', $result);
             return $t->parse('output', 'list-element');

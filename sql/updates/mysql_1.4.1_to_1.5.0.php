@@ -145,7 +145,7 @@ function create_ConfValues()
     $c->add('sg_theme', NULL, 'subgroup', 2, 0, NULL, 0, TRUE);
 
     $c->add('fs_theme', NULL, 'fieldset', 2, 10, NULL, 0, TRUE);
-    $c->add('theme','professional','fn:themeList',2,10,NULL,190,TRUE);
+    $c->add('theme','professional','select',2,10,NULL,190,TRUE);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%text',2,10,NULL,200,TRUE);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE);
 
@@ -274,7 +274,7 @@ function create_ConfValues()
     $c->add('sg_locale', NULL, 'subgroup', 6, 0, NULL, 0, TRUE);
 
     $c->add('fs_language', NULL, 'fieldset', 6, 28, NULL, 0, TRUE);
-    $c->add('language','english','fn:languageList',6,28,NULL,350,TRUE);
+    $c->add('language','english','select',6,28,NULL,350,TRUE);
     $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8'),'*text',6,28,NULL,470,FALSE);
     $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,28,NULL,480,FALSE);
 

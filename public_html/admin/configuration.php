@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.11 2008/02/02 21:56:27 blaine Exp $
+// $Id: configuration.php,v 1.12 2008/03/21 15:38:05 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -46,7 +46,7 @@ $config =& config::get_instance();
 * @note     Note that key/value are being swapped!
 *
 */
-function configmanager_languageList()
+function configmanager_select_language_helper()
 {
     global $_CONF;
 
@@ -61,7 +61,7 @@ function configmanager_languageList()
 * @note     Beautifying code duplicated from usersettings.php
 *
 */
-function configmanager_themeList()
+function configmanager_select_theme_helper()
 {
     $themes = array();
 
