@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.33 2008/03/21 15:38:05 dhaun Exp $
+// $Id: config.class.php,v 1.34 2008/03/21 19:43:32 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -336,7 +336,7 @@ class config {
                        'unset' : $cur[1]),
                       'selectionArray' =>
                       (($cur[2] != -1) ?
-                       $LANG_configselects[$group][$cur[2]] : null),
+                       isset($LANG_configselects[$group][$cur[2]]) : null),
                       'value' =>
                       (($cur[4] == 'unset') ?
                        'unset' : unserialize($cur[4])));
@@ -345,7 +345,7 @@ class config {
         return $res;
     }
 
-    /* Changes any config settings that depend on other configuration settings. */
+    // Changes any config settings that depend on other configuration settings.
     function _post_configuration()
     {
         $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes']
@@ -432,17 +432,23 @@ class config {
                         if (isset($LANG_configsubgroups[$group][$sgname])) {
                             $t->set_var('subgroup_active_name',
                                     $LANG_configsubgroups[$group][$sgname]);
-                        } else {
+                        } else if (isset($LANG_configsubgroups[$group][$sgroup])) {
                             $t->set_var('subgroup_active_name',
                                     $LANG_configsubgroups[$group][$sgroup]);
+                        } else {
+                            $t->set_var('subgroup_active_name', $sgname);
                         }
                         $t->set_var('select_id', 'id="current"');
                     } else {
                         $t->set_var('select_id', '');
                     }
                     $t->set_var('subgroup_name', $sgroup);
-                    $t->set_var("subgroup_display_name",
-                                $LANG_configsubgroups[$group][$sgname]);
+                    if (isset($LANG_configsubgroups[$group][$sgname])) {
+                        $t->set_var('subgroup_display_name',
+                                    $LANG_configsubgroups[$group][$sgname]);
+                    } else {
+                        $t->set_var('subgroup_display_name', $sgname);
+                    }
                     if ($innerloopcntr == 1) {
                         $t->parse('subgroups', "subgroup-selector");
                     } else {
@@ -513,8 +519,10 @@ class config {
                         "type = 'fieldset' AND fieldset = $fs_id AND group_name = '$group'");
         if (empty($fs_index)) {
             $t->set_var('fs_display', $LANG_fs[$group][$fs_id]);
-        } else {
+        } else if (isset($LANG_fs[$group][$fs_index])) {
             $t->set_var('fs_display', $LANG_fs[$group][$fs_index]);
+        } else {
+            $t->set_var('fs_display', $fs_index);
         }
         $t->set_var('fs_notes', '');
         $t->parse('sg_contents', 'fieldset', true);
@@ -760,8 +768,10 @@ class config {
             foreach ($sgroups as $sgname => $sgroup) {
                 if (isset($LANG_configsubgroups[$conf_group][$sgname])) {
                     $group_display = $LANG_configsubgroups[$conf_group][$sgname];
-                } else {
+                } else if (isset($LANG_configsubgroups[$conf_group][$sgroup])) {
                     $group_display = $LANG_configsubgroups[$conf_group][$sgroup];
+                } else {
+                    $group_display = $sgname;
                 }
                 // Create a menu item for each sub config group - disable the link for the current selected one
                 if ($i == $sg) {
