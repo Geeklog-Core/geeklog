@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.33 2008/03/16 11:30:28 dhaun Exp $
+// $Id: index.php,v 1.34 2008/03/21 12:30:51 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -74,12 +74,14 @@ function php_v ()
 /**
  * Returns the MySQL version
  *
- * @return array the 3 separate parts of the MySQL version number
+ * @return  mixed   array[0..2] of the parts of the version number or false
  *
  */
-function mysql_v ($_DB_host, $_DB_user, $_DB_pass)
+function mysql_v($_DB_host, $_DB_user, $_DB_pass)
 {
-    @mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
+    if (@mysql_connect($_DB_host, $_DB_user, $_DB_pass) === false) {
+        return false;
+    }
     $mysqlv = '';
 
     // mysql_get_server_info() is only available as of PHP 4.0.5
@@ -230,16 +232,23 @@ function INST_installEngine($install_type, $install_step)
 
             // If using MySQL check to make sure the version is supported
             $outdated_mysql = false;
+            $failed_to_connect = false;
             if ($db_type == 'mysql' || $db_type == 'mysql-innodb') {
                 $myv = mysql_v($db_host, $db_user, $db_pass);
-                if (($myv[0] < 3) || (($myv[0] == 3) && ($myv[1] < 23)) ||
+                if ($myv === false) {
+                    $failed_to_connect = true;
+                } elseif (($myv[0] < 3) || (($myv[0] == 3) && ($myv[1] < 23)) ||
                         (($myv[0] == 3) && ($myv[1] == 23) && ($myv[2] < 2))) {
-                            $outdated_mysql = true;
+                    $outdated_mysql = true;
                 }
             }
             if ($outdated_mysql) { // If MySQL is out of date
                 $display .= '<h1>' . $LANG_INSTALL[51] . '</h1>' . LB;
                 $display .= '<p>' . $LANG_INSTALL[52] . $myv[0] . '.' . $myv[1] . '.' . $myv[2] . $LANG_INSTALL[53] . '</p>' . LB;
+            } elseif ($failed_to_connect) {
+                $display .= '<h2>' . $LANG_INSTALL[54] . '</h2><p>'
+                         . $LANG_INSTALL[55] . '</p>'
+                         . INST_showReturnFormData($_POST) . LB;
             } else {
                 // Check if you can connect to database
                 $invalid_db_auth = false;
@@ -262,8 +271,9 @@ function INST_installEngine($install_type, $install_step)
                     break;
                 }
                 if ($invalid_db_auth) { // If we can't connect to the database server
-                    $display .= '<h2>' . $LANG_INSTALL['54'] . '</h2>
-                        <p>' . $LANG_INSTALL[55] . '</p>' . INST_showReturnFormData($_POST) . LB;
+                    $display .= '<h2>' . $LANG_INSTALL[54] . '</h2><p>'
+                             . $LANG_INSTALL[55] . '</p>'
+                             . INST_showReturnFormData($_POST) . LB;
                 } else { // If we can connect
                     // Check if the database exists
                     $db_exists = false;
