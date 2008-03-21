@@ -1181,7 +1181,7 @@ $MESSAGE = array(
     89 => 'OpenIDサーバのURLが見つかりません。',
     90 => 'OpenID認識がキャンセルされました。',
     91 => '無効なURLが指定されました。',
-    92 => 'Please ' . COM_createLink('check the security of your site', $_CONF['site_admin_url'] . '/sectest.php') . ' before using it!',
+    92 => 'Please <a href="' . $_CONF['site_admin_url'] . '/sectest.php">check the security of your site</a> before using it!',
     93 => 'Database back up was successful.',
     94 => 'Backup Failed: Filesize less than 1kb',
     95 => 'There was an error.'
