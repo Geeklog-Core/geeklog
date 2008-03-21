@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.34 2008/03/21 12:30:51 dhaun Exp $
+// $Id: index.php,v 1.35 2008/03/21 16:11:13 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -574,6 +574,8 @@ function INST_installEngine($install_type, $install_step)
                         $config->set('site_mail', urldecode($site_mail));
                         $config->set('noreply_mail', urldecode($noreply_mail));
                         $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
+
+                        INST_checkPlugins();
 
                         // Great, installation is complete, redirect to success page
                         header('Location: success.php?type=upgrade&language=' . $language);
@@ -1399,6 +1401,32 @@ function INST_updateDB($_SQL)
             DB_query($sql);
         }
     }
+}
+
+/**
+* Check which plugins are actually installed and disable them if needed
+*
+* @return   int     number of plugins that were disabled
+*
+*/
+function INST_checkPlugins()
+{
+    global $_CONF, $_TABLES;
+
+    $disabled = 0;
+    $plugin_path = $_CONF['path'] . 'plugins/';
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $num_plugins = DB_numRows($result);
+    for ($i = 0; $i < $num_plugins; $i++) {
+        $A = DB_fetchArray($result);
+        if (!file_exists($plugin_path . $A['pi_name'] . '/functions.inc')) {
+            DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '{$A['pi_name']}'");
+            $disabled++;
+        }
+    }
+
+    return $disabled;
 }
 
 
