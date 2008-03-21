@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.4 2008/02/10 17:09:38 dhaun Exp $
+// $Id: install_defaults.php,v 1.5 2008/03/21 17:09:26 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -72,7 +72,7 @@ $_SP_DEFAULT['delete_pages'] = 0;
  * 'home' -> display the site homepage
  * 'admin' -> display the site admin homepage
  */
-$_SP_DEFAULT['aftersave'] = 'item';
+$_SP_DEFAULT['aftersave'] = 'list';
 
 // Static pages can optionally be wrapped in a block. This setting defines
 // the default for that option (1 = wrap in a block, 0 = don't).

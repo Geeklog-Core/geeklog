@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.1 2008/03/16 12:22:01 dhaun Exp $
+// $Id: install_defaults.php,v 1.2 2008/03/21 17:09:26 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -89,7 +89,7 @@ $_CA_DEFAULT['delete_event'] = 0;
  * 'home' -> display the site homepage
  * 'admin' -> display the site admin homepage
  */
-$_CA_DEFAULT['aftersave'] = 'item';
+$_CA_DEFAULT['aftersave'] = 'list';
 
 // Define default permissions for new events created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
