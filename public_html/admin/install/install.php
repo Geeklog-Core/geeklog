@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
 // | Redirect to Geeklog installation script.                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
 // +---------------------------------------------------------------------------+
@@ -28,13 +28,10 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | You don't need to change anything in this file.                           |
-// | Please read docs/install.html which describes how to install Geeklog.     |
-// +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.96 2007/09/06 06:57:48 mwest Exp $
+// $Id: install.php,v 1.97 2008/03/21 12:39:12 dhaun Exp $
 
 // This file still exists for backwards compatibility 
 header('Location: index.php');
 
-?>
+?><html><head><meta http-equiv="refresh" content="0; URL=index.php"></head></html>
