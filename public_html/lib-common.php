@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.688 2008/03/16 21:01:49 dhaun Exp $
+// $Id: lib-common.php,v 1.689 2008/03/21 12:49:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2789,15 +2789,13 @@ function COM_adminMenu( $help = '', $title = '' )
 /**
 * Redirects user to a given URL
 *
-* This function COM_passes a meta tag to COM_refresh after a form is sent.  This is
-* necessary because for some reason Nutscrape and PHP4 don't play well with
-* the header() function COM_100% of the time.
+* This function does a redirect using a meta refresh. This is (or at least
+* used to be) more compatible than using a HTTP Location: header.
 *
 * @param        string      $url        URL to send user to
 *
 */
-
-function COM_refresh( $url )
+function COM_refresh($url)
 {
     return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"" . XHTML . "></head></html>\n";
 }
