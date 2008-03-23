@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.34 2008/03/21 19:43:32 dhaun Exp $
+// $Id: config.class.php,v 1.35 2008/03/23 10:22:54 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -336,7 +336,8 @@ class config {
                        'unset' : $cur[1]),
                       'selectionArray' =>
                       (($cur[2] != -1) ?
-                       isset($LANG_configselects[$group][$cur[2]]) : null),
+                       //isset($LANG_configselects[$group][$cur[2]]) : null),
+                       $LANG_configselects[$group][$cur[2]] : null),
                       'value' =>
                       (($cur[4] == 'unset') ?
                        'unset' : unserialize($cur[4])));
