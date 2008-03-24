@@ -2,6 +2,15 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.0)
 ------------
+
+This release incorporates the following projects implemented during
+the 2007 Google Summer of Code:
+
++ New user-friendly install script by Matt West
++ New Configuration GUI (replacing config.php) by Aaron Blankstein
++ New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
+
+Other changes:
 - Removed Blogger remote authentication option. Blogger.com have changed their
   authentication process, so this module no longer works.
 - Emails sent from Geeklog will now have an X-Originating-IP header to help
@@ -43,7 +52,7 @@ Geeklog History/Changes:
   (reported by Samuel M. Stone) [Dirk]
 - Bugfix: Atom always assumes 0.3 and doesn't handle article dates. (Reported by
   mystral kk on the forums). [Mike]
-- Added OpenID support, provided by Choplair
+- Added OpenID 1.1 support, provided by Choplair
 - Pass site_name into story templates so advanced linking to items like digg.com
   can be templated cross-site. [Mike]
 - Revamped DB Backups option. It now lists all backups (all .sql files), and
@@ -164,7 +173,6 @@ Polls plugin (2.0.1)
 
 Spam-X plugin (1.1.1)
 -------------
-- Added support for the ProjectHoneyPot.org http:BL API [Mike]
 - Fixed the "edit" modules not working with the French language files (reported
   bye Joe) [Dirk]
 - Autouninstall implemented [Oliver]
