@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let users submit stories and plugin stuff.                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.121 2008/02/20 20:07:58 mjervis Exp $
+// $Id: submit.php,v 1.122 2008/03/24 18:36:52 dhaun Exp $
 
-require_once ('lib-common.php');
-require_once ($_CONF['path_system'] . 'lib-story.php');
+require_once 'lib-common.php';
+require_once $_CONF['path_system'] . 'lib-story.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -79,7 +79,7 @@ function submissionform($type='story', $mode = '', $topic = '')
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $loginreq = new Template($_CONF['path_layout'] . 'submit');
             $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
-            $loginreq->set_var( 'xhtml', XHTML );
+            $loginreq->set_var('xhtml', XHTML);
             $loginreq->set_var('site_url', $_CONF['site_url']);
             $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
             $loginreq->set_var('layout_url', $_CONF['layout_url']);
@@ -128,7 +128,7 @@ function submitstory($topic = '')
     {
         // preview
         $story->loadSubmission();
-            $retval .= COM_startBlock($LANG12[32])
+        $retval .= COM_startBlock($LANG12[32])
                 . STORY_renderArticle ($story, 'p')
                 . COM_endBlock();
     } else {
@@ -161,7 +161,7 @@ function submitstory($topic = '')
             $storyform->set_var ('show_htmleditor', 'none');
         }
     }
-    $storyform->set_var ( 'xhtml', XHTML );
+    $storyform->set_var ('xhtml', XHTML);
     $storyform->set_var ('site_url', $_CONF['site_url']);
     $storyform->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $storyform->set_var ('layout_url', $_CONF['layout_url']);
@@ -236,7 +236,7 @@ function sendNotification ($table, $story)
     if ($A['postmode'] == 'html') {
         $A['introtext'] = strip_tags ($A['introtext']);
     }
-    $introtext = COM_undoSpecialChars( $story->displayElements('introtext') . '\n' . $story->displayElements('bodytext') );
+    $introtext = COM_undoSpecialChars( $story->displayElements('introtext') . "\n" . $story->displayElements('bodytext') );
     $storyauthor = COM_getDisplayName( $story->displayelements('uid') );
     $topic = stripslashes(DB_getItem ($_TABLES['topics'], 'topic',
                                        'tid = \''.$story->displayElements('tid').'\''));
