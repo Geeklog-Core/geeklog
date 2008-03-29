@@ -11,506 +11,228 @@
 
 <h1>Installing Geeklog</h1>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="4">
-<tr>
-    <td valign="top">
-        <blockquote>
-            <table width="100%" border="0" cellspacing="2" cellpadding="4">
-                <tr>
-                    <td align="left" valign="top" bgcolor="#aec7e8" width="33%"><b>New Installation</b></td>
-                    <td align="left" valign="top" bgcolor="#ffe7af" width="33%"><b>Upgrading To New Version</b></td>
-                    <td align="left" valign="top" bgcolor="#ffa6a6" width="33%"><b>Common Problems</b></td>
-                </tr>
-                <tr>
-                    <td align="left" valign="top" bgcolor="#cdeeff" width="33%">
-                        <ul>
-                            <li type="disc"><a href="#preinstall">Pre-Installation Checklist</a>
-                            <li type="disc"><a href="#install">Installation Instructions</a>
-                        </ul>
-                    </td>
-                    <td align="left" valign="top" bgcolor="#f5ffc7" width="33%">
-                        <ul>
-                            <li type="disc"><a href="#preupgrade">Pre-Upgrade Checklist</a>
-                            <li type="disc"><a href="#upgrade">Upgrade Instructions</a>
-                        </ul>
-                    </td>
-                    <td align="left" valign="top" bgcolor="#ffdbd5" width="33%">
-                        <ul>
-                            <li type="disc"><a href="#installprob">Installation</a>
-                            <li type="disc"><a href="#postinstall">Post-Installation</a>
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3" align="left" valign="top">Glossary
-                        <ul>
-                            <li type="disc">path: A physical location on a server that describes
-                  where files and directories are. On Windows paths begin with
-                  the drive letter (<code>c:/inetpub/wwwroot/</code>), on
-                  *nix paths start at root (<code>/</code>) like (<code>/var/www/</code>)
-                            <li type="disc">url: Uniform Resource Locator, the address of a specific
-                  piece of information on the web (<code>http://www.foo.com/</code>)
-                        </ul>
-                    </td>
-                </tr>
-            </table>
-        </blockquote>
-    </td>
-</tr>
-<tr>
-    <td valign="top"><br>
-    </td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#aec7e8"><a name="preinstall"><b>PRE-INSTALLATION CHECKLIST (new installation)</b></a></td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#cdeeff">
-        <p>Before installing Geeklog for the first time, please make sure you have or know the following:</p>
-        <ol>
-            <li>A web server running PHP 4.1.0 or higher
-            <li>A web server running MySQL 3.23.2 or higher, with access to a database or the ability to create a database
-            <li>The ability to create a new database in MySQL or access to an existing one
-            <li>A telnet or SSH connection to your web server (although FTP will work). This document will be written assuming you have command line access to your server, but we will note the major differences for FTP users.
-            <li>The ability to unpack a tarball (file ending in tar.gz)
-            <li>You know the difference between a path and a URL
-            <li>You know how to determine your system paths<br>
-                <br>
-
-
-            <table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
-                <tr>
-                    <td bgcolor="white">
-                        <div align="left">
-                            <p><a name="ParseError"><font color="#FF0000">SPECIAL NOTE ABOUT PARSE ERRORS: </font></a></p>
-                            <p>Some users have reported that WinZip corrupts certain files in the Geeklog tarball during decompression which will cause errors during the installation process. You are strongly urged not to use WinZip. Try WinRAR if you must decompress the file locally, or better yet, unpack the file from your server (requires telnet/SSH access).</p>
-                            <p>Parse errors can also be caused by using a WYSIWYG editor on lib-common.php, e.g. Dreamweaver - you should use a "plain text editor".</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <br>
-        </ol>
-
-<p>The following instructions will refer to the
-<a name="public_html"><tt>public_html</tt></a> directory a lot. Here is what
-this is all about:<p>
-
-<p>Basically, a Geeklog installation consists of two parts: The part that is
-visible "to the world" - which is everything in the public_html directory.
-"public_html" is a popular name for the world-accessible directory that can be
-found on a webserver ("htdocs" and "www" are other popular names). So if you
-have such a directory, just copy everything from Geeklog's public_html
-directory into that directory on your webserver. Then you only need to set up
-$_CONF['path_html'] (in config.php) to point to that directory.</p>
-
-<p>The other part of Geeklog, which is everything outside the public_html
-directory, should not be accessible via a URL since it contains sensitive
-information. So you should really put those files and directories outside of
-your document root (i.e. outside the web server's public_html, htdocs, or www
-directory). Then you only need to set up $_CONF['path'] (again, in config.php)
-to point to the place where you put those files and directories.</p>
-
-<p>Separating the install in this way will also ensure that you can access your
-Geeklog site directly via a domain name (if you have one), e.g.
-http://www.yourdomain.com/, and that you don't need to include "public_html"
-in the URL.</p>
-
-<p>If your hosting service does not allow you to install files outside of your document root, please see this FAQ entry on geeklog.net: <a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=56">Installing Geeklog entirely within the web root</a>.</p>
-    </td>
-</tr>
-<tr>
-    <td valign="top"><br>
-        <br>
-        <br>
-        <br>
-    </td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#aec7e8"><b><a name="install">INSTALLATION INSTRUCTIONS (new installation)</a></b></td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#cdeeff">
-        <p>Please read this section <b>COMPLETELY</b> before beginning.</p>
-        <ol>
-            <li>Unpack the tarball *within* your web tree by running the following in your shell (this assumes you have ssh access and that you are working with the tarball <i>on the designated server </i>- this can be locally or hosted elsewhere):<br>
-                <br>
-                <code>tar -zxvf geeklog-1.4.1.tar.gz</code><br>
-                <br>
-                <b>FTP, Windows Users:</b> unpack the tarball on your <i>local computer</i> and upload the result to your designated server. Everything uploads as ASCII except the images.<br>
-                <br>
-            <li>For *nix installations the following may be required: <br>
-                <br>
-                <code>chown -R <i>webuser</i>:<i>webuser</i> /path/to/geeklog</code><br>
-                <br>This guarantees that everything in that path belongs to you, typical settings are www:www or nobody:nobody and more often than not doesn't matter.<br>
-                <br>
-            <li>For *nix installations cd into /path/to/geeklog and do the following:<br>
-                <br>
-                <code>chmod -R 775 logs<br>
-                    chmod -R 775 data<br>
-                    chmod -R 775 backups<br>
-                    chmod -R 775 public_html/backend<br>
-                    chmod -R 775 public_html/images/articles<br>
-                    chmod -R 775 public_html/images/topics<br>
-                    chmod -R 775 public_html/images/userphotos</code><br>
-                <br>
-                <b>FTP Users:</b> If you're doing the chmod via a FTP client, you must also apply the chmod to the files <b>in</b> logs/ and public_html/backend as well as the directories themselves. Most, if not all, ftp clients do not perform this command recursively.  That means you need to set each file within each of these directories manually.<br>
-                <br>
-
-
-            <table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
-                <tr>
-                    <td bgcolor="white">
-                        <p><font color="#FF0000">SPECIAL NOTE: </font></p>
-                        <p><b>Not following step #3 correctly is the #1 reason why people receive errors when they first try to use Geeklog</b>. Take your time and get it right. Also, some users have reported problems if the above permissions are not set to 777. Try 775 first and only be more permissive if you receive an error message.</p>
-<p>There is also a script at <b>http://yourgeeklogsite/admin/install/check.php</b> that can test the permissions for you.</p>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <li>Create the database you want Geeklog to reside in. You only need to create an empty database - the install script (see below) will create the tables for you.<br><br>If you are not familiar with using MySQL, you are urged to get <a href="http://www.phpmyadmin.net/">phpMyAdmin</a> and use it to create a new database. If you have no idea what the previous two sentences mean, contact your sysadmin for help.<br>
-                <br>
-            <li>Edit config.php with the appropriate settings for your server. For installation, this basically means "set your paths," as all other variables can be changed after a successful installation. The config.php file contains comments to help you out.<br><br>
-Windows users, you should be able to use the Unix '/' in your paths without any problems. Otherwise, you will need to use the doubled Windows slashes '\\'.<br><br>
-<em>Please read the comments in config.php carefully.</em><br>
-                <br>
-            <li>Edit <b>lib-common.php</b> and change the require_once() at the top to point to the location of your <b>config.php</b> file.<br>
-                <br>
-            <li>Open your browser and navigate to <b>http://yourgeeklogsite/admin/install/install.php</b> and follow the directions!<br>
-                <br>
-            <li>Once you see the success message, you are ready to go. <b>You can now
-              delete the admin/install directory</b> (and all files within
-              it).<br><br>
-      <li>Read the first story on your Geeklog site to learn how to log in
-        as the administrator. Please remember to change the default passwords on all pre-configured accounts right away.<br>
-                <br>
-
-
-        </ol>
-<p>If you run into problems or keep getting error messages, please see the section on <a href="#installprob">common installation problems</a> below.</p>
-    </td>
-</tr>
-<tr>
-    <td valign="top"><br>
-        <br>
-        <br>
-        <br>
-    </td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#ffe7af"><a name="preupgrade"><b>PRE-UPGRADE CHECKLIST (upgrade)</b></a></td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#f5ffc7">
-        <div align="center">
-            <table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
-                <tr>
-                    <td bgcolor="white">
-                        <div align="left">
-                            <p><font color="#FF0000">WARNING:</font></p>
-                            <p>Take extreme care to back up any files from your current Geeklog installation that have any custom code in them, especially lib-custom.php (where all custom code should reside). Be sure to back up any modified themes, images, and static pages from your current installation.</p>
-                            <p>Also, please be sure to back up your database. We can't stress the importance of backing up your files and database enough. </p>
-                            <p><b>YOU HAVE BEEN WARNED.</b></p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <br>
-        </div>
-    </td>
-</tr>
-<tr>
-    <td valign="top"><br>
-        <br>
-        <br>
-        <br>
-    </td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#ffe7af"><b><a name="upgrade">UPGRADE INSTRUCTIONS (upgrade)</a></b></td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#f5ffc7">
-        <p>Upgrading is no different than a fresh installation except your database already exists and needs to be upgraded.</p>
-        <ol>
-            <li>Back up any files with custom code in them and back up your database. <br>
-                <br>
-            <table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
-                <tr>
-                    <td bgcolor="white">
-                        <p><font color="#FF0000">SPECIAL NOTE:</font></p>
-                        <p>Please pay special attention to the older config.php and lib-common.php files, as these files contain database and path information you entered the last time you installed Geeklog and this information MUST be copied over to the NEW config.php and lib-common.php files.<br>
-                        </p>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <li>You can choose to either rename or remove your current Geeklog directory.  Although in the end you will be deleting the older install it's probably safer to keep the old copy around for a few days *just* in-case you forgot to transfer some files.<br>
-                <br>
-            <li>Uncompress the new version and copy the result to the same path that your old installation had. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.<br>
-                <br>
-                        <li>As with a fresh install, edit your <strong>config.php</strong> and <strong>lib-common.php</strong>, basically just copying over the information from your old copies of these files.<br>
-                <br>
-            <li><em>If</em> you are upgrading <strong>from Geeklog 1.2 or earlier</strong>, change to <code>/path/to/geeklog/sql/updates</code> and apply all needed database updates. For example, if you are upgrading from Geeklog 1.1, you will need to apply 1.1_to_1.2.sql and 1.2_to_1.2.2.sql which will upgrade your database to Geeklog 1.2.5-1. I say 1.2.5-1 because there were no database changes from 1.2.2 to 1.2.5-1 (e.g. a 1.2.2 database is the same as a 1.2.5-1 database). If you are uncomfortable using the MySQL command line to do this, you can do it via phpMyAdmin as well.<br><br>
-            If you are upgrading from Geeklog 1.3 or later, you can skip this step.<br>
-                <br>
-            <li>Open your browser and navigate to <strong>http://yourgeeklogsite/admin/install/install.php</strong>. Enter your path to Geeklog and make sure you select <strong>Upgrade Database</strong> as the installation type, before you click on the "Next" button. The second step of the installation script should have an option to convert your database to the current version.<br>
-                <br>
-Please note that only "basic" version numbers are listed, because, for example, Geeklog 1.3.7 and 1.3.7sr2 use the same database. So if you're upgrading from Geeklog 1.3.7sr2, just select "1.3.7" (the same applies to 1.3.5 / 1.3.5sr1 / 1.3.5sr2 and all the various 1.3.8 versions).<br>
-                <br>
-            <li>Once you see the success message, your upgrade is complete. <b>You can now delete the admin/install directory</b> (and all files within it).<br><br>
-        </ol>
-    </td>
-</tr>
-<tr>
-    <td valign="top"><br>
-        <br>
-        <br>
-        <br>
-    </td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#ffa6a6"><b><a name="installprob">INSTALLATION PROBLEMS (common problems)</a></b></td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#ffdbd5">
-        <div align="center">
-            <table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
-                <tr>
-                    <td bgcolor="white">
-                        <p><font color="#FF0000">SPECIAL NOTE:</font></p>
-                        <p>Before you go any further, please open config.php <b>AND DOUBLE CHECK YOUR PATHS</b>. Bad paths, or typos in the paths will cause all sorts of errors in Geeklog.</p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-                <br>
-                <br>
-<div align="center">
-<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr><td>
-<p>When you get an error message, please read it carefully. Even if you're not
-familiar with PHP, it will give you a hint about what is wrong. Pay special
-attention at the paths contained in the error message. Wrong paths are the
-most common cause for problems.</p>
-<p>If you get more than one error message, always start with the very first
-error - the others will often go away automatically once you've fixed the first
-one.</p>
-</td></tr></table>
-</div>
-                <a name="parse-error"><br>
-                <br></a>
-<div align="center">
-<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
-<td bgcolor="#ffedf2">
-<p><b>I get the following error:</b></p>
-<p><code>Parse error: parse error in /path/to/your/config.php on line 76</code></p>
-</td></tr><tr><td>
-<p><small>(line number may vary)</small></p>
-<p><strong>Answer:</strong></p>
-<p>A parse error usually hints at a typo you've made. Check the file at the
-given line (the actual error may be in the line preceding the one mentioned
-in the error message).</p>
-<p>Common problems are:</p>
 <ul>
-<li>not enclosing paths in single quotes properly</li>
-<li>missing semicolon at the end of the line</li>
-<li>using single quotes within a string (you need to write <b>Joe's Site</b> as
-    <b>Joe\'s Site</b>, escaping the extra quote)
-</ul>
-</td></tr></table>
-</div>
-                <a name="failed-to-open"><br>
-                <br></a>
-<div align="center">
-<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
-<td bgcolor="#ffedf2">
-<p><b>I get the following errors:</b></p>
-<p><code>Warning: main(some/path/to/system/databases/mysql.class.php): failed to open stream: No such file or directory in /path/to/your/system/lib-database.php on line 110</code></p>
-<p><code>Fatal error: main(): Failed opening required 'some/path/to/system/databases/mysql.class.php' (include_path='.:/some/other/path/') in /some/path/to/system/lib-database.php on line 110</code></p>
-</td></tr><tr><td>
-<p><small>(line numbers may vary)</small></p>
-<p><strong>Answer:</strong></p>
-<p>The path that you've entered for the <b>$_CONF['path']</b> variable in config.php is not correct. Make sure you typed it correctly. Also make sure it uses
-an <em>absolute</em> path, i.e. one that starts at the root of your file
-system (and that it starts with a / under Unix/Linux or a drive letter under
-Windows).</p>
-</td></tr></table>
-</div>
-                <a name="already-exists"><br>
-                <br></a>
-<div align="center">
-<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
-<td bgcolor="#ffedf2">
-<p><b>I get the following error:</b></p>
-<p><code>1050: Table 'gl_access' already exists</code></p>
-</td></tr><tr><td>
-<p><strong>Answer:</strong></p>
-<p>You must have run the install script before (possibly unsuccessfully). To
-be on the save side, drop the database and create a  new, empty database
-before trying to run the install script again.</p>
-</td></tr></table>
-</div>
-                <a name="corrupted"><br>
-                <br></a>
-        <div align="center">
-            <table width="95%" border="0" cellspacing="0" cellpadding="4">
-                <tr>
-                    <td bgcolor="#ffedf2"><b>During installation, I get one of the following errors:</b>
-<p><b>Case 1:</b></p>
-                        <p><code>Parse error: parse error in ../../lib-common.php on line 2231 </code></p>
-                        <p><code>Fatal error: Cannot instantiate non-existent class: template in ../../lib-common.php on line 335 </code></p>
-
-<p><b>Case 2:</b></p>
-<p><code>Parse error: parse error in /path/to/geeklog/public_html/lib-common.php on line 3036</code></p>
-<p><code>Fatal error: Call to undefined function: plg_showcenterblock() in /path/to/geeklog/public_html/index.php on line 67</code></p>
-
-<p><b>Case 3:</b></p>
-<p><code>Parse error: parse error, unexpected T_CONSTANT_ENCAPSED_STRING in /path/to/geeklog/public_html/lib-common.php on line 3815</code></p>
-
-<p><code>Fatal error: Cannot instantiate non-existent class: template in /path/to/geeklog/public_html/lib-common.php on line 709</code></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p><small>(line numbers may vary)</small></p>
-                        <p><strong>Answer:</strong></p>
-
-<p>All of the above cases (and similar "parse error" messages you may get for lib-common.php, typically with a line number in the 3000 or 4000 range) indicate a <b>corrupted lib-common.php</b> file.</p>
-<p>As noted <a href="#ParseError">at the top of this document</a> this is usually caused by one of the following:</p>
-<ul>
-<li>Uncompressing the tarball with certain versions of <b>WinZip</b> (try using WinRar instead)</li>
-<li>Editing the lib-common.php with <b>Dreamweaver</b> or other so-called WYSIWYG HTML editors (use a simple text editor instead)</li>
-<li>Editing the lib-common.php with "on-site" text editors built into tools like <b>Cpanel</b> (again, use a simple text editor instead)</li>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#glossary">Glossary</a></li>
+  <li><a href="#installation_requirements">Installation Requirements</a></li>
+    <ul>
+      <li><a href="#server_requirements">Server Requirements</a></li>
+      <li><a href="#things_you_should_know">Things You Should Know</a></li>
+    </ul></li>
+  <li><a href="#new_installation">New Installation</a>
+  <li><a href="#upgrading">Upgrading</a>
+  <li><a href="#common_problems_and_troubleshooting">Common Problems and Troubleshooting</a></li>
 </ul>
 
-<p>You will need to unpack a fresh copy of the lib-common.php and edit it again, using a "normal" text editor. Windows users can find some recommendations for editors to use in <a href="http://www.geeklog.net/forum/viewtopic.php?forum=3&amp;showtopic=11866" title="Forum thread: Text editors?">this</a> and <a href="http://www.geeklog.net/forum/viewtopic.php?forum=3&amp;showtopic=15807" title="Forum thread: How to edit lib-common without Notepad on Windows?">this</a> thread in the forums on geeklog.net.</p>
 
-                    </td>
-                </tr>
-            </table>
-        </div>
-                <a name="template-error"><br>
-                <br></a>
-<div align="center">
-<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
-<td bgcolor="#ffedf2">
-<p><b>I get the following error:</b></p>
-<p><code>Template Error: set_root: /some/path/to/public_html/layout/professional is not a directory.
-Halted.</code></p>
-</td></tr><tr><td>
-<p><strong>Answer:</strong></p>
-<p>This is a path problem again. Check the setting for <b>$_CONF['path_html']</b>. If you did not change or rename Geeklog's <tt>public_html</tt> directory, then there's no need to change that setting at all (restore the line to its
-original content). Otherwise, please read the comments above that line in
-config.php again carefully to understand how to change that line properly.</p>
-</td></tr></table>
-</div>
-                <a name="access-denied"><br>
-                <br></a>
-<div align="center">
-<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
-<td bgcolor="#ffedf2">
-<p><b>I get the following error:</b></p>
-<p><code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in<br>
-/path/to/geeklog/system/databases/mysql.class.php on line 104<br>
+<h2><a name="introduction">Introduction</a></h2>
+
+    <p>We would first like to thank you for checking out Geeklog! Many developers have spent countless hours to craft the best content management system available today. Please take the time to read the <a href=#installation_requirements">installation requirements</a> before continuing to ensure a trouble free installation. </p>
+    
+    <p>This document will be written assuming you have SSH or some other remote command line access to your server, but we will note the major differences for FTP users.</p>
+
+
+<h2><a name="glossary">Glossary</a></h2>
+
+    <ul>
+        <li type="disc">Directory: Same as a folder.</li>
+        <li type="disc">Path: A physical location on a server that describes where files and directories are. On Windows paths begin with the drive letter (<code>c:/inetpub/wwwroot/</code>), on *nix paths start at root (<code>/</code>) like (<code>/var/www/</code>) </li>
+        <li type="disc">URL: Uniform Resource Locator, the address of a specific piece of information on the web (<code>http://www.foo.com/</code>)</li>
+    </ul>
+    
+
+<h2><a name="installation_requirements">Installation Requirements</a></h2>
+
+    <h3><a name="required_software">Required Software</a></h3>
+
+        <p>To install and use Geeklog you will need to have a server running Apache or Microsoft IIS with PHP 4.1.0 or higher installed. You will also need either <a href="http://dev.mysql.com/downloads/" target="_blank">MySQL 3.23.2</a> or greater or <a href="http://www.microsoft.com/sql/default.mspx" target="_blank">Microsoft SQL Server 2000</a> or newer.</p>
+
+    <h3><a name="things_you_should_know">Things You Should Know</a></h3>
+
+    <p>Before installing Geeklog for the first time, please make sure you:</p>
+    <ul>
+        <li>Know how to determine the path of your root web directory. (<a href="#glossary">What is a path?</a>)
+        <li>Have the ability to unpack the downloaded Geeklog tarball file.
+        <li>Have the ability to create a new database or have access to an existing one.
+        <li>Have access to your web server via SSH or FTP so you can change permissions on a few files and directories.
+    </ul>
+    
+
+<h2><a name="new_installation">New Installation</a></h2>
+
+    <ol>
+        <li>
+            <p>Download the current version of Geeklog from <a href="http://www.geeklog.net/" target="_blank">Geeklog.net</a>.</p>
+        </li>
+        <li>
+            <p>Unpack the downloaded tarball file by running: </p>
+            <p><code>tar -zxvf geeklog-1.5.0.tar.gz</code> </p>
+            
+            <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
+        </li>
+        <li>
+            <p>Create a blank MySQL or Microsoft SQL database and a user account with privileges to modify it. Your hosting provider may have already set up a database and account for you, contact them if you need assistance with this step.</p>
+        </li>
+        <li>
+            <p>Place the contents of <code>Geeklog-1.x/public_html/</code> into your web root directory on your web server. The web root directory is often named "public_html", "htdocs", or "www".</p>
+        
+            <p>Next, place the remaining contents of <code>Geeklog-1.x/</code> into either the parent directory of your root web directory (recommended) or any other non public folder and the installation wizard will attempt to locate them automatically. If it cannot you will be asked to specify their paths during installation. This is done as a security measure to prevent access to Geeklog system files by Internet users. </p>
+            
+            <p><strong>Note:</strong> If your hosting provider does not allow you to place files outside of your root web directory:</p>
+            <ul>
+                <li>Create an inconspicuous directory (i.e. don't name it "geeklog") in your root web directory.</li>
+                <li>Place these system files in that directory.</li>
+                <li>Password protect it using an .htaccess file or similar.</li>
+            </ul>
+        </li>
+        <li>
+            <p>Open your browser and navigate to the Geeklog installation wizard file <code>admin/install/index.php</code> on your web server. The path to this file will depend on where you chose to put the Geeklog files on your web server. The default location is: </p>
+            
+            <p><code>http://[your_geeklog_site]/admin/install/index.php</code></p>
+            
+            <p>The Geeklog installation wizard was designed to automate the install process. Simply follow the installation steps.</p>
+        </li>
+        <li>
+            <p>Once you have completed the installation be sure to delete the <code>admin/install</code> directory. Also, read the first story on your Geeklog site to learn how to log in as the administrator and change the default password.<br>
+</p>
+        </li>        
+    </ol>
+   
+
+<h2><a name="upgrading">Upgrading</a></h2>
+
+    <p>Upgrading is no different than a New Installation except your database already exists and needs to be updated.</p> 
+
+    <p>Take extreme care to back up any files from your current Geeklog installation that have any custom code in them, especially lib-custom.php (where all custom code should reside). Be sure to back up any modified themes, images, and static pages from your current installation.</p>
+            
+    <p>Also, please be sure to back up your database. We can't stress the importance of backing up your files and database enough. </p>
+
+    <p><strong>YOU HAVE BEEN WARNED.</strong></p>
+    <ol>
+        <li>
+            <p>Download the current version of Geeklog from <a href="http://www.geeklog.net/" target="_blank">Geeklog.net</a>.</p>
+        </li>
+        <li>
+            <p>Unpack the downloaded tarball file by running: </p>
+            <p><code>tar -zxvf geeklog-1.5.0.tar.gz</code> </p>
+            
+            <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
+        </li>
+        <li>
+            <p>Place the contents of <code>Geeklog-1.x/</code> into the same directory your old installation was located. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.</p>
+        </li>
+        <li>
+            <p>Open your browser and navigate to the Geeklog installation wizard file <code>admin/install/index.php</code> on your web server. The path to this file will depend on where you chose to put the Geeklog files on your web server. The default location is: </p>
+            
+            <p><code>http://[your_geeklog_site]/admin/install/index.php</code></p>
+            
+            <p>The Geeklog installation wizard was designed to automate the upgrade process. Simply follow the installation steps.</p>
+        </li>
+        <li>
+            <p>Once you have completed the upgrade be sure to delete the <code>admin/install</code> directory.</p>
+        </li>        
+    </ol>
+   
+
+<h2><a name="common_problems_and_troubleshooting">Common Problems and Troubleshooting</a></h2>
+
+    <p>Before you go any further, please open siteconfig.php and <strong>double check your paths!</strong> Bad paths, or typos in the paths, will cause all sorts of errors in Geeklog.</p>   
+
+<p>When you get an error message, please read it carefully. Even if you're not familiar with PHP, it will give you a hint about what is wrong. Pay special attention at the paths contained in the error message. As mentioned before, wrong paths are the most common cause for problems.</p>
+
+<p>If you get more than one error message, always start with the very first error - the others will often go away automatically once you've fixed the first one.</p>
+
+    <h3>Common errors (Line numbers will vary):</h3>
+        <ul>
+            <li><p><strong>Error:</strong> <code>Parse error: parse error in /path/to/your/siteconfig.php on line 20</code></p>
+                <p><strong>Answer:</strong> A parse error usually hints at a typo you've made. Check the file at the given line (the actual error may be in the line preceding the one mentioned in the error message).</p>
+                <p>Common problems are:</p>
+                <ul>
+                    <li>not enclosing paths in single quotes properly</li>
+                    <li>missing semicolon at the end of the line</li>
+                    <li>using single quotes within a string (you need to write <code>Joe's Site</code> as <code>Joe\'s Site</code>, escaping the extra quote)
+                </ul>
+            </li>
+            <li>
+                <p><strong>Error:</strong> <code>Warning: main(some/path/to/system/databases/mysql.class.php): failed to open stream: No such file or directory in /path/to/your/system/lib-database.php on line 100</code></p>
+                <p><code>Fatal error: main(): Failed opening required 'some/path/to/system/databases/mysql.class.php' (include_path='.:/some/other/path/') in /some/path/to/system/lib-database.php on line 100</code></p>
+                <p><strong>Answer:</strong> The path that you've entered for the <code>$_CONF['path']</code> variable in siteconfig.php is not correct. Make sure you typed it correctly. Also make sure it uses an <em>absolute</em> path, i.e. one that starts at the root of your file system (and that it starts with a / under Unix/Linux or a drive letter under Windows).</p>
+            </li>
+            <li>
+                <p><strong>Error:</strong> <code>1050: Table 'gl_access' already exists</code></p>
+                <p><strong>Answer:</strong> You must have run the install script once before (possibly unsuccessfully). To be on the safe side, drop the database and create a new, empty database and try running the install script again.</p>
+            </li>
+            <li>
+                <p><strong>Error:</strong> <code>Parse error: parse error in ../../lib-common.php on line 2231 </code></p>
+                <p><code>Fatal error: Cannot instantiate non-existent class: template in ../../lib-common.php on line 335 </code></p>
+
+                <p>Or:</p>
+                <p><code>Parse error: parse error in /path/to/geeklog/public_html/lib-common.php on line 3036</code></p>
+                <p><code>Fatal error: Call to undefined function: plg_showcenterblock() in /path/to/geeklog/public_html/index.php on line 67</code></p>
+
+                <p>Or:</p>
+                <p><code>Parse error: parse error, unexpected T_CONSTANT_ENCAPSED_STRING in /path/to/geeklog/public_html/lib-common.php on line 3815</code></p>
+                <p><code>Fatal error: Cannot instantiate non-existent class: template in /path/to/geeklog/public_html/lib-common.php on line 709</code></p>
+
+                <p><p><strong>Answer:</strong> All of the above cases (and similar "parse error" messages you may get for lib-common.php, typically with a line number in the 3000 or 4000 range) indicate a corrupted <code>lib-common.php</code> file.</p>
+                <p>As noted at the top of this document this is usually caused by one of the following:</p>
+                <ul>
+                    <li>Uncompressing the tarball with certain versions of WinZip (try using <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> instead)</li>
+                    <li>Editing the lib-common.php with Dreamweaver or other so-called WYSIWYG HTML editors (use a simple text editor instead)</li>
+                    <li>Editing the lib-common.php with "on-site" text editors built into tools like Cpanel (again, use a simple text editor instead)</li>
+                </ul>
+            </li>
+            <li>
+                <p><strong>Error:</strong> <code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in /path/to/geeklog/system/databases/mysql.class.php on line 104<br>
 Cannnot connect to DB server</code></p>
-</td></tr><tr><td>
-<p><small>(line number may vary)</small></p>
-<p><strong>Answer:</strong></p>
-<p>First of all, make sure the database settings in <tt>config.php</tt> are correct, specifically the name and password of your MySQL user, the name of your database, and the name of your MySQL server.</p>
-<p>If you're running your own server, you may need to give your MySQL user
-proper permissions. Log in to MySQL as the MySQL root user and issue these
-commands:</p>
-<code>GRANT ALL PRIVILEGES ON <em>database_name</em> TO <em>user@host</em> IDENTIFIED BY '<em>password</em>';<br>
-FLUSH PRIVILEGES;</code>
-<p>Replacing the lower-case strings with the actual values, of course.</p>
-<p>If you want (or need) to be more restrictive with database permissions:
-You will need to at least grant the ALTER, CREATE, DELETE, INSERT, SELECT, and
-UPDATE permissions to your database user. ALTER and CREATE permissions are only
-needed for installing and upgrading Geeklog, as well as for installing plugins
-and other add-ons.</p>
-</td></tr></table>
-</div>
-    </td>
-</tr>
-<tr>
-    <td valign="top"><br>
-        <br>
-        <br>
-        <br>
-    </td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#ffa6a6"><b><a name="postinstall">POST-INSTALL PROBLEMS (common problems)</a></b></td>
-</tr>
-<tr>
-    <td valign="top" bgcolor="#ffdbd5">
-        <div align="center">
-                        <a name="permission-denied"></a>
-            <table width="95%" border="0" cellspacing="0" cellpadding="4">
-                <tr>
-                    <td bgcolor="#ffedf2">
-                        <p><b>I've set up my site successfully, but get the following error message on the top:</b></p>
-<p><code>
-Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1440
-</code></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-<p><small>(line number may vary)</small></p>
-                        <p><strong>Answer:</strong></p>
-                        <p>Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the public_html/backend directory and the geeklog.rss file have the same 775 or 777 permissions.</p>
 
-<p><strong>Tip:</strong> Use the script that is located at <b>http://yourgeeklogsite/admin/install/check.php</b> to test if all the permissions have been set up correctly.</p>
-                    </td>
-                </tr>
-            </table>
-            <a name="headers-already-sent"><br>
-            <br></a>
-            <table width="95%" border="0" cellspacing="0" cellpadding="4">
-                <tr>
-                    <td bgcolor="#ffedf2">
-                        <p><b>Whenever someone tries to log in or out, the following error is produced:</b></p>
-                        <p><code>Cannot add header information - headers already sent by (output started at /usr###/home/&lt;userid&gt;/public_html/geeklog/config.php:589) in /usr###/home/&lt;userid&gt;/public_html/geeklog/system/lib-sessions.php on line 133</code></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-<p><small>(line numbers may vary)</small></p>
-                        <p><strong>Answer:</strong></p>
-                        <p>Make sure that your config.php file does not contain any "whitespace" after the closing <b>?&gt;</b> at the end of the file. I.e. there should not be anything (not even blanks or empty lines) after those two characters.</p>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <br>
-            <hr noshade width="95%">
-            <table width="95%" border="0" cellspacing="0" cellpadding="4">
-                <tr>
-                    <td>
-                        <div align="left">
-                            <p>If you still have problems, please do one or more of the following:</p>
-                            <p>1) Go to <a href="http://www.geeklog.net">http://www.geeklog.net</a> and check out the Support section. The Support section includes a <a href="http://www.geeklog.net/faqman/">FAQ</a> and a <a href="http://www.geeklog.net/search.php">search system</a> (try searching for the error message, if you get one).</p>
-                            <p>2) Visit the mailing list archives at <a href="http://lists.geeklog.net/pipermail/geeklog-users/">http://lists.geeklog.net/pipermail/geeklog-users/</a>. You can also <a href="http://lists.geeklog.net/listinfo/geeklog-users">subscribe to the mailing list</a> and post your question to the Geeklog community.</p>
-                            <p>3) Try the chat room at <b>irc.freenode.net, channel #geeklog</b>. Please have all your path information in config.php and lib-common.php readily available.</p>
-                            <p>4) Try entering the text of the error message on Google. Chances are you will find someone else who had the same problem and fixed it.  And sometimes searching for a specific error will cause Google to bring up broken pages that have the same error.</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <br>
-            Extended version of this document created by Jason C. Levine, <br>
-            layout by Simon Lord, reviewed by Dirk Haun and Jeffrey Schoolcraft.</div>
-    </td>
-</tr>
-</table>
+                <p><strong>Answer:</strong> First of all, make sure the database settings in <code>siteconfig.php</code> are correct, specifically the name and password of your MySQL user, the name of your database, and the name of your MySQL server.</p>
 
-<br><br>
+                <p>If you're running your own server, you may need to give your MySQL user proper permissions. Log in to MySQL as the MySQL root user and issue these commands:</p>
+
+                <p><code>GRANT ALL PRIVILEGES ON <em>[database_name]</em> TO <em>[user@host]</em> IDENTIFIED BY '<em>[password]</em>';<br>
+                FLUSH PRIVILEGES;</code></p>
+                
+                <p>Replace the <em>[lower-case]</em> strings with the actual values.</p>
+                
+                <p>If you want (or need) to be more restrictive with database permissions: You will need to at least grant the ALTER, CREATE, DELETE, INSERT, SELECT, and UPDATE permissions to your database user. ALTER and CREATE permissions are only needed for installing and upgrading Geeklog, as well as for installing plugins and other add-ons.</p>
+            </li>
+            <li>
+                <p><strong>Error:</strong> <code>Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1440</code></p>
+                <p><strong>Answer:</strong> Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the <code>public_html/backend</code> directory and the geeklog.rss file have the same 775 or 777 permissions.</p>
+    
+                <p><strong>Tip:</strong> Use the script that is located at <code>http://yourgeeklogsite/admin/install/check.php</code> to test if all the permissions have been set up correctly.</p>
+            </li>
+            <li>
+                <p><strong>Whenever someone tries to log in or out, the following error is produced:</strong></p>
+                <p><code>Cannot add header information - headers already sent by (output started at /usr###/home/&lt;userid&gt;/public_html/geeklog/siteconfig.php:589) in /usr###/home/&lt;userid&gt;/public_html/geeklog/system/lib-sessions.php on line 133</code></p>
+
+                <p><strong>Answer:</strong> Make sure that your siteconfig.php file does not contain any "whitespace" after the closing <code>?&gt;</code> at the end of the file. I.e. there should not be anything (not even blanks or empty lines) after those two characters.</p>
+
+            </li>
+        </ul>
+
+        <p>If you still have problems, please do one or more of the following:</p>
+        <ol>
+            <li>
+                <p>Go to <a href="http://www.geeklog.net">http://www.geeklog.net</a> and check out the Support section. The Support section includes a <a href="http://www.geeklog.net/faqman/">FAQ</a> and a <a href="http://www.geeklog.net/search.php">search system</a> (try searching for the error message, if you get one).</p>
+            </li>
+            <li>
+                <p>Visit the mailing list archives at <a href="http://lists.geeklog.net/pipermail/geeklog-users/">http://lists.geeklog.net/pipermail/geeklog-users/</a>. You can also <a href="http://lists.geeklog.net/listinfo/geeklog-users">subscribe to the mailing list</a> and post your question to the Geeklog community.</p>
+            </li>
+            <li>
+                <p>Try the chat room at <code>irc.freenode.net, channel #geeklog</code>. Please have all your path information in siteconfig.php and lib-common.php readily available.</p>
+            </li>
+            <li>
+                <p>Try entering the text of the error message on Google. Chances are you will find someone else who had the same problem and fixed it.  And sometimes searching for a specific error will cause Google to bring up broken pages that have the same error.</p>
+            </li>
+        </ol>
+
 
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
-    All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
+    All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft. <br>
+    Extended version of this document created by Jason C. Levine and Matt West
 </div>
 
 </body>
