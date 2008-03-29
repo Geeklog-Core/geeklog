@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: english.php,v 1.7 2008/01/02 13:29:02 dhaun Exp $
+// $Id: english.php,v 1.8 2008/03/29 22:21:08 mwest Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -71,7 +71,7 @@ $LANG_INSTALL = array(
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
     19 => 'Geeklog requires certain files and directories to be writeable by the web server. Below is a list of which files and directories need to be changed.',
     20 => 'Warning!',
-    21 => 'Your Geeklog and site will not work properly until the errors listed above are corrected. Please make the necessary changes before you continue.',
+    21 => 'Your Geeklog and site will not work properly until the errors listed above are corrected. Not following this step is the #1 reason why people receive errors when they first try to use Geeklog. Please make the necessary changes before you continue.',
     22 => 'unkown',
     23 => 'Choose your installation method:',
     24 => 'New Install',
@@ -93,7 +93,7 @@ $LANG_INSTALL = array(
     40 => 'Database Name',
     41 => 'Database Username',
     42 => 'Database Password',
-    43 => 'Database Prefix',
+    43 => 'Database Table Prefix',
     44 => 'Optional Configurations',
     45 => 'Site URL',
     46 => '(No trailing slash)',
@@ -173,22 +173,22 @@ $LANG_SUCCESS = array(
 );
 
 // +---------------------------------------------------------------------------+
-// help.php (TBD)
+// help.php
 
 $LANG_HELP = array(
     0 => 'Geeklog Installation Support',
-    1 => 'Site name',
-    2 => 'Slogan',
-    3 => 'Database type',
-    4 => 'Hostname',
-    5 => 'Name',
-    6 => 'Username',
-    7 => 'Password',
-    8 => 'Prefix',
-    9 => 'Site URL',
-    10 => 'Admin Directory Url',
-    11 => 'Site Email',
-    12 => 'Site No-Reply'
+    1 => 'The name of your website.',
+    2 => 'A simple description of your website.',
+    3 => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.',
+    4 => 'The network name (or IP address) of your database server. This is typically "localhost". If you are not sure contact your hosting provider.',
+    5 => 'The name of your database. If you are not sure what this is contact your hosting provider.',
+    6 => 'Your database user account. If you are not sure what this is contact your hosting provider.',
+    7 => 'Your database account password. If you are not sure what this is contact your hosting provider.',
+    8 => 'Some users want to install multiple copies of Geeklog on the same database. In order for each copy of Geeklog to function correctly it must have its own unique table prefix (i.e. gl1_, gl2_, etc).',
+    9 => 'Make sure this is the correct URL to your site, i.e. to where Geeklog\'s <code>index.php</code> file resides (no trailing slash).',
+    10 => 'Some hosting services have a preconfigured admin directory. In that case, you need to rename Geeklog\'s admin directory to something like "myadmin" and change the following URL as well. Leave as is until you experience any problems accessing Geeklog\'s admin menu.',
+    11 => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
+    12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.'
 );
 
 ?>
