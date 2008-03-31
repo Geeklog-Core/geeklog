@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.34 2008/03/09 16:19:45 dhaun Exp $
+// $Id: lib-webservices.php,v 1.35 2008/03/31 20:03:23 riyer Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -259,7 +259,7 @@ function WS_get()
     if ($WS_VERBOSE) {
         COM_errorLog("WS: GET request received");
     }
-
+    
     WS_dissectURI($args);
 
     if ($WS_INTROSPECTION) {
@@ -276,13 +276,13 @@ function WS_get()
             $_ws_plugins[] = 'story';
         }
 
-	if (is_array($_PLUGINS)) {
+        if (is_array($_PLUGINS)) {
             foreach ($_PLUGINS as $pi) {
                 if (PLG_wsEnabled($pi)) {
                     $_ws_plugins[] = $pi;
                 }
             }
-	}
+        }
 
         /* It might be simpler to do this part directly :-/ */
 
