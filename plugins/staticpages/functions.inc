@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.118 2008/03/17 21:12:54 dhaun Exp $
+// $Id: functions.inc,v 1.119 2008/04/06 17:26:02 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -987,6 +987,8 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
 {
     global $_CONF, $_TABLES;
 
+    static $recursive = array();
+
     if ($op == 'tagname' ) {
         return array('staticpage', 'staticpage_content');
     } else if ($op == 'parse') {
@@ -1004,7 +1006,12 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
             $content = str_replace ($autotag['tagstr'], $link, $content);
         } else if ($autotag['tag'] == 'staticpage_content') {
             $sp_id = COM_applyFilter ($autotag['parm1']);
-            $content = SP_returnStaticpage($sp_id, 'autotag');
+            if (isset($recursive[$sp_id])) {
+                $content = '';
+            } else {
+                $recursive[$sp_id] = true;
+                $content = SP_returnStaticpage($sp_id, 'autotag');
+            }
         }
 
         return $content;
