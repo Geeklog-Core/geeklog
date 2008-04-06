@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.141 2008/02/03 20:47:27 dhaun Exp $
+// $Id: lib-plugins.php,v 1.142 2008/04/06 16:19:42 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2307,7 +2307,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
 {
     global $_CONF;
 
-    if (isset($message)) {
+    if (isset($message) && (!empty($message) || is_numeric($message))) {
         $msg = "msg=$message";
     } else {
         $msg = '';
