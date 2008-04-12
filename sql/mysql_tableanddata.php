@@ -17,7 +17,7 @@ CREATE TABLE {$_TABLES['article_images']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[2] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['blocks']} (
   bid smallint(5) unsigned NOT NULL auto_increment,
   is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1',
@@ -95,16 +95,16 @@ CREATE TABLE {$_TABLES['comments']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['conf_values']} (
-      name varchar(50) default NULL,
-      value text,
-      type varchar(50) default NULL,
-      group_name varchar(50) default NULL,
-      default_value text,
-      subgroup int(11) default NULL,
-      selectionArray int(11) default NULL,
-      sort_order int(11) default NULL,
-      fieldset int(11) default NULL
-    ) TYPE=MyISAM
+  name varchar(50) default NULL,
+  value text,
+  type varchar(50) default NULL,
+  group_name varchar(50) default NULL,
+  default_value text,
+  subgroup int(11) default NULL,
+  selectionArray int(11) default NULL,
+  sort_order int(11) default NULL,
+  fieldset int(11) default NULL
+) TYPE=MyISAM
 ";
 
 $_SQL[] = "
@@ -121,62 +121,6 @@ CREATE TABLE {$_TABLES['dateformats']} (
   format varchar(32) default NULL,
   description varchar(64) default NULL,
   PRIMARY KEY  (dfid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['events']} (
-  eid varchar(20) NOT NULL default '',
-  title varchar(128) default NULL,
-  description text,
-  postmode varchar(10) NOT NULL default 'plaintext',
-  datestart date default NULL,
-  dateend date default NULL,
-  url varchar(255) default NULL,
-  hits mediumint(8) unsigned NOT NULL default '0',
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '3',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  address1 varchar(40) default NULL,
-  address2 varchar(40) default NULL,
-  city varchar(60) default NULL,
-  state varchar(40) default NULL,
-  zipcode varchar(5) default NULL,
-  allday tinyint(1) NOT NULL default '0',
-  event_type varchar(40) NOT NULL default '',
-  location varchar(128) default NULL,
-  timestart time default NULL,
-  timeend time default NULL,
-  INDEX events_eid(eid),
-  INDEX events_event_type(event_type),
-  INDEX events_datestart(datestart),
-  INDEX events_dateend(dateend),
-  PRIMARY KEY  (eid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['eventsubmission']} (
-  eid varchar(20) NOT NULL default '',
-  title varchar(128) default NULL,
-  description text,
-  location varchar(128) default NULL,
-  datestart date default NULL,
-  dateend date default NULL,
-  url varchar(255) default NULL,
-  allday tinyint(1) NOT NULL default '0',
-  zipcode varchar(5) default NULL,
-  state varchar(40) default NULL,
-  city varchar(60) default NULL,
-  address2 varchar(40) default NULL,
-  address1 varchar(40) default NULL,
-  event_type varchar(40) NOT NULL default '',
-  timestart time default NULL,
-  timeend time default NULL,
-  PRIMARY KEY  (eid)
 ) TYPE=MyISAM
 ";
 
@@ -234,36 +178,6 @@ CREATE TABLE {$_TABLES['maillist']} (
   code int(1) NOT NULL default '0',
   name char(32) default NULL,
   PRIMARY KEY  (code)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['personal_events']} (
-  eid varchar(20) NOT NULL default '',
-  title varchar(128) default NULL,
-  event_type varchar(40) NOT NULL default '',
-  datestart date default NULL,
-  dateend date default NULL,
-  address1 varchar(40) default NULL,
-  address2 varchar(40) default NULL,
-  city varchar(60) default NULL,
-  state varchar(40) default NULL,
-  zipcode varchar(5) default NULL,
-  allday tinyint(1) NOT NULL default '0',
-  url varchar(255) default NULL,
-  description text,
-  postmode varchar(10) NOT NULL default 'plaintext',
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '3',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  uid mediumint(8) NOT NULL default '0',
-  location varchar(128) default NULL,
-  timestart time default NULL,
-  timeend time default NULL,
-  PRIMARY KEY  (eid,uid)
 ) TYPE=MyISAM
 ";
 
@@ -429,12 +343,12 @@ CREATE TABLE {$_TABLES['syndication']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['tokens']} (
-    token varchar(32) NOT NULL,
-    created datetime NOT NULL,
-    owner_id mediumint(8) unsigned NOT NULL,
-    urlfor varchar(2000) NOT NULL,
-    ttl mediumint(8) unsigned NOT NULL default '1',
-    PRIMARY KEY (token)
+  token varchar(32) NOT NULL,
+  created datetime NOT NULL,
+  owner_id mediumint(8) unsigned NOT NULL,
+  urlfor varchar(2000) NOT NULL,
+  ttl mediumint(8) unsigned NOT NULL default '1',
+  PRIMARY KEY (token)
 ) TYPE=MyISAM
 ";
 
@@ -579,6 +493,94 @@ CREATE TABLE {$_TABLES['vars']} (
 
 // Tables used by the bundled plugins
 
+// Calendar plugin
+$_SQL[] = "
+CREATE TABLE {$_TABLES['events']} (
+  eid varchar(20) NOT NULL default '',
+  title varchar(128) default NULL,
+  description text,
+  postmode varchar(10) NOT NULL default 'plaintext',
+  datestart date default NULL,
+  dateend date default NULL,
+  url varchar(255) default NULL,
+  hits mediumint(8) unsigned NOT NULL default '0',
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '3',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  address1 varchar(40) default NULL,
+  address2 varchar(40) default NULL,
+  city varchar(60) default NULL,
+  state varchar(40) default NULL,
+  zipcode varchar(5) default NULL,
+  allday tinyint(1) NOT NULL default '0',
+  event_type varchar(40) NOT NULL default '',
+  location varchar(128) default NULL,
+  timestart time default NULL,
+  timeend time default NULL,
+  INDEX events_eid(eid),
+  INDEX events_event_type(event_type),
+  INDEX events_datestart(datestart),
+  INDEX events_dateend(dateend),
+  PRIMARY KEY  (eid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['eventsubmission']} (
+  eid varchar(20) NOT NULL default '',
+  title varchar(128) default NULL,
+  description text,
+  location varchar(128) default NULL,
+  datestart date default NULL,
+  dateend date default NULL,
+  url varchar(255) default NULL,
+  allday tinyint(1) NOT NULL default '0',
+  zipcode varchar(5) default NULL,
+  state varchar(40) default NULL,
+  city varchar(60) default NULL,
+  address2 varchar(40) default NULL,
+  address1 varchar(40) default NULL,
+  event_type varchar(40) NOT NULL default '',
+  timestart time default NULL,
+  timeend time default NULL,
+  PRIMARY KEY  (eid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['personal_events']} (
+  eid varchar(20) NOT NULL default '',
+  title varchar(128) default NULL,
+  event_type varchar(40) NOT NULL default '',
+  datestart date default NULL,
+  dateend date default NULL,
+  address1 varchar(40) default NULL,
+  address2 varchar(40) default NULL,
+  city varchar(60) default NULL,
+  state varchar(40) default NULL,
+  zipcode varchar(5) default NULL,
+  allday tinyint(1) NOT NULL default '0',
+  url varchar(255) default NULL,
+  description text,
+  postmode varchar(10) NOT NULL default 'plaintext',
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '3',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  uid mediumint(8) NOT NULL default '0',
+  location varchar(128) default NULL,
+  timestart time default NULL,
+  timeend time default NULL,
+  PRIMARY KEY  (eid,uid)
+) TYPE=MyISAM
+";
+
+// Links plugin
 $_SQL[] = "
 CREATE TABLE {$_TABLES['linkcategories']} (
   cid varchar(32) NOT NULL,
@@ -634,6 +636,7 @@ CREATE TABLE {$_TABLES['linksubmission']} (
 ) TYPE=MyISAM
 ";
 
+// Polls plugin
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
   pid varchar(20) NOT NULL default '',
@@ -692,6 +695,7 @@ CREATE TABLE {$_TABLES['pollvoters']} (
 ) TYPE=MyISAM
 ";
 
+// Spam-X plugin
 $_SQL[] = "
 CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
@@ -700,6 +704,7 @@ CREATE TABLE {$_TABLES['spamx']} (
 ) TYPE=MyISAM
 ";
 
+// Static Pages plugin
 $_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(40) NOT NULL default '',
@@ -735,6 +740,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   KEY staticpage_sp_where (sp_where)
 ) TYPE=MyISAM
 ";
+
 
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (2,3) ";
