@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.56 2008/02/29 08:22:52 mjervis Exp $
+// $Id: index.php,v 1.57 2008/04/12 19:51:15 dhaun Exp $
 
 /**
  * Geeklog links administration page.
@@ -44,7 +44,7 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2007
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Trinity Bays <trinity93@gmail.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
@@ -165,6 +165,11 @@ function editlink ($mode, $lid = '')
                                   sprintf ($delbutton, $jsconfirm));
         $link_templates->set_var ('delete_option_no_confirmation',
                                   sprintf ($delbutton, ''));
+        if ($mode == 'editsubmission') {
+            $link_templates->set_var('submission_option',
+                '<input type="hidden" name="type" value="submission"'
+                . XHTML . '>');
+        }
     }
     $link_templates->set_var('lang_linktitle', $LANG_LINKS_ADMIN[3]);
     $link_templates->set_var('link_title',
@@ -427,26 +432,44 @@ function listlinks ()
 * Delete a link
 *
 * @param    string  $lid    id of link to delete
+* @param    string  $type   'submission' when attempting to delete a submission
 * @return   string          HTML redirect
 *
 */
-function deleteLink ($lid)
+function deleteLink($lid, $type = '')
 {
     global $_CONF, $_TABLES, $_USER;
 
-    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE lid ='$lid'");
-    $A = DB_fetchArray ($result);
-    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-            $A['perm_group'], $A['perm_members'], $A['perm_anon']);
-    if ($access < 3) {
-        COM_accessLog ("User {$_USER['username']} tried to illegally delete link $lid.");
-        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php');
+    if (empty($type)) { // delete regular link
+        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE lid ='$lid'");
+        $A = DB_fetchArray($result);
+        $access = SEC_hasAccess($A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon']);
+        if ($access < 3) {
+            COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid.");
+            return COM_refresh($_CONF['site_admin_url']
+                               . '/plugins/links/index.php');
+        }
+
+        DB_delete($_TABLES['links'], 'lid', $lid);
+
+        return COM_refresh($_CONF['site_admin_url']
+                           . '/plugins/links/index.php?msg=3');
+    } elseif ($type == 'submission') {
+        if (plugin_ismoderator_links()) {
+            DB_delete($_TABLES['linksubmission'], 'lid', $lid);
+
+            return COM_refresh($_CONF['site_admin_url']
+                               . '/plugins/links/index.php?msg=3');
+        } else {
+            COM_accessLog("User {$_USER['username']} tried to illegally delete link submission $lid.");
+        }
+    } else {
+        COM_errorLog("User {$_USER['username']} tried to illegally delete link $lid of type $type.");
     }
 
-    DB_delete ($_TABLES['links'], 'lid', $lid);
-
-    return COM_refresh ($_CONF['site_admin_url']
-                        . '/plugins/links/index.php?msg=3');
+    return COM_refresh($_CONF['site_admin_url'] . '/plugins/links/index.php');
 }
 
 // MAIN
@@ -461,7 +484,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         COM_errorLog ('Attempted to delete link lid=' . $lid );
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php');
     } else {
-        $display .= deleteLink ($lid);
+        $type = '';
+        if (isset($_POST['type'])) {
+            $type = COM_applyFilter($_POST['type']);
+        }
+        $display .= deleteLink($lid, $type);
     }
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $display .= savelink (COM_applyFilter ($_POST['lid']),

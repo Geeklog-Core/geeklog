@@ -83,6 +83,7 @@
                                                 <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
                                                 <input type="hidden" value="{link_id}" name="old_lid"{xhtml}>
                                                 {delete_option}
+                                                {submission_option}
                                             </td>
                                         </tr>
                                     </table>
