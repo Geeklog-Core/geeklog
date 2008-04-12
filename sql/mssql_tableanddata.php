@@ -1,7 +1,6 @@
 <?php
+
 $_SQL = array();
-
-
 
 $_SQL[] = "begin tran";
 
@@ -15,8 +14,6 @@ CREATE TABLE [dbo].[dateCommandCrossReference] (
 ) ON [PRIMARY]
 ";
 
-
-
 $_SQL[] = "ALTER TABLE [dbo].[dateCommandCrossReference] ADD
     CONSTRAINT [DF_commandCrossReference_isDateName] DEFAULT (0) FOR [isDateName],
     CONSTRAINT [DF_commandCrossReference_isDatePart] DEFAULT (1) FOR [isDatePart],
@@ -25,7 +22,6 @@ $_SQL[] = "ALTER TABLE [dbo].[dateCommandCrossReference] ADD
         [id]
     )  ON [PRIMARY]
 ";
-
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['access']}] (
@@ -42,8 +38,6 @@ CREATE TABLE [dbo].[{$_TABLES['article_images']}] (
 ) ON [PRIMARY]
 ";
 
-
-
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
     [bid] [numeric](5, 0) IDENTITY (1, 1) NOT NULL ,
@@ -54,6 +48,7 @@ CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
     [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [blockorder] [numeric](5, 0) NOT NULL ,
     [content] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [allow_autotags] [tinyint] NOT NULL ,
     [rdfurl] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [rdfupdated] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [rdf_last_modified] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -67,8 +62,7 @@ CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
     [perm_owner] [tinyint] NOT NULL ,
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL ,
-    [allow_autotags] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -85,7 +79,6 @@ CREATE TABLE [dbo].[{$_TABLES['commentmodes']}] (
     [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
-
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['comments']}] (
@@ -135,6 +128,312 @@ CREATE TABLE [dbo].[{$_TABLES['dateformats']}] (
 ) ON [PRIMARY]
 ";
 
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['featurecodes']}] (
+    [code] [smallint] NOT NULL ,
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['features']}] (
+    [ft_id] [int] IDENTITY (1, 1) NOT NULL ,
+    [ft_name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [ft_descr] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [ft_gl_core] [smallint] NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['frontpagecodes']}] (
+    [code] [smallint] NOT NULL ,
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['group_assignments']}] (
+    [ug_main_grp_id] [int] NOT NULL ,
+    [ug_uid] [numeric](8, 0) NULL ,
+    [ug_grp_id] [numeric](8, 0) NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['groups']}] (
+    [grp_id] [int] IDENTITY (1, 1) NOT NULL ,
+    [grp_name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [grp_descr] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [grp_gl_core] [tinyint] NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['maillist']}] (
+    [code] [int] NOT NULL ,
+    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['pingservice']}] (
+    [pid] [numeric](5, 0) IDENTITY (1, 1) NOT NULL ,
+    [name] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [ping_url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [site_url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [method] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [is_enabled] [tinyint] NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['plugins']}] (
+    [pi_name] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pi_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pi_gl_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pi_enabled] [tinyint] NOT NULL ,
+    [pi_homepage] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['postmodes']}] (
+    [code] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
+    [sess_id] [numeric](10, 0) NOT NULL ,
+    [start_time] [numeric](10, 0) NOT NULL ,
+    [remote_ip] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [uid] [int] NOT NULL ,
+    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['sortcodes']}] (
+    [code] [char] (4) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['speedlimit']}] (
+    [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
+    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [date] [numeric](10, 0) NULL ,
+    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['statuscodes']}] (
+    [code] [int] NOT NULL ,
+    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['stories']}] (
+    [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [uid] [int] NOT NULL ,
+    [draft_flag] [tinyint] NULL ,
+    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [date] [datetime] NULL ,
+    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [hits] [numeric](8, 0) NOT NULL ,
+    [numemails] [numeric](8, 0) NOT NULL ,
+    [comments] [numeric](8, 0) NOT NULL ,
+    [trackbacks] [numeric](8, 0) NOT NULL ,
+    [related] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [featured] [tinyint] NOT NULL ,
+    [show_topic_icon] [tinyint] NOT NULL ,
+    [commentcode] [smallint] NOT NULL ,
+    [trackbackcode] [smallint] NOT NULL ,
+    [statuscode] [smallint] NOT NULL ,
+    [expire] [datetime] NULL ,
+    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [advanced_editor_mode] [tinyint] NOT NULL ,
+    [frontpage] [tinyint] NULL ,
+    [in_transit] [tinyint] NULL ,
+    [owner_id] [int] NOT NULL ,
+    [group_id] [int] NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['storysubmission']}] (
+    [sid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [uid] [int] NOT NULL ,
+    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [date] [datetime] NULL ,
+    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
+    [fid] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
+    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [topic] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [header_tid] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [limits] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [content_length] [numeric](5, 0) NOT NULL ,
+    [title] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [feedlogo] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [filename] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [charset] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [language] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [is_enabled] [tinyint] NOT NULL ,
+    [updated] [datetime] NULL ,
+    [update_info] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['tokens']} (
+    [token] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [created] [datetime] NOT NULL,
+    [owner_id] [numeric] (8,0) NOT NULL,
+    [urlfor] [varchar] (2000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [ttl] numeric(8,0) NOT NULL DEFAULT 1
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['topics']}] (
+    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [topic] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [imageurl] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [sortnum] [smallint] NULL ,
+    [limitnews] [smallint] NULL ,
+    [is_default] [tinyint] NOT NULL ,
+    [archive_flag] [tinyint]  NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['trackback']}] (
+    [cid] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
+    [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [blog] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [excerpt] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [date] [datetime] NULL ,
+    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['trackbackcodes']}] (
+    [code] [smallint] NOT NULL ,
+    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['usercomment']}] (
+    [uid] [int] NOT NULL ,
+    [commentmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [commentorder] [varchar] (4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [commentlimit] [numeric](8, 0) NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['userindex']}] (
+    [uid] [int] NOT NULL ,
+    [tids] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [etids] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [aids] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [boxes] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [noboxes] [smallint] NOT NULL ,
+    [maxstories] [smallint] NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['userinfo']}] (
+    [uid] [int] NOT NULL ,
+    [about] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [location] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [pgpkey] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [userspace] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [tokens] [tinyint] NULL ,
+    [totalcomments] [int] NULL ,
+    [lastgranted] [numeric](10, 0) NULL ,
+    [lastlogin] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['userprefs']}] (
+    [uid] [int] NOT NULL ,
+    [noicons] [tinyint] NULL ,
+    [willing] [tinyint] NULL ,
+    [dfid] [tinyint] NULL ,
+    [tzid] [varchar] (125) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [emailstories] [smallint] NULL ,
+    [emailfromadmin] [smallint] NULL ,
+    [emailfromuser] [smallint] NULL ,
+    [showonline] [smallint] NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['users']}] (
+    [uid] [int] IDENTITY (1, 1) NOT NULL ,
+    [username] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [remoteusername] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [remoteservice] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [fullname] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [passwd] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [email] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [homepage] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [sig] [varchar] (160) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [regdate] [datetime] NULL ,
+    [photo] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [cookietimeout] [numeric](8, 0) NULL ,
+    [theme] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [language] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [pwrequestid] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [status] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [num_reminders] [tinyint] NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['vars']}] (
+    [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [value] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+) ON [PRIMARY]
+";
+
+// Tables used by the bundled plugins
+
+// Calendar plugin
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
@@ -186,92 +485,6 @@ CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
 ";
 
 $_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['featurecodes']}] (
-    [code] [smallint] NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['features']}] (
-    [ft_id] [int] IDENTITY (1, 1) NOT NULL ,
-    [ft_name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ft_descr] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ft_gl_core] [smallint] NOT NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['frontpagecodes']}] (
-    [code] [smallint] NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['group_assignments']}] (
-    [ug_main_grp_id] [int] NOT NULL ,
-    [ug_uid] [numeric](8, 0) NULL ,
-    [ug_grp_id] [numeric](8, 0) NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['groups']}] (
-    [grp_id] [int] IDENTITY (1, 1) NOT NULL ,
-    [grp_name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [grp_descr] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [grp_gl_core] [tinyint] NOT NULL
-) ON [PRIMARY]
-";
-
-
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['links']}] (
-    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [hits] [int] NOT NULL ,
-    [date] [datetime] NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
-    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [hits] [int] NULL ,
-    [date] [datetime] NULL,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['maillist']}] (
-    [code] [int] NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
     [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -300,97 +513,107 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
 ) ON [PRIMARY]
 ";
 
-
+// Links plugin
 $_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['pingservice']}] (
-    [pid] [numeric](5, 0) IDENTITY (1, 1) NOT NULL ,
-    [name] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [ping_url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [site_url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [method] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [is_enabled] [tinyint] NOT NULL
+CREATE TABLE [dbo].[{$_TABLES['linkcategories']}] (
+    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [created] [datetime] NULL ,
+    [modified] [datetime] NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
-
 $_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['plugins']}] (
-    [pi_name] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [pi_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [pi_gl_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [pi_enabled] [tinyint] NOT NULL ,
-    [pi_homepage] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+CREATE TABLE [dbo].[{$_TABLES['links']}] (
+    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [hits] [int] NOT NULL ,
+    [date] [datetime] NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
+    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [hits] [int] NULL ,
+    [date] [datetime] NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL
+) ON [PRIMARY]
+";
 
+// Polls plugin
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
-    [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [qid] [int] NOT NULL ,
     [aid] [tinyint] NOT NULL ,
     [answer] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [votes] [numeric](8, 0) NULL ,
-    [remark] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [remark] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
-
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
-    [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [qid] [int] NOT NULL ,
+    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
+    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [topic] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [voters] [numeric](8, 0) NULL ,
+    [questions] [int] NOT NULL ,
     [date] [datetime] NULL ,
-    [display] [smallint] NOT NULL ,
+    [display] [tinyint] NOT NULL ,
+    [open] [tinyint] NOT NULL ,
+    [hideresults] [tinyint] NOT NULL ,
     [commentcode] [smallint] NOT NULL ,
     [statuscode] [smallint] NOT NULL ,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,
     [perm_owner] [tinyint] NOT NULL ,
     [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint]  NULL ,
-    [perm_anon] [tinyint]  NULL
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
-
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
     [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [qid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [numeric](10, 0) NULL
 ) ON [PRIMARY]
 ";
 
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['postmodes']}] (
-    [code] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
-    [sess_id] [numeric](10, 0) NOT NULL ,
-    [start_time] [numeric](10, 0) NOT NULL ,
-    [remote_ip] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [uid] [int] NOT NULL ,
-    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['sortcodes']}] (
-    [code] [char] (4) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
+// Spam-X plugin
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['spamx']}] (
     [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
@@ -398,17 +621,7 @@ CREATE TABLE [dbo].[{$_TABLES['spamx']}] (
 ) ON [PRIMARY]
 ";
 
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['speedlimit']}] (
-    [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [date] [numeric](10, 0) NULL ,
-    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY]
-";
-
-
+// Static Pages plugin
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
@@ -420,7 +633,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [sp_onmenu] [tinyint] NOT NULL ,
     [sp_label] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [commentcode] [numeric](4, 0) NOT NULL,
+    [commentcode] [smallint] NOT NULL ,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,
     [perm_owner] [tinyint] NOT NULL ,
@@ -434,224 +647,9 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [sp_php] [tinyint] NOT NULL ,
     [sp_nf] [tinyint] NULL ,
     [sp_inblock] [tinyint] NULL  ,
-    [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
 ";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['statuscodes']}] (
-    [code] [int] NOT NULL ,
-    [name] [char] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['stories']}] (
-    [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [uid] [int] NOT NULL ,
-    [draft_flag] [tinyint] NULL ,
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [date] [datetime] NULL ,
-    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [hits] [numeric](8, 0) NOT NULL ,
-    [numemails] [numeric](8, 0) NOT NULL ,
-    [comments] [numeric](8, 0) NOT NULL ,
-    [trackbacks] [numeric](8, 0) NOT NULL ,
-    [related] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [featured] [tinyint] NOT NULL ,
-    [show_topic_icon] [tinyint] NOT NULL ,
-    [commentcode] [smallint] NOT NULL ,
-    [trackbackcode] [smallint] NOT NULL ,
-    [statuscode] [smallint] NOT NULL ,
-    [expire] [datetime] NULL ,
-    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [frontpage] [tinyint] NULL ,
-    [in_transit] [tinyint] NULL ,
-    [owner_id] [int] NOT NULL ,
-    [group_id] [int] NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL ,
-    [advanced_editor_mode] [tinyint] NOT NULL ,
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['storysubmission']}] (
-    [sid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [uid] [int] NOT NULL ,
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [date] [datetime] NULL ,
-    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
-    [fid] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [topic] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [header_tid] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [limits] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [content_length] [numeric](5, 0) NOT NULL ,
-    [title] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [feedlogo] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [filename] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [charset] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [language] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [is_enabled] [tinyint] NOT NULL ,
-    [updated] [datetime] NULL ,
-    [update_info] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['tokens']} (
-    [token] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    [created] [datetime] NOT NULL,
-    [owner_id] [numeric] (8,0) NOT NULL,
-    [urlfor] [varchar] (2000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    [ttl] numeric(8,0) NOT NULL DEFAULT 1
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['topics']}] (
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [topic] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [imageurl] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [sortnum] [smallint] NULL ,
-    [limitnews] [smallint] NULL ,
-    [is_default] [tinyint] NOT NULL ,
-    [archive_flag] [tinyint]  NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['trackback']}] (
-    [cid] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [blog] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [excerpt] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [date] [datetime] NULL ,
-    [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['trackbackcodes']}] (
-    [code] [smallint] NOT NULL ,
-    [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['usercomment']}] (
-    [uid] [int] NOT NULL ,
-    [commentmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [commentorder] [varchar] (4) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [commentlimit] [numeric](8, 0) NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['userindex']}] (
-    [uid] [int] NOT NULL ,
-    [tids] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [etids] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [aids] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [boxes] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [noboxes] [smallint] NOT NULL ,
-    [maxstories] [smallint] NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['userinfo']}] (
-    [uid] [int] NOT NULL ,
-    [about] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [location] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [pgpkey] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [userspace] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [tokens] [tinyint] NULL ,
-    [totalcomments] [int] NULL ,
-    [lastgranted] [numeric](10, 0) NULL ,
-    [lastlogin] [varchar] (100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['userprefs']}] (
-    [uid] [int] NOT NULL ,
-    [noicons] [tinyint] NULL ,
-    [willing] [tinyint] NULL ,
-    [dfid] [tinyint] NULL ,
-    [tzid] [varchar] (125) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [emailstories] [smallint] NULL ,
-    [emailfromadmin] [smallint] NULL ,
-    [emailfromuser] [smallint] NULL ,
-    [showonline] [smallint] NULL
-) ON [PRIMARY]
-";
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['users']}] (
-    [uid] [int] IDENTITY (1, 1) NOT NULL ,
-    [username] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [remoteusername] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [remoteservice] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [fullname] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [passwd] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [email] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [homepage] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [sig] [varchar] (160) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [regdate] [datetime] NULL ,
-    [photo] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [cookietimeout] [numeric](8, 0) NULL ,
-    [theme] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [language] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [pwrequestid] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [status] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['vars']}] (
-    [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [value] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['access']}] ADD
@@ -774,6 +772,12 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['groups']}] ADD
     )  ON [PRIMARY]
 ";
 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
+    CONSTRAINT [PK_gl_linksubmission] PRIMARY KEY  CLUSTERED
+    (
+        [pid]
+    )  ON [PRIMARY]
+";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD
     CONSTRAINT [DF_gl_links_perm_group] DEFAULT (3) FOR [perm_group],
@@ -835,6 +839,13 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
     CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
     (
         [qid]
+    )  ON [PRIMARY]
+";
+
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['polltopics']}] ADD
+    CONSTRAINT [PK_gl_pollvoters] PRIMARY KEY  CLUSTERED
+    (
+        [pid]
     )  ON [PRIMARY]
 ";
 
