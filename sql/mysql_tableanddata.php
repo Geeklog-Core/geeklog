@@ -1,10 +1,19 @@
 <?php
 
-$_SQL[1] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['access']} (
   acc_ft_id mediumint(8) NOT NULL default '0',
   acc_grp_id mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (acc_ft_id,acc_grp_id)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['article_images']} (
+  ai_sid varchar(40) NOT NULL,
+  ai_img_num tinyint(2) unsigned NOT NULL,
+  ai_filename varchar(128) NOT NULL,
+  PRIMARY KEY (ai_sid,ai_img_num)
 ) TYPE=MyISAM
 ";
 
@@ -43,7 +52,7 @@ CREATE TABLE {$_TABLES['blocks']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[3] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['commentcodes']} (
   code tinyint(4) NOT NULL default '0',
   name varchar(32) default NULL,
@@ -51,7 +60,7 @@ CREATE TABLE {$_TABLES['commentcodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[4] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['commentmodes']} (
   mode varchar(10) NOT NULL default '',
   name varchar(32) default NULL,
@@ -59,7 +68,7 @@ CREATE TABLE {$_TABLES['commentmodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[5] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['comments']} (
   cid int(10) unsigned NOT NULL auto_increment,
   type varchar(30) NOT NULL DEFAULT 'article',
@@ -84,7 +93,7 @@ CREATE TABLE {$_TABLES['comments']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[6] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['conf_values']} (
       name varchar(50) default NULL,
       value text,
@@ -98,7 +107,7 @@ CREATE TABLE {$_TABLES['conf_values']} (
     ) TYPE=MyISAM
 ";
 
-$_SQL[7] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['cookiecodes']} (
   cc_value int(8) unsigned NOT NULL default '0',
   cc_descr varchar(20) NOT NULL default '',
@@ -106,7 +115,7 @@ CREATE TABLE {$_TABLES['cookiecodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[8] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['dateformats']} (
   dfid tinyint(4) NOT NULL default '0',
   format varchar(32) default NULL,
@@ -115,7 +124,7 @@ CREATE TABLE {$_TABLES['dateformats']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[9] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['events']} (
   eid varchar(20) NOT NULL default '',
   title varchar(128) default NULL,
@@ -149,7 +158,7 @@ CREATE TABLE {$_TABLES['events']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[10] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['eventsubmission']} (
   eid varchar(20) NOT NULL default '',
   title varchar(128) default NULL,
@@ -171,7 +180,7 @@ CREATE TABLE {$_TABLES['eventsubmission']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[11] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['featurecodes']} (
   code tinyint(4) NOT NULL default '0',
   name varchar(32) default NULL,
@@ -179,7 +188,7 @@ CREATE TABLE {$_TABLES['featurecodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[12] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['features']} (
   ft_id mediumint(8) NOT NULL auto_increment,
   ft_name varchar(20) NOT NULL default '',
@@ -190,7 +199,7 @@ CREATE TABLE {$_TABLES['features']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[13] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['frontpagecodes']} (
   code tinyint(4) NOT NULL default '0',
   name varchar(32) default NULL,
@@ -198,7 +207,7 @@ CREATE TABLE {$_TABLES['frontpagecodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[14] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['group_assignments']} (
   ug_main_grp_id mediumint(8) NOT NULL default '0',
   ug_uid mediumint(8) unsigned default NULL,
@@ -209,7 +218,7 @@ CREATE TABLE {$_TABLES['group_assignments']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[15] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['groups']} (
   grp_id mediumint(8) NOT NULL auto_increment,
   grp_name varchar(50) NOT NULL default '',
@@ -220,42 +229,7 @@ CREATE TABLE {$_TABLES['groups']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[16] = "
-CREATE TABLE {$_TABLES['links']} (
-  lid varchar(20) NOT NULL default '',
-  cid varchar(32) default NULL,
-  url varchar(255) default NULL,
-  description text,
-  title varchar(96) default NULL,
-  hits int(11) NOT NULL default '0',
-  date datetime default NULL,
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '2',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX links_category(cid),
-  INDEX links_date(date),
-  PRIMARY KEY (lid)
-) TYPE=MyISAM
-";
-
-$_SQL[17] = "
-CREATE TABLE {$_TABLES['linksubmission']} (
-  lid varchar(20) NOT NULL default '',
-  cid varchar(32) default NULL,
-  url varchar(255) default NULL,
-  description text,
-  title varchar(96) default NULL,
-  hits int(11) default NULL,
-  date datetime default NULL,
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  PRIMARY KEY (lid)
-) TYPE=MyISAM
-";
-
-$_SQL[18] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['maillist']} (
   code int(1) NOT NULL default '0',
   name char(32) default NULL,
@@ -263,7 +237,7 @@ CREATE TABLE {$_TABLES['maillist']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[19] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['personal_events']} (
   eid varchar(20) NOT NULL default '',
   title varchar(128) default NULL,
@@ -293,7 +267,20 @@ CREATE TABLE {$_TABLES['personal_events']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[20] = "
+$_SQL[] = "
+CREATE TABLE {$_TABLES['pingservice']} (
+  pid smallint(5) unsigned NOT NULL auto_increment,
+  name varchar(128) default NULL,
+  ping_url varchar(255) default NULL,
+  site_url varchar(255) default NULL,
+  method varchar(80) default NULL,
+  is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (pid),
+  INDEX pingservice_is_enabled(is_enabled)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['plugins']} (
   pi_name varchar(30) NOT NULL default '',
   pi_version varchar(20) NOT NULL default '',
@@ -305,65 +292,7 @@ CREATE TABLE {$_TABLES['plugins']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[21] = "
-CREATE TABLE {$_TABLES['pollanswers']} (
-  pid varchar(20) NOT NULL default '',
-  qid mediumint(9) NOT NULL default '0',
-  aid tinyint(3) unsigned NOT NULL default '0',
-  answer varchar(255) default NULL,
-  votes mediumint(8) unsigned default NULL,
-  remark varchar(255) NULL,
-  PRIMARY KEY (pid, qid, aid)
-) TYPE=MyISAM
-";
-
-$_SQL[22] = "
-CREATE TABLE {$_TABLES['pollquestions']} (
-  qid mediumint(9) NOT NULL DEFAULT '0',
-  pid varchar(20) NOT NULL,
-  question varchar(255) NOT NULL,
-  PRIMARY KEY (qid, pid)
-) TYPE=MyISAM
-";
-
-$_SQL[23] = "
-CREATE TABLE {$_TABLES['polltopics']} (
-  pid varchar(20) NOT NULL,
-  topic varchar(255) default NULL,
-  voters mediumint(8) unsigned default NULL,
-  questions int(11) NOT NULL default '0',
-  date datetime default NULL,
-  display tinyint(4) NOT NULL default '0',
-  open tinyint(1) NOT NULL default '1',
-  hideresults tinyint(1) NOT NULL default '0',
-  commentcode tinyint(4) NOT NULL default '0',
-  statuscode tinyint(4) NOT NULL default '0',
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '2',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX pollquestions_pid(pid),
-  INDEX pollquestions_date(date),
-  INDEX pollquestions_display(display),
-  INDEX pollquestions_commentcode(commentcode),
-  INDEX pollquestions_statuscode(statuscode),
-  PRIMARY KEY  (pid)
-) TYPE=MyISAM
-";
-
-$_SQL[24] = "
-CREATE TABLE {$_TABLES['pollvoters']} (
-  id int(10) unsigned NOT NULL auto_increment,
-  pid varchar(20) NOT NULL default '',
-  ipaddress varchar(15) NOT NULL default '',
-  date int(10) unsigned default NULL,
-  PRIMARY KEY (id)
-) TYPE=MyISAM
-";
-
-$_SQL[25] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['postmodes']} (
   code char(10) NOT NULL default '',
   name char(32) default NULL,
@@ -371,7 +300,7 @@ CREATE TABLE {$_TABLES['postmodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[26] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
   sess_id int(10) unsigned NOT NULL default '0',
   start_time int(10) unsigned NOT NULL default '0',
@@ -385,7 +314,7 @@ CREATE TABLE {$_TABLES['sessions']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[27] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['sortcodes']} (
   code char(4) NOT NULL default '0',
   name char(32) default NULL,
@@ -393,7 +322,7 @@ CREATE TABLE {$_TABLES['sortcodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[28] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id int(10) unsigned NOT NULL auto_increment,
   ipaddress varchar(15) NOT NULL default '',
@@ -405,7 +334,7 @@ CREATE TABLE {$_TABLES['speedlimit']} (
 ) TYPE = MyISAM
 ";
 
-$_SQL[29] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['statuscodes']} (
   code int(1) NOT NULL default '0',
   name char(32) default NULL,
@@ -413,7 +342,7 @@ CREATE TABLE {$_TABLES['statuscodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[30] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['stories']} (
   sid varchar(40) NOT NULL default '',
   uid mediumint(8) NOT NULL default '1',
@@ -458,7 +387,7 @@ CREATE TABLE {$_TABLES['stories']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[31] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['storysubmission']} (
   sid varchar(20) NOT NULL default '',
   uid mediumint(8) NOT NULL default '1',
@@ -472,7 +401,7 @@ CREATE TABLE {$_TABLES['storysubmission']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[32] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['syndication']} (
   fid int(10) unsigned NOT NULL auto_increment,
   type varchar(30) NOT NULL default 'geeklog',
@@ -498,7 +427,18 @@ CREATE TABLE {$_TABLES['syndication']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[33] = "
+$_SQL[] = "
+CREATE TABLE {$_TABLES['tokens']} (
+    token varchar(32) NOT NULL,
+    created datetime NOT NULL,
+    owner_id mediumint(8) unsigned NOT NULL,
+    urlfor varchar(2000) NOT NULL,
+    ttl mediumint(8) unsigned NOT NULL default '1',
+    PRIMARY KEY (token)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['topics']} (
   tid varchar(20) NOT NULL default '',
   topic varchar(48) default NULL,
@@ -517,7 +457,34 @@ CREATE TABLE {$_TABLES['topics']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[34] = "
+$_SQL[] = "
+CREATE TABLE {$_TABLES['trackback']} (
+  cid int(10) unsigned NOT NULL auto_increment,
+  sid varchar(40) NOT NULL,
+  url varchar(255) default NULL,
+  title varchar(128) default NULL,
+  blog varchar(80) default NULL,
+  excerpt text,
+  date datetime default NULL,
+  type varchar(30) NOT NULL default 'article',
+  ipaddress varchar(15) NOT NULL default '',
+  PRIMARY KEY (cid),
+  INDEX trackback_sid(sid),
+  INDEX trackback_url(url),
+  INDEX trackback_type(type),
+  INDEX trackback_date(date)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['trackbackcodes']} (
+  code tinyint(4) NOT NULL default '0',
+  name varchar(32) default NULL,
+  PRIMARY KEY  (code)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['usercomment']} (
   uid mediumint(8) NOT NULL default '1',
   commentmode varchar(10) NOT NULL default 'threaded',
@@ -527,7 +494,7 @@ CREATE TABLE {$_TABLES['usercomment']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[35] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['userindex']} (
   uid mediumint(8) NOT NULL default '1',
   tids varchar(255) NOT NULL default '',
@@ -543,7 +510,7 @@ CREATE TABLE {$_TABLES['userindex']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[36] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['userinfo']} (
   uid mediumint(8) NOT NULL default '1',
   about text,
@@ -558,7 +525,7 @@ CREATE TABLE {$_TABLES['userinfo']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[37] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['userprefs']} (
   uid mediumint(8) NOT NULL default '1',
   noicons tinyint(3) unsigned NOT NULL default '0',
@@ -573,7 +540,7 @@ CREATE TABLE {$_TABLES['userprefs']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[38] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['users']} (
   uid mediumint(8) NOT NULL auto_increment,
   username varchar(16) NOT NULL default '',
@@ -602,7 +569,7 @@ CREATE TABLE {$_TABLES['users']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[39] = "
+$_SQL[] = "
 CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
   value varchar(128) default NULL,
@@ -610,48 +577,130 @@ CREATE TABLE {$_TABLES['vars']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[40] = "
-CREATE TABLE {$_TABLES['article_images']} (
-  ai_sid varchar(40) NOT NULL,
-  ai_img_num tinyint(2) unsigned NOT NULL,
-  ai_filename varchar(128) NOT NULL,
-  PRIMARY KEY (ai_sid,ai_img_num)
-) TYPE=MyISAM
-";
+// Tables used by the bundled plugins
 
-$_SQL[41] = "
-CREATE TABLE {$_TABLES['trackback']} (
-  cid int(10) unsigned NOT NULL auto_increment,
-  sid varchar(40) NOT NULL,
-  url varchar(255) default NULL,
-  title varchar(128) default NULL,
-  blog varchar(80) default NULL,
-  excerpt text,
-  date datetime default NULL,
-  type varchar(30) NOT NULL default 'article',
-  ipaddress varchar(15) NOT NULL default '',
+$_SQL[] = "
+CREATE TABLE {$_TABLES['linkcategories']} (
+  cid varchar(32) NOT NULL,
+  pid varchar(32) NOT NULL,
+  category varchar(32) NOT NULL,
+  description text DEFAULT NULL,
+  tid varchar(20) DEFAULT NULL,
+  created datetime DEFAULT NULL,
+  modified datetime DEFAULT NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '2',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
   PRIMARY KEY (cid),
-  INDEX trackback_sid(sid),
-  INDEX trackback_url(url),
-  INDEX trackback_type(type),
-  INDEX trackback_date(date)
+  KEY links_pid (pid)
 ) TYPE=MyISAM
 ";
 
-$_SQL[42] = "
-CREATE TABLE {$_TABLES['pingservice']} (
-  pid smallint(5) unsigned NOT NULL auto_increment,
-  name varchar(128) default NULL,
-  ping_url varchar(255) default NULL,
-  site_url varchar(255) default NULL,
-  method varchar(80) default NULL,
-  is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (pid),
-  INDEX pingservice_is_enabled(is_enabled)
+$_SQL[] = "
+CREATE TABLE {$_TABLES['links']} (
+  lid varchar(20) NOT NULL default '',
+  cid varchar(32) default NULL,
+  url varchar(255) default NULL,
+  description text,
+  title varchar(96) default NULL,
+  hits int(11) NOT NULL default '0',
+  date datetime default NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '2',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  INDEX links_category(cid),
+  INDEX links_date(date),
+  PRIMARY KEY (lid)
 ) TYPE=MyISAM
 ";
 
-$_SQL[43] = "
+$_SQL[] = "
+CREATE TABLE {$_TABLES['linksubmission']} (
+  lid varchar(20) NOT NULL default '',
+  cid varchar(32) default NULL,
+  url varchar(255) default NULL,
+  description text,
+  title varchar(96) default NULL,
+  hits int(11) default NULL,
+  date datetime default NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  PRIMARY KEY (lid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['pollanswers']} (
+  pid varchar(20) NOT NULL default '',
+  qid mediumint(9) NOT NULL default '0',
+  aid tinyint(3) unsigned NOT NULL default '0',
+  answer varchar(255) default NULL,
+  votes mediumint(8) unsigned default NULL,
+  remark varchar(255) NULL,
+  PRIMARY KEY (pid, qid, aid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['pollquestions']} (
+  qid mediumint(9) NOT NULL DEFAULT '0',
+  pid varchar(20) NOT NULL,
+  question varchar(255) NOT NULL,
+  PRIMARY KEY (qid, pid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['polltopics']} (
+  pid varchar(20) NOT NULL,
+  topic varchar(255) default NULL,
+  voters mediumint(8) unsigned default NULL,
+  questions int(11) NOT NULL default '0',
+  date datetime default NULL,
+  display tinyint(4) NOT NULL default '0',
+  open tinyint(1) NOT NULL default '1',
+  hideresults tinyint(1) NOT NULL default '0',
+  commentcode tinyint(4) NOT NULL default '0',
+  statuscode tinyint(4) NOT NULL default '0',
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '2',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  INDEX pollquestions_pid(pid),
+  INDEX pollquestions_date(date),
+  INDEX pollquestions_display(display),
+  INDEX pollquestions_commentcode(commentcode),
+  INDEX pollquestions_statuscode(statuscode),
+  PRIMARY KEY  (pid)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['pollvoters']} (
+  id int(10) unsigned NOT NULL auto_increment,
+  pid varchar(20) NOT NULL default '',
+  ipaddress varchar(15) NOT NULL default '',
+  date int(10) unsigned default NULL,
+  PRIMARY KEY (id)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['spamx']} (
+  name varchar(20) NOT NULL default '',
+  value varchar(255) NOT NULL default '',
+  INDEX spamx_name(name)
+) TYPE=MyISAM
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(40) NOT NULL default '',
   sp_uid mediumint(8) NOT NULL default '1',
@@ -684,53 +733,6 @@ CREATE TABLE {$_TABLES['staticpage']} (
   KEY staticpage_sp_centerblock (sp_centerblock),
   KEY staticpage_sp_tid (sp_tid),
   KEY staticpage_sp_where (sp_where)
-) TYPE=MyISAM
-";
-
-$_SQL[44] = "
-CREATE TABLE {$_TABLES['spamx']} (
-  name varchar(20) NOT NULL default '',
-  value varchar(255) NOT NULL default '',
-  INDEX spamx_name(name)
-) TYPE=MyISAM
-";
-
-$_SQL[45] = "
-CREATE TABLE {$_TABLES['trackbackcodes']} (
-  code tinyint(4) NOT NULL default '0',
-  name varchar(32) default NULL,
-  PRIMARY KEY  (code)
-) TYPE=MyISAM
-";
-
-$_SQL[46] = "
-CREATE TABLE {$_TABLES['linkcategories']} (
-  cid varchar(32) NOT NULL,
-  pid varchar(32) NOT NULL,
-  category varchar(32) NOT NULL,
-  description text DEFAULT NULL,
-  tid varchar(20) DEFAULT NULL,
-  created datetime DEFAULT NULL,
-  modified datetime DEFAULT NULL,
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '2',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  PRIMARY KEY (cid),
-  KEY links_pid (pid)
-) TYPE=MyISAM
-";
-
-$_SQL[47] = "
-CREATE TABLE {$_TABLES['tokens']} (
-    token varchar(32) NOT NULL,
-    created datetime NOT NULL,
-    owner_id mediumint(8) unsigned NOT NULL,
-    urlfor varchar(2000) NOT NULL,
-    ttl mediumint(8) unsigned NOT NULL default '1',
-    PRIMARY KEY (token)
 ) TYPE=MyISAM
 ";
 

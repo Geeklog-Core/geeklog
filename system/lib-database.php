@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.51 2008/02/22 08:04:33 mjervis Exp $
+// $Id: lib-database.php,v 1.52 2008/04/12 11:21:46 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -56,6 +56,7 @@ $_TABLES['blocks']              = $_DB_table_prefix . 'blocks';
 $_TABLES['commentcodes']        = $_DB_table_prefix . 'commentcodes';
 $_TABLES['commentmodes']        = $_DB_table_prefix . 'commentmodes';
 $_TABLES['comments']            = $_DB_table_prefix . 'comments';
+$_TABLES['conf_values']         = $_DB_table_prefix . 'conf_values';
 $_TABLES['cookiecodes']         = $_DB_table_prefix . 'cookiecodes';
 $_TABLES['dateformats']         = $_DB_table_prefix . 'dateformats';
 $_TABLES['featurecodes']        = $_DB_table_prefix . 'featurecodes';
@@ -84,7 +85,6 @@ $_TABLES['userinfo']            = $_DB_table_prefix . 'userinfo';
 $_TABLES['userprefs']           = $_DB_table_prefix . 'userprefs';
 $_TABLES['users']               = $_DB_table_prefix . 'users';
 $_TABLES['vars']                = $_DB_table_prefix . 'vars';
-$_TABLES['conf_values']         = $_DB_table_prefix . 'conf_values';
 
 
 // Tables used by the bundled plugins
@@ -95,8 +95,8 @@ $_TABLES['eventsubmission']     = $_DB_table_prefix . 'eventsubmission';
 $_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
 
 // Links plugin
-$_TABLES['links']               = $_DB_table_prefix . 'links';
 $_TABLES['linkcategories']      = $_DB_table_prefix . 'linkcategories';
+$_TABLES['links']               = $_DB_table_prefix . 'links';
 $_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
 
 // Polls plugin
