@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.23 2008/02/20 17:47:25 mjervis Exp $
+// $Id: story.class.php,v 1.24 2008/04/12 19:28:41 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -369,7 +369,12 @@ class Story
 
         // Overwrite the date with the timestamp.
         $this->_date = $story['unixdate'];
-        $this->_expire = $story['expireunix'];
+        if (!empty($story['expireunix'])) {
+            $this->_expire = $story['expireunix'];
+        } else {
+            $this->_expire = '';
+        }
+
         // Store the original SID
         $this->_originalSid = $this->_sid;
     }
@@ -388,6 +393,7 @@ class Story
     function loadFromDatabase($sid, $mode = 'edit')
     {
         global $_TABLES, $_CONF, $_USER;
+
         $sid = addslashes(COM_applyFilter($sid));
 
         if (!empty($sid) && (($mode == 'edit') || ($mode == 'view'))) {
@@ -476,9 +482,13 @@ class Story
                     return STORY_INVALID_SID;
                 }
                 $this->loadFromArray($story);
-                $access
-                = SEC_hasAccess($story['owner_id'], $story['group_id'], $story['perm_owner'], $story['perm_group'],
-                                    $story['perm_members'], $story['perm_anon']);
+                if (!isset($story['owner_id'])) {
+                    $story['owner_id'] = 1;
+                }
+                $access = SEC_hasAccess($story['owner_id'], $story['group_id'],
+                            $story['perm_owner'], $story['perm_group'],
+                            $story['perm_members'], $story['perm_anon']);
+
                 $this->_access = min($access, SEC_hasTopicAccess($this->_tid));
 
                 if ($this->_access == 0) {
@@ -507,7 +517,7 @@ class Story
             $this->_commentcode = $_CONF['comment_code'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_featured = 0;
-            $this->_expire = '0000-00-00 00:00:00';
+            $this->_expire = time();
             $this->_expiredate = 0;
 
             if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$this->_tid}'") == 1) {
