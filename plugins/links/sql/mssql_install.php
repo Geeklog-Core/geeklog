@@ -6,13 +6,13 @@
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Trinity Bays      - trinity AT steubentech DOT com               |
+// |          Trinity Bays      - trinity93 AT gmail DOT com               |
 // |          Randy Kolenko     - randy AT nextide DOT ca                      |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -41,7 +41,7 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Trinity Bays <trinity93@gmail.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>

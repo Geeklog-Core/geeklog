@@ -12,7 +12,7 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Trinity Bays      - trinity AT steubentech DOT com               |
+// |          Trinity Bays      - trinity93 AT gmail DOT com               |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is licensed under the terms of the GNU General Public License|
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.7 2008/01/01 17:51:54 dhaun Exp $
+// $Id: mysql_install.php,v 1.8 2008/04/12 13:21:34 dhaun Exp $
 
 /**
  * Links plugin Installation SQL
@@ -41,7 +41,7 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Trinity Bays <trinity93@gmail.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
@@ -72,7 +72,7 @@ CREATE TABLE {$_TABLES['linkcategories']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['links']} (
-  lid varchar(20) NOT NULL default '',
+  lid varchar(40) NOT NULL default '',
   cid varchar(32) default NULL,
   url varchar(255) default NULL,
   description text,
@@ -93,7 +93,7 @@ CREATE TABLE {$_TABLES['links']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['linksubmission']} (
-  lid varchar(20) NOT NULL default '',
+  lid varchar(40) NOT NULL default '',
   cid varchar(32) default NULL,
   url varchar(255) default NULL,
   description text,
