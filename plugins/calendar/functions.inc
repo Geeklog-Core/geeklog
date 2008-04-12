@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.81 2008/03/17 21:12:54 dhaun Exp $
+// $Id: functions.inc,v 1.82 2008/04/12 20:34:18 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -302,8 +302,9 @@ function phpblock_calendar( $help='', $title='' )
 * @return        boolean       Returns true if moderator
 *
 */
-function plugin_ismoderator_calendar() {
-    return SEC_hasRights ('calendar.moderate');
+function plugin_ismoderator_calendar()
+{
+    return SEC_hasRights('calendar.moderate');
 }
 
 /**
@@ -769,27 +770,42 @@ function plugin_submit_calendar($mode = 'master')
 * Delete an event
 *
 * @param    string  $eid    id of event to delete
+* @param    string  $type   'submission' when attempting to delete a submission
 * @param    string          HTML redirect
 */
-function CALENDAR_deleteEvent ($eid)
+function CALENDAR_deleteEvent($eid, $type = '')
 {
     global $_CONF, $_TABLES, $_USER;
 
-    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
-                       ."FROM {$_TABLES['events']} WHERE eid = '$eid'");
-    $A = DB_fetchArray ($result);
-    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-            $A['perm_group'], $A['perm_members'], $A['perm_anon']);
-    if ($access < 3) {
-        COM_accessLog ("User {$_USER['username']} tried to illegally delete event $eid.");
-        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/calendar/index.php');
+    if (empty($type)) { // delete regular event
+        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '$eid'");
+        $A = DB_fetchArray($result);
+        $access = SEC_hasAccess($A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon']);
+        if ($access < 3) {
+            COM_accessLog("User {$_USER['username']} tried to illegally delete event $eid.");
+            return COM_refresh($_CONF['site_admin_url']
+                               . '/plugins/calendar/index.php');
+        }
+
+        DB_delete($_TABLES['events'], 'eid', $eid);
+        DB_delete($_TABLES['personal_events'], 'eid', $eid);
+        COM_rdfUpToDateCheck('geeklog', 'calendar', $eid);
+
+        return COM_refresh($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');
+    } elseif ($type == 'submission') {
+        if (plugin_ismoderator_calendar()) {
+            DB_delete($_TABLES['eventsubmission'], 'eid', $eid);
+        } else {
+            COM_accessLog("User {$_USER['username']} tried to illegally delete event submission $eid.");
+        }
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to illegally delete event $eid of type $type.");
     }
 
-    DB_delete ($_TABLES['events'], 'eid', $eid);
-    DB_delete ($_TABLES['personal_events'], 'eid', $eid);
-    COM_rdfUpToDateCheck ('geeklog', 'calendar', $eid);
-
-    return COM_refresh ($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');
+    return COM_refresh($_CONF['site_admin_url']
+                       . '/plugins/calendar/index.php');
 }
 
 function CALENDAR_listOld()

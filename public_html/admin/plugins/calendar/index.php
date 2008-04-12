@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.31 2008/01/27 15:23:33 dhaun Exp $
+// $Id: index.php,v 1.32 2008/04/12 20:34:18 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -139,6 +139,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
                                    sprintf ($delbutton, $jsconfirm));
         $event_templates->set_var ('delete_option_no_confirmation',
                                    sprintf ($delbutton, ''));
+        if ($mode == 'editsubmission') {
+            $event_templates->set_var('submission_option',
+                '<input type="hidden" name="type" value="submission"'
+                . XHTML . '>');
+        }
     } else { // new event
         $A['eid'] = COM_makesid ();
         $A['title'] = '';
@@ -578,7 +583,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                       . $eid . "'");
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/calendar/index.php');
     } else {
-        $display .= CALENDAR_deleteEvent ($eid);
+        $type = '';
+        if (isset($_POST['type'])) {
+            $type = COM_applyFilter($_POST['type']);
+        }
+        $display .= CALENDAR_deleteEvent($eid, $type);
     }
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     if (!isset ($_POST['allday'])) {

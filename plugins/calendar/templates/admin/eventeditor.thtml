@@ -155,6 +155,7 @@
                                             <input type="hidden" name="eid" value="{event_id}"{xhtml}>
                                             <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
                                             {delete_option}
+                                            {submission_option}
                                         </td>
                                     </tr>
                                 </table>
