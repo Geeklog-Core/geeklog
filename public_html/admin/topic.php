@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.77 2008/02/16 12:03:16 dhaun Exp $
+// $Id: topic.php,v 1.78 2008/04/13 16:19:09 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -564,6 +564,14 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $imageurl = handleIconUpload($_POST['tid']);
         $imageurl = COM_applyFilter ($imageurl);
     }
+    $is_default = '';
+    if (isset($_POST['is_default'])) {
+        $is_default = $_POST['is_default'];
+    }
+    $is_archive = '';
+    if (isset($_POST['is_archive'])) {
+        $is_archive = $_POST['is_archive'];
+    }
     $display .= savetopic (COM_applyFilter ($_POST['tid']), $_POST['topic'],
                            $imageurl,
                            COM_applyFilter ($_POST['sortnum'], true),
@@ -572,7 +580,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                            COM_applyFilter ($_POST['group_id'], true),
                            $_POST['perm_owner'], $_POST['perm_group'],
                            $_POST['perm_members'], $_POST['perm_anon'],
-                           $_POST['is_default'], $_POST['is_archive']);
+                           $is_default, $is_archive);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG27[1]);
     $tid = '';
