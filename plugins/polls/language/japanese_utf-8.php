@@ -27,6 +27,8 @@
 ###############################################################################
 # Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
+global $LANG32;
+
 $LANG_POLLS = array(
     'polls'             => 'アンケート',
     'results'           => '結果',

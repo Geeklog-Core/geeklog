@@ -12,8 +12,10 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: slovenian.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: slovenian.php,v 1.3 2008/04/13 11:59:08 dhaun Exp $
  */
+
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>Èe storiš to, potem si bodo drugi ',

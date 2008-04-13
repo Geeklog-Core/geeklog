@@ -11,8 +11,10 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: italian.php,v 1.8 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: italian.php,v 1.9 2008/04/13 11:59:08 dhaun Exp $
  */
+
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>Cos&igrave; facendo, poi altri ',

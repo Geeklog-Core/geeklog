@@ -22,7 +22,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: polish.php,v 1.4 2008/03/17 21:12:54 dhaun Exp $
+# $Id: polish.php,v 1.5 2008/04/13 11:59:08 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -34,7 +34,7 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93@steubentech.com>
+ * @author Trinity Bays <trinity93@gmail.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
@@ -42,6 +42,7 @@
  * 
  */
 
+global $LANG32;
 
 ###############################################################################
 # Array Format:
@@ -49,12 +50,13 @@
 #              XX - file id number
 #            YY - phrase id number
 ###############################################################################
+
 /**
 * the link plugin's lang array
 * 
 * @global array $LANG_LINKS 
 */
-$LANG_LINKS= array(
+$LANG_LINKS = array(
     10 => 'Przes³ane Linki',
     14 => 'Linki',
     84 => 'LINKI',

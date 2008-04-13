@@ -26,7 +26,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: slovenian_utf-8.php,v 1.3 2008/03/17 21:12:54 dhaun Exp $
+# $Id: slovenian_utf-8.php,v 1.4 2008/04/13 11:59:08 dhaun Exp $
 
 /** 
  * This is the english language page for the Geeklog links Plug-in! 
@@ -38,12 +38,13 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2006
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93 AT steubentech DOT com>
+ * @author Trinity Bays <trinity93 AT gmail DOT com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
  * 
  */
 
+global $LANG32;
 
 ###############################################################################
 # Array Format:
@@ -51,12 +52,13 @@
 #              XX - file id number
 #            YY - phrase id number
 ###############################################################################
+
 /**
 * the link plugin's lang array
 * 
 * @global array $LANG_LINKS 
 */
-$LANG_LINKS= array(
+$LANG_LINKS = array(
     10 => 'Čakajoča vsebina',
     14 => 'Povezave',
     84 => 'POVEZAVE',

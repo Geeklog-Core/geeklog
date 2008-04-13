@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish.php,v 1.7 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: spanish.php,v 1.8 2008/04/13 11:59:08 dhaun Exp $
  */
 
 // +---------------------------------------------------------------------------+
@@ -18,6 +18,7 @@
 // | http://comunidad.share4ever.net/                                          |
 // +---------------------------------------------------------------------------+
 
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>Si haces esto, los demás ',

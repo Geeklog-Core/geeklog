@@ -12,6 +12,8 @@
  * Licensed under GNU General Public License
  */
 
+global $LANG32;
+
 $LANG_SX00 = array (
     'inst1' => '<p>Si vous faites ce qui suit, alors tout le monde ',
     'inst2' => 'pourra voir et importer votre Liste Noire personnelle. Nous pouvons alors créer une base de données ',

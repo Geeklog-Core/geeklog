@@ -12,8 +12,10 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: slovenian_utf-8.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: slovenian_utf-8.php,v 1.3 2008/04/13 11:59:08 dhaun Exp $
  */
+
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>Če storiš to, potem si bodo drugi ',

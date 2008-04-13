@@ -24,7 +24,9 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german_formal.php,v 1.4 2008/03/17 21:12:54 dhaun Exp $
+# $Id: german_formal.php,v 1.5 2008/04/13 11:59:08 dhaun Exp $
+
+global $LANG32;
 
 ###############################################################################
 # Array Format:
@@ -33,8 +35,7 @@
 #            YY - phrase id number
 ###############################################################################
 
-
-$LANG_LINKS= array(
+$LANG_LINKS = array(
     10 => 'Beiträge',
     14 => 'Links',
     84 => 'LINKS',

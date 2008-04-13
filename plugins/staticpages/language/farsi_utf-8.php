@@ -22,7 +22,9 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-$LANG_CHARSET = 'utf-8';
+
+global $LANG32;
+
 ###############################################################################
 # Array Format: 
 # $LANGXX[YY]:	$LANG - variable name

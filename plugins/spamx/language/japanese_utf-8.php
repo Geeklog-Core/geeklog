@@ -10,10 +10,11 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese_utf-8.php,v 1.5 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: japanese_utf-8.php,v 1.6 2008/04/13 11:59:08 dhaun Exp $
  */
 # Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>もしこれをおこなったら他も ',

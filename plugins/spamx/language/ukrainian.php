@@ -9,8 +9,10 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: ukrainian.php,v 1.5 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: ukrainian.php,v 1.6 2008/04/13 11:59:08 dhaun Exp $
  */
+
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>‗ךשמ גט חנמבטעו צו, עמה³ ³םר³ ',

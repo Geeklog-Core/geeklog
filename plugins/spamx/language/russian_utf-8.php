@@ -9,8 +9,10 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: russian_utf-8.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: russian_utf-8.php,v 1.3 2008/04/13 11:59:08 dhaun Exp $
  */
+
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>Если Вы это сделаете, другие ',

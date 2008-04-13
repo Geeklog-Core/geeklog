@@ -11,8 +11,10 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: french_canada.php,v 1.9 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: french_canada.php,v 1.10 2008/04/13 11:59:08 dhaun Exp $
  */
+
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>Si vous faites ce qui suit, alors tout le monde ',

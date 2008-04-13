@@ -25,8 +25,10 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: korean.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
+# $Id: korean.php,v 1.3 2008/04/13 11:59:08 dhaun Exp $
 # Last Update 2007/01/30 by Ivy (Geeklog Japanese)
+
+global $LANG32;
 
 ###############################################################################
 # Array Format: 
@@ -35,7 +37,7 @@
 #			YY - phrase id number
 ###############################################################################
 
-$LANG_LINKS= array(
+$LANG_LINKS = array(
     10 => '덧글',
     14 => '링크',
     84 => '링크',

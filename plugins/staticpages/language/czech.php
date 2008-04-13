@@ -32,6 +32,7 @@
 #			YY - phrase id number
 ###############################################################################
 
+global $LANG32;
 
 $LANG_STATIC= array(
     newpage => "Nová stránka",

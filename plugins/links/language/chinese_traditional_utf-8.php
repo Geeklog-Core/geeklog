@@ -26,18 +26,21 @@
 #
 ###############################################################################
 
+global $LANG32;
+
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:    $LANG - variable name
 #              XX - file id number
 #            YY - phrase id number
 ###############################################################################
+
 /**
 * the link plugin's lang array
 * 
 * @global array $LANG_LINKS 
 */
-$LANG_LINKS= array(
+$LANG_LINKS = array(
     10 => '提交物',
     14 => '連結',
     84 => '連結',

@@ -9,15 +9,16 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish_utf-8.php,v 1.2 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: spanish_utf-8.php,v 1.3 2008/04/13 11:59:08 dhaun Exp $
  */
 
 // +---------------------------------------------------------------------------+
-// | Archivo en Español para el plugin spamx                                   |
+// | Archivo en Español para el plugin spamx                                  |
 // | Traducido por: vivi1123                                                   |
 // | http://comunidad.share4ever.net/                                          |
 // +---------------------------------------------------------------------------+
 
+global $LANG32;
 
 $LANG_SX00 = array (
     'inst1' => '<p>Si haces esto, los demás ',
