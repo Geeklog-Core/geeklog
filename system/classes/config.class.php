@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.35 2008/03/23 10:22:54 dhaun Exp $
+// $Id: config.class.php,v 1.36 2008/04/13 11:28:12 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -357,7 +357,22 @@ class config {
 
     function _get_groups()
     {
-        return array_keys($this->config_array);
+        global $_TABLES;
+
+        $groups = array_keys($this->config_array);
+        $num_groups = count($groups);
+        for ($i = 0; $i < $num_groups; $i++) {
+            $g = $groups[$i];
+            if ($g != 'Core') {
+                $enabled = DB_getItem($_TABLES['plugins'], 'pi_enabled',
+                                      "pi_name = '$g'");
+                if (isset($enabled) && ($enabled == 0)) {
+                    unset($groups[$i]);
+                }
+            }
+        }
+
+        return $groups;
     }
 
     function _get_sgroups($group)
