@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.63 2008/02/20 20:07:59 mjervis Exp $
+// $Id: lib-comment.php,v 1.64 2008/04/16 11:13:36 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1021,7 +1021,7 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
     }
 
     $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-              . '/comment.php?mode=view&amp;cid=' . $cid . ">\n\n";
+              . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
