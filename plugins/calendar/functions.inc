@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.82 2008/04/12 20:34:18 dhaun Exp $
+// $Id: functions.inc,v 1.83 2008/04/17 18:33:27 mjervis Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -129,11 +129,11 @@ function phpblock_calendar( $help='', $title='' )
         . "FROM {$_TABLES['events']} "
         . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
         . 'ORDER BY datestart,timestart';
-
+        
         if(( $_CA_CONF['personalcalendars'] == 1 ) && !empty( $_USER['uid'] )) {
             $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
             . "FROM {$_TABLES['personal_events']} "
-            . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
+            . "WHERE uid = {$_USER['uid']} AND dateend >= NOW()  AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
             . 'ORDER BY datestart, dateend';
         }
 
