@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Other changes:
+- Calendar block now includes events from the current day (in progress or all
+  day events, bug 0000604, patch from forums)
 - Removed Blogger remote authentication option. Blogger.com have changed their
   authentication process, so this module no longer works.
 - Emails sent from Geeklog will now have an X-Originating-IP header to help
