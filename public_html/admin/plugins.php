@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.80 2008/04/19 15:14:41 mjervis Exp $
+// $Id: plugins.php,v 1.81 2008/04/19 15:35:31 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -478,11 +478,14 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteFooter ();
 
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
+    $enabled = '';
+    if (isset($_POST['enabled'])) {
+        $enabled = COM_applyFilter($_POST['enabled']);
+    }
     $display .= saveplugin (COM_applyFilter ($_POST['pi_name']),
                             COM_applyFilter ($_POST['pi_version']),
                             COM_applyFilter ($_POST['pi_gl_version']),
-                            COM_applyFilter ($_POST['enabled']),
-                            COM_applyFilter ($_POST['pi_homepage']));
+                            $enabled, COM_applyFilter ($_POST['pi_homepage']));
 
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG32[5]);
