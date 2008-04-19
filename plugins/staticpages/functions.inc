@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.119 2008/04/06 17:26:02 dhaun Exp $
+// $Id: functions.inc,v 1.120 2008/04/19 19:23:58 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -983,7 +983,7 @@ function plugin_chkVersion_staticpages()
 * Implements the [staticpage:] autotag.
 *
 */
-function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
+function plugin_autotags_staticpages($op, $content = '', $autotag = '')
 {
     global $_CONF, $_TABLES;
 
@@ -993,24 +993,26 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
         return array('staticpage', 'staticpage_content');
     } else if ($op == 'parse') {
         if ($autotag['tag'] == 'staticpage' ) {
-            $sp_id = COM_applyFilter ($autotag['parm1']);
-            $url = COM_buildUrl ($_CONF['site_url'] . '/staticpages/index.php?page='
-                                 . $sp_id);
-            if (empty ($autotag['parm2'])) {
-                $linktext = stripslashes (DB_getItem ($_TABLES['staticpage'],
-                                          'sp_title', "sp_id = '$sp_id'"));
+            $sp_id = COM_applyFilter($autotag['parm1']);
+            $url = COM_buildUrl($_CONF['site_url']
+                                . '/staticpages/index.php?page=' . $sp_id);
+            if (empty($autotag['parm2'])) {
+                $linktext = stripslashes(DB_getItem ($_TABLES['staticpage'],
+                                         'sp_title', "sp_id = '$sp_id'"));
             } else {
                 $linktext = $autotag['parm2'];
             }
             $link = COM_createLink($linktext, $url);
-            $content = str_replace ($autotag['tagstr'], $link, $content);
+            $content = str_replace($autotag['tagstr'], $link, $content);
         } else if ($autotag['tag'] == 'staticpage_content') {
-            $sp_id = COM_applyFilter ($autotag['parm1']);
+            $sp_id = COM_applyFilter($autotag['parm1']);
             if (isset($recursive[$sp_id])) {
                 $content = '';
             } else {
                 $recursive[$sp_id] = true;
-                $content = SP_returnStaticpage($sp_id, 'autotag');
+                $sp_content = SP_returnStaticpage($sp_id, 'autotag');
+                $content = str_replace($autotag['tagstr'], $sp_content,
+                                       $content);
             }
         }
 
