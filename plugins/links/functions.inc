@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.106 2008/03/17 21:12:54 dhaun Exp $
+// $Id: functions.inc,v 1.107 2008/04/19 12:15:57 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -945,67 +945,90 @@ function plugin_submit_links()
 * @return   string      HTML redirect
 *
 */
-function plugin_save_submit_links ($A)
+function plugin_save_submit_links($A)
 {
-    global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG_LINKS_SUBMIT;
+    global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG12;
 
     $retval = '';
 
-    $A['category'] = strip_tags (COM_stripslashes ($A['category']));
-    $A['categorydd'] = strip_tags (COM_stripslashes ($A['categorydd']));
-    if ($A['categorydd'] != $LANG_LINKS_SUBMIT[4] && !empty ($A['categorydd'])) {
-        $A['cid'] = $A['categorydd'];
-    } else if ($A['categorydd'] != $LANG_LINKS_SUBMIT[4]) {
-        $retval .= COM_startBlock ($LANG_LINKS_SUBMIT[6], '',
-                       COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG_LINKS_SUBMIT[7]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform ('links')
-                . COM_siteFooter ();
+    // pseudo-formatted link description for the spam check
+    $spamcheck = '<p>'. COM_createLink($A['title'], $A['url']) .' ('
+               . $A['categorydd'] . ')<br' . XHTML . '>' . $A['description']
+               . '</p>';
+    $result = PLG_checkforSpam($spamcheck, $_CONF['spamx']);
+    if ($result > 0) {
+        COM_updateSpeedlimit('submit');
+        COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
+    }
+
+    $A['cid'] = strip_tags(COM_stripslashes($A['categorydd']));
+
+    $validcat = false;
+    if (!empty($A['cid'])) {
+        $cid = addslashes($A['cid']);
+        $cat = DB_getItem($_TABLES['linkcategories'], 'category',
+                          "cid = '$cid'");
+        if (!empty($cat)) {
+            $validcat = true;
+        }
+    }
+    if (!$validcat) {
+        $retval .= COM_startBlock($LANG12[22], '',
+                       COM_getBlockTemplate('_msg_block', 'header'))
+                . $LANG12[23]
+                . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'))
+                . submissionform('links')
+                . COM_siteFooter();
 
         return $retval;
     }
 
-    // pseudo-formatted link description for the spam check
-    $spamcheck = '<p>'. COM_createLink($A['title'], $A['url']) .' ('
-               . $A['cid'] . ', ' . $A['categorydd'] . ')<br' . XHTML . '>'
-               . $A['description'] . '</p>';
-    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
-    if ($result > 0) {
-        COM_updateSpeedlimit ('submit');
-        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+    $A['cid'] = addslashes($A['cid']);
+    $A['description'] = addslashes(htmlspecialchars(COM_checkWords($A['description'])));
+    $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
+    $A['url'] = addslashes(COM_sanitizeUrl($A['url']));
+    $A['lid'] = addslashes(COM_makeSid());
+
+    COM_updateSpeedlimit('submit');
+    if (COM_isAnonUser()) {
+        $owner_id = 1; // anonymous user
+    } else {
+        $owner_id = $_USER['uid'];
     }
 
-    $A['cid'] = addslashes ($A['cid']);
-    $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
-    $A['title'] = addslashes (strip_tags (COM_checkWords ($A['title'])));
-    $A['url'] = addslashes (COM_sanitizeUrl ($A['url']));
-    $A['lid'] = addslashes (COM_makeSid ());
-    COM_updateSpeedlimit ('submit');
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-        $owner_id = $_USER['uid'];
-    } else {
-        $owner_id = 1; // anonymous user
-    }
-    if (($_LI_CONF['linksubmission'] == 1) && !SEC_hasRights ('links.submit')) {
-        $result = DB_save ($_TABLES['linksubmission'],
+    if (($_LI_CONF['linksubmission'] == 1) && !SEC_hasRights('links.submit')) {
+        $result = DB_save($_TABLES['linksubmission'],
                     'lid,cid,url,description,title,date,owner_id',
                     "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
 
-        if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
-            LINKS_sendNotification ($_TABLES['linksubmission'], $A);
+        if ($_LI_CONF['notification'] == 1) {
+            LINKS_sendNotification($_TABLES['linksubmission'], $A);
         }
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=1&amp;plugin=links');
+        $retval = COM_refresh($_CONF['site_url']
+                              . '/index.php?msg=1&amp;plugin=links');
+
     } else { // add link directly
 
-        $result = DB_save ($_TABLES['links'], 'lid,cid,url,description,title,date,owner_id', "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
-        if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
-            LINKS_sendNotification ($_TABLES['links'], $A);
+        if (SEC_hasRights('links.submit')) {
+            $A['group_id'] = SEC_getFeatureGroup('links.submit');
+        } else {
+            $A['group_id'] = DB_getItem($_TABLES['groups'], 'grp_id',
+                                        "grp_name = 'All Users'");
         }
-        COM_rdfUpToDateCheck ();
+        SEC_setDefaultPermissions($A, $_LI_CONF['default_permissions']);
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=4&amp;plugin=links');
+        $result = DB_save($_TABLES['links'],
+                    'lid,cid,url,description,title,date,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
+                    "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}");
+
+        if ($_LI_CONF['notification'] == 1) {
+            LINKS_sendNotification($_TABLES['links'], $A);
+        }
+        COM_rdfUpToDateCheck('links', $A['cid'], $A['lid']);
+
+        $retval = COM_refresh($_CONF['site_url']
+                              . '/index.php?msg=4&amp;plugin=links');
     }
 
     return $retval;
