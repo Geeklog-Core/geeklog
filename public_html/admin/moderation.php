@@ -32,12 +32,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.118 2008/02/20 20:07:58 mjervis Exp $
+// $Id: moderation.php,v 1.119 2008/04/19 12:13:18 dhaun Exp $
 
-require_once ('../lib-common.php');
-require_once ('auth.inc.php');
-require_once ($_CONF['path_system'] . 'lib-user.php');
-require_once ($_CONF['path_system'] . 'lib-story.php');
+require_once '../lib-common.php';
+require_once 'auth.inc.php';
+require_once $_CONF['path_system'] . 'lib-user.php';
+require_once $_CONF['path_system'] . 'lib-story.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -483,9 +483,16 @@ function moderation ($mid, $action, $type, $count)
         list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
     }
 
-    $formaction = false;        // Set true if an valid action other then delete_all is selected
+    // Set true if an valid action other than delete_all is selected
+    $formaction = false;
+
     for ($i = 0; $i < $count; $i++) {
-        if (isset($action[$i]) AND $action[$i] != '') $formaction = true;
+        if (isset($action[$i]) AND ($action[$i] != '')) {
+            $formaction = true;
+        } else {
+            continue;
+        }
+
         switch ($action[$i]) {
         case 'delete':
             if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
@@ -503,6 +510,7 @@ function moderation ($mid, $action, $type, $count)
                 DB_delete($submissiontable,"$id",$mid[$i]);
             }
             break;
+
         case 'approve':
             if ($type == 'story') {
                 $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} WHERE sid = '$mid[$i]'");
@@ -542,9 +550,10 @@ function moderation ($mid, $action, $type, $count)
         }
     }
 
-    // Check if there was no direct action used on the form and if the delete_all submit action was used
+    // Check if there was no direct action used on the form
+    // and if the delete_all submit action was used
     if (!$formaction AND isset($_POST['delitem'])) {
-        foreach($_POST['delitem'] as $delitem) {
+        foreach ($_POST['delitem'] as $delitem) {
             $delitem = COM_applyFilter($delitem);
             if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
                 // There may be some plugin specific processing that needs to
@@ -581,15 +590,24 @@ function moderateusers ($uid, $action, $count)
     global $_CONF, $_TABLES, $LANG04;
 
     $retval = '';
-    $formaction = false;        // Set true if an valid action other then delete_all is selected
+
+    // Set true if an valid action other then delete_all is selected
+    $formaction = false;
+
     for ($i = 0; $i < $count; $i++) {
-        if (isset($action[$i]) AND $action[$i] != '') $formaction = true;
+        if (isset($action[$i]) AND ($action[$i] != '')) {
+            $formaction = true;
+        } else {
+            continue;
+        }
+
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
                 if ($uid[$i] > 1) {
                     USER_deleteAccount ($uid[$i]);
                 }
                 break;
+
             case 'approve':
                 $uid[$i] = COM_applyFilter($uid[$i], true);
                 $result = DB_query ("SELECT email,username, uid FROM {$_TABLES['users']} WHERE uid = $uid[$i]");
@@ -604,9 +622,10 @@ function moderateusers ($uid, $action, $count)
         }
     }
 
-    // Check if there was no direct action used on the form and if the delete_all submit action was used
+    // Check if there was no direct action used on the form
+    // and if the delete_all submit action was used
     if (!$formaction AND isset($_POST['delitem'])) {
-        foreach($_POST['delitem'] as $del_uid) {
+        foreach ($_POST['delitem'] as $del_uid) {
             $del_uid = COM_applyFilter($del_uid,true);
             if ($del_uid > 1) {
                 USER_deleteAccount ($del_uid);
@@ -650,15 +669,19 @@ if (isset ($_GET['msg'])) {
 }
 
 if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
+    $action = array();
+    if (isset($_POST['action'])) {
+        $action = $_POST['action'];
+    }
     if ($_POST['type'] == 'user') {
-        $display .= moderateusers ($_POST['id'], $_POST['action'],
-                                  COM_applyFilter ($_POST['count'], true));
+        $display .= moderateusers($_POST['id'], $action,
+                                  COM_applyFilter($_POST['count'], true));
     } else {
-        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type'],
-                                  COM_applyFilter ($_POST['count'], true));
+        $display .= moderation($_POST['id'], $action, $_POST['type'],
+                               COM_applyFilter ($_POST['count'], true));
     }
 } else {
-    $display .= security_check_reminder ();
+    $display .= security_check_reminder();
     $display .= commandcontrol();
 }
 
