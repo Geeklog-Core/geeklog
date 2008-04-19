@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.142 2008/04/06 16:19:42 dhaun Exp $
+// $Id: lib-plugins.php,v 1.143 2008/04/19 16:44:39 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -210,36 +210,36 @@ function PLG_uninstall ($type)
         }
 
         // removing variables
-        for ($i=0; $i < count($remvars['vars']); $i++) {
+        for ($i = 0; $i < count($remvars['vars']); $i++) {
             COM_errorLog ("Removing variable {$remvars['vars'][$i]}", 1);
             DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = '{$remvars['vars'][$i]}'");
             COM_errorLog ('...success', 1);
         }
 
         // removing groups
-        for ($i=0; $i < count($remvars['groups']); $i++) {
+        for ($i = 0; $i < count($remvars['groups']); $i++) {
             $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
                                   "grp_name = '{$remvars['groups'][$i]}'");
             if (!empty ($grp_id)) {
                 COM_errorLog ("Attempting to remove the {$remvars['groups'][$i]} group", 1);
                 DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
                 COM_errorLog ('...success', 1);
-                COM_errorLog ("Attempting to {$remvars['groups'][$i]} group from all groups.", 1);
+                COM_errorLog ("Attempting to remove the {$remvars['groups'][$i]} group from all groups.", 1);
                 DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
                 COM_errorLog ('...success', 1);
             }
         }
 
         // removing features
-        for ($i=0; $i < count($remvars['features']); $i++) {
+        for ($i = 0; $i < count($remvars['features']); $i++) {
             $access_id = DB_getItem ($_TABLES['features'], 'ft_id',
                                     "ft_name = '{$remvars['features'][$i]}'");
-            if (!empty ($acess_id)) {
+            if (!empty ($access_id)) {
                 COM_errorLog ("Attempting to remove {$remvars['features'][$i]} rights from all groups" ,1);
                 DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $access_id");
                 COM_errorLog ('...success', 1);
                 COM_errorLog ("Attempting to remove the {$remvars['features'][$i]} feature", 1);
-                DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_id = $access_id");
+                DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_name = '{$remvars['features'][$i]}'");
                 COM_errorLog ('...success', 1);
             }
         }
@@ -286,11 +286,11 @@ function PLG_uninstall ($type)
         COM_errorLog ('...success', 1);
 
         // uninstall the plugin
-        COM_errorLog ('Attempting to unregister the $type plugin from Geeklog', 1);
+        COM_errorLog ("Attempting to unregister the $type plugin from Geeklog", 1);
         DB_query ("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = '$type'");
         COM_errorLog ('...success',1);
 
-        COM_errorLog ('Finished uninstalling the $type plugin.', 1);
+        COM_errorLog ("Finished uninstalling the $type plugin.", 1);
 
         return true;
     } else {
