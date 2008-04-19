@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.83 2008/04/17 18:33:27 mjervis Exp $
+// $Id: functions.inc,v 1.84 2008/04/19 15:04:05 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -548,7 +548,8 @@ function plugin_savesubmission_calendar($A)
     if ($A['calendar_type'] == 'master') { // add to site calendar
 
         if (($_CA_CONF['eventsubmission'] == 1) &&
-                !SEC_hasRights ('calendar.submit')) {
+                !SEC_hasRights('calendar.submit')) {
+
             DB_save ($_TABLES['eventsubmission'],
                      'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
                      "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
@@ -558,38 +559,49 @@ function plugin_savesubmission_calendar($A)
                 CALENDAR_sendNotification ($_TABLES['eventsubmission'], $A);
             }
 
-            $retval = COM_refresh ($_CONF['site_url'] . '/calendar/index.php?msg=4');
+            $retval = COM_refresh($_CONF['site_url']
+                                  . '/calendar/index.php?msg=4');
         } else {
-            if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-                $owner_id = $_USER['uid'];
-            } else {
+            if (COM_isAnonUser()) {
                 $owner_id = 1; // anonymous user
+            } else {
+                $owner_id = $_USER['uid'];
             }
+
+            if (SEC_hasRights('calendar.submit')) {
+                $A['group_id'] = SEC_getFeatureGroup('calendar.submit');
+            } else {
+                $A['group_id'] = DB_getItem($_TABLES['groups'], 'grp_id',
+                                            "grp_name = 'All Users'");
+            }
+            SEC_setDefaultPermissions($A, $_CA_CONF['default_permissions']);
 
             DB_save ($_TABLES['events'],
-                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',
-                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
-            if (isset ($_CA_CONF['notification']) &&
-                    ($_CA_CONF['notification'] == 1)) {
-                CALENDAR_sendNotification ($_TABLES['events'], $A);
-            }
-            COM_rdfUpToDateCheck ();
+                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
+                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}");
 
-            $retval = COM_refresh ($_CONF['site_url'] . '/calendar/index.php');
+            if (isset($_CA_CONF['notification']) &&
+                    ($_CA_CONF['notification'] == 1)) {
+                CALENDAR_sendNotification($_TABLES['events'], $A);
+            }
+            COM_rdfUpToDateCheck('calendar', $A['event_type'], $A['eid']);
+
+            $retval = COM_refresh($_CONF['site_url']
+                                  . '/calendar/index.php?msg=17');
         }
 
     } else if ($_CA_CONF['personalcalendars'] == 1) { // add to personal calendar
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        if (COM_isAnonUser()) {
+            // anonymous users don't have personal calendars - bail
+            COM_accessLog("Attempt to write to the personal calendar of user '{$A['uid']}'.");
+
+            $retval = COM_refresh($_CONF['site_url'] . '/calendar/index.php');
+        } else {
             DB_save ($_TABLES['personal_events'],
                      'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
                      "{$_USER['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
             $retval = COM_refresh ($_CONF['site_url']
                                    . '/calendar/index.php?mode=personal&amp;msg=17');
-        } else {
-            // anonymous users don't have personal calendars - bail
-            COM_accessLog ("Attempt to write to the personal calendar of user '{$A['uid']}'.");
-
-            $retval = COM_refresh ($_CONF['site_url'] . '/calendar/index.php');
         }
 
     } else { // personal calendars are disabled
