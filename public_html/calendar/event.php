@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.27 2008/03/16 12:22:01 dhaun Exp $
+// $Id: event.php,v 1.28 2008/04/19 14:56:01 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once $_CONF['path_system'] . 'classes/calendar.class.php';
@@ -99,7 +99,7 @@ function adduserevent ($eid)
         $cal_template->set_var('event_location', $location);
         $cal_template->set_var('lang_description', $LANG_CAL_1[5]);
         $description = stripslashes ($A['description']);
-        if ($A['postmode'] == 'plaintext') {
+        if (empty($A['postmode']) || ($A['postmode'] == 'plaintext')) {
             $description = nl2br ($description);
         }
         $cal_template->set_var ('event_description',
@@ -640,7 +640,7 @@ default:
 
                 $cal_templates->set_var('lang_description', $LANG_CAL_1[5]);
                 $description = stripslashes($A['description']);
-                if ($A['postmode'] == 'plaintext') {
+                if (empty($A['postmode']) || ($A['postmode'] == 'plaintext')) {
                     $description = nl2br($description);
                 }
                 $description = PLG_replaceTags($description);
