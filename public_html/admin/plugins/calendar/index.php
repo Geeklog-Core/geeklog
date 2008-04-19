@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.32 2008/04/12 20:34:18 dhaun Exp $
+// $Id: index.php,v 1.33 2008/04/19 15:05:34 dhaun Exp $
 
-require_once ('../../../lib-common.php');
-require_once ('../../auth.inc.php');
+require_once '../../../lib-common.php';
+require_once '../../auth.inc.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -546,7 +546,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                        ."$perm_anon,{$P['uid']},'$location','$timestart','$timeend'");
             }
         }
-        COM_rdfUpToDateCheck ('geeklog', 'calendar', $eid);
+        COM_rdfUpToDateCheck('calendar', $event_type, $eid);
 
         return PLG_afterSaveSwitch (
             $_CA_CONF['aftersave'],
