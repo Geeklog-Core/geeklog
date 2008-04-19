@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.120 2008/03/15 14:09:41 dhaun Exp $
+// $Id: block.php,v 1.121 2008/04/19 15:14:41 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -824,7 +824,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 } else if ($mode == 'move') {
     $display .= COM_siteHeader('menu', $LANG21[19]);
     if(SEC_checkToken()) {
-    $display .= moveBlock();
+        $display .= moveBlock();
     }
     $display .= listblocks();
     $display .= COM_siteFooter();

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.129 2008/02/29 08:22:53 mjervis Exp $
+// $Id: lib-admin.php,v 1.130 2008/04/19 15:14:42 mjervis Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -939,10 +939,10 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
     return $retval;
 }
 
-function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
+function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $token) {
     global $_CONF, $LANG_ADMIN, $LANG32;
     $retval = '';
-
+    
     switch($fieldname) {
         case "edit":
             $retval = COM_createLink($icon_arr['edit'],
@@ -974,6 +974,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr) {
             }
             $retval = "<input type=\"checkbox\" name=\"enabledplugins[{$A['pi_name']}]\" "
                 . "onclick=\"submit()\" value=\"1\"$switch" . XHTML . ">";
+            $retval .= "<input type=\"hidden\" name=\"".CSRF_TOKEN."\" value=\"{$token}\"".XHTML.">";
             break;
         default:
             $retval = $fieldvalue;

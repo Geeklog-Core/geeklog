@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.13 2008/03/16 16:02:53 dhaun Exp $
+// $Id: install.php,v 1.14 2008/04/19 15:14:41 mjervis Exp $
 
 require_once ('../../../lib-common.php');
 
@@ -338,41 +338,45 @@ function plugin_install_now()
 // MAIN
 $display = '';
 
-if ($_REQUEST['action'] == 'uninstall') {
-    $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
-    if ($uninstall_plugin()) {
-        $display = COM_refresh($_CONF['site_admin_url']
-                               . '/plugins.php?msg=45');
-    } else {
-        $display = COM_refresh($_CONF['site_admin_url']
-                               . '/plugins.php?msg=73');
-    }
-} else if (DB_count($_TABLES['plugins'], 'pi_name', $pi_name) == 0) {
-    // plugin not installed
-
-    if (plugin_compatible_with_this_geeklog_version()) {
-        if (plugin_install_now()) {
+if (SEC_checkToken()) {
+    if ($_REQUEST['action'] == 'uninstall') {
+        $uninstall_plugin = 'plugin_uninstall_' . $pi_name;
+        if ($uninstall_plugin()) {
             $display = COM_refresh($_CONF['site_admin_url']
-                                   . '/plugins.php?msg=44');
+                                   . '/plugins.php?msg=45');
         } else {
             $display = COM_refresh($_CONF['site_admin_url']
-                                   . '/plugins.php?msg=72');
+                                   . '/plugins.php?msg=73');
+        }
+    } else if (DB_count($_TABLES['plugins'], 'pi_name', $pi_name) == 0) {
+        // plugin not installed
+    
+        if (plugin_compatible_with_this_geeklog_version()) {
+            if (plugin_install_now()) {
+                $display = COM_refresh($_CONF['site_admin_url']
+                                       . '/plugins.php?msg=44');
+            } else {
+                $display = COM_refresh($_CONF['site_admin_url']
+                                       . '/plugins.php?msg=72');
+            }
+        } else {
+            // plugin needs a newer version of Geeklog
+            $display .= COM_siteHeader('menu', $LANG32[8])
+                     . COM_startBlock($LANG32[8])
+                     . '<p>' . $LANG32[9] . '</p>'
+                     . COM_endBlock()
+                     . COM_siteFooter();
         }
     } else {
-        // plugin needs a newer version of Geeklog
-        $display .= COM_siteHeader('menu', $LANG32[8])
-                 . COM_startBlock($LANG32[8])
-                 . '<p>' . $LANG32[9] . '</p>'
+        // plugin already installed
+        $display .= COM_siteHeader('menu', $LANG01[77])
+                 . COM_startBlock($LANG32[6])
+                 . '<p>' . $LANG32[7] . '</p>'
                  . COM_endBlock()
                  . COM_siteFooter();
     }
 } else {
-    // plugin already installed
-    $display .= COM_siteHeader('menu', $LANG01[77])
-             . COM_startBlock($LANG32[6])
-             . '<p>' . $LANG32[7] . '</p>'
-             . COM_endBlock()
-             . COM_siteFooter();
+    $display = COM_refresh($_CONF['site_admin_url'].'/plugins.php');
 }
 
 echo $display;

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.79 2007/11/25 06:58:55 ospiess Exp $
+// $Id: plugins.php,v 1.80 2008/04/19 15:14:41 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -146,6 +146,8 @@ function plugineditor ($pi_name, $confirmed = 0)
     } else {
         $plg_templates->set_var('enabled_checked', '');
     }
+    $plg_templates->set_var('gltoken', SEC_createToken());
+    $plg_templates->set_var('gltoken_name', CSRF_TOKEN);
     $plg_templates->set_var('end_block',
             COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
 
@@ -236,7 +238,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 * @return   string      HTML containing list of uninstalled plugins
 *
 */
-function show_newplugins ()
+function show_newplugins ($token)
 {
     global $_CONF, $_TABLES, $LANG32;
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -278,7 +280,7 @@ function show_newplugins ()
                             'number' => $index,
                             'install_link'=> COM_createLink($LANG32[22],
                                 $_CONF['site_admin_url'] . '/plugins/' . $dir
-                                . '/install.php?action=install')
+                                . '/install.php?action=install&amp;'.CSRF_TOKEN.'='.$token)
                         );
                         $index++;
                     }
@@ -380,7 +382,7 @@ function do_uninstall ($pi_name)
 * @return   string                  formatted list of plugins
 *
 */
-function listplugins ()
+function listplugins ($token)
 {
     global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
     require_once( $_CONF['path_system'] . 'lib-admin.php' );
@@ -424,7 +426,7 @@ function listplugins ()
     $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true"' . XHTML . '>');
 
     $retval .= ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
-                       $text_arr, $query_arr, $defsort_arr, '', '', '', $form_arr);
+                       $text_arr, $query_arr, $defsort_arr, '', $token, '', $form_arr);
 
     return $retval;
 
@@ -432,7 +434,7 @@ function listplugins ()
 
 // MAIN
 $display = '';
-if (isset ($_POST['pluginenabler'])) {
+if (isset ($_POST['pluginenabler']) && SEC_checkToken()) {
     changePluginStatus ($_POST['enabledplugins']);
 
     // force a refresh so that the information of the plugin that was just
@@ -447,11 +449,12 @@ if (isset ($_REQUEST['mode'])) {
 }
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $pi_name = COM_applyFilter ($_POST['pi_name']);
-    if ($_POST['confirmed'] == 1) {
+    if (($_POST['confirmed'] == 1) && (SEC_checkToken())) {
         $display .= COM_siteHeader ('menu', $LANG32[30]);
         $display .= do_uninstall ($pi_name);
-        $display .= listplugins ();
-        $display .= show_newplugins();
+        $token = SEC_createToken();
+        $display .= listplugins ($token);
+        $display .= show_newplugins($token);
         $display .= COM_siteFooter ();
     } else { // ask user for confirmation
         $display .= COM_siteHeader ('menu', $LANG32[30]);
@@ -463,7 +466,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= COM_siteFooter ();
     }
 
-} else if (($mode == $LANG32[34]) && !empty ($LANG32[34])) { // update
+} else if (($mode == $LANG32[34]) && !empty ($LANG32[34]) && SEC_checkToken()) { // update
         $pi_name = COM_applyFilter ($_POST['pi_name']);
         $display .= COM_siteHeader ('menu', $LANG32[13]);
         $display .= do_update ($pi_name);
@@ -474,7 +477,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= plugineditor (COM_applyFilter ($_GET['pi_name']));
     $display .= COM_siteFooter ();
 
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
     $display .= saveplugin (COM_applyFilter ($_POST['pi_name']),
                             COM_applyFilter ($_POST['pi_version']),
                             COM_applyFilter ($_POST['pi_gl_version']),
@@ -493,8 +496,9 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
             $display .= COM_showMessage ($msg, $plugin);
         }
     }
-    $display .= listplugins ();
-    $display .= show_newplugins();
+    $token = SEC_createToken();
+    $display .= listplugins ($token);
+    $display .= show_newplugins($token);
     $display .= COM_siteFooter();
 }
 

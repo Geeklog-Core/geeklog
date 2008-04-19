@@ -186,6 +186,18 @@ inputs returns behaviour to the original.</p>
 <p>All the above mentioned items are now lists, using ul and li tags. The ul is
 insterted into the core code, the li is in the templates</p>
 
+<h3>Security Changes</h3>
+<p>Many forms, particularly in the admin section of the site need a new hidden form field in
+    order for saving the form/processing the action to work. Add:
+    <pre><code>
+        &lt;input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}&gt;
+    </code></pre>
+    To the following templates:
+    <ul>
+        <li>admin/plugins/editor.thtml</li>
+    </ul>
+</p>
+
 <h2><a name="changes141">Theme changes in Geeklog 1.4.1</a></h2>
 
 <p>The css in 1.4.1 has been changed to a wider extent. More and more layout
