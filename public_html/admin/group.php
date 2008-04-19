@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.99 2008/02/24 21:22:42 dhaun Exp $
+// $Id: group.php,v 1.100 2008/04/19 11:55:52 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -485,8 +485,8 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $f
         }
 
         // Use the field grp_gl_core to indicate if this is non-core GL Group is an Admin related group
-        if ($grp_gl_core != 1 AND $grp_id > 1) {
-            if (COM_applyFilter($grp_admin,true) == 1) {
+        if (($grp_gl_core != 1) AND ($grp_id > 1)) {
+            if ($grp_admin == 'on') {
                 DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_id=$grp_id");
             } else {
                 DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=0 WHERE grp_id=$grp_id");
@@ -969,12 +969,23 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= deleteGroup ($grp_id);
     }
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
-    $display .= savegroup (COM_applyFilter ($_POST['grp_id'],true),
-                           COM_applyFilter ($_POST['grp_name']),
-                           $_POST['grp_descr'],
-                           COM_applyFilter($_POST['chk_grpadmin'],true),
-                           COM_applyFilter ($_POST['grp_gl_core']),
-                           $_POST['features'], $_POST[$_TABLES['groups']]);
+    $chk_grpadmin = '';
+    if (isset($_POST['chk_grpadmin'])) {
+        $chk_grpadmin = COM_applyFilter($_POST['chk_grpadmin']);
+    }
+    $features = array();
+    if (isset($_POST['features'])) {
+        $features = $_POST['features'];
+    }
+    $groups = array();
+    if (isset($_POST[$_TABLES['groups']])) {
+        $groups = $_POST[$_TABLES['groups']];
+    }
+    $display .= savegroup(COM_applyFilter($_POST['grp_id'], true),
+                          COM_applyFilter($_POST['grp_name']),
+                          $_POST['grp_descr'], $chk_grpadmin,
+                          COM_applyFilter($_POST['grp_gl_core']),
+                          $features, $groups);
 } else if ($mode == 'savegroupusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
