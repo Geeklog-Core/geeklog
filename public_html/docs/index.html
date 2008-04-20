@@ -42,33 +42,70 @@ themes and plugins and make it even better.
   <li><a href="trackback.html">Trackback, Pingback, Ping</a></li>
   <li>Geeklog's API
     <ul>
-      <!-- <li>Geeklog Function List</li> -->
       <li><a href="plugin.html">Plugin Development</a></li>
       <li><a href="theme.html">Theme Development</a></li>
       <!-- <li>Writing Custom Functions</li> -->
     </ul></li>
-  <!-- <li>Upgrading Geeklog</li> -->
   <li><a href="support.html">Support</a></li>
   <li><a href="changes.html">List of Changes</a></li>
 </ul>
 
 <h2><a name="features">Features of Geeklog</a></h2>
 
-<p>Geeklog is a weblog powered by PHP and MySQL. It allows you within minutes
-to set up a fully functioning dynamic website, and has many features to get
-you started. As of Geeklog 1.4, these features are:
+<p>Geeklog is a PHP/MySQL based application for managing dynamic web content.
+"Out of the box", it is a blog engine, or a CMS with support for comments,
+trackbacks, multiple syndication formats, spam protection, and all the other
+vital features of such a system.</p>
+
+<h3>Blog/CMS Features</h3>
 
 <ul>
-  <li>User-system, allowing members of the public to register for your site and submit stories.</li>
-  <li>Comment system, allowing users to comment on posts made to your site.</li>
-  <li>Block system, allowing you to put information anywhere on your site.</li>
-  <li>Plugin system that allows you to extend Geeklog, without having to code any new PHP.</li>
-  <li>Theme system that allows users to select what layout they want to view.</li>
-  <li>Excellent security model that allows you to give users control over certain aspects of the site with no need to worry.</li>
-  <li>Site Statistics that show you the most popular areas of your site.</li>
-  <li>Link system that allows users to add links to the site.</li>
-  <li>Calendar System that lets you and your user add up-and-coming events.</li>
-  <li>Allow users to email stories to their friends.</li>
+<li>Create, Schedule, Post and Edit articles in multiple topics
+<li>Save story drafts until they are ready for publishing.
+<li>Control over formatting used in articles (HTML whitelists)
+<li>Control over acceptable content (filtering of offensive language)
+<li>Embed images or other content in articles
+<li>Multiple Authors can post
+<li>Submissions from users
+<li>Support for comments, trackbacks and pingbacks
+<li>Export and import in all common syndication formats (RSS/RDF/Atom etc)
+<li>Spam detection and rejection
+<li>Robust calendar feature with support for personalized calendars.
+<li>Support for OpenID and other remote authentication methods.
+<li>Extendible via numerous Open Source plugins.
+</ul>
+
+<h3>Administration Features</h3>
+
+<ul>
+<li>Easy to install with a new automated installer in 1.5
+<li>Fully support for internationalization and localization
+<li>Easy to use admin interface
+<li>Admin interface has complete configurability for all Geeklog Functions.
+<li>User-specified theming engine for custom look and feel.
+</ul>
+
+<h3>Security Features</h3>
+
+<ul>
+<li>User accounts and access controls.
+<li>Robust *nix-like security model for all objects which can be extended for
+    use in plugins
+<li>Access can be defined for each article, topic etc
+<li>All passwords are stored encrypted.
+<li>All admin access is logged.
+<li>All errors are logged.
+<li>Complete error logging on all forms and SQL calls.
+</ul>
+
+<h3>Developer Features</h3>
+
+<ul>
+<li>Plugin support with API for developers.
+<li>A fully configurable block system, with php-in-block support.
+<li>Well organized codebase, use of PHP's Object-Oriented features.
+<li>Thin database abstraction layer allowing Geeklog to be ported to DBMS's
+    other than the defaults (MySQL and MSSQL supported directly).
 </ul>
 
 <h2><a name="introduction">Introduction</a></h2>
@@ -82,7 +119,7 @@ Geeklog, dubbed GL2, off the ground, while Dirk Haun is now maintaining the
 1.x branch.</p>
 
 <p>Geeklog is bona fide open-source software and has been released under the
-<a href="license" title="GNU General Public License">GNU GPL</a> for use by
+<a href="license" title="GNU General Public License">GNU GPLv2</a> for use by
 others. Configuring Geeklog is meant to be an easy process though it will
 require you to have access to several components of your system.</p>
 
