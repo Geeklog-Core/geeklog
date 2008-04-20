@@ -9,15 +9,24 @@
 <img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90">
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Configuration</div>
 
-<h1>Geeklog Configuration File</h1>
+<h1>Geeklog Configuration</h1>
 
-<h2>Setting up config.php</h2>
+<h2>Configuration files</h2>
 
-<p>Most of Geeklog's "static" settings (i.e. those that you aren't going to
-change often) are set in a text file called <tt>config.php</tt>. It is
-necessary to edit this file to get your system running as well as
-configuring it to your preferences. This file contains a set of variables as
-defined below:</p>
+<p>Previous versions of Geeklog used one huge file called <tt>config.php</tt>
+that held all the core configuration options. As of Geeklog 1.5.0, most of
+the configuration options have been moved to the database and can now be
+reached from the <b>Configuration</b> admin panel within Geeklog.</p>
+
+<p>For technical reasons, some configuration options still have to be
+stored in files. There are two such configuration files now, called
+<tt>db-config.php</tt> and <tt>siteconfig.php</tt>. These files are updated
+when you install Geeklog and you will not normally have to edit them
+manually.</p>
+
+<h2>Configuration options</h2>
+
+<p>Geeklog's configuration options can be grouped like this:</p>
 
 <ul>
 <li><a href="#database">Database Settings</a></li>
@@ -42,6 +51,9 @@ defined below:</p>
 
 
 <h3><a name="database">Database Settings</a></h3>
+
+<p>Most of the database settings are actually stored in the
+<tt>db-config.php</tt> configuratin file:</p>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -68,6 +80,15 @@ defined below:</p>
     <td valign="top">gl_</td>
     <td valign="top">Prefix to put in front of all of Geeklog's table names (to
         avoid name collisions with tables used by other applications)</td></tr>
+</table>
+
+<p>These database-related settings are available from the Configuration admin
+panel:</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr><td valign="top">_DB_mysqldump_path</td>
     <td valign="top">/usr/bin/mysqldump</td>
     <td valign="top">Complete path to the <a
@@ -96,10 +117,12 @@ defined below:</p>
     <th width="63%">Description</th></tr>
 <tr><td valign="top"><a name="desc_path">path</a></td>
     <td valign="top">/path/to/geeklog/</td>
-    <td valign="top">Base file system path for your site (trailing slash necessary)</td></tr>
+    <td valign="top">Base file system path for your site (trailing slash necessary)<br>
+        (in <tt>site-config.php</tt>)</td></tr>
 <tr><td valign="top"><a name="desc_path_system">path_system</a></td>
     <td valign="top">/path/to/geeklog/system/</td>
-    <td valign="top">Path to your system directory for your site (trailing slash necessary).  This directory holds the code libraries used throughout Geeklog</td></tr>
+    <td valign="top">Path to your system directory for your site (trailing slash necessary).  This directory holds the code libraries used throughout Geeklog<br>
+        (in <tt>site-config.php</tt>)</td></tr>
 <tr><td valign="top"><a name="desc_path_html">path_html</a></td>
     <td valign="top">/path/to/geeklog/public_html/</td>
     <td valign="top">Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog.</td></tr>
@@ -232,7 +255,8 @@ defined below:</p>
   <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
   <td valign="top">true</td>
   <td valign="top">A Geeklog site can be disabled quickly (e.g. for maintenance)
-    by setting this to 'false'.</td></tr>
+    by setting this to 'false'.<br>
+    (in <tt>site-config.php</tt>)</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_disabled_msg">site_disabled_msg</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
@@ -368,6 +392,7 @@ defined below:</p>
   <td valign="top">Character encoding used by Geeklog when serving HTML pages or
     sending email. Only used if the language file did not already set
     another character encoding.<br>
+    (in <tt>site-config.php</tt>)<br>
     For <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">multi-language</a> setups, using <code>'utf-8'</code> as the default character
     set is recommended.</td></tr>
 <tr>
