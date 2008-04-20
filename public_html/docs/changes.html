@@ -16,6 +16,43 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
+<h2><a name="changes150">Geeklog 1.5.0</a></h2>
+
+<h3>Results from the Summer of Code</h3>
+
+<p>This release incorporates the following projects implemented during the
+the 2007 Google Summer of Code:</p>
+
+<ul>
+<li>New user-friendly install script by Matt West</li>
+<li>New Configuration GUI (replacing config.php) by Aaron Blankstein</li>
+<li>New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer</li>
+</ul>
+
+<h3>Other New Features and Improvements</h3>
+
+<ul>
+<li>OpenID support: You can now allow users to log into your site using an
+    OpenID, so that they don't need to create a new account with your site but
+    still get all the benefits of a normal registered user.</li>
+<li>The Links plugin now has hierarchical (sub-)categories.</li>
+<li>Rewrite of the underlying story code. Amongst other things, this should
+    finally resolve all outstanding issues with the handling of special
+    characters, HTML entities, etc. in stories. Also introduces a new
+    <code>[raw]</code> tag as an inline complement to <code>[code]</code> when
+    you want to post pieces of code (e.g. HTML) "as is", so that they are not
+    interpreted.</li>
+<li>Comments can now be closed, i.e. existing comments will still be displayed
+    but no new comment can be posted.</li>
+<li>The Polls plugin now allows for multiple questions per poll.</li>
+<li>The Static Pages plugin now supports comments.</li>
+<li>The database backup admin panel now lets you delete and download
+    backups.</li>
+<li>The default Professional theme is now HTML 4.01 Strict compliant. Geeklog
+    now also supports XHTML (given an XHTML compliant theme).</li>
+</ul>
+
+
 <h2><a name="changes141">Geeklog 1.4.1</a></h2>
 
 <h3>New Features</h3>
