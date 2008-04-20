@@ -40,6 +40,8 @@ Other changes:
   for us to use some other method in the future [Dirk]
 - Incorporated patches by Joe Mucchiello for places in the code where the
   template library was used incorrectly.
+- By defining the constant XHTML as ' /', themes can now be XHTML compliant
+  (patches provided by dengen from geeklog.jp)
 - Added batch admin feature to send out account reminders [Blaine]
 - Hide "Create Account" link in the story submission form when new account
   registration has been disabled (reported by Markus Wollschläger) [Dirk]
