@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.35 2008/03/21 16:11:13 dhaun Exp $
+// $Id: index.php,v 1.36 2008/04/20 08:26:50 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -518,6 +518,12 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
                             $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
 
+                            $charset = ''; // TBD: needs to be set ...
+                            $lng = INST_getDefaultLanguage($gl_path . 'language/', $language, $charset);
+                            if (!empty($lng)) {
+                                $config->set('language', $lng);
+                            }
+
                             // Now we're done with the installation so redirect the user to success.php
                             header('Location: success.php?type=install&language=' . $language);
                         } else {
@@ -881,6 +887,36 @@ function INST_personalizeAdminAccount($site_mail, $site_url)
             }
         }
     }
+}
+
+/**
+* Derive site's default language from available information
+*
+* @param    string  $langpath   path where the language files are kept
+* @param    string  $language   language used in the install script
+* @param    string  $charset    character set: UTF-8 or something else
+* @return   string              name of default language (for the config)
+*
+*/
+function INST_getDefaultLanguage($langpath, $language, $charset = '')
+{
+    if (strcasecmp('UTF-8', $charset) == 0) {
+        $lngname = $language . '_' . strtolower($charset);
+    } else {
+        $lngname = $language;
+    }
+    $lngfile = $lngname . '.php';
+
+    if (!file_exists($langpath . $lngfile)) {
+        // doesn't exist - fall back to English
+        if (strcasecmp('UTF-8', $charset) == 0) {
+            $lngname = 'english_' . strtolower($charset);
+        } else {
+            $lngname = 'english';
+        }
+    }
+
+    return $lngname;
 }
 
 
