@@ -172,8 +172,21 @@ so, you need to change the function <code>CUSTOM_handleError</code> in
 lib-custom.php to output any HTML you like.</p>
 
 <h2><a name="changes">Theme changes in Geeklog 1.5.0</a></h2>
+<h3>XHTML support</h3>
+<p>Geeklog now supports XHTML compliant themes. These themes should define the
+following constant in their <tt>functions.php</tt> file:</p>
+<pre><code>define('XHTML', ' /');</code></pre>
+<p>This will ensure that Geeklog switches to XHTML internally. If you want your
+theme be working both as an HTML and an XHTML theme, you should use the
+<code>{xhtml}</code> variable wherever XHTML requires a self-closing tag,
+e.g. <code>&lt;br /&gt;</code> would be written as <code>&lt;br{xhtml}&gt;</code>. If you don't plan to use the theme for HTML, feel free to hard-code your
+theme for XHTML only.</p>
+<p><strong>Note:</strong> If you're using XHTML, it is your responsibility to
+ensure that your site's content (stories, comments, etc.) is XHTML compliant.
+Geeklog does <em>not</em> convert your content to XHTML.</p>
+
 <h3>"Contribute" - User submitted stories</h3>
-<p>Geeklog 1.4.1 supports the ability for users to specify story intro text
+<p>Geeklog 1.5.0 supports the ability for users to specify story intro text
   and body text seperately rather than just the intro text. This can be
 turned on and off by changing the templates. The files:</p>
 <ul>
