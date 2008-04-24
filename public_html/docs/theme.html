@@ -172,10 +172,10 @@ so, you need to change the function <code>CUSTOM_handleError</code> in
 lib-custom.php to output any HTML you like.</p>
 
 <h2><a name="changes">Theme changes in Geeklog 1.5.0</a></h2>
-<h3>XHTML support</h3>
+<h3><a name="xhtml">XHTML support</a></h3>
 <p>Geeklog now supports XHTML compliant themes. These themes should define the
 following constant in their <tt>functions.php</tt> file:</p>
-<pre><code>define('XHTML', ' /');</code></pre>
+<pre><code>    define('XHTML', ' /'); </code></pre>
 <p>This will ensure that Geeklog switches to XHTML internally. If you want your
 theme be working both as an HTML and an XHTML theme, you should use the
 <code>{xhtml}</code> variable wherever XHTML requires a self-closing tag,
@@ -195,21 +195,22 @@ turned on and off by changing the templates. The files:</p>
 </ul>
 <p>Contain table rows containing the bodytext inputs. Simply removing these
 inputs returns behaviour to the original.</p>
-<h3>Admin-Menu, Topic-List & User-Menus</h3>
-<p>All the above mentioned items are now lists, using ul and li tags. The ul is
-insterted into the core code, the li is in the templates</p>
+
+<h3>Admin-Menu, Topic-List &amp; User-Menus</h3>
+<p>All the above mentioned items are now lists, using <code>ul</code> and
+<code>li</code> tags. The <code>ul</code> is inserted by the core code, the
+<code>li</code> is in the templates</p>
 
 <h3>Security Changes</h3>
-<p>Many forms, particularly in the admin section of the site need a new hidden form field in
-    order for saving the form/processing the action to work. Add:
-    <pre><code>
-        &lt;input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}&gt;
-    </code></pre>
-    To the following templates:
-    <ul>
-        <li>admin/plugins/editor.thtml</li>
-    </ul>
-</p>
+<p>Many forms, particularly in the admin section of the site need a new hidden
+form field in order for saving the form/processing the action to work. Add:</p>
+
+<pre><code>    &lt;input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}&gt;</code></pre>
+<p>To the following templates:</p>
+<ul>
+    <li>admin/plugins/editor.thtml</li>
+</ul>
+
 
 <h2><a name="changes141">Theme changes in Geeklog 1.4.1</a></h2>
 
