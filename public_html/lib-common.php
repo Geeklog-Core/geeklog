@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.690 2008/04/26 16:18:16 dhaun Exp $
+// $Id: lib-common.php,v 1.691 2008/04/26 17:58:37 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -286,8 +286,7 @@ require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 $usetheme = '';
 if( isset( $_POST['usetheme'] ))
 {
-    $usetheme = preg_replace( '/[^a-zA-Z0-9\-_\.]/', '', $_POST['usetheme'] );
-    $usetheme = str_replace( '..', '', $usetheme );
+    $usetheme = COM_sanitizeFilename($_POST['usetheme'], true);
 }
 if( !empty( $usetheme ) && is_dir( $_CONF['path_themes'] . $usetheme ))
 {
@@ -299,9 +298,7 @@ else if( $_CONF['allow_user_themes'] == 1 )
 {
     if( isset( $_COOKIE[$_CONF['cookie_theme']] ) && empty( $_USER['theme'] ))
     {
-        $theme = preg_replace( '/[^a-zA-Z0-9\-_\.]/', '',
-                               $_COOKIE[$_CONF['cookie_theme']] );
-        $theme = str_replace( '..', '', $theme );
+        $theme = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_theme']], true);
         if( is_dir( $_CONF['path_themes'] . $theme ))
         {
             $_USER['theme'] = $theme;
@@ -346,8 +343,7 @@ if( empty( $_IMAGE_TYPE ))
 
 if( isset( $_COOKIE[$_CONF['cookie_language']] ) && empty( $_USER['language'] ))
 {
-    $language = preg_replace( '/[^a-z0-9\-_]/', '',
-                              $_COOKIE[$_CONF['cookie_language']] );
+    $language = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_language']]);
     if( is_file( $_CONF['path_language'] . $language . '.php' ) &&
             ( $_CONF['allow_user_language'] == 1 ))
     {
@@ -5584,6 +5580,48 @@ function COM_sanitizeUrl( $url, $allowed_protocols = '', $default_protocol = '' 
 }
 
 /**
+* Ensure an ID contains only alphanumeric characters, dots, dashes, or underscores
+*
+* @param    string  $id     the ID to sanitize
+* @param    boolean $new_id true = create a new ID in case we end up with an empty string
+* @return   string          the sanitized ID
+*/
+function COM_sanitizeID( $id, $new_id = true )
+{
+    $id = str_replace( ' ', '', $id );
+    $id = str_replace( array( '/', '\\', ':', '+' ), '-', $id );
+    $id = preg_replace( '/[^a-zA-Z0-9\-_\.]/', '', $id );
+    if( empty( $id ) && $new_id )
+    {
+        $id = COM_makesid();
+    }
+
+    return $id;
+}
+
+/**
+* Sanitize a filename.
+*
+* @param    string  $filename   the filename to clean up
+* @param    boolean $allow_dots whether to allow dots in the filename or not
+* @return   string              sanitized filename
+* @note     This function is pretty strict in what it allows. Meant to be used
+*           for files to be included where part of the filename is dynamic.
+*
+*/
+function COM_sanitizeFilename($filename, $allow_dots = false)
+{
+    if ($allow_dots) {
+        $filename = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $filename);
+        $filename = str_replace('..', '', $filename);
+    } else {
+        $filename = preg_replace('/[^a-zA-Z0-9\-_]/', '', $filename);
+    }
+
+    return $filename;
+}
+
+/**
 * Detect links in a plain-ascii text and turn them into clickable links.
 * Will detect links starting with "http:", "https:", "ftp:", and "www.".
 *
@@ -5878,26 +5916,6 @@ function COM_onFrontpage()
 function COM_isFrontpage()
 {
     return !COM_onFrontpage();
-}
-
-/**
-* Ensure an ID contains only alphanumeric characters, dots, dashes, or underscores
-*
-* @param    string  $id     the ID to sanitize
-* @param    boolean $new_id true = create a new ID in case we end up with an empty string
-* @return   string          the sanitized ID
-*/
-function COM_sanitizeID( $id, $new_id = true )
-{
-    $id = str_replace( ' ', '', $id );
-    $id = str_replace( array( '/', '\\', ':', '+' ), '-', $id );
-    $id = preg_replace( '/[^a-zA-Z0-9\-_\.]/', '', $id );
-    if( empty( $id ) && $new_id )
-    {
-        $id = COM_makesid();
-    }
-
-    return $id;
 }
 
 /** Converts a number for output into a formatted number with thousands-
@@ -6199,7 +6217,7 @@ function COM_getLanguage()
         $langfile = COM_getLanguageFromBrowser();
     }
 
-    $langfile = preg_replace( '/[^a-z0-9\-_]/', '', $langfile );
+    $langfile = COM_sanitizeFilename($langfile);
     if( !empty( $langfile ))
     {
         if( is_file( $_CONF['path_language'] . $langfile . '.php' ))
