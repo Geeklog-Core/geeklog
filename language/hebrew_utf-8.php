@@ -1,18 +1,13 @@
 <?php
 
 ###############################################################################
-# hebrew.php # last Update  14/10/2006
-# Version 1.4.1 #1.0
+# hebrew.php # last Update  23/4/2008
+# Version 1.4.1 #1.2
 # Copyright (C) http://lior.weissbrod.com
 #
 # Originally:
 # hebrew.php # last Update  07/03/2004 23:35
 # this is "hebrew.php" Written by Tal Vizel tal-hebrew-lang-gl@1212.co.il
-# This is the Hebrew language page for GeekLog!
-# Special thanks to Mischa Polivanov for his work on this project
-#
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten AT securitygeeks DOT com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -674,7 +669,7 @@ $LANG21 = array(
     49 => ' (ללא רווחים וחייב להיות ייחודי)',
     50 => '',
     51 => 'כולל <span dir=ltr><b>http://</b></span>',
-    52 => 'אם תשאירו זאת ריק אייקון העזרה של קוביית מידע זו לא יופיע',
+    52 => 'אם תשאירו שדה זה ריק, אייקון העזרה של קוביית מידע זו לא יופיע',
     53 => 'אפשרו',
     54 => 'שמירה',
     55 => 'ביטול',
@@ -1103,8 +1098,8 @@ $MESSAGE = array(
     40 => 'הודעת מערכת',
     41 => 'מצטערים, אין לכם גישה לעמוד החלפות המילים. אנא שימו לב שכל נסיונות הגישה ליכולות לא מאושרות נרשמים ביומן',
     42 => 'המילה שלך נשמרה בהצלחה.',
-    43 => 'המילה שלך נמחקה בהצלחה.',
-    44 => 'ה-plugin נשמר בהצלחה!',
+    43 => 'המילה נמחקה בהצלחה.',
+    44 => 'ה-plugin הותקן בהצלחה!',
     45 => 'ה-plugin נמחק בהצלחה.',
     46 => 'מצטערים, אין בידיכם יכולת גישה לתוכנת גיבוי מאמר המידע. אנא שימו לב שכל נסיונות הגישה ליכולות לא מורשות נרשמות ביומן',
     47 => 'יכולת זו עובדת רק תחת nix*. אם הינכם מריצים nix* כמערכת ההפעלה שלכם אז זיכרון המטמון שלכם נוקה בהצלחה. אם הנכם משתמשים בחלונות, תיאלצו לחפש אחר קבצים בשם adodb_*.php ולהסירם באופן ידני.',
@@ -1384,17 +1379,17 @@ $LANG_DIR = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
-# For the first two strings, you can use the following placeholders.
-# Order them so it makes sense in your language:
-# %i    item, "Stories"
-# %n    amount, "2", "20" etc.
-# %t    time, "2" (weeks)
-# %s    scale, "hrs", "weeks"
 
-$LANG_WHATSNEW = array(
+$LANG_WHATSNEW = array (
+    # This here determines the order of the sentence "No new stories in 2 hrs"
+    # order it so it makes sense in your language:
+    # %i    item, "Stories"
+    # %n    amount, "2", "20" etc
+    # %t    time, "2" (weeks)
+    # %s    scale, "hrs", "weeks"
     'new_string' => 'יש %n %i חדשים ב-%t ה%s האחרונים/ות',
     'new_last' => 'ב-%t ה%s האחרונים/ות',
+    # other strings
     'minutes' => 'דקות',
     'hours' => 'שעות',
     'days' => 'ימים',
@@ -1405,6 +1400,31 @@ $LANG_WHATSNEW = array(
     'day' => 'יום',
     'week' => 'שבוע',
     'month' => 'חודש'
+);
+
+$LANG_MONTH = array(
+    1 => 'ינואר',
+    2 => 'פברואר',
+    3 => 'מרץ',
+    4 => 'אפריל',
+    5 => 'מאי',
+    6 => 'יוני',
+    7 => 'יולי',
+    8 => 'אוגוסט',
+    9 => 'ספטמבר',
+    10 => 'אוקטובר',
+    11 => 'נובמבר',
+    12 => 'דצמבר'
+);
+
+$LANG_WEEK = array(
+    1 => 'ראשון',
+    2 => 'שני',
+    3 => 'שלישי',
+    4 => 'רביעי',
+    5 => 'חמישי',
+    6 => 'שישי',
+    7 => 'שבת'
 );
 
 ###############################################################################
