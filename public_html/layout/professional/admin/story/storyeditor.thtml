@@ -225,6 +225,7 @@ function enablearchive(obj) {
                                             <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>
                                             <input type="hidden" name="editopt" value="default"{xhtml}>
                                             <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+                                            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                         </td>
                                     </tr>
                                 </table>

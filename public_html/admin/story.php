@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.266 2007/12/30 12:15:47 dhaun Exp $
+// $Id: story.php,v 1.267 2008/05/01 19:43:42 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -632,6 +632,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_preview', $LANG_ADMIN['preview']);
     $story_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
+    $story_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $story_templates->set_var('gltoken', SEC_createToken());
     $story_templates->parse('output','editor');
     $display .= $story_templates->finish($story_templates->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -720,12 +722,18 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         if (SEC_hasTopicAccess ($tid) < 3) {
             COM_accessLog ("User {$_USER['username']} tried to illegally delete story submission $sid.");
             echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
-        } else {
+        } else if (SEC_checkToken()) {
             DB_delete ($_TABLES['storysubmission'], 'sid', $sid,
                        $_CONF['site_admin_url'] . '/moderation.php');
+        } else {
+            COM_accessLog ("User {$_USER['username']} tried to illegally delete story submission $sid and failed CSRF checks.");
+            echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
         }
-    } else {
+    } else if (SEC_checkToken()) {
         echo STORY_deleteStory ($sid);
+    } else {
+        COM_accessLog ("User {$_USER['username']} tried to delete story and failed CSRF checks $sid.");
+        echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
 } else if (($mode == $LANG_ADMIN['preview']) && !empty ($LANG_ADMIN['preview'])) {
     $display .= COM_siteHeader('menu', $LANG24[5]);
@@ -759,7 +767,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= storyeditor (COM_applyFilter ($_GET['id']), $mode);
     $display .= COM_siteFooter();
     echo $display;
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
     submitstory ();
 } else { // 'cancel' or no mode at all
     $type = '';

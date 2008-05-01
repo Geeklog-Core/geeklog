@@ -216,6 +216,7 @@
             {submission_option}
             <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>
             <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
         </div>
     </form>
     <div id="preview" style="width:99%; border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">
