@@ -15,12 +15,12 @@
   <li><a href="#glossary">Glossary</a></li>
   <li><a href="#installation_requirements">Installation Requirements</a></li>
     <ul>
-      <li><a href="#required_software">Required Software</a></li>
+      <li><a href="#preinstall">Required Software</a></li>
       <li><a href="#things_you_should_know">Things You Should Know</a></li>
     </ul></li>
-  <li><a href="#new_installation">New Installation</a>
-  <li><a href="#upgrading">Upgrading</a>
-  <li><a href="#common_problems_and_troubleshooting">Common Problems and Troubleshooting</a></li>
+  <li><a href="#install">New Installation</a>
+  <li><a href="#upgrade">Upgrading</a>
+  <li><a href="#installprob">Common Problems and Troubleshooting</a></li>
 </ul>
 
 
@@ -35,7 +35,7 @@
 
 <h2><a name="installation_requirements">Installation Requirements</a></h2>
 
-    <h3><a name="required_software">Required Software</a></h3>
+    <h3><a name="preinstall">Required Software</a></h3>
 
         <p>To install and use Geeklog you will need to have a server running Apache or Microsoft IIS with PHP 4.1.0 or higher installed. You will also need either <a href="http://dev.mysql.com/downloads/" target="_blank">MySQL 3.23.2</a> or greater or <a href="http://www.microsoft.com/sql/default.mspx" target="_blank">Microsoft SQL Server 2000</a> or newer.</p>
 
@@ -50,7 +50,7 @@
     </ul>
     
 
-<h2><a name="new_installation">New Installation</a></h2>
+<h2><a name="install">New Installation</a></h2>
 
     <ol>
         <li>
@@ -60,7 +60,7 @@
             <p>Unpack the downloaded tarball file by running: </p>
             <p><code>tar -zxvf geeklog-1.5.0.tar.gz</code> </p>
             
-            <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
+            <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/" target="_blank">7-Zip</a> or <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
         </li>
         <li>
             <p>Create a blank MySQL or Microsoft SQL database and a user account with privileges to modify it. Your hosting provider may have already set up a database and account for you, contact them if you need assistance with this step.</p>
@@ -91,7 +91,7 @@
     </ol>
    
 
-<h2><a name="upgrading">Upgrading</a></h2>
+<h2><a name="upgrade">Upgrading</a></h2>
 
     <p>Upgrading is no different than a New Installation except your database already exists and needs to be updated.</p> 
 
@@ -108,7 +108,7 @@
             <p>Unpack the downloaded tarball file by running: </p>
             <p><code>tar -zxvf geeklog-1.5.0.tar.gz</code> </p>
             
-            <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
+            <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/" target="_blank">7-Zip</a> or <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
         </li>
         <li>
             <p>Place the contents of <code>Geeklog-1.x/</code> into the same directory your old installation was located. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.</p>
@@ -126,7 +126,7 @@
     </ol>
    
 
-<h2><a name="common_problems_and_troubleshooting">Common Problems and Troubleshooting</a></h2>
+<h2><a name="installprob">Common Problems and Troubleshooting</a></h2>
 
     <p>Before you go any further, please open siteconfig.php and <strong>double check your paths!</strong> Bad paths, or typos in the paths, will cause all sorts of errors in Geeklog.</p>   
 
@@ -169,7 +169,7 @@
                 <p><p><strong>Answer:</strong> All of the above cases (and similar "parse error" messages you may get for lib-common.php, typically with a line number in the 3000 or 4000 range) indicate a corrupted <code>lib-common.php</code> file.</p>
                 <p>As noted at the top of this document this is usually caused by one of the following:</p>
                 <ul>
-                    <li>Uncompressing the tarball with certain versions of WinZip (try using <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> instead)</li>
+                    <li>Uncompressing the tarball with certain versions of WinZip (try using <a href="http://www.7-zip.org/" target="_blank">7-Zip</a> or <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> instead)</li>
                     <li>Editing the lib-common.php with Dreamweaver or other so-called WYSIWYG HTML editors (use a simple text editor instead)</li>
                     <li>Editing the lib-common.php with "on-site" text editors built into tools like Cpanel (again, use a simple text editor instead)</li>
                 </ul>
