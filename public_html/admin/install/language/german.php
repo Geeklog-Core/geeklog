@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.4 2008/01/02 13:29:02 dhaun Exp $
+// $Id: german.php,v 1.5 2008/05/01 08:46:22 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -141,11 +141,12 @@ $LANG_INSTALL = array(
     88 => 'Change directory and containing files to',
     89 => 'Aktuelle Version:',
     90 => 'Empty database?',
-    91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.'
+    91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
+    92 => 'Benutze UTF-8'
 );
 
 // +---------------------------------------------------------------------------+
-// success.php (TBD)
+// success.php
 
 $LANG_SUCCESS = array(
     0 => 'Installation erfolgreich',
@@ -173,7 +174,7 @@ $LANG_SUCCESS = array(
 );
 
 // +---------------------------------------------------------------------------+
-// help.php (TBD)
+// help.php
 
 $LANG_HELP = array(
     0 => 'Geeklog Installation Support',

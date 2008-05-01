@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.36 2008/04/20 08:26:50 dhaun Exp $
+// $Id: index.php,v 1.37 2008/05/01 08:46:22 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -117,7 +117,7 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
  */
 function INST_installEngine($install_type, $install_step)
 {
-    global $_CONF, $LANG_INSTALL, $_DB, $_TABLES, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language;
+    global $_CONF, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_TABLES, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language;
 
     switch ($install_step) {
 
@@ -169,6 +169,14 @@ function INST_installEngine($install_type, $install_step)
             $host_name = $host_name[0];
             $site_mail = isset($_POST['site_mail']) ? $_POST['site_mail'] : ($_CONF['site_mail'] == 'admin@example.com' ? $_CONF['site_mail'] : 'admin@' . $host_name);
             $noreply_mail = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : ($_CONF['noreply_mail'] == 'noreply@example.com' ? $_CONF['noreply_mail'] : 'noreply@' . $host_name);
+            if (isset($_POST['utf8']) && ($_POST['utf8'] == 'on')) {
+                $utf8 = true;
+            } else {
+                $utf8 = false;
+                if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {
+                    $utf8 = true;
+                }
+            }
 
             if ($install_type == 'install') {
                 $buttontext = $LANG_INSTALL[50];
@@ -203,8 +211,14 @@ function INST_installEngine($install_type, $install_step)
                 <p><label>' . $LANG_INSTALL[45] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
                 <p><label>' . $LANG_INSTALL[47] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
                 <p><label>' . $LANG_INSTALL[48] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="50"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50"' . XHTML . '></p>
+                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50"' . XHTML . '></p>';
 
+            if ($install_type == 'install') {
+                $display .= '
+                    <p><label>' . $LANG_INSTALL[92] . ' ' . INST_helpLink('') . '</label> <input type="checkbox" name="utf8"' . ($utf8 ? ' checked="checked"' : '') . XHTML . '></p>';
+            }
+
+            $display .= '
                 <br' . XHTML . '>
                 <input type="submit" name="submit" class="submit" value="' . $buttontext . ' &gt;&gt;"' . XHTML . '>
                 </form>' . LB;
@@ -212,7 +226,7 @@ function INST_installEngine($install_type, $install_step)
 
 
         /**
-         * Page 2 - Enter information into config.php
+         * Page 2 - Enter information into db-config.php
          * and ask about InnoDB tables (if supported)
          */
         case 2:
@@ -229,6 +243,7 @@ function INST_installEngine($install_type, $install_step)
             $site_admin_url = $_POST['site_admin_url'];
             $site_mail = $_POST['site_mail'];
             $noreply_mail = $_POST['noreply_mail'];
+            $utf8 = (isset($_POST['utf8']) && ($_POST['utf8'] == 'on')) ? true : false;
 
             // If using MySQL check to make sure the version is supported
             $outdated_mysql = false;
@@ -312,9 +327,16 @@ function INST_installEngine($install_type, $install_step)
                         // Write our changes to db-config.php
                         $dbconfig_file = fopen($dbconfig_path, 'w');
                         if (!fwrite($dbconfig_file, $dbconfig_data)) {
-                            exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
+                            exit($LANG_INSTALL[26] . ' ' . $dbconfig_path
+                                 . $LANG_INSTALL[58]);
                         }
                         fclose($dbconfig_file);
+
+                        // for the default charset, patch siteconfig.php again
+                        if (!INST_setDefaultCharset($siteconfig_path, $utf8)) {
+                            exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
+                                 . $LANG_INSTALL[58]);
+                        }
 
                         require $dbconfig_path;
                         require_once $siteconfig_path;
@@ -327,6 +349,9 @@ function INST_installEngine($install_type, $install_step)
                                     . '&site_admin_url=' . urlencode($site_admin_url)
                                     . '&site_mail=' . urlencode($site_mail)
                                     . '&noreply_mail=' . urlencode($noreply_mail);
+                        if ($utf8) {
+                            $req_string .= '&utf8=true';
+                        }
 
                         switch ($install_type) {
 
@@ -339,7 +364,8 @@ function INST_installEngine($install_type, $install_step)
                                         <input type="hidden" name="site_url" value="' . urlencode($site_url) . '"' . XHTML . '>
                                         <input type="hidden" name="site_admin_url" value="' . urlencode($site_admin_url) . '"' . XHTML . '>
                                         <input type="hidden" name="site_mail" value="' . urlencode($site_mail) . '"' . XHTML . '>
-                                        <input type="hidden" name="noreply_mail" value="' . urlencode($noreply_mail) . '"' . XHTML . '>';
+                                        <input type="hidden" name="noreply_mail" value="' . urlencode($noreply_mail) . '"' . XHTML . '>
+                                        <input type="hidden" name="utf8" value="' . ($utf8 ? 'true' : 'false') . '"' . XHTML . '>';
 
                             // If using MySQL check to see if InnoDB is supported
                             if ($innodb && !INST_innodbSupported()) {
@@ -444,6 +470,11 @@ function INST_installEngine($install_type, $install_step)
                         $use_innodb = true;
                     }
 
+                    $utf8 = false;
+                    if ((isset($_POST['utf8']) && $_POST['utf8'] == 'true') || (isset($_GET['utf8']) && $_GET['utf8'] == 'true')) {
+                        $utf8 = true;
+                    }
+
                     // We need all this just to do one DB query
                     require_once $dbconfig_path;
                     require_once $siteconfig_path;
@@ -518,8 +549,7 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
                             $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
 
-                            $charset = ''; // TBD: needs to be set ...
-                            $lng = INST_getDefaultLanguage($gl_path . 'language/', $language, $charset);
+                            $lng = INST_getDefaultLanguage($gl_path . 'language/', $language, $utf8);
                             if (!empty($lng)) {
                                 $config->set('language', $lng);
                             }
@@ -600,9 +630,8 @@ function INST_installEngine($install_type, $install_step)
  * Check to see if config.php and lib-common.php are writeable by the web
  * server. If they aren't display a warning message.
  *
- * @param   string  $dbconfig_path      Path to config.php
- * @param   string  $siteconfig_path    Path to lib-common.php
- * @return  boolean                     true if both files are writeable
+ * @param   array   $files              list of files to check
+ * @return  boolean                     true if all files are writeable
  *
  */
 function INST_checkIfWritable($files)
@@ -616,6 +645,7 @@ function INST_checkIfWritable($files)
             fclose($tmp_file);
         }
     }
+
     return $writable;
 }
 
@@ -894,14 +924,14 @@ function INST_personalizeAdminAccount($site_mail, $site_url)
 *
 * @param    string  $langpath   path where the language files are kept
 * @param    string  $language   language used in the install script
-* @param    string  $charset    character set: UTF-8 or something else
+* @param    boolean $utf8       whether to use UTF-8
 * @return   string              name of default language (for the config)
 *
 */
-function INST_getDefaultLanguage($langpath, $language, $charset = '')
+function INST_getDefaultLanguage($langpath, $language, $utf8 = false)
 {
-    if (strcasecmp('UTF-8', $charset) == 0) {
-        $lngname = $language . '_' . strtolower($charset);
+    if ($utf8) {
+        $lngname = $language . '_utf-8';
     } else {
         $lngname = $language;
     }
@@ -909,8 +939,8 @@ function INST_getDefaultLanguage($langpath, $language, $charset = '')
 
     if (!file_exists($langpath . $lngfile)) {
         // doesn't exist - fall back to English
-        if (strcasecmp('UTF-8', $charset) == 0) {
-            $lngname = 'english_' . strtolower($charset);
+        if ($utf8) {
+            $lngname = 'english_utf-8';
         } else {
             $lngname = 'english';
         }
@@ -1463,6 +1493,46 @@ function INST_checkPlugins()
     }
 
     return $disabled;
+}
+
+/**
+* Change default character set to UTF-8
+*
+* @param   string   $siteconfig_path  complete path to siteconfig.php
+* @param   boolen   $utf8             true: use UTF-8
+* @return  boolean                    true: success; false: an error occured
+* @note    Yes, this means that we need to patch siteconfig.php a second time.
+*
+*/
+function INST_setDefaultCharset($siteconfig_path, $utf8 = false)
+{
+    global $LANG_CHARSET;
+
+    $result = true;
+
+    $siteconfig_file = fopen($siteconfig_path, 'r');
+    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
+    fclose($siteconfig_file);
+
+    if ($utf8) {
+        $new_charset = 'utf-8';
+    } else {
+        $new_charset = $LANG_CHARSET;
+    }
+
+    require_once $siteconfig_path;
+
+    $siteconfig_data = str_replace("\$_CONF['default_charset'] = '{$_CONF['default_charset']}';",
+                                   "\$_CONF['default_charset'] = '{$new_charset}';",
+                                   $siteconfig_data);
+
+    $siteconfig_file = fopen($siteconfig_path, 'w');
+    if (!fwrite($siteconfig_file, $siteconfig_data)) {
+        $result = false;
+    }
+    @fclose($siteconfig_file);
+
+    return $result;
 }
 
 
