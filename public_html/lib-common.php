@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.691 2008/04/26 17:58:37 dhaun Exp $
+// $Id: lib-common.php,v 1.692 2008/05/01 15:43:16 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4402,8 +4402,8 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 /**
 * Displays a message on the webpage
 *
-* Receives either a message number and gets the according message from the
-* language file or gets a message in cleartext and displays it then to the user
+* Pulls $msg off the URL string and gets the corresponding message and returns
+* it for display on the calling page
 *
 * @param      int     $msg        ID of message to show
 * @param      string  $plugin     Optional Name of plugin to lookup plugin defined message
@@ -4416,30 +4416,29 @@ function COM_showMessage($msg, $plugin = '')
 
     $retval = '';
 
-    $timestamp = strftime( $_CONF['daytime'] );
-    if($msg > 0) {
-        if(!empty($plugin)) {
+    if ($msg > 0) {
+        $timestamp = strftime($_CONF['daytime']);
+        if (!empty($plugin)) {
             $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
             global $$var;
-            if(isset($$var)) {
+            if (isset($$var)) {
                 $message = $$var;
             } else {
-                $message = sprintf( $MESSAGE[61], $plugin );
-                COM_errorLog ($MESSAGE[61]. ": " . $var,1);
+                $message = sprintf($MESSAGE[61], $plugin);
+                COM_errorLog($MESSAGE[61] . ": " . $var, 1);
             }
         } else {
             $message = $MESSAGE[$msg];
         }
-    } else if (strlen($msg) > 0) {
-        $message = $msg;
+
+        $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp, '',
+                                  COM_getBlockTemplate('_msg_block', 'header'))
+                . '<p><img src="' . $_CONF['layout_url']
+                . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" '
+                . 'style="padding-right:5px; padding-bottom:3px; border:none; float:left;"' . XHTML . '>'
+                . $message . '</p>'
+                . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
     }
-    $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
-                       COM_getBlockTemplate( '_msg_block', 'header' ))
-        . '<p><img src="' . $_CONF['layout_url']
-        . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" '
-        . 'style="padding-right:5px; padding-bottom:3px; border:none; float:left;"' . XHTML . '>'
-        . $message . '</p>'
-        . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
 
     return $retval;
 }
