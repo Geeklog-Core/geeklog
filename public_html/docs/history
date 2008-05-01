@@ -11,6 +11,7 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Other changes:
+- LDAP remote authentication module, provided by Jessica Blank / MTV Networks
 - The {lang_attribute} can only properly be set in a multi-language setup
   (bug #0000616) [Dirk]
 - Calendar block now includes events from the current day (in progress or all
