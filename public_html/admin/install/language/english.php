@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: english.php,v 1.9 2008/05/01 08:46:22 dhaun Exp $
+// $Id: english.php,v 1.10 2008/05/01 09:52:56 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -88,7 +88,7 @@ $LANG_INSTALL = array(
     35 => 'MySQL',
     36 => 'MySQL with InnoDB Table support',
     37 => 'Microsoft SQL',
-    38 => 'InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
+    38 => '',
     39 => 'Database Hostname',
     40 => 'Database Name',
     41 => 'Database Username',
@@ -180,7 +180,7 @@ $LANG_HELP = array(
     0 => 'Geeklog Installation Support',
     1 => 'The name of your website.',
     2 => 'A simple description of your website.',
-    3 => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.',
+    3 => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.<br><br><strong>Note:</strong> InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
     4 => 'The network name (or IP address) of your database server. This is typically "localhost". If you are not sure contact your hosting provider.',
     5 => 'The name of your database. If you are not sure what this is contact your hosting provider.',
     6 => 'Your database user account. If you are not sure what this is contact your hosting provider.',
@@ -189,7 +189,8 @@ $LANG_HELP = array(
     9 => 'Make sure this is the correct URL to your site, i.e. to where Geeklog\'s <code>index.php</code> file resides (no trailing slash).',
     10 => 'Some hosting services have a preconfigured admin directory. In that case, you need to rename Geeklog\'s admin directory to something like "myadmin" and change the following URL as well. Leave as is until you experience any problems accessing Geeklog\'s admin menu.',
     11 => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
-    12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.'
+    12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
+    13 => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.'
 );
 
 ?>

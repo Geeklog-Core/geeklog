@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.37 2008/05/01 08:46:22 dhaun Exp $
+// $Id: index.php,v 1.38 2008/05/01 09:52:56 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -195,27 +195,27 @@ function INST_installEngine($install_type, $install_step)
                 <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
 
                 <p><label>' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="40"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[33] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40"' . XHTML . '></p><br' . XHTML . '>
-                <p><label>' . $LANG_INSTALL[34] . ' ' . INST_helpLink('') . '</label> <select name="db_type">
+                <p><label>' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40"' . XHTML . '></p><br' . XHTML . '>
+                <p><label>' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">
                     <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
                     ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $mysql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
                     <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . $innodbnote . '</p>
-                <p><label>' . $LANG_INSTALL[39] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[40] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[41] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[42] . ' ' . INST_helpLink('') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[43] . ' ' . INST_helpLink('') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="20"' . XHTML . '></p>
+                <p><label>' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20"' . XHTML . '></p>
+                <p><label>' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20"' . XHTML . '></p>
+                <p><label>' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="20"' . XHTML . '></p>
+                <p><label>' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="20"' . XHTML . '></p>
+                <p><label>' . $LANG_INSTALL[43] . ' ' . INST_helpLink('db_prefix') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="20"' . XHTML . '></p>
 
                 <br' . XHTML . '>
                 <h2>' . $LANG_INSTALL[44] . '</h2>
-                <p><label>' . $LANG_INSTALL[45] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[47] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[48] . ' ' . INST_helpLink('') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="50"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50"' . XHTML . '></p>';
+                <p><label>' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label>' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label>' . $LANG_INSTALL[48] . ' ' . INST_helpLink('site_mail') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="50"' . XHTML . '></p>
+                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('noreply_mail') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50"' . XHTML . '></p>';
 
             if ($install_type == 'install') {
                 $display .= '
-                    <p><label>' . $LANG_INSTALL[92] . ' ' . INST_helpLink('') . '</label> <input type="checkbox" name="utf8"' . ($utf8 ? ' checked="checked"' : '') . XHTML . '></p>';
+                    <p><label>' . $LANG_INSTALL[92] . ' ' . INST_helpLink('utf8') . '</label> <input type="checkbox" name="utf8"' . ($utf8 ? ' checked="checked"' : '') . XHTML . '></p>';
             }
 
             $display .= '

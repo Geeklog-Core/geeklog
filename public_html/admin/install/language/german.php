@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.5 2008/05/01 08:46:22 dhaun Exp $
+// $Id: german.php,v 1.6 2008/05/01 09:52:56 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -88,7 +88,7 @@ $LANG_INSTALL = array(
     35 => 'MySQL',
     36 => 'MySQL mit Support für InnoDB-Tabellen',
     37 => 'Microsoft SQL',
-    38 => 'InnoDB-Tabellen können zu besserer Performance auf (sehr) großen Websites führen, machen den Backup-Prozess aber komplizierter.',
+    38 => '',
     39 => 'Datenbank-Server',
     40 => 'Name der Datenbank',
     41 => 'Datenbank-Username',
@@ -178,18 +178,19 @@ $LANG_SUCCESS = array(
 
 $LANG_HELP = array(
     0 => 'Geeklog Installation Support',
-    1 => 'Site name',
-    2 => 'Slogan',
-    3 => 'Database type',
-    4 => 'Hostname',
-    5 => 'Name',
-    6 => 'Username',
-    7 => 'Password',
-    8 => 'Prefix',
-    9 => 'Site URL',
-    10 => 'Admin Directory Url',
-    11 => 'Site Email',
-    12 => 'Site No-Reply'
+    1 => 'The name of your website.',
+    2 => 'A simple description of your website.',
+    3 => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.<br><br><strong>Hinweis:</strong> InnoDB-Tabellen können zu besserer Performance auf (sehr) großen Websites führen, machen den Backup-Prozess aber komplizierter.',
+    4 => 'The network name (or IP address) of your database server. This is typically "localhost". If you are not sure contact your hosting provider.',
+    5 => 'The name of your database. If you are not sure what this is contact your hosting provider.',
+    6 => 'Your database user account. If you are not sure what this is contact your hosting provider.',
+    7 => 'Your database account password. If you are not sure what this is contact your hosting provider.',
+    8 => 'Some users want to install multiple copies of Geeklog on the same database. In order for each copy of Geeklog to function correctly it must have its own unique table prefix (i.e. gl1_, gl2_, etc).',
+    9 => 'Make sure this is the correct URL to your site, i.e. to where Geeklog\'s <code>index.php</code> file resides (no trailing slash).',
+    10 => 'Some hosting services have a preconfigured admin directory. In that case, you need to rename Geeklog\'s admin directory to something like "myadmin" and change the following URL as well. Leave as is until you experience any problems accessing Geeklog\'s admin menu.',
+    11 => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
+    12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
+    13 => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.'
 );
 
 ?>

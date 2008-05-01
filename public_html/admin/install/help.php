@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Support for Geeklog installation script.                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: help.php,v 1.3 2008/03/29 22:17:47 mwest Exp $
+// $Id: help.php,v 1.4 2008/05/01 09:52:56 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
@@ -86,40 +86,43 @@ $display .= '<head>
         <div class="installation-body-container">
             <h1 class="heading">' . $LANG_HELP[0] . '</h1>
             <h2><a name="site_name">' . $LANG_INSTALL[32] . '</a></h2>
-            <p>' . $LANG_HELP[1] . '</p>
+            <p class="indent">' . $LANG_HELP[1] . '</p>
 
             <h2><a name="site_slogan">' . $LANG_INSTALL[33] . '</a></h2>
-            <p>' . $LANG_HELP[2] . '</p>
+            <p class="indent">' . $LANG_HELP[2] . '</p>
 
             <h2><a name="db_type">' . $LANG_INSTALL[34] . '</a></h2>
-            <p>' . $LANG_HELP[3] . '</p>
+            <p class="indent">' . $LANG_HELP[3] . '</p>
 
             <h2><a name="db_host">' . $LANG_INSTALL[39] . '</a></h2>
-            <p>' . $LANG_HELP[4] . '</p>
+            <p class="indent">' . $LANG_HELP[4] . '</p>
 
             <h2><a name="db_name">' . $LANG_INSTALL[40] . '</a></h2>
-            <p>' . $LANG_HELP[5] . '</p>
+            <p class="indent">' . $LANG_HELP[5] . '</p>
 
             <h2><a name="db_user">' . $LANG_INSTALL[41] . '</a></h2>
-            <p>' . $LANG_HELP[6] . '</p>
+            <p class="indent">' . $LANG_HELP[6] . '</p>
 
             <h2><a name="db_pass">' . $LANG_INSTALL[42] . '</a></h2>
-            <p>' . $LANG_HELP[7] . '</p>
+            <p class="indent">' . $LANG_HELP[7] . '</p>
 
             <h2><a name="db_prefix">' . $LANG_INSTALL[43] . '</a></h2>
-            <p>' . $LANG_HELP[8] . '</p>
+            <p class="indent">' . $LANG_HELP[8] . '</p>
 
             <h2><a name="site_url">' . $LANG_INSTALL[45] . '</a></h2>
-            <p>' . $LANG_HELP[9] . '</p>
+            <p class="indent">' . $LANG_HELP[9] . '</p>
 
             <h2><a name="site_admin_url">' . $LANG_INSTALL[47] . '</a></h2>
-            <p>' . $LANG_HELP[10] . '</p>
+            <p class="indent">' . $LANG_HELP[10] . '</p>
 
             <h2><a name="site_mail">' . $LANG_INSTALL[48] . '</a></h2>
-            <p>' . $LANG_HELP[11] . '</p>
+            <p class="indent">' . $LANG_HELP[11] . '</p>
 
             <h2><a name="noreply_mail">' . $LANG_INSTALL[49] . '</a></h2>
-            <p>' . $LANG_HELP[12] . '</p>
+            <p class="indent">' . $LANG_HELP[12] . '</p>
+
+            <h2><a name="utf8">' . $LANG_INSTALL[92] . '</a></h2>
+            <p class="indent">' . $LANG_HELP[13] . '</p>
 
         </div>
     </div>
