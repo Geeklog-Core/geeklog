@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.124 2008/02/20 20:23:00 dhaun Exp $
+// $Id: lib-story.php,v 1.125 2008/05/01 21:01:47 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1035,7 +1035,10 @@ function service_submit_story($args, &$output, &$svc_msg)
         return PLG_RET_AUTH_FAILED;
     }
 
-    $gl_edit = $args['gl_edit'];
+    $gl_edit = false;
+    if (isset($args['gl_edit'])) {
+        $gl_edit = $args['gl_edit'];
+    }
     if ($gl_edit) {
         /* This is EDIT mode, so there should be an old sid */
         if (empty($args['old_sid'])) {
@@ -1060,9 +1063,10 @@ function service_submit_story($args, &$output, &$svc_msg)
         $args['tid'] = $args['category'][0];
     }
 
+    $content = '';
     if (!empty($args['content'])) {
         $content = $args['content'];
-    } else {
+    } else if (!empty($args['summary'])) {
         $content = $args['summary'];
     }   
     if (!empty($content)) {
@@ -1183,7 +1187,11 @@ function service_submit_story($args, &$output, &$svc_msg)
     }
     $story = new Story();
 
-    if ($args['gl_edit'] && !empty($args['gl_etag'])) {
+    $gl_edit = false;
+    if (isset($args['gl_edit'])) {
+        $gl_edit = $args['gl_edit'];
+    }
+    if ($gl_edit && !empty($args['gl_etag'])) {
         /* First load the original story to check if it has been modified */
         $result = $story->loadFromDatabase($args['sid']);
         if ($result == STORY_LOADED_OK) {
