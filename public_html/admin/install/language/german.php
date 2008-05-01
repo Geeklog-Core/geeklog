@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.6 2008/05/01 09:52:56 dhaun Exp $
+// $Id: german.php,v 1.7 2008/05/01 21:09:00 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -55,24 +55,24 @@ $LANG_INSTALL = array(
     1 => 'Hilfe zur Installation',
     2 => 'Zuverlässigkeit eingebaut',
     3 => 'Geeklog-Installation',
-    4 => 'PHP 4.1.0 required',
-    5 => 'Sorry, but Geeklog requires at least PHP 4.1.0 to run (you have version ',
-    6 => '). Please <a href="http://www.php.net/downloads.php">upgrade your PHP</a> install or ask your hosting service to do it for you.',
-    7 => 'Unable to locate Geeklog files',
-    8 => 'The installation script was unable to locate critical Geeklog files. This is probably because you have moved them from their default location. Please specify the paths to the files and directories below:',
+    4 => 'PHP 4.1.0 benötigt',
+    5 => 'Sorry, Geeklog benötigt mindestens PHP 4.1.0 (Du hast Version '),
+    6 => '). Bitte <a href="http://www.php.net/downloads.php">aktualisiere Deine PHP-Installation</a> oder bitte Deinen Hosting-Provider darum.',
+    7 => 'Geeklog-Dateien nicht gefunden',
+    8 => 'Das Installations-Skript hat einige wichtige Geeklog-Dateien nicht gefunden. Wahrscheinlich hast Du diese in andere Verzeichnisse verschoben. Bitte gib hier die Pfade zu den Dateien und Verzeichnissen an:',
     9 => 'Willkommen und Danke, dass Du Geeklog gewählt hast!',
-    10 => 'File/Directory',
-    11 => 'Permissions',
-    12 => 'Change to',
-    13 => 'Currently',
+    10 => 'Datei/Verzeichnis',
+    11 => 'Zugriffsrechte',
+    12 => 'Ändern auf',
+    13 => 'Derzeit',
     14 => 'Change directory to',
     15 => 'Export of Geeklog headlines is switched off. The <code>backend</code> directory was not tested',
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
     19 => 'Geeklog requires certain files and directories to be writeable by the web server. Below is a list of which files and directories need to be changed.',
-    20 => 'Warning!',
+    20 => 'Warnung!',
     21 => 'Your Geeklog and site will not work properly until the errors listed above are corrected. Please make the necessary changes before you continue.',
-    22 => 'unkown',
+    22 => 'unbekannt',
     23 => 'Bitte wähle eine Installationsmethode:',
     24 => 'Neuinstallation',
     25 => 'Upgrade',
@@ -109,7 +109,7 @@ $LANG_INSTALL = array(
     56 => 'Could not connect to database',
     57 => 'Sorry, but the installer could not find the database you specified. Either the database does not exist or you misspelled the name. Please go back and try again.',
     58 => '. Did you make sure the file is write-able by the web server?',
-    59 => 'Notice:',
+    59 => 'Hinweis:',
     60 => 'InnoDB tables are not supported by your version of MySQL. Would you like to continue the installation without InnoDB support?',
     61 => 'zurück',
     62 => 'weiter',
@@ -140,7 +140,7 @@ $LANG_INSTALL = array(
     87 => 'http://geeklog.info/forum/index.php?forum=1',
     88 => 'Change directory and containing files to',
     89 => 'Aktuelle Version:',
-    90 => 'Empty database?',
+    90 => 'Leere Datenbank?',
     91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
     92 => 'Benutze UTF-8'
 );
