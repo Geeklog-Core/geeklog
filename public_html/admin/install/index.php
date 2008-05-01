@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.38 2008/05/01 09:52:56 dhaun Exp $
+// $Id: index.php,v 1.39 2008/05/01 13:23:28 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -333,9 +333,12 @@ function INST_installEngine($install_type, $install_step)
                         fclose($dbconfig_file);
 
                         // for the default charset, patch siteconfig.php again
-                        if (!INST_setDefaultCharset($siteconfig_path, $utf8)) {
-                            exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
-                                 . $LANG_INSTALL[58]);
+                        if ($install_type != 'upgrade') {
+                            if (!INST_setDefaultCharset($siteconfig_path,
+                                    ($utf8 ? 'utf-8' : $LANG_CHARSET))) {
+                                exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
+                                     . $LANG_INSTALL[58]);
+                            }
                         }
 
                         require $dbconfig_path;
@@ -627,8 +630,7 @@ function INST_installEngine($install_type, $install_step)
 
 
 /**
- * Check to see if config.php and lib-common.php are writeable by the web
- * server. If they aren't display a warning message.
+ * Check to see if required files are writeable by the web server.
  *
  * @param   array   $files              list of files to check
  * @return  boolean                     true if all files are writeable
@@ -638,7 +640,7 @@ function INST_checkIfWritable($files)
 {
     $writable = true;
     foreach ($files as $file) {
-        if (!$tmp_file = @fopen ($file, 'a')) {
+        if (!$tmp_file = @fopen($file, 'a')) {
             // Unable to modify
             $writable = false;
         } else {
@@ -1361,6 +1363,13 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
                 foreach ($_CONF as $key => $val) {
                     $config->set($key, $val);
                 }
+
+                if (!INST_setDefaultCharset($siteconfig_path,
+                                            $_CONF['default_charset'])) {
+                    exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
+                         . $LANG_INSTALL[58]);
+                }
+
                 require $siteconfig_path;
                 require $dbconfig_path;
             }
@@ -1499,32 +1508,25 @@ function INST_checkPlugins()
 * Change default character set to UTF-8
 *
 * @param   string   $siteconfig_path  complete path to siteconfig.php
-* @param   boolen   $utf8             true: use UTF-8
+* @param   string   $charset          default character set to use
 * @return  boolean                    true: success; false: an error occured
 * @note    Yes, this means that we need to patch siteconfig.php a second time.
 *
 */
-function INST_setDefaultCharset($siteconfig_path, $utf8 = false)
+function INST_setDefaultCharset($siteconfig_path, $charset)
 {
-    global $LANG_CHARSET;
-
     $result = true;
 
     $siteconfig_file = fopen($siteconfig_path, 'r');
     $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
     fclose($siteconfig_file);
 
-    if ($utf8) {
-        $new_charset = 'utf-8';
-    } else {
-        $new_charset = $LANG_CHARSET;
-    }
-
-    require_once $siteconfig_path;
-
-    $siteconfig_data = str_replace("\$_CONF['default_charset'] = '{$_CONF['default_charset']}';",
-                                   "\$_CONF['default_charset'] = '{$new_charset}';",
-                                   $siteconfig_data);
+    $siteconfig_data = preg_replace
+            (
+             '/\$_CONF\[\'default_charset\'\] = \'[^\']*\';/',
+             "\$_CONF['default_charset'] = '" . $charset . "';",
+             $siteconfig_data
+            );
 
     $siteconfig_file = fopen($siteconfig_path, 'w');
     if (!fwrite($siteconfig_file, $siteconfig_data)) {
