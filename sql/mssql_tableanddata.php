@@ -1719,8 +1719,8 @@ $_SQL[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzi
 $_SQL[] = "
 set identity_insert {$_TABLES['users']} on
 
-INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme, status) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'',getdate(),0,NULL,3)
-INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme, status) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net/','',getdate(),28800,NULL,3)
+INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme, status, num_reminders) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'',getdate(),0,NULL,3,0)
+INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme, status, num_reminders) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net/','',getdate(),28800,NULL,3,0)
 
 set identity_insert {$_TABLES['users']} off
 ";

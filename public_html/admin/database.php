@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.46 2008/02/29 08:22:52 mjervis Exp $
+// $Id: database.php,v 1.47 2008/05/01 18:35:14 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -286,7 +286,7 @@ $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
 if ($mode == 'backup') {
     // Perform the backup if asked
     if (SEC_checkToken()) {
-    $display .= dobackup();
+        $display .= dobackup();
     }
 } else if ($mode == 'delete') {
     foreach ($_POST['delitem'] as $delfile) {

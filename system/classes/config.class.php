@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.36 2008/04/13 11:28:12 dhaun Exp $
+// $Id: config.class.php,v 1.37 2008/05/01 18:35:14 mjervis Exp $
 
 class config {
     var $dbconfig_file;
@@ -280,7 +280,7 @@ class config {
 
         if ($_DB_dbms == 'mssql') {
             $sql_query = str_replace("\\'","''",$sql_query);
-            $sql_query = str_replace('\\"','"',$sql_query);
+            $sql_query = str_replace('\\"','""',$sql_query);
             $_DB->dbQuery($sql_query, 0, 1);
         } else {
             DB_query($sql_query);
