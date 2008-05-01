@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: english.php,v 1.10 2008/05/01 09:52:56 dhaun Exp $
+// $Id: english.php,v 1.11 2008/05/01 21:08:31 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -72,7 +72,7 @@ $LANG_INSTALL = array(
     19 => 'Geeklog requires certain files and directories to be writeable by the web server. Below is a list of which files and directories need to be changed.',
     20 => 'Warning!',
     21 => 'Your Geeklog and site will not work properly until the errors listed above are corrected. Not following this step is the #1 reason why people receive errors when they first try to use Geeklog. Please make the necessary changes before you continue.',
-    22 => 'unkown',
+    22 => 'unknown',
     23 => 'Choose your installation method:',
     24 => 'New Install',
     25 => 'Upgrade',
