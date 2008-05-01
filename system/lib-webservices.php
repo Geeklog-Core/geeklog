@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.35 2008/03/31 20:03:23 riyer Exp $
+// $Id: lib-webservices.php,v 1.36 2008/05/01 17:01:43 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -717,7 +717,7 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
  */
 function WS_authenticate()
 {
-    global $_CONF, $_USER, $_GROUPS, $_RIGHTS, $WS_VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $_RIGHTS, $WS_VERBOSE;
 
     $uid = '';
     $username = '';
@@ -732,6 +732,67 @@ function WS_authenticate()
         if ($WS_VERBOSE) {
             COM_errorLog("WS: Attempting to log in user '$username'");
         }
+
+/** this does not work! *******************************************************
+
+    } elseif (!empty($_SERVER['HTTP_X_WSSE']) &&
+            (strpos($_SERVER['HTTP_X_WSSE'], 'UsernameToken') !== false)) {
+
+        // this is loosely based on a code snippet taken from Elgg (elgg.org)
+
+        $wsse = str_replace('UsernameToken', '', $_SERVER['HTTP_X_WSSE']);
+        $wsse = explode(',', $wsse);
+
+        $username = '';
+        $pwdigest = '';
+        $created = '';
+        $nonce = '';
+
+        foreach ($wsse as $element) {
+            $element = explode('=', $element);
+            $key = array_shift($element);
+            if (count($element) == 1) {
+                $val = $element[0];
+            } else {
+                $val = implode('=', $element);
+            }
+            $key = trim($key);
+            $val = trim($val, "\x22\x27");
+            if ($key == 'Username') {
+                $username = $val;
+            } elseif ($key == 'PasswordDigest') {
+                $pwdigest = $val;
+            } elseif ($key == 'Created') {
+                $created = $val;
+            } elseif ($key == 'Nonce') {
+                $nonce = $val;
+            }
+        }
+
+        if (!empty($username) && !empty($pwdigest) && !empty($created) &&
+                !empty($nonce)) {
+
+            $uname = addslashes($username);
+            $pwd = DB_getItem($_TABLES['users'], 'passwd',
+                              "username = '$uname'");
+            // ... and here we would need the _unencrypted_ password
+
+            if (!empty($pwd)) {
+                $mydigest = pack('H*', sha1($nonce . $created . $pwd));
+                $mydigest = base64_encode($mydigest);
+
+                if ($pwdigest == $mydigest) {
+                    $password = $pwd;
+                }   
+            }   
+        }
+
+        if ($WS_VERBOSE) {
+            COM_errorLog("WS: Attempting to log in user '$username' (via WSSE)");
+        }
+
+******************************************************************************/
+
     } elseif (!empty($_SERVER['REMOTE_USER'])) {
         /* PHP installed as CGI may not have access to authorization headers of
          * Apache. In that case, use .htaccess to store the auth header as
