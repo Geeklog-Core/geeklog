@@ -29,10 +29,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2008/01/02 14:40:22 dhaun Exp $
+// $Id: index.php,v 1.4 2008/05/01 11:51:26 dhaun Exp $
 
 require_once '../../lib-common.php';
-require_once $_CONF['path_system'] . '/lib-webservices.php';
+
+/* Check for PHP5 */
+if (PHP_VERSION < 5) {
+    $_CONF['disable_webservices'] = true;
+} else {
+    require_once $_CONF['path_system'] . '/lib-webservices.php';
+}
 
 /* Check if WS component is enabled */
 if ($_CONF['disable_webservices']) {
