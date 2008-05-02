@@ -30,10 +30,10 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 # index.php
@@ -48,7 +48,7 @@ $LANG_CAL_1 = array(
     8 => 'Ko bo novi dogodek dodan v tvoj osebni koledar, lahko s klikom na "Moj koledar" v meniju "Uporabniške funkcije" hitro pregledaš le tiste dogodke, ki te zanimajo.',
     9 => 'Dodaj v Moj koledar',
     10 => 'Odstrani iz Mojega koledarja',
-    11 => "Dodajanje dogodka v %s koledar",
+    11 => 'Dodajanje dogodka v %s koledar',
     12 => 'Dogodek',
     13 => 'Zaèetek',
     14 => 'Konec',
@@ -64,7 +64,7 @@ $LANG_CAL_1 = array(
     24 => 'Dogodki te strani',
     25 => 'Ni prihajajoèih dogodkov',
     26 => 'Oddaj dogodek',
-    27 => "Oddaja dogodka na spletnem mestu {$_CONF['site_name']} bo tvoj dogodek dodala na glavni koledar, od koder lahko uporabniki tvoj dogodek dodajo v svoje osebne koledarje. Ta funkcija <b>NI</b> namenjena shranjevanju osebnih dogodkov, kot so rojstni dnevi in obletnice.<br><br>Ko svoj dogodek oddaš, bo poslan upravnikom, in èe bo odobren, se bo pojavil v glavnem koledarju.",
+    27 => "Oddaja dogodka na spletnem mestu {$_CONF['site_name']} bo tvoj dogodek dodala na glavni koledar, od koder lahko uporabniki tvoj dogodek dodajo v svoje osebne koledarje. Ta funkcija <b>NI</b> namenjena shranjevanju osebnih dogodkov, kot so rojstni dnevi in obletnice.<br" . XHTML . "><br" . XHTML . ">Ko svoj dogodek oddaš, bo poslan upravnikom, in èe bo odobren, se bo pojavil v glavnem koledarju.",
     28 => 'Naslov',
     29 => 'Konèni èas',
     30 => 'Zaèetni èas',
@@ -88,9 +88,7 @@ $LANG_CAL_1 = array(
     48 => 'Zadetki',
     49 => 'Izgleda, da na tem mestu ni dogodkov ali pa še nikoli ni nihèe kliknil na nobenega.',
     50 => 'Dogodki',
-    51 => 'Izbriši',
-    52 => 'Organizator',
-    53 => 'Telefon'
+    51 => 'Izbriši'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -99,7 +97,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => 'Datum & ura',
     'location' => 'Kraj',
     'description' => 'Opis'
-
 );
 
 ###############################################################################
@@ -129,7 +126,7 @@ $LANG_CAL_2 = array(
     40 => 'Teden',
     41 => 'Mesec',
     42 => 'Dodaj glavni dogodek',
-    43 => 'Dogodki',
+    43 => 'Dogodki'
 );
 
 ###############################################################################
@@ -160,20 +157,31 @@ $LANG_CAL_ADMIN = array(
     22 => 'izbriši',
     23 => 'Napaèen zaèetni datum.',
     24 => 'Napaèen konèni datum.',
-    25 => 'Konèni datum je pred zaèetnim datumom.'
+    25 => 'Konèni datum je pred zaèetnim datumom.',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<brXHTML>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Tvoj dogodek je uspešno shranjen.',
-    'delete'    => 'Dogodek je uspešno izbrisan.',
-    'private'   => 'Dogodek je shranjen v tvoj koledar.',
-    'login'     => 'Ne morem odpreti tvojega osebnega koledarja, dokler se ne prijaviš',
-    'removed'   => 'Dogodek je uspešno odstranjen iz tvojega osebnega koledarja',
+    'save' => 'Tvoj dogodek je uspešno shranjen.',
+    'delete' => 'Dogodek je uspešno izbrisan.',
+    'private' => 'Dogodek je shranjen v tvoj koledar.',
+    'login' => 'Ne morem odpreti tvojega osebnega koledarja, dokler se ne prijaviš',
+    'removed' => 'Dogodek je uspešno odstranjen iz tvojega osebnega koledarja',
     'noprivate' => 'Žal osebni koledarji na tem spletnem mestu niso omogoèeni',
-    'unauth'    => 'Žal nimaš dostopa do strani za upravljanje dogodkov. Vsi poskusi dostopa do nepooblašèenih funkcij se beležijo.',
+    'unauth' => 'Žal nimaš dostopa do strani za upravljanje dogodkov. Vsi poskusi dostopa do nepooblašèenih funkcij se beležijo.'
 );
 
-$PLG_calendar_MESSAGE4  = "Hvala, da si dogodek oddal/a na spletno mesto {$_CONF['site_name']}. Pred objavo ga bo pregledal eden od urednikov. Èe bo odobren, bo objavljen in dan na razpolago bralcem te spletne strani v razdelku <a href=\"{$_CONF['site_url']}/calendar/index.php\">koledar</a>.";
+$PLG_calendar_MESSAGE4 = "Hvala, da si dogodek oddal/a na spletno mesto {$_CONF['site_name']}. Pred objavo ga bo pregledal eden od urednikov. Èe bo odobren, bo objavljen in dan na razpolago bralcem te spletne strani v razdelku <a href=\"{$_CONF['site_url']}/calendar/index.php\">koledar</a>.";
 $PLG_calendar_MESSAGE17 = 'Tvoj dogodek je uspešno shranjen.';
 $PLG_calendar_MESSAGE18 = 'Dogodek je uspešno izbrisan.';
 $PLG_calendar_MESSAGE24 = 'Dogodek je shranjen v tvoj koledar.';
@@ -182,5 +190,44 @@ $PLG_calendar_MESSAGE26 = 'Dogodek je uspešno izbrisan.';
 // Messages for the plugin upgrade
 $PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['calendar'] = array(
+    'label' => 'Calendar',
+    'title' => 'Calendar Configuration'
+);
+
+$LANG_confignames['calendar'] = array(
+    'calendarloginrequired' => 'Calendar Login Required?',
+    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
+    'personalcalendars' => 'Enable Personal Calendars?',
+    'eventsubmission' => 'Enable Submission Queue?',
+    'showupcomingevents' => 'Show upcoming Events?',
+    'upcomingeventsrange' => 'Upcoming Events Range',
+    'event_types' => 'Event Types',
+    'hour_mode' => 'Hour Mode',
+    'notification' => 'Notification Email?',
+    'delete_event' => 'Delete Events with Owner?',
+    'aftersave' => 'After Saving Event',
+    'default_permissions' => 'Event Default Permissions'
+);
+
+$LANG_configsubgroups['calendar'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['calendar'] = array(
+    'fs_main' => 'General Calendar Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['calendar'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    6 => array('12' => 12, '24' => 24),
+    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

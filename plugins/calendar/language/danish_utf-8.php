@@ -46,7 +46,7 @@ $LANG_CAL_1 = array(
     8 => 'Ved at tilføje denne begivenhed kan du hurtig se den begivenheder der interesseret dig ved at klikke på "Min Kalender" under Bruger Funktioner.',
     9 => 'Tilføj til min kalender',
     10 => 'Fjern fra min kalender',
-    11 => "Tilføjer begivenhedAdding til %s's kalender",
+    11 => 'Tilføjer begivenhedAdding til %s\'s kalender',
     12 => 'Begivenhed',
     13 => 'Start',
     14 => 'Slut',
@@ -62,7 +62,7 @@ $LANG_CAL_1 = array(
     24 => 'Sitde Begivenheder',
     25 => 'Der ingen begivenheder lige nu',
     26 => 'Tilføj en begivenhed',
-    27 => "Tilføjer begivenhed til {$_CONF['site_name']} vil sætte din begivenhed under hoved kalender. Hvor en bruger kan vælge din begivenhed til deres eget kalender. Denne mulighed er <b>IKKE</b> beregnet til at gemme dine personlige begivenheder som fødselsdage og årsdage.<br><br>Når du har tilføjet en begivenhed skal admin godkende den, og hvis den godkendes vil den vises på hoved kalender.",
+    27 => "Tilføjer begivenhed til {$_CONF['site_name']} vil sætte din begivenhed under hoved kalender. Hvor en bruger kan vælge din begivenhed til deres eget kalender. Denne mulighed er <b>IKKE</b> beregnet til at gemme dine personlige begivenheder som fødselsdage og årsdage.<br" . XHTML . "><br" . XHTML . ">Når du har tilføjet en begivenhed skal admin godkende den, og hvis den godkendes vil den vises på hoved kalender.",
     28 => 'Titel',
     29 => 'Slut Tid',
     30 => 'Start Tid',
@@ -95,7 +95,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => 'Dato & Tid',
     'location' => 'Sted',
     'description' => 'Beskrivelse'
-
 );
 
 ###############################################################################
@@ -125,7 +124,7 @@ $LANG_CAL_2 = array(
     40 => 'Uge',
     41 => 'Måned',
     42 => 'Tilføj Hoved Begivenhed',
-    43 => 'Begivenheds tilføjelser',
+    43 => 'Begivenheds tilføjelser'
 );
 
 ###############################################################################
@@ -156,20 +155,31 @@ $LANG_CAL_ADMIN = array(
     22 => 'slet',
     23 => 'Forkert start dato.',
     24 => 'Forkert slut dato.',
-    25 => 'Slut dato er før start dato.'
+    25 => 'Slut dato er før start dato.',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<brXHTML>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Din begivenhed er blevet gemt.',
-    'delete'    => 'Denne begivenhed er blevet slettet.',
-    'private'   => 'Denne begivenhed er gemt i din kalender',
-    'login'     => 'Kan ikke åbne din personlige kalender før du er logget ind',
-    'removed'   => 'Begivenheden er slettet fra din personlige kalender',
+    'save' => 'Din begivenhed er blevet gemt.',
+    'delete' => 'Denne begivenhed er blevet slettet.',
+    'private' => 'Denne begivenhed er gemt i din kalender',
+    'login' => 'Kan ikke åbne din personlige kalender før du er logget ind',
+    'removed' => 'Begivenheden er slettet fra din personlige kalender',
     'noprivate' => 'Beklager, personlige kalender er ikke til rådighed på siden',
-    'unauth'    => 'Beklager, du har ikke adgang til admin siden. Alle førsøg på at få adgang til sider som ikke kommer dig ved. Bliver logget',
+    'unauth' => 'Beklager, du har ikke adgang til admin siden. Alle førsøg på at få adgang til sider som ikke kommer dig ved. Bliver logget'
 );
 
-$PLG_calendar_MESSAGE4  = "Tak for tilføjelsen til {$_CONF['site_name']}.  Den er blevet sendt til godkendelse.  Hvis den bliver godkendt vil begivenheden kunne ses her, i vores <a href=\"{$_CONF['site_url']}/calendar/index.php\">kalender</a> sektion.";
+$PLG_calendar_MESSAGE4 = "Tak for tilføjelsen til {$_CONF['site_name']}.  Den er blevet sendt til godkendelse.  Hvis den bliver godkendt vil begivenheden kunne ses her, i vores <a href=\"{$_CONF['site_url']}/calendar/index.php\">kalender</a> sektion.";
 $PLG_calendar_MESSAGE17 = 'Din begivenhed er blevet gemt.';
 $PLG_calendar_MESSAGE18 = 'Denne begivenhed er blevet slettet.';
 $PLG_calendar_MESSAGE24 = 'Denne begivenhed er gemt i din kalender.';
@@ -178,5 +188,44 @@ $PLG_calendar_MESSAGE26 = 'Denne begivenhed er slettet.';
 // Messages for the plugin upgrade
 $PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['calendar'] = array(
+    'label' => 'Calendar',
+    'title' => 'Calendar Configuration'
+);
+
+$LANG_confignames['calendar'] = array(
+    'calendarloginrequired' => 'Calendar Login Required?',
+    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
+    'personalcalendars' => 'Enable Personal Calendars?',
+    'eventsubmission' => 'Enable Submission Queue?',
+    'showupcomingevents' => 'Show upcoming Events?',
+    'upcomingeventsrange' => 'Upcoming Events Range',
+    'event_types' => 'Event Types',
+    'hour_mode' => 'Hour Mode',
+    'notification' => 'Notification Email?',
+    'delete_event' => 'Delete Events with Owner?',
+    'aftersave' => 'After Saving Event',
+    'default_permissions' => 'Event Default Permissions'
+);
+
+$LANG_configsubgroups['calendar'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['calendar'] = array(
+    'fs_main' => 'General Calendar Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['calendar'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    6 => array('12' => 12, '24' => 24),
+    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

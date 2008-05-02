@@ -27,14 +27,13 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
-$LANG_STATIC= array(
+$LANG_STATIC = array(
     'newpage' => 'Nuova Pagina',
     'adminhome' => 'Home Amministrazione',
     'staticpages' => 'Pagine Statiche',
@@ -67,9 +66,9 @@ $LANG_STATIC= array(
     'author' => 'Autore',
     'no_title_or_content' => 'Devi almeno compilare i campi <b>Titolo</b> e <b>Contenuto</b>.',
     'no_such_page_anon' => 'Prego entra nel sito..',
-    'no_page_access_msg' => "Questo potrebbe indicare che tu non sei entrato nel sito, o non sei un membro di {$_CONF["site_name"]}. Prego <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> diventa un membro</a> di {$_CONF["site_name"]} per ricevere pieno accesso al sito",
+    'no_page_access_msg' => "Questo potrebbe indicare che tu non sei entrato nel sito, o non sei un membro di {$_CONF['site_name']}. Prego <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> diventa un membro</a> di {$_CONF['site_name']} per ricevere pieno accesso al sito",
     'php_msg' => 'PHP: ',
-    'php_warn' => 'Attenzione: il codice PHP della tua pagina sar&agrave; valutato se abiliti questa opzione. <br><strong>Usare con cautela !!</strong>',
+    'php_warn' => 'Attenzione: il codice PHP della tua pagina sar&agrave; valutato se abiliti questa opzione. <br' . XHTML . '><strong>Usare con cautela !!</strong>',
     'exit_msg' => 'Tipo Uscita: ',
     'exit_info' => 'Abilita per Richiesta Messaggio di Login.  Lascia deselezionato per il normale controllo di sicurezza e messaggio.',
     'deny_msg' => 'Accesso a questa pagina negato.  Pu&ograve; essere che questa pagina &egrave; stata spostata/rimossa o che non hai i permessi sufficiente per visulaizzarla.',
@@ -104,12 +103,56 @@ $LANG_STATIC= array(
     'select_php_none' => 'non eseguire PHP',
     'select_php_return' => 'esegui PHP (return)',
     'select_php_free' => 'esegui PHP',
-    'php_not_activated' => 'L\'uso di PHP nelle pagine statiche &egrave; disattivato. Prego vedi la <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">documentazione</a> per dettagli.',
-    'printable_format' => 'Formato Stampabile'
+    'php_not_activated' => "L'uso di PHP nelle pagine statiche &egrave; disattivato. Prego vedi la <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">documentazione</a> per dettagli.",
+    'printable_format' => 'Formato Stampabile',
+    'copy' => 'Copy',
+    'limit_results' => 'Limit Results',
+    'search' => 'Search',
+    'submit' => 'Submit'
 );
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['staticpages'] = array(
+    'label' => 'Static Pages',
+    'title' => 'Static Pages Configuration'
+);
+
+$LANG_confignames['staticpages'] = array(
+    'allow_php' => 'Allow PHP?',
+    'sort_by' => 'Sort Centerblocks by',
+    'sort_menu_by' => 'Sort Menu Entries by',
+    'delete_pages' => 'Delete Pages with Owner?',
+    'in_block' => 'Wrap Pages in Block?',
+    'show_hits' => 'Show Hits?',
+    'show_date' => 'Show Date?',
+    'filter_html' => 'Filter HTML?',
+    'censor' => 'Censor Content?',
+    'default_permissions' => 'Page Default Permissions',
+    'aftersave' => 'After Saving Page',
+    'atom_max_items' => 'Max. Pages in Webservices Feed'
+);
+
+$LANG_configsubgroups['staticpages'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['staticpages'] = array(
+    'fs_main' => 'Static Pages Main Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['staticpages'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
+    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

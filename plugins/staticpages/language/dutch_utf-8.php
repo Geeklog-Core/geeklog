@@ -28,14 +28,13 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
-$LANG_STATIC= array(
+$LANG_STATIC = array(
     'newpage' => 'Nieuwe Pagina',
     'adminhome' => 'Beheerder Home',
     'staticpages' => 'Static Pages',
@@ -68,7 +67,7 @@ $LANG_STATIC= array(
     'author' => 'Auteur',
     'no_title_or_content' => 'Gelieve de <b>Titel</b> en <b>Content</b> op te geven.',
     'no_such_page_anon' => 'Gelieve eerst in te loggen...',
-    'no_page_access_msg' => "Dit kan optreden omdat u niet ingelogd bent, of geen lid bent van {$_CONF["site_name"]}. <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Meldt u aann</a> op {$_CONF["site_name"]} om alle faciliteiten te verkrijgen",
+    'no_page_access_msg' => "Dit kan optreden omdat u niet ingelogd bent, of geen lid bent van {$_CONF['site_name']}. <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Meldt u aann</a> op {$_CONF['site_name']} om alle faciliteiten te verkrijgen",
     'php_msg' => 'PHP: ',
     'php_warn' => 'Pas op !!  PHP code in uw pagina wordt uitgevoerd indien de optie geactiveerd is. Wees hiermee voorzichtig !!',
     'exit_msg' => 'Exit Type: ',
@@ -105,12 +104,56 @@ $LANG_STATIC= array(
     'select_php_none' => 'maak het uitvoeren van PHP onmogelijk',
     'select_php_return' => 'uitvoeren van PHP (return)',
     'select_php_free' => 'voer PHP uit',
-    'php_not_activated' => 'Het gebruik van PHP in Static Pages is niet geactiveerd. Bekijk de <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">documentatie</a> voor meer bijzonderheden.',
-    'printable_format' => 'Printbare versie'
+    'php_not_activated' => "Het gebruik van PHP in Static Pages is niet geactiveerd. Bekijk de <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">documentatie</a> voor meer bijzonderheden.",
+    'printable_format' => 'Printbare versie',
+    'copy' => 'Copy',
+    'limit_results' => 'Limit Results',
+    'search' => 'Search',
+    'submit' => 'Submit'
 );
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['staticpages'] = array(
+    'label' => 'Static Pages',
+    'title' => 'Static Pages Configuration'
+);
+
+$LANG_confignames['staticpages'] = array(
+    'allow_php' => 'Allow PHP?',
+    'sort_by' => 'Sort Centerblocks by',
+    'sort_menu_by' => 'Sort Menu Entries by',
+    'delete_pages' => 'Delete Pages with Owner?',
+    'in_block' => 'Wrap Pages in Block?',
+    'show_hits' => 'Show Hits?',
+    'show_date' => 'Show Date?',
+    'filter_html' => 'Filter HTML?',
+    'censor' => 'Censor Content?',
+    'default_permissions' => 'Page Default Permissions',
+    'aftersave' => 'After Saving Page',
+    'atom_max_items' => 'Max. Pages in Webservices Feed'
+);
+
+$LANG_configsubgroups['staticpages'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['staticpages'] = array(
+    'fs_main' => 'Static Pages Main Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['staticpages'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
+    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

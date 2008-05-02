@@ -9,12 +9,12 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: ukrainian_koi8-u.php,v 1.7 2008/04/13 11:59:08 dhaun Exp $
+ * $Id: ukrainian_koi8-u.php,v 1.8 2008/05/02 15:08:10 dhaun Exp $
  */
 
 global $LANG32;
 
-$LANG_SX00 = array (
+$LANG_SX00 = array(
     'inst1' => '<p>Якщо ви зробите це, тод╕ ╕нш╕ ',
     'inst2' => 'зможуть переглядати та ╕мпортувати ваш чорний список ╕ ми зможемо створити б╕ль ефективну ',
     'inst3' => 'розпод╕лену базу даних.</p><p>Якщо ви додали св╕й вебсайт, але б╕льше не хочете, щоб в╕н залишався у списку, ',
@@ -40,7 +40,7 @@ $LANG_SX00 = array (
     'rsscreated' => 'Стр╕чку RSS створено',
     'add1' => 'Додано ',
     'add2' => ' запис╕в з ',
-    'add3' => " чорного списку.",
+    'add3' => ' чорного списку.',
     'adminc' => 'Команди адм╕н╕стрування:',
     'mblack' => 'М╕й чорний список:',
     'rlinks' => 'Спор╕днен╕ посилання:',
@@ -55,7 +55,7 @@ $LANG_SX00 = array (
     'exmod' => 'Модул╕ анал╕зу Spam-X',
     'actmod' => 'Активн╕ модул╕',
     'avmod' => 'Доступн╕ модул╕',
-    'coninst' => '<hr>Натисн╕ть активний модуль, щоб прибрати його, натисн╕ть доступний модуль, щоб додати його.<br>Модул╕ виконуються саме в такому порядку.',
+    'coninst' => '<hr' . XHTML . '>Натисн╕ть активний модуль, щоб прибрати його, натисн╕ть доступний модуль, щоб додати його.<br' . XHTML . '>Модул╕ виконуються саме в такому порядку.',
     'fsc' => 'Знайдено зб╕г Spam-коментар ',
     'fsc1' => ' написаний користувачем ',
     'fsc2' => ' з IP-адреси ',
@@ -89,17 +89,17 @@ $LANG_SX00 = array (
     'foundspam' => 'Знайдено зб╕г Spam-коментар ',
     'foundspam2' => ' написаний користувачем ',
     'foundspam3' => ' з IP-адреси ',
-	'deletespam' => 'Вилучити Spam',
-	'numtocheck' => 'К╕льк╕сть коментар╕в для перев╕рки',
-	'note1'		=> '<p>Увага: Зас╕б Масове Вилучення може допомогти вам, якщо ви стали жертвою',
-	'note2'		=> ' спаму коментар╕в ╕ Spam-X не перехоплю╓ його.  <ul><li>Спочатку знайд╕ть посилання чи ╕нш╕ ',
-	'note3'		=> 'показники цього спам-коментаря ╕ додайте ╖х до вашого чорного списку.</li><li>Дал╕ ',
-	'note4'		=> 'поверн╕ться сюди ╕ дайте Spam-X перев╕рити останн╕ коментар╕ на спам.</li></ul><p>Коментар╕ ',
-	'note5'		=> 'перев╕ряються в╕д нов╕ших до стар╕ших -- перев╕рка б╕льшо╖ к╕лькост╕ коментар╕в ',
-	'note6'		=> 'вимага╓ б╕льше часу.</p>',
-	'masshead'	=> '<hr><h1 align="center">Масове Вилучення Spam-коментар╕в</h1>',
-	'masstb' => '<hr><h1 align="center">Масове Вилучення трекбек-спаму</h1>',
-	'comdel'	=> ' коментар╕в вилучено.',
+    'deletespam' => 'Вилучити Spam',
+    'numtocheck' => 'К╕льк╕сть коментар╕в для перев╕рки',
+    'note1' => '<p>Увага: Зас╕б Масове Вилучення може допомогти вам, якщо ви стали жертвою',
+    'note2' => ' спаму коментар╕в ╕ Spam-X не перехоплю╓ його.  <ul><li>Спочатку знайд╕ть посилання чи ╕нш╕ ',
+    'note3' => 'показники цього спам-коментаря ╕ додайте ╖х до вашого чорного списку.</li><li>Дал╕ ',
+    'note4' => 'поверн╕ться сюди ╕ дайте Spam-X перев╕рити останн╕ коментар╕ на спам.</li></ul><p>Коментар╕ ',
+    'note5' => 'перев╕ряються в╕д нов╕ших до стар╕ших -- перев╕рка б╕льшо╖ к╕лькост╕ коментар╕в ',
+    'note6' => 'вимага╓ б╕льше часу.</p>',
+    'masshead' => '<hr' . XHTML . '><h1 align="center">Масове Вилучення Spam-коментар╕в</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">Масове Вилучення трекбек-спаму</h1>',
+    'comdel' => ' коментар╕в вилучено.',
     'initial_Pimport' => '<p>╤мпорт чорного списку"',
     'initial_import' => 'Початковий ╕мпорт MT-Blacklist',
     'import_success' => '<p>Усп╕шно ╕мпортовано %d запис╕в чорного списку.',
@@ -112,7 +112,6 @@ $LANG_SX00 = array (
     'ipofurlblack' => 'Чорний список IP з URL Spam-X',
     'headerblack' => 'Чорний список HTTP-заголовк╕в Spam-X',
     'headers' => 'Заголовки запиту:',
-
     'stats_headline' => 'Статистика Spam-X',
     'stats_page_title' => 'Чорний список',
     'stats_entries' => 'Записи',
@@ -122,18 +121,44 @@ $LANG_SX00 = array (
     'stats_ipofurl' => 'Заблоковано за IP з URL',
     'stats_header' => 'HTTP-заголовки',
     'stats_deleted' => 'Пости, вилучен╕ як спам',
-
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'Б╕лий список SLV'
 );
 
-
-/* Define Messages that are shown when Spam-X module action is taken */
+// Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'Знайдено спам, коментар чи пов╕домлення вилучено.';
-$PLG_spamx_MESSAGE8   = 'Знайдено спам. Адм╕н╕стратору над╕слано електронного листа.';
+$PLG_spamx_MESSAGE8 = 'Знайдено спам. Адм╕н╕стратору над╕слано електронного листа.';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['spamx'] = array(
+    'label' => 'Spam-X',
+    'title' => 'Spam-X Configuration'
+);
+
+$LANG_confignames['spamx'] = array(
+    'action' => 'Spam-X Actions',
+    'notification_email' => 'Notification Email',
+    'admin_override' => 'Don\'t Filter Admin Posts',
+    'logging' => 'Enable Logging',
+    'timeout' => 'Timeout'
+);
+
+$LANG_configsubgroups['spamx'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['spamx'] = array(
+    'fs_main' => 'Spam-X Main Settings'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['spamx'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false)
+);
 
 ?>

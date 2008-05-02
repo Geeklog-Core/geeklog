@@ -25,15 +25,14 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# Last Update 2007/02/12 by Ivy (Geeklog Japanese)
 
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 # index.php
@@ -48,7 +47,7 @@ $LANG_CAL_1 = array(
     8 => '개인스캐줄에 이 이벤트를 추가하면, 「개인스캐줄」을 사용자 관리메뉴에서 선택하여 손쉽게 볼 수 있습니다。',
     9 => '개인스캐줄에 추가',
     10 => '개인스캐줄에서 삭제',
-    11 => "이 이벤트를 %s씨의 개인스캐줄에 추가",
+    11 => '이 이벤트를 %s씨의 개인스캐줄에 추가',
     12 => '이벤트',
     13 => '개시',
     14 => '종료',
@@ -64,7 +63,7 @@ $LANG_CAL_1 = array(
     24 => '사이트의 이벤트',
     25 => '-',
     26 => '이벤트에 덧글쓰기',
-    27 => "{$_CONF['site_name']} 에 이벤트를 투고하면，사이트 전체스캐줄에 등록됩니다。<br>전체스캐줄의 이벤트는 각 사용자가 필요에 따라 개인스캐줄에 등록 할 수 있습니다。",
+    27 => "{$_CONF['site_name']} 에 이벤트를 투고하면，사이트 전체스캐줄에 등록됩니다。<br" . XHTML . ">전체스캐줄의 이벤트는 각 사용자가 필요에 따라 개인스캐줄에 등록 할 수 있습니다。",
     28 => '제목',
     29 => '종료일시',
     30 => '개시일시',
@@ -97,7 +96,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => '일시',
     'location' => '장소',
     'description' => '자세한 설명'
-
 );
 
 ###############################################################################
@@ -127,7 +125,7 @@ $LANG_CAL_2 = array(
     40 => '주',
     41 => '월',
     42 => '전체이벤트 추가',
-    43 => '이벤트 덧글',
+    43 => '이벤트 덧글'
 );
 
 ###############################################################################
@@ -158,20 +156,31 @@ $LANG_CAL_ADMIN = array(
     22 => '삭제',
     23 => '개시일시를 정확하게 입력해 주시기 바랍니다。',
     24 => '종료일시를 정확하게 입력해 주시기 바랍니다。',
-    25 => '종료일시를 정확하게 입력해 주시기 바랍니다。'
+    25 => '종료일시를 정확하게 입력해 주시기 바랍니다。',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<brXHTML>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => '이벤트가 보존 되었습니다。',
-    'delete'    => '이벤트가 삭제 되었습니다。',
-    'private'   => '이벤트가 개인스캐줄에 보존 되었습니다。',
-    'login'     => '개인스캐줄을 열때에는，먼저 로그인 해 주시기 바랍니다。',
-    'removed'   => '개인스캐줄에서 이벤트가 삭제 되었습니다。',
+    'save' => '이벤트가 보존 되었습니다。',
+    'delete' => '이벤트가 삭제 되었습니다。',
+    'private' => '이벤트가 개인스캐줄에 보존 되었습니다。',
+    'login' => '개인스캐줄을 열때에는，먼저 로그인 해 주시기 바랍니다。',
+    'removed' => '개인스캐줄에서 이벤트가 삭제 되었습니다。',
     'noprivate' => '죄송합니다만，이 사이트에서는，개인스캐줄이 무효합니다。',
-    'unauth'    => '죄송합니다만，이벤트 관리페이지에 접속할 권한이 없습니다。 이 접속이 기록 된다는 점을 양해해 주시기 바랍니다.',
+    'unauth' => '죄송합니다만，이벤트 관리페이지에 접속할 권한이 없습니다。 이 접속이 기록 된다는 점을 양해해 주시기 바랍니다.'
 );
 
-$PLG_calendar_MESSAGE4  = "{$_CONF['site_name']} 에 이벤트를 투고해 주셔서 대단히 감사합니다。스탭에게 보내어져，승인을 기다리고 있는 상태입니다。 승인이 되면 이 사이트의 <a href=\"{$_CONF['site_url']}/calendar/index.php\">스캐줄</a> 부문에 표시 됩니다。";
+$PLG_calendar_MESSAGE4 = "{$_CONF['site_name']} 에 이벤트를 투고해 주셔서 대단히 감사합니다。스탭에게 보내어져，승인을 기다리고 있는 상태입니다。 승인이 되면 이 사이트의 <a href=\"{$_CONF['site_url']}/calendar/index.php\">스캐줄</a> 부문에 표시 됩니다。";
 $PLG_calendar_MESSAGE17 = '이벤트가 보존 되었습니다。';
 $PLG_calendar_MESSAGE18 = '이벤트가 삭제 되었습니다。';
 $PLG_calendar_MESSAGE24 = '이벤트가 개인스캐줄에 보존 되었습니다。';
@@ -180,5 +189,44 @@ $PLG_calendar_MESSAGE26 = '이벤트가 삭제 되었습니다。';
 // Messages for the plugin upgrade
 $PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['calendar'] = array(
+    'label' => 'Calendar',
+    'title' => 'Calendar Configuration'
+);
+
+$LANG_confignames['calendar'] = array(
+    'calendarloginrequired' => 'Calendar Login Required?',
+    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
+    'personalcalendars' => 'Enable Personal Calendars?',
+    'eventsubmission' => 'Enable Submission Queue?',
+    'showupcomingevents' => 'Show upcoming Events?',
+    'upcomingeventsrange' => 'Upcoming Events Range',
+    'event_types' => 'Event Types',
+    'hour_mode' => 'Hour Mode',
+    'notification' => 'Notification Email?',
+    'delete_event' => 'Delete Events with Owner?',
+    'aftersave' => 'After Saving Event',
+    'default_permissions' => 'Event Default Permissions'
+);
+
+$LANG_configsubgroups['calendar'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['calendar'] = array(
+    'fs_main' => 'General Calendar Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['calendar'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    6 => array('12' => 12, '24' => 24),
+    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

@@ -25,72 +25,84 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# Last Update 2007/02/12 by Ivy (Geeklog Japanese)
 
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
 $LANG_POLLS = array(
-    'polls'             => '앙케이트',
-    'results'           => '결과',
-    'pollresults'       => '앙케이트 결과',
-    'votes'             => '투표',
-    'vote'              => '투표하기',
-    'pastpolls'         => '앙케이트 전체보기',
-    'savedvotetitle'    => '투표가 등록 되었습니다',
-    'savedvotemsg'      => '지금의 투표가 등록 되었습니다',
-    'pollstitle'        => '모집 중인 앙케이트',
-    'pollquestions'     => '다른 앙케이트 보기',
-    'stats_top10'       => '앙케이트 톱 10',
-    'stats_questions'   => '앙케이트 질문',
-    'stats_votes'       => '투표',
-    'stats_none'        => '이 사이트에는 앙케이트가 없거나 앙케이트에 클릭한 사람이 없거나 어느 쪽일 것입니다.',
-    'stats_summary'     => 'Polls (Answers) in the system',
-    'open_poll'         => '공개 앙케이트'
+    'polls' => '앙케이트',
+    'results' => '결과',
+    'pollresults' => '앙케이트 결과',
+    'votes' => '투표',
+    'vote' => '투표하기',
+    'pastpolls' => '앙케이트 전체보기',
+    'savedvotetitle' => '투표가 등록 되었습니다',
+    'savedvotemsg' => '지금의 투표가 등록 되었습니다',
+    'pollstitle' => '모집 중인 앙케이트',
+    'polltopics' => 'Other polls',
+    'stats_top10' => '앙케이트 톱 10',
+    'stats_topics' => 'Poll Topic',
+    'stats_votes' => '투표',
+    'stats_none' => '이 사이트에는 앙케이트가 없거나 앙케이트에 클릭한 사람이 없거나 어느 쪽일 것입니다.',
+    'stats_summary' => 'Polls (Answers) in the system',
+    'open_poll' => '공개 앙케이트',
+    'answer_all' => 'Please answer all remaining questions',
+    'not_saved' => 'Result not saved',
+    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
+    'upgrade2' => 'upgrade',
+    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => '모드',
-    2 => '질문과 적어도 한가지 주요선택을 입력하시기 바랍니다.',
-    3 => '작성일시',
-    4 => "앙케이트 %s 가 보존 되었습니다",
-    5 => '앙케이트의 편집',
-    6 => '앙케이트ID',
-    7 => '(스페이스 두지 않도록)',
-    8 => '홈페이지에 표시하기',
-    9 => '질문하기',
-    10 => '응답 / 투표수 / 확인',
-    11 => "앙케이트(%s)의 주요선택에 에러가 있었습니다 ",
-    12 => "앙케이트(%s)의 질문항목에 에러가 있었습니다",
-    13 => '앙케이트 작성',
-    14 => '보존',
-    15 => '중지',
-    16 => '삭제',
-    17 => '앙케이트ID를 입력하시기 바랍니다',
-    18 => '앙케이트 전체보기',
-    19 => '앙케이트의 삭제, 편집은 제목의 왼편 아이콘을 클릭, 신규작성일 경우는 「신규작성」을 클릭 하시기 바랍니다. 제목을 클릭하시면 앙케이트 보기가 가능합니다.',
-    20 => '글쓴이',
-    21 => '접속에 실패 하였습니다',
-    22 => "관리권한이 없는 앙케이트를 편집하려고 하셨습니다.  이 행위는 기록 됩니다.  <a 
-href=\"{$_CONF['site_admin_url']}/poll.php\"> 덧글의 관리화면으로 </a>으로 돌아가시기 바랍니다.",
-    23 => '신규 앙케이트',
-    24 => '관리화면',
-    25 => '예',
-    26 => '아니오',
-    27 => '편집',
-    28 => '검색',
-    29 => '검색조건',
-    30 => '표시건수',
+    1 => 'Mode',
+    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
+    3 => 'Poll Created',
+    4 => 'Poll %s saved',
+    5 => 'Edit Poll',
+    6 => 'Poll ID',
+    7 => '(do not use spaces)',
+    8 => 'Appears on Pollblock',
+    9 => 'Topic',
+    10 => 'Answers / Votes / Remark',
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
+    13 => 'Create Poll',
+    14 => 'save',
+    15 => 'cancel',
+    16 => 'delete',
+    17 => 'Please enter a Poll ID',
+    18 => 'Poll List',
+    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
+    20 => 'Voters',
+    21 => 'Access Denied',
+    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
+    23 => 'New Poll',
+    24 => 'Admin Home',
+    25 => 'Yes',
+    26 => 'No',
+    27 => 'Edit',
+    28 => 'Submit',
+    29 => 'Search',
+    30 => 'Limit Results',
+    31 => 'Question',
+    32 => 'To remove this question from the poll, remove its question text',
+    33 => 'Open for voting',
+    34 => 'Poll Topic:',
+    35 => 'This poll has',
+    36 => 'more questions.',
+    37 => 'Hide results while poll is open',
+    38 => 'While the poll is open, only the owner &amp; root can see the results',
+    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE19 = '앙케이트가 등록 되었습니다.';
@@ -99,5 +111,42 @@ $PLG_polls_MESSAGE20 = '앙케이트가 삭제 되었습니다.';
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['polls'] = array(
+    'label' => 'Polls',
+    'title' => 'Polls Configuration'
+);
+
+$LANG_confignames['polls'] = array(
+    'pollsloginrequired' => 'Polls Login Required?',
+    'hidepollsmenu' => 'Hide Polls Menu Entry?',
+    'maxquestions' => 'Max. Questions per Poll',
+    'maxanswers' => 'Max. Options per Question',
+    'answerorder' => 'Sort Results ...',
+    'pollcookietime' => 'Voter Cookie valid for',
+    'polladdresstime' => 'Voter IP Address valid for',
+    'delete_polls' => 'Delete Polls with Owner?',
+    'aftersave' => 'After Saving Poll',
+    'default_permissions' => 'Poll Default Permissions'
+);
+
+$LANG_configsubgroups['polls'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['polls'] = array(
+    'fs_main' => 'General Polls Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['polls'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
+    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

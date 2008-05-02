@@ -29,10 +29,10 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 # index.php
@@ -47,7 +47,7 @@ $LANG_CAL_1 = array(
     8 => 'Ajoutez cet évènement à votre calendrier personnel et accédez à vos évènements privés via la fonction calendrier de votre zone membre.',
     9 => 'Ajoutez à mon calendrier',
     10 => 'Retirez de mon calendrier',
-    11 => "Ajoutez au calendrier de %s",
+    11 => 'Ajoutez au calendrier de %s',
     12 => 'Évènement',
     13 => 'Début',
     14 => 'Fin',
@@ -63,7 +63,7 @@ $LANG_CAL_1 = array(
     24 => 'Les évènements du site',
     25 => 'Il n\'y a aucun évènement à venir',
     26 => 'Soumettre un évènement',
-    27 => "En soumettant un évènement à {$_CONF['site_name']}, vous acceptez que celui-ci soit vu par tous les usagers du site. Cette fonction est interdite aux envois de type personnels.<br><br>La soumission apparaîtra au calendrier général une fois approuvé par l\'administrateur du site.",
+    27 => "En soumettant un évènement à {$_CONF['site_name']}, vous acceptez que celui-ci soit vu par tous les usagers du site. Cette fonction est interdite aux envois de type personnels.<br" . XHTML . "><br" . XHTML . ">La soumission apparaîtra au calendrier général une fois approuvé par l\'administrateur du site.",
     28 => 'Titre',
     29 => 'Heure du début',
     30 => 'Heure de la fin',
@@ -96,7 +96,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => 'Date et heure',
     'location' => 'Endroit',
     'description' => 'Description'
-
 );
 
 ###############################################################################
@@ -126,7 +125,7 @@ $LANG_CAL_2 = array(
     40 => 'Semaine',
     41 => 'Mois',
     42 => 'Ajoutez un évènement général',
-    43 => 'Soumission des évènements',
+    43 => 'Soumission des évènements'
 );
 
 ###############################################################################
@@ -157,20 +156,31 @@ $LANG_CAL_ADMIN = array(
     22 => 'effacer',
     23 => 'Mauvaise date de départ.',
     24 => 'Mauvaise date de fin.',
-    25 => 'La fin précède le départ.'
+    25 => 'La fin précède le départ.',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<brXHTML>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Évènement ajouté avec succès.',
-    'delete'    => 'Évènement effacé avec succès.',
-    'private'   => 'Évènement sauvegardé à votre calendrier',
-    'login'     => 'Cannot open your personal calendar until you login',
-    'removed'   => 'Event was successfully removed from your personal calendar',
+    'save' => 'Évènement ajouté avec succès.',
+    'delete' => 'Évènement effacé avec succès.',
+    'private' => 'Évènement sauvegardé à votre calendrier',
+    'login' => 'Cannot open your personal calendar until you login',
+    'removed' => 'Event was successfully removed from your personal calendar',
     'noprivate' => 'Désolé, les calendriers persos ne sont pas admis sur ce site',
-    'unauth'    => 'Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged',
+    'unauth' => 'Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged'
 );
 
-$PLG_calendar_MESSAGE4  = "Merci de soumettre un évènement à {$_CONF['site_name']}.  Vous pourrez le visualisé sur le <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendrier</a> une fois approuvé.";
+$PLG_calendar_MESSAGE4 = "Merci de soumettre un évènement à {$_CONF['site_name']}.  Vous pourrez le visualisé sur le <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendrier</a> une fois approuvé.";
 $PLG_calendar_MESSAGE17 = 'Évènement sauvegardé avec succès.';
 $PLG_calendar_MESSAGE18 = 'Évènement effacé avec succès.';
 $PLG_calendar_MESSAGE24 = 'Évènement sauvegardé sur votre calendrier.';
@@ -179,5 +189,44 @@ $PLG_calendar_MESSAGE26 = 'Évènement effacé avec succès.';
 // Messages for the plugin upgrade
 $PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['calendar'] = array(
+    'label' => 'Calendar',
+    'title' => 'Calendar Configuration'
+);
+
+$LANG_confignames['calendar'] = array(
+    'calendarloginrequired' => 'Calendar Login Required?',
+    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
+    'personalcalendars' => 'Enable Personal Calendars?',
+    'eventsubmission' => 'Enable Submission Queue?',
+    'showupcomingevents' => 'Show upcoming Events?',
+    'upcomingeventsrange' => 'Upcoming Events Range',
+    'event_types' => 'Event Types',
+    'hour_mode' => 'Hour Mode',
+    'notification' => 'Notification Email?',
+    'delete_event' => 'Delete Events with Owner?',
+    'aftersave' => 'After Saving Event',
+    'default_permissions' => 'Event Default Permissions'
+);
+
+$LANG_configsubgroups['calendar'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['calendar'] = array(
+    'fs_main' => 'General Calendar Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['calendar'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    6 => array('12' => 12, '24' => 24),
+    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

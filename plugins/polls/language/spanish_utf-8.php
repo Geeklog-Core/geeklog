@@ -31,66 +31,80 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
 $LANG_POLLS = array(
-    'polls'             => 'Encuestas',
-    'results'           => 'Resultados',
-    'pollresults'       => 'Resultados de la encuesta',
-    'votes'             => 'votos',
-    'vote'              => 'Voto',
-    'pastpolls'         => 'Encuestas anteriores',
-    'savedvotetitle'    => 'Voto guardado',
-    'savedvotemsg'      => 'Se ha guardado tu voto para la encuesta',
-    'pollstitle'        => 'Encuestas disponibles',
-    'pollquestions'     => 'Ver otras preguntas encuestadas',
-    'stats_top10'       => '10 encuestas principales',
-    'stats_questions'   => 'Pregunta de la encuesta',
-    'stats_votes'       => 'Votos',
-    'stats_none'        => 'Parece no haber encuestas o que nadie ha votado.',
-    'stats_summary'     => 'Encuestas (Respuestas) en el sistema',
-    'open_poll'         => 'Abierto para votar'
+    'polls' => 'Encuestas',
+    'results' => 'Resultados',
+    'pollresults' => 'Resultados de la encuesta',
+    'votes' => 'votos',
+    'vote' => 'Voto',
+    'pastpolls' => 'Encuestas anteriores',
+    'savedvotetitle' => 'Voto guardado',
+    'savedvotemsg' => 'Se ha guardado tu voto para la encuesta',
+    'pollstitle' => 'Encuestas disponibles',
+    'polltopics' => 'Other polls',
+    'stats_top10' => '10 encuestas principales',
+    'stats_topics' => 'Poll Topic',
+    'stats_votes' => 'Votos',
+    'stats_none' => 'Parece no haber encuestas o que nadie ha votado.',
+    'stats_summary' => 'Encuestas (Respuestas) en el sistema',
+    'open_poll' => 'Abierto para votar',
+    'answer_all' => 'Please answer all remaining questions',
+    'not_saved' => 'Result not saved',
+    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
+    'upgrade2' => 'upgrade',
+    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => 'Modo',
-    2 => 'Por favor, introduce una pregunta y al menos una respuesta.',
-    3 => 'Encuesta creada',
-    4 => "Encuesta %s guardada",
-    5 => 'Modificar encuesta',
-    6 => 'ID de la encuesta',
-    7 => '(no usar espacios)',
-    8 => 'Aparece en la Página Principal',
-    9 => 'Pregunta',
-    10 => 'Respuesta / Votos / Aclaración',
-    11 => "Ha habido un error intentando obtener los resultados de la encuesta %s",
-    12 => "Hubo un error intentando consultar los resultados de la encuesta %s",
-    13 => 'Crear encuesta',
-    14 => 'guardar',
-    15 => 'cancelar',
-    16 => 'borrar',
-    17 => 'Por favor, introduzca una ID para la encuesta',
-    18 => 'Lista de encuestas',
-    19 => 'Para modificar o borrar una encuesta, pulse en el botón de edición. Para crear una encuesta nueva, pulse en "Crear nueva".',
-    20 => 'Votantes',
-    21 => 'Acceso denegado',
-    22 => "Está intentando acceder a una encuesta a la que no tiene derecho. Este intento ha sido guardado. Por favor <a href=\"{$_CONF['site_admin_url']}/poll.php\">regrese a la pantalla de gestión de encuestas</a>.",
-    23 => 'Nueva encuesta',
-    24 => 'Administración',
-    25 => 'Si',
+    1 => 'Mode',
+    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
+    3 => 'Poll Created',
+    4 => 'Poll %s saved',
+    5 => 'Edit Poll',
+    6 => 'Poll ID',
+    7 => '(do not use spaces)',
+    8 => 'Appears on Pollblock',
+    9 => 'Topic',
+    10 => 'Answers / Votes / Remark',
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
+    13 => 'Create Poll',
+    14 => 'save',
+    15 => 'cancel',
+    16 => 'delete',
+    17 => 'Please enter a Poll ID',
+    18 => 'Poll List',
+    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
+    20 => 'Voters',
+    21 => 'Access Denied',
+    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
+    23 => 'New Poll',
+    24 => 'Admin Home',
+    25 => 'Yes',
     26 => 'No',
-    27 => 'Editar',
-    28 => 'Enviar',
-    29 => 'Buscar',
-    30 => 'Limitar Resultados',
+    27 => 'Edit',
+    28 => 'Submit',
+    29 => 'Search',
+    30 => 'Limit Results',
+    31 => 'Question',
+    32 => 'To remove this question from the poll, remove its question text',
+    33 => 'Open for voting',
+    34 => 'Poll Topic:',
+    35 => 'This poll has',
+    36 => 'more questions.',
+    37 => 'Hide results while poll is open',
+    38 => 'While the poll is open, only the owner &amp; root can see the results',
+    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE19 = 'Tu encuesta se guardó satisfactoriamente.';
@@ -99,5 +113,42 @@ $PLG_polls_MESSAGE20 = 'Tu encuesta se ha borrado satisfactoriamente.';
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['polls'] = array(
+    'label' => 'Polls',
+    'title' => 'Polls Configuration'
+);
+
+$LANG_confignames['polls'] = array(
+    'pollsloginrequired' => 'Polls Login Required?',
+    'hidepollsmenu' => 'Hide Polls Menu Entry?',
+    'maxquestions' => 'Max. Questions per Poll',
+    'maxanswers' => 'Max. Options per Question',
+    'answerorder' => 'Sort Results ...',
+    'pollcookietime' => 'Voter Cookie valid for',
+    'polladdresstime' => 'Voter IP Address valid for',
+    'delete_polls' => 'Delete Polls with Owner?',
+    'aftersave' => 'After Saving Poll',
+    'default_permissions' => 'Poll Default Permissions'
+);
+
+$LANG_configsubgroups['polls'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['polls'] = array(
+    'fs_main' => 'General Polls Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['polls'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
+    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

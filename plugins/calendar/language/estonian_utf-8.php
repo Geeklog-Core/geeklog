@@ -30,10 +30,10 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 # index.php
@@ -64,7 +64,7 @@ $LANG_CAL_1 = array(
     24 => 'Sündmused',
     25 => 'Pole tulevasi sündmusi',
     26 => 'Lisa sündmus',
-    27 => "Lisades {$_CONF['site_name']} lehele sündmuse, paigutub see peakalendrisse, kust kasutajad saavad soovi korral lisada selle oma enda isiklikku kalendrisse. Lehe kalender <b>ei ole </b> mõeldud teieisiklike sündmuste, nagu sünnipäevade või tähtpäevade jaoks.<br><br>Pärast sündmuse lisamist saadetakse see meie administraatoritele. Administraatorite poolt kinnitatud sündmus ilmub peakalendrisse.",
+    27 => "Lisades {$_CONF['site_name']} lehele sündmuse, paigutub see peakalendrisse, kust kasutajad saavad soovi korral lisada selle oma enda isiklikku kalendrisse. Lehe kalender <b>ei ole </b> mõeldud teieisiklike sündmuste, nagu sünnipäevade või tähtpäevade jaoks.<br" . XHTML . "><br" . XHTML . ">Pärast sündmuse lisamist saadetakse see meie administraatoritele. Administraatorite poolt kinnitatud sündmus ilmub peakalendrisse.",
     28 => 'Tiitel',
     29 => 'Lõpuaeg',
     30 => 'Algusaeg',
@@ -88,7 +88,7 @@ $LANG_CAL_1 = array(
     48 => 'klikke',
     49 => 'Näib, et saidil pole ühtegi sündmust või mitte keegi pole neil klõpsanud.',
     50 => 'Sündmused',
-    51 => 'Kustuta',
+    51 => 'Kustuta'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -97,7 +97,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => 'Päev ja kellaaeg',
     'location' => 'Asukoht',
     'description' => 'Kirjeldus'
-
 );
 
 ###############################################################################
@@ -149,29 +148,40 @@ $LANG_CAL_ADMIN = array(
     13 => 'Sündmuse tiitel',
     14 => 'Alguspäev',
     15 => 'lõpupäev',
-    16 => '', // Ligipääs tõkestatud',
+    16 => '',
     17 => "Sa proovisid ligi pääseda sündmusele, millele sul pole õigust ligi pääseda. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/\">mine tagasi sündmuste haldamise lehele</a>.",
-    18 => '', // Uus sündmus',
-    19 => '', // Admin avaleht',
+    18 => '',
+    19 => '',
     20 => 'salvesta',
     21 => 'tühista',
     22 => 'kustuta',
     23 => 'Sobimatu algusaeg.',
     24 => 'Sobimatu lõpuaeg.',
-    25 => 'Lõpuaeg on enne algusaega.'
+    25 => 'Lõpuaeg on enne algusaega.',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<brXHTML>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Sinu sündmus on edukalt salvestatud.',
-    'delete'    => 'Sündmus on edukalt kustutatud.',
-    'private'   => 'Sündmus on sinu kalendrisse salvestatud.',
-    'login'     => 'Ei saa enne sinu sisselogimist sinu isiklikku kalendrit avada',
-    'removed'   => 'Sündmus on sinu isiklikust kalendrist kustutatud.',
+    'save' => 'Sinu sündmus on edukalt salvestatud.',
+    'delete' => 'Sündmus on edukalt kustutatud.',
+    'private' => 'Sündmus on sinu kalendrisse salvestatud.',
+    'login' => 'Ei saa enne sinu sisselogimist sinu isiklikku kalendrit avada',
+    'removed' => 'Sündmus on sinu isiklikust kalendrist kustutatud.',
     'noprivate' => 'Kahjuks pole sellel lehel isiklikud kalendrid kasutuses.',
-    'unauth'    => 'Sul pole ligipääsu sündmuste haldamise lehele. Pane tähele, et kõik sellised lubamatud katsed logitakse',
+    'unauth' => 'Sul pole ligipääsu sündmuste haldamise lehele. Pane tähele, et kõik sellised lubamatud katsed logitakse'
 );
 
-$PLG_calendar_MESSAGE4  = "Täname sind {$_CONF['site_name']} lehele sündmuse sisestamise eest.  See saadeti meie meeskonnale kinnitamiseks. Pärast kinnitamist on see sündmus näha <a href=\"{$_CONF['site_url']}/calendar/\">kalendri</a> osas.";
+$PLG_calendar_MESSAGE4 = "Täname sind {$_CONF['site_name']} lehele sündmuse sisestamise eest.  See saadeti meie meeskonnale kinnitamiseks. Pärast kinnitamist on see sündmus näha <a href=\"{$_CONF['site_url']}/calendar/\">kalendri</a> osas.";
 $PLG_calendar_MESSAGE17 = 'Sündmus on edukalt salvestatud.';
 $PLG_calendar_MESSAGE18 = 'Sinu sündmus on edukalt kustutatud.';
 $PLG_calendar_MESSAGE24 = 'Sündmus on salvestatud sinu kalendrisse.';
@@ -180,5 +190,44 @@ $PLG_calendar_MESSAGE26 = 'Sündmus on edukalt kustutatud.';
 // Messages for the plugin upgrade
 $PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['calendar'] = array(
+    'label' => 'Calendar',
+    'title' => 'Calendar Configuration'
+);
+
+$LANG_confignames['calendar'] = array(
+    'calendarloginrequired' => 'Calendar Login Required?',
+    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
+    'personalcalendars' => 'Enable Personal Calendars?',
+    'eventsubmission' => 'Enable Submission Queue?',
+    'showupcomingevents' => 'Show upcoming Events?',
+    'upcomingeventsrange' => 'Upcoming Events Range',
+    'event_types' => 'Event Types',
+    'hour_mode' => 'Hour Mode',
+    'notification' => 'Notification Email?',
+    'delete_event' => 'Delete Events with Owner?',
+    'aftersave' => 'After Saving Event',
+    'default_permissions' => 'Event Default Permissions'
+);
+
+$LANG_configsubgroups['calendar'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['calendar'] = array(
+    'fs_main' => 'General Calendar Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['calendar'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    6 => array('12' => 12, '24' => 24),
+    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

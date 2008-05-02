@@ -29,66 +29,80 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
 $LANG_POLLS = array(
-    'polls'             => '民意調查',
-    'results'           => '結果',
-    'pollresults'       => '調查結果',
-    'votes'             => '票',
-    'vote'              => '票',
-    'pastpolls'         => '過去的調查',
-    'savedvotetitle'    => '投票已存續',
-    'savedvotemsg'      => '你投的票已經收存了',
-    'pollstitle'        => '個民意調查在這系統裏',
-    'pollquestions'     => '看其他調查問題',
-    'stats_top10'       => '最高十個民意調查',
-    'stats_questions'   => '調查題目',
-    'stats_votes'       => '投票數',
-    'stats_none'        => '看來此站沒有民意調查，或沒有人曾投過票.',
-    'stats_summary'     => '這系統裏的調查(答案)',
-    'open_poll'         => '開放投票'
+    'polls' => '民意調查',
+    'results' => '結果',
+    'pollresults' => '調查結果',
+    'votes' => '票',
+    'vote' => '票',
+    'pastpolls' => '過去的調查',
+    'savedvotetitle' => '投票已存續',
+    'savedvotemsg' => '你投的票已經收存了',
+    'pollstitle' => '個民意調查在這系統裏',
+    'polltopics' => 'Other polls',
+    'stats_top10' => '最高十個民意調查',
+    'stats_topics' => 'Poll Topic',
+    'stats_votes' => '投票數',
+    'stats_none' => '看來此站沒有民意調查，或沒有人曾投過票.',
+    'stats_summary' => '這系統裏的調查(答案)',
+    'open_poll' => '開放投票',
+    'answer_all' => 'Please answer all remaining questions',
+    'not_saved' => 'Result not saved',
+    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
+    'upgrade2' => 'upgrade',
+    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => '方式',
-    2 => '請輸入一個題目和最少一個答案.',
-    3 => '調查已建立',
-    4 => "調查 %s 已存了",
-    5 => '修改調查',
-    6 => '調查 ID',
-    7 => '(不可用空鍵)',
-    8 => '顯示在主頁',
-    9 => '問題',
-    10 => '答案 / 投票',
-    11 => "索取調查 %s 答案資料是出了錯誤",
-    12 => "索取調查 %s 問題資料是出了錯誤",
-    13 => '建立一個民意調查',
-    14 => '存',
-    15 => '取消',
-    16 => '刪除',
-    17 => '請輸入一個民意調查 ID',
-    18 => '民意調查目錄',
-    19 => '若要修改或刪除一個民意調查, 點擊它旁邊的修改圖.  若要建立一個新的民意調查, 點擊以上的 "建新".',
-    20 => '投票者',
-    21 => '拒絕進入',
-    22 => "你在進入一個你沒權進入得投票調查。此企圖以備記錄。 請回到 <a href=\"{$_CONF['site_admin_url']}/poll.php\">民意調查管理處</a>.",
-    23 => '新民意調查',
-    24 => '管理處',
-    25 => '是',
-    26 => '否',
-    27 => '修改',
-    28 => '提交',
-    29 => '搜尋',
-    30 => '限制結果',
+    1 => 'Mode',
+    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
+    3 => 'Poll Created',
+    4 => 'Poll %s saved',
+    5 => 'Edit Poll',
+    6 => 'Poll ID',
+    7 => '(do not use spaces)',
+    8 => 'Appears on Pollblock',
+    9 => 'Topic',
+    10 => 'Answers / Votes / Remark',
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
+    13 => 'Create Poll',
+    14 => 'save',
+    15 => 'cancel',
+    16 => 'delete',
+    17 => 'Please enter a Poll ID',
+    18 => 'Poll List',
+    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
+    20 => 'Voters',
+    21 => 'Access Denied',
+    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
+    23 => 'New Poll',
+    24 => 'Admin Home',
+    25 => 'Yes',
+    26 => 'No',
+    27 => 'Edit',
+    28 => 'Submit',
+    29 => 'Search',
+    30 => 'Limit Results',
+    31 => 'Question',
+    32 => 'To remove this question from the poll, remove its question text',
+    33 => 'Open for voting',
+    34 => 'Poll Topic:',
+    35 => 'This poll has',
+    36 => 'more questions.',
+    37 => 'Hide results while poll is open',
+    38 => 'While the poll is open, only the owner &amp; root can see the results',
+    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE19 = '你的民意調查已順利的存續了.';
@@ -97,5 +111,42 @@ $PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['polls'] = array(
+    'label' => 'Polls',
+    'title' => 'Polls Configuration'
+);
+
+$LANG_confignames['polls'] = array(
+    'pollsloginrequired' => 'Polls Login Required?',
+    'hidepollsmenu' => 'Hide Polls Menu Entry?',
+    'maxquestions' => 'Max. Questions per Poll',
+    'maxanswers' => 'Max. Options per Question',
+    'answerorder' => 'Sort Results ...',
+    'pollcookietime' => 'Voter Cookie valid for',
+    'polladdresstime' => 'Voter IP Address valid for',
+    'delete_polls' => 'Delete Polls with Owner?',
+    'aftersave' => 'After Saving Poll',
+    'default_permissions' => 'Poll Default Permissions'
+);
+
+$LANG_configsubgroups['polls'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['polls'] = array(
+    'fs_main' => 'General Polls Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['polls'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
+    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

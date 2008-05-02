@@ -26,10 +26,10 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 # index.php
@@ -44,7 +44,7 @@ $LANG_CAL_1 = array(
     8 => 'By adding this event to your calendar you can quickly view only the events you are interested in by clicking "My Calendar" from the User Functions area.',
     9 => 'Pøidat do osobního kalendáøe.',
     10 => 'Odebrat z mého kalendáøe',
-    11 => "Pøidat událost do osobního kalendáøe u¾ivatele %s",
+    11 => 'Pøidat událost do osobního kalendáøe u¾ivatele %s',
     12 => 'Událost',
     13 => 'Zaèátek',
     14 => 'Konec',
@@ -93,7 +93,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => 'Datum & Èas',
     'location' => 'Umístìní',
     'description' => 'Popis'
-
 );
 
 ###############################################################################
@@ -123,7 +122,7 @@ $LANG_CAL_2 = array(
     40 => 'Týden',
     41 => 'Mìsíc',
     42 => 'Pøidat hlavní událost',
-    43 => 'Po¾adavky událostí',
+    43 => 'Po¾adavky událostí'
 );
 
 ###############################################################################
@@ -154,20 +153,31 @@ $LANG_CAL_ADMIN = array(
     22 => 'vymazat',
     23 => 'Chybný datum zaèátku.',
     24 => 'Chybný datum konce.',
-    25 => 'Koncové datum je pøed datem zaèátku.'
+    25 => 'Koncové datum je pøed datem zaèátku.',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<brXHTML>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Událost byla úspì¹nì ulo¾ena.',
-    'delete'    => 'Událost byla úspì¹nì vymazána.',
-    'private'   => 'Událost byla ulo¾ena do va¹eho osobního kalendáøe',
-    'login'     => 'Nemohu otevøít vá¹ osobní kalendáø dokud se nepøihlásíte',
-    'removed'   => 'Událost byla odstranìna z va¹eho osobního kalendáøe',
+    'save' => 'Událost byla úspì¹nì ulo¾ena.',
+    'delete' => 'Událost byla úspì¹nì vymazána.',
+    'private' => 'Událost byla ulo¾ena do va¹eho osobního kalendáøe',
+    'login' => 'Nemohu otevøít vá¹ osobní kalendáø dokud se nepøihlásíte',
+    'removed' => 'Událost byla odstranìna z va¹eho osobního kalendáøe',
     'noprivate' => 'Bohu¾el, osobní kalendáøe tento server nepodporuje',
-    'unauth'    => 'Bohu¾el, nemáte administrátorský pøístup. Tento vá¹ pokus byl zalogován',
+    'unauth' => 'Bohu¾el, nemáte administrátorský pøístup. Tento vá¹ pokus byl zalogován'
 );
 
-$PLG_calendar_MESSAGE4  = "Dìkujeme za odeslání události pro {$_CONF['site_name']}.  Nyní oèekává potvrzení.  Jakmile bude potvrzena, naleznete ji v <a href=\"{$_CONF['site_url']}/calendar/index.php\">kalendáøi</a>.";
+$PLG_calendar_MESSAGE4 = "Dìkujeme za odeslání události pro {$_CONF['site_name']}.  Nyní oèekává potvrzení.  Jakmile bude potvrzena, naleznete ji v <a href=\"{$_CONF['site_url']}/calendar/index.php\">kalendáøi</a>.";
 $PLG_calendar_MESSAGE17 = 'Událost byla úspì¹nì ulo¾ena.';
 $PLG_calendar_MESSAGE18 = 'Událost byla úspì¹nì vymazána.';
 $PLG_calendar_MESSAGE24 = 'Událost byla ulo¾ena do kalendáøe.';
@@ -176,5 +186,44 @@ $PLG_calendar_MESSAGE26 = 'Událost byla vymazána.';
 // Messages for the plugin upgrade
 $PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['calendar'] = array(
+    'label' => 'Calendar',
+    'title' => 'Calendar Configuration'
+);
+
+$LANG_confignames['calendar'] = array(
+    'calendarloginrequired' => 'Calendar Login Required?',
+    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
+    'personalcalendars' => 'Enable Personal Calendars?',
+    'eventsubmission' => 'Enable Submission Queue?',
+    'showupcomingevents' => 'Show upcoming Events?',
+    'upcomingeventsrange' => 'Upcoming Events Range',
+    'event_types' => 'Event Types',
+    'hour_mode' => 'Hour Mode',
+    'notification' => 'Notification Email?',
+    'delete_event' => 'Delete Events with Owner?',
+    'aftersave' => 'After Saving Event',
+    'default_permissions' => 'Event Default Permissions'
+);
+
+$LANG_configsubgroups['calendar'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['calendar'] = array(
+    'fs_main' => 'General Calendar Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['calendar'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    6 => array('12' => 12, '24' => 24),
+    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

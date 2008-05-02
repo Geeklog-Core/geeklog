@@ -23,70 +23,84 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: german_utf-8.php,v 1.7 2008/04/13 11:59:08 dhaun Exp $
 
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 $LANG_POLLS = array(
-    'polls'             => 'Umfragen',
-    'results'           => 'Ergebnisse',
-    'pollresults'       => 'Umfrage-Ergebnisse',
-    'votes'             => 'Stimmen',
-    'vote'              => 'Abstimmen',
-    'pastpolls'         => 'Ältere Umfragen',
-    'savedvotetitle'    => 'Stimme gespeichert',
-    'savedvotemsg'      => 'Deine Stimme wurde für die Umfrage gespeichert: ',
-    'pollstitle'        => 'Umfragen im System',
-    'pollquestions'     => 'Ältere Umfragen ansehen',
-    'stats_top10'       => 'Top Ten der Umfragen',
-    'stats_questions'   => 'Thema der Umfrage',
-    'stats_votes'       => 'Stimmen',
-    'stats_none'        => 'Es gibt keine Umfragen oder es wurden keine Stimmen abgegeben.',
-    'stats_summary'     => 'Anzahl Umfragen (Stimmen)',
-    'open_poll'         => 'Abstimmen möglich'
+    'polls' => 'Umfragen',
+    'results' => 'Ergebnisse',
+    'pollresults' => 'Umfrage-Ergebnisse',
+    'votes' => 'Stimmen',
+    'vote' => 'Abstimmen',
+    'pastpolls' => 'Ältere Umfragen',
+    'savedvotetitle' => 'Stimme gespeichert',
+    'savedvotemsg' => 'Deine Stimme wurde für die Umfrage gespeichert: ',
+    'pollstitle' => 'Umfragen im System',
+    'polltopics' => 'Other polls',
+    'stats_top10' => 'Top Ten der Umfragen',
+    'stats_topics' => 'Poll Topic',
+    'stats_votes' => 'Stimmen',
+    'stats_none' => 'Es gibt keine Umfragen oder es wurden keine Stimmen abgegeben.',
+    'stats_summary' => 'Anzahl Umfragen (Stimmen)',
+    'open_poll' => 'Abstimmen möglich',
+    'answer_all' => 'Please answer all remaining questions',
+    'not_saved' => 'Result not saved',
+    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
+    'upgrade2' => 'upgrade',
+    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => 'Modus',
-    2 => 'Bitte eine Frage und mindestens eine Antwort eingeben.',
-    3 => 'Gestartet',
-    4 => 'Umfrage %s wurde gespeichert',
-    5 => 'Umfrage editieren',
-    6 => 'Umfrage-ID',
-    7 => '(keine Leerzeichen!)',
-    8 => 'Auf der Startseite',
-    9 => 'Thema',
-    10 => 'Antworten / Stimmen / Anmerkung',
-    11 => 'Beim Abrufen der Stimmen von Umfrage %s trat ein Fehler auf.',
-    12 => 'Beim Abrufen der Fragen von Umfrage %s trat ein Fehler auf.',
-    13 => 'Umfrage anlegen',
-    14 => 'Speichern',
-    15 => 'Abbruch',
-    16 => 'Löschen',
-    17 => 'Bitte eine Umfrage-ID eingeben.',
-    18 => 'Liste der Umfragen',
-    19 => 'Um eine Umfrage zu ändern oder zu löschen, auf das Ändern-Icon klicken. Mit Neu anlegen (s.o.) wird eine neue Umfrage angelegt.',
-    20 => 'Stimmen',
-    21 => 'Zugriff verweigert',
-    22 => "Du hast keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/polls/index.php\">Zurück zum Administrator-Menü</a>.",
-    23 => 'Neue Umfrage',
+    1 => 'Mode',
+    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
+    3 => 'Poll Created',
+    4 => 'Poll %s saved',
+    5 => 'Edit Poll',
+    6 => 'Poll ID',
+    7 => '(do not use spaces)',
+    8 => 'Appears on Pollblock',
+    9 => 'Topic',
+    10 => 'Answers / Votes / Remark',
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
+    13 => 'Create Poll',
+    14 => 'save',
+    15 => 'cancel',
+    16 => 'delete',
+    17 => 'Please enter a Poll ID',
+    18 => 'Poll List',
+    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
+    20 => 'Voters',
+    21 => 'Access Denied',
+    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
+    23 => 'New Poll',
     24 => 'Admin Home',
-    25 => 'Ja',
-    26 => 'Nein',
-    27 => 'Ändern',
-    28 => 'Abschicken',
-    29 => 'Suchen',
-    30 => 'Anzahl Ergebnisse'
+    25 => 'Yes',
+    26 => 'No',
+    27 => 'Edit',
+    28 => 'Submit',
+    29 => 'Search',
+    30 => 'Limit Results',
+    31 => 'Question',
+    32 => 'To remove this question from the poll, remove its question text',
+    33 => 'Open for voting',
+    34 => 'Poll Topic:',
+    35 => 'This poll has',
+    36 => 'more questions.',
+    37 => 'Hide results while poll is open',
+    38 => 'While the poll is open, only the owner &amp; root can see the results',
+    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE19 = 'Deine Umfrage wurde gespeichert.';
@@ -95,5 +109,42 @@ $PLG_polls_MESSAGE20 = 'Deine Umfrage wurde gelöscht.';
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['polls'] = array(
+    'label' => 'Polls',
+    'title' => 'Polls Configuration'
+);
+
+$LANG_confignames['polls'] = array(
+    'pollsloginrequired' => 'Polls Login Required?',
+    'hidepollsmenu' => 'Hide Polls Menu Entry?',
+    'maxquestions' => 'Max. Questions per Poll',
+    'maxanswers' => 'Max. Options per Question',
+    'answerorder' => 'Sort Results ...',
+    'pollcookietime' => 'Voter Cookie valid for',
+    'polladdresstime' => 'Voter IP Address valid for',
+    'delete_polls' => 'Delete Polls with Owner?',
+    'aftersave' => 'After Saving Poll',
+    'default_permissions' => 'Poll Default Permissions'
+);
+
+$LANG_configsubgroups['polls'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['polls'] = array(
+    'fs_main' => 'General Polls Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['polls'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
+    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

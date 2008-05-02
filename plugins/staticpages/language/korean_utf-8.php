@@ -23,19 +23,17 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# Last Update 2007/02/12 by Ivy (Geeklog Japanese)
 
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
-$LANG_STATIC= array(
+$LANG_STATIC = array(
     'newpage' => '신규페이지',
     'adminhome' => '관리화면',
     'staticpages' => '정적 페이지',
@@ -70,7 +68,7 @@ $LANG_STATIC= array(
     'no_such_page_anon' => '로그인 하시기 바랍니다.',
     'no_page_access_msg' => "이 문제는 아직 로그인 하지 않았거나 아마도 이 사이트 {$_CONF['site_name']} 의 회원이 아니기 때문인 것으로 여겨집니다.  {$_CONF['site_name']} 에 <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> 회원등록</a>을 하시거나, 적절한 접속권을 관리자로 부터 취득하시기 바랍니다",
     'php_msg' => 'PHP: ',
-    'php_warn' => '<br>주의: 이 옵션이 유효하기 되면 당신의 페이지에 들어있는 PHP 코드가 실행됩니다.  정적 페이지를 이용하는 경우에는 다시한번 관리화면 「그룹:Static Page Admin」에서 권한「Staticpages. PHP」 에 체크하시기 바랍니다.  PHP를 사용하는 경우 통상(return) 없이 그대로 「PHP 실행하기」 모드에서 이용할 수 있습니다.  이용에는 세심한 주의를 기울이시기 바랍니다 !!',
+    'php_warn' => '<br' . XHTML . '>주의: 이 옵션이 유효하기 되면 당신의 페이지에 들어있는 PHP 코드가 실행됩니다.  정적 페이지를 이용하는 경우에는 다시한번 관리화면 「그룹:Static Page Admin」에서 권한「Staticpages. PHP」 에 체크하시기 바랍니다.  PHP를 사용하는 경우 통상(return) 없이 그대로 「PHP 실행하기」 모드에서 이용할 수 있습니다.  이용에는 세심한 주의를 기울이시기 바랍니다 !!',
     'exit_msg' => '조회권한이 없는 경우: ',
     'exit_info' => '체크를 하면 조회권한이 없는 경우, 로그인 요구화면이 표시됩니다. 체크를 하지 않는 경우에는 「권한이 없습니다」 라는 메세지가 표시됩니다.',
     'deny_msg' => '페이지 접속에 실패 하였습니다.  페이지가 이동 혹은 삭제되거나, 아니면 권한이 없거나 어느 한 쪽일 것입니다.',
@@ -105,10 +103,8 @@ $LANG_STATIC= array(
     'select_php_none' => 'PHP를 실행하지 않습니다',
     'select_php_return' => 'PHP를 실행합니다 (return)',
     'select_php_free' => ' PHP를 실행합니다',
-    'php_not_activated' => '정적 페이지에서  PHP는 사용하지 않는 설정으로 되어 있습니다.  자세한 것은  <a href="' . $_CONF['site_url'] . 
-'/docs/staticpages.html#php"> 관련 도큐멘트 </a> 를 보시기 바랍니다.',
+    'php_not_activated' => "정적 페이지에서  PHP는 사용하지 않는 설정으로 되어 있습니다.  자세한 것은  <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\"> 관련 도큐멘트 </a> 를 보시기 바랍니다.",
     'printable_format' => '인쇄용 포멧',
-    'edit' => '편집',
     'copy' => '복사',
     'limit_results' => '좁혀가며 검색',
     'search' => '검색',
@@ -118,5 +114,45 @@ $LANG_STATIC= array(
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['staticpages'] = array(
+    'label' => 'Static Pages',
+    'title' => 'Static Pages Configuration'
+);
+
+$LANG_confignames['staticpages'] = array(
+    'allow_php' => 'Allow PHP?',
+    'sort_by' => 'Sort Centerblocks by',
+    'sort_menu_by' => 'Sort Menu Entries by',
+    'delete_pages' => 'Delete Pages with Owner?',
+    'in_block' => 'Wrap Pages in Block?',
+    'show_hits' => 'Show Hits?',
+    'show_date' => 'Show Date?',
+    'filter_html' => 'Filter HTML?',
+    'censor' => 'Censor Content?',
+    'default_permissions' => 'Page Default Permissions',
+    'aftersave' => 'After Saving Page',
+    'atom_max_items' => 'Max. Pages in Webservices Feed'
+);
+
+$LANG_configsubgroups['staticpages'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['staticpages'] = array(
+    'fs_main' => 'Static Pages Main Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['staticpages'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
+    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

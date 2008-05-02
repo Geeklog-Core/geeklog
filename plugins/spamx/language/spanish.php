@@ -9,18 +9,12 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish.php,v 1.8 2008/04/13 11:59:08 dhaun Exp $
+ * $Id: spanish.php,v 1.9 2008/05/02 15:08:10 dhaun Exp $
  */
-
-// +---------------------------------------------------------------------------+
-// | Archivo en Español para el plugin spamx                                   |
-// | Traducido por: vivi1123                                                   |
-// | http://comunidad.share4ever.net/                                          |
-// +---------------------------------------------------------------------------+
 
 global $LANG32;
 
-$LANG_SX00 = array (
+$LANG_SX00 = array(
     'inst1' => '<p>Si haces esto, los demás ',
     'inst2' => 'podrán ver e importar tu lista negra personal y nosotros podemos crear una base de datos ',
     'inst3' => 'distribuida más eficaz.</p><p>Si has registrado tu sitio web y decides que no deseas permanecer en la lista ',
@@ -46,7 +40,7 @@ $LANG_SX00 = array (
     'rsscreated' => 'Se creó la fuente RSS',
     'add1' => 'Se han Añadido ',
     'add2' => ' datos desde ',
-    'add3' => "la lista negra de  .",
+    'add3' => 'la lista negra de  .',
     'adminc' => 'Comandos de Administración:',
     'mblack' => 'Mi Lista Negra:',
     'rlinks' => 'Enlaces Relacionados:',
@@ -61,7 +55,7 @@ $LANG_SX00 = array (
     'exmod' => 'Módulos de Examen de Spam-X',
     'actmod' => 'Módulos Activos',
     'avmod' => 'Módulos Disponibles',
-    'coninst' => '<hr>Cliquea sobre un Módulo Activo para borrarlo, cliquea sobre un módulo Disponible para añadirlo.<br>Los módulos se ejecutan en el orden en que han sido presentados.',
+    'coninst' => '<hr' . XHTML . '>Cliquea sobre un Módulo Activo para borrarlo, cliquea sobre un módulo Disponible para añadirlo.<br' . XHTML . '>Los módulos se ejecutan en el orden en que han sido presentados.',
     'fsc' => 'Encontrado un comentario de Spam coincidente',
     'fsc1' => ' enviado por el usuario ',
     'fsc2' => ' desde el IP ',
@@ -95,17 +89,17 @@ $LANG_SX00 = array (
     'foundspam' => 'Encontrado comentario de Spam coincidente ',
     'foundspam2' => ' enviado por el usuario ',
     'foundspam3' => ' desde el IP ',
-	'deletespam' => 'Borrar Spam',
-	'numtocheck' => 'Número de Comentarios a comprobar',
-	'note1'		=> '<p>Nota: Borrado masivo está para ayudarte cuando te avasalla ',
-	'note2'		=> ' comentarios de spam y Spam-X no lo pilla.  <ul><li>Primero, encuentra el/los enlace/s u otros ',
-	'note3'		=> 'identificadores de este comentario de Spam y lo añades a tu lista negra personal.</li><li>Después ',
-	'note4'		=> 'vuelve aquí y haz que Spam-X compruebe los últimos comentarios de spam.</li></ul><p>Los comentarios ',
-	'note5'		=> 'se comprueban desde los más nuevos hasta los más antiguos -- La comprobación de más comentarios ',
-	'note6'		=> 'requiere más tiempo para llevarse a cabo</p>',
-	'masshead'	=> '<hr><center><h1>Borrado Masivo de Comentarios Spam</h1></center>',
-    'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
-	'comdel'	=> ' comentarios borrados.',
+    'deletespam' => 'Borrar Spam',
+    'numtocheck' => 'Número de Comentarios a comprobar',
+    'note1' => '<p>Nota: Borrado masivo está para ayudarte cuando te avasalla ',
+    'note2' => ' comentarios de spam y Spam-X no lo pilla.  <ul><li>Primero, encuentra el/los enlace/s u otros ',
+    'note3' => 'identificadores de este comentario de Spam y lo añades a tu lista negra personal.</li><li>Después ',
+    'note4' => 'vuelve aquí y haz que Spam-X compruebe los últimos comentarios de spam.</li></ul><p>Los comentarios ',
+    'note5' => 'se comprueban desde los más nuevos hasta los más antiguos -- La comprobación de más comentarios ',
+    'note6' => 'requiere más tiempo para llevarse a cabo</p>',
+    'masshead' => '<hr' . XHTML . '><center><h1>Borrado Masivo de Comentarios Spam</h1></center>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'comdel' => ' comentarios borrados.',
     'initial_Pimport' => '<p>Importar la Lista Negra Personal"',
     'initial_import' => 'Importar la lista Negra-MT inicial',
     'import_success' => '<p>Se ha importado con éxito los datos de la Lista Negra de %d.',
@@ -118,7 +112,6 @@ $LANG_SX00 = array (
     'ipofurlblack' => 'Spam-X IP of URL Blacklist',
     'headerblack' => 'Spam-X HTTP Header Blacklist',
     'headers' => 'Request headers:',
-
     'stats_headline' => 'Spam-X Statistics',
     'stats_page_title' => 'Blacklist',
     'stats_entries' => 'Entries',
@@ -128,18 +121,44 @@ $LANG_SX00 = array (
     'stats_ipofurl' => 'Blocked by IP of URL',
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
-
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV Whitelist'
 );
 
-
-/* Define los Mensajes que se muestran cuando una acción del módulo de Spam-X se lleva a cabo */
+// Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'Se ha detectado spam y se ha borrado el Comentario o el Mensaje.';
-$PLG_spamx_MESSAGE8   = 'Se ha detectado spam. Se ha enviado un correo al administrador.';
+$PLG_spamx_MESSAGE8 = 'Se ha detectado spam. Se ha enviado un correo al administrador.';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['spamx'] = array(
+    'label' => 'Spam-X',
+    'title' => 'Spam-X Configuration'
+);
+
+$LANG_confignames['spamx'] = array(
+    'action' => 'Spam-X Actions',
+    'notification_email' => 'Notification Email',
+    'admin_override' => 'Don\'t Filter Admin Posts',
+    'logging' => 'Enable Logging',
+    'timeout' => 'Timeout'
+);
+
+$LANG_configsubgroups['spamx'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['spamx'] = array(
+    'fs_main' => 'Spam-X Main Settings'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['spamx'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false)
+);
 
 ?>

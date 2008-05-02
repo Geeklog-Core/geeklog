@@ -11,12 +11,12 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: farsi_utf-8.php,v 1.6 2008/04/13 11:59:08 dhaun Exp $
+ * $Id: farsi_utf-8.php,v 1.7 2008/05/02 15:08:10 dhaun Exp $
  */
 
 global $LANG32;
 
-$LANG_SX00 = array (
+$LANG_SX00 = array(
     'inst1' => '<p>If you do this, then others ',
     'inst2' => 'will be able to view and import your personal blacklist and we can create a more effective ',
     'inst3' => 'distributed database.</p><p>If you have submitted your website and decide you do not wish your website to remain on the list ',
@@ -42,7 +42,7 @@ $LANG_SX00 = array (
     'rsscreated' => 'RSS Feed Created',
     'add1' => 'Added ',
     'add2' => ' entries from ',
-    'add3' => "'s blacklist.",
+    'add3' => '\'s blacklist.',
     'adminc' => 'Administration Commands:',
     'mblack' => 'My Blacklist:',
     'rlinks' => 'Related Links:',
@@ -57,7 +57,7 @@ $LANG_SX00 = array (
     'exmod' => 'Spam-X Examine Modules',
     'actmod' => 'Active Modules',
     'avmod' => 'Available Modules',
-    'coninst' => '<hr>Click on an Active module to remove it, click on an Available module to add it.<br>Modules are executed in order presented.',
+    'coninst' => '<hr' . XHTML . '>Click on an Active module to remove it, click on an Available module to add it.<br' . XHTML . '>Modules are executed in order presented.',
     'fsc' => 'Found Spam Comment matching ',
     'fsc1' => ' posted by user ',
     'fsc2' => ' from IP ',
@@ -91,17 +91,17 @@ $LANG_SX00 = array (
     'foundspam' => 'Found Spam Comment matching ',
     'foundspam2' => ' posted by user ',
     'foundspam3' => ' from IP ',
-	'deletespam' => 'Delete Spam',
-	'numtocheck' => 'Number of Comments to check',
-	'note1'		=> '<p>Note: Mass Delete is intended to help you when you are hit by',
-	'note2'		=> ' comment spam and Spam-X does not catch it.  <ul><li>First find the link(s) or other ',
-	'note3'		=> 'identifiers of this spam comment and add it to your personal blacklist.</li><li>Then ',
-	'note4'		=> 'come back here and have Spam-X check the latest comments for spam.</li></ul><p>Comments ',
-	'note5'		=> 'are checked from newest comment to oldest -- checking more comments ',
-	'note6'		=> 'requires more time for the check.</p>',
-	'masshead'	=> '<hr><h1 align="center">Mass Delete Spam Comments</h1>',
-    'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
-	'comdel'	=> ' comments deleted.',
+    'deletespam' => 'Delete Spam',
+    'numtocheck' => 'Number of Comments to check',
+    'note1' => '<p>Note: Mass Delete is intended to help you when you are hit by',
+    'note2' => ' comment spam and Spam-X does not catch it.  <ul><li>First find the link(s) or other ',
+    'note3' => 'identifiers of this spam comment and add it to your personal blacklist.</li><li>Then ',
+    'note4' => 'come back here and have Spam-X check the latest comments for spam.</li></ul><p>Comments ',
+    'note5' => 'are checked from newest comment to oldest -- checking more comments ',
+    'note6' => 'requires more time for the check.</p>',
+    'masshead' => '<hr' . XHTML . '><h1 align="center">Mass Delete Spam Comments</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'comdel' => ' comments deleted.',
     'initial_Pimport' => '<p>Personal Blacklist Import"',
     'initial_import' => 'Initial MT-Blacklist Import',
     'import_success' => '<p>Successfully imported %d blacklist entries.',
@@ -114,7 +114,6 @@ $LANG_SX00 = array (
     'ipofurlblack' => 'Spam-X IP of URL Blacklist',
     'headerblack' => 'Spam-X HTTP Header Blacklist',
     'headers' => 'Request headers:',
-
     'stats_headline' => 'Spam-X Statistics',
     'stats_page_title' => 'Blacklist',
     'stats_entries' => 'Entries',
@@ -124,18 +123,44 @@ $LANG_SX00 = array (
     'stats_ipofurl' => 'Blocked by IP of URL',
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
-
     'plugin_name' => 'شناسايي هرز نامه ها',
     'slvwhitelist' => 'SLV Whitelist'
 );
 
-
-/* Define Messages that are shown when Spam-X module action is taken */
+// Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'Spam detected and Comment or Message was deleted.';
-$PLG_spamx_MESSAGE8   = 'Spam detected. Email sent to admin.';
+$PLG_spamx_MESSAGE8 = 'Spam detected. Email sent to admin.';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['spamx'] = array(
+    'label' => 'Spam-X',
+    'title' => 'Spam-X Configuration'
+);
+
+$LANG_confignames['spamx'] = array(
+    'action' => 'Spam-X Actions',
+    'notification_email' => 'Notification Email',
+    'admin_override' => 'Don\'t Filter Admin Posts',
+    'logging' => 'Enable Logging',
+    'timeout' => 'Timeout'
+);
+
+$LANG_configsubgroups['spamx'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['spamx'] = array(
+    'fs_main' => 'Spam-X Main Settings'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['spamx'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false)
+);
 
 ?>

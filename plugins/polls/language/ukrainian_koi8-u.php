@@ -26,66 +26,80 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
 $LANG_POLLS = array(
-    'polls'             => 'Опитування',
-    'results'           => 'Результати',
-    'pollresults'       => 'Результати опитування',
-    'votes'             => 'голос╕в',
-    'vote'              => 'Голосувати',
-    'pastpolls'         => 'Минул╕ опитування',
-    'savedvotetitle'    => 'Голос збережено',
-    'savedvotemsg'      => 'Ваш голос у опитуванн╕ враховано',
-    'pollstitle'        => 'Опитування в систем╕',
-    'pollquestions'     => 'Переглянути ╕нш╕ опитування',
-    'stats_top10'       => '10 найпопулярн╕ших опитувань',
-    'stats_questions'   => 'Запитання опитування',
-    'stats_votes'       => 'Голос╕в',
-    'stats_none'        => 'На цьому сайт╕ нема╓ опитувань, або ще н╕хто в них не голосував.',
-    'stats_summary'     => 'Опитувань (Голос╕в) у систем╕',
-    'open_poll'         => 'В╕дкритий для голосування'
+    'polls' => 'Опитування',
+    'results' => 'Результати',
+    'pollresults' => 'Результати опитування',
+    'votes' => 'голос╕в',
+    'vote' => 'Голосувати',
+    'pastpolls' => 'Минул╕ опитування',
+    'savedvotetitle' => 'Голос збережено',
+    'savedvotemsg' => 'Ваш голос у опитуванн╕ враховано',
+    'pollstitle' => 'Опитування в систем╕',
+    'polltopics' => 'Other polls',
+    'stats_top10' => '10 найпопулярн╕ших опитувань',
+    'stats_topics' => 'Poll Topic',
+    'stats_votes' => 'Голос╕в',
+    'stats_none' => 'На цьому сайт╕ нема╓ опитувань, або ще н╕хто в них не голосував.',
+    'stats_summary' => 'Опитувань (Голос╕в) у систем╕',
+    'open_poll' => 'В╕дкритий для голосування',
+    'answer_all' => 'Please answer all remaining questions',
+    'not_saved' => 'Result not saved',
+    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
+    'upgrade2' => 'upgrade',
+    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.'
 );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => 'Режим',
-    2 => 'Будь-ласка, введ╕ть запитання ╕ хоча б одну в╕дпов╕дь.',
-    3 => 'Опитування створено',
-    4 => "Опитування %s збережено",
-    5 => 'Редагувати опитування',
-    6 => 'ID опитування',
-    7 => '(не використовувати пром╕жки)',
-    8 => 'Виводити на головн╕й стор╕нц╕',
-    9 => 'Запитання',
-    10 => 'В╕дпов╕д╕ / Голоси',
-    11 => "П╕д час видобування даних про в╕дпов╕д╕ опитування %s виникла помилка",
-    12 => "П╕д час видобування даних про запитання опитування %s виникла помилка",
-    13 => 'Створити опитування',
-    14 => 'зберегти',
-    15 => 'скасувати',
-    16 => 'вилучити',
-    17 => 'Будь-ласка, введ╕ть ID опитування',
-    18 => 'Список опитувань',
-    19 => 'Щоб зм╕нити чи вилучити опитування, натисн╕ть його ╕конку редагування нижче.  Щоб створити нове опитування, обер╕ть "Створити нове" вгор╕.',
-    20 => 'Проголосувало',
-    21 => 'Доступ заборонено',
-    22 => "Ви намагались отримати доступ до опитування, до якого у вас нема╓ прав.  Цю спробу записано. Будь-ласка, <a href=\"{$_CONF['site_admin_url']}/poll.php\">поверн╕ться до адм╕н╕стрування</a>.",
-    23 => 'Нове опитування',
-    24 => 'Адм╕н╕стрування',
-    25 => 'Так',
-    26 => 'Н╕',
-    27 => 'Редагувати',
-    28 => 'Над╕слати',
-    29 => 'Пошук',
-    30 => 'Обмежити результати',
+    1 => 'Mode',
+    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
+    3 => 'Poll Created',
+    4 => 'Poll %s saved',
+    5 => 'Edit Poll',
+    6 => 'Poll ID',
+    7 => '(do not use spaces)',
+    8 => 'Appears on Pollblock',
+    9 => 'Topic',
+    10 => 'Answers / Votes / Remark',
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
+    13 => 'Create Poll',
+    14 => 'save',
+    15 => 'cancel',
+    16 => 'delete',
+    17 => 'Please enter a Poll ID',
+    18 => 'Poll List',
+    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
+    20 => 'Voters',
+    21 => 'Access Denied',
+    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
+    23 => 'New Poll',
+    24 => 'Admin Home',
+    25 => 'Yes',
+    26 => 'No',
+    27 => 'Edit',
+    28 => 'Submit',
+    29 => 'Search',
+    30 => 'Limit Results',
+    31 => 'Question',
+    32 => 'To remove this question from the poll, remove its question text',
+    33 => 'Open for voting',
+    34 => 'Poll Topic:',
+    35 => 'This poll has',
+    36 => 'more questions.',
+    37 => 'Hide results while poll is open',
+    38 => 'While the poll is open, only the owner &amp; root can see the results',
+    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE19 = 'Ваше опитування усп╕шно збережено.';
@@ -94,5 +108,42 @@ $PLG_polls_MESSAGE20 = 'Ваше опитування усп╕шно вилучено.';
 // Messages for the plugin upgrade
 $PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['polls'] = array(
+    'label' => 'Polls',
+    'title' => 'Polls Configuration'
+);
+
+$LANG_confignames['polls'] = array(
+    'pollsloginrequired' => 'Polls Login Required?',
+    'hidepollsmenu' => 'Hide Polls Menu Entry?',
+    'maxquestions' => 'Max. Questions per Poll',
+    'maxanswers' => 'Max. Options per Question',
+    'answerorder' => 'Sort Results ...',
+    'pollcookietime' => 'Voter Cookie valid for',
+    'polladdresstime' => 'Voter IP Address valid for',
+    'delete_polls' => 'Delete Polls with Owner?',
+    'aftersave' => 'After Saving Poll',
+    'default_permissions' => 'Poll Default Permissions'
+);
+
+$LANG_configsubgroups['polls'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['polls'] = array(
+    'fs_main' => 'General Polls Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['polls'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
+    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

@@ -73,7 +73,7 @@ $LANG01 = array(
     28 => 'מחיקה',
     29 => 'לא נרשמו תגובות',
     30 => 'מאמרים ישנים',
-    31 => 'פקודות HTML מורשות:<br>',
+    31 => 'פקודות HTML מורשות:<br' . XHTML . '>',
     32 => 'הודעת שגיאה, חסר שם משתמש!',
     33 => 'הודעת שגיאה, לא מצליח לכתוב לקובץ log',
     34 => 'שגיאה',
@@ -101,7 +101,7 @@ $LANG01 = array(
     56 => 'הצביעו',
     57 => 'סיסמה',
     58 => 'כניסה',
-    59 => "אם אין לכם עדיין חשבון, זה הזמן <a href=\"{$_CONF['site_url']}/users.php?mode=new\">להירשם</a> לאתר",
+    59 => "אם אין לכם עדיין חשבון, זה הזמן <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">להירשם</a> לאתר",
     60 => 'הוספת תגובה',
     61 => 'צרו חשבון חדש',
     62 => 'מילים',
@@ -161,14 +161,18 @@ $LANG01 = array(
     116 => 'הפנייה',
     117 => 'ספרייה',
     118 => 'אנא המשיכו לקרוא בדף הבא:',
-    119 => "איבדתם את <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">סיסמתכם</a>?",
+    119 => "איבדתם את <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">סיסמתכם</a>?",
     120 => 'קישור קבוע לתגובה זו',
     121 => 'תגובות (%d)',
     122 => 'הפניות (%d)',
     123 => 'HTML מותר לגמרי לשימוש',
     124 => 'ליחצו כדי למחוק את כל הפריטים המסומנים',
     125 => 'האם הנכם בטוחים שאתם רוצים למחוק את כל הפריטים המסומנים',
-    126 => 'ביחרו או הוציאו מהבחירה את כל הפריטים'
+    126 => 'ביחרו או הוציאו מהבחירה את כל הפריטים',
+    127 => 'Permalink',
+    128 => 'Login with OpenID:',
+    129 => 'Configuration',
+    130 => 'Webservices'
 );
 
 ###############################################################################
@@ -205,7 +209,7 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# usersettings.php
+# users.php
 
 $LANG04 = array(
     1 => 'פרופיל המשתמש של',
@@ -273,12 +277,12 @@ $LANG04 = array(
     63 => "הסיסמה נשלחה אליכם באמצעות האימייל והנכם אמור לקבל אותה בכל רגע. אנא עיקבו אחר ההוראות שבאימייל ואנו מודים לכם על שימושכם ב-\n{$_CONF['site_name']}",
     64 => 'מאפייני תגובות של',
     65 => 'נסו להיכנס שוב',
-    66 => "יכול להיות שטעיתם באיות נתוני הכניסה לחשבון שלכם.  אנא נסו להתחבר שנית בתיבה שמתחת. האם הינכם <a href=\"{$_CONF['site_url']}/users.php?mode=new\">משתמשים חדשים</a>?",
+    66 => "יכול להיות שטעיתם באיות נתוני הכניסה לחשבון שלכם.  אנא נסו להתחבר שנית בתיבה שמתחת. האם הינכם <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">משתמשים חדשים</a>?",
     67 => 'חבר/ה חדש/ה מאז',
     68 => 'המערכת תזכור אותי עד',
     69 => 'לכמה זמן הנכם מעוניינים שהמערכת תזכור אתכם לאחר שתיכנסו אליה?',
     70 => "התאימו אישית את מראה האתר ואת התוכן של {$_CONF['site_name']}",
-    71 => "אחת מהאפשרויות של אתר {$_CONF['site_name']} היא שהנכם יכולים להתאים אישית את התוכן שאתם מקבלים ולשנות את המראה הכללי של האתר. על מנת ליהנות מיתרונות אלו, עליכם <a href=\"{$_CONF['site_url']}/users.php?mode=new\">להירשם</a> ב-{$_CONF['site_name']}. האם אתם כבר רשומים? אם כן, השתמשו בטופס הכניסה והתחברו!",
+    71 => "אחת מהאפשרויות של אתר {$_CONF['site_name']} היא שהנכם יכולים להתאים אישית את התוכן שאתם מקבלים ולשנות את המראה הכללי של האתר. על מנת ליהנות מיתרונות אלו, עליכם <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">להירשם</a> ב-{$_CONF['site_name']}. האם אתם כבר רשומים? אם כן, השתמשו בטופס הכניסה והתחברו!",
     72 => 'מראה האתר',
     73 => 'שפה',
     74 => 'שנו את מראה האתר!',
@@ -330,7 +334,7 @@ $LANG04 = array(
     120 => 'החשבון הופעל',
     121 => 'שירות',
     122 => 'מצטערים, אפשרות הרשמת משתמשים חדשים מנוטרלת',
-    123 => "האם אתם <a href=\"{$_CONF['site_url']}/users.php?mode=new\">משתמשים חדשים</a>?",
+    123 => "האם אתם <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">משתמשים חדשים</a>?",
     124 => 'אמתו את כתובת האימייל',
     125 => 'הנכם חייבים לכתוב את אותה כתובת האימייל בשני השדות!',
     126 => 'אנא חיזרו שוב בשביל אימות',
@@ -356,16 +360,25 @@ $LANG04 = array(
     146 => 'סיסמה וכתובת אימייל',
     147 => 'עירכו את סיסמת החשבון, כתובת האימייל ואת הכניסה האוטומטית למערכת שלכם. תצטרכו להכניס את אותה סיסמה או כתובת אימייל פעמיים בשביל אימות.',
     148 => 'מידע משתמש',
-    149 => 'שנו את מידע המשתמש שלכם שיוצג למשתמשים אחרים.<li>החתימה שלכם תתווסף לכל תגובה או הודעה בפורום שתכתבו
-</li><li>הביוגרפיה שלכם היא תקציר מסכם של עצמכם בשביל לחלוק בו</li><li>
-חלקו את מפתח ה-PHP שלכם</li>',
+    149 => "שנו את מידע המשתמש שלכם שיוצג למשתמשים אחרים.<li>החתימה שלכם תתווסף לכל תגובה או הודעה בפורום שתכתבו\n</li><li>הביוגרפיה שלכם היא תקציר מסכם של עצמכם בשביל לחלוק בו</li><li>\nחלקו את מפתח ה-PHP שלכם</li>",
     150 => 'אזהרה: ה-Javascript מיועד לביצועים מוגברים',
-    151 => 'תצוגה מקדימה',
-    152 => 'שם משתמש וסיסמה',
-    153 => 'מראה ושפה',
-    154 => 'תוכן',
-    155 => 'פרטיות',
-    156 => 'מחיקת החשבון'
+    156 => 'מחיקת החשבון',
+    157 => 'Delete Option',
+    158 => 'Time Zone',
+    159 => 'This email was generated automatically. Please do not reply to this email.'
+);
+
+###############################################################################
+# Customize if need to modify the Tabbed navbar MyAccount panels used.
+# Array index key matches preference div id
+
+$LANG_MYACCOUNT = array(
+    'pe_preview' => 'Preview',
+    'pe_namepass' => 'Username &amp; Password',
+    'pe_userinfo' => 'About You',
+    'pe_layout' => 'Layout &amp; Language',
+    'pe_content' => 'Content',
+    'pe_privacy' => 'Privacy'
 );
 
 ###############################################################################
@@ -594,7 +607,9 @@ $LANG12 = array(
     50 => '',
     51 => 'מיקום',
     52 => 'מחיקה',
-    53 => 'יצירת חשבון'
+    53 => 'יצירת חשבון',
+    54 => 'Story Introduction',
+    55 => 'Story Body'
 );
 
 ###############################################################################
@@ -610,7 +625,7 @@ $LANG20 = array(
     3 => 'הסיסמה לא נכונה למשתמש',
     4 => 'שם משתמש',
     5 => 'סיסמה',
-    6 => 'כל נסיונות הגישה לאיזורים הניהוליים של אתר זה נרשמים ביומן ונבדקים.<br>עמוד זה נועד לשימושם של אנשים מאושרים בלבד.',
+    6 => 'כל נסיונות הגישה לאיזורים הניהוליים של אתר זה נרשמים ביומן ונבדקים.<br' . XHTML . '>עמוד זה נועד לשימושם של אנשים מאושרים בלבד.',
     7 => 'כניסה למערכת'
 );
 
@@ -684,7 +699,8 @@ $LANG21 = array(
     64 => 'הכותרת שלכם אינה יכולה להיות ריקה ולא יכולה להכיל HTML!',
     65 => 'סדר',
     66 => 'Autotags',
-    67 => 'סמנו כדי לאפשר autotags'
+    67 => 'סמנו כדי לאפשר autotags',
+    68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.'
 );
 
 ###############################################################################
@@ -741,7 +757,7 @@ $LANG24 = array(
     48 => 'תמונה',
     49 => 'ימין (שמאל במצב שפה RTL)',
     50 => 'שמאל (ימין במצב שפה RTL)',
-    51 => 'כדי להוסיף את אחת מהתמונות שהינכם מצרפים למאמר זה עליכם להכניס טקסט מפורמט באופן מיוחד. הטקסט המפורמט באופן מיוחד הוא [imageX], [imageX_right] או [imageX_left] כאשר X הוא מספר התמונה שצירפתם. *שימו לב:* הינכם חייבים להשתמש בתמונות שצירפתם. אם לא תעשו זאת לא תוכלו לשמור את מאמרכם.<br>',
+    51 => 'כדי להוסיף את אחת מהתמונות שהינכם מצרפים למאמר זה עליכם להכניס טקסט מפורמט באופן מיוחד. הטקסט המפורמט באופן מיוחד הוא [imageX], [imageX_right] או [imageX_left] כאשר X הוא מספר התמונה שצירפתם. *שימו לב:* הינכם חייבים להשתמש בתמונות שצירפתם. אם לא תעשו זאת לא תוכלו לשמור את מאמרכם.<br' . XHTML . '>',
     52 => '',
     53 => 'לא הייתה בשימוש. הנכם חייבים להוסיף את התמונה לטקסט הפתיחה או לטקסט ההמשך לפני שתוכלו לשמור את השינויים שביצעתם.',
     54 => 'לא היה שימוש בתמונות המצורפות',
@@ -777,7 +793,8 @@ $LANG24 = array(
     84 => 'הרשאות',
     85 => 'הראה הכל',
     86 => 'עורך מתקדם',
-    87 => 'סטטיסטיקות מאמר'
+    87 => 'סטטיסטיקות מאמר',
+    88 => 'Wiki-style format'
 );
 
 ###############################################################################
@@ -870,7 +887,7 @@ $LANG28 = array(
     49 => 'קבוצת ניהול',
     50 => 'הפעילו כדי לאפשר סינון של קבוצה זו כקבוצה שמשמשת מנהלים',
     51 => 'ימי שימוש',
-    52 => '<br>הערה: "ימי שימוש" הם מספר הימים מאז ההרשמה הראשונית ועד ההתחברות האחרונה.',
+    52 => '<br' . XHTML . '>הערה: "ימי שימוש" הם מספר הימים מאז ההרשמה הראשונית ועד ההתחברות האחרונה.',
     53 => 'רשום',
     54 => 'מחיקה קבוצתית',
     55 => 'פונקציה זו עובדת רק אם קבעתם ש- <code>$_CONF[\'lastlogin\'] = true;</code> ב-config.php שלכם',
@@ -894,7 +911,16 @@ $LANG28 = array(
     73 => 'האם הנכם בטוחים שאתם רוצים למחוק את *כל* המשתמשים הרשומים',
     74 => 'משתמשים מהזמן האחרון',
     75 => 'משתמשים שנרשמו בזמן האחרון ',
-    76 => ' חודשים'
+    76 => ' חודשים',
+    77 => 'Email site login reminder to selected users',
+    78 => 'Send Reminder',
+    79 => 'No User selected for reminders',
+    80 => 'Successfully sent Reminders',
+    81 => 'Reminder to verify account for %s',
+    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
+    83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
+    84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
+    85 => 'If you have forgotten the password use the following link: %s'
 );
 
 ###############################################################################
@@ -968,7 +994,7 @@ $LANG32 = array(
     7 => 'ה-plug-in שהנכם מנסה להתקין כבר קיים. אנא מיחקו את ה-plugin לפני התקנתו מחדש.',
     8 => 'בדיקת התאמת Plugin נכשלה',
     9 => 'ה-plugin דורש גירסה חדשה יותר של Geeklog. שדרגו את העותק שלכם של <a href="http://www.geeklog.net">Geeklog</a> או השיגו גירסה חדשה יותר של ה-plugin.',
-    10 => '<br><b>אין plugins מותקנים כרגע.</b><br><br>',
+    10 => '<br' . XHTML . '><b>אין plugins מותקנים כרגע.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'כדי לערוך או למחוק plug-in, ליחצו על אייקון העריכה מתחת. זה יראה את פרטי ה-plugin כולל האתר של יוצריו. גם הגירסה המותקנת וגם הגירסה שמוחזרת מקוד ה-plugin מוצגות. זה יעזור לכם לדעת ה-plugin צריך לעבור שידרוג. כדי להתקין או לשדרג plugin אנא עיברו על הדוקומנטציה שלו.',
     12 => 'שום שם של plugin לא ניתן ל-plugineditor()',
     13 => 'עורך Plugins',
@@ -1058,8 +1084,8 @@ $LANG33 = array(
 $MESSAGE = array(
     1 => "סיסמתך נשלחה אליכם באימייל ואמורה להגיע בכל רגע. אנא עיקבו אחר ההוראות שבהודעה ואנו מודים לכם על שימושכם ב-{$_CONF['site_name']}",
     2 => "תודה לך על הגשת המאמר שלך ל-{$_CONF['site_name']}. הוא הוגש לצוות שלנו בשביל אישור. אם יאושר, מאמרך יהיה זמין לאחרים לקריאה באתר.",
-    3 => "",
-    4 => "",
+    3 => '',
+    4 => '',
     5 => 'המידע של חשבונך נשמר בהצלחה.',
     6 => 'העדפות התצוגה שלך נשמרו בהצלחה.',
     7 => 'הגדרות התגובות שלך נשמרו בהצלחה.',
@@ -1132,14 +1158,26 @@ $MESSAGE = array(
     74 => 'הפינג החוזר נשלח בהצלחה.',
     75 => 'הפניות חיבות להישלח בעזרת בקשת POST.',
     76 => 'האם הנכם באמת מעוניינים למחוק פריט זה',
-    77 => 'אזהרה:<br>קבעתם את קידוד ברירת המחדל שלכם ל-UTF-8. לעומת זאת, השרת שלכם לא תומך בקידודי multibyte. אנא התקינו את פונקציות ה-mbstring של PHP או ביחרו בקידוד/שפה אחרים.',
+    77 => 'אזהרה:<br' . XHTML . '>קבעתם את קידוד ברירת המחדל שלכם ל-UTF-8. לעומת זאת, השרת שלכם לא תומך בקידודי multibyte. אנא התקינו את פונקציות ה-mbstring של PHP או ביחרו בקידוד/שפה אחרים.',
     78 => 'אנא ודאו שכתובת האימייל וכתובת אימות האימייל הן זהות.',
     79 => 'העמוד שניסיתם לפתוח מתייחס לפונקציה שכבר לא קיימת באתר זה.',
     80 => 'ה-plugin שיצר הזנה זו כרגע מנוטרל. לא תוכלו לערוך הזנה זו עד שתפעילו מחדש את ה-plugin האחראי.',
     81 => 'יכול להיות שטעיתם בהקשת פרטי הכניסה שלכם למערכת. אנא נסו להיכנס שנית להלן.',
     82 => 'מיציתם את המספר האפשרי של נסיונות כניסה למערכת. אנא נסו שוב מאוחר יותר.',
     83 => 'כדי לשנות את הסיסמה, כתובת האימייל או כמה זמן לזכור אתכם, אנא הכניסו את הסיסמה הנוכחית שלכם.',
-    84 => 'כדי למחוק את חשבונכם, אנא הכניסו את הסיסמה הנוכחית שלכם.'
+    84 => 'כדי למחוק את חשבונכם, אנא הכניסו את הסיסמה הנוכחית שלכם.',
+    85 => 'There was a problem sending the email.',
+    86 => 'The OpenID server invalidated your login attempt.',
+    87 => 'OpenID login operation cancelled by user.',
+    88 => 'The OpenID server returned an error.',
+    89 => 'Unable to find an OpenID server for the given identity URL.',
+    90 => 'OpenID identification cancelled.',
+    91 => 'You specified an invalid identity URL.',
+    92 => "Please <a href=\"{$_CONF['site_admin_url']}/sectest.php\">check the security of your site</a> before using it!",
+    93 => 'Database back up was successful.',
+    94 => 'Backup Failed: Filesize less than 1kb',
+    95 => 'There was an error.',
+    96 => 'Sorry, you do not have access to the configuration administration page.  Please note that all attempts to access unauthorized features are logged.'
 );
 
 ###############################################################################
@@ -1180,7 +1218,7 @@ $LANG_ACCESS = array(
     'edit' => 'עריכה',
     'none' => 'אין',
     'accessdenied' => 'הגישה לא אושרה',
-    'storydenialmsg' => "אין לכם גישה לצפות במאמר זה. סיבה אפשרית לכך היא שאינכם חברים ב-{$_CONF['site_name']}. אנא <a href=users.php?mode=new> היפכו לחברים</a> ב-{$_CONF['site_name']} כדי לקבל גישה מלאה של חברים!",
+    'storydenialmsg' => "אין לכם גישה לצפות במאמר זה. סיבה אפשרית לכך היא שאינכם חברים ב-{$_CONF['site_name']}. אנא <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\"> היפכו לחברים</a> ב-{$_CONF['site_name']} כדי לקבל גישה מלאה של חברים!",
     'nogroupsforcoregroup' => 'קבוצה זו לא שייכת לשום קבוצה מהקבוצות האחרות',
     'grouphasnorights' => 'לקבוצה זו אין גישה לאף אחת מיכולות ההנהלה של האתר הזה',
     'newgroup' => 'קבוצה חדשה',
@@ -1218,14 +1256,15 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'צרו גיבוי',
     'backup_successful' => 'גיבוי מאגר הנתונים עבר בהצלחה.',
     'db_explanation' => 'כדי ליצור גיבוי חדש של המערכת, ליחצו על הכפתור שלעיל',
-    'not_found' => "מיקום שגוי או שה-mysqldump utility היא לא executable.<br>בידקו את הגדרת ה- <strong>\$_DB_mysqldump_path</strong> ב-config.php.<br>המשתנה כרגע מוגדר כ: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "מיקום שגוי או שה-mysqldump utility היא לא executable.<br" . XHTML . ">בידקו את הגדרת ה- <strong>\$_DB_mysqldump_path</strong> ב-config.php.<br" . XHTML . ">המשתנה כרגע מוגדר כ: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'הגיבוי נכשל. גודל הקובץ היה 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} לא קיים או שזו לא ספרייה",
     'no_access' => "שגיאה: הספרייה {$_CONF['backup_path']} חסומה.",
     'backup_file' => 'קובץ גיבוי',
     'size' => 'גודל',
     'bytes' => 'Bytes',
-    'total_number' => 'סך הכל גיבויים: %d'
+    'total_number' => 'סך הכל גיבויים: %d',
+    'download' => 'Click to download this file'
 );
 
 ###############################################################################
@@ -1254,6 +1293,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'נדרשת התחברות למערכת',
@@ -1261,6 +1301,9 @@ $LANG_LOGIN = array(
     3 => 'התחברות למערכת',
     4 => 'משתמש חדש'
 );
+
+###############################################################################
+# pdfgenerator.php
 
 $LANG_PDF = array(
     1 => 'יכולת ה-PDF מנוטרלת',
@@ -1355,11 +1398,11 @@ $LANG_TRB = array(
     'trackbacks' => 'הפניות',
     'editor_intro' => 'הכינו את ההפנייה עם תגובה שלכם עבור <a href="%s">%s</a>.',
     'editor_intro_none' => 'הכינו את ההפנייה עם תגובה שלכם.',
-    'trackback_note' => 'כדי לשלוח הפנייה עם תגובה למאמר, לכו לרשימת המאמרים וליחצו על "' . $LANG24[21] . '" במאמר הרצוי. כדי לשלוח הפנייה שאינה קשורה למאמר, <a href="%s">ליחצו כאן</a>.',
+    'trackback_note' => 'כדי לשלוח הפנייה עם תגובה למאמר, לכו לרשימת המאמרים וליחצו על "שילחו פינג" במאמר הרצוי. כדי לשלוח הפנייה שאינה קשורה למאמר, <a href="%s">ליחצו כאן</a>.',
     'pingback_explain' => 'כיתבו כתובת לשליחת הפינג החוזר. הפינג החוזר יכוון לאתר הבית שלכם.',
     'pingback_url' => 'כתובת לפינג חוזר',
     'site_url' => 'כתובת אתר זה',
-    'pingback_note' => 'כדי לשלוח פינג חוזר למאמר, לכו לרשימת המאמרים וליחצו על "' . $LANG24[21] . '" במאמר הרצוי. כדי לשלוח פינג חוזר שלא קשור למאמר, <a href="%s">ליחצו כאן</a>.',
+    'pingback_note' => 'כדי לשלוח פינג חוזר למאמר, לכו לרשימת המאמרים וליחצו על "שילחו פינג" במאמר הרצוי. כדי לשלוח פינג חוזר שלא קשור למאמר, <a href="%s">ליחצו כאן</a>.',
     'pbtarget_missing' => 'אין כתובת לשליחת פינג חוזר',
     'pbtarget_required' => 'אנא הכניסו כתובת לשליחת פינג חוזר',
     'pb_error_details' => 'שגיאה בעת שליחת הפינג:',
@@ -1379,17 +1422,17 @@ $LANG_DIR = array(
 
 ###############################################################################
 # "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
 
-$LANG_WHATSNEW = array (
-    # This here determines the order of the sentence "No new stories in 2 hrs"
-    # order it so it makes sense in your language:
-    # %i    item, "Stories"
-    # %n    amount, "2", "20" etc
-    # %t    time, "2" (weeks)
-    # %s    scale, "hrs", "weeks"
+$LANG_WHATSNEW = array(
     'new_string' => 'יש %n %i חדשים ב-%t ה%s האחרונים/ות',
     'new_last' => 'ב-%t ה%s האחרונים/ות',
-    # other strings
     'minutes' => 'דקות',
     'hours' => 'שעות',
     'days' => 'ימים',
@@ -1401,6 +1444,9 @@ $LANG_WHATSNEW = array (
     'week' => 'שבוע',
     'month' => 'חודש'
 );
+
+###############################################################################
+# Month names
 
 $LANG_MONTH = array(
     1 => 'ינואר',
@@ -1416,6 +1462,9 @@ $LANG_MONTH = array(
     11 => 'נובמבר',
     12 => 'דצמבר'
 );
+
+###############################################################################
+# Weekdays
 
 $LANG_WEEK = array(
     1 => 'ראשון',
@@ -1455,7 +1504,10 @@ $LANG_ADMIN = array(
     'no_results' => '- לא נמצאו נתונים -',
     'data_error' => 'הייתה בעיה בעיבוד נתוני המנוי שלכם. אנא בידקו את מקור הנתונים.',
     'preview' => 'תצוגה מקדימה',
-    'records_found' => 'פריטים שנמצאו'
+    'records_found' => 'פריטים שנמצאו',
+    'addchild' => 'Add child',
+    'list' => 'list',
+    'list_all' => 'List all'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1464,7 +1516,8 @@ $LANG_ADMIN = array(
 
 $LANG_commentcodes = array(
     0 => 'איפשור תגובות',
-    -1 => 'ניטרול תגובות'
+    -1 => 'ניטרול תגובות',
+    1 => 'Comments Closed'
 );
 
 $LANG_commentmodes = array(
@@ -1512,6 +1565,290 @@ $LANG_sortcodes = array(
 $LANG_trackbackcodes = array(
     0 => 'איפשור הפניות',
     -1 => 'ניטרול הפניות'
+);
+
+###############################################################################
+# Localization of the Admin Configuration UI
+
+$LANG_CONFIG = array(
+    'home' => 'Home',
+    'admin_home' => 'Site Administration',
+    'sections' => 'Configuration Sections',
+    'restore' => 'Restore',
+    'add_element' => 'Add Element',
+    'save_changes' => 'Save Changes',
+    'reset_form' => 'Reset Form',
+    'changes_made' => 'Changes were successfully made to',
+    'title' => 'Configuration Manager'
+);
+
+$LANG_configsections['Core'] = array(
+    'label' => 'Geeklog',
+    'title' => 'Geeklog Configuration'
+);
+
+$LANG_confignames['Core'] = array(
+    'path_html' => 'HTML Path',
+    'site_url' => 'Site URL',
+    'site_admin_url' => 'Admin URL',
+    'site_mail' => 'Site E-Mail',
+    'noreply_mail' => 'No-Reply E-Mail',
+    'site_name' => 'Site Name',
+    'site_slogan' => 'Slogan',
+    'microsummary_short' => 'Microsummary',
+    'path_log' => 'Log',
+    'path_language' => 'Language',
+    'backup_path' => 'Backup',
+    'path_data' => 'Data',
+    'path_images' => 'Images',
+    'path_pear' => 'Path Pear',
+    'have_pear' => 'Have Pear?',
+    'mail_settings' => 'Mail Settings',
+    'allow_mysqldump' => 'Allow MySQL Dump',
+    'mysqldump_path' => 'Path of Executable',
+    'mysqldump_options' => 'MySQL Dump Options',
+    'theme' => 'Theme',
+    'menu_elements' => 'Menu Elements',
+    'path_themes' => 'Themes Path',
+    'disable_new_user_registration' => 'Disable New Registrations',
+    'allow_user_themes' => 'Allow User Themes',
+    'allow_user_language' => 'Allow User Language',
+    'allow_user_photo' => 'Allow User Photo',
+    'allow_username_change' => 'Allow Username Changes',
+    'allow_account_delete' => 'Allow Account Deletion',
+    'hide_author_exclusion' => 'Allow Hide Author',
+    'show_fullname' => 'Show Fullname',
+    'show_servicename' => 'Show Service Name',
+    'custom_registration' => 'Enable Custom Registration',
+    'user_login_method' => 'User Login Method',
+    'spamx' => 'Spam-X Actions',
+    'sort_admin' => 'Sort Links',
+    'language' => 'Language',
+    'locale' => 'Locale',
+    'date' => 'Date Format',
+    'daytime' => 'Daytime Format',
+    'shortdate' => 'Short Date Format',
+    'dateonly' => 'Date Only Format',
+    'timeonly' => 'Time Only Format',
+    'week_start' => 'Week Start',
+    'hour_mode' => 'Hour Mode',
+    'thousand_separator' => 'Thousands Separator',
+    'decimal_separator' => 'Decimal Separator',
+    'decimal_count' => 'Decimal Count',
+    'language_files' => 'Language Files',
+    'languages' => 'Languages',
+    'timezone' => 'Timezone',
+    'site_disabled_msg' => 'Site Disabled Message or URL',
+    'rootdebug' => 'Root Debugging',
+    'cookie_session' => 'Session Cookie Name',
+    'cookie_name' => 'Permanent Cookie Name',
+    'cookie_password' => 'Password Cookie Name',
+    'cookie_theme' => 'Theme Cookie Name',
+    'cookie_language' => 'Language Cookie Name',
+    'cookie_tzid' => 'Timezone Cookie Name',
+    'cookie_ip' => 'Cookies embed IP?',
+    'default_perm_cookie_timeout' => 'Permanent Timeout',
+    'session_cookie_timeout' => 'Session Timeout',
+    'cookie_path' => 'Cookie Path',
+    'cookiedomain' => 'Cookie Domain',
+    'cookiesecure' => 'Cookie Secure',
+    'lastlogin' => 'Record Last Login?',
+    'pdf_enabled' => 'PDF Enabled?',
+    'num_search_results' => 'Number of Search Results',
+    'loginrequired' => 'Login Required?',
+    'submitloginrequired' => 'Submit Login Required?',
+    'commentsloginrequired' => 'Comment Login Required?',
+    'statsloginrequired' => 'Stats Login Required?',
+    'searchloginrequired' => 'Search Login Required?',
+    'profileloginrequired' => 'Profile Login Required?',
+    'emailuserloginrequired' => 'E-Mail User Login Required?',
+    'emailstoryloginrequired' => 'E-Mail Story Login Required?',
+    'directoryloginrequired' => 'Directory Login Required?',
+    'storysubmission' => 'Story Submission Queue?',
+    'usersubmission' => 'User Submission Queue?',
+    'listdraftstories' => 'List Draft Stories?',
+    'notification' => 'Notifications',
+    'postmode' => 'Default Post Mode',
+    'speedlimit' => 'Post Speed Limit',
+    'skip_preview' => 'Skip Preview in Posts',
+    'advanced_editor' => 'Advanced Editor?',
+    'wikitext_editor' => 'Wikitext Editor?',
+    'cron_schedule_interval' => 'Cron Schedule Interval',
+    'sortmethod' => 'Sort Topics',
+    'showstorycount' => 'Show Story Count?',
+    'showsubmissioncount' => 'Show Submission Count?',
+    'hide_home_link' => 'Hide Home Link?',
+    'whosonline_threshold' => 'Session Threshold',
+    'whosonline_anonymous' => 'Hide Names from Guests?',
+    'emailstories' => 'Daily Digest Enabled?',
+    'emailstorieslength' => 'Length of Stories',
+    'emailstoriesperdefault' => 'Enable for New Users?',
+    'allow_domains' => 'Automatic Allow Domains',
+    'disallow_domains' => 'Automatic Disallow Domains',
+    'newstoriesinterval' => 'New Stories Interval',
+    'newcommentsinterval' => 'New Comments Interval',
+    'newtrackbackinterval' => 'New Trackbacks Interval',
+    'hidenewstories' => 'Hide New Stories',
+    'hidenewcomments' => 'Hide New Comments',
+    'hidenewtrackbacks' => 'Hide New Trackbacks',
+    'hidenewplugins' => 'Hide New Plugin Entries',
+    'title_trim_length' => 'Title Trim Length',
+    'trackback_enabled' => 'Trackback Enabled?',
+    'pingback_enabled' => 'Pingback Enabled?',
+    'ping_enabled' => 'Ping Enabled?',
+    'trackback_code' => 'Trackback Default',
+    'multiple_trackbacks' => 'Multiple Trackbacks',
+    'trackbackspeedlimit' => 'Trackback Speed Limit',
+    'check_trackback_link' => 'Check Trackbacks',
+    'pingback_self' => 'Pingback Self?',
+    'pingback_excerpt' => 'Create Pingback Excerpt?',
+    'link_documentation' => 'Link to Documentation?',
+    'link_versionchecker' => 'Link to Version Checker?',
+    'maximagesperarticle' => 'Max Images per Article',
+    'limitnews' => 'Stories per Page',
+    'minnews' => 'Min. Stories per Page',
+    'contributedbyline' => 'Show "Contributed By"?"',
+    'hideviewscount' => 'Hide Views Count?',
+    'hideemailicon' => 'Hide E-Mail Icon?',
+    'hideprintericon' => 'Hide Print Icon?',
+    'allow_page_breaks' => 'Allow Page Breaks?',
+    'page_break_comments' => 'Comments on Multi-Page Articles',
+    'article_image_align' => 'Topic Icon Alignment',
+    'show_topic_icon' => 'Show Topic Icon?',
+    'draft_flag' => 'Draft Flag Default',
+    'frontpage' => 'Frontpage Default',
+    'hide_no_news_msg' => 'Hide "No News" Message?',
+    'hide_main_page_navigation' => 'Hide Main Page Navigation?',
+    'onlyrootfeatures' => 'Only Root can Feature?',
+    'aftersave_story' => 'After Saving Story',
+    'aftersave_user' => 'After Saving User',
+    'show_right_blocks' => 'Always Show Right Blocks?',
+    'showfirstasfeatured' => 'Show First Story as Featured?',
+    'backend' => 'Enable Feeds?',
+    'rdf_file' => 'Syndication Output Folder',
+    'rdf_limit' => 'Feed Limit',
+    'rdf_storytext' => 'Length of Stories in Feed',
+    'rdf_language' => 'Feed Language',
+    'syndication_max_headlines' => 'Max. Number of Headlines (portal blocks)',
+    'copyrightyear' => 'Copyright Year',
+    'image_lib' => 'Image Library',
+    'path_to_mogrify' => 'Path to Mogrify',
+    'path_to_netpbm' => 'Path to Netpbm',
+    'debug_image_upload' => 'Debug Image Uploading?',
+    'keep_unscaled_image' => 'Keep Unscaled Image?',
+    'allow_user_scaling' => 'Allow User Scaling?',
+    'max_image_width' => 'Max Image Width?',
+    'max_image_height' => 'Max Image Height?',
+    'max_image_size' => 'Max Image Size?',
+    'max_topicicon_width' => 'Max Topic Icon Width?',
+    'max_topicicon_height' => 'Max Topic Icon Height?',
+    'max_topicicon_size' => 'Max Topic Icon Size?',
+    'max_photo_width' => 'Max Photo Width?',
+    'max_photo_height' => 'Max Photo Height?',
+    'max_photo_size' => 'Max Photo Size?',
+    'use_gravatar' => 'Use Gravatar?',
+    'gravatar_rating' => 'Gravatar Rating Allowed',
+    'force_photo_width' => 'Force Photo Width',
+    'default_photo' => 'Default Photo',
+    'commentspeedlimit' => 'Comment Speed Limit',
+    'comment_limit' => 'Comment Limit',
+    'comment_mode' => 'Comment Mode',
+    'comment_code' => 'Comment Default',
+    'passwordspeedlimit' => 'Password Speed Limit',
+    'login_attempts' => 'Max. Login Attempts',
+    'login_speedlimit' => 'Login Speed Limit',
+    'user_html' => 'User HTML',
+    'admin_html' => 'Admin HTML',
+    'skip_html_filter_for_root' => 'Skip HTML Filter for Root?',
+    'allowed_protocols' => 'Allowed Protocols',
+    'disable_autolinks' => 'Disable Autolinks?',
+    'censormode' => 'Censor Mode?',
+    'censorreplace' => 'Censor Replace Text',
+    'censorlist' => 'Censor List',
+    'ip_lookup' => 'IP Lookup',
+    'url_rewrite' => 'Enable URL Rewrite',
+    'default_permissions_block' => 'Block Default Permissions',
+    'default_permissions_story' => 'Story Default Permissions',
+    'default_permissions_topic' => 'Topic Default Permissions',
+    'atom_max_stories' => 'Max. Stories in Webservices Feed',
+    'disable_webservices' => 'Disable Webservices?',
+    'restrict_webservices' => 'Restrict Webservices?'
+);
+
+$LANG_configsubgroups['Core'] = array(
+    'sg_site' => 'Site',
+    'sg_stories' => 'Stories and Trackback',
+    'sg_theme' => 'Theme',
+    'sg_blocks' => 'Blocks',
+    'sg_users' => 'Users and Submissions',
+    'sg_images' => 'Images',
+    'sg_locale' => 'Languages and Locale',
+    'sg_misc' => 'Miscellaneous'
+);
+
+$LANG_fs['Core'] = array(
+    'fs_site' => 'Site',
+    'fs_paths' => 'Paths',
+    'fs_theme' => 'Theme',
+    'fs_mail' => 'Mail',
+    'fs_pear' => 'Pear',
+    'fs_mysql' => 'MySQL',
+    'fs_users' => 'Users',
+    'fs_misc' => 'Miscellaneous',
+    'fs_spamx' => 'Spam-X',
+    'fs_admin_block' => 'Admin Block',
+    'fs_locale' => 'Locale',
+    'fs_language' => 'Language',
+    'fs_debug' => 'Debug',
+    'fs_cookies' => 'Cookies',
+    'fs_login' => 'Login Settings',
+    'fs_search' => 'Search',
+    'fs_user_submission' => 'User Submission',
+    'fs_submission' => 'Submission Settings',
+    'fs_topics_block' => 'Topics Block',
+    'fs_whosonline_block' => 'Who\'s Online Block',
+    'fs_daily_digest' => 'Daily Digest',
+    'fs_whatsnew_block' => 'What\'s New Block',
+    'fs_trackback' => 'Trackback',
+    'fs_pingback' => 'Pingback',
+    'fs_story' => 'Story',
+    'fs_theme_advanced' => 'Advanced Settings',
+    'fs_syndication' => 'Syndication',
+    'fs_imagelib' => 'Image Library',
+    'fs_upload' => 'Upload',
+    'fs_articleimg' => 'Images in Articles',
+    'fs_topicicon' => 'Topic Icons',
+    'fs_userphoto' => 'Photos',
+    'fs_gravatar' => 'Gravatar',
+    'fs_comments' => 'Comments',
+    'fs_htmlfilter' => 'HTML Filtering',
+    'fs_censoring' => 'Censoring',
+    'fs_iplookup' => 'IP Lookup',
+    'fs_perm_story' => 'Story Default Permission',
+    'fs_perm_topic' => 'Topic Default Permission',
+    'fs_perm_block' => 'Block Default Permission',
+    'fs_webservices' => 'Webservices'
+);
+
+$LANG_configselects['Core'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('Reject' => 0, 'Only Keep Latest' => 1, 'Allow Multiple Posts' => 2),
+    3 => array('Trackback Enabled' => 0, 'Trackback Disabled' => -1),
+    4 => array('Don\'t Check Anything' => 0, 'Check against Site URL' => 1, 'Check full URL' => 2, 'Check against Site URL and full URL' => 3, 'Check IP against Site IP' => 4, 'Check IP and Site URL' => 5, 'Check IP and Full URL' => 6, 'Check IP, Full URL, and Site URL' => 7),
+    5 => array('Plain Old Text' => 'plaintext', 'HTML Formatted' => 'html'),
+    6 => array('12' => 12, '24' => 24),
+    7 => array('Last Page' => 'last', 'First Page' => 'first', 'Every Page' => 'all'),
+    8 => array('Right' => 'right', 'Left' => 'left'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    10 => array('None' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
+    11 => array('Flat' => 'flat', 'Nested' => 'nested', 'Threaded' => 'threaded', 'No Comments' => 'nocomment'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+    13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2),
+    14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
+    15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
+    16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

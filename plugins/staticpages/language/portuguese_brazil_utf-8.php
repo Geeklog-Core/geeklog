@@ -29,14 +29,13 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
-$LANG_STATIC= array(
+$LANG_STATIC = array(
     'newpage' => 'Nova Página',
     'adminhome' => 'Home Admin',
     'staticpages' => 'Páginas Estáticas',
@@ -106,12 +105,56 @@ $LANG_STATIC= array(
     'select_php_none' => 'não executa código PHP',
     'select_php_return' => 'executa PHP (volta)',
     'select_php_free' => 'executa PHP',
-    'php_not_activated' => 'O uso de PHP em páginas estáticas não está ativado. Por favor veja a <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">documentação</a> para saber de mais detalhes.',
-    'printable_format' => 'Printable Format'
+    'php_not_activated' => "O uso de PHP em páginas estáticas não está ativado. Por favor veja a <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">documentação</a> para saber de mais detalhes.",
+    'printable_format' => 'Printable Format',
+    'copy' => 'Copy',
+    'limit_results' => 'Limit Results',
+    'search' => 'Search',
+    'submit' => 'Submit'
 );
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['staticpages'] = array(
+    'label' => 'Static Pages',
+    'title' => 'Static Pages Configuration'
+);
+
+$LANG_confignames['staticpages'] = array(
+    'allow_php' => 'Allow PHP?',
+    'sort_by' => 'Sort Centerblocks by',
+    'sort_menu_by' => 'Sort Menu Entries by',
+    'delete_pages' => 'Delete Pages with Owner?',
+    'in_block' => 'Wrap Pages in Block?',
+    'show_hits' => 'Show Hits?',
+    'show_date' => 'Show Date?',
+    'filter_html' => 'Filter HTML?',
+    'censor' => 'Censor Content?',
+    'default_permissions' => 'Page Default Permissions',
+    'aftersave' => 'After Saving Page',
+    'atom_max_items' => 'Max. Pages in Webservices Feed'
+);
+
+$LANG_configsubgroups['staticpages'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['staticpages'] = array(
+    'fs_main' => 'Static Pages Main Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['staticpages'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
+    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

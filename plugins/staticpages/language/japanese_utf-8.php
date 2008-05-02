@@ -23,19 +23,17 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# Last Update 2007/01/30 by Ivy (Geeklog Japanese)
 
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-
-$LANG_STATIC= array(
+$LANG_STATIC = array(
     'newpage' => '新規ページ',
     'adminhome' => '管理画面',
     'staticpages' => '静的ページ',
@@ -68,11 +66,11 @@ $LANG_STATIC= array(
     'author' => '所有者',
     'no_title_or_content' => '<b>タイトル</b>と<b>内容</b>を記入してください。',
     'no_such_page_anon' => 'ログインしてください。',
-    'no_page_access_msg' => "この問題は，まだログインしていないか，そもそもこのサイト（{$_CONF["site_name"]}）のメンバーではないためだと考えられます。{$_CONF["site_name"]}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか，適切なアクセス権を管理者から取得してください。",
+    'no_page_access_msg' => "この問題は，まだログインしていないか，そもそもこのサイト（{$_CONF['site_name']}）のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか，適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
-    'php_warn' => '<br>注意：このオプションを有効にすると，あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には，あらかじめ管理画面「グループ:Static Page Admin」で，権限「staticpages.PHP」にチェックしてください。PHPを使う場合，通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
+    'php_warn' => '<br' . XHTML . '>注意：このオプションを有効にすると，あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には，あらかじめ管理画面「グループ:Static Page Admin」で，権限「staticpages.PHP」にチェックしてください。PHPを使う場合，通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
     'exit_msg' => '閲覧権限がない場合: ',
-    'exit_info' => 'チェックすると，閲覧権限がない場合にログイン要求画面が表示されます。<br>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
+    'exit_info' => 'チェックすると，閲覧権限がない場合にログイン要求画面が表示されます。<br' . XHTML . '>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
     'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか，権限がないかのいずれかです。',
     'stats_headline' => '静的ページ（上位10件）',
     'stats_page_title' => 'タイトル',
@@ -88,20 +86,14 @@ $LANG_STATIC= array(
     'all_topics' => 'すべて',
     'no_topic' => 'ホームページのみ',
     'position_top' => 'ページの最上部',
-    'position_second' => '記事の上',
     'position_feat' => '注目記事の下',
     'position_bottom' => 'ページの下',
     'position_entire' => 'ページ全体',
-    'position_menutab' => 'ヘッダ',
-    'position_footer' => 'フッタ',
     'head_centerblock' => 'トップ表示',
     'centerblock_no' => 'いいえ',
     'centerblock_top' => '上部',
-    'centerblock_second' => '記事の上',
     'centerblock_feat' => '注目記事',
     'centerblock_bottom' => '下部',
-    'centerblock_menutab' => 'ヘッダ',
-    'centerblock_footer' => 'フッタ',
     'centerblock_entire' => 'ページ全体',
     'inblock_msg' => 'ブロックで囲む: ',
     'inblock_info' => 'チェックすると，タイトルが表示され，コンテンツがブロックで囲まれます。',
@@ -111,18 +103,56 @@ $LANG_STATIC= array(
     'select_php_none' => 'PHPを実行しない',
     'select_php_return' => 'PHPを実行する (return)',
     'select_php_free' => 'PHPを実行する',
-    'php_not_activated' => '静的ページでPHPは使用しない設定になっています。詳細については <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">関連ドキュメント</a> をご覧下さい。',
+    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
     'printable_format' => '印刷用フォーマット',
-    'edit' => '編集',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
     'search' => '検索',
     'submit' => '登録'
-
 );
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['staticpages'] = array(
+    'label' => 'Static Pages',
+    'title' => 'Static Pages Configuration'
+);
+
+$LANG_confignames['staticpages'] = array(
+    'allow_php' => 'Allow PHP?',
+    'sort_by' => 'Sort Centerblocks by',
+    'sort_menu_by' => 'Sort Menu Entries by',
+    'delete_pages' => 'Delete Pages with Owner?',
+    'in_block' => 'Wrap Pages in Block?',
+    'show_hits' => 'Show Hits?',
+    'show_date' => 'Show Date?',
+    'filter_html' => 'Filter HTML?',
+    'censor' => 'Censor Content?',
+    'default_permissions' => 'Page Default Permissions',
+    'aftersave' => 'After Saving Page',
+    'atom_max_items' => 'Max. Pages in Webservices Feed'
+);
+
+$LANG_configsubgroups['staticpages'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['staticpages'] = array(
+    'fs_main' => 'Static Pages Main Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['staticpages'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
+    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

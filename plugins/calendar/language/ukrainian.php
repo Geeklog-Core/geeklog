@@ -26,10 +26,10 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format: 
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 # index.php
@@ -44,7 +44,7 @@ $LANG_CAL_1 = array(
     8 => 'Додавши цю подію до свого календаря, ви можете швидко переглянути лише ті події, які вас цікавлять, натиснувши "Мій календар" у Функціях користувача.',
     9 => 'Додати до мого календаря',
     10 => 'Вилучити з мого календаря',
-    11 => "Додаємо подію до календаря %s",
+    11 => 'Додаємо подію до календаря %s',
     12 => 'Подія',
     13 => 'Початок',
     14 => 'Кінець',
@@ -60,7 +60,7 @@ $LANG_CAL_1 = array(
     24 => 'Загальні події',
     25 => 'Немає майбутніх подій',
     26 => 'Надіслати подію',
-    27 => "Якщо ви надішлете подію на {$_CONF['site_name']}, її буде додано до головного календаря, де користувачі зможуть за бажанням додати її до свого персонального календаря. Ця функція <b>НЕ</b> для зберігання ваших особистих подій, таких як дні народження та річниці.<br><br>Коли ви надішлете подію, її буде подано на розгляд адміністраторам, і у разі схвалення ваша подія з'явиться у головному календарі.",
+    27 => "Якщо ви надішлете подію на {$_CONF['site_name']}, її буде додано до головного календаря, де користувачі зможуть за бажанням додати її до свого персонального календаря. Ця функція <b>НЕ</b> для зберігання ваших особистих подій, таких як дні народження та річниці.<br" . XHTML . "><br" . XHTML . ">Коли ви надішлете подію, її буде подано на розгляд адміністраторам, і у разі схвалення ваша подія з'явиться у головному календарі.",
     28 => 'Назва',
     29 => 'Час початку',
     30 => 'Час закінчення',
@@ -93,7 +93,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => 'Дата і час',
     'location' => 'Розташування',
     'description' => 'Опис'
-
 );
 
 ###############################################################################
@@ -123,7 +122,7 @@ $LANG_CAL_2 = array(
     40 => 'Тиждень',
     41 => 'Місяць',
     42 => 'Додати головну подію',
-    43 => 'Надіслані події',
+    43 => 'Надіслані події'
 );
 
 ###############################################################################
@@ -154,20 +153,31 @@ $LANG_CAL_ADMIN = array(
     22 => 'вилучити',
     23 => 'Неправильна дата початку.',
     24 => 'Неправильна дата закінчення.',
-    25 => 'Дата закінчення передує даті початку.'
+    25 => 'Дата закінчення передує даті початку.',
+    26 => 'Delete old entries',
+    27 => 'These are the events that are older than ',
+    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<brXHTML>Find all entries that are older than ',
+    29 => ' months.',
+    30 => 'Update List',
+    31 => 'Are You sure you want to permanently delete ALL selected users?',
+    32 => 'List all',
+    33 => 'No events selected for deletion',
+    34 => 'Event ID',
+    35 => 'could not be deleted',
+    36 => 'Sucessfully deleted'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Вашу подію успішно збережено.',
-    'delete'    => 'Подію успішно вилучено.',
-    'private'   => 'Подію успішно збережено до вашого календаря.',
-    'login'     => 'Неможливо відкрити ваш особистий календар, доки ви не ввійдете до системи',
-    'removed'   => 'Подію успішно вилучено з вашого особистого календаря',
+    'save' => 'Вашу подію успішно збережено.',
+    'delete' => 'Подію успішно вилучено.',
+    'private' => 'Подію успішно збережено до вашого календаря.',
+    'login' => 'Неможливо відкрити ваш особистий календар, доки ви не ввійдете до системи',
+    'removed' => 'Подію успішно вилучено з вашого особистого календаря',
     'noprivate' => 'Вибачте, персональні календарі на цьому сайті заборонені',
-    'unauth'    => 'Вибачте, але у вас немає доступу до сторінки адміністрування подій. Будь-ласка, зайважте, що всі спробу несанкціонованого доступу записуються.',
+    'unauth' => 'Вибачте, але у вас немає доступу до сторінки адміністрування подій. Будь-ласка, зайважте, що всі спробу несанкціонованого доступу записуються.'
 );
 
-$PLG_calendar_MESSAGE4  = "Дякуємо за надсилання події на {$_CONF['site_name']}.  Її передано на схвалення нашому персоналу.  У разі схвалення, вашу подію можна буде побачити тут, в нашому <a href=\"{$_CONF['site_url']}/calendar/index.php\">календарі</a>.";
+$PLG_calendar_MESSAGE4 = "Дякуємо за надсилання події на {$_CONF['site_name']}.  Її передано на схвалення нашому персоналу.  У разі схвалення, вашу подію можна буде побачити тут, в нашому <a href=\"{$_CONF['site_url']}/calendar/index.php\">календарі</a>.";
 $PLG_calendar_MESSAGE17 = 'Вашу подію успішно збережено.';
 $PLG_calendar_MESSAGE18 = 'Подію успішно вилучено.';
 $PLG_calendar_MESSAGE24 = 'Подію успішно збережено до вашого календаря.';
@@ -176,5 +186,44 @@ $PLG_calendar_MESSAGE26 = 'Подію успішно вилучено.';
 // Messages for the plugin upgrade
 $PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['calendar'] = array(
+    'label' => 'Calendar',
+    'title' => 'Calendar Configuration'
+);
+
+$LANG_confignames['calendar'] = array(
+    'calendarloginrequired' => 'Calendar Login Required?',
+    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
+    'personalcalendars' => 'Enable Personal Calendars?',
+    'eventsubmission' => 'Enable Submission Queue?',
+    'showupcomingevents' => 'Show upcoming Events?',
+    'upcomingeventsrange' => 'Upcoming Events Range',
+    'event_types' => 'Event Types',
+    'hour_mode' => 'Hour Mode',
+    'notification' => 'Notification Email?',
+    'delete_event' => 'Delete Events with Owner?',
+    'aftersave' => 'After Saving Event',
+    'default_permissions' => 'Event Default Permissions'
+);
+
+$LANG_configsubgroups['calendar'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['calendar'] = array(
+    'fs_main' => 'General Calendar Settings',
+    'fs_permissions' => 'Default Permissions'
+);
+
+// Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['calendar'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    6 => array('12' => 12, '24' => 24),
+    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+);
 
 ?>

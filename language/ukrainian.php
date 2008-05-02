@@ -103,7 +103,7 @@ $LANG01 = array(
     56 => 'Проголосувати',
     57 => 'Пароль',
     58 => 'Логін',
-    59 => "Ви ще не зареєструвалися? Зробіть це як <a href=\"{$_CONF['site_url']}/users.php?mode=new\">новий користувач</a>",
+    59 => "Ви ще не зареєструвалися? Зробіть це як <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">новий користувач</a>",
     60 => 'Надіслати коментар',
     61 => 'Створити новий обліковий запис',
     62 => 'слова',
@@ -163,14 +163,18 @@ $LANG01 = array(
     116 => 'Трекбек',
     117 => 'Архів',
     118 => 'Будь-ласка, продовжуйте читати на наступній сторінці:',
-    119 => "Забули <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">пароль</a>?",
+    119 => "Забули <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">пароль</a>?",
     120 => 'Постійне посилання на цей коментар',
     121 => 'Коментарі (%d)',
     122 => 'Трекбеки (%d)',
     123 => 'Весь HTML дозволено',
     124 => 'Натисніть щоб вилучити всі відмічені елементи',
     125 => 'Ви впевнені, що хочете вилучити всі відмічені елементи?',
-    126 => 'Виділити/зняти виділення з усіх елементів'
+    126 => 'Виділити/зняти виділення з усіх елементів',
+    127 => 'Permalink',
+    128 => 'Login with OpenID:',
+    129 => 'Configuration',
+    130 => 'Webservices'
 );
 
 ###############################################################################
@@ -280,7 +284,7 @@ $LANG04 = array(
     68 => 'Запам\'ятати мене на',
     69 => 'Як довго ми повинні пам\'ятати вас після вашого входу в систему?',
     70 => "Налаштуйте під себе вигляд і зміст {$_CONF['site_name']}",
-    71 => "На нашому сайті Ви можете налаштувати зміст інформації, яку Ви отримуєте, а також вигляд цієї інформації. Щоб скористатися цими можливостями, Ви повинні спочатку <a href=\"{$_CONF['site_url']}/users.phpіmode=new\">зареєструватися</a> на {$_CONF['site_name']}.  Ви зареєстровані?  Тоді використовуйте форму ліворуч для входу в систему!",
+    71 => "На нашому сайті Ви можете налаштувати зміст інформації, яку Ви отримуєте, а також вигляд цієї інформації. Щоб скористатися цими можливостями, Ви повинні спочатку <a href=\"{$_CONF['site_url']}/users.phpіmode=new\" rel=\"nofollow\">зареєструватися</a> на {$_CONF['site_name']}.  Ви зареєстровані?  Тоді використовуйте форму ліворуч для входу в систему!",
     72 => 'Тема дизайну',
     73 => 'Мова',
     74 => 'Змініть вигляд сайту!',
@@ -332,7 +336,7 @@ $LANG04 = array(
     120 => 'Обліковий запис активовано',
     121 => 'Служба',
     122 => 'Вибачте, реєстрацію нових користувачів заборонено',
-    123 => "Ви <a href=\"{$_CONF['site_url']}/users.php?mode=new\">новий користувач</a>?",
+    123 => "Ви <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">новий користувач</a>?",
     124 => 'Підтвердити електронну адресу',
     125 => 'Ви повинні ввести однакову електронну адресу в обидва поля!',
     126 => 'Будь-ласка, повторіть для підтвердження',
@@ -360,14 +364,23 @@ $LANG04 = array(
     148 => 'Інформація про користувача',
     149 => 'Змінити інформацію про вас, що буде доступна іншим користувачам.<li>Підпис буде додано до ваших коментарів та постів у форумі</li><li>Біографія - це ваш короткий життєпис, яким ви хочете поділитись з іншими</li><li>Додати ваш ключ PGP</li>',
     150 => 'Попередження: для розширеної функціональності необхідна підтримка Javascript',
-    151 => 'Попередній перегляд',
-    152 => 'Ім\'я користувача та пароль',
-    153 => 'Зовнішній вигляд та мова',
-    154 => 'Вміст',
-    155 => 'Приватність',
     156 => 'Вилучити обліковий запис',
-    157 => 'Опція вилучення'
+    157 => 'Опція вилучення',
+    158 => 'Time Zone',
+    159 => 'This email was generated automatically. Please do not reply to this email.'
+);
 
+###############################################################################
+# Customize if need to modify the Tabbed navbar MyAccount panels used.
+# Array index key matches preference div id
+
+$LANG_MYACCOUNT = array(
+    'pe_preview' => 'Preview',
+    'pe_namepass' => 'Username &amp; Password',
+    'pe_userinfo' => 'About You',
+    'pe_layout' => 'Layout &amp; Language',
+    'pe_content' => 'Content',
+    'pe_privacy' => 'Privacy'
 );
 
 ###############################################################################
@@ -596,7 +609,9 @@ $LANG12 = array(
     50 => '',
     51 => 'Розташування',
     52 => 'Вилучити',
-    53 => 'Створити обліковий запис'
+    53 => 'Створити обліковий запис',
+    54 => 'Story Introduction',
+    55 => 'Story Body'
 );
 
 ###############################################################################
@@ -612,7 +627,7 @@ $LANG20 = array(
     3 => 'Неправильний пароль користувача',
     4 => 'Ім\'я користувача:',
     5 => 'Пароль:',
-    6 => 'Доступ до адміністративних функцій цього сайта записується і переглядається. <br>Ця сторінка лише для авторизованого персоналу сайту.',
+    6 => 'Доступ до адміністративних функцій цього сайта записується і переглядається. <br' . XHTML . '>Ця сторінка лише для авторизованого персоналу сайту.',
     7 => 'увійти'
 );
 
@@ -686,7 +701,8 @@ $LANG21 = array(
     64 => 'Ваш заголовок повинен бути непорожнім і не містити HTML!',
     65 => 'Порядок',
     66 => 'Автотеги',
-    67 => 'Відмітьте, щоб дозволити використання автотегів'
+    67 => 'Відмітьте, щоб дозволити використання автотегів',
+    68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.'
 );
 
 ###############################################################################
@@ -779,7 +795,8 @@ $LANG24 = array(
     84 => 'Права доступу',
     85 => 'Показати все',
     86 => 'Розширений редактор',
-    87 => 'Статистика статті'
+    87 => 'Статистика статті',
+    88 => 'Wiki-style format'
 );
 
 ###############################################################################
@@ -872,7 +889,7 @@ $LANG28 = array(
     49 => 'Адміністративна група',
     50 => 'Відмітьте, щоб фільтрувати цю групу як адміністративну',
     51 => 'Днів онлайн',
-    52 => '<br>Зауважте: "Днів онлайн" - це кількість днів між першою реєстрацією та останнім входом до системи.',
+    52 => '<br' . XHTML . '>Зауважте: "Днів онлайн" - це кількість днів між першою реєстрацією та останнім входом до системи.',
     53 => 'зареєстровано',
     54 => 'Масове вилучення',
     55 => 'Це працбє лише у випадку, коли ви встановили <code>$_CONF[\'lastlogin\'] = true;</code> у вашому файлі config.php',
@@ -896,7 +913,16 @@ $LANG28 = array(
     73 => 'Ви впевнені, що хочете остаточно вилучити ВСІХ обраних користувачів?',
     74 => 'Недавні користувачі',
     75 => 'Користувачі, що зареєструвались за останні ',
-    76 => ' місяць(і)'
+    76 => ' місяць(і)',
+    77 => 'Email site login reminder to selected users',
+    78 => 'Send Reminder',
+    79 => 'No User selected for reminders',
+    80 => 'Successfully sent Reminders',
+    81 => 'Reminder to verify account for %s',
+    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
+    83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
+    84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
+    85 => 'If you have forgotten the password use the following link: %s'
 );
 
 ###############################################################################
@@ -970,7 +996,7 @@ $LANG32 = array(
     7 => 'Модуль, який Ви намагаєтесь встановити, вже існує. Перед тим, як перевстановити модуль, вилучіть старий',
     8 => 'Модуль не пройшов перевірку сумісності версії',
     9 => 'Модуль потребує більш нової версії Geeklog. Оновіть Вашу копію <a href="http://www.geeklog.net">Geeklog</a> або спробуйте знайти іншу версію модуля.',
-    10 => '<br><b>В системі немає встановлених модулів.</b><br><br>',
+    10 => '<br' . XHTML . '><b>В системі немає встановлених модулів.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Щоб змінити чи вилучити модуль, натисніть його іконку редагування нижче. Буде виведено деталі про модуль, включаючи домашню сторінку автора. Виводиться як інстальована версія, так і версія з коду модуля. Це дасть вам знати, коли варто оновлювати модуль. Щоб встановити чи оновити модуль, будь-ласка, зверніться до його документації.',
     12 => 'ім\'я модуля не передано в plugineditor()',
     13 => 'Редактор модулів',
@@ -1134,14 +1160,26 @@ $MESSAGE = array(
     74 => 'Пінгбек успішно відправлено.',
     75 => 'Трекбеки повинні відправлятись через POST запит.',
     76 => 'Ви впевнені, що хочете вилучити цей елемент?',
-    77 => 'ПОПЕРЕДЖЕННЯ:<br>Ваше кодування символів за замовчуванням - UTF-8. Проте ваш сервер не підтримує багатобайтові кодування. Будь-ласка, встановіть функції mbstring для PHP або оберіть інше кодування/мову.',
+    77 => 'ПОПЕРЕДЖЕННЯ:<br' . XHTML . '>Ваше кодування символів за замовчуванням - UTF-8. Проте ваш сервер не підтримує багатобайтові кодування. Будь-ласка, встановіть функції mbstring для PHP або оберіть інше кодування/мову.',
     78 => 'Будь-ласка, переконайтеся, що електронна адреса та її підтвердження співпадають.',
     79 => 'Сторінка, яку ви намагалися відкрити, посилається на функцію, якою вже немає на цьому сайті.',
     80 => 'Модуль, що створив цю стрічку, наразі вимкнено. Ви не зможете редагувати цю стрічку, поки не увімкнете відповідний батьківський модуль.',
     81 => 'Можливо, ви помилилися при наборі ваших даних.  Будь-ласка, спробуйте ще раз.',
     82 => 'Ви перевищили кількість дозволених спроб входу.  Будь-ласка, спробуйте ще раз пізніше.',
     83 => 'Щоб змінити ваш пароль, електронну адресу чи час, на який сайт вас запам\'ятовує, введіть ваш поточний пароль.',
-    84 => 'Щоб вилучити ваш обліковий запис, введіть свій поточний пароль.'
+    84 => 'Щоб вилучити ваш обліковий запис, введіть свій поточний пароль.',
+    85 => 'There was a problem sending the email.',
+    86 => 'The OpenID server invalidated your login attempt.',
+    87 => 'OpenID login operation cancelled by user.',
+    88 => 'The OpenID server returned an error.',
+    89 => 'Unable to find an OpenID server for the given identity URL.',
+    90 => 'OpenID identification cancelled.',
+    91 => 'You specified an invalid identity URL.',
+    92 => "Please <a href=\"{$_CONF['site_admin_url']}/sectest.php\">check the security of your site</a> before using it!",
+    93 => 'Database back up was successful.',
+    94 => 'Backup Failed: Filesize less than 1kb',
+    95 => 'There was an error.',
+    96 => 'Sorry, you do not have access to the configuration administration page.  Please note that all attempts to access unauthorized features are logged.'
 );
 
 ###############################################################################
@@ -1182,7 +1220,7 @@ $LANG_ACCESS = array(
     'edit' => 'Редагувати',
     'none' => 'Жодних',
     'accessdenied' => 'Відмовлено у доступі',
-    'storydenialmsg' => "У вас не має прав на перегляд цієї статті. Можливо, ви просто не  зареєстровані на {$_CONF['site_name']}. Будь ласка, <a href=\"{$_CONF['site_url']}/users.php?mode=new\">зареєструйтесь</a> на {$_CONF['site_name']} для отримання користувацького доступу!",
+    'storydenialmsg' => "У вас не має прав на перегляд цієї статті. Можливо, ви просто не  зареєстровані на {$_CONF['site_name']}. Будь ласка, <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">зареєструйтесь</a> на {$_CONF['site_name']} для отримання користувацького доступу!",
     'nogroupsforcoregroup' => 'Ця група не належить до жодної з інших груп',
     'grouphasnorights' => 'Ця група не має права доступу до жодної з адміністративної функції сайту',
     'newgroup' => 'Нова група',
@@ -1220,14 +1258,15 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Створити резервну копію',
     'backup_successful' => 'Резервне копіювання бази даних вдало завершено.',
     'db_explanation' => 'Щоб створити нову резервну копію бази даних вашого сайту, клацніть нижче',
-    'not_found' => "Неправильний шлях або утиліта mysqldump не виконується.<br>Перевірте змінну <strong>\$_DB_mysqldump_path</strong> у файлі config.php.<br>Її теперішнє значення: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Неправильний шлях або утиліта mysqldump не виконується.<br" . XHTML . ">Перевірте змінну <strong>\$_DB_mysqldump_path</strong> у файлі config.php.<br" . XHTML . ">Її теперішнє значення: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Помилка резервного копіювання: Розмір файла 0 байт',
     'path_not_found' => "{$_CONF['backup_path']} не існує або не є каталогом",
     'no_access' => "Помилка: каталог {$_CONF['backup_path']} недоступний.",
     'backup_file' => 'Файл резервної копії',
     'size' => 'Розмір',
     'bytes' => 'Байт',
-    'total_number' => 'Всього резервних копій: %d'
+    'total_number' => 'Всього резервних копій: %d',
+    'download' => 'Click to download this file'
 );
 
 ###############################################################################
@@ -1467,19 +1506,21 @@ $LANG_ADMIN = array(
     'no_results' => '- Не знайдено записів -',
     'data_error' => 'Під час обробки даних сталася помилка. Будь-ласка, перевірте ваші дані.',
     'preview' => 'Попередній перегляд',
-    'records_found' => 'Знайдено записи'
+    'records_found' => 'Знайдено записи',
+    'addchild' => 'Add child',
+    'list' => 'list',
+    'list_all' => 'List all'
 );
 
-###############################################################################
 # Localisation of the texts for the various drop-down menus that are actually
 # stored in the database. If these exist, they override the texts from the
 # database.
 
 $LANG_commentcodes = array(
     0 => 'Коментарі дозволено',
-    -1 => 'Коментарі заборонено'
+    -1 => 'Коментарі заборонено',
+    1 => 'Comments Closed'
 );
-
 
 $LANG_commentmodes = array(
     'flat' => 'Звичайний',
@@ -1526,6 +1567,290 @@ $LANG_sortcodes = array(
 $LANG_trackbackcodes = array(
     0 => 'Трекбек увімкнено',
     -1 => 'Трекбек вимкнено'
+);
+
+###############################################################################
+# Localization of the Admin Configuration UI
+
+$LANG_CONFIG = array(
+    'home' => 'Home',
+    'admin_home' => 'Site Administration',
+    'sections' => 'Configuration Sections',
+    'restore' => 'Restore',
+    'add_element' => 'Add Element',
+    'save_changes' => 'Save Changes',
+    'reset_form' => 'Reset Form',
+    'changes_made' => 'Changes were successfully made to',
+    'title' => 'Configuration Manager'
+);
+
+$LANG_configsections['Core'] = array(
+    'label' => 'Geeklog',
+    'title' => 'Geeklog Configuration'
+);
+
+$LANG_confignames['Core'] = array(
+    'path_html' => 'HTML Path',
+    'site_url' => 'Site URL',
+    'site_admin_url' => 'Admin URL',
+    'site_mail' => 'Site E-Mail',
+    'noreply_mail' => 'No-Reply E-Mail',
+    'site_name' => 'Site Name',
+    'site_slogan' => 'Slogan',
+    'microsummary_short' => 'Microsummary',
+    'path_log' => 'Log',
+    'path_language' => 'Language',
+    'backup_path' => 'Backup',
+    'path_data' => 'Data',
+    'path_images' => 'Images',
+    'path_pear' => 'Path Pear',
+    'have_pear' => 'Have Pear?',
+    'mail_settings' => 'Mail Settings',
+    'allow_mysqldump' => 'Allow MySQL Dump',
+    'mysqldump_path' => 'Path of Executable',
+    'mysqldump_options' => 'MySQL Dump Options',
+    'theme' => 'Theme',
+    'menu_elements' => 'Menu Elements',
+    'path_themes' => 'Themes Path',
+    'disable_new_user_registration' => 'Disable New Registrations',
+    'allow_user_themes' => 'Allow User Themes',
+    'allow_user_language' => 'Allow User Language',
+    'allow_user_photo' => 'Allow User Photo',
+    'allow_username_change' => 'Allow Username Changes',
+    'allow_account_delete' => 'Allow Account Deletion',
+    'hide_author_exclusion' => 'Allow Hide Author',
+    'show_fullname' => 'Show Fullname',
+    'show_servicename' => 'Show Service Name',
+    'custom_registration' => 'Enable Custom Registration',
+    'user_login_method' => 'User Login Method',
+    'spamx' => 'Spam-X Actions',
+    'sort_admin' => 'Sort Links',
+    'language' => 'Language',
+    'locale' => 'Locale',
+    'date' => 'Date Format',
+    'daytime' => 'Daytime Format',
+    'shortdate' => 'Short Date Format',
+    'dateonly' => 'Date Only Format',
+    'timeonly' => 'Time Only Format',
+    'week_start' => 'Week Start',
+    'hour_mode' => 'Hour Mode',
+    'thousand_separator' => 'Thousands Separator',
+    'decimal_separator' => 'Decimal Separator',
+    'decimal_count' => 'Decimal Count',
+    'language_files' => 'Language Files',
+    'languages' => 'Languages',
+    'timezone' => 'Timezone',
+    'site_disabled_msg' => 'Site Disabled Message or URL',
+    'rootdebug' => 'Root Debugging',
+    'cookie_session' => 'Session Cookie Name',
+    'cookie_name' => 'Permanent Cookie Name',
+    'cookie_password' => 'Password Cookie Name',
+    'cookie_theme' => 'Theme Cookie Name',
+    'cookie_language' => 'Language Cookie Name',
+    'cookie_tzid' => 'Timezone Cookie Name',
+    'cookie_ip' => 'Cookies embed IP?',
+    'default_perm_cookie_timeout' => 'Permanent Timeout',
+    'session_cookie_timeout' => 'Session Timeout',
+    'cookie_path' => 'Cookie Path',
+    'cookiedomain' => 'Cookie Domain',
+    'cookiesecure' => 'Cookie Secure',
+    'lastlogin' => 'Record Last Login?',
+    'pdf_enabled' => 'PDF Enabled?',
+    'num_search_results' => 'Number of Search Results',
+    'loginrequired' => 'Login Required?',
+    'submitloginrequired' => 'Submit Login Required?',
+    'commentsloginrequired' => 'Comment Login Required?',
+    'statsloginrequired' => 'Stats Login Required?',
+    'searchloginrequired' => 'Search Login Required?',
+    'profileloginrequired' => 'Profile Login Required?',
+    'emailuserloginrequired' => 'E-Mail User Login Required?',
+    'emailstoryloginrequired' => 'E-Mail Story Login Required?',
+    'directoryloginrequired' => 'Directory Login Required?',
+    'storysubmission' => 'Story Submission Queue?',
+    'usersubmission' => 'User Submission Queue?',
+    'listdraftstories' => 'List Draft Stories?',
+    'notification' => 'Notifications',
+    'postmode' => 'Default Post Mode',
+    'speedlimit' => 'Post Speed Limit',
+    'skip_preview' => 'Skip Preview in Posts',
+    'advanced_editor' => 'Advanced Editor?',
+    'wikitext_editor' => 'Wikitext Editor?',
+    'cron_schedule_interval' => 'Cron Schedule Interval',
+    'sortmethod' => 'Sort Topics',
+    'showstorycount' => 'Show Story Count?',
+    'showsubmissioncount' => 'Show Submission Count?',
+    'hide_home_link' => 'Hide Home Link?',
+    'whosonline_threshold' => 'Session Threshold',
+    'whosonline_anonymous' => 'Hide Names from Guests?',
+    'emailstories' => 'Daily Digest Enabled?',
+    'emailstorieslength' => 'Length of Stories',
+    'emailstoriesperdefault' => 'Enable for New Users?',
+    'allow_domains' => 'Automatic Allow Domains',
+    'disallow_domains' => 'Automatic Disallow Domains',
+    'newstoriesinterval' => 'New Stories Interval',
+    'newcommentsinterval' => 'New Comments Interval',
+    'newtrackbackinterval' => 'New Trackbacks Interval',
+    'hidenewstories' => 'Hide New Stories',
+    'hidenewcomments' => 'Hide New Comments',
+    'hidenewtrackbacks' => 'Hide New Trackbacks',
+    'hidenewplugins' => 'Hide New Plugin Entries',
+    'title_trim_length' => 'Title Trim Length',
+    'trackback_enabled' => 'Trackback Enabled?',
+    'pingback_enabled' => 'Pingback Enabled?',
+    'ping_enabled' => 'Ping Enabled?',
+    'trackback_code' => 'Trackback Default',
+    'multiple_trackbacks' => 'Multiple Trackbacks',
+    'trackbackspeedlimit' => 'Trackback Speed Limit',
+    'check_trackback_link' => 'Check Trackbacks',
+    'pingback_self' => 'Pingback Self?',
+    'pingback_excerpt' => 'Create Pingback Excerpt?',
+    'link_documentation' => 'Link to Documentation?',
+    'link_versionchecker' => 'Link to Version Checker?',
+    'maximagesperarticle' => 'Max Images per Article',
+    'limitnews' => 'Stories per Page',
+    'minnews' => 'Min. Stories per Page',
+    'contributedbyline' => 'Show "Contributed By"?"',
+    'hideviewscount' => 'Hide Views Count?',
+    'hideemailicon' => 'Hide E-Mail Icon?',
+    'hideprintericon' => 'Hide Print Icon?',
+    'allow_page_breaks' => 'Allow Page Breaks?',
+    'page_break_comments' => 'Comments on Multi-Page Articles',
+    'article_image_align' => 'Topic Icon Alignment',
+    'show_topic_icon' => 'Show Topic Icon?',
+    'draft_flag' => 'Draft Flag Default',
+    'frontpage' => 'Frontpage Default',
+    'hide_no_news_msg' => 'Hide "No News" Message?',
+    'hide_main_page_navigation' => 'Hide Main Page Navigation?',
+    'onlyrootfeatures' => 'Only Root can Feature?',
+    'aftersave_story' => 'After Saving Story',
+    'aftersave_user' => 'After Saving User',
+    'show_right_blocks' => 'Always Show Right Blocks?',
+    'showfirstasfeatured' => 'Show First Story as Featured?',
+    'backend' => 'Enable Feeds?',
+    'rdf_file' => 'Syndication Output Folder',
+    'rdf_limit' => 'Feed Limit',
+    'rdf_storytext' => 'Length of Stories in Feed',
+    'rdf_language' => 'Feed Language',
+    'syndication_max_headlines' => 'Max. Number of Headlines (portal blocks)',
+    'copyrightyear' => 'Copyright Year',
+    'image_lib' => 'Image Library',
+    'path_to_mogrify' => 'Path to Mogrify',
+    'path_to_netpbm' => 'Path to Netpbm',
+    'debug_image_upload' => 'Debug Image Uploading?',
+    'keep_unscaled_image' => 'Keep Unscaled Image?',
+    'allow_user_scaling' => 'Allow User Scaling?',
+    'max_image_width' => 'Max Image Width?',
+    'max_image_height' => 'Max Image Height?',
+    'max_image_size' => 'Max Image Size?',
+    'max_topicicon_width' => 'Max Topic Icon Width?',
+    'max_topicicon_height' => 'Max Topic Icon Height?',
+    'max_topicicon_size' => 'Max Topic Icon Size?',
+    'max_photo_width' => 'Max Photo Width?',
+    'max_photo_height' => 'Max Photo Height?',
+    'max_photo_size' => 'Max Photo Size?',
+    'use_gravatar' => 'Use Gravatar?',
+    'gravatar_rating' => 'Gravatar Rating Allowed',
+    'force_photo_width' => 'Force Photo Width',
+    'default_photo' => 'Default Photo',
+    'commentspeedlimit' => 'Comment Speed Limit',
+    'comment_limit' => 'Comment Limit',
+    'comment_mode' => 'Comment Mode',
+    'comment_code' => 'Comment Default',
+    'passwordspeedlimit' => 'Password Speed Limit',
+    'login_attempts' => 'Max. Login Attempts',
+    'login_speedlimit' => 'Login Speed Limit',
+    'user_html' => 'User HTML',
+    'admin_html' => 'Admin HTML',
+    'skip_html_filter_for_root' => 'Skip HTML Filter for Root?',
+    'allowed_protocols' => 'Allowed Protocols',
+    'disable_autolinks' => 'Disable Autolinks?',
+    'censormode' => 'Censor Mode?',
+    'censorreplace' => 'Censor Replace Text',
+    'censorlist' => 'Censor List',
+    'ip_lookup' => 'IP Lookup',
+    'url_rewrite' => 'Enable URL Rewrite',
+    'default_permissions_block' => 'Block Default Permissions',
+    'default_permissions_story' => 'Story Default Permissions',
+    'default_permissions_topic' => 'Topic Default Permissions',
+    'atom_max_stories' => 'Max. Stories in Webservices Feed',
+    'disable_webservices' => 'Disable Webservices?',
+    'restrict_webservices' => 'Restrict Webservices?'
+);
+
+$LANG_configsubgroups['Core'] = array(
+    'sg_site' => 'Site',
+    'sg_stories' => 'Stories and Trackback',
+    'sg_theme' => 'Theme',
+    'sg_blocks' => 'Blocks',
+    'sg_users' => 'Users and Submissions',
+    'sg_images' => 'Images',
+    'sg_locale' => 'Languages and Locale',
+    'sg_misc' => 'Miscellaneous'
+);
+
+$LANG_fs['Core'] = array(
+    'fs_site' => 'Site',
+    'fs_paths' => 'Paths',
+    'fs_theme' => 'Theme',
+    'fs_mail' => 'Mail',
+    'fs_pear' => 'Pear',
+    'fs_mysql' => 'MySQL',
+    'fs_users' => 'Users',
+    'fs_misc' => 'Miscellaneous',
+    'fs_spamx' => 'Spam-X',
+    'fs_admin_block' => 'Admin Block',
+    'fs_locale' => 'Locale',
+    'fs_language' => 'Language',
+    'fs_debug' => 'Debug',
+    'fs_cookies' => 'Cookies',
+    'fs_login' => 'Login Settings',
+    'fs_search' => 'Search',
+    'fs_user_submission' => 'User Submission',
+    'fs_submission' => 'Submission Settings',
+    'fs_topics_block' => 'Topics Block',
+    'fs_whosonline_block' => 'Who\'s Online Block',
+    'fs_daily_digest' => 'Daily Digest',
+    'fs_whatsnew_block' => 'What\'s New Block',
+    'fs_trackback' => 'Trackback',
+    'fs_pingback' => 'Pingback',
+    'fs_story' => 'Story',
+    'fs_theme_advanced' => 'Advanced Settings',
+    'fs_syndication' => 'Syndication',
+    'fs_imagelib' => 'Image Library',
+    'fs_upload' => 'Upload',
+    'fs_articleimg' => 'Images in Articles',
+    'fs_topicicon' => 'Topic Icons',
+    'fs_userphoto' => 'Photos',
+    'fs_gravatar' => 'Gravatar',
+    'fs_comments' => 'Comments',
+    'fs_htmlfilter' => 'HTML Filtering',
+    'fs_censoring' => 'Censoring',
+    'fs_iplookup' => 'IP Lookup',
+    'fs_perm_story' => 'Story Default Permission',
+    'fs_perm_topic' => 'Topic Default Permission',
+    'fs_perm_block' => 'Block Default Permission',
+    'fs_webservices' => 'Webservices'
+);
+
+$LANG_configselects['Core'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false),
+    2 => array('Reject' => 0, 'Only Keep Latest' => 1, 'Allow Multiple Posts' => 2),
+    3 => array('Trackback Enabled' => 0, 'Trackback Disabled' => -1),
+    4 => array('Don\'t Check Anything' => 0, 'Check against Site URL' => 1, 'Check full URL' => 2, 'Check against Site URL and full URL' => 3, 'Check IP against Site IP' => 4, 'Check IP and Site URL' => 5, 'Check IP and Full URL' => 6, 'Check IP, Full URL, and Site URL' => 7),
+    5 => array('Plain Old Text' => 'plaintext', 'HTML Formatted' => 'html'),
+    6 => array('12' => 12, '24' => 24),
+    7 => array('Last Page' => 'last', 'First Page' => 'first', 'Every Page' => 'all'),
+    8 => array('Right' => 'right', 'Left' => 'left'),
+    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    10 => array('None' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
+    11 => array('Flat' => 'flat', 'Nested' => 'nested', 'Threaded' => 'threaded', 'No Comments' => 'nocomment'),
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+    13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2),
+    14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
+    15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
+    16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

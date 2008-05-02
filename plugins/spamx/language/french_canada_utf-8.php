@@ -11,12 +11,12 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: french_canada_utf-8.php,v 1.1 2008/04/26 20:46:44 dhaun Exp $
+ * $Id: french_canada_utf-8.php,v 1.2 2008/05/02 15:08:10 dhaun Exp $
  */
 
 global $LANG32;
 
-$LANG_SX00 = array (
+$LANG_SX00 = array(
     'inst1' => '<p>Si vous faites ce qui suit, alors tout le monde ',
     'inst2' => 'pourra voir et importer votre Liste Noire personnelle. Nous pouvons alors créer une base de données ',
     'inst3' => 'plus efficace.</p><p>Si vous avez soumis votre site et ne désirez pas qu\'il reste sur cette liste ',
@@ -42,7 +42,7 @@ $LANG_SX00 = array (
     'rsscreated' => 'Fil RSS Créé',
     'add1' => 'Ajouté ',
     'add2' => ' entrées de la',
-    'add3' => "' liste noire de.",
+    'add3' => '\' liste noire de.',
     'adminc' => 'Commandes Administration:',
     'mblack' => 'Ma Liste Noire:',
     'rlinks' => 'Liens relatifs:',
@@ -57,7 +57,7 @@ $LANG_SX00 = array (
     'exmod' => 'Modules Vérification de Spam-X',
     'actmod' => 'Modules actifs',
     'avmod' => 'Modules disponibles',
-    'coninst' => '<hr>Cliquez sur un module actif pour le supprimer, cliquez sur un module disponible pour l\'ajouter.<br>Les modules sont exécutés dans l\'ordre affiché.',
+    'coninst' => '<hr' . XHTML . '>Cliquez sur un module actif pour le supprimer, cliquez sur un module disponible pour l\'ajouter.<br' . XHTML . '>Les modules sont exécutés dans l\'ordre affiché.',
     'fsc' => 'Correspondance de commentaire indésirable trouvée ',
     'fsc1' => ' envoyé par l\'utilisateur ',
     'fsc2' => ' adresse IP ',
@@ -91,17 +91,17 @@ $LANG_SX00 = array (
     'foundspam' => 'Correspondance de commentaire indésirable trouvée ',
     'foundspam2' => ' envoyé par l\'utilisateur ',
     'foundspam3' => ' adresse IP ',
-	'deletespam' => 'Supprimer Commentaire',
-	'numtocheck' => 'Nombre de commentaires à vérifier',
-	'note1'		=> '<p>Note: La suppression en lot a pour but de faciliter la tâche lorsque vous êtes victime d\'un',
-	'note2'		=> ' commentaire indésirable et que Spam-X ne le reconnaît pas.  <ul><li>Trouvez d\'abord le(s) lien(s) ou autre ',
-	'note3'		=> 'identificateurs de ce commentaire indésirable et ajoutez-le à votre liste noire personnelle.</li><li>Ensuite ',
-	'note4'		=> 'revenez ici et exécutez Spam-X pour vérifier les derniers commentaires.</li></ul><p>Les commentaires ',
-	'note5'		=> 'sont vérifiés à partir des plus récents -- vérifier plus de commentaires ',
-	'note6'		=> 'nécessite plus de temps pour la vérification</p>',
-	'masshead'	=> '<hr><h1 align="center">Suppression de commentaires en lot</h1>',
-    'masstb' => '<hr><h1 align="center">Mass Delete Trackback Spam</h1>',
-	'comdel'	=> ' commentaires supprimés.',
+    'deletespam' => 'Supprimer Commentaire',
+    'numtocheck' => 'Nombre de commentaires à vérifier',
+    'note1' => '<p>Note: La suppression en lot a pour but de faciliter la tâche lorsque vous êtes victime d\'un',
+    'note2' => ' commentaire indésirable et que Spam-X ne le reconnaît pas.  <ul><li>Trouvez d\'abord le(s) lien(s) ou autre ',
+    'note3' => 'identificateurs de ce commentaire indésirable et ajoutez-le à votre liste noire personnelle.</li><li>Ensuite ',
+    'note4' => 'revenez ici et exécutez Spam-X pour vérifier les derniers commentaires.</li></ul><p>Les commentaires ',
+    'note5' => 'sont vérifiés à partir des plus récents -- vérifier plus de commentaires ',
+    'note6' => 'nécessite plus de temps pour la vérification</p>',
+    'masshead' => '<hr' . XHTML . '><h1 align="center">Suppression de commentaires en lot</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">Mass Delete Trackback Spam</h1>',
+    'comdel' => ' commentaires supprimés.',
     'initial_Pimport' => '<p>Importer Liste Noire Personnelle"',
     'initial_import' => 'Importer Liste Noire Principale Originale',
     'import_success' => '<p>Importation avec succès de %d entrées dans la liste noire.',
@@ -114,7 +114,6 @@ $LANG_SX00 = array (
     'ipofurlblack' => 'Spam-X IP of URL Blacklist',
     'headerblack' => 'Spam-X HTTP Header Blacklist',
     'headers' => 'Request headers:',
-
     'stats_headline' => 'Spam-X Statistics',
     'stats_page_title' => 'Blacklist',
     'stats_entries' => 'Entries',
@@ -124,18 +123,44 @@ $LANG_SX00 = array (
     'stats_ipofurl' => 'Blocked by IP of URL',
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
-
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV Whitelist'
 );
 
-
-/* Define Messages that are shown when Spam-X module action is taken */
+// Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'Commentaire indésirable détecté et Commentaire ou Message supprimé.';
-$PLG_spamx_MESSAGE8   = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\Administrateur.';
+$PLG_spamx_MESSAGE8 = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\Administrateur.';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
+
+// Localization of the Admin Configuration UI
+$LANG_configsections['spamx'] = array(
+    'label' => 'Spam-X',
+    'title' => 'Spam-X Configuration'
+);
+
+$LANG_confignames['spamx'] = array(
+    'action' => 'Spam-X Actions',
+    'notification_email' => 'Notification Email',
+    'admin_override' => 'Don\'t Filter Admin Posts',
+    'logging' => 'Enable Logging',
+    'timeout' => 'Timeout'
+);
+
+$LANG_configsubgroups['spamx'] = array(
+    'sg_main' => 'Main Settings'
+);
+
+$LANG_fs['spamx'] = array(
+    'fs_main' => 'Spam-X Main Settings'
+);
+
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+$LANG_configselects['spamx'] = array(
+    0 => array('True' => 1, 'False' => 0),
+    1 => array('True' => true, 'False' => false)
+);
 
 ?>
