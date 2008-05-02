@@ -14,7 +14,7 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Tom Willett       - tomw AT pigstye DOT net                      |
-// |          Trinity Bays      - trinity AT steubentech DOT com               |
+// |          Trinity Bays      - trinity93 AT gmail DOT com                   |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.33 2008/02/03 09:12:30 dhaun Exp $
+// $Id: index.php,v 1.34 2008/05/02 12:12:05 dhaun Exp $
 
 /**
  * This is the links page
@@ -50,7 +50,7 @@
  * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
  * @author Jason Whittenburg <jwhitten AT securitygeeks DOT com>
  * @author Tom Willett <tomw AT pigstye DOT net>
- * @author Trinity Bays <trinity AT steubentech DOT com>
+ * @author Trinity Bays <trinity93 AT gmail DOT com>
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */

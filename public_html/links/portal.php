@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.6 2008/01/01 12:33:48 dhaun Exp $
+// $Id: portal.php,v 1.7 2008/05/02 12:12:05 dhaun Exp $
 
 /** 
  * Geeklog portal page that tracks link click throughs. 
@@ -44,7 +44,7 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93 AT steubentech.com>
+ * @author Trinity Bays <trinity93 AT gmail.com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
  * @author Blaine Lang <langmail AT sympatico DOT ca>

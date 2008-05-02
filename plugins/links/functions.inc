@@ -16,7 +16,7 @@
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
 // |          Jason Whittenburg  - jwhitten AT securitygeeks DOT com           |
 // |          Dirk Haun          - dirk AT haun-online DOT de                  |
-// |          Trinity Bays       - trinity93 AT steubentech DOT com            |
+// |          Trinity Bays       - trinity93 AT gmail DOT com                  |
 // |          Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // |          Euan McKay         - info AT heatherengineering DOT com          |
 // +---------------------------------------------------------------------------+
@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.107 2008/04/19 12:15:57 dhaun Exp $
+// $Id: functions.inc,v 1.108 2008/05/02 12:12:05 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');

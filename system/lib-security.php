@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.68 2008/05/01 19:23:47 dhaun Exp $
+// $Id: lib-security.php,v 1.69 2008/05/02 12:12:06 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -892,7 +892,7 @@ function SEC_collectRemoteAuthenticationModules()
   * Rather self explanitory shortcut function
   * Is this the right place for this, Dirk?
   *
-  * @author Trinity L Bays <trinity93@steubentech.com>
+  * @author Trinity L Bays <trinity93 AT gmail DOT com>
   *
   * @param  string  $uid Their user id
   * @param  string  $gname The group name

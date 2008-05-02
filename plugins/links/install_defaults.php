@@ -16,7 +16,7 @@
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
 // |          Jason Whittenburg  - jwhitten AT securitygeeks DOT com           |
 // |          Dirk Haun          - dirk AT haun-online DOT de                  |
-// |          Trinity Bays       - trinity93 AT steubentech DOT com            |
+// |          Trinity Bays       - trinity93 AT gmail DOT com                  |
 // |          Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // |          Euan McKay         - info AT heatherengineering DOT com          |
 // +---------------------------------------------------------------------------+
@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.2 2008/02/10 17:09:37 dhaun Exp $
+// $Id: install_defaults.php,v 1.3 2008/05/02 12:12:05 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
