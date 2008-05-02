@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.37 2008/05/01 18:35:14 mjervis Exp $
+// $Id: config.class.php,v 1.38 2008/05/02 19:30:11 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -593,11 +593,13 @@ class config {
             //$t->set_var('unset_link',
             //            "(<a href='#' onClick='unset(\"{$name}\");'>X</a>)");
             if (($a = strrchr($name, '[')) !== FALSE) {
-                $o = substr($a, 1, -1);
+                $on = substr($a, 1, -1);
+                $o = str_replace(array('[', ']'), array('_', ''), $name);
             } else {
                 $o = $name;
+                $on = $name;
             }
-            if (! is_numeric($o)) {
+            if (! is_numeric($on)) {
                 if (!empty($GLOBALS['_CONF']['site_url'])) {
                     $baseUrl = $GLOBALS['_CONF']['site_url'];
                 } else {
