@@ -1,19 +1,19 @@
 This directory contains the PEAR packages that are needed by Geeklog. If you
-don't have PEAR installed on your webserver, simply set
-
-     $_CONF['have_pear'] = false;
-
-in config.php and Geeklog will pick up the PEAR packages from here.
+don't have PEAR installed on your webserver, simply set the "Have Pear?" option
+in the configutation to "False" and Geeklog will pick up the PEAR packages from
+here.
 
 Currently, Geeklog uses the following PEAR packages:
 
 - PEAR
+- Date
 - HTTP_Request
 - Mail
 - Net_SMTP
 - Net_Socket
 - Net_URL
 - PHP_Compat
+- Text_Wiki
 - XML_RPC
 
 The Archive and Console packages are included as they are used by the base PEAR
