@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 1.0                                                          |
+// | Links Plugin 2.0                                                          |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
@@ -50,11 +50,28 @@
  */
 
 
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['linkcategories']}] (
+    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [created] [datetime] NULL ,
+    [modified] [datetime] NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL ,
+    [group_id] [numeric](8, 0) NOT NULL ,
+    [perm_owner] [tinyint] NOT NULL ,
+    [perm_group] [tinyint] NOT NULL ,
+    [perm_members] [tinyint] NOT NULL ,
+    [perm_anon] [tinyint] NOT NULL
+) ON [PRIMARY]
+";
 
- $_SQL[] = "
+$_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['links']}] (
     [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -66,22 +83,28 @@ CREATE TABLE [dbo].[{$_TABLES['links']}] (
     [perm_group] [tinyint] NOT NULL ,
     [perm_members] [tinyint] NOT NULL ,
     [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY] 
+) ON [PRIMARY]
 ";
-
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
     [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [hits] [int] NULL ,
-    [date] [datetime] NULL
-) ON [PRIMARY] 
+    [date] [datetime] NULL ,
+    [owner_id] [numeric](8, 0) NOT NULL
+) ON [PRIMARY]
 ";
 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
+    CONSTRAINT [PK_gl_linkcategories] PRIMARY KEY  CLUSTERED
+    (
+        [pid]
+    )  ON [PRIMARY]
+";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD
     CONSTRAINT [DF_gl_links_perm_group] DEFAULT (3) FOR [perm_group],
