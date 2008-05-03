@@ -74,7 +74,7 @@ manually.</p>
 <tr>
   <td valign="top"><a name="desc_microsummary_short">microsummary_short</a></td>
   <td valign="top">GL:</td>
-  <td valign="top">(Microsummary)</td></tr>
+  <td valign="top">Prefix to use for a <a href="http://wiki.mozilla.org/Microsummaries">microsummary</a>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_disabled_msg">site_disabled_msg</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
@@ -244,7 +244,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <td valign="top">1</td>
     <td valign="top">Enable or disable the backup functionality (1 = on,
         0 = off).</td></tr>
-<tr><td valign="top">_DB_mysqldump_path</td>
+<tr><td valign="top"><a name="desc_mysqldump_path">_DB_mysqldump_path</a></td>
     <td valign="top">/usr/bin/mysqldump</td>
     <td valign="top">Complete path to the <a
         href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility
@@ -355,8 +355,14 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   should be able to feature a story.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_story">aftersave_story</a></td>
-  <td valign="top">0</td>
-  <td valign="top">(After Saving Story)</td></tr>
+  <td valign="top">'list'</td>
+  <td valign="top">Which page to go to after a story has been saved:
+    <ul>
+    <li>'item': display the story</li>
+    <li>'list': show admin's list of stories (default)</li>
+    <li>'home': display the site's homepage</li>
+    <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
+    </ul></td></tr>
 </table>
 
 <h3><a name="stories_trackback">Stories and Trackback: Trackback</a></h3>
@@ -507,9 +513,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">Add a link to Geeklog's documentation to the Admin block.
     Set this to 0 if you don't want that link to show up.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_link_documentation">link_documentation</a></td>
+  <td valign="top"><a name="desc_link_versionchecker">link_versionchecker</a></td>
   <td valign="top">1</td>
-  <td valign="top">(Link to Version Checker)</td></tr>
+  <td valign="top">Add a link "GL Version Test" to the Admin block so that you
+    can easily check if your Geeklog version is up to date. Set this to 0 if
+    you don't want that link to show up.<br>
+    <strong>Note:</strong> The link is only displayed to members of the Root
+    group anyway.</td></tr>
 </table>
 
 <h3><a name="blocks_topics">Blocks: Topics Block</a></h3>
@@ -656,11 +666,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_login_method_standard">standard</a></td>
   <td valign="top"><code>true</code></td>
-  <td valign="top">(Login Method: Standard)</td></tr>
+  <td valign="top">Whether to allow normal logins into the site, i.e. with
+    a user account that only exists in your site's database.</td></tr>
 <tr>
   <td valign="top"><a name="desc_login_method_openid">openid</a></td>
   <td valign="top"><code>false</code></td>
-  <td valign="top">(Login Method: OpenID)</td></tr>
+  <td valign="top">Whether to allow logins using <a href="http://openid.net/">OpenID</a>. This will display a special OpenID login below the normal login field.<br>
+    <strong>Note:</strong> Currently only OpenID 1.1 is supported.</td></tr>
 <tr>
   <td valign="top"><a name="desc_login_method_3rdparty">3rdparty</a></td>
   <td valign="top"><code>false</code></td>
@@ -670,11 +682,18 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     Please note that to enable login for a specific service, you need an
     authorization class in <tt>system/classes/authentication</tt>. If you only
     want to allow LDAP but not LiveJournal users (or vice versa), simply
-    remove the class file for the unwanted service(s).</td></tr>
+    remove the class file for the unwanted service(s).<br>
+    See <a href="http://www.geeklog.net/article.php/remote-authentication">Remote Authentication in Geeklog</a> for more information.</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">aftersave_user</a></td>
-  <td valign="top"><code>false</code></td>
-  <td valign="top">(After Saving User)</td></tr>
+  <td valign="top"><code>'item'</code></td>
+  <td valign="top">Which page to go to after a user has been saved:
+    <ul>
+    <li>'item': display the user's profile</li>
+    <li>'list': show admin's list of users (default)</li>
+    <li>'home': display the site's homepage</li>
+    <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
+    </ul></td></tr>
 </table>
 
 <h3><a name="users_spamx">Users and Submissions: Spam-X</a></h3>
@@ -823,7 +842,9 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_wikitext_editor">wikitext_editor</a></td>
   <td valign="top">false</td>
-  <td valign="top">(Wikitext Editor)</td></tr>
+  <td valign="top">Allow using wiki syntax in stories. This adds a third
+    option, "Wiki-style format", to the Post Mode dropdown in the story editor
+    (implemented using the <a href="http://pear.php.net/package/Text_Wiki">PEAR::Text_Wiki</a> package).</td></tr>
 </table>
 
 <h3><a name="users_comments">Users and Submissions: Comments</a></h3>
@@ -1049,11 +1070,14 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_language_files">language_files</a></td>
   <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">(Language Files)</td></tr>
+  <td valign="top">For multi-lingual setups only: A list mapping language
+    shortcuts ('en', 'de', etc.) to the Geeklog language files to use.</td></tr>
 <tr>
   <td valign="top"><a name="desc_languages">languages</a></td>
   <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">(Languages)</td></tr>
+  <td valign="top">For multi-lingual setups only: A list mapping language
+    shortcuts ('en', 'de', etc.) to the language's native name ("English",
+    "Deutsch", etc.).</td></tr>
 </table>
 
 <p>Also see <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">Multi-Language Support</a> in the Geeklog Wiki.</p>
@@ -1335,6 +1359,31 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br>
 <code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
 </table>
+
+<h3><a name="misc_ip_webservices">Miscellaneous: Webservices</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_disable_webservices">disable_webservices</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set this to <code>true</code> to disable the webservices.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_restrict_webservices">restrict_webservices</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set this to <code>true</code> to restrict webservices usage
+    to users with the <tt>webservices.atompub</tt> permission (e.g. those in
+    the predefined "Webservices Users" group).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_atom_max_stories">atom_max_stories</a></td>
+  <td valign="top">10</td>
+  <td valign="top">Max. number of stories returned when an Atom feed is
+    requested through the webservices API.</td></tr>
+</table>
+
+<p>Also see <a href="http://wiki.geeklog.net/wiki/index.php/Using_the_Webservices">Using the Webservices</a> in the Geeklog Wiki.</p>
 
 
 <h2><a name="db-config.php">db-config.php</a></h2>
