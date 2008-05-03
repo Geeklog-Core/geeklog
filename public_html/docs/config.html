@@ -19,117 +19,179 @@ the configuration options have been moved to the database and can now be
 reached from the <b>Configuration</b> admin panel within Geeklog.</p>
 
 <p>For technical reasons, some configuration options still have to be
-stored in files. There are two such configuration files now, called
-<tt>db-config.php</tt> and <tt>siteconfig.php</tt>. These files are updated
+stored in files. There are two such configuration files now:
+<ul>
+<li><a href="#db-config.php">db-config.php</a></li>
+<li><a href="#siteconfig.php">siteconfig.php</a></li>
+</ul>
+<p>These files are updated
 when you install Geeklog and you will not normally have to edit them
 manually.</p>
 
-<h2>Configuration options</h2>
+<h1>Configuration options</h1>
 
-<p>Geeklog's configuration options can be grouped like this:</p>
+<p>Geeklog's configuration options are grouped like this:</p>
 
 <ul>
-<li><a href="#database">Database Settings</a></li>
-<li><a href="#server">Server Settings</a></li>
-<li><a href="#site">Site Settings</a></li>
-<li><a href="#locale">Locale Settings</a></li>
-<li><a href="#session">Session Settings</a></li>
-<li><a href="#cookie">Cookie Names</a></li>
-<li><a href="#desc_mail_settings">E-Mail Settings</a></li>
-<li><a href="#login">Login Settings</a></li>
-<li><a href="#submission">Submission Settings</a></li>
-<li><a href="#trackback">Trackback, Pingback, and Ping Settings</a></li>
-<li><a href="#misc">Topic, What's New, and Daily Digest Settings</a></li>
-<li><a href="#story">Story Settings</a></li>
-<li><a href="#comment">Comment Settings</a></li>
-<li><a href="#image">Image Settings</a>
-    <ul><li><a href="#userphoto">User photo</a></li></ul></li>
-<li><a href="#rdf">Syndication Settings</a></li>
-<li><a href="#content">Content Control Settings</a></li>
-<li><a href="#url-rewrite">URL Rewriting</a></li>
+<li><a href="#site">Site</a></li>
+<li><a href="#stories">Stories and Trackback</a></li>
+<li><a href="#theme">Theme</a></li>
+<li><a href="#blocks">Blocks</a></li>
+<li><a href="#users">Users and Submissions</a></li>
+<li><a href="#images">Images</a></li>
+<li><a href="#languages">Languages and Locale</a></li>
+<li><a href="#misc">Miscellaneous</a></li>
 </ul>
 
+<h2><a name="site">Site</a></h2>
 
-<h3><a name="database">Database Settings</a></h3>
-
-<p>Most of the database settings are actually stored in the
-<tt>db-config.php</tt> configuratin file:</p>
+<h3><a name="site_site">Site: Site</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
     <th width="29%">Default Value</th>
     <th width="63%">Description</th></tr>
-<tr><td valign="top">_DB_dbms</td>
-    <td valign="top">mysql</td>
-    <td valign="top">This option tells Geeklog which type of database it's
-        running on. Can be either <code>'mysql'</code> (for MySQL) or
-        <code>'mssql'</code> (for Microsoft SQL Server).</td></tr>
-<tr><td valign="top">_DB_host</td>
-    <td valign="top">localhost</td>
-    <td valign="top">Database Server (to be entered in the form: <i>hostname:port:unixsocket</i>). In most cases you won't need to change the default value.</td></tr>
-<tr><td valign="top">_DB_name</td>
-    <td valign="top">geeklog</td>
-    <td valign="top">Database Name</td></tr>
-<tr><td valign="top">_DB_user</td>
-    <td valign="top">root</td>
-    <td valign="top">Database User Account</td></tr>
-<tr><td valign="top">_DB_pass</td>
-    <td valign="top">null</td>
-    <td valign="top">Database User Password</td></tr>
-<tr><td valign="top">_DB_table_prefix</td>
-    <td valign="top">gl_</td>
-    <td valign="top">Prefix to put in front of all of Geeklog's table names (to
-        avoid name collisions with tables used by other applications)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_site_url">site_url</a></td>
+  <td valign="top">http://www.example.com</td>
+  <td valign="top">Base URL for your site (no trailing slash)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_site_admin_url">site_admin_url</a></td>
+  <td valign="top">http://www.example.com/admin</td>
+  <td valign="top">Base URL of the admin area of your site (no trailing slash).
+    You won't have to change this normally, but some hosting services use a
+    predefined "admin" directory for other purposes. In this case, you can
+    rename Geeklog's <tt>admin</tt> directory and adjust the URL accordingly to
+    avoid conflicts.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_site_name">site_name</a></td>
+  <td valign="top">Geeklog Site</td>
+  <td valign="top">Name of your site</td></tr>
+<tr>
+  <td valign="top"><a name="desc_site_slogan">site_slogan</a></td>
+  <td valign="top">Another Nifty Geeklog Site</td>
+  <td valign="top">Slogan for your site. This is added to the HTML title field.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_microsummary_short">microsummary_short</a></td>
+  <td valign="top">GL:</td>
+  <td valign="top">(Microsummary)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_site_disabled_msg">site_disabled_msg</a></td>
+  <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
+  <td valign="top">This contains the message to display when a Geeklog site is
+    disabled. If the text begins with "http:" then visitors are redirected to
+    that URL.<br>
+    <strong>Note:</strong> The option actually disable the site can be found
+    in the <tt>siteconfig.php</tt> file.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_copyrightyear">copyrightyear</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">Set this to the year you want to appear in the copyright notice of your
+    site's footer. If not set, Geeklog will use the current year.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_url_rewrite">url_rewrite</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Enable (true) or disable (false) URL rewriting.<br>
+    Also see the section on <a href="#url-rewrite">URL Rewriting</a> below.</td></tr>
 </table>
 
-<p>These database-related settings are available from the Configuration admin
-panel:</p>
+<h3><a name="site_mail">Site: Mail</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
     <th width="29%">Default Value</th>
     <th width="63%">Description</th></tr>
-<tr><td valign="top">_DB_mysqldump_path</td>
-    <td valign="top">/usr/bin/mysqldump</td>
-    <td valign="top">Complete path to the <a
-        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility
-        (part of MySQL) for making backups of your Geeklog database.<br>
-        <i>(only used when running on a MySQL database)</i></td></tr>
-<tr><td valign="top"><a name="desc_allow_mysqldump">allow_mysqldump</a></td>
+<tr>
+  <td valign="top"><a name="desc_site_mail">site_mail</a></td>
+  <td valign="top">admin@example.com</td>
+  <td valign="top">E-mail address for all admin mail</td></tr>
+<tr>
+  <td valign="top"><a name="desc_noreply_mail">noreply_mail</a></td>
+  <td valign="top">noreply@example.com</td>
+  <td valign="top">This is the sender's address of emails sent by the system when users register etc.
+    This should be either the same as $_CONF['site_mail'] or a bouncing address
+    to prevent spammers from getting your email address by registering on the site.
+    If this is NOT the same as above, there will be a message in sent messages
+    that replying to those emails is recommended.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_backend">backend</a></td>
+    <td valign="top">mail</td>
+    <td valign="top">Used to select how to send email. Can be one of 'smtp',
+        'sendmail', or 'mail'.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_sendmail_path">sendmail_path</a></td>
+    <td valign="top"><tt>/usr/bin/sendmail</tt></td>
+    <td valign="top">If you chose 'sendmail' for the backend setting, this
+        specifies the complete path to the sendmail binary.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_sendmail_args">sendmail_args</a></td>
+    <td valign="top"><tt>''</tt> <i>(empty)</i></td>
+    <td valign="top">If you chose 'sendmail' for the backend setting, this
+        variable can be used to pass additional parameters to the sendmail
+        binary.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_host">host</a></td>
+    <td valign="top">smtp.example.com</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        SMTP server to use.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_port">port</a></td>
+    <td valign="top">25</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        port number to talk to on the SMTP server.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_auth">auth</a></td>
+    <td valign="top">0</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, set this to
+        <code>1</code> if your SMTP server requires authorization, and
+        <code>0</code> (or leave the field empty) if it doesn't.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_username">username</a></td>
+    <td valign="top">smtp-username</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        name of your SMTP account.</td></tr>
+<tr><td valign="top"><a name="desc_mail_settings_password">password</a></td>
+    <td valign="top">smtp-password</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        password for your SMTP account.</td></tr>
+</table>
+
+<h3><a name="site_syndication">Site: Syndication</a></h3>
+
+<p>Geeklog can export its headlines to a news feed in various formats (RSS, RDF, and Atom). This will let you share your news with other sites (Hint: Create a Portal block from Geeklog's Block menu to import news feeds from other sites).</p>
+
+<p>Starting with Geeklog 1.3.9, feeds can be created and configured from
+Geeklog's Admin menu ("Content Syndication"). The following settings will only
+be used as the <em>default settings</em> for any new feeds that you create from
+the admin panel.</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td valign="top"><a name="desc_backend">backend</a></td>
     <td valign="top">1</td>
-    <td valign="top">Enable or disable the backup functionality (1 = on,
-        0 = off).<br>
-        <i>(only used when running on a MySQL database)</i></td></tr>
-<tr><td valign="top"><a name="desc_mysqldump_options">mysqldump_options</a></td>
-    <td valign="top">-Q</td>
-    <td valign="top">Here you can include additional options for the <a
-        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> call
-        that Geeklog uses to create a backup from your database.<br>
-        <i>(only used when running on a MySQL database)</i></td></tr>
+    <td valign="top">Create a feed file for the stories in rdf_file (0=no, 1=yes)</td></tr>
+<tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
+    <td valign="top">HTML path with "/backend/geeklog.rss" suffix</td>
+    <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others</td></tr>
+<tr><td valign="top"><a name="desc_rdf_limit">rdf_limit</a></td>
+    <td valign="top">10</td>
+    <td valign="top">Limit the number of stories to export to the news feed. If the value for this setting is a number, the feed will hold this many stories. If the number is followed by a lower-case 'h' (e.g. 24h) it denotes the number of hours from which to chose the stories.</td></tr>
+<tr><td valign="top"><a name="desc_rdf_storytext">rdf_storytext</a></td>
+    <td valign="top">0</td>
+    <td valign="top">If this value is 1, then the entire introtext of the stories will be included in the news feed. Any number greater than 1 limits the introtext to that many characters (e.g. a value of 80 would only include the first 80 characters from the introtext in the feed). If set to 0, the introtext is not included in the feed.</td></tr>
+<tr><td valign="top"><a name="desc_rdf_language">rdf_language</a></td>
+    <td valign="top">en-gb</td>
+    <td valign="top">Value for the feed's language tag. Depending on your site's language and operating system, this may differ from the language setting in the locale (see above).<br><strong>Example:</strong> The PHP locale setting for German is 'de_DE' while the correct language setting for a German RSS feed would be 'de-DE' (note the dash instead of the underscore).</td></tr>
+<tr><td valign="top"><a name="desc_syndication_max_headlines">syndication_max_headlines</a></td>
+    <td valign="top">0</td>
+    <td valign="top">Upper limit for the max. number of headlines when <em>importing</em> a feed (into a portal block). The limit can also be set for each individual portal block in the block menu.<br>
+    When set to 0, all headlines are imported.</td></tr>
 </table>
 
-
-<h3><a name="server">Server Settings</a></h3>
+<h3><a name="site_paths">Site: Paths</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
     <th width="29%">Default Value</th>
     <th width="63%">Description</th></tr>
-<tr><td valign="top"><a name="desc_path">path</a></td>
-    <td valign="top">/path/to/geeklog/</td>
-    <td valign="top">Base file system path for your site (trailing slash necessary)<br>
-        (in <tt>site-config.php</tt>)</td></tr>
-<tr><td valign="top"><a name="desc_path_system">path_system</a></td>
-    <td valign="top">/path/to/geeklog/system/</td>
-    <td valign="top">Path to your system directory for your site (trailing slash necessary).  This directory holds the code libraries used throughout Geeklog<br>
-        (in <tt>site-config.php</tt>)</td></tr>
 <tr><td valign="top"><a name="desc_path_html">path_html</a></td>
     <td valign="top">/path/to/geeklog/public_html/</td>
     <td valign="top">Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog.</td></tr>
-<tr><td valign="top"><a name="desc_path_images">path_images</a></td>
-    <td valign="top">/path/to/geeklog/public_html/images/</td>
-    <td valign="top">Path where Geeklog expects to find its images, including
-        user photos and images for stories.</td>
 <tr><td valign="top"><a name="desc_path_log">path_log</a></td>
     <td valign="top">/path/to/geeklog/logs/</td>
     <td valign="top">File system path for the log files</td></tr>
@@ -142,6 +204,18 @@ panel:</p>
 <tr><td valign="top"><a name="desc_path_data">path_data</a></td>
     <td valign="top">/path/to/geeklog/data/</td>
     <td valign="top">File system path for the data directory, used e.g. for the user batch add feature</td></tr>
+<tr><td valign="top"><a name="desc_path_images">path_images</a></td>
+    <td valign="top">/path/to/geeklog/public_html/images/</td>
+    <td valign="top">Path where Geeklog expects to find its images, including
+        user photos and images for stories.</td>
+</table>
+
+<h3><a name="site_pear">Site: PEAR</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr><td valign="top"><a name="desc_have_pear">have_pear</a></td>
     <td valign="top"><code>false</code></td>
     <td valign="top">Whether you have <a href="http://pear.php.net/">PEAR</a>
@@ -157,123 +231,220 @@ panel:</p>
         PEAR::Mail for sending emails).</td></tr>
 </table>
 
+<h3><a name="site_mysql">Site: MySQL</a></h3>
 
-<h3><a name="site">Site Settings</a></h3>
+<p>As the name implies, these options are only relevant when your site is
+running on a MySQL database. They are ignored when using MS SQL.</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td valign="top"><a name="desc_allow_mysqldump">allow_mysqldump</a></td>
+    <td valign="top">1</td>
+    <td valign="top">Enable or disable the backup functionality (1 = on,
+        0 = off).</td></tr>
+<tr><td valign="top">_DB_mysqldump_path</td>
+    <td valign="top">/usr/bin/mysqldump</td>
+    <td valign="top">Complete path to the <a
+        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility
+        (part of MySQL) for making backups of your Geeklog database.</td></tr>
+<tr><td valign="top"><a name="desc_mysqldump_options">mysqldump_options</a></td>
+    <td valign="top">-Q</td>
+    <td valign="top">Here you can include additional options for the <a
+        href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> call
+        that Geeklog uses to create a backup from your database.</td></tr>
+</table>
+
+<h3><a name="site_search">Site: Search</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
     <th width="29%">Default Value</th>
     <th width="63%">Description</th></tr>
 <tr>
-  <td valign="top"><a name="desc_site_name">site_name</a></td>
-  <td valign="top">Geeklog Site</td>
-  <td valign="top">Name of your site</td></tr>
+  <td valign="top"><a name="desc_num_search_results">num_search_results</a></td>
+  <td valign="top">10</td>
+  <td valign="top">Number of search results per page (and per type).</td></tr>
+</table>
+
+
+<h2><a name="stories">Stories and Trackback</a></h2>
+
+<h3><a name="stories_story">Stories and Trackback: Story</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr>
-  <td valign="top"><a name="desc_site_slogan">site_slogan</a></td>
-  <td valign="top">Another Nifty Geeklog Site</td>
-  <td valign="top">Slogan for your site. This is added to the HTML title field.</td></tr>
+  <td valign="top"><a name="desc_maximagesperarticle">maximagesperarticle</a></td>
+  <td valign="top">5</td>
+  <td valign="top">max. number of images you can have in a story</td></tr>
 <tr>
-  <td valign="top"><a name="desc_site_mail">site_mail</a></td>
-  <td valign="top">admin@example.com</td>
-  <td valign="top">E-mail address for all admin mail</td></tr>
+  <td valign="top"><a name="desc_limitnews">limitnews</a></td>
+  <td valign="top">10</td>
+  <td valign="top">Number of stories to limit the index page to, this same number will appear in the older stuff block</td></tr>
 <tr>
-  <td valign="top"><a name="desc_noreply_mail">noreply_mail</a></td>
-  <td valign="top">noreply@example.com</td>
-  <td valign="top">This is the sender's address of emails sent by the system when users register etc.
-    This should be either the same as $_CONF['site_mail'] or a bouncing address
-    to prevent spammers from getting your email address by registering on the site.
-    If this is NOT the same as above, there will be a message in sent messages
-    that replying to those emails is recommended.</td></tr>
+  <td valign="top"><a name="desc_minnews">minnews</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Minimum numbers of stories than can appear on a topic page</td></tr>
 <tr>
-  <td valign="top"><a name="desc_site_url">site_url</a></td>
-  <td valign="top">http://www.example.com</td>
-  <td valign="top">Base URL for your site (no trailing slash)</td></tr>
+  <td valign="top"><a name="desc_contributedbyline">contributedbyline</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Show author username to public, and enable search by username (0=no, 1=yes)</td></tr>
 <tr>
-  <td valign="top"><a name="desc_site_admin_url">site_admin_url</a></td>
-  <td valign="top">http://www.example.com/admin</td>
-  <td valign="top">Base URL of the admin area of your site (no trailing slash).
-    You won't have to change this normally, but some hosting services use a
-    predefined "admin" directory for other purposes. In this case, you can
-    rename Geeklog's <tt>admin</tt> directory and adjust the URL accordingly to
-    avoid conflicts.</td></tr>
+  <td valign="top"><a name="desc_hideviewscount">hideviewscount</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Whether to show (= 0) or to hide (= 1) the number of views
+    a story has had.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hideemailicon">hideemailicon</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this will disable the ability to send a story by email. It
+    will also hide the email icon from stories and the &quot;Email Article To a
+    Friend&quot; from the Story Options block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hideprintericon">hideprintericon</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this will disable display of a story in a &quot;printer
+    friendly&quot; format. It will also hide the printer icon from stories and
+    the &quot;View Printable Version&quot; from the Story Options
+    block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_page_breaks">allow_page_breaks</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Allow usage of the <code>[page_break]</code> tag in stories (when set to 1), so that stories can spread over multiple pages.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_page_break_comments">page_break_comments</a></td>
+  <td valign="top">last</td>
+  <td valign="top">When the <code>[page_break]</code> tag is allowed in stories (see above), where should the story's comments be displayed: <code>'last'</code> = on the story's last page only, <code>'first'</code> = on the first page only, <code>'all'</code> = on every page.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_article_image_align">article_image_align</a></td>
+  <td valign="top">right</td>
+  <td valign="top">Which side of article the topic image should be shown (right or left)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_show_topic_icon">show_topic_icon</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Default setting for new stories and story submissions: Whether to show the topic icon (1) or not (0).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_draft_flag">draft_flag</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Default setting for new stories created by Story Admins: Whether the story's draft flag should be set (1) or not (0).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_frontpage">frontpage</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Default setting for new stories and story submissions: Whether the story should appear on the site's frontpage (1) or only in its topic's page (0). Please note that for stories submitted to the archive topic, this setting will be ignored and the story will <em>not</em> appear on the frontpage.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hide_no_news_msg">hide_no_news_msg</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, hide the "No News To Display" message on the index page (e.g. when viewing a topic without any stories in it)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hide_main_page_navigation">hide_main_page_navigation</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this option will hide the "Google paging"
+    navigation from index.php, i.e. from the site's frontpage and all topic
+    pages. This may come in handy for more advanced layouts but will of course
+    prevent people from easily reaching older articles.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_onlyrootfeatures">onlyrootfeatures</a></td>
+  <td valign="top">0</td>
+  <td valign="top">This restricts the featuring of stories to root user(s). If you have several story admins who can create content that is not visible to other story admins,
+  and such a content is featured, another admin might think its ok to feature his own content. To prevent
+  that two admins unknowingly take features from each other away, only a user who can see all content (= root)
+  should be able to feature a story.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_aftersave_story">aftersave_story</a></td>
+  <td valign="top">0</td>
+  <td valign="top">(After Saving Story)</td></tr>
+</table>
+
+<h3><a name="stories_trackback">Stories and Trackback: Trackback</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_trackback_enabled">trackback_enabled</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Enable (true) or disable (true) <a href="http://en.wikipedia.org/wiki/Trackback">trackback</a> comments. This applies to both sending and receiving trackback comments.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_trackback_code">trackback_code</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Default value for new stories: Trackback enabled (0) or disabled (-1)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_trackbackspeedlimit">trackbackspeedlimit</a></td>
+  <td valign="top">300</td>
+  <td valign="top">Number of seconds between two trackbacks / pingbacks from the same IP address.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_check_trackback_link">check_trackback_link</a></td>
+  <td valign="top">2</td>
+  <td valign="top">This option can be used to check the validity of a trackback.
+    You can check if the URL in the trackback actually contains a link back to
+    your site (otherwise, it's probably spam). You can also check if the
+    trackback was sent from the proper IP address, i.e. the IP of the site in
+    the trackback URL (again, if they don't match, it's probably spam). Note
+    that you can <strong>add up the values</strong> below to do more than one
+    check (but using option 1 <em>and</em> 2 doesn't make sense and will be
+    treated as if you requested option 2).<br>
+    Options are: 0 = don't perform any checks, 1 = check only for your site's main URL (<code>$_CONF['site_url']</code>), 2 = check for the exact URL of the entry (e.g. an article) on your site, 4 = check IP address of the sender of the trackback against the site referred to in the trackback URL.<br>
+    <b>Example:</b> <code>$_CONF['check_trackback_link'] = 6; // check for the exact URL (2) and proper IP address (4)</code></td></tr>
+<tr>
+  <td valign="top"><a name="desc_multiple_trackbacks">multiple_trackbacks</a></td>
+  <td valign="top">0</td>
+  <td valign="top">How to handle multiple trackbacks and pingbacks from the same source: 0 = keep only the first, reject any further trackbacks / pingbacks; 1 = overwrite, i.e. only keep the latest trackback / pingback; 2 = allow multiple trackbacks / pingbacks, i.e. list them all</td></tr>
+</table>
+
+<h3><a name="stories_pingback">Stories and Trackback: Pingback</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_pingback_enabled">pingback_enabled</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Enable (true) or disable (true) <a href="http://en.wikipedia.org/wiki/Pingback">pingback</a> support. This applies to both sending and receiving pingbacks.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_pingback_excerpt">pingback_excerpt</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Unlike Trackbacks, Pingback don't include an excerpt of the
+    text from the site linking to us. When this option is enabled, Geeklog will
+    try and create an excerpt by searching the backlink on the site that sent
+    the Pingback, extract a piece of the text near the link, and use that as
+    the excerpt for the Pingback.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_pingback_self">pingback_self</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Pingbacks are sent out automatically to <em>all</em> the
+    URLs linked from a story - which includes stories on your own site that
+    you may have linked in the article. This option lets you specify how these
+    "self pingbacks" are to be handled: 0 = skip them, i.e. don't send pingbacks
+    to stories on your own site; 1 = allow them, but obey the speed limit;
+    2 = allow them and ignore the speed limit.<br>
+    If your article contains more than one link to other stories on your site,
+    then option 1 is probably of limited use, as it would only pingback the
+    first linked story and run into the speed limit for the others.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_ping_enabled">ping_enabled</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Enable (true) or disable (true) the ability to ping weblog directory services like <a href="http://technorati.com/">Technorati</a>.</td></tr>
+</table>
+
+
+<h2><a name="theme">Theme</a></h2>
+
+<h3><a name="theme_theme">Theme: Theme</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_theme">theme</a></td>
   <td valign="top">professional</td>
   <td valign="top">Default theme to use on the site</td></tr>
-<tr>
-  <td valign="top"><a name="desc_layout_url">layout_url</a></td>
-  <td valign="top">Site URL path, with layout dir and default layout</td>
-  <td valign="top">Location of the default layout</td></tr>
-<tr>
-  <td valign="top"><a name="desc_path_themes">path_themes</a></td>
-  <td valign="top">/path/to/geeklog/public_html/layout/</td>
-  <td valign="top">Directory where all themes reside</td></tr>
-<tr>
-  <td valign="top"><a name="desc_path_layout">path_layout</a></td>
-  <td valign="top">/path/to/geeklog/public_html/layout/professional/</td>
-  <td valign="top">Path to current theme directory</td></tr>
-<tr>
-  <td valign="top"><a name="desc_allow_user_themes">allow_user_themes</a></td>
-  <td valign="top">Can be 1 or 0</td>
-  <td valign="top">If set to 1, users can set their own theme that the site uses</td></tr>
-<tr>
-  <td valign="top"><a name="desc_allow_user_language">allow_user_language</a></td>
-  <td valign="top">Can be 1 or 0</td>
-  <td valign="top">If set to 1, users can select the language for the site navigation</td></tr>
-<tr>
-  <td valign="top"><a name="desc_allow_user_photo">allow_user_photo</a></td>
-  <td valign="top">Can be 1 or 0</td>
-  <td valign="top">If set to 1, users can upload a photo to their profile</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hide_author_exclusion">hide_author_exclusion</a></td>
-  <td valign="top">Can be 1 or 0</td>
-  <td valign="top">If set to 1, the option to to exclude certain authors from being seen is hidden from the user's preferences.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_show_fullname">show_fullname</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Whether to display a user's full name (= 1) or only their
-    username (= 0). For users that haven't entered their full name, Geeklog
-    will always display the username.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_remoteauthentication">remoteauthentication</a></td>
-  <td valign="top">false</td>
-  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
-    an account with some other service to log into your Geeklog site with the
-    login for that service. Currently supported: Blogger and LiveJournal.<br>
-    Please note that to enable login for a specific service, you need an
-    authorization class in <tt>system/classes/authentication</tt>. If you only
-    want to allow Blogger but not LiveJournal users (or vice versa), simply
-    remove the class file for the unwanted service(s).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_show_servicename">show_servicename</a></td>
-  <td valign="top">true</td>
-  <td valign="top">If you allow users to log in with accounts on remote services
-    (like Blogger or LiveJournal), this option will at the service's name to
-    the username to avoid confusion with local users of the same name. Set to
-    <tt>false</tt> to disable.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
-  <td valign="top">true</td>
-  <td valign="top">A Geeklog site can be disabled quickly (e.g. for maintenance)
-    by setting this to 'false'.<br>
-    (in <tt>site-config.php</tt>)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_site_disabled_msg">site_disabled_msg</a></td>
-  <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
-  <td valign="top">This contains the message to display when a Geeklog site is
-    disabled.  If the text begins with "http:" then visitors are redirected to
-    that URL.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_sort_admin">sort_admin</a></td>
-  <td valign="top">false</td>
-  <td valign="top">If set to <tt>true</tt> will sort the entries in the Admin's
-    block and the icons on the Submissions page (<tt>moderation.php</tt>)
-    alphabetically.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_link_documentation">link_documentation</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Add a link to Geeklog's documentation to the Admin block.
-    Set this to 0 if you don't want that link to show up.</td></tr>
 <tr>
   <td valign="top"><a name="desc_menu_elements">menu_elements</a></td>
   <td valign="top"><code>array('contribute', 'calendar', 'search', 'stats',
@@ -289,11 +460,229 @@ panel:</p>
     a custom function <code>CUSTOM_menuEntries</code> (see
     <tt>lib-custom.php</tt> for details).</td></tr>
 <tr>
+  <td valign="top"><a name="desc_path_themes">path_themes</a></td>
+  <td valign="top">/path/to/geeklog/public_html/layout/</td>
+  <td valign="top">Directory where all themes reside</td></tr>
+</table>
+
+<h3><a name="theme_advanced">Theme: Advanced Settings</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_show_right_blocks">show_right_blocks</a></td>
+  <td valign="top">false</td>
+  <td valign="top">If set to <tt>true</tt>, the right-side column of blocks
+    will be displayed on <em>all</em> pages (instead of only on the index
+    page).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_showfirstasfeatured">showfirstasfeatured</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this will render the first story on <em>any</em> page
+    using the templates for a featured story, even if that story is not
+    featured. This will even be applied to the first story on page 2 of a
+    topic page, for example.</td></tr>
+</table>
+
+
+<h2><a name="blocks">Blocks</a></h2>
+
+<h3><a name="blocks_admin">Blocks: Admin Block</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_sort_admin">sort_admin</a></td>
+  <td valign="top">false</td>
+  <td valign="top">If set to <tt>true</tt> will sort the entries in the Admin's
+    block and the icons on the Submissions page (<tt>moderation.php</tt>)
+    alphabetically.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_link_documentation">link_documentation</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Add a link to Geeklog's documentation to the Admin block.
+    Set this to 0 if you don't want that link to show up.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_link_documentation">link_documentation</a></td>
+  <td valign="top">1</td>
+  <td valign="top">(Link to Version Checker)</td></tr>
+</table>
+
+<h3><a name="blocks_topics">Blocks: Topics Block</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_sortmethod">sortmethod</a></td>
+  <td valign="top">sortnum</td>
+  <td valign="top">alpha = Sort topics in topic list alphabetically<br>sortnum = Sort topics in topic list by sort number</td></tr>
+<tr>
+  <td valign="top"><a name="desc_showstorycount">showstorycount</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Show the number of stories in a topic in the Sections block (0=no, 1=yes)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_showsubmissioncount">showsubmissioncount</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Show the number of story submissions for a topic in the Sections block (0=no, 1=yes)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hide_home_link">hide_home_link</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Hide the "Home" link from the Sections block (0=no, 1=yes)</td></tr>
+</table>
+
+<h3><a name="blocks_who">Blocks: Who's Online Block</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_whosonline_threshold">whosonline_threshold</a></td>
+  <td valign="top">300</td>
+  <td valign="top">How long, in seconds, users can be idle before removing them from the whosonline block</td></tr>
+<tr>
+  <td valign="top"><a name="desc_whosonline_anonymous">whosonline_anonymous</a></td>
+  <td valign="top">0</td>
+  <td valign="top">If enabled (i.e. set to 1), anonymous users will only see the number of registered users currently online in the Who's Online block but not their names. Only logged-in users will see the names of other users that are currently online.</td></tr>
+</table>
+
+<h3><a name="blocks_what">Blocks: What's New Block</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_newstoriesinterval">newstoriesinterval</a></td>
+  <td valign="top">86400</td>
+  <td valign="top">Stories are "new" if they are this many seconds old.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_newcommentsinterval">newcommentsinterval</a></td>
+  <td valign="top">172800</td>
+  <td valign="top">Comments are "new" if they are this many seconds old.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_newtrackbackinterval">newtrackbackinterval</a></td>
+  <td valign="top">172800</td>
+  <td valign="top">Trackback comments are "new" if they are this many seconds old.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hidenewstories">hidenewstories</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Set to 1 to hide new stories from the What's New block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hidenewcomments">hidenewcomments</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Set to 1 to hide new comments from the What's New block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hidenewtrackbacks">hidenewtrackbacks</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Set to 1 to hide new trackback comments from the What's New block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hidenewplugins">hidenewplugins</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Set to 1 to hide new entries by plugins from the What's New
+    block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_title_trim_length">title_trim_length</a></td>
+  <td valign="top">20</td>
+  <td valign="top">Max. length of the title of items listed in the What's New
+    block.</td></tr>
+</table>
+
+
+<h2><a name="users">Users and Submissions</a></h2>
+
+<h3><a name="users_users">Users and Submissions: Users</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_disable_new_user_registration">disable_new_user_registration</a></td>
+  <td valign="top">false</td>
+  <td valign="top">When set to <tt>true</tt> completely disables all options
+    to sign up as a new user.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_user_themes">allow_user_themes</a></td>
+  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">If set to 1, users can set their own theme that the site uses</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_user_language">allow_user_language</a></td>
+  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">If set to 1, users can select the language for the site navigation</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_user_photo">allow_user_photo</a></td>
+  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">If set to 1, users can upload a photo to their profile</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_username_change">allow_username_change</a></td>
+  <td valign="top">0</td>
+  <td valign="top">If set to 1, users will be allowed to change their username
+    (login name). Stories and comments posted under the old username will
+    automatically show the new username.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_account_delete">allow_account_delete</a></td>
+  <td valign="top">0</td>
+  <td valign="top">If set to 1, users will be allowed to delete their accounts. Stories and comments posted under that account will be kept and show up as being posted by "Anonymous".</td></tr>
+<tr>
+  <td valign="top"><a name="desc_hide_author_exclusion">hide_author_exclusion</a></td>
+  <td valign="top">Can be 1 or 0</td>
+  <td valign="top">If set to 1, the option to to exclude certain authors from being seen is hidden from the user's preferences.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_show_fullname">show_fullname</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Whether to display a user's full name (= 1) or only their
+    username (= 0). For users that haven't entered their full name, Geeklog
+    will always display the username.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_show_servicename">show_servicename</a></td>
+  <td valign="top">true</td>
+  <td valign="top">If you allow users to log in with accounts on remote services
+    (like LDAP or LiveJournal), this option will at the service's name to
+    the username to avoid confusion with local users of the same name. Set to
+    <tt>false</tt> to disable.</td></tr>
+<tr>
   <td valign="top"><a name="desc_custom_registration">custom_registration</a></td>
   <td valign="top"><code>false</code></td>
   <td valign="top">When set to <code>true</code>, Geeklog will let you use
       your own signup form for new user registrations. Please see the file
       <tt>lib-custom.php</tt> that ships with Geeklog for an example.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_login_method_standard">standard</a></td>
+  <td valign="top"><code>true</code></td>
+  <td valign="top">(Login Method: Standard)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_login_method_openid">openid</a></td>
+  <td valign="top"><code>false</code></td>
+  <td valign="top">(Login Method: OpenID)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_login_method_3rdparty">3rdparty</a></td>
+  <td valign="top"><code>false</code></td>
+  <td valign="top">Allow (when set to <tt>true</tt>) users who already have
+    an account with some other service to log into your Geeklog site with the
+    login for that service. Currently supported: LDAP and LiveJournal.<br>
+    Please note that to enable login for a specific service, you need an
+    authorization class in <tt>system/classes/authentication</tt>. If you only
+    want to allow LDAP but not LiveJournal users (or vice versa), simply
+    remove the class file for the unwanted service(s).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_aftersave_user">aftersave_user</a></td>
+  <td valign="top"><code>false</code></td>
+  <td valign="top">(After Saving User)</td></tr>
+</table>
+
+<h3><a name="users_spamx">Users and Submissions: Spam-X</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_spamx">spamx</a></td>
   <td valign="top">128</td>
@@ -302,35 +691,349 @@ panel:</p>
     executed. E.g. the "delete" action module uses 128, the "email admin"
     module uses 8, so if both modules should be executed, this option should
     be set to 128 + 8 = 136.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_rootdebug">rootdebug</a></td>
-  <td valign="top"><code>false</code></td>
-  <td valign="top">When a PHP error occurs, Geeklog's error handler will only
-    display the actual error message to members of the Root group (to prevent
-    leakage of possibly sensitive information). When set to <code>true</code>,
-    this information will be displayed to <em>all</em> users. <strong>Use only
-    for debugging purposes!</strong></td></tr>
+</table>
+
+<h3><a name="users_login">Users and Submissions: Login Settings</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_lastlogin">lastlogin</a></td>
   <td valign="top"><code>true</code></td>
   <td valign="top">Whether to keep track of when a user last logged in
     (<code>= true</code>) or not (<code>= false</code>).</td></tr>
+<tr><td valign="top"><a name="desc_loginrequired">loginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">Login is required to access <em>any</em> part of the site. When
+      set to 1, this overrides the following settings. When you only want to
+      block access to certain parts of the site, set this to 0 and select
+      from the following settings.</td></tr>
+<tr><td valign="top"><a name="desc_submitloginrequired">submitloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can submit stories
+      and items handled by plugins, e.g. links and events</td></tr>
+<tr><td valign="top"><a name="desc_commentsloginrequired">commentsloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can submit comments</td></tr>
+<tr><td valign="top"><a name="desc_statsloginrequired">statsloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can access the site stats</td></tr>
+<tr><td valign="top"><a name="desc_searchloginrequired">searchloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can use the advanced search. When
+      set to 2, the simple search is blocked for anonymous users, too.</td></tr>
+<tr><td valign="top"><a name="desc_profileloginrequired">profileloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can view another user's profile</td></tr>
+<tr><td valign="top"><a name="desc_emailuserloginrequired">emailuserloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can use the email submission
+      form to send an email to another user</td></tr>
+<tr><td valign="top"><a name="desc_emailstoryloginrequired">emailstoryloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can email stories</td></tr>
+<tr><td valign="top"><a name="desc_directoryloginrequired">directoryloginrequired</a></td>
+    <td valign="top">0</td>
+    <td valign="top">When set to 1, only registered users can access the list of past articles</td></tr>
 <tr>
-  <td valign="top"><a name="desc_cron_schedule_interval">cron_schedule_interval</a></td>
-  <td valign="top">86400</td>
-  <td valign="top">Geeklog can emulate a <a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>, i.e. trigger a certain action at a given time. The code
-    to be executed can be provided by a plugin or through the
-    <code>CUSTOM_runScheduledTask</code> function in your
-    <tt>lib-custom.php</tt>. The value given is in seconds and specifies the
-    interval in which the code should be executed.<br>
-    Please note that to trigger this action, you will need to have someone
-    visit your site at around the specified time. On a site with few visitors,
-    the code may only be executed with considerable delay.<br>
-    Set to 0 to disable.</td></tr>
+  <td valign="top"><a name="desc_passwordspeedlimit">passwordspeedlimit</a></td>
+  <td valign="top">300</td>
+  <td valign="top">Minimum delay between two requests for a new password, in seconds.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_login_attempts">login_attempts</a></td>
+  <td valign="top">3</td>
+  <td valign="top">Max. number of login attempts before the speedlimit (see
+    below) kicks in and further logins are blocked for the given amount of
+    time.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_login_speedlimit">login_speedlimit</a></td>
+  <td valign="top">300</td>
+  <td valign="top">How many seconds have to pass before another login attempt
+    can be made after <code>$_CONF['login_attempts']</code> (see above) login
+    attempts have failed.</td></tr>
+</table>
+
+<h3><a name="users_usersub">Users and Submissions: User Submission</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_usersubmission">usersubmission</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Enable (1) or disable (0) the user submission queue (i.e.
+      new users must be approved before they receive their password)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_domains">allow_domains</a></td>
+  <td valign="top">''</td>
+  <td valign="top">When the user submission queue is enabled this can contain a
+    comma-separated list of domain names from which user submissions will not
+    be queued (but approved automatically). Regular expressions are also allowed
+    and interpreted.<br><strong>Example:</strong>
+    <tt>'mycompany.com,myothercompany.com'</tt></td></tr>
+<tr>
+  <td valign="top"><a name="desc_disallow_domains">disallow_domains</a></td>
+  <td valign="top">''</td>
+  <td valign="top">This is the opposite of <code>$_CONF['allow_domains']</code>
+    (see above): A list of domain names that are <em>not</em> allowed in email
+    addresses of new users. Note that this list is <em>always</em> used, even
+    when the user submission queue has been switched off. Again, regular
+    expression can be used.<br><strong>Example</strong> disallow email addresses
+    with a certain domain name and from any ".edu" domain:
+    <tt>'somebaddomain.com,\.edu$'</tt></td></tr>
+</table>
+
+<h3><a name="users_submission">Users and Submissions: Submission Settings</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_storysubmission">storysubmission</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Enable (1) or disable (0) the story submission queue</td></tr>
+<tr>
+  <td valign="top"><a name="desc_listdraftstories">listdraftstories</a></td>
+  <td valign="top">0</td>
+  <td valign="top">When set to 1, this will display an additional block on the
+    submissions page (<tt>moderation.php</tt>) that lists all the stories that
+    have the 'draft' flag set.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_postmode">postmode</a></td>
+  <td valign="top">plaintext</td>
+  <td valign="top">Sets the default submission mode to 'html' or 'plaintext'</td></tr>
+<tr>
+  <td valign="top"><a name="desc_speedlimit">speedlimit</a></td>
+  <td valign="top">45</td>
+  <td valign="top">Minimum delay between submissions in seconds. This helps prevent Denial of Service (DOS) attacks</td></tr>
+<tr>
+  <td valign="top"><a name="desc_skip_preview">skip_preview</a></td>
+  <td valign="top">0</td>
+  <td valign="top">If 1, allows submission of stories and comments without previewing (i.e. the submission form will always have a Preview <em>and</em> a Submit button).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_advanced_editor">advanced_editor</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
+    story and comment submissions and static pages. Geeklog ships with <a
+    href="http://www.fckeditor.net/">FCKeditor</a>.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_wikitext_editor">wikitext_editor</a></td>
+  <td valign="top">false</td>
+  <td valign="top">(Wikitext Editor)</td></tr>
+</table>
+
+<h3><a name="users_comments">Users and Submissions: Comments</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_commentspeedlimit">commentspeedlimit</a></td>
+  <td valign="top">45</td>
+  <td valign="top">Number of seconds between posting a comment for the user</td></tr>
+<tr>
+  <td valign="top"><a name="desc_comment_limit">comment_limit</a></td>
+  <td valign="top">100</td>
+  <td valign="top">Most number of comments to show at any one time</td></tr>
+<tr>
+  <td valign="top"><a name="desc_comment_mode">comment_mode</a></td>
+  <td valign="top">threaded</td>
+  <td valign="top">How to display comments (threaded, nested, flat or nocomments)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_comment_code">comment_code</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Default value for new stories: Comments enabled (0) or disabled (-1)</td></tr>
 </table>
 
 
-<h3><a name="locale">Locale Settings</a></h3>
+<h2><a name="images">Images</a></h2>
+
+<h3><a name="images_imagelib">Images: Image Library</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_image_lib">image_lib</a></td>
+  <td valign="top">'' <i>(empty string)</i></td>
+  <td valign="top">Set this to either 'imagemagick', 'netpbm', or 'gdlib' if
+    images should be resized during upload. Leave as '' if you don't want
+    images to be resized or if you don't have those packages available.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_path_to_mogrify">path_to_mogrify</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">If you chose 'imagemagick' for
+    <code>$_CONF['image_lib']</code> above, then this should hold the
+    <strong>complete path</strong> to the mogrify executable (from the
+    ImageMagick package), e.g. '/usr/bin/mogrify'.<br>
+    You will need a fairly recent version of <a
+    href="http://www.imagemagick.org/">ImageMagick</a> for this to work
+    (version 5.4.9 or newer is recommended).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">If you chose 'netpbm' for <code>$_CONF['image_lib']</code>
+    above, then this should hold the complete path to the <em>directory</em>
+    where the binaries from the netpbm package are kept, e.g.
+    <code>'/usr/bin/netpbm/'</code>. Note that the path must end in a slash.<br>
+    Precompiled binaries of the netpbm package for various platforms can be
+    downloaded from the <a
+    href="http://sourceforge.net/projects/gallery/">Homepage of the Gallery
+    project</a>.</td></tr>
+</table>
+
+<h3><a name="images_upload">Images: Upload</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_keep_unscaled_image">keep_unscaled_image</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Set this to 1 if you want Geeklog to keep the original, unscaled images after upload. The smaller image will then be used as a thumbnail and will link to the original image. Note that this may use a lot of disk space (depending on the size of your images).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_user_scaling">allow_user_scaling</a></td>
+  <td valign="top">1</td>
+  <td valign="top">When unscaled images are kept (see above), this option lets
+    the user chose between using the scaled or unscaled image in the story, i.e.
+    enables the <code>[unscaled<i>X</i>]</code> image tag (in addition to the
+    <code>[image<i>X</i>]</code> tag).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_debug_image_upload">debug_image_upload</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">When not commented out(!) and set to <code>true</code>, this
+    option enables debugging output to be written into Geeklog's <tt>error.log</tt> file during the upload of an image. This is useful to track down problems
+    with the image upload.</td></tr>
+</table>
+
+<h3><a name="images_articles">Images: Images in Articles</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_max_image_width">max_image_width</a></td>
+  <td valign="top">160</td>
+  <td valign="top">Max. width of an image in pixels. If it exceeds this, it is
+    either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_max_image_height">max_image_height</a></td>
+  <td valign="top">120</td>
+  <td valign="top">Max. height of an image in pixels. If it exceeds this, it is
+    either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_max_image_size">max_image_size</a></td>
+  <td valign="top">1048576 <i>(equals 1 MB)</i></td>
+  <td valign="top">Max. size of an image in bytes. If it exceeds this, it is
+    is rejected (even if you're using a graphics package to resize images).</td></tr>
+</table>
+
+<h3><a name="images_topic">Images: Topic Icons</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_max_topicicon_width">max_topicicon_width</a></td>
+  <td valign="top">48</td>
+  <td valign="top">Max. width of a topic icon in pixels. If it exceeds this,
+    it is either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_max_topicicon_height">max_topicicon_height</a></td>
+  <td valign="top">48</td>
+  <td valign="top">Max. height of a topic icon in pixels. If it exceeds this,
+    it is either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_max_topicicon_size">max_topicicon_size</a></td>
+  <td valign="top">65536 <i>(equals 64 KB)</i></td>
+  <td valign="top">Max. size of a topic icon in bytes. If it exceeds this, it
+    is rejected (even if you're using a graphics package to resize images).</td>
+</table>
+
+<h3><a name="images_photos">Images: Photos</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_max_photo_width">max_photo_width</a></td>
+  <td valign="top">128</td>
+  <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it
+    is either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</tr>
+<tr>
+  <td valign="top"><a name="desc_max_photo_height">max_photo_height</a></td>
+  <td valign="top">128</td>
+  <td valign="top">Max. height of a user photo in pixels. If it exceeds this,
+    it is either rejected or resized (depending on the setting of
+    <code>$_CONF['image_lib']</code> above).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_max_photo_size">max_photo_size</a></td>
+  <td valign="top">65536 <i>(equals 64 KB)</i></td>
+  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
+    is rejected (even if you're using a graphics package to resize images).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_force_photo_width">force_photo_width</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">This option, when enabled, will only apply when
+    <em>displaying</em> a user photo. The <code>&lt;img&gt;</code> tag for the
+    user photo will be emitted with a max. width, as specified by this option.
+    This means that the actual photo can still be larger, but will only be
+    displayed smaller. This is useful for cases where you don't want oddly
+    shaped user photos to break your page's layout (e.g. in a forum).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_photo">default_photo</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">When enabled, this option should point to an image (full URL
+    required!) that should be displayed for users without a user photo. When
+    this option is not set and a user does not have a user photo (or an avatar)
+    then Geeklog will simply not display anything.</td></tr>
+</table>
+
+<h3><a name="images_gravatar">Images: Gravatar</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_use_gravatar">use_gravatar</a></td>
+  <td valign="top">false</td>
+  <td valign="top">If enabled (set to <tt>true</tt>), a user's avatar image will
+    be requested from <a href="http://gravatar.com/">gravatar.com</a> if the
+    user didn't upload a user photo (i.e. an uploaded photo always takes
+    priority).<br>
+    Please note that this option may slow down your site on pages that display
+    a lot of userphotos for different users (e.g. forum threads).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_gravatar_rating">gravatar_rating</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">Avatars submitted to gravatar.com are <a
+    href="http://gravatar.com/rating.php">rated</a> with the rating system used
+    for movies (in the U.S.), i.e. the letters G, PG, R, or X. This option will
+    let you chose the <em>maximum</em> allowed rating for an avatar. For
+    example, a max. rating of R will make sure that no X-rated avatars will be
+    displayed on your site (only G, PG, and R).</td></tr>
+</table>
+
+
+<h2><a name="languages">Languages and Locale</a></h2>
+
+<h3><a name="languages_language">Languages and Locale: Language</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -343,6 +1046,24 @@ panel:</p>
     available for download at <a href="http://www.geeklog.net/">http://www.geeklog.net</a>.
     If you translate a language file, please send it to us. Also see <a
     href="#Localization">Localization</a> below.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_language_files">language_files</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">(Language Files)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_languages">languages</a></td>
+  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top">(Languages)</td></tr>
+</table>
+
+<p>Also see <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">Multi-Language Support</a> in the Geeklog Wiki.</p>
+
+<h3><a name="languages_locale">Languages and Locale: Locale</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_locale">locale</a></td>
   <td valign="top">en_GB</td>
@@ -387,15 +1108,6 @@ panel:</p>
     with a time setting (e.g. the publish time of a story). Can be 12 (for the
     12 hour am/pm format) or 24 (for the 24 hour format).</td></tr>
 <tr>
-  <td valign="top"><a name="desc_default_charset">default_charset</a></td>
-  <td valign="top">iso-8859-1</td>
-  <td valign="top">Character encoding used by Geeklog when serving HTML pages or
-    sending email. Only used if the language file did not already set
-    another character encoding.<br>
-    (in <tt>site-config.php</tt>)<br>
-    For <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">multi-language</a> setups, using <code>'utf-8'</code> as the default character
-    set is recommended.</td></tr>
-<tr>
   <td valign="top"><a name="desc_thousand_separator">thousand_separator</a></td>
   <td valign="top"><code>,</code></td>
   <td valign="top">Character to use between every group of thousands.</td></tr>
@@ -418,39 +1130,9 @@ panel:</p>
 </table>
 
 
-<h3><a name="session">Session Settings</a></h3>
+<h2><a name="misc">Miscellaneous</a></h2>
 
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_cookie_ip">cookie_ip</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Session ID to contain IP address of user as well as random number. This is more secure but will more than likely require dialed up users to login each and every time. (0=no, 1=yes)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_default_perm_cookie_timeout">default_perm_cookie_timeout</a></td>
-  <td valign="top">28800</td>
-  <td valign="top">Permanent cookie timeout in seconds (28800 = 8 hours).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_session_cookie_timeout">session_cookie_timeout</a></td>
-  <td valign="top">7200</td>
-  <td valign="top">Session cookie timeout (in seconds).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_cookie_path">cookie_path</a></td>
-  <td valign="top">/</td>
-  <td valign="top">Cookie path (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_cookiedomain">cookiedomain</a></td>
-  <td valign="top"><i>(empty)</i></td>
-  <td valign="top">The domain that the cookie is available. Geeklog will attempt to guess the correct value for this setting (based on the 'site_url' variable). See the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_cookiesecure">cookiesecure</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Only set to 1 if your site uses HTTPS (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
-</table>
-
-<h3><a name="cookie">Cookie Names</a></h3>
+<h3><a name="misc_cookies">Miscellaneous: Cookies</a></h3>
 
 <p>These variables define the names of all of Geeklog's cookies. They can easily be changed in case there's a name collision with the cookies used by some other software package that you may use on your site.</p>
 
@@ -478,140 +1160,48 @@ panel:</p>
   <td valign="top"><a name="desc_cookie_language">cookie_language</a></td>
   <td valign="top">language</td>
   <td valign="top">Name of the language cookie.</td></tr>
-</table>
-
-<h3><a name="desc_mail_settings">E-Mail Settings</a><a name="email"></a></h3>
-
-<p>Starting with Geeklog 1.3.9, Geeklog uses the PEAR::Mail class to send all
-emails. You can then select whether emails should be sent through SMTP,
-sendmail, or PHP's <code>mail()</code> function.</p>
-
-<p>Within <code>$_CONF['mail_settings']</code> you have the following
-options:</p>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr><td valign="top"><a name="desc_mail_settings_backend">backend</a></td>
-    <td valign="top">mail</td>
-    <td valign="top">Used to select how to send email. Can be one of 'smtp',
-        'sendmail', or 'mail'.</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_sendmail_path">sendmail_path</a></td>
-    <td valign="top"><tt>/usr/bin/sendmail</tt></td>
-    <td valign="top">If you chose 'sendmail' for the backend setting, this
-        specifies the complete path to the sendmail binary.</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_sendmail_args">sendmail_args</a></td>
-    <td valign="top"><tt>''</tt> <i>(empty)</i></td>
-    <td valign="top">If you chose 'sendmail' for the backend setting, this
-        variable can be used to pass additional parameters to the sendmail
-        binary.</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_host">host</a></td>
-    <td valign="top">smtp.example.com</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
-        SMTP server to use.</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_port">port</a></td>
-    <td valign="top">25</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
-        port number to talk to on the SMTP server.</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_auth">auth</a></td>
-    <td valign="top">false</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, set this to
-        <code>true</code> if your SMTP server requires authorization, and
-        <code>false</code> if it doesn't.</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_username">username</a></td>
-    <td valign="top">smtp-username</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
-        name of your SMTP account.</td></tr>
-<tr><td valign="top"><a name="desc_mail_settings_password">password</a></td>
-    <td valign="top">smtp-password</td>
-    <td valign="top">If you chose 'smtp' for the backend setting, this is the
-        password for your SMTP account.</td></tr>
-</table>
-
-<h3><a name="login">Login Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr><td valign="top"><a name="desc_loginrequired">loginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">Login is required to access <em>any</em> part of the site. When
-      set to 1, this overrides the following settings. When you only want to
-      block access to certain parts of the site, set this to 0 and select
-      from the following settings.</td></tr>
-<tr><td valign="top"><a name="desc_submitloginrequired">submitloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can submit stories
-      and items handled by plugins, e.g. links and events</td></tr>
-<tr><td valign="top"><a name="desc_commentsloginrequired">commentsloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can submit comments</td></tr>
-<tr><td valign="top"><a name="desc_calendarloginrequired">calendarloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can access the calendar</td></tr>
-<tr><td valign="top"><a name="desc_statsloginrequired">statsloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can access the site stats</td></tr>
-<tr><td valign="top"><a name="desc_searchloginrequired">searchloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can use the advanced search. When
-      set to 2, the simple search is blocked for anonymous users, too.</td></tr>
-<tr><td valign="top"><a name="desc_profileloginrequired">profileloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can view another user's profile</td></tr>
-<tr><td valign="top"><a name="desc_emailuserloginrequired">emailuserloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can use the email submission
-      form to send an email to another user</td></tr>
-<tr><td valign="top"><a name="desc_emailstoryloginrequired">emailstoryloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can email stories</td></tr>
-<tr><td valign="top"><a name="desc_directoryloginrequired">directoryloginrequired</a></td>
-    <td valign="top">0</td>
-    <td valign="top">When set to 1, only registered users can access the list of past articles</td></tr>
-</table>
-
-
-<h3><a name="submission">Submission Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
 <tr>
-  <td valign="top"><a name="desc_storysubmission">storysubmission</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Enable (1) or disable (0) the story submission queue</td></tr>
+  <td valign="top"><a name="desc_cookie_tzid">cookie_tzid</a></td>
+  <td valign="top">timezone</td>
+  <td valign="top">Name of the timezone cookie.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_usersubmission">usersubmission</a></td>
+  <td valign="top"><a name="desc_cookie_ip">cookie_ip</a></td>
   <td valign="top">0</td>
-  <td valign="top">Enable (1) or disable (0) the user submission queue (i.e.
-      new users must be approved before they receive their password)</td></tr>
+  <td valign="top">Session ID to contain IP address of user as well as random number. This is more secure but will more than likely require dialed up users to login each and every time. (0=no, 1=yes)</td></tr>
 <tr>
-  <td valign="top"><a name="desc_disable_new_user_registration">disable_new_user_registration</a></td>
-  <td valign="top">false</td>
-  <td valign="top">When set to <tt>true</tt> completely disables all options
-    to sign up as a new user.</td></tr>
+  <td valign="top"><a name="desc_default_perm_cookie_timeout">default_perm_cookie_timeout</a></td>
+  <td valign="top">28800</td>
+  <td valign="top">Permanent cookie timeout in seconds (28800 = 8 hours).</td></tr>
 <tr>
-  <td valign="top"><a name="desc_allow_domains">allow_domains</a></td>
-  <td valign="top">''</td>
-  <td valign="top">When the user submission queue is enabled this can contain a
-    comma-separated list of domain names from which user submissions will not
-    be queued (but approved automatically). Regular expressions are also allowed
-    and interpreted.<br><strong>Example:</strong>
-    <tt>'mycompany.com,myothercompany.com'</tt></td></tr>
+  <td valign="top"><a name="desc_session_cookie_timeout">session_cookie_timeout</a></td>
+  <td valign="top">7200</td>
+  <td valign="top">Session cookie timeout (in seconds).</td></tr>
 <tr>
-  <td valign="top"><a name="desc_disallow_domains">disallow_domains</a></td>
-  <td valign="top">''</td>
-  <td valign="top">This is the opposite of <code>$_CONF['allow_domains']</code>
-    (see above): A list of domain names that are <em>not</em> allowed in email
-    addresses of new users. Note that this list is <em>always</em> used, even
-    when the user submission queue has been switched off. Again, regular
-    expression can be used.<br><strong>Example</strong> disallow email addresses
-    with a certain domain name and from any ".edu" domain:
-    <tt>'somebaddomain.com,\.edu$'</tt></td></tr>
+  <td valign="top"><a name="desc_cookie_path">cookie_path</a></td>
+  <td valign="top">/</td>
+  <td valign="top">Cookie path (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookiedomain">cookiedomain</a></td>
+  <td valign="top"><i>(empty)</i></td>
+  <td valign="top">The domain that the cookie is available. Geeklog will attempt to guess the correct value for this setting (based on the 'site_url' variable). See the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookiesecure">cookiesecure</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Only set to 1 if your site uses HTTPS (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
+</table>
+
+<h3><a name="misc_misc">Miscellaneous: Miscellaneous</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_pdf_enabled">pdf_enabled</a></td>
+  <td valign="top">0</td>
+  <td valign="top">PDF conversion of stories has not been fully implemented
+    yet. Leave this option switched off to prevent unfinished options from
+    showing up on your site.</td></tr>
 <tr>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>
@@ -626,128 +1216,46 @@ options:</p>
     registered. No notifications would be sent, for example, for new
     comments.</td>
 <tr>
-  <td valign="top"><a name="desc_listdraftstories">listdraftstories</a></td>
+  <td valign="top"><a name="desc_cron_schedule_interval">cron_schedule_interval</a></td>
+  <td valign="top">86400</td>
+  <td valign="top">Geeklog can emulate a <a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>, i.e. trigger a certain action at a given time. The code
+    to be executed can be provided by a plugin or through the
+    <code>CUSTOM_runScheduledTask</code> function in your
+    <tt>lib-custom.php</tt>. The value given is in seconds and specifies the
+    interval in which the code should be executed.<br>
+    Please note that to trigger this action, you will need to have someone
+    visit your site at around the specified time. On a site with few visitors,
+    the code may only be executed with considerable delay.<br>
+    Set to 0 to disable.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_disable_autolinks">disable_autolinks</a></td>
   <td valign="top">0</td>
-  <td valign="top">When set to 1, this will display an additional block on the
-    submissions page (<tt>moderation.php</tt>) that lists all the stories that
-    have the 'draft' flag set.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_postmode">postmode</a></td>
-  <td valign="top">plaintext</td>
-  <td valign="top">Sets the default submission mode to 'html' or 'plaintext'</td></tr>
-<tr>
-  <td valign="top"><a name="desc_speedlimit">speedlimit</a></td>
-  <td valign="top">45</td>
-  <td valign="top">Minimum delay between submissions in seconds. This helps prevent Denial of Service (DOS) attacks</td></tr>
-<tr>
-  <td valign="top"><a name="desc_skip_preview">skip_preview</a></td>
-  <td valign="top">0</td>
-  <td valign="top">If 1, allows submission of stories and comments without previewing (i.e. the submission form will always have a Preview <em>and</em> a Submit button).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_advanced_editor">advanced_editor</a></td>
-  <td valign="top">false</td>
-  <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
-    story and comment submissions and static pages. Geeklog ships with <a
-    href="http://www.fckeditor.net/">FCKeditor</a>.</td></tr>
+  <td valign="top">If set to 1, disables the autolinks. I.e. links using the
+    [story:] etc. syntax are not interpreted any more.</td></tr>
 </table>
 
-
-<h3><a name="trackback">Trackback, Pingback, and Ping Settings</a></h3>
+<h3><a name="misc_debug">Miscellaneous: Debug</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
     <th width="29%">Default Value</th>
     <th width="63%">Description</th></tr>
 <tr>
-  <td valign="top"><a name="desc_trackback_enabled">trackback_enabled</a></td>
-  <td valign="top">true</td>
-  <td valign="top">Enable (true) or disable (true) <a href="http://en.wikipedia.org/wiki/Trackback">trackback</a> comments. This applies to both sending and receiving trackback comments.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_pingback_enabled">pingback_enabled</a></td>
-  <td valign="top">true</td>
-  <td valign="top">Enable (true) or disable (true) <a href="http://en.wikipedia.org/wiki/Pingback">pingback</a> support. This applies to both sending and receiving pingbacks.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_ping_enabled">ping_enabled</a></td>
-  <td valign="top">true</td>
-  <td valign="top">Enable (true) or disable (true) the ability to ping weblog directory services like <a href="http://technorati.com/">Technorati</a>.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_trackback_code">trackback_code</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Default value for new stories: Trackback enabled (0) or disabled (-1)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_multiple_trackbacks">multiple_trackbacks</a></td>
-  <td valign="top">0</td>
-  <td valign="top">How to handle multiple trackbacks and pingbacks from the same source: 0 = keep only the first, reject any further trackbacks / pingbacks; 1 = overwrite, i.e. only keep the latest trackback / pingback; 2 = allow multiple trackbacks / pingbacks, i.e. list them all</td></tr>
-<tr>
-  <td valign="top"><a name="desc_trackbackspeedlimit">trackbackspeedlimit</a></td>
-  <td valign="top">300</td>
-  <td valign="top">Number of seconds between two trackbacks / pingbacks from the same IP address.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_check_trackback_link">check_trackback_link</a></td>
-  <td valign="top">2</td>
-  <td valign="top">This option can be used to check the validity of a trackback.
-    You can check if the URL in the trackback actually contains a link back to
-    your site (otherwise, it's probably spam). You can also check if the
-    trackback was sent from the proper IP address, i.e. the IP of the site in
-    the trackback URL (again, if they don't match, it's probably spam). Note
-    that you can <strong>add up the values</strong> below to do more than one
-    check (but using option 1 <em>and</em> 2 doesn't make sense and will be
-    treated as if you requested option 2).<br>
-    Options are: 0 = don't perform any checks, 1 = check only for your site's main URL (<code>$_CONF['site_url']</code>), 2 = check for the exact URL of the entry (e.g. an article) on your site, 4 = check IP address of the sender of the trackback against the site referred to in the trackback URL.<br>
-    <b>Example:</b> <code>$_CONF['check_trackback_link'] = 6; // check for the exact URL (2) and proper IP address (4)</code></td></tr>
-<tr>
-  <td valign="top"><a name="desc_pingback_self">pingback_self</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Pingbacks are sent out automatically to <em>all</em> the
-    URLs linked from a story - which includes stories on your own site that
-    you may have linked in the article. This option lets you specify how these
-    "self pingbacks" are to be handled: 0 = skip them, i.e. don't send pingbacks
-    to stories on your own site; 1 = allow them, but obey the speed limit;
-    2 = allow them and ignore the speed limit.<br>
-    If your article contains more than one link to other stories on your site,
-    then option 1 is probably of limited use, as it would only pingback the
-    first linked story and run into the speed limit for the others.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_pingback_excerpt">pingback_excerpt</a></td>
-  <td valign="top">true</td>
-  <td valign="top">Unlike Trackbacks, Pingback don't include an excerpt of the
-    text from the site linking to us. When this option is enabled, Geeklog will
-    try and create an excerpt by searching the backlink on the site that sent
-    the Pingback, extract a piece of the text near the link, and use that as
-    the excerpt for the Pingback.</td></tr>
+  <td valign="top"><a name="desc_rootdebug">rootdebug</a></td>
+  <td valign="top"><code>false</code></td>
+  <td valign="top">When a PHP error occurs, Geeklog's error handler will only
+    display the actual error message to members of the Root group (to prevent
+    leakage of possibly sensitive information). When set to <code>true</code>,
+    this information will be displayed to <em>all</em> users. <strong>Use only
+    for debugging purposes!</strong></td></tr>
 </table>
 
-
-<h3><a name="misc">Topic, What's New, and E-mail Settings</a></h3>
+<h3><a name="misc_digest">Miscellaneous: Daily Digest</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
     <th width="29%">Default Value</th>
     <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_sortmethod">sortmethod</a></td>
-  <td valign="top">sortnum</td>
-  <td valign="top">alpha = Sort topics in topic list alphabetically<br>sortnum = Sort topics in topic list by sort number</td></tr>
-<tr>
-  <td valign="top"><a name="desc_showstorycount">showstorycount</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Show the number of stories in a topic in the Sections block (0=no, 1=yes)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_showsubmissioncount">showsubmissioncount</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Show the number of story submissions for a topic in the Sections block (0=no, 1=yes)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hide_home_link">hide_home_link</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Hide the "Home" link from the Sections block (0=no, 1=yes)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_whosonline_threshold">whosonline_threshold</a></td>
-  <td valign="top">300</td>
-  <td valign="top">How long, in seconds, users can be idle before removing them from the whosonline block</td></tr>
-<tr>
-  <td valign="top"><a name="desc_whosonline_anonymous">whosonline_anonymous</a></td>
-  <td valign="top">0</td>
-  <td valign="top">If enabled (i.e. set to 1), anonymous users will only see the number of registered users currently online in the Who's Online block but not their names. Only logged-in users will see the names of other users that are currently online.</td></tr>
 <tr>
   <td valign="top"><a name="desc_emailstories">emailstories</a></td>
   <td valign="top">0</td>
@@ -764,422 +1272,9 @@ options:</p>
   <td valign="top">0</td>
   <td valign="top">When set to 1, new users will be subscribed to the daily digest
     automatically when they register with the site.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_newstoriesinterval">newstoriesinterval</a></td>
-  <td valign="top">86400</td>
-  <td valign="top">Stories are "new" if they are this many seconds old.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_newcommentsinterval">newcommentsinterval</a></td>
-  <td valign="top">172800</td>
-  <td valign="top">Comments are "new" if they are this many seconds old.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_newtrackbackinterval">newtrackbackinterval</a></td>
-  <td valign="top">172800</td>
-  <td valign="top">Trackback comments are "new" if they are this many seconds old.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hidenewstories">hidenewstories</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Set to 1 to hide new stories from the What's New block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hidenewcomments">hidenewcomments</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Set to 1 to hide new comments from the What's New block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hidenewtrackbacks">hidenewtrackbacks</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Set to 1 to hide new trackback comments from the What's New block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hidenewplugins">hidenewplugins</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Set to 1 to hide new entries by plugins from the What's New
-    block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_title_trim_length">title_trim_length</a></td>
-  <td valign="top">20</td>
-  <td valign="top">Max. length of the title of items listed in the What's New
-    block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_copyrightyear">copyrightyear</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">Set this to the year you want to appear in the copyright notice of your
-    site's footer. If not set, Geeklog will use the current year.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_allow_username_change">allow_username_change</a></td>
-  <td valign="top">0</td>
-  <td valign="top">If set to 1, users will be allowed to change their username
-    (login name). Stories and comments posted under the old username will
-    automatically show the new username.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_allow_account_delete">allow_account_delete</a></td>
-  <td valign="top">0</td>
-  <td valign="top">If set to 1, users will be allowed to delete their accounts. Stories and comments posted under that account will be kept and show up as being posted by "Anonymous".</td></tr>
-<tr>
-  <td valign="top"><a name="desc_passwordspeedlimit">passwordspeedlimit</a></td>
-  <td valign="top">300</td>
-  <td valign="top">Minimum delay between two requests for a new password, in seconds.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_login_attempts">login_attempts</a></td>
-  <td valign="top">3</td>
-  <td valign="top">Max. number of login attempts before the speedlimit (see
-    below) kicks in and further logins are blocked for the given amount of
-    time.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_login_speedlimit">login_speedlimit</a></td>
-  <td valign="top">300</td>
-  <td valign="top">How many seconds have to pass before another login attempt
-    can be made after <code>$_CONF['login_attempts']</code> (see above) login
-    attempts have failed.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
-  <td valign="top"><i>not set</i></td>
-  <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br>
-<code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
-<tr>
-  <td valign="top"><a name="desc_num_search_results">num_search_results</a></td>
-  <td valign="top">10</td>
-  <td valign="top">Number of search results per page (and per type).</td></tr>
 </table>
 
-
-<h3><a name="story">Story Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_maximagesperarticle">maximagesperarticle</a></td>
-  <td valign="top">5</td>
-  <td valign="top">max. number of images you can have in a story</td></tr>
-<tr>
-  <td valign="top"><a name="desc_limitnews">limitnews</a></td>
-  <td valign="top">10</td>
-  <td valign="top">Number of stories to limit the index page to, this same number will appear in the older stuff block</td></tr>
-<tr>
-  <td valign="top"><a name="desc_minnews">minnews</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Minimum numbers of stories than can appear on a topic page</td></tr>
-<tr>
-  <td valign="top"><a name="desc_contributedbyline">contributedbyline</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Show author username to public, and enable search by username (0=no, 1=yes)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hideviewscount">hideviewscount</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Whether to show (= 0) or to hide (= 1) the number of views
-    a story has had.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_article_image_align">article_image_align</a></td>
-  <td valign="top">right</td>
-  <td valign="top">Which side of article the topic image should be shown (right or left)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_show_topic_icon">show_topic_icon</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Default setting for new stories and story submissions: Whether to show the topic icon (1) or not (0).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_draft_flag">draft_flag</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Default setting for new stories created by Story Admins: Whether the story's draft flag should be set (1) or not (0).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_frontpage">frontpage</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Default setting for new stories and story submissions: Whether the story should appear on the site's frontpage (1) or only in its topic's page (0). Please note that for stories submitted to the archive topic, this setting will be ignored and the story will <em>not</em> appear on the frontpage.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_onlyrootfeatures">onlyrootfeatures</a></td>
-  <td valign="top">0</td>
-  <td valign="top">When set to 1, this will only allow members of the Root
-    group to make a story "featured", i.e. the sticky top story on the
-    site.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hideemailicon">hideemailicon</a></td>
-  <td valign="top">0</td>
-  <td valign="top">When set to 1, this will disable the ability to send a story by email. It
-    will also hide the email icon from stories and the &quot;Email Article To a
-    Friend&quot; from the Story Options block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hideprintericon">hideprintericon</a></td>
-  <td valign="top">0</td>
-  <td valign="top">When set to 1, this will disable display of a story in a &quot;printer
-    friendly&quot; format. It will also hide the printer icon from stories and
-    the &quot;View Printable Version&quot; from the Story Options
-    block.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hide_no_news_msg">hide_no_news_msg</a></td>
-  <td valign="top">0</td>
-  <td valign="top">When set to 1, hide the "No News To Display" message on the index page (e.g. when viewing a topic without any stories in it)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_hide_main_page_navigation">hide_main_page_navigation</a></td>
-  <td valign="top">0</td>
-  <td valign="top">When set to 1, this option will hide the "Google paging"
-    navigation from index.php, i.e. from the site's frontpage and all topic
-    pages. This may come in handy for more advanced layouts but will of course
-    prevent people from easily reaching older articles.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_allow_page_breaks">allow_page_breaks</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Allow usage of the <code>[page_break]</code> tag in stories (when set to 1), so that stories can spread over multiple pages.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_page_break_comments">page_break_comments</a></td>
-  <td valign="top">last</td>
-  <td valign="top">When the <code>[page_break]</code> tag is allowed in stories (see above), where should the story's comments be displayed: <code>'last'</code> = on the story's last page only, <code>'first'</code> = on the first page only, <code>'all'</code> = on every page.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_show_right_blocks">show_right_blocks</a></td>
-  <td valign="top">false</td>
-  <td valign="top">If set to <tt>true</tt>, the right-side column of blocks
-    will be displayed on <em>all</em> pages (instead of only on the index
-    page).</td></tr>
-<tr>
-  <td valign="top"><a name="desc_showfirstasfeatured">showfirstasfeatured</a></td>
-  <td valign="top">0</td>
-  <td valign="top">When set to 1, this will render the first story on <em>any</em> page
-    using the templates for a featured story, even if that story is not
-    featured. This will even be applied to the first story on page 2 of a
-    topic page, for example.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_showfirstasfeatured">onlyrootfeatures</a></td>
-  <td valign="top">0</td>
-  <td valign="top">This restricts the featuring of stories to root user(s). If you have several story admins
-  that can create content that is not visible to other story admins,
-  and such a content is featured, another admin might think its ok to feature his own content. To prevent
-  that two admins unknowingly take features from each other away, only a user who can see all content (= root)
-  should be able to feature a story.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_left_blocks_in_footer">left_blocks_in_footer</a></td>
-  <td valign="top">0</td>
-  <td valign="top">When set to 1, this will make the <code>{left_blocks}</code>
-    variable available in <tt>footer.thtml</tt> (and disable it in
-    <tt>header.thtml</tt>). This is really only useful for two-column layouts
-    where you want the left column contain the stories and the right columni
-    contain the standard blocks.</td></tr>
-</table>
-
-
-<h3><a name="comment">Comment Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_commentspeedlimit">commentspeedlimit</a></td>
-  <td valign="top">45</td>
-  <td valign="top">Number of seconds between posting a comment for the user</td></tr>
-<tr>
-  <td valign="top"><a name="desc_comment_limit">comment_limit</a></td>
-  <td valign="top">100</td>
-  <td valign="top">Most number of comments to show at any one time</td></tr>
-<tr>
-  <td valign="top"><a name="desc_comment_mode">comment_mode</a></td>
-  <td valign="top">threaded</td>
-  <td valign="top">How to display comments (threaded, nested, flat or nocomments)</td></tr>
-<tr>
-  <td valign="top"><a name="desc_comment_code">comment_code</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Default value for new stories: Comments enabled (0) or disabled (-1)</td></tr>
-</table>
-
-
-<h3><a name="image">Image Settings</a></h3>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_image_lib">image_lib</a></td>
-  <td valign="top">'' <i>(empty string)</i></td>
-  <td valign="top">Set this to either 'imagemagick', 'netpbm', or 'gdlib' if
-    images should be resized during upload. Leave as '' if you don't want
-    images to be resized or if you don't have those packages available.</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_path_to_mogrify">path_to_mogrify</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">If you chose 'imagemagick' for
-    <code>$_CONF['image_lib']</code> above, then this should hold the
-    <strong>complete path</strong> to the mogrify executable (from the
-    ImageMagick package), e.g. '/usr/bin/mogrify'.<br>
-    You will need a fairly recent version of <a
-    href="http://www.imagemagick.org/">ImageMagick</a> for this to work
-    (version 5.4.9 or newer is recommended).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">If you chose 'netpbm' for <code>$_CONF['image_lib']</code>
-    above, then this should hold the complete path to the <em>directory</em>
-    where the binaries from the netpbm package are kept, e.g.
-    <code>'/usr/bin/netpbm/'</code>. Note that the path must end in a slash.<br>
-    Precompiled binaries of the netpbm package for various platforms can be
-    downloaded from the <a
-    href="http://sourceforge.net/projects/gallery/">Homepage of the Gallery
-    project</a>.</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_keep_unscaled_image">keep_unscaled_image</a></td>
-  <td valign="top">0</td>
-  <td valign="top">Set this to 1 if you want Geeklog to keep the original, unscaled images after upload. The smaller image will then be used as a thumbnail and will link to the original image. Note that this may use a lot of disk space (depending on the size of your images).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_allow_user_scaling">allow_user_scaling</a></td>
-  <td valign="top">1</td>
-  <td valign="top">When unscaled images are kept (see above), this option lets
-    the user chose between using the scaled or unscaled image in the story, i.e.
-    enables the <code>[unscaled<i>X</i>]</code> image tag (in addition to the
-    <code>[image<i>X</i>]</code> tag).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_image_width">max_image_width</a></td>
-  <td valign="top">160</td>
-  <td valign="top">Max. width of an image in pixels. If it exceeds this, it is
-    either rejected or resized (depending on the setting of
-    <code>$_CONF['image_lib']</code> above).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_image_height">max_image_height</a></td>
-  <td valign="top">120</td>
-  <td valign="top">Max. height of an image in pixels. If it exceeds this, it is
-    either rejected or resized (depending on the setting of
-    <code>$_CONF['image_lib']</code> above).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_image_size">max_image_size</a></td>
-  <td valign="top">1048576 <i>(equals 1 MB)</i></td>
-  <td valign="top">Max. size of an image in bytes. If it exceeds this, it is
-    is rejected (even if you're using a graphics package to resize images).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_topicicon_width">max_topicicon_width</a></td>
-  <td valign="top">48</td>
-  <td valign="top">Max. width of a topic icon in pixels. If it exceeds this,
-    it is either rejected or resized (depending on the setting of
-    <code>$_CONF['image_lib']</code> above).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_topicicon_height">max_topicicon_height</a></td>
-  <td valign="top">48</td>
-  <td valign="top">Max. height of a topic icon in pixels. If it exceeds this,
-    it is either rejected or resized (depending on the setting of
-    <code>$_CONF['image_lib']</code> above).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_topicicon_size">max_topicicon_size</a></td>
-  <td valign="top">65536 <i>(equals 64 KB)</i></td>
-  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
-    is rejected (even if you're using a graphics package to resize images).</td>
-<tr>
-  <td valign="top"><a name="desc_debug_image_upload">debug_image_upload</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">When not commented out(!) and set to <code>true</code>, this
-    option enables debugging output to be written into Geeklog's <tt>error.log</tt> file during the upload of an image. This is useful to track down problems
-    with the image upload.</td>
-</tr>
-</table>
-
-<h4><a name="userphoto">User photo</a></h4>
-
-<p>Additional options for the user photo.</p>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_max_photo_width">max_photo_width</a></td>
-  <td valign="top">128</td>
-  <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it
-    is either rejected or resized (depending on the setting of
-    <code>$_CONF['image_lib']</code> above).
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_photo_height">max_photo_height</a></td>
-  <td valign="top">128</td>
-  <td valign="top">Max. height of a user photo in pixels. If it exceeds this,
-    it is either rejected or resized (depending on the setting of
-    <code>$_CONF['image_lib']</code> above).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_max_photo_size">max_photo_size</a></td>
-  <td valign="top">65536 <i>(equals 64 KB)</i></td>
-  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
-    is rejected (even if you're using a graphics package to resize images).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_use_gravatar">use_gravatar</a></td>
-  <td valign="top">false</td>
-  <td valign="top">If enabled (set to <tt>true</tt>), a user's avatar image will
-    be requested from <a href="http://gravatar.com/">gravatar.com</a> if the
-    user didn't upload a user photo (i.e. an uploaded photo always takes
-    priority).<br>
-    Please note that this option may slow down your site on pages that display
-    a lot of userphotos for different users (e.g. forum threads).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_gravatar_rating">gravatar_rating</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">Avatars submitted to gravatar.com are <a
-    href="http://gravatar.com/rating.php">rated</a> with the rating system used
-    for movies (in the U.S.), i.e. the letters G, PG, R, or X. This option will
-    let you chose the <em>maximum</em> allowed rating for an avatar. For
-    example, a max. rating of R will make sure that no X-rated avatars will be
-    displayed on your site (only G, PG, and R).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_force_photo_width">force_photo_width</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">This option, when enabled, will only apply when
-    <em>displaying</em> a user photo. The <code>&lt;img&gt;</code> tag for the
-    user photo will be emitted with a max. width, as specified by this option.
-    This means that the actual photo can still be larger, but will only be
-    displayed smaller. This is useful for cases where you don't want oddly
-    shaped user photos to break your page's layout (e.g. in a forum).</td>
-</tr>
-<tr>
-  <td valign="top"><a name="desc_default_photo">default_photo</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">When enabled, this option should point to an image (full URL
-    required!) that should be displayed for users without a user photo. When
-    this option is not set and a user does not have a user photo (or an avatar)
-    then Geeklog will simply not display anything.</td>
-</tr>
-</table>
-
-<h3><a name="rdf">Syndication Settings</a></h3>
-
-<p>Geeklog can export its headlines to a news feed in various formats (RSS, RDF, and Atom). This will let you share your news with other sites (Hint: Create a Portal block from Geeklog's Block menu to import news feeds from other sites).</p>
-
-<p>Starting with Geeklog 1.3.9, feeds can be created and configured from
-Geeklog's Admin menu ("Content Syndication"). The following settings will only
-be used as the <em>default settings</em> for any new feeds that you create from
-the admin panel.</p>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr><td valign="top"><a name="desc_backend">backend</a></td>
-    <td valign="top">1</td>
-    <td valign="top">Create a feed file for the stories in rdf_file (0=no, 1=yes)</td></tr>
-<tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
-    <td valign="top">HTML path with "/backend/geeklog.rss" suffix</td>
-    <td valign="top">File system path for the feed file. This file allows you to share your site's headlines with others</td></tr>
-<tr><td valign="top"><a name="desc_rdf_language">rdf_language</a></td>
-    <td valign="top">en-gb</td>
-    <td valign="top">Value for the feed's language tag. Depending on your site's language and operating system, this may differ from the language setting in the locale (see above).<br><strong>Example:</strong> The PHP locale setting for German is 'de_DE' while the correct language setting for a German RSS feed would be 'de-DE' (note the dash instead of the underscore).</td></tr>
-<tr><td valign="top"><a name="desc_rdf_limit">rdf_limit</a></td>
-    <td valign="top">10</td>
-    <td valign="top">Limit the number of stories to export to the news feed. If the value for this setting is a number, the feed will hold this many stories. If the number is followed by a lower-case 'h' (e.g. 24h) it denotes the number of hours from which to chose the stories.</td></tr>
-<tr><td valign="top"><a name="desc_rdf_storytext">rdf_storytext</a></td>
-    <td valign="top">0</td>
-    <td valign="top">If this value is 1, then the entire introtext of the stories will be included in the news feed. Any number greater than 1 limits the introtext to that many characters (e.g. a value of 80 would only include the first 80 characters from the introtext in the feed). If set to 0, the introtext is not included in the feed.</td></tr>
-<tr><td valign="top"><a name="desc_syndication_max_headlines">syndication_max_headlines</a></td>
-    <td valign="top">0</td>
-    <td valign="top">Upper limit for the max. number of headlines when <em>importing</em> a feed (into a portal block). The limit can also be set for each individual portal block in the block menu.<br>
-    When set to 0, all headlines are imported.</td></tr>
-</table>
-
-
-<h3><a name="content">Content Control Settings</a></h3>
+<h3><a name="misc_html">Miscellaneous: HTML Filtering</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -1197,20 +1292,23 @@ the admin panel.</p>
       use (in addition to those from user_html). Redefining a tag with
       additional attributes will overwrite the definition from user_html.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_allowed_protocols">allowed_protocols</a></td>
-  <td valign="top">array ('http', 'https', 'ftp');</td>
-  <td valign="top">Defines which protocols are allowed in links (i.e. HTML
-    <code>&lt;a&gt;</code> tags).</td></tr>
-<tr>
   <td valign="top"><a name="desc_skip_html_filter_for_root">skip_html_filter_for_root</a></td>
   <td valign="top">0</td>
   <td valign="top">When set to 1, this will allow members of the Root group
     to use <em>all</em> HTML in their posts. <strong>Use at your own risk!</strong></td></tr>
 <tr>
-  <td valign="top"><a name="desc_disable_autolinks">disable_autolinks</a></td>
-  <td valign="top">0</td>
-  <td valign="top">If set to 1, disables the autolinks. I.e. links using the
-    [story:] etc. syntax are not interpreted any more.</td></tr>
+  <td valign="top"><a name="desc_allowed_protocols">allowed_protocols</a></td>
+  <td valign="top">array ('http', 'https', 'ftp');</td>
+  <td valign="top">Defines which protocols are allowed in links (i.e. HTML
+    <code>&lt;a&gt;</code> tags).</td></tr>
+</table>
+
+<h3><a name="misc_censoring">Miscellaneous: Censoring</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_censormode">censormode</a></td>
   <td valign="top">1</td>
@@ -1225,7 +1323,89 @@ the admin panel.</p>
   <td valign="top">An array of censored words</td></tr>
 </table>
 
-<h3><a name="url-rewrite">URL Rewriting</a></h3>
+<h3><a name="misc_ip_lookup">Miscellaneous: IP Lookup</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
+  <td valign="top"><i>not set</i></td>
+  <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report abuse to ISPs, etc.<br>
+<code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';</code></td></tr>
+</table>
+
+
+<h2><a name="db-config.php">db-config.php</a></h2>
+
+<p>As the name implies, the file <tt>db-config.php</tt> contains the database
+configuration. This information is put there during the initial install and
+you should not normally have to edit this file.</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td valign="top">_DB_host</td>
+    <td valign="top">localhost</td>
+    <td valign="top">Database Server (to be entered in the form: <i>hostname:port:unixsocket</i>). In most cases you won't need to change the default value.</td></tr>
+<tr><td valign="top">_DB_name</td>
+    <td valign="top">geeklog</td>
+    <td valign="top">Database Name</td></tr>
+<tr><td valign="top">_DB_user</td>
+    <td valign="top">root</td>
+    <td valign="top">Database User Account</td></tr>
+<tr><td valign="top">_DB_pass</td>
+    <td valign="top">null</td>
+    <td valign="top">Database User Password</td></tr>
+<tr><td valign="top">_DB_table_prefix</td>
+    <td valign="top">gl_</td>
+    <td valign="top">Prefix to put in front of all of Geeklog's table names (to
+        avoid name collisions with tables used by other applications)</td></tr>
+<tr><td valign="top">_DB_dbms</td>
+    <td valign="top">mysql</td>
+    <td valign="top">This option tells Geeklog which type of database it's
+        running on. Can be either <code>'mysql'</code> (for MySQL) or
+        <code>'mssql'</code> (for Microsoft SQL Server).</td></tr>
+</table>
+
+
+<h2><a name="siteconfig.php">siteconfig.php</a></h2>
+
+<p>The <tt>siteconfig.php</tt> file holds configuration data that can not be
+stored in the database. Again, most of this information is put there during
+the installation and you should not normally have to edit this file.</p> 
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td valign="top"><a name="desc_path">path</a></td>
+    <td valign="top">/path/to/geeklog/</td>
+    <td valign="top">Base file system path for your site (trailing slash necessary)</td></tr>
+<tr><td valign="top"><a name="desc_path_system">path_system</a></td>
+    <td valign="top">/path/to/geeklog/system/</td>
+    <td valign="top">Path to your system directory for your site (trailing slash necessary).  This directory holds the code libraries used throughout Geeklog</td></tr>
+<tr>
+  <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
+  <td valign="top">true</td>
+  <td valign="top">A Geeklog site can be disabled quickly (e.g. for maintenance)
+    by setting this to 'false'.<br>
+    Also see the <a href="#desc_site_disabled_msg">site_disabled_msg</a>
+    configuration option.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_charset">default_charset</a></td>
+  <td valign="top">iso-8859-1</td>
+  <td valign="top">Character encoding used by Geeklog when serving HTML pages or
+    sending email. Only used if the language file did not already set
+    another character encoding.<br>
+    For <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">multi-language</a> setups, using <code>'utf-8'</code> as the default character
+    set is recommended.</td></tr>
+</table>
+
+
+<h2><a name="url-rewrite">URL Rewriting</a></h2>
 
 <p>Geeklog includes a simple but useful URL rewriting feature which can help
 make your site more crawler friendly (i.e. the URLs of your site are more
@@ -1237,44 +1417,11 @@ supported for URLs to stories, static pages, the article directory, and links.
 <p>instead of like this</p>
 <p align="center"><tt>http://www.geeklog.net/article.php?story=20021022234959146</tt></p>
 <p>While some search engines will pick up the second form, Google seems to
-prefer the first format and completely ignores the second format.</p>
+prefer the first format and often ignores the second format.</p>
 <p><strong>Note:</strong> This feature may not work with all web servers. It
 is known to work with Apache (all versions) and known <em>not</em> to work
 with IIS (at least some versions). Please try it out before you go public
 with your site.</p>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_url_rewrite">url_rewrite</a></td>
-  <td valign="top">false</td>
-  <td valign="top">Enable (true) or disable (false) URL rewriting.</td></tr>
-</table>
-
-
-<h3><a name="unused">Unused Settings</a></h3>
-
-<p>This is a list of <tt>config.php</tt> options that are currently unused, e.g.
-because the feature they were intended for has not been implemented yet.</p>
-
-<table border="1" width="100%">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Default Value</th>
-    <th width="63%">Description</th></tr>
-<tr>
-  <td valign="top"><a name="desc_ostype">ostype</a></td>
-  <td valign="top"><code>PHP_OS</code></td>
-  <td valign="top">Identifies the operating system running on your
-    webserver.</td></tr>
-<tr>
-  <td valign="top"><a name="desc_pdf_enabled">pdf_enabled</a></td>
-  <td valign="top">0</td>
-  <td valign="top">PDF conversion of stories has not been fully implemented
-    yet. Leave this option as is to prevent unfinished options from showing up
-    on your site.</td></tr>
-</table>
 
 
 <h2><a name="Localization">Localization</a></h2>
