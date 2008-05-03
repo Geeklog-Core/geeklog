@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.25 2008/05/01 19:43:42 mjervis Exp $
+// $Id: story.class.php,v 1.26 2008/05/03 19:04:08 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1507,7 +1507,7 @@ class Story
                 $out = '';
                 while( $start_pos !== false ) {
                     /* Copy in to start to out */
-                    $out .= MBYTE_substr($inlower, 0, $start_pos);
+                    $out .= MBYTE_substr($buffer, 0, $start_pos);
                     /* Find end */
                     $end_pos = MBYTE_strpos($inlower, '[/raw]');
                     if( $end_pos !== false ) {
@@ -1541,7 +1541,7 @@ class Story
                 $out = '';
                 while( $start_pos !== false ) {
                     /* Copy in to start to out */
-                    $out .= MBYTE_substr($inlower, 0, $start_pos);
+                    $out .= MBYTE_substr($buffer, 0, $start_pos);
                     /* Find end */
                     $end_pos = MBYTE_strpos($inlower, '[/code]');
                     if( $end_pos !== false ) {
