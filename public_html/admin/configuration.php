@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configuration.php,v 1.12 2008/03/21 15:38:05 dhaun Exp $
+// $Id: configuration.php,v 1.13 2008/05/03 15:09:13 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -87,9 +87,10 @@ function configmanager_select_theme_helper()
     return $themes;
 }
 
+$tokenstate = SEC_checkToken();
 
 // MAIN
-if (array_key_exists('set_action', $_POST)){
+if (array_key_exists('set_action', $_POST) && $tokenstate){
     if (SEC_inGroup('Root')) {
         if ($_POST['set_action'] == 'restore') {
             $config->restore_param($_POST['name'], $conf_group);
@@ -99,7 +100,7 @@ if (array_key_exists('set_action', $_POST)){
     }
 }
 
-if (array_key_exists('form_submit', $_POST)) {
+if (array_key_exists('form_submit', $_POST) && $tokenstate) {
     $result = null;
     if (! array_key_exists('form_reset', $_POST)) {
         $result = $config->updateConfig($_POST, $conf_group);

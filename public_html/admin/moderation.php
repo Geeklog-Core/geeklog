@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.119 2008/04/19 12:13:18 dhaun Exp $
+// $Id: moderation.php,v 1.120 2008/05/03 15:09:13 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -78,7 +78,7 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 * instead of div's. 
 *
 */
-function commandcontrol()
+function commandcontrol($token)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE, $_DB_dbms;
 
@@ -211,7 +211,7 @@ function commandcontrol()
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     if (SEC_hasRights('story.moderate')) {
-        $retval .= itemlist('story');
+        $retval .= itemlist('story', $token);
     }
 
     if (SEC_hasRights('story.edit')) {
@@ -225,7 +225,7 @@ function commandcontrol()
         }
     }
 
-    $retval .= PLG_showModerationList();
+    $retval .= PLG_showModerationList($token);
 
     return $retval;
 }
@@ -238,7 +238,7 @@ function commandcontrol()
 * @type     string      Type of object to build list for
 *
 */
-function itemlist($type)
+function itemlist($type, $token)
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
 
@@ -313,6 +313,7 @@ function itemlist($type)
     $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
         $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
+                . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
                 . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
                 . '<p class="aligncenter"><input type="submit" value="'
@@ -568,7 +569,7 @@ function moderation ($mid, $action, $type, $count)
         }
     }
 
-    $retval .= commandcontrol();
+    $retval .= commandcontrol(SEC_createToken());
 
     return $retval;
 }
@@ -633,7 +634,7 @@ function moderateusers ($uid, $action, $count)
         }
     }
 
-    $retval .= commandcontrol();
+    $retval .= commandcontrol(SEC_createToken());
 
     return $retval;
 }
@@ -668,7 +669,7 @@ if (isset ($_GET['msg'])) {
     $display .= COM_showMessage ($_GET['msg']);
 }
 
-if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
+if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation') && SEC_checkToken()) {
     $action = array();
     if (isset($_POST['action'])) {
         $action = $_POST['action'];
@@ -682,7 +683,7 @@ if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
     }
 } else {
     $display .= security_check_reminder();
-    $display .= commandcontrol();
+    $display .= commandcontrol(SEC_createToken());
 }
 
 $display .= COM_siteFooter();

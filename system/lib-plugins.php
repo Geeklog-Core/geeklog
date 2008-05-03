@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.143 2008/04/19 16:44:39 dhaun Exp $
+// $Id: lib-plugins.php,v 1.144 2008/05/03 15:09:13 mjervis Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -997,14 +997,14 @@ function PLG_saveSubmission($type, $A)
 * @return   string      returns list of items needing moderation for plugins
 *
 */
-function PLG_showModerationList()
+function PLG_showModerationList($token)
 {
     global $_PLUGINS;
 
     $retval = '';
 
     foreach ($_PLUGINS as $pi_name) {
-        $retval .= itemlist($pi_name);
+        $retval .= itemlist($pi_name, $token);
     }
 
     return $retval;

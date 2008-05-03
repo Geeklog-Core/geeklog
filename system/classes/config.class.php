@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.38 2008/05/02 19:30:11 dhaun Exp $
+// $Id: config.class.php,v 1.39 2008/05/03 15:09:13 mjervis Exp $
 
 class config {
     var $dbconfig_file;
@@ -425,6 +425,8 @@ class config {
         $t->set_var('site_admin_url', $_CONF['site_admin_url']);
         $t->set_var('layout_url', $_CONF['layout_url']);
         $t->set_var('xhtml', XHTML);
+        $t->set_var('gltoken_name', CSRF_TOKEN);
+        $t->set_var('gltoken', SEC_createToken());
 
         $t->set_var('lang_save_changes', $LANG_CONFIG['save_changes']);
         $t->set_var('lang_reset_form', $LANG_CONFIG['reset_form']);

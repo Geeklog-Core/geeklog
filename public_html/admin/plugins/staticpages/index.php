@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.91 2008/03/15 20:37:34 dhaun Exp $
+// $Id: index.php,v 1.92 2008/05/03 15:09:13 mjervis Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -370,6 +370,8 @@ function form ($A, $error = false)
         $sp_template->set_var('end_block',
                 COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
         $sp_template->set_var( 'xhtml', XHTML );
+        $sp_template->set_var( 'gltoken_name', CSRF_TOKEN );
+        $sp_template->set_var( 'gltoken', SEC_createToken() );
         $retval .= $sp_template->parse('output','form');
     }
 
@@ -551,7 +553,7 @@ if (isset($_REQUEST['sp_id'])) {
 
 $display = '';
 
-if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete']) && SEC_checkToken()) {
     if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
         COM_errorLog ('Attempted to delete static page sp_id=' . $sp_id);
     } else {
@@ -576,7 +578,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
     if (!empty ($sp_id)) {
         if (!isset ($_POST['sp_onmenu'])) {
             $_POST['sp_onmenu'] = '';
