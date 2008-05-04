@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.693 2008/05/04 21:42:59 blaine Exp $
+// $Id: lib-common.php,v 1.694 2008/05/04 21:50:11 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1486,7 +1486,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     // Set a blockid
     if (!isset($GLOBALS['siteblocks'])) $GLOBALS['siteblocks'] = array();
     $blockid = stripslashes ($title);
-    $blockid = strtr($blockid, "!@#$%^&*()'\"\\/?~`.,;: ", "________________________");
+    $blockid = COM_sanitizeID($title);
     // Check if there is already a block of the same name
     if (in_array($blockid,$GLOBALS['siteblocks'])) {
         // Now, in the unlikely chance there are multiple matching blocks
