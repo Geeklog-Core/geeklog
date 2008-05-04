@@ -13,7 +13,7 @@
 
 <ul>
   <li><a href="#glossary">Glossary</a></li>
-  <li><a href="#installation_requirements">Installation Requirements</a></li>
+  <li><a href="#installation_requirements">Installation Requirements</a>
     <ul>
       <li><a href="#preinstall">Required Software</a></li>
       <li><a href="#things_you_should_know">Things You Should Know</a></li>
@@ -112,6 +112,9 @@
         </li>
         <li>
             <p>Place the contents of <code>Geeklog-1.x/</code> into the same directory your old installation was located. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.</p>
+        </li>
+        <li>
+            <p><strong>When upgrading from Geeklog 1.4.1 or earlier</strong>: Put the <tt>config.php</tt> files from your old install back into their place now (the main <tt>config.php</tt> and those for the plugins). The install script will read these files during the upgrade to pre-populate the new Configuration admin panel with your settings. If you skip this step, you will end up with default settings for Geeklog and the pre-installed plugins.</p>
         </li>
         <li>
             <p>Open your browser and navigate to the Geeklog installation wizard file <code>admin/install/index.php</code> on your web server. The path to this file will depend on where you chose to put the Geeklog files on your web server. The default location is: </p>
