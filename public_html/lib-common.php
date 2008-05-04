@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.692 2008/05/01 15:43:16 dhaun Exp $
+// $Id: lib-common.php,v 1.693 2008/05/04 21:42:59 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1111,6 +1111,9 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         }
     }
 
+    // Call to plugins to set template variables in the header
+    PLG_templateSetVars( 'header', $header );
+
     if( $_CONF['left_blocks_in_footer'] == 1 )
     {
         $header->set_var( 'left_blocks', '' );
@@ -1214,9 +1217,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     // Call any plugin that may want to include extra Meta tags
     // or Javascript functions
     $header->set_var( 'plg_headercode', $headercode . PLG_getHeaderCode() );
-
-    // Call to plugins to set template variables in the header
-    PLG_templateSetVars( 'header', $header );
 
     // The following lines allow users to embed PHP in their templates.  This
     // is almost a contradition to the reasons for using templates but this may
@@ -2951,7 +2951,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
         }
     }
     while( $start_pos !== false );
-    
+
     // handle [raw] ... [/raw]
     do
     {
