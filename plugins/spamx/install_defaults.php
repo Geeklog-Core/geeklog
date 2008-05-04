@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.2 2008/02/10 17:09:37 dhaun Exp $
+// $Id: install_defaults.php,v 1.3 2008/05/04 09:16:33 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -80,7 +80,7 @@ function plugin_initconfig_spamx()
     global $_CONF, $_SPX_CONF, $_SPX_DEFAULT;
 
     if (is_array($_SPX_CONF) && (count($_SPX_CONF) > 1)) {
-        $_SPX_DEFAULT = $_SPX_CONF;
+        $_SPX_DEFAULT = array_merge($_SPX_DEFAULT, $_SPX_CONF);
     }
 
     $c = config::get_instance();

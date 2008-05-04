@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.5 2008/03/21 17:09:26 dhaun Exp $
+// $Id: install_defaults.php,v 1.6 2008/05/04 09:16:33 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -121,7 +121,7 @@ function plugin_initconfig_staticpages()
     global $_SP_CONF, $_SP_DEFAULT;
 
     if (is_array($_SP_CONF) && (count($_SP_CONF) > 1)) {
-        $_SP_DEFAULT = $_SP_CONF;
+        $_SP_DEFAULT = array_merge($_SP_DEFAULT, $_SP_CONF);
     }
 
     $c = config::get_instance();

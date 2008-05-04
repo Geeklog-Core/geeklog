@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.3 2008/05/02 12:12:05 dhaun Exp $
+// $Id: install_defaults.php,v 1.4 2008/05/04 09:16:33 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -166,7 +166,7 @@ function plugin_initconfig_links()
     global $_LI_CONF, $_LI_DEFAULT;
 
     if (is_array($_LI_CONF) && (count($_LI_CONF) > 1)) {
-        $_LI_DEFAULT = $_LI_CONF;
+        $_LI_DEFAULT = array_merge($_LI_DEFAULT, $_LI_CONF);
     }
 
     $c = config::get_instance();

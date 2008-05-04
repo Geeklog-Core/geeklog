@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.2 2008/03/21 17:09:26 dhaun Exp $
+// $Id: install_defaults.php,v 1.3 2008/05/04 09:16:33 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -104,7 +104,7 @@ function plugin_initconfig_polls()
     global $_CONF, $_PO_CONF, $_PO_DEFAULT;
 
     if (is_array($_PO_CONF) && (count($_PO_CONF) > 1)) {
-        $_PO_DEFAULT = $_PO_CONF;
+        $_PO_DEFAULT = array_merge($_PO_DEFAULT, $_PO_CONF);
     }
 
     $c = config::get_instance();

@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.3 2008/05/02 12:12:05 dhaun Exp $
+// $Id: install_defaults.php,v 1.4 2008/05/04 09:16:33 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -116,7 +116,7 @@ function plugin_initconfig_calendar()
     global $_CONF, $_CA_CONF, $_CA_DEFAULT;
 
     if (is_array($_CA_CONF) && (count($_CA_CONF) > 1)) {
-        $_CA_DEFAULT = $_CA_CONF;
+        $_CA_DEFAULT = array_merge($_CA_DEFAULT, $_CA_CONF);
     }
 
     $c = config::get_instance();
