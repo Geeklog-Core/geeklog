@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.120 2008/05/03 15:09:13 mjervis Exp $
+// $Id: moderation.php,v 1.121 2008/05/04 07:32:53 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -206,7 +206,7 @@ function commandcontrol($token)
         $admin_templates->clear_var ('cc_main_options');
     }
 
-    $retval .= $admin_templates->parse('output','cc');
+    $retval .= $admin_templates->finish($admin_templates->parse('output','cc'));
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
