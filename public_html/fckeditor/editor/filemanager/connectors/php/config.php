@@ -1,7 +1,7 @@
 <?php
 /*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2007 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2008 Frederico Caldeira Knabben
  *
  * == BEGIN LICENSE ==
  *
@@ -48,19 +48,30 @@ $Config['UserFilesAbsolutePath'] = $_CONF['path_html'] . $_CONF_FCK['imagelibrar
 // following setting enabled.
 $Config['ForceSingleExtension'] = true ;
 
-// Perform additional checks for image files
-// if set to true, validate image size (using getimagesize)
+// Perform additional checks for image files.
+// If set to true, validate image size (using getimagesize).
 $Config['SecureImageUploads'] = true;
 
-// What the user can do with this connector
+// What the user can do with this connector.
 $Config['ConfigAllowedCommands'] = array('QuickUpload', 'FileUpload', 'GetFolders', 'GetFoldersAndFiles', 'CreateFolder') ;
 
-// Allowed Resource Types
+// Allowed Resource Types.
 $Config['ConfigAllowedTypes'] = array('File', 'Image', 'Flash', 'Media') ;
 
 // For security, HTML is allowed in the first Kb of data for files having the
 // following extensions only.
 $Config['HtmlExtensions'] = array("html", "htm", "xml", "xsd", "txt", "js") ;
+
+// After file is uploaded, sometimes it is required to change its permissions
+// so that it was possible to access it at the later time.
+// If possible, it is recommended to set more restrictive permissions, like 0755.
+// Set to 0 to disable this feature.
+// Note: not needed on Windows-based servers.
+$Config['ChmodOnUpload'] = 0777 ;
+
+// See comments above.
+// Used when creating folders that does not exist.
+$Config['ChmodOnFolderCreate'] = 0777 ;
 
 /*
 	Configuration settings for each Resource Type
@@ -123,21 +134,21 @@ $Config['QuickUploadAbsolutePath']['File']= $Config['UserFilesAbsolutePath'] ;
 
 $Config['AllowedExtensions']['Image']	= array('bmp','gif','jpeg','jpg','png') ;
 $Config['DeniedExtensions']['Image']	= array() ;
-$Config['FileTypesPath']['Image']		= $Config['UserFilesPath'] . 'Image/' ;
+$Config['FileTypesPath']['Image']		= $Config['UserFilesPath'] . 'image/' ;
 $Config['FileTypesAbsolutePath']['Image']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'image/' ;
 $Config['QuickUploadPath']['Image']		= $Config['UserFilesPath'] ;
 $Config['QuickUploadAbsolutePath']['Image']= $Config['UserFilesAbsolutePath'] ;
 
 $Config['AllowedExtensions']['Flash']	= array('swf','flv') ;
 $Config['DeniedExtensions']['Flash']	= array() ;
-$Config['FileTypesPath']['Flash']		= $Config['UserFilesPath'] . 'Flash/' ;
+$Config['FileTypesPath']['Flash']		= $Config['UserFilesPath'] . 'flash/' ;
 $Config['FileTypesAbsolutePath']['Flash']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'flash/' ;
 $Config['QuickUploadPath']['Flash']		= $Config['UserFilesPath'] ;
 $Config['QuickUploadAbsolutePath']['Flash']= $Config['UserFilesAbsolutePath'] ;
 
 $Config['AllowedExtensions']['Media']	= array('aiff', 'asf', 'avi', 'bmp', 'fla', 'flv', 'gif', 'jpeg', 'jpg', 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg', 'png', 'qt', 'ram', 'rm', 'rmi', 'rmvb', 'swf', 'tif', 'tiff', 'wav', 'wma', 'wmv') ;
 $Config['DeniedExtensions']['Media']	= array() ;
-$Config['FileTypesPath']['Media']		= $Config['UserFilesPath'] . 'Media/' ;
+$Config['FileTypesPath']['Media']		= $Config['UserFilesPath'] . 'media/' ;
 $Config['FileTypesAbsolutePath']['Media']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'media/' ;
 $Config['QuickUploadPath']['Media']		= $Config['UserFilesPath'] ;
 $Config['QuickUploadAbsolutePath']['Media']= $Config['UserFilesAbsolutePath'] ;
