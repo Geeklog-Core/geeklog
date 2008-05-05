@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.45 2007/12/09 18:05:39 dhaun Exp $
+// $Id: lib-user.php,v 1.46 2008/05/05 20:04:38 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -363,7 +363,7 @@ function USER_sendNotification ($username, $email, $uid, $mode='inactive')
         $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
         // user has been created, or has activated themselves:
-        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&amp;uid={$uid}>\n\n";
+        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\n\n";
     }
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
