@@ -218,7 +218,7 @@ select {
   font-size:larger;
 }
 /* Menus in blocks *****************************************************************/
-#Admins_Only ul, #User_Functions ul, #Topics ul {
+#AdminsOnly ul, #UserFunctions ul, #Topics ul {
   list-style:none;
   padding:0px;
   margin:0px;
