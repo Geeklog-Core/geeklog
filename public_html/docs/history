@@ -1,7 +1,7 @@
 Geeklog History/Changes:
 
-??? ??, 2008 (1.5.0)
-------------
+May 5, 2008 (1.5.0b1)
+-----------
 
 This release incorporates the following projects implemented during
 the 2007 Google Summer of Code:
@@ -15,12 +15,10 @@ Other changes:
 - LDAP remote authentication module, provided by Jessica Blank / MTV Networks
 - The {lang_attribute} can only properly be set in a multi-language setup
   (bug #0000616) [Dirk]
-- Calendar block now includes events from the current day (in progress or all
-  day events, bug 0000604, patch from forums)
 - Removed Blogger remote authentication option. Blogger.com have changed their
   authentication process, so this module no longer works.
-- Emails sent from Geeklog will now have an X-Originating-IP header to help
-  track spam / abuse [Dirk]
+- Emails sent from Geeklog now have an X-Originating-IP header to help track
+  spam or abuse [Dirk]
 - The topic editor allowed you to enter topic IDs with more than 20 characters
   (reported by Markus Wollschläger) [Dirk]
 - Ease restriction that email addresses have to be unique: Remote accounts can
@@ -106,7 +104,7 @@ Other changes:
   avoid code duplication). It should be save to simply use $LANG_CHARSET in
   most cases, though [Dirk]
 - Added optional Wikitext postmode for stories [Oliver]
-- Addded optional noreply-email address option to config.php to prevent
+- Added optional noreply-email address option to config.php to prevent
   spammers retrieving the admin's email address from registering online [Oliver]
 - Added support for "Microsummaries" to index.php.
   See (http://wiki.mozilla.org/Microsummaries) [Mike]
@@ -152,6 +150,8 @@ Other changes:
 
 Calendar plugin (1.0.2)
 ---------------
+- Calendar block now includes events from the current day (in progress or all
+  day events, bug 0000604, patch from forums)
 - Fixed deleting events submissions from the Events editor [Dirk]
 - The global $_STATES has been removed from Geeklog. The state in an event's
   details is now a simple text entry field.
