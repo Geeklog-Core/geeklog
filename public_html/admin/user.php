@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.201 2008/02/24 19:43:53 dhaun Exp $
+// $Id: user.php,v 1.202 2008/05/05 00:30:37 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -809,7 +809,7 @@ function batchdelete()
         'default_filter' => "AND $filter_sql {$_TABLES['users']}.uid > 1"
     );
     $listoptions = array('chkdelete' => true, 'chkfield' => 'uid');
-    
+
     $menu_arr = array (
         array('url' => $_CONF['site_admin_url'] . '/user.php',
               'text' => $LANG28[11]),
@@ -1090,7 +1090,7 @@ function importusers ($file)
 * @return   string      HTML for import form
 *
 */
-function display_form ()
+function display_batchAddform ()
 {
     global $_CONF, $LANG28;
 
@@ -1200,7 +1200,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_startBlock ($LANG28[24], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
     $display .= $LANG28[25] . '<br' . XHTML . '><br' . XHTML . '>';
-    $display .= display_form();
+    $display .= display_batchAddform();
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();
 } else if ($mode == 'batchdelete') {

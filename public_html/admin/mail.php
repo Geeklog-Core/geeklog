@@ -30,14 +30,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.34 2007/11/25 06:58:55 ospiess Exp $
+// $Id: mail.php,v 1.35 2008/05/05 00:30:37 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
 
 $display = '';
 
-// Make sure user has access to this page  
+// Make sure user has access to this page
 if (!SEC_inGroup ('Mail Admin') && !SEC_hasrights ('user.mail')) {
     $retval .= COM_siteHeader ('menu', $MESSAGE[30]);
     $retval .= COM_startBlock ($MESSAGE[30], '',
@@ -57,7 +57,7 @@ if (!SEC_inGroup ('Mail Admin') && !SEC_hasrights ('user.mail')) {
 * @return   string      HTML for the email form
 *
 */
-function display_form ()
+function display_mailform ()
 {
     global $_CONF, $_TABLES, $_USER, $LANG31;
 
@@ -122,7 +122,7 @@ function display_form ()
 function send_messages ($vars)
 {
     global $_CONF, $_TABLES, $LANG31;
-    
+
     require_once($_CONF['path_system'] . 'lib-user.php');
 
     $retval = '';
@@ -146,12 +146,12 @@ function send_messages ($vars)
     }
 
     // If you want to send html mail
-    if (isset ($vars['html'])) { 
+    if (isset ($vars['html'])) {
         $html = true;
     } else {
         $html = false;
     }
-    
+
     $groupList = implode (',', USER_getChildGroups($vars['to_group']));
 
     // and now mail it
@@ -228,7 +228,7 @@ $display .= COM_siteHeader ('menu', $LANG31[1]);
 if (isset ($_POST['mail']) && ($_POST['mail'] == 'mail')) {
     $display .= send_messages ($_POST);
 } else {
-    $display .= display_form ();
+    $display .= display_mailform ();
 }
 
 $display .= COM_siteFooter ();
