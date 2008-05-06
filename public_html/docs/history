@@ -1,9 +1,9 @@
 Geeklog History/Changes:
 
-May 5, 2008 (1.5.0b1)
------------
+May ??, 2008 (1.5.0b2)
+------------
 
-This release incorporates the following projects implemented during
+Geeklog 1.5.0 incorporates the following projects implemented during
 the 2007 Google Summer of Code:
 
 + New user-friendly install script by Matt West
@@ -11,6 +11,14 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Other changes:
+- Fixed invalid <brXHTML> tag in some language files (bug #0000621) [Dirk]
+- The URL sent in a user registration notification contained a &amp; where it
+  should have been a simple & [Dirk]
+
+
+May 5, 2008 (1.5.0b1)
+-----------
+
 - Updated FCKEditor to v2.6 [Blaine]
 - LDAP remote authentication module, provided by Jessica Blank / MTV Networks
 - The {lang_attribute} can only properly be set in a multi-language setup

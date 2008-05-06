@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese_utf-8.php,v 1.7 2008/05/02 15:08:10 dhaun Exp $
+ * $Id: japanese_utf-8.php,v 1.8 2008/05/06 18:20:43 dhaun Exp $
  */
 
 global $LANG32;
@@ -56,7 +56,7 @@ $LANG_SX00 = array(
     'exmod' => 'Spam-X イグザミンモジュール',
     'actmod' => 'アクティブモジュール',
     'avmod' => 'アベイラブルモジュール',
-    'coninst' => '<hrXHTML>クリックしてアクティブモジュールを削除、クリックしてアベイラブルモジュールを追加。<brXHTML>モジュールは、示された順序で実行されます。 ',
+    'coninst' => '<hrXHTML>クリックしてアクティブモジュールを削除、クリックしてアベイラブルモジュールを追加。<br' . XHTML . '>モジュールは、示された順序で実行されます。 ',
     'fsc' => ' スパムポストマッチングが見つかりました。',
     'fsc1' => ' ユーザによる投稿',
     'fsc2' => ' IP から',
