@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Other changes:
+- Make sure the XHTML constant is defined if the theme doesn't already define
+  it (bug #0000622) [Dirk]
 - Fixed invalid <brXHTML> tag in some language files (bug #0000621) [Dirk]
 - The URL sent in a user registration notification contained a &amp; where it
   should have been a simple & [Dirk]
