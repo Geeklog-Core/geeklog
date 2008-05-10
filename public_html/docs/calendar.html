@@ -14,9 +14,12 @@
 <p>Events and the calendar used to be an integral part of the Geeklog core code,
 but have been moved to a plugin as of Geeklog 1.4.1.</p>
 
-<h2><a name="config.php">Configuration File</a></h2>
+<h2><a name="config.php">Configuration</a></h2>
 
-<p>The calendar plugin has its own configuration file, located at <tt>/path/to/geeklog/plugins/calendar/config.php</tt>. There you will find the following options:</p>
+<p>The calendar's configuration can be changed from the Configuration admin
+panel:</p>
+
+<h3><a name="general">General Calendar Settings</a></h3>
 
 <table>
 <tr><th width="25%">Variable</th>
@@ -35,51 +38,21 @@ but have been moved to a plugin as of Geeklog 1.4.1.</p>
     to 0.</td>
 </tr>
 <tr class="r2">
-  <td><a name="desc_delete_event">delete_event</a></td>
-  <td>0</td>
-  <td>Defines what to do when a user is deleted that is the owner of an event.
-    When set to 0, all events owned by the deleted user will be assigned to a
-    user of the "Root" group (e.g. the site admin). When set to 1, the events
-    are deleted. This only applies to site events - a user's personal events
-    are always deleted.</td>
-</tr>
-<tr>
-  <td><a name="desc_eventsubmission">eventsubmission</a></td>
-  <td>1</td>
-  <td>Whether events submitted by users will have to be approved by an admin
-    first (when set = 1) or show up immediately (when set = 0).</td>
-</tr>
-<tr class="r2">
-  <td><a name="desc_event_types">event_types</a></td>
-  <td>Anniversary, Appointment, Birthday, Business, Education, Holiday, Meeting, Miscellaneous, Personal, Phone Call, Special Occasion, Travel, Vacation</td>
-  <td>The set of event types that are used both on the public calendar and the
-    user's personal calendar.</td>
-</tr>
-<tr>
   <td><a name="desc_hidecalendarmenu">hidecalendarmenu</a></td>
   <td>0</td>
   <td>Whether to hide the "Calendar" entry from Geeklog's menu bar (when set to
     1) or to show it (when set to 0).</td>
 </tr>
-<tr class="r2">
-  <td><a name="desc_hour_mode">hour_mode</a></td>
-  <td>12</td>
-  <td>Which format to use when submitting or editing an event. Can be 12 (for
-    the 12 hours am/pm format) or 24 (for the 24 hours format).<br>
-    Uses the same value as <a
-    href="config.html#desc_hour_mode">$_CONF['hour_mode']</a> by default.</td>
-</tr>
 <tr>
-  <td><a name="desc_notification">notification</a></td>
-  <td>0</td>
-  <td>Whether to send an email notification when a new event was submitted for
-    the site's calendar (when set to = 1) or not (when set to = 0).<br>
-    No notification is ever sent for events in personal calendars.</td>
-</tr>
-<tr class="r2">
   <td><a name="desc_personalcalendars">personalcalendars</a></td>
   <td>0</td>
   <td>Allow account holders to have a personal calendar</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_eventsubmission">eventsubmission</a></td>
+  <td>1</td>
+  <td>Whether events submitted by users will have to be approved by an admin
+    first (when set = 1) or show up immediately (when set = 0).</td>
 </tr>
 <tr>
   <td><a name="desc_showupcomingevents">showupcomingevents</a></td>
@@ -92,6 +65,48 @@ but have been moved to a plugin as of Geeklog 1.4.1.</p>
   <td>14</td>
   <td>Number of days that the &quot;Upcoming Events&quot; block will look
     ahead.</td>
+</tr>
+<tr>
+  <td><a name="desc_hour_mode">hour_mode</a></td>
+  <td>12</td>
+  <td>Which format to use when submitting or editing an event. Can be 12 (for
+    the 12 hours am/pm format) or 24 (for the 24 hours format).<br>
+    Uses the same value as <a
+    href="config.html#desc_hour_mode">$_CONF['hour_mode']</a> by default.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_event_types">event_types</a></td>
+  <td>Anniversary, Appointment, Birthday, Business, Education, Holiday, Meeting, Miscellaneous, Personal, Phone Call, Special Occasion, Travel, Vacation</td>
+  <td>The set of event types that are used both on the public calendar and the
+    user's personal calendar.</td>
+</tr>
+<tr>
+  <td><a name="desc_notification">notification</a></td>
+  <td>0</td>
+  <td>Whether to send an email notification when a new event was submitted for
+    the site's calendar (when set to = 1) or not (when set to = 0).<br>
+    No notification is ever sent for events in personal calendars.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_delete_event">delete_event</a></td>
+  <td>0</td>
+  <td>Defines what to do when a user is deleted that is the owner of an event.
+    When set to 0, all events owned by the deleted user will be assigned to a
+    user of the "Root" group (e.g. the site admin). When set to 1, the events
+    are deleted. This only applies to site events - a user's personal events
+    are always deleted.</td>
+</tr>
+<tr>
+  <td><a name="desc_aftersave">aftersave</a></td>
+  <td>'list'</td>
+  <td>Which page to go to after an event has been saved:
+    <ul>
+    <li>'item': display the event details</li>
+    <li>'list': show admin's list of events (default)</li>
+    <li>'plugin': display the calendar</li>
+    <li>'home': display the site's homepage</li>
+    <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
+    </ul></td>
 </tr>
 </table>
 

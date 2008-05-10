@@ -13,39 +13,16 @@
 
 <p>The links section used to be an integral part of the Geeklog core code, but have been moved to a plugin as of Geeklog 1.4.0.</p>
 
-<h2><a name="config.php">Configuration File</a></h2>
+<h2><a name="config.php">Configuration</a></h2>
 
-<p>The links plugin has its own configuration file, located at <tt>/path/to/geeklog/plugins/links/config.php</tt>. There you will find the following options:</p>
+<p>The configuration of the Links plugin can be changed from the Configuration admin panel:</p>
+
+<h3><a name="public">Public Links List Settings</a></h3>
 
 <table>
 <tr><th width="25%">Variable</th>
     <th width="25%">Default Value</th>
     <th width="50%">Description</th>
-</tr>
-<tr>
-  <td><a name="desc_delete_links">delete_links</a></td>
-  <td>0</td>
-  <td>Defines what to do when a user is deleted that is the owner of a link.
-    When set to 0, all links owned by the deleted user will be assigned to a
-    user of the "Root" group (e.g. the site admin). When set to 1, the links
-    are deleted.</td>
-</tr>
-<tr class="r2">
-  <td><a name="desc_hidelinksmenu">hidelinksmenu</a></td>
-  <td>0</td>
-  <td>Whether to hide the "Links" entry from Geeklog's menu bar (when set to 1)
-    or to show it (when set to 0).</td>
-</tr>
-<tr>
-  <td><a name="desc_hidenewlinks">hidenewlinks</a></td>
-  <td>0</td>
-  <td>Whether new links should be hidden from the "What's New" block (when set
-    = 1) or whether to list them there (when set to = 0).</td>
-</tr>
-<tr class="r2">
-  <td><a name="desc_linkcols">linkcols</a></td>
-  <td>3</td>
-  <td>The number of link categories to display per column.</td>
 </tr>
 <tr>
   <td><a name="desc_linksloginrequired">linksloginrequired</a></td>
@@ -59,28 +36,14 @@
     to 0.</td>
 </tr>
 <tr class="r2">
+  <td><a name="desc_linkcols">linkcols</a></td>
+  <td>3</td>
+  <td>The number of link categories to display per column.</td>
+</tr>
+<tr>
   <td><a name="desc_linksperpage">linksperpage</a></td>
   <td>10</td>
   <td>The number of links to show per page.</td>
-</tr>
-<tr>
-  <td><a name="desc_linksubmission">linksubmission</a></td>
-  <td>1</td>
-  <td>Whether links submitted by users will have to be approved by an admin
-    first (when set = 1) or show up immediately (when set = 0).</td>
-</tr>
-<tr class="r2">
-  <td><a name="desc_newlinksinterval">newlinksinterval</a></td>
-  <td>1209600</td>
-  <td>For how long a link should be considered "new" and show up in the "What's
-    New" block on the site. The interval is given in seconds, so the default
-    value equals 14 days.</td>
-</tr>
-<tr>
-  <td><a name="desc_notification">notification</a></td>
-  <td>0</td>
-  <td>Whether to send an email notification when a new link was submitted (when
-    set to = 1) or not (when set to = 0).</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_show_top10">show_top10</a></td>
@@ -90,6 +53,76 @@
     show a list of the 10 most clicked-on links on the Links plugin's index
     page automatically. If you do not want that "top 10" list there, set this
     option to <code>false</code>.</td>
+</tr>
+<tr>
+  <td><a name="desc_show_category_descriptions">show_category_descriptions</a></td>
+  <td><code>true</code></td>
+  <td>Whether to show subcategory descriptions when viewing a category or not.</td>
+</tr>
+</table>
+
+<h3><a name="admin">Links Admin Settings</a></h3>
+
+<table>
+<tr><th width="25%">Variable</th>
+    <th width="25%">Default Value</th>
+    <th width="50%">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_hidenewlinks">hidenewlinks</a></td>
+  <td>0</td>
+  <td>Whether new links should be hidden from the "What's New" block (when set
+    = 1) or whether to list them there (when set to = 0).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_newlinksinterval">newlinksinterval</a></td>
+  <td>1209600</td>
+  <td>For how long a link should be considered "new" and show up in the "What's
+    New" block on the site. The interval is given in seconds, so the default
+    value equals 14 days.</td>
+</tr>
+<tr>
+  <td><a name="desc_hidelinksmenu">hidelinksmenu</a></td>
+  <td>0</td>
+  <td>Whether to hide the "Links" entry from Geeklog's menu bar (when set to 1)
+    or to show it (when set to 0).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_linksubmission">linksubmission</a></td>
+  <td>1</td>
+  <td>Whether links submitted by users will have to be approved by an admin
+    first (when set = 1) or show up immediately (when set = 0).</td>
+</tr>
+<tr>
+  <td><a name="desc_notification">notification</a></td>
+  <td>0</td>
+  <td>Whether to send an email notification when a new link was submitted (when
+    set to = 1) or not (when set to = 0).</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_delete_links">delete_links</a></td>
+  <td>0</td>
+  <td>Defines what to do when a user is deleted that is the owner of a link.
+    When set to 0, all links owned by the deleted user will be assigned to a
+    user of the "Root" group (e.g. the site admin). When set to 1, the links
+    are deleted.</td>
+</tr>
+<tr>
+  <td><a name="desc_aftersave">aftersave</a></td>
+  <td>'list'</td>
+  <td>Which page to go to after a links has been saved:
+    <ul>
+    <li>'item': go to the linked site(!)</li>
+    <li>'list': show admin's list of links (default)</li>
+    <li>'plugin': display the public list of links</li>
+    <li>'home': display the site's homepage</li>
+    <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
+    </ul></td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_root">root</a></td>
+  <td>'site'</td>
+  <td>ID to use for the root of the link categories tree.</td>
 </tr>
 </table>
 

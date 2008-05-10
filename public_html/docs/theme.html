@@ -171,6 +171,30 @@ non-root users in the event of an error occurring (a crash bug). To do
 so, you need to change the function <code>CUSTOM_handleError</code> in
 lib-custom.php to output any HTML you like.</p>
 
+<p><strong><a name="permalink">Adding a "permalink" to stories:</a></strong>
+Many websites offer a so-called permalink, i.e. a link to a permanent URL for
+the story. In Geeklog's default Professional theme, the article's headline
+already provides the same functionality - it links to a permanent URL for the
+story (pointing to article.php). However, since this is not very obvious and
+since visitors often expect to find a "permalink" somewhere on the page, here's
+how to add one yourself:</p>
+<ol>
+<li>Find a place in the story template files. The "story-footer" section in
+<tt>storytext.thtml</tt> may be a good place since it already contains quite a
+few story-related links.</li>
+<li>Once you've found a place to put the permalink entry, enter this piece of
+code:<br>
+<code style="margin-left:2em">&lt;a href="{article_url}"&gt;{lang_permalink}&lt;a&gt;</code><br>
+This will add a link to the article (<code>article_url</code>) using the word
+"Permalink" from the current language file (<code>lang_permalink</code>).</li>
+<li>Try it out. Be aware that at this point, your permalink entry only shows up
+for non-featured articles. You may want to tweak the appearance a bit (using
+CSS) or move the link around.</li>
+<li>Add the same piece of code to the <tt>featuredstorytext.thtml</tt> and
+<tt>archivestorytext.thtml</tt> templates so that the link also appears for
+featured and archived stories.</li>
+</ol>
+
 
 <h2><a name="changes">Theme changes in Geeklog 1.5.0</a></h2>
 
