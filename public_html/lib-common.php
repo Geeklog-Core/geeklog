@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.695 2008/05/07 18:48:17 dhaun Exp $
+// $Id: lib-common.php,v 1.696 2008/05/10 07:56:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5931,7 +5931,7 @@ function COM_numberFormat( $number )
 {
     global $_CONF;
 
-    if( $number - abs( $number ) > 0 ) // number has decimals
+    if( $number - floor( $number ) > 0 ) // number has decimals
     {
         $dc = $_CONF['decimal_count'];
     }
