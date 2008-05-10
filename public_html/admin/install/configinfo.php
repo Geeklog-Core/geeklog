@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | configinfo.php                                                            |
 // |                                                                           |
-// | Display contents of config.php                                            |
+// | Display current configuration settings                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Jeffrey Schoolcraft  - dream AT dr3amscap3 DOT com               |
 // |          Dirk Haun            - dirk AT haun-online DOT de                |
@@ -30,44 +30,42 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configinfo.php,v 1.5 2006/09/06 05:31:00 ospiess Exp $
+// $Id: configinfo.php,v 1.6 2008/05/10 21:03:23 dhaun Exp $
 
 /**
 * This script will display file and permission information based on settings in
-* config.php  This is meant to be as a support tool when asked questions in #geeklog
+* the configuration.  This is meant to be used as a support tool when asked
+* questions in #geeklog.
 *
-*
-* @author   Jeffrey Schoolcraft <dream@dr3amscap3.com>
+* @author   Jeffrey Schoolcraft <dream AT dr3amscap3 DOT com>
 *
 */
 
-if (file_exists ('../../../config.php')) {
-    require_once('../../../config.php');
-} else if (file_exists ('../../lib-common.php')) {
-    require_once('../../lib-common.php');
+if (file_exists('../../lib-common.php')) {
+    require_once '../../lib-common.php';
 } else {
-    die ("Sorry, config.php not found ...");
+    die("Sorry, lib-common.php not found ...");
 }
 
 $highlight_on     = '#EFEFEF';
 $highlight_off    = '#D9D9D9';
 
-if (isset ($_CONF['site_url']) &&
-        strpos ($_CONF['site_url'], 'example.com') === false) {
+if (isset($_CONF['site_url']) &&
+        strpos($_CONF['site_url'], 'example.com') === false) {
     $docs = $_CONF['site_url'] . '/docs/config.html#desc_';
 } else {
     $docs = '../../docs/config.html#desc_';
 }
 
-if (isset ($_CONF['mail_settings']['password'])) {
-    unset ($_CONF['mail_settings']['password']);
+if (isset($_CONF['mail_settings']['password'])) {
+    unset($_CONF['mail_settings']['password']);
 }
 
 $display = "<html>\n<head><title>config.php</title></head>\n<body>\n";
 $n = 0;
 $display .= '<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border: thin black solid;">';
 
-foreach($_CONF as $option => $value) {
+foreach ($_CONF as $option => $value) {
     $display .= '<tr';
     if ($n % 2 == 0) {
         $display .= ' style="background-color: ' . $highlight_on . '">';
@@ -81,7 +79,7 @@ foreach($_CONF as $option => $value) {
         print_r($value);
         $value=nl2br(ob_get_contents());
         ob_end_clean();
-    } elseif (is_bool ($value)) {
+    } elseif (is_bool($value)) {
         $value = ($value === false) ? 'false' : 'true';
     } elseif (eregi('[a-z]+html', $option)) {
         $value = htmlentities($value);
@@ -95,3 +93,5 @@ foreach($_CONF as $option => $value) {
 $display .= "</table>\n</body>\n</html>";
 
 echo $display;
+
+?>

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.696 2008/05/10 07:56:41 dhaun Exp $
+// $Id: lib-common.php,v 1.697 2008/05/10 21:03:23 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3767,7 +3767,7 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 * Returns what HTML is allowed in content
 *
 * Returns what HTML tags the system allows to be used inside content.
-* You can modify this by changing $_CONF['user_html'] in config.php
+* You can modify this by changing $_CONF['user_html'] in the configuration
 * (for admins, see also $_CONF['admin_html']).
 *
 * @param    string  $permissions    comma-separated list of rights which identify the current user as an "Admin"
@@ -6436,7 +6436,7 @@ function COM_truncate( $text, $maxlen, $filler = '' )
 *
 * Uses (if available, and in this order)
 * - $LANG_CHARSET (from the current language file)
-* - $_CONF['default_charset'] (from config.php)
+* - $_CONF['default_charset'] (from siteconfig.php)
 * - 'iso-8859-1' (hard-coded fallback)
 *
 */

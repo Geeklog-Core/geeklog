@@ -180,7 +180,7 @@ General Use
 ===========
 If you would like to change the theme for your self alone, go into your
 preferences and change the look. If you would like to make the entire
-site pick up on the change go into your Geeklog/config.php and change
+site pick up on the change go into your Configuration panel and change
 the default theme to the name of the theme "professional".
 
 Things to Do
