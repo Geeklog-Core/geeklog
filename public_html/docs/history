@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Other changes:
+- Removed an extra } from the Static Pages staticpage.thtml template file
+  (reported by Markus Wollschläger) [Dirk]
 - COM_numberFormat wouldn't handle decimals correctly (bug #0000624) [Dirk]
 - Make sure the XHTML constant is defined if the theme doesn't already define
   it (bug #0000622) [Dirk]
