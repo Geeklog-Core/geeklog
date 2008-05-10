@@ -146,7 +146,7 @@ third, fifth, etc. answer and <tt>bar1.gif</tt> for the second, fourth, etc.
 answer.</p>
 
 <p><strong><a name="left-blocks">Left blocks in the right column:</a></strong>
-<code>$_CONF['left_blocks_in_footer']</code> (in <tt>config.php</tt>) is a
+<code>$_CONF['left_blocks_in_footer']</code> is a
 rather curious option. It makes the <code>{left_blocks}</code> variable
 available in the site's footer (i.e. <tt>footer.thtml</tt>) while at the same
 time disabling it in the header (<tt>header.thtml</tt>).<br>
@@ -159,10 +159,10 @@ admin pages). Setting <code>$_CONF['left_blocks_in_footer'] = 1</code> will
 fix this, so that the blocks, while internally still treated as <em>left</em>
 blocks, will actually be displayed on the <em>right</em>.<br>
 The theme's <tt>header.thtml</tt>, <tt>footer.thtml</tt>, and
-<tt>leftblocks.thtml</tt> will probably need some adjustments. It is also
-recommended to leave the <code>$_CONF</code> variable unchanged in
-<tt>config.php</tt> and overwrite it in the theme's <tt>functions.php</tt>
-instead. That way, you can even leave your users a choice between, for example,
+<tt>leftblocks.thtml</tt> will probably need some adjustments. The
+'left_blocks_in_footer' option is therefore not available in the main
+configuration but should instead be set in the theme's <tt>functions.php</tt>
+file.  That way, you can even leave your users a choice between, for example,
 a "normal" theme and one with the blocks on the right.</p>
 
 <p><strong><a name="error-message">Error Message:</a></strong>
@@ -865,8 +865,8 @@ this shouldn't be too much of a hassle ...</p>
     <tt>featuredstorybodytext.thtml</tt></li>
   <li>In the Classic and Digital Monochrome themes the "contact" link now
     points to the form to send an email to the admin user instead of using a
-    <code>mailto:</code> link with the site's email address from
-    <tt>config.php</tt>.</li>
+    <code>mailto:</code> link with the site's email address from the
+    configuration.</li>
 </ul>
 
 <h3>CSS changes</h3>

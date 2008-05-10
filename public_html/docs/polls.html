@@ -14,9 +14,12 @@
 <p>Polls used to be an integral part of the Geeklog core code, but have been
 moved to a plugin as of Geeklog 1.4.0.</p>
 
-<h2><a name="config.php">Configuration File</a></h2>
+<h2><a name="config.php">Configuration</a></h2>
 
-<p>The polls plugin has its own configuration file, located at <tt>/path/to/geeklog/plugins/polls/config.php</tt>. There you will find the following options:</p>
+<p>The Polls plugin's configuration can be changed from the Configuration admin
+panel:</p>
+
+<h3><a name="general">General Polls Settings</a></h3>
 
 <table>
 <tr><th width="25%">Variable</th>
@@ -30,7 +33,7 @@ moved to a plugin as of Geeklog 1.4.0.</p>
     polls.<br>
     Please note that <code>$_CONF['<a
     href="config.html#desc_loginrequired">loginrequired</a>']</code> in
-    <tt>config.php</tt> takes precedence over this setting. So when
+    Geeklog's main configuration takes precedence over this setting. So when
     <code>'loginrequired'</code> is set to 1, anonymous users can not access
     the recent polls even when <code>'pollsloginrequired'</code> is set
     to 0.</td>
@@ -42,33 +45,50 @@ moved to a plugin as of Geeklog 1.4.0.</p>
     or to show it (when set to 0).</td>
 </tr>
 <tr>
-  <td><a name="desc_maxanswers">maxanswers</a></td>
+  <td><a name="desc_maxquestions">maxquestions</a></td>
   <td>10</td>
-  <td>Maximum number of possible answers for the poll editor.</td>
+  <td>Maximum number of questions in a poll.</td>
 </tr>
 <tr class="r2">
+  <td><a name="desc_maxanswers">maxanswers</a></td>
+  <td>10</td>
+  <td>Maximum number of options per question.</td>
+</tr>
+<tr>
   <td><a name="desc_answerorder">answerorder</a></td>
   <td>submitorder</td>
   <td>Sort answers by the number of results ('voteorder') or keep the order
     in which they were entered ('submitorder').</td>
 </tr>
-<tr>
+<tr class="r2">
   <td><a name="desc_pollcookietime">pollcookietime</a></td>
   <td>86400</td>
   <td>Number of seconds to set a poll answer cookie to time out on.</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_polladdresstime">polladdresstime</a></td>
   <td>604800</td>
   <td>Number of seconds to set a poll answer IP address to time out on.</td>
 </tr>
-<tr>
+<tr class="r2">
   <td><a name="desc_delete_polls">delete_polls</a></td>
   <td>0</td>
   <td>Defines what to do when a user is deleted that is the owner of a poll.
     When set to 0, all polls owned by the deleted user will be assigned to a
     user of the "Root" group (e.g. the site admin). When set to 1, the polls
     are deleted, including all the comments posted on that poll.</td>
+</tr>
+<tr>
+  <td><a name="desc_aftersave">aftersave</a></td>
+  <td>'list'</td>
+  <td>Which page to go to after a poll has been saved:
+    <ul>
+    <li>'item': display the poll</li>
+    <li>'list': show admin's list of polls (default)</li>
+    <li>'plugin': display the public list of polls</li>
+    <li>'home': display the site's homepage</li>
+    <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
+    </ul></td>
 </tr>
 </table>
 
@@ -89,10 +109,10 @@ Geeklog does two things when you vote:</p>
 and during that time, you can't vote again on the same poll.</p>
 
 <p>The amount of time your cookie and IP are stored can be changed in the polls
-plugin's <tt>config.php</tt>:</p>
+plugin's configuration (see above):</p>
 
-<pre>$_PO_CONF['pollcookietime']    = 86400;
-$_PO_CONF['polladdresstime']   = 604800;</pre>
+<pre>$_PO_CONF['<a href="#desc_pollcookietime">pollcookietime</a>']    = 86400;
+$_PO_CONF['<a href="#desc_polladdresstime">polladdresstime</a>']   = 604800;</pre>
 
 <p>Both times are in seconds, i.e. the cookie is valid for 24 hours and the IP
 is stored for a week.</p>

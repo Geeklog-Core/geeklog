@@ -154,6 +154,8 @@ posts made by this user agent, you would enter:</p>
 </table>
 <p>This would block all posts from user agents beginning with "libwww-perl".</p>
 
+<!-- Currently not shipped with Geeklog
+
 <h3><a name="honeypot">Project Honeypot http:BL Filter</a></h3>
 
 <p><a href="http://www.projecthoneypot.org" title="visit the project honey pot site">ProjectHoneypot.org</a>
@@ -177,6 +179,8 @@ posts made by this user agent, you would enter:</p>
         config.php file, http:BL blocking will be used for all filtered content
     automatically.</p>
 
+-->
+
 
 <h2><a name="action">Action Modules</a></h2>
 
@@ -194,15 +198,13 @@ modules, on the other hand, are activated by simply dropping them into the
 Spam-X directory). For this, every action module has a unique number that needs
 to be added up with the number of the other action modules you want to enable
 and entered as the value for the <a href="config.html#desc_spamx">spamx config
-variable</a> in Geeklog's main <tt>config.php</tt> file.</p>
+variable</a> in Geeklog's main configuration.</p>
 
 <h3>Example</h3>
 
 <p>The Delete Action module has the value 128, while the Mail Admin Action
 module has the value 8. So to activate both modules, add 128 + 8 = 136 and
-enter that in your config.php:</p>
-
-<pre>    $_CONF['spamx'] = 136;</pre>
+enter that in the Configuration admin panel.</p>
 
 <p>The SLV Examine module is complemented by a <strong>SLV Action</strong>
 module that ensures that SLV is notified of spam posts caught by other examine
@@ -261,12 +263,15 @@ that supposedly sent the trackback actually contains a link back to your site.
 In addition, Geeklog can also check if the IP address of the site in the
 trackback URL matches the IP address that sent the trackback. Trackbacks that
 fail any of these tests are usually spam. Please refer to the <a
-href="config.html#desc_check_trackback_link">config.php documentation</a> for
-more information.</p>
+href="config.html#desc_check_trackback_link">documentation for the
+configuration</a> for more information.</p>
 
 <h2><a name="config.php">Configuration File</a></h2>
 
-<p>The Spam-X plugin has its own configuration file, located at <tt>/path/to/geeklog/plugins/spamx/config.php</tt>. There you will find the following options:</p>
+<p>The Spam-X plugin's configuration can be changed from the Configuration admin
+panel:</p>
+
+<h3><a name="main">Spam-X Main Settings</a></h3>
 
 <table>
 <tr><th width="25%">Variable</th>
@@ -274,12 +279,10 @@ more information.</p>
     <th width="50%">Description</th>
 </tr>
 <tr>
-  <td><a name="desc_action">action</a></td>
-  <td>128</td>
-  <td>This only exists as a fallback in case <a
-    href="config.html#desc_spamx">$_CONF['spamx']</a> in Geeklog's main
-    <tt>config.php</tt> is not set. I.e. <code>$_CONF['spamx']</code> takes
-    precedence.</td>
+  <td><a name="desc_logging">logging</a></td>
+  <td><code>true</code></td>
+  <td>Whether to log recognized spam posts in the <tt>spamx.log</tt> logfile
+    (if set to <code>true</code>) or not (<code>false</code>).</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_admin_override">admin_override</a></td>
@@ -291,10 +294,9 @@ more information.</p>
     not checked for spam.</td>
 </tr>
 <tr>
-  <td><a name="desc_logging">logging</a></td>
-  <td><code>true</code></td>
-  <td>Whether to log recognized spam posts in the <tt>spamx.log</tt> logfile
-    (if set to <code>true</code>) or not (<code>false</code>).</td>
+  <td><a name="desc_timeout">timeout</a></td>
+  <td>5</td>
+  <td>Timeout (in seconds) for contacting external services such as SLV.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_notification_email">notification_email</a></td>
@@ -303,9 +305,12 @@ more information.</p>
     <a href="#action">action module</a> is enabled.</td>
 </tr>
 <tr>
-  <td><a name="desc_timeout">timeout</a></td>
-  <td>5</td>
-  <td>Timeout (in seconds) for contacting external services such as SLV.</td>
+  <td><a name="desc_action">action</a></td>
+  <td>128</td>
+  <td>This only exists as a fallback in case <a
+    href="config.html#desc_spamx">$_CONF['spamx']</a> in Geeklog's main
+    configuration is not set. I.e. <code>$_CONF['spamx']</code> takes
+    precedence.</td>
 </tr>
 </table>
 
