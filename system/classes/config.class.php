@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.39 2008/05/03 15:09:13 mjervis Exp $
+// $Id: config.class.php,v 1.40 2008/05/11 07:07:20 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -108,7 +108,7 @@ class config {
     {
         global $_TABLES;
 
-        $sql_query = "SELECT name, value, group_name FROM {$_TABLES['conf_values']}";
+        $sql_query = "SELECT name, value, group_name FROM {$_TABLES['conf_values']} WHERE (type <> 'subgroup') AND (type <> 'fieldset')";
         $result = DB_query($sql_query);
         while ($row = DB_fetchArray($result)) {
             if ($row[1] !== 'unset') {
