@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.202 2008/05/05 00:30:37 blaine Exp $
+// $Id: user.php,v 1.203 2008/05/11 22:03:25 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -1096,7 +1096,7 @@ function display_batchAddform ()
 
     $retval = '<form action="' . $_CONF['site_admin_url']
             . '/user.php" method="post" enctype="multipart/form-data"><div>'
-            . $LANG28[29] . ': <input type="file" name="importfile" size="40"' . XHTML . '>'
+            . $LANG28[29] . ': <input type="file" dir="ltr" name="importfile" size="40"' . XHTML . '>'
             . '<input type="hidden" name="mode" value="import"' . XHTML . '>'
             . '<input type="submit" name="submit" value="' . $LANG28[30]
             . '"' . XHTML . '></div></form>';

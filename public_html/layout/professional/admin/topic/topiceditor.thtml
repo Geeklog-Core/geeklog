@@ -22,7 +22,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_uploadimage}:</td>
-                                        <td><input type="file" name="newicon"{xhtml}> ({lang_maxsize} {icon_dimensions})</td>
+                                        <td><input type="file" dir="ltr" name="newicon"{xhtml}> ({lang_maxsize} {icon_dimensions})</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_defaulttopic}:</td>

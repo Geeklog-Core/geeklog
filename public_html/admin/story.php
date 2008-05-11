@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.267 2008/05/01 19:43:42 mjervis Exp $
+// $Id: story.php,v 1.268 2008/05/11 22:03:25 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -604,7 +604,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
         $newallowed = $_CONF['maximagesperarticle'] - $icount;
         for ($z = $icount + 1; $z <= $_CONF['maximagesperarticle']; $z++) {
-            $fileinputs .= $z . ') <input type="file" name="file' . $z . '"' . XHTML . '>';
+            $fileinputs .= $z . ') <input type="file" dir="ltr" name="file'
+                        . $z . '"' . XHTML . '>';
             if ($z < $_CONF['maximagesperarticle']) {
                 $fileinputs .= '<br' . XHTML . '>';
             }
