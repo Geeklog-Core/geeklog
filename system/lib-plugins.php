@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.144 2008/05/03 15:09:13 mjervis Exp $
+// $Id: lib-plugins.php,v 1.145 2008/05/11 07:25:08 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2296,7 +2296,7 @@ function PLG_wsEnabled($type)
 }
 
 /**
-* Forward the user depending on config.php-setting after saving something
+* Forward the user depending on config setting after saving something
 *
 * @param  string  $item_url   the url of the item saved
 * @param  string  $plugin     the name of the plugin that saved the item

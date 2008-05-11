@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configinfo.php,v 1.6 2008/05/10 21:03:23 dhaun Exp $
+// $Id: configinfo.php,v 1.7 2008/05/11 07:25:08 dhaun Exp $
 
 /**
 * This script will display file and permission information based on settings in
@@ -61,7 +61,7 @@ if (isset($_CONF['mail_settings']['password'])) {
     unset($_CONF['mail_settings']['password']);
 }
 
-$display = "<html>\n<head><title>config.php</title></head>\n<body>\n";
+$display = "<html>\n<head><title>Configuration Settings</title></head>\n<body>\n";
 $n = 0;
 $display .= '<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border: thin black solid;">';
 

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | mssql.class.php                                                           |
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // |          Randy Kolenko, Randy AT nextide DOT ca                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql.class.php,v 1.6 2007/11/25 06:59:56 ospiess Exp $
+// $Id: mssql.class.php,v 1.7 2008/05/11 07:25:08 dhaun Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -124,7 +124,7 @@ class database {
         $this->_db = mssql_connect($this->_host,$this->_user,$this->_pass) or die('Cannnot connect to DB server');
 
         // Set the database
-        @mssql_select_db($this->_name) or die ('Cannot Connect to the database provided.  Please check the config.php settings.');
+        @mssql_select_db($this->_name) or die ('Cannot Connect to the database provided.  Please check the db-config.php settings.');
 
         if (!($this->_db)) {
             if ($this->isVerbose()) {

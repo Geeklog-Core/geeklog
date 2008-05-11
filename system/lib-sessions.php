@@ -2,16 +2,16 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-sessions.php                                                          |
 // |                                                                           |
 // | Geeklog session library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.44 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-sessions.php,v 1.45 2008/05/11 07:25:08 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -233,7 +233,7 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     // For added security we are adding the option to build a IP-based
     // session ID.  This has the advantage of better security but it may
     // required dialed users to login every time.  You can turn the below
-    // code on in config.php (it's turned off by default)
+    // code on in the configuration (it's turned off by default)
     if ($md5_based == 1) {
         $ip = str_replace('.','',$remote_ip);
         $md5_sessid = md5($ip + $sessid);

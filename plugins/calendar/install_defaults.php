@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.4 2008/05/04 09:16:33 dhaun Exp $
+// $Id: install_defaults.php,v 1.5 2008/05/11 07:25:08 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -53,7 +53,7 @@ if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
 global $_CA_DEFAULT;
 
 // when set to 1 will only allow logged-in users to view the list of past events
-// (also see $_CONF['loginrequired'] in Geeklog's config.php)
+// (also see $_CONF['loginrequired'] in Geeklog's main configuration)
 $_CA_DEFAULT['calendarloginrequired']   = 0;
 
 // enable (set to 1) or disable (set to 0) submission queues:

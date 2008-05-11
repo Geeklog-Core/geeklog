@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.38 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-custom.php,v 1.39 2008/05/11 07:25:08 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -129,7 +129,7 @@ function CUSTOM_templateSetVars ($templatename, &$template)
 
 /*  Sample Custom Member Functions to create and update Custom Membership registration and profile
 
-    Note1: Enable CustomRegistration Feature in config.php
+    Note1: Enable CustomRegistration Feature in the configuration
     $_CONF['custom_registration'] = true;  // Set to true if you have custom code
 
     Note2: This example requires a template file called memberdetail.thtml to be
@@ -439,7 +439,7 @@ function CUSTOM_mail($to, $subject, $message, $from = '', $html = false, $priori
 
 /**
 * This is an example of a function that returns menu entries to be used for
-* the 'custom' entry in $_CONF['menu_elements'] (see config.php).
+* the 'custom' entry in $_CONF['menu_elements'] (see configuration).
 *
 */
 /*

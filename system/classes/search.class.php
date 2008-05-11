@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.65 2008/02/20 20:07:59 mjervis Exp $
+// $Id: search.class.php,v 1.66 2008/05/11 07:25:08 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -185,7 +185,7 @@ class Search {
 
     /**
     * Return the user's username or full name for display, depending
-    * on the $_CONF['show_fullname'] config.php setting
+    * on the $_CONF['show_fullname'] configuration setting
     *
     * @author Dirk Haun <dirk AT haun-online DOT de
     * @access private
