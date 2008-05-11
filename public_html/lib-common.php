@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.697 2008/05/10 21:03:23 dhaun Exp $
+// $Id: lib-common.php,v 1.698 2008/05/11 07:56:01 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -6142,7 +6142,7 @@ function COM_createImage($url, $alt = "", $attr = array())
         $attr_str .= " $key=\"$value\"";
     }
 
-    $retval = "<img $attr_str alt=\"$alt\" " . XHTML . ">";
+    $retval = "<img $attr_str alt=\"$alt\"" . XHTML . ">";
 
     return $retval;
 }
