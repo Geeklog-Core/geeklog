@@ -18,13 +18,6 @@
 <p>Since then, people have used the static pages for all kinds of things and with the inclusion of PHP into static pages, even the original name isn't quite right any more ...</p>
 
 
-<h2><a name="history">History</a></h2>
-
-<p>The plugin was originally written by Tony Bibbs and is included with Geeklog as a pre-installed plugin since Geeklog 1.3.5. An extended version of the plugin was started by Phill Gillespie and later supported by Tom Willet. The extended version was the first to allow the use of PHP in static pages and also supported proper Geeklog permissions.</p>
-
-<p>With Geeklog 1.3.8 and Static Pages 1.3, these two versions were merged again. Static Pages 1.3 also introduced some new features that were not included in either of its predecessors.</p>
-
-
 <h2><a name="features">Features</a></h2>
 
 <ul>
@@ -33,7 +26,7 @@
   <li>Static pages can be displayed on Geeklog's <a href="#frontpage">index and topic pages</a> and can even replace it entirely ("splash screen")</li>
   <li>"<a href="#cloning">cloning</a>" of existing pages</li>
   <li>Makes use of Geeklog's <a href="#url">URL rewrite feature</a></li>
-  <li>Supports autolinks and provides a <code>[staticpage:]</code> autotag</li>
+  <li>Provides <code>[staticpage:]</code> and <code>[staticpage_content:]</code> autotags</li>
   <li>proper support for Geeklog permissions</li>
 </ul>
 
@@ -44,7 +37,8 @@
 
 <p><strong>Important:</strong> For security reasons, the use of PHP in static pages is disabled by default. To enable it, you will have to grant the 'staticpages.PHP' permission to the "Static Page Admin" group. To do this, log in as the Admin and from the Admin's Only block, select "Groups". Find the "Static Page Admin" group and edit it by clicking on the name of the group. At the bottom of the page, you will find a list of "Rights" (permissions) that can be granted to all members of this group. Note that 'staticpages.delete' and 'staticpages.edit' are checked, while 'staticpages.PHP' is not checked. To allow members of the Static Page Admin group to use PHP in static pages, you will have to check the 'staticpages.PHP' checkbox and save your changes.</p>
 
-<p>In addition to the 'staticpages.PHP' permission discussed above, there is also a global flag, <code>$_SP_CONF['allow_php']</code>, that can be used to disable the use of PHP in static pages entirely. When set to 0, it will override the 'staticpages.PHP' permission and disable all use of PHP in static pages. The flag is located in the static pages' <tt>config.php</tt> file in the <tt>plugins/staticpages</tt> directory.</p>
+<p>In addition to the 'staticpages.PHP' permission discussed above, there is also a global option to disable the use of PHP in static pages entirely. That option ("Allow PHP?") can be found in the Configuration admin panel for the static pages plugin. When set to "False", that option will override the 'staticpages.PHP
+' permission and disable all use of PHP in static pages.</p>
 
 <h3><a name="usage">Usage</a></h3>
 
@@ -82,7 +76,7 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <h2><a name="frontpage">Using Static Pages on the index page</a></h2>
 
-<p>Geeklog 1.3.8 introduced a new concept for use by plugins, called Center Blocks. Basically, this means that any plugin can place blocks in the center area of a Geeklog site, i.e. among the stories.</p>
+<p>Geeklog's Center Blocks concept allows plugins to place blocks in the center area of a Geeklog site, i.e. among the stories.</p>
 
 <p>When you check the "Centerblock" option for a static page, you can use the "Position" and "Topic" drop-downs to chose where this static page will be displayed. For "Position", the options are "Top Of Page", "After Featured Story", "Bottom Of Page" (which should be self-explanatory) and "Entire Page". That last option, "Entire Page", will tell Geeklog that this static page will replace the entire index page - it will not display any stories, but only the contents of this static page. This is useful e.g. for "splash" screens or Welcome pages.</p>
 
@@ -94,15 +88,28 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <h3><a name="sort">Sorting</a></h3>
 
-<p><strong>Centerblocks:</strong> When you have more than one static page that would appear in the same section of the center area (e.g. two static pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the plugin's <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id. Please note that this order will only apply to centerblocks from static pages. All other plugins creating centerblocks will not be in that order. Also note that the centerblock is not necessarily looking like a standard Geeklog block. To achieve that, please check the field "Wrapping Static Pages in a block" below.</p>
+<p><strong>Centerblocks:</strong> When you have more than one static page that would appear in the same section of the center area (e.g. two static pages that would be displayed at the top of the index page), you can choose the order in which they appear from the Configuration admin panel for the static pages plugin. Your options are:</p>
+<ul>
+<li>Date (sort by last changed date)</li>
+<li>Page ID (sort by the page id; default)</li>
+<li>Page Title (sort by the page title)</li>
+</ul>
+<p>Please note that this order will only apply to centerblocks from static pages. All other plugins creating centerblocks will not be in that order. Also note that the centerblock is not necessarily looking like a standard Geeklog block. To achieve that, please check the field "Wrapping Static Pages in a block" below.</p>
 
-<p><strong>Menu entries:</strong> It's also possible to sort the static pages that are displayed in the site's menu (if you're using a theme that uses the <code>{plg_menu_elements}</code> variables in its <tt>header.thtml</tt>). Set the <code>$_SP_CONF['sort_menu_by']</code> variable (again, in the plugin's <tt>config.php</tt> file) to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), <tt>label</tt> (sort by the menu label), or <tt>title</tt> (sort by page title).</p>
+<p><strong>Menu entries:</strong> It's also possible to sort the static pages that are displayed in the site's menu (if you're using a theme that uses the <code>{plg_menu_elements}</code> variables in its <tt>header.thtml</tt>). This sort order can also be changed in the Configuration admin panel for the static pages plugin:</p>
+<ul>
+<li>Date (sort by last changed date)</li>
+<li>Label (sort by the menu label text; default)</li>
+<li>Page ID (sort by the page id)</li>
+<li>Page Title (sort by the page title)</li>
+</ul>
+
 
 <h2><a name="block">Wrapping Static Pages in a block</a></h2>
 
 <p>You can chose to have a static page wrapped in a Geeklog block-layout by checking the "wrap static page in a block" option in the static pages editor. If selected, the page's title will be used as the block title. Further, you can, as with normal blocks, enter a help URL. If this URL is entered, the block will display a help icon linking to that URL.</p>
 
-<p>The plugin's <tt>config.php</tt> file also has a flag, <code>$_SP_CONF['in_block']</code>, which is used as the default for this option.</p>
+<p>The default for this option can be set in the Configuration admin panel for the static pages plugin.</p>
 
 
 <h2><a name="cloning">Cloning Static Pages</a></h2>
@@ -130,16 +137,9 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <h3><a name="delete">Deleting pages with their owner</a></h3>
 
-<p>As all objects in Geeklog, static pages have an owner (the user that created
-the static page). When that user's account is deleted for some reason, any
-static pages owned by that user can either be deleted as well or they can be
-assigned to another user in Geeklog's Root group. The <tt>config.php</tt> file
-for the Static Pages plugin has the following option:</p>
-<p align="center"><code>$_SP_CONF['delete_pages'] = 0;</code></p>
-<p>If set to 0 (which is the default), static pages will not be deleted with
-their owner, but assigned to a member of the Root group instead (the user with
-the lowest user ID, most likely the Admin). If you change this to 1, static
-pages will be deleted when their owner's account is deleted.</p>
+<p>As all objects in Geeklog, static pages have an owner (the user that created the static page). When that user's account is deleted for some reason, any static pages owned by that user can either be deleted as well or they can be assigned to another user in Geeklog's Root group.</p>
+
+<p>In the Configuration admin panel for the static pages plugin, you can set the "Delete Pages with Owner?" option to either "False" (which is also the default), meaning that static pages will not be deleted withtheir owner, but assigned to a member of the Root group instead (the user withthe lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
 
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>

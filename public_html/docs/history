@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Other changes:
+- Removed references to config.php from the documentation, some READMEs, and
+  some source files (bug #0000627) [Dirk]
 - Don't include the (internal) 'subgroup' and 'fieldset' entries in the $_CONF
   arrays [Dirk]
 - Removed an extra } from the Static Pages staticpage.thtml template file
