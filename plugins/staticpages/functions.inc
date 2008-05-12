@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.120 2008/04/19 19:23:58 dhaun Exp $
+// $Id: functions.inc,v 1.121 2008/05/12 10:29:55 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -303,7 +303,6 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
         'comments' => 'spcomments.thtml'));
 
     if ($A['sp_format'] <> 'blankpage') {
-        $icons = '';
         if ($_CONF['hideprintericon'] == 0) {
             $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
             $attr = array('title' => $LANG_STATIC['printable_format']);
@@ -882,7 +881,6 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             $spage->set_var('layout_url', $_CONF['layout_url']);
             $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
 
-            $icons = '';
             if ($_CONF['hideprintericon'] == 0) {
                 $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
                 $attr = array('title' => $LANG_STATIC['printable_format']);
@@ -909,7 +907,6 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 );
                 $spage->set_var('edit_icon', $icon);
             }
-            $spage->set_var('icons', $icons);
 
             $content = SP_render_content (stripslashes ($S['sp_content']), $S['sp_php']);
             $spage->set_var('content', $content );
