@@ -26,6 +26,7 @@ function enablearchive(obj) {
                                     <tr>
                                         <td class="alignright" style="vertical-align:top;">{lang_date}:</td>
                                         <td>
+                                          <span dir="ltr">
                                             <select name="publish_month">
                                                 {publish_month_options}
                                             </select>
@@ -44,9 +45,10 @@ function enablearchive(obj) {
                                             <select name="publish_minute">
                                                 {publish_minute_options}
                                             </select>
-                                            {publishampm_selection}<br{xhtml}>
+                                            {publishampm_selection}
                                             <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
-                                            {publish_date_explanation}
+                                          </span><br{xhtml}>
+                                          {publish_date_explanation}
                                         </td>
                                     </tr>
                                     <tr>
@@ -92,6 +94,7 @@ function enablearchive(obj) {
                                                 <tr>
                                                     <td class="alignright" style="vertical-align:top;padding-right:5px;">{lang_date}:</td>
                                                     <td colspan="2">
+                                                      <span dir="ltr">
                                                         <select id="expire_month" name="expire_month">
                                                             {expire_month_options}
                                                         </select>
@@ -110,8 +113,9 @@ function enablearchive(obj) {
                                                         <select name="expire_minute">
                                                             {expire_minute_options}
                                                         </select>
-                                                        {expireampm_selection}<br{xhtml}>
+                                                        {expireampm_selection}
                                                         <input type="hidden" name="expire_second" value="{expire_second}"{xhtml}>
+                                                      </span><br{xhtml}>
                                                     </td>
                                                 </tr>
                                             </table>
