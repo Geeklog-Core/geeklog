@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.3 2008/05/04 09:16:33 dhaun Exp $
+// $Id: install_defaults.php,v 1.4 2008/05/12 14:25:44 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -119,17 +119,17 @@ function plugin_initconfig_polls()
         $c->add('maxquestions', $_PO_DEFAULT['maxquestions'], 'text',
                 0, 0, 0, 30, true, 'polls');
         $c->add('maxanswers', $_PO_DEFAULT['maxanswers'], 'text',
-                0, 0, 0, 30, true, 'polls');
+                0, 0, 0, 40, true, 'polls');
         $c->add('answerorder', $_PO_DEFAULT['answerorder'], 'select',
-                0, 0, 2, 40, true, 'polls');
+                0, 0, 2, 50, true, 'polls');
         $c->add('pollcookietime', $_PO_DEFAULT['pollcookietime'], 'text',
-                0, 0, 0, 50, true, 'polls');
-        $c->add('polladdresstime', $_PO_DEFAULT['polladdresstime'], 'text',
                 0, 0, 0, 60, true, 'polls');
-        $c->add('delete_polls', $_PO_DEFAULT['delete_polls'], 'select',
+        $c->add('polladdresstime', $_PO_DEFAULT['polladdresstime'], 'text',
                 0, 0, 0, 70, true, 'polls');
+        $c->add('delete_polls', $_PO_DEFAULT['delete_polls'], 'select',
+                0, 0, 0, 80, true, 'polls');
         $c->add('aftersave', $_PO_DEFAULT['aftersave'], 'select',
-                0, 0, 9, 80, true, 'polls');
+                0, 0, 9, 90, true, 'polls');
 
         $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true, 'polls');
         $c->add('default_permissions', $_PO_DEFAULT['default_permissions'],

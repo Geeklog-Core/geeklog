@@ -26,6 +26,11 @@ Other changes:
 - The URL sent in a user registration notification contained an &amp; where it
   should have been a simple & [Dirk]
 
+Polls plugin
+------------
+- Fixed duplicate sort_order value in the Polls config [Dirk]
+- Cosmetic changes in the Polls topic and results (bug #0000625) [Dirk]
+
 Static Pages plugin
 -------------------
 - Moved the print and edit icons to the bottom of a static page in the default
