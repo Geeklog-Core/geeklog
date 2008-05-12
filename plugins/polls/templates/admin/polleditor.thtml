@@ -4,7 +4,7 @@
                                     <table cellspacing="0" cellpadding="2" width="100%">
                                         <tr>
                                             <td align="right">{lang_pollid}:</td>
-                                            <td><input type="text" name="pid" value="{poll_id}" size="20"{xhtml}> {lang_donotusespaces}</td>
+                                            <td><input type="text" dir="ltr" name="pid" value="{poll_id}" size="20"{xhtml}> {lang_donotusespaces}</td>
                                         </tr>
                                         <tr>
                                             <td align="right">{lang_topic}:</td>

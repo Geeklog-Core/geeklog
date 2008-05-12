@@ -2,7 +2,7 @@
                                 <table cellspacing="0" cellpadding="2" width="100%">
                                     <tr>
                                         <td class="alignright">{lang_topicid}:</td>
-                                        <td><input type="text" size="20" maxlength="20" name="tid" value="{topic_id}"{xhtml}> {lang_donotusespaces}</td>
+                                        <td><input type="text" dir="ltr" size="20" maxlength="20" name="tid" value="{topic_id}"{xhtml}> {lang_donotusespaces}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_sortorder}:</td>

@@ -47,7 +47,7 @@
         </tr>
           <tr>
             <td align="right">{lang_id}:</td>
-            <td><input type="text" name="sp_id" size="40" maxlength="40" value="{sp_id}"{xhtml}></td>
+            <td><input type="text" dir="ltr" name="sp_id" size="40" maxlength="40" value="{sp_id}"{xhtml}></td>
           </tr>
           <tr>
             <td style="text-align:right;padding-bottom:15px;">{lang_url}:</td>

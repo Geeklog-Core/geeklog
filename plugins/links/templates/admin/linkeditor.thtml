@@ -14,7 +14,7 @@
                                         <tr>
                                             <td align="right">{lang_linkid}:</td>
                                             <td>
-                                                <input type="text" size="40" maxlength="40" name="lid" value="{link_id}"{xhtml}>
+                                                <input type="text" dir="ltr" size="40" maxlength="40" name="lid" value="{link_id}"{xhtml}>
                                             </td>
                                         </tr>
                                         <tr>
