@@ -19,14 +19,22 @@ Other changes:
   some source files (bug #0000627) [Dirk]
 - Don't include the (internal) 'subgroup' and 'fieldset' entries in the $_CONF
   arrays [Dirk]
-- Removed an extra } from the Static Pages staticpage.thtml template file
-  (reported by Markus Wollschläger) [Dirk]
 - COM_numberFormat wouldn't handle decimals correctly (bug #0000624) [Dirk]
 - Make sure the XHTML constant is defined if the theme doesn't already define
   it (bug #0000622) [Dirk]
 - Fixed invalid <brXHTML> tag in some language files (bug #0000621) [Dirk]
 - The URL sent in a user registration notification contained an &amp; where it
   should have been a simple & [Dirk]
+
+Static Pages plugin
+-------------------
+- Moved the print and edit icons to the bottom of a static page in the default
+  staticpage.thtml template file. Also removed the icons from the default
+  centerblock.thtml template file and defined the {lastupdate} and {hits}
+  variables there (bug #0000628) [Dirk]
+- Removed an extra } from the Static Pages staticpage.thtml template file
+  (reported by Markus Wollschläger) [Dirk]
+
 
 
 May 5, 2008 (1.5.0b1)
