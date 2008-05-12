@@ -1,3 +1,1 @@
-<span class="story-icons">{print_icon}{edit_icon}</span>
 {content}
-<p class="aligncenter">{lastupdate} {hits}</p>
