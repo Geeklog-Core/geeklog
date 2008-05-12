@@ -1,25 +1,21 @@
 <?php
 
-/* These queries were copied from the mysql 1.4.2 upgrade and
+/* These queries were copied from the mysql 1.5.0 upgrade and
  * probably need to be rewritten for MS SQL
-
+ */
 
 // remove time zone table since its included into PEAR now
 $_SQL[] = "DROP TABLE " . $_DB_table_prefix . 'tzcodes';
-$_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} CHANGE `tzid` `tzid` VARCHAR(125) NOT NULL DEFAULT ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} CHANGE tzid tzid VARCHAR(125) NOT NULL DEFAULT ''";
 // change former default values to '' so users dont all have edt for no reason
-$_SQL[] = "UPDATE `{$_TABLES['userprefs']}` set tzid = ''";
+$_SQL[] = "UPDATE {$_TABLES['userprefs']} set tzid = ''";
+// Add new field to track the number of reminders to login and use the site or account may be deleted
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD num_reminders TINYINT(1) NOT NULL default 0 AFTER status";
 // User submissions may have body text.
-$_SQL[] = "ALTER TABLE `{$_TABLES['storysubmission']}` ADD bodytext TEXT AFTER introtext";
+$_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD bodytext TEXT AFTER introtext";
 
 // new comment code: close comments
 $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Comments Closed')";
-
-// add owner-field to links-submission
-$_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1';";
-
-// update plugin version numbers
-$_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1', pi_gl_version = '1.4.1' WHERE pi_name = 'links'";
 
 // Increase block function size to accept arguments:
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR(128)";
@@ -28,9 +24,14 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE phpblockfn phpblockfn VARCHAR
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DEFAULT NULL AFTER rdfupdated";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL AFTER rdf_last_modified";
 
- */
+// new 'webservices.atompub' feature
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('webservices.atompub', 'May use Atompub Webservices (if restricted)', 1)";
+
+// add the 'Webservices Users' group
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Webservices Users', 'Can use the Webservices API (if restricted)', 0)";
  
- $_SQL[] = "
+// add the security tokens table:
+$_SQL[] = "
 CREATE TABLE {$_TABLES['tokens']} (
     [token] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     [created] [datetime] NOT NULL,
@@ -363,21 +364,343 @@ function create_ConfValues()
     $c->add('atom_max_stories',     10, 'text',   7, 40, 0, 1860, TRUE);
 }
 
+// Polls plugin updates
+function upgrade_PollsPlugin()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/polls/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_DB_table_prefix, $_PO_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_polls()) {
+        echo 'There was an error upgrading the Polls plugin';
+        return false;
+    }
+
+    $P_SQL = array();
+    $P_SQL[] = "RENAME TABLE {$_TABLES['pollquestions']} TO {$_TABLES['polltopics']};";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} CHANGE question topic VARCHAR( 255 )  NULL DEFAULT NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} CHANGE qid pid VARCHAR( 20 ) NOT NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD questions int(11) default '0' NOT NULL AFTER voters";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD open tinyint(1) NOT NULL default '1' AFTER display";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD hideresults tinyint(1) NOT NULL default '0' AFTER open";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} CHANGE qid pid VARCHAR( 20 ) NOT NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD qid VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER pid;";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} DROP PRIMARY KEY;";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD INDEX (pid, qid, aid);";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollvoters']} CHANGE qid pid VARCHAR( 20 ) NOT NULL";
+    $P_SQL[] = "CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
+        [qid] [int] NOT NULL ,
+        [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+        [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    ) ON [PRIMARY]";
+    $P_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
+        CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
+        (
+            [qid]
+        )  ON [PRIMARY]";
+    // in 1.4.1, "don't display poll" was equivalent to "closed"
+    $P_SQL[] = "UPDATE {$_TABLES['polltopics']} SET open = 0 WHERE display = 0";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.1', pi_gl_version = '1.5.0' WHERE pi_name = 'polls'";
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the polls, SQL: $sql<br>";
+            return false;
+        }
+    }
+    $P_SQL = array();
+
+    $move_sql = "SELECT pid, topic FROM {$_TABLES['polltopics']}";
+    $move_rst = DB_query ($move_sql);
+    $count_move = DB_numRows($move_rst);
+    for ($i = 0; $i < $count_move; $i++) {
+        $A = DB_fetchArray($move_rst);
+        $A[1] = mysql_real_escape_string($A[1]);
+        $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
+    }
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the polls, SQL: $sql<br>";
+            return false;
+        }
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
+    }
+
+    return true;
+}
+
+// Staticpages plugin updates
 function upgrade_StaticpagesPlugin()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/staticpages/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_DB_table_prefix, $_SP_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_staticpages()) {
+        echo 'There was an error upgrading the Static Pages plugin';
+        return false;
+    }
+
+    $P_SQL = array();
+    $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
+    // disable comments on all existing static pages
+    $P_SQL[] = "UPDATE {$_TABLES['staticpage']} SET commentcode = -1";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.5.0', pi_gl_version = '1.5.0' WHERE pi_name = 'staticpages'";
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the Static Pages plugin, SQL: $sql<br>";
+            return false;
+        }
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
+    }
+
+    return true;
+}
+
+// Calendar plugin updates
+function upgrade_CalendarPlugin()
+{
+    global $_CONF, $_TABLES, $_STATES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/calendar/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_DB_table_prefix, $_CA_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_calendar()) {
+        echo 'There was an error upgrading the Polls plugin';
+        return false;
+    }
+
+    $P_SQL[] = "ALTER TABLE {$_TABLES['events']} CHANGE state state varchar(40) default NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['eventsubmission']} CHANGE state state varchar(40) default NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['personal_events']} CHANGE state state varchar(40) default NULL";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.0.2', pi_gl_version = '1.5.0' WHERE pi_name = 'calendar'";
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the calendar";
+            return false;
+        }
+    }
+
+    if (isset($_STATES) && is_array($_STATES)) {
+        $tables = array($_TABLES['events'], $_TABLES['eventsubmission'],
+                        $_TABLES['personal_events']);
+
+        foreach ($_STATES as $key => $state) {
+            foreach ($tables as $table) {
+                DB_change($table, 'state', addslashes($state),
+                                  'state', addslashes($key));
+            }
+        }
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
+    }
+
+    return true;
+}
+
+// Spam-X plugin updates
+function upgrade_SpamXPlugin()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/spamx/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_DB_table_prefix, $_SPX_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_spamx()) {
+        echo 'There was an error upgrading the Spam-X plugin';
+        return false;
+    }
+
+    $sql = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.1.1', pi_gl_version = '1.5.0' WHERE pi_name = 'spamx'";
+    $rst = DB_query($sql);
+    if (DB_error()) {
+        echo "There was an error upgrading the Spam-X plugin";
+        return false;
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
+    }
+
+    return true;
+}
+
+// Links plugin updates
+function upgrade_LinksPlugin()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $plugin_path = $_CONF['path'] . 'plugins/links/';
+    require_once $plugin_path . 'install_defaults.php';
+
+    if (file_exists($plugin_path . 'config.php')) {
+        global $_DB_table_prefix, $_LI_CONF;
+
+        require_once $plugin_path . 'config.php';
+    }
+
+    if (!plugin_initconfig_links()) {
+        echo 'There was an error upgrading the Links plugin';
+        return false;
+    }
+
+    $li_config = config::get_instance();
+    $_LI_CONF = $li_config->get_config('links');
+
+    if (empty($_LI_CONF['root'])) {
+        $_LI_CONF['root'] = 'site';
+    }
+    $root = addslashes($_LI_CONF['root']);
+
+    $P_SQL = array();
+    $P_SQL[] = "CREATE TABLE [dbo].[{$_TABLES['linkcategories']}] (
+        [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+        [pid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+        [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+        [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+        [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+        [created] [datetime] NULL ,
+        [modified] [datetime] NULL ,
+        [owner_id] [numeric](8, 0) NOT NULL ,
+        [group_id] [numeric](8, 0) NOT NULL ,
+        [perm_owner] [tinyint] NOT NULL ,
+        [perm_group] [tinyint] NOT NULL ,
+        [perm_members] [tinyint] NOT NULL ,
+        [perm_anon] [tinyint] NOT NULL
+    ) ON [PRIMARY]";
+    $P_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
+        CONSTRAINT [PK_gl_linkcategories] PRIMARY KEY  CLUSTERED
+        (
+            [pid]
+        )  ON [PRIMARY]";
+
+    $blockadmin_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                "grp_name='Block Admin'");
+
+    $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1' AFTER date";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(32) NOT NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(32) NOT NULL";
+    $P_SQL[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$root}', 'root', 'Root', 'Website root', NULL, NOW(), NOW(), 5, 2, 3, 3, 2, 2)";
+    $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.0', pi_gl_version='1.5.0' WHERE pi_name='links'";
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the links, SQL: $sql<br>";
+            return false;
+        }
+    }
+
+    // get Links admin group number
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                           "grp_name = 'Links Admin'");
+
+    // loop through adding to category table, then update links table with cids
+    $result = DB_query("SELECT DISTINCT cid AS category FROM {$_TABLES['links']}");
+    $nrows = DB_numRows($result);
+    for ($i = 0; $i < $nrows; $i++) {
+
+        $A = DB_fetchArray($result);
+        $category = addslashes($A['category']);
+        $cid = $category;
+        DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified) VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW())",1);
+        if ($cid != $category) { // still experimenting ...
+            DB_query("UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$category}'",1);
+        }
+        if (DB_error()) {
+            echo "Error inserting categories into linkcategories table";
+            return false;
+        }
+    }
+
+    if (file_exists($plugin_path . 'config.php')) {
+        // Rename the existing config.php as it's not needed any more
+        $ren = @rename($plugin_path . 'config.php',
+                       $plugin_path . 'config-pre1.5.0.php');
+    }
+
+    return true;
+}
+
+// add the new 'webservices.atompub' feature and the 'Webservices Users' group
+function upgrade_addWebservicesFeature()
 {
     global $_TABLES;
 
-/*
- * This needs to be updated for MS SQL
-    // Polls plugin updates
-    $check_sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = 'staticpages';";
-    $check_rst = DB_query ($check_sql);
-    if (DB_numRows($check_rst) == 1) {
-        $P_SQL = array();
-        $P_SQL[] = "ALTER TABLE `{$_TABLES['staticpage']}` ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
+    $ft_id = DB_getItem($_TABLES['features'], 'ft_id',
+                        "ft_name = 'webservices.atompub'");
+    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                          "grp_name = 'Webservices Users'");
+    $rootgrp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
 
-        INST_updateDB($P_SQL);
+    if (($grp_id > 0) && ($ft_id > 0)) {
+        // add 'webservices.atompub' feature to 'Webservices Users' group
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $grp_id)");
+
+        // make 'Root' members a member of 'Webservices Users'
+        if ($rootgrp > 0) {
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($grp_id, NULL, $rootgrp)");
+        }
     }
-*/
 }
+
 ?>
