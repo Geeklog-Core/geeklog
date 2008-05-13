@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.51 2008/01/26 20:43:15 dhaun Exp $
+// $Id: index.php,v 1.52 2008/05/13 19:42:16 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -87,7 +87,7 @@ function listpolls()
         array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
         array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
-        array('text' => $LANG25[33], 'field' => 'open', 'sort' => true)
+        array('text' => $LANG25[33], 'field' => 'is_open', 'sort' => true)
     );
 
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
@@ -254,7 +254,7 @@ function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults
 
     // Save poll topic
     DB_save($_TABLES['polltopics'],"pid, topic, voters, questions, date, display, "
-           . "open, hideresults, statuscode, commentcode, owner_id, group_id, "
+           . "is_open, hideresults, statuscode, commentcode, owner_id, group_id, "
            . "perm_owner, perm_group, perm_members, perm_anon",$sql);
 
     if ($_POLL_VERBOSE) {
@@ -346,7 +346,7 @@ function editpoll ($pid = '')
         $T['topic'] = '';
         $T['voters'] = 0;
         $T['display'] = 1;
-        $T['open'] = 1;
+        $T['is_open'] = 1;
         $T['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Polls Admin'])) {
             $T['group_id'] = $_GROUPS['Polls Admin'];
@@ -379,7 +379,7 @@ function editpoll ($pid = '')
         $poll_templates->set_var('poll_display', 'checked="checked"');
     }
 
-    if ($T['open'] == 1) {
+    if ($T['is_open'] == 1) {
         $poll_templates->set_var('poll_open', 'checked="checked"');
     }
     if ($T['hideresults'] == 1) {

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.26 2008/01/19 14:53:12 dhaun Exp $
+// $Id: index.php,v 1.27 2008/05/13 19:42:17 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -72,7 +72,7 @@ function polllist ()
                         array('text' => $LANG25[9], 'field' => 'topic', 'sort' => true),
                         array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
                         array('text' => $LANG25[3], 'field' => 'unixdate', 'sort' => true),
-                        array('text' => $LANG_POLLS['open_poll'], 'field' => 'open', 'sort' => true)
+                        array('text' => $LANG_POLLS['open_poll'], 'field' => 'is_open', 'sort' => true)
         );
 
         $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
@@ -158,7 +158,7 @@ if (empty($pid)) {
             . DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'") . '"'
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
-    if (DB_getItem($_TABLES['polltopics'], 'open', "pid = '$pid'") != 1) {
+    if (DB_getItem($_TABLES['polltopics'], 'is_open', "pid = '$pid'") != 1) {
         $aid = -1; // poll closed - show result
     }
     if (!isset ($_COOKIE['poll-'.$pid])
