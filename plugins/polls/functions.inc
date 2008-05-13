@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.86 2008/03/17 21:12:54 dhaun Exp $
+// $Id: functions.inc,v 1.87 2008/05/13 18:53:22 mwest Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -469,7 +469,7 @@ function POLLS_pollVote($pid, $showall=true)
     global $_CONF, $_TABLES, $LANG_POLLS, $LANG01, $_USER, $LANG25, $_IMAGE_TYPE;
     $retval = '';
 
-    $topic = DB_query("SELECT topic,voters,commentcode,open,hideresults,owner_id "
+    $topic = DB_query("SELECT topic,voters,commentcode,is_open,hideresults,owner_id "
         . ",group_id,perm_owner,perm_group,perm_anon,perm_members "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
     $ntopics = DB_numRows($topic);
@@ -478,7 +478,7 @@ function POLLS_pollVote($pid, $showall=true)
         return $retval;
     }
     $P = DB_fetchArray($topic);
-    if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) or ($P['open'] == 1)) {
+    if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) or ($P['is_open'] == 1)) {
         if ($ntopics == 1) {
             $questions_sql = "SELECT question,qid "
                 . "FROM {$_TABLES['pollquestions']} "
@@ -506,7 +506,7 @@ function POLLS_pollVote($pid, $showall=true)
                 $poll->set_var('lang_votes', $LANG_POLLS['votes']);
                 $results = "";
 
-                if (($P['open'] == 0) || (
+                if (($P['is_open'] == 0) || (
                         ($P['hideresults'] == 1) && (isset($_USER['uid']) && $_USER['uid'] == $P['owner_id'])
                     ) || (
                         ($P['hideresults'] == 1) && (SEC_inGroup('Root'))
@@ -637,13 +637,13 @@ function POLLS_showPoll($size, $pid='', $showall=false )
     DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_PO_CONF['polladdresstime']}");
 
     if(!empty($pid)) {
-        if(!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['open'] == 1)) {
+        if(!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['is_open'] == 1)) {
             $retval .= POLLS_pollVote($pid);
         } else {
             $retval .= POLLS_pollResults($pid, $size);
         }
     } else {
-        $result = DB_query("SELECT pid,topic,open from {$_TABLES['polltopics']} WHERE display = 1 ORDER BY date DESC");
+        $result = DB_query("SELECT pid,topic,is_open from {$_TABLES['polltopics']} WHERE display = 1 ORDER BY date DESC");
         $nrows = DB_numRows($result );
 
         $title = DB_getItem($_TABLES['blocks'], 'title', "name='poll_block'");
@@ -659,7 +659,7 @@ function POLLS_showPoll($size, $pid='', $showall=false )
                     $showall = true;
                 }
 
-                if (!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['open'] == 1)) {
+                if (!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['is_open'] == 1)) {
                     $retval .= POLLS_pollVote($pid, $showall);
                 } else {
                     $retval .= POLLS_pollResults($pid, $size);
@@ -747,7 +747,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
            $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE, $LANG25;
 
     $retval = '';
-    $topic_sql = "SELECT topic,voters,open,hideresults,commentcode,owner_id,group_id,"
+    $topic_sql = "SELECT topic,voters,is_open,hideresults,commentcode,owner_id,group_id,"
         . "perm_owner,perm_group,perm_members,perm_anon "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'";
     $topic = DB_query($topic_sql);
@@ -1038,8 +1038,8 @@ function plugin_getListField_polls($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 $retval = $access;
                 break;
-            case 'open':
-                if ($A['open'] == 1) {
+            case 'is_open':
+                if ($A['is_open'] == 1) {
                     $retval = $LANG25[25];
                 } else {
                     $retval = $LANG25[26];
