@@ -591,7 +591,7 @@ CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
     [questions] [int] NOT NULL ,
     [date] [datetime] NULL ,
     [display] [tinyint] NOT NULL ,
-    [open] [tinyint] NOT NULL ,
+    [is_open] [tinyint] NOT NULL ,
     [hideresults] [tinyint] NOT NULL ,
     [commentcode] [smallint] NOT NULL ,
     [statuscode] [smallint] NOT NULL ,
