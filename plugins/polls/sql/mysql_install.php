@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.10 2008/05/02 12:08:07 dhaun Exp $
+// $Id: mysql_install.php,v 1.11 2008/05/13 18:50:42 mwest Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
@@ -61,7 +61,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   questions int(11) NOT NULL default '0',
   date datetime default NULL,
   display tinyint(4) NOT NULL default '0',
-  open tinyint(1) NOT NULL default '1',
+  is_open tinyint(1) NOT NULL default '1',
   hideresults tinyint(1) NOT NULL default '0',
   commentcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
