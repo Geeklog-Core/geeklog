@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.4 2008/05/02 12:08:07 dhaun Exp $
+// $Id: mssql_install.php,v 1.5 2008/05/13 18:49:54 mwest Exp $
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
@@ -60,7 +60,7 @@ CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
     [questions] [int] NOT NULL ,
     [date] [datetime] NULL ,
     [display] [tinyint] NOT NULL ,
-    [open] [tinyint] NOT NULL ,
+    [is_open] [tinyint] NOT NULL ,
     [hideresults] [tinyint] NOT NULL ,
     [commentcode] [smallint] NOT NULL ,
     [statuscode] [smallint] NOT NULL ,
