@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.22 2008/04/19 15:14:41 mjervis Exp $
+// $Id: install.php,v 1.23 2008/05/14 10:04:29 dhaun Exp $
 
 require_once '../../../lib-common.php';
 
@@ -69,7 +69,7 @@ $MAPPINGS['polls.edit']         = array ($pi_admin);
 // Insert table name and sql to insert default data for your plugin.
 // Note: '#group#' will be replaced with the id of the plugin's admin group.
 $DEFVALUES = array();
-$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, questions, date, display, open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
+$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, questions, date, display, is_open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) "
     . "VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 0, 2, NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
 // more default data is in the install SQL file in the plugin's directory
 
