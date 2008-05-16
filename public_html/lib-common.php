@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.698 2008/05/11 07:56:01 dhaun Exp $
+// $Id: lib-common.php,v 1.699 2008/05/16 19:20:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -6497,8 +6497,8 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
         if($_CONF['rootdebug'] || SEC_inGroup('Root'))
         {
             echo("
-                An error has occurred:<br" . XHTML . ">
-                $errno - $errstr @ $errfile line $errline<br" . XHTML . ">
+                An error has occurred:<br>
+                $errno - $errstr @ $errfile line $errline<br>
             <pre>");
             ob_start();
             var_dump($errcontext);
