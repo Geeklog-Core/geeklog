@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.52 2008/05/13 19:42:16 dhaun Exp $
+// $Id: index.php,v 1.53 2008/05/17 17:35:52 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -347,6 +347,7 @@ function editpoll ($pid = '')
         $T['voters'] = 0;
         $T['display'] = 1;
         $T['is_open'] = 1;
+        $T['hideresults'] = 0;
         $T['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Polls Admin'])) {
             $T['group_id'] = $_GROUPS['Polls Admin'];
