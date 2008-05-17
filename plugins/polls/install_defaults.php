@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.4 2008/05/12 14:25:44 dhaun Exp $
+// $Id: install_defaults.php,v 1.5 2008/05/17 13:53:21 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -133,7 +133,7 @@ function plugin_initconfig_polls()
 
         $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true, 'polls');
         $c->add('default_permissions', $_PO_DEFAULT['default_permissions'],
-                '@select', 0, 1, 12, 90, true, 'polls');
+                '@select', 0, 1, 12, 100, true, 'polls');
     }
 
     return true;
