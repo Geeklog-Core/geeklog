@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.57 2008/04/12 19:51:15 dhaun Exp $
+// $Id: index.php,v 1.58 2008/05/17 19:56:10 dhaun Exp $
 
 /**
  * Geeklog links administration page.
@@ -491,9 +491,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= deleteLink($lid, $type);
     }
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+    $cid = '';
+    if (isset($_POST['cid'])) {
+        $cid = $_POST['cid'];
+    }
     $display .= savelink (COM_applyFilter ($_POST['lid']),
             COM_applyFilter ($_POST['old_lid']),
-            $_POST['cid'], $_POST['categorydd'],
+            $cid, $_POST['categorydd'],
             $_POST['url'], $_POST['description'], $_POST['title'],
             COM_applyFilter ($_POST['hits'], true),
             COM_applyFilter ($_POST['owner_id'], true),
