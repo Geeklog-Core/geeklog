@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.14 2008/01/01 12:25:22 dhaun Exp $
+// $Id: category.php,v 1.15 2008/05/17 21:02:03 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -92,7 +92,7 @@ function links_list_categories($root)
               'text' => $LANG_LINKS_ADMIN[53]),
         array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
               'text' => $LANG_LINKS_ADMIN[51]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?checkhtml=true',
+        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled',
               'text' => $LANG_LINKS_ADMIN[26]),
         array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
               'text' => $LANG_LINKS_ADMIN[50]),

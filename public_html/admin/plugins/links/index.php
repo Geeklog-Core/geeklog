@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.58 2008/05/17 19:56:10 dhaun Exp $
+// $Id: index.php,v 1.59 2008/05/17 21:02:03 dhaun Exp $
 
 /**
  * Geeklog links administration page.
@@ -371,24 +371,23 @@ function listlinks ()
     );
 
     $validate = '';
-    $token = SEC_createToken();
-    if (isset($_GET['validate']) && SEC_checkToken()) {
+    if (isset($_GET['validate'])) {
+        $token = SEC_createToken();
         $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
             'text' => $LANG_LINKS_ADMIN[53]);
-        $dovalidate_url = $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=validate'
-                          . '&amp;'.CSRF_TOKEN.'='.$token;
+        $dovalidate_url = $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=validate' . '&amp;'.CSRF_TOKEN.'='.$token;
         $dovalidate_text = $LANG_LINKS_ADMIN[58];
         $form_arr['top'] = COM_createLink($dovalidate_text, $dovalidate_url);
         if ($_GET['validate'] == 'enabled') {
             $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'beforevalidate', 'sort' => false);
-            $validate = '?validate=enabled&amp;'.CSRF_TOKEN.'='.$token;
-        } else if ($_GET['validate'] == 'validate'){
+            $validate = '?validate=enabled';
+        } else if ($_GET['validate'] == 'validate') {
             $header_arr[] = array('text' => $LANG_LINKS_ADMIN[27], 'field' => 'dovalidate', 'sort' => false);
             $validate = '?validate=validate&amp;'.CSRF_TOKEN.'='.$token;
         }
         $validate_help = $LANG_LINKS_ADMIN[59];
     } else {
-        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled&amp;'.CSRF_TOKEN.'='.$token,
+        $menu_arr[] = array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled',
               'text' => $LANG_LINKS_ADMIN[26]);
         $form_arr = array();
         $validate_help = '';
