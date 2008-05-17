@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.53 2008/05/17 17:35:52 dhaun Exp $
+// $Id: index.php,v 1.54 2008/05/17 18:53:27 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -155,7 +155,6 @@ function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG25[2];
         $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= editpoll ($pid);
         $retval .= COM_siteFooter ();
         return $retval;
     }
