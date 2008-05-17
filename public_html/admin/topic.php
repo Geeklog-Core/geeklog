@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.78 2008/04/13 16:19:09 dhaun Exp $
+// $Id: topic.php,v 1.79 2008/05/17 20:07:40 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -291,7 +291,6 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
     } else {
         $retval .= COM_siteHeader('menu', $LANG27[1]);
         $retval .= COM_errorLog($LANG27[7], 2);
-        $retval .= edittopic($tid);
         $retval .= COM_siteFooter();
     }
 
