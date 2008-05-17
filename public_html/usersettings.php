@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.171 2008/02/24 19:43:53 dhaun Exp $
+// $Id: usersettings.php,v 1.172 2008/05/17 11:00:49 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -1399,13 +1399,17 @@ function savepreferences($A)
         $A['tzid'] = '';
     }
 
-    $A['theme'] = COM_applyFilter ($A['theme']);
-    if (empty ($A['theme'])) {
+    if (isset($A['theme'])) {
+        $A['theme'] = COM_applyFilter($A['theme']);
+    }
+    if (empty($A['theme'])) {
         $A['theme'] = $_CONF['theme'];
     }
 
-    $A['language'] = COM_applyFilter ($A['language']);
-    if (empty ($A['language'])) {
+    if (isset($A['language'])) {
+        $A['language'] = COM_applyFilter($A['language']);
+    }
+    if (empty($A['language'])) {
         $A['language'] = $_CONF['language'];
     }
 
