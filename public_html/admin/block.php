@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.121 2008/04/19 15:14:41 mjervis Exp $
+// $Id: block.php,v 1.122 2008/05/17 17:02:54 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -166,6 +166,8 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $block_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
     $block_templates->set_var('max_url_length', 255);
+    $block_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $block_templates->set_var('gltoken', SEC_createToken());
     $block_templates->parse('output','editor');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -354,6 +356,8 @@ function editblock ($bid = '')
     } else {
         $block_templates->set_var ('allow_autotags', '');
     }
+    $block_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $block_templates->set_var('gltoken', SEC_createToken());
     $block_templates->set_var ('end_block',
             COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
     $block_templates->parse('output', 'editor');
@@ -772,8 +776,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
         COM_errorLog ('Attempted to delete block, bid empty or null, value =' . $bid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/block.php');
-    } else {
+    } elseif (SEC_checkToken()) {
         $display .= deleteBlock ($bid);
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to illegally delete block $bid and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
     $help = '';

@@ -80,6 +80,7 @@
                                             <input type="submit" value="{lang_save}" name="mode"{xhtml}>
                                             <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
                                             <input type="hidden" name="bid" value="{block_id}"{xhtml}>
+                                            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                         </td>
                                     </tr>
                                 </table>
