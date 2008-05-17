@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.100 2008/04/19 11:55:52 dhaun Exp $
+// $Id: group.php,v 1.101 2008/05/17 19:52:49 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -423,6 +423,7 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $f
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
+    $retval = '';
     if (!empty ($grp_name) && !empty ($grp_descr)) {
         $GroupAdminGroups = SEC_getUserGroups ();
         if (!empty ($grp_id) &&
