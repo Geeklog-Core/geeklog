@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.7 2008/05/01 21:09:00 dhaun Exp $
+// $Id: german.php,v 1.8 2008/05/17 10:58:25 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -56,7 +56,7 @@ $LANG_INSTALL = array(
     2 => 'Zuverlässigkeit eingebaut',
     3 => 'Geeklog-Installation',
     4 => 'PHP 4.1.0 benötigt',
-    5 => 'Sorry, Geeklog benötigt mindestens PHP 4.1.0 (Du hast Version '),
+    5 => 'Sorry, Geeklog benötigt mindestens PHP 4.1.0 (Du hast Version ',
     6 => '). Bitte <a href="http://www.php.net/downloads.php">aktualisiere Deine PHP-Installation</a> oder bitte Deinen Hosting-Provider darum.',
     7 => 'Geeklog-Dateien nicht gefunden',
     8 => 'Das Installations-Skript hat einige wichtige Geeklog-Dateien nicht gefunden. Wahrscheinlich hast Du diese in andere Verzeichnisse verschoben. Bitte gib hier die Pfade zu den Dateien und Verzeichnissen an:',
