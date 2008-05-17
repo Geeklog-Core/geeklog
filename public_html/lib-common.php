@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.699 2008/05/16 19:20:51 dhaun Exp $
+// $Id: lib-common.php,v 1.700 2008/05/17 17:30:28 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3781,6 +3781,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
 
     $retval = '';
 
+    $allow_page_break = false;
     if( isset( $_CONF['skip_html_filter_for_root'] ) &&
              ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
             SEC_inGroup( 'Root' ))
@@ -3798,7 +3799,6 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
             $retval .= '<span class="warningsmall">' . $LANG01[31] . ' ';
         }
 
-        $allow_page_break = false;
         if( empty( $permissions ) || !SEC_hasRights( $permissions ) ||
                 empty( $_CONF['admin_html'] ))
         {
