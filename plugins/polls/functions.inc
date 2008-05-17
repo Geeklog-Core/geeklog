@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.87 2008/05/13 18:53:22 mwest Exp $
+// $Id: functions.inc,v 1.88 2008/05/17 20:34:52 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -819,10 +819,10 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                 $order = "aid";
             }
 
-            for ($j=0; $j<$nquestions; $j++) {
+            for ($j = 0; $j < $nquestions; $j++) {
                 $Q = DB_fetchArray($questions);
 
-                if ($nquestions > 1) {
+                if ($nquestions >= 1) {
                     $counter = ($j + 1) . "/$nquestions: " ;
                 }
                 $poll->set_var('poll_question', $counter . $Q['question']);
