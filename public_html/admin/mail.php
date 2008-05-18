@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | mail.php                                                                  |
 // |                                                                           |
 // | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2006 by the following authors:                         |
+// | Copyright (C) 2001-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
 // |          Dirk Haun  - dirk AT haun-online DOT de                          |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.35 2008/05/05 00:30:37 blaine Exp $
+// $Id: mail.php,v 1.36 2008/05/18 16:58:51 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -104,7 +104,9 @@ function display_mailform ()
     $mail_templates->set_var ('lang_ignoreusersettings', $LANG31[14]);
     $mail_templates->set_var ('lang_send', $LANG31[12]);
     $mail_templates->set_var ('end_block', COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
-    $mail_templates->set_var ( 'xhtml', XHTML );
+    $mail_templates->set_var ('xhtml', XHTML);
+    $mail_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $mail_templates->set_var('gltoken', SEC_createToken());
 
     $mail_templates->parse ('output', 'form');
     $retval = $mail_templates->finish ($mail_templates->get_var ('output'));
@@ -225,7 +227,7 @@ function send_messages ($vars)
 
 $display .= COM_siteHeader ('menu', $LANG31[1]);
 
-if (isset ($_POST['mail']) && ($_POST['mail'] == 'mail')) {
+if (isset($_POST['mail']) && ($_POST['mail'] == 'mail') && SEC_checkToken()) {
     $display .= send_messages ($_POST);
 } else {
     $display .= display_mailform ();

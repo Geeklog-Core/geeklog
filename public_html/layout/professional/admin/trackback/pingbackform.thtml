@@ -16,6 +16,7 @@
         <tr>
             <td colspan="2">
                 <input type="submit" value="{lang_send}" name="mode[2]"{xhtml}>
+                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
             </td>
         </tr>
     </table>

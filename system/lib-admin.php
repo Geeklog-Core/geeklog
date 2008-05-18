@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.131 2008/05/18 08:19:35 dhaun Exp $
+// $Id: lib-admin.php,v 1.132 2008/05/18 16:58:51 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1028,9 +1028,10 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
-function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
+function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
     global $_CONF, $LANG_TRB;
+
     $retval = '';
 
     switch($fieldname) {
@@ -1059,6 +1060,8 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr)
             }
             $retval = "<input type=\"checkbox\" name=\"changedservices[]\" "
                 . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch" . XHTML . ">";
+            $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN
+                    . "\" value=\"{$token}\"" . XHTML . ">";
             break;
         default:
             $retval = $fieldvalue;

@@ -51,6 +51,7 @@
             <td colspan="2" class="aligncenter">
                 <input type="submit" value="{lang_send}"{xhtml}>
                 <input type="hidden" name="mail" value="mail"{xhtml}>
+                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
             </td>
         </tr>
     </table>

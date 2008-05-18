@@ -32,11 +32,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.79 2008/05/17 20:07:40 dhaun Exp $
+// $Id: topic.php,v 1.80 2008/05/18 16:58:51 dhaun Exp $
 
-require_once ('../lib-common.php');
-require_once ('auth.inc.php');
-require_once ($_CONF['path_system'] . 'lib-story.php');
+require_once '../lib-common.php';
+require_once 'auth.inc.php';
+require_once $_CONF['path_system'] . 'lib-story.php';
 
 if (!SEC_hasRights('topic.edit')) {
     $display = COM_siteHeader ('menu', $MESSAGE[30]);
@@ -117,10 +117,11 @@ function edittopic ($tid = '')
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
                    . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
-        $topic_templates->set_var ('delete_option',
-                                   sprintf ($delbutton, $jsconfirm));
-        $topic_templates->set_var ('delete_option_no_confirmation',
-                                   sprintf ($delbutton, ''));
+        $topic_templates->set_var('delete_option',
+                                  sprintf($delbutton, $jsconfirm));
+        $topic_templates->set_var('delete_option_no_confirmation',
+                                  sprintf($delbutton, ''));
+        $topic_templates->set_var('warning_msg', $LANG27[6]);
     }
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);
@@ -172,7 +173,6 @@ function edittopic ($tid = '')
     $topic_templates->set_var('lang_maxsize', $LANG27[28]);
     $topic_templates->set_var('max_url_length', 255);
     $topic_templates->set_var('image_url', $A['imageurl']);
-    $topic_templates->set_var('warning_msg', $LANG27[6]);
 
     $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
     $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
@@ -194,6 +194,8 @@ function edittopic ($tid = '')
             $topic_templates->set_var ('archive_disabled', 'disabled');
         }
     }
+    $topic_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $topic_templates->set_var('gltoken', SEC_createToken());
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -553,10 +555,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!isset ($tid) || empty ($tid)) {
         COM_errorLog ('Attempted to delete topic tid=' . $tid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
+    } elseif (SEC_checkToken()) {
+        $display .= deleteTopic($tid);
     } else {
-        $display .= deleteTopic ($tid);
+        COM_accessLog("User {$_USER['username']} tried to illegally delete topic $tid and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     if (empty ($_FILES['newicon']['name'])){
         $imageurl = COM_applyFilter ($_POST['imageurl']);
     } else {
