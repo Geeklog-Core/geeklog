@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.59 2008/05/17 21:02:03 dhaun Exp $
+// $Id: index.php,v 1.60 2008/05/18 13:55:40 dhaun Exp $
 
 /**
  * Geeklog links administration page.
@@ -207,6 +207,8 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
     $link_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $link_templates->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
+    $link_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $link_templates->set_var('gltoken', SEC_createToken());
     $link_templates->parse('output', 'editor');
     $retval .= $link_templates->finish($link_templates->get_var('output'));
 
@@ -482,14 +484,17 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!isset ($lid) || empty ($lid)) {  // || ($lid == 0)
         COM_errorLog ('Attempted to delete link lid=' . $lid );
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php');
-    } else {
+    } elseif (SEC_checkToken()) {
         $type = '';
         if (isset($_POST['type'])) {
             $type = COM_applyFilter($_POST['type']);
         }
         $display .= deleteLink($lid, $type);
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $cid = '';
     if (isset($_POST['cid'])) {
         $cid = $_POST['cid'];

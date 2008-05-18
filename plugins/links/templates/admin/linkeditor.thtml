@@ -84,6 +84,7 @@
                                                 <input type="hidden" value="{link_id}" name="old_lid"{xhtml}>
                                                 {delete_option}
                                                 {submission_option}
+                                                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                             </td>
                                         </tr>
                                     </table>

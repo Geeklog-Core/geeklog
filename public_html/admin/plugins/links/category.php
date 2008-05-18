@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.15 2008/05/17 21:02:03 dhaun Exp $
+// $Id: category.php,v 1.16 2008/05/18 13:55:40 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -266,6 +266,8 @@ function links_edit_category($cid, $pid)
     $T->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],
             $A['perm_group'], $A['perm_members'], $A['perm_anon']));
     $T->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
+    $T->set_var('gltoken_name', CSRF_TOKEN);
+    $T->set_var('gltoken', SEC_createToken());
 
     $T->parse('output', 'page');
     $retval .= $T->finish($T->get_var('output'));
@@ -463,17 +465,20 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
         COM_errorLog('Attempted to delete empty category');
         $display .= COM_refresh($_CONF['site_admin_url']
                                 . '/plugins/links/category.php');
-    } else {
+    } elseif (SEC_checkToken()) {
         $msg = links_delete_category($cid);
 
         $display .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[11]);
         $display .= COM_showMessage($msg, 'links');
         $display .= links_list_categories($root);
         $display .= COM_siteFooter();
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to illegally delete link category $cid and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
 
 // save category
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $msg = links_save_category($_POST['cid'], $_POST['old_cid'],
                 $_POST['pid'], $_POST['category'],
                 $_POST['description'], COM_applyFilter($_POST['tid']),
