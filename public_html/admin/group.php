@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.101 2008/05/17 19:52:49 dhaun Exp $
+// $Id: group.php,v 1.102 2008/05/18 11:37:20 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -241,6 +241,8 @@ function editgroup($grp_id = '')
     }
 
     $group_templates->set_var('rights_options', printrights($grp_id, $A['grp_gl_core']));
+    $group_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $group_templates->set_var('gltoken', SEC_createToken());
     $group_templates->parse('output','editor');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -836,8 +838,14 @@ function grp_selectUsers ($group_id, $allusers = false)
     return $retval;
 }
 
-
-function editusers ($group)
+/**
+* Allow easy addition/removal of users to/from a group
+*
+* @param    int     $group  Group ID
+* @return   string          HTML form
+*
+*/
+function editusers($group)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_ADMIN, $LANG28;
 
@@ -865,36 +873,40 @@ function editusers ($group)
     }
 
     $group_listing_url = $_CONF['site_admin_url'] . '/group.php';
-    if ($_REQUEST['chk_showall'] == 1) {
+    $showall = 0;
+    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
         $group_listing_url .= '?chk_showall=1';
+        $showall = 1;
     }
 
-    $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'] . " - $groupName" , '',
-                       COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG_ACCESS['usergroupadmin'] . " - $groupName" , '',
+                       COM_getBlockTemplate('_admin_block', 'header'));
     $groupmembers = new Template($_CONF['path_layout'] . 'admin/group');
-    $groupmembers->set_file (array ('groupmembers'=>'groupmembers.thtml'));
-    $groupmembers->set_var ('site_url', $_CONF['site_url']);
-    $groupmembers->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $groupmembers->set_var ('group_listing_url', $group_listing_url);
-    $groupmembers->set_var ('layout_url', $_CONF['layout_url']);
-    $groupmembers->set_var ('phpself', $_CONF['site_admin_url'] . '/group.php');
+    $groupmembers->set_file(array('groupmembers'=>'groupmembers.thtml'));
+    $groupmembers->set_var('site_url', $_CONF['site_url']);
+    $groupmembers->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $groupmembers->set_var('group_listing_url', $group_listing_url);
+    $groupmembers->set_var('layout_url', $_CONF['layout_url']);
+    $groupmembers->set_var('phpself', $_CONF['site_admin_url'] . '/group.php');
     $groupmembers->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);
     $groupmembers->set_var('lang_instructions', $LANG_ACCESS['editgroupmsg']);
-    $groupmembers->set_var ('LANG_sitemembers',$LANG_ACCESS['availmembers']);
-    $groupmembers->set_var ('LANG_grpmembers',$LANG_ACCESS['groupmembers']);
-    $groupmembers->set_var ('sitemembers', grp_selectUsers($group,true) );
-    $groupmembers->set_var ('group_list', grp_selectUsers($group) );
-    $groupmembers->set_var ('LANG_add',$LANG_ACCESS['add']);
-    $groupmembers->set_var ('LANG_remove',$LANG_ACCESS['remove']);
+    $groupmembers->set_var('LANG_sitemembers',$LANG_ACCESS['availmembers']);
+    $groupmembers->set_var('LANG_grpmembers',$LANG_ACCESS['groupmembers']);
+    $groupmembers->set_var('sitemembers', grp_selectUsers($group,true) );
+    $groupmembers->set_var('group_list', grp_selectUsers($group) );
+    $groupmembers->set_var('LANG_add',$LANG_ACCESS['add']);
+    $groupmembers->set_var('LANG_remove',$LANG_ACCESS['remove']);
     $groupmembers->set_var('lang_save', $LANG_ADMIN['save']);
     $groupmembers->set_var('lang_cancel', $LANG_ADMIN['cancel']);
-    $groupmembers->set_var ('lang_grouplist', $LANG28[38]);
-    $groupmembers->set_var('show_all', COM_applyFilter($_GET['chk_showall'],true));
-    $groupmembers->set_var ('group_id',$group);
-    $groupmembers->set_var ( 'xhtml',  XHTML );
-    $groupmembers->parse ('output', 'groupmembers');
+    $groupmembers->set_var('lang_grouplist', $LANG28[38]);
+    $groupmembers->set_var('show_all', $showall);
+    $groupmembers->set_var('group_id',$group);
+    $groupmembers->set_var('xhtml', XHTML);
+    $groupmembers->set_var('gltoken_name', CSRF_TOKEN);
+    $groupmembers->set_var('gltoken', SEC_createToken());
+    $groupmembers->parse('output', 'groupmembers');
     $retval .= $groupmembers->finish($groupmembers->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -902,6 +914,7 @@ function editusers ($group)
 function savegroupusers ($groupid, $groupmembers)
 {
     global $_CONF, $_TABLES;
+
     // Delete all the current buddy records for this user and add all the selected ones
     $sql = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid IS NOT NULL";
     DB_query($sql);
@@ -966,10 +979,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
         COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/group.php');
-    } else {
+    } elseif (SEC_checkToken()) {
         $display .= deleteGroup ($grp_id);
+    } else {
+        COM_accessLog("User {$_USER['username']} tried to illegally delete group $grp_id and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $chk_grpadmin = '';
     if (isset($_POST['chk_grpadmin'])) {
         $chk_grpadmin = COM_applyFilter($_POST['chk_grpadmin']);
@@ -987,7 +1003,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                           $_POST['grp_descr'], $chk_grpadmin,
                           COM_applyFilter($_POST['grp_gl_core']),
                           $features, $groups);
-} else if ($mode == 'savegroupusers') {
+} else if (($mode == 'savegroupusers') && SEC_checkToken()) {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
 } else if ($mode == 'edit') {

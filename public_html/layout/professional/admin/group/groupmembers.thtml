@@ -41,6 +41,7 @@
                     <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
                     <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)"{xhtml}>&nbsp;&nbsp;
                     <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)"{xhtml}>
+                    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                 </td>
             </tr>
         </table>

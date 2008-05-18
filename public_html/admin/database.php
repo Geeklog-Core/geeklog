@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | database.php                                                              |
 // |                                                                           |
 // | Geeklog database backup administration page.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Blaine Lang        - langmail AT sympatico DOT ca                |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.47 2008/05/01 18:35:14 mjervis Exp $
+// $Id: database.php,v 1.48 2008/05/18 11:37:20 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -110,9 +110,10 @@ function listbackups()
                                   'filename' => $backups[$i]);
         }
 
+        $token = SEC_createToken();
         $menu_arr = array(
             array('url' => $_CONF['site_admin_url']
-                           . '/database.php?mode=backup&'.CSRF_TOKEN.'='.SEC_createToken(),
+                           . '/database.php?mode=backup&'.CSRF_TOKEN.'='.$token,
                   'text' => $LANG_ADMIN['create_new']),
             array('url' => $_CONF['site_admin_url'],
                   'text' => $LANG_ADMIN['admin_home'])
@@ -134,7 +135,9 @@ function listbackups()
         );
         $form_arr = array('bottom' => '', 'top' => '');
         if ($num_backups > 0) {
-            $form_arr['bottom'] = '<input type="hidden" name="mode" value="delete"' . XHTML . '>' . LB;
+            $form_arr['bottom'] = '<input type="hidden" name="mode" value="delete"' . XHTML . '>'
+                                . '<input type="hidden" name="' . CSRF_TOKEN
+                                . '" value="' . $token . '"' . XHTML . '>' . LB;
         }
         $listoptions = array('chkdelete' => true, 'chkminimum' => 0,
                              'chkfield' => 'filename');
@@ -288,12 +291,14 @@ if ($mode == 'backup') {
     if (SEC_checkToken()) {
         $display .= dobackup();
     }
-} else if ($mode == 'delete') {
-    foreach ($_POST['delitem'] as $delfile) {
-        $file = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $delfile);
-        $file = str_replace('..', '', $file);
-        if (!@unlink($_CONF['backup_path'] . $file)) {
-            COM_errorLog('Unable to remove backup file "' . $file . '"');
+} elseif ($mode == 'delete') {
+    if (SEC_checkToken()) {
+        foreach ($_POST['delitem'] as $delfile) {
+            $file = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $delfile);
+            $file = str_replace('..', '', $file);
+            if (!@unlink($_CONF['backup_path'] . $file)) {
+                COM_errorLog('Unable to remove backup file "' . $file . '"');
+            }
         }
     }
 }

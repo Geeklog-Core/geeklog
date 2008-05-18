@@ -53,6 +53,7 @@
                                             <input type="hidden" name="grp_gl_core" value="{group_core}"{xhtml}>
                                             <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
                                             <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+                                            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                         </td>
                                     </tr>
                                 </table>
