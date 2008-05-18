@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | article.php                                                               |
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.95 2008/02/20 20:07:58 mjervis Exp $
+// $Id: article.php,v 1.96 2008/05/18 19:29:30 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -46,10 +46,10 @@
 /**
 * Geeklog common function library
 */
-require_once ('lib-common.php');
-require_once ($_CONF['path_system'] . 'lib-story.php');
+require_once 'lib-common.php';
+require_once $_CONF['path_system'] . 'lib-story.php';
 if ($_CONF['trackback_enabled']) {
-    require_once ($_CONF['path_system'] . 'lib-trackback.php');
+    require_once $_CONF['path_system'] . 'lib-trackback.php';
 }
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -143,7 +143,7 @@ if ($A['count'] > 0) {
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
         $story_template = new Template ($_CONF['path_layout'] . 'article');
         $story_template->set_file ('article', 'printable.thtml');
-        $story_template->set_var ( 'xhtml', XHTML );
+        $story_template->set_var ('xhtml', XHTML);
         $story_template->set_var ('page_title',
                 $_CONF['site_name'] . ': ' . $story->displayElements('title'));
         $story_template->set_var ( 'story_title', $story->DisplayElements( 'title' ) );
@@ -262,11 +262,12 @@ if ($A['count'] > 0) {
         $story_template = new Template($_CONF['path_layout'] . 'article');
         $story_template->set_file('article','article.thtml');
 
-        $story_template->set_var( 'xhtml', XHTML );
+        $story_template->set_var('xhtml', XHTML);
         $story_template->set_var('site_url', $_CONF['site_url']);
         $story_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_template->set_var('story_id', $story->getSid());
+        $story_template->set_var('story_title', $pagetitle);
         $story_options = array ();
         if (($_CONF['hideemailicon'] == 0) && (!empty ($_USER['username']) ||
                 (($_CONF['loginrequired'] == 0) &&
