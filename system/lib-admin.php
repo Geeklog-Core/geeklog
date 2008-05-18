@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.130 2008/04/19 15:14:42 mjervis Exp $
+// $Id: lib-admin.php,v 1.131 2008/05/18 08:19:35 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -592,13 +592,14 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '') {
 function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
+
     $retval = false;
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
         switch($fieldname) {
-            case "edit":
+            case 'edit':
                 if ($access == 3) {
                     $retval = COM_createLink($icon_arr['edit'],
                         "{$_CONF['site_admin_url']}/block.php?mode=edit&amp;bid={$A['bid']}");
@@ -622,6 +623,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
                     }
                     $retval = "<input type=\"checkbox\" name=\"enabledblocks[{$A['bid']}]\" "
                         . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch" . XHTML . ">";
+                    $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN . "\" value=\"{$token}\"" . XHTML . ">";
                 }
                 break;
             case 'move':
@@ -890,13 +892,14 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
-function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) {
+function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, $token)
+{
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
 
     $retval = '';
 
     switch($fieldname) {
-        case "edit":
+        case 'edit':
             $retval = COM_createLink($icon_arr['edit'],
                 "{$_CONF['site_admin_url']}/syndication.php?mode=edit&amp;fid={$A['fid']}");
             break;
@@ -917,6 +920,7 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr) 
             }
             $retval = "<input type=\"checkbox\" name=\"enabledfeeds[]\" "
                 . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch" . XHTML . ">";
+            $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN . "\" value=\"{$token}\"" . XHTML . ">";
             break;
         case 'header_tid':
             if ($A['header_tid'] == 'all') {

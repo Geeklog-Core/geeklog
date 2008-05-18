@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.122 2008/05/17 17:02:54 dhaun Exp $
+// $Id: block.php,v 1.123 2008/05/18 08:19:35 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -714,9 +714,10 @@ function moveBlock()
 /**
 * Enable and Disable block
 */
-function changeBlockStatus ($side, $bid_arr)
+function changeBlockStatus($side, $bid_arr)
 {
     global $_CONF, $_TABLES;
+
     // first, disable all on the requested side
     $side = COM_applyFilter($side, true);
     $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '0' WHERE onleft='$side';";
@@ -768,8 +769,12 @@ if (!empty($_REQUEST['bid'])) {
     $bid = COM_applyFilter ($_REQUEST['bid']);
 }
 
-if (isset ($_POST['blockenabler'])) {
-    changeBlockStatus ($_POST['blockenabler'], $_POST['enabledblocks']);
+if (isset($_POST['blockenabler']) && SEC_checkToken()) {
+    $enabledblocks = array();
+    if (isset($_POST['enabledblocks'])) {
+        $enabledblocks = $_POST['enabledblocks'];
+    }
+    changeBlockStatus($_POST['blockenabler'], $enabledblocks);
 }
 
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
@@ -782,7 +787,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         COM_accessLog("User {$_USER['username']} tried to illegally delete block $bid and failed CSRF checks.");
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $help = '';
     if (isset ($_POST['help'])) {
         $help = COM_sanitizeUrl ($_POST['help'], array ('http', 'https'));

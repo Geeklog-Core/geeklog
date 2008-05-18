@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | syndication.php                                                           |
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2006 by the following authors:                         |
+// | Copyright (C) 2003-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
@@ -30,11 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.53 2007/11/25 06:58:55 ospiess Exp $
+// $Id: syndication.php,v 1.54 2008/05/18 08:19:35 dhaun Exp $
 
-
-require_once ('../lib-common.php');
-require_once ('auth.inc.php');
+require_once '../lib-common.php';
+require_once 'auth.inc.php';
 
 if (!SEC_hasRights ('syndication.edit')) {
     $display .= COM_siteHeader ('menu', $MESSAGE[30])
@@ -55,9 +54,10 @@ if (!SEC_hasRights ('syndication.edit')) {
 * @return   void
 *
 */
-function changeFeedStatus ($fid_arr)
+function changeFeedStatus($fid_arr)
 {
     global $_TABLES;
+
     // first disable all
     DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '0'");
     if (isset($fid_arr)) {
@@ -82,8 +82,8 @@ function find_feedFormats ()
     global $_CONF;
 
     // Import the feed handling classes:
-    require_once ($_CONF['path_system']
-                  . '/classes/syndication/parserfactory.class.php');
+    require_once $_CONF['path_system']
+                 . '/classes/syndication/parserfactory.class.php';
 
     $factory = new FeedParserFactory ();
     $formats = $factory->getFeedTypes ();
@@ -128,10 +128,13 @@ function get_geeklogFeeds ()
 function listfeeds()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
-    $retval = '';
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
+    $retval = '';
+    $token = SEC_createToken();
+
+    $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
                     array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
@@ -166,12 +169,13 @@ function listfeeds()
                        'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
                        'query_fields' => array('title', 'filename'),
                        'default_filter' => '');
-    // this is a dummy-variable so we know the form has been used if all feeds should be disabled
-    // in order to disable the last one.
+    // this is a dummy variable so we know the form has been used if all feeds
+    // should be disabled in order to disable the last one.
     $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true"' . XHTML . '>');
 
-    $retval .= ADMIN_list ("syndication", "ADMIN_getListField_syndication", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, '', '', '', $form_arr);
+    $retval .= ADMIN_list('syndication', 'ADMIN_getListField_syndication',
+                          $header_arr, $text_arr, $query_arr, $defsort_arr, '',
+                          $token, '', $form_arr);
     return $retval;
 }
 
@@ -351,6 +355,8 @@ function editfeed ($fid = 0, $type = '')
     } else {
         $feed_template->set_var ('is_enabled', '');
     }
+    $feed_template->set_var('gltoken_name', CSRF_TOKEN);
+    $feed_template->set_var('gltoken', SEC_createToken());
 
     $retval .= $feed_template->finish ($feed_template->parse ('output',
                                                               'editor'));
@@ -529,8 +535,12 @@ function deletefeed ($fid)
 // MAIN
 $display = '';
 
-if ($_CONF['backend'] && isset ($_POST['feedenabler'])) {
-    changeFeedStatus ($_POST['enabledfeeds']);
+if ($_CONF['backend'] && isset($_POST['feedenabler']) && SEC_checkToken()) {
+    $enabledfeeds = array();
+    if (isset($_POST['enabledfeeds'])) {
+        $enabledfeeds = $_POST['enabledfeeds'];
+    }
+    changeFeedStatus($enabledfeeds);
 }
 $mode = '';
 if (isset($_REQUEST['mode'])) {
@@ -551,13 +561,13 @@ else if (($mode == $LANG33[1]) && !empty ($LANG33[1]))
              . editfeed (0, COM_applyFilter($_REQUEST['type']))
              . COM_siteFooter ();
 }
-else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']))
+elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken())
 {
-    $display .= savefeed ($_POST);
+    $display .= savefeed($_POST);
 }
-else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete']))
+elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_checkToken())
 {
-    $display .= deletefeed (COM_applyFilter($_REQUEST['fid']));
+    $display .= deletefeed(COM_applyFilter($_REQUEST['fid']));
 }
 else
 {

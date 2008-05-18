@@ -71,6 +71,7 @@
             <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
             {delete_option}
             <input type="hidden" name="fid" value="{feed_id}"{xhtml}>
+            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
           </td>
         </tr>
     </table>

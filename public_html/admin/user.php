@@ -32,14 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.203 2008/05/11 22:03:25 dhaun Exp $
+// $Id: user.php,v 1.204 2008/05/18 08:19:35 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
 
-require_once ('../lib-common.php');
-require_once ('auth.inc.php');
-require_once ($_CONF['path_system'] . 'lib-user.php');
+require_once '../lib-common.php';
+require_once 'auth.inc.php';
+require_once $_CONF['path_system'] . 'lib-user.php';
 
 $display = '';
 
@@ -347,6 +347,8 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var ('group_edit',
                 '<input type="hidden" name="groups" value="-1"' . XHTML . '>');
     }
+    $user_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $user_templates->set_var('gltoken', SEC_createToken());
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -1151,14 +1153,17 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=67');
     }
 } else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
-    $uid = COM_applyFilter ($_POST['uid'], true);
-    if ($uid > 1) {
-        $display .= deleteUser ($uid);
+    $uid = COM_applyFilter($_POST['uid'], true);
+    if ($uid <= 1) {
+        COM_errorLog('Attempted to delete user uid=' . $uid);
+        $display = COM_refresh($_CONF['site_admin_url'] . '/user.php');
+    } elseif (SEC_checkToken()) {
+        $display .= deleteUser($uid);
     } else {
-        COM_errorLog ('Attempted to delete user uid=' . $uid);
-        $display = COM_refresh ($_CONF['site_admin_url'] . '/user.php');
+        COM_accessLog("User {$_USER['username']} tried to illegally delete user $uid and failed CSRF checks.");
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save'])) { // save
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) { // save
     $delphoto = '';
     if (isset ($_POST['delete_photo'])) {
         $delphoto = $_POST['delete_photo'];
