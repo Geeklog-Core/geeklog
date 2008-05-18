@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-pingback.php                                                          |
 // |                                                                           |
 // | Functions needed to handle pingbacks.                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2007 by the following authors:                         |
+// | Copyright (C) 2005-2008 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,14 +29,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.13 2007/09/02 07:50:56 dhaun Exp $
+// $Id: lib-pingback.php,v 1.14 2008/05/18 15:54:36 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-pingback.php') !== false) {
     die ('This file can not be used on its own!');
 }
 
 // PEAR class to handle XML-RPC
-require_once ('XML/RPC.php');
+require_once 'XML/RPC.php';
 
 /**
 * Get the Pingback URL for a given URL
@@ -154,6 +154,8 @@ function PNB_sendPingback ($sourceURI, $targetURI)
 */
 function PNB_sendPing ($url, $blogname, $blogurl, $changedurl)
 {
+    $retval = '';
+
     $parts = parse_url ($url);
     if (empty ($parts['port'])) {
         if (strcasecmp ($parts['scheme'], 'https') == 0) {
