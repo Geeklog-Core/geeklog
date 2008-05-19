@@ -30,6 +30,8 @@ Changes since 1.5.0b1:
 - The URL sent in a user registration notification contained an &amp; where it
   should have been a simple & [Dirk]
 
+- Updated German language files, provided by Markus Wollschläger
+
 Links plugin
 ------------
 - Fixed the "Validate Links" link from the list of categories [Dirk]
