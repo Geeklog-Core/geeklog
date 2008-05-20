@@ -31,7 +31,7 @@ if (!defined('LB')) {
   define('LB',"\n");
 }
 if (!defined('VERSION')) {
-  define('VERSION', '1.5.0b1');
+  define('VERSION', '1.5.0b2');
 }
 
 ?>
