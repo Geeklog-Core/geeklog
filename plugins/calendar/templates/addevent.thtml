@@ -29,6 +29,7 @@
                                                 <input type="hidden" name="action" value="saveuserevent"{xhtml}>
                                                 <input type="hidden" name="eid" value="{event_id}"{xhtml}>
                                                 <input type="submit" value="{lang_addtomycalendar}"{xhtml}>
+                                                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                             </div>
                                         </form>
                                     </td>

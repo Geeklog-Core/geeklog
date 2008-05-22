@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.28 2008/04/19 14:56:01 dhaun Exp $
+// $Id: event.php,v 1.29 2008/05/22 17:01:54 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once $_CONF['path_system'] . 'classes/calendar.class.php';
@@ -61,8 +61,8 @@ function adduserevent ($eid)
                                             COM_getDisplayName()));
         $A = DB_fetchArray($result);
         $cal_template = new Template($_CONF['path'] . 'plugins/calendar/templates/');
-        $cal_template->set_file (array ('addevent' => 'addevent.thtml'));
-        $cal_template->set_var( 'xhtml', XHTML );
+        $cal_template->set_file(array('addevent' => 'addevent.thtml'));
+        $cal_template->set_var('xhtml', XHTML);
         $cal_template->set_var('site_url', $_CONF['site_url']);
         $cal_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $cal_template->set_var('layout_url', $_CONF['layout_url']);
@@ -106,7 +106,9 @@ function adduserevent ($eid)
                                 PLG_replaceTags ($description));
         $cal_template->set_var('event_id', $eid);
         $cal_template->set_var('lang_addtomycalendar', $LANG_CAL_1[9]);
-        $cal_template->parse('output','addevent');
+        $cal_template->set_var('gltoken_name', CSRF_TOKEN);
+        $cal_template->set_var('gltoken', SEC_createToken());
+        $cal_template->parse('output', 'addevent');
         $retval .= $cal_template->finish($cal_template->get_var('output'));
         $retval .= COM_endBlock ();
     } else {
@@ -119,7 +121,7 @@ function adduserevent ($eid)
 /**
 * Save an event to user's personal calendar
 *
-* User has seen the confirmation screen and they still want to
+* User has seen the confirmation screen and they still wants to
 * add this event to their calendar.  Actually save it now.
 *
 * @param    string  $eid    ID of event to save
@@ -296,6 +298,8 @@ function editpersonalevent ($A)
     } else {
         $cal_templates->set_var ('hour_mode', 12);
     }
+    $cal_templates->set_var('gltoken_name', CSRF_TOKEN);
+    $cal_templates->set_var('gltoken', SEC_createToken());
 
     return $cal_templates->parse ('output', 'form');
 }
@@ -344,8 +348,7 @@ if (isset ($_REQUEST['action'])) {
 
 switch ($action) {
 case 'addevent':
-    if (($_CA_CONF['personalcalendars'] == 1) &&
-            isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+    if (($_CA_CONF['personalcalendars'] == 1) && !COM_isAnonUser()) {
         $display .= COM_siteHeader ();
 
         $eid = COM_applyFilter ($_GET['eid']);
@@ -362,7 +365,7 @@ case 'addevent':
     break;
 
 case 'saveuserevent':
-    if ($_CA_CONF['personalcalendars'] == 1) {
+    if (($_CA_CONF['personalcalendars'] == 1) && SEC_checkToken()) {
         $eid = COM_applyFilter ($_POST['eid']);
         if (!empty ($eid)) {
             $display .= saveuserevent ($eid);
@@ -377,10 +380,10 @@ case 'saveuserevent':
     break;
 
 case $LANG_CAL_1[45]: // save edited personal event
-    if (!empty ($LANG_CAL_1[45]) && ($_CA_CONF['personalcalendars'] == 1) &&
+    if (!empty($LANG_CAL_1[45]) && ($_CA_CONF['personalcalendars'] == 1) &&
             (!empty ($_USER['uid']) && ($_USER['uid'] > 1)) &&
             (isset ($_POST['calendar_type']) &&
-             ($_POST['calendar_type'] == 'personal'))) {
+             ($_POST['calendar_type'] == 'personal')) && SEC_checkToken()) {
         $display = plugin_savesubmission_calendar ($_POST);
     } else {
         $display = COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -389,7 +392,7 @@ case $LANG_CAL_1[45]: // save edited personal event
 
 case 'deleteevent':
 case $LANG_CAL_1[51]:
-    if ($_CA_CONF['personalcalendars'] == 1) {
+    if (($_CA_CONF['personalcalendars'] == 1) && SEC_checkToken()) {
         $eid = COM_applyFilter ($_REQUEST['eid']);
         if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
             DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
@@ -499,7 +502,7 @@ default:
     $cal_templates->set_var ('lang_addevent', $LANG_CAL_1[6]);
     $cal_templates->set_var ('lang_backtocalendar', $LANG_CAL_1[15]);
     if ($mode == 'personal') {
-        $cal_templates->set_var ('calendar_mode', '&amp;mode=personal');
+        $cal_templates->set_var ('calendar_mode', '?mode=personal');
     } else {
         $cal_templates->set_var ('calendar_mode', '');
     }
@@ -521,7 +524,7 @@ default:
         setCalendarLanguage ($cal);
 
         $currentmonth = '';
-        for ($i = 1; $i <= $nrows; $i++) {
+        for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],
                               $A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
@@ -540,18 +543,21 @@ default:
                     $event_title = COM_createLink($event_title, $A['url']);
                 }
                 $cal_templates->set_var('event_title', $event_title);
-                if (!empty ($_USER['uid']) && ($_USER['uid'] > 1) &&
-                        ($_CA_CONF['personalcalendars'] == 1)) {
-                    $tmpresult = DB_query("SELECT * FROM {$_TABLES['personal_events']} "
-                                        . "WHERE eid='{$A['eid']}' AND uid={$_USER['uid']}");
+                if (($_CA_CONF['personalcalendars'] == 1)
+                        && !COM_isAnonUser()) {
+                    $tmpresult = DB_query("SELECT * FROM {$_TABLES['personal_events']} WHERE eid='{$A['eid']}' AND uid={$_USER['uid']}");
                     $tmpnrows = DB_numRows($tmpresult);
                     if ($tmpnrows > 0) {
-                        $addremovelink = $_CONF['site_url'] . '/calendar/event.php?eid='
-                            . $A['eid'] . '&amp;mode=personal&amp;action=deleteevent';
+                        $token = SEC_createToken();
+                        $addremovelink = $_CONF['site_url']
+                             . '/calendar/event.php?eid=' . $A['eid']
+                             . '&amp;mode=personal&amp;action=deleteevent&amp;'
+                             . CSRF_TOKEN . '=' . $token;
                         $addremovetxt = $LANG_CAL_1[10];
                     } else {
-                        $addremovelink = $_CONF['site_url'] . '/calendar/event.php?eid='
-                            . $A['eid'] . '&amp;mode=personal&amp;action=addevent';
+                        $addremovelink = $_CONF['site_url']
+                            . '/calendar/event.php?eid=' . $A['eid']
+                            . '&amp;mode=personal&amp;action=addevent';
                         $addremovetxt = $LANG_CAL_1[9];
                     }
                     $cal_templates->set_var('lang_addremovefromcal',
@@ -650,42 +656,48 @@ default:
                 $cal_templates->set_var ('event_description', $description);
                 $cal_templates->set_var ('lang_event_type', $LANG_CAL_1[37]);
                 $cal_templates->set_var ('event_type', $A['event_type']);
+
+                if ($mode == 'personal') {
+                    $editurl = $_CONF['site_url']
+                             . '/calendar/event.php?action=edit' . '&amp;eid='
+                             . $A['eid'];
+                    $cal_templates->set_var('event_edit',
+                            COM_createLink($LANG01[4], $editurl));
+                    $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+                        . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
+                        . $LANG01[4] . '"' . XHTML . '>';
+                    $cal_templates->set_var('edit_icon',
+                            COM_createLink($img, $editurl));
+                } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']) == 3) && SEC_hasRights ('calendar.edit')) {
+                    $editurl = $_CONF['site_admin_url']
+                             . '/plugins/calendar/index.php?mode=edit&amp;eid='
+                             . $A['eid'];
+                    $cal_templates->set_var('event_edit',
+                            COM_createLink($LANG01[4], $editurl));
+                    $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+                        . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
+                        . $LANG01[4] . '"' . XHTML . '>';
+                    $cal_templates->set_var('edit_icon',
+                            COM_createLink($img, $editurl));
+                    $cal_templates->set_var('hits_admin',
+                                            COM_numberFormat($A['hits']));
+                    $cal_templates->set_var('lang_hits_admin', $LANG10[30]);
+                } else {
+                    $cal_templates->set_var('event_edit', '');
+                    $cal_templates->set_var('edit_icon', '');
+                }
+                if ($mode == 'personal') {
+                    // personal events don't have a hits counter
+                    $cal_templates->set_var('lang_hits', '');
+                    $cal_templates->set_var('hits', '');
+                } else {
+                    $cal_templates->set_var('lang_hits', $LANG10[30]);
+                    $cal_templates->set_var('hits', COM_numberFormat($A['hits']));
+                }
                 $cal_templates->parse ('event_details', 'details', true);
             }
-        }
-
-        if ($mode == 'personal') {
-            $editurl = $_CONF['site_url'] . '/calendar/event.php?action=edit'
-                     . '&amp;eid=' . $eid;
-            $cal_templates->set_var ('event_edit', COM_createLink($LANG01[4], $editurl));
-            $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-                . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
-                . $LANG01[4] . '"' . XHTML . '>';
-            $cal_templates->set_var ('edit_icon', COM_createLink($img, $editurl));
-        } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                $A['perm_anon']) == 3) && SEC_hasRights ('calendar.edit')) {
-            $editurl = $_CONF['site_admin_url']
-                     . '/plugins/calendar/index.php?mode=edit&amp;eid=' . $eid;
-            $cal_templates->set_var ('event_edit', COM_createLink($LANG01[4], $editurl));
-            $img = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
-                . $_IMAGE_TYPE . '" alt="' . $LANG01[4] . '" title="'
-                . $LANG01[4] . '"' . XHTML . '>';
-            $cal_templates->set_var ('edit_icon', COM_createLink($img, $editurl));
-            $cal_templates->set_var ('hits_admin',
-                                     COM_numberFormat ($A['hits']));
-            $cal_templates->set_var ('lang_hits_admin', $LANG10[30]);
-        } else {
-            $cal_templates->set_var ('event_edit', '');
-            $cal_templates->set_var ('edit_icon', '');
-        }
-        if ($mode == 'personal') {
-            // personal events don't have a hits counter
-            $cal_templates->set_var ('lang_hits', '');
-            $cal_templates->set_var ('hits', '');
-        } else {
-            $cal_templates->set_var ('lang_hits', $LANG10[30]);
-            $cal_templates->set_var ('hits', COM_numberFormat ($A['hits']));
         }
 
         $cal_templates->parse ('output', 'events');

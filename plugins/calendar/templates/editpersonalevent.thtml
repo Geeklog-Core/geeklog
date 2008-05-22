@@ -103,7 +103,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_description}:</b></td>
-                                        <td><textarea name="description" cols="50" rows="20">{event_description}</textarea></td>
+                                        <td><textarea name="description" style="width:100%" cols="50" rows="20">{event_description}</textarea></td>
                                     </tr>
                                     <tr>
                                         <td align="center" colspan="2">{lang_htmlnotallowed}</td>
@@ -113,6 +113,7 @@
                                             <input type="hidden" name="type" value="event"{xhtml}>
                                             <input type="submit" name="action" value="{lang_submit}"{xhtml}>
                                             <input type="submit" name="action" value="{lang_delete}"{xhtml}>
+                                            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                         </td>
                                     </tr>
                                 </table>

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.86 2008/05/22 13:59:45 dhaun Exp $
+// $Id: functions.inc,v 1.87 2008/05/22 17:01:54 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -435,9 +435,15 @@ function plugin_savesubmission_calendar($A)
         return $retval;
     }
     // check ok, proceed to saving
-    $A['end_year'] = COM_applyFilter ($A['end_year'], true);
-    $A['end_month'] = COM_applyFilter ($A['end_month'], true);
-    $A['end_day'] = COM_applyFilter ($A['end_day'], true);
+    if (isset($A['end_year'])) {
+        $A['end_year'] = COM_applyFilter($A['end_year'], true);
+    }
+    if (isset($A['end_month'])) {
+        $A['end_month'] = COM_applyFilter($A['end_month'], true);
+    }
+    if (isset($A['end_day'])) {
+        $A['end_day'] = COM_applyFilter($A['end_day'], true);
+    }
 
     $A['datestart'] = sprintf ('%4d-%02d-%02d',
                         $A['start_year'], $A['start_month'], $A['start_day']);
@@ -456,6 +462,17 @@ function plugin_savesubmission_calendar($A)
     if (!isset ($A['end_minute'])) {
         $A['end_minute'] = $A['start_minute'];
     }
+
+    $A['title']       = (isset($A['title']) ? $A['title'] : '');
+    $A['url']         = (isset($A['url']) ? $A['url'] : '');
+    $A['location']    = (isset($A['location']) ? $A['location'] : '');
+    $A['address1']    = (isset($A['address1']) ? $A['address1'] : '');
+    $A['address2']    = (isset($A['address2']) ? $A['address2'] : '');
+    $A['city']        = (isset($A['city']) ? $A['city'] : '');
+    $A['zipcode']     = (isset($A['zipcode']) ? $A['zipcode'] : '');
+    $A['state']       = (isset($A['state']) ? $A['state'] : '');
+    $A['description'] = (isset($A['description']) ? $A['description'] : '');
+    $A['event_type']  = (isset($A['event_type']) ? $A['event_type'] : '');
 
     // pseudo-formatted event description for the spam check
     $spamcheck = COM_createLink($A['title'], $A['url']) . '<br' . XHTML . '>'
@@ -772,6 +789,14 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_htmnotallowed', $LANG_CAL_1[44]);
     $eventform->set_var('lang_submit', $LANG_CAL_1[45]);
     $eventform->set_var('mode', $mode);
+    if ($mode == 'personal') {
+        $token = SEC_createToken();
+        $hidden_fields = '<input type="hidden" name="' . CSRF_TOKEN
+                       . "\" value=\"{$token}\"" . XHTML . ">";
+        $eventform->set_var('hidden_fields', $hidden_fields);
+    } else {
+        $eventform->set_var('hidden_fields', '');
+    }
     $eventform->set_var('xhtml', XHTML);
     $eventform->parse('theform', 'eventform');
     $retval .= $eventform->finish($eventform->get_var('theform'));
@@ -896,9 +921,13 @@ function CALENDAR_listOld()
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'eid');
     $retval .= ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[27] . $usr_time . "$desc", plugin_geticon_calendar());
+
+    $token = SEC_createToken();
+    $form_arr['bottom'] = "<input type=\"hidden\" name=\"" . CSRF_TOKEN
+                        . "\" value=\"{$token}\"" . XHTML . ">";
     $retval .= ADMIN_list('calendar', 'plugin_getListField_calendar',
                           $header_arr, $text_arr, $query_arr,
-                          $defsort_arr, '', '', $listoptions);
+                          $defsort_arr, '', '', $listoptions, $form_arr);
 
     return $retval;
 }

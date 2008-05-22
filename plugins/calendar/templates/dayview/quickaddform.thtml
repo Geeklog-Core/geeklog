@@ -39,6 +39,7 @@
                                                         </select>
                                                         {startampm_selection}
                                                         <input type="submit" value="{lang_add}"{xhtml}>
+                                                        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                                     </td>
                                                 </tr>
                                             </table>

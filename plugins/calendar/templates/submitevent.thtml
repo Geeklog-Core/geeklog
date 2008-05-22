@@ -93,6 +93,7 @@
                                     <input type="hidden" name="calendar_type" value="{mode}"{xhtml}>
                                     <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
                                     <input type="submit" value="{lang_submit}"{xhtml}>
+                                    {hidden_fields}
                                 </div>
                                 <div class="clear-left"></div>
                             </form>

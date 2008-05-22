@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog calendar plugin                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.24 2008/02/13 11:29:09 dhaun Exp $
+// $Id: index.php,v 1.25 2008/05/22 17:01:54 dhaun Exp $
 
-require_once ('../lib-common.php');
-require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
+require_once '../lib-common.php';
+require_once $_CONF['path_system'] . 'classes/calendar.class.php';
 
 $display = '';
 
@@ -207,10 +207,11 @@ function addMode ($mode, $more = true)
 *
 * @param    string  $mode   'personal' for personal events
 * @param    array   $A      event permissions and id
+* @param    string  $token  security token
 * @return   string          link or empty string
 *
 */
-function getDeleteImageLink ($mode, $A)
+function getDeleteImageLink($mode, $A, $token)
 {
     global $_CONF, $LANG_CAL_ADMIN, $LANG_CAL_2, $_IMAGE_TYPE;
 
@@ -219,19 +220,21 @@ function getDeleteImageLink ($mode, $A)
         . '/calendar/images/delete_event.' . $_IMAGE_TYPE
         . '" alt="' . $LANG_CAL_2[30] . '" title="'
         . $LANG_CAL_2[30] . '"' . XHTML . '>';
+
     if ($mode == 'personal') {
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+        if (SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0) {
             $retval = COM_createLink($img, $_CONF['site_url']
                     . '/calendar/event.php?action=deleteevent&amp;eid='
-                    . $A['eid']);
+                    . $A['eid'] . '&amp;' . CSRF_TOKEN . '=' . $token);
         }
-    } else if (SEC_hasRights ('calendar.edit')) {
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+    } else if (SEC_hasRights('calendar.edit')) {
+        if (SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
             $retval = COM_createLink($img, $_CONF['site_admin_url']
                     . '/plugins/calendar/index.php?mode=' . $LANG_CAL_ADMIN[22]
-                    . '&amp;eid=' . $A['eid']);
+                    . '&amp;eid=' . $A['eid'] . '&amp;' . CSRF_TOKEN . '='
+                    . $token);
         }
     }
 
@@ -307,15 +310,15 @@ function getSmallCalendar ($m, $y, $mode = '')
 * Builds Quick Add form
 *
 */
-function getQuickAdd($tpl, $month, $day, $year)
+function getQuickAdd($tpl, $month, $day, $year, $token)
 {
     global $_CA_CONF, $LANG_CAL_2;
 
-    $tpl->set_var ('month_options', COM_getMonthFormOptions ($month));
-    $tpl->set_var ('day_options', COM_getDayFormOptions ($day));
-    $tpl->set_var ('year_options', COM_getYearFormOptions ($year));
+    $tpl->set_var('month_options', COM_getMonthFormOptions($month));
+    $tpl->set_var('day_options', COM_getDayFormOptions($day));
+    $tpl->set_var('year_options', COM_getYearFormOptions($year));
 
-    $cur_hour = date ('H', time ());
+    $cur_hour = date('H', time ());
     if ($cur_hour >= 12) {
         $ampm = 'pm';
     } else {
@@ -327,26 +330,28 @@ function getQuickAdd($tpl, $month, $day, $year)
     } else if ($cur_hour == 0) {
         $cur_hour = 12;
     }
-    if (isset ($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
-        $tpl->set_var ('hour_mode', 24);
-        $tpl->set_var ('hour_options',
-                       COM_getHourFormOptions ($cur_hour_24, 24));
+    if (isset($_CA_CONF['hour_mode']) && ($_CA_CONF['hour_mode'] == 24)) {
+        $tpl->set_var('hour_mode', 24);
+        $tpl->set_var('hour_options',
+                      COM_getHourFormOptions($cur_hour_24, 24));
     } else {
-        $tpl->set_var ('hour_mode', 12);
-        $tpl->set_var ('hour_options', COM_getHourFormOptions ($cur_hour));
+        $tpl->set_var('hour_mode', 12);
+        $tpl->set_var('hour_options', COM_getHourFormOptions($cur_hour));
     }
-    $tpl->set_var ('startampm_selection',
-                   COM_getAmPmFormSelection ('start_ampm', $ampm));
-    $cur_min = intval (date ('i') / 15) * 15;
-    $tpl->set_var ('minute_options', COM_getMinuteFormOptions ($cur_min, 15));
+    $tpl->set_var('startampm_selection',
+                  COM_getAmPmFormSelection('start_ampm', $ampm));
+    $cur_min = intval(date('i') / 15) * 15;
+    $tpl->set_var('minute_options', COM_getMinuteFormOptions($cur_min, 15));
 
-    $tpl->set_var ('lang_event', $LANG_CAL_2[32]);
-    $tpl->set_var ('lang_date', $LANG_CAL_2[33]);
-    $tpl->set_var ('lang_time', $LANG_CAL_2[34]);
-    $tpl->set_var ('lang_add', $LANG_CAL_2[31]);
-    $tpl->set_var ('lang_quickadd', $LANG_CAL_2[35]);
-    $tpl->set_var ('lang_submit', $LANG_CAL_2[36]);
-    $tpl->parse ('quickadd_form', 'quickadd', true);
+    $tpl->set_var('lang_event', $LANG_CAL_2[32]);
+    $tpl->set_var('lang_date', $LANG_CAL_2[33]);
+    $tpl->set_var('lang_time', $LANG_CAL_2[34]);
+    $tpl->set_var('lang_add', $LANG_CAL_2[31]);
+    $tpl->set_var('lang_quickadd', $LANG_CAL_2[35]);
+    $tpl->set_var('lang_submit', $LANG_CAL_2[36]);
+    $tpl->set_var('gltoken_name', CSRF_TOKEN);
+    $tpl->set_var('gltoken', $token);
+    $tpl->parse('quickadd_form', 'quickadd', true);
 
     return $tpl;
 }
@@ -367,6 +372,7 @@ function getPriorSunday($month, $day, $year)
     return array($newmonth, $newday, $newyear);
 }
 
+// MAIN
 $mode = '';
 if (isset ($_REQUEST['mode'])) {
     $mode = COM_applyFilter ($_REQUEST['mode']);
@@ -383,7 +389,7 @@ if ($mode == 'personal') {
 }
 
 // Set mode back to master if user refreshes screen after their session expires
-if (($mode == 'personal') && (!isset ($_USER['uid']) || ($_USER['uid'] <= 1))) {
+if (($mode == 'personal') && COM_isAnonUser()) {
     $mode = '';
 }
 
@@ -427,6 +433,12 @@ if (isset ($_REQUEST['month'])) {
 $day = 0;
 if (isset ($_REQUEST['day'])) {
     $day = COM_applyFilter ($_REQUEST['day'], true);
+}
+
+$token = '';
+if ((($view == 'day') || ($view == 'week')) &&
+        (($mode == 'personal') || SEC_hasRights('calendar.edit'))) {
+    $token = SEC_createToken();
 }
 
 // Create new calendar object
@@ -513,14 +525,14 @@ case 'day':
         $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
         $cal_templates->set_var('calendar_toggle', '|&nbsp;'
             . COM_createLink($LANG_CAL_2[11], $_CONF['site_url']
-                . "/calendar/index.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year")
+                . "/calendar/index.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
         );
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
         if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                 . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
-                    . "/calendar/index.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year")
+                    . "/calendar/index.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
             );
         } else {
             $cal_templates->set_var('calendar_toggle', ']');
@@ -549,24 +561,25 @@ case 'day':
     list($hourcols, $thedata, $max, $alldaydata) = getDayViewData($result);
 
     // Get all day events
-    if (count ($alldaydata) > 0) {
-        for ($i = 1; $i <= count ($alldaydata); $i++) {
+    $alldaycount = count($alldaydata);
+    if ($alldaycount > 0) {
+        for ($i = 1; $i <= $alldaycount; $i++) {
             $A = current($alldaydata);
-            $cal_templates->set_var ('delete_imagelink',
-                                     getDeleteImageLink ($mode, $A));
+            $cal_templates->set_var('delete_imagelink',
+                                    getDeleteImageLink($mode, $A, $token));
             $cal_templates->set_var('event_time', $LANG_CAL_2[26]);
             $cal_templates->set_var('eid', $A['eid']);
-            $cal_templates->set_var('event_title',stripslashes($A['title']));
-            if ($i < count($alldaydata)) {
+            $cal_templates->set_var('event_title', stripslashes($A['title']));
+            if ($i < $alldaycount) {
                 $cal_templates->set_var('br', '<br' . XHTML . '>');
             } else {
                 $cal_templates->set_var('br', '');
             }
-            $cal_templates->parse('allday_events','event', true);
+            $cal_templates->parse('allday_events', 'event', true);
             next($alldaydata);
         }
     } else {
-        $cal_templates->set_var('allday_events','&nbsp;');
+        $cal_templates->set_var('allday_events', '&nbsp;');
     }
 
     //$cal_templates->set_var('first_colspan', $maxcols);
@@ -583,8 +596,8 @@ case 'day':
                             . ' ' . $A['timestart'])) . '-'
                     . strftime ($_CONF['timeonly'], strtotime ($A['dateend']
                             . ' ' . $A['timeend'])));
-                $cal_templates->set_var ('delete_imagelink',
-                                         getDeleteImageLink ($mode, $A));
+                $cal_templates->set_var('delete_imagelink',
+                                        getDeleteImageLink($mode, $A, $token));
                 $cal_templates->set_var('eid', $A['eid']);
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
                 if ($j < $numevents) {
@@ -606,7 +619,7 @@ case 'day':
     }
 
     if ($mode == 'personal') {
-        $cal_templates = getQuickAdd($cal_templates, $month, $day, $year);
+        $cal_templates = getQuickAdd($cal_templates, $month, $day, $year, $token);
     } else {
         $cal_templates->set_var('quickadd_form','');
     }
@@ -629,21 +642,21 @@ case 'week':
         $cal_templates->set_var('calendar_title', '[' . $LANG_CAL_2[28] . ' ' . COM_getDisplayName());
         $cal_templates->set_var('calendar_toggle', '|&nbsp;'
             . COM_createLink($LANG_CAL_2[11], $_CONF['site_url']
-                . "/calendar/index.php?view=week&amp;month=$month&amp;day=$day&amp;year=$year")
+                . "/calendar/index.php?view=week&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
         );
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
         if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                 . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
-                    . "/calendar/index.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year")
+                    . "/calendar/index.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
             );
         } else {
             $cal_templates->set_var('calendar_toggle', ']');
         }
     }
     if ($mode == 'personal') {
-        $cal_templates = getQuickAdd($cal_templates, $month, $day, $year);
+        $cal_templates = getQuickAdd($cal_templates, $month, $day, $year, $token);
     } else {
         $cal_templates->set_var('quickadd_form','');
     }
@@ -762,8 +775,8 @@ case 'week':
                 . 'eid=' . $A['eid'])
             );
             // Provide delete event link if user has access
-            $cal_templates->set_var ('delete_imagelink',
-                                     getDeleteImageLink ($mode, $A));
+            $cal_templates->set_var('delete_imagelink',
+                                    getDeleteImageLink($mode, $A, $token));
             $cal_templates->parse ('events_day' . $i, 'events', true);
         }
         if ($nrows == 0) {
@@ -782,12 +795,20 @@ case 'week':
     break;
 
 case 'addentry':
-    $display .= plugin_submit_calendar($mode);
-    $display .= COM_siteFooter();
+    if (SEC_checkToken()) {
+        $display .= plugin_submit_calendar($mode);
+        $display .= COM_siteFooter();
+    } else {
+        $display = COM_refresh($_CONF['site_url'] . '/calendar/index.php');
+    }
     break;
 
 case 'savepersonal':
-    $display = plugin_savesubmission_calendar($_POST);
+    if (SEC_checkToken()) {
+        $display = plugin_savesubmission_calendar($_POST);
+    } else {
+        $display = COM_refresh($_CONF['site_url'] . '/calendar/index.php');
+    }
     break;
 
 default: // month view
