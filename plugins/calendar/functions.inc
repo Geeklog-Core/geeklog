@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.84 2008/04/19 15:04:05 dhaun Exp $
+// $Id: functions.inc,v 1.85 2008/05/22 13:24:59 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -822,8 +822,8 @@ function CALENDAR_deleteEvent($eid, $type = '')
 
 function CALENDAR_listOld()
 {
-    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS, $LANG01,
-        $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_CAL_ADMIN, $LANG_ACCESS,
+           $LANG01, $_IMAGE_TYPE;
 
     if (isset($_REQUEST['usr_time'])) {
         $usr_time = $_REQUEST['usr_time'];
@@ -831,11 +831,11 @@ function CALENDAR_listOld()
         $usr_time = 12;
     }
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
         array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true),
         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
@@ -896,7 +896,7 @@ function CALENDAR_listOld()
     $retval .= ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[27] . $usr_time . "$desc", plugin_geticon_calendar());
     $retval .= ADMIN_list('calendar', 'plugin_getListField_calendar',
                           $header_arr, $text_arr, $query_arr,
-                          $defsort_arr, '', $listoptions);
+                          $defsort_arr, '', '', $listoptions);
 
     return $retval;
 }
@@ -946,7 +946,7 @@ function CALENDAR_listevents()
 
     $retval = '';
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
         array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
