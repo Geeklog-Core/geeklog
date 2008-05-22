@@ -238,15 +238,34 @@ form field in order for saving the form/processing the action to work. Add:</p>
 <pre><code>    &lt;input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}&gt;</code></pre>
 <p>To the following templates:</p>
 <ul>
+    <li>admin/block/blockeditor.thtml</li>
+    <li>admin/block/defaultblockeditor.thtml</li>
+    <li>admin/config/configuration.thtml (new theme file for 1.5)</li>
+    <li>admin/group/groupeditor.thtml</li>
+    <li>admin/group/groupmembers.thtml</li>
+    <li>admin/mail/mailform.thtml</li>
     <li>admin/plugins/editor.thtml</li>
     <li>admin/story/storyeditor.thtml</li>
     <li>admin/story/storyeditor_advanced.thtml</li>
-    <li>admin/config/configuration.thtml (new theme file for 1.5)</li>
+    <li>admin/syndication/feededitor.thtml</li>
+    <li>admin/topic/topiceditor.thtml</li>
+    <li>admin/trackback/pingbackform.thtml</li>
+    <li>admin/trackback/pingform.thtml</li>
+    <li>admin/trackback/serviceeditor.thtml</li>
+    <li>admin/user/edituser.thtml</li>
 </ul>
-<p>Some plugin specific templates have also been changed, you may also need to check:</p>
+<p>Some plugin specific templates have also been changed, you may also need to
+check:</p>
 <ul>
-  <li>plugins/staticpages/templates/admin/editor.thtml</li>
-  <li>plugins/staticpages/templates/admin/editor_advanced.thtml</li>
+    <li>plugins/calendar/templates/addevent.thtml</li>
+    <li>plugins/calendar/templates/editpersonalevent.thtml</li>
+    <li>plugins/calendar/templates/dayview/quickaddform.thtml</li>
+    <li>plugins/calendar/templates/submitevent.thtml (<code>{hidden_fields}</code> variable)</li>
+    <li>plugins/links/templates/admin/categoryeditor.thtml (new theme file for 1.5)</li>
+    <li>plugins/links/templates/admin/linkeditor.thtml</li>
+    <li>plugins/polls/templates/admin/polleditor.thtml</li>
+    <li>plugins/staticpages/templates/admin/editor.thtml</li>
+    <li>plugins/staticpages/templates/admin/editor_advanced.thtml</li>
 </ul>
 
 
