@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.132 2008/05/18 16:58:51 dhaun Exp $
+// $Id: lib-admin.php,v 1.133 2008/05/22 08:23:53 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -772,7 +772,7 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
             break;
         case 'phantom_date':
         case 'offline_months':
-            $retval = COM_numberFormat(round($fieldvalue / 2592000, 1));
+            $retval = COM_numberFormat(round($fieldvalue / 2592000));
             break;
         case 'online_hours':
             $retval = COM_numberFormat(round($fieldvalue / 3600, 3));

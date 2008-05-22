@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May 20, 2008 (1.5.0b2)
+May ??, 2008 (1.5.0rc1)
 ------------
 
 Geeklog 1.5.0 incorporates the following projects implemented during
@@ -9,6 +9,17 @@ the 2007 Google Summer of Code:
 + New user-friendly install script by Matt West
 + New Configuration GUI (replacing config.php) by Aaron Blankstein
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
+
+Changes since 1.5.0b2:
+- Display value in the "Months since registration" column on the Batch User
+  Admin screen without decimals again (as in 1.4.1) [Dirk]
+- Removed unused poll-vote, poll-vote-results classes from the Professional
+  theme's stylesheet; added empty required-field, missing-field classes for
+  future use (cf. bug #0000635) [Dirk]
+
+
+May 20, 2008 (1.5.0b2)
+------------
 
 Changes since 1.5.0b1:
 - {story_title} is now available in the article.thtml template file [Dirk]
