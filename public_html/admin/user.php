@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.204 2008/05/18 08:19:35 dhaun Exp $
+// $Id: user.php,v 1.205 2008/05/22 12:06:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -360,7 +360,7 @@ function listusers()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG28, $_IMAGE_TYPE;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
@@ -372,7 +372,7 @@ function listusers()
         $login_field = 'regdate';
     }
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
                     array('text' => $LANG28[37], 'field' => $_TABLES['users'] . '.uid', 'sort' => true),
                     array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
@@ -673,7 +673,7 @@ function batchdelete()
         return $retval;
     }
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $usr_type = '';
     if (isset($_REQUEST['usr_type'])) {
@@ -734,7 +734,7 @@ function batchdelete()
     $user_templates->parse('form', 'form');
     $desc = $user_templates->finish($user_templates->get_var('form'));
 
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
                     array('text' => $LANG28[37], 'field' => $_TABLES['users'] . '.uid', 'sort' => true),
                     array('text' => $LANG28[3], 'field' => 'username', 'sort' => true),
                     array('text' => $LANG28[4], 'field' => 'fullname', 'sort' => true)
@@ -827,19 +827,23 @@ function batchdelete()
         $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE
     );
 
-    $user_templates->set_var('lang_reminder',$LANG28[77]);
-    $user_templates->set_var('action_reminder',$LANG28[78]);
-    $user_templates->parse('test','reminder');
+    $user_templates->set_var('lang_reminder', $LANG28[77]);
+    $user_templates->set_var('action_reminder', $LANG28[78]);
+    $user_templates->parse('test', 'reminder');
 
     $form_arr['top'] = $user_templates->get_var('test');
-    $display .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-        $query_arr, $defsort_arr, '', '', $listoptions,$form_arr);
+    $token = SEC_createToken();
+    $form_arr['bottom'] = "<input type=\"hidden\" name=\"" . CSRF_TOKEN
+                        . "\" value=\"{$token}\"" . XHTML . ">";
+    $display .= ADMIN_list('user', 'ADMIN_getListField_users', $header_arr,
+                           $text_arr, $query_arr, $defsort_arr, '', '',
+                           $listoptions, $form_arr);
 
     // $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"" . XHTML . "></form>" . LB;
-    return $display;
-//
 
+    return $display;
 }
+
 /**
 * This function deletes the users selected in the batchdeletelist function
 *
@@ -849,6 +853,7 @@ function batchdelete()
 function batchdeleteexec()
 {
     global $_CONF, $LANG28;
+
     $msg = '';
     $user_list = array();
     if (isset($_POST['delitem'])) {
@@ -871,13 +876,13 @@ function batchdeleteexec()
         }
     }
 
-    // Since this function is used for deletion only, its necessary to say that
-    // zero where deleted instead of just leaving this message away.
-    COM_numberFormat($c); // just in case we have more than 999)..
+    // Since this function is used for deletion only, it's necessary to say that
+    // zero were deleted instead of just leaving this message away.
+    COM_numberFormat($c); // just in case we have more than 999 ...
     $msg .= "{$LANG28[71]}: $c<br" . XHTML . ">\n";
+
     return $msg;
 }
-
 
 
 /**
@@ -888,7 +893,8 @@ function batchdeleteexec()
 */
 function batchreminders()
 {
-    global $_CONF, $_TABLES, $LANG28;
+    global $_CONF, $_TABLES, $LANG04, $LANG28;
+
     $msg = '';
     $user_list = array();
     if (isset($_POST['delitem'])) {
@@ -896,7 +902,7 @@ function batchreminders()
     }
 
     if (count($user_list) == 0) {
-        $msg = $LANG28[79] . "<br>";
+        $msg = $LANG28[79] . '<br' . XHTML . '>';
     }
     $c = 0;
 
@@ -916,7 +922,7 @@ function batchreminders()
                 $template->set_var ('lang_username', $LANG04[2]);
                 $template->set_var ('username', $username);
                 $template->set_var ('name', COM_getDisplayName ($uid));
-                $template->set_var ('lastlogin',$lasttime[0]);
+                $template->set_var ('lastlogin', $lasttime[0]);
 
                 $template->parse ('output', 'mail');
                 $mailtext = $template->get_var ('output');
@@ -924,13 +930,14 @@ function batchreminders()
                 if ($lastlogin == 0) {
                     $mailtext = $LANG28[83] . "\n\n";
                 } else {
-                    $mailtext = sprintf($LANG28[82],$lasttime[0]) . "\n\n";
+                    $mailtext = sprintf($LANG28[82], $lasttime[0]) . "\n\n";
                 }
-                $mailtext .= sprintf($LANG28[84],$username) . "\n";
-                $mailtext .= sprintf($LANG28[85],$_CONF['site_url'] . '/users.php?mode=getpassword') . "\n\n";
+                $mailtext .= sprintf($LANG28[84], $username) . "\n";
+                $mailtext .= sprintf($LANG28[85], $_CONF['site_url']
+                                     . '/users.php?mode=getpassword') . "\n\n";
 
             }
-            $subject = sprintf($LANG28[81],$_CONF['site_name']);
+            $subject = sprintf($LANG28[81], $_CONF['site_name']);
             if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
                 $mailfrom = $_CONF['noreply_mail'];
                 global $LANG_LOGIN;
@@ -951,9 +958,9 @@ function batchreminders()
     // Since this function is used for deletion only, its necessary to say that
     // zero where deleted instead of just leaving this message away.
     COM_numberFormat($c); // just in case we have more than 999)..
-    $msg .= "{$LANG28[80]}: $c<br>\n";
-    return $msg;
+    $msg .= "{$LANG28[80]}: $c<br" . XHTML . ">\n";
 
+    return $msg;
 }
 
 
@@ -966,11 +973,10 @@ function batchreminders()
 * After clicking an extra button, the actual import should take place. This will
 * prevent problems in case the list formatting is incorrect.
 *
-* @param    string  $file   file to import
 * @return   string          HTML with success or error message
 *
 */
-function importusers ($file)
+function importusers()
 {
     global $_CONF, $_TABLES, $LANG04, $LANG28;
 
@@ -984,22 +990,27 @@ function importusers ($file)
     $_CONF['usersubmission'] = 0;
 
     // First, upload the file
-    require_once ($_CONF['path_system'] . 'classes/upload.class.php');
+    require_once $_CONF['path_system'] . 'classes/upload.class.php';
 
     $upload = new upload ();
     $upload->setPath ($_CONF['path_data']);
     $upload->setAllowedMimeTypes (array ('text/plain' => '.txt'));
     $upload->setFileNames ('user_import_file.txt');
-    if ($upload->uploadFiles ()) {
+    if ($upload->uploadFiles()) {
         // Good, file got uploaded, now install everything
-        $thefile =  current ($_FILES);
+        $thefile = current($_FILES);
         $filename = $_CONF['path_data'] . 'user_import_file.txt';
+        if (!file_exists($filename)) { // empty upload form
+            $retval = COM_refresh($_CONF['site_admin_url']
+                                  . '/user.php?mode=importform');
+            return $retval;
+        }
     } else {
         // A problem occurred, print debug information
         $retval = COM_siteHeader ('menu', $LANG28[22]);
         $retval .= COM_startBlock ($LANG28[24], '',
                 COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $upload->printErrors ();
+        $retval .= $upload->printErrors(false);
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 
         return $retval;
@@ -1043,7 +1054,7 @@ function importusers ($file)
             $ecount = DB_count ($_TABLES['users'], 'email',
                                 addslashes ($emailAddr));
 
-            if ($ucount == 0 && ecount == 0) {
+            if ($ucount == 0 && $ecount == 0) {
                 // user doesn't already exist
                 $uid = USER_createAccount ($userName, $emailAddr, '',
                                            $fullName);
@@ -1092,16 +1103,20 @@ function importusers ($file)
 * @return   string      HTML for import form
 *
 */
-function display_batchAddform ()
+function display_batchAddform()
 {
     global $_CONF, $LANG28;
 
+    $token = SEC_createToken();
     $retval = '<form action="' . $_CONF['site_admin_url']
             . '/user.php" method="post" enctype="multipart/form-data"><div>'
-            . $LANG28[29] . ': <input type="file" dir="ltr" name="importfile" size="40"' . XHTML . '>'
+            . $LANG28[29]
+            . ': <input type="file" dir="ltr" name="importfile" size="40"'
+            . XHTML . '>'
             . '<input type="hidden" name="mode" value="import"' . XHTML . '>'
             . '<input type="submit" name="submit" value="' . $LANG28[30]
-            . '"' . XHTML . '></div></form>';
+            . '"' . XHTML . '><input type="hidden" name="' . CSRF_TOKEN
+            . "\" value=\"{$token}\"" . XHTML . '></div></form>';
 
     return $retval;
 }
@@ -1126,12 +1141,12 @@ function deleteUser ($uid)
 
 // MAIN
 $mode = '';
-if (isset ($_REQUEST['mode'])) {
+if (isset($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 
-if (isset($_POST["delbutton_x"])) {
-    $mode = batchdeleteexec;
+if (isset($_POST['delbutton_x'])) {
+    $mode = 'batchdeleteexec';
 }
 
 if (isset ($_REQUEST['order'])) {
@@ -1152,7 +1167,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     } else {
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=67');
     }
-} else if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
+} elseif (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
     $uid = COM_applyFilter($_POST['uid'], true);
     if ($uid <= 1) {
         COM_errorLog('Attempted to delete user uid=' . $uid);
@@ -1186,7 +1201,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
         $tmp .= COM_siteFooter();
         $display = $tmp;
     }
-} else if ($mode == 'edit') {
+} elseif ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
     $msg = '';
     if (isset ($_GET['msg'])) {
@@ -1198,9 +1213,9 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     }
     $display .= edituser ($uid, $msg);
     $display .= COM_siteFooter();
-} else if ($mode == 'import') {
-    $display .= importusers ($_POST['file']);
-} else if ($mode == 'importform') {
+} elseif (($mode == 'import') && SEC_checkToken()) {
+    $display .= importusers();
+} elseif ($mode == 'importform') {
     $display .= COM_siteHeader('menu', $LANG28[24]);
     $display .= COM_startBlock ($LANG28[24], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
@@ -1208,17 +1223,17 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= display_batchAddform();
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();
-} else if ($mode == 'batchdelete') {
+} elseif ($mode == 'batchdelete') {
     $display .= COM_siteHeader ('menu', $LANG28[54]);
     $display .= batchdelete();
     $display .= COM_siteFooter();
-} elseif ($mode == 'Send Reminder') {
+} elseif (($mode == $LANG28[78]) && !empty($LANG28[78]) && SEC_checkToken()) {
     $msg = batchreminders();
     $display .= COM_siteHeader ('menu', $LANG28[11])
         . COM_showMessage($msg)
         . batchdelete()
         . COM_siteFooter();
-} else if ($mode == 'batchdeleteexec') {
+} elseif (($mode == 'batchdeleteexec') && SEC_checkToken()) {
     $msg = batchdeleteexec();
     $display .= COM_siteHeader ('menu', $LANG28[11])
         . COM_showMessage($msg)
