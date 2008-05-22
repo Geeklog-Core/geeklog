@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.85 2008/05/22 13:24:59 dhaun Exp $
+// $Id: functions.inc,v 1.86 2008/05/22 13:59:45 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -634,8 +634,10 @@ function plugin_submit_calendar($mode = 'master')
 {
     global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
 
-    if (isset ($_POST['calendar_type'])) {
+    if (isset($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
+    } else if (isset($_REQUEST['mode']) && ($_REQUEST['mode'] == 'personal')) {
+        $mode = 'personal';
     }
 
     if (($_CA_CONF['personalcalendars'] == 1) && ($mode == 'quickadd')) {
