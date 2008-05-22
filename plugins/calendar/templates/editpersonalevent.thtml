@@ -91,7 +91,6 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_state}:</b></td>
-                                        <td>
                                         <td><input type="text" name="state" size="36" value="{event_state}"{xhtml}></td>
                                     </tr>
                                     <tr>
