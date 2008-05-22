@@ -11,11 +11,22 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0b2:
+- Fixed handling of empty form submission and display of error messages in the
+  batch user import [Dirk]
+- Fixed text for the account reminder emails [Dirk]
 - Display value in the "Months since registration" column on the Batch User
   Admin screen without decimals again (as in 1.4.1) [Dirk]
 - Removed unused poll-vote, poll-vote-results classes from the Professional
   theme's stylesheet; added empty required-field, missing-field classes for
   future use (cf. bug #0000635) [Dirk]
+
+Calendar plugin
+---------------
+- Fixed missing ] in the headline of the day and week view [Dirk]
+- Fixed the template for the personal event editor (extra <td> tag) [Dirk]
+- Bugfix: In some cases, personal events would end up in the submission queue
+  for site events [Dirk]
+- Fixed "Delete old entries" option (delete checkboxes were missing) [Dirk]
 
 
 May 20, 2008 (1.5.0b2)
