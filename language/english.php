@@ -917,8 +917,8 @@ $LANG28 = array(
     79 => 'No User selected for reminders',
     80 => 'Successfully sent Reminders',
     81 => 'Reminder to verify account for %s',
-    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
-    83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
+    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the next 30 days.",
+    83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will be deleted soon if not accessed.",
     84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
     85 => 'If you have forgotten the password use the following link: %s'
 );
