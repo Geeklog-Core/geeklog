@@ -186,7 +186,7 @@ select {
   padding:5px;
   border:1px solid #EEEEEE;
 }
-.admin-menu-text{ /* the text below the links */
+.admin-menu-text { /* the text below the links */
   padding:5px;
 }
 .admin-menu-item { /* a single link in the menu */
@@ -200,7 +200,7 @@ select {
 .admin-list-table form {
   margin:0px;
 }
-.admin-list-search{
+.admin-list-search {
   text-align:center;
   margin-top:5px;
   margin-bottom:5px;
@@ -289,7 +289,7 @@ select {
   padding-left:20px;
 }
 .block-bg-left,
-.block-bg-right{
+.block-bg-right {
   border-top:1px solid #FFFFFF;
 }
 .block-bg-spreader {
@@ -406,7 +406,7 @@ select {
 .edit-perm-down {
   text-align:center;
 }
-.edit-perm-up{
+.edit-perm-up {
   text-align:center;
   padding-right:10px;
   padding-left:10px;
@@ -471,19 +471,25 @@ select {
   padding:0px;
   margin:0px;
 }
-.checkboxes-list span{ /* space between the text and the checkbox */
+.checkboxes-list span { /* space between the text and the checkbox */
   padding-left:5px;
 }
 .checkboxes-list .gldefault { /* default blocks in the user settings block list */
   font-weight:bold;
 }
+.missing-field {
+  /* reserved for future use */
+}
+.required-field {
+  /* reserved for future use */
+}
 /* Header *********************************************************************/
-.header-logo{
+.header-logo {
   float:left;
   padding-left:15px;
   padding-top:13px;
 }
-.header-slogan{
+.header-slogan {
   float:right;
   line-height:78px;
   padding-right:15px;
@@ -499,7 +505,7 @@ select {
   border-bottom:1px solid #FFFFFF;
   background:#E7E7E7;
 }
-.header-navigation-container ul{
+.header-navigation-container ul {
   list-style: none;
   padding:0px;
   margin:0px;
@@ -508,7 +514,7 @@ select {
   float:right;
   height:24px;
 }
-.header-navigation-container li{
+.header-navigation-container li {
   float:left;
   padding-right:9px;
   padding-left:9px;
@@ -595,12 +601,12 @@ select {
   padding:0px 4px 0px 1px;
   margin:0px;
 }
-.searchform-elements{
+.searchform-elements {
   display:inline;
   position:relative;
   top:6px;
 }
-.searchform-elements input{
+.searchform-elements input {
   font-size:0.9em;
 }
 .searchhits {
@@ -636,7 +642,7 @@ select {
   background:transparent;
   color:#000000;
 }
-.story h1{
+.story h1 {
   /* the title of a story */
   background:transparent;
   color:#000000;
@@ -665,7 +671,7 @@ select {
   float:right;
   padding-top:10px;
 }
-.story-icons a{
+.story-icons a {
   margin-left:5px;
 }
 .story-container {
@@ -680,7 +686,7 @@ select {
   text-align:center;
   clear:both;
 }
-.story-footer p{
+.story-footer p {
   padding:0px;
   margin:0px;
 }
@@ -1002,10 +1008,3 @@ a.tooltip:hover span {
 
 /* End of Common Plugin CSS */
 
-/* Poll Plugin ****************************************************************/
-.poll-vote,
-.poll-vote-results {
-  background:transparent;
-  color:#000000;
-  font-size:smaller;
-}
