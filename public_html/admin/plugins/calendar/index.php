@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.33 2008/04/19 15:05:34 dhaun Exp $
+// $Id: index.php,v 1.34 2008/05/22 13:23:59 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -594,8 +594,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $_POST['allday'] = '';
     }
     $hour_mode = 12;
-    if (isset ($_POST['hour_mode']) && ($_POST['hour_mode'] == 24)) {
+    if (isset($_POST['hour_mode']) && ($_POST['hour_mode'] == 24)) {
         $hour_mode = 24;
+    }
+    if ($hour_mode == 24) {
+        // these aren't set in 24 hour mode
+        $_POST['start_ampm'] = '';
+        $_POST['end_ampm'] = '';
     }
     $display .= CALENDAR_saveEvent (COM_applyFilter ($_POST['eid']),
             $_POST['title'], $_POST['event_type'],
