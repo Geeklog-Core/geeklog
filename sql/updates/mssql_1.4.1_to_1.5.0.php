@@ -410,31 +410,27 @@ function upgrade_PollsPlugin()
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['polltopics']}.question', 'topic', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ALTER COLUMN [topic] VARCHAR( 255 ) NULL";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['polltopics']}.qid', 'pid', 'COLUMN'";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} CHANGE [pid] VARCHAR( 20 ) NOT NULL";
-    // TODO: test changes here.:
-    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD COLUMN questions int(11) default '0' NOT NULL";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD COLUMN is_open tinyint(1) NOT NULL default '1'";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD COLUMN hideresults tinyint(1) NOT NULL default '0'";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD questions int default '0' NOT NULL";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD is_open tinyint NOT NULL default '1'";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD hideresults tinyint NOT NULL default '0'";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['pollanswers']}.qid', 'pid', 'COLUMN'";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ALTER COLUMN [pid] VARCHAR( 20 ) NOT NULL";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ALTER COLUMN [qid] VARCHAR( 20 ) NOT NULL;";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD CONSTRAINT 
-                [DF_gl_pollanswers_qid] DEFAULT ('0') FOR [qid]";
-    // to do:sort out primary key/indexes here:
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} DROP PRIMARY KEY;";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD INDEX (pid, qid, aid);";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD qid VARCHAR(20) NOT NULL default '0'";
+    // todo:sort out primary key/indexes here:
+    //$P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} DROP PRIMARY KEY;";
+    //$P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD INDEX (pid, qid, aid);";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['pollvoters']}.qid', 'pid', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHAR( 20 ) NOT NULL";
     $P_SQL[] = "CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
-        [qid] [int] NOT NULL ,
+        [qid] [int] NOT NULL DEFAULT 0,
         [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
         [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     ) ON [PRIMARY]";
-    $P_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
-        CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
-        (
-            [qid]
-        )  ON [PRIMARY]";
+    // todo: sort out key
+//    $P_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
+//        CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
+//        (
+//            [qid]
+//        )  ON [PRIMARY]";
     // in 1.4.1, "don't display poll" was equivalent to "closed"
     $P_SQL[] = "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0";
     $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.1', pi_gl_version = '1.5.0' WHERE pi_name = 'polls'";
@@ -453,7 +449,7 @@ function upgrade_PollsPlugin()
     $count_move = DB_numRows($move_rst);
     for ($i = 0; $i < $count_move; $i++) {
         $A = DB_fetchArray($move_rst);
-        $A[1] = mysql_real_escape_string($A[1]);
+        $A[1] = str_replace("'", "''", $A[1]);
         $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
     }
 

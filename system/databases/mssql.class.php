@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql.class.php,v 1.7 2008/05/11 07:25:08 dhaun Exp $
+// $Id: mssql.class.php,v 1.8 2008/05/23 17:25:29 mjervis Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -991,12 +991,17 @@ class database {
     */
     function dbError($sql='')
     {
-        if (trim(mssql_get_last_message())!='') {
-            $this->_errorlog(@mssql_get_last_message() . ': ' . @mssql_get_last_message() . ". SQL in question: $sql");        
-            if ($this->_display_error) {
-                return  @mssql_get_last_message() . ': ' . @mssql_get_last_message();
+        $msg = mssql_get_last_message();
+        if (trim($msg)!='') {
+            if (substr($msg, 0, 7) != 'Caution') {
+                $this->_errorlog($msg . ': ' . $msg . ". SQL in question: $sql");        
+                if ($this->_display_error) {
+                    return  $msg . ': ' . $msg;
+                } else {
+                    return 'An SQL error has occurred. Please see error.log for details.';
+                }
             } else {
-                return 'An SQL error has occurred. Please see error.log for details.';
+                $this->_errorlog('SQL Warning: "' . $msg . '" SQL in question: ' . $sql);
             }
         }
 

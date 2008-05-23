@@ -835,6 +835,10 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
     )  ON [PRIMARY]
 ";
 
+$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
+    CONSTRAINT [DF_gl_pollanswers_qid] DEFAULT ('0') FOR [qid]
+";
+
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
     CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
     (
@@ -997,6 +1001,7 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userprefs']}] ADD
     CONSTRAINT [DF_gl_userprefs_emailfromadmin] DEFAULT (0) FOR [emailfromadmin],
     CONSTRAINT [DF_gl_userprefs_emailfromuser] DEFAULT (0) FOR [emailfromuser],
     CONSTRAINT [DF_gl_userprefs_showonline] DEFAULT (0) FOR [showonline],
+    CONSTRAINT [DF_gl_userprefs_tzid] DEFAULT ('') FOR [tzid],
     CONSTRAINT [PK_gl_userprefs] PRIMARY KEY  CLUSTERED
     (
         [uid]
