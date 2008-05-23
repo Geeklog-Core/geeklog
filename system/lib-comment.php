@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.64 2008/04/16 11:13:36 dhaun Exp $
+// $Id: lib-comment.php,v 1.65 2008/05/23 10:50:50 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -42,7 +42,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
 if( $_CONF['allow_user_photo'] )
 {
     // only needed for the USER_getPhoto function
-    require_once ($_CONF['path_system'] . 'lib-user.php');
+    require_once $_CONF['path_system'] . 'lib-user.php';
 }
 
 /**
@@ -269,6 +269,11 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         return '';
     }
 
+    $token = '';
+    if ($delete_option && !$preview) {
+        $token = SEC_createToken();
+    }
+
     $row = 1;
     do {
         // determines indentation for current comment
@@ -375,7 +380,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         // If deletion is allowed, displays delete link
         if( $delete_option ) {
             $dellink = $_CONF['site_url'] . '/comment.php?mode=delete&amp;cid='
-                . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type;
+                . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type
+                . '&amp;' . CSRF_TOKEN . '=' . $token;
             $delattr = array('onclick' => "return confirm('{$MESSAGE[76]}');");
             $deloption = COM_createLink( $LANG01[28], $dellink, $delattr) . ' | ';
             if( !empty( $A['ipaddress'] )) {
@@ -768,7 +774,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             } else {
                 $comment_template->set_file('form','commentform.thtml');
             }
-            $comment_template->set_var( 'xhtml', XHTML );
+            $comment_template->set_var('xhtml', XHTML);
             $comment_template->set_var('site_url', $_CONF['site_url']);
             $comment_template->set_var('site_admin_url', $_CONF['site_admin_url']);
             $comment_template->set_var('layout_url', $_CONF['layout_url']);
@@ -1107,7 +1113,7 @@ function CMT_reportAbusiveComment ($cid, $type)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template ($_CONF['path_layout'] . 'submit');
         $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
-        $loginreq->set_var ( 'xhtml', XHTML );
+        $loginreq->set_var ('xhtml', XHTML);
         $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
         $loginreq->set_var ('site_url', $_CONF['site_url']);
         $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -1130,20 +1136,22 @@ function CMT_reportAbusiveComment ($cid, $type)
         return $retval;
     }
 
-    $start = new Template ($_CONF['path_layout'] . 'comment');
-    $start->set_file (array ('report' => 'reportcomment.thtml'));
-    $start->set_var ( 'xhtml', XHTML );
-    $start->set_var ('site_url', $_CONF['site_url']);
-    $start->set_var ('layout_url', $_CONF['layout_url']);
-    $start->set_var ('lang_report_this', $LANG03[25]);
-    $start->set_var ('lang_send_report', $LANG03[10]);
-    $start->set_var ('cid', $cid);
-    $start->set_var ('type', $type);
+    $start = new Template($_CONF['path_layout'] . 'comment');
+    $start->set_file(array('report' => 'reportcomment.thtml'));
+    $start->set_var('xhtml', XHTML);
+    $start->set_var('site_url', $_CONF['site_url']);
+    $start->set_var('layout_url', $_CONF['layout_url']);
+    $start->set_var('lang_report_this', $LANG03[25]);
+    $start->set_var('lang_send_report', $LANG03[10]);
+    $start->set_var('cid', $cid);
+    $start->set_var('type', $type);
+    $start->set_var('gltoken_name', CSRF_TOKEN);
+    $start->set_var('gltoken', SEC_createToken());
 
     $result = DB_query ("SELECT uid,sid,pid,title,comment,UNIX_TIMESTAMP(date) AS nice_date FROM {$_TABLES['comments']} WHERE cid = $cid AND type = '$type'");
     $A = DB_fetchArray ($result);
 
-    $result = DB_query ("SELECT username,fullname,photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+    $result = DB_query ("SELECT username,fullname,photo,email FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
     $B = DB_fetchArray ($result);
 
     // prepare data for comment preview
@@ -1152,6 +1160,7 @@ function CMT_reportAbusiveComment ($cid, $type)
     $A['username'] = $B['username'];
     $A['fullname'] = $B['fullname'];
     $A['photo'] = $B['photo'];
+    $A['email'] = $B['email'];
     $A['indent'] = 0;
     $A['pindent'] = 0;
 
@@ -1182,7 +1191,7 @@ function CMT_sendReport ($cid, $type)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template ($_CONF['path_layout'] . 'submit');
         $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
-        $loginreq->set_var ( 'xhtml', XHTML );
+        $loginreq->set_var ('xhtml', XHTML);
         $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
         $loginreq->set_var ('site_url', $_CONF['site_url']);
         $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -1237,7 +1246,7 @@ function CMT_sendReport ($cid, $type)
     }
 
     $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-              . '/comment.php?mode=view&amp;cid=' . $cid . ">\n\n";
+              . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";

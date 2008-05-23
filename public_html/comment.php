@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -33,14 +33,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.114 2007/10/28 16:48:42 dhaun Exp $
+// $Id: comment.php,v 1.115 2008/05/23 10:50:51 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
 * comments to the DB.  All comment display stuff is in lib-common.php
 *
 * @author   Jason Whittenburg
-* @author   Tony Bibbs  <tony@tonybibbs.com>
+* @author   Tony Bibbs    <tonyAT tonybibbs DOT com>
 * @author   Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
 *
 */
@@ -48,12 +48,12 @@
 /**
 * Geeklog common function library
 */
-require_once('lib-common.php');
+require_once 'lib-common.php';
 
 /**
  * Geeklog comment function library
  */
-require_once( $_CONF['path_system'] . 'lib-comment.php' );
+require_once $_CONF['path_system'] . 'lib-comment.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -114,7 +114,7 @@ function handleSubmit()
 }
 
 /**
- * Hanldes a comment submission
+ * Handles a comment submission
  *
  * @copyright Vincent Furia 2005
  * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
@@ -124,35 +124,39 @@ function handleDelete()
 {
     global $_CONF, $_TABLES;
 
-    $type = COM_applyFilter ($_REQUEST['type']);
-    $sid = COM_applyFilter ($_REQUEST['sid']);
-    switch ( $type ) {
-        case 'article':
-            $has_editPermissions = SEC_hasRights ('story.edit');
-            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
-            $A = DB_fetchArray ($result);
+    $display = '';
 
-            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
-                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
-                    $A['perm_members'], $A['perm_anon']) == 3) {
-                CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'article');
-                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-                DB_change ($_TABLES['stories'], 'comments', $comments,
-                           'sid', $sid);
-                $display .= COM_refresh (COM_buildUrl ($_CONF['site_url']
-                                . "/article.php?story=$sid") . '#comments');
-            } else {
-                COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
-                            . "tried to illegally delete comment $cid from $type $sid");
-                $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-            break;
-        default: //assume plugin
-            if ( !($display = PLG_commentDelete($type, 
-                                COM_applyFilter($_REQUEST['cid'], true), $sid)) ) {
-                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-            break;
+    $type = COM_applyFilter($_REQUEST['type']);
+    $sid = COM_applyFilter($_REQUEST['sid']);
+
+    switch ($type) {
+    case 'article':
+        $has_editPermissions = SEC_hasRights('story.edit');
+        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
+        $A = DB_fetchArray($result);
+
+        if ($has_editPermissions && SEC_hasAccess($A['owner_id'],
+                $A['group_id'], $A['perm_owner'], $A['perm_group'],
+                $A['perm_members'], $A['perm_anon']) == 3) {
+            CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid,
+                              'article');
+            $comments = DB_count($_TABLES['comments'], 'sid', $sid);
+            DB_change($_TABLES['stories'], 'comments', $comments,
+                      'sid', $sid);
+            $display .= COM_refresh(COM_buildUrl ($_CONF['site_url']
+                                    . "/article.php?story=$sid") . '#comments');
+        } else {
+            COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) tried to illegally delete comment $cid from $type $sid");
+            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+        }
+        break;
+
+    default: // assume plugin
+        if (!($display = PLG_commentDelete($type, 
+                            COM_applyFilter($_REQUEST['cid'], true), $sid))) {
+            $display = COM_refresh($_CONF['site_url'] . '/index.php');
+        }
+        break;
     }
 
     return $display;
@@ -275,7 +279,11 @@ case $LANG03[11]: // Submit Comment
     break;
 
 case 'delete':
-    $display .= handleDelete();  // moved to function for readibility
+    if (SEC_checkToken()) {
+        $display .= handleDelete();  // moved to function for readibility
+    } else {
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    }
     break;
 
 case 'view':
@@ -287,15 +295,19 @@ case 'display':
     break;
 
 case 'report':
-    $display .= COM_siteHeader ('menu', $LANG03[27])
-              . CMT_reportAbusiveComment (COM_applyFilter ($_GET['cid'], true),
-                                          COM_applyFilter ($_GET['type']))
-              . COM_siteFooter ();
+    $display .= COM_siteHeader('menu', $LANG03[27])
+             . CMT_reportAbusiveComment(COM_applyFilter($_GET['cid'], true),
+                                        COM_applyFilter($_GET['type']))
+             . COM_siteFooter();
     break;
 
 case 'sendreport':
-    $display .= CMT_sendReport (COM_applyFilter ($_POST['cid'], true),
-                                COM_applyFilter ($_POST['type']));
+    if (SEC_checkToken()) {
+        $display .= CMT_sendReport(COM_applyFilter($_POST['cid'], true),
+                                   COM_applyFilter($_POST['type']));
+    } else {
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    }
     break;
 
 default:  // New Comment
@@ -313,8 +325,9 @@ default:  // New Comment
     if (!empty ($sid) && !empty ($type)) { 
         if (empty ($title)) {
             if ($type == 'article') {
-                $title = DB_getItem ($_TABLES['stories'], 'title',
-                                     "sid = '{$sid}'" . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
+                $title = DB_getItem($_TABLES['stories'], 'title',
+                                    "sid = '{$sid}'" . COM_getPermSQL('AND')
+                                    . COM_getTopicSQL('AND'));
             }
             $title = str_replace ('$', '&#36;', $title);
             // CMT_commentForm expects non-htmlspecial chars for title...

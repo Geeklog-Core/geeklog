@@ -12,6 +12,7 @@
             <input type="hidden" name="type" value="{type}"{xhtml}>
             <input type="hidden" name="mode" value="sendreport"{xhtml}>
             <input type="submit" name="sendit" value="{lang_send_report}"{xhtml}>
+            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
         </p>
     </div>
 </form>
