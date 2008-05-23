@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.55 2008/05/18 16:58:51 dhaun Exp $
+// $Id: index.php,v 1.56 2008/05/23 20:13:30 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -64,7 +64,7 @@ function listpolls()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG25, $LANG_ACCESS;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
     // writing the menu on top
@@ -81,7 +81,7 @@ function listpolls()
     );
 
     // writing the actual list
-    $header_arr = array(      # dislay 'text' and use table field 'field'
+    $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
         array('text' => $LANG25[9], 'field' => 'topic', 'sort' => true),
         array('text' => $LANG25[20], 'field' => 'voters', 'sort' => true),
@@ -119,14 +119,17 @@ function listpolls()
 *
 * Saves a poll topic and potential answers to the database
 *
-* @param    string  $pid            topic ID
-* @param    int     $display        Flag to indicate if poll appears on homepage
-* @param    string  $topic       The text for the topic
-* @param    int     $voters         Number of votes
+* @param    string  $pid            Poll topic ID
+* @param    array   $Q              Array of poll questions
+* @param    string  $mainpage       Checkbox: poll appears on homepage
+* @param    string  $topic          The text for the topic
 * @param    int     $statuscode     (unused)
+* @param    string  $open           Checkbox: poll open for voting
+* @param    string  $hideresults    Checkbox: hide results until closed
 * @param    int     $commentcode    Indicates if users can comment on poll
 * @param    array   $A              Array of possible answers
 * @param    array   $V              Array of vote per each answer
+* @param    array   $R              Array of remark per each answer
 * @param    int     $owner_id       ID of poll owner
 * @param    int     $group_id       ID of group poll belongs to
 * @param    int     $perm_owner     Permissions the owner has on poll
@@ -136,20 +139,25 @@ function listpolls()
 * @return   string                  HTML redirect or error message
 *
 */
-function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults,
-                   $commentcode, $A, $V, $R, $owner_id, $group_id, $perm_owner,
-                   $perm_group, $perm_members, $perm_anon)
+function savepoll($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults,
+                  $commentcode, $A, $V, $R, $owner_id, $group_id, $perm_owner,
+                  $perm_group, $perm_members, $perm_anon)
 
 {
-    global $_CONF, $_TABLES, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE, $_PO_CONF;
+    global $_CONF, $_TABLES, $_USER, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE,
+           $_PO_CONF;
+
     $retval = '';
+
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-    $pid = COM_sanitizeID ($pid);
-    $topic = COM_stripslashes ($topic);
+    $pid = COM_sanitizeID($pid);
+    $topic = COM_stripslashes($topic);
+
     // check if any question was entered
-    if (empty ($topic) or (sizeof ($Q) == 0) or strlen ($Q[0]) == 0 or strlen ($A[0][0]) == 0){
+    if (empty($topic) or (sizeof($Q) == 0) or (strlen($Q[0]) == 0) or
+            (strlen($A[0][0]) == 0)) {
         $retval .= COM_siteHeader ('menu', $LANG25[5]);
         $retval .= COM_startBlock ($LANG21[32], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
@@ -158,6 +166,13 @@ function savepoll ($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults
         $retval .= COM_siteFooter ();
         return $retval;
     }
+
+    if (!SEC_checkToken()) {
+        COM_accessLog("User {$_USER['username']} tried to save poll $pid and failed CSRF checks.");
+        return COM_refresh($_CONF['site_admin_url']
+                           . '/plugins/polls/index.php');
+    }
+
     // start processing the poll topic
     if ($_POLL_VERBOSE) {
         COM_errorLog ('**** Inside savepoll() in '
@@ -511,7 +526,7 @@ if ($mode == 'edit') {
     }
     $display .= editpoll ($pid);
     $display .= COM_siteFooter ();
-} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) {
     $pid = COM_applyFilter ($_POST['pid']);
     if (!empty ($pid)) {
         $statuscode = 0;
