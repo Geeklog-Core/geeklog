@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.121 2008/05/04 07:32:53 mjervis Exp $
+// $Id: moderation.php,v 1.122 2008/05/23 21:07:14 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -665,8 +665,16 @@ function security_check_reminder ()
 
 $display = '';
 $display .= COM_siteHeader ('menu', $LANG29[34]);
-if (isset ($_GET['msg'])) {
-    $display .= COM_showMessage ($_GET['msg']);
+$msg = 0;
+if (isset($_GET['msg'])) {
+    $msg = COM_applyFilter($_GET['msg'], true);
+}
+if ($msg > 0) {
+    $plugin = '';
+    if (isset($_GET['plugin'])) {
+        $plugin = COM_applyFilter($_GET['plugin']);
+    }
+    $display .= COM_showMessage($msg, $plugin);
 }
 
 if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation') && SEC_checkToken()) {

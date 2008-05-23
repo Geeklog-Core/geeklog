@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.145 2008/05/11 07:25:08 dhaun Exp $
+// $Id: lib-plugins.php,v 1.146 2008/05/23 21:07:14 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2335,13 +2335,23 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
         break;
 
     case 'home':
-        // the plugins messages are not available, use generic
-        $url = $_CONF['site_url'] . '/index.php?msg=15';
+        $url = $_CONF['site_url'] . '/index.php';
+        if (!empty($msg)) {
+            $url .= '?' . $msg;
+            if ($plugin != 'story') {
+                $url .= '&amp;plugin=' . $plugin;
+            }
+        }
         break;
 
     case 'admin':
-        // the plugins messages are not available, use generic
-        $url = $_CONF['site_admin_url'] . '/moderation.php?msg=15';
+        $url = $_CONF['site_admin_url'] . '/moderation.php';
+        if (!empty($msg)) {
+            $url .= '?' . $msg;
+            if ($plugin != 'story') {
+                $url .= '&amp;plugin=' . $plugin;
+            }
+        }
         break;
 
     case 'plugin':
