@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.35 2008/05/22 17:01:54 dhaun Exp $
+// $Id: index.php,v 1.36 2008/05/23 20:24:57 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -340,20 +340,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
 /**
 * Saves an event to the database
 *
-* @param    string  $eid            Event ID
-* @param    string  $title          Event Title
-* @param    string  $url            URL for the event
-* @param    string  $datestart      Date the event begins on
-* @param    string  $dateend        Date the event ends on
-* @param    string  $location       Where the event will be held at
-* @param    string  $description    Description about the event
-* @param    string  $postmode       Is this HTML or plain text?
-* @param    string  $owner_id       ID of owner
-* @param    string  $group_id       ID of group event belongs to
-* @param    string  $perm_owner     Permissions the owner has on event
-* @param    string  $perm_group     Permissions the groups has on the event
-* @param    string  $perm_members   Permisssions members have on the event
-* @param    string  $perm_anon      Permissions anonymous users have
+* (parameters should be obvious - old list was incomplete anyway)
 * @return   string                  HTML redirect or error message
 *
 */
@@ -518,6 +505,12 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
     }
 
     if (!empty ($eid) AND !empty ($description) AND !empty ($title)) {
+        if (!SEC_checkToken()) {
+            COM_accessLog("User {$_USER['username']} tried to save event $eid and failed CSRF checks.");
+            return COM_refresh($_CONF['site_admin_url']
+                               . '/plugins/calendar/index.php');
+        }
+
         DB_delete ($_TABLES['eventsubmission'], 'eid', $eid);
 
         DB_save($_TABLES['events'],
@@ -583,7 +576,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         COM_errorLog ('Attempted to delete event eid=\'' . $eid . "'");
         $display .= COM_refresh($_CONF['site_admin_url']
                                 . '/plugins/calendar/index.php');
-    } elseif(SEC_checkToken()) {
+    } elseif (SEC_checkToken()) {
         $type = '';
         if (isset($_POST['type'])) {
             $type = COM_applyFilter($_POST['type']);
@@ -593,7 +586,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         COM_accessLog("User {$_USER['username']} tried to illegally delete event $eid and failed CSRF checks.");
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
-} elseif (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
+} elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) {
     if (!isset ($_POST['allday'])) {
         $_POST['allday'] = '';
     }
