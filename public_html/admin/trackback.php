@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.52 2008/05/18 16:58:51 dhaun Exp $
+// $Id: trackback.php,v 1.53 2008/05/23 11:23:43 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -875,7 +875,7 @@ if (empty ($mode)) {
     }
 }
 
-if ($mode == 'delete') {
+if (($mode == 'delete') && SEC_checkToken()) {
     $cid = COM_applyFilter($_REQUEST['cid'], true);
     if ($cid > 0) {
         $display = deleteTrackbackComment($cid);

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-trackback.php                                                         |
 // |                                                                           |
 // | Functions needed to handle trackback comments.                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2007 by the following authors:                         |
+// | Copyright (C) 2005-2008 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -29,16 +29,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-trackback.php,v 1.50 2007/11/25 06:55:07 ospiess Exp $
+// $Id: lib-trackback.php,v 1.51 2008/05/23 11:23:43 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 // result codes for TRB_saveTrackbackComment
-define ('TRB_SAVE_OK',      0);
-define ('TRB_SAVE_SPAM',   -1);
-define ('TRB_SAVE_REJECT', -2);
+define('TRB_SAVE_OK',      0);
+define('TRB_SAVE_SPAM',   -1);
+define('TRB_SAVE_REJECT', -2);
 
 // set to true to log rejected Trackbacks
 $_TRB_LOG_REJECTS = false;
@@ -345,10 +345,11 @@ function TRB_deleteTrackbackComment ($cid)
 * @param    bool        $delete_option  whether to display a link to delete the trackback comment
 * @param    string      $cid        id of this trackback comment
 * @param    string      $ipaddress  IP address the comment was sent from
+* @param    string      $token      security token
 * @return   string                  HTML of the formatted trackback comment
 *
 */
-function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date = 0, $delete_option = false, $cid = '', $ipaddress = '')
+function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date = 0, $delete_option = false, $cid = '', $ipaddress = '', $token = '')
 {
     global $_CONF, $LANG01, $LANG_TRB, $MESSAGE;
 
@@ -403,9 +404,9 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
     $deloption = '';
     if ($delete_option) {
         $deloption .= '[ ';
-        $deloption .= COM_createLink(
-            $LANG01[28],
-            $_CONF['site_admin_url'] . '/trackback.php?mode=delete&amp;cid=' . $cid,
+        $deloption .= COM_createLink($LANG01[28], $_CONF['site_admin_url']
+            . '/trackback.php?mode=delete&amp;cid=' . $cid . '&amp;'
+            . CSRF_TOKEN . '=' . $token,
             array('onclick'=> "return confirm('{$MESSAGE[76]}');")
         );
         if (!empty ($ipaddress)) {
@@ -419,8 +420,8 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
         $deloption .= ' ]';
     }
     $template->set_var ('delete_option', $deloption);
-
     $template->parse ('output', 'comment');
+
     return $template->finish ($template->get_var ('output'));
 }
 
@@ -715,12 +716,16 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
     }
 
     $delete_option = TRB_allowDelete ($sid, $type);
+    $token = '';
+    if ($delete_option && ($numrows > 0)) {
+        $token = SEC_createToken();
+    }
 
     for ($i = 0; $i < $numrows; $i++) {
         $A = DB_fetchArray ($result);
         $comment = TRB_formatComment ($A['url'], $A['title'], $A['blog'],
                         $A['excerpt'], $A['day'], $delete_option, $A['cid'],
-                        $A['ipaddress']);
+                        $A['ipaddress'], $token);
         $template->set_var ('formatted_comment', $comment);
         $template->parse ('trackback_comments', 'comment', true);
     }
@@ -932,7 +937,6 @@ function TRB_sendNotificationEmail ($cid, $what = 'trackback')
         $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['pingback'];
     } else {
         $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['trackback'];
-        $mailbody .= "\n" . $LANG_TRB['delete_trackback'] . "<" . $_CONF['site_admin_url'] . '/trackback.php?mode=delete&amp;cid=' . $cid . ">\n";
     }
 
     COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
