@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May ??, 2008 (1.5.0rc1)
+May 2?, 2008 (1.5.0rc1)
 ------------
 
 Geeklog 1.5.0 incorporates the following projects implemented during
@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0b2:
+- Fixed display of plugin messages when they were set to redirect to the index
+  page or admin home after saving an item [Dirk]
 - Fixed handling of empty form submission and display of error messages in the
   batch user import [Dirk]
 - Fixed text for the account reminder emails [Dirk]
