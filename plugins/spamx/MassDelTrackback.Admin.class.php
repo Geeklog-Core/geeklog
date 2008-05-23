@@ -1,26 +1,25 @@
 <?php
 
 /**
-* file:  MassDelTrackback.Admin.class.php
+* File:  MassDelTrackback.Admin.class.php
 *
 * Mass delete trackback spam
 *
-* Copyright (C) 2004-2006 by the following authors:
+* Copyright (C) 2004-2008 by the following authors:
 *
 * @author   Tom Willett     tomw AT pigstye DOT net
 * @author   Dirk Haun       dirk AT haun-online DOT de
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelTrackback.Admin.class.php,v 1.9 2007/11/25 06:56:05 ospiess Exp $
+* $Id: MassDelTrackback.Admin.class.php,v 1.10 2008/05/23 08:59:12 dhaun Exp $
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'MassDelTrackback.Admin.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos($_SERVER['PHP_SELF'], 'MassDelTrackback.Admin.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
-require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
-
+require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
 class MassDelTrackback extends BaseAdmin {
 
@@ -31,40 +30,41 @@ class MassDelTrackback extends BaseAdmin {
         $display = $LANG_SX00['masstb'];
 
         $act = '';
-        if (isset ($_POST['action'])) {
-            $act = COM_applyFilter ($_POST['action']);
+        if (isset($_POST['action'])) {
+            $act = COM_applyFilter($_POST['action']);
         }
         $lmt = 0;
-        if (isset ($_POST['limit'])) {
-            $lmt = COM_applyFilter ($_POST['limit'], true);
+        if (isset($_POST['limit'])) {
+            $lmt = COM_applyFilter($_POST['limit'], true);
         }
 
-        if (($act == $LANG_SX00['deletespam']) && ($lmt > 0)) {
+        if (($act == $LANG_SX00['deletespam']) && ($lmt > 0) &&
+                SEC_checkToken()) {
             $numc = 0;
             $spamx_path = $_CONF['path'] . 'plugins/spamx/';
 
-            if ($dir = @opendir ($spamx_path)) {
-                while (($file = readdir ($dir)) !== false) {
-                    if (is_file ($spamx_path . $file)) {
-                        if (substr ($file, -18) == '.Examine.class.php') {
-                            $tmp = str_replace ('.Examine.class.php', '', $file);
+            if ($dir = @opendir($spamx_path)) {
+                while (($file = readdir($dir)) !== false) {
+                    if (is_file($spamx_path . $file)) {
+                        if (substr($file, -18) == '.Examine.class.php') {
+                            $tmp = str_replace('.Examine.class.php', '', $file);
                             $Spamx_Examine[] = $tmp;
 
-                            require_once ($spamx_path . $file);
+                            require_once $spamx_path . $file;
                         }
                     }
                 }
-                closedir ($dir);
+                closedir($dir);
             }
 
-            require_once ($_CONF['path_system'] . 'lib-trackback.php');
+            require_once $_CONF['path_system'] . 'lib-trackback.php';
 
-            $result = DB_query ("SELECT cid,sid,type,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) as date FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
-            $nrows = DB_numRows ($result);
+            $result = DB_query("SELECT cid,sid,type,url,title,blog,excerpt,ipaddress,UNIX_TIMESTAMP(date) AS date FROM {$_TABLES['trackback']} ORDER BY date DESC LIMIT $lmt");
+            $nrows = DB_numRows($result);
             for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray ($result);
-                $comment = TRB_formatComment ($A['url'], $A['title'],
-                                              $A['blog'], $A['excerpt']);
+                $A = DB_fetchArray($result);
+                $comment = TRB_formatComment($A['url'], $A['title'],
+                                             $A['blog'], $A['excerpt']);
 
                 foreach ($Spamx_Examine as $Examine) {
                     $EX = new $Examine;
@@ -72,36 +72,43 @@ class MassDelTrackback extends BaseAdmin {
                     {
                     	$res = $EX->reexecute($comment, $A['date'], $A['ipaddress'], $A['type']);
                     } else {
-                    	$res = $EX->execute ($comment);
+                    	$res = $EX->execute($comment);
                     }
                     if ($res == 1) {
                         break;
                     }
                 }
                 if ($res == 1) {
-                    $this->deltrackback ($A['cid'], $A['sid'], $A['type']);
+                    $this->deltrackback($A['cid'], $A['sid'], $A['type']);
                     $numc = $numc + 1;
                 }
             }
-            $display .= $numc . $LANG_SX00['comdel'];
+            $display .= '<p>' . $numc . $LANG_SX00['comdel'] . '</p>' . LB;
         } else {
-            $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=MassDelTrackback"><div>';
-            $display .= $LANG_SX00['numtocheck'] . '&nbsp;&nbsp;&nbsp;' . ' <select name="limit">';
+            $token = SEC_createToken();
+            $display .= '<form method="post" action="'
+                     . $_CONF['site_admin_url']
+                     . '/plugins/spamx/index.php?command=MassDelTrackback"><div>';
+            $display .= $LANG_SX00['numtocheck'] . '&nbsp;&nbsp;&nbsp;'
+                     . ' <select name="limit">' . LB;
             $display .= '<option value="10">10</option>'
                      .  '<option value="50">50</option>'
                      .  '<option value="100" selected="selected">100</option>'
                      .  '<option value="200">200</option>'
                      .  '<option value="300">300</option>'
                      .  '<option value="400">400</option>';
-            $display .= '</select>';
+            $display .= '</select>' . LB;
             $display .= $LANG_SX00['note1'];
             $display .= $LANG_SX00['note2'];
             $display .= $LANG_SX00['note3'];
             $display .= $LANG_SX00['note4'];
             $display .= $LANG_SX00['note5'];
-            $display .= $LANG_SX00['note6'];
-            $display .= '<input type="submit" name="action" value="' . $LANG_SX00['deletespam'] . '"' . XHTML . '>';
-            $display .= '</div></form>';
+            $display .= $LANG_SX00['note6'] . LB;
+            $display .= '<input type="submit" name="action" value="'
+                     . $LANG_SX00['deletespam'] . '"' . XHTML . '>' . LB;
+            $display .= '<input type="hidden" name="' . CSRF_TOKEN
+                     . "\" value=\"{$token}\"" . XHTML . '>' . LB;
+            $display .= '</div></form>' . LB;
         }
 
         return $display;
@@ -123,21 +130,21 @@ class MassDelTrackback extends BaseAdmin {
     * @return   void
     *
     */
-    function deltrackback ($cid, $sid, $type)
+    function deltrackback($cid, $sid, $type)
     {
         global $_TABLES, $LANG_SX00;
 
-        if (TRB_allowDelete ($sid, $type)) {
-            TRB_deleteTrackbackComment ($cid);
+        if (TRB_allowDelete($sid, $type)) {
+            TRB_deleteTrackbackComment($cid);
 
             if ($type == 'article') {
-                $tbcount = DB_count ($_TABLES['trackback'],
-                                     array ('type', 'sid'),
-                                     array ('article', $sid));
-                DB_query ("UPDATE {$_TABLES['stories']} SET trackbacks = $tbcount WHERE sid = '$sid'");
+                $tbcount = DB_count($_TABLES['trackback'],
+                                    array('type', 'sid'),
+                                    array('article', $sid));
+                DB_query("UPDATE {$_TABLES['stories']} SET trackbacks = $tbcount WHERE sid = '$sid'");
             }
 
-            SPAMX_log ($LANG_SX00['spamdeleted']);
+            SPAMX_log($LANG_SX00['spamdeleted']);
         }
     }
 }

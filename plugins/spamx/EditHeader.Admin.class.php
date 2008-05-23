@@ -4,18 +4,18 @@
 * File: EditHeader.Admin.class.php
 * This is the Edit HTTP Header Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2005-2007 by the following authors:
+* Copyright (C) 2005-2008 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
 *
 * based on the works of Tom Willett <tomw AT pigstye DOT net>
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.9 2007/11/25 06:56:05 ospiess Exp $
+* $Id: EditHeader.Admin.class.php,v 1.10 2008/05/23 08:59:12 dhaun Exp $
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**
@@ -35,57 +35,65 @@ class EditHeader extends BaseAdmin {
         $action = '';
         if (isset($_GET['action'])) {
             $action = $_GET['action'];
-        } else if (isset($_POST['paction'])) {
+        } elseif (isset($_POST['paction'])) {
             $action = $_POST['paction'];
         }
 
-        if ($action == 'delete') {
+        if (($action == 'delete') && SEC_checkToken()) {
             $entry = $_GET['entry'];
-            if (!empty ($entry)) {
-                $dbentry = addslashes ($entry);
-                $result = DB_query ("DELETE FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' AND value='$dbentry'");
+            if (!empty($entry)) {
+                $dbentry = addslashes($entry);
+                $result = DB_query("DELETE FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' AND value='$dbentry'");
             }
-        } elseif ($action == $LANG_SX00['addentry']) {
+        } elseif (($action == $LANG_SX00['addentry']) && SEC_checkToken()) {
             $entry = '';
-            $name = COM_applyFilter ($_REQUEST['header-name']);
-            $n = explode (':', $name);
+            $name = COM_applyFilter($_REQUEST['header-name']);
+            $n = explode(':', $name);
             $name = $n[0];
             $value = $_REQUEST['header-value'];
 
-            if (!empty ($name) && !empty ($value)) {
+            if (!empty($name) && !empty($value)) {
                 $entry = $name . ': ' . $value;
             }
 
-            $dbentry = addslashes ($entry);
-            if (!empty ($entry)) {
-                $result = DB_query ("INSERT INTO {$_TABLES['spamx']} VALUES ('HTTPHeader','$dbentry')");
+            $dbentry = addslashes($entry);
+            if (!empty($entry)) {
+                $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('HTTPHeader','$dbentry')");
             }
         }
 
-        $display = '<hr' . XHTML . '><p><b>';
+        $token = SEC_createToken();
+        $display = '<hr' . XHTML . '>' . LB . '<p><b>';
         $display .= $LANG_SX00['headerblack'];
-        $display .= '</b></p><ul>';
-        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' ORDER BY value");
-        $nrows = DB_numRows ($result);
+        $display .= '</b></p>' . LB . '<ul>' . LB;
+        $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' ORDER BY value");
+        $nrows = DB_numRows($result);
         for ($i = 0; $i < $nrows; $i++) {
-            list($e) = DB_fetchArray ($result);
+            list($e) = DB_fetchArray($result);
 
-            $display .= '<li>'. COM_createLink($e , $_CONF['site_admin_url']
-                . '/plugins/spamx/index.php?command=EditHeader&amp;action=delete&amp;entry='
-                . urlencode ($e)) . '</li>';
+            $display .= '<li>'. COM_createLink(htmlspecialchars($e),
+                $_CONF['site_admin_url']
+                . '/plugins/spamx/index.php?command=EditHeader&amp;action=delete&amp;entry=' . urlencode($e) . '&amp;' . CSRF_TOKEN . '=' . $token) . '</li>' . LB;
         }
-        $display .= '</ul><p>' . $LANG_SX00['e1'] . '</p>';
-        $display .= '<p>' . $LANG_SX00['e2'] . '</p>';
+        $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
+        $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
 
-        $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditHeader">';
+        $display .= '<form method="post" action="' . $_CONF['site_admin_url']
+                 . '/plugins/spamx/index.php?command=EditHeader">' . LB;
         $display .= '<table border="0" width="100%">' . LB;
         $display .= '<tr><td align="right"><b>Header:</b></td>' . LB;
-        $display .= '<td><input type="text" size="40" name="header-name"' . XHTML . '> e.g. <tt>User-Agent</tt></td></tr>' . LB;
+        $display .= '<td><input type="text" size="40" name="header-name"'
+                 . XHTML . '> e.g. <tt>User-Agent</tt></td></tr>' . LB;
         $display .= '<tr><td align="right"><b>Content:</b></td>' . LB;
-        $display .= '<td><input type="text" size="40" name="header-value"' . XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB;
+        $display .= '<td><input type="text" size="40" name="header-value"'
+                 . XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB;
         $display .= '</table>' . LB;
-        $display .= '<p><input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '"' . XHTML . '></p>';
-        $display .= '</form>';
+        $display .= '<p><input type="submit" name="paction" value="'
+                 . $LANG_SX00['addentry'] . '"' . XHTML . '></p>';
+        $display .= '<input type="hidden" name="' . CSRF_TOKEN
+                 . "\" value=\"{$token}\"" . XHTML . '>' . LB;
+        $display .= '</form>' . LB;
+
         return $display;
     }
 
