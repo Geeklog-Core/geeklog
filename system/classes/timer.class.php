@@ -2,15 +2,15 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | timer.class.php                                                           |
+// |                                                                           |
 // | Geeklog timer class.  Use this to do performance testing.                 |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2002 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
+// | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: timer.class.php,v 1.7 2004/03/30 02:41:34 vinny Exp $
+// $Id: timer.class.php,v 1.8 2008/05/23 07:35:11 dhaun Exp $
 
 /* EXAMPLE  USAGE
 
@@ -44,7 +44,7 @@
     $mytimer->startTimer();
 
     // Stop timer and print elapsed time
-    echo $mytimer->endTimer();
+    echo $mytimer->stopTimer();
 
 */
 
@@ -137,7 +137,7 @@ class timerobject {
     /** 
     * Restarts the timer
     *
-    * Same as starTimer excepts this clears everything out first
+    * Same as startTimer excepts this clears everything out first
     *
     */
     function restart()
