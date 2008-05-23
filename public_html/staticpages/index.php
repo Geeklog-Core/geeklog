@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Static Pages Plugin                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -31,9 +31,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.46 2007/12/29 15:28:12 dhaun Exp $
+// $Id: index.php,v 1.47 2008/05/23 14:40:16 dhaun Exp $
 
 require_once '../lib-common.php';
+
+if (!in_array('staticpages', $_PLUGINS)) {
+    echo COM_refresh($_CONF['site_url'] . '/index.php');
+    exit;
+}
+
 
 // MAIN
 

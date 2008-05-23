@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.7 2008/05/02 12:12:05 dhaun Exp $
+// $Id: portal.php,v 1.8 2008/05/23 14:40:16 dhaun Exp $
 
 /** 
  * Geeklog portal page that tracks link click throughs. 
@@ -53,6 +53,12 @@
  */
 
 require_once '../lib-common.php';
+
+if (!in_array('links', $_PLUGINS)) {
+    echo COM_refresh($_CONF['site_url'] . '/index.php');
+    exit;
+}
+
 
 // MAIN
 

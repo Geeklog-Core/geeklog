@@ -32,9 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.27 2008/05/13 19:42:17 dhaun Exp $
+// $Id: index.php,v 1.28 2008/05/23 14:40:16 dhaun Exp $
 
 require_once '../lib-common.php';
+
+if (!in_array('polls', $_PLUGINS)) {
+    echo COM_refresh($_CONF['site_url'] . '/index.php');
+    exit;
+}
 
 
 /**

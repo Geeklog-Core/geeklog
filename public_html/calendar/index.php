@@ -32,9 +32,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2008/05/22 17:01:54 dhaun Exp $
+// $Id: index.php,v 1.26 2008/05/23 14:40:16 dhaun Exp $
 
 require_once '../lib-common.php';
+
+if (!in_array('calendar', $_PLUGINS)) {
+    echo COM_refresh($_CONF['site_url'] . '/index.php');
+    exit;
+}
+
 require_once $_CONF['path_system'] . 'classes/calendar.class.php';
 
 $display = '';
