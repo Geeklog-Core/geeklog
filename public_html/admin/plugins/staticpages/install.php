@@ -37,7 +37,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.32 2008/04/19 15:14:42 mjervis Exp $
+// $Id: install.php,v 1.33 2008/05/23 13:36:12 dhaun Exp $
 
 require_once '../../../lib-common.php';
 
@@ -83,9 +83,13 @@ $DEFVALUES = array();
 * @return   boolean     true = proceed with install, false = not compatible
 *
 */
-function plugin_compatible_with_this_geeklog_version ()
+function plugin_compatible_with_this_geeklog_version()
 {
-    if (!function_exists ('SEC_getGroupDropdown')) {
+    if (!function_exists('SEC_getGroupDropdown')) {
+        return false;
+    }
+
+    if (!function_exists('SEC_createToken')) {
         return false;
     }
 

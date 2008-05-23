@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.25 2008/04/19 15:14:41 mjervis Exp $
+// $Id: install.php,v 1.26 2008/05/23 13:36:12 dhaun Exp $
 
 require_once '../../../lib-common.php';
 
@@ -81,6 +81,10 @@ $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')";
 function plugin_compatible_with_this_geeklog_version()
 {
     if (function_exists('PLG_spamAction')) {
+        return true;
+    }
+
+    if (function_exists('SEC_createToken')) {
         return true;
     }
 

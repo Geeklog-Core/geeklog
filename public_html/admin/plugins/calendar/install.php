@@ -11,7 +11,7 @@
 // +---------------------------------------------------------------------------+
 // | Based on the Universal Plugin and prior work by the following authors:    |
 // |                                                                           |
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Tom Willett       - tom AT pigstye DOT net                       |
@@ -36,9 +36,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.14 2008/04/19 15:14:41 mjervis Exp $
+// $Id: install.php,v 1.15 2008/05/23 13:36:12 dhaun Exp $
 
-require_once ('../../../lib-common.php');
+require_once '../../../lib-common.php';
 
 // Plugin information
 //
@@ -47,7 +47,7 @@ require_once ('../../../lib-common.php');
 $pi_display_name = 'Calendar';
 $pi_name         = 'calendar';
 $pi_version      = '1.0.2';
-$gl_version      = '1.4.1';
+$gl_version      = '1.5.0';
 $pi_url          = 'http://www.geeklog.net/';
 
 $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
@@ -81,16 +81,20 @@ $DEFVALUES = array();
 * @return   boolean     true = proceed with install, false = not compatible
 *
 */
-function plugin_compatible_with_this_geeklog_version ()
+function plugin_compatible_with_this_geeklog_version()
 {
-    if (function_exists ('COM_printUpcomingEvents')) {
+    if (function_exists('COM_printUpcomingEvents')) {
         // if this function exists, then someone's trying to install the
         // plugin on Geeklog 1.4.0 or older - sorry, but that won't work
         return false;
     }
 
-    if (!function_exists ('MBYTE_strpos')) {
+    if (!function_exists('MBYTE_strpos')) {
         // the plugin requires the multi-byte functions
+        return false;
+    }
+
+    if (!function_exists('SEC_createToken')) {
         return false;
     }
 

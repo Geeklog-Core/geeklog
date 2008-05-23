@@ -38,7 +38,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.25 2008/04/19 15:14:41 mjervis Exp $
+// $Id: install.php,v 1.26 2008/05/23 13:36:12 dhaun Exp $
 
 require_once '../../../lib-common.php';
 
@@ -87,6 +87,10 @@ $DEFVALUES = array(); // not used here - see plugin_postinstall
 function plugin_compatible_with_this_geeklog_version()
 {
     if (!function_exists('COM_truncate') || !function_exists('MBYTE_strpos')) {
+        return false;
+    }
+
+    if (!function_exists('SEC_createToken')) {
         return false;
     }
 
