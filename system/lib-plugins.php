@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.146 2008/05/23 21:07:14 dhaun Exp $
+// $Id: lib-plugins.php,v 1.147 2008/05/23 21:35:37 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2317,20 +2317,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
     case 'item':
         $url = $item_url;
         if (!empty($msg)) {
-            $url .= '&' . $msg;
-        }
-        break;
-
-    case 'list':
-        if ($plugin == 'story') {
-            $url = $_CONF['site_admin_url'] . "/$plugin.php";
-        } elseif ($plugin == 'user') {
-            $url = $_CONF['site_admin_url'] . "/user.php";
-        } else {
-            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
-        }
-        if (!empty($msg)) {
-            $url .= '?' . $msg;
+            $url .= '&amp;' . $msg;
         }
         break;
 
@@ -2338,7 +2325,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
         $url = $_CONF['site_url'] . '/index.php';
         if (!empty($msg)) {
             $url .= '?' . $msg;
-            if ($plugin != 'story') {
+            if (($plugin != 'story') && ($plugin != 'user')) {
                 $url .= '&amp;plugin=' . $plugin;
             }
         }
@@ -2348,7 +2335,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
         $url = $_CONF['site_admin_url'] . '/moderation.php';
         if (!empty($msg)) {
             $url .= '?' . $msg;
-            if ($plugin != 'story') {
+            if (($plugin != 'story') && ($plugin != 'user')) {
                 $url .= '&amp;plugin=' . $plugin;
             }
         }
@@ -2356,6 +2343,20 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
 
     case 'plugin':
         $url = $_CONF['site_url'] . "/$plugin/index.php";
+        if (!empty($msg)) {
+            $url .= '?' . $msg;
+        }
+        break;
+
+    case 'list':
+    default:
+        if ($plugin == 'story') {
+            $url = $_CONF['site_admin_url'] . "/$plugin.php";
+        } elseif ($plugin == 'user') {
+            $url = $_CONF['site_admin_url'] . "/user.php";
+        } else {
+            $url = $_CONF['site_admin_url'] . "/plugins/$plugin/index.php";
+        }
         if (!empty($msg)) {
             $url .= '?' . $msg;
         }
