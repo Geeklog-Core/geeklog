@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.56 2008/05/23 20:13:30 dhaun Exp $
+// $Id: index.php,v 1.57 2008/05/24 09:04:59 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -278,7 +278,7 @@ function savepoll($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults,
 
     return PLG_afterSaveSwitch (
         $_PO_CONF['aftersave'],
-        COM_buildURL ("{$_CONF['site_url']}/polls/index.php?pid=$pid"),
+        $_CONF['site_url'] . '/polls/index.php?pid=' . $pid,
         'polls',
         19
     );
