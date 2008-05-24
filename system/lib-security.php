@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.69 2008/05/02 12:12:06 dhaun Exp $
+// $Id: lib-security.php,v 1.70 2008/05/24 16:16:14 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -1072,9 +1072,11 @@ function SEC_encryptPassword($password)
   * added to forms and urls in the admin section as a non-cookie double-check
   * that the admin user really wanted to do that...
   *
+  * @param $ttl integer Time to live for token in seconds. Default is 20 minutes.
+  *
   * @return string  Generated token, it'll be an MD5 hash (32chars)
   */
-function SEC_createToken()
+function SEC_createToken($ttl = 1200)
 {
     global $_USER, $_TABLES;
     
@@ -1087,9 +1089,9 @@ function SEC_createToken()
     
     /* Destroy exired tokens: */
     /* Note: TTL not yet implemented! So commented out */
-//    $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
-//           . " AND (ttl > 0)";
-//    DB_Query($sql);
+    $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
+           . " AND (ttl > 0)";
+    DB_Query($sql);
     
     /* Destroy tokens for this user/url combination */
     $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id={$_USER['uid']} AND urlfor='$pageURL'";
@@ -1098,7 +1100,7 @@ function SEC_createToken()
     /* Create a token for this user/url combination */
     /* NOTE: TTL mapping for PageURL not yet implemented */
     $sql = "INSERT INTO {$_TABLES['tokens']} (token, created, owner_id, urlfor, ttl) "
-           . "VALUES ('$token', NOW(), {$_USER['uid']}, '$pageURL', 0)";
+           . "VALUES ('$token', NOW(), {$_USER['uid']}, '$pageURL', $ttl)";
     DB_Query($sql);
            
     /* And return the token to the user */
