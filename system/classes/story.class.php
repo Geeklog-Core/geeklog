@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.26 2008/05/03 19:04:08 mjervis Exp $
+// $Id: story.class.php,v 1.27 2008/05/24 19:46:13 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -618,8 +618,15 @@ class Story
         }
 
         /* Format dates for storage: */
-        $this->_date = date('Y-m-d H:i:s', $this->_date);
-        $this->_expire = date('Y-m-d H:i:s', $this->_expire);
+        /*
+         * Doing this here would use the webserver's timezone, but we need
+         * to use the DB server's timezone so that ye olde timezone hack
+         * still works. See use of FROM_UNIXTIME in the SQL below.
+         *
+         * $this->_date = date('Y-m-d H:i:s', $this->_date);
+         * $this->_expire = date('Y-m-d H:i:s', $this->_expire);
+         *
+         */
 
         // Get the related URLs
         $this->_related = implode("\n", STORY_extractLinks("{$this->_introtext} {$this->_bodytext}"));
@@ -636,7 +643,12 @@ class Story
             if ($save === 1) {
                 $varname = '_' . $fieldname;
                 $sql .= $fieldname . ', ';
-                $values .= '\'' . addslashes($this->{$varname}) . '\', ';
+                if (($fieldname == 'date') || ($fieldname == 'expire')) {
+                    // let the DB server do this conversion (cf. timezone hack)
+                    $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
+                } else {
+                    $values .= '\'' . addslashes($this->{$varname}) . '\', ';
+                }
             }
         }
 

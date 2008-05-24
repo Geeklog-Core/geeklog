@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May 2?, 2008 (1.5.0rc1)
+May 25, 2008 (1.5.0rc1)
 ------------
 
 Geeklog 1.5.0 incorporates the following projects implemented during
@@ -11,6 +11,9 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0b2:
+- Fixed story date/time when using the timezone hack (bug #0000639) [Dirk]
+- Fixed MS SQL upgrade [Mike]
+- Added code to beautify the language names in the install script [Dirk]
 - Ensure the "After Saving ..." options work as advertised [Dirk]
 - Fixed handling of empty form submission and display of error messages in the
   batch user import [Dirk]
@@ -21,7 +24,7 @@ Changes since 1.5.0b2:
   theme's stylesheet; added empty required-field, missing-field classes for
   future use (cf. bug #0000635) [Dirk]
 
-- Updated Chinese language files, proviced by Samuel M. Stone
+- Updated Chinese language files, provided by Samuel M. Stone
 - Updated Estonian language files, provided by Artur Räpp
 
 Calendar plugin
