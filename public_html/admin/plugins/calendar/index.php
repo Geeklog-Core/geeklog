@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.36 2008/05/23 20:24:57 dhaun Exp $
+// $Id: index.php,v 1.37 2008/05/24 07:45:28 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -544,7 +544,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
 
         return PLG_afterSaveSwitch (
             $_CA_CONF['aftersave'],
-            COM_buildURL ("{$_CONF['site_url']}/calendar/event.php?eid=$eid"),
+            $_CONF['site_url'] . '/calendar/event.php?eid=' . $eid,
             'calendar',
             17
         );
