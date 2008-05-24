@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.8 2008/05/23 14:40:16 dhaun Exp $
+// $Id: portal.php,v 1.9 2008/05/24 08:57:35 dhaun Exp $
 
 /** 
  * Geeklog portal page that tracks link click throughs. 
@@ -70,6 +70,12 @@ $what = COM_getArgument('what');
 if ($what == 'link') {
 
     $item = COM_applyFilter(COM_getArgument('item'));
+    if (!empty($item)) {
+        // Hack: due to PLG_afterSaveSwitch settings, we may get
+        // an attached &msg - strip it off
+        $i = explode('&', $item);
+        $item = $i[0];
+    }
 
     if (!empty($item)) {
         $url = DB_getItem($_TABLES['links'], 'url', "lid = '{$item}'");
