@@ -11,9 +11,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ADD CONSTRAINT [DF_gl_userprefs_t
 // change former default values to '' so users dont all have edt for no reason
 $_SQL[] = "UPDATE {$_TABLES['userprefs']} set tzid = ''";
 // Add new field to track the number of reminders to login and use the site or account may be deleted
-$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD num_reminders TINYINT NOT NULL default 0"; // AFTER status";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD num_reminders TINYINT NOT NULL default 0";
 // User submissions may have body text.
-$_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD bodytext TEXT"; // AFTER introtext";
+$_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD bodytext TEXT";
 
 // new comment code: close comments
 $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Comments Closed')";
@@ -22,8 +22,8 @@ $_SQL[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (1,'Commen
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ALTER COLUMN [phpblockfn] VARCHAR(128)";
 
 // New fields to store HTTP Last-Modified and ETag headers
-$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DEFAULT NULL";// AFTER rdfupdated";
-$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL"; // AFTER rdf_last_modified";
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_last_modified VARCHAR(40) DEFAULT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdf_etag VARCHAR(40) DEFAULT NULL";
 
 // new 'webservices.atompub' feature
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('webservices.atompub', 'May use Atompub Webservices (if restricted)', 1)";
@@ -33,7 +33,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) V
  
 // add the security tokens table:
 $_SQL[] = "
-CREATE TABLE {$_TABLES['tokens']} (
+CREATE TABLE [dbo].[{$_TABLES['tokens']}] (
     [token] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     [created] [datetime] NOT NULL,
     [owner_id] [numeric] (8,0) NOT NULL,
@@ -70,7 +70,7 @@ function create_ConfValues()
         ");
         
     DB_Query ("
-        ALTER function [dbo].[DESCRIBE](@d as varchar(100)='', @c as varchar(100)=null)
+        ALTER function [DESCRIBE](@d as varchar(100)='', @c as varchar(100)=null)
         RETURNS table AS
 
         RETURN
@@ -406,6 +406,7 @@ function upgrade_PollsPlugin()
 
     $P_SQL = array();
     //$P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} RENAME TO {$_TABLES['pollquestions']};";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollquestions']} DROP CONSTRAINT [PK_gl_pollquestions];";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['pollquestions']}', '{$_TABLES['polltopics']}'";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['polltopics']}.question', 'topic', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ALTER COLUMN [topic] VARCHAR( 255 ) NULL";
@@ -415,22 +416,19 @@ function upgrade_PollsPlugin()
     $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} ADD hideresults tinyint NOT NULL default '0'";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['pollanswers']}.qid', 'pid', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD qid VARCHAR(20) NOT NULL default '0'";
-    // todo:sort out primary key/indexes here:
-    //$P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} DROP PRIMARY KEY;";
-    //$P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD INDEX (pid, qid, aid);";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} DROP CONSTRAINT [PK_gl_pollanswers];";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY CLUSTERED ([pid], [qid], [aid]) ON [PRIMARY];";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['pollvoters']}.qid', 'pid', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHAR( 20 ) NOT NULL";
     $P_SQL[] = "CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
         [qid] [int] NOT NULL DEFAULT 0,
         [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
         [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+        CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED 
+	    (
+		    [qid]
+	    )  ON [PRIMARY] 
     ) ON [PRIMARY]";
-    // todo: sort out key
-//    $P_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
-//        CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
-//        (
-//            [qid]
-//        )  ON [PRIMARY]";
     // in 1.4.1, "don't display poll" was equivalent to "closed"
     $P_SQL[] = "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0";
     $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '2.0.1', pi_gl_version = '1.5.0' WHERE pi_name = 'polls'";
@@ -492,9 +490,9 @@ function upgrade_StaticpagesPlugin()
     }
 
     $P_SQL = array();
-    $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD COLUMN commentcode tinyint(4) NOT NULL default '0' AFTER sp_label";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD [commentcode] TINYINT NOT NULL default '0'";
     // disable comments on all existing static pages
-    $P_SQL[] = "UPDATE {$_TABLES['staticpage']} SET commentcode = -1";
+    $P_SQL[] = "UPDATE {$_TABLES['staticpage']} SET commentcode = 0";
     $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.5.0', pi_gl_version = '1.5.0' WHERE pi_name = 'staticpages'";
 
     foreach ($P_SQL as $sql) {
@@ -641,7 +639,7 @@ function upgrade_LinksPlugin()
         [pid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
         [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
         [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-        [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+        [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
         [created] [datetime] NULL ,
         [modified] [datetime] NULL ,
         [owner_id] [numeric](8, 0) NOT NULL ,
@@ -660,7 +658,7 @@ function upgrade_LinksPlugin()
     $blockadmin_id = DB_getItem($_TABLES['groups'], 'grp_id',
                                 "grp_name='Block Admin'");
 
-    $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1' AFTER date";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id INTEGER NOT NULL default '1'";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['linksubmission']}.category', 'cid', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ALTER COLUMN [cid] varchar(32) NOT NULL";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['links']}.category', 'cid', 'COLUMN'";
@@ -688,9 +686,11 @@ function upgrade_LinksPlugin()
         $A = DB_fetchArray($result);
         $category = addslashes($A['category']);
         $cid = $category;
-        DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified) VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW())",1);
+        $sql = "INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW(), 3, 3, 2, 2)";
+        DB_query($sql,0);
         if ($cid != $category) { // still experimenting ...
-            DB_query("UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$category}'",1);
+            $sql = "UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$category}'";
+            DB_query($sql,0);
         }
         if (DB_error()) {
             echo "Error inserting categories into linkcategories table";
