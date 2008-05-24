@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.40 2008/05/11 07:25:08 dhaun Exp $
+// $Id: index.php,v 1.41 2008/05/24 19:12:02 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -953,6 +953,41 @@ function INST_getDefaultLanguage($langpath, $language, $utf8 = false)
 
 
 /**
+ * Make a nice display name from the language filename
+ *
+ * @param    string  $file   filename without the extension
+ * @return   string          language name to display to the user
+ * @note     This code is a straight copy from MBYTE_languageList()
+ *
+ */
+function INST_prettifyLanguageName($filename)
+{
+    $langfile = str_replace ('_utf-8', '', $filename);
+    $uscore = strpos ($langfile, '_');
+    if ($uscore === false) {
+        $lngname = ucfirst ($langfile);
+    } else {
+        $lngname = ucfirst (substr ($langfile, 0, $uscore));
+        $lngadd = substr ($langfile, $uscore + 1);
+        $lngadd = str_replace ('utf-8', '', $lngadd);
+        $lngadd = str_replace ('_', ', ', $lngadd);
+        $word = explode (' ', $lngadd);
+        $lngadd = '';
+        foreach ($word as $w) {
+            if (preg_match ('/[0-9]+/', $w)) {
+                $lngadd .= strtoupper ($w) . ' ';
+            } else {
+                $lngadd .= ucfirst ($w) . ' ';
+            }
+        }
+        $lngname .= ' (' . trim ($lngadd) . ')';
+    }
+
+    return $lngname;
+}
+
+
+/**
  * Check if a table exists
  *
  * @param   string $table   Table name
@@ -1629,7 +1664,7 @@ if ($mode == 'check_permissions') {
 
     foreach (glob('language/*.php') as $filename) {
         $filename = preg_replace('/.php/', '', preg_replace('/language\//', '', $filename));
-        $display .= '<option value="' . $filename . '"' . (($filename == $language) ? ' selected="selected"' : '') . '>' . ucfirst($filename) . '</option>' . LB;
+        $display .= '<option value="' . $filename . '"' . (($filename == $language) ? ' selected="selected"' : '') . '>' . INST_prettifyLanguageName($filename) . '</option>' . LB;
     }
 
     $display .= '</select>
