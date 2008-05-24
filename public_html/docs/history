@@ -11,8 +11,7 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0b2:
-- Fixed display of plugin messages when they were set to redirect to the index
-  page or admin home after saving an item [Dirk]
+- Ensure the "After Saving ..." options work as advertised [Dirk]
 - Fixed handling of empty form submission and display of error messages in the
   batch user import [Dirk]
 - Fixed text for the account reminder emails [Dirk]
@@ -22,6 +21,7 @@ Changes since 1.5.0b2:
   theme's stylesheet; added empty required-field, missing-field classes for
   future use (cf. bug #0000635) [Dirk]
 
+- Updated Chinese language files, proviced by Samuel M. Stone
 - Updated Estonian language files, provided by Artur Räpp
 
 Calendar plugin
